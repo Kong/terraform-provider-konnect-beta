@@ -1,0 +1,5 @@
+tests/e2e/local-plugins
+.terraform
+.terraform*
+*.tfstate*
+.DS_Store

@@ -1,0 +1,12 @@
+workflowVersion: 1.0.0
+speakeasyVersion: 1.503.0
+sources:
+    kong:
+        inputs:
+            - location: openapi.yaml
+        registry:
+            location: registry.speakeasyapi.dev/kong/kong/terraform-provider-konnect-beta
+targets:
+    terraform:
+        target: terraform
+        source: kong
