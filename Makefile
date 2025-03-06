@@ -9,6 +9,7 @@ speakeasy: check-speakeasy
 	@git clean -fd docs > /dev/null
 	@git checkout -- README.md
 	@rm USAGE.md
+	@find internal/provider -type f -name "*_resource.go" | xargs sed -i '' 's/resp.TypeName = req.ProviderTypeName + "/resp.TypeName = "konnect/'
 
 FILES=$(shell find internal/provider -type f | grep data_source | grep -v portallist | grep -v cloudgatewayprovideraccountlist)
 remove-data-sources:
