@@ -26,13 +26,6 @@ func newMeshFaultInjection(sdkConfig sdkConfiguration) *MeshFaultInjection {
 
 // GetMeshFaultInjection - Returns MeshFaultInjection entity
 func (s *MeshFaultInjection) GetMeshFaultInjection(ctx context.Context, request operations.GetMeshFaultInjectionRequest, opts ...operations.Option) (*operations.GetMeshFaultInjectionResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getMeshFaultInjection",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -54,6 +47,14 @@ func (s *MeshFaultInjection) GetMeshFaultInjection(ctx context.Context, request 
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshfaultinjections/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getMeshFaultInjection",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -179,13 +180,6 @@ func (s *MeshFaultInjection) GetMeshFaultInjection(ctx context.Context, request 
 
 // DeleteMeshFaultInjection - Deletes MeshFaultInjection entity
 func (s *MeshFaultInjection) DeleteMeshFaultInjection(ctx context.Context, request operations.DeleteMeshFaultInjectionRequest, opts ...operations.Option) (*operations.DeleteMeshFaultInjectionResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "deleteMeshFaultInjection",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -207,6 +201,14 @@ func (s *MeshFaultInjection) DeleteMeshFaultInjection(ctx context.Context, reque
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshfaultinjections/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "deleteMeshFaultInjection",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -332,13 +334,6 @@ func (s *MeshFaultInjection) DeleteMeshFaultInjection(ctx context.Context, reque
 
 // CreateMeshFaultInjection - Creates or Updates MeshFaultInjection entity
 func (s *MeshFaultInjection) CreateMeshFaultInjection(ctx context.Context, request operations.CreateMeshFaultInjectionRequest, opts ...operations.Option) (*operations.CreateMeshFaultInjectionResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "createMeshFaultInjection",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -361,6 +356,13 @@ func (s *MeshFaultInjection) CreateMeshFaultInjection(ctx context.Context, reque
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "createMeshFaultInjection",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MeshFaultInjectionItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -466,13 +468,6 @@ func (s *MeshFaultInjection) CreateMeshFaultInjection(ctx context.Context, reque
 
 // UpdateMeshFaultInjection - Creates or Updates MeshFaultInjection entity
 func (s *MeshFaultInjection) UpdateMeshFaultInjection(ctx context.Context, request operations.UpdateMeshFaultInjectionRequest, opts ...operations.Option) (*operations.UpdateMeshFaultInjectionResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "updateMeshFaultInjection",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -495,6 +490,13 @@ func (s *MeshFaultInjection) UpdateMeshFaultInjection(ctx context.Context, reque
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "updateMeshFaultInjection",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MeshFaultInjectionItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -600,13 +602,6 @@ func (s *MeshFaultInjection) UpdateMeshFaultInjection(ctx context.Context, reque
 
 // GetMeshFaultInjectionList - Returns a list of MeshFaultInjection in the mesh.
 func (s *MeshFaultInjection) GetMeshFaultInjectionList(ctx context.Context, request operations.GetMeshFaultInjectionListRequest, opts ...operations.Option) (*operations.GetMeshFaultInjectionListResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getMeshFaultInjectionList",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -627,6 +622,14 @@ func (s *MeshFaultInjection) GetMeshFaultInjectionList(ctx context.Context, requ
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshfaultinjections", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getMeshFaultInjectionList",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

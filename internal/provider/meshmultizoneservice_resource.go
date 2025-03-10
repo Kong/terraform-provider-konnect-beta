@@ -26,7 +26,7 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
-	speakeasy_int64validators "github.com/kong/terraform-provider-konnect-beta/internal/validators/int64validators"
+	speakeasy_int32validators "github.com/kong/terraform-provider-konnect-beta/internal/validators/int32validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
 	"regexp"
 )
@@ -128,17 +128,17 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 								"app_protocol": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Default:     stringdefault.StaticString("tcp"),
+									Default:     stringdefault.StaticString(`tcp`),
 									Description: `Protocol identifies a protocol supported by a service. Default: "tcp"`,
 								},
 								"name": schema.StringAttribute{
 									Optional: true,
 								},
-								"port": schema.Int64Attribute{
+								"port": schema.Int32Attribute{
 									Optional:    true,
 									Description: `Not Null`,
-									Validators: []validator.Int64{
-										speakeasy_int64validators.NotNull(),
+									Validators: []validator.Int32{
+										speakeasy_int32validators.NotNull(),
 									},
 								},
 							},

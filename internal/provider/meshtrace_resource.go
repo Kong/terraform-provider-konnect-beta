@@ -186,7 +186,7 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 												"api_version": schema.StringAttribute{
 													Computed: true,
 													Optional: true,
-													Default:  stringdefault.StaticString("httpJson"),
+													Default:  stringdefault.StaticString(`httpJson`),
 													MarkdownDescription: `Version of the API.` + "\n" +
 														`https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/trace/v3/zipkin.proto#L66` + "\n" +
 														`Default: "httpJson"; must be one of ["httpJson", "httpProto"]`,

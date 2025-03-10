@@ -31,13 +31,13 @@ type MeshHTTPRouteListDataSource struct {
 type MeshHTTPRouteListDataSourceModel struct {
 	CpID   types.String                `tfsdk:"cp_id"`
 	Items  []tfTypes.MeshHTTPRouteItem `tfsdk:"items"`
-	Key    types.String                `tfsdk:"key"`
+	Key    types.String                `queryParam:"name=key" tfsdk:"key"`
 	Mesh   types.String                `tfsdk:"mesh"`
 	Next   types.String                `tfsdk:"next"`
-	Offset types.Int64                 `tfsdk:"offset"`
-	Size   types.Int64                 `tfsdk:"size"`
+	Offset types.Int64                 `queryParam:"style=form,explode=true,name=offset" tfsdk:"offset"`
+	Size   types.Int64                 `queryParam:"style=form,explode=true,name=size" tfsdk:"size"`
 	Total  types.Number                `tfsdk:"total"`
-	Value  types.String                `tfsdk:"value"`
+	Value  types.String                `queryParam:"name=value" tfsdk:"value"`
 }
 
 // Metadata returns the data source type name.
@@ -179,7 +179,7 @@ func (r *MeshHTTPRouteListDataSource) Schema(ctx context.Context, req datasource
 																				MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 																					`will be targeted.`,
 																			},
-																			"port": schema.Int64Attribute{
+																			"port": schema.Int32Attribute{
 																				Computed:    true,
 																				Description: `Port is only supported when this ref refers to a real MeshService object`,
 																			},
@@ -278,7 +278,7 @@ func (r *MeshHTTPRouteListDataSource) Schema(ctx context.Context, req datasource
 																								MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 																									`will be targeted.`,
 																							},
-																							"port": schema.Int64Attribute{
+																							"port": schema.Int32Attribute{
 																								Computed:    true,
 																								Description: `Port is only supported when this ref refers to a real MeshService object`,
 																							},
@@ -350,7 +350,7 @@ func (r *MeshHTTPRouteListDataSource) Schema(ctx context.Context, req datasource
 																							`The modified path is then used to construct the location header.` + "\n" +
 																							`When empty, the request path is used as-is.`,
 																					},
-																					"port": schema.Int64Attribute{
+																					"port": schema.Int32Attribute{
 																						Computed: true,
 																						MarkdownDescription: `Port is the port to be used in the value of the ` + "`" + `Location` + "`" + `` + "\n" +
 																							`header in the response.` + "\n" +

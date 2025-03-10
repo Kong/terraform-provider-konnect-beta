@@ -24,7 +24,7 @@ func (r *MeshTimeoutListDataSourceModel) RefreshFromSharedMeshTimeoutList(resp *
 				items1.CreationTime = types.StringNull()
 			}
 			if len(itemsItem.Labels) > 0 {
-				items1.Labels = make(map[string]types.String)
+				items1.Labels = make(map[string]types.String, len(itemsItem.Labels))
 				for key, value := range itemsItem.Labels {
 					items1.Labels[key] = types.StringValue(value)
 				}
@@ -58,7 +58,7 @@ func (r *MeshTimeoutListDataSourceModel) RefreshFromSharedMeshTimeoutList(resp *
 				}
 				from1.TargetRef.Kind = types.StringValue(string(fromItem.TargetRef.Kind))
 				if len(fromItem.TargetRef.Labels) > 0 {
-					from1.TargetRef.Labels = make(map[string]types.String)
+					from1.TargetRef.Labels = make(map[string]types.String, len(fromItem.TargetRef.Labels))
 					for key1, value1 := range fromItem.TargetRef.Labels {
 						from1.TargetRef.Labels[key1] = types.StringValue(value1)
 					}
@@ -72,7 +72,7 @@ func (r *MeshTimeoutListDataSourceModel) RefreshFromSharedMeshTimeoutList(resp *
 				}
 				from1.TargetRef.SectionName = types.StringPointerValue(fromItem.TargetRef.SectionName)
 				if len(fromItem.TargetRef.Tags) > 0 {
-					from1.TargetRef.Tags = make(map[string]types.String)
+					from1.TargetRef.Tags = make(map[string]types.String, len(fromItem.TargetRef.Tags))
 					for key2, value2 := range fromItem.TargetRef.Tags {
 						from1.TargetRef.Tags[key2] = types.StringValue(value2)
 					}
@@ -116,7 +116,7 @@ func (r *MeshTimeoutListDataSourceModel) RefreshFromSharedMeshTimeoutList(resp *
 				items1.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 				items1.Spec.TargetRef.Kind = types.StringValue(string(itemsItem.Spec.TargetRef.Kind))
 				if len(itemsItem.Spec.TargetRef.Labels) > 0 {
-					items1.Spec.TargetRef.Labels = make(map[string]types.String)
+					items1.Spec.TargetRef.Labels = make(map[string]types.String, len(itemsItem.Spec.TargetRef.Labels))
 					for key3, value3 := range itemsItem.Spec.TargetRef.Labels {
 						items1.Spec.TargetRef.Labels[key3] = types.StringValue(value3)
 					}
@@ -130,7 +130,7 @@ func (r *MeshTimeoutListDataSourceModel) RefreshFromSharedMeshTimeoutList(resp *
 				}
 				items1.Spec.TargetRef.SectionName = types.StringPointerValue(itemsItem.Spec.TargetRef.SectionName)
 				if len(itemsItem.Spec.TargetRef.Tags) > 0 {
-					items1.Spec.TargetRef.Tags = make(map[string]types.String)
+					items1.Spec.TargetRef.Tags = make(map[string]types.String, len(itemsItem.Spec.TargetRef.Tags))
 					for key4, value4 := range itemsItem.Spec.TargetRef.Tags {
 						items1.Spec.TargetRef.Tags[key4] = types.StringValue(value4)
 					}
@@ -158,7 +158,7 @@ func (r *MeshTimeoutListDataSourceModel) RefreshFromSharedMeshTimeoutList(resp *
 				}
 				to1.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 				if len(toItem.TargetRef.Labels) > 0 {
-					to1.TargetRef.Labels = make(map[string]types.String)
+					to1.TargetRef.Labels = make(map[string]types.String, len(toItem.TargetRef.Labels))
 					for key5, value5 := range toItem.TargetRef.Labels {
 						to1.TargetRef.Labels[key5] = types.StringValue(value5)
 					}
@@ -172,7 +172,7 @@ func (r *MeshTimeoutListDataSourceModel) RefreshFromSharedMeshTimeoutList(resp *
 				}
 				to1.TargetRef.SectionName = types.StringPointerValue(toItem.TargetRef.SectionName)
 				if len(toItem.TargetRef.Tags) > 0 {
-					to1.TargetRef.Tags = make(map[string]types.String)
+					to1.TargetRef.Tags = make(map[string]types.String, len(toItem.TargetRef.Tags))
 					for key6, value6 := range toItem.TargetRef.Tags {
 						to1.TargetRef.Tags[key6] = types.StringValue(value6)
 					}

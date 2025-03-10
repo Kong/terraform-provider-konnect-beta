@@ -26,7 +26,6 @@ type KonnectBetaProvider struct {
 
 // KonnectBetaProviderModel describes the provider data model.
 type KonnectBetaProviderModel struct {
-	ClientToken              types.String `tfsdk:"client_token"`
 	KonnectAccessToken       types.String `tfsdk:"konnect_access_token"`
 	PersonalAccessToken      types.String `tfsdk:"personal_access_token"`
 	ServerURL                types.String `tfsdk:"server_url"`
@@ -41,10 +40,6 @@ func (p *KonnectBetaProvider) Metadata(ctx context.Context, req provider.Metadat
 func (p *KonnectBetaProvider) Schema(ctx context.Context, req provider.SchemaRequest, resp *provider.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
-			"client_token": schema.StringAttribute{
-				Optional:  true,
-				Sensitive: true,
-			},
 			"konnect_access_token": schema.StringAttribute{
 				Optional:  true,
 				Sensitive: true,
@@ -110,17 +105,10 @@ func (p *KonnectBetaProvider) Configure(ctx context.Context, req provider.Config
 	} else {
 		konnectAccessToken = nil
 	}
-	clientToken := new(string)
-	if !data.ClientToken.IsUnknown() && !data.ClientToken.IsNull() {
-		*clientToken = data.ClientToken.ValueString()
-	} else {
-		clientToken = nil
-	}
 	security := shared.Security{
 		PersonalAccessToken:      personalAccessToken,
 		SystemAccountAccessToken: systemAccountAccessToken,
 		KonnectAccessToken:       konnectAccessToken,
-		ClientToken:              clientToken,
 	}
 
 	providerHTTPTransportOpts := ProviderHTTPTransportOpts{
@@ -144,6 +132,11 @@ func (p *KonnectBetaProvider) Configure(ctx context.Context, req provider.Config
 
 func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
+		NewAPIResource,
+		NewAPIDocumentResource,
+		NewAPIImplementationResource,
+		NewAPIPublicationResource,
+		NewAPISpecificationResource,
 		NewHostnameGeneratorResource,
 		NewMeshResource,
 		NewMeshAccessLogResource,
@@ -169,18 +162,23 @@ func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.R
 		NewMeshTLSResource,
 		NewMeshTraceResource,
 		NewMeshTrafficPermissionResource,
-		NewSystemAccountResource,
-		NewSystemAccountAccessTokenResource,
-		NewSystemAccountRoleResource,
-		NewSystemAccountTeamResource,
-		NewTeamResource,
-		NewTeamRoleResource,
-		NewTeamUserResource,
+		NewPortalResource,
+		NewPortalAuthResource,
+		NewPortalCustomDomainResource,
+		NewPortalCustomizationResource,
+		NewPortalPageResource,
+		NewPortalSnippetResource,
+		NewPortalTeamResource,
 	}
 }
 
 func (p *KonnectBetaProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
+		NewAPIDataSource,
+		NewAPIDocumentDataSource,
+		NewAPIImplementationDataSource,
+		NewAPIPublicationDataSource,
+		NewAPISpecificationDataSource,
 		NewHostnameGeneratorDataSource,
 		NewHostnameGeneratorListDataSource,
 		NewMeshDataSource,
@@ -230,9 +228,13 @@ func (p *KonnectBetaProvider) DataSources(ctx context.Context) []func() datasour
 		NewMeshTraceListDataSource,
 		NewMeshTrafficPermissionDataSource,
 		NewMeshTrafficPermissionListDataSource,
-		NewSystemAccountDataSource,
-		NewSystemAccountAccessTokenDataSource,
-		NewTeamDataSource,
+		NewPortalDataSource,
+		NewPortalAuthDataSource,
+		NewPortalCustomDomainDataSource,
+		NewPortalCustomizationDataSource,
+		NewPortalPageDataSource,
+		NewPortalSnippetDataSource,
+		NewPortalTeamDataSource,
 	}
 }
 

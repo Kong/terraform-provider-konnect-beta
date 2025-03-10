@@ -9,16 +9,16 @@ type MeshHealthCheckItemDefault struct {
 	EventLogPath                 types.String             `tfsdk:"event_log_path"`
 	FailTrafficOnPanic           types.Bool               `tfsdk:"fail_traffic_on_panic"`
 	Grpc                         *Grpc                    `tfsdk:"grpc"`
-	HealthyPanicThreshold        *Mode                    `tfsdk:"healthy_panic_threshold"`
-	HealthyThreshold             types.Int64              `tfsdk:"healthy_threshold"`
+	HealthyPanicThreshold        *MeshItemMode            `tfsdk:"healthy_panic_threshold"`
+	HealthyThreshold             types.Int32              `tfsdk:"healthy_threshold"`
 	HTTP                         *MeshHealthCheckItemHTTP `tfsdk:"http"`
 	InitialJitter                types.String             `tfsdk:"initial_jitter"`
 	Interval                     types.String             `tfsdk:"interval"`
 	IntervalJitter               types.String             `tfsdk:"interval_jitter"`
-	IntervalJitterPercent        types.Int64              `tfsdk:"interval_jitter_percent"`
+	IntervalJitterPercent        types.Int32              `tfsdk:"interval_jitter_percent"`
 	NoTrafficInterval            types.String             `tfsdk:"no_traffic_interval"`
 	ReuseConnection              types.Bool               `tfsdk:"reuse_connection"`
 	TCP                          *TCP                     `tfsdk:"tcp"`
 	Timeout                      types.String             `tfsdk:"timeout"`
-	UnhealthyThreshold           types.Int64              `tfsdk:"unhealthy_threshold"`
+	UnhealthyThreshold           types.Int32              `tfsdk:"unhealthy_threshold"`
 }

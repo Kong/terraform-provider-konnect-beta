@@ -17,7 +17,7 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 			r.CreationTime = types.StringNull()
 		}
 		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String)
+			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
 				r.Labels[key] = types.StringValue(value)
 			}
@@ -44,29 +44,29 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 				} else {
 					from1.Default.ConnectionLimits = &tfTypes.ConnectionLimits{}
 					if fromItem.Default.ConnectionLimits.MaxConnectionPools != nil {
-						from1.Default.ConnectionLimits.MaxConnectionPools = types.Int64Value(int64(*fromItem.Default.ConnectionLimits.MaxConnectionPools))
+						from1.Default.ConnectionLimits.MaxConnectionPools = types.Int32Value(int32(*fromItem.Default.ConnectionLimits.MaxConnectionPools))
 					} else {
-						from1.Default.ConnectionLimits.MaxConnectionPools = types.Int64Null()
+						from1.Default.ConnectionLimits.MaxConnectionPools = types.Int32Null()
 					}
 					if fromItem.Default.ConnectionLimits.MaxConnections != nil {
-						from1.Default.ConnectionLimits.MaxConnections = types.Int64Value(int64(*fromItem.Default.ConnectionLimits.MaxConnections))
+						from1.Default.ConnectionLimits.MaxConnections = types.Int32Value(int32(*fromItem.Default.ConnectionLimits.MaxConnections))
 					} else {
-						from1.Default.ConnectionLimits.MaxConnections = types.Int64Null()
+						from1.Default.ConnectionLimits.MaxConnections = types.Int32Null()
 					}
 					if fromItem.Default.ConnectionLimits.MaxPendingRequests != nil {
-						from1.Default.ConnectionLimits.MaxPendingRequests = types.Int64Value(int64(*fromItem.Default.ConnectionLimits.MaxPendingRequests))
+						from1.Default.ConnectionLimits.MaxPendingRequests = types.Int32Value(int32(*fromItem.Default.ConnectionLimits.MaxPendingRequests))
 					} else {
-						from1.Default.ConnectionLimits.MaxPendingRequests = types.Int64Null()
+						from1.Default.ConnectionLimits.MaxPendingRequests = types.Int32Null()
 					}
 					if fromItem.Default.ConnectionLimits.MaxRequests != nil {
-						from1.Default.ConnectionLimits.MaxRequests = types.Int64Value(int64(*fromItem.Default.ConnectionLimits.MaxRequests))
+						from1.Default.ConnectionLimits.MaxRequests = types.Int32Value(int32(*fromItem.Default.ConnectionLimits.MaxRequests))
 					} else {
-						from1.Default.ConnectionLimits.MaxRequests = types.Int64Null()
+						from1.Default.ConnectionLimits.MaxRequests = types.Int32Null()
 					}
 					if fromItem.Default.ConnectionLimits.MaxRetries != nil {
-						from1.Default.ConnectionLimits.MaxRetries = types.Int64Value(int64(*fromItem.Default.ConnectionLimits.MaxRetries))
+						from1.Default.ConnectionLimits.MaxRetries = types.Int32Value(int32(*fromItem.Default.ConnectionLimits.MaxRetries))
 					} else {
-						from1.Default.ConnectionLimits.MaxRetries = types.Int64Null()
+						from1.Default.ConnectionLimits.MaxRetries = types.Int32Null()
 					}
 				}
 				if fromItem.Default.OutlierDetection == nil {
@@ -83,19 +83,19 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 						} else {
 							from1.Default.OutlierDetection.Detectors.FailurePercentage = &tfTypes.FailurePercentage{}
 							if fromItem.Default.OutlierDetection.Detectors.FailurePercentage.MinimumHosts != nil {
-								from1.Default.OutlierDetection.Detectors.FailurePercentage.MinimumHosts = types.Int64Value(int64(*fromItem.Default.OutlierDetection.Detectors.FailurePercentage.MinimumHosts))
+								from1.Default.OutlierDetection.Detectors.FailurePercentage.MinimumHosts = types.Int32Value(int32(*fromItem.Default.OutlierDetection.Detectors.FailurePercentage.MinimumHosts))
 							} else {
-								from1.Default.OutlierDetection.Detectors.FailurePercentage.MinimumHosts = types.Int64Null()
+								from1.Default.OutlierDetection.Detectors.FailurePercentage.MinimumHosts = types.Int32Null()
 							}
 							if fromItem.Default.OutlierDetection.Detectors.FailurePercentage.RequestVolume != nil {
-								from1.Default.OutlierDetection.Detectors.FailurePercentage.RequestVolume = types.Int64Value(int64(*fromItem.Default.OutlierDetection.Detectors.FailurePercentage.RequestVolume))
+								from1.Default.OutlierDetection.Detectors.FailurePercentage.RequestVolume = types.Int32Value(int32(*fromItem.Default.OutlierDetection.Detectors.FailurePercentage.RequestVolume))
 							} else {
-								from1.Default.OutlierDetection.Detectors.FailurePercentage.RequestVolume = types.Int64Null()
+								from1.Default.OutlierDetection.Detectors.FailurePercentage.RequestVolume = types.Int32Null()
 							}
 							if fromItem.Default.OutlierDetection.Detectors.FailurePercentage.Threshold != nil {
-								from1.Default.OutlierDetection.Detectors.FailurePercentage.Threshold = types.Int64Value(int64(*fromItem.Default.OutlierDetection.Detectors.FailurePercentage.Threshold))
+								from1.Default.OutlierDetection.Detectors.FailurePercentage.Threshold = types.Int32Value(int32(*fromItem.Default.OutlierDetection.Detectors.FailurePercentage.Threshold))
 							} else {
-								from1.Default.OutlierDetection.Detectors.FailurePercentage.Threshold = types.Int64Null()
+								from1.Default.OutlierDetection.Detectors.FailurePercentage.Threshold = types.Int32Null()
 							}
 						}
 						if fromItem.Default.OutlierDetection.Detectors.GatewayFailures == nil {
@@ -103,9 +103,9 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 						} else {
 							from1.Default.OutlierDetection.Detectors.GatewayFailures = &tfTypes.GatewayFailures{}
 							if fromItem.Default.OutlierDetection.Detectors.GatewayFailures.Consecutive != nil {
-								from1.Default.OutlierDetection.Detectors.GatewayFailures.Consecutive = types.Int64Value(int64(*fromItem.Default.OutlierDetection.Detectors.GatewayFailures.Consecutive))
+								from1.Default.OutlierDetection.Detectors.GatewayFailures.Consecutive = types.Int32Value(int32(*fromItem.Default.OutlierDetection.Detectors.GatewayFailures.Consecutive))
 							} else {
-								from1.Default.OutlierDetection.Detectors.GatewayFailures.Consecutive = types.Int64Null()
+								from1.Default.OutlierDetection.Detectors.GatewayFailures.Consecutive = types.Int32Null()
 							}
 						}
 						if fromItem.Default.OutlierDetection.Detectors.LocalOriginFailures == nil {
@@ -113,9 +113,9 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 						} else {
 							from1.Default.OutlierDetection.Detectors.LocalOriginFailures = &tfTypes.GatewayFailures{}
 							if fromItem.Default.OutlierDetection.Detectors.LocalOriginFailures.Consecutive != nil {
-								from1.Default.OutlierDetection.Detectors.LocalOriginFailures.Consecutive = types.Int64Value(int64(*fromItem.Default.OutlierDetection.Detectors.LocalOriginFailures.Consecutive))
+								from1.Default.OutlierDetection.Detectors.LocalOriginFailures.Consecutive = types.Int32Value(int32(*fromItem.Default.OutlierDetection.Detectors.LocalOriginFailures.Consecutive))
 							} else {
-								from1.Default.OutlierDetection.Detectors.LocalOriginFailures.Consecutive = types.Int64Null()
+								from1.Default.OutlierDetection.Detectors.LocalOriginFailures.Consecutive = types.Int32Null()
 							}
 						}
 						if fromItem.Default.OutlierDetection.Detectors.SuccessRate == nil {
@@ -123,19 +123,19 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 						} else {
 							from1.Default.OutlierDetection.Detectors.SuccessRate = &tfTypes.SuccessRate{}
 							if fromItem.Default.OutlierDetection.Detectors.SuccessRate.MinimumHosts != nil {
-								from1.Default.OutlierDetection.Detectors.SuccessRate.MinimumHosts = types.Int64Value(int64(*fromItem.Default.OutlierDetection.Detectors.SuccessRate.MinimumHosts))
+								from1.Default.OutlierDetection.Detectors.SuccessRate.MinimumHosts = types.Int32Value(int32(*fromItem.Default.OutlierDetection.Detectors.SuccessRate.MinimumHosts))
 							} else {
-								from1.Default.OutlierDetection.Detectors.SuccessRate.MinimumHosts = types.Int64Null()
+								from1.Default.OutlierDetection.Detectors.SuccessRate.MinimumHosts = types.Int32Null()
 							}
 							if fromItem.Default.OutlierDetection.Detectors.SuccessRate.RequestVolume != nil {
-								from1.Default.OutlierDetection.Detectors.SuccessRate.RequestVolume = types.Int64Value(int64(*fromItem.Default.OutlierDetection.Detectors.SuccessRate.RequestVolume))
+								from1.Default.OutlierDetection.Detectors.SuccessRate.RequestVolume = types.Int32Value(int32(*fromItem.Default.OutlierDetection.Detectors.SuccessRate.RequestVolume))
 							} else {
-								from1.Default.OutlierDetection.Detectors.SuccessRate.RequestVolume = types.Int64Null()
+								from1.Default.OutlierDetection.Detectors.SuccessRate.RequestVolume = types.Int32Null()
 							}
 							if fromItem.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor == nil {
 								from1.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor = nil
 							} else {
-								from1.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor = &tfTypes.Mode{}
+								from1.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor = &tfTypes.MeshItemMode{}
 								if fromItem.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor.Integer != nil {
 									from1.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor.Integer = types.Int64PointerValue(fromItem.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor.Integer)
 								}
@@ -149,9 +149,9 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 						} else {
 							from1.Default.OutlierDetection.Detectors.TotalFailures = &tfTypes.GatewayFailures{}
 							if fromItem.Default.OutlierDetection.Detectors.TotalFailures.Consecutive != nil {
-								from1.Default.OutlierDetection.Detectors.TotalFailures.Consecutive = types.Int64Value(int64(*fromItem.Default.OutlierDetection.Detectors.TotalFailures.Consecutive))
+								from1.Default.OutlierDetection.Detectors.TotalFailures.Consecutive = types.Int32Value(int32(*fromItem.Default.OutlierDetection.Detectors.TotalFailures.Consecutive))
 							} else {
-								from1.Default.OutlierDetection.Detectors.TotalFailures.Consecutive = types.Int64Null()
+								from1.Default.OutlierDetection.Detectors.TotalFailures.Consecutive = types.Int32Null()
 							}
 						}
 					}
@@ -159,7 +159,7 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 					if fromItem.Default.OutlierDetection.HealthyPanicThreshold == nil {
 						from1.Default.OutlierDetection.HealthyPanicThreshold = nil
 					} else {
-						from1.Default.OutlierDetection.HealthyPanicThreshold = &tfTypes.Mode{}
+						from1.Default.OutlierDetection.HealthyPanicThreshold = &tfTypes.MeshItemMode{}
 						if fromItem.Default.OutlierDetection.HealthyPanicThreshold.Integer != nil {
 							from1.Default.OutlierDetection.HealthyPanicThreshold.Integer = types.Int64PointerValue(fromItem.Default.OutlierDetection.HealthyPanicThreshold.Integer)
 						}
@@ -169,16 +169,16 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 					}
 					from1.Default.OutlierDetection.Interval = types.StringPointerValue(fromItem.Default.OutlierDetection.Interval)
 					if fromItem.Default.OutlierDetection.MaxEjectionPercent != nil {
-						from1.Default.OutlierDetection.MaxEjectionPercent = types.Int64Value(int64(*fromItem.Default.OutlierDetection.MaxEjectionPercent))
+						from1.Default.OutlierDetection.MaxEjectionPercent = types.Int32Value(int32(*fromItem.Default.OutlierDetection.MaxEjectionPercent))
 					} else {
-						from1.Default.OutlierDetection.MaxEjectionPercent = types.Int64Null()
+						from1.Default.OutlierDetection.MaxEjectionPercent = types.Int32Null()
 					}
 					from1.Default.OutlierDetection.SplitExternalAndLocalErrors = types.BoolPointerValue(fromItem.Default.OutlierDetection.SplitExternalAndLocalErrors)
 				}
 			}
 			from1.TargetRef.Kind = types.StringValue(string(fromItem.TargetRef.Kind))
 			if len(fromItem.TargetRef.Labels) > 0 {
-				from1.TargetRef.Labels = make(map[string]types.String)
+				from1.TargetRef.Labels = make(map[string]types.String, len(fromItem.TargetRef.Labels))
 				for key1, value1 := range fromItem.TargetRef.Labels {
 					from1.TargetRef.Labels[key1] = types.StringValue(value1)
 				}
@@ -192,7 +192,7 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 			}
 			from1.TargetRef.SectionName = types.StringPointerValue(fromItem.TargetRef.SectionName)
 			if len(fromItem.TargetRef.Tags) > 0 {
-				from1.TargetRef.Tags = make(map[string]types.String)
+				from1.TargetRef.Tags = make(map[string]types.String, len(fromItem.TargetRef.Tags))
 				for key2, value2 := range fromItem.TargetRef.Tags {
 					from1.TargetRef.Tags[key2] = types.StringValue(value2)
 				}
@@ -219,29 +219,29 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 				} else {
 					rules1.Default.ConnectionLimits = &tfTypes.ConnectionLimits{}
 					if rulesItem.Default.ConnectionLimits.MaxConnectionPools != nil {
-						rules1.Default.ConnectionLimits.MaxConnectionPools = types.Int64Value(int64(*rulesItem.Default.ConnectionLimits.MaxConnectionPools))
+						rules1.Default.ConnectionLimits.MaxConnectionPools = types.Int32Value(int32(*rulesItem.Default.ConnectionLimits.MaxConnectionPools))
 					} else {
-						rules1.Default.ConnectionLimits.MaxConnectionPools = types.Int64Null()
+						rules1.Default.ConnectionLimits.MaxConnectionPools = types.Int32Null()
 					}
 					if rulesItem.Default.ConnectionLimits.MaxConnections != nil {
-						rules1.Default.ConnectionLimits.MaxConnections = types.Int64Value(int64(*rulesItem.Default.ConnectionLimits.MaxConnections))
+						rules1.Default.ConnectionLimits.MaxConnections = types.Int32Value(int32(*rulesItem.Default.ConnectionLimits.MaxConnections))
 					} else {
-						rules1.Default.ConnectionLimits.MaxConnections = types.Int64Null()
+						rules1.Default.ConnectionLimits.MaxConnections = types.Int32Null()
 					}
 					if rulesItem.Default.ConnectionLimits.MaxPendingRequests != nil {
-						rules1.Default.ConnectionLimits.MaxPendingRequests = types.Int64Value(int64(*rulesItem.Default.ConnectionLimits.MaxPendingRequests))
+						rules1.Default.ConnectionLimits.MaxPendingRequests = types.Int32Value(int32(*rulesItem.Default.ConnectionLimits.MaxPendingRequests))
 					} else {
-						rules1.Default.ConnectionLimits.MaxPendingRequests = types.Int64Null()
+						rules1.Default.ConnectionLimits.MaxPendingRequests = types.Int32Null()
 					}
 					if rulesItem.Default.ConnectionLimits.MaxRequests != nil {
-						rules1.Default.ConnectionLimits.MaxRequests = types.Int64Value(int64(*rulesItem.Default.ConnectionLimits.MaxRequests))
+						rules1.Default.ConnectionLimits.MaxRequests = types.Int32Value(int32(*rulesItem.Default.ConnectionLimits.MaxRequests))
 					} else {
-						rules1.Default.ConnectionLimits.MaxRequests = types.Int64Null()
+						rules1.Default.ConnectionLimits.MaxRequests = types.Int32Null()
 					}
 					if rulesItem.Default.ConnectionLimits.MaxRetries != nil {
-						rules1.Default.ConnectionLimits.MaxRetries = types.Int64Value(int64(*rulesItem.Default.ConnectionLimits.MaxRetries))
+						rules1.Default.ConnectionLimits.MaxRetries = types.Int32Value(int32(*rulesItem.Default.ConnectionLimits.MaxRetries))
 					} else {
-						rules1.Default.ConnectionLimits.MaxRetries = types.Int64Null()
+						rules1.Default.ConnectionLimits.MaxRetries = types.Int32Null()
 					}
 				}
 				if rulesItem.Default.OutlierDetection == nil {
@@ -258,19 +258,19 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 						} else {
 							rules1.Default.OutlierDetection.Detectors.FailurePercentage = &tfTypes.FailurePercentage{}
 							if rulesItem.Default.OutlierDetection.Detectors.FailurePercentage.MinimumHosts != nil {
-								rules1.Default.OutlierDetection.Detectors.FailurePercentage.MinimumHosts = types.Int64Value(int64(*rulesItem.Default.OutlierDetection.Detectors.FailurePercentage.MinimumHosts))
+								rules1.Default.OutlierDetection.Detectors.FailurePercentage.MinimumHosts = types.Int32Value(int32(*rulesItem.Default.OutlierDetection.Detectors.FailurePercentage.MinimumHosts))
 							} else {
-								rules1.Default.OutlierDetection.Detectors.FailurePercentage.MinimumHosts = types.Int64Null()
+								rules1.Default.OutlierDetection.Detectors.FailurePercentage.MinimumHosts = types.Int32Null()
 							}
 							if rulesItem.Default.OutlierDetection.Detectors.FailurePercentage.RequestVolume != nil {
-								rules1.Default.OutlierDetection.Detectors.FailurePercentage.RequestVolume = types.Int64Value(int64(*rulesItem.Default.OutlierDetection.Detectors.FailurePercentage.RequestVolume))
+								rules1.Default.OutlierDetection.Detectors.FailurePercentage.RequestVolume = types.Int32Value(int32(*rulesItem.Default.OutlierDetection.Detectors.FailurePercentage.RequestVolume))
 							} else {
-								rules1.Default.OutlierDetection.Detectors.FailurePercentage.RequestVolume = types.Int64Null()
+								rules1.Default.OutlierDetection.Detectors.FailurePercentage.RequestVolume = types.Int32Null()
 							}
 							if rulesItem.Default.OutlierDetection.Detectors.FailurePercentage.Threshold != nil {
-								rules1.Default.OutlierDetection.Detectors.FailurePercentage.Threshold = types.Int64Value(int64(*rulesItem.Default.OutlierDetection.Detectors.FailurePercentage.Threshold))
+								rules1.Default.OutlierDetection.Detectors.FailurePercentage.Threshold = types.Int32Value(int32(*rulesItem.Default.OutlierDetection.Detectors.FailurePercentage.Threshold))
 							} else {
-								rules1.Default.OutlierDetection.Detectors.FailurePercentage.Threshold = types.Int64Null()
+								rules1.Default.OutlierDetection.Detectors.FailurePercentage.Threshold = types.Int32Null()
 							}
 						}
 						if rulesItem.Default.OutlierDetection.Detectors.GatewayFailures == nil {
@@ -278,9 +278,9 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 						} else {
 							rules1.Default.OutlierDetection.Detectors.GatewayFailures = &tfTypes.GatewayFailures{}
 							if rulesItem.Default.OutlierDetection.Detectors.GatewayFailures.Consecutive != nil {
-								rules1.Default.OutlierDetection.Detectors.GatewayFailures.Consecutive = types.Int64Value(int64(*rulesItem.Default.OutlierDetection.Detectors.GatewayFailures.Consecutive))
+								rules1.Default.OutlierDetection.Detectors.GatewayFailures.Consecutive = types.Int32Value(int32(*rulesItem.Default.OutlierDetection.Detectors.GatewayFailures.Consecutive))
 							} else {
-								rules1.Default.OutlierDetection.Detectors.GatewayFailures.Consecutive = types.Int64Null()
+								rules1.Default.OutlierDetection.Detectors.GatewayFailures.Consecutive = types.Int32Null()
 							}
 						}
 						if rulesItem.Default.OutlierDetection.Detectors.LocalOriginFailures == nil {
@@ -288,9 +288,9 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 						} else {
 							rules1.Default.OutlierDetection.Detectors.LocalOriginFailures = &tfTypes.GatewayFailures{}
 							if rulesItem.Default.OutlierDetection.Detectors.LocalOriginFailures.Consecutive != nil {
-								rules1.Default.OutlierDetection.Detectors.LocalOriginFailures.Consecutive = types.Int64Value(int64(*rulesItem.Default.OutlierDetection.Detectors.LocalOriginFailures.Consecutive))
+								rules1.Default.OutlierDetection.Detectors.LocalOriginFailures.Consecutive = types.Int32Value(int32(*rulesItem.Default.OutlierDetection.Detectors.LocalOriginFailures.Consecutive))
 							} else {
-								rules1.Default.OutlierDetection.Detectors.LocalOriginFailures.Consecutive = types.Int64Null()
+								rules1.Default.OutlierDetection.Detectors.LocalOriginFailures.Consecutive = types.Int32Null()
 							}
 						}
 						if rulesItem.Default.OutlierDetection.Detectors.SuccessRate == nil {
@@ -298,19 +298,19 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 						} else {
 							rules1.Default.OutlierDetection.Detectors.SuccessRate = &tfTypes.SuccessRate{}
 							if rulesItem.Default.OutlierDetection.Detectors.SuccessRate.MinimumHosts != nil {
-								rules1.Default.OutlierDetection.Detectors.SuccessRate.MinimumHosts = types.Int64Value(int64(*rulesItem.Default.OutlierDetection.Detectors.SuccessRate.MinimumHosts))
+								rules1.Default.OutlierDetection.Detectors.SuccessRate.MinimumHosts = types.Int32Value(int32(*rulesItem.Default.OutlierDetection.Detectors.SuccessRate.MinimumHosts))
 							} else {
-								rules1.Default.OutlierDetection.Detectors.SuccessRate.MinimumHosts = types.Int64Null()
+								rules1.Default.OutlierDetection.Detectors.SuccessRate.MinimumHosts = types.Int32Null()
 							}
 							if rulesItem.Default.OutlierDetection.Detectors.SuccessRate.RequestVolume != nil {
-								rules1.Default.OutlierDetection.Detectors.SuccessRate.RequestVolume = types.Int64Value(int64(*rulesItem.Default.OutlierDetection.Detectors.SuccessRate.RequestVolume))
+								rules1.Default.OutlierDetection.Detectors.SuccessRate.RequestVolume = types.Int32Value(int32(*rulesItem.Default.OutlierDetection.Detectors.SuccessRate.RequestVolume))
 							} else {
-								rules1.Default.OutlierDetection.Detectors.SuccessRate.RequestVolume = types.Int64Null()
+								rules1.Default.OutlierDetection.Detectors.SuccessRate.RequestVolume = types.Int32Null()
 							}
 							if rulesItem.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor == nil {
 								rules1.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor = nil
 							} else {
-								rules1.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor = &tfTypes.Mode{}
+								rules1.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor = &tfTypes.MeshItemMode{}
 								if rulesItem.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor.Integer != nil {
 									rules1.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor.Integer = types.Int64PointerValue(rulesItem.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor.Integer)
 								}
@@ -324,9 +324,9 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 						} else {
 							rules1.Default.OutlierDetection.Detectors.TotalFailures = &tfTypes.GatewayFailures{}
 							if rulesItem.Default.OutlierDetection.Detectors.TotalFailures.Consecutive != nil {
-								rules1.Default.OutlierDetection.Detectors.TotalFailures.Consecutive = types.Int64Value(int64(*rulesItem.Default.OutlierDetection.Detectors.TotalFailures.Consecutive))
+								rules1.Default.OutlierDetection.Detectors.TotalFailures.Consecutive = types.Int32Value(int32(*rulesItem.Default.OutlierDetection.Detectors.TotalFailures.Consecutive))
 							} else {
-								rules1.Default.OutlierDetection.Detectors.TotalFailures.Consecutive = types.Int64Null()
+								rules1.Default.OutlierDetection.Detectors.TotalFailures.Consecutive = types.Int32Null()
 							}
 						}
 					}
@@ -334,7 +334,7 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 					if rulesItem.Default.OutlierDetection.HealthyPanicThreshold == nil {
 						rules1.Default.OutlierDetection.HealthyPanicThreshold = nil
 					} else {
-						rules1.Default.OutlierDetection.HealthyPanicThreshold = &tfTypes.Mode{}
+						rules1.Default.OutlierDetection.HealthyPanicThreshold = &tfTypes.MeshItemMode{}
 						if rulesItem.Default.OutlierDetection.HealthyPanicThreshold.Integer != nil {
 							rules1.Default.OutlierDetection.HealthyPanicThreshold.Integer = types.Int64PointerValue(rulesItem.Default.OutlierDetection.HealthyPanicThreshold.Integer)
 						}
@@ -344,9 +344,9 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 					}
 					rules1.Default.OutlierDetection.Interval = types.StringPointerValue(rulesItem.Default.OutlierDetection.Interval)
 					if rulesItem.Default.OutlierDetection.MaxEjectionPercent != nil {
-						rules1.Default.OutlierDetection.MaxEjectionPercent = types.Int64Value(int64(*rulesItem.Default.OutlierDetection.MaxEjectionPercent))
+						rules1.Default.OutlierDetection.MaxEjectionPercent = types.Int32Value(int32(*rulesItem.Default.OutlierDetection.MaxEjectionPercent))
 					} else {
-						rules1.Default.OutlierDetection.MaxEjectionPercent = types.Int64Null()
+						rules1.Default.OutlierDetection.MaxEjectionPercent = types.Int32Null()
 					}
 					rules1.Default.OutlierDetection.SplitExternalAndLocalErrors = types.BoolPointerValue(rulesItem.Default.OutlierDetection.SplitExternalAndLocalErrors)
 				}
@@ -363,7 +363,7 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 			r.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			r.Spec.TargetRef.Kind = types.StringValue(string(resp.Spec.TargetRef.Kind))
 			if len(resp.Spec.TargetRef.Labels) > 0 {
-				r.Spec.TargetRef.Labels = make(map[string]types.String)
+				r.Spec.TargetRef.Labels = make(map[string]types.String, len(resp.Spec.TargetRef.Labels))
 				for key3, value3 := range resp.Spec.TargetRef.Labels {
 					r.Spec.TargetRef.Labels[key3] = types.StringValue(value3)
 				}
@@ -377,7 +377,7 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 			}
 			r.Spec.TargetRef.SectionName = types.StringPointerValue(resp.Spec.TargetRef.SectionName)
 			if len(resp.Spec.TargetRef.Tags) > 0 {
-				r.Spec.TargetRef.Tags = make(map[string]types.String)
+				r.Spec.TargetRef.Tags = make(map[string]types.String, len(resp.Spec.TargetRef.Tags))
 				for key4, value4 := range resp.Spec.TargetRef.Tags {
 					r.Spec.TargetRef.Tags[key4] = types.StringValue(value4)
 				}
@@ -398,29 +398,29 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 				} else {
 					to1.Default.ConnectionLimits = &tfTypes.ConnectionLimits{}
 					if toItem.Default.ConnectionLimits.MaxConnectionPools != nil {
-						to1.Default.ConnectionLimits.MaxConnectionPools = types.Int64Value(int64(*toItem.Default.ConnectionLimits.MaxConnectionPools))
+						to1.Default.ConnectionLimits.MaxConnectionPools = types.Int32Value(int32(*toItem.Default.ConnectionLimits.MaxConnectionPools))
 					} else {
-						to1.Default.ConnectionLimits.MaxConnectionPools = types.Int64Null()
+						to1.Default.ConnectionLimits.MaxConnectionPools = types.Int32Null()
 					}
 					if toItem.Default.ConnectionLimits.MaxConnections != nil {
-						to1.Default.ConnectionLimits.MaxConnections = types.Int64Value(int64(*toItem.Default.ConnectionLimits.MaxConnections))
+						to1.Default.ConnectionLimits.MaxConnections = types.Int32Value(int32(*toItem.Default.ConnectionLimits.MaxConnections))
 					} else {
-						to1.Default.ConnectionLimits.MaxConnections = types.Int64Null()
+						to1.Default.ConnectionLimits.MaxConnections = types.Int32Null()
 					}
 					if toItem.Default.ConnectionLimits.MaxPendingRequests != nil {
-						to1.Default.ConnectionLimits.MaxPendingRequests = types.Int64Value(int64(*toItem.Default.ConnectionLimits.MaxPendingRequests))
+						to1.Default.ConnectionLimits.MaxPendingRequests = types.Int32Value(int32(*toItem.Default.ConnectionLimits.MaxPendingRequests))
 					} else {
-						to1.Default.ConnectionLimits.MaxPendingRequests = types.Int64Null()
+						to1.Default.ConnectionLimits.MaxPendingRequests = types.Int32Null()
 					}
 					if toItem.Default.ConnectionLimits.MaxRequests != nil {
-						to1.Default.ConnectionLimits.MaxRequests = types.Int64Value(int64(*toItem.Default.ConnectionLimits.MaxRequests))
+						to1.Default.ConnectionLimits.MaxRequests = types.Int32Value(int32(*toItem.Default.ConnectionLimits.MaxRequests))
 					} else {
-						to1.Default.ConnectionLimits.MaxRequests = types.Int64Null()
+						to1.Default.ConnectionLimits.MaxRequests = types.Int32Null()
 					}
 					if toItem.Default.ConnectionLimits.MaxRetries != nil {
-						to1.Default.ConnectionLimits.MaxRetries = types.Int64Value(int64(*toItem.Default.ConnectionLimits.MaxRetries))
+						to1.Default.ConnectionLimits.MaxRetries = types.Int32Value(int32(*toItem.Default.ConnectionLimits.MaxRetries))
 					} else {
-						to1.Default.ConnectionLimits.MaxRetries = types.Int64Null()
+						to1.Default.ConnectionLimits.MaxRetries = types.Int32Null()
 					}
 				}
 				if toItem.Default.OutlierDetection == nil {
@@ -437,19 +437,19 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 						} else {
 							to1.Default.OutlierDetection.Detectors.FailurePercentage = &tfTypes.FailurePercentage{}
 							if toItem.Default.OutlierDetection.Detectors.FailurePercentage.MinimumHosts != nil {
-								to1.Default.OutlierDetection.Detectors.FailurePercentage.MinimumHosts = types.Int64Value(int64(*toItem.Default.OutlierDetection.Detectors.FailurePercentage.MinimumHosts))
+								to1.Default.OutlierDetection.Detectors.FailurePercentage.MinimumHosts = types.Int32Value(int32(*toItem.Default.OutlierDetection.Detectors.FailurePercentage.MinimumHosts))
 							} else {
-								to1.Default.OutlierDetection.Detectors.FailurePercentage.MinimumHosts = types.Int64Null()
+								to1.Default.OutlierDetection.Detectors.FailurePercentage.MinimumHosts = types.Int32Null()
 							}
 							if toItem.Default.OutlierDetection.Detectors.FailurePercentage.RequestVolume != nil {
-								to1.Default.OutlierDetection.Detectors.FailurePercentage.RequestVolume = types.Int64Value(int64(*toItem.Default.OutlierDetection.Detectors.FailurePercentage.RequestVolume))
+								to1.Default.OutlierDetection.Detectors.FailurePercentage.RequestVolume = types.Int32Value(int32(*toItem.Default.OutlierDetection.Detectors.FailurePercentage.RequestVolume))
 							} else {
-								to1.Default.OutlierDetection.Detectors.FailurePercentage.RequestVolume = types.Int64Null()
+								to1.Default.OutlierDetection.Detectors.FailurePercentage.RequestVolume = types.Int32Null()
 							}
 							if toItem.Default.OutlierDetection.Detectors.FailurePercentage.Threshold != nil {
-								to1.Default.OutlierDetection.Detectors.FailurePercentage.Threshold = types.Int64Value(int64(*toItem.Default.OutlierDetection.Detectors.FailurePercentage.Threshold))
+								to1.Default.OutlierDetection.Detectors.FailurePercentage.Threshold = types.Int32Value(int32(*toItem.Default.OutlierDetection.Detectors.FailurePercentage.Threshold))
 							} else {
-								to1.Default.OutlierDetection.Detectors.FailurePercentage.Threshold = types.Int64Null()
+								to1.Default.OutlierDetection.Detectors.FailurePercentage.Threshold = types.Int32Null()
 							}
 						}
 						if toItem.Default.OutlierDetection.Detectors.GatewayFailures == nil {
@@ -457,9 +457,9 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 						} else {
 							to1.Default.OutlierDetection.Detectors.GatewayFailures = &tfTypes.GatewayFailures{}
 							if toItem.Default.OutlierDetection.Detectors.GatewayFailures.Consecutive != nil {
-								to1.Default.OutlierDetection.Detectors.GatewayFailures.Consecutive = types.Int64Value(int64(*toItem.Default.OutlierDetection.Detectors.GatewayFailures.Consecutive))
+								to1.Default.OutlierDetection.Detectors.GatewayFailures.Consecutive = types.Int32Value(int32(*toItem.Default.OutlierDetection.Detectors.GatewayFailures.Consecutive))
 							} else {
-								to1.Default.OutlierDetection.Detectors.GatewayFailures.Consecutive = types.Int64Null()
+								to1.Default.OutlierDetection.Detectors.GatewayFailures.Consecutive = types.Int32Null()
 							}
 						}
 						if toItem.Default.OutlierDetection.Detectors.LocalOriginFailures == nil {
@@ -467,9 +467,9 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 						} else {
 							to1.Default.OutlierDetection.Detectors.LocalOriginFailures = &tfTypes.GatewayFailures{}
 							if toItem.Default.OutlierDetection.Detectors.LocalOriginFailures.Consecutive != nil {
-								to1.Default.OutlierDetection.Detectors.LocalOriginFailures.Consecutive = types.Int64Value(int64(*toItem.Default.OutlierDetection.Detectors.LocalOriginFailures.Consecutive))
+								to1.Default.OutlierDetection.Detectors.LocalOriginFailures.Consecutive = types.Int32Value(int32(*toItem.Default.OutlierDetection.Detectors.LocalOriginFailures.Consecutive))
 							} else {
-								to1.Default.OutlierDetection.Detectors.LocalOriginFailures.Consecutive = types.Int64Null()
+								to1.Default.OutlierDetection.Detectors.LocalOriginFailures.Consecutive = types.Int32Null()
 							}
 						}
 						if toItem.Default.OutlierDetection.Detectors.SuccessRate == nil {
@@ -477,19 +477,19 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 						} else {
 							to1.Default.OutlierDetection.Detectors.SuccessRate = &tfTypes.SuccessRate{}
 							if toItem.Default.OutlierDetection.Detectors.SuccessRate.MinimumHosts != nil {
-								to1.Default.OutlierDetection.Detectors.SuccessRate.MinimumHosts = types.Int64Value(int64(*toItem.Default.OutlierDetection.Detectors.SuccessRate.MinimumHosts))
+								to1.Default.OutlierDetection.Detectors.SuccessRate.MinimumHosts = types.Int32Value(int32(*toItem.Default.OutlierDetection.Detectors.SuccessRate.MinimumHosts))
 							} else {
-								to1.Default.OutlierDetection.Detectors.SuccessRate.MinimumHosts = types.Int64Null()
+								to1.Default.OutlierDetection.Detectors.SuccessRate.MinimumHosts = types.Int32Null()
 							}
 							if toItem.Default.OutlierDetection.Detectors.SuccessRate.RequestVolume != nil {
-								to1.Default.OutlierDetection.Detectors.SuccessRate.RequestVolume = types.Int64Value(int64(*toItem.Default.OutlierDetection.Detectors.SuccessRate.RequestVolume))
+								to1.Default.OutlierDetection.Detectors.SuccessRate.RequestVolume = types.Int32Value(int32(*toItem.Default.OutlierDetection.Detectors.SuccessRate.RequestVolume))
 							} else {
-								to1.Default.OutlierDetection.Detectors.SuccessRate.RequestVolume = types.Int64Null()
+								to1.Default.OutlierDetection.Detectors.SuccessRate.RequestVolume = types.Int32Null()
 							}
 							if toItem.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor == nil {
 								to1.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor = nil
 							} else {
-								to1.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor = &tfTypes.Mode{}
+								to1.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor = &tfTypes.MeshItemMode{}
 								if toItem.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor.Integer != nil {
 									to1.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor.Integer = types.Int64PointerValue(toItem.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor.Integer)
 								}
@@ -503,9 +503,9 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 						} else {
 							to1.Default.OutlierDetection.Detectors.TotalFailures = &tfTypes.GatewayFailures{}
 							if toItem.Default.OutlierDetection.Detectors.TotalFailures.Consecutive != nil {
-								to1.Default.OutlierDetection.Detectors.TotalFailures.Consecutive = types.Int64Value(int64(*toItem.Default.OutlierDetection.Detectors.TotalFailures.Consecutive))
+								to1.Default.OutlierDetection.Detectors.TotalFailures.Consecutive = types.Int32Value(int32(*toItem.Default.OutlierDetection.Detectors.TotalFailures.Consecutive))
 							} else {
-								to1.Default.OutlierDetection.Detectors.TotalFailures.Consecutive = types.Int64Null()
+								to1.Default.OutlierDetection.Detectors.TotalFailures.Consecutive = types.Int32Null()
 							}
 						}
 					}
@@ -513,7 +513,7 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 					if toItem.Default.OutlierDetection.HealthyPanicThreshold == nil {
 						to1.Default.OutlierDetection.HealthyPanicThreshold = nil
 					} else {
-						to1.Default.OutlierDetection.HealthyPanicThreshold = &tfTypes.Mode{}
+						to1.Default.OutlierDetection.HealthyPanicThreshold = &tfTypes.MeshItemMode{}
 						if toItem.Default.OutlierDetection.HealthyPanicThreshold.Integer != nil {
 							to1.Default.OutlierDetection.HealthyPanicThreshold.Integer = types.Int64PointerValue(toItem.Default.OutlierDetection.HealthyPanicThreshold.Integer)
 						}
@@ -523,16 +523,16 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 					}
 					to1.Default.OutlierDetection.Interval = types.StringPointerValue(toItem.Default.OutlierDetection.Interval)
 					if toItem.Default.OutlierDetection.MaxEjectionPercent != nil {
-						to1.Default.OutlierDetection.MaxEjectionPercent = types.Int64Value(int64(*toItem.Default.OutlierDetection.MaxEjectionPercent))
+						to1.Default.OutlierDetection.MaxEjectionPercent = types.Int32Value(int32(*toItem.Default.OutlierDetection.MaxEjectionPercent))
 					} else {
-						to1.Default.OutlierDetection.MaxEjectionPercent = types.Int64Null()
+						to1.Default.OutlierDetection.MaxEjectionPercent = types.Int32Null()
 					}
 					to1.Default.OutlierDetection.SplitExternalAndLocalErrors = types.BoolPointerValue(toItem.Default.OutlierDetection.SplitExternalAndLocalErrors)
 				}
 			}
 			to1.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 			if len(toItem.TargetRef.Labels) > 0 {
-				to1.TargetRef.Labels = make(map[string]types.String)
+				to1.TargetRef.Labels = make(map[string]types.String, len(toItem.TargetRef.Labels))
 				for key5, value5 := range toItem.TargetRef.Labels {
 					to1.TargetRef.Labels[key5] = types.StringValue(value5)
 				}
@@ -546,7 +546,7 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 			}
 			to1.TargetRef.SectionName = types.StringPointerValue(toItem.TargetRef.SectionName)
 			if len(toItem.TargetRef.Tags) > 0 {
-				to1.TargetRef.Tags = make(map[string]types.String)
+				to1.TargetRef.Tags = make(map[string]types.String, len(toItem.TargetRef.Tags))
 				for key6, value6 := range toItem.TargetRef.Tags {
 					to1.TargetRef.Tags[key6] = types.StringValue(value6)
 				}

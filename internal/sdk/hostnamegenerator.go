@@ -26,13 +26,6 @@ func newHostnameGenerator(sdkConfig sdkConfiguration) *HostnameGenerator {
 
 // GetHostnameGenerator - Returns HostnameGenerator entity
 func (s *HostnameGenerator) GetHostnameGenerator(ctx context.Context, request operations.GetHostnameGeneratorRequest, opts ...operations.Option) (*operations.GetHostnameGeneratorResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getHostnameGenerator",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -54,6 +47,14 @@ func (s *HostnameGenerator) GetHostnameGenerator(ctx context.Context, request op
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/hostnamegenerators/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getHostnameGenerator",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -179,13 +180,6 @@ func (s *HostnameGenerator) GetHostnameGenerator(ctx context.Context, request op
 
 // DeleteHostnameGenerator - Deletes HostnameGenerator entity
 func (s *HostnameGenerator) DeleteHostnameGenerator(ctx context.Context, request operations.DeleteHostnameGeneratorRequest, opts ...operations.Option) (*operations.DeleteHostnameGeneratorResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "deleteHostnameGenerator",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -207,6 +201,14 @@ func (s *HostnameGenerator) DeleteHostnameGenerator(ctx context.Context, request
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/hostnamegenerators/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "deleteHostnameGenerator",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -332,13 +334,6 @@ func (s *HostnameGenerator) DeleteHostnameGenerator(ctx context.Context, request
 
 // CreateHostnameGenerator - Creates or Updates HostnameGenerator entity
 func (s *HostnameGenerator) CreateHostnameGenerator(ctx context.Context, request operations.CreateHostnameGeneratorRequest, opts ...operations.Option) (*operations.CreateHostnameGeneratorResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "createHostnameGenerator",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -361,6 +356,13 @@ func (s *HostnameGenerator) CreateHostnameGenerator(ctx context.Context, request
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "createHostnameGenerator",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "HostnameGeneratorItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -466,13 +468,6 @@ func (s *HostnameGenerator) CreateHostnameGenerator(ctx context.Context, request
 
 // UpdateHostnameGenerator - Creates or Updates HostnameGenerator entity
 func (s *HostnameGenerator) UpdateHostnameGenerator(ctx context.Context, request operations.UpdateHostnameGeneratorRequest, opts ...operations.Option) (*operations.UpdateHostnameGeneratorResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "updateHostnameGenerator",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -495,6 +490,13 @@ func (s *HostnameGenerator) UpdateHostnameGenerator(ctx context.Context, request
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "updateHostnameGenerator",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "HostnameGeneratorItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -600,13 +602,6 @@ func (s *HostnameGenerator) UpdateHostnameGenerator(ctx context.Context, request
 
 // GetHostnameGeneratorList - Returns a list of HostnameGenerator in the mesh.
 func (s *HostnameGenerator) GetHostnameGeneratorList(ctx context.Context, request operations.GetHostnameGeneratorListRequest, opts ...operations.Option) (*operations.GetHostnameGeneratorListResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getHostnameGeneratorList",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -627,6 +622,14 @@ func (s *HostnameGenerator) GetHostnameGeneratorList(ctx context.Context, reques
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/hostnamegenerators", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getHostnameGeneratorList",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

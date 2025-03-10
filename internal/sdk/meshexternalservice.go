@@ -26,13 +26,6 @@ func newMeshExternalService(sdkConfig sdkConfiguration) *MeshExternalService {
 
 // GetMeshExternalService - Returns MeshExternalService entity
 func (s *MeshExternalService) GetMeshExternalService(ctx context.Context, request operations.GetMeshExternalServiceRequest, opts ...operations.Option) (*operations.GetMeshExternalServiceResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getMeshExternalService",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -54,6 +47,14 @@ func (s *MeshExternalService) GetMeshExternalService(ctx context.Context, reques
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshexternalservices/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getMeshExternalService",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -179,13 +180,6 @@ func (s *MeshExternalService) GetMeshExternalService(ctx context.Context, reques
 
 // DeleteMeshExternalService - Deletes MeshExternalService entity
 func (s *MeshExternalService) DeleteMeshExternalService(ctx context.Context, request operations.DeleteMeshExternalServiceRequest, opts ...operations.Option) (*operations.DeleteMeshExternalServiceResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "deleteMeshExternalService",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -207,6 +201,14 @@ func (s *MeshExternalService) DeleteMeshExternalService(ctx context.Context, req
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshexternalservices/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "deleteMeshExternalService",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -332,13 +334,6 @@ func (s *MeshExternalService) DeleteMeshExternalService(ctx context.Context, req
 
 // CreateMeshExternalService - Creates or Updates MeshExternalService entity
 func (s *MeshExternalService) CreateMeshExternalService(ctx context.Context, request operations.CreateMeshExternalServiceRequest, opts ...operations.Option) (*operations.CreateMeshExternalServiceResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "createMeshExternalService",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -361,6 +356,13 @@ func (s *MeshExternalService) CreateMeshExternalService(ctx context.Context, req
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "createMeshExternalService",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MeshExternalServiceItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -466,13 +468,6 @@ func (s *MeshExternalService) CreateMeshExternalService(ctx context.Context, req
 
 // UpdateMeshExternalService - Creates or Updates MeshExternalService entity
 func (s *MeshExternalService) UpdateMeshExternalService(ctx context.Context, request operations.UpdateMeshExternalServiceRequest, opts ...operations.Option) (*operations.UpdateMeshExternalServiceResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "updateMeshExternalService",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -495,6 +490,13 @@ func (s *MeshExternalService) UpdateMeshExternalService(ctx context.Context, req
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "updateMeshExternalService",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MeshExternalServiceItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -600,13 +602,6 @@ func (s *MeshExternalService) UpdateMeshExternalService(ctx context.Context, req
 
 // GetMeshExternalServiceList - Returns a list of MeshExternalService in the mesh.
 func (s *MeshExternalService) GetMeshExternalServiceList(ctx context.Context, request operations.GetMeshExternalServiceListRequest, opts ...operations.Option) (*operations.GetMeshExternalServiceListResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getMeshExternalServiceList",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -627,6 +622,14 @@ func (s *MeshExternalService) GetMeshExternalServiceList(ctx context.Context, re
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshexternalservices", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getMeshExternalServiceList",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

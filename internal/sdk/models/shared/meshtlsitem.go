@@ -33,18 +33,18 @@ func (e *MeshTLSItemType) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// MeshTLSItemSpecMode - Mode defines the behavior of inbound listeners with regard to traffic encryption.
-type MeshTLSItemSpecMode string
+// MeshTLSItemMode - Mode defines the behavior of inbound listeners with regard to traffic encryption.
+type MeshTLSItemMode string
 
 const (
-	MeshTLSItemSpecModePermissive MeshTLSItemSpecMode = "Permissive"
-	MeshTLSItemSpecModeStrict     MeshTLSItemSpecMode = "Strict"
+	MeshTLSItemModePermissive MeshTLSItemMode = "Permissive"
+	MeshTLSItemModeStrict     MeshTLSItemMode = "Strict"
 )
 
-func (e MeshTLSItemSpecMode) ToPointer() *MeshTLSItemSpecMode {
+func (e MeshTLSItemMode) ToPointer() *MeshTLSItemMode {
 	return &e
 }
-func (e *MeshTLSItemSpecMode) UnmarshalJSON(data []byte) error {
+func (e *MeshTLSItemMode) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -53,10 +53,10 @@ func (e *MeshTLSItemSpecMode) UnmarshalJSON(data []byte) error {
 	case "Permissive":
 		fallthrough
 	case "Strict":
-		*e = MeshTLSItemSpecMode(v)
+		*e = MeshTLSItemMode(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for MeshTLSItemSpecMode: %v", v)
+		return fmt.Errorf("invalid value for MeshTLSItemMode: %v", v)
 	}
 }
 
@@ -207,14 +207,14 @@ func (o *TLSVersion) GetMin() *MeshTLSItemSpecMin {
 // 'targetRef'
 type MeshTLSItemDefault struct {
 	// Mode defines the behavior of inbound listeners with regard to traffic encryption.
-	Mode *MeshTLSItemSpecMode `json:"mode,omitempty"`
+	Mode *MeshTLSItemMode `json:"mode,omitempty"`
 	// TlsCiphers section for providing ciphers specification.
 	TLSCiphers []TLSCiphers `json:"tlsCiphers,omitempty"`
 	// Version section for providing version specification.
 	TLSVersion *TLSVersion `json:"tlsVersion,omitempty"`
 }
 
-func (o *MeshTLSItemDefault) GetMode() *MeshTLSItemSpecMode {
+func (o *MeshTLSItemDefault) GetMode() *MeshTLSItemMode {
 	if o == nil {
 		return nil
 	}
@@ -415,18 +415,18 @@ func (o *MeshTLSItemFrom) GetTargetRef() MeshTLSItemSpecTargetRef {
 	return o.TargetRef
 }
 
-// MeshTLSItemMode - Mode defines the behavior of inbound listeners with regard to traffic encryption.
-type MeshTLSItemMode string
+// MeshTLSItemSpecMode - Mode defines the behavior of inbound listeners with regard to traffic encryption.
+type MeshTLSItemSpecMode string
 
 const (
-	MeshTLSItemModePermissive MeshTLSItemMode = "Permissive"
-	MeshTLSItemModeStrict     MeshTLSItemMode = "Strict"
+	MeshTLSItemSpecModePermissive MeshTLSItemSpecMode = "Permissive"
+	MeshTLSItemSpecModeStrict     MeshTLSItemSpecMode = "Strict"
 )
 
-func (e MeshTLSItemMode) ToPointer() *MeshTLSItemMode {
+func (e MeshTLSItemSpecMode) ToPointer() *MeshTLSItemSpecMode {
 	return &e
 }
-func (e *MeshTLSItemMode) UnmarshalJSON(data []byte) error {
+func (e *MeshTLSItemSpecMode) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -435,10 +435,10 @@ func (e *MeshTLSItemMode) UnmarshalJSON(data []byte) error {
 	case "Permissive":
 		fallthrough
 	case "Strict":
-		*e = MeshTLSItemMode(v)
+		*e = MeshTLSItemSpecMode(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for MeshTLSItemMode: %v", v)
+		return fmt.Errorf("invalid value for MeshTLSItemSpecMode: %v", v)
 	}
 }
 
@@ -588,14 +588,14 @@ func (o *MeshTLSItemTLSVersion) GetMin() *MeshTLSItemMin {
 // MeshTLSItemSpecDefault - Default contains configuration of the inbound tls
 type MeshTLSItemSpecDefault struct {
 	// Mode defines the behavior of inbound listeners with regard to traffic encryption.
-	Mode *MeshTLSItemMode `json:"mode,omitempty"`
+	Mode *MeshTLSItemSpecMode `json:"mode,omitempty"`
 	// TlsCiphers section for providing ciphers specification.
 	TLSCiphers []MeshTLSItemTLSCiphers `json:"tlsCiphers,omitempty"`
 	// Version section for providing version specification.
 	TLSVersion *MeshTLSItemTLSVersion `json:"tlsVersion,omitempty"`
 }
 
-func (o *MeshTLSItemSpecDefault) GetMode() *MeshTLSItemMode {
+func (o *MeshTLSItemSpecDefault) GetMode() *MeshTLSItemSpecMode {
 	if o == nil {
 		return nil
 	}

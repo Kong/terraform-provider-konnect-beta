@@ -230,58 +230,58 @@ func (o *Logging) GetDefaultBackend() *string {
 	return o.DefaultBackend
 }
 
-type ModeType string
+type MeshItemModeType string
 
 const (
-	ModeTypeStr     ModeType = "str"
-	ModeTypeInteger ModeType = "integer"
+	MeshItemModeTypeStr     MeshItemModeType = "str"
+	MeshItemModeTypeInteger MeshItemModeType = "integer"
 )
 
-type Mode struct {
+type MeshItemMode struct {
 	Str     *string `queryParam:"inline"`
 	Integer *int64  `queryParam:"inline"`
 
-	Type ModeType
+	Type MeshItemModeType
 }
 
-func CreateModeStr(str string) Mode {
-	typ := ModeTypeStr
+func CreateMeshItemModeStr(str string) MeshItemMode {
+	typ := MeshItemModeTypeStr
 
-	return Mode{
+	return MeshItemMode{
 		Str:  &str,
 		Type: typ,
 	}
 }
 
-func CreateModeInteger(integer int64) Mode {
-	typ := ModeTypeInteger
+func CreateMeshItemModeInteger(integer int64) MeshItemMode {
+	typ := MeshItemModeTypeInteger
 
-	return Mode{
+	return MeshItemMode{
 		Integer: &integer,
 		Type:    typ,
 	}
 }
 
-func (u *Mode) UnmarshalJSON(data []byte) error {
+func (u *MeshItemMode) UnmarshalJSON(data []byte) error {
 
 	var str string = ""
 	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
 		u.Str = &str
-		u.Type = ModeTypeStr
+		u.Type = MeshItemModeTypeStr
 		return nil
 	}
 
 	var integer int64 = int64(0)
 	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
 		u.Integer = &integer
-		u.Type = ModeTypeInteger
+		u.Type = MeshItemModeTypeInteger
 		return nil
 	}
 
-	return fmt.Errorf("could not unmarshal `%s` into any supported union types for Mode", string(data))
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshItemMode", string(data))
 }
 
-func (u Mode) MarshalJSON() ([]byte, error) {
+func (u MeshItemMode) MarshalJSON() ([]byte, error) {
 	if u.Str != nil {
 		return utils.MarshalJSON(u.Str, "", true)
 	}
@@ -290,14 +290,14 @@ func (u Mode) MarshalJSON() ([]byte, error) {
 		return utils.MarshalJSON(u.Integer, "", true)
 	}
 
-	return nil, errors.New("could not marshal union type Mode: all fields are null")
+	return nil, errors.New("could not marshal union type MeshItemMode: all fields are null")
 }
 
 type MeshServices struct {
-	Mode *Mode `json:"mode,omitempty"`
+	Mode *MeshItemMode `json:"mode,omitempty"`
 }
 
-func (o *MeshServices) GetMode() *Mode {
+func (o *MeshServices) GetMode() *MeshItemMode {
 	if o == nil {
 		return nil
 	}
@@ -1067,60 +1067,60 @@ func (o *DpCert) GetRotation() *Rotation {
 	return o.Rotation
 }
 
-type MeshItemModeType string
+type MeshItemMtlsModeType string
 
 const (
-	MeshItemModeTypeStr     MeshItemModeType = "str"
-	MeshItemModeTypeInteger MeshItemModeType = "integer"
+	MeshItemMtlsModeTypeStr     MeshItemMtlsModeType = "str"
+	MeshItemMtlsModeTypeInteger MeshItemMtlsModeType = "integer"
 )
 
-// MeshItemMode - Mode defines the behaviour of inbound listeners with regard to traffic
+// MeshItemMtlsMode - Mode defines the behaviour of inbound listeners with regard to traffic
 // encryption
-type MeshItemMode struct {
+type MeshItemMtlsMode struct {
 	Str     *string `queryParam:"inline"`
 	Integer *int64  `queryParam:"inline"`
 
-	Type MeshItemModeType
+	Type MeshItemMtlsModeType
 }
 
-func CreateMeshItemModeStr(str string) MeshItemMode {
-	typ := MeshItemModeTypeStr
+func CreateMeshItemMtlsModeStr(str string) MeshItemMtlsMode {
+	typ := MeshItemMtlsModeTypeStr
 
-	return MeshItemMode{
+	return MeshItemMtlsMode{
 		Str:  &str,
 		Type: typ,
 	}
 }
 
-func CreateMeshItemModeInteger(integer int64) MeshItemMode {
-	typ := MeshItemModeTypeInteger
+func CreateMeshItemMtlsModeInteger(integer int64) MeshItemMtlsMode {
+	typ := MeshItemMtlsModeTypeInteger
 
-	return MeshItemMode{
+	return MeshItemMtlsMode{
 		Integer: &integer,
 		Type:    typ,
 	}
 }
 
-func (u *MeshItemMode) UnmarshalJSON(data []byte) error {
+func (u *MeshItemMtlsMode) UnmarshalJSON(data []byte) error {
 
 	var str string = ""
 	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
 		u.Str = &str
-		u.Type = MeshItemModeTypeStr
+		u.Type = MeshItemMtlsModeTypeStr
 		return nil
 	}
 
 	var integer int64 = int64(0)
 	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
 		u.Integer = &integer
-		u.Type = MeshItemModeTypeInteger
+		u.Type = MeshItemMtlsModeTypeInteger
 		return nil
 	}
 
-	return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshItemMode", string(data))
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshItemMtlsMode", string(data))
 }
 
-func (u MeshItemMode) MarshalJSON() ([]byte, error) {
+func (u MeshItemMtlsMode) MarshalJSON() ([]byte, error) {
 	if u.Str != nil {
 		return utils.MarshalJSON(u.Str, "", true)
 	}
@@ -1129,7 +1129,7 @@ func (u MeshItemMode) MarshalJSON() ([]byte, error) {
 		return utils.MarshalJSON(u.Integer, "", true)
 	}
 
-	return nil, errors.New("could not marshal union type MeshItemMode: all fields are null")
+	return nil, errors.New("could not marshal union type MeshItemMtlsMode: all fields are null")
 }
 
 // MeshItemRequestTimeout - Timeout on request for to CA for root certificate chain.
@@ -1173,7 +1173,7 @@ type MeshItemMtlsBackends struct {
 	DpCert *DpCert `json:"dpCert,omitempty"`
 	// Mode defines the behaviour of inbound listeners with regard to traffic
 	// encryption
-	Mode *MeshItemMode `json:"mode,omitempty"`
+	Mode *MeshItemMtlsMode `json:"mode,omitempty"`
 	// Name of the backend
 	Name      *string    `json:"name,omitempty"`
 	RootChain *RootChain `json:"rootChain,omitempty"`
@@ -1196,7 +1196,7 @@ func (o *MeshItemMtlsBackends) GetDpCert() *DpCert {
 	return o.DpCert
 }
 
-func (o *MeshItemMtlsBackends) GetMode() *MeshItemMode {
+func (o *MeshItemMtlsBackends) GetMode() *MeshItemMtlsMode {
 	if o == nil {
 		return nil
 	}

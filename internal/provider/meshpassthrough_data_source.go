@@ -85,7 +85,7 @@ func (r *MeshPassthroughDataSource) Schema(ctx context.Context, req datasource.S
 								Computed: true,
 								NestedObject: schema.NestedAttributeObject{
 									Attributes: map[string]schema.Attribute{
-										"port": schema.Int64Attribute{
+										"port": schema.Int32Attribute{
 											Computed:    true,
 											Description: `Port defines the port to which a user makes a request.`,
 										},

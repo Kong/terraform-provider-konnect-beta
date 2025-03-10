@@ -27,7 +27,7 @@ func (r *MeshGatewayDataSourceModel) RefreshFromSharedMeshGatewayItem(resp *shar
 				if listenersItem.Protocol == nil {
 					listeners1.Protocol = nil
 				} else {
-					listeners1.Protocol = &tfTypes.Mode{}
+					listeners1.Protocol = &tfTypes.MeshItemMode{}
 					if listenersItem.Protocol.Str != nil {
 						listeners1.Protocol.Str = types.StringPointerValue(listenersItem.Protocol.Str)
 					}
@@ -42,7 +42,7 @@ func (r *MeshGatewayDataSourceModel) RefreshFromSharedMeshGatewayItem(resp *shar
 					listeners1.Resources.ConnectionLimit = types.Int64PointerValue(listenersItem.Resources.ConnectionLimit)
 				}
 				if len(listenersItem.Tags) > 0 {
-					listeners1.Tags = make(map[string]types.String)
+					listeners1.Tags = make(map[string]types.String, len(listenersItem.Tags))
 					for key, value := range listenersItem.Tags {
 						listeners1.Tags[key] = types.StringValue(value)
 					}
@@ -65,7 +65,7 @@ func (r *MeshGatewayDataSourceModel) RefreshFromSharedMeshGatewayItem(resp *shar
 					if listenersItem.TLS.Mode == nil {
 						listeners1.TLS.Mode = nil
 					} else {
-						listeners1.TLS.Mode = &tfTypes.Mode{}
+						listeners1.TLS.Mode = &tfTypes.MeshItemMode{}
 						if listenersItem.TLS.Mode.Str != nil {
 							listeners1.TLS.Mode.Str = types.StringPointerValue(listenersItem.TLS.Mode.Str)
 						}
@@ -93,7 +93,7 @@ func (r *MeshGatewayDataSourceModel) RefreshFromSharedMeshGatewayItem(resp *shar
 			}
 		}
 		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String)
+			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key1, value1 := range resp.Labels {
 				r.Labels[key1] = types.StringValue(value1)
 			}
@@ -107,7 +107,7 @@ func (r *MeshGatewayDataSourceModel) RefreshFromSharedMeshGatewayItem(resp *shar
 		for selectorsCount, selectorsItem := range resp.Selectors {
 			var selectors1 tfTypes.Selectors
 			if len(selectorsItem.Match) > 0 {
-				selectors1.Match = make(map[string]types.String)
+				selectors1.Match = make(map[string]types.String, len(selectorsItem.Match))
 				for key2, value2 := range selectorsItem.Match {
 					selectors1.Match[key2] = types.StringValue(value2)
 				}
@@ -119,7 +119,7 @@ func (r *MeshGatewayDataSourceModel) RefreshFromSharedMeshGatewayItem(resp *shar
 			}
 		}
 		if len(resp.Tags) > 0 {
-			r.Tags = make(map[string]types.String)
+			r.Tags = make(map[string]types.String, len(resp.Tags))
 			for key3, value3 := range resp.Tags {
 				r.Tags[key3] = types.StringValue(value3)
 			}

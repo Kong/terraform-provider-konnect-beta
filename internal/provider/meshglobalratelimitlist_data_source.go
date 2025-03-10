@@ -31,13 +31,13 @@ type MeshGlobalRateLimitListDataSource struct {
 type MeshGlobalRateLimitListDataSourceModel struct {
 	CpID   types.String                      `tfsdk:"cp_id"`
 	Items  []tfTypes.MeshGlobalRateLimitItem `tfsdk:"items"`
-	Key    types.String                      `tfsdk:"key"`
+	Key    types.String                      `queryParam:"name=key" tfsdk:"key"`
 	Mesh   types.String                      `tfsdk:"mesh"`
 	Next   types.String                      `tfsdk:"next"`
-	Offset types.Int64                       `tfsdk:"offset"`
-	Size   types.Int64                       `tfsdk:"size"`
+	Offset types.Int64                       `queryParam:"style=form,explode=true,name=offset" tfsdk:"offset"`
+	Size   types.Int64                       `queryParam:"style=form,explode=true,name=size" tfsdk:"size"`
 	Total  types.Number                      `tfsdk:"total"`
-	Value  types.String                      `tfsdk:"value"`
+	Value  types.String                      `queryParam:"name=value" tfsdk:"value"`
 }
 
 // Metadata returns the data source type name.
@@ -155,7 +155,7 @@ func (r *MeshGlobalRateLimitListDataSource) Schema(ctx context.Context, req data
 																		},
 																		Description: `The Headers to be added to the HTTP response on a rate limit event`,
 																	},
-																	"status": schema.Int64Attribute{
+																	"status": schema.Int32Attribute{
 																		Computed:    true,
 																		Description: `The HTTP status code to be set on a rate limit event`,
 																	},
@@ -181,7 +181,7 @@ func (r *MeshGlobalRateLimitListDataSource) Schema(ctx context.Context, req data
 																								Computed:    true,
 																								Description: `The interval the number of units is accounted for. Only 1s, 1m, 1h or 24h can be configured.`,
 																							},
-																							"num": schema.Int64Attribute{
+																							"num": schema.Int32Attribute{
 																								Computed: true,
 																								MarkdownDescription: `Number of units per interval (depending on usage it can be a number of requests,` + "\n" +
 																									`or a number of connections).`,
@@ -212,7 +212,7 @@ func (r *MeshGlobalRateLimitListDataSource) Schema(ctx context.Context, req data
 																		Computed:    true,
 																		Description: `The interval the number of units is accounted for. Only 1s, 1m, 1h or 24h can be configured.`,
 																	},
-																	"num": schema.Int64Attribute{
+																	"num": schema.Int32Attribute{
 																		Computed: true,
 																		MarkdownDescription: `Number of units per interval (depending on usage it can be a number of requests,` + "\n" +
 																			`or a number of connections).`,
@@ -404,7 +404,7 @@ func (r *MeshGlobalRateLimitListDataSource) Schema(ctx context.Context, req data
 																		},
 																		Description: `The Headers to be added to the HTTP response on a rate limit event`,
 																	},
-																	"status": schema.Int64Attribute{
+																	"status": schema.Int32Attribute{
 																		Computed:    true,
 																		Description: `The HTTP status code to be set on a rate limit event`,
 																	},
@@ -430,7 +430,7 @@ func (r *MeshGlobalRateLimitListDataSource) Schema(ctx context.Context, req data
 																								Computed:    true,
 																								Description: `The interval the number of units is accounted for. Only 1s, 1m, 1h or 24h can be configured.`,
 																							},
-																							"num": schema.Int64Attribute{
+																							"num": schema.Int32Attribute{
 																								Computed: true,
 																								MarkdownDescription: `Number of units per interval (depending on usage it can be a number of requests,` + "\n" +
 																									`or a number of connections).`,
@@ -461,7 +461,7 @@ func (r *MeshGlobalRateLimitListDataSource) Schema(ctx context.Context, req data
 																		Computed:    true,
 																		Description: `The interval the number of units is accounted for. Only 1s, 1m, 1h or 24h can be configured.`,
 																	},
-																	"num": schema.Int64Attribute{
+																	"num": schema.Int32Attribute{
 																		Computed: true,
 																		MarkdownDescription: `Number of units per interval (depending on usage it can be a number of requests,` + "\n" +
 																			`or a number of connections).`,

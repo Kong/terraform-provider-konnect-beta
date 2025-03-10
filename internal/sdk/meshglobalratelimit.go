@@ -26,13 +26,6 @@ func newMeshGlobalRateLimit(sdkConfig sdkConfiguration) *MeshGlobalRateLimit {
 
 // GetMeshGlobalRateLimit - Returns MeshGlobalRateLimit entity
 func (s *MeshGlobalRateLimit) GetMeshGlobalRateLimit(ctx context.Context, request operations.GetMeshGlobalRateLimitRequest, opts ...operations.Option) (*operations.GetMeshGlobalRateLimitResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getMeshGlobalRateLimit",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -54,6 +47,14 @@ func (s *MeshGlobalRateLimit) GetMeshGlobalRateLimit(ctx context.Context, reques
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshglobalratelimits/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getMeshGlobalRateLimit",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -179,13 +180,6 @@ func (s *MeshGlobalRateLimit) GetMeshGlobalRateLimit(ctx context.Context, reques
 
 // DeleteMeshGlobalRateLimit - Deletes MeshGlobalRateLimit entity
 func (s *MeshGlobalRateLimit) DeleteMeshGlobalRateLimit(ctx context.Context, request operations.DeleteMeshGlobalRateLimitRequest, opts ...operations.Option) (*operations.DeleteMeshGlobalRateLimitResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "deleteMeshGlobalRateLimit",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -207,6 +201,14 @@ func (s *MeshGlobalRateLimit) DeleteMeshGlobalRateLimit(ctx context.Context, req
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshglobalratelimits/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "deleteMeshGlobalRateLimit",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -332,13 +334,6 @@ func (s *MeshGlobalRateLimit) DeleteMeshGlobalRateLimit(ctx context.Context, req
 
 // CreateMeshGlobalRateLimit - Creates or Updates MeshGlobalRateLimit entity
 func (s *MeshGlobalRateLimit) CreateMeshGlobalRateLimit(ctx context.Context, request operations.CreateMeshGlobalRateLimitRequest, opts ...operations.Option) (*operations.CreateMeshGlobalRateLimitResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "createMeshGlobalRateLimit",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -361,6 +356,13 @@ func (s *MeshGlobalRateLimit) CreateMeshGlobalRateLimit(ctx context.Context, req
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "createMeshGlobalRateLimit",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MeshGlobalRateLimitItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -466,13 +468,6 @@ func (s *MeshGlobalRateLimit) CreateMeshGlobalRateLimit(ctx context.Context, req
 
 // UpdateMeshGlobalRateLimit - Creates or Updates MeshGlobalRateLimit entity
 func (s *MeshGlobalRateLimit) UpdateMeshGlobalRateLimit(ctx context.Context, request operations.UpdateMeshGlobalRateLimitRequest, opts ...operations.Option) (*operations.UpdateMeshGlobalRateLimitResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "updateMeshGlobalRateLimit",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -495,6 +490,13 @@ func (s *MeshGlobalRateLimit) UpdateMeshGlobalRateLimit(ctx context.Context, req
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "updateMeshGlobalRateLimit",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MeshGlobalRateLimitItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -600,13 +602,6 @@ func (s *MeshGlobalRateLimit) UpdateMeshGlobalRateLimit(ctx context.Context, req
 
 // GetMeshGlobalRateLimitList - Returns a list of MeshGlobalRateLimit in the mesh.
 func (s *MeshGlobalRateLimit) GetMeshGlobalRateLimitList(ctx context.Context, request operations.GetMeshGlobalRateLimitListRequest, opts ...operations.Option) (*operations.GetMeshGlobalRateLimitListResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getMeshGlobalRateLimitList",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -627,6 +622,14 @@ func (s *MeshGlobalRateLimit) GetMeshGlobalRateLimitList(ctx context.Context, re
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshglobalratelimits", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getMeshGlobalRateLimitList",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

@@ -26,13 +26,6 @@ func newMeshHTTPRoute(sdkConfig sdkConfiguration) *MeshHTTPRoute {
 
 // GetMeshHTTPRoute - Returns MeshHTTPRoute entity
 func (s *MeshHTTPRoute) GetMeshHTTPRoute(ctx context.Context, request operations.GetMeshHTTPRouteRequest, opts ...operations.Option) (*operations.GetMeshHTTPRouteResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getMeshHTTPRoute",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -54,6 +47,14 @@ func (s *MeshHTTPRoute) GetMeshHTTPRoute(ctx context.Context, request operations
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhttproutes/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getMeshHTTPRoute",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -179,13 +180,6 @@ func (s *MeshHTTPRoute) GetMeshHTTPRoute(ctx context.Context, request operations
 
 // DeleteMeshHTTPRoute - Deletes MeshHTTPRoute entity
 func (s *MeshHTTPRoute) DeleteMeshHTTPRoute(ctx context.Context, request operations.DeleteMeshHTTPRouteRequest, opts ...operations.Option) (*operations.DeleteMeshHTTPRouteResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "deleteMeshHTTPRoute",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -207,6 +201,14 @@ func (s *MeshHTTPRoute) DeleteMeshHTTPRoute(ctx context.Context, request operati
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhttproutes/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "deleteMeshHTTPRoute",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -332,13 +334,6 @@ func (s *MeshHTTPRoute) DeleteMeshHTTPRoute(ctx context.Context, request operati
 
 // CreateMeshHTTPRoute - Creates or Updates MeshHTTPRoute entity
 func (s *MeshHTTPRoute) CreateMeshHTTPRoute(ctx context.Context, request operations.CreateMeshHTTPRouteRequest, opts ...operations.Option) (*operations.CreateMeshHTTPRouteResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "createMeshHTTPRoute",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -361,6 +356,13 @@ func (s *MeshHTTPRoute) CreateMeshHTTPRoute(ctx context.Context, request operati
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "createMeshHTTPRoute",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MeshHTTPRouteItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -466,13 +468,6 @@ func (s *MeshHTTPRoute) CreateMeshHTTPRoute(ctx context.Context, request operati
 
 // UpdateMeshHTTPRoute - Creates or Updates MeshHTTPRoute entity
 func (s *MeshHTTPRoute) UpdateMeshHTTPRoute(ctx context.Context, request operations.UpdateMeshHTTPRouteRequest, opts ...operations.Option) (*operations.UpdateMeshHTTPRouteResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "updateMeshHTTPRoute",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -495,6 +490,13 @@ func (s *MeshHTTPRoute) UpdateMeshHTTPRoute(ctx context.Context, request operati
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "updateMeshHTTPRoute",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MeshHTTPRouteItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -600,13 +602,6 @@ func (s *MeshHTTPRoute) UpdateMeshHTTPRoute(ctx context.Context, request operati
 
 // GetMeshHTTPRouteList - Returns a list of MeshHTTPRoute in the mesh.
 func (s *MeshHTTPRoute) GetMeshHTTPRouteList(ctx context.Context, request operations.GetMeshHTTPRouteListRequest, opts ...operations.Option) (*operations.GetMeshHTTPRouteListResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getMeshHTTPRouteList",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -627,6 +622,14 @@ func (s *MeshHTTPRoute) GetMeshHTTPRouteList(ctx context.Context, request operat
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhttproutes", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getMeshHTTPRouteList",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

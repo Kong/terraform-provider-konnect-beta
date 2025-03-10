@@ -24,7 +24,7 @@ func (r *MeshHealthCheckListDataSourceModel) RefreshFromSharedMeshHealthCheckLis
 				items1.CreationTime = types.StringNull()
 			}
 			if len(itemsItem.Labels) > 0 {
-				items1.Labels = make(map[string]types.String)
+				items1.Labels = make(map[string]types.String, len(itemsItem.Labels))
 				for key, value := range itemsItem.Labels {
 					items1.Labels[key] = types.StringValue(value)
 				}
@@ -42,7 +42,7 @@ func (r *MeshHealthCheckListDataSourceModel) RefreshFromSharedMeshHealthCheckLis
 				items1.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 				items1.Spec.TargetRef.Kind = types.StringValue(string(itemsItem.Spec.TargetRef.Kind))
 				if len(itemsItem.Spec.TargetRef.Labels) > 0 {
-					items1.Spec.TargetRef.Labels = make(map[string]types.String)
+					items1.Spec.TargetRef.Labels = make(map[string]types.String, len(itemsItem.Spec.TargetRef.Labels))
 					for key1, value1 := range itemsItem.Spec.TargetRef.Labels {
 						items1.Spec.TargetRef.Labels[key1] = types.StringValue(value1)
 					}
@@ -56,7 +56,7 @@ func (r *MeshHealthCheckListDataSourceModel) RefreshFromSharedMeshHealthCheckLis
 				}
 				items1.Spec.TargetRef.SectionName = types.StringPointerValue(itemsItem.Spec.TargetRef.SectionName)
 				if len(itemsItem.Spec.TargetRef.Tags) > 0 {
-					items1.Spec.TargetRef.Tags = make(map[string]types.String)
+					items1.Spec.TargetRef.Tags = make(map[string]types.String, len(itemsItem.Spec.TargetRef.Tags))
 					for key2, value2 := range itemsItem.Spec.TargetRef.Tags {
 						items1.Spec.TargetRef.Tags[key2] = types.StringValue(value2)
 					}
@@ -83,7 +83,7 @@ func (r *MeshHealthCheckListDataSourceModel) RefreshFromSharedMeshHealthCheckLis
 					if toItem.Default.HealthyPanicThreshold == nil {
 						to1.Default.HealthyPanicThreshold = nil
 					} else {
-						to1.Default.HealthyPanicThreshold = &tfTypes.Mode{}
+						to1.Default.HealthyPanicThreshold = &tfTypes.MeshItemMode{}
 						if toItem.Default.HealthyPanicThreshold.Integer != nil {
 							to1.Default.HealthyPanicThreshold.Integer = types.Int64PointerValue(toItem.Default.HealthyPanicThreshold.Integer)
 						}
@@ -92,9 +92,9 @@ func (r *MeshHealthCheckListDataSourceModel) RefreshFromSharedMeshHealthCheckLis
 						}
 					}
 					if toItem.Default.HealthyThreshold != nil {
-						to1.Default.HealthyThreshold = types.Int64Value(int64(*toItem.Default.HealthyThreshold))
+						to1.Default.HealthyThreshold = types.Int32Value(int32(*toItem.Default.HealthyThreshold))
 					} else {
-						to1.Default.HealthyThreshold = types.Int64Null()
+						to1.Default.HealthyThreshold = types.Int32Null()
 					}
 					if toItem.Default.HTTP == nil {
 						to1.Default.HTTP = nil
@@ -140,9 +140,9 @@ func (r *MeshHealthCheckListDataSourceModel) RefreshFromSharedMeshHealthCheckLis
 					to1.Default.Interval = types.StringPointerValue(toItem.Default.Interval)
 					to1.Default.IntervalJitter = types.StringPointerValue(toItem.Default.IntervalJitter)
 					if toItem.Default.IntervalJitterPercent != nil {
-						to1.Default.IntervalJitterPercent = types.Int64Value(int64(*toItem.Default.IntervalJitterPercent))
+						to1.Default.IntervalJitterPercent = types.Int32Value(int32(*toItem.Default.IntervalJitterPercent))
 					} else {
-						to1.Default.IntervalJitterPercent = types.Int64Null()
+						to1.Default.IntervalJitterPercent = types.Int32Null()
 					}
 					to1.Default.NoTrafficInterval = types.StringPointerValue(toItem.Default.NoTrafficInterval)
 					to1.Default.ReuseConnection = types.BoolPointerValue(toItem.Default.ReuseConnection)
@@ -159,14 +159,14 @@ func (r *MeshHealthCheckListDataSourceModel) RefreshFromSharedMeshHealthCheckLis
 					}
 					to1.Default.Timeout = types.StringPointerValue(toItem.Default.Timeout)
 					if toItem.Default.UnhealthyThreshold != nil {
-						to1.Default.UnhealthyThreshold = types.Int64Value(int64(*toItem.Default.UnhealthyThreshold))
+						to1.Default.UnhealthyThreshold = types.Int32Value(int32(*toItem.Default.UnhealthyThreshold))
 					} else {
-						to1.Default.UnhealthyThreshold = types.Int64Null()
+						to1.Default.UnhealthyThreshold = types.Int32Null()
 					}
 				}
 				to1.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 				if len(toItem.TargetRef.Labels) > 0 {
-					to1.TargetRef.Labels = make(map[string]types.String)
+					to1.TargetRef.Labels = make(map[string]types.String, len(toItem.TargetRef.Labels))
 					for key3, value5 := range toItem.TargetRef.Labels {
 						to1.TargetRef.Labels[key3] = types.StringValue(value5)
 					}
@@ -180,7 +180,7 @@ func (r *MeshHealthCheckListDataSourceModel) RefreshFromSharedMeshHealthCheckLis
 				}
 				to1.TargetRef.SectionName = types.StringPointerValue(toItem.TargetRef.SectionName)
 				if len(toItem.TargetRef.Tags) > 0 {
-					to1.TargetRef.Tags = make(map[string]types.String)
+					to1.TargetRef.Tags = make(map[string]types.String, len(toItem.TargetRef.Tags))
 					for key4, value6 := range toItem.TargetRef.Tags {
 						to1.TargetRef.Tags[key4] = types.StringValue(value6)
 					}

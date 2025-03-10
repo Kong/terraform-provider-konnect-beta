@@ -24,7 +24,7 @@ func (r *MeshFaultInjectionListDataSourceModel) RefreshFromSharedMeshFaultInject
 				items1.CreationTime = types.StringNull()
 			}
 			if len(itemsItem.Labels) > 0 {
-				items1.Labels = make(map[string]types.String)
+				items1.Labels = make(map[string]types.String, len(itemsItem.Labels))
 				for key, value := range itemsItem.Labels {
 					items1.Labels[key] = types.StringValue(value)
 				}
@@ -50,7 +50,7 @@ func (r *MeshFaultInjectionListDataSourceModel) RefreshFromSharedMeshFaultInject
 							http1.Abort = nil
 						} else {
 							http1.Abort = &tfTypes.Abort{}
-							http1.Abort.HTTPStatus = types.Int64Value(int64(httpItem.Abort.HTTPStatus))
+							http1.Abort.HTTPStatus = types.Int32Value(int32(httpItem.Abort.HTTPStatus))
 							if httpItem.Abort.Percentage.Integer != nil {
 								http1.Abort.Percentage.Integer = types.Int64PointerValue(httpItem.Abort.Percentage.Integer)
 							}
@@ -93,7 +93,7 @@ func (r *MeshFaultInjectionListDataSourceModel) RefreshFromSharedMeshFaultInject
 				}
 				from1.TargetRef.Kind = types.StringValue(string(fromItem.TargetRef.Kind))
 				if len(fromItem.TargetRef.Labels) > 0 {
-					from1.TargetRef.Labels = make(map[string]types.String)
+					from1.TargetRef.Labels = make(map[string]types.String, len(fromItem.TargetRef.Labels))
 					for key1, value2 := range fromItem.TargetRef.Labels {
 						from1.TargetRef.Labels[key1] = types.StringValue(value2)
 					}
@@ -107,7 +107,7 @@ func (r *MeshFaultInjectionListDataSourceModel) RefreshFromSharedMeshFaultInject
 				}
 				from1.TargetRef.SectionName = types.StringPointerValue(fromItem.TargetRef.SectionName)
 				if len(fromItem.TargetRef.Tags) > 0 {
-					from1.TargetRef.Tags = make(map[string]types.String)
+					from1.TargetRef.Tags = make(map[string]types.String, len(fromItem.TargetRef.Tags))
 					for key2, value3 := range fromItem.TargetRef.Tags {
 						from1.TargetRef.Tags[key2] = types.StringValue(value3)
 					}
@@ -125,7 +125,7 @@ func (r *MeshFaultInjectionListDataSourceModel) RefreshFromSharedMeshFaultInject
 				items1.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 				items1.Spec.TargetRef.Kind = types.StringValue(string(itemsItem.Spec.TargetRef.Kind))
 				if len(itemsItem.Spec.TargetRef.Labels) > 0 {
-					items1.Spec.TargetRef.Labels = make(map[string]types.String)
+					items1.Spec.TargetRef.Labels = make(map[string]types.String, len(itemsItem.Spec.TargetRef.Labels))
 					for key3, value4 := range itemsItem.Spec.TargetRef.Labels {
 						items1.Spec.TargetRef.Labels[key3] = types.StringValue(value4)
 					}
@@ -139,7 +139,7 @@ func (r *MeshFaultInjectionListDataSourceModel) RefreshFromSharedMeshFaultInject
 				}
 				items1.Spec.TargetRef.SectionName = types.StringPointerValue(itemsItem.Spec.TargetRef.SectionName)
 				if len(itemsItem.Spec.TargetRef.Tags) > 0 {
-					items1.Spec.TargetRef.Tags = make(map[string]types.String)
+					items1.Spec.TargetRef.Tags = make(map[string]types.String, len(itemsItem.Spec.TargetRef.Tags))
 					for key4, value5 := range itemsItem.Spec.TargetRef.Tags {
 						items1.Spec.TargetRef.Tags[key4] = types.StringValue(value5)
 					}
@@ -159,7 +159,7 @@ func (r *MeshFaultInjectionListDataSourceModel) RefreshFromSharedMeshFaultInject
 							http3.Abort = nil
 						} else {
 							http3.Abort = &tfTypes.Abort{}
-							http3.Abort.HTTPStatus = types.Int64Value(int64(httpItem1.Abort.HTTPStatus))
+							http3.Abort.HTTPStatus = types.Int32Value(int32(httpItem1.Abort.HTTPStatus))
 							if httpItem1.Abort.Percentage.Integer != nil {
 								http3.Abort.Percentage.Integer = types.Int64PointerValue(httpItem1.Abort.Percentage.Integer)
 							}
@@ -202,7 +202,7 @@ func (r *MeshFaultInjectionListDataSourceModel) RefreshFromSharedMeshFaultInject
 				}
 				to1.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 				if len(toItem.TargetRef.Labels) > 0 {
-					to1.TargetRef.Labels = make(map[string]types.String)
+					to1.TargetRef.Labels = make(map[string]types.String, len(toItem.TargetRef.Labels))
 					for key5, value7 := range toItem.TargetRef.Labels {
 						to1.TargetRef.Labels[key5] = types.StringValue(value7)
 					}
@@ -216,7 +216,7 @@ func (r *MeshFaultInjectionListDataSourceModel) RefreshFromSharedMeshFaultInject
 				}
 				to1.TargetRef.SectionName = types.StringPointerValue(toItem.TargetRef.SectionName)
 				if len(toItem.TargetRef.Tags) > 0 {
-					to1.TargetRef.Tags = make(map[string]types.String)
+					to1.TargetRef.Tags = make(map[string]types.String, len(toItem.TargetRef.Tags))
 					for key6, value8 := range toItem.TargetRef.Tags {
 						to1.TargetRef.Tags[key6] = types.StringValue(value8)
 					}

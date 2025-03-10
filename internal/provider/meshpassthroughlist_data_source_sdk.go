@@ -24,7 +24,7 @@ func (r *MeshPassthroughListDataSourceModel) RefreshFromSharedMeshPassthroughLis
 				items1.CreationTime = types.StringNull()
 			}
 			if len(itemsItem.Labels) > 0 {
-				items1.Labels = make(map[string]types.String)
+				items1.Labels = make(map[string]types.String, len(itemsItem.Labels))
 				for key, value := range itemsItem.Labels {
 					items1.Labels[key] = types.StringValue(value)
 				}
@@ -44,9 +44,9 @@ func (r *MeshPassthroughListDataSourceModel) RefreshFromSharedMeshPassthroughLis
 				for appendMatchCount, appendMatchItem := range itemsItem.Spec.Default.AppendMatch {
 					var appendMatch1 tfTypes.AppendMatch
 					if appendMatchItem.Port != nil {
-						appendMatch1.Port = types.Int64Value(int64(*appendMatchItem.Port))
+						appendMatch1.Port = types.Int32Value(int32(*appendMatchItem.Port))
 					} else {
-						appendMatch1.Port = types.Int64Null()
+						appendMatch1.Port = types.Int32Null()
 					}
 					if appendMatchItem.Protocol != nil {
 						appendMatch1.Protocol = types.StringValue(string(*appendMatchItem.Protocol))
@@ -76,7 +76,7 @@ func (r *MeshPassthroughListDataSourceModel) RefreshFromSharedMeshPassthroughLis
 				items1.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 				items1.Spec.TargetRef.Kind = types.StringValue(string(itemsItem.Spec.TargetRef.Kind))
 				if len(itemsItem.Spec.TargetRef.Labels) > 0 {
-					items1.Spec.TargetRef.Labels = make(map[string]types.String)
+					items1.Spec.TargetRef.Labels = make(map[string]types.String, len(itemsItem.Spec.TargetRef.Labels))
 					for key1, value2 := range itemsItem.Spec.TargetRef.Labels {
 						items1.Spec.TargetRef.Labels[key1] = types.StringValue(value2)
 					}
@@ -90,7 +90,7 @@ func (r *MeshPassthroughListDataSourceModel) RefreshFromSharedMeshPassthroughLis
 				}
 				items1.Spec.TargetRef.SectionName = types.StringPointerValue(itemsItem.Spec.TargetRef.SectionName)
 				if len(itemsItem.Spec.TargetRef.Tags) > 0 {
-					items1.Spec.TargetRef.Tags = make(map[string]types.String)
+					items1.Spec.TargetRef.Tags = make(map[string]types.String, len(itemsItem.Spec.TargetRef.Tags))
 					for key2, value3 := range itemsItem.Spec.TargetRef.Tags {
 						items1.Spec.TargetRef.Tags[key2] = types.StringValue(value3)
 					}

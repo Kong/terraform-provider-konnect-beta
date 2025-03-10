@@ -36,7 +36,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput() *shared.Me
 			if backendsItem.File != nil {
 				var format *shared.Format
 				if backendsItem.File.Format != nil {
-					var json []shared.JSON = []shared.JSON{}
+					var jsonVar []shared.JSON = []shared.JSON{}
 					for _, jsonItem := range backendsItem.File.Format.JSON {
 						var key string
 						key = jsonItem.Key.ValueString()
@@ -44,7 +44,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput() *shared.Me
 						var value string
 						value = jsonItem.Value.ValueString()
 
-						json = append(json, shared.JSON{
+						jsonVar = append(jsonVar, shared.JSON{
 							Key:   key,
 							Value: value,
 						})
@@ -63,7 +63,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput() *shared.Me
 					}
 					typeVar1 := shared.MeshAccessLogItemSpecFromType(backendsItem.File.Format.Type.ValueString())
 					format = &shared.Format{
-						JSON:            json,
+						JSON:            jsonVar,
 						OmitEmptyValues: omitEmptyValues,
 						Plain:           plain,
 						Type:            typeVar1,
@@ -112,7 +112,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput() *shared.Me
 
 				var format1 *shared.MeshAccessLogItemFormat
 				if backendsItem.TCP.Format != nil {
-					var json1 []shared.MeshAccessLogItemJSON = []shared.MeshAccessLogItemJSON{}
+					var jsonVar1 []shared.MeshAccessLogItemJSON = []shared.MeshAccessLogItemJSON{}
 					for _, jsonItem1 := range backendsItem.TCP.Format.JSON {
 						var key2 string
 						key2 = jsonItem1.Key.ValueString()
@@ -120,7 +120,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput() *shared.Me
 						var value2 string
 						value2 = jsonItem1.Value.ValueString()
 
-						json1 = append(json1, shared.MeshAccessLogItemJSON{
+						jsonVar1 = append(jsonVar1, shared.MeshAccessLogItemJSON{
 							Key:   key2,
 							Value: value2,
 						})
@@ -139,7 +139,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput() *shared.Me
 					}
 					typeVar2 := shared.MeshAccessLogItemSpecFromDefaultType(backendsItem.TCP.Format.Type.ValueString())
 					format1 = &shared.MeshAccessLogItemFormat{
-						JSON:            json1,
+						JSON:            jsonVar1,
 						OmitEmptyValues: omitEmptyValues1,
 						Plain:           plain1,
 						Type:            typeVar2,
@@ -227,7 +227,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput() *shared.Me
 			if backendsItem1.File != nil {
 				var format2 *shared.MeshAccessLogItemSpecFormat
 				if backendsItem1.File.Format != nil {
-					var json2 []shared.MeshAccessLogItemSpecJSON = []shared.MeshAccessLogItemSpecJSON{}
+					var jsonVar2 []shared.MeshAccessLogItemSpecJSON = []shared.MeshAccessLogItemSpecJSON{}
 					for _, jsonItem2 := range backendsItem1.File.Format.JSON {
 						var key3 string
 						key3 = jsonItem2.Key.ValueString()
@@ -235,7 +235,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput() *shared.Me
 						var value3 string
 						value3 = jsonItem2.Value.ValueString()
 
-						json2 = append(json2, shared.MeshAccessLogItemSpecJSON{
+						jsonVar2 = append(jsonVar2, shared.MeshAccessLogItemSpecJSON{
 							Key:   key3,
 							Value: value3,
 						})
@@ -254,7 +254,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput() *shared.Me
 					}
 					typeVar3 := shared.MeshAccessLogItemSpecRulesType(backendsItem1.File.Format.Type.ValueString())
 					format2 = &shared.MeshAccessLogItemSpecFormat{
-						JSON:            json2,
+						JSON:            jsonVar2,
 						OmitEmptyValues: omitEmptyValues2,
 						Plain:           plain2,
 						Type:            typeVar3,
@@ -303,7 +303,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput() *shared.Me
 
 				var format3 *shared.MeshAccessLogItemSpecRulesFormat
 				if backendsItem1.TCP.Format != nil {
-					var json3 []shared.MeshAccessLogItemSpecRulesJSON = []shared.MeshAccessLogItemSpecRulesJSON{}
+					var jsonVar3 []shared.MeshAccessLogItemSpecRulesJSON = []shared.MeshAccessLogItemSpecRulesJSON{}
 					for _, jsonItem3 := range backendsItem1.TCP.Format.JSON {
 						var key5 string
 						key5 = jsonItem3.Key.ValueString()
@@ -311,7 +311,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput() *shared.Me
 						var value5 string
 						value5 = jsonItem3.Value.ValueString()
 
-						json3 = append(json3, shared.MeshAccessLogItemSpecRulesJSON{
+						jsonVar3 = append(jsonVar3, shared.MeshAccessLogItemSpecRulesJSON{
 							Key:   key5,
 							Value: value5,
 						})
@@ -330,7 +330,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput() *shared.Me
 					}
 					typeVar4 := shared.MeshAccessLogItemSpecRulesDefaultType(backendsItem1.TCP.Format.Type.ValueString())
 					format3 = &shared.MeshAccessLogItemSpecRulesFormat{
-						JSON:            json3,
+						JSON:            jsonVar3,
 						OmitEmptyValues: omitEmptyValues3,
 						Plain:           plain3,
 						Type:            typeVar4,
@@ -420,7 +420,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput() *shared.Me
 			if backendsItem2.File != nil {
 				var format4 *shared.MeshAccessLogItemSpecToFormat
 				if backendsItem2.File.Format != nil {
-					var json4 []shared.MeshAccessLogItemSpecToJSON = []shared.MeshAccessLogItemSpecToJSON{}
+					var jsonVar4 []shared.MeshAccessLogItemSpecToJSON = []shared.MeshAccessLogItemSpecToJSON{}
 					for _, jsonItem4 := range backendsItem2.File.Format.JSON {
 						var key6 string
 						key6 = jsonItem4.Key.ValueString()
@@ -428,7 +428,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput() *shared.Me
 						var value6 string
 						value6 = jsonItem4.Value.ValueString()
 
-						json4 = append(json4, shared.MeshAccessLogItemSpecToJSON{
+						jsonVar4 = append(jsonVar4, shared.MeshAccessLogItemSpecToJSON{
 							Key:   key6,
 							Value: value6,
 						})
@@ -447,7 +447,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput() *shared.Me
 					}
 					typeVar5 := shared.MeshAccessLogItemSpecToDefaultBackendsType(backendsItem2.File.Format.Type.ValueString())
 					format4 = &shared.MeshAccessLogItemSpecToFormat{
-						JSON:            json4,
+						JSON:            jsonVar4,
 						OmitEmptyValues: omitEmptyValues4,
 						Plain:           plain4,
 						Type:            typeVar5,
@@ -496,7 +496,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput() *shared.Me
 
 				var format5 *shared.MeshAccessLogItemSpecToDefaultFormat
 				if backendsItem2.TCP.Format != nil {
-					var json5 []shared.MeshAccessLogItemSpecToDefaultJSON = []shared.MeshAccessLogItemSpecToDefaultJSON{}
+					var jsonVar5 []shared.MeshAccessLogItemSpecToDefaultJSON = []shared.MeshAccessLogItemSpecToDefaultJSON{}
 					for _, jsonItem5 := range backendsItem2.TCP.Format.JSON {
 						var key8 string
 						key8 = jsonItem5.Key.ValueString()
@@ -504,7 +504,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput() *shared.Me
 						var value8 string
 						value8 = jsonItem5.Value.ValueString()
 
-						json5 = append(json5, shared.MeshAccessLogItemSpecToDefaultJSON{
+						jsonVar5 = append(jsonVar5, shared.MeshAccessLogItemSpecToDefaultJSON{
 							Key:   key8,
 							Value: value8,
 						})
@@ -523,7 +523,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput() *shared.Me
 					}
 					typeVar6 := shared.MeshAccessLogItemSpecToDefaultType(backendsItem2.TCP.Format.Type.ValueString())
 					format5 = &shared.MeshAccessLogItemSpecToDefaultFormat{
-						JSON:            json5,
+						JSON:            jsonVar5,
 						OmitEmptyValues: omitEmptyValues5,
 						Plain:           plain5,
 						Type:            typeVar6,
@@ -636,7 +636,7 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(resp *sh
 			r.CreationTime = types.StringNull()
 		}
 		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String)
+			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
 				r.Labels[key] = types.StringValue(value)
 			}
@@ -666,15 +666,15 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(resp *sh
 					} else {
 						backends1.File.Format = &tfTypes.Format{}
 						backends1.File.Format.JSON = []tfTypes.JSON{}
-						for jsonCount, jsonItem := range backendsItem.File.Format.JSON {
-							var json1 tfTypes.JSON
-							json1.Key = types.StringValue(jsonItem.Key)
-							json1.Value = types.StringValue(jsonItem.Value)
-							if jsonCount+1 > len(backends1.File.Format.JSON) {
-								backends1.File.Format.JSON = append(backends1.File.Format.JSON, json1)
+						for jsonVarCount, jsonVarItem := range backendsItem.File.Format.JSON {
+							var jsonVar1 tfTypes.JSON
+							jsonVar1.Key = types.StringValue(jsonVarItem.Key)
+							jsonVar1.Value = types.StringValue(jsonVarItem.Value)
+							if jsonVarCount+1 > len(backends1.File.Format.JSON) {
+								backends1.File.Format.JSON = append(backends1.File.Format.JSON, jsonVar1)
 							} else {
-								backends1.File.Format.JSON[jsonCount].Key = json1.Key
-								backends1.File.Format.JSON[jsonCount].Value = json1.Value
+								backends1.File.Format.JSON[jsonVarCount].Key = jsonVar1.Key
+								backends1.File.Format.JSON[jsonVarCount].Value = jsonVar1.Value
 							}
 						}
 						backends1.File.Format.OmitEmptyValues = types.BoolPointerValue(backendsItem.File.Format.OmitEmptyValues)
@@ -717,15 +717,15 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(resp *sh
 					} else {
 						backends1.TCP.Format = &tfTypes.Format{}
 						backends1.TCP.Format.JSON = []tfTypes.JSON{}
-						for jsonCount1, jsonItem1 := range backendsItem.TCP.Format.JSON {
-							var json3 tfTypes.JSON
-							json3.Key = types.StringValue(jsonItem1.Key)
-							json3.Value = types.StringValue(jsonItem1.Value)
-							if jsonCount1+1 > len(backends1.TCP.Format.JSON) {
-								backends1.TCP.Format.JSON = append(backends1.TCP.Format.JSON, json3)
+						for jsonVarCount1, jsonVarItem1 := range backendsItem.TCP.Format.JSON {
+							var jsonVar2 tfTypes.JSON
+							jsonVar2.Key = types.StringValue(jsonVarItem1.Key)
+							jsonVar2.Value = types.StringValue(jsonVarItem1.Value)
+							if jsonVarCount1+1 > len(backends1.TCP.Format.JSON) {
+								backends1.TCP.Format.JSON = append(backends1.TCP.Format.JSON, jsonVar2)
 							} else {
-								backends1.TCP.Format.JSON[jsonCount1].Key = json3.Key
-								backends1.TCP.Format.JSON[jsonCount1].Value = json3.Value
+								backends1.TCP.Format.JSON[jsonVarCount1].Key = jsonVar2.Key
+								backends1.TCP.Format.JSON[jsonVarCount1].Value = jsonVar2.Value
 							}
 						}
 						backends1.TCP.Format.OmitEmptyValues = types.BoolPointerValue(backendsItem.TCP.Format.OmitEmptyValues)
@@ -745,7 +745,7 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(resp *sh
 			}
 			from1.TargetRef.Kind = types.StringValue(string(fromItem.TargetRef.Kind))
 			if len(fromItem.TargetRef.Labels) > 0 {
-				from1.TargetRef.Labels = make(map[string]types.String)
+				from1.TargetRef.Labels = make(map[string]types.String, len(fromItem.TargetRef.Labels))
 				for key4, value4 := range fromItem.TargetRef.Labels {
 					from1.TargetRef.Labels[key4] = types.StringValue(value4)
 				}
@@ -759,7 +759,7 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(resp *sh
 			}
 			from1.TargetRef.SectionName = types.StringPointerValue(fromItem.TargetRef.SectionName)
 			if len(fromItem.TargetRef.Tags) > 0 {
-				from1.TargetRef.Tags = make(map[string]types.String)
+				from1.TargetRef.Tags = make(map[string]types.String, len(fromItem.TargetRef.Tags))
 				for key5, value5 := range fromItem.TargetRef.Tags {
 					from1.TargetRef.Tags[key5] = types.StringValue(value5)
 				}
@@ -789,15 +789,15 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(resp *sh
 					} else {
 						backends3.File.Format = &tfTypes.Format{}
 						backends3.File.Format.JSON = []tfTypes.JSON{}
-						for jsonCount2, jsonItem2 := range backendsItem1.File.Format.JSON {
-							var json5 tfTypes.JSON
-							json5.Key = types.StringValue(jsonItem2.Key)
-							json5.Value = types.StringValue(jsonItem2.Value)
-							if jsonCount2+1 > len(backends3.File.Format.JSON) {
-								backends3.File.Format.JSON = append(backends3.File.Format.JSON, json5)
+						for jsonVarCount2, jsonVarItem2 := range backendsItem1.File.Format.JSON {
+							var jsonVar3 tfTypes.JSON
+							jsonVar3.Key = types.StringValue(jsonVarItem2.Key)
+							jsonVar3.Value = types.StringValue(jsonVarItem2.Value)
+							if jsonVarCount2+1 > len(backends3.File.Format.JSON) {
+								backends3.File.Format.JSON = append(backends3.File.Format.JSON, jsonVar3)
 							} else {
-								backends3.File.Format.JSON[jsonCount2].Key = json5.Key
-								backends3.File.Format.JSON[jsonCount2].Value = json5.Value
+								backends3.File.Format.JSON[jsonVarCount2].Key = jsonVar3.Key
+								backends3.File.Format.JSON[jsonVarCount2].Value = jsonVar3.Value
 							}
 						}
 						backends3.File.Format.OmitEmptyValues = types.BoolPointerValue(backendsItem1.File.Format.OmitEmptyValues)
@@ -840,15 +840,15 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(resp *sh
 					} else {
 						backends3.TCP.Format = &tfTypes.Format{}
 						backends3.TCP.Format.JSON = []tfTypes.JSON{}
-						for jsonCount3, jsonItem3 := range backendsItem1.TCP.Format.JSON {
-							var json7 tfTypes.JSON
-							json7.Key = types.StringValue(jsonItem3.Key)
-							json7.Value = types.StringValue(jsonItem3.Value)
-							if jsonCount3+1 > len(backends3.TCP.Format.JSON) {
-								backends3.TCP.Format.JSON = append(backends3.TCP.Format.JSON, json7)
+						for jsonVarCount3, jsonVarItem3 := range backendsItem1.TCP.Format.JSON {
+							var jsonVar4 tfTypes.JSON
+							jsonVar4.Key = types.StringValue(jsonVarItem3.Key)
+							jsonVar4.Value = types.StringValue(jsonVarItem3.Value)
+							if jsonVarCount3+1 > len(backends3.TCP.Format.JSON) {
+								backends3.TCP.Format.JSON = append(backends3.TCP.Format.JSON, jsonVar4)
 							} else {
-								backends3.TCP.Format.JSON[jsonCount3].Key = json7.Key
-								backends3.TCP.Format.JSON[jsonCount3].Value = json7.Value
+								backends3.TCP.Format.JSON[jsonVarCount3].Key = jsonVar4.Key
+								backends3.TCP.Format.JSON[jsonVarCount3].Value = jsonVar4.Value
 							}
 						}
 						backends3.TCP.Format.OmitEmptyValues = types.BoolPointerValue(backendsItem1.TCP.Format.OmitEmptyValues)
@@ -878,7 +878,7 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(resp *sh
 			r.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			r.Spec.TargetRef.Kind = types.StringValue(string(resp.Spec.TargetRef.Kind))
 			if len(resp.Spec.TargetRef.Labels) > 0 {
-				r.Spec.TargetRef.Labels = make(map[string]types.String)
+				r.Spec.TargetRef.Labels = make(map[string]types.String, len(resp.Spec.TargetRef.Labels))
 				for key9, value9 := range resp.Spec.TargetRef.Labels {
 					r.Spec.TargetRef.Labels[key9] = types.StringValue(value9)
 				}
@@ -892,7 +892,7 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(resp *sh
 			}
 			r.Spec.TargetRef.SectionName = types.StringPointerValue(resp.Spec.TargetRef.SectionName)
 			if len(resp.Spec.TargetRef.Tags) > 0 {
-				r.Spec.TargetRef.Tags = make(map[string]types.String)
+				r.Spec.TargetRef.Tags = make(map[string]types.String, len(resp.Spec.TargetRef.Tags))
 				for key10, value10 := range resp.Spec.TargetRef.Tags {
 					r.Spec.TargetRef.Tags[key10] = types.StringValue(value10)
 				}
@@ -916,15 +916,15 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(resp *sh
 					} else {
 						backends5.File.Format = &tfTypes.Format{}
 						backends5.File.Format.JSON = []tfTypes.JSON{}
-						for jsonCount4, jsonItem4 := range backendsItem2.File.Format.JSON {
-							var json9 tfTypes.JSON
-							json9.Key = types.StringValue(jsonItem4.Key)
-							json9.Value = types.StringValue(jsonItem4.Value)
-							if jsonCount4+1 > len(backends5.File.Format.JSON) {
-								backends5.File.Format.JSON = append(backends5.File.Format.JSON, json9)
+						for jsonVarCount4, jsonVarItem4 := range backendsItem2.File.Format.JSON {
+							var jsonVar5 tfTypes.JSON
+							jsonVar5.Key = types.StringValue(jsonVarItem4.Key)
+							jsonVar5.Value = types.StringValue(jsonVarItem4.Value)
+							if jsonVarCount4+1 > len(backends5.File.Format.JSON) {
+								backends5.File.Format.JSON = append(backends5.File.Format.JSON, jsonVar5)
 							} else {
-								backends5.File.Format.JSON[jsonCount4].Key = json9.Key
-								backends5.File.Format.JSON[jsonCount4].Value = json9.Value
+								backends5.File.Format.JSON[jsonVarCount4].Key = jsonVar5.Key
+								backends5.File.Format.JSON[jsonVarCount4].Value = jsonVar5.Value
 							}
 						}
 						backends5.File.Format.OmitEmptyValues = types.BoolPointerValue(backendsItem2.File.Format.OmitEmptyValues)
@@ -967,15 +967,15 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(resp *sh
 					} else {
 						backends5.TCP.Format = &tfTypes.Format{}
 						backends5.TCP.Format.JSON = []tfTypes.JSON{}
-						for jsonCount5, jsonItem5 := range backendsItem2.TCP.Format.JSON {
-							var json11 tfTypes.JSON
-							json11.Key = types.StringValue(jsonItem5.Key)
-							json11.Value = types.StringValue(jsonItem5.Value)
-							if jsonCount5+1 > len(backends5.TCP.Format.JSON) {
-								backends5.TCP.Format.JSON = append(backends5.TCP.Format.JSON, json11)
+						for jsonVarCount5, jsonVarItem5 := range backendsItem2.TCP.Format.JSON {
+							var jsonVar6 tfTypes.JSON
+							jsonVar6.Key = types.StringValue(jsonVarItem5.Key)
+							jsonVar6.Value = types.StringValue(jsonVarItem5.Value)
+							if jsonVarCount5+1 > len(backends5.TCP.Format.JSON) {
+								backends5.TCP.Format.JSON = append(backends5.TCP.Format.JSON, jsonVar6)
 							} else {
-								backends5.TCP.Format.JSON[jsonCount5].Key = json11.Key
-								backends5.TCP.Format.JSON[jsonCount5].Value = json11.Value
+								backends5.TCP.Format.JSON[jsonVarCount5].Key = jsonVar6.Key
+								backends5.TCP.Format.JSON[jsonVarCount5].Value = jsonVar6.Value
 							}
 						}
 						backends5.TCP.Format.OmitEmptyValues = types.BoolPointerValue(backendsItem2.TCP.Format.OmitEmptyValues)
@@ -995,7 +995,7 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(resp *sh
 			}
 			to1.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 			if len(toItem.TargetRef.Labels) > 0 {
-				to1.TargetRef.Labels = make(map[string]types.String)
+				to1.TargetRef.Labels = make(map[string]types.String, len(toItem.TargetRef.Labels))
 				for key14, value14 := range toItem.TargetRef.Labels {
 					to1.TargetRef.Labels[key14] = types.StringValue(value14)
 				}
@@ -1009,7 +1009,7 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(resp *sh
 			}
 			to1.TargetRef.SectionName = types.StringPointerValue(toItem.TargetRef.SectionName)
 			if len(toItem.TargetRef.Tags) > 0 {
-				to1.TargetRef.Tags = make(map[string]types.String)
+				to1.TargetRef.Tags = make(map[string]types.String, len(toItem.TargetRef.Tags))
 				for key15, value15 := range toItem.TargetRef.Tags {
 					to1.TargetRef.Tags[key15] = types.StringValue(value15)
 				}

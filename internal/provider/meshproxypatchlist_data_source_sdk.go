@@ -25,7 +25,7 @@ func (r *MeshProxyPatchListDataSourceModel) RefreshFromSharedMeshProxyPatchList(
 				items1.CreationTime = types.StringNull()
 			}
 			if len(itemsItem.Labels) > 0 {
-				items1.Labels = make(map[string]types.String)
+				items1.Labels = make(map[string]types.String, len(itemsItem.Labels))
 				for key, value := range itemsItem.Labels {
 					items1.Labels[key] = types.StringValue(value)
 				}
@@ -106,7 +106,7 @@ func (r *MeshProxyPatchListDataSourceModel) RefreshFromSharedMeshProxyPatchList(
 						appendModifications1.HTTPFilter.Match = &tfTypes.MeshProxyPatchItemMatch{}
 						appendModifications1.HTTPFilter.Match.ListenerName = types.StringPointerValue(appendModificationsItem.HTTPFilter.Match.ListenerName)
 						if len(appendModificationsItem.HTTPFilter.Match.ListenerTags) > 0 {
-							appendModifications1.HTTPFilter.Match.ListenerTags = make(map[string]types.String)
+							appendModifications1.HTTPFilter.Match.ListenerTags = make(map[string]types.String, len(appendModificationsItem.HTTPFilter.Match.ListenerTags))
 							for key1, value4 := range appendModificationsItem.HTTPFilter.Match.ListenerTags {
 								appendModifications1.HTTPFilter.Match.ListenerTags[key1] = types.StringValue(value4)
 							}
@@ -149,7 +149,7 @@ func (r *MeshProxyPatchListDataSourceModel) RefreshFromSharedMeshProxyPatchList(
 						appendModifications1.Listener.Match.Name = types.StringPointerValue(appendModificationsItem.Listener.Match.Name)
 						appendModifications1.Listener.Match.Origin = types.StringPointerValue(appendModificationsItem.Listener.Match.Origin)
 						if len(appendModificationsItem.Listener.Match.Tags) > 0 {
-							appendModifications1.Listener.Match.Tags = make(map[string]types.String)
+							appendModifications1.Listener.Match.Tags = make(map[string]types.String, len(appendModificationsItem.Listener.Match.Tags))
 							for key2, value7 := range appendModificationsItem.Listener.Match.Tags {
 								appendModifications1.Listener.Match.Tags[key2] = types.StringValue(value7)
 							}
@@ -189,7 +189,7 @@ func (r *MeshProxyPatchListDataSourceModel) RefreshFromSharedMeshProxyPatchList(
 						appendModifications1.NetworkFilter.Match = &tfTypes.MeshProxyPatchItemMatch{}
 						appendModifications1.NetworkFilter.Match.ListenerName = types.StringPointerValue(appendModificationsItem.NetworkFilter.Match.ListenerName)
 						if len(appendModificationsItem.NetworkFilter.Match.ListenerTags) > 0 {
-							appendModifications1.NetworkFilter.Match.ListenerTags = make(map[string]types.String)
+							appendModifications1.NetworkFilter.Match.ListenerTags = make(map[string]types.String, len(appendModificationsItem.NetworkFilter.Match.ListenerTags))
 							for key3, value10 := range appendModificationsItem.NetworkFilter.Match.ListenerTags {
 								appendModifications1.NetworkFilter.Match.ListenerTags[key3] = types.StringValue(value10)
 							}
@@ -247,7 +247,7 @@ func (r *MeshProxyPatchListDataSourceModel) RefreshFromSharedMeshProxyPatchList(
 				items1.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 				items1.Spec.TargetRef.Kind = types.StringValue(string(itemsItem.Spec.TargetRef.Kind))
 				if len(itemsItem.Spec.TargetRef.Labels) > 0 {
-					items1.Spec.TargetRef.Labels = make(map[string]types.String)
+					items1.Spec.TargetRef.Labels = make(map[string]types.String, len(itemsItem.Spec.TargetRef.Labels))
 					for key4, value14 := range itemsItem.Spec.TargetRef.Labels {
 						items1.Spec.TargetRef.Labels[key4] = types.StringValue(value14)
 					}
@@ -261,7 +261,7 @@ func (r *MeshProxyPatchListDataSourceModel) RefreshFromSharedMeshProxyPatchList(
 				}
 				items1.Spec.TargetRef.SectionName = types.StringPointerValue(itemsItem.Spec.TargetRef.SectionName)
 				if len(itemsItem.Spec.TargetRef.Tags) > 0 {
-					items1.Spec.TargetRef.Tags = make(map[string]types.String)
+					items1.Spec.TargetRef.Tags = make(map[string]types.String, len(itemsItem.Spec.TargetRef.Tags))
 					for key5, value15 := range itemsItem.Spec.TargetRef.Tags {
 						items1.Spec.TargetRef.Tags[key5] = types.StringValue(value15)
 					}

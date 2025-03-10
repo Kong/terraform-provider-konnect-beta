@@ -24,7 +24,7 @@ func (r *MeshTraceListDataSourceModel) RefreshFromSharedMeshTraceList(resp *shar
 				items1.CreationTime = types.StringNull()
 			}
 			if len(itemsItem.Labels) > 0 {
-				items1.Labels = make(map[string]types.String)
+				items1.Labels = make(map[string]types.String, len(itemsItem.Labels))
 				for key, value := range itemsItem.Labels {
 					items1.Labels[key] = types.StringValue(value)
 				}
@@ -86,7 +86,7 @@ func (r *MeshTraceListDataSourceModel) RefreshFromSharedMeshTraceList(resp *shar
 					if itemsItem.Spec.Default.Sampling.Client == nil {
 						items1.Spec.Default.Sampling.Client = nil
 					} else {
-						items1.Spec.Default.Sampling.Client = &tfTypes.Mode{}
+						items1.Spec.Default.Sampling.Client = &tfTypes.MeshItemMode{}
 						if itemsItem.Spec.Default.Sampling.Client.Integer != nil {
 							items1.Spec.Default.Sampling.Client.Integer = types.Int64PointerValue(itemsItem.Spec.Default.Sampling.Client.Integer)
 						}
@@ -97,7 +97,7 @@ func (r *MeshTraceListDataSourceModel) RefreshFromSharedMeshTraceList(resp *shar
 					if itemsItem.Spec.Default.Sampling.Overall == nil {
 						items1.Spec.Default.Sampling.Overall = nil
 					} else {
-						items1.Spec.Default.Sampling.Overall = &tfTypes.Mode{}
+						items1.Spec.Default.Sampling.Overall = &tfTypes.MeshItemMode{}
 						if itemsItem.Spec.Default.Sampling.Overall.Integer != nil {
 							items1.Spec.Default.Sampling.Overall.Integer = types.Int64PointerValue(itemsItem.Spec.Default.Sampling.Overall.Integer)
 						}
@@ -108,7 +108,7 @@ func (r *MeshTraceListDataSourceModel) RefreshFromSharedMeshTraceList(resp *shar
 					if itemsItem.Spec.Default.Sampling.Random == nil {
 						items1.Spec.Default.Sampling.Random = nil
 					} else {
-						items1.Spec.Default.Sampling.Random = &tfTypes.Mode{}
+						items1.Spec.Default.Sampling.Random = &tfTypes.MeshItemMode{}
 						if itemsItem.Spec.Default.Sampling.Random.Integer != nil {
 							items1.Spec.Default.Sampling.Random.Integer = types.Int64PointerValue(itemsItem.Spec.Default.Sampling.Random.Integer)
 						}
@@ -144,7 +144,7 @@ func (r *MeshTraceListDataSourceModel) RefreshFromSharedMeshTraceList(resp *shar
 				items1.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 				items1.Spec.TargetRef.Kind = types.StringValue(string(itemsItem.Spec.TargetRef.Kind))
 				if len(itemsItem.Spec.TargetRef.Labels) > 0 {
-					items1.Spec.TargetRef.Labels = make(map[string]types.String)
+					items1.Spec.TargetRef.Labels = make(map[string]types.String, len(itemsItem.Spec.TargetRef.Labels))
 					for key1, value1 := range itemsItem.Spec.TargetRef.Labels {
 						items1.Spec.TargetRef.Labels[key1] = types.StringValue(value1)
 					}
@@ -158,7 +158,7 @@ func (r *MeshTraceListDataSourceModel) RefreshFromSharedMeshTraceList(resp *shar
 				}
 				items1.Spec.TargetRef.SectionName = types.StringPointerValue(itemsItem.Spec.TargetRef.SectionName)
 				if len(itemsItem.Spec.TargetRef.Tags) > 0 {
-					items1.Spec.TargetRef.Tags = make(map[string]types.String)
+					items1.Spec.TargetRef.Tags = make(map[string]types.String, len(itemsItem.Spec.TargetRef.Tags))
 					for key2, value2 := range itemsItem.Spec.TargetRef.Tags {
 						items1.Spec.TargetRef.Tags[key2] = types.StringValue(value2)
 					}

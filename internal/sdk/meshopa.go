@@ -26,13 +26,6 @@ func newMeshOPA(sdkConfig sdkConfiguration) *MeshOPA {
 
 // GetMeshOPA - Returns MeshOPA entity
 func (s *MeshOPA) GetMeshOPA(ctx context.Context, request operations.GetMeshOPARequest, opts ...operations.Option) (*operations.GetMeshOPAResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getMeshOPA",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -54,6 +47,14 @@ func (s *MeshOPA) GetMeshOPA(ctx context.Context, request operations.GetMeshOPAR
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshopas/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getMeshOPA",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -179,13 +180,6 @@ func (s *MeshOPA) GetMeshOPA(ctx context.Context, request operations.GetMeshOPAR
 
 // DeleteMeshOPA - Deletes MeshOPA entity
 func (s *MeshOPA) DeleteMeshOPA(ctx context.Context, request operations.DeleteMeshOPARequest, opts ...operations.Option) (*operations.DeleteMeshOPAResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "deleteMeshOPA",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -207,6 +201,14 @@ func (s *MeshOPA) DeleteMeshOPA(ctx context.Context, request operations.DeleteMe
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshopas/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "deleteMeshOPA",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -332,13 +334,6 @@ func (s *MeshOPA) DeleteMeshOPA(ctx context.Context, request operations.DeleteMe
 
 // CreateMeshOPA - Creates or Updates MeshOPA entity
 func (s *MeshOPA) CreateMeshOPA(ctx context.Context, request operations.CreateMeshOPARequest, opts ...operations.Option) (*operations.CreateMeshOPAResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "createMeshOPA",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -361,6 +356,13 @@ func (s *MeshOPA) CreateMeshOPA(ctx context.Context, request operations.CreateMe
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "createMeshOPA",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MeshOPAItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -466,13 +468,6 @@ func (s *MeshOPA) CreateMeshOPA(ctx context.Context, request operations.CreateMe
 
 // UpdateMeshOPA - Creates or Updates MeshOPA entity
 func (s *MeshOPA) UpdateMeshOPA(ctx context.Context, request operations.UpdateMeshOPARequest, opts ...operations.Option) (*operations.UpdateMeshOPAResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "updateMeshOPA",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -495,6 +490,13 @@ func (s *MeshOPA) UpdateMeshOPA(ctx context.Context, request operations.UpdateMe
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "updateMeshOPA",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MeshOPAItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -600,13 +602,6 @@ func (s *MeshOPA) UpdateMeshOPA(ctx context.Context, request operations.UpdateMe
 
 // GetMeshOPAList - Returns a list of MeshOPA in the mesh.
 func (s *MeshOPA) GetMeshOPAList(ctx context.Context, request operations.GetMeshOPAListRequest, opts ...operations.Option) (*operations.GetMeshOPAListResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getMeshOPAList",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -627,6 +622,14 @@ func (s *MeshOPA) GetMeshOPAList(ctx context.Context, request operations.GetMesh
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshopas", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getMeshOPAList",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

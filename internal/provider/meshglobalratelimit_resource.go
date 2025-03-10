@@ -25,7 +25,7 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
-	speakeasy_int64validators "github.com/kong/terraform-provider-konnect-beta/internal/validators/int64validators"
+	speakeasy_int32validators "github.com/kong/terraform-provider-konnect-beta/internal/validators/int32validators"
 	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/listvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
@@ -247,7 +247,7 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 															},
 															Description: `The Headers to be added to the HTTP response on a rate limit event`,
 														},
-														"status": schema.Int64Attribute{
+														"status": schema.Int32Attribute{
 															Computed:    true,
 															Optional:    true,
 															Description: `The HTTP status code to be set on a rate limit event`,
@@ -295,13 +295,13 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																						speakeasy_stringvalidators.NotNull(),
 																					},
 																				},
-																				"num": schema.Int64Attribute{
+																				"num": schema.Int32Attribute{
 																					Optional: true,
 																					MarkdownDescription: `Number of units per interval (depending on usage it can be a number of requests,` + "\n" +
 																						`or a number of connections).` + "\n" +
 																						`Not Null`,
-																					Validators: []validator.Int64{
-																						speakeasy_int64validators.NotNull(),
+																					Validators: []validator.Int32{
+																						speakeasy_int32validators.NotNull(),
 																					},
 																				},
 																			},
@@ -342,13 +342,13 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																speakeasy_stringvalidators.NotNull(),
 															},
 														},
-														"num": schema.Int64Attribute{
+														"num": schema.Int32Attribute{
 															Optional: true,
 															MarkdownDescription: `Number of units per interval (depending on usage it can be a number of requests,` + "\n" +
 																`or a number of connections).` + "\n" +
 																`Not Null`,
-															Validators: []validator.Int64{
-																speakeasy_int64validators.NotNull(),
+															Validators: []validator.Int32{
+																speakeasy_int32validators.NotNull(),
 															},
 														},
 													},
@@ -648,7 +648,7 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 															},
 															Description: `The Headers to be added to the HTTP response on a rate limit event`,
 														},
-														"status": schema.Int64Attribute{
+														"status": schema.Int32Attribute{
 															Computed:    true,
 															Optional:    true,
 															Description: `The HTTP status code to be set on a rate limit event`,
@@ -696,13 +696,13 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																						speakeasy_stringvalidators.NotNull(),
 																					},
 																				},
-																				"num": schema.Int64Attribute{
+																				"num": schema.Int32Attribute{
 																					Optional: true,
 																					MarkdownDescription: `Number of units per interval (depending on usage it can be a number of requests,` + "\n" +
 																						`or a number of connections).` + "\n" +
 																						`Not Null`,
-																					Validators: []validator.Int64{
-																						speakeasy_int64validators.NotNull(),
+																					Validators: []validator.Int32{
+																						speakeasy_int32validators.NotNull(),
 																					},
 																				},
 																			},
@@ -743,13 +743,13 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																speakeasy_stringvalidators.NotNull(),
 															},
 														},
-														"num": schema.Int64Attribute{
+														"num": schema.Int32Attribute{
 															Optional: true,
 															MarkdownDescription: `Number of units per interval (depending on usage it can be a number of requests,` + "\n" +
 																`or a number of connections).` + "\n" +
 																`Not Null`,
-															Validators: []validator.Int64{
-																speakeasy_int64validators.NotNull(),
+															Validators: []validator.Int32{
+																speakeasy_int32validators.NotNull(),
 															},
 														},
 													},

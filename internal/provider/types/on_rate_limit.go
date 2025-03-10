@@ -6,5 +6,5 @@ import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type OnRateLimit struct {
 	Headers *MeshGlobalRateLimitItemHeaders `tfsdk:"headers"`
-	Status  types.Int64                     `tfsdk:"status"`
+	Status  types.Int32                     `tfsdk:"status"`
 }

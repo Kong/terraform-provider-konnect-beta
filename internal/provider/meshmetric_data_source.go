@@ -97,7 +97,7 @@ func (r *MeshMetricDataSource) Schema(ctx context.Context, req datasource.Schema
 											Computed:    true,
 											Description: `Path on which an application expose HTTP endpoint with metrics.`,
 										},
-										"port": schema.Int64Attribute{
+										"port": schema.Int32Attribute{
 											Computed:    true,
 											Description: `Port on which an application expose HTTP endpoint with metrics.`,
 										},
@@ -134,7 +134,7 @@ func (r *MeshMetricDataSource) Schema(ctx context.Context, req datasource.Schema
 													Computed:    true,
 													Description: `Path on which a dataplane should expose HTTP endpoint with Prometheus metrics.`,
 												},
-												"port": schema.Int64Attribute{
+												"port": schema.Int32Attribute{
 													Computed:    true,
 													Description: `Port on which a dataplane should expose HTTP endpoint with Prometheus metrics.`,
 												},

@@ -6,5 +6,5 @@ import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Maglev struct {
 	HashPolicies []HashPolicies `tfsdk:"hash_policies"`
-	TableSize    types.Int64    `tfsdk:"table_size"`
+	TableSize    types.Int32    `tfsdk:"table_size"`
 }

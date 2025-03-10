@@ -31,13 +31,13 @@ type MeshTCPRouteListDataSource struct {
 type MeshTCPRouteListDataSourceModel struct {
 	CpID   types.String               `tfsdk:"cp_id"`
 	Items  []tfTypes.MeshTCPRouteItem `tfsdk:"items"`
-	Key    types.String               `tfsdk:"key"`
+	Key    types.String               `queryParam:"name=key" tfsdk:"key"`
 	Mesh   types.String               `tfsdk:"mesh"`
 	Next   types.String               `tfsdk:"next"`
-	Offset types.Int64                `tfsdk:"offset"`
-	Size   types.Int64                `tfsdk:"size"`
+	Offset types.Int64                `queryParam:"style=form,explode=true,name=offset" tfsdk:"offset"`
+	Size   types.Int64                `queryParam:"style=form,explode=true,name=size" tfsdk:"size"`
 	Total  types.Number               `tfsdk:"total"`
-	Value  types.String               `tfsdk:"value"`
+	Value  types.String               `queryParam:"name=value" tfsdk:"value"`
 }
 
 // Metadata returns the data source type name.
@@ -171,7 +171,7 @@ func (r *MeshTCPRouteListDataSource) Schema(ctx context.Context, req datasource.
 																				MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 																					`will be targeted.`,
 																			},
-																			"port": schema.Int64Attribute{
+																			"port": schema.Int32Attribute{
 																				Computed:    true,
 																				Description: `Port is only supported when this ref refers to a real MeshService object`,
 																			},

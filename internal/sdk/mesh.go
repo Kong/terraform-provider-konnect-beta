@@ -27,13 +27,6 @@ func newMesh(sdkConfig sdkConfiguration) *Mesh {
 
 // GetMesh - Returns Mesh entity
 func (s *Mesh) GetMesh(ctx context.Context, request operations.GetMeshRequest, opts ...operations.Option) (*operations.GetMeshResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getMesh",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -55,6 +48,14 @@ func (s *Mesh) GetMesh(ctx context.Context, request operations.GetMeshRequest, o
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getMesh",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -180,13 +181,6 @@ func (s *Mesh) GetMesh(ctx context.Context, request operations.GetMeshRequest, o
 
 // PutMesh - Creates or Updates Mesh entity
 func (s *Mesh) PutMesh(ctx context.Context, request operations.PutMeshRequest, opts ...operations.Option) (*operations.PutMeshResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "putMesh",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -209,6 +203,13 @@ func (s *Mesh) PutMesh(ctx context.Context, request operations.PutMeshRequest, o
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "putMesh",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MeshItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -316,13 +317,6 @@ func (s *Mesh) PutMesh(ctx context.Context, request operations.PutMeshRequest, o
 
 // DeleteMesh - Deletes Mesh entity
 func (s *Mesh) DeleteMesh(ctx context.Context, request operations.DeleteMeshRequest, opts ...operations.Option) (*operations.DeleteMeshResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "deleteMesh",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -344,6 +338,14 @@ func (s *Mesh) DeleteMesh(ctx context.Context, request operations.DeleteMeshRequ
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "deleteMesh",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -469,13 +471,6 @@ func (s *Mesh) DeleteMesh(ctx context.Context, request operations.DeleteMeshRequ
 
 // GetMeshList - Returns a list of Mesh in the mesh.
 func (s *Mesh) GetMeshList(ctx context.Context, request operations.GetMeshListRequest, opts ...operations.Option) (*operations.GetMeshListResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getMeshList",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -496,6 +491,14 @@ func (s *Mesh) GetMeshList(ctx context.Context, request operations.GetMeshListRe
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getMeshList",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -600,13 +603,6 @@ func (s *Mesh) GetMeshList(ctx context.Context, request operations.GetMeshListRe
 // CreateCp - Create a new control plane
 // Create a new control plane
 func (s *Mesh) CreateCp(ctx context.Context, request shared.CreateMeshControlPlaneRequest, opts ...operations.Option) (*operations.CreateCpResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "create-cp",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -630,6 +626,13 @@ func (s *Mesh) CreateCp(ctx context.Context, request shared.CreateMeshControlPla
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "create-cp",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -804,13 +807,6 @@ func (s *Mesh) CreateCp(ctx context.Context, request shared.CreateMeshControlPla
 // GetMeshControlPlane - Get the control plane
 // Get the control plane
 func (s *Mesh) GetMeshControlPlane(ctx context.Context, request operations.GetMeshControlPlaneRequest, opts ...operations.Option) (*operations.GetMeshControlPlaneResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-mesh-control-plane",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -832,6 +828,14 @@ func (s *Mesh) GetMeshControlPlane(ctx context.Context, request operations.GetMe
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-mesh-control-plane",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -1000,13 +1004,6 @@ func (s *Mesh) GetMeshControlPlane(ctx context.Context, request operations.GetMe
 // DeleteMeshControlPlane - Delete the control plane
 // Delete the control plane
 func (s *Mesh) DeleteMeshControlPlane(ctx context.Context, request operations.DeleteMeshControlPlaneRequest, opts ...operations.Option) (*operations.DeleteMeshControlPlaneResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-mesh-control-plane",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -1027,6 +1024,14 @@ func (s *Mesh) DeleteMeshControlPlane(ctx context.Context, request operations.De
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-mesh-control-plane",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -1170,13 +1175,6 @@ func (s *Mesh) DeleteMeshControlPlane(ctx context.Context, request operations.De
 // UpdateMeshControlPlane - Update control plane
 // Update an individual control plane.
 func (s *Mesh) UpdateMeshControlPlane(ctx context.Context, request operations.UpdateMeshControlPlaneRequest, opts ...operations.Option) (*operations.UpdateMeshControlPlaneResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "update-mesh-control-plane",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -1200,6 +1198,13 @@ func (s *Mesh) UpdateMeshControlPlane(ctx context.Context, request operations.Up
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "update-mesh-control-plane",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateMeshControlPlaneRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err

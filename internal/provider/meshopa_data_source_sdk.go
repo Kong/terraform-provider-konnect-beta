@@ -17,7 +17,7 @@ func (r *MeshOPADataSourceModel) RefreshFromSharedMeshOPAItem(resp *shared.MeshO
 			r.CreationTime = types.StringNull()
 		}
 		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String)
+			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
 				r.Labels[key] = types.StringValue(value)
 			}
@@ -72,16 +72,16 @@ func (r *MeshOPADataSourceModel) RefreshFromSharedMeshOPAItem(resp *shared.MeshO
 				} else {
 					r.Spec.Default.AuthConfig.RequestBody = &tfTypes.RequestBody{}
 					if resp.Spec.Default.AuthConfig.RequestBody.MaxSize != nil {
-						r.Spec.Default.AuthConfig.RequestBody.MaxSize = types.Int64Value(int64(*resp.Spec.Default.AuthConfig.RequestBody.MaxSize))
+						r.Spec.Default.AuthConfig.RequestBody.MaxSize = types.Int32Value(int32(*resp.Spec.Default.AuthConfig.RequestBody.MaxSize))
 					} else {
-						r.Spec.Default.AuthConfig.RequestBody.MaxSize = types.Int64Null()
+						r.Spec.Default.AuthConfig.RequestBody.MaxSize = types.Int32Null()
 					}
 					r.Spec.Default.AuthConfig.RequestBody.SendRawBody = types.BoolPointerValue(resp.Spec.Default.AuthConfig.RequestBody.SendRawBody)
 				}
 				if resp.Spec.Default.AuthConfig.StatusOnError != nil {
-					r.Spec.Default.AuthConfig.StatusOnError = types.Int64Value(int64(*resp.Spec.Default.AuthConfig.StatusOnError))
+					r.Spec.Default.AuthConfig.StatusOnError = types.Int32Value(int32(*resp.Spec.Default.AuthConfig.StatusOnError))
 				} else {
-					r.Spec.Default.AuthConfig.StatusOnError = types.Int64Null()
+					r.Spec.Default.AuthConfig.StatusOnError = types.Int32Null()
 				}
 				r.Spec.Default.AuthConfig.Timeout = types.StringPointerValue(resp.Spec.Default.AuthConfig.Timeout)
 			}
@@ -92,7 +92,7 @@ func (r *MeshOPADataSourceModel) RefreshFromSharedMeshOPAItem(resp *shared.MeshO
 			r.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			r.Spec.TargetRef.Kind = types.StringValue(string(resp.Spec.TargetRef.Kind))
 			if len(resp.Spec.TargetRef.Labels) > 0 {
-				r.Spec.TargetRef.Labels = make(map[string]types.String)
+				r.Spec.TargetRef.Labels = make(map[string]types.String, len(resp.Spec.TargetRef.Labels))
 				for key1, value1 := range resp.Spec.TargetRef.Labels {
 					r.Spec.TargetRef.Labels[key1] = types.StringValue(value1)
 				}
@@ -106,7 +106,7 @@ func (r *MeshOPADataSourceModel) RefreshFromSharedMeshOPAItem(resp *shared.MeshO
 			}
 			r.Spec.TargetRef.SectionName = types.StringPointerValue(resp.Spec.TargetRef.SectionName)
 			if len(resp.Spec.TargetRef.Tags) > 0 {
-				r.Spec.TargetRef.Tags = make(map[string]types.String)
+				r.Spec.TargetRef.Tags = make(map[string]types.String, len(resp.Spec.TargetRef.Tags))
 				for key2, value2 := range resp.Spec.TargetRef.Tags {
 					r.Spec.TargetRef.Tags[key2] = types.StringValue(value2)
 				}

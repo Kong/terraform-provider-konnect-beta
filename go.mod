@@ -2,8 +2,6 @@ module github.com/kong/terraform-provider-konnect-beta
 
 go 1.23.0
 
-toolchain go1.23.6
-
 require (
 	github.com/ericlagergren/decimal v0.0.0-20221120152707-495c53812d05
 	github.com/hashicorp/go-uuid v1.0.3

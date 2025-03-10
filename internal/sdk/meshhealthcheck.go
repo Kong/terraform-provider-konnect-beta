@@ -26,13 +26,6 @@ func newMeshHealthCheck(sdkConfig sdkConfiguration) *MeshHealthCheck {
 
 // GetMeshHealthCheck - Returns MeshHealthCheck entity
 func (s *MeshHealthCheck) GetMeshHealthCheck(ctx context.Context, request operations.GetMeshHealthCheckRequest, opts ...operations.Option) (*operations.GetMeshHealthCheckResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getMeshHealthCheck",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -54,6 +47,14 @@ func (s *MeshHealthCheck) GetMeshHealthCheck(ctx context.Context, request operat
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhealthchecks/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getMeshHealthCheck",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -179,13 +180,6 @@ func (s *MeshHealthCheck) GetMeshHealthCheck(ctx context.Context, request operat
 
 // DeleteMeshHealthCheck - Deletes MeshHealthCheck entity
 func (s *MeshHealthCheck) DeleteMeshHealthCheck(ctx context.Context, request operations.DeleteMeshHealthCheckRequest, opts ...operations.Option) (*operations.DeleteMeshHealthCheckResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "deleteMeshHealthCheck",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -207,6 +201,14 @@ func (s *MeshHealthCheck) DeleteMeshHealthCheck(ctx context.Context, request ope
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhealthchecks/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "deleteMeshHealthCheck",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -332,13 +334,6 @@ func (s *MeshHealthCheck) DeleteMeshHealthCheck(ctx context.Context, request ope
 
 // CreateMeshHealthCheck - Creates or Updates MeshHealthCheck entity
 func (s *MeshHealthCheck) CreateMeshHealthCheck(ctx context.Context, request operations.CreateMeshHealthCheckRequest, opts ...operations.Option) (*operations.CreateMeshHealthCheckResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "createMeshHealthCheck",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -361,6 +356,13 @@ func (s *MeshHealthCheck) CreateMeshHealthCheck(ctx context.Context, request ope
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "createMeshHealthCheck",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MeshHealthCheckItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -466,13 +468,6 @@ func (s *MeshHealthCheck) CreateMeshHealthCheck(ctx context.Context, request ope
 
 // UpdateMeshHealthCheck - Creates or Updates MeshHealthCheck entity
 func (s *MeshHealthCheck) UpdateMeshHealthCheck(ctx context.Context, request operations.UpdateMeshHealthCheckRequest, opts ...operations.Option) (*operations.UpdateMeshHealthCheckResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "updateMeshHealthCheck",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -495,6 +490,13 @@ func (s *MeshHealthCheck) UpdateMeshHealthCheck(ctx context.Context, request ope
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "updateMeshHealthCheck",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MeshHealthCheckItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -600,13 +602,6 @@ func (s *MeshHealthCheck) UpdateMeshHealthCheck(ctx context.Context, request ope
 
 // GetMeshHealthCheckList - Returns a list of MeshHealthCheck in the mesh.
 func (s *MeshHealthCheck) GetMeshHealthCheckList(ctx context.Context, request operations.GetMeshHealthCheckListRequest, opts ...operations.Option) (*operations.GetMeshHealthCheckListResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getMeshHealthCheckList",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -627,6 +622,14 @@ func (s *MeshHealthCheck) GetMeshHealthCheckList(ctx context.Context, request op
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhealthchecks", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getMeshHealthCheckList",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

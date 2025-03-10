@@ -31,13 +31,13 @@ type MeshMetricListDataSource struct {
 type MeshMetricListDataSourceModel struct {
 	CpID   types.String             `tfsdk:"cp_id"`
 	Items  []tfTypes.MeshMetricItem `tfsdk:"items"`
-	Key    types.String             `tfsdk:"key"`
+	Key    types.String             `queryParam:"name=key" tfsdk:"key"`
 	Mesh   types.String             `tfsdk:"mesh"`
 	Next   types.String             `tfsdk:"next"`
-	Offset types.Int64              `tfsdk:"offset"`
-	Size   types.Int64              `tfsdk:"size"`
+	Offset types.Int64              `queryParam:"style=form,explode=true,name=offset" tfsdk:"offset"`
+	Size   types.Int64              `queryParam:"style=form,explode=true,name=size" tfsdk:"size"`
 	Total  types.Number             `tfsdk:"total"`
-	Value  types.String             `tfsdk:"value"`
+	Value  types.String             `queryParam:"name=value" tfsdk:"value"`
 }
 
 // Metadata returns the data source type name.
@@ -102,7 +102,7 @@ func (r *MeshMetricListDataSource) Schema(ctx context.Context, req datasource.Sc
 														Computed:    true,
 														Description: `Path on which an application expose HTTP endpoint with metrics.`,
 													},
-													"port": schema.Int64Attribute{
+													"port": schema.Int32Attribute{
 														Computed:    true,
 														Description: `Port on which an application expose HTTP endpoint with metrics.`,
 													},
@@ -139,7 +139,7 @@ func (r *MeshMetricListDataSource) Schema(ctx context.Context, req datasource.Sc
 																Computed:    true,
 																Description: `Path on which a dataplane should expose HTTP endpoint with Prometheus metrics.`,
 															},
-															"port": schema.Int64Attribute{
+															"port": schema.Int32Attribute{
 																Computed:    true,
 																Description: `Port on which a dataplane should expose HTTP endpoint with Prometheus metrics.`,
 															},

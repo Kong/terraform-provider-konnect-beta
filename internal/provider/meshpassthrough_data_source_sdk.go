@@ -17,7 +17,7 @@ func (r *MeshPassthroughDataSourceModel) RefreshFromSharedMeshPassthroughItem(re
 			r.CreationTime = types.StringNull()
 		}
 		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String)
+			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
 				r.Labels[key] = types.StringValue(value)
 			}
@@ -40,9 +40,9 @@ func (r *MeshPassthroughDataSourceModel) RefreshFromSharedMeshPassthroughItem(re
 			for appendMatchCount, appendMatchItem := range resp.Spec.Default.AppendMatch {
 				var appendMatch1 tfTypes.AppendMatch
 				if appendMatchItem.Port != nil {
-					appendMatch1.Port = types.Int64Value(int64(*appendMatchItem.Port))
+					appendMatch1.Port = types.Int32Value(int32(*appendMatchItem.Port))
 				} else {
-					appendMatch1.Port = types.Int64Null()
+					appendMatch1.Port = types.Int32Null()
 				}
 				if appendMatchItem.Protocol != nil {
 					appendMatch1.Protocol = types.StringValue(string(*appendMatchItem.Protocol))
@@ -72,7 +72,7 @@ func (r *MeshPassthroughDataSourceModel) RefreshFromSharedMeshPassthroughItem(re
 			r.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			r.Spec.TargetRef.Kind = types.StringValue(string(resp.Spec.TargetRef.Kind))
 			if len(resp.Spec.TargetRef.Labels) > 0 {
-				r.Spec.TargetRef.Labels = make(map[string]types.String)
+				r.Spec.TargetRef.Labels = make(map[string]types.String, len(resp.Spec.TargetRef.Labels))
 				for key1, value2 := range resp.Spec.TargetRef.Labels {
 					r.Spec.TargetRef.Labels[key1] = types.StringValue(value2)
 				}
@@ -86,7 +86,7 @@ func (r *MeshPassthroughDataSourceModel) RefreshFromSharedMeshPassthroughItem(re
 			}
 			r.Spec.TargetRef.SectionName = types.StringPointerValue(resp.Spec.TargetRef.SectionName)
 			if len(resp.Spec.TargetRef.Tags) > 0 {
-				r.Spec.TargetRef.Tags = make(map[string]types.String)
+				r.Spec.TargetRef.Tags = make(map[string]types.String, len(resp.Spec.TargetRef.Tags))
 				for key2, value3 := range resp.Spec.TargetRef.Tags {
 					r.Spec.TargetRef.Tags[key2] = types.StringValue(value3)
 				}

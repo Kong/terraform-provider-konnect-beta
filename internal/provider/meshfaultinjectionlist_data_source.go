@@ -31,13 +31,13 @@ type MeshFaultInjectionListDataSource struct {
 type MeshFaultInjectionListDataSourceModel struct {
 	CpID   types.String                     `tfsdk:"cp_id"`
 	Items  []tfTypes.MeshFaultInjectionItem `tfsdk:"items"`
-	Key    types.String                     `tfsdk:"key"`
+	Key    types.String                     `queryParam:"name=key" tfsdk:"key"`
 	Mesh   types.String                     `tfsdk:"mesh"`
 	Next   types.String                     `tfsdk:"next"`
-	Offset types.Int64                      `tfsdk:"offset"`
-	Size   types.Int64                      `tfsdk:"size"`
+	Offset types.Int64                      `queryParam:"style=form,explode=true,name=offset" tfsdk:"offset"`
+	Size   types.Int64                      `queryParam:"style=form,explode=true,name=size" tfsdk:"size"`
 	Total  types.Number                     `tfsdk:"total"`
-	Value  types.String                     `tfsdk:"value"`
+	Value  types.String                     `queryParam:"name=value" tfsdk:"value"`
 }
 
 // Metadata returns the data source type name.
@@ -97,7 +97,7 @@ func (r *MeshFaultInjectionListDataSource) Schema(ctx context.Context, req datas
 																"abort": schema.SingleNestedAttribute{
 																	Computed: true,
 																	Attributes: map[string]schema.Attribute{
-																		"http_status": schema.Int64Attribute{
+																		"http_status": schema.Int32Attribute{
 																			Computed:    true,
 																			Description: `HTTP status code which will be returned to source side`,
 																		},
@@ -290,7 +290,7 @@ func (r *MeshFaultInjectionListDataSource) Schema(ctx context.Context, req datas
 																"abort": schema.SingleNestedAttribute{
 																	Computed: true,
 																	Attributes: map[string]schema.Attribute{
-																		"http_status": schema.Int64Attribute{
+																		"http_status": schema.Int32Attribute{
 																			Computed:    true,
 																			Description: `HTTP status code which will be returned to source side`,
 																		},

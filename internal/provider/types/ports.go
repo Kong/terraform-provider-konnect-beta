@@ -7,5 +7,5 @@ import "github.com/hashicorp/terraform-plugin-framework/types"
 type Ports struct {
 	AppProtocol types.String `tfsdk:"app_protocol"`
 	Name        types.String `tfsdk:"name"`
-	Port        types.Int64  `tfsdk:"port"`
+	Port        types.Int32  `tfsdk:"port"`
 }

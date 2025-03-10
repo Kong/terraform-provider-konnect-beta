@@ -158,7 +158,7 @@ func (r *MeshHealthCheckResourceModel) ToSharedMeshHealthCheckItemInput() *share
 			}
 			healthyThreshold := new(int)
 			if !toItem.Default.HealthyThreshold.IsUnknown() && !toItem.Default.HealthyThreshold.IsNull() {
-				*healthyThreshold = int(toItem.Default.HealthyThreshold.ValueInt64())
+				*healthyThreshold = int(toItem.Default.HealthyThreshold.ValueInt32())
 			} else {
 				healthyThreshold = nil
 			}
@@ -240,7 +240,7 @@ func (r *MeshHealthCheckResourceModel) ToSharedMeshHealthCheckItemInput() *share
 			}
 			intervalJitterPercent := new(int)
 			if !toItem.Default.IntervalJitterPercent.IsUnknown() && !toItem.Default.IntervalJitterPercent.IsNull() {
-				*intervalJitterPercent = int(toItem.Default.IntervalJitterPercent.ValueInt64())
+				*intervalJitterPercent = int(toItem.Default.IntervalJitterPercent.ValueInt32())
 			} else {
 				intervalJitterPercent = nil
 			}
@@ -288,7 +288,7 @@ func (r *MeshHealthCheckResourceModel) ToSharedMeshHealthCheckItemInput() *share
 			}
 			unhealthyThreshold := new(int)
 			if !toItem.Default.UnhealthyThreshold.IsUnknown() && !toItem.Default.UnhealthyThreshold.IsNull() {
-				*unhealthyThreshold = int(toItem.Default.UnhealthyThreshold.ValueInt64())
+				*unhealthyThreshold = int(toItem.Default.UnhealthyThreshold.ValueInt32())
 			} else {
 				unhealthyThreshold = nil
 			}
@@ -400,7 +400,7 @@ func (r *MeshHealthCheckResourceModel) RefreshFromSharedMeshHealthCheckItem(resp
 			r.CreationTime = types.StringNull()
 		}
 		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String)
+			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
 				r.Labels[key] = types.StringValue(value)
 			}
@@ -418,7 +418,7 @@ func (r *MeshHealthCheckResourceModel) RefreshFromSharedMeshHealthCheckItem(resp
 			r.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			r.Spec.TargetRef.Kind = types.StringValue(string(resp.Spec.TargetRef.Kind))
 			if len(resp.Spec.TargetRef.Labels) > 0 {
-				r.Spec.TargetRef.Labels = make(map[string]types.String)
+				r.Spec.TargetRef.Labels = make(map[string]types.String, len(resp.Spec.TargetRef.Labels))
 				for key1, value1 := range resp.Spec.TargetRef.Labels {
 					r.Spec.TargetRef.Labels[key1] = types.StringValue(value1)
 				}
@@ -432,7 +432,7 @@ func (r *MeshHealthCheckResourceModel) RefreshFromSharedMeshHealthCheckItem(resp
 			}
 			r.Spec.TargetRef.SectionName = types.StringPointerValue(resp.Spec.TargetRef.SectionName)
 			if len(resp.Spec.TargetRef.Tags) > 0 {
-				r.Spec.TargetRef.Tags = make(map[string]types.String)
+				r.Spec.TargetRef.Tags = make(map[string]types.String, len(resp.Spec.TargetRef.Tags))
 				for key2, value2 := range resp.Spec.TargetRef.Tags {
 					r.Spec.TargetRef.Tags[key2] = types.StringValue(value2)
 				}
@@ -462,7 +462,7 @@ func (r *MeshHealthCheckResourceModel) RefreshFromSharedMeshHealthCheckItem(resp
 				if toItem.Default.HealthyPanicThreshold == nil {
 					to1.Default.HealthyPanicThreshold = nil
 				} else {
-					to1.Default.HealthyPanicThreshold = &tfTypes.Mode{}
+					to1.Default.HealthyPanicThreshold = &tfTypes.MeshItemMode{}
 					if toItem.Default.HealthyPanicThreshold.Integer != nil {
 						to1.Default.HealthyPanicThreshold.Integer = types.Int64PointerValue(toItem.Default.HealthyPanicThreshold.Integer)
 					}
@@ -471,9 +471,9 @@ func (r *MeshHealthCheckResourceModel) RefreshFromSharedMeshHealthCheckItem(resp
 					}
 				}
 				if toItem.Default.HealthyThreshold != nil {
-					to1.Default.HealthyThreshold = types.Int64Value(int64(*toItem.Default.HealthyThreshold))
+					to1.Default.HealthyThreshold = types.Int32Value(int32(*toItem.Default.HealthyThreshold))
 				} else {
-					to1.Default.HealthyThreshold = types.Int64Null()
+					to1.Default.HealthyThreshold = types.Int32Null()
 				}
 				if toItem.Default.HTTP == nil {
 					to1.Default.HTTP = nil
@@ -519,9 +519,9 @@ func (r *MeshHealthCheckResourceModel) RefreshFromSharedMeshHealthCheckItem(resp
 				to1.Default.Interval = types.StringPointerValue(toItem.Default.Interval)
 				to1.Default.IntervalJitter = types.StringPointerValue(toItem.Default.IntervalJitter)
 				if toItem.Default.IntervalJitterPercent != nil {
-					to1.Default.IntervalJitterPercent = types.Int64Value(int64(*toItem.Default.IntervalJitterPercent))
+					to1.Default.IntervalJitterPercent = types.Int32Value(int32(*toItem.Default.IntervalJitterPercent))
 				} else {
-					to1.Default.IntervalJitterPercent = types.Int64Null()
+					to1.Default.IntervalJitterPercent = types.Int32Null()
 				}
 				to1.Default.NoTrafficInterval = types.StringPointerValue(toItem.Default.NoTrafficInterval)
 				to1.Default.ReuseConnection = types.BoolPointerValue(toItem.Default.ReuseConnection)
@@ -538,14 +538,14 @@ func (r *MeshHealthCheckResourceModel) RefreshFromSharedMeshHealthCheckItem(resp
 				}
 				to1.Default.Timeout = types.StringPointerValue(toItem.Default.Timeout)
 				if toItem.Default.UnhealthyThreshold != nil {
-					to1.Default.UnhealthyThreshold = types.Int64Value(int64(*toItem.Default.UnhealthyThreshold))
+					to1.Default.UnhealthyThreshold = types.Int32Value(int32(*toItem.Default.UnhealthyThreshold))
 				} else {
-					to1.Default.UnhealthyThreshold = types.Int64Null()
+					to1.Default.UnhealthyThreshold = types.Int32Null()
 				}
 			}
 			to1.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 			if len(toItem.TargetRef.Labels) > 0 {
-				to1.TargetRef.Labels = make(map[string]types.String)
+				to1.TargetRef.Labels = make(map[string]types.String, len(toItem.TargetRef.Labels))
 				for key3, value5 := range toItem.TargetRef.Labels {
 					to1.TargetRef.Labels[key3] = types.StringValue(value5)
 				}
@@ -559,7 +559,7 @@ func (r *MeshHealthCheckResourceModel) RefreshFromSharedMeshHealthCheckItem(resp
 			}
 			to1.TargetRef.SectionName = types.StringPointerValue(toItem.TargetRef.SectionName)
 			if len(toItem.TargetRef.Tags) > 0 {
-				to1.TargetRef.Tags = make(map[string]types.String)
+				to1.TargetRef.Tags = make(map[string]types.String, len(toItem.TargetRef.Tags))
 				for key4, value6 := range toItem.TargetRef.Tags {
 					to1.TargetRef.Tags[key4] = types.StringValue(value6)
 				}

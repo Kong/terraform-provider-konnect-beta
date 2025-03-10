@@ -24,7 +24,7 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 				items1.CreationTime = types.StringNull()
 			}
 			if len(itemsItem.Labels) > 0 {
-				items1.Labels = make(map[string]types.String)
+				items1.Labels = make(map[string]types.String, len(itemsItem.Labels))
 				for key, value := range itemsItem.Labels {
 					items1.Labels[key] = types.StringValue(value)
 				}
@@ -42,7 +42,7 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 				items1.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 				items1.Spec.TargetRef.Kind = types.StringValue(string(itemsItem.Spec.TargetRef.Kind))
 				if len(itemsItem.Spec.TargetRef.Labels) > 0 {
-					items1.Spec.TargetRef.Labels = make(map[string]types.String)
+					items1.Spec.TargetRef.Labels = make(map[string]types.String, len(itemsItem.Spec.TargetRef.Labels))
 					for key1, value1 := range itemsItem.Spec.TargetRef.Labels {
 						items1.Spec.TargetRef.Labels[key1] = types.StringValue(value1)
 					}
@@ -56,7 +56,7 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 				}
 				items1.Spec.TargetRef.SectionName = types.StringPointerValue(itemsItem.Spec.TargetRef.SectionName)
 				if len(itemsItem.Spec.TargetRef.Tags) > 0 {
-					items1.Spec.TargetRef.Tags = make(map[string]types.String)
+					items1.Spec.TargetRef.Tags = make(map[string]types.String, len(itemsItem.Spec.TargetRef.Tags))
 					for key2, value2 := range itemsItem.Spec.TargetRef.Tags {
 						items1.Spec.TargetRef.Tags[key2] = types.StringValue(value2)
 					}
@@ -77,7 +77,7 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 						var backendRefs1 tfTypes.BackendRefs
 						backendRefs1.Kind = types.StringValue(string(backendRefsItem.Kind))
 						if len(backendRefsItem.Labels) > 0 {
-							backendRefs1.Labels = make(map[string]types.String)
+							backendRefs1.Labels = make(map[string]types.String, len(backendRefsItem.Labels))
 							for key3, value3 := range backendRefsItem.Labels {
 								backendRefs1.Labels[key3] = types.StringValue(value3)
 							}
@@ -86,9 +86,9 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 						backendRefs1.Name = types.StringPointerValue(backendRefsItem.Name)
 						backendRefs1.Namespace = types.StringPointerValue(backendRefsItem.Namespace)
 						if backendRefsItem.Port != nil {
-							backendRefs1.Port = types.Int64Value(int64(*backendRefsItem.Port))
+							backendRefs1.Port = types.Int32Value(int32(*backendRefsItem.Port))
 						} else {
-							backendRefs1.Port = types.Int64Null()
+							backendRefs1.Port = types.Int32Null()
 						}
 						backendRefs1.ProxyTypes = make([]types.String, 0, len(backendRefsItem.ProxyTypes))
 						for _, v := range backendRefsItem.ProxyTypes {
@@ -96,7 +96,7 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 						}
 						backendRefs1.SectionName = types.StringPointerValue(backendRefsItem.SectionName)
 						if len(backendRefsItem.Tags) > 0 {
-							backendRefs1.Tags = make(map[string]types.String)
+							backendRefs1.Tags = make(map[string]types.String, len(backendRefsItem.Tags))
 							for key4, value4 := range backendRefsItem.Tags {
 								backendRefs1.Tags[key4] = types.StringValue(value4)
 							}
@@ -159,7 +159,7 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 							filters1.RequestMirror = &tfTypes.RequestMirror{}
 							filters1.RequestMirror.BackendRef.Kind = types.StringValue(string(filtersItem.RequestMirror.BackendRef.Kind))
 							if len(filtersItem.RequestMirror.BackendRef.Labels) > 0 {
-								filters1.RequestMirror.BackendRef.Labels = make(map[string]types.String)
+								filters1.RequestMirror.BackendRef.Labels = make(map[string]types.String, len(filtersItem.RequestMirror.BackendRef.Labels))
 								for key5, value7 := range filtersItem.RequestMirror.BackendRef.Labels {
 									filters1.RequestMirror.BackendRef.Labels[key5] = types.StringValue(value7)
 								}
@@ -168,9 +168,9 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 							filters1.RequestMirror.BackendRef.Name = types.StringPointerValue(filtersItem.RequestMirror.BackendRef.Name)
 							filters1.RequestMirror.BackendRef.Namespace = types.StringPointerValue(filtersItem.RequestMirror.BackendRef.Namespace)
 							if filtersItem.RequestMirror.BackendRef.Port != nil {
-								filters1.RequestMirror.BackendRef.Port = types.Int64Value(int64(*filtersItem.RequestMirror.BackendRef.Port))
+								filters1.RequestMirror.BackendRef.Port = types.Int32Value(int32(*filtersItem.RequestMirror.BackendRef.Port))
 							} else {
-								filters1.RequestMirror.BackendRef.Port = types.Int64Null()
+								filters1.RequestMirror.BackendRef.Port = types.Int32Null()
 							}
 							filters1.RequestMirror.BackendRef.ProxyTypes = make([]types.String, 0, len(filtersItem.RequestMirror.BackendRef.ProxyTypes))
 							for _, v := range filtersItem.RequestMirror.BackendRef.ProxyTypes {
@@ -178,7 +178,7 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 							}
 							filters1.RequestMirror.BackendRef.SectionName = types.StringPointerValue(filtersItem.RequestMirror.BackendRef.SectionName)
 							if len(filtersItem.RequestMirror.BackendRef.Tags) > 0 {
-								filters1.RequestMirror.BackendRef.Tags = make(map[string]types.String)
+								filters1.RequestMirror.BackendRef.Tags = make(map[string]types.String, len(filtersItem.RequestMirror.BackendRef.Tags))
 								for key6, value8 := range filtersItem.RequestMirror.BackendRef.Tags {
 									filters1.RequestMirror.BackendRef.Tags[key6] = types.StringValue(value8)
 								}
@@ -187,7 +187,7 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 							if filtersItem.RequestMirror.Percentage == nil {
 								filters1.RequestMirror.Percentage = nil
 							} else {
-								filters1.RequestMirror.Percentage = &tfTypes.Mode{}
+								filters1.RequestMirror.Percentage = &tfTypes.MeshItemMode{}
 								if filtersItem.RequestMirror.Percentage.Integer != nil {
 									filters1.RequestMirror.Percentage.Integer = types.Int64PointerValue(filtersItem.RequestMirror.Percentage.Integer)
 								}
@@ -210,9 +210,9 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 								filters1.RequestRedirect.Path.Type = types.StringValue(string(filtersItem.RequestRedirect.Path.Type))
 							}
 							if filtersItem.RequestRedirect.Port != nil {
-								filters1.RequestRedirect.Port = types.Int64Value(int64(*filtersItem.RequestRedirect.Port))
+								filters1.RequestRedirect.Port = types.Int32Value(int32(*filtersItem.RequestRedirect.Port))
 							} else {
-								filters1.RequestRedirect.Port = types.Int64Null()
+								filters1.RequestRedirect.Port = types.Int32Null()
 							}
 							if filtersItem.RequestRedirect.Scheme != nil {
 								filters1.RequestRedirect.Scheme = types.StringValue(string(*filtersItem.RequestRedirect.Scheme))
@@ -350,7 +350,7 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 				}
 				to1.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 				if len(toItem.TargetRef.Labels) > 0 {
-					to1.TargetRef.Labels = make(map[string]types.String)
+					to1.TargetRef.Labels = make(map[string]types.String, len(toItem.TargetRef.Labels))
 					for key7, value14 := range toItem.TargetRef.Labels {
 						to1.TargetRef.Labels[key7] = types.StringValue(value14)
 					}
@@ -364,7 +364,7 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 				}
 				to1.TargetRef.SectionName = types.StringPointerValue(toItem.TargetRef.SectionName)
 				if len(toItem.TargetRef.Tags) > 0 {
-					to1.TargetRef.Tags = make(map[string]types.String)
+					to1.TargetRef.Tags = make(map[string]types.String, len(toItem.TargetRef.Tags))
 					for key8, value15 := range toItem.TargetRef.Tags {
 						to1.TargetRef.Tags[key8] = types.StringValue(value15)
 					}

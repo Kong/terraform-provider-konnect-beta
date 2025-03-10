@@ -136,7 +136,7 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 	}
 	var meshServices *shared.MeshServices
 	if r.MeshServices != nil {
-		var mode *shared.Mode
+		var mode *shared.MeshItemMode
 		if r.MeshServices.Mode != nil {
 			str := new(string)
 			if !r.MeshServices.Mode.Str.IsUnknown() && !r.MeshServices.Mode.Str.IsNull() {
@@ -145,7 +145,7 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 				str = nil
 			}
 			if str != nil {
-				mode = &shared.Mode{
+				mode = &shared.MeshItemMode{
 					Str: str,
 				}
 			}
@@ -156,7 +156,7 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 				integer = nil
 			}
 			if integer != nil {
-				mode = &shared.Mode{
+				mode = &shared.MeshItemMode{
 					Integer: integer,
 				}
 			}
@@ -572,7 +572,7 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 					Rotation:       rotation,
 				}
 			}
-			var mode3 *shared.MeshItemMode
+			var mode3 *shared.MeshItemMtlsMode
 			if backendsItem2.Mode != nil {
 				str2 := new(string)
 				if !backendsItem2.Mode.Str.IsUnknown() && !backendsItem2.Mode.Str.IsNull() {
@@ -581,7 +581,7 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 					str2 = nil
 				}
 				if str2 != nil {
-					mode3 = &shared.MeshItemMode{
+					mode3 = &shared.MeshItemMtlsMode{
 						Str: str2,
 					}
 				}
@@ -592,7 +592,7 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 					integer2 = nil
 				}
 				if integer2 != nil {
-					mode3 = &shared.MeshItemMode{
+					mode3 = &shared.MeshItemMtlsMode{
 						Integer: integer2,
 					}
 				}
@@ -870,7 +870,7 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(resp *shared.MeshItem) {
 				for requirementsCount, requirementsItem := range resp.Constraints.DataplaneProxy.Requirements {
 					var requirements1 tfTypes.Requirements
 					if len(requirementsItem.Tags) > 0 {
-						requirements1.Tags = make(map[string]types.String)
+						requirements1.Tags = make(map[string]types.String, len(requirementsItem.Tags))
 						for key, value := range requirementsItem.Tags {
 							requirements1.Tags[key] = types.StringValue(value)
 						}
@@ -888,7 +888,7 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(resp *shared.MeshItem) {
 				for restrictionsCount, restrictionsItem := range resp.Constraints.DataplaneProxy.Restrictions {
 					var restrictions1 tfTypes.Requirements
 					if len(restrictionsItem.Tags) > 0 {
-						restrictions1.Tags = make(map[string]types.String)
+						restrictions1.Tags = make(map[string]types.String, len(restrictionsItem.Tags))
 						for key1, value1 := range restrictionsItem.Tags {
 							restrictions1.Tags[key1] = types.StringValue(value1)
 						}
@@ -902,7 +902,7 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(resp *shared.MeshItem) {
 			}
 		}
 		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String)
+			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key2, value2 := range resp.Labels {
 				r.Labels[key2] = types.StringValue(value2)
 			}
@@ -951,7 +951,7 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(resp *shared.MeshItem) {
 			if resp.MeshServices.Mode == nil {
 				r.MeshServices.Mode = nil
 			} else {
-				r.MeshServices.Mode = &tfTypes.Mode{}
+				r.MeshServices.Mode = &tfTypes.MeshItemMode{}
 				if resp.MeshServices.Mode.Str != nil {
 					r.MeshServices.Mode.Str = types.StringPointerValue(resp.MeshServices.Mode.Str)
 				}
@@ -1005,7 +1005,7 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(resp *shared.MeshItem) {
 						backends3.Conf.PrometheusMetricsBackendConfig.Port = types.Int64PointerValue(backendsItem1.Conf.PrometheusMetricsBackendConfig.Port)
 						backends3.Conf.PrometheusMetricsBackendConfig.SkipMTLS = types.BoolPointerValue(backendsItem1.Conf.PrometheusMetricsBackendConfig.SkipMTLS)
 						if len(backendsItem1.Conf.PrometheusMetricsBackendConfig.Tags) > 0 {
-							backends3.Conf.PrometheusMetricsBackendConfig.Tags = make(map[string]types.String)
+							backends3.Conf.PrometheusMetricsBackendConfig.Tags = make(map[string]types.String, len(backendsItem1.Conf.PrometheusMetricsBackendConfig.Tags))
 							for key3, value3 := range backendsItem1.Conf.PrometheusMetricsBackendConfig.Tags {
 								backends3.Conf.PrometheusMetricsBackendConfig.Tags[key3] = types.StringValue(value3)
 							}
@@ -1017,7 +1017,7 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(resp *shared.MeshItem) {
 							if backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode == nil {
 								backends3.Conf.PrometheusMetricsBackendConfig.TLS.Mode = nil
 							} else {
-								backends3.Conf.PrometheusMetricsBackendConfig.TLS.Mode = &tfTypes.Mode{}
+								backends3.Conf.PrometheusMetricsBackendConfig.TLS.Mode = &tfTypes.MeshItemMode{}
 								if backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Str != nil {
 									backends3.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Str = types.StringPointerValue(backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Str)
 								}
@@ -1171,7 +1171,7 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(resp *shared.MeshItem) {
 				if backendsItem2.Mode == nil {
 					backends5.Mode = nil
 				} else {
-					backends5.Mode = &tfTypes.Mode{}
+					backends5.Mode = &tfTypes.MeshItemMode{}
 					if backendsItem2.Mode.Str != nil {
 						backends5.Mode.Str = types.StringPointerValue(backendsItem2.Mode.Str)
 					}

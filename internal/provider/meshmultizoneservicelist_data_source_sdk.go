@@ -24,7 +24,7 @@ func (r *MeshMultiZoneServiceListDataSourceModel) RefreshFromSharedMeshMultiZone
 				items1.CreationTime = types.StringNull()
 			}
 			if len(itemsItem.Labels) > 0 {
-				items1.Labels = make(map[string]types.String)
+				items1.Labels = make(map[string]types.String, len(itemsItem.Labels))
 				for key, value := range itemsItem.Labels {
 					items1.Labels[key] = types.StringValue(value)
 				}
@@ -41,7 +41,7 @@ func (r *MeshMultiZoneServiceListDataSourceModel) RefreshFromSharedMeshMultiZone
 				var ports1 tfTypes.Ports
 				ports1.AppProtocol = types.StringPointerValue(portsItem.AppProtocol)
 				ports1.Name = types.StringPointerValue(portsItem.Name)
-				ports1.Port = types.Int64Value(int64(portsItem.Port))
+				ports1.Port = types.Int32Value(int32(portsItem.Port))
 				if portsCount+1 > len(items1.Spec.Ports) {
 					items1.Spec.Ports = append(items1.Spec.Ports, ports1)
 				} else {
@@ -51,7 +51,7 @@ func (r *MeshMultiZoneServiceListDataSourceModel) RefreshFromSharedMeshMultiZone
 				}
 			}
 			if len(itemsItem.Spec.Selector.MeshService.MatchLabels) > 0 {
-				items1.Spec.Selector.MeshService.MatchLabels = make(map[string]types.String)
+				items1.Spec.Selector.MeshService.MatchLabels = make(map[string]types.String, len(itemsItem.Spec.Selector.MeshService.MatchLabels))
 				for key1, value1 := range itemsItem.Spec.Selector.MeshService.MatchLabels {
 					items1.Spec.Selector.MeshService.MatchLabels[key1] = types.StringValue(value1)
 				}

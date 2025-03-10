@@ -90,7 +90,7 @@ func (r *MeshMultiZoneServiceDataSource) Schema(ctx context.Context, req datasou
 								"name": schema.StringAttribute{
 									Computed: true,
 								},
-								"port": schema.Int64Attribute{
+								"port": schema.Int32Attribute{
 									Computed: true,
 								},
 							},

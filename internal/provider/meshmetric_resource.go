@@ -11,7 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int32default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -26,7 +26,7 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
-	speakeasy_int64validators "github.com/kong/terraform-provider-konnect-beta/internal/validators/int64validators"
+	speakeasy_int32validators "github.com/kong/terraform-provider-konnect-beta/internal/validators/int32validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
 )
@@ -139,14 +139,14 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 										"path": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
-											Default:     stringdefault.StaticString("/metrics"),
+											Default:     stringdefault.StaticString(`/metrics`),
 											Description: `Path on which an application expose HTTP endpoint with metrics. Default: "/metrics"`,
 										},
-										"port": schema.Int64Attribute{
+										"port": schema.Int32Attribute{
 											Optional:    true,
 											Description: `Port on which an application expose HTTP endpoint with metrics. Not Null`,
-											Validators: []validator.Int64{
-												speakeasy_int64validators.NotNull(),
+											Validators: []validator.Int32{
+												speakeasy_int32validators.NotNull(),
 											},
 										},
 									},
@@ -191,13 +191,13 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 												"path": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Default:     stringdefault.StaticString("/metrics"),
+													Default:     stringdefault.StaticString(`/metrics`),
 													Description: `Path on which a dataplane should expose HTTP endpoint with Prometheus metrics. Default: "/metrics"`,
 												},
-												"port": schema.Int64Attribute{
+												"port": schema.Int32Attribute{
 													Computed:    true,
 													Optional:    true,
-													Default:     int64default.StaticInt64(5670),
+													Default:     int32default.StaticInt32(5670),
 													Description: `Port on which a dataplane should expose HTTP endpoint with Prometheus metrics. Default: 5670`,
 												},
 												"tls": schema.SingleNestedAttribute{
@@ -206,7 +206,7 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 														"mode": schema.StringAttribute{
 															Computed:    true,
 															Optional:    true,
-															Default:     stringdefault.StaticString("Disabled"),
+															Default:     stringdefault.StaticString(`Disabled`),
 															Description: `Configuration of TLS for Prometheus listener. Default: "Disabled"; must be one of ["Disabled", "ProvidedTLS", "ActiveMTLSBackend"]`,
 															Validators: []validator.String{
 																stringvalidator.OneOf(

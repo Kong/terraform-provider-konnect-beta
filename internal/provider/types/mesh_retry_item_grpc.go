@@ -6,7 +6,7 @@ import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshRetryItemGrpc struct {
 	BackOff            *BackOff            `tfsdk:"back_off"`
-	NumRetries         types.Int64         `tfsdk:"num_retries"`
+	NumRetries         types.Int32         `tfsdk:"num_retries"`
 	PerTryTimeout      types.String        `tfsdk:"per_try_timeout"`
 	RateLimitedBackOff *RateLimitedBackOff `tfsdk:"rate_limited_back_off"`
 	RetryOn            []types.String      `tfsdk:"retry_on"`

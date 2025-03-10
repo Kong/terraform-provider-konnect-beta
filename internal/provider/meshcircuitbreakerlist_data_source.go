@@ -31,13 +31,13 @@ type MeshCircuitBreakerListDataSource struct {
 type MeshCircuitBreakerListDataSourceModel struct {
 	CpID   types.String                     `tfsdk:"cp_id"`
 	Items  []tfTypes.MeshCircuitBreakerItem `tfsdk:"items"`
-	Key    types.String                     `tfsdk:"key"`
+	Key    types.String                     `queryParam:"name=key" tfsdk:"key"`
 	Mesh   types.String                     `tfsdk:"mesh"`
 	Next   types.String                     `tfsdk:"next"`
-	Offset types.Int64                      `tfsdk:"offset"`
-	Size   types.Int64                      `tfsdk:"size"`
+	Offset types.Int64                      `queryParam:"style=form,explode=true,name=offset" tfsdk:"offset"`
+	Size   types.Int64                      `queryParam:"style=form,explode=true,name=size" tfsdk:"size"`
 	Total  types.Number                     `tfsdk:"total"`
-	Value  types.String                     `tfsdk:"value"`
+	Value  types.String                     `queryParam:"name=value" tfsdk:"value"`
 }
 
 // Metadata returns the data source type name.
@@ -93,29 +93,29 @@ func (r *MeshCircuitBreakerListDataSource) Schema(ctx context.Context, req datas
 													"connection_limits": schema.SingleNestedAttribute{
 														Computed: true,
 														Attributes: map[string]schema.Attribute{
-															"max_connection_pools": schema.Int64Attribute{
+															"max_connection_pools": schema.Int32Attribute{
 																Computed: true,
 																MarkdownDescription: `The maximum number of connection pools per cluster that are concurrently` + "\n" +
 																	`supported at once. Set this for clusters which create a large number of` + "\n" +
 																	`connection pools.`,
 															},
-															"max_connections": schema.Int64Attribute{
+															"max_connections": schema.Int32Attribute{
 																Computed: true,
 																MarkdownDescription: `The maximum number of connections allowed to be made to the upstream` + "\n" +
 																	`cluster.`,
 															},
-															"max_pending_requests": schema.Int64Attribute{
+															"max_pending_requests": schema.Int32Attribute{
 																Computed: true,
 																MarkdownDescription: `The maximum number of pending requests that are allowed to the upstream` + "\n" +
 																	`cluster. This limit is applied as a connection limit for non-HTTP` + "\n" +
 																	`traffic.`,
 															},
-															"max_requests": schema.Int64Attribute{
+															"max_requests": schema.Int32Attribute{
 																Computed: true,
 																MarkdownDescription: `The maximum number of parallel requests that are allowed to be made` + "\n" +
 																	`to the upstream cluster. This limit does not apply to non-HTTP traffic.`,
 															},
-															"max_retries": schema.Int64Attribute{
+															"max_retries": schema.Int32Attribute{
 																Computed: true,
 																MarkdownDescription: `The maximum number of parallel retries that will be allowed to` + "\n" +
 																	`the upstream cluster.`,
@@ -141,14 +141,14 @@ func (r *MeshCircuitBreakerListDataSource) Schema(ctx context.Context, req datas
 																	"failure_percentage": schema.SingleNestedAttribute{
 																		Computed: true,
 																		Attributes: map[string]schema.Attribute{
-																			"minimum_hosts": schema.Int64Attribute{
+																			"minimum_hosts": schema.Int32Attribute{
 																				Computed: true,
 																				MarkdownDescription: `The minimum number of hosts in a cluster in order to perform failure` + "\n" +
 																					`percentage-based ejection. If the total number of hosts in the cluster is` + "\n" +
 																					`less than this value, failure percentage-based ejection will not be` + "\n" +
 																					`performed.`,
 																			},
-																			"request_volume": schema.Int64Attribute{
+																			"request_volume": schema.Int32Attribute{
 																				Computed: true,
 																				MarkdownDescription: `The minimum number of total requests that must be collected in one` + "\n" +
 																					`interval (as defined by the interval duration above) to perform failure` + "\n" +
@@ -156,7 +156,7 @@ func (r *MeshCircuitBreakerListDataSource) Schema(ctx context.Context, req datas
 																					`setting, failure percentage-based ejection will not be performed for this` + "\n" +
 																					`host.`,
 																			},
-																			"threshold": schema.Int64Attribute{
+																			"threshold": schema.Int32Attribute{
 																				Computed: true,
 																				MarkdownDescription: `The failure percentage to use when determining failure percentage-based` + "\n" +
 																					`outlier detection. If the failure percentage of a given host is greater` + "\n" +
@@ -181,7 +181,7 @@ func (r *MeshCircuitBreakerListDataSource) Schema(ctx context.Context, req datas
 																	"gateway_failures": schema.SingleNestedAttribute{
 																		Computed: true,
 																		Attributes: map[string]schema.Attribute{
-																			"consecutive": schema.Int64Attribute{
+																			"consecutive": schema.Int32Attribute{
 																				Computed: true,
 																				MarkdownDescription: `The number of consecutive gateway failures (502, 503, 504 status codes)` + "\n" +
 																					`before a consecutive gateway failure ejection occurs.`,
@@ -199,7 +199,7 @@ func (r *MeshCircuitBreakerListDataSource) Schema(ctx context.Context, req datas
 																	"local_origin_failures": schema.SingleNestedAttribute{
 																		Computed: true,
 																		Attributes: map[string]schema.Attribute{
-																			"consecutive": schema.Int64Attribute{
+																			"consecutive": schema.Int32Attribute{
 																				Computed: true,
 																				MarkdownDescription: `The number of consecutive locally originated failures before ejection` + "\n" +
 																					`occurs. Parameter takes effect only when splitExternalAndLocalErrors` + "\n" +
@@ -218,14 +218,14 @@ func (r *MeshCircuitBreakerListDataSource) Schema(ctx context.Context, req datas
 																	"success_rate": schema.SingleNestedAttribute{
 																		Computed: true,
 																		Attributes: map[string]schema.Attribute{
-																			"minimum_hosts": schema.Int64Attribute{
+																			"minimum_hosts": schema.Int32Attribute{
 																				Computed: true,
 																				MarkdownDescription: `The number of hosts in a cluster that must have enough request volume to` + "\n" +
 																					`detect success rate outliers. If the number of hosts is less than this` + "\n" +
 																					`setting, outlier detection via success rate statistics is not performed` + "\n" +
 																					`for any host in the cluster.`,
 																			},
-																			"request_volume": schema.Int64Attribute{
+																			"request_volume": schema.Int32Attribute{
 																				Computed: true,
 																				MarkdownDescription: `The minimum number of total requests that must be collected in one` + "\n" +
 																					`interval (as defined by the interval duration configured in` + "\n" +
@@ -271,7 +271,7 @@ func (r *MeshCircuitBreakerListDataSource) Schema(ctx context.Context, req datas
 																	"total_failures": schema.SingleNestedAttribute{
 																		Computed: true,
 																		Attributes: map[string]schema.Attribute{
-																			"consecutive": schema.Int64Attribute{
+																			"consecutive": schema.Int32Attribute{
 																				Computed: true,
 																				MarkdownDescription: `The number of consecutive server-side error responses (for HTTP traffic,` + "\n" +
 																					`5xx responses; for TCP traffic, connection failures; for Redis, failure` + "\n" +
@@ -316,7 +316,7 @@ func (r *MeshCircuitBreakerListDataSource) Schema(ctx context.Context, req datas
 																MarkdownDescription: `The time interval between ejection analysis sweeps. This can result in` + "\n" +
 																	`both new ejections and hosts being returned to service.`,
 															},
-															"max_ejection_percent": schema.Int64Attribute{
+															"max_ejection_percent": schema.Int32Attribute{
 																Computed: true,
 																MarkdownDescription: `The maximum % of an upstream cluster that can be ejected due to outlier` + "\n" +
 																	`detection. Defaults to 10% but will eject at least one host regardless of` + "\n" +
@@ -402,29 +402,29 @@ func (r *MeshCircuitBreakerListDataSource) Schema(ctx context.Context, req datas
 													"connection_limits": schema.SingleNestedAttribute{
 														Computed: true,
 														Attributes: map[string]schema.Attribute{
-															"max_connection_pools": schema.Int64Attribute{
+															"max_connection_pools": schema.Int32Attribute{
 																Computed: true,
 																MarkdownDescription: `The maximum number of connection pools per cluster that are concurrently` + "\n" +
 																	`supported at once. Set this for clusters which create a large number of` + "\n" +
 																	`connection pools.`,
 															},
-															"max_connections": schema.Int64Attribute{
+															"max_connections": schema.Int32Attribute{
 																Computed: true,
 																MarkdownDescription: `The maximum number of connections allowed to be made to the upstream` + "\n" +
 																	`cluster.`,
 															},
-															"max_pending_requests": schema.Int64Attribute{
+															"max_pending_requests": schema.Int32Attribute{
 																Computed: true,
 																MarkdownDescription: `The maximum number of pending requests that are allowed to the upstream` + "\n" +
 																	`cluster. This limit is applied as a connection limit for non-HTTP` + "\n" +
 																	`traffic.`,
 															},
-															"max_requests": schema.Int64Attribute{
+															"max_requests": schema.Int32Attribute{
 																Computed: true,
 																MarkdownDescription: `The maximum number of parallel requests that are allowed to be made` + "\n" +
 																	`to the upstream cluster. This limit does not apply to non-HTTP traffic.`,
 															},
-															"max_retries": schema.Int64Attribute{
+															"max_retries": schema.Int32Attribute{
 																Computed: true,
 																MarkdownDescription: `The maximum number of parallel retries that will be allowed to` + "\n" +
 																	`the upstream cluster.`,
@@ -450,14 +450,14 @@ func (r *MeshCircuitBreakerListDataSource) Schema(ctx context.Context, req datas
 																	"failure_percentage": schema.SingleNestedAttribute{
 																		Computed: true,
 																		Attributes: map[string]schema.Attribute{
-																			"minimum_hosts": schema.Int64Attribute{
+																			"minimum_hosts": schema.Int32Attribute{
 																				Computed: true,
 																				MarkdownDescription: `The minimum number of hosts in a cluster in order to perform failure` + "\n" +
 																					`percentage-based ejection. If the total number of hosts in the cluster is` + "\n" +
 																					`less than this value, failure percentage-based ejection will not be` + "\n" +
 																					`performed.`,
 																			},
-																			"request_volume": schema.Int64Attribute{
+																			"request_volume": schema.Int32Attribute{
 																				Computed: true,
 																				MarkdownDescription: `The minimum number of total requests that must be collected in one` + "\n" +
 																					`interval (as defined by the interval duration above) to perform failure` + "\n" +
@@ -465,7 +465,7 @@ func (r *MeshCircuitBreakerListDataSource) Schema(ctx context.Context, req datas
 																					`setting, failure percentage-based ejection will not be performed for this` + "\n" +
 																					`host.`,
 																			},
-																			"threshold": schema.Int64Attribute{
+																			"threshold": schema.Int32Attribute{
 																				Computed: true,
 																				MarkdownDescription: `The failure percentage to use when determining failure percentage-based` + "\n" +
 																					`outlier detection. If the failure percentage of a given host is greater` + "\n" +
@@ -490,7 +490,7 @@ func (r *MeshCircuitBreakerListDataSource) Schema(ctx context.Context, req datas
 																	"gateway_failures": schema.SingleNestedAttribute{
 																		Computed: true,
 																		Attributes: map[string]schema.Attribute{
-																			"consecutive": schema.Int64Attribute{
+																			"consecutive": schema.Int32Attribute{
 																				Computed: true,
 																				MarkdownDescription: `The number of consecutive gateway failures (502, 503, 504 status codes)` + "\n" +
 																					`before a consecutive gateway failure ejection occurs.`,
@@ -508,7 +508,7 @@ func (r *MeshCircuitBreakerListDataSource) Schema(ctx context.Context, req datas
 																	"local_origin_failures": schema.SingleNestedAttribute{
 																		Computed: true,
 																		Attributes: map[string]schema.Attribute{
-																			"consecutive": schema.Int64Attribute{
+																			"consecutive": schema.Int32Attribute{
 																				Computed: true,
 																				MarkdownDescription: `The number of consecutive locally originated failures before ejection` + "\n" +
 																					`occurs. Parameter takes effect only when splitExternalAndLocalErrors` + "\n" +
@@ -527,14 +527,14 @@ func (r *MeshCircuitBreakerListDataSource) Schema(ctx context.Context, req datas
 																	"success_rate": schema.SingleNestedAttribute{
 																		Computed: true,
 																		Attributes: map[string]schema.Attribute{
-																			"minimum_hosts": schema.Int64Attribute{
+																			"minimum_hosts": schema.Int32Attribute{
 																				Computed: true,
 																				MarkdownDescription: `The number of hosts in a cluster that must have enough request volume to` + "\n" +
 																					`detect success rate outliers. If the number of hosts is less than this` + "\n" +
 																					`setting, outlier detection via success rate statistics is not performed` + "\n" +
 																					`for any host in the cluster.`,
 																			},
-																			"request_volume": schema.Int64Attribute{
+																			"request_volume": schema.Int32Attribute{
 																				Computed: true,
 																				MarkdownDescription: `The minimum number of total requests that must be collected in one` + "\n" +
 																					`interval (as defined by the interval duration configured in` + "\n" +
@@ -580,7 +580,7 @@ func (r *MeshCircuitBreakerListDataSource) Schema(ctx context.Context, req datas
 																	"total_failures": schema.SingleNestedAttribute{
 																		Computed: true,
 																		Attributes: map[string]schema.Attribute{
-																			"consecutive": schema.Int64Attribute{
+																			"consecutive": schema.Int32Attribute{
 																				Computed: true,
 																				MarkdownDescription: `The number of consecutive server-side error responses (for HTTP traffic,` + "\n" +
 																					`5xx responses; for TCP traffic, connection failures; for Redis, failure` + "\n" +
@@ -625,7 +625,7 @@ func (r *MeshCircuitBreakerListDataSource) Schema(ctx context.Context, req datas
 																MarkdownDescription: `The time interval between ejection analysis sweeps. This can result in` + "\n" +
 																	`both new ejections and hosts being returned to service.`,
 															},
-															"max_ejection_percent": schema.Int64Attribute{
+															"max_ejection_percent": schema.Int32Attribute{
 																Computed: true,
 																MarkdownDescription: `The maximum % of an upstream cluster that can be ejected due to outlier` + "\n" +
 																	`detection. Defaults to 10% but will eject at least one host regardless of` + "\n" +
@@ -712,29 +712,29 @@ func (r *MeshCircuitBreakerListDataSource) Schema(ctx context.Context, req datas
 													"connection_limits": schema.SingleNestedAttribute{
 														Computed: true,
 														Attributes: map[string]schema.Attribute{
-															"max_connection_pools": schema.Int64Attribute{
+															"max_connection_pools": schema.Int32Attribute{
 																Computed: true,
 																MarkdownDescription: `The maximum number of connection pools per cluster that are concurrently` + "\n" +
 																	`supported at once. Set this for clusters which create a large number of` + "\n" +
 																	`connection pools.`,
 															},
-															"max_connections": schema.Int64Attribute{
+															"max_connections": schema.Int32Attribute{
 																Computed: true,
 																MarkdownDescription: `The maximum number of connections allowed to be made to the upstream` + "\n" +
 																	`cluster.`,
 															},
-															"max_pending_requests": schema.Int64Attribute{
+															"max_pending_requests": schema.Int32Attribute{
 																Computed: true,
 																MarkdownDescription: `The maximum number of pending requests that are allowed to the upstream` + "\n" +
 																	`cluster. This limit is applied as a connection limit for non-HTTP` + "\n" +
 																	`traffic.`,
 															},
-															"max_requests": schema.Int64Attribute{
+															"max_requests": schema.Int32Attribute{
 																Computed: true,
 																MarkdownDescription: `The maximum number of parallel requests that are allowed to be made` + "\n" +
 																	`to the upstream cluster. This limit does not apply to non-HTTP traffic.`,
 															},
-															"max_retries": schema.Int64Attribute{
+															"max_retries": schema.Int32Attribute{
 																Computed: true,
 																MarkdownDescription: `The maximum number of parallel retries that will be allowed to` + "\n" +
 																	`the upstream cluster.`,
@@ -760,14 +760,14 @@ func (r *MeshCircuitBreakerListDataSource) Schema(ctx context.Context, req datas
 																	"failure_percentage": schema.SingleNestedAttribute{
 																		Computed: true,
 																		Attributes: map[string]schema.Attribute{
-																			"minimum_hosts": schema.Int64Attribute{
+																			"minimum_hosts": schema.Int32Attribute{
 																				Computed: true,
 																				MarkdownDescription: `The minimum number of hosts in a cluster in order to perform failure` + "\n" +
 																					`percentage-based ejection. If the total number of hosts in the cluster is` + "\n" +
 																					`less than this value, failure percentage-based ejection will not be` + "\n" +
 																					`performed.`,
 																			},
-																			"request_volume": schema.Int64Attribute{
+																			"request_volume": schema.Int32Attribute{
 																				Computed: true,
 																				MarkdownDescription: `The minimum number of total requests that must be collected in one` + "\n" +
 																					`interval (as defined by the interval duration above) to perform failure` + "\n" +
@@ -775,7 +775,7 @@ func (r *MeshCircuitBreakerListDataSource) Schema(ctx context.Context, req datas
 																					`setting, failure percentage-based ejection will not be performed for this` + "\n" +
 																					`host.`,
 																			},
-																			"threshold": schema.Int64Attribute{
+																			"threshold": schema.Int32Attribute{
 																				Computed: true,
 																				MarkdownDescription: `The failure percentage to use when determining failure percentage-based` + "\n" +
 																					`outlier detection. If the failure percentage of a given host is greater` + "\n" +
@@ -800,7 +800,7 @@ func (r *MeshCircuitBreakerListDataSource) Schema(ctx context.Context, req datas
 																	"gateway_failures": schema.SingleNestedAttribute{
 																		Computed: true,
 																		Attributes: map[string]schema.Attribute{
-																			"consecutive": schema.Int64Attribute{
+																			"consecutive": schema.Int32Attribute{
 																				Computed: true,
 																				MarkdownDescription: `The number of consecutive gateway failures (502, 503, 504 status codes)` + "\n" +
 																					`before a consecutive gateway failure ejection occurs.`,
@@ -818,7 +818,7 @@ func (r *MeshCircuitBreakerListDataSource) Schema(ctx context.Context, req datas
 																	"local_origin_failures": schema.SingleNestedAttribute{
 																		Computed: true,
 																		Attributes: map[string]schema.Attribute{
-																			"consecutive": schema.Int64Attribute{
+																			"consecutive": schema.Int32Attribute{
 																				Computed: true,
 																				MarkdownDescription: `The number of consecutive locally originated failures before ejection` + "\n" +
 																					`occurs. Parameter takes effect only when splitExternalAndLocalErrors` + "\n" +
@@ -837,14 +837,14 @@ func (r *MeshCircuitBreakerListDataSource) Schema(ctx context.Context, req datas
 																	"success_rate": schema.SingleNestedAttribute{
 																		Computed: true,
 																		Attributes: map[string]schema.Attribute{
-																			"minimum_hosts": schema.Int64Attribute{
+																			"minimum_hosts": schema.Int32Attribute{
 																				Computed: true,
 																				MarkdownDescription: `The number of hosts in a cluster that must have enough request volume to` + "\n" +
 																					`detect success rate outliers. If the number of hosts is less than this` + "\n" +
 																					`setting, outlier detection via success rate statistics is not performed` + "\n" +
 																					`for any host in the cluster.`,
 																			},
-																			"request_volume": schema.Int64Attribute{
+																			"request_volume": schema.Int32Attribute{
 																				Computed: true,
 																				MarkdownDescription: `The minimum number of total requests that must be collected in one` + "\n" +
 																					`interval (as defined by the interval duration configured in` + "\n" +
@@ -890,7 +890,7 @@ func (r *MeshCircuitBreakerListDataSource) Schema(ctx context.Context, req datas
 																	"total_failures": schema.SingleNestedAttribute{
 																		Computed: true,
 																		Attributes: map[string]schema.Attribute{
-																			"consecutive": schema.Int64Attribute{
+																			"consecutive": schema.Int32Attribute{
 																				Computed: true,
 																				MarkdownDescription: `The number of consecutive server-side error responses (for HTTP traffic,` + "\n" +
 																					`5xx responses; for TCP traffic, connection failures; for Redis, failure` + "\n" +
@@ -935,7 +935,7 @@ func (r *MeshCircuitBreakerListDataSource) Schema(ctx context.Context, req datas
 																MarkdownDescription: `The time interval between ejection analysis sweeps. This can result in` + "\n" +
 																	`both new ejections and hosts being returned to service.`,
 															},
-															"max_ejection_percent": schema.Int64Attribute{
+															"max_ejection_percent": schema.Int32Attribute{
 																Computed: true,
 																MarkdownDescription: `The maximum % of an upstream cluster that can be ejected due to outlier` + "\n" +
 																	`detection. Defaults to 10% but will eject at least one host regardless of` + "\n" +

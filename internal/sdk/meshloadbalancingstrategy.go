@@ -26,13 +26,6 @@ func newMeshLoadBalancingStrategy(sdkConfig sdkConfiguration) *MeshLoadBalancing
 
 // GetMeshLoadBalancingStrategy - Returns MeshLoadBalancingStrategy entity
 func (s *MeshLoadBalancingStrategy) GetMeshLoadBalancingStrategy(ctx context.Context, request operations.GetMeshLoadBalancingStrategyRequest, opts ...operations.Option) (*operations.GetMeshLoadBalancingStrategyResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getMeshLoadBalancingStrategy",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -54,6 +47,14 @@ func (s *MeshLoadBalancingStrategy) GetMeshLoadBalancingStrategy(ctx context.Con
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshloadbalancingstrategies/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getMeshLoadBalancingStrategy",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -179,13 +180,6 @@ func (s *MeshLoadBalancingStrategy) GetMeshLoadBalancingStrategy(ctx context.Con
 
 // DeleteMeshLoadBalancingStrategy - Deletes MeshLoadBalancingStrategy entity
 func (s *MeshLoadBalancingStrategy) DeleteMeshLoadBalancingStrategy(ctx context.Context, request operations.DeleteMeshLoadBalancingStrategyRequest, opts ...operations.Option) (*operations.DeleteMeshLoadBalancingStrategyResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "deleteMeshLoadBalancingStrategy",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -207,6 +201,14 @@ func (s *MeshLoadBalancingStrategy) DeleteMeshLoadBalancingStrategy(ctx context.
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshloadbalancingstrategies/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "deleteMeshLoadBalancingStrategy",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -332,13 +334,6 @@ func (s *MeshLoadBalancingStrategy) DeleteMeshLoadBalancingStrategy(ctx context.
 
 // CreateMeshLoadBalancingStrategy - Creates or Updates MeshLoadBalancingStrategy entity
 func (s *MeshLoadBalancingStrategy) CreateMeshLoadBalancingStrategy(ctx context.Context, request operations.CreateMeshLoadBalancingStrategyRequest, opts ...operations.Option) (*operations.CreateMeshLoadBalancingStrategyResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "createMeshLoadBalancingStrategy",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -361,6 +356,13 @@ func (s *MeshLoadBalancingStrategy) CreateMeshLoadBalancingStrategy(ctx context.
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "createMeshLoadBalancingStrategy",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MeshLoadBalancingStrategyItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -466,13 +468,6 @@ func (s *MeshLoadBalancingStrategy) CreateMeshLoadBalancingStrategy(ctx context.
 
 // UpdateMeshLoadBalancingStrategy - Creates or Updates MeshLoadBalancingStrategy entity
 func (s *MeshLoadBalancingStrategy) UpdateMeshLoadBalancingStrategy(ctx context.Context, request operations.UpdateMeshLoadBalancingStrategyRequest, opts ...operations.Option) (*operations.UpdateMeshLoadBalancingStrategyResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "updateMeshLoadBalancingStrategy",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -495,6 +490,13 @@ func (s *MeshLoadBalancingStrategy) UpdateMeshLoadBalancingStrategy(ctx context.
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "updateMeshLoadBalancingStrategy",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MeshLoadBalancingStrategyItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -600,13 +602,6 @@ func (s *MeshLoadBalancingStrategy) UpdateMeshLoadBalancingStrategy(ctx context.
 
 // GetMeshLoadBalancingStrategyList - Returns a list of MeshLoadBalancingStrategy in the mesh.
 func (s *MeshLoadBalancingStrategy) GetMeshLoadBalancingStrategyList(ctx context.Context, request operations.GetMeshLoadBalancingStrategyListRequest, opts ...operations.Option) (*operations.GetMeshLoadBalancingStrategyListResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getMeshLoadBalancingStrategyList",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -627,6 +622,14 @@ func (s *MeshLoadBalancingStrategy) GetMeshLoadBalancingStrategyList(ctx context
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshloadbalancingstrategies", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getMeshLoadBalancingStrategyList",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

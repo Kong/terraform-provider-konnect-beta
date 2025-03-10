@@ -11,7 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int32default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -214,7 +214,7 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 													MarkdownDescription: `BackOff is a configuration of durations which will be used in an exponential` + "\n" +
 														`backoff strategy between retries.`,
 												},
-												"num_retries": schema.Int64Attribute{
+												"num_retries": schema.Int32Attribute{
 													Optional: true,
 													MarkdownDescription: `NumRetries is the number of attempts that will be made on failed (and` + "\n" +
 														`retriable) requests. If not set, the default value is 1.`,
@@ -337,10 +337,10 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 																MarkdownDescription: `Tags is a map of metadata to match against for selecting the omitted hosts. Required if Type is` + "\n" +
 																	`OmitHostsWithTags`,
 															},
-															"update_frequency": schema.Int64Attribute{
+															"update_frequency": schema.Int32Attribute{
 																Computed: true,
 																Optional: true,
-																Default:  int64default.StaticInt64(2),
+																Default:  int32default.StaticInt32(2),
 																MarkdownDescription: `UpdateFrequency is how often the priority load should be updated based on previously attempted priorities.` + "\n" +
 																	`Used for OmitPreviousPriorities.` + "\n" +
 																	`Default: 2`,
@@ -356,7 +356,7 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 														`reattempted before giving up, at which point the host that was last selected will` + "\n" +
 														`be routed to. If unspecified, this will default to retrying once.`,
 												},
-												"num_retries": schema.Int64Attribute{
+												"num_retries": schema.Int32Attribute{
 													Optional: true,
 													MarkdownDescription: `NumRetries is the number of attempts that will be made on failed (and` + "\n" +
 														`retriable) requests.  If not set, the default value is 1.`,
@@ -444,7 +444,7 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 															"type": schema.StringAttribute{
 																Computed:    true,
 																Optional:    true,
-																Default:     stringdefault.StaticString("Exact"),
+																Default:     stringdefault.StaticString(`Exact`),
 																Description: `Type specifies how to match against the value of the header. Default: "Exact"; must be one of ["Exact", "Present", "RegularExpression", "Absent", "Prefix"]`,
 																Validators: []validator.String{
 																	stringvalidator.OneOf(
@@ -490,7 +490,7 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 															"type": schema.StringAttribute{
 																Computed:    true,
 																Optional:    true,
-																Default:     stringdefault.StaticString("Exact"),
+																Default:     stringdefault.StaticString(`Exact`),
 																Description: `Type specifies how to match against the value of the header. Default: "Exact"; must be one of ["Exact", "Present", "RegularExpression", "Absent", "Prefix"]`,
 																Validators: []validator.String{
 																	stringvalidator.OneOf(
@@ -532,7 +532,7 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 										"tcp": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
-												"max_connect_attempt": schema.Int64Attribute{
+												"max_connect_attempt": schema.Int32Attribute{
 													Optional: true,
 													MarkdownDescription: `MaxConnectAttempt is a maximal amount of TCP connection attempts` + "\n" +
 														`which will be made before giving up`,

@@ -188,7 +188,7 @@ func (r *MeshHealthCheckDataSource) Schema(ctx context.Context, req datasource.S
 												`Deprecated: the setting has been moved to MeshCircuitBreaker policy,` + "\n" +
 												`please use MeshCircuitBreaker policy instead.`,
 										},
-										"healthy_threshold": schema.Int64Attribute{
+										"healthy_threshold": schema.Int32Attribute{
 											Computed: true,
 											MarkdownDescription: `Number of consecutive healthy checks before considering a host healthy.` + "\n" +
 												`If not specified then the default value is 1`,
@@ -264,7 +264,7 @@ func (r *MeshHealthCheckDataSource) Schema(ctx context.Context, req datasource.S
 											MarkdownDescription: `If specified, during every interval Envoy will add IntervalJitter to the` + "\n" +
 												`wait time.`,
 										},
-										"interval_jitter_percent": schema.Int64Attribute{
+										"interval_jitter_percent": schema.Int32Attribute{
 											Computed: true,
 											MarkdownDescription: `If specified, during every interval Envoy will add IntervalJitter *` + "\n" +
 												`IntervalJitterPercent / 100 to the wait time. If IntervalJitter and` + "\n" +
@@ -314,7 +314,7 @@ func (r *MeshHealthCheckDataSource) Schema(ctx context.Context, req datasource.S
 											MarkdownDescription: `Maximum time to wait for a health check response.` + "\n" +
 												`If not specified then the default value is 15s`,
 										},
-										"unhealthy_threshold": schema.Int64Attribute{
+										"unhealthy_threshold": schema.Int32Attribute{
 											Computed: true,
 											MarkdownDescription: `Number of consecutive unhealthy checks before considering a host` + "\n" +
 												`unhealthy.` + "\n" +

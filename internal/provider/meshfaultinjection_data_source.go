@@ -92,7 +92,7 @@ func (r *MeshFaultInjectionDataSource) Schema(ctx context.Context, req datasourc
 													"abort": schema.SingleNestedAttribute{
 														Computed: true,
 														Attributes: map[string]schema.Attribute{
-															"http_status": schema.Int64Attribute{
+															"http_status": schema.Int32Attribute{
 																Computed:    true,
 																Description: `HTTP status code which will be returned to source side`,
 															},
@@ -285,7 +285,7 @@ func (r *MeshFaultInjectionDataSource) Schema(ctx context.Context, req datasourc
 													"abort": schema.SingleNestedAttribute{
 														Computed: true,
 														Attributes: map[string]schema.Attribute{
-															"http_status": schema.Int64Attribute{
+															"http_status": schema.Int32Attribute{
 																Computed:    true,
 																Description: `HTTP status code which will be returned to source side`,
 															},

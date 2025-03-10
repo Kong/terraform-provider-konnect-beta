@@ -103,7 +103,7 @@ func (r *MeshServiceDataSource) Schema(ctx context.Context, req datasource.Schem
 								"name": schema.StringAttribute{
 									Computed: true,
 								},
-								"port": schema.Int64Attribute{
+								"port": schema.Int32Attribute{
 									Computed: true,
 								},
 								"target_port": schema.SingleNestedAttribute{

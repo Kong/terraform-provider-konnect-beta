@@ -118,7 +118,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) ToSharedMeshLoadBalancingStrate
 					}
 					choiceCount := new(int)
 					if !toItem.Default.LoadBalancer.LeastRequest.ChoiceCount.IsUnknown() && !toItem.Default.LoadBalancer.LeastRequest.ChoiceCount.IsNull() {
-						*choiceCount = int(toItem.Default.LoadBalancer.LeastRequest.ChoiceCount.ValueInt64())
+						*choiceCount = int(toItem.Default.LoadBalancer.LeastRequest.ChoiceCount.ValueInt32())
 					} else {
 						choiceCount = nil
 					}
@@ -212,7 +212,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) ToSharedMeshLoadBalancingStrate
 					}
 					tableSize := new(int)
 					if !toItem.Default.LoadBalancer.Maglev.TableSize.IsUnknown() && !toItem.Default.LoadBalancer.Maglev.TableSize.IsNull() {
-						*tableSize = int(toItem.Default.LoadBalancer.Maglev.TableSize.ValueInt64())
+						*tableSize = int(toItem.Default.LoadBalancer.Maglev.TableSize.ValueInt32())
 					} else {
 						tableSize = nil
 					}
@@ -316,13 +316,13 @@ func (r *MeshLoadBalancingStrategyResourceModel) ToSharedMeshLoadBalancingStrate
 					}
 					maxRingSize := new(int)
 					if !toItem.Default.LoadBalancer.RingHash.MaxRingSize.IsUnknown() && !toItem.Default.LoadBalancer.RingHash.MaxRingSize.IsNull() {
-						*maxRingSize = int(toItem.Default.LoadBalancer.RingHash.MaxRingSize.ValueInt64())
+						*maxRingSize = int(toItem.Default.LoadBalancer.RingHash.MaxRingSize.ValueInt32())
 					} else {
 						maxRingSize = nil
 					}
 					minRingSize := new(int)
 					if !toItem.Default.LoadBalancer.RingHash.MinRingSize.IsUnknown() && !toItem.Default.LoadBalancer.RingHash.MinRingSize.IsNull() {
-						*minRingSize = int(toItem.Default.LoadBalancer.RingHash.MinRingSize.ValueInt64())
+						*minRingSize = int(toItem.Default.LoadBalancer.RingHash.MinRingSize.ValueInt32())
 					} else {
 						minRingSize = nil
 					}
@@ -426,7 +426,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) ToSharedMeshLoadBalancingStrate
 
 						weight := new(int)
 						if !affinityTagsItem.Weight.IsUnknown() && !affinityTagsItem.Weight.IsNull() {
-							*weight = int(affinityTagsItem.Weight.ValueInt64())
+							*weight = int(affinityTagsItem.Weight.ValueInt32())
 						} else {
 							weight = nil
 						}
@@ -539,7 +539,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 			r.CreationTime = types.StringNull()
 		}
 		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String)
+			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
 				r.Labels[key] = types.StringValue(value)
 			}
@@ -557,7 +557,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 			r.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			r.Spec.TargetRef.Kind = types.StringValue(string(resp.Spec.TargetRef.Kind))
 			if len(resp.Spec.TargetRef.Labels) > 0 {
-				r.Spec.TargetRef.Labels = make(map[string]types.String)
+				r.Spec.TargetRef.Labels = make(map[string]types.String, len(resp.Spec.TargetRef.Labels))
 				for key1, value1 := range resp.Spec.TargetRef.Labels {
 					r.Spec.TargetRef.Labels[key1] = types.StringValue(value1)
 				}
@@ -571,7 +571,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 			}
 			r.Spec.TargetRef.SectionName = types.StringPointerValue(resp.Spec.TargetRef.SectionName)
 			if len(resp.Spec.TargetRef.Tags) > 0 {
-				r.Spec.TargetRef.Tags = make(map[string]types.String)
+				r.Spec.TargetRef.Tags = make(map[string]types.String, len(resp.Spec.TargetRef.Tags))
 				for key2, value2 := range resp.Spec.TargetRef.Tags {
 					r.Spec.TargetRef.Tags[key2] = types.StringValue(value2)
 				}
@@ -598,7 +598,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 						if toItem.Default.LoadBalancer.LeastRequest.ActiveRequestBias == nil {
 							to1.Default.LoadBalancer.LeastRequest.ActiveRequestBias = nil
 						} else {
-							to1.Default.LoadBalancer.LeastRequest.ActiveRequestBias = &tfTypes.Mode{}
+							to1.Default.LoadBalancer.LeastRequest.ActiveRequestBias = &tfTypes.MeshItemMode{}
 							if toItem.Default.LoadBalancer.LeastRequest.ActiveRequestBias.Integer != nil {
 								to1.Default.LoadBalancer.LeastRequest.ActiveRequestBias.Integer = types.Int64PointerValue(toItem.Default.LoadBalancer.LeastRequest.ActiveRequestBias.Integer)
 							}
@@ -607,9 +607,9 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 							}
 						}
 						if toItem.Default.LoadBalancer.LeastRequest.ChoiceCount != nil {
-							to1.Default.LoadBalancer.LeastRequest.ChoiceCount = types.Int64Value(int64(*toItem.Default.LoadBalancer.LeastRequest.ChoiceCount))
+							to1.Default.LoadBalancer.LeastRequest.ChoiceCount = types.Int32Value(int32(*toItem.Default.LoadBalancer.LeastRequest.ChoiceCount))
 						} else {
-							to1.Default.LoadBalancer.LeastRequest.ChoiceCount = types.Int64Null()
+							to1.Default.LoadBalancer.LeastRequest.ChoiceCount = types.Int32Null()
 						}
 					}
 					if toItem.Default.LoadBalancer.Maglev == nil {
@@ -666,9 +666,9 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 							}
 						}
 						if toItem.Default.LoadBalancer.Maglev.TableSize != nil {
-							to1.Default.LoadBalancer.Maglev.TableSize = types.Int64Value(int64(*toItem.Default.LoadBalancer.Maglev.TableSize))
+							to1.Default.LoadBalancer.Maglev.TableSize = types.Int32Value(int32(*toItem.Default.LoadBalancer.Maglev.TableSize))
 						} else {
-							to1.Default.LoadBalancer.Maglev.TableSize = types.Int64Null()
+							to1.Default.LoadBalancer.Maglev.TableSize = types.Int32Null()
 						}
 					}
 					if toItem.Default.LoadBalancer.Random == nil {
@@ -735,14 +735,14 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 							}
 						}
 						if toItem.Default.LoadBalancer.RingHash.MaxRingSize != nil {
-							to1.Default.LoadBalancer.RingHash.MaxRingSize = types.Int64Value(int64(*toItem.Default.LoadBalancer.RingHash.MaxRingSize))
+							to1.Default.LoadBalancer.RingHash.MaxRingSize = types.Int32Value(int32(*toItem.Default.LoadBalancer.RingHash.MaxRingSize))
 						} else {
-							to1.Default.LoadBalancer.RingHash.MaxRingSize = types.Int64Null()
+							to1.Default.LoadBalancer.RingHash.MaxRingSize = types.Int32Null()
 						}
 						if toItem.Default.LoadBalancer.RingHash.MinRingSize != nil {
-							to1.Default.LoadBalancer.RingHash.MinRingSize = types.Int64Value(int64(*toItem.Default.LoadBalancer.RingHash.MinRingSize))
+							to1.Default.LoadBalancer.RingHash.MinRingSize = types.Int32Value(int32(*toItem.Default.LoadBalancer.RingHash.MinRingSize))
 						} else {
-							to1.Default.LoadBalancer.RingHash.MinRingSize = types.Int64Null()
+							to1.Default.LoadBalancer.RingHash.MinRingSize = types.Int32Null()
 						}
 					}
 					if toItem.Default.LoadBalancer.RoundRobin == nil {
@@ -806,9 +806,9 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 							var affinityTags1 tfTypes.AffinityTags
 							affinityTags1.Key = types.StringValue(affinityTagsItem.Key)
 							if affinityTagsItem.Weight != nil {
-								affinityTags1.Weight = types.Int64Value(int64(*affinityTagsItem.Weight))
+								affinityTags1.Weight = types.Int32Value(int32(*affinityTagsItem.Weight))
 							} else {
-								affinityTags1.Weight = types.Int64Null()
+								affinityTags1.Weight = types.Int32Null()
 							}
 							if affinityTagsCount+1 > len(to1.Default.LocalityAwareness.LocalZone.AffinityTags) {
 								to1.Default.LocalityAwareness.LocalZone.AffinityTags = append(to1.Default.LocalityAwareness.LocalZone.AffinityTags, affinityTags1)
@@ -822,7 +822,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 			}
 			to1.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 			if len(toItem.TargetRef.Labels) > 0 {
-				to1.TargetRef.Labels = make(map[string]types.String)
+				to1.TargetRef.Labels = make(map[string]types.String, len(toItem.TargetRef.Labels))
 				for key6, value3 := range toItem.TargetRef.Labels {
 					to1.TargetRef.Labels[key6] = types.StringValue(value3)
 				}
@@ -836,7 +836,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 			}
 			to1.TargetRef.SectionName = types.StringPointerValue(toItem.TargetRef.SectionName)
 			if len(toItem.TargetRef.Tags) > 0 {
-				to1.TargetRef.Tags = make(map[string]types.String)
+				to1.TargetRef.Tags = make(map[string]types.String, len(toItem.TargetRef.Tags))
 				for key7, value4 := range toItem.TargetRef.Tags {
 					to1.TargetRef.Tags[key7] = types.StringValue(value4)
 				}

@@ -30,7 +30,7 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(resp *shared.MeshLis
 					for requirementsCount, requirementsItem := range itemsItem.Constraints.DataplaneProxy.Requirements {
 						var requirements1 tfTypes.Requirements
 						if len(requirementsItem.Tags) > 0 {
-							requirements1.Tags = make(map[string]types.String)
+							requirements1.Tags = make(map[string]types.String, len(requirementsItem.Tags))
 							for key, value := range requirementsItem.Tags {
 								requirements1.Tags[key] = types.StringValue(value)
 							}
@@ -45,7 +45,7 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(resp *shared.MeshLis
 					for restrictionsCount, restrictionsItem := range itemsItem.Constraints.DataplaneProxy.Restrictions {
 						var restrictions1 tfTypes.Requirements
 						if len(restrictionsItem.Tags) > 0 {
-							restrictions1.Tags = make(map[string]types.String)
+							restrictions1.Tags = make(map[string]types.String, len(restrictionsItem.Tags))
 							for key1, value1 := range restrictionsItem.Tags {
 								restrictions1.Tags[key1] = types.StringValue(value1)
 							}
@@ -59,7 +59,7 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(resp *shared.MeshLis
 				}
 			}
 			if len(itemsItem.Labels) > 0 {
-				items1.Labels = make(map[string]types.String)
+				items1.Labels = make(map[string]types.String, len(itemsItem.Labels))
 				for key2, value2 := range itemsItem.Labels {
 					items1.Labels[key2] = types.StringValue(value2)
 				}
@@ -105,7 +105,7 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(resp *shared.MeshLis
 				if itemsItem.MeshServices.Mode == nil {
 					items1.MeshServices.Mode = nil
 				} else {
-					items1.MeshServices.Mode = &tfTypes.Mode{}
+					items1.MeshServices.Mode = &tfTypes.MeshItemMode{}
 					if itemsItem.MeshServices.Mode.Str != nil {
 						items1.MeshServices.Mode.Str = types.StringPointerValue(itemsItem.MeshServices.Mode.Str)
 					}
@@ -156,7 +156,7 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(resp *shared.MeshLis
 							backends3.Conf.PrometheusMetricsBackendConfig.Port = types.Int64PointerValue(backendsItem1.Conf.PrometheusMetricsBackendConfig.Port)
 							backends3.Conf.PrometheusMetricsBackendConfig.SkipMTLS = types.BoolPointerValue(backendsItem1.Conf.PrometheusMetricsBackendConfig.SkipMTLS)
 							if len(backendsItem1.Conf.PrometheusMetricsBackendConfig.Tags) > 0 {
-								backends3.Conf.PrometheusMetricsBackendConfig.Tags = make(map[string]types.String)
+								backends3.Conf.PrometheusMetricsBackendConfig.Tags = make(map[string]types.String, len(backendsItem1.Conf.PrometheusMetricsBackendConfig.Tags))
 								for key3, value3 := range backendsItem1.Conf.PrometheusMetricsBackendConfig.Tags {
 									backends3.Conf.PrometheusMetricsBackendConfig.Tags[key3] = types.StringValue(value3)
 								}
@@ -168,7 +168,7 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(resp *shared.MeshLis
 								if backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode == nil {
 									backends3.Conf.PrometheusMetricsBackendConfig.TLS.Mode = nil
 								} else {
-									backends3.Conf.PrometheusMetricsBackendConfig.TLS.Mode = &tfTypes.Mode{}
+									backends3.Conf.PrometheusMetricsBackendConfig.TLS.Mode = &tfTypes.MeshItemMode{}
 									if backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Str != nil {
 										backends3.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Str = types.StringPointerValue(backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Str)
 									}
@@ -319,7 +319,7 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(resp *shared.MeshLis
 					if backendsItem2.Mode == nil {
 						backends5.Mode = nil
 					} else {
-						backends5.Mode = &tfTypes.Mode{}
+						backends5.Mode = &tfTypes.MeshItemMode{}
 						if backendsItem2.Mode.Str != nil {
 							backends5.Mode.Str = types.StringPointerValue(backendsItem2.Mode.Str)
 						}

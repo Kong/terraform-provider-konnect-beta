@@ -31,13 +31,13 @@ type MeshOPAListDataSource struct {
 type MeshOPAListDataSourceModel struct {
 	CpID   types.String          `tfsdk:"cp_id"`
 	Items  []tfTypes.MeshOPAItem `tfsdk:"items"`
-	Key    types.String          `tfsdk:"key"`
+	Key    types.String          `queryParam:"name=key" tfsdk:"key"`
 	Mesh   types.String          `tfsdk:"mesh"`
 	Next   types.String          `tfsdk:"next"`
-	Offset types.Int64           `tfsdk:"offset"`
-	Size   types.Int64           `tfsdk:"size"`
+	Offset types.Int64           `queryParam:"style=form,explode=true,name=offset" tfsdk:"offset"`
+	Size   types.Int64           `queryParam:"style=form,explode=true,name=size" tfsdk:"size"`
 	Total  types.Number          `tfsdk:"total"`
-	Value  types.String          `tfsdk:"value"`
+	Value  types.String          `queryParam:"name=value" tfsdk:"value"`
 }
 
 // Metadata returns the data source type name.
@@ -145,7 +145,7 @@ func (r *MeshOPAListDataSource) Schema(ctx context.Context, req datasource.Schem
 												"request_body": schema.SingleNestedAttribute{
 													Computed: true,
 													Attributes: map[string]schema.Attribute{
-														"max_size": schema.Int64Attribute{
+														"max_size": schema.Int32Attribute{
 															Computed: true,
 															MarkdownDescription: `MaxSize defines the maximum payload size sent to authorization agent. If the payload` + "\n" +
 																`is larger it will be truncated and there will be a header` + "\n" +
@@ -160,7 +160,7 @@ func (r *MeshOPAListDataSource) Schema(ctx context.Context, req datasource.Schem
 													MarkdownDescription: `RequestBody configuration to apply on the request body sent to the` + "\n" +
 														`authorization agent (if absent, the body is not sent).`,
 												},
-												"status_on_error": schema.Int64Attribute{
+												"status_on_error": schema.Int32Attribute{
 													Computed: true,
 													MarkdownDescription: `StatusOnError is the http status to return when there's a connection` + "\n" +
 														`failure between the dataplane and the authorization agent`,

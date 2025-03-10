@@ -155,7 +155,7 @@ func (r *MeshRetryDataSource) Schema(ctx context.Context, req datasource.SchemaR
 													MarkdownDescription: `BackOff is a configuration of durations which will be used in an exponential` + "\n" +
 														`backoff strategy between retries.`,
 												},
-												"num_retries": schema.Int64Attribute{
+												"num_retries": schema.Int32Attribute{
 													Computed: true,
 													MarkdownDescription: `NumRetries is the number of attempts that will be made on failed (and` + "\n" +
 														`retriable) requests. If not set, the default value is 1.`,
@@ -240,7 +240,7 @@ func (r *MeshRetryDataSource) Schema(ctx context.Context, req datasource.SchemaR
 																MarkdownDescription: `Tags is a map of metadata to match against for selecting the omitted hosts. Required if Type is` + "\n" +
 																	`OmitHostsWithTags`,
 															},
-															"update_frequency": schema.Int64Attribute{
+															"update_frequency": schema.Int32Attribute{
 																Computed: true,
 																MarkdownDescription: `UpdateFrequency is how often the priority load should be updated based on previously attempted priorities.` + "\n" +
 																	`Used for OmitPreviousPriorities.`,
@@ -256,7 +256,7 @@ func (r *MeshRetryDataSource) Schema(ctx context.Context, req datasource.SchemaR
 														`reattempted before giving up, at which point the host that was last selected will` + "\n" +
 														`be routed to. If unspecified, this will default to retrying once.`,
 												},
-												"num_retries": schema.Int64Attribute{
+												"num_retries": schema.Int32Attribute{
 													Computed: true,
 													MarkdownDescription: `NumRetries is the number of attempts that will be made on failed (and` + "\n" +
 														`retriable) requests.  If not set, the default value is 1.`,
@@ -361,7 +361,7 @@ func (r *MeshRetryDataSource) Schema(ctx context.Context, req datasource.SchemaR
 										"tcp": schema.SingleNestedAttribute{
 											Computed: true,
 											Attributes: map[string]schema.Attribute{
-												"max_connect_attempt": schema.Int64Attribute{
+												"max_connect_attempt": schema.Int32Attribute{
 													Computed: true,
 													MarkdownDescription: `MaxConnectAttempt is a maximal amount of TCP connection attempts` + "\n" +
 														`which will be made before giving up`,

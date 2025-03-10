@@ -17,7 +17,7 @@ func (r *MeshTCPRouteDataSourceModel) RefreshFromSharedMeshTCPRouteItem(resp *sh
 			r.CreationTime = types.StringNull()
 		}
 		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String)
+			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
 				r.Labels[key] = types.StringValue(value)
 			}
@@ -35,7 +35,7 @@ func (r *MeshTCPRouteDataSourceModel) RefreshFromSharedMeshTCPRouteItem(resp *sh
 			r.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			r.Spec.TargetRef.Kind = types.StringValue(string(resp.Spec.TargetRef.Kind))
 			if len(resp.Spec.TargetRef.Labels) > 0 {
-				r.Spec.TargetRef.Labels = make(map[string]types.String)
+				r.Spec.TargetRef.Labels = make(map[string]types.String, len(resp.Spec.TargetRef.Labels))
 				for key1, value1 := range resp.Spec.TargetRef.Labels {
 					r.Spec.TargetRef.Labels[key1] = types.StringValue(value1)
 				}
@@ -49,7 +49,7 @@ func (r *MeshTCPRouteDataSourceModel) RefreshFromSharedMeshTCPRouteItem(resp *sh
 			}
 			r.Spec.TargetRef.SectionName = types.StringPointerValue(resp.Spec.TargetRef.SectionName)
 			if len(resp.Spec.TargetRef.Tags) > 0 {
-				r.Spec.TargetRef.Tags = make(map[string]types.String)
+				r.Spec.TargetRef.Tags = make(map[string]types.String, len(resp.Spec.TargetRef.Tags))
 				for key2, value2 := range resp.Spec.TargetRef.Tags {
 					r.Spec.TargetRef.Tags[key2] = types.StringValue(value2)
 				}
@@ -69,7 +69,7 @@ func (r *MeshTCPRouteDataSourceModel) RefreshFromSharedMeshTCPRouteItem(resp *sh
 					var backendRefs1 tfTypes.BackendRefs
 					backendRefs1.Kind = types.StringValue(string(backendRefsItem.Kind))
 					if len(backendRefsItem.Labels) > 0 {
-						backendRefs1.Labels = make(map[string]types.String)
+						backendRefs1.Labels = make(map[string]types.String, len(backendRefsItem.Labels))
 						for key3, value3 := range backendRefsItem.Labels {
 							backendRefs1.Labels[key3] = types.StringValue(value3)
 						}
@@ -78,9 +78,9 @@ func (r *MeshTCPRouteDataSourceModel) RefreshFromSharedMeshTCPRouteItem(resp *sh
 					backendRefs1.Name = types.StringPointerValue(backendRefsItem.Name)
 					backendRefs1.Namespace = types.StringPointerValue(backendRefsItem.Namespace)
 					if backendRefsItem.Port != nil {
-						backendRefs1.Port = types.Int64Value(int64(*backendRefsItem.Port))
+						backendRefs1.Port = types.Int32Value(int32(*backendRefsItem.Port))
 					} else {
-						backendRefs1.Port = types.Int64Null()
+						backendRefs1.Port = types.Int32Null()
 					}
 					backendRefs1.ProxyTypes = make([]types.String, 0, len(backendRefsItem.ProxyTypes))
 					for _, v := range backendRefsItem.ProxyTypes {
@@ -88,7 +88,7 @@ func (r *MeshTCPRouteDataSourceModel) RefreshFromSharedMeshTCPRouteItem(resp *sh
 					}
 					backendRefs1.SectionName = types.StringPointerValue(backendRefsItem.SectionName)
 					if len(backendRefsItem.Tags) > 0 {
-						backendRefs1.Tags = make(map[string]types.String)
+						backendRefs1.Tags = make(map[string]types.String, len(backendRefsItem.Tags))
 						for key4, value4 := range backendRefsItem.Tags {
 							backendRefs1.Tags[key4] = types.StringValue(value4)
 						}
@@ -117,7 +117,7 @@ func (r *MeshTCPRouteDataSourceModel) RefreshFromSharedMeshTCPRouteItem(resp *sh
 			}
 			to1.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 			if len(toItem.TargetRef.Labels) > 0 {
-				to1.TargetRef.Labels = make(map[string]types.String)
+				to1.TargetRef.Labels = make(map[string]types.String, len(toItem.TargetRef.Labels))
 				for key5, value5 := range toItem.TargetRef.Labels {
 					to1.TargetRef.Labels[key5] = types.StringValue(value5)
 				}
@@ -131,7 +131,7 @@ func (r *MeshTCPRouteDataSourceModel) RefreshFromSharedMeshTCPRouteItem(resp *sh
 			}
 			to1.TargetRef.SectionName = types.StringPointerValue(toItem.TargetRef.SectionName)
 			if len(toItem.TargetRef.Tags) > 0 {
-				to1.TargetRef.Tags = make(map[string]types.String)
+				to1.TargetRef.Tags = make(map[string]types.String, len(toItem.TargetRef.Tags))
 				for key6, value6 := range toItem.TargetRef.Tags {
 					to1.TargetRef.Tags[key6] = types.StringValue(value6)
 				}

@@ -24,7 +24,7 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
-	speakeasy_int64validators "github.com/kong/terraform-provider-konnect-beta/internal/validators/int64validators"
+	speakeasy_int32validators "github.com/kong/terraform-provider-konnect-beta/internal/validators/int32validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
 )
@@ -140,11 +140,11 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 													"abort": schema.SingleNestedAttribute{
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
-															"http_status": schema.Int64Attribute{
+															"http_status": schema.Int32Attribute{
 																Optional:    true,
 																Description: `HTTP status code which will be returned to source side. Not Null`,
-																Validators: []validator.Int64{
-																	speakeasy_int64validators.NotNull(),
+																Validators: []validator.Int32{
+																	speakeasy_int32validators.NotNull(),
 																},
 															},
 															"percentage": schema.SingleNestedAttribute{
@@ -438,11 +438,11 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 													"abort": schema.SingleNestedAttribute{
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
-															"http_status": schema.Int64Attribute{
+															"http_status": schema.Int32Attribute{
 																Optional:    true,
 																Description: `HTTP status code which will be returned to source side. Not Null`,
-																Validators: []validator.Int64{
-																	speakeasy_int64validators.NotNull(),
+																Validators: []validator.Int32{
+																	speakeasy_int32validators.NotNull(),
 																},
 															},
 															"percentage": schema.SingleNestedAttribute{

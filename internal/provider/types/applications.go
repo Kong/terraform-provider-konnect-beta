@@ -8,5 +8,5 @@ type Applications struct {
 	Address types.String `tfsdk:"address"`
 	Name    types.String `tfsdk:"name"`
 	Path    types.String `tfsdk:"path"`
-	Port    types.Int64  `tfsdk:"port"`
+	Port    types.Int32  `tfsdk:"port"`
 }

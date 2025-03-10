@@ -110,7 +110,7 @@ func (r *MeshRetryResourceModel) ToSharedMeshRetryItemInput() *shared.MeshRetryI
 				}
 				numRetries := new(int)
 				if !toItem.Default.Grpc.NumRetries.IsUnknown() && !toItem.Default.Grpc.NumRetries.IsNull() {
-					*numRetries = int(toItem.Default.Grpc.NumRetries.ValueInt64())
+					*numRetries = int(toItem.Default.Grpc.NumRetries.ValueInt32())
 				} else {
 					numRetries = nil
 				}
@@ -189,7 +189,7 @@ func (r *MeshRetryResourceModel) ToSharedMeshRetryItemInput() *shared.MeshRetryI
 					}
 					updateFrequency := new(int)
 					if !hostSelectionItem.UpdateFrequency.IsUnknown() && !hostSelectionItem.UpdateFrequency.IsNull() {
-						*updateFrequency = int(hostSelectionItem.UpdateFrequency.ValueInt64())
+						*updateFrequency = int(hostSelectionItem.UpdateFrequency.ValueInt32())
 					} else {
 						updateFrequency = nil
 					}
@@ -207,7 +207,7 @@ func (r *MeshRetryResourceModel) ToSharedMeshRetryItemInput() *shared.MeshRetryI
 				}
 				numRetries1 := new(int)
 				if !toItem.Default.HTTP.NumRetries.IsUnknown() && !toItem.Default.HTTP.NumRetries.IsNull() {
-					*numRetries1 = int(toItem.Default.HTTP.NumRetries.ValueInt64())
+					*numRetries1 = int(toItem.Default.HTTP.NumRetries.ValueInt32())
 				} else {
 					numRetries1 = nil
 				}
@@ -307,7 +307,7 @@ func (r *MeshRetryResourceModel) ToSharedMeshRetryItemInput() *shared.MeshRetryI
 			if toItem.Default.TCP != nil {
 				maxConnectAttempt := new(int)
 				if !toItem.Default.TCP.MaxConnectAttempt.IsUnknown() && !toItem.Default.TCP.MaxConnectAttempt.IsNull() {
-					*maxConnectAttempt = int(toItem.Default.TCP.MaxConnectAttempt.ValueInt64())
+					*maxConnectAttempt = int(toItem.Default.TCP.MaxConnectAttempt.ValueInt32())
 				} else {
 					maxConnectAttempt = nil
 				}
@@ -410,7 +410,7 @@ func (r *MeshRetryResourceModel) RefreshFromSharedMeshRetryItem(resp *shared.Mes
 			r.CreationTime = types.StringNull()
 		}
 		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String)
+			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
 				r.Labels[key] = types.StringValue(value)
 			}
@@ -428,7 +428,7 @@ func (r *MeshRetryResourceModel) RefreshFromSharedMeshRetryItem(resp *shared.Mes
 			r.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			r.Spec.TargetRef.Kind = types.StringValue(string(resp.Spec.TargetRef.Kind))
 			if len(resp.Spec.TargetRef.Labels) > 0 {
-				r.Spec.TargetRef.Labels = make(map[string]types.String)
+				r.Spec.TargetRef.Labels = make(map[string]types.String, len(resp.Spec.TargetRef.Labels))
 				for key1, value1 := range resp.Spec.TargetRef.Labels {
 					r.Spec.TargetRef.Labels[key1] = types.StringValue(value1)
 				}
@@ -442,7 +442,7 @@ func (r *MeshRetryResourceModel) RefreshFromSharedMeshRetryItem(resp *shared.Mes
 			}
 			r.Spec.TargetRef.SectionName = types.StringPointerValue(resp.Spec.TargetRef.SectionName)
 			if len(resp.Spec.TargetRef.Tags) > 0 {
-				r.Spec.TargetRef.Tags = make(map[string]types.String)
+				r.Spec.TargetRef.Tags = make(map[string]types.String, len(resp.Spec.TargetRef.Tags))
 				for key2, value2 := range resp.Spec.TargetRef.Tags {
 					r.Spec.TargetRef.Tags[key2] = types.StringValue(value2)
 				}
@@ -470,9 +470,9 @@ func (r *MeshRetryResourceModel) RefreshFromSharedMeshRetryItem(resp *shared.Mes
 						to1.Default.Grpc.BackOff.MaxInterval = types.StringPointerValue(toItem.Default.Grpc.BackOff.MaxInterval)
 					}
 					if toItem.Default.Grpc.NumRetries != nil {
-						to1.Default.Grpc.NumRetries = types.Int64Value(int64(*toItem.Default.Grpc.NumRetries))
+						to1.Default.Grpc.NumRetries = types.Int32Value(int32(*toItem.Default.Grpc.NumRetries))
 					} else {
-						to1.Default.Grpc.NumRetries = types.Int64Null()
+						to1.Default.Grpc.NumRetries = types.Int32Null()
 					}
 					to1.Default.Grpc.PerTryTimeout = types.StringPointerValue(toItem.Default.Grpc.PerTryTimeout)
 					if toItem.Default.Grpc.RateLimitedBackOff == nil {
@@ -514,15 +514,15 @@ func (r *MeshRetryResourceModel) RefreshFromSharedMeshRetryItem(resp *shared.Mes
 						var hostSelection1 tfTypes.HostSelection
 						hostSelection1.Predicate = types.StringValue(string(hostSelectionItem.Predicate))
 						if len(hostSelectionItem.Tags) > 0 {
-							hostSelection1.Tags = make(map[string]types.String)
+							hostSelection1.Tags = make(map[string]types.String, len(hostSelectionItem.Tags))
 							for key3, value3 := range hostSelectionItem.Tags {
 								hostSelection1.Tags[key3] = types.StringValue(value3)
 							}
 						}
 						if hostSelectionItem.UpdateFrequency != nil {
-							hostSelection1.UpdateFrequency = types.Int64Value(int64(*hostSelectionItem.UpdateFrequency))
+							hostSelection1.UpdateFrequency = types.Int32Value(int32(*hostSelectionItem.UpdateFrequency))
 						} else {
-							hostSelection1.UpdateFrequency = types.Int64Null()
+							hostSelection1.UpdateFrequency = types.Int32Null()
 						}
 						if hostSelectionCount+1 > len(to1.Default.HTTP.HostSelection) {
 							to1.Default.HTTP.HostSelection = append(to1.Default.HTTP.HostSelection, hostSelection1)
@@ -534,9 +534,9 @@ func (r *MeshRetryResourceModel) RefreshFromSharedMeshRetryItem(resp *shared.Mes
 					}
 					to1.Default.HTTP.HostSelectionMaxAttempts = types.Int64PointerValue(toItem.Default.HTTP.HostSelectionMaxAttempts)
 					if toItem.Default.HTTP.NumRetries != nil {
-						to1.Default.HTTP.NumRetries = types.Int64Value(int64(*toItem.Default.HTTP.NumRetries))
+						to1.Default.HTTP.NumRetries = types.Int32Value(int32(*toItem.Default.HTTP.NumRetries))
 					} else {
-						to1.Default.HTTP.NumRetries = types.Int64Null()
+						to1.Default.HTTP.NumRetries = types.Int32Null()
 					}
 					to1.Default.HTTP.PerTryTimeout = types.StringPointerValue(toItem.Default.HTTP.PerTryTimeout)
 					if toItem.Default.HTTP.RateLimitedBackOff == nil {
@@ -603,15 +603,15 @@ func (r *MeshRetryResourceModel) RefreshFromSharedMeshRetryItem(resp *shared.Mes
 				} else {
 					to1.Default.TCP = &tfTypes.MeshRetryItemTCP{}
 					if toItem.Default.TCP.MaxConnectAttempt != nil {
-						to1.Default.TCP.MaxConnectAttempt = types.Int64Value(int64(*toItem.Default.TCP.MaxConnectAttempt))
+						to1.Default.TCP.MaxConnectAttempt = types.Int32Value(int32(*toItem.Default.TCP.MaxConnectAttempt))
 					} else {
-						to1.Default.TCP.MaxConnectAttempt = types.Int64Null()
+						to1.Default.TCP.MaxConnectAttempt = types.Int32Null()
 					}
 				}
 			}
 			to1.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 			if len(toItem.TargetRef.Labels) > 0 {
-				to1.TargetRef.Labels = make(map[string]types.String)
+				to1.TargetRef.Labels = make(map[string]types.String, len(toItem.TargetRef.Labels))
 				for key4, value6 := range toItem.TargetRef.Labels {
 					to1.TargetRef.Labels[key4] = types.StringValue(value6)
 				}
@@ -625,7 +625,7 @@ func (r *MeshRetryResourceModel) RefreshFromSharedMeshRetryItem(resp *shared.Mes
 			}
 			to1.TargetRef.SectionName = types.StringPointerValue(toItem.TargetRef.SectionName)
 			if len(toItem.TargetRef.Tags) > 0 {
-				to1.TargetRef.Tags = make(map[string]types.String)
+				to1.TargetRef.Tags = make(map[string]types.String, len(toItem.TargetRef.Tags))
 				for key5, value7 := range toItem.TargetRef.Tags {
 					to1.TargetRef.Tags[key5] = types.StringValue(value7)
 				}

@@ -6,5 +6,5 @@ import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshGlobalRateLimitItemSpecFromRequestRate struct {
 	Interval types.String `tfsdk:"interval"`
-	Num      types.Int64  `tfsdk:"num"`
+	Num      types.Int32  `tfsdk:"num"`
 }

@@ -26,13 +26,6 @@ func newMeshMultiZoneService(sdkConfig sdkConfiguration) *MeshMultiZoneService {
 
 // GetMeshMultiZoneService - Returns MeshMultiZoneService entity
 func (s *MeshMultiZoneService) GetMeshMultiZoneService(ctx context.Context, request operations.GetMeshMultiZoneServiceRequest, opts ...operations.Option) (*operations.GetMeshMultiZoneServiceResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getMeshMultiZoneService",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -54,6 +47,14 @@ func (s *MeshMultiZoneService) GetMeshMultiZoneService(ctx context.Context, requ
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmultizoneservices/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getMeshMultiZoneService",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -179,13 +180,6 @@ func (s *MeshMultiZoneService) GetMeshMultiZoneService(ctx context.Context, requ
 
 // DeleteMeshMultiZoneService - Deletes MeshMultiZoneService entity
 func (s *MeshMultiZoneService) DeleteMeshMultiZoneService(ctx context.Context, request operations.DeleteMeshMultiZoneServiceRequest, opts ...operations.Option) (*operations.DeleteMeshMultiZoneServiceResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "deleteMeshMultiZoneService",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -207,6 +201,14 @@ func (s *MeshMultiZoneService) DeleteMeshMultiZoneService(ctx context.Context, r
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmultizoneservices/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "deleteMeshMultiZoneService",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -332,13 +334,6 @@ func (s *MeshMultiZoneService) DeleteMeshMultiZoneService(ctx context.Context, r
 
 // CreateMeshMultiZoneService - Creates or Updates MeshMultiZoneService entity
 func (s *MeshMultiZoneService) CreateMeshMultiZoneService(ctx context.Context, request operations.CreateMeshMultiZoneServiceRequest, opts ...operations.Option) (*operations.CreateMeshMultiZoneServiceResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "createMeshMultiZoneService",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -361,6 +356,13 @@ func (s *MeshMultiZoneService) CreateMeshMultiZoneService(ctx context.Context, r
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "createMeshMultiZoneService",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MeshMultiZoneServiceItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -466,13 +468,6 @@ func (s *MeshMultiZoneService) CreateMeshMultiZoneService(ctx context.Context, r
 
 // UpdateMeshMultiZoneService - Creates or Updates MeshMultiZoneService entity
 func (s *MeshMultiZoneService) UpdateMeshMultiZoneService(ctx context.Context, request operations.UpdateMeshMultiZoneServiceRequest, opts ...operations.Option) (*operations.UpdateMeshMultiZoneServiceResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "updateMeshMultiZoneService",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -495,6 +490,13 @@ func (s *MeshMultiZoneService) UpdateMeshMultiZoneService(ctx context.Context, r
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "updateMeshMultiZoneService",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MeshMultiZoneServiceItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -600,13 +602,6 @@ func (s *MeshMultiZoneService) UpdateMeshMultiZoneService(ctx context.Context, r
 
 // GetMeshMultiZoneServiceList - Returns a list of MeshMultiZoneService in the mesh.
 func (s *MeshMultiZoneService) GetMeshMultiZoneServiceList(ctx context.Context, request operations.GetMeshMultiZoneServiceListRequest, opts ...operations.Option) (*operations.GetMeshMultiZoneServiceListResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getMeshMultiZoneServiceList",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -627,6 +622,14 @@ func (s *MeshMultiZoneService) GetMeshMultiZoneServiceList(ctx context.Context, 
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmultizoneservices", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getMeshMultiZoneServiceList",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
