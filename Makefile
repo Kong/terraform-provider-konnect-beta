@@ -3,13 +3,13 @@
 all: speakeasy
 
 speakeasy: check-speakeasy
+	@rm -rf examples
 	speakeasy run --skip-versioning --output console --minimal
 	@go mod tidy
 	@go generate .
-	@git clean -fd docs > /dev/null
 	@git checkout -- README.md
-	@rm USAGE.md
-	@find internal/provider -type f -name "*_resource.go" | xargs sed -i '' 's/resp.TypeName = req.ProviderTypeName + "/resp.TypeName = "konnect/'
+	@git clean -fd examples/data-sources docs/data-sources examples/README.md USAGE.md > /dev/null
+	@bash ./rename-provider.sh
 
 FILES=$(shell find internal/provider -type f | grep data_source | grep -v portallist | grep -v cloudgatewayprovideraccountlist)
 remove-data-sources:
