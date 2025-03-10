@@ -24,7 +24,7 @@ func (r *MeshRateLimitListDataSourceModel) RefreshFromSharedMeshRateLimitList(re
 				items1.CreationTime = types.StringNull()
 			}
 			if len(itemsItem.Labels) > 0 {
-				items1.Labels = make(map[string]types.String)
+				items1.Labels = make(map[string]types.String, len(itemsItem.Labels))
 				for key, value := range itemsItem.Labels {
 					items1.Labels[key] = types.StringValue(value)
 				}
@@ -86,9 +86,9 @@ func (r *MeshRateLimitListDataSourceModel) RefreshFromSharedMeshRateLimitList(re
 									}
 								}
 								if fromItem.Default.Local.HTTP.OnRateLimit.Status != nil {
-									from1.Default.Local.HTTP.OnRateLimit.Status = types.Int64Value(int64(*fromItem.Default.Local.HTTP.OnRateLimit.Status))
+									from1.Default.Local.HTTP.OnRateLimit.Status = types.Int32Value(int32(*fromItem.Default.Local.HTTP.OnRateLimit.Status))
 								} else {
-									from1.Default.Local.HTTP.OnRateLimit.Status = types.Int64Null()
+									from1.Default.Local.HTTP.OnRateLimit.Status = types.Int32Null()
 								}
 							}
 							if fromItem.Default.Local.HTTP.RequestRate == nil {
@@ -96,7 +96,7 @@ func (r *MeshRateLimitListDataSourceModel) RefreshFromSharedMeshRateLimitList(re
 							} else {
 								from1.Default.Local.HTTP.RequestRate = &tfTypes.MeshGlobalRateLimitItemSpecFromRequestRate{}
 								from1.Default.Local.HTTP.RequestRate.Interval = types.StringValue(fromItem.Default.Local.HTTP.RequestRate.Interval)
-								from1.Default.Local.HTTP.RequestRate.Num = types.Int64Value(int64(fromItem.Default.Local.HTTP.RequestRate.Num))
+								from1.Default.Local.HTTP.RequestRate.Num = types.Int32Value(int32(fromItem.Default.Local.HTTP.RequestRate.Num))
 							}
 						}
 						if fromItem.Default.Local.TCP == nil {
@@ -108,7 +108,7 @@ func (r *MeshRateLimitListDataSourceModel) RefreshFromSharedMeshRateLimitList(re
 							} else {
 								from1.Default.Local.TCP.ConnectionRate = &tfTypes.MeshGlobalRateLimitItemSpecFromRequestRate{}
 								from1.Default.Local.TCP.ConnectionRate.Interval = types.StringValue(fromItem.Default.Local.TCP.ConnectionRate.Interval)
-								from1.Default.Local.TCP.ConnectionRate.Num = types.Int64Value(int64(fromItem.Default.Local.TCP.ConnectionRate.Num))
+								from1.Default.Local.TCP.ConnectionRate.Num = types.Int32Value(int32(fromItem.Default.Local.TCP.ConnectionRate.Num))
 							}
 							from1.Default.Local.TCP.Disabled = types.BoolPointerValue(fromItem.Default.Local.TCP.Disabled)
 						}
@@ -116,7 +116,7 @@ func (r *MeshRateLimitListDataSourceModel) RefreshFromSharedMeshRateLimitList(re
 				}
 				from1.TargetRef.Kind = types.StringValue(string(fromItem.TargetRef.Kind))
 				if len(fromItem.TargetRef.Labels) > 0 {
-					from1.TargetRef.Labels = make(map[string]types.String)
+					from1.TargetRef.Labels = make(map[string]types.String, len(fromItem.TargetRef.Labels))
 					for key1, value3 := range fromItem.TargetRef.Labels {
 						from1.TargetRef.Labels[key1] = types.StringValue(value3)
 					}
@@ -130,7 +130,7 @@ func (r *MeshRateLimitListDataSourceModel) RefreshFromSharedMeshRateLimitList(re
 				}
 				from1.TargetRef.SectionName = types.StringPointerValue(fromItem.TargetRef.SectionName)
 				if len(fromItem.TargetRef.Tags) > 0 {
-					from1.TargetRef.Tags = make(map[string]types.String)
+					from1.TargetRef.Tags = make(map[string]types.String, len(fromItem.TargetRef.Tags))
 					for key2, value4 := range fromItem.TargetRef.Tags {
 						from1.TargetRef.Tags[key2] = types.StringValue(value4)
 					}
@@ -192,9 +192,9 @@ func (r *MeshRateLimitListDataSourceModel) RefreshFromSharedMeshRateLimitList(re
 									}
 								}
 								if rulesItem.Default.Local.HTTP.OnRateLimit.Status != nil {
-									rules1.Default.Local.HTTP.OnRateLimit.Status = types.Int64Value(int64(*rulesItem.Default.Local.HTTP.OnRateLimit.Status))
+									rules1.Default.Local.HTTP.OnRateLimit.Status = types.Int32Value(int32(*rulesItem.Default.Local.HTTP.OnRateLimit.Status))
 								} else {
-									rules1.Default.Local.HTTP.OnRateLimit.Status = types.Int64Null()
+									rules1.Default.Local.HTTP.OnRateLimit.Status = types.Int32Null()
 								}
 							}
 							if rulesItem.Default.Local.HTTP.RequestRate == nil {
@@ -202,7 +202,7 @@ func (r *MeshRateLimitListDataSourceModel) RefreshFromSharedMeshRateLimitList(re
 							} else {
 								rules1.Default.Local.HTTP.RequestRate = &tfTypes.MeshGlobalRateLimitItemSpecFromRequestRate{}
 								rules1.Default.Local.HTTP.RequestRate.Interval = types.StringValue(rulesItem.Default.Local.HTTP.RequestRate.Interval)
-								rules1.Default.Local.HTTP.RequestRate.Num = types.Int64Value(int64(rulesItem.Default.Local.HTTP.RequestRate.Num))
+								rules1.Default.Local.HTTP.RequestRate.Num = types.Int32Value(int32(rulesItem.Default.Local.HTTP.RequestRate.Num))
 							}
 						}
 						if rulesItem.Default.Local.TCP == nil {
@@ -214,7 +214,7 @@ func (r *MeshRateLimitListDataSourceModel) RefreshFromSharedMeshRateLimitList(re
 							} else {
 								rules1.Default.Local.TCP.ConnectionRate = &tfTypes.MeshGlobalRateLimitItemSpecFromRequestRate{}
 								rules1.Default.Local.TCP.ConnectionRate.Interval = types.StringValue(rulesItem.Default.Local.TCP.ConnectionRate.Interval)
-								rules1.Default.Local.TCP.ConnectionRate.Num = types.Int64Value(int64(rulesItem.Default.Local.TCP.ConnectionRate.Num))
+								rules1.Default.Local.TCP.ConnectionRate.Num = types.Int32Value(int32(rulesItem.Default.Local.TCP.ConnectionRate.Num))
 							}
 							rules1.Default.Local.TCP.Disabled = types.BoolPointerValue(rulesItem.Default.Local.TCP.Disabled)
 						}
@@ -232,7 +232,7 @@ func (r *MeshRateLimitListDataSourceModel) RefreshFromSharedMeshRateLimitList(re
 				items1.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 				items1.Spec.TargetRef.Kind = types.StringValue(string(itemsItem.Spec.TargetRef.Kind))
 				if len(itemsItem.Spec.TargetRef.Labels) > 0 {
-					items1.Spec.TargetRef.Labels = make(map[string]types.String)
+					items1.Spec.TargetRef.Labels = make(map[string]types.String, len(itemsItem.Spec.TargetRef.Labels))
 					for key3, value7 := range itemsItem.Spec.TargetRef.Labels {
 						items1.Spec.TargetRef.Labels[key3] = types.StringValue(value7)
 					}
@@ -246,7 +246,7 @@ func (r *MeshRateLimitListDataSourceModel) RefreshFromSharedMeshRateLimitList(re
 				}
 				items1.Spec.TargetRef.SectionName = types.StringPointerValue(itemsItem.Spec.TargetRef.SectionName)
 				if len(itemsItem.Spec.TargetRef.Tags) > 0 {
-					items1.Spec.TargetRef.Tags = make(map[string]types.String)
+					items1.Spec.TargetRef.Tags = make(map[string]types.String, len(itemsItem.Spec.TargetRef.Tags))
 					for key4, value8 := range itemsItem.Spec.TargetRef.Tags {
 						items1.Spec.TargetRef.Tags[key4] = types.StringValue(value8)
 					}
@@ -302,9 +302,9 @@ func (r *MeshRateLimitListDataSourceModel) RefreshFromSharedMeshRateLimitList(re
 									}
 								}
 								if toItem.Default.Local.HTTP.OnRateLimit.Status != nil {
-									to1.Default.Local.HTTP.OnRateLimit.Status = types.Int64Value(int64(*toItem.Default.Local.HTTP.OnRateLimit.Status))
+									to1.Default.Local.HTTP.OnRateLimit.Status = types.Int32Value(int32(*toItem.Default.Local.HTTP.OnRateLimit.Status))
 								} else {
-									to1.Default.Local.HTTP.OnRateLimit.Status = types.Int64Null()
+									to1.Default.Local.HTTP.OnRateLimit.Status = types.Int32Null()
 								}
 							}
 							if toItem.Default.Local.HTTP.RequestRate == nil {
@@ -312,7 +312,7 @@ func (r *MeshRateLimitListDataSourceModel) RefreshFromSharedMeshRateLimitList(re
 							} else {
 								to1.Default.Local.HTTP.RequestRate = &tfTypes.MeshGlobalRateLimitItemSpecFromRequestRate{}
 								to1.Default.Local.HTTP.RequestRate.Interval = types.StringValue(toItem.Default.Local.HTTP.RequestRate.Interval)
-								to1.Default.Local.HTTP.RequestRate.Num = types.Int64Value(int64(toItem.Default.Local.HTTP.RequestRate.Num))
+								to1.Default.Local.HTTP.RequestRate.Num = types.Int32Value(int32(toItem.Default.Local.HTTP.RequestRate.Num))
 							}
 						}
 						if toItem.Default.Local.TCP == nil {
@@ -324,7 +324,7 @@ func (r *MeshRateLimitListDataSourceModel) RefreshFromSharedMeshRateLimitList(re
 							} else {
 								to1.Default.Local.TCP.ConnectionRate = &tfTypes.MeshGlobalRateLimitItemSpecFromRequestRate{}
 								to1.Default.Local.TCP.ConnectionRate.Interval = types.StringValue(toItem.Default.Local.TCP.ConnectionRate.Interval)
-								to1.Default.Local.TCP.ConnectionRate.Num = types.Int64Value(int64(toItem.Default.Local.TCP.ConnectionRate.Num))
+								to1.Default.Local.TCP.ConnectionRate.Num = types.Int32Value(int32(toItem.Default.Local.TCP.ConnectionRate.Num))
 							}
 							to1.Default.Local.TCP.Disabled = types.BoolPointerValue(toItem.Default.Local.TCP.Disabled)
 						}
@@ -332,7 +332,7 @@ func (r *MeshRateLimitListDataSourceModel) RefreshFromSharedMeshRateLimitList(re
 				}
 				to1.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 				if len(toItem.TargetRef.Labels) > 0 {
-					to1.TargetRef.Labels = make(map[string]types.String)
+					to1.TargetRef.Labels = make(map[string]types.String, len(toItem.TargetRef.Labels))
 					for key5, value11 := range toItem.TargetRef.Labels {
 						to1.TargetRef.Labels[key5] = types.StringValue(value11)
 					}
@@ -346,7 +346,7 @@ func (r *MeshRateLimitListDataSourceModel) RefreshFromSharedMeshRateLimitList(re
 				}
 				to1.TargetRef.SectionName = types.StringPointerValue(toItem.TargetRef.SectionName)
 				if len(toItem.TargetRef.Tags) > 0 {
-					to1.TargetRef.Tags = make(map[string]types.String)
+					to1.TargetRef.Tags = make(map[string]types.String, len(toItem.TargetRef.Tags))
 					for key6, value12 := range toItem.TargetRef.Tags {
 						to1.TargetRef.Tags[key6] = types.StringValue(value12)
 					}

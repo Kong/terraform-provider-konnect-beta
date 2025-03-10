@@ -7,6 +7,6 @@ import "github.com/hashicorp/terraform-plugin-framework/types"
 type RingHash struct {
 	HashFunction types.String   `tfsdk:"hash_function"`
 	HashPolicies []HashPolicies `tfsdk:"hash_policies"`
-	MaxRingSize  types.Int64    `tfsdk:"max_ring_size"`
-	MinRingSize  types.Int64    `tfsdk:"min_ring_size"`
+	MaxRingSize  types.Int32    `tfsdk:"max_ring_size"`
+	MinRingSize  types.Int32    `tfsdk:"min_ring_size"`
 }

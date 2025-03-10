@@ -166,7 +166,7 @@ func (r *MeshTCPRouteDataSource) Schema(ctx context.Context, req datasource.Sche
 																	MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 																		`will be targeted.`,
 																},
-																"port": schema.Int64Attribute{
+																"port": schema.Int32Attribute{
 																	Computed:    true,
 																	Description: `Port is only supported when this ref refers to a real MeshService object`,
 																},

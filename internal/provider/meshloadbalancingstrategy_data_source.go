@@ -156,7 +156,7 @@ func (r *MeshLoadBalancingStrategyDataSource) Schema(ctx context.Context, req da
 																`value, the more forcefully it reduces the load balancing weight of endpoints that are` + "\n" +
 																`actively serving requests.`,
 														},
-														"choice_count": schema.Int64Attribute{
+														"choice_count": schema.Int32Attribute{
 															Computed: true,
 															MarkdownDescription: `ChoiceCount is the number of random healthy hosts from which the host with` + "\n" +
 																`the fewest active requests will be chosen. Defaults to 2 so that Envoy performs` + "\n" +
@@ -247,7 +247,7 @@ func (r *MeshLoadBalancingStrategyDataSource) Schema(ctx context.Context, req da
 																`set to true, and there is already a hash generated, the hash is returned immediately,` + "\n" +
 																`ignoring the rest of the hash policy list.`,
 														},
-														"table_size": schema.Int64Attribute{
+														"table_size": schema.Int32Attribute{
 															Computed: true,
 															MarkdownDescription: `The table size for Maglev hashing. Maglev aims for “minimal disruption”` + "\n" +
 																`rather than an absolute guarantee. Minimal disruption means that when` + "\n" +
@@ -353,12 +353,12 @@ func (r *MeshLoadBalancingStrategyDataSource) Schema(ctx context.Context, req da
 																`set to true, and there is already a hash generated, the hash is returned immediately,` + "\n" +
 																`ignoring the rest of the hash policy list.`,
 														},
-														"max_ring_size": schema.Int64Attribute{
+														"max_ring_size": schema.Int32Attribute{
 															Computed: true,
 															MarkdownDescription: `Maximum hash ring size. Defaults to 8M entries, and limited to 8M entries,` + "\n" +
 																`but can be lowered to further constrain resource use.`,
 														},
-														"min_ring_size": schema.Int64Attribute{
+														"min_ring_size": schema.Int32Attribute{
 															Computed: true,
 															MarkdownDescription: `Minimum hash ring size. The larger the ring is (that is,` + "\n" +
 																`the more hashes there are for each provided host) the better the request distribution` + "\n" +
@@ -460,7 +460,7 @@ func (r *MeshLoadBalancingStrategyDataSource) Schema(ctx context.Context, req da
 																		Computed:    true,
 																		Description: `Key defines tag for which affinity is configured`,
 																	},
-																	"weight": schema.Int64Attribute{
+																	"weight": schema.Int32Attribute{
 																		Computed: true,
 																		MarkdownDescription: `Weight of the tag used for load balancing. The bigger the weight the bigger the priority.` + "\n" +
 																			`Percentage of local traffic load balanced to tag is computed by dividing weight by sum of weights from all tags.` + "\n" +

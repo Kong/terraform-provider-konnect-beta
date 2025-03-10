@@ -19,602 +19,1050 @@ security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
   - konnectAccessToken: []
-  - clientToken: []
 tags:
-  - name: Roles
-  - name: Team Membership
-  - name: Teams
-  - name: System Accounts
-  - name: System Accounts - Access Tokens
-  - name: System Accounts - Roles
-  - name: System Accounts - Team Membership
+  - name: Portals
+    description: APIs related to configuration of Konnect Developer Portals.
+  - name: Portal Custom Domains
+    description: APIs related to configuration of Konnect Developer Portals custom domains.
+  - name: Portal Customization
+    description: APIs related to customization of Konnect Developer Portals.
+  - name: Portal Auth Settings
+    description: APIs related to configuration of Konnect Developer Portal auth settings.
+  - name: Portal Teams
+    description: APIs related to configuration of Konnect Developer Portal developer teams.
+  - name: Pages
+    description: APIs related to Konnect Developer Portal Custom Pages.
+  - name: Snippets
+    description: APIs related to Konnect Developer Portal Custom Snippets.
+  - name: API
+  - name: API Documentation
+  - name: API Specification
+  - name: API Publication
+  - name: API Implementation
   - name: Mesh
 paths:
-  /v3/teams:
-    parameters: []
+  /v3/portals:
     post:
-      x-speakeasy-entity-operation: Team#create
+      x-speakeasy-entity-operation: Portal#create
+      x-unstable: true
+      summary: Create Portal
+      description: >-
+        Creates a new developer portal scoped in this region for this
+        organization.
+      operationId: create-portal
+      tags:
+        - Portals
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePortal'
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /v3/portals/{portalId}:
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+        name: portalId
+        in: path
+        required: true
+        description: ID of the portal.
+        x-speakeasy-match: id
+    get:
+      x-speakeasy-entity-operation: Portal#read
+      x-unstable: true
+      summary: Fetch Portal
+      description: >-
+        Returns the configuration for a single developer portal, including  the
+        current visibility, access, and domain settings.
+      operationId: get-portal
+      tags:
+        - Portals
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      x-speakeasy-entity-operation: Portal#update
+      x-unstable: true
+      summary: Update Portal
+      description: >-
+        Updates the configuration for a single portal including the visibility,
+        access, and custom domain settings.
+      operationId: update-portal
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortal'
+      tags:
+        - Portals
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+    delete:
+      x-speakeasy-entity-operation: Portal#delete
+      x-unstable: true
+      summary: Delete Portal
+      parameters:
+        - name: force
+          in: query
+          description: >-
+            [Overlay change] Always cascade delete when being managed with
+            declarative configuation
+          schema:
+            type: string
+            const: 'true'
+          required: true
+      description: Deletes a single portal, along with all related entities.
+      operationId: delete-portal
+      tags:
+        - Portals
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v3/portals/{portalId}/custom-domain:
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+    get:
+      x-speakeasy-entity-operation: PortalCustomDomain#read
+      x-unstable: true
+      summary: Get Custom Domain
+      description: Get the custom domain associated to the portal.
+      operationId: get-portal-custom-domain
+      tags:
+        - Portal Custom Domains
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalCustomDomain'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      x-speakeasy-entity-operation: PortalCustomDomain#create
+      x-unstable: true
+      summary: Create Custom Domain
+      description: >-
+        Creates the custom domain associated with the portal. Only one custom
+        domain can be associated with a portal at a time.
+      operationId: create-portal-custom-domain
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePortalCustomDomain'
+      tags:
+        - Portal Custom Domains
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalCustomDomain'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      x-speakeasy-entity-operation: PortalCustomDomain#update
+      x-unstable: true
+      summary: Enable or Disable Domain
+      description: Updates the portal domain associated with the portal.
+      operationId: update-portal-custom-domain
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortalCustomDomain'
+      tags:
+        - Portal Custom Domains
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalCustomDomain'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    delete:
+      x-speakeasy-entity-operation: PortalCustomDomain#delete
+      x-unstable: true
+      operationId: delete-portal-custom-domain
+      summary: Remove Domain
+      description: Deletes the custom domain associated with the portal.
+      tags:
+        - Portal Custom Domains
+      responses:
+        '204':
+          description: No Content
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v3/portals/{portalId}/customization:
+    get:
+      x-speakeasy-entity-operation: PortalCustomization#read
+      x-unstable: true
+      summary: Get Customization
+      description: Returns the portal customization options.
+      operationId: get-portal-customization
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+      tags:
+        - Portal Customization
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalCustomizationResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      x-speakeasy-entity-operation: PortalCustomization#create,update
+      x-unstable: true
+      summary: Replace Customization
+      description: Replace the portal customization options.
+      operationId: replace-portal-customization
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+      tags:
+        - Portal Customization
+      requestBody:
+        $ref: '#/components/requestBodies/ReplacePortalCustomization'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalCustomizationResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v3/portals/{portalId}/pages:
+    post:
+      x-speakeasy-entity-operation: PortalPage#create
+      x-unstable: true
+      summary: Create Page
+      description: >-
+        Creates a new custom page for this portal. Custom pages can be used to
+        display static content, documentation, or other information to
+        developers.
+      operationId: create-portal-page
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePortalPage'
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+      tags:
+        - Pages
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalPage'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v3/portals/{portalId}/pages/{pageId}:
+    get:
+      x-speakeasy-entity-operation: PortalPage#read
+      x-unstable: true
+      summary: Fetch Page
+      description: >-
+        Returns the configuration of a single custom page for this portal.
+        Custom pages can be used to display static content, documentation, or
+        other information to developers.
+      operationId: get-portal-page
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/PageId'
+      tags:
+        - Pages
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalPage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      x-speakeasy-entity-operation: PortalPage#update
+      x-unstable: true
+      summary: Update Page
+      description: Updates the configuration of a single custom page for this portal.
+      operationId: update-portal-page
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortalPage'
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/PageId'
+      tags:
+        - Pages
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalPage'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      x-speakeasy-entity-operation: PortalPage#delete
+      x-unstable: true
+      summary: Delete Page
+      description: Deletes a single custom page for this portal.
+      operationId: delete-portal-page
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/PageId'
+      tags:
+        - Pages
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v3/portals/{portalId}/snippets:
+    post:
+      x-speakeasy-entity-operation: PortalSnippet#create
+      x-unstable: true
+      summary: Create Snippet
+      description: >-
+        Creates a new custom snippet for this portal. Custom snippets can be
+        used to display static content, documentation, or other information to
+        developers.
+      operationId: create-portal-snippet
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePortalSnippet'
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+      tags:
+        - Snippets
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalSnippet'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v3/portals/{portalId}/snippets/{snippetId}:
+    get:
+      x-speakeasy-entity-operation: PortalSnippet#read
+      x-unstable: true
+      summary: Fetch Snippet
+      description: >-
+        Returns the configuration of a single custom snippet for this portal.
+        Custom snippets can be used to display static content, documentation, or
+        other information to developers.
+      operationId: get-portal-snippet
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/SnippetId'
+      tags:
+        - Snippets
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalSnippet'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      x-speakeasy-entity-operation: PortalSnippet#update
+      x-unstable: true
+      summary: Update Snippet
+      description: Updates the configuration of a single custom snippet for this portal.
+      operationId: update-portal-snippet
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortalSnippet'
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/SnippetId'
+      tags:
+        - Snippets
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalSnippet'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      x-speakeasy-entity-operation: PortalSnippet#delete
+      x-unstable: true
+      summary: Delete Snippet
+      description: Deletes a single custom snippet for this portal.
+      operationId: delete-portal-snippet
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/SnippetId'
+      tags:
+        - Snippets
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v3/portals/{portalId}/authentication-settings:
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+    get:
+      x-unstable: true
+      x-speakeasy-entity-operation: PortalAuth#read
+      summary: Get Auth Settings
+      description: >-
+        Returns the developer authentication configuration for a portal, which
+        determines how developers can log in and how they are assigned to teams.
+      operationId: get-portal-authentication-settings
+      tags:
+        - Portal Auth Settings
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalAuthenticationSettings'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    patch:
+      x-unstable: true
+      x-speakeasy-entity-operation: PortalAuth#create,update
+      summary: Update Auth Settings
+      description: >-
+        Updates the developer authentication configuration for a portal.
+        Developers can be allowed to login using basic auth (email & password)
+        or use Single-Sign-On (SSO) through an OIDC Identity Provider (IdP).
+        Developers can be automatically assigned to teams by mapping claims from
+        thier IdP account.
+      operationId: update-portal-authentication-settings
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortalAuthenticationSettings'
+      tags:
+        - Portal Auth Settings
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalAuthenticationSettings'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /v3/portals/{portalId}/teams:
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+    post:
+      x-unstable: true
+      x-speakeasy-entity-operation: PortalTeam#create
       summary: Create Team
-      operationId: create-team
+      operationId: create-portal-team
       responses:
         '201':
-          $ref: '#/components/responses/TeamSingle'
+          $ref: '#/components/responses/PortalTeam'
         '400':
-          $ref: '#/components/responses/IdentityBadRequest'
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '403':
-          $ref: '#/components/responses/IdentityPermissionDenied'
-      tags:
-        - Teams
-      requestBody:
-        $ref: '#/components/requestBodies/CreateTeam'
-      description: 'Creates a team in the Konnect Organization. '
-      servers:
-        - url: https://global.api.konghq.com/
-      x-servers-added: true
-  /v3/teams/{teamId}/users:
-    parameters:
-      - schema:
-          type: string
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-          format: uuid
-        name: teamId
-        in: path
-        required: true
-        description: ID of the team.
-    post:
-      x-speakeasy-entity-operation: TeamUser#create
-      summary: Add User
-      operationId: add-user-to-team
-      responses:
-        '201':
-          description: Created
-        '400':
-          $ref: '#/components/responses/IdentityBadRequest'
+          $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/IdentityNotFound'
-        '409':
-          $ref: '#/components/responses/IdentityConflict'
-      description: Adds a user to a team.
-      requestBody:
-        $ref: '#/components/requestBodies/AddUserToTeam'
+          $ref: '#/components/responses/NotFound'
       tags:
-        - Team Membership
-      servers:
-        - url: https://global.api.konghq.com/
-      x-servers-added: true
-  /v3/teams/{teamId}:
+        - Portal Teams
+      requestBody:
+        $ref: '#/components/requestBodies/PortalCreateTeam'
+      description: >-
+        Creates a developer team in a portal. Developers can be added to teams
+        to provide RBAC access to API products. Teams can be assigned roles that
+        grant permissions to perform an action on a resource.
+  /v3/portals/{portalId}/teams/{teamId}:
     parameters:
-      - schema:
-          type: string
-          format: uuid
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        name: teamId
-        in: path
-        required: true
-        description: The team ID
-        x-speakeasy-match: id
+      - $ref: '#/components/parameters/TeamId'
+      - $ref: '#/components/parameters/PortalId'
     get:
-      x-speakeasy-entity-operation: Team#read
-      summary: Fetch Team
+      x-unstable: true
+      x-speakeasy-entity-operation: PortalTeam#read
+      summary: Get Team
       responses:
         '200':
-          $ref: '#/components/responses/TeamSingle'
-        '400':
-          $ref: '#/components/responses/IdentityBadRequest'
+          $ref: '#/components/responses/PortalTeam'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/IdentityNotFound'
-      operationId: get-team
-      description: Returns information about a team from a given team ID.
+          $ref: '#/components/responses/NotFound'
+      operationId: get-portal-team
+      description: Get an individual team.
       tags:
-        - Teams
-      servers:
-        - url: https://global.api.konghq.com/
-      x-servers-added: true
+        - Portal Teams
     patch:
-      x-speakeasy-entity-operation: Team#update
+      x-unstable: true
+      x-speakeasy-entity-operation: PortalTeam#update
+      description: Updates an individual developer team for a portal.
       summary: Update Team
-      operationId: update-team
+      operationId: update-portal-team
       responses:
         '200':
-          $ref: '#/components/responses/TeamSingle'
-        '400':
-          $ref: '#/components/responses/IdentityBadRequest'
+          $ref: '#/components/responses/PortalTeam'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/IdentityNotFound'
-      description: Updates an individual team.
+          $ref: '#/components/responses/NotFound'
       requestBody:
-        $ref: '#/components/requestBodies/UpdateTeam'
+        $ref: '#/components/requestBodies/PortalUpdateTeam'
       tags:
-        - Teams
-      servers:
-        - url: https://global.api.konghq.com/
-      x-servers-added: true
+        - Portal Teams
     delete:
-      x-speakeasy-entity-operation: Team#delete
+      x-unstable: true
+      x-speakeasy-entity-operation: PortalTeam#delete
       summary: Delete Team
-      operationId: delete-team
+      operationId: delete-portal-team
+      description: >-
+        Deletes a developer team from a portal. Deleting a team also deletes its
+        assigned roles. Members of the team are not deleted, but they will lose
+        any access provided through the team.
       responses:
         '204':
           description: No Content
-        '400':
-          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/IdentityNotFound'
-      description: Deletes an individual team. Returns 404 if the team is not found.
+          $ref: '#/components/responses/NotFound'
       tags:
-        - Teams
-      servers:
-        - url: https://global.api.konghq.com/
-      x-servers-added: true
-  /v3/teams/{teamId}/users/{userId}:
+        - Portal Teams
+  /v3/apis:
+    post:
+      x-speakeasy-entity-operation: Api#create
+      x-unstable: true
+      summary: Create API
+      description: Creates an API.
+      operationId: create-api
+      responses:
+        '201':
+          $ref: '#/components/responses/ApiResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - API
+      requestBody:
+        $ref: '#/components/requestBodies/CreateApiRequest'
+  /v3/apis/{apiId}:
     parameters:
       - schema:
           type: string
           format: uuid
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-        name: userId
+          example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+        name: apiId
         in: path
         required: true
-        description: User ID
-      - schema:
-          type: string
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-          format: uuid
-        name: teamId
-        in: path
-        required: true
-        description: Team ID.
+        description: The UUID API identifier
+        x-speakeasy-match: id
+    get:
+      x-speakeasy-entity-operation: Api#read
+      x-unstable: true
+      summary: Fetch API
+      description: Fetches an API.
+      operationId: fetch-api
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiResponse'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API
+    patch:
+      x-speakeasy-entity-operation: Api#update
+      x-unstable: true
+      summary: Update API
+      description: Updates an API.
+      operationId: update-api
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - API
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateApiRequest'
     delete:
-      x-speakeasy-entity-operation: TeamUser#delete
-      summary: Remove User
-      operationId: remove-user-from-team
+      x-speakeasy-entity-operation: Api#delete
+      x-unstable: true
+      summary: Delete API
+      description: Deletes an API.
+      operationId: delete-api
       responses:
         '204':
-          description: No Content
-        '400':
-          $ref: '#/components/responses/IdentityBadRequest'
+          description: API was deleted successfully.
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
         '404':
-          $ref: '#/components/responses/IdentityNotFound'
-      description: >-
-        Removes a user from a team.
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API
+  /v3/apis/{apiId}/documents:
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+    post:
+      x-speakeasy-entity-operation: ApiDocument#create
+      x-unstable: true
+      summary: Create API Document
+      description: >
+        Publish a new document attached to an API.
 
-        If the user was removed, returns a 204 empty response. Returns 404 if
-        the user or team were not found.
-      tags:
-        - Team Membership
-      servers:
-        - url: https://global.api.konghq.com/
-      x-servers-added: true
-  /v3/teams/{teamId}/assigned-roles:
-    parameters:
-      - schema:
-          type: string
-          format: uuid
-          example: e81bc3e5-e9db-4764-b7dd-e81e39072cbe
-        name: teamId
-        in: path
-        required: true
-        description: The team ID
-    post:
-      x-speakeasy-entity-operation: TeamRole#create
-      summary: Assign Team Role
-      operationId: teams-assign-role
+
+        All configuration options may be provided in the frontmatter section of
+        `content`. If you set values in both the `POST` request _and_ in the
+        frontmatter, the values in the `POST` request will take precedence.
+      operationId: create-api-document
       responses:
         '201':
-          $ref: '#/components/responses/AssignedRoleSingle'
+          $ref: '#/components/responses/ApiDocumentResponse'
         '400':
-          $ref: '#/components/responses/IdentityBadRequest'
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
         '401':
-          $ref: '#/components/responses/IdentityUnauthenticated'
+          $ref: '#/components/responses/ApiUnauthorized'
         '403':
-          $ref: '#/components/responses/IdentityPermissionDenied'
+          $ref: '#/components/responses/ApiForbidden'
         '404':
-          $ref: '#/components/responses/IdentityNotFound'
+          $ref: '#/components/responses/ApiNotFound'
         '409':
-          $ref: '#/components/responses/IdentityConflict'
-      description: Assigns a role to a team. Returns 409 if role is already assigned.
+          $ref: '#/components/responses/ApiSlugConflict'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
       requestBody:
-        $ref: '#/components/requestBodies/AssignRole'
+        $ref: '#/components/requestBodies/CreateApiDocumentRequest'
       tags:
-        - Roles
-      servers:
-        - url: https://global.api.konghq.com/
-      x-servers-added: true
-  /v3/teams/{teamId}/assigned-roles/{roleId}:
+        - API Documentation
+  /v3/apis/{apiId}/documents/{documentId}:
     parameters:
-      - schema:
-          type: string
-          format: uuid
-          example: e81bc3e5-e9db-4764-b7dd-e81e39072cbe
-        name: teamId
-        in: path
-        required: true
-        description: The team ID.
-      - schema:
-          type: string
-          example: 8350205f-a305-4e39-abe9-bc082a80091a
-          format: uuid
-        name: roleId
-        in: path
-        required: true
-        description: The role ID.
-        x-speakeasy-match: id
-    delete:
-      x-speakeasy-entity-operation: TeamRole#delete
-      summary: Remove Team Role
-      operationId: teams-remove-role
+      - $ref: '#/components/parameters/ApiId'
+      - $ref: '#/components/parameters/DocumentId'
+    get:
+      x-speakeasy-entity-operation: ApiDocument#read
+      x-unstable: true
+      summary: Fetch API Document
+      description: Returns a document for the API.
+      operationId: fetch-api-document
       responses:
-        '204':
-          description: No Content
+        '200':
+          $ref: '#/components/responses/ApiDocumentResponse'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Documentation
+    patch:
+      x-speakeasy-entity-operation: ApiDocument#update
+      x-unstable: true
+      summary: Update API Document
+      description: Updates a document for an API.
+      operationId: update-api-document
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiDocumentResponse'
         '400':
-          $ref: '#/components/responses/IdentityBadRequest'
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
         '401':
-          $ref: '#/components/responses/IdentityUnauthenticated'
+          $ref: '#/components/responses/ApiUnauthorized'
         '403':
-          $ref: '#/components/responses/IdentityPermissionDenied'
+          $ref: '#/components/responses/ApiForbidden'
         '404':
-          $ref: '#/components/responses/IdentityNotFound'
+          $ref: '#/components/responses/ApiNotFound'
+        '409':
+          $ref: '#/components/responses/ApiSlugConflict'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
       tags:
-        - Roles
-      description: >-
-        Removes an assigned role from a team. Returns 404 if the requested team
-        or assigned role were not found.
-      servers:
-        - url: https://global.api.konghq.com/
-      x-servers-added: true
-  /v3/system-accounts:
-    post:
-      x-speakeasy-entity-operation: SystemAccount#create
-      summary: Create System Account
-      operationId: post-system-accounts
-      tags:
-        - System Accounts
-      description: >-
-        Creates a system account. Returns a 409 if a system account with the
-        same name already exists.
+        - API Documentation
       requestBody:
-        $ref: '#/components/requestBodies/CreateSystemAccount'
+        $ref: '#/components/requestBodies/UpdateApiDocumentRequest'
+    delete:
+      x-speakeasy-entity-operation: ApiDocument#delete
+      x-unstable: true
+      summary: Delete API Documentation
+      description: Removes a document from an API.
+      operationId: delete-api-document
+      responses:
+        '204':
+          description: Document for the API was deleted successfully.
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Documentation
+  /v3/apis/{apiId}/specifications:
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+    post:
+      x-speakeasy-entity-operation: ApiSpecification#create
+      x-unstable: true
+      summary: Create API Specification
+      description: |
+        Creates a specification for an API.
+        **Note:** You can only have one specification for an API.
+      operationId: create-api-spec
       responses:
         '201':
-          $ref: '#/components/responses/SystemAccountSingle'
+          $ref: '#/components/responses/ApiSpecResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
         '401':
-          $ref: '#/components/responses/IdentityUnauthenticated'
+          $ref: '#/components/responses/ApiUnauthorized'
         '403':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
         '409':
-          $ref: '#/components/responses/IdentityConflict'
-      servers:
-        - url: https://global.api.konghq.com/
-      x-servers-added: true
-  /v3/system-accounts/{accountId}:
+          $ref: '#/components/responses/ApiSpecConflict'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - API Specification
+      requestBody:
+        $ref: '#/components/requestBodies/CreateApiSpecRequest'
+  /v3/apis/{apiId}/specifications/{specId}:
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+      - $ref: '#/components/parameters/SpecId'
     get:
-      x-speakeasy-entity-operation: SystemAccount#read
-      summary: Fetch System Account
-      tags:
-        - System Accounts
+      x-speakeasy-entity-operation: ApiSpecification#read
+      x-unstable: true
+      summary: Fetch API Specification
+      description: Fetches the specification of an API.
+      operationId: fetch-api-spec
       responses:
         '200':
-          $ref: '#/components/responses/SystemAccountSingle'
+          $ref: '#/components/responses/ApiSpecResponse'
         '401':
-          $ref: '#/components/responses/IdentityUnauthenticated'
+          $ref: '#/components/responses/ApiUnauthorized'
         '403':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiForbidden'
         '404':
-          $ref: '#/components/responses/IdentityNotFound'
-      operationId: get-system-accounts-id
-      description: >-
-        Returns the system account (SA) for the SA ID specified as a path
-        parameter.
-      servers:
-        - url: https://global.api.konghq.com/
-      x-servers-added: true
-    parameters:
-      - schema:
-          type: string
-        name: accountId
-        in: path
-        required: true
-        description: ID of the system account.
-        x-speakeasy-match: id
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Specification
     patch:
-      x-speakeasy-entity-operation: SystemAccount#update
-      summary: Update System Account
-      operationId: patch-system-accounts-id
+      x-speakeasy-entity-operation: ApiSpecification#update
+      x-unstable: true
+      summary: Update API Specification
+      description: Updates the specification of an API.
+      operationId: update-api-spec
       responses:
         '200':
-          $ref: '#/components/responses/SystemAccountSingle'
+          $ref: '#/components/responses/ApiSpecResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
         '401':
-          $ref: '#/components/responses/IdentityUnauthenticated'
+          $ref: '#/components/responses/ApiUnauthorized'
         '403':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiForbidden'
         '404':
-          $ref: '#/components/responses/IdentityNotFound'
+          $ref: '#/components/responses/ApiNotFound'
         '409':
-          $ref: '#/components/responses/IdentityConflict'
-      description: >-
-        Updates the specified system account. Returns a 409 if the updated name
-        is the same as another system account in the organization.
+          $ref: '#/components/responses/ApiSpecHiddenConflict'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
       tags:
-        - System Accounts
+        - API Specification
       requestBody:
-        $ref: '#/components/requestBodies/UpdateSystemAccount'
-      servers:
-        - url: https://global.api.konghq.com/
-      x-servers-added: true
+        $ref: '#/components/requestBodies/UpdateApiSpecRequest'
     delete:
-      x-speakeasy-entity-operation: SystemAccount#delete
-      summary: Delete System Account
-      operationId: delete-system-accounts-id
+      x-speakeasy-entity-operation: ApiSpecification#delete
+      x-unstable: true
+      summary: Delete API Specification
+      description: Deletes the specification of an API.
+      operationId: delete-api-spec
       responses:
         '204':
-          description: No Content
+          description: API Specification was deleted successfully.
         '401':
-          $ref: '#/components/responses/IdentityUnauthenticated'
+          $ref: '#/components/responses/ApiUnauthorized'
         '403':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiForbidden'
         '404':
-          $ref: '#/components/responses/IdentityNotFound'
-      description: >-
-        Deletes the specified system account. Returns 404 if the requested
-        account was not found.
+          $ref: '#/components/responses/ApiNotFound'
       tags:
-        - System Accounts
-      servers:
-        - url: https://global.api.konghq.com/
-      x-servers-added: true
-  /v3/system-accounts/{accountId}/access-tokens:
+        - API Specification
+  /v3/apis/{apiId}/publications/{portalId}:
     parameters:
-      - schema:
-          type: string
-        name: accountId
-        in: path
-        required: true
-        description: ID of the system account.
-    post:
-      x-speakeasy-entity-operation: SystemAccountAccessToken#create
-      summary: Create System Account Access Token
-      operationId: post-system-accounts-id-access-tokens
+      - $ref: '#/components/parameters/ApiId'
+      - $ref: '#/components/parameters/PortalId'
+    put:
+      x-speakeasy-entity-operation: ApiPublication#create,update
+      x-unstable: true
+      summary: Publish API
+      description: |
+        Publish an API to a portal.
+      operationId: publish-api-to-portal
       responses:
-        '201':
-          $ref: '#/components/responses/SystemAccountAccessTokenCreated'
+        '200':
+          $ref: '#/components/responses/ApiPublicationResponse'
+        '400':
+          $ref: '#/components/responses/ApiPublicationBadRequest'
         '401':
-          $ref: '#/components/responses/IdentityUnauthenticated'
+          $ref: '#/components/responses/ApiUnauthorized'
         '403':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiForbidden'
         '404':
-          $ref: '#/components/responses/IdentityNotFound'
-        '409':
-          $ref: '#/components/responses/IdentityConflict'
-      description: >-
-        Creates an access token for the specified system account (SA). The
-        access token can be used for authenticating API and CLI requests. The
-        token will only be displayed once on creation. Returns a 409 if the
-        system account already has a token with the same name.
-      requestBody:
-        $ref: '#/components/requestBodies/CreateSystemAccountAccessToken'
+          $ref: '#/components/responses/ApiNotFound'
       tags:
-        - System Accounts - Access Tokens
-      servers:
-        - url: https://global.api.konghq.com/
-      x-servers-added: true
-  /v3/system-accounts/{accountId}/access-tokens/{tokenId}:
+        - API Publication
+      requestBody:
+        $ref: '#/components/requestBodies/PutApiPublicationRequest'
     get:
-      x-speakeasy-entity-operation: SystemAccountAccessToken#read
-      summary: Fetch System Account Access Token
+      x-speakeasy-entity-operation: ApiPublication#read
+      x-unstable: true
+      summary: Fetch Publication
+      description: |
+        Retrieve an API's publication in a portal.
+        If the API is not published to the portal, a 404 response is returned.
+      operationId: fetch-publication
       responses:
         '200':
-          $ref: '#/components/responses/SystemAccountAccessTokenSingle'
+          $ref: '#/components/responses/ApiPublicationResponse'
         '401':
-          $ref: '#/components/responses/IdentityUnauthenticated'
+          $ref: '#/components/responses/ApiUnauthorized'
         '403':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiForbidden'
         '404':
-          $ref: '#/components/responses/IdentityNotFound'
-      operationId: get-system-accounts-id-access-tokens-id
-      description: >-
-        Returns the system account (SA) access token for the SA Access Token ID
-        specified as a path parameter.
-      parameters: []
+          $ref: '#/components/responses/ApiNotFound'
       tags:
-        - System Accounts - Access Tokens
-      servers:
-        - url: https://global.api.konghq.com/
-      x-servers-added: true
+        - API Publication
+    delete:
+      x-speakeasy-entity-operation: ApiPublication#delete
+      x-unstable: true
+      summary: Delete Publication
+      description: Unpublish an API from a portal.
+      operationId: delete-publication
+      responses:
+        '204':
+          description: API was successfully unpublished from portal.
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Publication
+  /v3/apis/{apiId}/implementations:
     parameters:
-      - schema:
-          type: string
-        name: accountId
-        in: path
-        required: true
-        description: ID of the system account.
-      - schema:
-          type: string
-        name: tokenId
-        in: path
-        required: true
-        description: ID of the system account access token.
-        x-speakeasy-match: id
-    patch:
-      x-speakeasy-entity-operation: SystemAccountAccessToken#update
-      summary: Update System Account Access Token
-      operationId: patch-system-accounts-id-access-tokens-id
+      - $ref: '#/components/parameters/ApiId'
+    post:
+      x-speakeasy-entity-operation: ApiImplementation#create
+      x-unstable: true
+      summary: Create API Implementation
+      description: |
+        Creates an implementation for an API.
+        An API can be implemented by a single Gateway Service.
+      operationId: create-api-implementation
+      responses:
+        '201':
+          $ref: '#/components/responses/ApiImplementationResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+        '409':
+          $ref: '#/components/responses/ApiImplementationConflict'
+      tags:
+        - API Implementation
+      requestBody:
+        $ref: '#/components/requestBodies/CreateApiImplementationRequest'
+  /v3/apis/{apiId}/implementations/{implementationId}:
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+      - $ref: '#/components/parameters/ImplementationId'
+    get:
+      x-speakeasy-entity-operation: ApiImplementation#read
+      x-unstable: true
+      summary: Fetch API Implementation
+      description: Retrieve a gateway implementation for this API
+      operationId: fetch-api-implementation
       responses:
         '200':
-          $ref: '#/components/responses/SystemAccountAccessTokenSingle'
+          $ref: '#/components/responses/ApiImplementationResponse'
         '401':
-          $ref: '#/components/responses/IdentityUnauthenticated'
+          $ref: '#/components/responses/ApiUnauthorized'
         '403':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiForbidden'
         '404':
-          $ref: '#/components/responses/IdentityNotFound'
-        '409':
-          $ref: '#/components/responses/IdentityConflict'
-      description: >-
-        Updates the specified access token. Returns a 409 if the updated name is
-        the same as another token belonging to the specified system user.
-      requestBody:
-        $ref: '#/components/requestBodies/UpdateSystemAccountAccessToken'
+          $ref: '#/components/responses/ApiNotFound'
       tags:
-        - System Accounts - Access Tokens
-      servers:
-        - url: https://global.api.konghq.com/
-      x-servers-added: true
+        - API Implementation
     delete:
-      x-speakeasy-entity-operation: SystemAccountAccessToken#delete
-      summary: Delete System Account Access Token
-      operationId: delete-system-accounts-id-access-tokens-id
+      x-speakeasy-entity-operation: ApiImplementation#delete
+      x-unstable: true
+      summary: Delete API Implementation
+      description: Unlink a gateway implementation from this API
+      operationId: delete-api-implementation
       responses:
         '204':
-          description: No Content
+          description: API implementation was unlinked successfully.
         '401':
-          $ref: '#/components/responses/IdentityUnauthenticated'
+          $ref: '#/components/responses/ApiUnauthorized'
         '403':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/ApiForbidden'
         '404':
-          $ref: '#/components/responses/IdentityNotFound'
-      description: Deletes the specified token. Returns 404 if the token was not found.
+          $ref: '#/components/responses/ApiNotFound'
       tags:
-        - System Accounts - Access Tokens
-      servers:
-        - url: https://global.api.konghq.com/
-      x-servers-added: true
-  /v3/system-accounts/{accountId}/assigned-roles:
-    parameters:
-      - schema:
-          type: string
-        name: accountId
-        in: path
-        required: true
-        description: ID of the system account.
-    post:
-      x-speakeasy-entity-operation: SystemAccountRole#create
-      summary: Create Assigned Role for System Account
-      operationId: post-system-accounts-accountId-assigned-roles
-      responses:
-        '201':
-          $ref: '#/components/responses/AssignedRoleSingle'
-        '401':
-          $ref: '#/components/responses/IdentityUnauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/IdentityNotFound'
-        '409':
-          $ref: '#/components/responses/IdentityConflict'
-      description: >-
-        Assigns a role to a system account. Returns 409 if role is already
-        assigned.
-      requestBody:
-        $ref: '#/components/requestBodies/AssignRole'
-      tags:
-        - System Accounts - Roles
-      servers:
-        - url: https://global.api.konghq.com/
-      x-servers-added: true
-  /v3/system-accounts/{accountId}/assigned-roles/{roleId}:
-    parameters:
-      - schema:
-          type: string
-        name: accountId
-        in: path
-        required: true
-        description: ID of the system account.
-      - schema:
-          type: string
-        name: roleId
-        in: path
-        required: true
-        description: ID of the role.
-        x-speakeasy-match: id
-    delete:
-      x-speakeasy-entity-operation: SystemAccountRole#delete
-      summary: Delete Assigned Role from System Account
-      operationId: delete-system-accounts-accountId-assigned-roles-roleId
-      responses:
-        '204':
-          description: No Content
-        '401':
-          $ref: '#/components/responses/IdentityUnauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/IdentityNotFound'
-      description: >-
-        Removes an assigned role from a system account. Returns 404 if the
-        system account or assigned role were not found.
-      tags:
-        - System Accounts - Roles
-      servers:
-        - url: https://global.api.konghq.com/
-      x-servers-added: true
-  /v3/teams/{teamId}/system-accounts:
-    parameters:
-      - schema:
-          type: string
-        name: teamId
-        in: path
-        required: true
-        description: ID of the team.
-    post:
-      x-speakeasy-entity-operation: SystemAccountTeam#create
-      summary: Add System Account to a Team
-      operationId: post-teams-teamId-system-accounts
-      responses:
-        '201':
-          description: Created
-        '401':
-          $ref: '#/components/responses/IdentityUnauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/IdentityNotFound'
-        '409':
-          $ref: '#/components/responses/IdentityConflict'
-      description: >-
-        Adds a system account to a team. Returns a 409 if the system account is
-        already a member of the team.
-      requestBody:
-        $ref: '#/components/requestBodies/AddSystemAccountToTeam'
-      tags:
-        - System Accounts - Team Membership
-      servers:
-        - url: https://global.api.konghq.com/
-      x-servers-added: true
-  /v3/teams/{teamId}/system-accounts/{accountId}:
-    parameters:
-      - schema:
-          type: string
-        name: teamId
-        in: path
-        required: true
-        description: ID of the team.
-      - schema:
-          type: string
-        name: accountId
-        in: path
-        required: true
-        description: ID of the system account.
-    delete:
-      x-speakeasy-entity-operation: SystemAccountTeam#delete
-      summary: Remove System Account From Team
-      operationId: delete-teams-teamId-system-accounts-accountId
-      responses:
-        '204':
-          description: No Content
-        '401':
-          $ref: '#/components/responses/IdentityUnauthenticated'
-        '403':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/IdentityNotFound'
-      description: >-
-        Removes a system account from a team. Returns 404 if the team or system
-        account were not found.
-      tags:
-        - System Accounts - Team Membership
-      servers:
-        - url: https://global.api.konghq.com/
-      x-servers-added: true
+        - API Implementation
   /v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshaccesslogs/{name}#create:
     get:
       operationId: getMeshAccessLog
@@ -4781,140 +5229,471 @@ paths:
             schema:
               $ref: '#/components/schemas/UpdateMeshControlPlaneRequest'
 components:
+  requestBodies:
+    CreatePortalCustomDomain:
+      description: Create a portal custom domain.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatePortalCustomDomainRequest'
+    UpdatePortalCustomDomain:
+      description: Create a portal custom domain.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdatePortalCustomDomainRequest'
+    CreatePortal:
+      description: Create a portal.
+      required: true
+      content:
+        application/json:
+          schema:
+            x-flatten-allOf: true
+            allOf:
+              - $ref: '#/components/schemas/Portal'
+              - required:
+                  - name
+                properties:
+                  labels:
+                    $ref: '#/components/schemas/LabelsUpdate'
+    UpdatePortal:
+      description: Update a portal's settings.
+      required: true
+      content:
+        application/json:
+          schema:
+            x-flatten-allOf: true
+            allOf:
+              - $ref: '#/components/schemas/Portal'
+              - properties:
+                  labels:
+                    $ref: '#/components/schemas/LabelsUpdate'
+    ReplacePortalCustomization:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalCustomization'
+    CreatePortalPage:
+      description: Create a page in a portal.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatePortalPageRequest'
+    UpdatePortalPage:
+      description: Update a page in a portal.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdatePortalPageRequest'
+    CreatePortalSnippet:
+      description: Create a snippet in a portal.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatePortalSnippetRequest'
+    UpdatePortalSnippet:
+      description: Update a snippet in a portal.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdatePortalSnippetRequest'
+    PortalUpdateTeam:
+      description: Update a team in a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalUpdateTeamRequest'
+    PortalCreateTeam:
+      description: Create a team in a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalCreateTeamRequest'
+    UpdatePortalAuthenticationSettings:
+      description: Update a portal's developer authentication settings.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalAuthenticationSettingsUpdateRequest'
+    CreateApiRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            x-flatten-allOf: true
+            allOf:
+              - $ref: '#/components/schemas/Api'
+              - required:
+                  - name
+    CreateApiSpecRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            x-flatten-allOf: true
+            allOf:
+              - $ref: '#/components/schemas/ApiSpec'
+              - required:
+                  - content
+    CreateApiDocumentRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            x-flatten-allOf: true
+            allOf:
+              - $ref: '#/components/schemas/ApiDocument'
+              - required:
+                  - content
+    UpdateApiRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            x-flatten-allOf: true
+            allOf:
+              - $ref: '#/components/schemas/Api'
+              - type: object
+                properties:
+                  labels:
+                    $ref: '#/components/schemas/LabelsUpdate'
+                  public_labels:
+                    $ref: '#/components/schemas/PublicLabelsUpdate'
+    UpdateApiDocumentRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiDocument'
+    UpdateApiSpecRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiSpec'
+    PutApiPublicationRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiPublication'
+    CreateApiImplementationRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiImplementation'
+  parameters:
+    PortalId:
+      schema:
+        type: string
+        format: uuid
+        example: f32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: portalId
+      in: path
+      required: true
+      description: The Portal identifier
+    PageId:
+      schema:
+        type: string
+        format: uuid
+        example: ebbac5b0-ac89-45c3-9d2e-c4542c657e79
+      name: pageId
+      in: path
+      required: true
+      description: ID of the page.
+      x-speakeasy-match: id
+    SnippetId:
+      schema:
+        type: string
+        format: uuid
+        example: ebbac5b0-ac89-45c3-9d2e-c4542c657e79
+      name: snippetId
+      in: path
+      required: true
+      description: ID of the snippet.
+      x-speakeasy-match: id
+    TeamId:
+      x-speakeasy-match: id
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: teamId
+      in: path
+      required: true
+      description: ID of the team.
+    ApiId:
+      schema:
+        type: string
+        format: uuid
+        example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+      name: apiId
+      in: path
+      required: true
+      description: The UUID API identifier
+    DocumentId:
+      schema:
+        type: string
+        format: uuid
+        example: de5c9818-be5c-42e6-b514-e3d4bc30ddeb
+      name: documentId
+      description: The document identifier related to the API
+      in: path
+      required: true
+      x-speakeasy-match: id
+    SpecId:
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: specId
+      description: The API specification identifier
+      in: path
+      required: true
+      x-speakeasy-match: id
+    ImplementationId:
+      schema:
+        type: string
+        format: uuid
+        example: 032d905a-ed33-46a3-a093-d8f536af9a8a
+      name: implementationId
+      in: path
+      required: true
+      description: The Portal identifier
+      x-speakeasy-match: id
+    cpId:
+      name: cpId
+      in: path
+      required: true
+      description: Id of the Konnect resource
+      example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
+      x-speakeasy-plan-modifiers: RequiresReplaceModifier
+      schema:
+        type: string
+        format: uuid
   responses:
-    TeamSingle:
-      description: A response including a single team.
+    PortalAuthenticationSettings:
+      description: Details about a portal's authentication settings.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Team'
-    AssignedRoleSingle:
-      description: A get action response of a single assigned role.
+            $ref: '#/components/schemas/PortalAuthenticationSettingsResponse'
+    PortalTeam:
+      description: Details about a team of developers in a portal.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/AssignedRole'
-    IdentityBadRequest:
-      description: Bad Request
+            $ref: '#/components/schemas/PortalTeamResponse'
+    PortalCustomDomain:
+      description: Portal custom domain
       content:
-        application/problem+json:
+        application/json:
           schema:
-            $ref: '#/components/schemas/BadRequestError'
-    IdentityConflict:
-      description: Conflict
+            $ref: '#/components/schemas/PortalCustomDomain'
+    PortalResponse:
+      description: Details about a portal.
       content:
-        application/problem+json:
+        application/json:
           schema:
-            $ref: '#/components/schemas/ConflictError'
-    IdentityPermissionDenied:
-      description: Permission denied
+            x-flatten-allOf: true
+            allOf:
+              - $ref: '#/components/schemas/Portal'
+              - required:
+                  - id
+                  - name
+                  - display_name
+                  - description
+                  - authentication_enabled
+                  - rbac_enabled
+                  - default_api_visibility
+                  - default_page_visibility
+                  - default_application_auth_strategy_id
+                  - auto_approve_applications
+                  - auto_approve_developers
+                  - default_domain
+                  - canonical_domain
+                  - updated_at
+                  - created_at
+    PortalCustomizationResponse:
+      description: The current customization options for a portal.
       content:
-        application/problem+json:
+        application/json:
           schema:
-            $ref: '#/components/schemas/ForbiddenError'
-    IdentityUnauthenticated:
-      description: Unauthenticated
+            $ref: '#/components/schemas/PortalCustomization'
+    PortalPage:
+      description: Details about a page in a portal.
       content:
-        application/problem+json:
+        application/json:
           schema:
-            $ref: '#/components/schemas/UnauthorizedError'
+            $ref: '#/components/schemas/PortalPageResponse'
+    PortalSnippet:
+      description: Details about a snippet in a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalSnippetResponse'
     Unauthorized:
       description: Unauthorized
       content:
         application/problem+json:
           schema:
-            type: object
-            title: Unauthorized Response
-            description: The error response object.
-            properties:
-              status:
-                type: integer
-                example: 403
-                description: The HTTP status code.
-              title:
-                type: string
-                description: The Error Response.
-                example: Unauthorized
-              instance:
-                type: string
-                description: The Konnect traceback code.
-                example: konnect:trace:952172606039454040
-              detail:
-                type: string
-                description: Details about the error response.
-                example: You do not have permission to perform this action
-    IdentityNotFound:
+            $ref: '#/components/schemas/UnauthorizedError'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenError'
+    NotFound:
       description: Not Found
       content:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/NotFoundError'
-    SystemAccountSingle:
-      description: A response including a single system account.
+    Conflict:
+      description: Conflict
       content:
-        application/json:
+        application/problem+json:
           schema:
-            $ref: '#/components/schemas/SystemAccount'
-    SystemAccountAccessTokenSingle:
-      description: A response including a single system account access token.
+            $ref: '#/components/schemas/ConflictError'
+    ApiSlugConflict:
+      description: Conflict - `slug` property must be unique
       content:
-        application/json:
+        application/problem+json:
           schema:
-            $ref: '#/components/schemas/SystemAccountAccessToken'
-    SystemAccountAccessTokenCreated:
-      description: >-
-        A response including a single system account access token with the
-        token.
-      content:
-        application/json:
-          schema:
-            x-speakeasy-entity: SystemAccountAccessToken
             type: object
-            title: System Account Access Token Created Response
-            example:
-              id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-              name: Sample Access Token
-              created_at: '2022-08-01T14:16:09Z'
-              updated_at: '2022-08-02T08:35:49Z'
-              expires_at: '2022-12-31T12:52:23Z'
-              last_used_at: '2022-10-24T13:05:42Z'
+            required:
+              - status
+              - title
+              - instance
             properties:
-              id:
+              status:
+                type: number
+              title:
                 type: string
-                description: ID of the system account access token.
-                format: uuid
-                readOnly: true
-              name:
+              type:
                 type: string
-                description: Name of the system account access token.
-              created_at:
+              instance:
                 type: string
-                description: Timestamp of when the system account access token was created.
-                format: date-time
-                readOnly: true
-              updated_at:
-                type: string
-                description: >-
-                  Timestamp of when the system account access token was last
-                  updated.
-                format: date-time
-                readOnly: true
-              expires_at:
-                type: string
-                description: Timestamp of when the system account access token will expire.
-                format: date-time
-                readOnly: true
-              last_used_at:
-                type: string
-                description: >-
-                  Timestamp of when the system account access token was last
-                  used.
-                format: date-time
-                readOnly: true
-              token:
-                type: string
-                description: The token of the system account access token.
-                readOnly: true
+    ApiSpecConflict:
+      description: Conflict - An API may only have one specification
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
+    ApiSpecHiddenConflict:
+      description: Conflict - name attribute must be unique across specifications
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
+    ApiImplementationConflict:
+      description: Conflict - A gateway service can only be linked to a single API
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
+    ApiUnauthorized:
+      description: ApiUnauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+    ApiNotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/NotFoundError'
+    ApiForbidden:
+      description: ApiForbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenError'
+    ApiPublicationBadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+    ApiResponse:
+      description: API
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponseSchema'
+    ApiDocumentResponse:
+      description: API document
+      content:
+        application/json:
+          schema:
+            x-flatten-allOf: true
+            allOf:
+              - $ref: '#/components/schemas/ApiDocument'
+              - required:
+                  - id
+                  - parent_document_id
+                  - title
+                  - slug
+                  - status
+                  - content
+                  - labels
+                  - updated_at
+                  - created_at
+    ApiSpecResponse:
+      description: API specification
+      content:
+        application/json:
+          schema:
+            x-flatten-allOf: true
+            allOf:
+              - $ref: '#/components/schemas/ApiSpec'
+              - required:
+                  - id
+                  - content
+                  - type
+                  - created_at
+                  - updated_at
+    ApiPublicationResponse:
+      description: An API publication in a portal
+      content:
+        application/json:
+          schema:
+            x-flatten-allOf: true
+            allOf:
+              - $ref: '#/components/schemas/ApiPublication'
+              - required:
+                  - visibility
+                  - created_at
+                  - updated_at
+                  - auth_strategy_ids
+    ApiImplementationResponse:
+      description: An API implementation
+      content:
+        application/json:
+          schema:
+            x-flatten-allOf: true
+            allOf:
+              - $ref: '#/components/schemas/ApiImplementation'
+              - required:
+                  - id
+                  - service
+                  - created_at
+                  - updated_at
+    UnsupportedMediaType:
+      description: Unsupported Media Type
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnsupportedMediaTypeError'
     MeshAccessLogItem:
       description: Successful response
       content:
@@ -5515,397 +6294,722 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/MeshControlPlane'
-    NotFound:
-      description: Not Found
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/NotFoundError'
-  requestBodies:
-    CreateTeam:
-      description: >-
-        The request schema for the create team request.
-
-
-        If you pass the same `name` and `description` of an existing team in the
-        request, a team with the same `name` and `description` will be created.
-        The two teams will have different `team_id` values to differentiate
-        them.
-      content:
-        application/json:
-          schema:
-            x-speakeasy-entity: Team
-            type: object
-            properties:
-              name:
-                type: string
-                example: IDM - Developers
-                pattern: ^[\w \W]+$
-                description: A name for the team being created.
-                writeOnly: true
-              description:
-                type: string
-                maxLength: 250
-                example: The Identity Management (IDM) team.
-                description: The description of the new team.
-                writeOnly: true
-              labels:
-                $ref: '#/components/schemas/Labels'
-            required:
-              - name
-    UpdateTeam:
-      description: The request schema for the update team request.
-      content:
-        application/json:
-          schema:
-            x-speakeasy-entity: Team
-            type: object
-            properties:
-              name:
-                type: string
-                example: IDM - Developers
-                pattern: ^[\w \W]+$
-                description: The name of the team.
-                writeOnly: true
-              description:
-                type: string
-                maxLength: 250
-                example: The Identity Management (IDM) API team.
-                description: The description of the team.
-                writeOnly: true
-              labels:
-                $ref: '#/components/schemas/LabelsUpdate'
-    AddUserToTeam:
-      description: The request schema for adding a user to a team.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              id:
-                type: string
-                example: df120cb4-f60b-47bc-a2f8-6a28e6a3c63b
-                format: uuid
-                description: The user ID for the user being added to a team.
-                writeOnly: true
-                x-speakeasy-name-override: user_id
-            required:
-              - id
-    AssignRole:
-      content:
-        application/json:
-          schema:
-            type: object
-            description: >-
-              An assigned role is a role that has been assigned to a user or
-              team.
-            properties:
-              role_name:
-                type: string
-                example: Viewer
-                description: The desired role.
-                enum:
-                  - Admin
-                  - Appearance Maintainer
-                  - Application Registration
-                  - Certificate Admin
-                  - Cloud Gateway Cluster Admin
-                  - Cloud Gateway Cluster Viewer
-                  - Consumer Admin
-                  - Creator
-                  - Deployer
-                  - Discovery Admin
-                  - Discovery Viewer
-                  - Gateway Service Admin
-                  - Integration Admin
-                  - Integration Viewer
-                  - Key Admin
-                  - Maintainer
-                  - Network Admin
-                  - Network Creator
-                  - Network Viewer
-                  - Plugin Admin
-                  - Plugins Admin
-                  - Product Publisher
-                  - Publisher
-                  - Route Admin
-                  - SNI Admin
-                  - Service Admin
-                  - Service Creator
-                  - Service Viewer
-                  - Upstream Admin
-                  - Vault Admin
-                  - Viewer
-              entity_id:
-                type: string
-                format: uuid
-                example: e67490ce-44dc-4cbd-b65e-b52c746fc26a
-                description: The ID of the entity.
-              entity_type_name:
-                type: string
-                example: Control Planes
-                description: The type of entity.
-                enum:
-                  - APIs
-                  - API Products
-                  - Application Auth Strategies
-                  - Audit Logs
-                  - Control Planes
-                  - DCR Providers
-                  - Identity
-                  - Mesh Control Planes
-                  - Networks
-                  - Portals
-                  - Service Hub
-              entity_region:
-                x-flatten-allOf: true
-                allOf:
-                  - $ref: '#/components/schemas/EntityRegion'
-                  - description: Region of the team.
-      description: The request schema for assigning a role.
-    CreateSystemAccount:
-      content:
-        application/json:
-          schema:
-            x-speakeasy-entity: SystemAccount
-            type: object
-            required:
-              - name
-              - description
-            properties:
-              name:
-                type: string
-                description: Name of the system account.
-              description:
-                type: string
-                description: >-
-                  Description of the system account. Useful when the system
-                  account name is not sufficient to differentiate one system
-                  account from another.
-              konnect_managed:
-                type: boolean
-                description: The system account is managed by Konnect (true/false).
-      description: The request schema to create a system account.
-    UpdateSystemAccount:
-      content:
-        application/json:
-          schema:
-            x-speakeasy-entity: SystemAccount
-            type: object
-            properties:
-              name:
-                type: string
-                description: Name of the system account.
-              description:
-                type: string
-                description: Description of the system account.
-      description: The request schema for the update system account request.
-    UpdateSystemAccountAccessToken:
-      content:
-        application/json:
-          schema:
-            x-speakeasy-entity: SystemAccountAccessToken
-            type: object
-            properties:
-              name:
-                type: string
-                description: Name of the system account access token.
-    CreateSystemAccountAccessToken:
-      content:
-        application/json:
-          schema:
-            x-speakeasy-entity: SystemAccountAccessToken
-            type: object
-            properties:
-              name:
-                type: string
-              expires_at:
-                type: string
-                format: date-time
-      description: The request body to create a system account access token.
-    AddSystemAccountToTeam:
-      content:
-        application/json:
-          schema:
-            x-speakeasy-entity: SystemAccountTeam
-            type: object
-            properties:
-              id:
-                x-speakeasy-name-override: account_id
-                type: string
-                description: ID of the system account.
-                format: uuid
-            x-speakeasy-param-computed: false
-            nullable: true
-            default: null
-      description: The request schema for adding a system account to a team.
   schemas:
-    Team:
-      x-speakeasy-entity: Team
-      title: Team
+    Portal:
+      title: Portal
       type: object
-      description: The team object contains information about a group of users.
-      example:
-        id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-        name: IDM - Developers
-        description: The developers for the IDM API.
-        system_team: false
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        name:
+          type: string
+          maxLength: 255
+          minLength: 1
+          description: >-
+            The name of the portal, used to distinguish it from other portals.
+            Name must be unique.
+        display_name:
+          type: string
+          maxLength: 255
+          minLength: 1
+          description: >-
+            The display name of the portal. This value will be the portal's
+            `name` in Portal API.
+        description:
+          type: string
+          nullable: true
+          maxLength: 512
+          description: A description of the portal.
+        authentication_enabled:
+          type: boolean
+          description: >-
+            Whether the portal supports developer authentication. If disabled,
+            developers cannot register for accounts or create applications.
+        rbac_enabled:
+          type: boolean
+          description: >-
+            Whether the portal resources are protected by Role Based Access
+            Control (RBAC). If enabled, developers view or register for APIs
+            until unless assigned to teams with access to view and consume
+            specific APIs. Authentication must be enabled to use RBAC.
+        default_api_visibility:
+          type: string
+          description: >-
+            The default visibility of APIs in the portal. If set to `public`,
+            newly published APIs are visible to unauthenticated developers. If
+            set to `private`, newly published APIs are hidden from
+            unauthenticated developers.
+          enum:
+            - public
+            - private
+        default_page_visibility:
+          type: string
+          description: >-
+            The default visibility of pages in the portal. If set to `public`,
+            newly created pages are visible to unauthenticated developers. If
+            set to `private`, newly created pages are hidden from
+            unauthenticated developers.
+          enum:
+            - public
+            - private
+        default_application_auth_strategy_id:
+          type: string
+          format: uuid
+          description: >-
+            The default authentication strategy for APIs published to the
+            portal. Newly published APIs will use this authentication strategy
+            unless overridden during publication. If set to `null`, API
+            publications will not use an authentication strategy unless set
+            during publication. DCR support for Auth Strategies is currently in
+            development.
+          nullable: true
+        auto_approve_developers:
+          type: boolean
+          description: >-
+            Whether developer account registrations will be automatically
+            approved, or if they will be set to pending until approved by an
+            admin.
+        auto_approve_applications:
+          type: boolean
+          description: >-
+            Whether requests from applications to register for APIs will be
+            automatically approved, or if they will be set to pending until
+            approved by an admin.
+        default_domain:
+          description: >-
+            The domain assigned to the portal by Konnect. This is the default
+            place to access the portal and its API if not using a
+            `custom_domain``.
+          type: string
+          format: hostname
+          readOnly: true
+        canonical_domain:
+          type: string
+          format: hostname
+          description: The canonical domain of the developer portal
+          nullable: false
+          readOnly: true
         labels:
-          env: test
-        created_at: '1992-02-07T17:46:57.52Z'
-        updated_at: '2022-08-31T17:00:00.52Z'
+          $ref: '#/components/schemas/Labels'
+    PageSlug:
+      title: PageSlug
+      description: >-
+        The slug of a page in a portal. Is used to compute the full path
+        /slug1/slug2/slug3.
+      type: string
+      maxLength: 512
+      example: /my-page
+    ParentPageId:
+      type: string
+      format: uuid
+      nullable: true
+      description: >
+        Pages may be rendered as a tree of files.
+
+
+        Specify the `id` of another page as the `parent_page_id` to add some
+        hierarchy to your pages.
+      example: null
+    PageTitle:
+      title: PageTitle
+      description: The title of a page in a portal.
+      type: string
+      maxLength: 512
+      example: My Page
+    PageContent:
+      title: PageContent
+      description: The renderable markdown content of a page in a portal.
+      type: string
+      maxLength: 1000000
+      example: '# Welcome to My Page'
+    SnippetName:
+      title: SnippetName
+      description: The unique name of a snippet in a portal.
+      type: string
+      maxLength: 512
+      example: my-snippet
+    SnippetTitle:
+      title: SnippetTitle
+      description: The display title of a snippet in a portal.
+      type: string
+      maxLength: 512
+      example: My Snippet
+    SnippetContent:
+      title: SnippetContent
+      description: The renderable markdown content of a page in a portal.
+      type: string
+      maxLength: 1000000
+      example: '# Welcome to My Snippet'
+    VisibilityStatus:
+      title: VisibilityStatus
+      description: >-
+        Whether the resource is publicly accessible to non-authenticated users.
+        Defaults to private.
+      type: string
+      example: public
+      enum:
+        - public
+        - private
+    PublishedStatus:
+      title: PublishedStatus
+      description: Whether the resource is visible on a given portal. Defaults to false.
+      type: string
+      example: published
+      enum:
+        - published
+        - unpublished
+    Description:
+      title: ResourceDescription
+      type: string
+      maxLength: 160
+      example: A custom page about developer portals
+    PageVisibilityStatusWithDefault:
+      title: PageVisibilityStatusWithDefault
+      description: Whether a page is publicly accessible to non-authenticated users.
+      type: string
+      default: private
+      example: public
+    SnippetVisibilityStatusWithDefault:
+      title: PageVisibilityStatusWithDefault
+      description: Whether a page is publicly accessible to non-authenticated users.
+      type: string
+      default: private
+      example: public
+    UpdatePortalPageRequest:
+      title: UpdatePortalPageRequest
+      description: Update a page in a portal.
+      type: object
+      additionalProperties: false
+      properties:
+        slug:
+          $ref: '#/components/schemas/PageSlug'
+        title:
+          $ref: '#/components/schemas/PageTitle'
+        content:
+          $ref: '#/components/schemas/PageContent'
+        visibility:
+          $ref: '#/components/schemas/VisibilityStatus'
+        status:
+          $ref: '#/components/schemas/PublishedStatus'
+        description:
+          $ref: '#/components/schemas/Description'
+        parent_page_id:
+          $ref: '#/components/schemas/ParentPageId'
+    CreatePortalPageRequest:
+      title: CreatePortalPageRequest
+      description: Create a page in a portal.
+      type: object
+      additionalProperties: false
+      required:
+        - slug
+        - title
+        - content
+      properties:
+        slug:
+          $ref: '#/components/schemas/PageSlug'
+        title:
+          $ref: '#/components/schemas/PageTitle'
+        content:
+          $ref: '#/components/schemas/PageContent'
+        visibility:
+          $ref: '#/components/schemas/PageVisibilityStatusWithDefault'
+        status:
+          $ref: '#/components/schemas/PublishedStatus'
+        description:
+          $ref: '#/components/schemas/Description'
+        parent_page_id:
+          $ref: '#/components/schemas/ParentPageId'
+    PortalPageResponse:
+      title: PortalPageResponse
+      description: Details about a page in a portal.
+      additionalProperties: false
+      type: object
+      required:
+        - id
+        - slug
+        - title
+        - content
+        - visibility
+        - status
+        - created_at
+        - updated_at
+        - parent_page_id
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        slug:
+          $ref: '#/components/schemas/PageSlug'
+        title:
+          $ref: '#/components/schemas/PageTitle'
+        content:
+          $ref: '#/components/schemas/PageContent'
+        visibility:
+          $ref: '#/components/schemas/VisibilityStatus'
+        status:
+          $ref: '#/components/schemas/PublishedStatus'
+        description:
+          $ref: '#/components/schemas/Description'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        parent_page_id:
+          $ref: '#/components/schemas/ParentPageId'
+    PortalSnippetResponse:
+      title: PortalSnippetResponse
+      description: Details about a page in a portal.
+      additionalProperties: false
+      type: object
+      required:
+        - id
+        - name
+        - content
+        - visibility
+        - status
+        - created_at
+        - updated_at
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          $ref: '#/components/schemas/SnippetName'
+        title:
+          $ref: '#/components/schemas/SnippetTitle'
+        content:
+          $ref: '#/components/schemas/SnippetContent'
+        visibility:
+          $ref: '#/components/schemas/VisibilityStatus'
+        status:
+          $ref: '#/components/schemas/PublishedStatus'
+        description:
+          $ref: '#/components/schemas/Description'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+    UpdatePortalSnippetRequest:
+      title: UpdatePortalSnippetRequest
+      description: Update a snippet in a portal.
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          $ref: '#/components/schemas/SnippetName'
+        title:
+          $ref: '#/components/schemas/SnippetTitle'
+        content:
+          $ref: '#/components/schemas/SnippetContent'
+        visibility:
+          $ref: '#/components/schemas/VisibilityStatus'
+        status:
+          $ref: '#/components/schemas/PublishedStatus'
+        description:
+          $ref: '#/components/schemas/Description'
+    CreatePortalSnippetRequest:
+      title: CreatePortalSnippetRequest
+      description: Create a snippet in a portal.
+      type: object
+      additionalProperties: false
+      required:
+        - name
+        - title
+        - content
+      properties:
+        name:
+          $ref: '#/components/schemas/SnippetName'
+        title:
+          $ref: '#/components/schemas/SnippetTitle'
+        content:
+          $ref: '#/components/schemas/SnippetContent'
+        visibility:
+          $ref: '#/components/schemas/SnippetVisibilityStatusWithDefault'
+        status:
+          $ref: '#/components/schemas/PublishedStatus'
+        description:
+          $ref: '#/components/schemas/Description'
+    PortalCustomDomain:
+      title: PortalCustomDomain
+      type: object
+      additionalProperties: false
+      properties:
+        hostname:
+          type: string
+        enabled:
+          type: boolean
+        ssl:
+          $ref: '#/components/schemas/PortalCustomDomainSSL'
+        cname_status:
+          $ref: '#/components/schemas/PortalCustomDomainCnameStatus'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - hostname
+        - enabled
+        - ssl
+        - cname_status
+        - created_at
+        - updated_at
+    PortalCustomDomainSSL:
+      type: object
+      title: PortalCustomDomainSSL
+      additionalProperties: false
+      properties:
+        domain_verification_method:
+          $ref: '#/components/schemas/PortalCustomDomainVerificationMethod'
+        verification_status:
+          $ref: '#/components/schemas/PortalCustomDomainVerificationStatus'
+        validation_errors:
+          $ref: '#/components/schemas/PortalCustomDomainValidationErrors'
+      required:
+        - domain_verification_method
+        - ownership_verification
+        - verification_status
+    CreatePortalCustomDomainSSL:
+      type: object
+      title: CreatePortalCustomDomainSSL
+      additionalProperties: false
+      properties:
+        domain_verification_method:
+          $ref: '#/components/schemas/PortalCustomDomainVerificationMethod'
+      required:
+        - domain_verification_method
+    PortalCustomDomainVerificationMethod:
+      title: PortalCustomDomainVerificationMethod
+      type: string
+      enum:
+        - http
+    PortalCustomDomainVerificationStatus:
+      title: PortalCustomDomainVerificationStatus
+      type: string
+      readOnly: true
+      enum:
+        - verified
+        - pending
+        - error
+    PortalCustomDomainCnameStatus:
+      title: PortalCustomDomainCnameStatus
+      type: string
+      readOnly: true
+      enum:
+        - verified
+        - pending
+    PortalCustomDomainValidationErrors:
+      title: PortalCustomDomainValidationErrors
+      type: array
+      readOnly: true
+      items:
+        type: string
+    CreatePortalCustomDomainRequest:
+      title: CreatePortalCustomDomainRequest
+      type: object
+      additionalProperties: false
+      properties:
+        hostname:
+          type: string
+        enabled:
+          type: boolean
+        ssl:
+          $ref: '#/components/schemas/CreatePortalCustomDomainSSL'
+      required:
+        - hostname
+        - enabled
+        - ssl
+    UpdatePortalCustomDomainRequest:
+      title: UpdatePortalCustomDomainRequest
+      type: object
+      additionalProperties: false
+      properties:
+        enabled:
+          type: boolean
+    PortalClaimMappings:
+      title: PortalClaimMappings
+      description: Mappings from a portal developer atribute to an Identity Provider claim.
+      type: object
+      minProperties: 0
+      maxProperties: 3
+      properties:
+        name:
+          type: string
+          example: name
+        email:
+          type: string
+          example: email
+        groups:
+          type: string
+          example: custom-group-claim
+      example:
+        name: name
+        email: email
+        groups: custom-group-claim
+    PortalOIDCConfig:
+      title: PortalOIDCConfig
+      description: Configuration properties for an OpenID Connect Identity Provider.
+      type: object
+      properties:
+        issuer:
+          type: string
+          example: https://identity.example.com/v2
+        client_id:
+          type: string
+          example: x7id0o42lklas0blidl2
+        scopes:
+          type: array
+          items:
+            type: string
+          example:
+            - email
+            - openid
+            - profile
+        claim_mappings:
+          $ref: '#/components/schemas/PortalClaimMappings'
+      required:
+        - issuer
+        - client_id
+      example:
+        issuer: https://identity.example.com/v2
+        client_id: x7id0o42lklas0blidl2
+        scopes:
+          - email
+          - openid
+          - profile
+        claim_mappings:
+          name: name
+          email: email
+          groups: custom-group-claim
+    PortalAuthenticationSettingsResponse:
+      x-speakeasy-entity: PortalAuth
+      title: PortalAuthenticationSettingsResponse
+      description: The developer authentication settings for a portal.
+      type: object
+      properties:
+        basic_auth_enabled:
+          type: boolean
+          example: true
+          description: The portal has basic auth enabled or disabled.
+        oidc_auth_enabled:
+          type: boolean
+          example: false
+          description: The portal has OIDC enabled or disabled.
+        saml_auth_enabled:
+          type: boolean
+          example: false
+          description: The portal has SAML enabled or disabled.
+        oidc_team_mapping_enabled:
+          type: boolean
+          example: true
+          description: IdP groups determine the Portal Teams a developer has.
+        idp_mapping_enabled:
+          type: boolean
+          example: true
+          description: >-
+            IdP groups determine the Portal Teams a developer has. This will
+            soon replace oidc_team_mapping_enabled.
+        konnect_mapping_enabled:
+          type: boolean
+          example: false
+          description: A Konnect Identity Admin assigns teams to a developer.
+        oidc_config:
+          $ref: '#/components/schemas/PortalOIDCConfig'
+      required:
+        - basic_auth_enabled
+        - konnect_mapping_enabled
+        - oidc_auth_enabled
+        - oidc_team_mapping_enabled
+      example:
+        basic_auth_enabled: true
+        oidc_auth_enabled: true
+        oidc_team_mapping_enabled: true
+        konnect_mapping_enabled: false
+        oidc_config:
+          issuer: https://identity.example.com/v2
+          client_id: x7id0o42lklas0blidl2
+          scopes:
+            - email
+            - openid
+            - profile
+          claim_mappings:
+            name: name
+            email: email
+            groups: custom-group-claim
+    PortalAuthenticationSettingsUpdateRequest:
+      x-speakeasy-entity: PortalAuth
+      title: PortalAuthenticationSettingsUpdateRequest
+      description: Properties to update a portal's developer auth settings.
+      type: object
+      properties:
+        basic_auth_enabled:
+          type: boolean
+          example: true
+          description: The organization has basic auth enabled.
+        oidc_auth_enabled:
+          type: boolean
+          example: false
+          description: The organization has OIDC disabled.
+        saml_auth_enabled:
+          type: boolean
+          example: false
+          description: The portal has SAML enabled or disabled.
+        oidc_team_mapping_enabled:
+          type: boolean
+          example: true
+          description: >-
+            Whether IdP groups determine the Konnect Portal teams a developer
+            has.
+        konnect_mapping_enabled:
+          type: boolean
+          example: false
+          description: Whether a Konnect Identity Admin assigns teams to a developer.
+        idp_mapping_enabled:
+          type: boolean
+          example: true
+          description: >-
+            Whether IdP groups determine the Konnect Portal teams a developer
+            has. This will soon replace oidc_team_mapping_enabled.
+        oidc_issuer:
+          type: string
+        oidc_client_id:
+          type: string
+        oidc_client_secret:
+          type: string
+        oidc_scopes:
+          type: array
+          items:
+            type: string
+        oidc_claim_mappings:
+          $ref: '#/components/schemas/PortalClaimMappings'
+      example:
+        basic_auth_enabled: true
+        oidc_auth_enabled: true
+        oidc_team_mapping_enabled: true
+        konnect_mapping_enabled: false
+        oidc_issuer: https://identity.example.com/v2
+        oidc_client_id: x7id0o42lklas0blidl2
+        oidc_scopes:
+          - email
+          - openid
+          - profile
+        oidc_claim_mappings:
+          name: name
+          email: email
+          groups: custom-group-claim
+    PortalUpdateTeamRequest:
+      title: PortalUpdateTeamRequest
+      description: Properties to update on a team.
+      type: object
+      properties:
+        name:
+          type: string
+          example: IDM - Developers
+          pattern: ^[\w \W]+$
+          writeOnly: true
+        description:
+          type: string
+          maxLength: 250
+          example: The Identity Management (IDM) API team.
+          writeOnly: true
+      example:
+        name: IDM - Developers
+        description: The Identity Management (IDM) API team.
+    PortalCreateTeamRequest:
+      x-speakeasy-entity: PortalTeam
+      title: PortalCreateTeamRequest
+      description: Details about a team to create.
+      type: object
+      properties:
+        name:
+          type: string
+          example: IDM - Developers
+          pattern: ^[\w \W]+$
+          writeOnly: true
+        description:
+          type: string
+          maxLength: 250
+          example: The Identity Management (IDM) team.
+          writeOnly: true
+      required:
+        - name
+      example:
+        name: IDM - Developers
+        description: The Identity Management (IDM) team.
+    PortalTeamResponse:
+      title: PortalTeamResponse
+      description: Details about a developer team.
+      type: object
       properties:
         id:
           type: string
           format: uuid
           example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-          description: The team ID.
           readOnly: true
         name:
           type: string
           pattern: ^[\w \W]+$
           example: IDM - Developers
           maxLength: 250
-          description: The name of the team.
         description:
           type: string
           example: The developers for the IDM API.
           maxLength: 250
-          description: The team description in Konnect.
-        system_team:
-          type: boolean
-          description: >-
-            Returns True if a user belongs to a `system_team`. System teams are
-            teams that can manage Konnect objects, like "Organization Admin", or
-            "Service"
-          readOnly: true
-        labels:
-          $ref: '#/components/schemas/Labels'
         created_at:
           type: string
           format: date-time
           example: '1992-02-07T17:46:57.52Z'
-          description: A Unix timestamp representation of team creation.
           readOnly: true
         updated_at:
           type: string
           format: date-time
           example: '2022-02-07T17:00:00.52Z'
-          description: >
-            A Unix timestamp representation of the most recent change to the
-            team object in Konnect.
           readOnly: true
-    AssignedRole:
-      title: AssignedRole
-      type: object
-      description: An assigned role is a role that has been assigned to a user or team.
       example:
-        id: 54cc6168-ebb1-4300-8168-d62a0dd08fc8
-        role_name: Viewer
-        entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
-        entity_type_name: Control Planes
-        entity_region: us
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: eaf7adf1-32c8-4bbf-b960-d1f8456afe67
-          description: The ID of the role assignment.
-        role_name:
-          type: string
-          example: Viewer
-          description: Name of the role being assigned.
-        entity_id:
-          type: string
-          format: uuid
-          example: 817d0422-45c9-4d88-8d64-45aef05c1ae7
-          description: A RBAC entity ID.
-        entity_type_name:
-          type: string
-          example: Control Planes
-          description: Name of the entity type the role is being assigned to.
-        entity_region:
-          x-flatten-allOf: true
-          allOf:
-            - $ref: '#/components/schemas/EntityRegion'
-            - description: Region of the entity.
-    SystemAccount:
-      x-speakeasy-entity: SystemAccount
-      title: System Account
+        id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        name: IDM - Developers
+        description: The developers for the IDM API.
+        created_at: '1992-02-07T17:46:57.52Z'
+        updated_at: '2022-08-31T17:00:00.52Z'
+    UUID:
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      description: Contains a unique identifier used for this resource.
+      readOnly: true
+    CreatedAt:
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      description: An ISO-8601 timestamp representation of entity creation date.
+      readOnly: true
+    UpdatedAt:
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      description: An ISO-8601 timestamp representation of entity update date.
+      readOnly: true
+    Labels:
+      title: Labels
       type: object
       example:
-        id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-        name: Example System Account
-        description: This is a sample system account description.
-        created_at: '2022-08-24T14:15:22Z'
-        updated_at: '2022-10-05T10:33:49Z'
-        konnect_managed: false
-      description: Schema of the system account.
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: ID of the system account.
-          readOnly: true
-        name:
-          type: string
-          description: Name of the system account.
-        description:
-          type: string
-          description: Description of the system account.
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp of when the system account was created.
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          description: Timestamp of when the system account was last updated.
-          readOnly: true
-        konnect_managed:
-          type: boolean
-          description: The system account is managed by Konnect (true/false).
-    SystemAccountAccessToken:
-      x-speakeasy-entity: SystemAccountAccessToken
-      title: System Account Access Token
-      example:
-        id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-        name: Sample Access Token
-        created_at: '2022-08-01T14:16:09Z'
-        updated_at: '2022-08-02T08:35:49Z'
-        expires_at: '2022-12-31T12:52:23Z'
-        last_used_at: '2022-10-24T13:05:42Z'
-      description: Schema of the system account access token.
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: ID of the system account access token.
-          readOnly: true
-        name:
-          type: string
-          description: Name of the system account access token.
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp of when the system account access token was created.
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          description: Timestamp of when the system account access token was last updated.
-          readOnly: true
-        expires_at:
-          type: string
-          format: date-time
-          description: Timestamp of when the system account access token will expire.
-        last_used_at:
-          type: string
-          format: date-time
-          description: Timestamp of when the system account access token was last used.
-          readOnly: true
+        env: test
+      maxProperties: 50
+      description: >
+        Labels store metadata of an entity that can be used for filtering an
+        entity list or for searching across entity types. 
+
+
+        Keys must be of length 1-63 characters, and cannot start with "kong",
+        "konnect", "mesh", "kic", or "_".
+      additionalProperties:
+        type: string
+        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$
+        minLength: 1
+        maxLength: 63
+        nullable: true
     BaseError:
       type: object
       title: Error
@@ -6160,21 +7264,6 @@ components:
           properties:
             invalid_parameters:
               $ref: '#/components/schemas/InvalidParameters'
-    NotFoundError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 404
-            title:
-              example: Not Found
-            type:
-              example: https://httpstatuses.com/404
-            instance:
-              example: kong:trace:1234567890
-            detail:
-              example: Not found
     UnauthorizedError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -6190,21 +7279,6 @@ components:
               example: kong:trace:1234567890
             detail:
               example: Invalid credentials
-    ConflictError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - type: object
-          properties:
-            status:
-              example: 409
-            title:
-              example: Conflict
-            type:
-              example: https://httpstatuses.com/409
-            instance:
-              example: kong:trace:1234567890
-            detail:
-              example: Conflict
     ForbiddenError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -6220,24 +7294,6 @@ components:
               example: kong:trace:1234567890
             detail:
               example: Forbidden
-    Labels:
-      title: Labels
-      type: object
-      example:
-        env: test
-      maxProperties: 50
-      description: >
-        Labels store metadata of an entity that can be used for filtering an
-        entity list or for searching across entity types. 
-
-
-        Keys must be of length 1-63 characters, and cannot start with "kong",
-        "konnect", "mesh", "kic", or "_".
-      additionalProperties:
-        type: string
-        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$
-        minLength: 1
-        maxLength: 63
     LabelsUpdate:
       type: object
       nullable: true
@@ -6261,16 +7317,525 @@ components:
         maxLength: 63
         nullable: true
       writeOnly: true
-    EntityRegion:
+    NotFoundError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 404
+            title:
+              example: Not Found
+            type:
+              example: https://httpstatuses.com/404
+            instance:
+              example: kong:trace:1234567890
+            detail:
+              example: Not found
+    ConflictError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 409
+            title:
+              example: Conflict
+            type:
+              example: https://httpstatuses.com/409
+            instance:
+              example: kong:trace:1234567890
+            detail:
+              example: Conflict
+    PortalMenuItem:
+      type: object
+      additionalProperties: false
+      properties:
+        path:
+          description: The absolute path of a page in a portal with a leading slash.
+          type: string
+          example: /about/company
+          maxLength: 512
+        title:
+          description: The link display text
+          type: string
+          example: My Page
+        visibility:
+          description: >-
+            Whether a menu item is public or private. Private menu items are
+            only accessible to authenticated users.
+          type: string
+          example: public
+          enum:
+            - public
+            - private
+        external:
+          description: When clicked, open the link in a new window
+          type: boolean
+      required:
+        - path
+        - title
+        - visibility
+        - external
+    PortalFooterMenuSection:
+      type: object
+      additionalProperties: false
+      properties:
+        title:
+          description: The footer menu section title
+          type: string
+          maxLength: 512
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortalMenuItem'
+      required:
+        - title
+        - items
+    PortalCustomization:
+      title: PortalCustomization
+      description: The custom settings of this portal
+      type: object
+      additionalProperties: false
+      properties:
+        theme:
+          type: object
+          additionalProperties: false
+          properties:
+            name:
+              type: string
+              nullable: false
+            mode:
+              type: string
+              enum:
+                - light
+                - dark
+                - system
+            colors:
+              type: object
+              additionalProperties: false
+              properties:
+                primary:
+                  type: string
+                  nullable: false
+                  pattern: ^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$
+                  x-validation-message: must be a valid hex color value
+                  example: '#000000'
+        layout:
+          type: string
+          nullable: false
+        css:
+          type: string
+          nullable: true
+        js:
+          type: object
+          additionalProperties: false
+          properties:
+            custom:
+              type: string
+              nullable: true
+            scripts:
+              type: array
+              items:
+                type: string
+                pattern: ^https://[^:.]+\..+$
+              maxItems: 20
+        menu:
+          type: object
+          additionalProperties: false
+          properties:
+            main:
+              type: array
+              items:
+                $ref: '#/components/schemas/PortalMenuItem'
+            footer_sections:
+              type: array
+              items:
+                $ref: '#/components/schemas/PortalFooterMenuSection'
+            footer_bottom:
+              type: array
+              items:
+                $ref: '#/components/schemas/PortalMenuItem'
+        spec_renderer:
+          type: object
+          additionalProperties: false
+          properties:
+            try_it_ui:
+              type: boolean
+            try_it_insomnia:
+              type: boolean
+            infinite_scroll:
+              type: boolean
+            show_schemas:
+              type: boolean
+        robots:
+          type: string
+          nullable: true
+    Api:
+      title: API
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+          description: The API identifier.
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+          minLength: 1
+          description: >
+            The name of your API. The `name + version` combination must be
+            unique for each API you publish.
+          example: MyAPI
+        description:
+          type: string
+          description: A description of your API. Will be visible on your live Portal.
+          nullable: true
+        version:
+          type: string
+          maxLength: 255
+          minLength: 1
+          description: >-
+            An optional version for your API. Leave this empty if your API is
+            unversioned.
+          nullable: true
+        deprecated:
+          type: boolean
+          description: Marks this API as deprecated.
+        slug:
+          type: string
+          pattern: ^[\w-]+$
+          description: >
+            The `slug` is used in generated URLs to provide human readable
+            paths.
+
+
+            Defaults to `slugify(name + version)`
+          example: my-api-v1
+          nullable: true
+        portals:
+          readOnly: true
+          type: array
+          nullable: false
+          uniqueItems: true
+          description: The list of portals which this API is published to.
+          items:
+            type: object
+            additionalProperties: false
+            required:
+              - id
+              - name
+              - display_name
+            properties:
+              id:
+                type: string
+                format: uuid
+                example: 25a2624c-49fc-4764-99e1-224ed819f200
+                description: The portal identifier.
+              name:
+                type: string
+                example: My Portal
+                description: >-
+                  The name of the portal, used to distinguish it from other
+                  portals.
+              display_name:
+                type: string
+                example: My Portal
+                description: >-
+                  The display name of the portal. This value will be the
+                  portal's `name` in Portal API.
+        labels:
+          $ref: '#/components/schemas/Labels'
+        public_labels:
+          $ref: '#/components/schemas/PublicLabels'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+    ApiResponseSchema:
+      type: object
+      title: API Response
+      x-flatten-allOf: true
+      allOf:
+        - $ref: '#/components/schemas/Api'
+        - required:
+            - id
+            - name
+            - version
+            - labels
+            - public_labels
+            - deprecated
+            - created_at
+            - updated_at
+            - slug
+            - portals
+    ApiDocumentId:
+      title: API Document ID
+      type: string
+      format: uuid
+      example: de5c9818-be5c-42e6-b514-e3d4bc30ddeb
+      description: The API document identifier.
+      readOnly: true
+    ApiDocumentContent:
+      title: API Document Content
+      type: string
+      description: Raw markdown content to display in your Portal
+    ApiDocumentTitle:
+      title: API Document Title
+      type: string
+      description: >-
+        The title of the document. Used to populate the `<title>` tag for the
+        page
+      example: API Document
+    ApiDocumentStatus:
+      title: API Document Status
+      x-flatten-allOf: true
+      allOf:
+        - $ref: '#/components/schemas/PublishStatus'
+        - description: >-
+            If `status=published` the document will be visible in your live
+            portal
+          default: unpublished
+    ApiDocumentParentDocumentId:
+      title: API Document Parent Document ID
+      type: string
+      format: uuid
+      nullable: true
+      description: >
+        API Documents may be rendered as a tree of files.
+
+
+        Specify the `id` of another API Document as the `parent_document_id` to
+        add some heirarchy do your documents.
+      example: null
+    ApiDocumentSlug:
+      title: API Document Slug
+      type: string
+      pattern: ^[\w-]+$
+      description: |
+        The `slug` is used in generated URLs to provide human readable paths.
+
+        Defaults to `slugify(title)`
+      example: api-document
+    ApiDocument:
+      type: object
+      title: API Document
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '#/components/schemas/ApiDocumentId'
+        content:
+          $ref: '#/components/schemas/ApiDocumentContent'
+        title:
+          $ref: '#/components/schemas/ApiDocumentTitle'
+        slug:
+          $ref: '#/components/schemas/ApiDocumentSlug'
+        status:
+          $ref: '#/components/schemas/ApiDocumentStatus'
+        parent_document_id:
+          $ref: '#/components/schemas/ApiDocumentParentDocumentId'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+    ApiSpec:
+      title: API Specification
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 7710d5c4-d902-410b-992f-18b814155b53
+          description: The API specification identifier.
+          readOnly: true
+        content:
+          type: string
+          description: |
+            The raw content of your API specification.
+          example: >-
+            {"openapi":"3.0.3","info":{"title":"Example
+            API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example
+            endpoint","responses":{"200":{"description":"Successful
+            response"}}}}}}
+        type:
+          $ref: '#/components/schemas/ApiSpecType'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+    ApiPublicationVisibility:
+      title: API Publication Visibility
       type: string
       enum:
-        - us
-        - eu
-        - au
-        - me
-        - in
-        - '*'
-      example: eu
+        - public
+        - private
+      default: private
+      description: >
+        The visibility of the API in the portal.
+
+        Public API publications do not require authentication to view and
+        retrieve information about them.
+
+        Private API publications require authentication to retrieve information
+        about them.
+    ApiPublicationAuthStrategyIds:
+      title: API Publication Auth Strategy IDs
+      type: array
+      nullable: true
+      description: >
+        The auth strategy the API enforces for applications in the portal.
+
+        Omitting this property means the portal's default application auth
+        strategy will be used.
+
+        Setting to null means the API will not require application
+        authentication.
+
+        DCR support for application registration is currently in development.
+      maxItems: 1
+      minItems: 1
+      items:
+        type: string
+        format: uuid
+    AutoApproveRegistrations:
+      title: Auto Approve Registrations
+      description: >-
+        Whether the application registration auto approval on this portal for
+        the api is enabled. If set to false, fallbacks on portal's
+        auto_approve_applications value.
+      type: boolean
+    ApiPublication:
+      title: API Publication
+      type: object
+      description: An API publication in a portal
+      additionalProperties: false
+      properties:
+        auto_approve_registrations:
+          $ref: '#/components/schemas/AutoApproveRegistrations'
+        auth_strategy_ids:
+          $ref: '#/components/schemas/ApiPublicationAuthStrategyIds'
+        visibility:
+          $ref: '#/components/schemas/ApiPublicationVisibility'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+    ApiImplementationService:
+      title: API Implementation Service
+      type: object
+      description: A Gateway service that implements an API
+      additionalProperties: false
+      required:
+        - control_plane_id
+        - id
+      properties:
+        control_plane_id:
+          type: string
+          format: uuid
+          example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+        id:
+          type: string
+          format: uuid
+          example: 7710d5c4-d902-410b-992f-18b814155b53
+    ApiImplementation:
+      title: API Implementation
+      type: object
+      description: An entity that implements an API
+      additionalProperties: false
+      required:
+        - service
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        service:
+          $ref: '#/components/schemas/ApiImplementationService'
+    PublicLabels:
+      title: PublicLabels
+      type: object
+      example:
+        category: finance
+      maxProperties: 50
+      description: >
+        Public labels store information about an entity that can be used for
+        filtering a list of objects.
+
+
+        Public labels are intended to store **PUBLIC** metadata. 
+
+
+        Keys must be of length 1-63 characters, and cannot start with "kong",
+        "konnect", "mesh", "kic", or "_".
+      additionalProperties:
+        type: string
+        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$
+        minLength: 1
+        maxLength: 63
+    UnsupportedMediaTypeError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 415
+            title:
+              example: UnsupportedMediaType
+            type:
+              example: https://httpstatuses.com/415
+            instance:
+              example: kong:trace:1234567890
+            detail:
+              example: UnsupportedMediaType
+    PublicLabelsUpdate:
+      title: PublicLabelsUpdate
+      type: object
+      example:
+        category: finance
+      maxProperties: 50
+      description: >
+        Public labels store information about an entity that can be used for
+        filtering a list of objects.
+
+
+        Public labels are intended to store **PUBLIC** metadata.
+
+
+        Keys must be of length 1-63 characters, and cannot start with "kong",
+        "konnect", "mesh", "kic", or "_".
+      additionalProperties:
+        type: string
+        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$
+        minLength: 1
+        maxLength: 63
+        nullable: true
+      writeOnly: true
+    PublishStatus:
+      type: string
+      enum:
+        - published
+        - unpublished
+    ApiSpecType:
+      title: API Spec Type
+      type: string
+      example: oas3
+      description: >
+        The type of specification being stored. This allows us to render the
+        specification correctly.
+
+
+        If this field is not set, it will be autodetected from `content`
+      enum:
+        - oas3
+        - asyncapi
     MeshAccessLogItem:
       type: object
       required:
@@ -20442,22 +22007,6 @@ components:
         labels:
           $ref: '#/components/schemas/MeshControlPlaneLabels'
   securitySchemes:
-    systemAccountAccessToken:
-      type: http
-      scheme: bearer
-      bearerFormat: Token
-      description: >
-        The system account access token is meant for automations and
-        integrations that are not directly associated with a human identity.
-
-        You can generate a system account Access Token by creating a system
-        account and then obtaining a system account access token for that
-        account.
-
-        The access token must be passed in the header of a request, for example:
-
-        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header
-        'Authorization: Bearer spat_i2Ej...'`
     personalAccessToken:
       type: http
       scheme: bearer
@@ -20474,6 +22023,22 @@ components:
 
         `curl -X GET 'https://global.api.konghq.com/v2/users/' --header
         'Authorization: Bearer kpat_xgfT...'`
+    systemAccountAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Token
+      description: >
+        The system account access token is meant for automations and
+        integrations that are not directly associated with a human identity.
+
+        You can generate a system account Access Token by creating a system
+        account and then obtaining a system account access token for that
+        account.
+
+        The access token must be passed in the header of a request, for example:
+
+        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header
+        'Authorization: Bearer spat_i2Ej...'`
     konnectAccessToken:
       type: http
       scheme: bearer
@@ -20481,22 +22046,3 @@ components:
       description: >
         The Konnect access token is meant to be used by the Konnect dashboard
         and the decK CLI authenticate with.
-    clientToken:
-      x-internal: true
-      type: http
-      scheme: bearer
-      bearerFormat: Token
-      description: >
-        The Client token is meant to be used by internal service clients for the
-        MinK integration.
-  parameters:
-    cpId:
-      name: cpId
-      in: path
-      required: true
-      description: Id of the Konnect resource
-      example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
-      x-speakeasy-plan-modifiers: RequiresReplaceModifier
-      schema:
-        type: string
-        format: uuid

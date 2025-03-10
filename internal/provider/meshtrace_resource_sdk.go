@@ -303,7 +303,7 @@ func (r *MeshTraceResourceModel) RefreshFromSharedMeshTraceItem(resp *shared.Mes
 			r.CreationTime = types.StringNull()
 		}
 		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String)
+			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
 				r.Labels[key] = types.StringValue(value)
 			}
@@ -368,7 +368,7 @@ func (r *MeshTraceResourceModel) RefreshFromSharedMeshTraceItem(resp *shared.Mes
 				if resp.Spec.Default.Sampling.Client == nil {
 					r.Spec.Default.Sampling.Client = nil
 				} else {
-					r.Spec.Default.Sampling.Client = &tfTypes.Mode{}
+					r.Spec.Default.Sampling.Client = &tfTypes.MeshItemMode{}
 					if resp.Spec.Default.Sampling.Client.Integer != nil {
 						r.Spec.Default.Sampling.Client.Integer = types.Int64PointerValue(resp.Spec.Default.Sampling.Client.Integer)
 					}
@@ -379,7 +379,7 @@ func (r *MeshTraceResourceModel) RefreshFromSharedMeshTraceItem(resp *shared.Mes
 				if resp.Spec.Default.Sampling.Overall == nil {
 					r.Spec.Default.Sampling.Overall = nil
 				} else {
-					r.Spec.Default.Sampling.Overall = &tfTypes.Mode{}
+					r.Spec.Default.Sampling.Overall = &tfTypes.MeshItemMode{}
 					if resp.Spec.Default.Sampling.Overall.Integer != nil {
 						r.Spec.Default.Sampling.Overall.Integer = types.Int64PointerValue(resp.Spec.Default.Sampling.Overall.Integer)
 					}
@@ -390,7 +390,7 @@ func (r *MeshTraceResourceModel) RefreshFromSharedMeshTraceItem(resp *shared.Mes
 				if resp.Spec.Default.Sampling.Random == nil {
 					r.Spec.Default.Sampling.Random = nil
 				} else {
-					r.Spec.Default.Sampling.Random = &tfTypes.Mode{}
+					r.Spec.Default.Sampling.Random = &tfTypes.MeshItemMode{}
 					if resp.Spec.Default.Sampling.Random.Integer != nil {
 						r.Spec.Default.Sampling.Random.Integer = types.Int64PointerValue(resp.Spec.Default.Sampling.Random.Integer)
 					}
@@ -429,7 +429,7 @@ func (r *MeshTraceResourceModel) RefreshFromSharedMeshTraceItem(resp *shared.Mes
 			r.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			r.Spec.TargetRef.Kind = types.StringValue(string(resp.Spec.TargetRef.Kind))
 			if len(resp.Spec.TargetRef.Labels) > 0 {
-				r.Spec.TargetRef.Labels = make(map[string]types.String)
+				r.Spec.TargetRef.Labels = make(map[string]types.String, len(resp.Spec.TargetRef.Labels))
 				for key1, value1 := range resp.Spec.TargetRef.Labels {
 					r.Spec.TargetRef.Labels[key1] = types.StringValue(value1)
 				}
@@ -443,7 +443,7 @@ func (r *MeshTraceResourceModel) RefreshFromSharedMeshTraceItem(resp *shared.Mes
 			}
 			r.Spec.TargetRef.SectionName = types.StringPointerValue(resp.Spec.TargetRef.SectionName)
 			if len(resp.Spec.TargetRef.Tags) > 0 {
-				r.Spec.TargetRef.Tags = make(map[string]types.String)
+				r.Spec.TargetRef.Tags = make(map[string]types.String, len(resp.Spec.TargetRef.Tags))
 				for key2, value2 := range resp.Spec.TargetRef.Tags {
 					r.Spec.TargetRef.Tags[key2] = types.StringValue(value2)
 				}

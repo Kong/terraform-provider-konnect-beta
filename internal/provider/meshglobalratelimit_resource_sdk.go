@@ -100,7 +100,7 @@ func (r *MeshGlobalRateLimitResourceModel) ToSharedMeshGlobalRateLimitItemInput(
 				}
 				status := new(int)
 				if !fromItem.Default.HTTP.OnRateLimit.Status.IsUnknown() && !fromItem.Default.HTTP.OnRateLimit.Status.IsNull() {
-					*status = int(fromItem.Default.HTTP.OnRateLimit.Status.ValueInt64())
+					*status = int(fromItem.Default.HTTP.OnRateLimit.Status.ValueInt32())
 				} else {
 					status = nil
 				}
@@ -120,7 +120,7 @@ func (r *MeshGlobalRateLimitResourceModel) ToSharedMeshGlobalRateLimitItemInput(
 						interval = limitsItem.RequestRate.Interval.ValueString()
 
 						var num int
-						num = int(limitsItem.RequestRate.Num.ValueInt64())
+						num = int(limitsItem.RequestRate.Num.ValueInt32())
 
 						requestRate = &shared.MeshGlobalRateLimitItemSpecFromRequestRate{
 							Interval: interval,
@@ -150,7 +150,7 @@ func (r *MeshGlobalRateLimitResourceModel) ToSharedMeshGlobalRateLimitItemInput(
 				interval1 = fromItem.Default.HTTP.RequestRate.Interval.ValueString()
 
 				var num1 int
-				num1 = int(fromItem.Default.HTTP.RequestRate.Num.ValueInt64())
+				num1 = int(fromItem.Default.HTTP.RequestRate.Num.ValueInt32())
 
 				requestRate1 = &shared.RequestRate{
 					Interval: interval1,
@@ -362,7 +362,7 @@ func (r *MeshGlobalRateLimitResourceModel) ToSharedMeshGlobalRateLimitItemInput(
 				}
 				status1 := new(int)
 				if !toItem.Default.HTTP.OnRateLimit.Status.IsUnknown() && !toItem.Default.HTTP.OnRateLimit.Status.IsNull() {
-					*status1 = int(toItem.Default.HTTP.OnRateLimit.Status.ValueInt64())
+					*status1 = int(toItem.Default.HTTP.OnRateLimit.Status.ValueInt32())
 				} else {
 					status1 = nil
 				}
@@ -382,7 +382,7 @@ func (r *MeshGlobalRateLimitResourceModel) ToSharedMeshGlobalRateLimitItemInput(
 						interval2 = limitsItem1.RequestRate.Interval.ValueString()
 
 						var num2 int
-						num2 = int(limitsItem1.RequestRate.Num.ValueInt64())
+						num2 = int(limitsItem1.RequestRate.Num.ValueInt32())
 
 						requestRate2 = &shared.MeshGlobalRateLimitItemSpecRequestRate{
 							Interval: interval2,
@@ -412,7 +412,7 @@ func (r *MeshGlobalRateLimitResourceModel) ToSharedMeshGlobalRateLimitItemInput(
 				interval3 = toItem.Default.HTTP.RequestRate.Interval.ValueString()
 
 				var num3 int
-				num3 = int(toItem.Default.HTTP.RequestRate.Num.ValueInt64())
+				num3 = int(toItem.Default.HTTP.RequestRate.Num.ValueInt32())
 
 				requestRate3 = &shared.MeshGlobalRateLimitItemRequestRate{
 					Interval: interval3,
@@ -527,7 +527,7 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 			r.CreationTime = types.StringNull()
 		}
 		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String)
+			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
 				r.Labels[key] = types.StringValue(value)
 			}
@@ -587,9 +587,9 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 						}
 					}
 					if fromItem.Default.HTTP.OnRateLimit.Status != nil {
-						from1.Default.HTTP.OnRateLimit.Status = types.Int64Value(int64(*fromItem.Default.HTTP.OnRateLimit.Status))
+						from1.Default.HTTP.OnRateLimit.Status = types.Int32Value(int32(*fromItem.Default.HTTP.OnRateLimit.Status))
 					} else {
-						from1.Default.HTTP.OnRateLimit.Status = types.Int64Null()
+						from1.Default.HTTP.OnRateLimit.Status = types.Int32Null()
 					}
 				}
 				from1.Default.HTTP.RatelimitOnRequest = []tfTypes.RatelimitOnRequest{}
@@ -604,7 +604,7 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 						} else {
 							limits1.RequestRate = &tfTypes.MeshGlobalRateLimitItemSpecFromRequestRate{}
 							limits1.RequestRate.Interval = types.StringValue(limitsItem.RequestRate.Interval)
-							limits1.RequestRate.Num = types.Int64Value(int64(limitsItem.RequestRate.Num))
+							limits1.RequestRate.Num = types.Int32Value(int32(limitsItem.RequestRate.Num))
 						}
 						limits1.Value = types.StringValue(limitsItem.Value)
 						if limitsCount+1 > len(ratelimitOnRequest1.Limits) {
@@ -628,7 +628,7 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 				} else {
 					from1.Default.HTTP.RequestRate = &tfTypes.MeshGlobalRateLimitItemSpecFromRequestRate{}
 					from1.Default.HTTP.RequestRate.Interval = types.StringValue(fromItem.Default.HTTP.RequestRate.Interval)
-					from1.Default.HTTP.RequestRate.Num = types.Int64Value(int64(fromItem.Default.HTTP.RequestRate.Num))
+					from1.Default.HTTP.RequestRate.Num = types.Int32Value(int32(fromItem.Default.HTTP.RequestRate.Num))
 				}
 				if fromItem.Default.Mode != nil {
 					from1.Default.Mode = types.StringValue(string(*fromItem.Default.Mode))
@@ -638,7 +638,7 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 			}
 			from1.TargetRef.Kind = types.StringValue(string(fromItem.TargetRef.Kind))
 			if len(fromItem.TargetRef.Labels) > 0 {
-				from1.TargetRef.Labels = make(map[string]types.String)
+				from1.TargetRef.Labels = make(map[string]types.String, len(fromItem.TargetRef.Labels))
 				for key1, value4 := range fromItem.TargetRef.Labels {
 					from1.TargetRef.Labels[key1] = types.StringValue(value4)
 				}
@@ -652,7 +652,7 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 			}
 			from1.TargetRef.SectionName = types.StringPointerValue(fromItem.TargetRef.SectionName)
 			if len(fromItem.TargetRef.Tags) > 0 {
-				from1.TargetRef.Tags = make(map[string]types.String)
+				from1.TargetRef.Tags = make(map[string]types.String, len(fromItem.TargetRef.Tags))
 				for key2, value5 := range fromItem.TargetRef.Tags {
 					from1.TargetRef.Tags[key2] = types.StringValue(value5)
 				}
@@ -670,7 +670,7 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 			r.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			r.Spec.TargetRef.Kind = types.StringValue(string(resp.Spec.TargetRef.Kind))
 			if len(resp.Spec.TargetRef.Labels) > 0 {
-				r.Spec.TargetRef.Labels = make(map[string]types.String)
+				r.Spec.TargetRef.Labels = make(map[string]types.String, len(resp.Spec.TargetRef.Labels))
 				for key3, value6 := range resp.Spec.TargetRef.Labels {
 					r.Spec.TargetRef.Labels[key3] = types.StringValue(value6)
 				}
@@ -684,7 +684,7 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 			}
 			r.Spec.TargetRef.SectionName = types.StringPointerValue(resp.Spec.TargetRef.SectionName)
 			if len(resp.Spec.TargetRef.Tags) > 0 {
-				r.Spec.TargetRef.Tags = make(map[string]types.String)
+				r.Spec.TargetRef.Tags = make(map[string]types.String, len(resp.Spec.TargetRef.Tags))
 				for key4, value7 := range resp.Spec.TargetRef.Tags {
 					r.Spec.TargetRef.Tags[key4] = types.StringValue(value7)
 				}
@@ -738,9 +738,9 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 						}
 					}
 					if toItem.Default.HTTP.OnRateLimit.Status != nil {
-						to1.Default.HTTP.OnRateLimit.Status = types.Int64Value(int64(*toItem.Default.HTTP.OnRateLimit.Status))
+						to1.Default.HTTP.OnRateLimit.Status = types.Int32Value(int32(*toItem.Default.HTTP.OnRateLimit.Status))
 					} else {
-						to1.Default.HTTP.OnRateLimit.Status = types.Int64Null()
+						to1.Default.HTTP.OnRateLimit.Status = types.Int32Null()
 					}
 				}
 				to1.Default.HTTP.RatelimitOnRequest = []tfTypes.RatelimitOnRequest{}
@@ -755,7 +755,7 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 						} else {
 							limits3.RequestRate = &tfTypes.MeshGlobalRateLimitItemSpecFromRequestRate{}
 							limits3.RequestRate.Interval = types.StringValue(limitsItem1.RequestRate.Interval)
-							limits3.RequestRate.Num = types.Int64Value(int64(limitsItem1.RequestRate.Num))
+							limits3.RequestRate.Num = types.Int32Value(int32(limitsItem1.RequestRate.Num))
 						}
 						limits3.Value = types.StringValue(limitsItem1.Value)
 						if limitsCount1+1 > len(ratelimitOnRequest3.Limits) {
@@ -779,7 +779,7 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 				} else {
 					to1.Default.HTTP.RequestRate = &tfTypes.MeshGlobalRateLimitItemSpecFromRequestRate{}
 					to1.Default.HTTP.RequestRate.Interval = types.StringValue(toItem.Default.HTTP.RequestRate.Interval)
-					to1.Default.HTTP.RequestRate.Num = types.Int64Value(int64(toItem.Default.HTTP.RequestRate.Num))
+					to1.Default.HTTP.RequestRate.Num = types.Int32Value(int32(toItem.Default.HTTP.RequestRate.Num))
 				}
 				if toItem.Default.Mode != nil {
 					to1.Default.Mode = types.StringValue(string(*toItem.Default.Mode))
@@ -789,7 +789,7 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 			}
 			to1.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 			if len(toItem.TargetRef.Labels) > 0 {
-				to1.TargetRef.Labels = make(map[string]types.String)
+				to1.TargetRef.Labels = make(map[string]types.String, len(toItem.TargetRef.Labels))
 				for key5, value11 := range toItem.TargetRef.Labels {
 					to1.TargetRef.Labels[key5] = types.StringValue(value11)
 				}
@@ -803,7 +803,7 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 			}
 			to1.TargetRef.SectionName = types.StringPointerValue(toItem.TargetRef.SectionName)
 			if len(toItem.TargetRef.Tags) > 0 {
-				to1.TargetRef.Tags = make(map[string]types.String)
+				to1.TargetRef.Tags = make(map[string]types.String, len(toItem.TargetRef.Tags))
 				for key6, value12 := range toItem.TargetRef.Tags {
 					to1.TargetRef.Tags[key6] = types.StringValue(value12)
 				}

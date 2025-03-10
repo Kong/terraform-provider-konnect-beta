@@ -31,13 +31,13 @@ type MeshRetryListDataSource struct {
 type MeshRetryListDataSourceModel struct {
 	CpID   types.String            `tfsdk:"cp_id"`
 	Items  []tfTypes.MeshRetryItem `tfsdk:"items"`
-	Key    types.String            `tfsdk:"key"`
+	Key    types.String            `queryParam:"name=key" tfsdk:"key"`
 	Mesh   types.String            `tfsdk:"mesh"`
 	Next   types.String            `tfsdk:"next"`
-	Offset types.Int64             `tfsdk:"offset"`
-	Size   types.Int64             `tfsdk:"size"`
+	Offset types.Int64             `queryParam:"style=form,explode=true,name=offset" tfsdk:"offset"`
+	Size   types.Int64             `queryParam:"style=form,explode=true,name=size" tfsdk:"size"`
 	Total  types.Number            `tfsdk:"total"`
-	Value  types.String            `tfsdk:"value"`
+	Value  types.String            `queryParam:"name=value" tfsdk:"value"`
 }
 
 // Metadata returns the data source type name.
@@ -160,7 +160,7 @@ func (r *MeshRetryListDataSource) Schema(ctx context.Context, req datasource.Sch
 																MarkdownDescription: `BackOff is a configuration of durations which will be used in an exponential` + "\n" +
 																	`backoff strategy between retries.`,
 															},
-															"num_retries": schema.Int64Attribute{
+															"num_retries": schema.Int32Attribute{
 																Computed: true,
 																MarkdownDescription: `NumRetries is the number of attempts that will be made on failed (and` + "\n" +
 																	`retriable) requests. If not set, the default value is 1.`,
@@ -245,7 +245,7 @@ func (r *MeshRetryListDataSource) Schema(ctx context.Context, req datasource.Sch
 																			MarkdownDescription: `Tags is a map of metadata to match against for selecting the omitted hosts. Required if Type is` + "\n" +
 																				`OmitHostsWithTags`,
 																		},
-																		"update_frequency": schema.Int64Attribute{
+																		"update_frequency": schema.Int32Attribute{
 																			Computed: true,
 																			MarkdownDescription: `UpdateFrequency is how often the priority load should be updated based on previously attempted priorities.` + "\n" +
 																				`Used for OmitPreviousPriorities.`,
@@ -261,7 +261,7 @@ func (r *MeshRetryListDataSource) Schema(ctx context.Context, req datasource.Sch
 																	`reattempted before giving up, at which point the host that was last selected will` + "\n" +
 																	`be routed to. If unspecified, this will default to retrying once.`,
 															},
-															"num_retries": schema.Int64Attribute{
+															"num_retries": schema.Int32Attribute{
 																Computed: true,
 																MarkdownDescription: `NumRetries is the number of attempts that will be made on failed (and` + "\n" +
 																	`retriable) requests.  If not set, the default value is 1.`,
@@ -366,7 +366,7 @@ func (r *MeshRetryListDataSource) Schema(ctx context.Context, req datasource.Sch
 													"tcp": schema.SingleNestedAttribute{
 														Computed: true,
 														Attributes: map[string]schema.Attribute{
-															"max_connect_attempt": schema.Int64Attribute{
+															"max_connect_attempt": schema.Int32Attribute{
 																Computed: true,
 																MarkdownDescription: `MaxConnectAttempt is a maximal amount of TCP connection attempts` + "\n" +
 																	`which will be made before giving up`,

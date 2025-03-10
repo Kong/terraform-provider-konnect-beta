@@ -104,7 +104,7 @@ func (r *HostnameGeneratorResourceModel) RefreshFromSharedHostnameGeneratorItem(
 			r.CreationTime = types.StringNull()
 		}
 		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String)
+			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
 				r.Labels[key] = types.StringValue(value)
 			}
@@ -124,7 +124,7 @@ func (r *HostnameGeneratorResourceModel) RefreshFromSharedHostnameGeneratorItem(
 			} else {
 				r.Spec.Selector.MeshExternalService = &tfTypes.MeshExternalService{}
 				if len(resp.Spec.Selector.MeshExternalService.MatchLabels) > 0 {
-					r.Spec.Selector.MeshExternalService.MatchLabels = make(map[string]types.String)
+					r.Spec.Selector.MeshExternalService.MatchLabels = make(map[string]types.String, len(resp.Spec.Selector.MeshExternalService.MatchLabels))
 					for key1, value1 := range resp.Spec.Selector.MeshExternalService.MatchLabels {
 						r.Spec.Selector.MeshExternalService.MatchLabels[key1] = types.StringValue(value1)
 					}
@@ -135,7 +135,7 @@ func (r *HostnameGeneratorResourceModel) RefreshFromSharedHostnameGeneratorItem(
 			} else {
 				r.Spec.Selector.MeshMultiZoneService = &tfTypes.MeshExternalService{}
 				if len(resp.Spec.Selector.MeshMultiZoneService.MatchLabels) > 0 {
-					r.Spec.Selector.MeshMultiZoneService.MatchLabels = make(map[string]types.String)
+					r.Spec.Selector.MeshMultiZoneService.MatchLabels = make(map[string]types.String, len(resp.Spec.Selector.MeshMultiZoneService.MatchLabels))
 					for key2, value2 := range resp.Spec.Selector.MeshMultiZoneService.MatchLabels {
 						r.Spec.Selector.MeshMultiZoneService.MatchLabels[key2] = types.StringValue(value2)
 					}
@@ -146,7 +146,7 @@ func (r *HostnameGeneratorResourceModel) RefreshFromSharedHostnameGeneratorItem(
 			} else {
 				r.Spec.Selector.MeshService = &tfTypes.MeshExternalService{}
 				if len(resp.Spec.Selector.MeshService.MatchLabels) > 0 {
-					r.Spec.Selector.MeshService.MatchLabels = make(map[string]types.String)
+					r.Spec.Selector.MeshService.MatchLabels = make(map[string]types.String, len(resp.Spec.Selector.MeshService.MatchLabels))
 					for key3, value3 := range resp.Spec.Selector.MeshService.MatchLabels {
 						r.Spec.Selector.MeshService.MatchLabels[key3] = types.StringValue(value3)
 					}

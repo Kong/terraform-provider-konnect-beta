@@ -24,7 +24,7 @@ func (r *MeshMetricListDataSourceModel) RefreshFromSharedMeshMetricList(resp *sh
 				items1.CreationTime = types.StringNull()
 			}
 			if len(itemsItem.Labels) > 0 {
-				items1.Labels = make(map[string]types.String)
+				items1.Labels = make(map[string]types.String, len(itemsItem.Labels))
 				for key, value := range itemsItem.Labels {
 					items1.Labels[key] = types.StringValue(value)
 				}
@@ -46,7 +46,7 @@ func (r *MeshMetricListDataSourceModel) RefreshFromSharedMeshMetricList(resp *sh
 					applications1.Address = types.StringPointerValue(applicationsItem.Address)
 					applications1.Name = types.StringPointerValue(applicationsItem.Name)
 					applications1.Path = types.StringPointerValue(applicationsItem.Path)
-					applications1.Port = types.Int64Value(int64(applicationsItem.Port))
+					applications1.Port = types.Int32Value(int32(applicationsItem.Port))
 					if applicationsCount+1 > len(items1.Spec.Default.Applications) {
 						items1.Spec.Default.Applications = append(items1.Spec.Default.Applications, applications1)
 					} else {
@@ -73,9 +73,9 @@ func (r *MeshMetricListDataSourceModel) RefreshFromSharedMeshMetricList(resp *sh
 						backends1.Prometheus.ClientID = types.StringPointerValue(backendsItem.Prometheus.ClientID)
 						backends1.Prometheus.Path = types.StringPointerValue(backendsItem.Prometheus.Path)
 						if backendsItem.Prometheus.Port != nil {
-							backends1.Prometheus.Port = types.Int64Value(int64(*backendsItem.Prometheus.Port))
+							backends1.Prometheus.Port = types.Int32Value(int32(*backendsItem.Prometheus.Port))
 						} else {
-							backends1.Prometheus.Port = types.Int64Null()
+							backends1.Prometheus.Port = types.Int32Null()
 						}
 						if backendsItem.Prometheus.TLS == nil {
 							backends1.Prometheus.TLS = nil
@@ -149,7 +149,7 @@ func (r *MeshMetricListDataSourceModel) RefreshFromSharedMeshMetricList(resp *sh
 				items1.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 				items1.Spec.TargetRef.Kind = types.StringValue(string(itemsItem.Spec.TargetRef.Kind))
 				if len(itemsItem.Spec.TargetRef.Labels) > 0 {
-					items1.Spec.TargetRef.Labels = make(map[string]types.String)
+					items1.Spec.TargetRef.Labels = make(map[string]types.String, len(itemsItem.Spec.TargetRef.Labels))
 					for key1, value1 := range itemsItem.Spec.TargetRef.Labels {
 						items1.Spec.TargetRef.Labels[key1] = types.StringValue(value1)
 					}
@@ -163,7 +163,7 @@ func (r *MeshMetricListDataSourceModel) RefreshFromSharedMeshMetricList(resp *sh
 				}
 				items1.Spec.TargetRef.SectionName = types.StringPointerValue(itemsItem.Spec.TargetRef.SectionName)
 				if len(itemsItem.Spec.TargetRef.Tags) > 0 {
-					items1.Spec.TargetRef.Tags = make(map[string]types.String)
+					items1.Spec.TargetRef.Tags = make(map[string]types.String, len(itemsItem.Spec.TargetRef.Tags))
 					for key2, value2 := range itemsItem.Spec.TargetRef.Tags {
 						items1.Spec.TargetRef.Tags[key2] = types.StringValue(value2)
 					}

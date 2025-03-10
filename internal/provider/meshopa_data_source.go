@@ -140,7 +140,7 @@ func (r *MeshOPADataSource) Schema(ctx context.Context, req datasource.SchemaReq
 									"request_body": schema.SingleNestedAttribute{
 										Computed: true,
 										Attributes: map[string]schema.Attribute{
-											"max_size": schema.Int64Attribute{
+											"max_size": schema.Int32Attribute{
 												Computed: true,
 												MarkdownDescription: `MaxSize defines the maximum payload size sent to authorization agent. If the payload` + "\n" +
 													`is larger it will be truncated and there will be a header` + "\n" +
@@ -155,7 +155,7 @@ func (r *MeshOPADataSource) Schema(ctx context.Context, req datasource.SchemaReq
 										MarkdownDescription: `RequestBody configuration to apply on the request body sent to the` + "\n" +
 											`authorization agent (if absent, the body is not sent).`,
 									},
-									"status_on_error": schema.Int64Attribute{
+									"status_on_error": schema.Int32Attribute{
 										Computed: true,
 										MarkdownDescription: `StatusOnError is the http status to return when there's a connection` + "\n" +
 											`failure between the dataplane and the authorization agent`,

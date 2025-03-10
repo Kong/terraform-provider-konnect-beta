@@ -26,7 +26,7 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
-	speakeasy_int64validators "github.com/kong/terraform-provider-konnect-beta/internal/validators/int64validators"
+	speakeasy_int32validators "github.com/kong/terraform-provider-konnect-beta/internal/validators/int32validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
 	"regexp"
@@ -161,17 +161,17 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 								"app_protocol": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Default:     stringdefault.StaticString("tcp"),
+									Default:     stringdefault.StaticString(`tcp`),
 									Description: `Protocol identifies a protocol supported by a service. Default: "tcp"`,
 								},
 								"name": schema.StringAttribute{
 									Optional: true,
 								},
-								"port": schema.Int64Attribute{
+								"port": schema.Int32Attribute{
 									Optional:    true,
 									Description: `Not Null`,
-									Validators: []validator.Int64{
-										speakeasy_int64validators.NotNull(),
+									Validators: []validator.Int32{
+										speakeasy_int32validators.NotNull(),
 									},
 								},
 								"target_port": schema.SingleNestedAttribute{
@@ -218,7 +218,7 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 					"state": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
-						Default:  stringdefault.StaticString("Unavailable"),
+						Default:  stringdefault.StaticString(`Unavailable`),
 						MarkdownDescription: `State of MeshService. Available if there is at least one healthy endpoint. Otherwise, Unavailable.` + "\n" +
 							`It's used for cross zone communication to check if we should send traffic to it, when MeshService is aggregated into MeshMultiZoneService.` + "\n" +
 							`Default: "Unavailable"; must be one of ["Available", "Unavailable"]`,

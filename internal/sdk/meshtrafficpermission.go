@@ -26,13 +26,6 @@ func newMeshTrafficPermission(sdkConfig sdkConfiguration) *MeshTrafficPermission
 
 // GetMeshTrafficPermission - Returns MeshTrafficPermission entity
 func (s *MeshTrafficPermission) GetMeshTrafficPermission(ctx context.Context, request operations.GetMeshTrafficPermissionRequest, opts ...operations.Option) (*operations.GetMeshTrafficPermissionResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getMeshTrafficPermission",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -54,6 +47,14 @@ func (s *MeshTrafficPermission) GetMeshTrafficPermission(ctx context.Context, re
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtrafficpermissions/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getMeshTrafficPermission",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -179,13 +180,6 @@ func (s *MeshTrafficPermission) GetMeshTrafficPermission(ctx context.Context, re
 
 // DeleteMeshTrafficPermission - Deletes MeshTrafficPermission entity
 func (s *MeshTrafficPermission) DeleteMeshTrafficPermission(ctx context.Context, request operations.DeleteMeshTrafficPermissionRequest, opts ...operations.Option) (*operations.DeleteMeshTrafficPermissionResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "deleteMeshTrafficPermission",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -207,6 +201,14 @@ func (s *MeshTrafficPermission) DeleteMeshTrafficPermission(ctx context.Context,
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtrafficpermissions/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "deleteMeshTrafficPermission",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -332,13 +334,6 @@ func (s *MeshTrafficPermission) DeleteMeshTrafficPermission(ctx context.Context,
 
 // CreateMeshTrafficPermission - Creates or Updates MeshTrafficPermission entity
 func (s *MeshTrafficPermission) CreateMeshTrafficPermission(ctx context.Context, request operations.CreateMeshTrafficPermissionRequest, opts ...operations.Option) (*operations.CreateMeshTrafficPermissionResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "createMeshTrafficPermission",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -361,6 +356,13 @@ func (s *MeshTrafficPermission) CreateMeshTrafficPermission(ctx context.Context,
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "createMeshTrafficPermission",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MeshTrafficPermissionItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -466,13 +468,6 @@ func (s *MeshTrafficPermission) CreateMeshTrafficPermission(ctx context.Context,
 
 // UpdateMeshTrafficPermission - Creates or Updates MeshTrafficPermission entity
 func (s *MeshTrafficPermission) UpdateMeshTrafficPermission(ctx context.Context, request operations.UpdateMeshTrafficPermissionRequest, opts ...operations.Option) (*operations.UpdateMeshTrafficPermissionResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "updateMeshTrafficPermission",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -495,6 +490,13 @@ func (s *MeshTrafficPermission) UpdateMeshTrafficPermission(ctx context.Context,
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "updateMeshTrafficPermission",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MeshTrafficPermissionItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -600,13 +602,6 @@ func (s *MeshTrafficPermission) UpdateMeshTrafficPermission(ctx context.Context,
 
 // GetMeshTrafficPermissionList - Returns a list of MeshTrafficPermission in the mesh.
 func (s *MeshTrafficPermission) GetMeshTrafficPermissionList(ctx context.Context, request operations.GetMeshTrafficPermissionListRequest, opts ...operations.Option) (*operations.GetMeshTrafficPermissionListResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getMeshTrafficPermissionList",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -627,6 +622,14 @@ func (s *MeshTrafficPermission) GetMeshTrafficPermissionList(ctx context.Context
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtrafficpermissions", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getMeshTrafficPermissionList",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

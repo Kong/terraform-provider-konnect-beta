@@ -53,7 +53,7 @@ func (r *MeshServiceResourceModel) ToSharedMeshServiceItemInput() *shared.MeshSe
 			name1 = nil
 		}
 		var port int
-		port = int(portsItem.Port.ValueInt64())
+		port = int(portsItem.Port.ValueInt32())
 
 		var targetPort *shared.TargetPort
 		if portsItem.TargetPort != nil {
@@ -152,7 +152,7 @@ func (r *MeshServiceResourceModel) RefreshFromSharedMeshServiceItem(resp *shared
 			r.CreationTime = types.StringNull()
 		}
 		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String)
+			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
 				r.Labels[key] = types.StringValue(value)
 			}
@@ -187,11 +187,11 @@ func (r *MeshServiceResourceModel) RefreshFromSharedMeshServiceItem(resp *shared
 			var ports1 tfTypes.MeshServiceItemPorts
 			ports1.AppProtocol = types.StringPointerValue(portsItem.AppProtocol)
 			ports1.Name = types.StringPointerValue(portsItem.Name)
-			ports1.Port = types.Int64Value(int64(portsItem.Port))
+			ports1.Port = types.Int32Value(int32(portsItem.Port))
 			if portsItem.TargetPort == nil {
 				ports1.TargetPort = nil
 			} else {
-				ports1.TargetPort = &tfTypes.Mode{}
+				ports1.TargetPort = &tfTypes.MeshItemMode{}
 				if portsItem.TargetPort.Integer != nil {
 					ports1.TargetPort.Integer = types.Int64PointerValue(portsItem.TargetPort.Integer)
 				}
@@ -219,7 +219,7 @@ func (r *MeshServiceResourceModel) RefreshFromSharedMeshServiceItem(resp *shared
 				r.Spec.Selector.DataplaneRef.Name = types.StringPointerValue(resp.Spec.Selector.DataplaneRef.Name)
 			}
 			if len(resp.Spec.Selector.DataplaneTags) > 0 {
-				r.Spec.Selector.DataplaneTags = make(map[string]types.String)
+				r.Spec.Selector.DataplaneTags = make(map[string]types.String, len(resp.Spec.Selector.DataplaneTags))
 				for key1, value2 := range resp.Spec.Selector.DataplaneTags {
 					r.Spec.Selector.DataplaneTags[key1] = types.StringValue(value2)
 				}

@@ -7,7 +7,7 @@ import "github.com/hashicorp/terraform-plugin-framework/types"
 type MeshItemMtlsBackends struct {
 	Conf      *MeshItemMtlsConf `tfsdk:"conf"`
 	DpCert    *DpCert           `tfsdk:"dp_cert"`
-	Mode      *Mode             `tfsdk:"mode"`
+	Mode      *MeshItemMode     `tfsdk:"mode"`
 	Name      types.String      `tfsdk:"name"`
 	RootChain *RootChain        `tfsdk:"root_chain"`
 	Type      types.String      `tfsdk:"type"`

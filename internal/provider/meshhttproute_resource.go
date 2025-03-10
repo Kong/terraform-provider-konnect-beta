@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int32validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -269,7 +270,7 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																	MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 																		`will be targeted.`,
 																},
-																"port": schema.Int64Attribute{
+																"port": schema.Int32Attribute{
 																	Optional:    true,
 																	Description: `Port is only supported when this ref refers to a real MeshService object`,
 																},
@@ -443,7 +444,7 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																					MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 																						`will be targeted.`,
 																				},
-																				"port": schema.Int64Attribute{
+																				"port": schema.Int32Attribute{
 																					Optional:    true,
 																					Description: `Port is only supported when this ref refers to a real MeshService object`,
 																				},
@@ -547,13 +548,13 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																				`The modified path is then used to construct the location header.` + "\n" +
 																				`When empty, the request path is used as-is.`,
 																		},
-																		"port": schema.Int64Attribute{
+																		"port": schema.Int32Attribute{
 																			Optional: true,
 																			MarkdownDescription: `Port is the port to be used in the value of the ` + "`" + `Location` + "`" + `` + "\n" +
 																				`header in the response.` + "\n" +
 																				`When empty, port (if specified) of the request is used.`,
-																			Validators: []validator.Int64{
-																				int64validator.Between(1, 65535),
+																			Validators: []validator.Int32{
+																				int32validator.Between(1, 65535),
 																			},
 																		},
 																		"scheme": schema.StringAttribute{
@@ -773,7 +774,7 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																	"type": schema.StringAttribute{
 																		Computed:    true,
 																		Optional:    true,
-																		Default:     stringdefault.StaticString("Exact"),
+																		Default:     stringdefault.StaticString(`Exact`),
 																		Description: `Type specifies how to match against the value of the header. Default: "Exact"; must be one of ["Exact", "Present", "RegularExpression", "Absent", "Prefix"]`,
 																		Validators: []validator.String{
 																			stringvalidator.OneOf(

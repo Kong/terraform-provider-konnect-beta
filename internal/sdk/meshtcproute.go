@@ -26,13 +26,6 @@ func newMeshTCPRoute(sdkConfig sdkConfiguration) *MeshTCPRoute {
 
 // GetMeshTCPRoute - Returns MeshTCPRoute entity
 func (s *MeshTCPRoute) GetMeshTCPRoute(ctx context.Context, request operations.GetMeshTCPRouteRequest, opts ...operations.Option) (*operations.GetMeshTCPRouteResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getMeshTCPRoute",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -54,6 +47,14 @@ func (s *MeshTCPRoute) GetMeshTCPRoute(ctx context.Context, request operations.G
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtcproutes/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getMeshTCPRoute",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -179,13 +180,6 @@ func (s *MeshTCPRoute) GetMeshTCPRoute(ctx context.Context, request operations.G
 
 // DeleteMeshTCPRoute - Deletes MeshTCPRoute entity
 func (s *MeshTCPRoute) DeleteMeshTCPRoute(ctx context.Context, request operations.DeleteMeshTCPRouteRequest, opts ...operations.Option) (*operations.DeleteMeshTCPRouteResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "deleteMeshTCPRoute",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -207,6 +201,14 @@ func (s *MeshTCPRoute) DeleteMeshTCPRoute(ctx context.Context, request operation
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtcproutes/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "deleteMeshTCPRoute",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -332,13 +334,6 @@ func (s *MeshTCPRoute) DeleteMeshTCPRoute(ctx context.Context, request operation
 
 // CreateMeshTCPRoute - Creates or Updates MeshTCPRoute entity
 func (s *MeshTCPRoute) CreateMeshTCPRoute(ctx context.Context, request operations.CreateMeshTCPRouteRequest, opts ...operations.Option) (*operations.CreateMeshTCPRouteResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "createMeshTCPRoute",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -361,6 +356,13 @@ func (s *MeshTCPRoute) CreateMeshTCPRoute(ctx context.Context, request operation
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "createMeshTCPRoute",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MeshTCPRouteItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -466,13 +468,6 @@ func (s *MeshTCPRoute) CreateMeshTCPRoute(ctx context.Context, request operation
 
 // UpdateMeshTCPRoute - Creates or Updates MeshTCPRoute entity
 func (s *MeshTCPRoute) UpdateMeshTCPRoute(ctx context.Context, request operations.UpdateMeshTCPRouteRequest, opts ...operations.Option) (*operations.UpdateMeshTCPRouteResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "updateMeshTCPRoute",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -495,6 +490,13 @@ func (s *MeshTCPRoute) UpdateMeshTCPRoute(ctx context.Context, request operation
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "updateMeshTCPRoute",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MeshTCPRouteItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -600,13 +602,6 @@ func (s *MeshTCPRoute) UpdateMeshTCPRoute(ctx context.Context, request operation
 
 // GetMeshTCPRouteList - Returns a list of MeshTCPRoute in the mesh.
 func (s *MeshTCPRoute) GetMeshTCPRouteList(ctx context.Context, request operations.GetMeshTCPRouteListRequest, opts ...operations.Option) (*operations.GetMeshTCPRouteListResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getMeshTCPRouteList",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -627,6 +622,14 @@ func (s *MeshTCPRoute) GetMeshTCPRouteList(ctx context.Context, request operatio
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtcproutes", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getMeshTCPRouteList",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

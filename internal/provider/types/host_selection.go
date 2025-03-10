@@ -7,5 +7,5 @@ import "github.com/hashicorp/terraform-plugin-framework/types"
 type HostSelection struct {
 	Predicate       types.String            `tfsdk:"predicate"`
 	Tags            map[string]types.String `tfsdk:"tags"`
-	UpdateFrequency types.Int64             `tfsdk:"update_frequency"`
+	UpdateFrequency types.Int32             `tfsdk:"update_frequency"`
 }

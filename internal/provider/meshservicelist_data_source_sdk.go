@@ -24,7 +24,7 @@ func (r *MeshServiceListDataSourceModel) RefreshFromSharedMeshServiceList(resp *
 				items1.CreationTime = types.StringNull()
 			}
 			if len(itemsItem.Labels) > 0 {
-				items1.Labels = make(map[string]types.String)
+				items1.Labels = make(map[string]types.String, len(itemsItem.Labels))
 				for key, value := range itemsItem.Labels {
 					items1.Labels[key] = types.StringValue(value)
 				}
@@ -53,11 +53,11 @@ func (r *MeshServiceListDataSourceModel) RefreshFromSharedMeshServiceList(resp *
 				var ports1 tfTypes.MeshServiceItemPorts
 				ports1.AppProtocol = types.StringPointerValue(portsItem.AppProtocol)
 				ports1.Name = types.StringPointerValue(portsItem.Name)
-				ports1.Port = types.Int64Value(int64(portsItem.Port))
+				ports1.Port = types.Int32Value(int32(portsItem.Port))
 				if portsItem.TargetPort == nil {
 					ports1.TargetPort = nil
 				} else {
-					ports1.TargetPort = &tfTypes.Mode{}
+					ports1.TargetPort = &tfTypes.MeshItemMode{}
 					if portsItem.TargetPort.Integer != nil {
 						ports1.TargetPort.Integer = types.Int64PointerValue(portsItem.TargetPort.Integer)
 					}
@@ -85,7 +85,7 @@ func (r *MeshServiceListDataSourceModel) RefreshFromSharedMeshServiceList(resp *
 					items1.Spec.Selector.DataplaneRef.Name = types.StringPointerValue(itemsItem.Spec.Selector.DataplaneRef.Name)
 				}
 				if len(itemsItem.Spec.Selector.DataplaneTags) > 0 {
-					items1.Spec.Selector.DataplaneTags = make(map[string]types.String)
+					items1.Spec.Selector.DataplaneTags = make(map[string]types.String, len(itemsItem.Spec.Selector.DataplaneTags))
 					for key1, value2 := range itemsItem.Spec.Selector.DataplaneTags {
 						items1.Spec.Selector.DataplaneTags[key1] = types.StringValue(value2)
 					}

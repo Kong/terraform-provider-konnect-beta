@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type LeastRequest struct {
-	ActiveRequestBias *Mode       `tfsdk:"active_request_bias"`
-	ChoiceCount       types.Int64 `tfsdk:"choice_count"`
+	ActiveRequestBias *MeshItemMode `tfsdk:"active_request_bias"`
+	ChoiceCount       types.Int32   `tfsdk:"choice_count"`
 }

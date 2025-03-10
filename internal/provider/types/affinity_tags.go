@@ -6,5 +6,5 @@ import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type AffinityTags struct {
 	Key    types.String `tfsdk:"key"`
-	Weight types.Int64  `tfsdk:"weight"`
+	Weight types.Int32  `tfsdk:"weight"`
 }

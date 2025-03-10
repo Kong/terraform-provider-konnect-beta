@@ -26,13 +26,6 @@ func newMeshPassthrough(sdkConfig sdkConfiguration) *MeshPassthrough {
 
 // GetMeshPassthrough - Returns MeshPassthrough entity
 func (s *MeshPassthrough) GetMeshPassthrough(ctx context.Context, request operations.GetMeshPassthroughRequest, opts ...operations.Option) (*operations.GetMeshPassthroughResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getMeshPassthrough",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -54,6 +47,14 @@ func (s *MeshPassthrough) GetMeshPassthrough(ctx context.Context, request operat
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshpassthroughs/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getMeshPassthrough",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -179,13 +180,6 @@ func (s *MeshPassthrough) GetMeshPassthrough(ctx context.Context, request operat
 
 // DeleteMeshPassthrough - Deletes MeshPassthrough entity
 func (s *MeshPassthrough) DeleteMeshPassthrough(ctx context.Context, request operations.DeleteMeshPassthroughRequest, opts ...operations.Option) (*operations.DeleteMeshPassthroughResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "deleteMeshPassthrough",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -207,6 +201,14 @@ func (s *MeshPassthrough) DeleteMeshPassthrough(ctx context.Context, request ope
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshpassthroughs/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "deleteMeshPassthrough",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -332,13 +334,6 @@ func (s *MeshPassthrough) DeleteMeshPassthrough(ctx context.Context, request ope
 
 // CreateMeshPassthrough - Creates or Updates MeshPassthrough entity
 func (s *MeshPassthrough) CreateMeshPassthrough(ctx context.Context, request operations.CreateMeshPassthroughRequest, opts ...operations.Option) (*operations.CreateMeshPassthroughResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "createMeshPassthrough",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -361,6 +356,13 @@ func (s *MeshPassthrough) CreateMeshPassthrough(ctx context.Context, request ope
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "createMeshPassthrough",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MeshPassthroughItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -466,13 +468,6 @@ func (s *MeshPassthrough) CreateMeshPassthrough(ctx context.Context, request ope
 
 // UpdateMeshPassthrough - Creates or Updates MeshPassthrough entity
 func (s *MeshPassthrough) UpdateMeshPassthrough(ctx context.Context, request operations.UpdateMeshPassthroughRequest, opts ...operations.Option) (*operations.UpdateMeshPassthroughResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "updateMeshPassthrough",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -495,6 +490,13 @@ func (s *MeshPassthrough) UpdateMeshPassthrough(ctx context.Context, request ope
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "updateMeshPassthrough",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MeshPassthroughItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -600,13 +602,6 @@ func (s *MeshPassthrough) UpdateMeshPassthrough(ctx context.Context, request ope
 
 // GetMeshPassthroughList - Returns a list of MeshPassthrough in the mesh.
 func (s *MeshPassthrough) GetMeshPassthroughList(ctx context.Context, request operations.GetMeshPassthroughListRequest, opts ...operations.Option) (*operations.GetMeshPassthroughListResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getMeshPassthroughList",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -627,6 +622,14 @@ func (s *MeshPassthrough) GetMeshPassthroughList(ctx context.Context, request op
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshpassthroughs", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getMeshPassthroughList",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

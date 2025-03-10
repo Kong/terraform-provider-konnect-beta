@@ -74,37 +74,49 @@ func (c *sdkConfiguration) GetServerDetails() (string, map[string]string) {
 
 // KonnectBeta - Konnect API (BETA): This is a BETA specification. Endpoints in this specification may change with zero notice
 type KonnectBeta struct {
-	Teams                        *Teams
-	TeamMembership               *TeamMembership
-	Roles                        *Roles
-	SystemAccounts               *SystemAccounts
-	SystemAccountsAccessTokens   *SystemAccountsAccessTokens
-	SystemAccountsRoles          *SystemAccountsRoles
-	SystemAccountsTeamMembership *SystemAccountsTeamMembership
-	MeshAccessLog                *MeshAccessLog
-	MeshCircuitBreaker           *MeshCircuitBreaker
-	MeshFaultInjection           *MeshFaultInjection
-	MeshHealthCheck              *MeshHealthCheck
-	MeshHTTPRoute                *MeshHTTPRoute
-	MeshLoadBalancingStrategy    *MeshLoadBalancingStrategy
-	MeshMetric                   *MeshMetric
-	MeshPassthrough              *MeshPassthrough
-	MeshProxyPatch               *MeshProxyPatch
-	MeshRateLimit                *MeshRateLimit
-	MeshRetry                    *MeshRetry
-	MeshTCPRoute                 *MeshTCPRoute
-	MeshTimeout                  *MeshTimeout
-	MeshTLS                      *MeshTLS
-	MeshTrace                    *MeshTrace
-	MeshTrafficPermission        *MeshTrafficPermission
-	Mesh                         *Mesh
-	MeshGateway                  *MeshGateway
-	HostnameGenerator            *HostnameGenerator
-	MeshExternalService          *MeshExternalService
-	MeshMultiZoneService         *MeshMultiZoneService
-	MeshService                  *MeshService
-	MeshGlobalRateLimit          *MeshGlobalRateLimit
-	MeshOPA                      *MeshOPA
+	// APIs related to configuration of Konnect Developer Portals.
+	Portals *Portals
+	// APIs related to configuration of Konnect Developer Portals custom domains.
+	PortalCustomDomains *PortalCustomDomains
+	// APIs related to customization of Konnect Developer Portals.
+	PortalCustomization *PortalCustomization
+	// APIs related to Konnect Developer Portal Custom Pages.
+	Pages *Pages
+	// APIs related to Konnect Developer Portal Custom Snippets.
+	Snippets *Snippets
+	// APIs related to configuration of Konnect Developer Portal auth settings.
+	PortalAuthSettings *PortalAuthSettings
+	// APIs related to configuration of Konnect Developer Portal developer teams.
+	PortalTeams               *PortalTeams
+	API                       *API
+	APIDocumentation          *APIDocumentation
+	APISpecification          *APISpecification
+	APIPublication            *APIPublication
+	APIImplementation         *APIImplementation
+	MeshAccessLog             *MeshAccessLog
+	MeshCircuitBreaker        *MeshCircuitBreaker
+	MeshFaultInjection        *MeshFaultInjection
+	MeshHealthCheck           *MeshHealthCheck
+	MeshHTTPRoute             *MeshHTTPRoute
+	MeshLoadBalancingStrategy *MeshLoadBalancingStrategy
+	MeshMetric                *MeshMetric
+	MeshPassthrough           *MeshPassthrough
+	MeshProxyPatch            *MeshProxyPatch
+	MeshRateLimit             *MeshRateLimit
+	MeshRetry                 *MeshRetry
+	MeshTCPRoute              *MeshTCPRoute
+	MeshTimeout               *MeshTimeout
+	MeshTLS                   *MeshTLS
+	MeshTrace                 *MeshTrace
+	MeshTrafficPermission     *MeshTrafficPermission
+	Mesh                      *Mesh
+	MeshGateway               *MeshGateway
+	HostnameGenerator         *HostnameGenerator
+	MeshExternalService       *MeshExternalService
+	MeshMultiZoneService      *MeshMultiZoneService
+	MeshService               *MeshService
+	MeshGlobalRateLimit       *MeshGlobalRateLimit
+	MeshOPA                   *MeshOPA
 
 	sdkConfiguration sdkConfiguration
 }
@@ -183,8 +195,8 @@ func New(opts ...SDKOption) *KonnectBeta {
 			Language:          "go",
 			OpenAPIDocVersion: "2.0.0",
 			SDKVersion:        "0.1.0",
-			GenVersion:        "2.505.0",
-			UserAgent:         "speakeasy-sdk/terraform 0.1.0 2.505.0 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
+			GenVersion:        "2.545.4",
+			UserAgent:         "speakeasy-sdk/terraform 0.1.0 2.545.4 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
 			Hooks:             hooks.New(),
 		},
 	}
@@ -204,19 +216,29 @@ func New(opts ...SDKOption) *KonnectBeta {
 		sdk.sdkConfiguration.ServerURL = serverURL
 	}
 
-	sdk.Teams = newTeams(sdk.sdkConfiguration)
+	sdk.Portals = newPortals(sdk.sdkConfiguration)
 
-	sdk.TeamMembership = newTeamMembership(sdk.sdkConfiguration)
+	sdk.PortalCustomDomains = newPortalCustomDomains(sdk.sdkConfiguration)
 
-	sdk.Roles = newRoles(sdk.sdkConfiguration)
+	sdk.PortalCustomization = newPortalCustomization(sdk.sdkConfiguration)
 
-	sdk.SystemAccounts = newSystemAccounts(sdk.sdkConfiguration)
+	sdk.Pages = newPages(sdk.sdkConfiguration)
 
-	sdk.SystemAccountsAccessTokens = newSystemAccountsAccessTokens(sdk.sdkConfiguration)
+	sdk.Snippets = newSnippets(sdk.sdkConfiguration)
 
-	sdk.SystemAccountsRoles = newSystemAccountsRoles(sdk.sdkConfiguration)
+	sdk.PortalAuthSettings = newPortalAuthSettings(sdk.sdkConfiguration)
 
-	sdk.SystemAccountsTeamMembership = newSystemAccountsTeamMembership(sdk.sdkConfiguration)
+	sdk.PortalTeams = newPortalTeams(sdk.sdkConfiguration)
+
+	sdk.API = newAPI(sdk.sdkConfiguration)
+
+	sdk.APIDocumentation = newAPIDocumentation(sdk.sdkConfiguration)
+
+	sdk.APISpecification = newAPISpecification(sdk.sdkConfiguration)
+
+	sdk.APIPublication = newAPIPublication(sdk.sdkConfiguration)
+
+	sdk.APIImplementation = newAPIImplementation(sdk.sdkConfiguration)
 
 	sdk.MeshAccessLog = newMeshAccessLog(sdk.sdkConfiguration)
 

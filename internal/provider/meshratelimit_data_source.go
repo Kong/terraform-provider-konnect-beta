@@ -130,7 +130,7 @@ func (r *MeshRateLimitDataSource) Schema(ctx context.Context, req datasource.Sch
 																	},
 																	Description: `The Headers to be added to the HTTP response on a rate limit event`,
 																},
-																"status": schema.Int64Attribute{
+																"status": schema.Int32Attribute{
 																	Computed:    true,
 																	Description: `The HTTP status code to be set on a rate limit event`,
 																},
@@ -144,7 +144,7 @@ func (r *MeshRateLimitDataSource) Schema(ctx context.Context, req datasource.Sch
 																	Computed:    true,
 																	Description: `The interval the number of units is accounted for.`,
 																},
-																"num": schema.Int64Attribute{
+																"num": schema.Int32Attribute{
 																	Computed: true,
 																	MarkdownDescription: `Number of units per interval (depending on usage it can be a number of requests,` + "\n" +
 																		`or a number of connections).`,
@@ -166,7 +166,7 @@ func (r *MeshRateLimitDataSource) Schema(ctx context.Context, req datasource.Sch
 																	Computed:    true,
 																	Description: `The interval the number of units is accounted for.`,
 																},
-																"num": schema.Int64Attribute{
+																"num": schema.Int32Attribute{
 																	Computed: true,
 																	MarkdownDescription: `Number of units per interval (depending on usage it can be a number of requests,` + "\n" +
 																		`or a number of connections).`,
@@ -294,7 +294,7 @@ func (r *MeshRateLimitDataSource) Schema(ctx context.Context, req datasource.Sch
 																	},
 																	Description: `The Headers to be added to the HTTP response on a rate limit event`,
 																},
-																"status": schema.Int64Attribute{
+																"status": schema.Int32Attribute{
 																	Computed:    true,
 																	Description: `The HTTP status code to be set on a rate limit event`,
 																},
@@ -308,7 +308,7 @@ func (r *MeshRateLimitDataSource) Schema(ctx context.Context, req datasource.Sch
 																	Computed:    true,
 																	Description: `The interval the number of units is accounted for.`,
 																},
-																"num": schema.Int64Attribute{
+																"num": schema.Int32Attribute{
 																	Computed: true,
 																	MarkdownDescription: `Number of units per interval (depending on usage it can be a number of requests,` + "\n" +
 																		`or a number of connections).`,
@@ -330,7 +330,7 @@ func (r *MeshRateLimitDataSource) Schema(ctx context.Context, req datasource.Sch
 																	Computed:    true,
 																	Description: `The interval the number of units is accounted for.`,
 																},
-																"num": schema.Int64Attribute{
+																"num": schema.Int32Attribute{
 																	Computed: true,
 																	MarkdownDescription: `Number of units per interval (depending on usage it can be a number of requests,` + "\n" +
 																		`or a number of connections).`,
@@ -459,7 +459,7 @@ func (r *MeshRateLimitDataSource) Schema(ctx context.Context, req datasource.Sch
 																	},
 																	Description: `The Headers to be added to the HTTP response on a rate limit event`,
 																},
-																"status": schema.Int64Attribute{
+																"status": schema.Int32Attribute{
 																	Computed:    true,
 																	Description: `The HTTP status code to be set on a rate limit event`,
 																},
@@ -473,7 +473,7 @@ func (r *MeshRateLimitDataSource) Schema(ctx context.Context, req datasource.Sch
 																	Computed:    true,
 																	Description: `The interval the number of units is accounted for.`,
 																},
-																"num": schema.Int64Attribute{
+																"num": schema.Int32Attribute{
 																	Computed: true,
 																	MarkdownDescription: `Number of units per interval (depending on usage it can be a number of requests,` + "\n" +
 																		`or a number of connections).`,
@@ -495,7 +495,7 @@ func (r *MeshRateLimitDataSource) Schema(ctx context.Context, req datasource.Sch
 																	Computed:    true,
 																	Description: `The interval the number of units is accounted for.`,
 																},
-																"num": schema.Int64Attribute{
+																"num": schema.Int32Attribute{
 																	Computed: true,
 																	MarkdownDescription: `Number of units per interval (depending on usage it can be a number of requests,` + "\n" +
 																		`or a number of connections).`,

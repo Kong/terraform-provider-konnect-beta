@@ -182,7 +182,7 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 							"protocol": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     stringdefault.StaticString("tcp"),
+								Default:     stringdefault.StaticString(`tcp`),
 								Description: `Protocol defines a protocol of the communication. Possible values: ` + "`" + `tcp` + "`" + `, ` + "`" + `grpc` + "`" + `, ` + "`" + `http` + "`" + `, ` + "`" + `http2` + "`" + `. Default: "tcp"; must be one of ["tcp", "grpc", "http", "http2"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
@@ -196,7 +196,7 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 							"type": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     stringdefault.StaticString("HostnameGenerator"),
+								Default:     stringdefault.StaticString(`HostnameGenerator`),
 								Description: `Type of the match, only ` + "`" + `HostnameGenerator` + "`" + ` is available at the moment. Default: "HostnameGenerator"; must be "HostnameGenerator"`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
@@ -284,7 +284,7 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 									"mode": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Default:     stringdefault.StaticString("Secured"),
+										Default:     stringdefault.StaticString(`Secured`),
 										Description: `Mode defines if proxy should skip verification, one of ` + "`" + `SkipSAN` + "`" + `, ` + "`" + `SkipCA` + "`" + `, ` + "`" + `Secured` + "`" + `, ` + "`" + `SkipAll` + "`" + `. Default ` + "`" + `Secured` + "`" + `. Default: "Secured"; must be one of ["SkipSAN", "SkipCA", "Secured", "SkipAll"]`,
 										Validators: []validator.String{
 											stringvalidator.OneOf(
@@ -313,7 +313,7 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 												"type": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Default:     stringdefault.StaticString("Exact"),
+													Default:     stringdefault.StaticString(`Exact`),
 													Description: `Type specifies matching type, one of ` + "`" + `Exact` + "`" + `, ` + "`" + `Prefix` + "`" + `. Default: ` + "`" + `Exact` + "`" + `. Default: "Exact"; must be one of ["Exact", "Prefix"]`,
 													Validators: []validator.String{
 														stringvalidator.OneOf(
@@ -342,7 +342,7 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 									"max": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Default:     stringdefault.StaticString("TLSAuto"),
+										Default:     stringdefault.StaticString(`TLSAuto`),
 										Description: `Max defines maximum supported version. One of ` + "`" + `TLSAuto` + "`" + `, ` + "`" + `TLS10` + "`" + `, ` + "`" + `TLS11` + "`" + `, ` + "`" + `TLS12` + "`" + `, ` + "`" + `TLS13` + "`" + `. Default: "TLSAuto"; must be one of ["TLSAuto", "TLS10", "TLS11", "TLS12", "TLS13"]`,
 										Validators: []validator.String{
 											stringvalidator.OneOf(
@@ -357,7 +357,7 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 									"min": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Default:     stringdefault.StaticString("TLSAuto"),
+										Default:     stringdefault.StaticString(`TLSAuto`),
 										Description: `Min defines minimum supported version. One of ` + "`" + `TLSAuto` + "`" + `, ` + "`" + `TLS10` + "`" + `, ` + "`" + `TLS11` + "`" + `, ` + "`" + `TLS12` + "`" + `, ` + "`" + `TLS13` + "`" + `. Default: "TLSAuto"; must be one of ["TLSAuto", "TLS10", "TLS11", "TLS12", "TLS13"]`,
 										Validators: []validator.String{
 											stringvalidator.OneOf(

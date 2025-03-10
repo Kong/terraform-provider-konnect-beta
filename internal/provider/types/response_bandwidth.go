@@ -6,5 +6,5 @@ import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type ResponseBandwidth struct {
 	Limit      types.String `tfsdk:"limit"`
-	Percentage Mode         `tfsdk:"percentage"`
+	Percentage MeshItemMode `tfsdk:"percentage"`
 }

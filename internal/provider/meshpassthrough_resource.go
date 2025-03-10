@@ -125,14 +125,14 @@ func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.Schem
 										speakeasy_objectvalidators.NotNull(),
 									},
 									Attributes: map[string]schema.Attribute{
-										"port": schema.Int64Attribute{
+										"port": schema.Int32Attribute{
 											Optional:    true,
 											Description: `Port defines the port to which a user makes a request.`,
 										},
 										"protocol": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
-											Default:     stringdefault.StaticString("tcp"),
+											Default:     stringdefault.StaticString(`tcp`),
 											Description: `Protocol defines the communication protocol. Possible values: ` + "`" + `tcp` + "`" + `, ` + "`" + `tls` + "`" + `, ` + "`" + `grpc` + "`" + `, ` + "`" + `http` + "`" + `, ` + "`" + `http2` + "`" + `, ` + "`" + `mysql` + "`" + `. Default: "tcp"; must be one of ["tcp", "tls", "grpc", "http", "http2", "mysql"]`,
 											Validators: []validator.String{
 												stringvalidator.OneOf(

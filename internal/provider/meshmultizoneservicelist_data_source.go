@@ -31,13 +31,13 @@ type MeshMultiZoneServiceListDataSource struct {
 type MeshMultiZoneServiceListDataSourceModel struct {
 	CpID   types.String                       `tfsdk:"cp_id"`
 	Items  []tfTypes.MeshMultiZoneServiceItem `tfsdk:"items"`
-	Key    types.String                       `tfsdk:"key"`
+	Key    types.String                       `queryParam:"name=key" tfsdk:"key"`
 	Mesh   types.String                       `tfsdk:"mesh"`
 	Next   types.String                       `tfsdk:"next"`
-	Offset types.Int64                        `tfsdk:"offset"`
-	Size   types.Int64                        `tfsdk:"size"`
+	Offset types.Int64                        `queryParam:"style=form,explode=true,name=offset" tfsdk:"offset"`
+	Size   types.Int64                        `queryParam:"style=form,explode=true,name=size" tfsdk:"size"`
 	Total  types.Number                       `tfsdk:"total"`
-	Value  types.String                       `tfsdk:"value"`
+	Value  types.String                       `queryParam:"name=value" tfsdk:"value"`
 }
 
 // Metadata returns the data source type name.
@@ -94,7 +94,7 @@ func (r *MeshMultiZoneServiceListDataSource) Schema(ctx context.Context, req dat
 											"name": schema.StringAttribute{
 												Computed: true,
 											},
-											"port": schema.Int64Attribute{
+											"port": schema.Int32Attribute{
 												Computed: true,
 											},
 										},

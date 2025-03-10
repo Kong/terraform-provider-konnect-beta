@@ -150,7 +150,7 @@ func (r *MeshTLSResource) Schema(ctx context.Context, req resource.SchemaRequest
 												"max": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Default:     stringdefault.StaticString("TLSAuto"),
+													Default:     stringdefault.StaticString(`TLSAuto`),
 													Description: `Max defines maximum supported version. One of ` + "`" + `TLSAuto` + "`" + `, ` + "`" + `TLS10` + "`" + `, ` + "`" + `TLS11` + "`" + `, ` + "`" + `TLS12` + "`" + `, ` + "`" + `TLS13` + "`" + `. Default: "TLSAuto"; must be one of ["TLSAuto", "TLS10", "TLS11", "TLS12", "TLS13"]`,
 													Validators: []validator.String{
 														stringvalidator.OneOf(
@@ -165,7 +165,7 @@ func (r *MeshTLSResource) Schema(ctx context.Context, req resource.SchemaRequest
 												"min": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Default:     stringdefault.StaticString("TLSAuto"),
+													Default:     stringdefault.StaticString(`TLSAuto`),
 													Description: `Min defines minimum supported version. One of ` + "`" + `TLSAuto` + "`" + `, ` + "`" + `TLS10` + "`" + `, ` + "`" + `TLS11` + "`" + `, ` + "`" + `TLS12` + "`" + `, ` + "`" + `TLS13` + "`" + `. Default: "TLSAuto"; must be one of ["TLSAuto", "TLS10", "TLS11", "TLS12", "TLS13"]`,
 													Validators: []validator.String{
 														stringvalidator.OneOf(
@@ -297,7 +297,7 @@ func (r *MeshTLSResource) Schema(ctx context.Context, req resource.SchemaRequest
 												"max": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Default:     stringdefault.StaticString("TLSAuto"),
+													Default:     stringdefault.StaticString(`TLSAuto`),
 													Description: `Max defines maximum supported version. One of ` + "`" + `TLSAuto` + "`" + `, ` + "`" + `TLS10` + "`" + `, ` + "`" + `TLS11` + "`" + `, ` + "`" + `TLS12` + "`" + `, ` + "`" + `TLS13` + "`" + `. Default: "TLSAuto"; must be one of ["TLSAuto", "TLS10", "TLS11", "TLS12", "TLS13"]`,
 													Validators: []validator.String{
 														stringvalidator.OneOf(
@@ -312,7 +312,7 @@ func (r *MeshTLSResource) Schema(ctx context.Context, req resource.SchemaRequest
 												"min": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Default:     stringdefault.StaticString("TLSAuto"),
+													Default:     stringdefault.StaticString(`TLSAuto`),
 													Description: `Min defines minimum supported version. One of ` + "`" + `TLSAuto` + "`" + `, ` + "`" + `TLS10` + "`" + `, ` + "`" + `TLS11` + "`" + `, ` + "`" + `TLS12` + "`" + `, ` + "`" + `TLS13` + "`" + `. Default: "TLSAuto"; must be one of ["TLSAuto", "TLS10", "TLS11", "TLS12", "TLS13"]`,
 													Validators: []validator.String{
 														stringvalidator.OneOf(

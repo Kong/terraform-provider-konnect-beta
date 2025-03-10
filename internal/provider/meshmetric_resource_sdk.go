@@ -50,7 +50,7 @@ func (r *MeshMetricResourceModel) ToSharedMeshMetricItemInput() *shared.MeshMetr
 				path = nil
 			}
 			var port int
-			port = int(applicationsItem.Port.ValueInt64())
+			port = int(applicationsItem.Port.ValueInt32())
 
 			applications = append(applications, shared.Applications{
 				Address: address,
@@ -93,7 +93,7 @@ func (r *MeshMetricResourceModel) ToSharedMeshMetricItemInput() *shared.MeshMetr
 				}
 				port1 := new(int)
 				if !backendsItem.Prometheus.Port.IsUnknown() && !backendsItem.Prometheus.Port.IsNull() {
-					*port1 = int(backendsItem.Prometheus.Port.ValueInt64())
+					*port1 = int(backendsItem.Prometheus.Port.ValueInt32())
 				} else {
 					port1 = nil
 				}
@@ -266,7 +266,7 @@ func (r *MeshMetricResourceModel) RefreshFromSharedMeshMetricItem(resp *shared.M
 			r.CreationTime = types.StringNull()
 		}
 		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String)
+			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
 				r.Labels[key] = types.StringValue(value)
 			}
@@ -291,7 +291,7 @@ func (r *MeshMetricResourceModel) RefreshFromSharedMeshMetricItem(resp *shared.M
 				applications1.Address = types.StringPointerValue(applicationsItem.Address)
 				applications1.Name = types.StringPointerValue(applicationsItem.Name)
 				applications1.Path = types.StringPointerValue(applicationsItem.Path)
-				applications1.Port = types.Int64Value(int64(applicationsItem.Port))
+				applications1.Port = types.Int32Value(int32(applicationsItem.Port))
 				if applicationsCount+1 > len(r.Spec.Default.Applications) {
 					r.Spec.Default.Applications = append(r.Spec.Default.Applications, applications1)
 				} else {
@@ -321,9 +321,9 @@ func (r *MeshMetricResourceModel) RefreshFromSharedMeshMetricItem(resp *shared.M
 					backends1.Prometheus.ClientID = types.StringPointerValue(backendsItem.Prometheus.ClientID)
 					backends1.Prometheus.Path = types.StringPointerValue(backendsItem.Prometheus.Path)
 					if backendsItem.Prometheus.Port != nil {
-						backends1.Prometheus.Port = types.Int64Value(int64(*backendsItem.Prometheus.Port))
+						backends1.Prometheus.Port = types.Int32Value(int32(*backendsItem.Prometheus.Port))
 					} else {
-						backends1.Prometheus.Port = types.Int64Null()
+						backends1.Prometheus.Port = types.Int32Null()
 					}
 					if backendsItem.Prometheus.TLS == nil {
 						backends1.Prometheus.TLS = nil
@@ -406,7 +406,7 @@ func (r *MeshMetricResourceModel) RefreshFromSharedMeshMetricItem(resp *shared.M
 			r.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			r.Spec.TargetRef.Kind = types.StringValue(string(resp.Spec.TargetRef.Kind))
 			if len(resp.Spec.TargetRef.Labels) > 0 {
-				r.Spec.TargetRef.Labels = make(map[string]types.String)
+				r.Spec.TargetRef.Labels = make(map[string]types.String, len(resp.Spec.TargetRef.Labels))
 				for key1, value1 := range resp.Spec.TargetRef.Labels {
 					r.Spec.TargetRef.Labels[key1] = types.StringValue(value1)
 				}
@@ -420,7 +420,7 @@ func (r *MeshMetricResourceModel) RefreshFromSharedMeshMetricItem(resp *shared.M
 			}
 			r.Spec.TargetRef.SectionName = types.StringPointerValue(resp.Spec.TargetRef.SectionName)
 			if len(resp.Spec.TargetRef.Tags) > 0 {
-				r.Spec.TargetRef.Tags = make(map[string]types.String)
+				r.Spec.TargetRef.Tags = make(map[string]types.String, len(resp.Spec.TargetRef.Tags))
 				for key2, value2 := range resp.Spec.TargetRef.Tags {
 					r.Spec.TargetRef.Tags[key2] = types.StringValue(value2)
 				}

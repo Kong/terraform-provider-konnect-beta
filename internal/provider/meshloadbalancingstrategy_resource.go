@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int32validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -225,13 +226,13 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																`value, the more forcefully it reduces the load balancing weight of endpoints that are` + "\n" +
 																`actively serving requests.`,
 														},
-														"choice_count": schema.Int64Attribute{
+														"choice_count": schema.Int32Attribute{
 															Optional: true,
 															MarkdownDescription: `ChoiceCount is the number of random healthy hosts from which the host with` + "\n" +
 																`the fewest active requests will be chosen. Defaults to 2 so that Envoy performs` + "\n" +
 																`two-choice selection if the field is not set.`,
-															Validators: []validator.Int64{
-																int64validator.AtLeast(2),
+															Validators: []validator.Int32{
+																int32validator.AtLeast(2),
 															},
 														},
 													},
@@ -362,7 +363,7 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																`set to true, and there is already a hash generated, the hash is returned immediately,` + "\n" +
 																`ignoring the rest of the hash policy list.`,
 														},
-														"table_size": schema.Int64Attribute{
+														"table_size": schema.Int32Attribute{
 															Optional: true,
 															MarkdownDescription: `The table size for Maglev hashing. Maglev aims for “minimal disruption”` + "\n" +
 																`rather than an absolute guarantee. Minimal disruption means that when` + "\n" +
@@ -370,8 +371,8 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																`to the same upstream as it was before. Increasing the table size reduces` + "\n" +
 																`the amount of disruption. The table size must be prime number limited to 5000011.` + "\n" +
 																`If it is not specified, the default is 65537.`,
-															Validators: []validator.Int64{
-																int64validator.Between(1, 5000011),
+															Validators: []validator.Int32{
+																int32validator.Between(1, 5000011),
 															},
 														},
 													},
@@ -521,21 +522,21 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																`set to true, and there is already a hash generated, the hash is returned immediately,` + "\n" +
 																`ignoring the rest of the hash policy list.`,
 														},
-														"max_ring_size": schema.Int64Attribute{
+														"max_ring_size": schema.Int32Attribute{
 															Optional: true,
 															MarkdownDescription: `Maximum hash ring size. Defaults to 8M entries, and limited to 8M entries,` + "\n" +
 																`but can be lowered to further constrain resource use.`,
-															Validators: []validator.Int64{
-																int64validator.Between(1, 8000000),
+															Validators: []validator.Int32{
+																int32validator.Between(1, 8000000),
 															},
 														},
-														"min_ring_size": schema.Int64Attribute{
+														"min_ring_size": schema.Int32Attribute{
 															Optional: true,
 															MarkdownDescription: `Minimum hash ring size. The larger the ring is (that is,` + "\n" +
 																`the more hashes there are for each provided host) the better the request distribution` + "\n" +
 																`will reflect the desired weights. Defaults to 1024 entries, and limited to 8M entries.`,
-															Validators: []validator.Int64{
-																int64validator.Between(1, 8000000),
+															Validators: []validator.Int32{
+																int32validator.Between(1, 8000000),
 															},
 														},
 													},
@@ -703,7 +704,7 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																			speakeasy_stringvalidators.NotNull(),
 																		},
 																	},
-																	"weight": schema.Int64Attribute{
+																	"weight": schema.Int32Attribute{
 																		Optional: true,
 																		MarkdownDescription: `Weight of the tag used for load balancing. The bigger the weight the bigger the priority.` + "\n" +
 																			`Percentage of local traffic load balanced to tag is computed by dividing weight by sum of weights from all tags.` + "\n" +

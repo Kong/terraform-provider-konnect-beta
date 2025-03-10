@@ -7,6 +7,6 @@ import "github.com/hashicorp/terraform-plugin-framework/types"
 type AuthConfig struct {
 	OnAgentFailure types.String `tfsdk:"on_agent_failure"`
 	RequestBody    *RequestBody `tfsdk:"request_body"`
-	StatusOnError  types.Int64  `tfsdk:"status_on_error"`
+	StatusOnError  types.Int32  `tfsdk:"status_on_error"`
 	Timeout        types.String `tfsdk:"timeout"`
 }

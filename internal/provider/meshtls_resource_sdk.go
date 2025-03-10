@@ -31,9 +31,9 @@ func (r *MeshTLSResourceModel) ToSharedMeshTLSItemInput() *shared.MeshTLSItemInp
 	for _, fromItem := range r.Spec.From {
 		var defaultVar *shared.MeshTLSItemDefault
 		if fromItem.Default != nil {
-			mode := new(shared.MeshTLSItemSpecMode)
+			mode := new(shared.MeshTLSItemMode)
 			if !fromItem.Default.Mode.IsUnknown() && !fromItem.Default.Mode.IsNull() {
-				*mode = shared.MeshTLSItemSpecMode(fromItem.Default.Mode.ValueString())
+				*mode = shared.MeshTLSItemMode(fromItem.Default.Mode.ValueString())
 			} else {
 				mode = nil
 			}
@@ -128,9 +128,9 @@ func (r *MeshTLSResourceModel) ToSharedMeshTLSItemInput() *shared.MeshTLSItemInp
 	for _, rulesItem := range r.Spec.Rules {
 		var default1 *shared.MeshTLSItemSpecDefault
 		if rulesItem.Default != nil {
-			mode1 := new(shared.MeshTLSItemMode)
+			mode1 := new(shared.MeshTLSItemSpecMode)
 			if !rulesItem.Default.Mode.IsUnknown() && !rulesItem.Default.Mode.IsNull() {
-				*mode1 = shared.MeshTLSItemMode(rulesItem.Default.Mode.ValueString())
+				*mode1 = shared.MeshTLSItemSpecMode(rulesItem.Default.Mode.ValueString())
 			} else {
 				mode1 = nil
 			}
@@ -255,7 +255,7 @@ func (r *MeshTLSResourceModel) RefreshFromSharedMeshTLSItem(resp *shared.MeshTLS
 			r.CreationTime = types.StringNull()
 		}
 		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String)
+			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
 				r.Labels[key] = types.StringValue(value)
 			}
@@ -304,7 +304,7 @@ func (r *MeshTLSResourceModel) RefreshFromSharedMeshTLSItem(resp *shared.MeshTLS
 			}
 			from1.TargetRef.Kind = types.StringValue(string(fromItem.TargetRef.Kind))
 			if len(fromItem.TargetRef.Labels) > 0 {
-				from1.TargetRef.Labels = make(map[string]types.String)
+				from1.TargetRef.Labels = make(map[string]types.String, len(fromItem.TargetRef.Labels))
 				for key1, value1 := range fromItem.TargetRef.Labels {
 					from1.TargetRef.Labels[key1] = types.StringValue(value1)
 				}
@@ -318,7 +318,7 @@ func (r *MeshTLSResourceModel) RefreshFromSharedMeshTLSItem(resp *shared.MeshTLS
 			}
 			from1.TargetRef.SectionName = types.StringPointerValue(fromItem.TargetRef.SectionName)
 			if len(fromItem.TargetRef.Tags) > 0 {
-				from1.TargetRef.Tags = make(map[string]types.String)
+				from1.TargetRef.Tags = make(map[string]types.String, len(fromItem.TargetRef.Tags))
 				for key2, value2 := range fromItem.TargetRef.Tags {
 					from1.TargetRef.Tags[key2] = types.StringValue(value2)
 				}
@@ -377,7 +377,7 @@ func (r *MeshTLSResourceModel) RefreshFromSharedMeshTLSItem(resp *shared.MeshTLS
 			r.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			r.Spec.TargetRef.Kind = types.StringValue(string(resp.Spec.TargetRef.Kind))
 			if len(resp.Spec.TargetRef.Labels) > 0 {
-				r.Spec.TargetRef.Labels = make(map[string]types.String)
+				r.Spec.TargetRef.Labels = make(map[string]types.String, len(resp.Spec.TargetRef.Labels))
 				for key3, value3 := range resp.Spec.TargetRef.Labels {
 					r.Spec.TargetRef.Labels[key3] = types.StringValue(value3)
 				}
@@ -391,7 +391,7 @@ func (r *MeshTLSResourceModel) RefreshFromSharedMeshTLSItem(resp *shared.MeshTLS
 			}
 			r.Spec.TargetRef.SectionName = types.StringPointerValue(resp.Spec.TargetRef.SectionName)
 			if len(resp.Spec.TargetRef.Tags) > 0 {
-				r.Spec.TargetRef.Tags = make(map[string]types.String)
+				r.Spec.TargetRef.Tags = make(map[string]types.String, len(resp.Spec.TargetRef.Tags))
 				for key4, value4 := range resp.Spec.TargetRef.Tags {
 					r.Spec.TargetRef.Tags[key4] = types.StringValue(value4)
 				}

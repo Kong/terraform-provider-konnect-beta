@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type FailurePercentage struct {
-	MinimumHosts  types.Int64 `tfsdk:"minimum_hosts"`
-	RequestVolume types.Int64 `tfsdk:"request_volume"`
-	Threshold     types.Int64 `tfsdk:"threshold"`
+	MinimumHosts  types.Int32 `tfsdk:"minimum_hosts"`
+	RequestVolume types.Int32 `tfsdk:"request_volume"`
+	Threshold     types.Int32 `tfsdk:"threshold"`
 }

@@ -26,13 +26,6 @@ func newMeshCircuitBreaker(sdkConfig sdkConfiguration) *MeshCircuitBreaker {
 
 // GetMeshCircuitBreaker - Returns MeshCircuitBreaker entity
 func (s *MeshCircuitBreaker) GetMeshCircuitBreaker(ctx context.Context, request operations.GetMeshCircuitBreakerRequest, opts ...operations.Option) (*operations.GetMeshCircuitBreakerResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getMeshCircuitBreaker",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -54,6 +47,14 @@ func (s *MeshCircuitBreaker) GetMeshCircuitBreaker(ctx context.Context, request 
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshcircuitbreakers/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getMeshCircuitBreaker",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -179,13 +180,6 @@ func (s *MeshCircuitBreaker) GetMeshCircuitBreaker(ctx context.Context, request 
 
 // DeleteMeshCircuitBreaker - Deletes MeshCircuitBreaker entity
 func (s *MeshCircuitBreaker) DeleteMeshCircuitBreaker(ctx context.Context, request operations.DeleteMeshCircuitBreakerRequest, opts ...operations.Option) (*operations.DeleteMeshCircuitBreakerResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "deleteMeshCircuitBreaker",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -207,6 +201,14 @@ func (s *MeshCircuitBreaker) DeleteMeshCircuitBreaker(ctx context.Context, reque
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshcircuitbreakers/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "deleteMeshCircuitBreaker",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -332,13 +334,6 @@ func (s *MeshCircuitBreaker) DeleteMeshCircuitBreaker(ctx context.Context, reque
 
 // CreateMeshCircuitBreaker - Creates or Updates MeshCircuitBreaker entity
 func (s *MeshCircuitBreaker) CreateMeshCircuitBreaker(ctx context.Context, request operations.CreateMeshCircuitBreakerRequest, opts ...operations.Option) (*operations.CreateMeshCircuitBreakerResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "createMeshCircuitBreaker",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -361,6 +356,13 @@ func (s *MeshCircuitBreaker) CreateMeshCircuitBreaker(ctx context.Context, reque
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "createMeshCircuitBreaker",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MeshCircuitBreakerItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -466,13 +468,6 @@ func (s *MeshCircuitBreaker) CreateMeshCircuitBreaker(ctx context.Context, reque
 
 // UpdateMeshCircuitBreaker - Creates or Updates MeshCircuitBreaker entity
 func (s *MeshCircuitBreaker) UpdateMeshCircuitBreaker(ctx context.Context, request operations.UpdateMeshCircuitBreakerRequest, opts ...operations.Option) (*operations.UpdateMeshCircuitBreakerResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "updateMeshCircuitBreaker",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -495,6 +490,13 @@ func (s *MeshCircuitBreaker) UpdateMeshCircuitBreaker(ctx context.Context, reque
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "updateMeshCircuitBreaker",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MeshCircuitBreakerItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -600,13 +602,6 @@ func (s *MeshCircuitBreaker) UpdateMeshCircuitBreaker(ctx context.Context, reque
 
 // GetMeshCircuitBreakerList - Returns a list of MeshCircuitBreaker in the mesh.
 func (s *MeshCircuitBreaker) GetMeshCircuitBreakerList(ctx context.Context, request operations.GetMeshCircuitBreakerListRequest, opts ...operations.Option) (*operations.GetMeshCircuitBreakerListResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "getMeshCircuitBreakerList",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -627,6 +622,14 @@ func (s *MeshCircuitBreaker) GetMeshCircuitBreakerList(ctx context.Context, requ
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshcircuitbreakers", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "getMeshCircuitBreakerList",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
