@@ -16,7 +16,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	custom_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
-	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
 	custom_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
@@ -114,7 +113,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 						Required: true,
 						Attributes: map[string]schema.Attribute{
 							"append_modifications": schema.ListNestedAttribute{
-								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.List{
 									custom_listplanmodifier.SupressZeroNullModifier(),
@@ -128,7 +126,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"json_patches": schema.ListNestedAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.List{
 														custom_listplanmodifier.SupressZeroNullModifier(),
@@ -225,7 +222,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"json_patches": schema.ListNestedAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.List{
 														custom_listplanmodifier.SupressZeroNullModifier(),
@@ -335,7 +331,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"json_patches": schema.ListNestedAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.List{
 														custom_listplanmodifier.SupressZeroNullModifier(),
@@ -437,7 +432,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"json_patches": schema.ListNestedAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.List{
 														custom_listplanmodifier.SupressZeroNullModifier(),
@@ -546,7 +540,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"json_patches": schema.ListNestedAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.List{
 														custom_listplanmodifier.SupressZeroNullModifier(),
@@ -696,7 +689,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.List{
 									custom_listplanmodifier.SupressZeroNullModifier(),
@@ -737,7 +729,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 				Computed: true,
 				PlanModifiers: []planmodifier.List{
 					custom_listplanmodifier.SupressZeroNullModifier(),
-					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +

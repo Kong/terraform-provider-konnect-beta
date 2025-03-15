@@ -18,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	custom_boolplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/boolplanmodifier"
 	custom_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
-	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
 	custom_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
@@ -116,7 +115,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"from": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						PlanModifiers: []planmodifier.List{
 							custom_listplanmodifier.SupressZeroNullModifier(),
@@ -179,7 +177,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"add": schema.ListNestedAttribute{
-																	Computed: true,
 																	Optional: true,
 																	PlanModifiers: []planmodifier.List{
 																		custom_listplanmodifier.SupressZeroNullModifier(),
@@ -212,7 +209,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																	},
 																},
 																"set": schema.ListNestedAttribute{
-																	Computed: true,
 																	Optional: true,
 																	PlanModifiers: []planmodifier.List{
 																		custom_listplanmodifier.SupressZeroNullModifier(),
@@ -256,7 +252,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 													Description: `Describes the actions to take on a rate limit event`,
 												},
 												"ratelimit_on_request": schema.ListNestedAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.List{
 														custom_listplanmodifier.SupressZeroNullModifier(),
@@ -275,7 +270,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																},
 															},
 															"limits": schema.ListNestedAttribute{
-																Computed: true,
 																Optional: true,
 																PlanModifiers: []planmodifier.List{
 																	custom_listplanmodifier.SupressZeroNullModifier(),
@@ -418,7 +412,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Computed: true,
 											Optional: true,
 											PlanModifiers: []planmodifier.List{
 												custom_listplanmodifier.SupressZeroNullModifier(),
@@ -491,7 +484,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.List{
 									custom_listplanmodifier.SupressZeroNullModifier(),
@@ -517,7 +509,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 							`defined inplace.`,
 					},
 					"to": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						PlanModifiers: []planmodifier.List{
 							custom_listplanmodifier.SupressZeroNullModifier(),
@@ -580,7 +571,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"add": schema.ListNestedAttribute{
-																	Computed: true,
 																	Optional: true,
 																	PlanModifiers: []planmodifier.List{
 																		custom_listplanmodifier.SupressZeroNullModifier(),
@@ -613,7 +603,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																	},
 																},
 																"set": schema.ListNestedAttribute{
-																	Computed: true,
 																	Optional: true,
 																	PlanModifiers: []planmodifier.List{
 																		custom_listplanmodifier.SupressZeroNullModifier(),
@@ -657,7 +646,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 													Description: `Describes the actions to take on a rate limit event`,
 												},
 												"ratelimit_on_request": schema.ListNestedAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.List{
 														custom_listplanmodifier.SupressZeroNullModifier(),
@@ -676,7 +664,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																},
 															},
 															"limits": schema.ListNestedAttribute{
-																Computed: true,
 																Optional: true,
 																PlanModifiers: []planmodifier.List{
 																	custom_listplanmodifier.SupressZeroNullModifier(),
@@ -819,7 +806,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Computed: true,
 											Optional: true,
 											PlanModifiers: []planmodifier.List{
 												custom_listplanmodifier.SupressZeroNullModifier(),
@@ -867,7 +853,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 				Computed: true,
 				PlanModifiers: []planmodifier.List{
 					custom_listplanmodifier.SupressZeroNullModifier(),
-					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +

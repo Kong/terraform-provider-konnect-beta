@@ -17,7 +17,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	custom_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
-	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
 	custom_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
@@ -115,7 +114,6 @@ func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.Schem
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"append_match": schema.ListNestedAttribute{
-								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.List{
 									custom_listplanmodifier.SupressZeroNullModifier(),
@@ -226,7 +224,6 @@ func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.Schem
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.List{
 									custom_listplanmodifier.SupressZeroNullModifier(),
@@ -267,7 +264,6 @@ func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.Schem
 				Computed: true,
 				PlanModifiers: []planmodifier.List{
 					custom_listplanmodifier.SupressZeroNullModifier(),
-					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +

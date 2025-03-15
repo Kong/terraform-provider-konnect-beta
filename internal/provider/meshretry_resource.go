@@ -18,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	custom_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
-	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
 	custom_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
@@ -154,7 +153,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.List{
 									custom_listplanmodifier.SupressZeroNullModifier(),
@@ -180,7 +178,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 							`defined inplace.`,
 					},
 					"to": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						PlanModifiers: []planmodifier.List{
 							custom_listplanmodifier.SupressZeroNullModifier(),
@@ -234,7 +231,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 																`If not specified then the default value is "300s".`,
 														},
 														"reset_headers": schema.ListNestedAttribute{
-															Computed: true,
 															Optional: true,
 															PlanModifiers: []planmodifier.List{
 																custom_listplanmodifier.SupressZeroNullModifier(),
@@ -276,7 +272,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 														`the upstream returns one of the headers configured.`,
 												},
 												"retry_on": schema.ListAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.List{
 														custom_listplanmodifier.SupressZeroNullModifier(),
@@ -309,7 +304,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 														`backoff strategy between retries.`,
 												},
 												"host_selection": schema.ListNestedAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.List{
 														custom_listplanmodifier.SupressZeroNullModifier(),
@@ -378,7 +372,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 																`If not specified then the default value is "300s".`,
 														},
 														"reset_headers": schema.ListNestedAttribute{
-															Computed: true,
 															Optional: true,
 															PlanModifiers: []planmodifier.List{
 																custom_listplanmodifier.SupressZeroNullModifier(),
@@ -420,7 +413,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 														`when the upstream returns one of the headers configured.`,
 												},
 												"retriable_request_headers": schema.ListNestedAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.List{
 														custom_listplanmodifier.SupressZeroNullModifier(),
@@ -466,7 +458,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 														`for retries to be attempted.`,
 												},
 												"retriable_response_headers": schema.ListNestedAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.List{
 														custom_listplanmodifier.SupressZeroNullModifier(),
@@ -513,7 +504,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 														`matches the upstream response headers.`,
 												},
 												"retry_on": schema.ListAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.List{
 														custom_listplanmodifier.SupressZeroNullModifier(),
@@ -586,7 +576,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Computed: true,
 											Optional: true,
 											PlanModifiers: []planmodifier.List{
 												custom_listplanmodifier.SupressZeroNullModifier(),
@@ -634,7 +623,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 				Computed: true,
 				PlanModifiers: []planmodifier.List{
 					custom_listplanmodifier.SupressZeroNullModifier(),
-					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +

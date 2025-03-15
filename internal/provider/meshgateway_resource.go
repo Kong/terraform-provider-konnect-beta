@@ -18,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	custom_boolplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/boolplanmodifier"
 	custom_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
-	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
 	custom_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
@@ -66,7 +65,6 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"listeners": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						PlanModifiers: []planmodifier.List{
 							custom_listplanmodifier.SupressZeroNullModifier(),
@@ -142,7 +140,6 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"certificates": schema.ListNestedAttribute{
-											Computed: true,
 											Optional: true,
 											PlanModifiers: []planmodifier.List{
 												custom_listplanmodifier.SupressZeroNullModifier(),
@@ -248,7 +245,6 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 				Description: `name of the MeshGateway`,
 			},
 			"selectors": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				PlanModifiers: []planmodifier.List{
 					custom_listplanmodifier.SupressZeroNullModifier(),
@@ -283,7 +279,6 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 				Computed: true,
 				PlanModifiers: []planmodifier.List{
 					custom_listplanmodifier.SupressZeroNullModifier(),
-					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +
