@@ -5204,30 +5204,30 @@ paths:
           $ref: '#/components/responses/MeshControlPlaneForbiddenError'
         '404':
           $ref: '#/components/responses/MeshControlPlaneNotFoundError'
-    patch:
+    put:
       x-speakeasy-entity-operation: MeshControlPlane#update
-      summary: Update control plane
-      operationId: update-mesh-control-plane
+      summary: Update a whole control plane
+      description: Update a whole control plane
+      operationId: update-cp
       tags:
         - Mesh
       responses:
         '200':
-          $ref: '#/components/responses/UpdateMeshControlPlaneResponse'
+          $ref: '#/components/responses/PutMeshControlPlaneResponse'
         '400':
-          $ref: '#/components/responses/UpdateMeshControlPlaneValidationError'
+          $ref: '#/components/responses/PutMeshControlPlaneValidationError'
         '401':
           $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
         '403':
           $ref: '#/components/responses/MeshControlPlaneForbiddenError'
         '404':
           $ref: '#/components/responses/MeshControlPlaneNotFoundError'
-      description: Update an individual control plane.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateMeshControlPlaneRequest'
+              $ref: '#/components/schemas/PutMeshControlPlaneRequest'
 components:
   requestBodies:
     CreatePortalCustomDomain:
@@ -6264,7 +6264,7 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/BadRequestError'
-    UpdateMeshControlPlaneValidationError:
+    PutMeshControlPlaneValidationError:
       description: Validation Error
       content:
         application/problem+json:
@@ -6288,7 +6288,7 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/NotFoundError'
-    UpdateMeshControlPlaneResponse:
+    PutMeshControlPlaneResponse:
       description: A response to updating a control plane.
       content:
         application/json:
@@ -22117,6 +22117,21 @@ components:
         minLength: 1
         maxLength: 63
         nullable: true
+    MeshControlPlaneNonNullableLabels:
+      title: Labels
+      type: object
+      nullable: true
+      example:
+        test: 'true'
+      description: >-
+        Labels to facilitate tagged search on control planes. Keys must be of
+        length 1-63 characters.
+      maxProperties: 10
+      additionalProperties:
+        type: string
+        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z\-\.\_]*[a-z0-9A-Z]+)?$
+        minLength: 1
+        maxLength: 63
     MeshControlPlane:
       type: object
       title: ControlPlane
@@ -22135,15 +22150,9 @@ components:
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
         name:
-          type: string
-          example: Test control plane
-          description: The name of the control plane.
-          maxLength: 100
-          pattern: ^[a-z0-9A-Z]{1}.*$
+          $ref: '#/components/schemas/MeshControlPlaneName'
         description:
-          type: string
-          example: A control plane to handle traffic on development environment.
-          maxLength: 250
+          $ref: '#/components/schemas/MeshControlPlaneDescription'
         labels:
           $ref: '#/components/schemas/MeshControlPlaneLabels'
         features:
@@ -22169,37 +22178,37 @@ components:
       additionalProperties: false
       properties:
         name:
-          type: string
-          example: Test control plane
-          description: The name of the control plane.
-          minLength: 1
-          maxLength: 100
-          pattern: ^[a-z0-9A-Z]{1}.*$
+          $ref: '#/components/schemas/MeshControlPlaneName'
         description:
-          type: string
-          example: A control plane to handle traffic on development environment.
-          maxLength: 250
+          $ref: '#/components/schemas/MeshControlPlaneDescription'
         features:
           $ref: '#/components/schemas/MeshControlPlaneFeatures'
         labels:
           $ref: '#/components/schemas/MeshControlPlaneLabels'
-    UpdateMeshControlPlaneRequest:
+    PutMeshControlPlaneRequest:
       type: object
-      title: UpdateMeshControlPlaneRequest
-      description: a payload to update the control plane
+      title: PutMeshControlPlaneRequest
+      description: a payload to update the whole control plane
       properties:
         name:
-          type: string
-          example: Test control plane
-          description: The name of the control plane.
-          maxLength: 100
-          pattern: ^[a-z0-9A-Z]{1}.*$
+          $ref: '#/components/schemas/MeshControlPlaneName'
         description:
-          type: string
-          example: A control plane to handle traffic on development environment.
-          maxLength: 250
+          $ref: '#/components/schemas/MeshControlPlaneDescription'
         labels:
-          $ref: '#/components/schemas/MeshControlPlaneLabels'
+          $ref: '#/components/schemas/MeshControlPlaneNonNullableLabels'
+      required:
+        - name
+    MeshControlPlaneName:
+      type: string
+      example: Test control plane
+      description: The name of the control plane.
+      minLength: 1
+      maxLength: 100
+      pattern: ^[a-z0-9A-Z]{1}.*$
+    MeshControlPlaneDescription:
+      type: string
+      example: A control plane to handle traffic on development environment.
+      maxLength: 250
   securitySchemes:
     personalAccessToken:
       type: http
