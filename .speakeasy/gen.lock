@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: 6114339b41251f5c13262105460685d9
+  docChecksum: c37e94850589acec07672d58c7ceba26
   docVersion: 2.0.0
   speakeasyVersion: 1.514.1
   generationVersion: 2.546.3
@@ -833,10 +833,10 @@ generatedFiles:
   - internal/sdk/models/operations/updateapi.go
   - internal/sdk/models/operations/updateapidocument.go
   - internal/sdk/models/operations/updateapispec.go
+  - internal/sdk/models/operations/updatecp.go
   - internal/sdk/models/operations/updatehostnamegenerator.go
   - internal/sdk/models/operations/updatemeshaccesslog.go
   - internal/sdk/models/operations/updatemeshcircuitbreaker.go
-  - internal/sdk/models/operations/updatemeshcontrolplane.go
   - internal/sdk/models/operations/updatemeshexternalservice.go
   - internal/sdk/models/operations/updatemeshfaultinjection.go
   - internal/sdk/models/operations/updatemeshgateway.go
@@ -1016,11 +1016,11 @@ generatedFiles:
   - internal/sdk/models/shared/portalteamresponse.go
   - internal/sdk/models/shared/portalupdateteamrequest.go
   - internal/sdk/models/shared/publishedstatus.go
+  - internal/sdk/models/shared/putmeshcontrolplanerequest.go
   - internal/sdk/models/shared/security.go
   - internal/sdk/models/shared/unauthorizederror.go
   - internal/sdk/models/shared/unsupportedmediatypeerror.go
   - internal/sdk/models/shared/updateapirequest.go
-  - internal/sdk/models/shared/updatemeshcontrolplanerequest.go
   - internal/sdk/models/shared/updateportal.go
   - internal/sdk/models/shared/updateportalcustomdomainrequest.go
   - internal/sdk/models/shared/updateportalpagerequest.go
@@ -3034,5 +3034,23 @@ examples:
       responses:
         "200":
           application/json: {"items": [{"type": "MeshOPA", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}, {"type": "MeshOPA", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}, {"type": "MeshOPA", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+  update-cp:
+    "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+      requestBody:
+        application/json: {"name": "Test control plane", "description": "A control plane to handle traffic on development environment.", "labels": {"test": "true"}}
+      responses:
+        "200":
+          application/json: {"id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "name": "Test control plane", "description": "A control plane to handle traffic on development environment.", "labels": {"test": "true"}, "created_at": "2023-01-11T02:30:42.227Z", "updated_at": "2023-01-11T02:30:42.227Z"}
+        "400":
+          application/problem+json: {"status": 443687, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}, {"field": "name", "rule": "min_lowercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>"], "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
 examplesVersion: 1.0.0
 generatedTests: {}
