@@ -5,8 +5,8 @@ management:
   docVersion: 2.0.0
   speakeasyVersion: 1.514.1
   generationVersion: 2.546.3
-  releaseVersion: 0.1.0
-  configChecksum: 80972a056e5c173c0c6c6cbcc1e05336
+  releaseVersion: 0.1.1
+  configChecksum: 82de04c8e162785ee5712d8c123777c8
 features:
   terraform:
     additionalDependencies: 0.1.0
