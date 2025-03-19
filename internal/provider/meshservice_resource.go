@@ -18,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	custom_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
-	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
 	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/objectplanmodifier"
 	custom_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
@@ -117,7 +116,6 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"identities": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						PlanModifiers: []planmodifier.List{
 							custom_listplanmodifier.SupressZeroNullModifier(),
@@ -148,7 +146,6 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 						},
 					},
 					"ports": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						PlanModifiers: []planmodifier.List{
 							custom_listplanmodifier.SupressZeroNullModifier(),
@@ -242,7 +239,6 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 						Computed: true,
 						PlanModifiers: []planmodifier.List{
 							custom_listplanmodifier.SupressZeroNullModifier(),
-							speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 						},
 						NestedObject: schema.NestedAttributeObject{
 							PlanModifiers: []planmodifier.Object{
@@ -288,7 +284,6 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 						Computed: true,
 						PlanModifiers: []planmodifier.List{
 							custom_listplanmodifier.SupressZeroNullModifier(),
-							speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 						},
 						NestedObject: schema.NestedAttributeObject{
 							PlanModifiers: []planmodifier.Object{
@@ -299,7 +294,6 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 									Computed: true,
 									PlanModifiers: []planmodifier.List{
 										custom_listplanmodifier.SupressZeroNullModifier(),
-										speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 									},
 									NestedObject: schema.NestedAttributeObject{
 										PlanModifiers: []planmodifier.Object{
@@ -385,7 +379,6 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 						Computed: true,
 						PlanModifiers: []planmodifier.List{
 							custom_listplanmodifier.SupressZeroNullModifier(),
-							speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 						},
 						NestedObject: schema.NestedAttributeObject{
 							PlanModifiers: []planmodifier.Object{
@@ -414,7 +407,6 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 				Computed: true,
 				PlanModifiers: []planmodifier.List{
 					custom_listplanmodifier.SupressZeroNullModifier(),
-					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +

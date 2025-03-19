@@ -5204,30 +5204,30 @@ paths:
           $ref: '#/components/responses/MeshControlPlaneForbiddenError'
         '404':
           $ref: '#/components/responses/MeshControlPlaneNotFoundError'
-    patch:
+    put:
       x-speakeasy-entity-operation: MeshControlPlane#update
-      summary: Update control plane
-      operationId: update-mesh-control-plane
+      summary: Update a whole control plane
+      description: Update a whole control plane
+      operationId: update-cp
       tags:
         - Mesh
       responses:
         '200':
-          $ref: '#/components/responses/UpdateMeshControlPlaneResponse'
+          $ref: '#/components/responses/PutMeshControlPlaneResponse'
         '400':
-          $ref: '#/components/responses/UpdateMeshControlPlaneValidationError'
+          $ref: '#/components/responses/PutMeshControlPlaneValidationError'
         '401':
           $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
         '403':
           $ref: '#/components/responses/MeshControlPlaneForbiddenError'
         '404':
           $ref: '#/components/responses/MeshControlPlaneNotFoundError'
-      description: Update an individual control plane.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateMeshControlPlaneRequest'
+              $ref: '#/components/schemas/PutMeshControlPlaneRequest'
 components:
   requestBodies:
     CreatePortalCustomDomain:
@@ -6264,7 +6264,7 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/BadRequestError'
-    UpdateMeshControlPlaneValidationError:
+    PutMeshControlPlaneValidationError:
       description: Validation Error
       content:
         application/problem+json:
@@ -6288,7 +6288,7 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/NotFoundError'
-    UpdateMeshControlPlaneResponse:
+    PutMeshControlPlaneResponse:
       description: A response to updating a control plane.
       content:
         application/json:
@@ -7919,6 +7919,7 @@ components:
                                         type: object
                                       type: array
                                       x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                      x-speakeasy-param-computed: false
                                     omitEmptyValues:
                                       default: false
                                       type: boolean
@@ -7975,6 +7976,7 @@ components:
                                     type: object
                                   type: array
                                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                  x-speakeasy-param-computed: false
                                 body:
                                   description: >-
                                     Body is a raw string or an OTLP any value as
@@ -8041,6 +8043,7 @@ components:
                                         type: object
                                       type: array
                                       x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                      x-speakeasy-param-computed: false
                                     omitEmptyValues:
                                       default: false
                                       type: boolean
@@ -8077,6 +8080,7 @@ components:
                           type: object
                         type: array
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        x-speakeasy-param-computed: false
                     type: object
                     x-speakeasy-param-computed: false
                   targetRef:
@@ -8145,6 +8149,7 @@ components:
                           type: string
                         type: array
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        x-speakeasy-param-computed: false
                       sectionName:
                         description: >-
                           SectionName is used to target specific section of
@@ -8175,6 +8180,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             rules:
               description: >-
                 Rules defines inbound access log configurations. Currently
@@ -8224,6 +8230,7 @@ components:
                                         type: object
                                       type: array
                                       x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                      x-speakeasy-param-computed: false
                                     omitEmptyValues:
                                       default: false
                                       type: boolean
@@ -8280,6 +8287,7 @@ components:
                                     type: object
                                   type: array
                                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                  x-speakeasy-param-computed: false
                                 body:
                                   description: >-
                                     Body is a raw string or an OTLP any value as
@@ -8345,6 +8353,7 @@ components:
                                         type: object
                                       type: array
                                       x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                      x-speakeasy-param-computed: false
                                     omitEmptyValues:
                                       default: false
                                       type: boolean
@@ -8381,6 +8390,7 @@ components:
                           type: object
                         type: array
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        x-speakeasy-param-computed: false
                     type: object
                     x-speakeasy-param-computed: false
                 required:
@@ -8388,6 +8398,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             targetRef:
               description: >-
                 TargetRef is a reference to the resource the policy takes an
@@ -8457,6 +8468,7 @@ components:
                     type: string
                   type: array
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  x-speakeasy-param-computed: false
                 sectionName:
                   description: >-
                     SectionName is used to target specific section of resource.
@@ -8527,6 +8539,7 @@ components:
                                         type: object
                                       type: array
                                       x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                      x-speakeasy-param-computed: false
                                     omitEmptyValues:
                                       default: false
                                       type: boolean
@@ -8583,6 +8596,7 @@ components:
                                     type: object
                                   type: array
                                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                  x-speakeasy-param-computed: false
                                 body:
                                   description: >-
                                     Body is a raw string or an OTLP any value as
@@ -8649,6 +8663,7 @@ components:
                                         type: object
                                       type: array
                                       x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                      x-speakeasy-param-computed: false
                                     omitEmptyValues:
                                       default: false
                                       type: boolean
@@ -8685,6 +8700,7 @@ components:
                           type: object
                         type: array
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        x-speakeasy-param-computed: false
                     type: object
                     x-speakeasy-param-computed: false
                   targetRef:
@@ -8753,6 +8769,7 @@ components:
                           type: string
                         type: array
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        x-speakeasy-param-computed: false
                       sectionName:
                         description: >-
                           SectionName is used to target specific section of
@@ -8783,6 +8800,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
           type: object
           x-speakeasy-param-computed: false
         creationTime:
@@ -8814,6 +8832,7 @@ components:
           items:
             type: string
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
     MeshAccessLogDeleteSuccessResponse:
       type: object
@@ -9422,6 +9441,7 @@ components:
                           type: string
                         type: array
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        x-speakeasy-param-computed: false
                       sectionName:
                         description: >-
                           SectionName is used to target specific section of
@@ -9451,6 +9471,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             rules:
               description: >-
                 Rules defines inbound circuit breaker configurations. Currently
@@ -9958,6 +9979,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             targetRef:
               description: >-
                 TargetRef is a reference to the resource the policy takes an
@@ -10027,6 +10049,7 @@ components:
                     type: string
                   type: array
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  x-speakeasy-param-computed: false
                 sectionName:
                   description: >-
                     SectionName is used to target specific section of resource.
@@ -10620,6 +10643,7 @@ components:
                           type: string
                         type: array
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        x-speakeasy-param-computed: false
                       sectionName:
                         description: >-
                           SectionName is used to target specific section of
@@ -10649,6 +10673,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
           type: object
           x-speakeasy-param-computed: false
         creationTime:
@@ -10680,6 +10705,7 @@ components:
           items:
             type: string
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
     MeshCircuitBreakerDeleteSuccessResponse:
       type: object
@@ -10835,6 +10861,7 @@ components:
                           type: object
                         type: array
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        x-speakeasy-param-computed: false
                     type: object
                     x-speakeasy-param-computed: false
                   targetRef:
@@ -10903,6 +10930,7 @@ components:
                           type: string
                         type: array
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        x-speakeasy-param-computed: false
                       sectionName:
                         description: >-
                           SectionName is used to target specific section of
@@ -10932,6 +10960,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             targetRef:
               description: >-
                 TargetRef is a reference to the resource the policy takes an
@@ -11001,6 +11030,7 @@ components:
                     type: string
                   type: array
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  x-speakeasy-param-computed: false
                 sectionName:
                   description: >-
                     SectionName is used to target specific section of resource.
@@ -11139,6 +11169,7 @@ components:
                           type: object
                         type: array
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        x-speakeasy-param-computed: false
                     type: object
                     x-speakeasy-param-computed: false
                   targetRef:
@@ -11207,6 +11238,7 @@ components:
                           type: string
                         type: array
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        x-speakeasy-param-computed: false
                       sectionName:
                         description: >-
                           SectionName is used to target specific section of
@@ -11236,6 +11268,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
           type: object
           x-speakeasy-param-computed: false
         creationTime:
@@ -11267,6 +11300,7 @@ components:
           items:
             type: string
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
     MeshFaultInjectionDeleteSuccessResponse:
       type: object
@@ -11375,6 +11409,7 @@ components:
                     type: string
                   type: array
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  x-speakeasy-param-computed: false
                 sectionName:
                   description: >-
                     SectionName is used to target specific section of resource.
@@ -11521,6 +11556,7 @@ components:
                               type: integer
                             type: array
                             x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                            x-speakeasy-param-computed: false
                           path:
                             description: >-
                               The HTTP path which will be requested during the
@@ -11560,6 +11596,7 @@ components:
                                   - name
                                 x-kubernetes-list-type: map
                                 x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                x-speakeasy-param-computed: false
                               set:
                                 items:
                                   properties:
@@ -11582,6 +11619,7 @@ components:
                                   - name
                                 x-kubernetes-list-type: map
                                 x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                x-speakeasy-param-computed: false
                             type: object
                             x-speakeasy-param-computed: false
                         type: object
@@ -11689,6 +11727,7 @@ components:
                               type: string
                             type: array
                             x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                            x-speakeasy-param-computed: false
                           send:
                             description: >-
                               Base64 encoded content of the message which will
@@ -11782,6 +11821,7 @@ components:
                           type: string
                         type: array
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        x-speakeasy-param-computed: false
                       sectionName:
                         description: >-
                           SectionName is used to target specific section of
@@ -11811,6 +11851,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
           type: object
           x-speakeasy-param-computed: false
         creationTime:
@@ -11842,6 +11883,7 @@ components:
           items:
             type: string
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
     MeshHealthCheckDeleteSuccessResponse:
       type: object
@@ -11950,6 +11992,7 @@ components:
                     type: string
                   type: array
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  x-speakeasy-param-computed: false
                 sectionName:
                   description: >-
                     SectionName is used to target specific section of resource.
@@ -11993,6 +12036,7 @@ components:
                       type: string
                     type: array
                     x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                    x-speakeasy-param-computed: false
                   rules:
                     description: >-
                       Rules contains the routing rules applies to a combination
@@ -12082,6 +12126,7 @@ components:
                                       type: string
                                     type: array
                                     x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                    x-speakeasy-param-computed: false
                                   sectionName:
                                     description: >-
                                       SectionName is used to target specific
@@ -12112,6 +12157,7 @@ components:
                                 type: object
                               type: array
                               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                              x-speakeasy-param-computed: false
                             filters:
                               items:
                                 properties:
@@ -12148,12 +12194,14 @@ components:
                                           - name
                                         x-kubernetes-list-type: map
                                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                        x-speakeasy-param-computed: false
                                       remove:
                                         items:
                                           type: string
                                         maxItems: 16
                                         type: array
                                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                        x-speakeasy-param-computed: false
                                       set:
                                         items:
                                           properties:
@@ -12176,6 +12224,7 @@ components:
                                           - name
                                         x-kubernetes-list-type: map
                                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                        x-speakeasy-param-computed: false
                                     type: object
                                     x-speakeasy-param-computed: false
                                   requestMirror:
@@ -12256,6 +12305,7 @@ components:
                                               type: string
                                             type: array
                                             x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                            x-speakeasy-param-computed: false
                                           sectionName:
                                             description: >-
                                               SectionName is used to target specific
@@ -12422,12 +12472,14 @@ components:
                                           - name
                                         x-kubernetes-list-type: map
                                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                        x-speakeasy-param-computed: false
                                       remove:
                                         items:
                                           type: string
                                         maxItems: 16
                                         type: array
                                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                        x-speakeasy-param-computed: false
                                       set:
                                         items:
                                           properties:
@@ -12450,6 +12502,7 @@ components:
                                           - name
                                         x-kubernetes-list-type: map
                                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                        x-speakeasy-param-computed: false
                                     type: object
                                     x-speakeasy-param-computed: false
                                   type:
@@ -12510,6 +12563,7 @@ components:
                                 type: object
                               type: array
                               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                              x-speakeasy-param-computed: false
                           type: object
                           x-speakeasy-param-computed: false
                         matches:
@@ -12565,6 +12619,7 @@ components:
                                   type: object
                                 type: array
                                 x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                x-speakeasy-param-computed: false
                               method:
                                 enum:
                                   - CONNECT
@@ -12631,16 +12686,19 @@ components:
                                   type: object
                                 type: array
                                 x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                x-speakeasy-param-computed: false
                             type: object
                           minItems: 1
                           type: array
                           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                          x-speakeasy-param-computed: false
                       required:
                         - default
                         - matches
                       type: object
                     type: array
                     x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                    x-speakeasy-param-computed: false
                   targetRef:
                     description: >-
                       TargetRef is a reference to the resource that represents a
@@ -12707,6 +12765,7 @@ components:
                           type: string
                         type: array
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        x-speakeasy-param-computed: false
                       sectionName:
                         description: >-
                           SectionName is used to target specific section of
@@ -12737,6 +12796,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
           type: object
           x-speakeasy-param-computed: false
         creationTime:
@@ -12768,6 +12828,7 @@ components:
           items:
             type: string
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
     MeshHTTPRouteDeleteSuccessResponse:
       type: object
@@ -12878,6 +12939,7 @@ components:
                     type: string
                   type: array
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  x-speakeasy-param-computed: false
                 sectionName:
                   description: >-
                     SectionName is used to target specific section of resource.
@@ -13103,6 +13165,7 @@ components:
                                   type: object
                                 type: array
                                 x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                x-speakeasy-param-computed: false
                               tableSize:
                                 description: >-
                                   The table size for Maglev hashing. Maglev aims
@@ -13297,6 +13360,7 @@ components:
                                   type: object
                                 type: array
                                 x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                x-speakeasy-param-computed: false
                               maxRingSize:
                                 description: >-
                                   Maximum hash ring size. Defaults to 8M
@@ -13377,6 +13441,7 @@ components:
                                             type: string
                                           type: array
                                           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                          x-speakeasy-param-computed: false
                                       required:
                                         - zones
                                       type: object
@@ -13402,6 +13467,7 @@ components:
                                             type: string
                                           type: array
                                           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                          x-speakeasy-param-computed: false
                                       required:
                                         - type
                                       type: object
@@ -13411,6 +13477,7 @@ components:
                                   type: object
                                 type: array
                                 x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                x-speakeasy-param-computed: false
                               failoverThreshold:
                                 description: >-
                                   FailoverThreshold defines the percentage of
@@ -13503,6 +13570,7 @@ components:
                                   type: object
                                 type: array
                                 x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                x-speakeasy-param-computed: false
                             type: object
                             x-speakeasy-param-computed: false
                         type: object
@@ -13575,6 +13643,7 @@ components:
                           type: string
                         type: array
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        x-speakeasy-param-computed: false
                       sectionName:
                         description: >-
                           SectionName is used to target specific section of
@@ -13604,6 +13673,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
           type: object
           x-speakeasy-param-computed: false
         creationTime:
@@ -13635,6 +13705,7 @@ components:
           items:
             type: string
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
     MeshLoadBalancingStrategyDeleteSuccessResponse:
       type: object
@@ -13710,6 +13781,7 @@ components:
                     type: object
                   type: array
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  x-speakeasy-param-computed: false
                 backends:
                   description: Backends list that will be used to collect metrics.
                   items:
@@ -13786,6 +13858,7 @@ components:
                     type: object
                   type: array
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  x-speakeasy-param-computed: false
                 sidecar:
                   description: Sidecar metrics collection configuration
                   properties:
@@ -13830,6 +13903,7 @@ components:
                             type: object
                           type: array
                           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                          x-speakeasy-param-computed: false
                         exclude:
                           description: >-
                             Exclude makes it possible to exclude groups of
@@ -13861,6 +13935,7 @@ components:
                             type: object
                           type: array
                           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                          x-speakeasy-param-computed: false
                         include:
                           description: >-
                             Include makes it possible to include additional
@@ -13892,6 +13967,7 @@ components:
                             type: object
                           type: array
                           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                          x-speakeasy-param-computed: false
                       type: object
                       x-speakeasy-param-computed: false
                   type: object
@@ -13967,6 +14043,7 @@ components:
                     type: string
                   type: array
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  x-speakeasy-param-computed: false
                 sectionName:
                   description: >-
                     SectionName is used to target specific section of resource.
@@ -14020,6 +14097,7 @@ components:
           items:
             type: string
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
     MeshMetricDeleteSuccessResponse:
       type: object
@@ -14108,6 +14186,7 @@ components:
                     type: object
                   type: array
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  x-speakeasy-param-computed: false
                 passthroughMode:
                   description: >-
                     Defines the passthrough behavior. Possible values: `All`,
@@ -14193,6 +14272,7 @@ components:
                     type: string
                   type: array
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  x-speakeasy-param-computed: false
                 sectionName:
                   description: >-
                     SectionName is used to target specific section of resource.
@@ -14246,6 +14326,7 @@ components:
           items:
             type: string
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
     MeshPassthroughDeleteSuccessResponse:
       type: object
@@ -14342,6 +14423,7 @@ components:
                               type: object
                             type: array
                             x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                            x-speakeasy-param-computed: false
                           match:
                             description: >-
                               Match is a set of conditions that have to be
@@ -14460,6 +14542,7 @@ components:
                               type: object
                             type: array
                             x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                            x-speakeasy-param-computed: false
                           match:
                             description: >-
                               Match is a set of conditions that have to be
@@ -14592,6 +14675,7 @@ components:
                               type: object
                             type: array
                             x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                            x-speakeasy-param-computed: false
                           match:
                             description: >-
                               Match is a set of conditions that have to be
@@ -14715,6 +14799,7 @@ components:
                               type: object
                             type: array
                             x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                            x-speakeasy-param-computed: false
                           match:
                             description: >-
                               Match is a set of conditions that have to be
@@ -14849,6 +14934,7 @@ components:
                               type: object
                             type: array
                             x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                            x-speakeasy-param-computed: false
                           match:
                             description: >-
                               Match is a set of conditions that have to be
@@ -14926,6 +15012,7 @@ components:
                     type: object
                   type: array
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  x-speakeasy-param-computed: false
               type: object
               x-speakeasy-param-computed: false
             targetRef:
@@ -14997,6 +15084,7 @@ components:
                     type: string
                   type: array
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  x-speakeasy-param-computed: false
                 sectionName:
                   description: >-
                     SectionName is used to target specific section of resource.
@@ -15052,6 +15140,7 @@ components:
           items:
             type: string
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
     MeshProxyPatchDeleteSuccessResponse:
       type: object
@@ -15153,6 +15242,7 @@ components:
                                           - name
                                         x-kubernetes-list-type: map
                                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                        x-speakeasy-param-computed: false
                                       set:
                                         items:
                                           properties:
@@ -15175,6 +15265,7 @@ components:
                                           - name
                                         x-kubernetes-list-type: map
                                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                        x-speakeasy-param-computed: false
                                     type: object
                                     x-speakeasy-param-computed: false
                                   status:
@@ -15323,6 +15414,7 @@ components:
                           type: string
                         type: array
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        x-speakeasy-param-computed: false
                       sectionName:
                         description: >-
                           SectionName is used to target specific section of
@@ -15352,6 +15444,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             rules:
               description: >-
                 Rules defines inbound rate limiting configurations. Currently
@@ -15413,6 +15506,7 @@ components:
                                           - name
                                         x-kubernetes-list-type: map
                                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                        x-speakeasy-param-computed: false
                                       set:
                                         items:
                                           properties:
@@ -15435,6 +15529,7 @@ components:
                                           - name
                                         x-kubernetes-list-type: map
                                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                        x-speakeasy-param-computed: false
                                     type: object
                                     x-speakeasy-param-computed: false
                                   status:
@@ -15520,6 +15615,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             targetRef:
               description: >-
                 TargetRef is a reference to the resource the policy takes an
@@ -15589,6 +15685,7 @@ components:
                     type: string
                   type: array
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  x-speakeasy-param-computed: false
                 sectionName:
                   description: >-
                     SectionName is used to target specific section of resource.
@@ -15673,6 +15770,7 @@ components:
                                           - name
                                         x-kubernetes-list-type: map
                                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                        x-speakeasy-param-computed: false
                                       set:
                                         items:
                                           properties:
@@ -15695,6 +15793,7 @@ components:
                                           - name
                                         x-kubernetes-list-type: map
                                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                        x-speakeasy-param-computed: false
                                     type: object
                                     x-speakeasy-param-computed: false
                                   status:
@@ -15843,6 +15942,7 @@ components:
                           type: string
                         type: array
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        x-speakeasy-param-computed: false
                       sectionName:
                         description: >-
                           SectionName is used to target specific section of
@@ -15872,6 +15972,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
           type: object
           x-speakeasy-param-computed: false
         creationTime:
@@ -15903,6 +16004,7 @@ components:
           items:
             type: string
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
     MeshRateLimitDeleteSuccessResponse:
       type: object
@@ -16011,6 +16113,7 @@ components:
                     type: string
                   type: array
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  x-speakeasy-param-computed: false
                 sectionName:
                   description: >-
                     SectionName is used to target specific section of resource.
@@ -16154,6 +16257,7 @@ components:
                                   type: object
                                 type: array
                                 x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                x-speakeasy-param-computed: false
                             type: object
                             x-speakeasy-param-computed: false
                           retryOn:
@@ -16176,6 +16280,7 @@ components:
                               type: string
                             type: array
                             x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                            x-speakeasy-param-computed: false
                         type: object
                         x-speakeasy-param-computed: false
                       http:
@@ -16255,6 +16360,7 @@ components:
                               type: object
                             type: array
                             x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                            x-speakeasy-param-computed: false
                           hostSelectionMaxAttempts:
                             description: >-
                               HostSelectionMaxAttempts is the maximum number of
@@ -16347,6 +16453,7 @@ components:
                                   type: object
                                 type: array
                                 x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                x-speakeasy-param-computed: false
                             type: object
                             x-speakeasy-param-computed: false
                           retriableRequestHeaders:
@@ -16399,6 +16506,7 @@ components:
                               type: object
                             type: array
                             x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                            x-speakeasy-param-computed: false
                           retriableResponseHeaders:
                             description: >-
                               RetriableResponseHeaders is an HTTP response
@@ -16452,6 +16560,7 @@ components:
                               type: object
                             type: array
                             x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                            x-speakeasy-param-computed: false
                           retryOn:
                             description: >-
                               RetryOn is a list of conditions which will cause a
@@ -16493,6 +16602,7 @@ components:
                               type: string
                             type: array
                             x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                            x-speakeasy-param-computed: false
                         type: object
                         x-speakeasy-param-computed: false
                       tcp:
@@ -16577,6 +16687,7 @@ components:
                           type: string
                         type: array
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        x-speakeasy-param-computed: false
                       sectionName:
                         description: >-
                           SectionName is used to target specific section of
@@ -16606,6 +16717,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
           type: object
           x-speakeasy-param-computed: false
         creationTime:
@@ -16637,6 +16749,7 @@ components:
           items:
             type: string
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
     MeshRetryDeleteSuccessResponse:
       type: object
@@ -16745,6 +16858,7 @@ components:
                     type: string
                   type: array
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  x-speakeasy-param-computed: false
                 sectionName:
                   description: >-
                     SectionName is used to target specific section of resource.
@@ -16864,6 +16978,7 @@ components:
                                       type: string
                                     type: array
                                     x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                    x-speakeasy-param-computed: false
                                   sectionName:
                                     description: >-
                                       SectionName is used to target specific
@@ -16894,6 +17009,7 @@ components:
                                 type: object
                               type: array
                               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                              x-speakeasy-param-computed: false
                           type: object
                           x-speakeasy-param-computed: false
                       required:
@@ -16902,6 +17018,7 @@ components:
                     maxItems: 1
                     type: array
                     x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                    x-speakeasy-param-computed: false
                   targetRef:
                     description: >-
                       TargetRef is a reference to the resource that represents a
@@ -16968,6 +17085,7 @@ components:
                           type: string
                         type: array
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        x-speakeasy-param-computed: false
                       sectionName:
                         description: >-
                           SectionName is used to target specific section of
@@ -16999,6 +17117,7 @@ components:
               minItems: 1
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
           type: object
           x-speakeasy-param-computed: false
         creationTime:
@@ -17030,6 +17149,7 @@ components:
           items:
             type: string
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
     MeshTCPRouteDeleteSuccessResponse:
       type: object
@@ -17234,6 +17354,7 @@ components:
                           type: string
                         type: array
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        x-speakeasy-param-computed: false
                       sectionName:
                         description: >-
                           SectionName is used to target specific section of
@@ -17263,6 +17384,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             rules:
               description: >-
                 Rules defines inbound timeout configurations. Currently limited
@@ -17364,6 +17486,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             targetRef:
               description: >-
                 TargetRef is a reference to the resource the policy takes an
@@ -17433,6 +17556,7 @@ components:
                     type: string
                   type: array
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  x-speakeasy-param-computed: false
                 sectionName:
                   description: >-
                     SectionName is used to target specific section of resource.
@@ -17620,6 +17744,7 @@ components:
                           type: string
                         type: array
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        x-speakeasy-param-computed: false
                       sectionName:
                         description: >-
                           SectionName is used to target specific section of
@@ -17649,6 +17774,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
           type: object
           x-speakeasy-param-computed: false
         creationTime:
@@ -17680,6 +17806,7 @@ components:
           items:
             type: string
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
     MeshTimeoutDeleteSuccessResponse:
       type: object
@@ -17756,6 +17883,7 @@ components:
                           type: string
                         type: array
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        x-speakeasy-param-computed: false
                       tlsVersion:
                         description: Version section for providing version specification.
                         properties:
@@ -17855,6 +17983,7 @@ components:
                           type: string
                         type: array
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        x-speakeasy-param-computed: false
                       sectionName:
                         description: >-
                           SectionName is used to target specific section of
@@ -17884,6 +18013,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             rules:
               description: >-
                 Rules defines inbound tls configurations. Currently limited to
@@ -17919,6 +18049,7 @@ components:
                           type: string
                         type: array
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        x-speakeasy-param-computed: false
                       tlsVersion:
                         description: Version section for providing version specification.
                         properties:
@@ -17955,6 +18086,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             targetRef:
               description: >-
                 TargetRef is a reference to the resource the policy takes an
@@ -18024,6 +18156,7 @@ components:
                     type: string
                   type: array
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  x-speakeasy-param-computed: false
                 sectionName:
                   description: >-
                     SectionName is used to target specific section of resource.
@@ -18077,6 +18210,7 @@ components:
           items:
             type: string
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
     MeshTLSDeleteSuccessResponse:
       type: object
@@ -18233,6 +18367,7 @@ components:
                   maxItems: 1
                   type: array
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  x-speakeasy-param-computed: false
                 sampling:
                   description: >-
                     Sampling configuration.
@@ -18357,6 +18492,7 @@ components:
                     type: object
                   type: array
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  x-speakeasy-param-computed: false
               type: object
               x-speakeasy-param-computed: false
             targetRef:
@@ -18428,6 +18564,7 @@ components:
                     type: string
                   type: array
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  x-speakeasy-param-computed: false
                 sectionName:
                   description: >-
                     SectionName is used to target specific section of resource.
@@ -18481,6 +18618,7 @@ components:
           items:
             type: string
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
     MeshTraceDeleteSuccessResponse:
       type: object
@@ -18613,6 +18751,7 @@ components:
                           type: string
                         type: array
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        x-speakeasy-param-computed: false
                       sectionName:
                         description: >-
                           SectionName is used to target specific section of
@@ -18642,6 +18781,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             targetRef:
               description: >-
                 TargetRef is a reference to the resource the policy takes an
@@ -18711,6 +18851,7 @@ components:
                     type: string
                   type: array
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  x-speakeasy-param-computed: false
                 sectionName:
                   description: >-
                     SectionName is used to target specific section of resource.
@@ -18764,6 +18905,7 @@ components:
           items:
             type: string
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
     MeshTrafficPermissionDeleteSuccessResponse:
       type: object
@@ -18860,6 +19002,7 @@ components:
                     type: object
                   type: array
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  x-speakeasy-param-computed: false
                 restrictions:
                   description: >-
                     Restrictions defines a set of restrictions that data plane
@@ -18889,6 +19032,7 @@ components:
                     type: object
                   type: array
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  x-speakeasy-param-computed: false
               type: object
               x-speakeasy-param-computed: false
           type: object
@@ -18936,6 +19080,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             defaultBackend:
               description: Name of the default backend
               type: string
@@ -18989,6 +19134,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             enabledBackend:
               description: Name of the enabled backend
               type: string
@@ -19091,6 +19237,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             enabledBackend:
               description: Name of the enabled backend
               type: string
@@ -19160,6 +19307,7 @@ components:
             type: string
           type: array
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
         tracing:
           description: |-
             Tracing settings.
@@ -19199,6 +19347,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             defaultBackend:
               description: Name of the default backend
               type: string
@@ -19227,6 +19376,7 @@ components:
           items:
             type: string
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
     MeshDeleteSuccessResponse:
       type: object
@@ -19285,6 +19435,7 @@ components:
             type: object
           type: array
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
         envoy:
           description: Configuration of Envoy's metrics.
           properties:
@@ -19545,6 +19696,7 @@ components:
                           type: object
                         type: array
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        x-speakeasy-param-computed: false
                       mode:
                         description: >-
                           Mode defines the TLS behavior for the TLS session
@@ -19572,6 +19724,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
           type: object
           x-speakeasy-param-computed: false
         labels:
@@ -19603,6 +19756,7 @@ components:
             type: object
           type: array
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
         tags:
           additionalProperties:
             type: string
@@ -19639,6 +19793,7 @@ components:
           items:
             type: string
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
     MeshGatewayDeleteSuccessResponse:
       type: object
@@ -19734,6 +19889,7 @@ components:
           items:
             type: string
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
     HostnameGeneratorDeleteSuccessResponse:
       type: object
@@ -19797,6 +19953,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             extension:
               description: >-
                 Extension struct for a plugin configuration, in the presence of
@@ -19970,6 +20127,7 @@ components:
                         type: object
                       type: array
                       x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                      x-speakeasy-param-computed: false
                   type: object
                   x-speakeasy-param-computed: false
                 version:
@@ -20050,6 +20208,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             hostnameGenerators:
               items:
                 properties:
@@ -20114,6 +20273,7 @@ components:
                       - type
                     x-kubernetes-list-type: map
                     x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                    x-speakeasy-param-computed: false
                   hostnameGeneratorRef:
                     properties:
                       coreName:
@@ -20128,6 +20288,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             vip:
               description: Vip section for allocated IP
               properties:
@@ -20157,6 +20318,7 @@ components:
           items:
             type: string
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
     MeshExternalServiceDeleteSuccessResponse:
       type: object
@@ -20218,6 +20380,7 @@ components:
               minItems: 1
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             selector:
               description: Selector is a way to select multiple MeshServices
               properties:
@@ -20284,6 +20447,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             hostnameGenerators:
               description: Status of hostnames generator applied on this resource
               items:
@@ -20349,6 +20513,7 @@ components:
                       - type
                     x-kubernetes-list-type: map
                     x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                    x-speakeasy-param-computed: false
                   hostnameGeneratorRef:
                     properties:
                       coreName:
@@ -20363,6 +20528,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             meshServices:
               description: MeshServices is a list of matched MeshServices
               items:
@@ -20388,6 +20554,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             vips:
               description: VIPs is a list of assigned Kuma VIPs.
               items:
@@ -20398,6 +20565,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
           type: object
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
@@ -20416,6 +20584,7 @@ components:
           items:
             type: string
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
     MeshMultiZoneServiceDeleteSuccessResponse:
       type: object
@@ -20472,6 +20641,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             ports:
               items:
                 properties:
@@ -20502,6 +20672,7 @@ components:
                 - appProtocol
               x-kubernetes-list-type: map
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             selector:
               properties:
                 dataplaneRef:
@@ -20572,6 +20743,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             dataplaneProxies:
               description: Data plane proxies statistics selected by this MeshService.
               properties:
@@ -20657,6 +20829,7 @@ components:
                       - type
                     x-kubernetes-list-type: map
                     x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                    x-speakeasy-param-computed: false
                   hostnameGeneratorRef:
                     properties:
                       coreName:
@@ -20671,6 +20844,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             tls:
               properties:
                 status:
@@ -20689,6 +20863,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
           type: object
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
@@ -20707,6 +20882,7 @@ components:
           items:
             type: string
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
     MeshServiceDeleteSuccessResponse:
       type: object
@@ -20770,6 +20946,7 @@ components:
             type: string
           type: array
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
         issuerRef:
           properties:
             group:
@@ -20935,6 +21112,7 @@ components:
                                       - name
                                     x-kubernetes-list-type: map
                                     x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                    x-speakeasy-param-computed: false
                                   set:
                                     items:
                                       properties:
@@ -20957,6 +21135,7 @@ components:
                                       - name
                                     x-kubernetes-list-type: map
                                     x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                    x-speakeasy-param-computed: false
                                 type: object
                                 x-speakeasy-param-computed: false
                               status:
@@ -21021,6 +21200,7 @@ components:
                                     type: object
                                   type: array
                                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                  x-speakeasy-param-computed: false
                                 name:
                                   description: >-
                                     Name of the request element on which rate
@@ -21034,6 +21214,7 @@ components:
                               type: object
                             type: array
                             x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                            x-speakeasy-param-computed: false
                           requestRate:
                             description: >-
                               Defines how many requests are allowed per
@@ -21146,6 +21327,7 @@ components:
                           type: string
                         type: array
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        x-speakeasy-param-computed: false
                       sectionName:
                         description: >-
                           SectionName is used to target specific section of
@@ -21175,6 +21357,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
             targetRef:
               description: >-
                 TargetRef is a reference to the resource the policy takes an
@@ -21244,6 +21427,7 @@ components:
                     type: string
                   type: array
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  x-speakeasy-param-computed: false
                 sectionName:
                   description: >-
                     SectionName is used to target specific section of resource.
@@ -21348,6 +21532,7 @@ components:
                                       - name
                                     x-kubernetes-list-type: map
                                     x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                    x-speakeasy-param-computed: false
                                   set:
                                     items:
                                       properties:
@@ -21370,6 +21555,7 @@ components:
                                       - name
                                     x-kubernetes-list-type: map
                                     x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                    x-speakeasy-param-computed: false
                                 type: object
                                 x-speakeasy-param-computed: false
                               status:
@@ -21434,6 +21620,7 @@ components:
                                     type: object
                                   type: array
                                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                  x-speakeasy-param-computed: false
                                 name:
                                   description: >-
                                     Name of the request element on which rate
@@ -21447,6 +21634,7 @@ components:
                               type: object
                             type: array
                             x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                            x-speakeasy-param-computed: false
                           requestRate:
                             description: >-
                               Defines how many requests are allowed per
@@ -21559,6 +21747,7 @@ components:
                           type: string
                         type: array
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        x-speakeasy-param-computed: false
                       sectionName:
                         description: >-
                           SectionName is used to target specific section of
@@ -21588,6 +21777,7 @@ components:
                 type: object
               type: array
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              x-speakeasy-param-computed: false
           type: object
           x-speakeasy-param-computed: false
         creationTime:
@@ -21619,6 +21809,7 @@ components:
           items:
             type: string
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
     MeshGlobalRateLimitDeleteSuccessResponse:
       type: object
@@ -21716,6 +21907,7 @@ components:
                     type: object
                   type: array
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  x-speakeasy-param-computed: false
                 authConfig:
                   description: AuthConfig are configurations specific to the filter.
                   properties:
@@ -21850,6 +22042,7 @@ components:
                     type: string
                   type: array
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  x-speakeasy-param-computed: false
                 sectionName:
                   description: >-
                     SectionName is used to target specific section of resource.
@@ -21903,6 +22096,7 @@ components:
           items:
             type: string
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
     MeshOPADeleteSuccessResponse:
       type: object
@@ -21923,6 +22117,21 @@ components:
         minLength: 1
         maxLength: 63
         nullable: true
+    MeshControlPlaneNonNullableLabels:
+      title: Labels
+      type: object
+      nullable: true
+      example:
+        test: 'true'
+      description: >-
+        Labels to facilitate tagged search on control planes. Keys must be of
+        length 1-63 characters.
+      maxProperties: 10
+      additionalProperties:
+        type: string
+        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z\-\.\_]*[a-z0-9A-Z]+)?$
+        minLength: 1
+        maxLength: 63
     MeshControlPlane:
       type: object
       title: ControlPlane
@@ -21941,15 +22150,9 @@ components:
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
         name:
-          type: string
-          example: Test control plane
-          description: The name of the control plane.
-          maxLength: 100
-          pattern: ^[a-z0-9A-Z]{1}.*$
+          $ref: '#/components/schemas/MeshControlPlaneName'
         description:
-          type: string
-          example: A control plane to handle traffic on development environment.
-          maxLength: 250
+          $ref: '#/components/schemas/MeshControlPlaneDescription'
         labels:
           $ref: '#/components/schemas/MeshControlPlaneLabels'
         features:
@@ -21975,37 +22178,37 @@ components:
       additionalProperties: false
       properties:
         name:
-          type: string
-          example: Test control plane
-          description: The name of the control plane.
-          minLength: 1
-          maxLength: 100
-          pattern: ^[a-z0-9A-Z]{1}.*$
+          $ref: '#/components/schemas/MeshControlPlaneName'
         description:
-          type: string
-          example: A control plane to handle traffic on development environment.
-          maxLength: 250
+          $ref: '#/components/schemas/MeshControlPlaneDescription'
         features:
           $ref: '#/components/schemas/MeshControlPlaneFeatures'
         labels:
           $ref: '#/components/schemas/MeshControlPlaneLabels'
-    UpdateMeshControlPlaneRequest:
+    PutMeshControlPlaneRequest:
       type: object
-      title: UpdateMeshControlPlaneRequest
-      description: a payload to update the control plane
+      title: PutMeshControlPlaneRequest
+      description: a payload to update the whole control plane
       properties:
         name:
-          type: string
-          example: Test control plane
-          description: The name of the control plane.
-          maxLength: 100
-          pattern: ^[a-z0-9A-Z]{1}.*$
+          $ref: '#/components/schemas/MeshControlPlaneName'
         description:
-          type: string
-          example: A control plane to handle traffic on development environment.
-          maxLength: 250
+          $ref: '#/components/schemas/MeshControlPlaneDescription'
         labels:
-          $ref: '#/components/schemas/MeshControlPlaneLabels'
+          $ref: '#/components/schemas/MeshControlPlaneNonNullableLabels'
+      required:
+        - name
+    MeshControlPlaneName:
+      type: string
+      example: Test control plane
+      description: The name of the control plane.
+      minLength: 1
+      maxLength: 100
+      pattern: ^[a-z0-9A-Z]{1}.*$
+    MeshControlPlaneDescription:
+      type: string
+      example: A control plane to handle traffic on development environment.
+      maxLength: 250
   securitySchemes:
     personalAccessToken:
       type: http

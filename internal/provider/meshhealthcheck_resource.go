@@ -19,7 +19,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	custom_boolplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/boolplanmodifier"
 	custom_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
-	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
 	custom_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
@@ -155,7 +154,6 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.List{
 									custom_listplanmodifier.SupressZeroNullModifier(),
@@ -181,7 +179,6 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 							`defined inplace.`,
 					},
 					"to": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						PlanModifiers: []planmodifier.List{
 							custom_listplanmodifier.SupressZeroNullModifier(),
@@ -283,7 +280,6 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 													Description: `If true the HttpHealthCheck is disabled`,
 												},
 												"expected_statuses": schema.ListAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.List{
 														custom_listplanmodifier.SupressZeroNullModifier(),
@@ -301,7 +297,6 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"add": schema.ListNestedAttribute{
-															Computed: true,
 															Optional: true,
 															PlanModifiers: []planmodifier.List{
 																custom_listplanmodifier.SupressZeroNullModifier(),
@@ -334,7 +329,6 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 															},
 														},
 														"set": schema.ListNestedAttribute{
-															Computed: true,
 															Optional: true,
 															PlanModifiers: []planmodifier.List{
 																custom_listplanmodifier.SupressZeroNullModifier(),
@@ -426,7 +420,6 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 													Description: `If true the TcpHealthCheck is disabled`,
 												},
 												"receive": schema.ListAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.List{
 														custom_listplanmodifier.SupressZeroNullModifier(),
@@ -502,7 +495,6 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Computed: true,
 											Optional: true,
 											PlanModifiers: []planmodifier.List{
 												custom_listplanmodifier.SupressZeroNullModifier(),
@@ -550,7 +542,6 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 				Computed: true,
 				PlanModifiers: []planmodifier.List{
 					custom_listplanmodifier.SupressZeroNullModifier(),
-					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +
