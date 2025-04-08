@@ -1,8 +1,11 @@
 module github.com/kong/terraform-provider-konnect-beta
 
-go 1.23.0
+go 1.24.1
 
 require (
+	github.com/Kong/shared-speakeasy/hooks/mesh_defaults v0.0.0-00010101000000-000000000000
+	github.com/Kong/shared-speakeasy/planmodifiers/arbitrary_json v0.0.0-00010101000000-000000000000
+	github.com/Kong/shared-speakeasy/planmodifiers/suppress_zero_null v0.0.0-00010101000000-000000000000
 	github.com/ericlagergren/decimal v0.0.0-20221120152707-495c53812d05
 	github.com/hashicorp/go-uuid v1.0.3
 	github.com/hashicorp/terraform-plugin-docs v0.20.1
@@ -71,4 +74,10 @@ require (
 	google.golang.org/protobuf v1.36.3 // indirect
 	gopkg.in/yaml.v2 v2.3.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
+)
+
+replace (
+	github.com/Kong/shared-speakeasy/hooks/mesh_defaults => ../shared-speakeasy/hooks/mesh_defaults
+	github.com/Kong/shared-speakeasy/planmodifiers/arbitrary_json => ../shared-speakeasy/planmodifiers/arbitrary_json
+	github.com/Kong/shared-speakeasy/planmodifiers/suppress_zero_null => ../shared-speakeasy/planmodifiers/suppress_zero_null
 )
