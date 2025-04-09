@@ -26,6 +26,9 @@ func newSnippets(sdkConfig sdkConfiguration) *Snippets {
 }
 
 // CreatePortalSnippet - Create Snippet
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Creates a new custom snippet for this portal. Custom snippets can be used to display static content, documentation, or other information to developers.
 func (s *Snippets) CreatePortalSnippet(ctx context.Context, request operations.CreatePortalSnippetRequest, opts ...operations.Option) (*operations.CreatePortalSnippetResponse, error) {
 	o := operations.Options{}
@@ -251,6 +254,9 @@ func (s *Snippets) CreatePortalSnippet(ctx context.Context, request operations.C
 }
 
 // GetPortalSnippet - Fetch Snippet
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Returns the configuration of a single custom snippet for this portal. Custom snippets can be used to display static content, documentation, or other information to developers.
 func (s *Snippets) GetPortalSnippet(ctx context.Context, request operations.GetPortalSnippetRequest, opts ...operations.Option) (*operations.GetPortalSnippetResponse, error) {
 	o := operations.Options{}
@@ -448,6 +454,9 @@ func (s *Snippets) GetPortalSnippet(ctx context.Context, request operations.GetP
 }
 
 // UpdatePortalSnippet - Update Snippet
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Updates the configuration of a single custom snippet for this portal.
 func (s *Snippets) UpdatePortalSnippet(ctx context.Context, request operations.UpdatePortalSnippetRequest, opts ...operations.Option) (*operations.UpdatePortalSnippetResponse, error) {
 	o := operations.Options{}
@@ -673,6 +682,9 @@ func (s *Snippets) UpdatePortalSnippet(ctx context.Context, request operations.U
 }
 
 // DeletePortalSnippet - Delete Snippet
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Deletes a single custom snippet for this portal.
 func (s *Snippets) DeletePortalSnippet(ctx context.Context, request operations.DeletePortalSnippetRequest, opts ...operations.Option) (*operations.DeletePortalSnippetResponse, error) {
 	o := operations.Options{}

@@ -81,8 +81,8 @@ resource "konnect_mesh_external_service" "my_meshexternalservice" {
 ### Required
 
 - `cp_id` (String) Id of the Konnect resource
-- `mesh` (String) name of the mesh
-- `name` (String) name of the MeshExternalService
+- `mesh` (String) name of the mesh. Requires replacement if changed.
+- `name` (String) name of the MeshExternalService. Requires replacement if changed.
 - `spec` (Attributes) Spec is the specification of the Kuma MeshExternalService resource. (see [below for nested schema](#nestedatt--spec))
 - `type` (String) the type of the resource. must be "MeshExternalService"
 
