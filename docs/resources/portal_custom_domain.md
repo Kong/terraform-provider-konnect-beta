@@ -19,6 +19,8 @@ resource "konnect_portal_custom_domain" "my_portalcustomdomain" {
   hostname  = "...my_hostname..."
   portal_id = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
   ssl = {
+    custom_certificate         = "...my_custom_certificate..."
+    custom_private_key         = "...my_custom_private_key..."
     domain_verification_method = "http"
   }
 }
@@ -45,10 +47,17 @@ resource "konnect_portal_custom_domain" "my_portalcustomdomain" {
 
 Required:
 
-- `domain_verification_method` (String) must be "http"; Requires replacement if changed.
+- `domain_verification_method` (String) must be one of ["http", "custom_certificate"]; Requires replacement if changed.
+
+Optional:
+
+- `custom_certificate` (String) Custom certificate to be used for the SSL termination. Requires replacement if changed.
+- `custom_private_key` (String) Custom certificate private key to be used for the SSL termination. Requires replacement if changed.
 
 Read-Only:
 
+- `expires_at` (String) An ISO-8601 timestamp representation of the ssl certificate expiration date.
+- `uploaded_at` (String) An ISO-8601 timestamp representation of the ssl certificate upload date.
 - `validation_errors` (List of String)
 - `verification_status` (String) must be one of ["verified", "pending", "error"]
 

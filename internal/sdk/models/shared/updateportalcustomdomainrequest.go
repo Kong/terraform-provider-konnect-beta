@@ -5,6 +5,10 @@ package shared
 // UpdatePortalCustomDomainRequest - Create a portal custom domain.
 type UpdatePortalCustomDomainRequest struct {
 	Enabled *bool `json:"enabled,omitempty"`
+	// Custom certificate to be used for the SSL termination.
+	CustomCertificate *string `json:"custom_certificate,omitempty"`
+	// Custom certificate private key to be used for the SSL termination.
+	CustomPrivateKey *string `json:"custom_private_key,omitempty"`
 }
 
 func (o *UpdatePortalCustomDomainRequest) GetEnabled() *bool {
@@ -12,4 +16,18 @@ func (o *UpdatePortalCustomDomainRequest) GetEnabled() *bool {
 		return nil
 	}
 	return o.Enabled
+}
+
+func (o *UpdatePortalCustomDomainRequest) GetCustomCertificate() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CustomCertificate
+}
+
+func (o *UpdatePortalCustomDomainRequest) GetCustomPrivateKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CustomPrivateKey
 }

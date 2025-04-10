@@ -47,6 +47,11 @@ paths:
       x-unstable: true
       summary: Create Portal
       description: >-
+        **Pre-release Endpoint**
+
+        This endpoint is currently in beta and is subject to change.
+
+
         Creates a new developer portal scoped in this region for this
         organization.
       operationId: create-portal
@@ -82,6 +87,11 @@ paths:
       x-unstable: true
       summary: Fetch Portal
       description: >-
+        **Pre-release Endpoint**
+
+        This endpoint is currently in beta and is subject to change.
+
+
         Returns the configuration for a single developer portal, including  the
         current visibility, access, and domain settings.
       operationId: get-portal
@@ -101,6 +111,11 @@ paths:
       x-unstable: true
       summary: Update Portal
       description: >-
+        **Pre-release Endpoint**
+
+        This endpoint is currently in beta and is subject to change.
+
+
         Updates the configuration for a single portal including the visibility,
         access, and custom domain settings.
       operationId: update-portal
@@ -139,7 +154,11 @@ paths:
             type: string
             const: 'true'
           required: true
-      description: Deletes a single portal, along with all related entities.
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Deletes a single portal, along with all related entities.
       operationId: delete-portal
       tags:
         - Portals
@@ -159,7 +178,11 @@ paths:
       x-speakeasy-entity-operation: PortalCustomDomain#read
       x-unstable: true
       summary: Get Custom Domain
-      description: Get the custom domain associated to the portal.
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Get the custom domain associated to the portal.
       operationId: get-portal-custom-domain
       tags:
         - Portal Custom Domains
@@ -177,6 +200,11 @@ paths:
       x-unstable: true
       summary: Create Custom Domain
       description: >-
+        **Pre-release Endpoint**
+
+        This endpoint is currently in beta and is subject to change.
+
+
         Creates the custom domain associated with the portal. Only one custom
         domain can be associated with a portal at a time.
       operationId: create-portal-custom-domain
@@ -203,7 +231,11 @@ paths:
       x-speakeasy-entity-operation: PortalCustomDomain#update
       x-unstable: true
       summary: Enable or Disable Domain
-      description: Updates the portal domain associated with the portal.
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Updates the portal domain associated with the portal.
       operationId: update-portal-custom-domain
       requestBody:
         $ref: '#/components/requestBodies/UpdatePortalCustomDomain'
@@ -227,7 +259,11 @@ paths:
       x-unstable: true
       operationId: delete-portal-custom-domain
       summary: Remove Domain
-      description: Deletes the custom domain associated with the portal.
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Deletes the custom domain associated with the portal.
       tags:
         - Portal Custom Domains
       responses:
@@ -240,7 +276,11 @@ paths:
       x-speakeasy-entity-operation: PortalCustomization#read
       x-unstable: true
       summary: Get Customization
-      description: Returns the portal customization options.
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Returns the portal customization options.
       operationId: get-portal-customization
       parameters:
         - $ref: '#/components/parameters/PortalId'
@@ -259,7 +299,11 @@ paths:
       x-speakeasy-entity-operation: PortalCustomization#create,update
       x-unstable: true
       summary: Replace Customization
-      description: Replace the portal customization options.
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Replace the portal customization options.
       operationId: replace-portal-customization
       parameters:
         - $ref: '#/components/parameters/PortalId'
@@ -288,6 +332,11 @@ paths:
       x-unstable: true
       summary: Create Page
       description: >-
+        **Pre-release Endpoint**
+
+        This endpoint is currently in beta and is subject to change.
+
+
         Creates a new custom page for this portal. Custom pages can be used to
         display static content, documentation, or other information to
         developers.
@@ -319,6 +368,11 @@ paths:
       x-unstable: true
       summary: Fetch Page
       description: >-
+        **Pre-release Endpoint**
+
+        This endpoint is currently in beta and is subject to change.
+
+
         Returns the configuration of a single custom page for this portal.
         Custom pages can be used to display static content, documentation, or
         other information to developers.
@@ -341,7 +395,11 @@ paths:
       x-speakeasy-entity-operation: PortalPage#update
       x-unstable: true
       summary: Update Page
-      description: Updates the configuration of a single custom page for this portal.
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Updates the configuration of a single custom page for this portal.
       operationId: update-portal-page
       requestBody:
         $ref: '#/components/requestBodies/UpdatePortalPage'
@@ -369,7 +427,11 @@ paths:
       x-speakeasy-entity-operation: PortalPage#delete
       x-unstable: true
       summary: Delete Page
-      description: Deletes a single custom page for this portal.
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Deletes a single custom page for this portal.
       operationId: delete-portal-page
       parameters:
         - $ref: '#/components/parameters/PortalId'
@@ -391,6 +453,11 @@ paths:
       x-unstable: true
       summary: Create Snippet
       description: >-
+        **Pre-release Endpoint**
+
+        This endpoint is currently in beta and is subject to change.
+
+
         Creates a new custom snippet for this portal. Custom snippets can be
         used to display static content, documentation, or other information to
         developers.
@@ -422,6 +489,11 @@ paths:
       x-unstable: true
       summary: Fetch Snippet
       description: >-
+        **Pre-release Endpoint**
+
+        This endpoint is currently in beta and is subject to change.
+
+
         Returns the configuration of a single custom snippet for this portal.
         Custom snippets can be used to display static content, documentation, or
         other information to developers.
@@ -444,7 +516,11 @@ paths:
       x-speakeasy-entity-operation: PortalSnippet#update
       x-unstable: true
       summary: Update Snippet
-      description: Updates the configuration of a single custom snippet for this portal.
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Updates the configuration of a single custom snippet for this portal.
       operationId: update-portal-snippet
       requestBody:
         $ref: '#/components/requestBodies/UpdatePortalSnippet'
@@ -472,7 +548,11 @@ paths:
       x-speakeasy-entity-operation: PortalSnippet#delete
       x-unstable: true
       summary: Delete Snippet
-      description: Deletes a single custom snippet for this portal.
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Deletes a single custom snippet for this portal.
       operationId: delete-portal-snippet
       parameters:
         - $ref: '#/components/parameters/PortalId'
@@ -496,6 +576,11 @@ paths:
       x-speakeasy-entity-operation: PortalAuth#read
       summary: Get Auth Settings
       description: >-
+        **Pre-release Endpoint**
+
+        This endpoint is currently in beta and is subject to change.
+
+
         Returns the developer authentication configuration for a portal, which
         determines how developers can log in and how they are assigned to teams.
       operationId: get-portal-authentication-settings
@@ -511,6 +596,11 @@ paths:
       x-speakeasy-entity-operation: PortalAuth#create,update
       summary: Update Auth Settings
       description: >-
+        **Pre-release Endpoint**
+
+        This endpoint is currently in beta and is subject to change.
+
+
         Updates the developer authentication configuration for a portal.
         Developers can be allowed to login using basic auth (email & password)
         or use Single-Sign-On (SSO) through an OIDC Identity Provider (IdP).
@@ -562,6 +652,11 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/PortalCreateTeam'
       description: >-
+        **Pre-release Endpoint**
+
+        This endpoint is currently in beta and is subject to change.
+
+
         Creates a developer team in a portal. Developers can be added to teams
         to provide RBAC access to API products. Teams can be assigned roles that
         grant permissions to perform an action on a resource.
@@ -583,13 +678,21 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       operationId: get-portal-team
-      description: Get an individual team.
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Get an individual team.
       tags:
         - Portal Teams
     patch:
       x-unstable: true
       x-speakeasy-entity-operation: PortalTeam#update
-      description: Updates an individual developer team for a portal.
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Updates an individual developer team for a portal.
       summary: Update Team
       operationId: update-portal-team
       responses:
@@ -611,6 +714,11 @@ paths:
       summary: Delete Team
       operationId: delete-portal-team
       description: >-
+        **Pre-release Endpoint**
+
+        This endpoint is currently in beta and is subject to change.
+
+
         Deletes a developer team from a portal. Deleting a team also deletes its
         assigned roles. Members of the team are not deleted, but they will lose
         any access provided through the team.
@@ -630,7 +738,11 @@ paths:
       x-speakeasy-entity-operation: Api#create
       x-unstable: true
       summary: Create API
-      description: Creates an API.
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Creates an API.
       operationId: create-api
       responses:
         '201':
@@ -668,7 +780,11 @@ paths:
       x-speakeasy-entity-operation: Api#read
       x-unstable: true
       summary: Fetch API
-      description: Fetches an API.
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Fetches an API.
       operationId: fetch-api
       responses:
         '200':
@@ -685,7 +801,11 @@ paths:
       x-speakeasy-entity-operation: Api#update
       x-unstable: true
       summary: Update API
-      description: Updates an API.
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Updates an API.
       operationId: update-api
       responses:
         '200':
@@ -712,7 +832,11 @@ paths:
       x-speakeasy-entity-operation: Api#delete
       x-unstable: true
       summary: Delete API
-      description: Deletes an API.
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Deletes an API.
       operationId: delete-api
       responses:
         '204':
@@ -732,7 +856,12 @@ paths:
       x-speakeasy-entity-operation: ApiDocument#create
       x-unstable: true
       summary: Create API Document
-      description: >
+      description: >-
+        **Pre-release Endpoint**
+
+        This endpoint is currently in beta and is subject to change.
+
+
         Publish a new document attached to an API.
 
 
@@ -771,7 +900,11 @@ paths:
       x-speakeasy-entity-operation: ApiDocument#read
       x-unstable: true
       summary: Fetch API Document
-      description: Returns a document for the API.
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Returns a document for the API.
       operationId: fetch-api-document
       responses:
         '200':
@@ -788,7 +921,11 @@ paths:
       x-speakeasy-entity-operation: ApiDocument#update
       x-unstable: true
       summary: Update API Document
-      description: Updates a document for an API.
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Updates a document for an API.
       operationId: update-api-document
       responses:
         '200':
@@ -817,7 +954,11 @@ paths:
       x-speakeasy-entity-operation: ApiDocument#delete
       x-unstable: true
       summary: Delete API Documentation
-      description: Removes a document from an API.
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Removes a document from an API.
       operationId: delete-api-document
       responses:
         '204':
@@ -837,7 +978,10 @@ paths:
       x-speakeasy-entity-operation: ApiSpecification#create
       x-unstable: true
       summary: Create API Specification
-      description: |
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
         Creates a specification for an API.
         **Note:** You can only have one specification for an API.
       operationId: create-api-spec
@@ -872,7 +1016,11 @@ paths:
       x-speakeasy-entity-operation: ApiSpecification#read
       x-unstable: true
       summary: Fetch API Specification
-      description: Fetches the specification of an API.
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Fetches the specification of an API.
       operationId: fetch-api-spec
       responses:
         '200':
@@ -889,7 +1037,11 @@ paths:
       x-speakeasy-entity-operation: ApiSpecification#update
       x-unstable: true
       summary: Update API Specification
-      description: Updates the specification of an API.
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Updates the specification of an API.
       operationId: update-api-spec
       responses:
         '200':
@@ -918,7 +1070,11 @@ paths:
       x-speakeasy-entity-operation: ApiSpecification#delete
       x-unstable: true
       summary: Delete API Specification
-      description: Deletes the specification of an API.
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Deletes the specification of an API.
       operationId: delete-api-spec
       responses:
         '204':
@@ -939,7 +1095,10 @@ paths:
       x-speakeasy-entity-operation: ApiPublication#create,update
       x-unstable: true
       summary: Publish API
-      description: |
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
         Publish an API to a portal.
       operationId: publish-api-to-portal
       responses:
@@ -961,7 +1120,10 @@ paths:
       x-speakeasy-entity-operation: ApiPublication#read
       x-unstable: true
       summary: Fetch Publication
-      description: |
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
         Retrieve an API's publication in a portal.
         If the API is not published to the portal, a 404 response is returned.
       operationId: fetch-publication
@@ -980,7 +1142,11 @@ paths:
       x-speakeasy-entity-operation: ApiPublication#delete
       x-unstable: true
       summary: Delete Publication
-      description: Unpublish an API from a portal.
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Unpublish an API from a portal.
       operationId: delete-publication
       responses:
         '204':
@@ -1000,7 +1166,10 @@ paths:
       x-speakeasy-entity-operation: ApiImplementation#create
       x-unstable: true
       summary: Create API Implementation
-      description: |
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
         Creates an implementation for an API.
         An API can be implemented by a single Gateway Service.
       operationId: create-api-implementation
@@ -1033,7 +1202,11 @@ paths:
       x-speakeasy-entity-operation: ApiImplementation#read
       x-unstable: true
       summary: Fetch API Implementation
-      description: Retrieve a gateway implementation for this API
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Retrieve a gateway implementation for this API
       operationId: fetch-api-implementation
       responses:
         '200':
@@ -1050,7 +1223,11 @@ paths:
       x-speakeasy-entity-operation: ApiImplementation#delete
       x-unstable: true
       summary: Delete API Implementation
-      description: Unlink a gateway implementation from this API
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Unlink a gateway implementation from this API
       operationId: delete-api-implementation
       responses:
         '204':
@@ -1116,8 +1293,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       x-speakeasy-entity-operation: MeshAccessLog#delete
-    parameters:
-      - $ref: '#/components/parameters/cpId'
     put:
       operationId: createMeshAccessLog
       summary: Creates or Updates MeshAccessLog entity
@@ -1152,6 +1327,8 @@ paths:
                 $ref: >-
                   #/components/schemas/MeshAccessLogCreateOrUpdateSuccessResponse
       x-speakeasy-entity-operation: MeshAccessLog#create
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   /v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshaccesslogs/{name}#update:
     put:
       operationId: updateMeshAccessLog
@@ -1290,8 +1467,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       x-speakeasy-entity-operation: MeshCircuitBreaker#delete
-    parameters:
-      - $ref: '#/components/parameters/cpId'
     put:
       operationId: createMeshCircuitBreaker
       summary: Creates or Updates MeshCircuitBreaker entity
@@ -1326,6 +1501,8 @@ paths:
                 $ref: >-
                   #/components/schemas/MeshCircuitBreakerCreateOrUpdateSuccessResponse
       x-speakeasy-entity-operation: MeshCircuitBreaker#create
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   /v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshcircuitbreakers/{name}#update:
     put:
       operationId: updateMeshCircuitBreaker
@@ -1464,8 +1641,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       x-speakeasy-entity-operation: MeshFaultInjection#delete
-    parameters:
-      - $ref: '#/components/parameters/cpId'
     put:
       operationId: createMeshFaultInjection
       summary: Creates or Updates MeshFaultInjection entity
@@ -1500,6 +1675,8 @@ paths:
                 $ref: >-
                   #/components/schemas/MeshFaultInjectionCreateOrUpdateSuccessResponse
       x-speakeasy-entity-operation: MeshFaultInjection#create
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   /v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshfaultinjections/{name}#update:
     put:
       operationId: updateMeshFaultInjection
@@ -1638,8 +1815,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       x-speakeasy-entity-operation: MeshHealthCheck#delete
-    parameters:
-      - $ref: '#/components/parameters/cpId'
     put:
       operationId: createMeshHealthCheck
       summary: Creates or Updates MeshHealthCheck entity
@@ -1674,6 +1849,8 @@ paths:
                 $ref: >-
                   #/components/schemas/MeshHealthCheckCreateOrUpdateSuccessResponse
       x-speakeasy-entity-operation: MeshHealthCheck#create
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   /v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhealthchecks/{name}#update:
     put:
       operationId: updateMeshHealthCheck
@@ -1812,8 +1989,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       x-speakeasy-entity-operation: MeshHTTPRoute#delete
-    parameters:
-      - $ref: '#/components/parameters/cpId'
     put:
       operationId: createMeshHTTPRoute
       summary: Creates or Updates MeshHTTPRoute entity
@@ -1848,6 +2023,8 @@ paths:
                 $ref: >-
                   #/components/schemas/MeshHTTPRouteCreateOrUpdateSuccessResponse
       x-speakeasy-entity-operation: MeshHTTPRoute#create
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   /v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhttproutes/{name}#update:
     put:
       operationId: updateMeshHTTPRoute
@@ -1987,8 +2164,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       x-speakeasy-entity-operation: MeshLoadBalancingStrategy#delete
-    parameters:
-      - $ref: '#/components/parameters/cpId'
     put:
       operationId: createMeshLoadBalancingStrategy
       summary: Creates or Updates MeshLoadBalancingStrategy entity
@@ -2023,6 +2198,8 @@ paths:
                 $ref: >-
                   #/components/schemas/MeshLoadBalancingStrategyCreateOrUpdateSuccessResponse
       x-speakeasy-entity-operation: MeshLoadBalancingStrategy#create
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   /v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshloadbalancingstrategies/{name}#update:
     put:
       operationId: updateMeshLoadBalancingStrategy
@@ -2161,8 +2338,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       x-speakeasy-entity-operation: MeshMetric#delete
-    parameters:
-      - $ref: '#/components/parameters/cpId'
     put:
       operationId: createMeshMetric
       summary: Creates or Updates MeshMetric entity
@@ -2196,6 +2371,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/MeshMetricCreateOrUpdateSuccessResponse'
       x-speakeasy-entity-operation: MeshMetric#create
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   /v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmetrics/{name}#update:
     put:
       operationId: updateMeshMetric
@@ -2333,8 +2510,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       x-speakeasy-entity-operation: MeshPassthrough#delete
-    parameters:
-      - $ref: '#/components/parameters/cpId'
     put:
       operationId: createMeshPassthrough
       summary: Creates or Updates MeshPassthrough entity
@@ -2369,6 +2544,8 @@ paths:
                 $ref: >-
                   #/components/schemas/MeshPassthroughCreateOrUpdateSuccessResponse
       x-speakeasy-entity-operation: MeshPassthrough#create
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   /v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshpassthroughs/{name}#update:
     put:
       operationId: updateMeshPassthrough
@@ -2507,8 +2684,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       x-speakeasy-entity-operation: MeshProxyPatch#delete
-    parameters:
-      - $ref: '#/components/parameters/cpId'
     put:
       operationId: createMeshProxyPatch
       summary: Creates or Updates MeshProxyPatch entity
@@ -2543,6 +2718,8 @@ paths:
                 $ref: >-
                   #/components/schemas/MeshProxyPatchCreateOrUpdateSuccessResponse
       x-speakeasy-entity-operation: MeshProxyPatch#create
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   /v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshproxypatches/{name}#update:
     put:
       operationId: updateMeshProxyPatch
@@ -2681,8 +2858,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       x-speakeasy-entity-operation: MeshRateLimit#delete
-    parameters:
-      - $ref: '#/components/parameters/cpId'
     put:
       operationId: createMeshRateLimit
       summary: Creates or Updates MeshRateLimit entity
@@ -2717,6 +2892,8 @@ paths:
                 $ref: >-
                   #/components/schemas/MeshRateLimitCreateOrUpdateSuccessResponse
       x-speakeasy-entity-operation: MeshRateLimit#create
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   /v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshratelimits/{name}#update:
     put:
       operationId: updateMeshRateLimit
@@ -2855,8 +3032,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       x-speakeasy-entity-operation: MeshRetry#delete
-    parameters:
-      - $ref: '#/components/parameters/cpId'
     put:
       operationId: createMeshRetry
       summary: Creates or Updates MeshRetry entity
@@ -2890,6 +3065,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/MeshRetryCreateOrUpdateSuccessResponse'
       x-speakeasy-entity-operation: MeshRetry#create
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   /v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshretries/{name}#update:
     put:
       operationId: updateMeshRetry
@@ -3027,8 +3204,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       x-speakeasy-entity-operation: MeshTCPRoute#delete
-    parameters:
-      - $ref: '#/components/parameters/cpId'
     put:
       operationId: createMeshTCPRoute
       summary: Creates or Updates MeshTCPRoute entity
@@ -3062,6 +3237,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/MeshTCPRouteCreateOrUpdateSuccessResponse'
       x-speakeasy-entity-operation: MeshTCPRoute#create
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   /v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtcproutes/{name}#update:
     put:
       operationId: updateMeshTCPRoute
@@ -3199,8 +3376,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       x-speakeasy-entity-operation: MeshTimeout#delete
-    parameters:
-      - $ref: '#/components/parameters/cpId'
     put:
       operationId: createMeshTimeout
       summary: Creates or Updates MeshTimeout entity
@@ -3234,6 +3409,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/MeshTimeoutCreateOrUpdateSuccessResponse'
       x-speakeasy-entity-operation: MeshTimeout#create
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   /v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtimeouts/{name}#update:
     put:
       operationId: updateMeshTimeout
@@ -3371,8 +3548,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       x-speakeasy-entity-operation: MeshTLS#delete
-    parameters:
-      - $ref: '#/components/parameters/cpId'
     put:
       operationId: createMeshTLS
       summary: Creates or Updates MeshTLS entity
@@ -3406,6 +3581,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/MeshTLSCreateOrUpdateSuccessResponse'
       x-speakeasy-entity-operation: MeshTLS#create
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   /v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtlses/{name}#update:
     put:
       operationId: updateMeshTLS
@@ -3543,8 +3720,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       x-speakeasy-entity-operation: MeshTrace#delete
-    parameters:
-      - $ref: '#/components/parameters/cpId'
     put:
       operationId: createMeshTrace
       summary: Creates or Updates MeshTrace entity
@@ -3578,6 +3753,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/MeshTraceCreateOrUpdateSuccessResponse'
       x-speakeasy-entity-operation: MeshTrace#create
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   /v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtraces/{name}#update:
     put:
       operationId: updateMeshTrace
@@ -3716,8 +3893,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       x-speakeasy-entity-operation: MeshTrafficPermission#delete
-    parameters:
-      - $ref: '#/components/parameters/cpId'
     put:
       operationId: createMeshTrafficPermission
       summary: Creates or Updates MeshTrafficPermission entity
@@ -3752,6 +3927,8 @@ paths:
                 $ref: >-
                   #/components/schemas/MeshTrafficPermissionCreateOrUpdateSuccessResponse
       x-speakeasy-entity-operation: MeshTrafficPermission#create
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   /v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtrafficpermissions/{name}#update:
     put:
       operationId: updateMeshTrafficPermission
@@ -4008,8 +4185,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       x-speakeasy-entity-operation: MeshGateway#delete
-    parameters:
-      - $ref: '#/components/parameters/cpId'
     put:
       operationId: createMeshGateway
       summary: Creates or Updates MeshGateway entity
@@ -4043,6 +4218,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/MeshGatewayCreateOrUpdateSuccessResponse'
       x-speakeasy-entity-operation: MeshGateway#create
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   /v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshgateways/{name}#update:
     put:
       operationId: updateMeshGateway
@@ -4168,8 +4345,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       x-speakeasy-entity-operation: MeshHostnameGenerator#delete
-    parameters:
-      - $ref: '#/components/parameters/cpId'
     put:
       operationId: createHostnameGenerator
       summary: Creates or Updates HostnameGenerator entity
@@ -4198,6 +4373,8 @@ paths:
                 $ref: >-
                   #/components/schemas/HostnameGeneratorCreateOrUpdateSuccessResponse
       x-speakeasy-entity-operation: MeshHostnameGenerator#create
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   /v1/mesh/control-planes/{cpId}/api/hostnamegenerators/{name}#update:
     put:
       operationId: updateHostnameGenerator
@@ -4324,8 +4501,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       x-speakeasy-entity-operation: MeshExternalService#delete
-    parameters:
-      - $ref: '#/components/parameters/cpId'
     put:
       operationId: createMeshExternalService
       summary: Creates or Updates MeshExternalService entity
@@ -4360,6 +4535,8 @@ paths:
                 $ref: >-
                   #/components/schemas/MeshExternalServiceCreateOrUpdateSuccessResponse
       x-speakeasy-entity-operation: MeshExternalService#create
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   /v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshexternalservices/{name}#update:
     put:
       operationId: updateMeshExternalService
@@ -4498,8 +4675,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       x-speakeasy-entity-operation: MeshMultiZoneService#delete
-    parameters:
-      - $ref: '#/components/parameters/cpId'
     put:
       operationId: createMeshMultiZoneService
       summary: Creates or Updates MeshMultiZoneService entity
@@ -4534,6 +4709,8 @@ paths:
                 $ref: >-
                   #/components/schemas/MeshMultiZoneServiceCreateOrUpdateSuccessResponse
       x-speakeasy-entity-operation: MeshMultiZoneService#create
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   /v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmultizoneservices/{name}#update:
     put:
       operationId: updateMeshMultiZoneService
@@ -4672,8 +4849,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       x-speakeasy-entity-operation: MeshService#delete
-    parameters:
-      - $ref: '#/components/parameters/cpId'
     put:
       operationId: createMeshService
       summary: Creates or Updates MeshService entity
@@ -4707,6 +4882,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/MeshServiceCreateOrUpdateSuccessResponse'
       x-speakeasy-entity-operation: MeshService#create
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   /v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshservices/{name}#update:
     put:
       operationId: updateMeshService
@@ -4844,8 +5021,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       x-speakeasy-entity-operation: MeshGlobalRateLimit#delete
-    parameters:
-      - $ref: '#/components/parameters/cpId'
     put:
       operationId: createMeshGlobalRateLimit
       summary: Creates or Updates MeshGlobalRateLimit entity
@@ -4880,6 +5055,8 @@ paths:
                 $ref: >-
                   #/components/schemas/MeshGlobalRateLimitCreateOrUpdateSuccessResponse
       x-speakeasy-entity-operation: MeshGlobalRateLimit#create
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   /v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshglobalratelimits/{name}#update:
     put:
       operationId: updateMeshGlobalRateLimit
@@ -5018,8 +5195,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       x-speakeasy-entity-operation: MeshOPA#delete
-    parameters:
-      - $ref: '#/components/parameters/cpId'
     put:
       operationId: createMeshOPA
       summary: Creates or Updates MeshOPA entity
@@ -5053,6 +5228,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/MeshOPACreateOrUpdateSuccessResponse'
       x-speakeasy-entity-operation: MeshOPA#create
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   /v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshopas/{name}#update:
     put:
       operationId: updateMeshOPA
@@ -6660,6 +6837,13 @@ components:
       type: object
       title: PortalCustomDomainSSL
       additionalProperties: false
+      x-property-annotations:
+        uploaded_at:
+          - x-unstable
+          - x-internal
+        expires_at:
+          - x-unstable
+          - x-internal
       properties:
         domain_verification_method:
           $ref: '#/components/schemas/PortalCustomDomainVerificationMethod'
@@ -6667,17 +6851,45 @@ components:
           $ref: '#/components/schemas/PortalCustomDomainVerificationStatus'
         validation_errors:
           $ref: '#/components/schemas/PortalCustomDomainValidationErrors'
+        uploaded_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: >-
+            An ISO-8601 timestamp representation of the ssl certificate upload
+            date.
+          readOnly: true
+        expires_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: >-
+            An ISO-8601 timestamp representation of the ssl certificate
+            expiration date.
+          readOnly: true
       required:
         - domain_verification_method
-        - ownership_verification
         - verification_status
     CreatePortalCustomDomainSSL:
       type: object
       title: CreatePortalCustomDomainSSL
       additionalProperties: false
+      x-property-annotations:
+        custom_certificate:
+          - x-unstable
+          - x-internal
+        custom_private_key:
+          - x-unstable
+          - x-internal
       properties:
         domain_verification_method:
           $ref: '#/components/schemas/PortalCustomDomainVerificationMethod'
+        custom_certificate:
+          type: string
+          description: Custom certificate to be used for the SSL termination.
+        custom_private_key:
+          type: string
+          description: Custom certificate private key to be used for the SSL termination.
       required:
         - domain_verification_method
     PortalCustomDomainVerificationMethod:
@@ -6685,6 +6897,9 @@ components:
       type: string
       enum:
         - http
+        - custom_certificate
+      x-enum-dev:
+        - custom_certificate
     PortalCustomDomainVerificationStatus:
       title: PortalCustomDomainVerificationStatus
       type: string
@@ -6725,9 +6940,22 @@ components:
       title: UpdatePortalCustomDomainRequest
       type: object
       additionalProperties: false
+      x-property-annotations:
+        custom_certificate:
+          - x-unstable
+          - x-internal
+        custom_private_key:
+          - x-unstable
+          - x-internal
       properties:
         enabled:
           type: boolean
+        custom_certificate:
+          type: string
+          description: Custom certificate to be used for the SSL termination.
+        custom_private_key:
+          type: string
+          description: Custom certificate private key to be used for the SSL termination.
     PortalClaimMappings:
       title: PortalClaimMappings
       description: Mappings from a portal developer atribute to an Identity Provider claim.
@@ -7855,12 +8083,12 @@ components:
             be omitted for cluster-scoped resources.
           type: string
           default: default
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         name:
           description: Name of the Kuma resource
           type: string
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         labels:
           additionalProperties:
@@ -8856,12 +9084,12 @@ components:
             be omitted for cluster-scoped resources.
           type: string
           default: default
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         name:
           description: Name of the Kuma resource
           type: string
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         labels:
           additionalProperties:
@@ -9321,7 +9549,6 @@ components:
                               When set to true, outlierDetection configuration
                               won't take any effect
                             type: boolean
-                            x-speakeasy-plan-modifiers: SupressZeroNullModifier
                             x-speakeasy-param-computed: false
                           healthyPanicThreshold:
                             anyOf:
@@ -9369,7 +9596,6 @@ components:
                               into account:
                               detectors.localOriginFailures.consecutive
                             type: boolean
-                            x-speakeasy-plan-modifiers: SupressZeroNullModifier
                             x-speakeasy-param-computed: false
                         type: object
                         x-speakeasy-param-computed: false
@@ -9922,7 +10148,6 @@ components:
                               When set to true, outlierDetection configuration
                               won't take any effect
                             type: boolean
-                            x-speakeasy-plan-modifiers: SupressZeroNullModifier
                             x-speakeasy-param-computed: false
                           healthyPanicThreshold:
                             anyOf:
@@ -9970,7 +10195,6 @@ components:
                               into account:
                               detectors.localOriginFailures.consecutive
                             type: boolean
-                            x-speakeasy-plan-modifiers: SupressZeroNullModifier
                             x-speakeasy-param-computed: false
                         type: object
                         x-speakeasy-param-computed: false
@@ -10523,7 +10747,6 @@ components:
                               When set to true, outlierDetection configuration
                               won't take any effect
                             type: boolean
-                            x-speakeasy-plan-modifiers: SupressZeroNullModifier
                             x-speakeasy-param-computed: false
                           healthyPanicThreshold:
                             anyOf:
@@ -10571,7 +10794,6 @@ components:
                               into account:
                               detectors.localOriginFailures.consecutive
                             type: boolean
-                            x-speakeasy-plan-modifiers: SupressZeroNullModifier
                             x-speakeasy-param-computed: false
                         type: object
                         x-speakeasy-param-computed: false
@@ -10729,12 +10951,12 @@ components:
             be omitted for cluster-scoped resources.
           type: string
           default: default
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         name:
           description: Name of the Kuma resource
           type: string
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         labels:
           additionalProperties:
@@ -11324,12 +11546,12 @@ components:
             be omitted for cluster-scoped resources.
           type: string
           default: default
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         name:
           description: Name of the Kuma resource
           type: string
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         labels:
           additionalProperties:
@@ -11455,7 +11677,6 @@ components:
 
                           default value is false.
                         type: boolean
-                        x-speakeasy-plan-modifiers: SupressZeroNullModifier
                         x-speakeasy-param-computed: false
                       eventLogPath:
                         description: >-
@@ -11478,7 +11699,6 @@ components:
 
                           service.
                         type: boolean
-                        x-speakeasy-plan-modifiers: SupressZeroNullModifier
                         x-speakeasy-param-computed: false
                       grpc:
                         description: >-
@@ -11499,7 +11719,6 @@ components:
                           disabled:
                             description: If true the GrpcHealthCheck is disabled
                             type: boolean
-                            x-speakeasy-plan-modifiers: SupressZeroNullModifier
                             x-speakeasy-param-computed: false
                           serviceName:
                             description: >-
@@ -11546,7 +11765,6 @@ components:
                           disabled:
                             description: If true the HttpHealthCheck is disabled
                             type: boolean
-                            x-speakeasy-plan-modifiers: SupressZeroNullModifier
                             x-speakeasy-param-computed: false
                           expectedStatuses:
                             description: >-
@@ -11695,7 +11913,6 @@ components:
                           Reuse health check connection between health checks.
                           Default is true.
                         type: boolean
-                        x-speakeasy-plan-modifiers: SupressZeroNullModifier
                         x-speakeasy-param-computed: false
                       tcp:
                         description: >-
@@ -11707,7 +11924,6 @@ components:
                           disabled:
                             description: If true the TcpHealthCheck is disabled
                             type: boolean
-                            x-speakeasy-plan-modifiers: SupressZeroNullModifier
                             x-speakeasy-param-computed: false
                           receive:
                             description: >-
@@ -11907,12 +12123,12 @@ components:
             be omitted for cluster-scoped resources.
           type: string
           default: default
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         name:
           description: Name of the Kuma resource
           type: string
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         labels:
           additionalProperties:
@@ -12524,7 +12740,6 @@ components:
                                           upstream host. This option is only
                                           available when targeting MeshGateways.
                                         type: boolean
-                                        x-speakeasy-plan-modifiers: SupressZeroNullModifier
                                         x-speakeasy-param-computed: false
                                       hostname:
                                         description: >-
@@ -12852,12 +13067,12 @@ components:
             be omitted for cluster-scoped resources.
           type: string
           default: default
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         name:
           description: Name of the Kuma resource
           type: string
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         labels:
           additionalProperties:
@@ -13054,7 +13269,6 @@ components:
                                         sourceIP:
                                           description: Hash on source IP address.
                                           type: boolean
-                                          x-speakeasy-plan-modifiers: SupressZeroNullModifier
                                           x-speakeasy-param-computed: false
                                       type: object
                                       x-speakeasy-param-computed: false
@@ -13148,7 +13362,6 @@ components:
                                         computed, ignore rest of the list of
                                         hash polices.
                                       type: boolean
-                                      x-speakeasy-plan-modifiers: SupressZeroNullModifier
                                       x-speakeasy-param-computed: false
                                     type:
                                       enum:
@@ -13249,7 +13462,6 @@ components:
                                         sourceIP:
                                           description: Hash on source IP address.
                                           type: boolean
-                                          x-speakeasy-plan-modifiers: SupressZeroNullModifier
                                           x-speakeasy-param-computed: false
                                       type: object
                                       x-speakeasy-param-computed: false
@@ -13343,7 +13555,6 @@ components:
                                         computed, ignore rest of the list of
                                         hash polices.
                                       type: boolean
-                                      x-speakeasy-plan-modifiers: SupressZeroNullModifier
                                       x-speakeasy-param-computed: false
                                     type:
                                       enum:
@@ -13516,7 +13727,6 @@ components:
                               When disabled requests are distributed across all
                               endpoints regardless of locality.
                             type: boolean
-                            x-speakeasy-plan-modifiers: SupressZeroNullModifier
                             x-speakeasy-param-computed: false
                           localZone:
                             description: >-
@@ -13729,12 +13939,12 @@ components:
             be omitted for cluster-scoped resources.
           type: string
           default: default
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         name:
           description: Name of the Kuma resource
           type: string
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         labels:
           additionalProperties:
@@ -13875,7 +14085,6 @@ components:
 
                         If not specified then the default value is false.
                       type: boolean
-                      x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       x-speakeasy-param-computed: false
                     profiles:
                       description: >-
@@ -14121,12 +14330,12 @@ components:
             be omitted for cluster-scoped resources.
           type: string
           default: default
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         name:
           description: Name of the Kuma resource
           type: string
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         labels:
           additionalProperties:
@@ -14350,12 +14559,12 @@ components:
             be omitted for cluster-scoped resources.
           type: string
           default: default
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         name:
           description: Name of the Kuma resource
           type: string
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         labels:
           additionalProperties:
@@ -15164,12 +15373,12 @@ components:
             be omitted for cluster-scoped resources.
           type: string
           default: default
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         name:
           description: Name of the Kuma resource
           type: string
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         labels:
           additionalProperties:
@@ -15208,7 +15417,6 @@ components:
                               disabled:
                                 description: Define if rate limiting should be disabled.
                                 type: boolean
-                                x-speakeasy-plan-modifiers: SupressZeroNullModifier
                                 x-speakeasy-param-computed: false
                               onRateLimit:
                                 description: >-
@@ -15340,7 +15548,6 @@ components:
                                   Define if rate limiting should be disabled.
                                   Default: false
                                 type: boolean
-                                x-speakeasy-plan-modifiers: SupressZeroNullModifier
                                 x-speakeasy-param-computed: false
                             type: object
                             x-speakeasy-param-computed: false
@@ -15472,7 +15679,6 @@ components:
                               disabled:
                                 description: Define if rate limiting should be disabled.
                                 type: boolean
-                                x-speakeasy-plan-modifiers: SupressZeroNullModifier
                                 x-speakeasy-param-computed: false
                               onRateLimit:
                                 description: >-
@@ -15604,7 +15810,6 @@ components:
                                   Define if rate limiting should be disabled.
                                   Default: false
                                 type: boolean
-                                x-speakeasy-plan-modifiers: SupressZeroNullModifier
                                 x-speakeasy-param-computed: false
                             type: object
                             x-speakeasy-param-computed: false
@@ -15736,7 +15941,6 @@ components:
                               disabled:
                                 description: Define if rate limiting should be disabled.
                                 type: boolean
-                                x-speakeasy-plan-modifiers: SupressZeroNullModifier
                                 x-speakeasy-param-computed: false
                               onRateLimit:
                                 description: >-
@@ -15868,7 +16072,6 @@ components:
                                   Define if rate limiting should be disabled.
                                   Default: false
                                 type: boolean
-                                x-speakeasy-plan-modifiers: SupressZeroNullModifier
                                 x-speakeasy-param-computed: false
                             type: object
                             x-speakeasy-param-computed: false
@@ -16028,12 +16231,12 @@ components:
             be omitted for cluster-scoped resources.
           type: string
           default: default
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         name:
           description: Name of the Kuma resource
           type: string
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         labels:
           additionalProperties:
@@ -16773,12 +16976,12 @@ components:
             be omitted for cluster-scoped resources.
           type: string
           default: default
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         name:
           description: Name of the Kuma resource
           type: string
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         labels:
           additionalProperties:
@@ -17173,12 +17376,12 @@ components:
             be omitted for cluster-scoped resources.
           type: string
           default: default
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         name:
           description: Name of the Kuma resource
           type: string
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         labels:
           additionalProperties:
@@ -17830,12 +18033,12 @@ components:
             be omitted for cluster-scoped resources.
           type: string
           default: default
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         name:
           description: Name of the Kuma resource
           type: string
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         labels:
           additionalProperties:
@@ -18234,12 +18437,12 @@ components:
             be omitted for cluster-scoped resources.
           type: string
           default: default
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         name:
           description: Name of the Kuma resource
           type: string
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         labels:
           additionalProperties:
@@ -18642,12 +18845,12 @@ components:
             be omitted for cluster-scoped resources.
           type: string
           default: default
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         name:
           description: Name of the Kuma resource
           type: string
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         labels:
           additionalProperties:
@@ -18949,7 +19152,6 @@ components:
 
             `backend_OUTBOUND_db2` in Datadog. Default: false
           type: boolean
-          x-speakeasy-plan-modifiers: SupressZeroNullModifier
           x-speakeasy-param-computed: false
       type: object
     FileLoggingBackendConfig:
@@ -19245,13 +19447,12 @@ components:
             skipValidation:
               description: If enabled, skips CA validation.
               type: boolean
-              x-speakeasy-plan-modifiers: SupressZeroNullModifier
               x-speakeasy-param-computed: false
           type: object
           x-speakeasy-param-computed: false
         name:
           type: string
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         networking:
           description: Networking settings of the mesh
@@ -19262,7 +19463,6 @@ components:
                 passthrough:
                   description: Control the passthrough cluster
                   type: boolean
-                  x-speakeasy-plan-modifiers: SupressZeroNullModifier
                   x-speakeasy-param-computed: false
               type: object
               x-speakeasy-param-computed: false
@@ -19276,12 +19476,10 @@ components:
                 If true, blocks traffic to MeshExternalServices.
                 Default: false
               type: boolean
-              x-speakeasy-plan-modifiers: SupressZeroNullModifier
               x-speakeasy-param-computed: false
             localityAwareLoadBalancing:
               description: Enable the Locality Aware Load Balancing
               type: boolean
-              x-speakeasy-plan-modifiers: SupressZeroNullModifier
               x-speakeasy-param-computed: false
             zoneEgress:
               description: >-
@@ -19290,7 +19488,6 @@ components:
 
                 through ZoneEgress. Default: false
               type: boolean
-              x-speakeasy-plan-modifiers: SupressZeroNullModifier
               x-speakeasy-param-computed: false
           type: object
           x-speakeasy-param-computed: false
@@ -19414,7 +19611,6 @@ components:
 
                   as true and kuma-dp scrapes metrics from the service.
                 type: boolean
-                x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 x-speakeasy-param-computed: false
               name:
                 description: Name which identify given configuration.
@@ -19457,7 +19653,6 @@ components:
 
                 least once). If nil, then it is treated as false.
               type: boolean
-              x-speakeasy-plan-modifiers: SupressZeroNullModifier
               x-speakeasy-param-computed: false
           type: object
           x-speakeasy-param-computed: false
@@ -19484,7 +19679,6 @@ components:
 
             is enabled in Mesh. If nil, then it is treated as false.
           type: boolean
-          x-speakeasy-plan-modifiers: SupressZeroNullModifier
           x-speakeasy-param-computed: false
         tags:
           additionalProperties:
@@ -19554,12 +19748,10 @@ components:
 
             https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/zipkin.proto#config-trace-v3-zipkinconfig
           type: boolean
-          x-speakeasy-plan-modifiers: SupressZeroNullModifier
           x-speakeasy-param-computed: false
         traceId128bit:
           description: 'Generate 128bit traces. Default: false'
           type: boolean
-          x-speakeasy-plan-modifiers: SupressZeroNullModifier
           x-speakeasy-param-computed: false
         url:
           description: Address of Zipkin collector.
@@ -19586,7 +19778,6 @@ components:
 
                       meshes.
                     type: boolean
-                    x-speakeasy-plan-modifiers: SupressZeroNullModifier
                     x-speakeasy-param-computed: false
                   hostname:
                     description: >-
@@ -19734,11 +19925,11 @@ components:
           x-speakeasy-param-computed: false
         mesh:
           type: string
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         name:
           type: string
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         selectors:
           description: |-
@@ -19913,12 +20104,12 @@ components:
             be omitted for cluster-scoped resources.
           type: string
           default: default
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         name:
           description: Name of the Kuma resource
           type: string
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         labels:
           additionalProperties:
@@ -20342,12 +20533,12 @@ components:
             be omitted for cluster-scoped resources.
           type: string
           default: default
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         name:
           description: Name of the Kuma resource
           type: string
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         labels:
           additionalProperties:
@@ -20608,12 +20799,12 @@ components:
             be omitted for cluster-scoped resources.
           type: string
           default: default
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         name:
           description: Name of the Kuma resource
           type: string
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         labels:
           additionalProperties:
@@ -21014,12 +21205,12 @@ components:
             be omitted for cluster-scoped resources.
           type: string
           default: default
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         name:
           description: Name of the Kuma resource
           type: string
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         labels:
           additionalProperties:
@@ -21055,7 +21246,6 @@ components:
                                   LimitOnServiceFail will pass limit requests if
                                   ratelimit service is not reachable.
                                 type: boolean
-                                x-speakeasy-plan-modifiers: SupressZeroNullModifier
                                 x-speakeasy-param-computed: false
                               timeout:
                                 description: >-
@@ -21078,7 +21268,6 @@ components:
                           disabled:
                             description: Define if rate limiting should be disabled.
                             type: boolean
-                            x-speakeasy-plan-modifiers: SupressZeroNullModifier
                             x-speakeasy-param-computed: false
                           onRateLimit:
                             description: >-
@@ -21475,7 +21664,6 @@ components:
                                   LimitOnServiceFail will pass limit requests if
                                   ratelimit service is not reachable.
                                 type: boolean
-                                x-speakeasy-plan-modifiers: SupressZeroNullModifier
                                 x-speakeasy-param-computed: false
                               timeout:
                                 description: >-
@@ -21498,7 +21686,6 @@ components:
                           disabled:
                             description: Define if rate limiting should be disabled.
                             type: boolean
-                            x-speakeasy-plan-modifiers: SupressZeroNullModifier
                             x-speakeasy-param-computed: false
                           onRateLimit:
                             description: >-
@@ -21833,12 +22020,12 @@ components:
             be omitted for cluster-scoped resources.
           type: string
           default: default
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         name:
           description: Name of the Kuma resource
           type: string
-          x-speakeasy-plan-modifiers: RequiresReplaceModifier
+          x-speakeasy-param-force-new: true
           x-speakeasy-param-computed: false
         labels:
           additionalProperties:
@@ -21880,7 +22067,6 @@ components:
                           If true, then policy won't be taken into account when
                           making a decision.
                         type: boolean
-                        x-speakeasy-plan-modifiers: SupressZeroNullModifier
                         x-speakeasy-param-computed: false
                       rego:
                         description: >-
@@ -21949,7 +22135,6 @@ components:
                             SendRawBody enable sending raw body instead of the
                             body encoded into UTF-8
                           type: boolean
-                          x-speakeasy-plan-modifiers: SupressZeroNullModifier
                           x-speakeasy-param-computed: false
                       type: object
                       x-speakeasy-param-computed: false
