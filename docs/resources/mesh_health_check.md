@@ -119,8 +119,8 @@ resource "konnect_mesh_health_check" "my_meshhealthcheck" {
 ### Required
 
 - `cp_id` (String) Id of the Konnect resource
-- `mesh` (String) name of the mesh
-- `name` (String) name of the MeshHealthCheck
+- `mesh` (String) name of the mesh. Requires replacement if changed.
+- `name` (String) name of the MeshHealthCheck. Requires replacement if changed.
 - `spec` (Attributes) Spec is the specification of the Kuma MeshHealthCheck resource. (see [below for nested schema](#nestedatt--spec))
 - `type` (String) the type of the resource. must be "MeshHealthCheck"
 

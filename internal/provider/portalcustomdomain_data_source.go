@@ -29,13 +29,13 @@ type PortalCustomDomainDataSource struct {
 
 // PortalCustomDomainDataSourceModel describes the data model.
 type PortalCustomDomainDataSourceModel struct {
-	CnameStatus types.String                        `tfsdk:"cname_status"`
-	CreatedAt   types.String                        `tfsdk:"created_at"`
-	Enabled     types.Bool                          `tfsdk:"enabled"`
-	Hostname    types.String                        `tfsdk:"hostname"`
-	PortalID    types.String                        `tfsdk:"portal_id"`
-	Ssl         tfTypes.CreatePortalCustomDomainSSL `tfsdk:"ssl"`
-	UpdatedAt   types.String                        `tfsdk:"updated_at"`
+	CnameStatus types.String                  `tfsdk:"cname_status"`
+	CreatedAt   types.String                  `tfsdk:"created_at"`
+	Enabled     types.Bool                    `tfsdk:"enabled"`
+	Hostname    types.String                  `tfsdk:"hostname"`
+	PortalID    types.String                  `tfsdk:"portal_id"`
+	Ssl         tfTypes.PortalCustomDomainSSL `tfsdk:"ssl"`
+	UpdatedAt   types.String                  `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -71,6 +71,14 @@ func (r *PortalCustomDomainDataSource) Schema(ctx context.Context, req datasourc
 				Attributes: map[string]schema.Attribute{
 					"domain_verification_method": schema.StringAttribute{
 						Computed: true,
+					},
+					"expires_at": schema.StringAttribute{
+						Computed:    true,
+						Description: `An ISO-8601 timestamp representation of the ssl certificate expiration date.`,
+					},
+					"uploaded_at": schema.StringAttribute{
+						Computed:    true,
+						Description: `An ISO-8601 timestamp representation of the ssl certificate upload date.`,
 					},
 					"validation_errors": schema.ListAttribute{
 						Computed:    true,

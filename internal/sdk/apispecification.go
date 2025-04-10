@@ -25,6 +25,9 @@ func newAPISpecification(sdkConfig sdkConfiguration) *APISpecification {
 }
 
 // CreateAPISpec - Create API Specification
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Creates a specification for an API.
 // **Note:** You can only have one specification for an API.
 func (s *APISpecification) CreateAPISpec(ctx context.Context, request operations.CreateAPISpecRequest, opts ...operations.Option) (*operations.CreateAPISpecResponse, error) {
@@ -293,6 +296,9 @@ func (s *APISpecification) CreateAPISpec(ctx context.Context, request operations
 }
 
 // FetchAPISpec - Fetch API Specification
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Fetches the specification of an API.
 func (s *APISpecification) FetchAPISpec(ctx context.Context, request operations.FetchAPISpecRequest, opts ...operations.Option) (*operations.FetchAPISpecResponse, error) {
 	o := operations.Options{}
@@ -490,6 +496,9 @@ func (s *APISpecification) FetchAPISpec(ctx context.Context, request operations.
 }
 
 // UpdateAPISpec - Update API Specification
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Updates the specification of an API.
 func (s *APISpecification) UpdateAPISpec(ctx context.Context, request operations.UpdateAPISpecRequest, opts ...operations.Option) (*operations.UpdateAPISpecResponse, error) {
 	o := operations.Options{}
@@ -757,6 +766,9 @@ func (s *APISpecification) UpdateAPISpec(ctx context.Context, request operations
 }
 
 // DeleteAPISpec - Delete API Specification
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Deletes the specification of an API.
 func (s *APISpecification) DeleteAPISpec(ctx context.Context, request operations.DeleteAPISpecRequest, opts ...operations.Option) (*operations.DeleteAPISpecResponse, error) {
 	o := operations.Options{}

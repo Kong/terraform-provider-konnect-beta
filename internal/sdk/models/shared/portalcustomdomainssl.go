@@ -2,10 +2,30 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
+	"time"
+)
+
 type PortalCustomDomainSSL struct {
 	DomainVerificationMethod PortalCustomDomainVerificationMethod `json:"domain_verification_method"`
 	VerificationStatus       PortalCustomDomainVerificationStatus `json:"verification_status"`
 	ValidationErrors         []string                             `json:"validation_errors,omitempty"`
+	// An ISO-8601 timestamp representation of the ssl certificate upload date.
+	UploadedAt *time.Time `json:"uploaded_at,omitempty"`
+	// An ISO-8601 timestamp representation of the ssl certificate expiration date.
+	ExpiresAt *time.Time `json:"expires_at,omitempty"`
+}
+
+func (p PortalCustomDomainSSL) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PortalCustomDomainSSL) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *PortalCustomDomainSSL) GetDomainVerificationMethod() PortalCustomDomainVerificationMethod {
@@ -27,4 +47,18 @@ func (o *PortalCustomDomainSSL) GetValidationErrors() []string {
 		return nil
 	}
 	return o.ValidationErrors
+}
+
+func (o *PortalCustomDomainSSL) GetUploadedAt() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.UploadedAt
+}
+
+func (o *PortalCustomDomainSSL) GetExpiresAt() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.ExpiresAt
 }

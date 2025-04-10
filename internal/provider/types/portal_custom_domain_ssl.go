@@ -4,9 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type CreatePortalCustomDomainSSL struct {
-	CustomCertificate        types.String   `tfsdk:"custom_certificate"`
-	CustomPrivateKey         types.String   `tfsdk:"custom_private_key"`
+type PortalCustomDomainSSL struct {
 	DomainVerificationMethod types.String   `tfsdk:"domain_verification_method"`
 	ExpiresAt                types.String   `tfsdk:"expires_at"`
 	UploadedAt               types.String   `tfsdk:"uploaded_at"`

@@ -4,6 +4,10 @@ package shared
 
 type CreatePortalCustomDomainSSL struct {
 	DomainVerificationMethod PortalCustomDomainVerificationMethod `json:"domain_verification_method"`
+	// Custom certificate to be used for the SSL termination.
+	CustomCertificate *string `json:"custom_certificate,omitempty"`
+	// Custom certificate private key to be used for the SSL termination.
+	CustomPrivateKey *string `json:"custom_private_key,omitempty"`
 }
 
 func (o *CreatePortalCustomDomainSSL) GetDomainVerificationMethod() PortalCustomDomainVerificationMethod {
@@ -11,4 +15,18 @@ func (o *CreatePortalCustomDomainSSL) GetDomainVerificationMethod() PortalCustom
 		return PortalCustomDomainVerificationMethod("")
 	}
 	return o.DomainVerificationMethod
+}
+
+func (o *CreatePortalCustomDomainSSL) GetCustomCertificate() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CustomCertificate
+}
+
+func (o *CreatePortalCustomDomainSSL) GetCustomPrivateKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CustomPrivateKey
 }
