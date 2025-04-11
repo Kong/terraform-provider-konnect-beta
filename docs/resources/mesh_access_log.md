@@ -228,8 +228,8 @@ resource "konnect_mesh_access_log" "my_meshaccesslog" {
 ### Required
 
 - `cp_id` (String) Id of the Konnect resource
-- `mesh` (String) name of the mesh
-- `name` (String) name of the MeshAccessLog
+- `mesh` (String) name of the mesh. Requires replacement if changed.
+- `name` (String) name of the MeshAccessLog. Requires replacement if changed.
 - `spec` (Attributes) Spec is the specification of the Kuma MeshAccessLog resource. (see [below for nested schema](#nestedatt--spec))
 - `type` (String) the type of the resource. must be "MeshAccessLog"
 

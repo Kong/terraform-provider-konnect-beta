@@ -26,6 +26,9 @@ func newPages(sdkConfig sdkConfiguration) *Pages {
 }
 
 // CreatePortalPage - Create Page
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Creates a new custom page for this portal. Custom pages can be used to display static content, documentation, or other information to developers.
 func (s *Pages) CreatePortalPage(ctx context.Context, request operations.CreatePortalPageRequest, opts ...operations.Option) (*operations.CreatePortalPageResponse, error) {
 	o := operations.Options{}
@@ -251,6 +254,9 @@ func (s *Pages) CreatePortalPage(ctx context.Context, request operations.CreateP
 }
 
 // GetPortalPage - Fetch Page
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Returns the configuration of a single custom page for this portal. Custom pages can be used to display static content, documentation, or other information to developers.
 func (s *Pages) GetPortalPage(ctx context.Context, request operations.GetPortalPageRequest, opts ...operations.Option) (*operations.GetPortalPageResponse, error) {
 	o := operations.Options{}
@@ -448,6 +454,9 @@ func (s *Pages) GetPortalPage(ctx context.Context, request operations.GetPortalP
 }
 
 // UpdatePortalPage - Update Page
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Updates the configuration of a single custom page for this portal.
 func (s *Pages) UpdatePortalPage(ctx context.Context, request operations.UpdatePortalPageRequest, opts ...operations.Option) (*operations.UpdatePortalPageResponse, error) {
 	o := operations.Options{}
@@ -673,6 +682,9 @@ func (s *Pages) UpdatePortalPage(ctx context.Context, request operations.UpdateP
 }
 
 // DeletePortalPage - Delete Page
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Deletes a single custom page for this portal.
 func (s *Pages) DeletePortalPage(ctx context.Context, request operations.DeletePortalPageRequest, opts ...operations.Option) (*operations.DeletePortalPageResponse, error) {
 	o := operations.Options{}

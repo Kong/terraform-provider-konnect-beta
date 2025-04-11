@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: c37e94850589acec07672d58c7ceba26
+  docChecksum: 7466f808c40546c1e2cc96715977fa46
   docVersion: 2.0.0
   speakeasyVersion: 1.514.1
   generationVersion: 2.546.3
@@ -602,6 +602,7 @@ generatedFiles:
   - internal/provider/types/outlier_detection.go
   - internal/provider/types/path.go
   - internal/provider/types/portal_claim_mappings.go
+  - internal/provider/types/portal_custom_domain_ssl.go
   - internal/provider/types/portal_footer_menu_section.go
   - internal/provider/types/portal_menu_item.go
   - internal/provider/types/portal_oidc_config.go
@@ -1125,7 +1126,7 @@ examples:
           portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
-          application/json: {"hostname": "clueless-information.net", "enabled": false, "ssl": {"domain_verification_method": "http", "verification_status": "error"}, "cname_status": "pending", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"hostname": "clueless-information.net", "enabled": false, "ssl": {"domain_verification_method": "http", "verification_status": "error", "uploaded_at": "2022-11-04T20:10:06.927Z", "expires_at": "2022-11-04T20:10:06.927Z"}, "cname_status": "pending", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -1141,7 +1142,7 @@ examples:
         application/json: {"hostname": "precious-challenge.org", "enabled": false, "ssl": {"domain_verification_method": "http"}}
       responses:
         "201":
-          application/json: {"hostname": "speedy-eggplant.org", "enabled": false, "ssl": {"domain_verification_method": "http", "verification_status": "verified"}, "cname_status": "pending", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"hostname": "speedy-eggplant.org", "enabled": false, "ssl": {"domain_verification_method": "http", "verification_status": "verified", "uploaded_at": "2022-11-04T20:10:06.927Z", "expires_at": "2022-11-04T20:10:06.927Z"}, "cname_status": "pending", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 74008, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": [], "source": "body"}]}
         "401":
@@ -1159,7 +1160,7 @@ examples:
         application/json: {}
       responses:
         "200":
-          application/json: {"hostname": "terrible-draw.name", "enabled": false, "ssl": {"domain_verification_method": "http", "verification_status": "pending"}, "cname_status": "verified", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"hostname": "terrible-draw.name", "enabled": false, "ssl": {"domain_verification_method": "http", "verification_status": "pending", "uploaded_at": "2022-11-04T20:10:06.927Z", "expires_at": "2022-11-04T20:10:06.927Z"}, "cname_status": "verified", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 435172, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":

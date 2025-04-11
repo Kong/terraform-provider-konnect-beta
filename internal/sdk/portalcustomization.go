@@ -26,6 +26,9 @@ func newPortalCustomization(sdkConfig sdkConfiguration) *PortalCustomization {
 }
 
 // GetPortalCustomization - Get Customization
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Returns the portal customization options.
 func (s *PortalCustomization) GetPortalCustomization(ctx context.Context, request operations.GetPortalCustomizationRequest, opts ...operations.Option) (*operations.GetPortalCustomizationResponse, error) {
 	o := operations.Options{}
@@ -223,6 +226,9 @@ func (s *PortalCustomization) GetPortalCustomization(ctx context.Context, reques
 }
 
 // ReplacePortalCustomization - Replace Customization
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Replace the portal customization options.
 func (s *PortalCustomization) ReplacePortalCustomization(ctx context.Context, request operations.ReplacePortalCustomizationRequest, opts ...operations.Option) (*operations.ReplacePortalCustomizationResponse, error) {
 	o := operations.Options{}

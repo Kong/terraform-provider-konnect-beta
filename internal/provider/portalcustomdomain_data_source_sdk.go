@@ -15,6 +15,16 @@ func (r *PortalCustomDomainDataSourceModel) RefreshFromSharedPortalCustomDomain(
 		r.Enabled = types.BoolValue(resp.Enabled)
 		r.Hostname = types.StringValue(resp.Hostname)
 		r.Ssl.DomainVerificationMethod = types.StringValue(string(resp.Ssl.DomainVerificationMethod))
+		if resp.Ssl.ExpiresAt != nil {
+			r.Ssl.ExpiresAt = types.StringValue(resp.Ssl.ExpiresAt.Format(time.RFC3339Nano))
+		} else {
+			r.Ssl.ExpiresAt = types.StringNull()
+		}
+		if resp.Ssl.UploadedAt != nil {
+			r.Ssl.UploadedAt = types.StringValue(resp.Ssl.UploadedAt.Format(time.RFC3339Nano))
+		} else {
+			r.Ssl.UploadedAt = types.StringNull()
+		}
 		r.Ssl.ValidationErrors = make([]types.String, 0, len(resp.Ssl.ValidationErrors))
 		for _, v := range resp.Ssl.ValidationErrors {
 			r.Ssl.ValidationErrors = append(r.Ssl.ValidationErrors, types.StringValue(v))
