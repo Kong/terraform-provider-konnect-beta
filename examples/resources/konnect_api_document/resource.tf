@@ -1,5 +1,7 @@
 resource "konnect_api_document" "my_apidocument" {
   provider = konnect-beta
+  provider = konnect-beta
+  provider = konnect-beta
   api_id  = "9f5061ce-78f6-4452-9108-ad7c02821fd5"
   content = "...my_content..."
   labels = {
