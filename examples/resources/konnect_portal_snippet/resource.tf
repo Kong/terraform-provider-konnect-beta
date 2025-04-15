@@ -1,5 +1,6 @@
 resource "konnect_portal_snippet" "my_portalsnippet" {
   provider = konnect-beta
+  provider = konnect-beta
   content     = "# Welcome to My Snippet"
   description = "A custom page about developer portals"
   name        = "my-snippet"

@@ -1,5 +1,6 @@
 resource "konnect_mesh_gateway" "my_meshgateway" {
   provider = konnect-beta
+  provider = konnect-beta
   conf = {
     listeners = [
       {

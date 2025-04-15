@@ -1,5 +1,6 @@
 resource "konnect_portal" "my_portal" {
   provider = konnect-beta
+  provider = konnect-beta
   authentication_enabled               = false
   auto_approve_applications            = false
   auto_approve_developers              = false
