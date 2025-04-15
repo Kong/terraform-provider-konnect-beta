@@ -2,6 +2,8 @@ resource "konnect_mesh" "my_mesh" {
   provider = konnect-beta
   provider = konnect-beta
   provider = konnect-beta
+  provider = konnect-beta
+  provider = konnect-beta
   constraints = {
     dataplane_proxy = {
       requirements = [
