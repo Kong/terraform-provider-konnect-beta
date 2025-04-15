@@ -1,6 +1,8 @@
 resource "konnect_portal_auth" "my_portalauth" {
   provider = konnect-beta
   provider = konnect-beta
+  provider = konnect-beta
+  provider = konnect-beta
   basic_auth_enabled      = true
   idp_mapping_enabled     = true
   konnect_mapping_enabled = false

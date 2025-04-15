@@ -2,6 +2,8 @@ resource "konnect_portal_customization" "my_portalcustomization" {
   provider = konnect-beta
   provider = konnect-beta
   provider = konnect-beta
+  provider = konnect-beta
+  provider = konnect-beta
   css = "...my_css..."
   js = {
     custom = "...my_custom..."

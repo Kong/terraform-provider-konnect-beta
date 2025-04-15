@@ -1,6 +1,8 @@
 resource "konnect_mesh_control_plane" "my_meshcontrolplane" {
   provider = konnect-beta
   provider = konnect-beta
+  provider = konnect-beta
+  provider = konnect-beta
   description = "A control plane to handle traffic on development environment."
   features = [
     {
