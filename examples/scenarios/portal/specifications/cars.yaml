@@ -1,0 +1,130 @@
+openapi: 3.0.0
+info:
+  title: Car API
+  description: API for managing cars
+  version: 1.0.0
+  contact:
+    email: cars@example.com
+servers:
+  - url: https://api.example.com/v1
+    description: Production server
+paths:
+  /cars:
+    get:
+      summary: Get a list of cars
+      operationId: getCars
+      tags:
+        - Cars
+      description: Retrieves a list of all available cars.
+      responses:
+        '200':
+          $ref: '#/components/responses/CarListResponse'
+    post:
+      summary: Add a new car
+      operationId: addCar
+      tags:
+        - Cars
+      description: Adds a new car to the database.
+      requestBody:
+        $ref: '#/components/requestBodies/CarRequestBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/CarCreatedResponse'
+  /cars/{carId}:
+    get:
+      summary: Get car details
+      operationId: getCarById
+      tags:
+        - Cars
+      description: Retrieves details of a specific car.
+      parameters:
+        - $ref: '#/components/parameters/CarIdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/CarResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+    put:
+      summary: Update car details
+      operationId: updateCarById
+      tags:
+        - Cars
+      description: Updates the details of an existing car.
+      parameters:
+        - $ref: '#/components/parameters/CarIdParam'
+      requestBody:
+        $ref: '#/components/requestBodies/CarRequestBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/CarUpdatedResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+    delete:
+      summary: Delete a car
+      operationId: deleteCarById
+      tags:
+        - Cars
+      description: Deletes a car from the database.
+      parameters:
+        - $ref: '#/components/parameters/CarIdParam'
+      responses:
+        '204':
+          $ref: '#/components/responses/CarDeletedResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+components:
+  schemas:
+    Car:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "123abc"
+        make:
+          type: string
+          example: "Toyota"
+        model:
+          type: string
+          example: "Corolla"
+        year:
+          type: integer
+          example: 2022
+  parameters:
+    CarIdParam:
+      name: carId
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBodies:
+    CarRequestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Car'
+  responses:
+    CarListResponse:
+      description: A list of cars.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Car'
+    CarResponse:
+      description: Car details returned successfully
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Car'
+    CarCreatedResponse:
+      description: Car created successfully
+    CarUpdatedResponse:
+      description: Car updated successfully
+    CarDeletedResponse:
+      description: Car deleted successfully
+    NotFoundResponse:
+      description: Car not found
+tags:
+  - name: Cars
