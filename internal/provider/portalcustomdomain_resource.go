@@ -95,15 +95,52 @@ func (r *PortalCustomDomainResource) Schema(ctx context.Context, req resource.Sc
 					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 				},
 				Attributes: map[string]schema.Attribute{
+					"custom_certificate": schema.StringAttribute{
+						Optional: true,
+						PlanModifiers: []planmodifier.String{
+							stringplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						Description: `Custom certificate to be used for the SSL termination. Requires replacement if changed.`,
+					},
+					"custom_private_key": schema.StringAttribute{
+						Optional: true,
+						PlanModifiers: []planmodifier.String{
+							stringplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						Description: `Custom certificate private key to be used for the SSL termination. Requires replacement if changed.`,
+					},
 					"domain_verification_method": schema.StringAttribute{
 						Required: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `must be "http"; Requires replacement if changed.`,
+						Description: `must be one of ["http", "custom_certificate"]; Requires replacement if changed.`,
 						Validators: []validator.String{
-							stringvalidator.OneOf("http"),
+							stringvalidator.OneOf(
+								"http",
+								"custom_certificate",
+							),
+						},
+					},
+					"expires_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An ISO-8601 timestamp representation of the ssl certificate expiration date.`,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
+					},
+					"uploaded_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An ISO-8601 timestamp representation of the ssl certificate upload date.`,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
 						},
 					},
 					"validation_errors": schema.ListAttribute{
@@ -209,6 +246,34 @@ func (r *PortalCustomDomainResource) Create(ctx context.Context, req resource.Cr
 	}
 	data.RefreshFromSharedPortalCustomDomain(res.PortalCustomDomain)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	var portalId1 string
+	portalId1 = data.PortalID.ValueString()
+
+	request1 := operations.GetPortalCustomDomainRequest{
+		PortalID: portalId1,
+	}
+	res1, err := r.client.PortalCustomDomains.GetPortalCustomDomain(ctx, request1)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res1 != nil && res1.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
+		}
+		return
+	}
+	if res1 == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
+		return
+	}
+	if res1.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
+		return
+	}
+	if !(res1.PortalCustomDomain != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
+		return
+	}
+	data.RefreshFromSharedPortalCustomDomain(res1.PortalCustomDomain)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -311,6 +376,34 @@ func (r *PortalCustomDomainResource) Update(ctx context.Context, req resource.Up
 		return
 	}
 	data.RefreshFromSharedPortalCustomDomain(res.PortalCustomDomain)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	var portalId1 string
+	portalId1 = data.PortalID.ValueString()
+
+	request1 := operations.GetPortalCustomDomainRequest{
+		PortalID: portalId1,
+	}
+	res1, err := r.client.PortalCustomDomains.GetPortalCustomDomain(ctx, request1)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res1 != nil && res1.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
+		}
+		return
+	}
+	if res1 == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
+		return
+	}
+	if res1.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
+		return
+	}
+	if !(res1.PortalCustomDomain != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
+		return
+	}
+	data.RefreshFromSharedPortalCustomDomain(res1.PortalCustomDomain)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state

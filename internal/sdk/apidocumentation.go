@@ -25,6 +25,9 @@ func newAPIDocumentation(sdkConfig sdkConfiguration) *APIDocumentation {
 }
 
 // CreateAPIDocument - Create API Document
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Publish a new document attached to an API.
 //
 // All configuration options may be provided in the frontmatter section of `content`. If you set values in both the `POST` request _and_ in the frontmatter, the values in the `POST` request will take precedence.
@@ -294,6 +297,9 @@ func (s *APIDocumentation) CreateAPIDocument(ctx context.Context, request operat
 }
 
 // FetchAPIDocument - Fetch API Document
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Returns a document for the API.
 func (s *APIDocumentation) FetchAPIDocument(ctx context.Context, request operations.FetchAPIDocumentRequest, opts ...operations.Option) (*operations.FetchAPIDocumentResponse, error) {
 	o := operations.Options{}
@@ -491,6 +497,9 @@ func (s *APIDocumentation) FetchAPIDocument(ctx context.Context, request operati
 }
 
 // UpdateAPIDocument - Update API Document
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Updates a document for an API.
 func (s *APIDocumentation) UpdateAPIDocument(ctx context.Context, request operations.UpdateAPIDocumentRequest, opts ...operations.Option) (*operations.UpdateAPIDocumentResponse, error) {
 	o := operations.Options{}
@@ -758,6 +767,9 @@ func (s *APIDocumentation) UpdateAPIDocument(ctx context.Context, request operat
 }
 
 // DeleteAPIDocument - Delete API Documentation
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Removes a document from an API.
 func (s *APIDocumentation) DeleteAPIDocument(ctx context.Context, request operations.DeleteAPIDocumentRequest, opts ...operations.Option) (*operations.DeleteAPIDocumentResponse, error) {
 	o := operations.Options{}

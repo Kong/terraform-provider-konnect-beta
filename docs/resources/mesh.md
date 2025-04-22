@@ -169,7 +169,7 @@ resource "konnect_mesh" "my_mesh" {
 ### Required
 
 - `cp_id` (String) Id of the Konnect resource
-- `name` (String) name of the Mesh
+- `name` (String) name of the Mesh. Requires replacement if changed.
 - `type` (String)
 
 ### Optional

@@ -26,6 +26,9 @@ func newPortalAuthSettings(sdkConfig sdkConfiguration) *PortalAuthSettings {
 }
 
 // GetPortalAuthenticationSettings - Get Auth Settings
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Returns the developer authentication configuration for a portal, which determines how developers can log in and how they are assigned to teams.
 func (s *PortalAuthSettings) GetPortalAuthenticationSettings(ctx context.Context, request operations.GetPortalAuthenticationSettingsRequest, opts ...operations.Option) (*operations.GetPortalAuthenticationSettingsResponse, error) {
 	o := operations.Options{}
@@ -181,6 +184,9 @@ func (s *PortalAuthSettings) GetPortalAuthenticationSettings(ctx context.Context
 }
 
 // UpdatePortalAuthenticationSettings - Update Auth Settings
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Updates the developer authentication configuration for a portal. Developers can be allowed to login using basic auth (email & password) or use Single-Sign-On (SSO) through an OIDC Identity Provider (IdP). Developers can be automatically assigned to teams by mapping claims from thier IdP account.
 func (s *PortalAuthSettings) UpdatePortalAuthenticationSettings(ctx context.Context, request operations.UpdatePortalAuthenticationSettingsRequest, opts ...operations.Option) (*operations.UpdatePortalAuthenticationSettingsResponse, error) {
 	o := operations.Options{}

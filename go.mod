@@ -1,8 +1,11 @@
 module github.com/kong/terraform-provider-konnect-beta
 
-go 1.23.0
+go 1.24.1
 
 require (
+	github.com/Kong/shared-speakeasy/hooks/mesh_defaults v0.0.1
+	github.com/Kong/shared-speakeasy/planmodifiers/arbitrary_json v0.0.1
+	github.com/Kong/shared-speakeasy/planmodifiers/suppress_zero_null v0.0.1
 	github.com/ericlagergren/decimal v0.0.0-20221120152707-495c53812d05
 	github.com/hashicorp/go-uuid v1.0.3
 	github.com/hashicorp/terraform-plugin-docs v0.20.1

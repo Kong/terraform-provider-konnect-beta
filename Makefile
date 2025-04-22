@@ -3,7 +3,7 @@
 all: speakeasy
 
 speakeasy: check-speakeasy
-	@rm -rf examples
+	@rm -rf examples/resources
 	speakeasy run --skip-versioning --output console --minimal
 	@go mod tidy
 	@go generate .
