@@ -32,3 +32,10 @@ test:
 
 test-cleanup:
 	@cd tests/e2e; rm -rf local-plugins .terraform .terraform.lock.hcl terraform.tfstate terraform.tfstate.backup
+
+dev/use-local-shared-speakeasy:
+	go mod edit -replace=github.com/Kong/shared-speakeasy=../shared-speakeasy
+	go mod tidy
+
+acceptance:
+	@TF_ACC=1 go test -count=1 -v ./tests/resources

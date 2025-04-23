@@ -71,9 +71,9 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 			"cp_id": schema.StringAttribute{
 				Required: true,
 				PlanModifiers: []planmodifier.String{
-					custom_stringplanmodifier.RequiresReplaceModifier(),
+					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Description: `Id of the Konnect resource`,
+				Description: `Id of the Konnect resource. Requires replacement if changed.`,
 			},
 			"creation_time": schema.StringAttribute{
 				Computed: true,
