@@ -5651,7 +5651,7 @@ components:
       required: true
       description: Id of the Konnect resource
       example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
-      x-speakeasy-plan-modifiers: RequiresReplaceModifier
+      x-speakeasy-param-force-new: true
       schema:
         type: string
         format: uuid
