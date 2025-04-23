@@ -10,6 +10,8 @@ github.com/Kong/shared-speakeasy/planmodifiers/suppress_zero_null v0.0.1 h1:2PxZ
 github.com/Kong/shared-speakeasy/planmodifiers/suppress_zero_null v0.0.1/go.mod h1:l0nwf2fPUF7e6a+/Ui4LiuCXS6EUzcOJ7t+sW/ojvtI=
 github.com/Kong/shared-speakeasy/tfbuilder v0.0.0-20250422125515-f560f4ef34c7 h1:5tXTVjnsk6UDanaXGeXLquxmaCD8v49pNRi/udDeNeA=
 github.com/Kong/shared-speakeasy/tfbuilder v0.0.0-20250422125515-f560f4ef34c7/go.mod h1:v6oYDYrFFFeOQ0akCMj2Z6D/82hgcRualebW0dUCu8M=
+github.com/Kong/shared-speakeasy/tfbuilder v0.0.0-20250423074447-2b10b429db8a h1:aEUgtoA3xH36Ozo2e+BpVi2UGHYDVTFFU2K4hm4szh0=
+github.com/Kong/shared-speakeasy/tfbuilder v0.0.0-20250423074447-2b10b429db8a/go.mod h1:v6oYDYrFFFeOQ0akCMj2Z6D/82hgcRualebW0dUCu8M=
 github.com/Kunde21/markdownfmt/v3 v3.1.0 h1:KiZu9LKs+wFFBQKhrZJrFZwtLnCCWJahL+S+E/3VnM0=
 github.com/Kunde21/markdownfmt/v3 v3.1.0/go.mod h1:tPXN1RTyOzJwhfHoon9wUr4HGYmWgVxSQN6VBJDkrVc=
 github.com/Masterminds/goutils v1.1.1 h1:5nUrii3FMTL5diU80unEVvNevw1nH4+ZV4DSLVJLSYI=

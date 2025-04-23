@@ -6,7 +6,7 @@ require (
 	github.com/Kong/shared-speakeasy/hooks/mesh_defaults v0.0.1
 	github.com/Kong/shared-speakeasy/planmodifiers/arbitrary_json v0.0.1
 	github.com/Kong/shared-speakeasy/planmodifiers/suppress_zero_null v0.0.1
-	github.com/Kong/shared-speakeasy/tfbuilder v0.0.0-20250422125515-f560f4ef34c7
+	github.com/Kong/shared-speakeasy/tfbuilder v0.0.0-20250423074447-2b10b429db8a
 	github.com/ericlagergren/decimal v0.0.0-20221120152707-495c53812d05
 	github.com/hashicorp/go-uuid v1.0.3
 	github.com/hashicorp/terraform-plugin-docs v0.20.1
