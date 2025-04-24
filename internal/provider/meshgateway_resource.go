@@ -22,8 +22,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
-	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
-	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -65,13 +63,7 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 				Attributes: map[string]schema.Attribute{
 					"listeners": schema.ListNestedAttribute{
 						Optional: true,
-						PlanModifiers: []planmodifier.List{
-							custom_listplanmodifier.SupressZeroNullModifier(),
-						},
 						NestedObject: schema.NestedAttributeObject{
-							Validators: []validator.Object{
-								speakeasy_objectvalidators.NotNull(),
-							},
 							Attributes: map[string]schema.Attribute{
 								"cross_mesh": schema.BoolAttribute{
 									Optional: true,
@@ -137,25 +129,18 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 									Attributes: map[string]schema.Attribute{
 										"certificates": schema.ListNestedAttribute{
 											Optional: true,
-											PlanModifiers: []planmodifier.List{
-												custom_listplanmodifier.SupressZeroNullModifier(),
-											},
 											NestedObject: schema.NestedAttributeObject{
-												Validators: []validator.Object{
-													speakeasy_objectvalidators.NotNull(),
-												},
 												Attributes: map[string]schema.Attribute{
 													"type": schema.StringAttribute{
-														Optional: true,
+														Required: true,
 														MarkdownDescription: `Types that are assignable to Type:` + "\n" +
 															`` + "\n" +
 															`	*DataSource_Secret` + "\n" +
 															`	*DataSource_File` + "\n" +
 															`	*DataSource_Inline` + "\n" +
 															`	*DataSource_InlineString` + "\n" +
-															`Not Null; Parsed as JSON.`,
+															`Parsed as JSON.`,
 														Validators: []validator.String{
-															speakeasy_stringvalidators.NotNull(),
 															validators.IsValidJSON(),
 														},
 													},
@@ -242,13 +227,7 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 			},
 			"selectors": schema.ListNestedAttribute{
 				Optional: true,
-				PlanModifiers: []planmodifier.List{
-					custom_listplanmodifier.SupressZeroNullModifier(),
-				},
 				NestedObject: schema.NestedAttributeObject{
-					Validators: []validator.Object{
-						speakeasy_objectvalidators.NotNull(),
-					},
 					Attributes: map[string]schema.Attribute{
 						"match": schema.MapAttribute{
 							Optional:    true,

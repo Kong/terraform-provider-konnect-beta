@@ -12,9 +12,12 @@ func (r *PortalPageResourceModel) ToSharedCreatePortalPageRequest() *shared.Crea
 	var slug string
 	slug = r.Slug.ValueString()
 
-	var title string
-	title = r.Title.ValueString()
-
+	title := new(string)
+	if !r.Title.IsUnknown() && !r.Title.IsNull() {
+		*title = r.Title.ValueString()
+	} else {
+		title = nil
+	}
 	var content string
 	content = r.Content.ValueString()
 

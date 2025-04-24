@@ -27,7 +27,7 @@ resource "konnect_api_specification" "my_apispecification" {
 ### Required
 
 - `api_id` (String) The UUID API identifier
-- `content` (String) The raw content of your API specification.
+- `content` (String) The raw content of your API specification, in json or yaml.
 
 ### Optional
 
@@ -41,6 +41,14 @@ must be one of ["oas3", "asyncapi"]
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) The API specification identifier.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
+- `validation_messages` (Attributes List) The errors that occurred while parsing the API specification. (see [below for nested schema](#nestedatt--validation_messages))
+
+<a id="nestedatt--validation_messages"></a>
+### Nested Schema for `validation_messages`
+
+Read-Only:
+
+- `message` (String)
 
 ## Import
 

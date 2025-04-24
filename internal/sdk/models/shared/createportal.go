@@ -61,6 +61,7 @@ func (e *DefaultPageVisibility) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// CreatePortal - Create a portal.
 type CreatePortal struct {
 	// The name of the portal, used to distinguish it from other portals. Name must be unique.
 	Name string `json:"name"`

@@ -103,7 +103,8 @@ func (r *PortalSnippetResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 			},
 			"title": schema.StringAttribute{
-				Required:    true,
+				Computed:    true,
+				Optional:    true,
 				Description: `The display title of a snippet in a portal.`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtMost(512),

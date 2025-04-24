@@ -11,7 +11,7 @@ type CreatePortalSnippetRequest struct {
 	// The unique name of a snippet in a portal.
 	Name string `json:"name"`
 	// The display title of a snippet in a portal.
-	Title string `json:"title"`
+	Title *string `json:"title,omitempty"`
 	// The renderable markdown content of a page in a portal.
 	Content string `json:"content"`
 	// Whether a page is publicly accessible to non-authenticated users.
@@ -39,9 +39,9 @@ func (o *CreatePortalSnippetRequest) GetName() string {
 	return o.Name
 }
 
-func (o *CreatePortalSnippetRequest) GetTitle() string {
+func (o *CreatePortalSnippetRequest) GetTitle() *string {
 	if o == nil {
-		return ""
+		return nil
 	}
 	return o.Title
 }

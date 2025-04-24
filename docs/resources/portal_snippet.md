@@ -33,12 +33,12 @@ resource "konnect_portal_snippet" "my_portalsnippet" {
 - `content` (String) The renderable markdown content of a page in a portal.
 - `name` (String) The unique name of a snippet in a portal.
 - `portal_id` (String) The Portal identifier
-- `title` (String) The display title of a snippet in a portal.
 
 ### Optional
 
 - `description` (String)
 - `status` (String) Whether the resource is visible on a given portal. Defaults to false. must be one of ["published", "unpublished"]
+- `title` (String) The display title of a snippet in a portal.
 - `visibility` (String) Whether a page is publicly accessible to non-authenticated users. Default: "private"
 
 ### Read-Only

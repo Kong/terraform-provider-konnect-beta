@@ -3,6 +3,7 @@
 package provider
 
 import (
+	"encoding/json"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
@@ -11,6 +12,53 @@ import (
 
 func (r *APIDataSourceModel) RefreshFromSharedAPIResponseSchema(resp *shared.APIResponseSchema) {
 	if resp != nil {
+		if resp.AuthStrategySyncError == nil {
+			r.AuthStrategySyncError = nil
+		} else {
+			r.AuthStrategySyncError = &tfTypes.AuthStrategySyncError{}
+			if resp.AuthStrategySyncError.ControlPlaneError != nil {
+				r.AuthStrategySyncError.ControlPlaneError = types.StringValue(string(*resp.AuthStrategySyncError.ControlPlaneError))
+			} else {
+				r.AuthStrategySyncError.ControlPlaneError = types.StringNull()
+			}
+			if resp.AuthStrategySyncError.Info == nil {
+				r.AuthStrategySyncError.Info = nil
+			} else {
+				r.AuthStrategySyncError.Info = &tfTypes.Info{}
+				if resp.AuthStrategySyncError.Info.AdditionalProperties == nil {
+					r.AuthStrategySyncError.Info.AdditionalProperties = types.StringNull()
+				} else {
+					additionalPropertiesResult, _ := json.Marshal(resp.AuthStrategySyncError.Info.AdditionalProperties)
+					r.AuthStrategySyncError.Info.AdditionalProperties = types.StringValue(string(additionalPropertiesResult))
+				}
+				r.AuthStrategySyncError.Info.Details = []tfTypes.Details{}
+				if len(r.AuthStrategySyncError.Info.Details) > len(resp.AuthStrategySyncError.Info.Details) {
+					r.AuthStrategySyncError.Info.Details = r.AuthStrategySyncError.Info.Details[:len(resp.AuthStrategySyncError.Info.Details)]
+				}
+				for detailsCount, detailsItem := range resp.AuthStrategySyncError.Info.Details {
+					var details1 tfTypes.Details
+					if detailsItem.AdditionalProperties == nil {
+						details1.AdditionalProperties = types.StringNull()
+					} else {
+						additionalPropertiesResult1, _ := json.Marshal(detailsItem.AdditionalProperties)
+						details1.AdditionalProperties = types.StringValue(string(additionalPropertiesResult1))
+					}
+					details1.Message = make([]types.String, 0, len(detailsItem.Message))
+					for _, v := range detailsItem.Message {
+						details1.Message = append(details1.Message, types.StringValue(v))
+					}
+					details1.Type = types.StringPointerValue(detailsItem.Type)
+					if detailsCount+1 > len(r.AuthStrategySyncError.Info.Details) {
+						r.AuthStrategySyncError.Info.Details = append(r.AuthStrategySyncError.Info.Details, details1)
+					} else {
+						r.AuthStrategySyncError.Info.Details[detailsCount].AdditionalProperties = details1.AdditionalProperties
+						r.AuthStrategySyncError.Info.Details[detailsCount].Message = details1.Message
+						r.AuthStrategySyncError.Info.Details[detailsCount].Type = details1.Type
+					}
+				}
+			}
+			r.AuthStrategySyncError.Message = types.StringValue(resp.AuthStrategySyncError.Message)
+		}
 		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
 		r.Deprecated = types.BoolValue(resp.Deprecated)
 		r.Description = types.StringPointerValue(resp.Description)

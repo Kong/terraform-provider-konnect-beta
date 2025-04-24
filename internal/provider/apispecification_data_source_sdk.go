@@ -4,6 +4,7 @@ package provider
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 	"time"
 )
@@ -15,5 +16,18 @@ func (r *APISpecificationDataSourceModel) RefreshFromSharedAPISpecResponse(resp 
 		r.ID = types.StringValue(resp.ID)
 		r.Type = types.StringValue(string(resp.Type))
 		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		r.ValidationMessages = []tfTypes.ValidationMessages{}
+		if len(r.ValidationMessages) > len(resp.ValidationMessages) {
+			r.ValidationMessages = r.ValidationMessages[:len(resp.ValidationMessages)]
+		}
+		for validationMessagesCount, validationMessagesItem := range resp.ValidationMessages {
+			var validationMessages1 tfTypes.ValidationMessages
+			validationMessages1.Message = types.StringValue(validationMessagesItem.Message)
+			if validationMessagesCount+1 > len(r.ValidationMessages) {
+				r.ValidationMessages = append(r.ValidationMessages, validationMessages1)
+			} else {
+				r.ValidationMessages[validationMessagesCount].Message = validationMessages1.Message
+			}
+		}
 	}
 }

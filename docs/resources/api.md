@@ -55,10 +55,40 @@ Defaults to `slugify(name + version)`
 
 ### Read-Only
 
+- `auth_strategy_sync_error` (Attributes) (see [below for nested schema](#nestedatt--auth_strategy_sync_error))
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) The API identifier.
 - `portals` (Attributes List) The list of portals which this API is published to. (see [below for nested schema](#nestedatt--portals))
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
+
+<a id="nestedatt--auth_strategy_sync_error"></a>
+### Nested Schema for `auth_strategy_sync_error`
+
+Read-Only:
+
+- `control_plane_error` (String) must be one of ["control_plane_error_no_response", "control_plane_error_invalid_response", "control_plane_error_unavailable", "control_plane_error_internal_error", "control_plane_error_bad_request", "control_plane_error_plugin_conflict", "control_plane_error_data_constraint_error", "control_plane_error_implementation_not_found"]
+- `info` (Attributes) (see [below for nested schema](#nestedatt--auth_strategy_sync_error--info))
+- `message` (String)
+
+<a id="nestedatt--auth_strategy_sync_error--info"></a>
+### Nested Schema for `auth_strategy_sync_error.info`
+
+Read-Only:
+
+- `additional_properties` (String) Parsed as JSON.
+- `details` (Attributes List) (see [below for nested schema](#nestedatt--auth_strategy_sync_error--info--details))
+
+<a id="nestedatt--auth_strategy_sync_error--info--details"></a>
+### Nested Schema for `auth_strategy_sync_error.info.details`
+
+Read-Only:
+
+- `additional_properties` (String) Parsed as JSON.
+- `message` (List of String)
+- `type` (String)
+
+
+
 
 <a id="nestedatt--portals"></a>
 ### Nested Schema for `portals`

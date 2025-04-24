@@ -7,13 +7,26 @@ import (
 	"time"
 )
 
+type ValidationMessages struct {
+	Message string `json:"message"`
+}
+
+func (o *ValidationMessages) GetMessage() string {
+	if o == nil {
+		return ""
+	}
+	return o.Message
+}
+
 // APISpecResponse - API specification
 type APISpecResponse struct {
 	// The API specification identifier.
 	ID string `json:"id"`
-	// The raw content of your API specification.
+	// The raw content of your API specification, in json or yaml.
 	//
 	Content string `json:"content"`
+	// The errors that occurred while parsing the API specification.
+	ValidationMessages []ValidationMessages `json:"validation_messages"`
 	// The type of specification being stored. This allows us to render the specification correctly.
 	//
 	// If this field is not set, it will be autodetected from `content`
@@ -48,6 +61,13 @@ func (o *APISpecResponse) GetContent() string {
 		return ""
 	}
 	return o.Content
+}
+
+func (o *APISpecResponse) GetValidationMessages() []ValidationMessages {
+	if o == nil {
+		return []ValidationMessages{}
+	}
+	return o.ValidationMessages
 }
 
 func (o *APISpecResponse) GetType() APISpecType {

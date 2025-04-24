@@ -29,17 +29,18 @@ type APIDataSource struct {
 
 // APIDataSourceModel describes the data model.
 type APIDataSourceModel struct {
-	CreatedAt    types.String            `tfsdk:"created_at"`
-	Deprecated   types.Bool              `tfsdk:"deprecated"`
-	Description  types.String            `tfsdk:"description"`
-	ID           types.String            `tfsdk:"id"`
-	Labels       map[string]types.String `tfsdk:"labels"`
-	Name         types.String            `tfsdk:"name"`
-	Portals      []tfTypes.Portals       `tfsdk:"portals"`
-	PublicLabels map[string]types.String `tfsdk:"public_labels"`
-	Slug         types.String            `tfsdk:"slug"`
-	UpdatedAt    types.String            `tfsdk:"updated_at"`
-	Version      types.String            `tfsdk:"version"`
+	AuthStrategySyncError *tfTypes.AuthStrategySyncError `tfsdk:"auth_strategy_sync_error"`
+	CreatedAt             types.String                   `tfsdk:"created_at"`
+	Deprecated            types.Bool                     `tfsdk:"deprecated"`
+	Description           types.String                   `tfsdk:"description"`
+	ID                    types.String                   `tfsdk:"id"`
+	Labels                map[string]types.String        `tfsdk:"labels"`
+	Name                  types.String                   `tfsdk:"name"`
+	Portals               []tfTypes.Portals              `tfsdk:"portals"`
+	PublicLabels          map[string]types.String        `tfsdk:"public_labels"`
+	Slug                  types.String                   `tfsdk:"slug"`
+	UpdatedAt             types.String                   `tfsdk:"updated_at"`
+	Version               types.String                   `tfsdk:"version"`
 }
 
 // Metadata returns the data source type name.
@@ -53,6 +54,44 @@ func (r *APIDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 		MarkdownDescription: "API DataSource",
 
 		Attributes: map[string]schema.Attribute{
+			"auth_strategy_sync_error": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"control_plane_error": schema.StringAttribute{
+						Computed: true,
+					},
+					"info": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"additional_properties": schema.StringAttribute{
+								Computed:    true,
+								Description: `Parsed as JSON.`,
+							},
+							"details": schema.ListNestedAttribute{
+								Computed: true,
+								NestedObject: schema.NestedAttributeObject{
+									Attributes: map[string]schema.Attribute{
+										"additional_properties": schema.StringAttribute{
+											Computed:    true,
+											Description: `Parsed as JSON.`,
+										},
+										"message": schema.ListAttribute{
+											Computed:    true,
+											ElementType: types.StringType,
+										},
+										"type": schema.StringAttribute{
+											Computed: true,
+										},
+									},
+								},
+							},
+						},
+					},
+					"message": schema.StringAttribute{
+						Computed: true,
+					},
+				},
+			},
 			"created_at": schema.StringAttribute{
 				Computed:    true,
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,

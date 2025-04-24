@@ -14,6 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
@@ -34,12 +35,13 @@ type APISpecificationResource struct {
 
 // APISpecificationResourceModel describes the resource data model.
 type APISpecificationResourceModel struct {
-	APIID     types.String `tfsdk:"api_id"`
-	Content   types.String `tfsdk:"content"`
-	CreatedAt types.String `tfsdk:"created_at"`
-	ID        types.String `tfsdk:"id"`
-	Type      types.String `tfsdk:"type"`
-	UpdatedAt types.String `tfsdk:"updated_at"`
+	APIID              types.String                 `tfsdk:"api_id"`
+	Content            types.String                 `tfsdk:"content"`
+	CreatedAt          types.String                 `tfsdk:"created_at"`
+	ID                 types.String                 `tfsdk:"id"`
+	Type               types.String                 `tfsdk:"type"`
+	UpdatedAt          types.String                 `tfsdk:"updated_at"`
+	ValidationMessages []tfTypes.ValidationMessages `tfsdk:"validation_messages"`
 }
 
 func (r *APISpecificationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -56,7 +58,7 @@ func (r *APISpecificationResource) Schema(ctx context.Context, req resource.Sche
 			},
 			"content": schema.StringAttribute{
 				Required:    true,
-				Description: `The raw content of your API specification.`,
+				Description: `The raw content of your API specification, in json or yaml.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed:    true,
@@ -89,6 +91,17 @@ func (r *APISpecificationResource) Schema(ctx context.Context, req resource.Sche
 				Validators: []validator.String{
 					validators.IsRFC3339(),
 				},
+			},
+			"validation_messages": schema.ListNestedAttribute{
+				Computed: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"message": schema.StringAttribute{
+							Computed: true,
+						},
+					},
+				},
+				Description: `The errors that occurred while parsing the API specification.`,
 			},
 		},
 	}

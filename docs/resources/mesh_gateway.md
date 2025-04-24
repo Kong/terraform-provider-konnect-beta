@@ -168,7 +168,7 @@ client certificates enforced, and so on. (see [below for nested schema](#nesteda
 <a id="nestedatt--conf--listeners--tls--certificates"></a>
 ### Nested Schema for `conf.listeners.tls.certificates`
 
-Optional:
+Required:
 
 - `type` (String) Types that are assignable to Type:
 
@@ -176,7 +176,7 @@ Optional:
 	*DataSource_File
 	*DataSource_Inline
 	*DataSource_InlineString
-Not Null; Parsed as JSON.
+Parsed as JSON.
 
 
 <a id="nestedatt--conf--listeners--tls--mode"></a>

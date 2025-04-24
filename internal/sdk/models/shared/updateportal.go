@@ -61,6 +61,7 @@ func (e *UpdatePortalDefaultPageVisibility) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// UpdatePortal - Update a portal's settings.
 type UpdatePortal struct {
 	// The name of the portal, used to distinguish it from other portals. Name must be unique.
 	Name *string `json:"name,omitempty"`

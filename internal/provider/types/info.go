@@ -4,7 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type BuiltinCertificateAuthorityConfigConfCaCert struct {
-	Expiration types.String `tfsdk:"expiration"`
-	RsaBits    types.Int64  `tfsdk:"rsa_bits"`
+type Info struct {
+	AdditionalProperties types.String `tfsdk:"additional_properties"`
+	Details              []Details    `tfsdk:"details"`
 }

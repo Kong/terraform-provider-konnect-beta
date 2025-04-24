@@ -111,7 +111,8 @@ func (r *PortalPageResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 			},
 			"title": schema.StringAttribute{
-				Required:    true,
+				Computed:    true,
+				Optional:    true,
 				Description: `The title of a page in a portal.`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtMost(512),
