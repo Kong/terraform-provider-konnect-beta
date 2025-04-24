@@ -197,7 +197,7 @@ resource "konnect_mesh_rate_limit" "my_meshratelimit" {
 
 ### Required
 
-- `cp_id` (String) Id of the Konnect resource
+- `cp_id` (String) Id of the Konnect resource. Requires replacement if changed.
 - `mesh` (String) name of the mesh. Requires replacement if changed.
 - `name` (String) name of the MeshRateLimit. Requires replacement if changed.
 - `spec` (Attributes) Spec is the specification of the Kuma MeshRateLimit resource. (see [below for nested schema](#nestedatt--spec))

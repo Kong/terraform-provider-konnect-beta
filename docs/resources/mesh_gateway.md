@@ -71,7 +71,7 @@ resource "konnect_mesh_gateway" "my_meshgateway" {
 
 ### Required
 
-- `cp_id` (String) Id of the Konnect resource
+- `cp_id` (String) Id of the Konnect resource. Requires replacement if changed.
 - `mesh` (String) name of the mesh. Requires replacement if changed.
 - `name` (String) name of the MeshGateway. Requires replacement if changed.
 - `type` (String)

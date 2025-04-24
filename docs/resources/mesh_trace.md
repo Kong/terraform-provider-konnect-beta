@@ -89,7 +89,7 @@ resource "konnect_mesh_trace" "my_meshtrace" {
 
 ### Required
 
-- `cp_id` (String) Id of the Konnect resource
+- `cp_id` (String) Id of the Konnect resource. Requires replacement if changed.
 - `mesh` (String) name of the mesh. Requires replacement if changed.
 - `name` (String) name of the MeshTrace. Requires replacement if changed.
 - `spec` (Attributes) Spec is the specification of the Kuma MeshTrace resource. (see [below for nested schema](#nestedatt--spec))

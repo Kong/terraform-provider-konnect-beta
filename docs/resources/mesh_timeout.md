@@ -125,7 +125,7 @@ resource "konnect_mesh_timeout" "my_meshtimeout" {
 
 ### Required
 
-- `cp_id` (String) Id of the Konnect resource
+- `cp_id` (String) Id of the Konnect resource. Requires replacement if changed.
 - `mesh` (String) name of the mesh. Requires replacement if changed.
 - `name` (String) name of the MeshTimeout. Requires replacement if changed.
 - `spec` (Attributes) Spec is the specification of the Kuma MeshTimeout resource. (see [below for nested schema](#nestedatt--spec))
