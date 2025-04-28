@@ -1,12 +1,38 @@
 # Changelog
 
+## 0.2.0
+> Released on 2025/04/28
+
+### Features
+
+* Add support for OAS2 docs in Portal
+
+### Bug fixes
+
+* Fix plan output for non-computed entities in Mesh
+* Support sending empty arrays in Mesh
+
+## 0.1.3
+> Released on 2025/04/24
+
+### Bug fixes
+
+* Fix more "Replace if changed" logic for Mesh entities
+* Add integration tests
+
+## 0.1.2
+> Released on 2025/04/22
+
+### Bug fixes
+
+* Fix "Replace if changed" logic for Mesh entities
+
 ## 0.1.1
 > Released on 2025/03/19
 
 ### Bug fixes
 
 * Switch to PUT rather than PATCH when managing Mesh entities
-
 
 ## 0.1.0
 > Released on 2025/03/11
