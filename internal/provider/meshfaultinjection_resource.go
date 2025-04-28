@@ -21,7 +21,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 	speakeasy_int32validators "github.com/kong/terraform-provider-konnect-beta/internal/validators/int32validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
@@ -697,23 +696,13 @@ func (r *MeshFaultInjectionResource) Create(ctx context.Context, req resource.Cr
 		return
 	}
 
-	var cpID string
-	cpID = data.CpID.ValueString()
+	request, requestDiags := data.ToOperationsCreateMeshFaultInjectionRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var mesh string
-	mesh = data.Mesh.ValueString()
-
-	var name string
-	name = data.Name.ValueString()
-
-	meshFaultInjectionItem := *data.ToSharedMeshFaultInjectionItemInput()
-	request := operations.CreateMeshFaultInjectionRequest{
-		CpID:                   cpID,
-		Mesh:                   mesh,
-		Name:                   name,
-		MeshFaultInjectionItem: meshFaultInjectionItem,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.MeshFaultInjection.CreateMeshFaultInjection(ctx, request)
+	res, err := r.client.MeshFaultInjection.CreateMeshFaultInjection(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -733,23 +722,24 @@ func (r *MeshFaultInjectionResource) Create(ctx context.Context, req resource.Cr
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshFaultInjectionCreateOrUpdateSuccessResponse(res.MeshFaultInjectionCreateOrUpdateSuccessResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
-	var cpId1 string
-	cpId1 = data.CpID.ValueString()
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshFaultInjectionCreateOrUpdateSuccessResponse(ctx, res.MeshFaultInjectionCreateOrUpdateSuccessResponse)...)
 
-	var mesh1 string
-	mesh1 = data.Mesh.ValueString()
-
-	var name1 string
-	name1 = data.Name.ValueString()
-
-	request1 := operations.GetMeshFaultInjectionRequest{
-		CpID: cpId1,
-		Mesh: mesh1,
-		Name: name1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.MeshFaultInjection.GetMeshFaultInjection(ctx, request1)
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsGetMeshFaultInjectionRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.MeshFaultInjection.GetMeshFaultInjection(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -769,8 +759,17 @@ func (r *MeshFaultInjectionResource) Create(ctx context.Context, req resource.Cr
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshFaultInjectionItem(res1.MeshFaultInjectionItem)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshFaultInjectionItem(ctx, res1.MeshFaultInjectionItem)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -794,21 +793,13 @@ func (r *MeshFaultInjectionResource) Read(ctx context.Context, req resource.Read
 		return
 	}
 
-	var cpID string
-	cpID = data.CpID.ValueString()
+	request, requestDiags := data.ToOperationsGetMeshFaultInjectionRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var mesh string
-	mesh = data.Mesh.ValueString()
-
-	var name string
-	name = data.Name.ValueString()
-
-	request := operations.GetMeshFaultInjectionRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.MeshFaultInjection.GetMeshFaultInjection(ctx, request)
+	res, err := r.client.MeshFaultInjection.GetMeshFaultInjection(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -832,7 +823,11 @@ func (r *MeshFaultInjectionResource) Read(ctx context.Context, req resource.Read
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshFaultInjectionItem(res.MeshFaultInjectionItem)
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshFaultInjectionItem(ctx, res.MeshFaultInjectionItem)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -852,23 +847,13 @@ func (r *MeshFaultInjectionResource) Update(ctx context.Context, req resource.Up
 		return
 	}
 
-	var cpID string
-	cpID = data.CpID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateMeshFaultInjectionRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var mesh string
-	mesh = data.Mesh.ValueString()
-
-	var name string
-	name = data.Name.ValueString()
-
-	meshFaultInjectionItem := *data.ToSharedMeshFaultInjectionItemInput()
-	request := operations.UpdateMeshFaultInjectionRequest{
-		CpID:                   cpID,
-		Mesh:                   mesh,
-		Name:                   name,
-		MeshFaultInjectionItem: meshFaultInjectionItem,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.MeshFaultInjection.UpdateMeshFaultInjection(ctx, request)
+	res, err := r.client.MeshFaultInjection.UpdateMeshFaultInjection(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -888,23 +873,24 @@ func (r *MeshFaultInjectionResource) Update(ctx context.Context, req resource.Up
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshFaultInjectionCreateOrUpdateSuccessResponse(res.MeshFaultInjectionCreateOrUpdateSuccessResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
-	var cpId1 string
-	cpId1 = data.CpID.ValueString()
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshFaultInjectionCreateOrUpdateSuccessResponse(ctx, res.MeshFaultInjectionCreateOrUpdateSuccessResponse)...)
 
-	var mesh1 string
-	mesh1 = data.Mesh.ValueString()
-
-	var name1 string
-	name1 = data.Name.ValueString()
-
-	request1 := operations.GetMeshFaultInjectionRequest{
-		CpID: cpId1,
-		Mesh: mesh1,
-		Name: name1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.MeshFaultInjection.GetMeshFaultInjection(ctx, request1)
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsGetMeshFaultInjectionRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.MeshFaultInjection.GetMeshFaultInjection(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -924,8 +910,17 @@ func (r *MeshFaultInjectionResource) Update(ctx context.Context, req resource.Up
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshFaultInjectionItem(res1.MeshFaultInjectionItem)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshFaultInjectionItem(ctx, res1.MeshFaultInjectionItem)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -949,21 +944,13 @@ func (r *MeshFaultInjectionResource) Delete(ctx context.Context, req resource.De
 		return
 	}
 
-	var cpID string
-	cpID = data.CpID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteMeshFaultInjectionRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var mesh string
-	mesh = data.Mesh.ValueString()
-
-	var name string
-	name = data.Name.ValueString()
-
-	request := operations.DeleteMeshFaultInjectionRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.MeshFaultInjection.DeleteMeshFaultInjection(ctx, request)
+	res, err := r.client.MeshFaultInjection.DeleteMeshFaultInjection(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -992,7 +979,7 @@ func (r *MeshFaultInjectionResource) ImportState(ctx context.Context, req resour
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b",  "mesh": "",  "name": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b",  "mesh": "",  "name": ""}': `+err.Error())
 		return
 	}
 

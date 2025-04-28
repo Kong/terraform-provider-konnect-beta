@@ -11,7 +11,7 @@ type CreatePortalPageRequest struct {
 	// The slug of a page in a portal. Is used to compute the full path /slug1/slug2/slug3.
 	Slug string `json:"slug"`
 	// The title of a page in a portal.
-	Title string `json:"title"`
+	Title *string `json:"title,omitempty"`
 	// The renderable markdown content of a page in a portal.
 	Content string `json:"content"`
 	// Whether a page is publicly accessible to non-authenticated users.
@@ -44,9 +44,9 @@ func (o *CreatePortalPageRequest) GetSlug() string {
 	return o.Slug
 }
 
-func (o *CreatePortalPageRequest) GetTitle() string {
+func (o *CreatePortalPageRequest) GetTitle() *string {
 	if o == nil {
-		return ""
+		return nil
 	}
 	return o.Title
 }

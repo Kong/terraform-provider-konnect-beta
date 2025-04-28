@@ -459,17 +459,17 @@ Optional:
 <a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key"></a>
 ### Nested Schema for `mtls.backends.conf.acm_certificate_authority_config.auth.aws_credentials.access_key`
 
-Optional:
+Required:
 
-- `type` (String) Not Null; Parsed as JSON.
+- `type` (String) Parsed as JSON.
 
 
 <a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key_secret"></a>
 ### Nested Schema for `mtls.backends.conf.acm_certificate_authority_config.auth.aws_credentials.access_key_secret`
 
-Optional:
+Required:
 
-- `type` (String) Not Null; Parsed as JSON.
+- `type` (String) Parsed as JSON.
 
 
 
@@ -477,9 +477,9 @@ Optional:
 <a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--ca_cert"></a>
 ### Nested Schema for `mtls.backends.conf.acm_certificate_authority_config.ca_cert`
 
-Optional:
+Required:
 
-- `type` (String) Not Null; Parsed as JSON.
+- `type` (String) Parsed as JSON.
 
 
 
@@ -496,7 +496,7 @@ Optional:
 Optional:
 
 - `expiration` (String)
-- `rs_abits` (Number)
+- `rsa_bits` (Number)
 
 
 
@@ -513,9 +513,9 @@ Optional:
 <a id="nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config--ca_cert"></a>
 ### Nested Schema for `mtls.backends.conf.cert_manager_certificate_authority_config.ca_cert`
 
-Optional:
+Required:
 
-- `type` (String) Not Null; Parsed as JSON.
+- `type` (String) Parsed as JSON.
 
 
 <a id="nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config--issuer_ref"></a>
@@ -540,17 +540,17 @@ Optional:
 <a id="nestedatt--mtls--backends--conf--provided_certificate_authority_config--cert"></a>
 ### Nested Schema for `mtls.backends.conf.provided_certificate_authority_config.cert`
 
-Optional:
+Required:
 
-- `type` (String) Not Null; Parsed as JSON.
+- `type` (String) Parsed as JSON.
 
 
 <a id="nestedatt--mtls--backends--conf--provided_certificate_authority_config--key"></a>
 ### Nested Schema for `mtls.backends.conf.provided_certificate_authority_config.key`
 
-Optional:
+Required:
 
-- `type` (String) Not Null; Parsed as JSON.
+- `type` (String) Parsed as JSON.
 
 
 

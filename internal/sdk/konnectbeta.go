@@ -194,9 +194,9 @@ func New(opts ...SDKOption) *KonnectBeta {
 		sdkConfiguration: sdkConfiguration{
 			Language:          "go",
 			OpenAPIDocVersion: "2.0.0",
-			SDKVersion:        "0.1.3",
-			GenVersion:        "2.546.3",
-			UserAgent:         "speakeasy-sdk/terraform 0.1.3 2.546.3 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
+			SDKVersion:        "0.2.0",
+			GenVersion:        "2.593.4",
+			UserAgent:         "speakeasy-sdk/terraform 0.2.0 2.593.4 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
 			Hooks:             hooks.New(),
 		},
 	}

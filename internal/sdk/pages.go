@@ -29,7 +29,7 @@ func newPages(sdkConfig sdkConfiguration) *Pages {
 // **Pre-release Endpoint**
 // This endpoint is currently in beta and is subject to change.
 //
-// Creates a new custom page for this portal. Custom pages can be used to display static content, documentation, or other information to developers.
+// Creates a new custom page for this portal. Custom pages can be used to display static content, documentation, or other information to developers. Title and Description properties may be provided in the frontmatter section of `content`. If you set values in both the `POST` request _and_ in the frontmatter, the values in frontmatter will take precedence.
 func (s *Pages) CreatePortalPage(ctx context.Context, request operations.CreatePortalPageRequest, opts ...operations.Option) (*operations.CreatePortalPageResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

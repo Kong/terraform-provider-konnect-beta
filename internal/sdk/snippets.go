@@ -29,7 +29,7 @@ func newSnippets(sdkConfig sdkConfiguration) *Snippets {
 // **Pre-release Endpoint**
 // This endpoint is currently in beta and is subject to change.
 //
-// Creates a new custom snippet for this portal. Custom snippets can be used to display static content, documentation, or other information to developers.
+// Creates a new custom snippet for this portal. Custom snippets can be used to display static content, documentation, or other information to developers. Title and Description properties may be provided in the frontmatter section of `content`. If you set values in both the `POST` request _and_ in the frontmatter, the values in the frontmatter will take precedence.
 func (s *Snippets) CreatePortalSnippet(ctx context.Context, request operations.CreatePortalSnippetRequest, opts ...operations.Option) (*operations.CreatePortalSnippetResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

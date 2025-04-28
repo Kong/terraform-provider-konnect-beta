@@ -13,6 +13,7 @@ import (
 type APISpecType string
 
 const (
+	APISpecTypeOas2     APISpecType = "oas2"
 	APISpecTypeOas3     APISpecType = "oas3"
 	APISpecTypeAsyncapi APISpecType = "asyncapi"
 )
@@ -26,6 +27,8 @@ func (e *APISpecType) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "oas2":
+		fallthrough
 	case "oas3":
 		fallthrough
 	case "asyncapi":

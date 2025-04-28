@@ -16,7 +16,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 )
 
@@ -111,7 +110,8 @@ func (r *PortalPageResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 			},
 			"title": schema.StringAttribute{
-				Required:    true,
+				Computed:    true,
+				Optional:    true,
 				Description: `The title of a page in a portal.`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtMost(512),
@@ -172,15 +172,13 @@ func (r *PortalPageResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
+	request, requestDiags := data.ToOperationsCreatePortalPageRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	createPortalPageRequest := *data.ToSharedCreatePortalPageRequest()
-	request := operations.CreatePortalPageRequest{
-		PortalID:                portalID,
-		CreatePortalPageRequest: createPortalPageRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Pages.CreatePortalPage(ctx, request)
+	res, err := r.client.Pages.CreatePortalPage(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -200,8 +198,17 @@ func (r *PortalPageResource) Create(ctx context.Context, req resource.CreateRequ
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPortalPageResponse(res.PortalPageResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalPageResponse(ctx, res.PortalPageResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -225,17 +232,13 @@ func (r *PortalPageResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
+	request, requestDiags := data.ToOperationsGetPortalPageRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var pageID string
-	pageID = data.ID.ValueString()
-
-	request := operations.GetPortalPageRequest{
-		PortalID: portalID,
-		PageID:   pageID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Pages.GetPortalPage(ctx, request)
+	res, err := r.client.Pages.GetPortalPage(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -259,7 +262,11 @@ func (r *PortalPageResource) Read(ctx context.Context, req resource.ReadRequest,
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPortalPageResponse(res.PortalPageResponse)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalPageResponse(ctx, res.PortalPageResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -279,19 +286,13 @@ func (r *PortalPageResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
+	request, requestDiags := data.ToOperationsUpdatePortalPageRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var pageID string
-	pageID = data.ID.ValueString()
-
-	updatePortalPageRequest := *data.ToSharedUpdatePortalPageRequest()
-	request := operations.UpdatePortalPageRequest{
-		PortalID:                portalID,
-		PageID:                  pageID,
-		UpdatePortalPageRequest: updatePortalPageRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Pages.UpdatePortalPage(ctx, request)
+	res, err := r.client.Pages.UpdatePortalPage(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -311,8 +312,17 @@ func (r *PortalPageResource) Update(ctx context.Context, req resource.UpdateRequ
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPortalPageResponse(res.PortalPageResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalPageResponse(ctx, res.PortalPageResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -336,17 +346,13 @@ func (r *PortalPageResource) Delete(ctx context.Context, req resource.DeleteRequ
 		return
 	}
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
+	request, requestDiags := data.ToOperationsDeletePortalPageRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var pageID string
-	pageID = data.ID.ValueString()
-
-	request := operations.DeletePortalPageRequest{
-		PortalID: portalID,
-		PageID:   pageID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Pages.DeletePortalPage(ctx, request)
+	res, err := r.client.Pages.DeletePortalPage(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -374,7 +380,7 @@ func (r *PortalPageResource) ImportState(ctx context.Context, req resource.Impor
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "page_id": "ebbac5b0-ac89-45c3-9d2e-c4542c657e79",  "portal_id": "f32d905a-ed33-46a3-a093-d8f536af9a8a"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "id": "ebbac5b0-ac89-45c3-9d2e-c4542c657e79",  "portal_id": "f32d905a-ed33-46a3-a093-d8f536af9a8a"}': `+err.Error())
 		return
 	}
 

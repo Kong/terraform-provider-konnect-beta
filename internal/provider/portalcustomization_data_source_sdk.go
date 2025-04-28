@@ -3,12 +3,30 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *PortalCustomizationDataSourceModel) RefreshFromSharedPortalCustomization(resp *shared.PortalCustomization) {
+func (r *PortalCustomizationDataSourceModel) ToOperationsGetPortalCustomizationRequest(ctx context.Context) (*operations.GetPortalCustomizationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	out := operations.GetPortalCustomizationRequest{
+		PortalID: portalID,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalCustomizationDataSourceModel) RefreshFromSharedPortalCustomization(ctx context.Context, resp *shared.PortalCustomization) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.CSS = types.StringPointerValue(resp.CSS)
 		if resp.Js == nil {
@@ -31,18 +49,18 @@ func (r *PortalCustomizationDataSourceModel) RefreshFromSharedPortalCustomizatio
 				r.Menu.FooterBottom = r.Menu.FooterBottom[:len(resp.Menu.FooterBottom)]
 			}
 			for footerBottomCount, footerBottomItem := range resp.Menu.FooterBottom {
-				var footerBottom1 tfTypes.PortalMenuItem
-				footerBottom1.External = types.BoolValue(footerBottomItem.External)
-				footerBottom1.Path = types.StringValue(footerBottomItem.Path)
-				footerBottom1.Title = types.StringValue(footerBottomItem.Title)
-				footerBottom1.Visibility = types.StringValue(string(footerBottomItem.Visibility))
+				var footerBottom tfTypes.PortalMenuItem
+				footerBottom.External = types.BoolValue(footerBottomItem.External)
+				footerBottom.Path = types.StringValue(footerBottomItem.Path)
+				footerBottom.Title = types.StringValue(footerBottomItem.Title)
+				footerBottom.Visibility = types.StringValue(string(footerBottomItem.Visibility))
 				if footerBottomCount+1 > len(r.Menu.FooterBottom) {
-					r.Menu.FooterBottom = append(r.Menu.FooterBottom, footerBottom1)
+					r.Menu.FooterBottom = append(r.Menu.FooterBottom, footerBottom)
 				} else {
-					r.Menu.FooterBottom[footerBottomCount].External = footerBottom1.External
-					r.Menu.FooterBottom[footerBottomCount].Path = footerBottom1.Path
-					r.Menu.FooterBottom[footerBottomCount].Title = footerBottom1.Title
-					r.Menu.FooterBottom[footerBottomCount].Visibility = footerBottom1.Visibility
+					r.Menu.FooterBottom[footerBottomCount].External = footerBottom.External
+					r.Menu.FooterBottom[footerBottomCount].Path = footerBottom.Path
+					r.Menu.FooterBottom[footerBottomCount].Title = footerBottom.Title
+					r.Menu.FooterBottom[footerBottomCount].Visibility = footerBottom.Visibility
 				}
 			}
 			r.Menu.FooterSections = []tfTypes.PortalFooterMenuSection{}
@@ -50,29 +68,29 @@ func (r *PortalCustomizationDataSourceModel) RefreshFromSharedPortalCustomizatio
 				r.Menu.FooterSections = r.Menu.FooterSections[:len(resp.Menu.FooterSections)]
 			}
 			for footerSectionsCount, footerSectionsItem := range resp.Menu.FooterSections {
-				var footerSections1 tfTypes.PortalFooterMenuSection
-				footerSections1.Items = []tfTypes.PortalMenuItem{}
+				var footerSections tfTypes.PortalFooterMenuSection
+				footerSections.Items = []tfTypes.PortalMenuItem{}
 				for itemsCount, itemsItem := range footerSectionsItem.Items {
-					var items1 tfTypes.PortalMenuItem
-					items1.External = types.BoolValue(itemsItem.External)
-					items1.Path = types.StringValue(itemsItem.Path)
-					items1.Title = types.StringValue(itemsItem.Title)
-					items1.Visibility = types.StringValue(string(itemsItem.Visibility))
-					if itemsCount+1 > len(footerSections1.Items) {
-						footerSections1.Items = append(footerSections1.Items, items1)
+					var items tfTypes.PortalMenuItem
+					items.External = types.BoolValue(itemsItem.External)
+					items.Path = types.StringValue(itemsItem.Path)
+					items.Title = types.StringValue(itemsItem.Title)
+					items.Visibility = types.StringValue(string(itemsItem.Visibility))
+					if itemsCount+1 > len(footerSections.Items) {
+						footerSections.Items = append(footerSections.Items, items)
 					} else {
-						footerSections1.Items[itemsCount].External = items1.External
-						footerSections1.Items[itemsCount].Path = items1.Path
-						footerSections1.Items[itemsCount].Title = items1.Title
-						footerSections1.Items[itemsCount].Visibility = items1.Visibility
+						footerSections.Items[itemsCount].External = items.External
+						footerSections.Items[itemsCount].Path = items.Path
+						footerSections.Items[itemsCount].Title = items.Title
+						footerSections.Items[itemsCount].Visibility = items.Visibility
 					}
 				}
-				footerSections1.Title = types.StringValue(footerSectionsItem.Title)
+				footerSections.Title = types.StringValue(footerSectionsItem.Title)
 				if footerSectionsCount+1 > len(r.Menu.FooterSections) {
-					r.Menu.FooterSections = append(r.Menu.FooterSections, footerSections1)
+					r.Menu.FooterSections = append(r.Menu.FooterSections, footerSections)
 				} else {
-					r.Menu.FooterSections[footerSectionsCount].Items = footerSections1.Items
-					r.Menu.FooterSections[footerSectionsCount].Title = footerSections1.Title
+					r.Menu.FooterSections[footerSectionsCount].Items = footerSections.Items
+					r.Menu.FooterSections[footerSectionsCount].Title = footerSections.Title
 				}
 			}
 			r.Menu.Main = []tfTypes.PortalMenuItem{}
@@ -80,18 +98,18 @@ func (r *PortalCustomizationDataSourceModel) RefreshFromSharedPortalCustomizatio
 				r.Menu.Main = r.Menu.Main[:len(resp.Menu.Main)]
 			}
 			for mainCount, mainItem := range resp.Menu.Main {
-				var main1 tfTypes.PortalMenuItem
-				main1.External = types.BoolValue(mainItem.External)
-				main1.Path = types.StringValue(mainItem.Path)
-				main1.Title = types.StringValue(mainItem.Title)
-				main1.Visibility = types.StringValue(string(mainItem.Visibility))
+				var main tfTypes.PortalMenuItem
+				main.External = types.BoolValue(mainItem.External)
+				main.Path = types.StringValue(mainItem.Path)
+				main.Title = types.StringValue(mainItem.Title)
+				main.Visibility = types.StringValue(string(mainItem.Visibility))
 				if mainCount+1 > len(r.Menu.Main) {
-					r.Menu.Main = append(r.Menu.Main, main1)
+					r.Menu.Main = append(r.Menu.Main, main)
 				} else {
-					r.Menu.Main[mainCount].External = main1.External
-					r.Menu.Main[mainCount].Path = main1.Path
-					r.Menu.Main[mainCount].Title = main1.Title
-					r.Menu.Main[mainCount].Visibility = main1.Visibility
+					r.Menu.Main[mainCount].External = main.External
+					r.Menu.Main[mainCount].Path = main.Path
+					r.Menu.Main[mainCount].Title = main.Title
+					r.Menu.Main[mainCount].Visibility = main.Visibility
 				}
 			}
 		}
@@ -123,4 +141,6 @@ func (r *PortalCustomizationDataSourceModel) RefreshFromSharedPortalCustomizatio
 			r.Theme.Name = types.StringPointerValue(resp.Theme.Name)
 		}
 	}
+
+	return diags
 }

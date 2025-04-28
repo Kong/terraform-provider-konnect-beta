@@ -11,7 +11,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -117,17 +116,13 @@ func (r *APIImplementationDataSource) Read(ctx context.Context, req datasource.R
 		return
 	}
 
-	var apiID string
-	apiID = data.APIID.ValueString()
+	request, requestDiags := data.ToOperationsFetchAPIImplementationRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var implementationID string
-	implementationID = data.ID.ValueString()
-
-	request := operations.FetchAPIImplementationRequest{
-		APIID:            apiID,
-		ImplementationID: implementationID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIImplementation.FetchAPIImplementation(ctx, request)
+	res, err := r.client.APIImplementation.FetchAPIImplementation(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -139,10 +134,6 @@ func (r *APIImplementationDataSource) Read(ctx context.Context, req datasource.R
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode == 404 {
-		resp.State.RemoveResource(ctx)
-		return
-	}
 	if res.StatusCode != 200 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
@@ -151,7 +142,11 @@ func (r *APIImplementationDataSource) Read(ctx context.Context, req datasource.R
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAPIImplementationResponse(res.APIImplementationResponse)
+	resp.Diagnostics.Append(data.RefreshFromSharedAPIImplementationResponse(ctx, res.APIImplementationResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

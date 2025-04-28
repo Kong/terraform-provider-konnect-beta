@@ -3,7 +3,7 @@
 package shared
 
 type APISpec struct {
-	// The raw content of your API specification.
+	// The raw content of your API specification, in json or yaml.
 	//
 	Content *string `json:"content,omitempty"`
 	// The type of specification being stored. This allows us to render the specification correctly.

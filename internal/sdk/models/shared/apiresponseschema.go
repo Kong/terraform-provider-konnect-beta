@@ -3,9 +3,150 @@
 package shared
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 	"time"
 )
+
+type ControlPlaneError string
+
+const (
+	ControlPlaneErrorControlPlaneErrorNoResponse             ControlPlaneError = "control_plane_error_no_response"
+	ControlPlaneErrorControlPlaneErrorInvalidResponse        ControlPlaneError = "control_plane_error_invalid_response"
+	ControlPlaneErrorControlPlaneErrorUnavailable            ControlPlaneError = "control_plane_error_unavailable"
+	ControlPlaneErrorControlPlaneErrorInternalError          ControlPlaneError = "control_plane_error_internal_error"
+	ControlPlaneErrorControlPlaneErrorBadRequest             ControlPlaneError = "control_plane_error_bad_request"
+	ControlPlaneErrorControlPlaneErrorPluginConflict         ControlPlaneError = "control_plane_error_plugin_conflict"
+	ControlPlaneErrorControlPlaneErrorDataConstraintError    ControlPlaneError = "control_plane_error_data_constraint_error"
+	ControlPlaneErrorControlPlaneErrorImplementationNotFound ControlPlaneError = "control_plane_error_implementation_not_found"
+)
+
+func (e ControlPlaneError) ToPointer() *ControlPlaneError {
+	return &e
+}
+func (e *ControlPlaneError) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "control_plane_error_no_response":
+		fallthrough
+	case "control_plane_error_invalid_response":
+		fallthrough
+	case "control_plane_error_unavailable":
+		fallthrough
+	case "control_plane_error_internal_error":
+		fallthrough
+	case "control_plane_error_bad_request":
+		fallthrough
+	case "control_plane_error_plugin_conflict":
+		fallthrough
+	case "control_plane_error_data_constraint_error":
+		fallthrough
+	case "control_plane_error_implementation_not_found":
+		*e = ControlPlaneError(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for ControlPlaneError: %v", v)
+	}
+}
+
+type Details struct {
+	Type                 *string  `json:"type,omitempty"`
+	Message              []string `json:"message,omitempty"`
+	AdditionalProperties any      `additionalProperties:"true" json:"-"`
+}
+
+func (d Details) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *Details) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *Details) GetType() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+func (o *Details) GetMessage() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Message
+}
+
+func (o *Details) GetAdditionalProperties() any {
+	if o == nil {
+		return nil
+	}
+	return o.AdditionalProperties
+}
+
+type Info struct {
+	Details              []Details `json:"details,omitempty"`
+	AdditionalProperties any       `additionalProperties:"true" json:"-"`
+}
+
+func (i Info) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *Info) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *Info) GetDetails() []Details {
+	if o == nil {
+		return nil
+	}
+	return o.Details
+}
+
+func (o *Info) GetAdditionalProperties() any {
+	if o == nil {
+		return nil
+	}
+	return o.AdditionalProperties
+}
+
+type AuthStrategySyncError struct {
+	ControlPlaneError *ControlPlaneError `json:"control_plane_error,omitempty"`
+	Message           string             `json:"message"`
+	Info              *Info              `json:"info,omitempty"`
+}
+
+func (o *AuthStrategySyncError) GetControlPlaneError() *ControlPlaneError {
+	if o == nil {
+		return nil
+	}
+	return o.ControlPlaneError
+}
+
+func (o *AuthStrategySyncError) GetMessage() string {
+	if o == nil {
+		return ""
+	}
+	return o.Message
+}
+
+func (o *AuthStrategySyncError) GetInfo() *Info {
+	if o == nil {
+		return nil
+	}
+	return o.Info
+}
 
 type Portals struct {
 	// The portal identifier.
@@ -37,6 +178,7 @@ func (o *Portals) GetDisplayName() string {
 	return o.DisplayName
 }
 
+// APIResponseSchema - API
 type APIResponseSchema struct {
 	// The API identifier.
 	ID string `json:"id"`
@@ -53,7 +195,8 @@ type APIResponseSchema struct {
 	//
 	// Defaults to `slugify(name + version)`
 	//
-	Slug *string `json:"slug"`
+	Slug                  *string                `json:"slug"`
+	AuthStrategySyncError *AuthStrategySyncError `json:"auth_strategy_sync_error,omitempty"`
 	// The list of portals which this API is published to.
 	Portals []Portals `json:"portals"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
@@ -125,6 +268,13 @@ func (o *APIResponseSchema) GetSlug() *string {
 		return nil
 	}
 	return o.Slug
+}
+
+func (o *APIResponseSchema) GetAuthStrategySyncError() *AuthStrategySyncError {
+	if o == nil {
+		return nil
+	}
+	return o.AuthStrategySyncError
 }
 
 func (o *APIResponseSchema) GetPortals() []Portals {

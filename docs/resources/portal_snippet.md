@@ -33,12 +33,12 @@ resource "konnect_portal_snippet" "my_portalsnippet" {
 - `content` (String) The renderable markdown content of a page in a portal.
 - `name` (String) The unique name of a snippet in a portal.
 - `portal_id` (String) The Portal identifier
-- `title` (String) The display title of a snippet in a portal.
 
 ### Optional
 
 - `description` (String)
 - `status` (String) Whether the resource is visible on a given portal. Defaults to false. must be one of ["published", "unpublished"]
+- `title` (String) The display title of a snippet in a portal.
 - `visibility` (String) Whether a page is publicly accessible to non-authenticated users. Default: "private"
 
 ### Read-Only
@@ -52,5 +52,5 @@ resource "konnect_portal_snippet" "my_portalsnippet" {
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_portal_snippet.my_konnect_portal_snippet "{ \"portal_id\": \"f32d905a-ed33-46a3-a093-d8f536af9a8a\",  \"snippet_id\": \"ebbac5b0-ac89-45c3-9d2e-c4542c657e79\"}"
+terraform import konnect_portal_snippet.my_konnect_portal_snippet "{ \"portal_id\": \"f32d905a-ed33-46a3-a093-d8f536af9a8a\",  \"id\": \"ebbac5b0-ac89-45c3-9d2e-c4542c657e79\"}"
 ```

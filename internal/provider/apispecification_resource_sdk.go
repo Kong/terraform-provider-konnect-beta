@@ -3,12 +3,18 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
+	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
-	"time"
 )
 
-func (r *APISpecificationResourceModel) ToSharedCreateAPISpecRequest() *shared.CreateAPISpecRequest {
+func (r *APISpecificationResourceModel) ToSharedCreateAPISpecRequest(ctx context.Context) (*shared.CreateAPISpecRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var content string
 	content = r.Content.ValueString()
 
@@ -22,20 +28,34 @@ func (r *APISpecificationResourceModel) ToSharedCreateAPISpecRequest() *shared.C
 		Content: content,
 		Type:    typeVar,
 	}
-	return &out
+
+	return &out, diags
 }
 
-func (r *APISpecificationResourceModel) RefreshFromSharedAPISpecResponse(resp *shared.APISpecResponse) {
-	if resp != nil {
-		r.Content = types.StringValue(resp.Content)
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
-		r.ID = types.StringValue(resp.ID)
-		r.Type = types.StringValue(string(resp.Type))
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+func (r *APISpecificationResourceModel) ToOperationsCreateAPISpecRequest(ctx context.Context) (*operations.CreateAPISpecRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiID string
+	apiID = r.APIID.ValueString()
+
+	createAPISpecRequest, createAPISpecRequestDiags := r.ToSharedCreateAPISpecRequest(ctx)
+	diags.Append(createAPISpecRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
 	}
+
+	out := operations.CreateAPISpecRequest{
+		APIID:                apiID,
+		CreateAPISpecRequest: *createAPISpecRequest,
+	}
+
+	return &out, diags
 }
 
-func (r *APISpecificationResourceModel) ToSharedAPISpec() *shared.APISpec {
+func (r *APISpecificationResourceModel) ToSharedAPISpec(ctx context.Context) (*shared.APISpec, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	content := new(string)
 	if !r.Content.IsUnknown() && !r.Content.IsNull() {
 		*content = r.Content.ValueString()
@@ -52,5 +72,92 @@ func (r *APISpecificationResourceModel) ToSharedAPISpec() *shared.APISpec {
 		Content: content,
 		Type:    typeVar,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *APISpecificationResourceModel) ToOperationsUpdateAPISpecRequest(ctx context.Context) (*operations.UpdateAPISpecRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiID string
+	apiID = r.APIID.ValueString()
+
+	var specID string
+	specID = r.ID.ValueString()
+
+	apiSpec, apiSpecDiags := r.ToSharedAPISpec(ctx)
+	diags.Append(apiSpecDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAPISpecRequest{
+		APIID:   apiID,
+		SpecID:  specID,
+		APISpec: *apiSpec,
+	}
+
+	return &out, diags
+}
+
+func (r *APISpecificationResourceModel) ToOperationsFetchAPISpecRequest(ctx context.Context) (*operations.FetchAPISpecRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiID string
+	apiID = r.APIID.ValueString()
+
+	var specID string
+	specID = r.ID.ValueString()
+
+	out := operations.FetchAPISpecRequest{
+		APIID:  apiID,
+		SpecID: specID,
+	}
+
+	return &out, diags
+}
+
+func (r *APISpecificationResourceModel) ToOperationsDeleteAPISpecRequest(ctx context.Context) (*operations.DeleteAPISpecRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiID string
+	apiID = r.APIID.ValueString()
+
+	var specID string
+	specID = r.ID.ValueString()
+
+	out := operations.DeleteAPISpecRequest{
+		APIID:  apiID,
+		SpecID: specID,
+	}
+
+	return &out, diags
+}
+
+func (r *APISpecificationResourceModel) RefreshFromSharedAPISpecResponse(ctx context.Context, resp *shared.APISpecResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.Content = types.StringValue(resp.Content)
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.ID = types.StringValue(resp.ID)
+		r.Type = types.StringValue(string(resp.Type))
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+		r.ValidationMessages = []tfTypes.ValidationMessages{}
+		if len(r.ValidationMessages) > len(resp.ValidationMessages) {
+			r.ValidationMessages = r.ValidationMessages[:len(resp.ValidationMessages)]
+		}
+		for validationMessagesCount, validationMessagesItem := range resp.ValidationMessages {
+			var validationMessages tfTypes.ValidationMessages
+			validationMessages.Message = types.StringValue(validationMessagesItem.Message)
+			if validationMessagesCount+1 > len(r.ValidationMessages) {
+				r.ValidationMessages = append(r.ValidationMessages, validationMessages)
+			} else {
+				r.ValidationMessages[validationMessagesCount].Message = validationMessages.Message
+			}
+		}
+	}
+
+	return diags
 }

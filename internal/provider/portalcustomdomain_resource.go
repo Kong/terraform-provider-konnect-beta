@@ -20,7 +20,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 )
 
@@ -216,15 +215,13 @@ func (r *PortalCustomDomainResource) Create(ctx context.Context, req resource.Cr
 		return
 	}
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
+	request, requestDiags := data.ToOperationsCreatePortalCustomDomainRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	createPortalCustomDomainRequest := *data.ToSharedCreatePortalCustomDomainRequest()
-	request := operations.CreatePortalCustomDomainRequest{
-		PortalID:                        portalID,
-		CreatePortalCustomDomainRequest: createPortalCustomDomainRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.PortalCustomDomains.CreatePortalCustomDomain(ctx, request)
+	res, err := r.client.PortalCustomDomains.CreatePortalCustomDomain(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -244,15 +241,24 @@ func (r *PortalCustomDomainResource) Create(ctx context.Context, req resource.Cr
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPortalCustomDomain(res.PortalCustomDomain)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
-	var portalId1 string
-	portalId1 = data.PortalID.ValueString()
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalCustomDomain(ctx, res.PortalCustomDomain)...)
 
-	request1 := operations.GetPortalCustomDomainRequest{
-		PortalID: portalId1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.PortalCustomDomains.GetPortalCustomDomain(ctx, request1)
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsGetPortalCustomDomainRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.PortalCustomDomains.GetPortalCustomDomain(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -272,8 +278,17 @@ func (r *PortalCustomDomainResource) Create(ctx context.Context, req resource.Cr
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPortalCustomDomain(res1.PortalCustomDomain)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalCustomDomain(ctx, res1.PortalCustomDomain)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -297,13 +312,13 @@ func (r *PortalCustomDomainResource) Read(ctx context.Context, req resource.Read
 		return
 	}
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
+	request, requestDiags := data.ToOperationsGetPortalCustomDomainRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.GetPortalCustomDomainRequest{
-		PortalID: portalID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.PortalCustomDomains.GetPortalCustomDomain(ctx, request)
+	res, err := r.client.PortalCustomDomains.GetPortalCustomDomain(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -327,7 +342,11 @@ func (r *PortalCustomDomainResource) Read(ctx context.Context, req resource.Read
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPortalCustomDomain(res.PortalCustomDomain)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalCustomDomain(ctx, res.PortalCustomDomain)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -347,15 +366,13 @@ func (r *PortalCustomDomainResource) Update(ctx context.Context, req resource.Up
 		return
 	}
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
+	request, requestDiags := data.ToOperationsUpdatePortalCustomDomainRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	updatePortalCustomDomainRequest := *data.ToSharedUpdatePortalCustomDomainRequest()
-	request := operations.UpdatePortalCustomDomainRequest{
-		PortalID:                        portalID,
-		UpdatePortalCustomDomainRequest: updatePortalCustomDomainRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.PortalCustomDomains.UpdatePortalCustomDomain(ctx, request)
+	res, err := r.client.PortalCustomDomains.UpdatePortalCustomDomain(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -375,15 +392,24 @@ func (r *PortalCustomDomainResource) Update(ctx context.Context, req resource.Up
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPortalCustomDomain(res.PortalCustomDomain)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
-	var portalId1 string
-	portalId1 = data.PortalID.ValueString()
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalCustomDomain(ctx, res.PortalCustomDomain)...)
 
-	request1 := operations.GetPortalCustomDomainRequest{
-		PortalID: portalId1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.PortalCustomDomains.GetPortalCustomDomain(ctx, request1)
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsGetPortalCustomDomainRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.PortalCustomDomains.GetPortalCustomDomain(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -403,8 +429,17 @@ func (r *PortalCustomDomainResource) Update(ctx context.Context, req resource.Up
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPortalCustomDomain(res1.PortalCustomDomain)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalCustomDomain(ctx, res1.PortalCustomDomain)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -428,13 +463,13 @@ func (r *PortalCustomDomainResource) Delete(ctx context.Context, req resource.De
 		return
 	}
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
+	request, requestDiags := data.ToOperationsDeletePortalCustomDomainRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.DeletePortalCustomDomainRequest{
-		PortalID: portalID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.PortalCustomDomains.DeletePortalCustomDomain(ctx, request)
+	res, err := r.client.PortalCustomDomains.DeletePortalCustomDomain(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

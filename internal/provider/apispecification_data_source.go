@@ -9,8 +9,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -28,12 +28,13 @@ type APISpecificationDataSource struct {
 
 // APISpecificationDataSourceModel describes the data model.
 type APISpecificationDataSourceModel struct {
-	APIID     types.String `tfsdk:"api_id"`
-	Content   types.String `tfsdk:"content"`
-	CreatedAt types.String `tfsdk:"created_at"`
-	ID        types.String `tfsdk:"id"`
-	Type      types.String `tfsdk:"type"`
-	UpdatedAt types.String `tfsdk:"updated_at"`
+	APIID              types.String                 `tfsdk:"api_id"`
+	Content            types.String                 `tfsdk:"content"`
+	CreatedAt          types.String                 `tfsdk:"created_at"`
+	ID                 types.String                 `tfsdk:"id"`
+	Type               types.String                 `tfsdk:"type"`
+	UpdatedAt          types.String                 `tfsdk:"updated_at"`
+	ValidationMessages []tfTypes.ValidationMessages `tfsdk:"validation_messages"`
 }
 
 // Metadata returns the data source type name.
@@ -53,7 +54,7 @@ func (r *APISpecificationDataSource) Schema(ctx context.Context, req datasource.
 			},
 			"content": schema.StringAttribute{
 				Computed:    true,
-				Description: `The raw content of your API specification.`,
+				Description: `The raw content of your API specification, in json or yaml.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed:    true,
@@ -72,6 +73,17 @@ func (r *APISpecificationDataSource) Schema(ctx context.Context, req datasource.
 			"updated_at": schema.StringAttribute{
 				Computed:    true,
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
+			},
+			"validation_messages": schema.ListNestedAttribute{
+				Computed: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"message": schema.StringAttribute{
+							Computed: true,
+						},
+					},
+				},
+				Description: `The errors that occurred while parsing the API specification.`,
 			},
 		},
 	}
@@ -115,17 +127,13 @@ func (r *APISpecificationDataSource) Read(ctx context.Context, req datasource.Re
 		return
 	}
 
-	var apiID string
-	apiID = data.APIID.ValueString()
+	request, requestDiags := data.ToOperationsFetchAPISpecRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var specID string
-	specID = data.ID.ValueString()
-
-	request := operations.FetchAPISpecRequest{
-		APIID:  apiID,
-		SpecID: specID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APISpecification.FetchAPISpec(ctx, request)
+	res, err := r.client.APISpecification.FetchAPISpec(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -137,10 +145,6 @@ func (r *APISpecificationDataSource) Read(ctx context.Context, req datasource.Re
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode == 404 {
-		resp.State.RemoveResource(ctx)
-		return
-	}
 	if res.StatusCode != 200 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
@@ -149,7 +153,11 @@ func (r *APISpecificationDataSource) Read(ctx context.Context, req datasource.Re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAPISpecResponse(res.APISpecResponse)
+	resp.Diagnostics.Append(data.RefreshFromSharedAPISpecResponse(ctx, res.APISpecResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

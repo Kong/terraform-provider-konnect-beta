@@ -34,7 +34,6 @@ resource "konnect_portal_page" "my_portalpage" {
 - `content` (String) The renderable markdown content of a page in a portal.
 - `portal_id` (String) The Portal identifier
 - `slug` (String) The slug of a page in a portal. Is used to compute the full path /slug1/slug2/slug3.
-- `title` (String) The title of a page in a portal.
 
 ### Optional
 
@@ -43,6 +42,7 @@ resource "konnect_portal_page" "my_portalpage" {
 
 Specify the `id` of another page as the `parent_page_id` to add some hierarchy to your pages.
 - `status` (String) Whether the resource is visible on a given portal. Defaults to false. must be one of ["published", "unpublished"]
+- `title` (String) The title of a page in a portal.
 - `visibility` (String) Whether a page is publicly accessible to non-authenticated users. Default: "private"
 
 ### Read-Only
@@ -56,5 +56,5 @@ Specify the `id` of another page as the `parent_page_id` to add some hierarchy t
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_portal_page.my_konnect_portal_page "{ \"page_id\": \"ebbac5b0-ac89-45c3-9d2e-c4542c657e79\",  \"portal_id\": \"f32d905a-ed33-46a3-a093-d8f536af9a8a\"}"
+terraform import konnect_portal_page.my_konnect_portal_page "{ \"id\": \"ebbac5b0-ac89-45c3-9d2e-c4542c657e79\",  \"portal_id\": \"f32d905a-ed33-46a3-a093-d8f536af9a8a\"}"
 ```

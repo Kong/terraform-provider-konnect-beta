@@ -3,12 +3,17 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
-	"time"
 )
 
-func (r *APIImplementationResourceModel) ToSharedAPIImplementation() *shared.APIImplementation {
+func (r *APIImplementationResourceModel) ToSharedAPIImplementation(ctx context.Context) (*shared.APIImplementation, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var controlPlaneID string
 	controlPlaneID = r.Service.ControlPlaneID.ValueString()
 
@@ -22,15 +27,75 @@ func (r *APIImplementationResourceModel) ToSharedAPIImplementation() *shared.API
 	out := shared.APIImplementation{
 		Service: service,
 	}
-	return &out
+
+	return &out, diags
 }
 
-func (r *APIImplementationResourceModel) RefreshFromSharedAPIImplementationResponse(resp *shared.APIImplementationResponse) {
+func (r *APIImplementationResourceModel) ToOperationsCreateAPIImplementationRequest(ctx context.Context) (*operations.CreateAPIImplementationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiID string
+	apiID = r.APIID.ValueString()
+
+	apiImplementation, apiImplementationDiags := r.ToSharedAPIImplementation(ctx)
+	diags.Append(apiImplementationDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateAPIImplementationRequest{
+		APIID:             apiID,
+		APIImplementation: *apiImplementation,
+	}
+
+	return &out, diags
+}
+
+func (r *APIImplementationResourceModel) ToOperationsFetchAPIImplementationRequest(ctx context.Context) (*operations.FetchAPIImplementationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiID string
+	apiID = r.APIID.ValueString()
+
+	var implementationID string
+	implementationID = r.ID.ValueString()
+
+	out := operations.FetchAPIImplementationRequest{
+		APIID:            apiID,
+		ImplementationID: implementationID,
+	}
+
+	return &out, diags
+}
+
+func (r *APIImplementationResourceModel) ToOperationsDeleteAPIImplementationRequest(ctx context.Context) (*operations.DeleteAPIImplementationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiID string
+	apiID = r.APIID.ValueString()
+
+	var implementationID string
+	implementationID = r.ID.ValueString()
+
+	out := operations.DeleteAPIImplementationRequest{
+		APIID:            apiID,
+		ImplementationID: implementationID,
+	}
+
+	return &out, diags
+}
+
+func (r *APIImplementationResourceModel) RefreshFromSharedAPIImplementationResponse(ctx context.Context, resp *shared.APIImplementationResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.ID = types.StringValue(resp.ID)
 		r.Service.ControlPlaneID = types.StringValue(resp.Service.ControlPlaneID)
 		r.Service.ID = types.StringValue(resp.Service.ID)
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
+
+	return diags
 }

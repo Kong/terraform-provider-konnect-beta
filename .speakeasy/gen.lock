@@ -1,17 +1,18 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: 68d832ec0c186ee918dfec2a8860ef0d
+  docChecksum: b0f30d7c211ca734b85e8bdf81c8e2fd
   docVersion: 2.0.0
-  speakeasyVersion: 1.514.1
-  generationVersion: 2.546.3
-  releaseVersion: 0.1.3
-  configChecksum: fe0978365eff8898a7d5b94c5eea01e9
+  speakeasyVersion: 1.540.1
+  generationVersion: 2.593.4
+  releaseVersion: 0.2.0
+  configChecksum: 71f4b18501d5d31f01ceccbd7cad9256
 features:
   terraform:
     additionalDependencies: 0.1.0
+    additionalProperties: 0.1.2
     constsAndDefaults: 0.2.1
-    core: 3.36.1
+    core: 3.41.6
     envVarSecurityUsage: 0.1.0
     globalSecurity: 2.81.10
     globalServerURLs: 2.82.1
@@ -383,6 +384,9 @@ generatedFiles:
   - internal/provider/reflect/primitive.go
   - internal/provider/reflect/slice.go
   - internal/provider/reflect/struct.go
+  - internal/provider/typeconvert/date.go
+  - internal/provider/typeconvert/datetime.go
+  - internal/provider/typeconvert/int32.go
   - internal/provider/types/abort.go
   - internal/provider/types/access_key.go
   - internal/provider/types/acm_certificate_authority_config.go
@@ -396,6 +400,7 @@ generatedFiles:
   - internal/provider/types/applications.go
   - internal/provider/types/auth.go
   - internal/provider/types/auth_config.go
+  - internal/provider/types/auth_strategy_sync_error.go
   - internal/provider/types/aws_credentials.go
   - internal/provider/types/back_off.go
   - internal/provider/types/backend.go
@@ -422,6 +427,7 @@ generatedFiles:
   - internal/provider/types/dataplane_ref.go
   - internal/provider/types/default.go
   - internal/provider/types/delay.go
+  - internal/provider/types/details.go
   - internal/provider/types/detectors.go
   - internal/provider/types/dp_cert.go
   - internal/provider/types/endpoints.go
@@ -449,6 +455,7 @@ generatedFiles:
   - internal/provider/types/hostname_generators.go
   - internal/provider/types/http.go
   - internal/provider/types/http_filter.go
+  - internal/provider/types/info.go
   - internal/provider/types/issuer_ref.go
   - internal/provider/types/js.go
   - internal/provider/types/json.go
@@ -646,6 +653,7 @@ generatedFiles:
   - internal/provider/types/tls.go
   - internal/provider/types/tracing.go
   - internal/provider/types/url_rewrite.go
+  - internal/provider/types/validation_messages.go
   - internal/provider/types/vault_certificate_authority_config.go
   - internal/provider/types/verification.go
   - internal/provider/types/version.go
@@ -1126,7 +1134,7 @@ examples:
           portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
-          application/json: {"hostname": "clueless-information.net", "enabled": false, "ssl": {"domain_verification_method": "http", "verification_status": "error", "uploaded_at": "2022-11-04T20:10:06.927Z", "expires_at": "2022-11-04T20:10:06.927Z"}, "cname_status": "pending", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"hostname": "clueless-information.net", "enabled": false, "ssl": {"domain_verification_method": "custom_certificate", "verification_status": "pending", "uploaded_at": "2022-11-04T20:10:06.927Z", "expires_at": "2022-11-04T20:10:06.927Z"}, "cname_status": "verified", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -1139,12 +1147,12 @@ examples:
         path:
           portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
-        application/json: {"hostname": "precious-challenge.org", "enabled": false, "ssl": {"domain_verification_method": "http"}}
+        application/json: {"hostname": "precious-challenge.org", "enabled": false, "ssl": {"domain_verification_method": "custom_certificate"}}
       responses:
         "201":
-          application/json: {"hostname": "speedy-eggplant.org", "enabled": false, "ssl": {"domain_verification_method": "http", "verification_status": "verified", "uploaded_at": "2022-11-04T20:10:06.927Z", "expires_at": "2022-11-04T20:10:06.927Z"}, "cname_status": "pending", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"hostname": "forceful-unibody.name", "enabled": true, "ssl": {"domain_verification_method": "custom_certificate", "verification_status": "verified", "uploaded_at": "2022-11-04T20:10:06.927Z", "expires_at": "2022-11-04T20:10:06.927Z"}, "cname_status": "verified", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
-          application/problem+json: {"status": 74008, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": [], "source": "body"}]}
+          application/problem+json: {"status": 737305, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -1160,9 +1168,9 @@ examples:
         application/json: {}
       responses:
         "200":
-          application/json: {"hostname": "terrible-draw.name", "enabled": false, "ssl": {"domain_verification_method": "http", "verification_status": "pending", "uploaded_at": "2022-11-04T20:10:06.927Z", "expires_at": "2022-11-04T20:10:06.927Z"}, "cname_status": "verified", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"hostname": "terrible-draw.name", "enabled": false, "ssl": {"domain_verification_method": "http", "verification_status": "verified", "uploaded_at": "2022-11-04T20:10:06.927Z", "expires_at": "2022-11-04T20:10:06.927Z"}, "cname_status": "verified", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
-          application/problem+json: {"status": 435172, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+          application/problem+json: {"status": 199340, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": [], "source": "body"}, {"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value>", "<value>", "<value>"], "source": "body"}]}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -1432,7 +1440,7 @@ examples:
         application/json: {"name": "MyAPI", "slug": "my-api-v1", "labels": {"env": "test"}, "public_labels": {"category": "finance"}}
       responses:
         "201":
-          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "version": "<value>", "deprecated": true, "slug": "my-api-v1", "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "public_labels": {"category": "finance"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "version": "<value>", "deprecated": true, "slug": "my-api-v1", "auth_strategy_sync_error": {"control_plane_error": "control_plane_error_unavailable", "message": "Unable to connect to the control plane to update plugin"}, "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "public_labels": {"category": "finance"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 202165, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -1450,7 +1458,7 @@ examples:
           apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
       responses:
         "200":
-          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "version": "<value>", "deprecated": true, "slug": "my-api-v1", "portals": [], "labels": {"env": "test"}, "public_labels": {"category": "finance"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "version": "<value>", "deprecated": true, "slug": "my-api-v1", "auth_strategy_sync_error": {"control_plane_error": "control_plane_error_unavailable", "message": "Unable to connect to the control plane to update plugin"}, "portals": [], "labels": {"env": "test"}, "public_labels": {"category": "finance"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -1466,7 +1474,7 @@ examples:
         application/json: {"name": "MyAPI", "slug": "my-api-v1", "labels": {"env": "test"}, "public_labels": {"category": "finance"}}
       responses:
         "200":
-          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "version": "<value>", "deprecated": true, "slug": "my-api-v1", "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "public_labels": {"category": "finance"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "version": "<value>", "deprecated": true, "slug": "my-api-v1", "auth_strategy_sync_error": {"control_plane_error": "control_plane_error_unavailable", "message": "Unable to connect to the control plane to update plugin"}, "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "public_labels": {"category": "finance"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 107431, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}, {"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value>", "<value>", "<value>"], "source": "body"}]}
         "401":
@@ -1571,9 +1579,9 @@ examples:
         application/json: {"content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "type": "oas3"}
       responses:
         "201":
-          application/json: {"id": "7710d5c4-d902-410b-992f-18b814155b53", "content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "type": "oas3", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "7710d5c4-d902-410b-992f-18b814155b53", "content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "validation_messages": [{"message": "<value>"}], "type": "oas3", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
-          application/problem+json: {"status": 294737, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>"], "source": "body"}, {"field": "name", "rule": "min_length", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
+          application/problem+json: {"status": 522440, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_lowercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}, {"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -1592,7 +1600,7 @@ examples:
           specId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
-          application/json: {"id": "7710d5c4-d902-410b-992f-18b814155b53", "content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "type": "oas3", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "7710d5c4-d902-410b-992f-18b814155b53", "content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "validation_messages": [{"message": "<value>"}], "type": "oas3", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -1609,9 +1617,9 @@ examples:
         application/json: {"content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "type": "oas3"}
       responses:
         "200":
-          application/json: {"id": "7710d5c4-d902-410b-992f-18b814155b53", "content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "type": "oas3", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "7710d5c4-d902-410b-992f-18b814155b53", "content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "validation_messages": [{"message": "<value>"}, {"message": "<value>"}, {"message": "<value>"}], "type": "oas3", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
-          application/problem+json: {"status": 813219, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_items", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}, {"field": "name", "rule": "max", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
+          application/problem+json: {"status": 628762, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>", "<value>"], "source": "body"}]}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -2586,7 +2594,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"name": "<value>", "type": "<value>"}
+          application/json: {"name": "<value>", "skipCreatingInitialPolicies": [], "type": "<value>"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   putMesh:
@@ -2596,7 +2604,7 @@ examples:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
           name: "<value>"
       requestBody:
-        application/json: {"name": "<value>", "type": "<value>"}
+        application/json: {"name": "<value>", "skipCreatingInitialPolicies": [], "type": "<value>"}
   deleteMesh:
     "":
       parameters:
@@ -2654,7 +2662,7 @@ examples:
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
-  update-mesh-control-plane:
+  update-cp:
     "":
       parameters:
         path:
@@ -2665,7 +2673,7 @@ examples:
         "200":
           application/json: {"id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "name": "Test control plane", "description": "A control plane to handle traffic on development environment.", "labels": {"test": "true"}, "created_at": "2023-01-11T02:30:42.227Z", "updated_at": "2023-01-11T02:30:42.227Z"}
         "400":
-          application/problem+json: {"status": 300219, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+          application/problem+json: {"status": 443687, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}, {"field": "name", "rule": "min_lowercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>"], "source": "body"}]}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -2681,7 +2689,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"mesh": "<value>", "name": "<value>", "type": "<value>"}
+          application/json: {"mesh": "<value>", "name": "<value>", "selectors": [], "type": "<value>"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshGateway:
@@ -2703,7 +2711,7 @@ examples:
           mesh: "<value>"
           name: "<value>"
       requestBody:
-        application/json: {"mesh": "<value>", "name": "<value>", "type": "<value>"}
+        application/json: {"mesh": "<value>", "name": "<value>", "selectors": [], "type": "<value>"}
   updateMeshGateway:
     "":
       parameters:
@@ -2712,7 +2720,7 @@ examples:
           mesh: "<value>"
           name: "<value>"
       requestBody:
-        application/json: {"mesh": "<value>", "name": "<value>", "type": "<value>"}
+        application/json: {"mesh": "<value>", "name": "<value>", "selectors": [], "type": "<value>"}
   getMeshGatewayList:
     "":
       parameters:
@@ -3035,23 +3043,5 @@ examples:
       responses:
         "200":
           application/json: {"items": [{"type": "MeshOPA", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}, {"type": "MeshOPA", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}, {"type": "MeshOPA", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
-  update-cp:
-    "":
-      parameters:
-        path:
-          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
-      requestBody:
-        application/json: {"name": "Test control plane", "description": "A control plane to handle traffic on development environment.", "labels": {"test": "true"}}
-      responses:
-        "200":
-          application/json: {"id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "name": "Test control plane", "description": "A control plane to handle traffic on development environment.", "labels": {"test": "true"}, "created_at": "2023-01-11T02:30:42.227Z", "updated_at": "2023-01-11T02:30:42.227Z"}
-        "400":
-          application/problem+json: {"status": 443687, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}, {"field": "name", "rule": "min_lowercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>"], "source": "body"}]}
-        "401":
-          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
-        "403":
-          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
-        "404":
-          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
-examplesVersion: 1.0.0
+examplesVersion: 1.0.1
 generatedTests: {}

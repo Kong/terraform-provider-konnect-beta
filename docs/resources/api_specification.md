@@ -27,25 +27,33 @@ resource "konnect_api_specification" "my_apispecification" {
 ### Required
 
 - `api_id` (String) The UUID API identifier
-- `content` (String) The raw content of your API specification.
+- `content` (String) The raw content of your API specification, in json or yaml.
 
 ### Optional
 
 - `type` (String) The type of specification being stored. This allows us to render the specification correctly.
 
 If this field is not set, it will be autodetected from `content`
-must be one of ["oas3", "asyncapi"]
+must be one of ["oas2", "oas3", "asyncapi"]
 
 ### Read-Only
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) The API specification identifier.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
+- `validation_messages` (Attributes List) The errors that occurred while parsing the API specification. (see [below for nested schema](#nestedatt--validation_messages))
+
+<a id="nestedatt--validation_messages"></a>
+### Nested Schema for `validation_messages`
+
+Read-Only:
+
+- `message` (String)
 
 ## Import
 
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_api_specification.my_konnect_api_specification "{ \"apiid\": \"9f5061ce-78f6-4452-9108-ad7c02821fd5\",  \"spec_id\": \"d32d905a-ed33-46a3-a093-d8f536af9a8a\"}"
+terraform import konnect_api_specification.my_konnect_api_specification "{ \"apiid\": \"9f5061ce-78f6-4452-9108-ad7c02821fd5\",  \"id\": \"d32d905a-ed33-46a3-a093-d8f536af9a8a\"}"
 ```

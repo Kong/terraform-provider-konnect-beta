@@ -339,7 +339,10 @@ paths:
 
         Creates a new custom page for this portal. Custom pages can be used to
         display static content, documentation, or other information to
-        developers.
+        developers. Title and Description properties may be provided in the
+        frontmatter section of `content`. If you set values in both the `POST`
+        request _and_ in the frontmatter, the values in frontmatter will take
+        precedence.
       operationId: create-portal-page
       requestBody:
         $ref: '#/components/requestBodies/CreatePortalPage'
@@ -460,7 +463,10 @@ paths:
 
         Creates a new custom snippet for this portal. Custom snippets can be
         used to display static content, documentation, or other information to
-        developers.
+        developers. Title and Description properties may be provided in the
+        frontmatter section of `content`. If you set values in both the `POST`
+        request _and_ in the frontmatter, the values in the frontmatter will
+        take precedence.
       operationId: create-portal-snippet
       requestBody:
         $ref: '#/components/requestBodies/CreatePortalSnippet'
@@ -5427,26 +5433,218 @@ components:
       content:
         application/json:
           schema:
-            x-flatten-allOf: true
-            allOf:
-              - $ref: '#/components/schemas/Portal'
-              - required:
-                  - name
-                properties:
-                  labels:
-                    $ref: '#/components/schemas/LabelsUpdate'
+            title: Portal
+            type: object
+            additionalProperties: false
+            properties:
+              id:
+                $ref: '#/components/schemas/UUID'
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+              name:
+                type: string
+                maxLength: 255
+                minLength: 1
+                description: >-
+                  The name of the portal, used to distinguish it from other
+                  portals. Name must be unique.
+              display_name:
+                type: string
+                maxLength: 255
+                minLength: 1
+                description: >-
+                  The display name of the portal. This value will be the
+                  portal's `name` in Portal API.
+              description:
+                type: string
+                nullable: true
+                maxLength: 512
+                description: A description of the portal.
+              authentication_enabled:
+                type: boolean
+                description: >-
+                  Whether the portal supports developer authentication. If
+                  disabled, developers cannot register for accounts or create
+                  applications.
+              rbac_enabled:
+                type: boolean
+                description: >-
+                  Whether the portal resources are protected by Role Based
+                  Access Control (RBAC). If enabled, developers view or register
+                  for APIs until unless assigned to teams with access to view
+                  and consume specific APIs. Authentication must be enabled to
+                  use RBAC.
+              default_api_visibility:
+                type: string
+                description: >-
+                  The default visibility of APIs in the portal. If set to
+                  `public`, newly published APIs are visible to unauthenticated
+                  developers. If set to `private`, newly published APIs are
+                  hidden from unauthenticated developers.
+                enum:
+                  - public
+                  - private
+              default_page_visibility:
+                type: string
+                description: >-
+                  The default visibility of pages in the portal. If set to
+                  `public`, newly created pages are visible to unauthenticated
+                  developers. If set to `private`, newly created pages are
+                  hidden from unauthenticated developers.
+                enum:
+                  - public
+                  - private
+              default_application_auth_strategy_id:
+                type: string
+                format: uuid
+                description: >-
+                  The default authentication strategy for APIs published to the
+                  portal. Newly published APIs will use this authentication
+                  strategy unless overridden during publication. If set to
+                  `null`, API publications will not use an authentication
+                  strategy unless set during publication. DCR support for Auth
+                  Strategies is currently in development.
+                nullable: true
+              auto_approve_developers:
+                type: boolean
+                description: >-
+                  Whether developer account registrations will be automatically
+                  approved, or if they will be set to pending until approved by
+                  an admin.
+              auto_approve_applications:
+                type: boolean
+                description: >-
+                  Whether requests from applications to register for APIs will
+                  be automatically approved, or if they will be set to pending
+                  until approved by an admin.
+              default_domain:
+                description: >-
+                  The domain assigned to the portal by Konnect. This is the
+                  default place to access the portal and its API if not using a
+                  `custom_domain``.
+                type: string
+                format: hostname
+                readOnly: true
+              canonical_domain:
+                type: string
+                format: hostname
+                description: The canonical domain of the developer portal
+                nullable: false
+                readOnly: true
+              labels:
+                $ref: '#/components/schemas/LabelsUpdate'
+            required:
+              - name
     UpdatePortal:
       description: Update a portal's settings.
       required: true
       content:
         application/json:
           schema:
-            x-flatten-allOf: true
-            allOf:
-              - $ref: '#/components/schemas/Portal'
-              - properties:
-                  labels:
-                    $ref: '#/components/schemas/LabelsUpdate'
+            title: Portal
+            type: object
+            additionalProperties: false
+            properties:
+              id:
+                $ref: '#/components/schemas/UUID'
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+              name:
+                type: string
+                maxLength: 255
+                minLength: 1
+                description: >-
+                  The name of the portal, used to distinguish it from other
+                  portals. Name must be unique.
+              display_name:
+                type: string
+                maxLength: 255
+                minLength: 1
+                description: >-
+                  The display name of the portal. This value will be the
+                  portal's `name` in Portal API.
+              description:
+                type: string
+                nullable: true
+                maxLength: 512
+                description: A description of the portal.
+              authentication_enabled:
+                type: boolean
+                description: >-
+                  Whether the portal supports developer authentication. If
+                  disabled, developers cannot register for accounts or create
+                  applications.
+              rbac_enabled:
+                type: boolean
+                description: >-
+                  Whether the portal resources are protected by Role Based
+                  Access Control (RBAC). If enabled, developers view or register
+                  for APIs until unless assigned to teams with access to view
+                  and consume specific APIs. Authentication must be enabled to
+                  use RBAC.
+              default_api_visibility:
+                type: string
+                description: >-
+                  The default visibility of APIs in the portal. If set to
+                  `public`, newly published APIs are visible to unauthenticated
+                  developers. If set to `private`, newly published APIs are
+                  hidden from unauthenticated developers.
+                enum:
+                  - public
+                  - private
+              default_page_visibility:
+                type: string
+                description: >-
+                  The default visibility of pages in the portal. If set to
+                  `public`, newly created pages are visible to unauthenticated
+                  developers. If set to `private`, newly created pages are
+                  hidden from unauthenticated developers.
+                enum:
+                  - public
+                  - private
+              default_application_auth_strategy_id:
+                type: string
+                format: uuid
+                description: >-
+                  The default authentication strategy for APIs published to the
+                  portal. Newly published APIs will use this authentication
+                  strategy unless overridden during publication. If set to
+                  `null`, API publications will not use an authentication
+                  strategy unless set during publication. DCR support for Auth
+                  Strategies is currently in development.
+                nullable: true
+              auto_approve_developers:
+                type: boolean
+                description: >-
+                  Whether developer account registrations will be automatically
+                  approved, or if they will be set to pending until approved by
+                  an admin.
+              auto_approve_applications:
+                type: boolean
+                description: >-
+                  Whether requests from applications to register for APIs will
+                  be automatically approved, or if they will be set to pending
+                  until approved by an admin.
+              default_domain:
+                description: >-
+                  The domain assigned to the portal by Konnect. This is the
+                  default place to access the portal and its API if not using a
+                  `custom_domain``.
+                type: string
+                format: hostname
+                readOnly: true
+              canonical_domain:
+                type: string
+                format: hostname
+                description: The canonical domain of the developer portal
+                nullable: false
+                readOnly: true
+              labels:
+                $ref: '#/components/schemas/LabelsUpdate'
     ReplacePortalCustomization:
       content:
         application/json:
@@ -5503,45 +5701,264 @@ components:
       content:
         application/json:
           schema:
-            x-flatten-allOf: true
-            allOf:
-              - $ref: '#/components/schemas/Api'
-              - required:
-                  - name
+            title: API
+            type: object
+            additionalProperties: false
+            properties:
+              id:
+                type: string
+                format: uuid
+                example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+                description: The API identifier.
+                readOnly: true
+              name:
+                type: string
+                maxLength: 255
+                minLength: 1
+                description: >
+                  The name of your API. The `name + version` combination must be
+                  unique for each API you publish.
+                example: MyAPI
+              description:
+                type: string
+                description: >-
+                  A description of your API. Will be visible on your live
+                  Portal.
+                nullable: true
+              version:
+                type: string
+                maxLength: 255
+                minLength: 1
+                description: >-
+                  An optional version for your API. Leave this empty if your API
+                  is unversioned.
+                nullable: true
+              deprecated:
+                type: boolean
+                description: Marks this API as deprecated.
+              slug:
+                type: string
+                pattern: ^[\w-]+$
+                description: >
+                  The `slug` is used in generated URLs to provide human readable
+                  paths.
+
+
+                  Defaults to `slugify(name + version)`
+                example: my-api-v1
+                nullable: true
+              auth_strategy_sync_error:
+                readOnly: true
+                allOf:
+                  - $ref: '#/components/schemas/AuthStrategyApiSyncError'
+              portals:
+                readOnly: true
+                type: array
+                nullable: false
+                uniqueItems: true
+                description: The list of portals which this API is published to.
+                items:
+                  type: object
+                  additionalProperties: false
+                  required:
+                    - id
+                    - name
+                    - display_name
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      example: 25a2624c-49fc-4764-99e1-224ed819f200
+                      description: The portal identifier.
+                    name:
+                      type: string
+                      example: My Portal
+                      description: >-
+                        The name of the portal, used to distinguish it from
+                        other portals.
+                    display_name:
+                      type: string
+                      example: My Portal
+                      description: >-
+                        The display name of the portal. This value will be the
+                        portal's `name` in Portal API.
+              labels:
+                $ref: '#/components/schemas/Labels'
+              public_labels:
+                $ref: '#/components/schemas/PublicLabels'
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+            required:
+              - name
     CreateApiSpecRequest:
       required: true
       content:
         application/json:
           schema:
-            x-flatten-allOf: true
-            allOf:
-              - $ref: '#/components/schemas/ApiSpec'
-              - required:
-                  - content
+            title: API Specification
+            type: object
+            additionalProperties: false
+            properties:
+              id:
+                type: string
+                format: uuid
+                example: 7710d5c4-d902-410b-992f-18b814155b53
+                description: The API specification identifier.
+                readOnly: true
+              content:
+                type: string
+                description: |
+                  The raw content of your API specification, in json or yaml.
+                example: >-
+                  {"openapi":"3.0.3","info":{"title":"Example
+                  API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example
+                  endpoint","responses":{"200":{"description":"Successful
+                  response"}}}}}}
+              validation_messages:
+                type: array
+                description: The errors that occurred while parsing the API specification.
+                readOnly: true
+                items:
+                  type: object
+                  additionalProperties: false
+                  required:
+                    - message
+                  properties:
+                    message:
+                      type: string
+              type:
+                $ref: '#/components/schemas/ApiSpecType'
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+            required:
+              - content
     CreateApiDocumentRequest:
       required: true
       content:
         application/json:
           schema:
-            x-flatten-allOf: true
-            allOf:
-              - $ref: '#/components/schemas/ApiDocument'
-              - required:
-                  - content
+            type: object
+            title: API Document
+            additionalProperties: false
+            properties:
+              id:
+                $ref: '#/components/schemas/ApiDocumentId'
+              content:
+                $ref: '#/components/schemas/ApiDocumentContent'
+              title:
+                $ref: '#/components/schemas/ApiDocumentTitle'
+              slug:
+                $ref: '#/components/schemas/ApiDocumentSlug'
+              status:
+                $ref: '#/components/schemas/ApiDocumentStatus'
+              parent_document_id:
+                $ref: '#/components/schemas/ApiDocumentParentDocumentId'
+              labels:
+                $ref: '#/components/schemas/Labels'
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+            required:
+              - content
     UpdateApiRequest:
       required: true
       content:
         application/json:
           schema:
-            x-flatten-allOf: true
-            allOf:
-              - $ref: '#/components/schemas/Api'
-              - type: object
-                properties:
-                  labels:
-                    $ref: '#/components/schemas/LabelsUpdate'
-                  public_labels:
-                    $ref: '#/components/schemas/PublicLabelsUpdate'
+            title: API
+            type: object
+            additionalProperties: false
+            properties:
+              id:
+                type: string
+                format: uuid
+                example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+                description: The API identifier.
+                readOnly: true
+              name:
+                type: string
+                maxLength: 255
+                minLength: 1
+                description: >
+                  The name of your API. The `name + version` combination must be
+                  unique for each API you publish.
+                example: MyAPI
+              description:
+                type: string
+                description: >-
+                  A description of your API. Will be visible on your live
+                  Portal.
+                nullable: true
+              version:
+                type: string
+                maxLength: 255
+                minLength: 1
+                description: >-
+                  An optional version for your API. Leave this empty if your API
+                  is unversioned.
+                nullable: true
+              deprecated:
+                type: boolean
+                description: Marks this API as deprecated.
+              slug:
+                type: string
+                pattern: ^[\w-]+$
+                description: >
+                  The `slug` is used in generated URLs to provide human readable
+                  paths.
+
+
+                  Defaults to `slugify(name + version)`
+                example: my-api-v1
+                nullable: true
+              auth_strategy_sync_error:
+                readOnly: true
+                allOf:
+                  - $ref: '#/components/schemas/AuthStrategyApiSyncError'
+              portals:
+                readOnly: true
+                type: array
+                nullable: false
+                uniqueItems: true
+                description: The list of portals which this API is published to.
+                items:
+                  type: object
+                  additionalProperties: false
+                  required:
+                    - id
+                    - name
+                    - display_name
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      example: 25a2624c-49fc-4764-99e1-224ed819f200
+                      description: The portal identifier.
+                    name:
+                      type: string
+                      example: My Portal
+                      description: >-
+                        The name of the portal, used to distinguish it from
+                        other portals.
+                    display_name:
+                      type: string
+                      example: My Portal
+                      description: >-
+                        The display name of the portal. This value will be the
+                        portal's `name` in Portal API.
+              labels:
+                $ref: '#/components/schemas/LabelsUpdate'
+              public_labels:
+                $ref: '#/components/schemas/PublicLabelsUpdate'
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
     UpdateApiDocumentRequest:
       required: true
       content:
@@ -5679,25 +6096,124 @@ components:
       content:
         application/json:
           schema:
-            x-flatten-allOf: true
-            allOf:
-              - $ref: '#/components/schemas/Portal'
-              - required:
-                  - id
-                  - name
-                  - display_name
-                  - description
-                  - authentication_enabled
-                  - rbac_enabled
-                  - default_api_visibility
-                  - default_page_visibility
-                  - default_application_auth_strategy_id
-                  - auto_approve_applications
-                  - auto_approve_developers
-                  - default_domain
-                  - canonical_domain
-                  - updated_at
-                  - created_at
+            title: Portal
+            type: object
+            additionalProperties: false
+            properties:
+              id:
+                $ref: '#/components/schemas/UUID'
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+              name:
+                type: string
+                maxLength: 255
+                minLength: 1
+                description: >-
+                  The name of the portal, used to distinguish it from other
+                  portals. Name must be unique.
+              display_name:
+                type: string
+                maxLength: 255
+                minLength: 1
+                description: >-
+                  The display name of the portal. This value will be the
+                  portal's `name` in Portal API.
+              description:
+                type: string
+                nullable: true
+                maxLength: 512
+                description: A description of the portal.
+              authentication_enabled:
+                type: boolean
+                description: >-
+                  Whether the portal supports developer authentication. If
+                  disabled, developers cannot register for accounts or create
+                  applications.
+              rbac_enabled:
+                type: boolean
+                description: >-
+                  Whether the portal resources are protected by Role Based
+                  Access Control (RBAC). If enabled, developers view or register
+                  for APIs until unless assigned to teams with access to view
+                  and consume specific APIs. Authentication must be enabled to
+                  use RBAC.
+              default_api_visibility:
+                type: string
+                description: >-
+                  The default visibility of APIs in the portal. If set to
+                  `public`, newly published APIs are visible to unauthenticated
+                  developers. If set to `private`, newly published APIs are
+                  hidden from unauthenticated developers.
+                enum:
+                  - public
+                  - private
+              default_page_visibility:
+                type: string
+                description: >-
+                  The default visibility of pages in the portal. If set to
+                  `public`, newly created pages are visible to unauthenticated
+                  developers. If set to `private`, newly created pages are
+                  hidden from unauthenticated developers.
+                enum:
+                  - public
+                  - private
+              default_application_auth_strategy_id:
+                type: string
+                format: uuid
+                description: >-
+                  The default authentication strategy for APIs published to the
+                  portal. Newly published APIs will use this authentication
+                  strategy unless overridden during publication. If set to
+                  `null`, API publications will not use an authentication
+                  strategy unless set during publication. DCR support for Auth
+                  Strategies is currently in development.
+                nullable: true
+              auto_approve_developers:
+                type: boolean
+                description: >-
+                  Whether developer account registrations will be automatically
+                  approved, or if they will be set to pending until approved by
+                  an admin.
+              auto_approve_applications:
+                type: boolean
+                description: >-
+                  Whether requests from applications to register for APIs will
+                  be automatically approved, or if they will be set to pending
+                  until approved by an admin.
+              default_domain:
+                description: >-
+                  The domain assigned to the portal by Konnect. This is the
+                  default place to access the portal and its API if not using a
+                  `custom_domain``.
+                type: string
+                format: hostname
+                readOnly: true
+              canonical_domain:
+                type: string
+                format: hostname
+                description: The canonical domain of the developer portal
+                nullable: false
+                readOnly: true
+              labels:
+                $ref: '#/components/schemas/Labels'
+            required:
+              - id
+              - name
+              - display_name
+              - description
+              - authentication_enabled
+              - rbac_enabled
+              - default_api_visibility
+              - default_page_visibility
+              - default_application_auth_strategy_id
+              - auto_approve_applications
+              - auto_approve_developers
+              - default_domain
+              - canonical_domain
+              - updated_at
+              - created_at
     PortalCustomizationResponse:
       description: The current customization options for a portal.
       content:
@@ -5812,59 +6328,135 @@ components:
       content:
         application/json:
           schema:
-            x-flatten-allOf: true
-            allOf:
-              - $ref: '#/components/schemas/ApiDocument'
-              - required:
-                  - id
-                  - parent_document_id
-                  - title
-                  - slug
-                  - status
-                  - content
-                  - labels
-                  - updated_at
-                  - created_at
+            type: object
+            title: API Document
+            additionalProperties: false
+            properties:
+              id:
+                $ref: '#/components/schemas/ApiDocumentId'
+              content:
+                $ref: '#/components/schemas/ApiDocumentContent'
+              title:
+                $ref: '#/components/schemas/ApiDocumentTitle'
+              slug:
+                $ref: '#/components/schemas/ApiDocumentSlug'
+              status:
+                $ref: '#/components/schemas/ApiDocumentStatus'
+              parent_document_id:
+                $ref: '#/components/schemas/ApiDocumentParentDocumentId'
+              labels:
+                $ref: '#/components/schemas/Labels'
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+            required:
+              - id
+              - parent_document_id
+              - title
+              - slug
+              - status
+              - content
+              - labels
+              - updated_at
+              - created_at
     ApiSpecResponse:
       description: API specification
       content:
         application/json:
           schema:
-            x-flatten-allOf: true
-            allOf:
-              - $ref: '#/components/schemas/ApiSpec'
-              - required:
-                  - id
-                  - content
-                  - type
-                  - created_at
-                  - updated_at
+            title: API Specification
+            type: object
+            additionalProperties: false
+            properties:
+              id:
+                type: string
+                format: uuid
+                example: 7710d5c4-d902-410b-992f-18b814155b53
+                description: The API specification identifier.
+                readOnly: true
+              content:
+                type: string
+                description: |
+                  The raw content of your API specification, in json or yaml.
+                example: >-
+                  {"openapi":"3.0.3","info":{"title":"Example
+                  API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example
+                  endpoint","responses":{"200":{"description":"Successful
+                  response"}}}}}}
+              validation_messages:
+                type: array
+                description: The errors that occurred while parsing the API specification.
+                readOnly: true
+                items:
+                  type: object
+                  additionalProperties: false
+                  required:
+                    - message
+                  properties:
+                    message:
+                      type: string
+              type:
+                $ref: '#/components/schemas/ApiSpecType'
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+            required:
+              - id
+              - content
+              - type
+              - created_at
+              - updated_at
+              - validation_messages
     ApiPublicationResponse:
       description: An API publication in a portal
       content:
         application/json:
           schema:
-            x-flatten-allOf: true
-            allOf:
-              - $ref: '#/components/schemas/ApiPublication'
-              - required:
-                  - visibility
-                  - created_at
-                  - updated_at
-                  - auth_strategy_ids
+            title: API Publication
+            type: object
+            description: An API publication in a portal
+            additionalProperties: false
+            properties:
+              auto_approve_registrations:
+                $ref: '#/components/schemas/AutoApproveRegistrations'
+              auth_strategy_ids:
+                $ref: '#/components/schemas/ApiPublicationAuthStrategyIds'
+              visibility:
+                $ref: '#/components/schemas/ApiPublicationVisibility'
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+            required:
+              - visibility
+              - created_at
+              - updated_at
+              - auth_strategy_ids
     ApiImplementationResponse:
       description: An API implementation
       content:
         application/json:
           schema:
-            x-flatten-allOf: true
-            allOf:
-              - $ref: '#/components/schemas/ApiImplementation'
-              - required:
-                  - id
-                  - service
-                  - created_at
-                  - updated_at
+            title: API Implementation
+            type: object
+            description: An entity that implements an API
+            additionalProperties: false
+            required:
+              - service
+              - id
+              - created_at
+              - updated_at
+            properties:
+              id:
+                $ref: '#/components/schemas/UUID'
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+              service:
+                $ref: '#/components/schemas/ApiImplementationService'
     UnsupportedMediaType:
       description: Unsupported Media Type
       content:
@@ -6472,107 +7064,6 @@ components:
           schema:
             $ref: '#/components/schemas/MeshControlPlane'
   schemas:
-    Portal:
-      title: Portal
-      type: object
-      additionalProperties: false
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-        name:
-          type: string
-          maxLength: 255
-          minLength: 1
-          description: >-
-            The name of the portal, used to distinguish it from other portals.
-            Name must be unique.
-        display_name:
-          type: string
-          maxLength: 255
-          minLength: 1
-          description: >-
-            The display name of the portal. This value will be the portal's
-            `name` in Portal API.
-        description:
-          type: string
-          nullable: true
-          maxLength: 512
-          description: A description of the portal.
-        authentication_enabled:
-          type: boolean
-          description: >-
-            Whether the portal supports developer authentication. If disabled,
-            developers cannot register for accounts or create applications.
-        rbac_enabled:
-          type: boolean
-          description: >-
-            Whether the portal resources are protected by Role Based Access
-            Control (RBAC). If enabled, developers view or register for APIs
-            until unless assigned to teams with access to view and consume
-            specific APIs. Authentication must be enabled to use RBAC.
-        default_api_visibility:
-          type: string
-          description: >-
-            The default visibility of APIs in the portal. If set to `public`,
-            newly published APIs are visible to unauthenticated developers. If
-            set to `private`, newly published APIs are hidden from
-            unauthenticated developers.
-          enum:
-            - public
-            - private
-        default_page_visibility:
-          type: string
-          description: >-
-            The default visibility of pages in the portal. If set to `public`,
-            newly created pages are visible to unauthenticated developers. If
-            set to `private`, newly created pages are hidden from
-            unauthenticated developers.
-          enum:
-            - public
-            - private
-        default_application_auth_strategy_id:
-          type: string
-          format: uuid
-          description: >-
-            The default authentication strategy for APIs published to the
-            portal. Newly published APIs will use this authentication strategy
-            unless overridden during publication. If set to `null`, API
-            publications will not use an authentication strategy unless set
-            during publication. DCR support for Auth Strategies is currently in
-            development.
-          nullable: true
-        auto_approve_developers:
-          type: boolean
-          description: >-
-            Whether developer account registrations will be automatically
-            approved, or if they will be set to pending until approved by an
-            admin.
-        auto_approve_applications:
-          type: boolean
-          description: >-
-            Whether requests from applications to register for APIs will be
-            automatically approved, or if they will be set to pending until
-            approved by an admin.
-        default_domain:
-          description: >-
-            The domain assigned to the portal by Konnect. This is the default
-            place to access the portal and its API if not using a
-            `custom_domain``.
-          type: string
-          format: hostname
-          readOnly: true
-        canonical_domain:
-          type: string
-          format: hostname
-          description: The canonical domain of the developer portal
-          nullable: false
-          readOnly: true
-        labels:
-          $ref: '#/components/schemas/Labels'
     PageSlug:
       title: PageSlug
       description: >-
@@ -6684,7 +7175,6 @@ components:
       additionalProperties: false
       required:
         - slug
-        - title
         - content
       properties:
         slug:
@@ -6794,7 +7284,6 @@ components:
       additionalProperties: false
       required:
         - name
-        - title
         - content
       properties:
         name:
@@ -7699,7 +8188,7 @@ components:
         robots:
           type: string
           nullable: true
-    Api:
+    ApiResponseSchema:
       title: API
       type: object
       additionalProperties: false
@@ -7744,6 +8233,10 @@ components:
             Defaults to `slugify(name + version)`
           example: my-api-v1
           nullable: true
+        auth_strategy_sync_error:
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/AuthStrategyApiSyncError'
         portals:
           readOnly: true
           type: array
@@ -7783,23 +8276,56 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
-    ApiResponseSchema:
+      required:
+        - id
+        - name
+        - version
+        - labels
+        - public_labels
+        - deprecated
+        - created_at
+        - updated_at
+        - slug
+        - portals
+    AuthStrategyApiSyncError:
       type: object
-      title: API Response
-      x-flatten-allOf: true
-      allOf:
-        - $ref: '#/components/schemas/Api'
-        - required:
-            - id
-            - name
-            - version
-            - labels
-            - public_labels
-            - deprecated
-            - created_at
-            - updated_at
-            - slug
-            - portals
+      additionalProperties: false
+      nullable: true
+      required:
+        - message
+      properties:
+        control_plane_error:
+          type: string
+          enum:
+            - control_plane_error_no_response
+            - control_plane_error_invalid_response
+            - control_plane_error_unavailable
+            - control_plane_error_internal_error
+            - control_plane_error_bad_request
+            - control_plane_error_plugin_conflict
+            - control_plane_error_data_constraint_error
+            - control_plane_error_implementation_not_found
+        message:
+          type: string
+        info:
+          type: object
+          additionalProperties: true
+          properties:
+            details:
+              type: array
+              items:
+                type: object
+                additionalProperties: true
+                properties:
+                  type:
+                    type: string
+                  message:
+                    type: array
+                    items:
+                      type: string
+      example:
+        control_plane_error: control_plane_error_unavailable
+        message: Unable to connect to the control plane to update plugin
     ApiDocumentId:
       title: API Document ID
       type: string
@@ -7819,14 +8345,12 @@ components:
         page
       example: API Document
     ApiDocumentStatus:
-      title: API Document Status
-      x-flatten-allOf: true
-      allOf:
-        - $ref: '#/components/schemas/PublishStatus'
-        - description: >-
-            If `status=published` the document will be visible in your live
-            portal
-          default: unpublished
+      type: string
+      enum:
+        - published
+        - unpublished
+      description: If `status=published` the document will be visible in your live portal
+      default: unpublished
     ApiDocumentParentDocumentId:
       title: API Document Parent Document ID
       type: string
@@ -7885,12 +8409,24 @@ components:
         content:
           type: string
           description: |
-            The raw content of your API specification.
+            The raw content of your API specification, in json or yaml.
           example: >-
             {"openapi":"3.0.3","info":{"title":"Example
             API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example
             endpoint","responses":{"200":{"description":"Successful
             response"}}}}}}
+        validation_messages:
+          type: array
+          description: The errors that occurred while parsing the API specification.
+          readOnly: true
+          items:
+            type: object
+            additionalProperties: false
+            required:
+              - message
+            properties:
+              message:
+                type: string
         type:
           $ref: '#/components/schemas/ApiSpecType'
         created_at:
@@ -8046,11 +8582,6 @@ components:
         maxLength: 63
         nullable: true
       writeOnly: true
-    PublishStatus:
-      type: string
-      enum:
-        - published
-        - unpublished
     ApiSpecType:
       title: API Spec Type
       type: string
@@ -8062,6 +8593,7 @@ components:
 
         If this field is not set, it will be autodetected from `content`
       enum:
+        - oas2
         - oas3
         - asyncapi
     MeshAccessLogItem:
@@ -19117,12 +19649,12 @@ components:
       properties:
         caCert:
           properties:
-            RSAbits:
-              format: uint32
-              type: integer
-              x-speakeasy-param-computed: false
             expiration:
               type: string
+              x-speakeasy-param-computed: false
+            rsaBits:
+              format: uint32
+              type: integer
               x-speakeasy-param-computed: false
           type: object
           x-speakeasy-param-computed: false
@@ -19202,8 +19734,9 @@ components:
                         type: object
                         x-speakeasy-param-computed: false
                     type: object
+                    x-speakeasy-param-computed: false
                   type: array
-                  x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  default: []
                   x-speakeasy-param-computed: false
                 restrictions:
                   description: >-
@@ -19232,8 +19765,9 @@ components:
                         type: object
                         x-speakeasy-param-computed: false
                     type: object
+                    x-speakeasy-param-computed: false
                   type: array
-                  x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                  default: []
                   x-speakeasy-param-computed: false
               type: object
               x-speakeasy-param-computed: false
@@ -19280,8 +19814,9 @@ components:
                     type: string
                     x-speakeasy-param-computed: false
                 type: object
+                x-speakeasy-param-computed: false
               type: array
-              x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              default: []
               x-speakeasy-param-computed: false
             defaultBackend:
               description: Name of the default backend
@@ -19334,8 +19869,9 @@ components:
                     type: string
                     x-speakeasy-param-computed: false
                 type: object
+                x-speakeasy-param-computed: false
               type: array
-              x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              default: []
               x-speakeasy-param-computed: false
             enabledBackend:
               description: Name of the enabled backend
@@ -19437,8 +19973,9 @@ components:
                     type: string
                     x-speakeasy-param-computed: false
                 type: object
+                x-speakeasy-param-computed: false
               type: array
-              x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              default: []
               x-speakeasy-param-computed: false
             enabledBackend:
               description: Name of the enabled backend
@@ -19502,8 +20039,9 @@ components:
             policies.
           items:
             type: string
+            x-speakeasy-param-computed: false
           type: array
-          x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          default: []
           x-speakeasy-param-computed: false
         tracing:
           description: |-
@@ -19542,8 +20080,9 @@ components:
                     type: string
                     x-speakeasy-param-computed: false
                 type: object
+                x-speakeasy-param-computed: false
               type: array
-              x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              default: []
               x-speakeasy-param-computed: false
             defaultBackend:
               description: Name of the default backend
@@ -19629,8 +20168,8 @@ components:
                 type: integer
                 x-speakeasy-param-computed: false
             type: object
+            x-speakeasy-param-computed: false
           type: array
-          x-speakeasy-plan-modifiers: SupressZeroNullModifier
           x-speakeasy-param-computed: false
         envoy:
           description: Configuration of Envoy's metrics.
@@ -19885,8 +20424,9 @@ components:
                           required:
                             - Type
                           type: object
+                          x-speakeasy-param-computed: false
                         type: array
-                        x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                        default: []
                         x-speakeasy-param-computed: false
                       mode:
                         description: >-
@@ -19913,8 +20453,9 @@ components:
                     type: object
                     x-speakeasy-param-computed: false
                 type: object
+                x-speakeasy-param-computed: false
               type: array
-              x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              default: []
               x-speakeasy-param-computed: false
           type: object
           x-speakeasy-param-computed: false
@@ -19945,8 +20486,9 @@ components:
                 type: object
                 x-speakeasy-param-computed: false
             type: object
+            x-speakeasy-param-computed: false
           type: array
-          x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          default: []
           x-speakeasy-param-computed: false
         tags:
           additionalProperties:
@@ -21135,8 +21677,8 @@ components:
         dnsNames:
           items:
             type: string
+            x-speakeasy-param-computed: false
           type: array
-          x-speakeasy-plan-modifiers: SupressZeroNullModifier
           x-speakeasy-param-computed: false
         issuerRef:
           properties:

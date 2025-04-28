@@ -3,25 +3,41 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
-	"time"
 )
 
-func (r *PortalTeamDataSourceModel) RefreshFromSharedPortalTeamResponse(resp *shared.PortalTeamResponse) {
+func (r *PortalTeamDataSourceModel) ToOperationsGetPortalTeamRequest(ctx context.Context) (*operations.GetPortalTeamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var teamID string
+	teamID = r.ID.ValueString()
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	out := operations.GetPortalTeamRequest{
+		TeamID:   teamID,
+		PortalID: portalID,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalTeamDataSourceModel) RefreshFromSharedPortalTeamResponse(ctx context.Context, resp *shared.PortalTeamResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		if resp.CreatedAt != nil {
-			r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.CreatedAt = types.StringNull()
-		}
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Name = types.StringPointerValue(resp.Name)
-		if resp.UpdatedAt != nil {
-			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.UpdatedAt = types.StringNull()
-		}
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	}
+
+	return diags
 }

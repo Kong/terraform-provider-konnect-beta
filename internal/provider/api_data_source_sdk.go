@@ -3,15 +3,81 @@
 package provider
 
 import (
+	"context"
+	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
-	"time"
 )
 
-func (r *APIDataSourceModel) RefreshFromSharedAPIResponseSchema(resp *shared.APIResponseSchema) {
+func (r *APIDataSourceModel) ToOperationsFetchAPIRequest(ctx context.Context) (*operations.FetchAPIRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiID string
+	apiID = r.ID.ValueString()
+
+	out := operations.FetchAPIRequest{
+		APIID: apiID,
+	}
+
+	return &out, diags
+}
+
+func (r *APIDataSourceModel) RefreshFromSharedAPIResponseSchema(ctx context.Context, resp *shared.APIResponseSchema) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		if resp.AuthStrategySyncError == nil {
+			r.AuthStrategySyncError = nil
+		} else {
+			r.AuthStrategySyncError = &tfTypes.AuthStrategySyncError{}
+			if resp.AuthStrategySyncError.ControlPlaneError != nil {
+				r.AuthStrategySyncError.ControlPlaneError = types.StringValue(string(*resp.AuthStrategySyncError.ControlPlaneError))
+			} else {
+				r.AuthStrategySyncError.ControlPlaneError = types.StringNull()
+			}
+			if resp.AuthStrategySyncError.Info == nil {
+				r.AuthStrategySyncError.Info = nil
+			} else {
+				r.AuthStrategySyncError.Info = &tfTypes.Info{}
+				if resp.AuthStrategySyncError.Info.AdditionalProperties == nil {
+					r.AuthStrategySyncError.Info.AdditionalProperties = types.StringNull()
+				} else {
+					additionalPropertiesResult, _ := json.Marshal(resp.AuthStrategySyncError.Info.AdditionalProperties)
+					r.AuthStrategySyncError.Info.AdditionalProperties = types.StringValue(string(additionalPropertiesResult))
+				}
+				r.AuthStrategySyncError.Info.Details = []tfTypes.Details{}
+				if len(r.AuthStrategySyncError.Info.Details) > len(resp.AuthStrategySyncError.Info.Details) {
+					r.AuthStrategySyncError.Info.Details = r.AuthStrategySyncError.Info.Details[:len(resp.AuthStrategySyncError.Info.Details)]
+				}
+				for detailsCount, detailsItem := range resp.AuthStrategySyncError.Info.Details {
+					var details tfTypes.Details
+					if detailsItem.AdditionalProperties == nil {
+						details.AdditionalProperties = types.StringNull()
+					} else {
+						additionalPropertiesResult1, _ := json.Marshal(detailsItem.AdditionalProperties)
+						details.AdditionalProperties = types.StringValue(string(additionalPropertiesResult1))
+					}
+					details.Message = make([]types.String, 0, len(detailsItem.Message))
+					for _, v := range detailsItem.Message {
+						details.Message = append(details.Message, types.StringValue(v))
+					}
+					details.Type = types.StringPointerValue(detailsItem.Type)
+					if detailsCount+1 > len(r.AuthStrategySyncError.Info.Details) {
+						r.AuthStrategySyncError.Info.Details = append(r.AuthStrategySyncError.Info.Details, details)
+					} else {
+						r.AuthStrategySyncError.Info.Details[detailsCount].AdditionalProperties = details.AdditionalProperties
+						r.AuthStrategySyncError.Info.Details[detailsCount].Message = details.Message
+						r.AuthStrategySyncError.Info.Details[detailsCount].Type = details.Type
+					}
+				}
+			}
+			r.AuthStrategySyncError.Message = types.StringValue(resp.AuthStrategySyncError.Message)
+		}
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Deprecated = types.BoolValue(resp.Deprecated)
 		r.Description = types.StringPointerValue(resp.Description)
 		r.ID = types.StringValue(resp.ID)
@@ -27,16 +93,16 @@ func (r *APIDataSourceModel) RefreshFromSharedAPIResponseSchema(resp *shared.API
 			r.Portals = r.Portals[:len(resp.Portals)]
 		}
 		for portalsCount, portalsItem := range resp.Portals {
-			var portals1 tfTypes.Portals
-			portals1.DisplayName = types.StringValue(portalsItem.DisplayName)
-			portals1.ID = types.StringValue(portalsItem.ID)
-			portals1.Name = types.StringValue(portalsItem.Name)
+			var portals tfTypes.Portals
+			portals.DisplayName = types.StringValue(portalsItem.DisplayName)
+			portals.ID = types.StringValue(portalsItem.ID)
+			portals.Name = types.StringValue(portalsItem.Name)
 			if portalsCount+1 > len(r.Portals) {
-				r.Portals = append(r.Portals, portals1)
+				r.Portals = append(r.Portals, portals)
 			} else {
-				r.Portals[portalsCount].DisplayName = portals1.DisplayName
-				r.Portals[portalsCount].ID = portals1.ID
-				r.Portals[portalsCount].Name = portals1.Name
+				r.Portals[portalsCount].DisplayName = portals.DisplayName
+				r.Portals[portalsCount].ID = portals.ID
+				r.Portals[portalsCount].Name = portals.Name
 			}
 		}
 		if len(resp.PublicLabels) > 0 {
@@ -46,7 +112,9 @@ func (r *APIDataSourceModel) RefreshFromSharedAPIResponseSchema(resp *shared.API
 			}
 		}
 		r.Slug = types.StringPointerValue(resp.Slug)
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 		r.Version = types.StringPointerValue(resp.Version)
 	}
+
+	return diags
 }

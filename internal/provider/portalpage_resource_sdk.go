@@ -3,18 +3,26 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
-	"time"
 )
 
-func (r *PortalPageResourceModel) ToSharedCreatePortalPageRequest() *shared.CreatePortalPageRequest {
+func (r *PortalPageResourceModel) ToSharedCreatePortalPageRequest(ctx context.Context) (*shared.CreatePortalPageRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var slug string
 	slug = r.Slug.ValueString()
 
-	var title string
-	title = r.Title.ValueString()
-
+	title := new(string)
+	if !r.Title.IsUnknown() && !r.Title.IsNull() {
+		*title = r.Title.ValueString()
+	} else {
+		title = nil
+	}
 	var content string
 	content = r.Content.ValueString()
 
@@ -51,25 +59,34 @@ func (r *PortalPageResourceModel) ToSharedCreatePortalPageRequest() *shared.Crea
 		Description:  description,
 		ParentPageID: parentPageID,
 	}
-	return &out
+
+	return &out, diags
 }
 
-func (r *PortalPageResourceModel) RefreshFromSharedPortalPageResponse(resp *shared.PortalPageResponse) {
-	if resp != nil {
-		r.Content = types.StringValue(resp.Content)
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
-		r.Description = types.StringPointerValue(resp.Description)
-		r.ID = types.StringValue(resp.ID)
-		r.ParentPageID = types.StringPointerValue(resp.ParentPageID)
-		r.Slug = types.StringValue(resp.Slug)
-		r.Status = types.StringValue(string(resp.Status))
-		r.Title = types.StringValue(resp.Title)
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
-		r.Visibility = types.StringValue(string(resp.Visibility))
+func (r *PortalPageResourceModel) ToOperationsCreatePortalPageRequest(ctx context.Context) (*operations.CreatePortalPageRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	createPortalPageRequest, createPortalPageRequestDiags := r.ToSharedCreatePortalPageRequest(ctx)
+	diags.Append(createPortalPageRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
 	}
+
+	out := operations.CreatePortalPageRequest{
+		PortalID:                portalID,
+		CreatePortalPageRequest: *createPortalPageRequest,
+	}
+
+	return &out, diags
 }
 
-func (r *PortalPageResourceModel) ToSharedUpdatePortalPageRequest() *shared.UpdatePortalPageRequest {
+func (r *PortalPageResourceModel) ToSharedUpdatePortalPageRequest(ctx context.Context) (*shared.UpdatePortalPageRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	slug := new(string)
 	if !r.Slug.IsUnknown() && !r.Slug.IsNull() {
 		*slug = r.Slug.ValueString()
@@ -121,5 +138,84 @@ func (r *PortalPageResourceModel) ToSharedUpdatePortalPageRequest() *shared.Upda
 		Description:  description,
 		ParentPageID: parentPageID,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *PortalPageResourceModel) ToOperationsUpdatePortalPageRequest(ctx context.Context) (*operations.UpdatePortalPageRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	var pageID string
+	pageID = r.ID.ValueString()
+
+	updatePortalPageRequest, updatePortalPageRequestDiags := r.ToSharedUpdatePortalPageRequest(ctx)
+	diags.Append(updatePortalPageRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdatePortalPageRequest{
+		PortalID:                portalID,
+		PageID:                  pageID,
+		UpdatePortalPageRequest: *updatePortalPageRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalPageResourceModel) ToOperationsGetPortalPageRequest(ctx context.Context) (*operations.GetPortalPageRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	var pageID string
+	pageID = r.ID.ValueString()
+
+	out := operations.GetPortalPageRequest{
+		PortalID: portalID,
+		PageID:   pageID,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalPageResourceModel) ToOperationsDeletePortalPageRequest(ctx context.Context) (*operations.DeletePortalPageRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	var pageID string
+	pageID = r.ID.ValueString()
+
+	out := operations.DeletePortalPageRequest{
+		PortalID: portalID,
+		PageID:   pageID,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalPageResourceModel) RefreshFromSharedPortalPageResponse(ctx context.Context, resp *shared.PortalPageResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.Content = types.StringValue(resp.Content)
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.Description = types.StringPointerValue(resp.Description)
+		r.ID = types.StringValue(resp.ID)
+		r.ParentPageID = types.StringPointerValue(resp.ParentPageID)
+		r.Slug = types.StringValue(resp.Slug)
+		r.Status = types.StringValue(string(resp.Status))
+		r.Title = types.StringValue(resp.Title)
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+		r.Visibility = types.StringValue(string(resp.Visibility))
+	}
+
+	return diags
 }

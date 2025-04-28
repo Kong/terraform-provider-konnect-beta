@@ -15,7 +15,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	speakeasy_boolvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/boolvalidators"
 	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/listvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
@@ -363,15 +362,13 @@ func (r *PortalCustomizationResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
+	request, requestDiags := data.ToOperationsReplacePortalCustomizationRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	portalCustomization := data.ToSharedPortalCustomization()
-	request := operations.ReplacePortalCustomizationRequest{
-		PortalID:            portalID,
-		PortalCustomization: portalCustomization,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.PortalCustomization.ReplacePortalCustomization(ctx, request)
+	res, err := r.client.PortalCustomization.ReplacePortalCustomization(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -391,8 +388,17 @@ func (r *PortalCustomizationResource) Create(ctx context.Context, req resource.C
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPortalCustomization(res.PortalCustomization)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalCustomization(ctx, res.PortalCustomization)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -416,13 +422,13 @@ func (r *PortalCustomizationResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
+	request, requestDiags := data.ToOperationsGetPortalCustomizationRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.GetPortalCustomizationRequest{
-		PortalID: portalID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.PortalCustomization.GetPortalCustomization(ctx, request)
+	res, err := r.client.PortalCustomization.GetPortalCustomization(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -446,7 +452,11 @@ func (r *PortalCustomizationResource) Read(ctx context.Context, req resource.Rea
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPortalCustomization(res.PortalCustomization)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalCustomization(ctx, res.PortalCustomization)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -466,15 +476,13 @@ func (r *PortalCustomizationResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
+	request, requestDiags := data.ToOperationsReplacePortalCustomizationRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	portalCustomization := data.ToSharedPortalCustomization()
-	request := operations.ReplacePortalCustomizationRequest{
-		PortalID:            portalID,
-		PortalCustomization: portalCustomization,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.PortalCustomization.ReplacePortalCustomization(ctx, request)
+	res, err := r.client.PortalCustomization.ReplacePortalCustomization(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -494,8 +502,17 @@ func (r *PortalCustomizationResource) Update(ctx context.Context, req resource.U
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPortalCustomization(res.PortalCustomization)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalCustomization(ctx, res.PortalCustomization)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

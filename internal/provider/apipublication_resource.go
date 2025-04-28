@@ -17,7 +17,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 )
 
@@ -150,19 +149,13 @@ func (r *APIPublicationResource) Create(ctx context.Context, req resource.Create
 		return
 	}
 
-	var apiID string
-	apiID = data.APIID.ValueString()
+	request, requestDiags := data.ToOperationsPublishAPIToPortalRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
-
-	apiPublication := *data.ToSharedAPIPublication()
-	request := operations.PublishAPIToPortalRequest{
-		APIID:          apiID,
-		PortalID:       portalID,
-		APIPublication: apiPublication,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIPublication.PublishAPIToPortal(ctx, request)
+	res, err := r.client.APIPublication.PublishAPIToPortal(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -182,8 +175,17 @@ func (r *APIPublicationResource) Create(ctx context.Context, req resource.Create
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAPIPublicationResponse(res.APIPublicationResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAPIPublicationResponse(ctx, res.APIPublicationResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -207,17 +209,13 @@ func (r *APIPublicationResource) Read(ctx context.Context, req resource.ReadRequ
 		return
 	}
 
-	var apiID string
-	apiID = data.APIID.ValueString()
+	request, requestDiags := data.ToOperationsFetchPublicationRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
-
-	request := operations.FetchPublicationRequest{
-		APIID:    apiID,
-		PortalID: portalID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIPublication.FetchPublication(ctx, request)
+	res, err := r.client.APIPublication.FetchPublication(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -241,7 +239,11 @@ func (r *APIPublicationResource) Read(ctx context.Context, req resource.ReadRequ
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAPIPublicationResponse(res.APIPublicationResponse)
+	resp.Diagnostics.Append(data.RefreshFromSharedAPIPublicationResponse(ctx, res.APIPublicationResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -261,19 +263,13 @@ func (r *APIPublicationResource) Update(ctx context.Context, req resource.Update
 		return
 	}
 
-	var apiID string
-	apiID = data.APIID.ValueString()
+	request, requestDiags := data.ToOperationsPublishAPIToPortalRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
-
-	apiPublication := *data.ToSharedAPIPublication()
-	request := operations.PublishAPIToPortalRequest{
-		APIID:          apiID,
-		PortalID:       portalID,
-		APIPublication: apiPublication,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIPublication.PublishAPIToPortal(ctx, request)
+	res, err := r.client.APIPublication.PublishAPIToPortal(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -293,8 +289,17 @@ func (r *APIPublicationResource) Update(ctx context.Context, req resource.Update
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAPIPublicationResponse(res.APIPublicationResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAPIPublicationResponse(ctx, res.APIPublicationResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -318,17 +323,13 @@ func (r *APIPublicationResource) Delete(ctx context.Context, req resource.Delete
 		return
 	}
 
-	var apiID string
-	apiID = data.APIID.ValueString()
+	request, requestDiags := data.ToOperationsDeletePublicationRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
-
-	request := operations.DeletePublicationRequest{
-		APIID:    apiID,
-		PortalID: portalID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIPublication.DeletePublication(ctx, request)
+	res, err := r.client.APIPublication.DeletePublication(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -356,7 +357,7 @@ func (r *APIPublicationResource) ImportState(ctx context.Context, req resource.I
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "apiid": "9f5061ce-78f6-4452-9108-ad7c02821fd5",  "portal_id": "f32d905a-ed33-46a3-a093-d8f536af9a8a"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "apiid": "9f5061ce-78f6-4452-9108-ad7c02821fd5",  "portal_id": "f32d905a-ed33-46a3-a093-d8f536af9a8a"}': `+err.Error())
 		return
 	}
 

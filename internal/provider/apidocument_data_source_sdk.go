@@ -3,15 +3,37 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
-	"time"
 )
 
-func (r *APIDocumentDataSourceModel) RefreshFromSharedAPIDocumentResponse(resp *shared.APIDocumentResponse) {
+func (r *APIDocumentDataSourceModel) ToOperationsFetchAPIDocumentRequest(ctx context.Context) (*operations.FetchAPIDocumentRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiID string
+	apiID = r.APIID.ValueString()
+
+	var documentID string
+	documentID = r.ID.ValueString()
+
+	out := operations.FetchAPIDocumentRequest{
+		APIID:      apiID,
+		DocumentID: documentID,
+	}
+
+	return &out, diags
+}
+
+func (r *APIDocumentDataSourceModel) RefreshFromSharedAPIDocumentResponse(ctx context.Context, resp *shared.APIDocumentResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.Content = types.StringValue(resp.Content)
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.ID = types.StringValue(resp.ID)
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
@@ -27,6 +49,8 @@ func (r *APIDocumentDataSourceModel) RefreshFromSharedAPIDocumentResponse(resp *
 			r.Status = types.StringNull()
 		}
 		r.Title = types.StringValue(resp.Title)
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
+
+	return diags
 }

@@ -61,7 +61,7 @@ func TestMesh(t *testing.T) {
                 "kuma.io/origin": "zone",
                 "kuma.io/zone":   "default",
             }).
-            WithSpecHCL(tfbuilder.AllowAllTrafficPermissionSpec)
+            WithSpec(tfbuilder.AllowAllTrafficPermissionSpec)
         builder.AddControlPlane(cp)
         builder.AddMesh(mesh)
 
