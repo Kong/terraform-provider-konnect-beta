@@ -3,12 +3,17 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *PortalAuthResourceModel) ToSharedPortalAuthenticationSettingsUpdateRequest() *shared.PortalAuthenticationSettingsUpdateRequest {
+func (r *PortalAuthResourceModel) ToSharedPortalAuthenticationSettingsUpdateRequest(ctx context.Context) (*shared.PortalAuthenticationSettingsUpdateRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	basicAuthEnabled := new(bool)
 	if !r.BasicAuthEnabled.IsUnknown() && !r.BasicAuthEnabled.IsNull() {
 		*basicAuthEnabled = r.BasicAuthEnabled.ValueBool()
@@ -63,7 +68,7 @@ func (r *PortalAuthResourceModel) ToSharedPortalAuthenticationSettingsUpdateRequ
 	} else {
 		oidcClientSecret = nil
 	}
-	var oidcScopes []string = []string{}
+	oidcScopes := make([]string, 0, len(r.OidcScopes))
 	for _, oidcScopesItem := range r.OidcScopes {
 		oidcScopes = append(oidcScopes, oidcScopesItem.ValueString())
 	}
@@ -106,10 +111,47 @@ func (r *PortalAuthResourceModel) ToSharedPortalAuthenticationSettingsUpdateRequ
 		OidcScopes:             oidcScopes,
 		OidcClaimMappings:      oidcClaimMappings,
 	}
-	return &out
+
+	return &out, diags
 }
 
-func (r *PortalAuthResourceModel) RefreshFromSharedPortalAuthenticationSettingsResponse(resp *shared.PortalAuthenticationSettingsResponse) {
+func (r *PortalAuthResourceModel) ToOperationsUpdatePortalAuthenticationSettingsRequest(ctx context.Context) (*operations.UpdatePortalAuthenticationSettingsRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	portalAuthenticationSettingsUpdateRequest, portalAuthenticationSettingsUpdateRequestDiags := r.ToSharedPortalAuthenticationSettingsUpdateRequest(ctx)
+	diags.Append(portalAuthenticationSettingsUpdateRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdatePortalAuthenticationSettingsRequest{
+		PortalID: portalID,
+		PortalAuthenticationSettingsUpdateRequest: portalAuthenticationSettingsUpdateRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalAuthResourceModel) ToOperationsGetPortalAuthenticationSettingsRequest(ctx context.Context) (*operations.GetPortalAuthenticationSettingsRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	out := operations.GetPortalAuthenticationSettingsRequest{
+		PortalID: portalID,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalAuthResourceModel) RefreshFromSharedPortalAuthenticationSettingsResponse(ctx context.Context, resp *shared.PortalAuthenticationSettingsResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.BasicAuthEnabled = types.BoolValue(resp.BasicAuthEnabled)
 		r.IdpMappingEnabled = types.BoolPointerValue(resp.IdpMappingEnabled)
@@ -137,4 +179,6 @@ func (r *PortalAuthResourceModel) RefreshFromSharedPortalAuthenticationSettingsR
 		r.OidcTeamMappingEnabled = types.BoolValue(resp.OidcTeamMappingEnabled)
 		r.SamlAuthEnabled = types.BoolPointerValue(resp.SamlAuthEnabled)
 	}
+
+	return diags
 }

@@ -3,12 +3,17 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
-	"time"
 )
 
-func (r *PortalResourceModel) ToSharedCreatePortal() *shared.CreatePortal {
+func (r *PortalResourceModel) ToSharedCreatePortal(ctx context.Context) (*shared.CreatePortal, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var name string
 	name = r.Name.ValueString()
 
@@ -89,36 +94,13 @@ func (r *PortalResourceModel) ToSharedCreatePortal() *shared.CreatePortal {
 		AutoApproveApplications:          autoApproveApplications,
 		Labels:                           labels,
 	}
-	return &out
+
+	return &out, diags
 }
 
-func (r *PortalResourceModel) RefreshFromSharedPortalResponse(resp *shared.PortalResponse) {
-	if resp != nil {
-		r.AuthenticationEnabled = types.BoolValue(resp.AuthenticationEnabled)
-		r.AutoApproveApplications = types.BoolValue(resp.AutoApproveApplications)
-		r.AutoApproveDevelopers = types.BoolValue(resp.AutoApproveDevelopers)
-		r.CanonicalDomain = types.StringValue(resp.CanonicalDomain)
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
-		r.DefaultAPIVisibility = types.StringValue(string(resp.DefaultAPIVisibility))
-		r.DefaultApplicationAuthStrategyID = types.StringPointerValue(resp.DefaultApplicationAuthStrategyID)
-		r.DefaultDomain = types.StringValue(resp.DefaultDomain)
-		r.DefaultPageVisibility = types.StringValue(string(resp.DefaultPageVisibility))
-		r.Description = types.StringPointerValue(resp.Description)
-		r.DisplayName = types.StringValue(resp.DisplayName)
-		r.ID = types.StringValue(resp.ID)
-		if resp.Labels != nil {
-			r.Labels = make(map[string]types.String, len(resp.Labels))
-			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringPointerValue(value)
-			}
-		}
-		r.Name = types.StringValue(resp.Name)
-		r.RbacEnabled = types.BoolValue(resp.RbacEnabled)
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
-	}
-}
+func (r *PortalResourceModel) ToSharedUpdatePortal(ctx context.Context) (*shared.UpdatePortal, diag.Diagnostics) {
+	var diags diag.Diagnostics
 
-func (r *PortalResourceModel) ToSharedUpdatePortal() *shared.UpdatePortal {
 	name := new(string)
 	if !r.Name.IsUnknown() && !r.Name.IsNull() {
 		*name = r.Name.ValueString()
@@ -202,5 +184,83 @@ func (r *PortalResourceModel) ToSharedUpdatePortal() *shared.UpdatePortal {
 		AutoApproveApplications:          autoApproveApplications,
 		Labels:                           labels,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *PortalResourceModel) ToOperationsUpdatePortalRequest(ctx context.Context) (*operations.UpdatePortalRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.ID.ValueString()
+
+	updatePortal, updatePortalDiags := r.ToSharedUpdatePortal(ctx)
+	diags.Append(updatePortalDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdatePortalRequest{
+		PortalID:     portalID,
+		UpdatePortal: *updatePortal,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalResourceModel) ToOperationsGetPortalRequest(ctx context.Context) (*operations.GetPortalRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.ID.ValueString()
+
+	out := operations.GetPortalRequest{
+		PortalID: portalID,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalResourceModel) ToOperationsDeletePortalRequest(ctx context.Context) (*operations.DeletePortalRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.ID.ValueString()
+
+	out := operations.DeletePortalRequest{
+		PortalID: portalID,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalResourceModel) RefreshFromSharedPortalResponse(ctx context.Context, resp *shared.PortalResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.AuthenticationEnabled = types.BoolValue(resp.AuthenticationEnabled)
+		r.AutoApproveApplications = types.BoolValue(resp.AutoApproveApplications)
+		r.AutoApproveDevelopers = types.BoolValue(resp.AutoApproveDevelopers)
+		r.CanonicalDomain = types.StringValue(resp.CanonicalDomain)
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.DefaultAPIVisibility = types.StringValue(string(resp.DefaultAPIVisibility))
+		r.DefaultApplicationAuthStrategyID = types.StringPointerValue(resp.DefaultApplicationAuthStrategyID)
+		r.DefaultDomain = types.StringValue(resp.DefaultDomain)
+		r.DefaultPageVisibility = types.StringValue(string(resp.DefaultPageVisibility))
+		r.Description = types.StringPointerValue(resp.Description)
+		r.DisplayName = types.StringValue(resp.DisplayName)
+		r.ID = types.StringValue(resp.ID)
+		if resp.Labels != nil {
+			r.Labels = make(map[string]types.String, len(resp.Labels))
+			for key, value := range resp.Labels {
+				r.Labels[key] = types.StringPointerValue(value)
+			}
+		}
+		r.Name = types.StringValue(resp.Name)
+		r.RbacEnabled = types.BoolValue(resp.RbacEnabled)
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+	}
+
+	return diags
 }

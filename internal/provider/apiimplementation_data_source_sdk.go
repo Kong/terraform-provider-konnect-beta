@@ -3,17 +3,41 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
-	"time"
 )
 
-func (r *APIImplementationDataSourceModel) RefreshFromSharedAPIImplementationResponse(resp *shared.APIImplementationResponse) {
+func (r *APIImplementationDataSourceModel) ToOperationsFetchAPIImplementationRequest(ctx context.Context) (*operations.FetchAPIImplementationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiID string
+	apiID = r.APIID.ValueString()
+
+	var implementationID string
+	implementationID = r.ID.ValueString()
+
+	out := operations.FetchAPIImplementationRequest{
+		APIID:            apiID,
+		ImplementationID: implementationID,
+	}
+
+	return &out, diags
+}
+
+func (r *APIImplementationDataSourceModel) RefreshFromSharedAPIImplementationResponse(ctx context.Context, resp *shared.APIImplementationResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.ID = types.StringValue(resp.ID)
 		r.Service.ControlPlaneID = types.StringValue(resp.Service.ControlPlaneID)
 		r.Service.ID = types.StringValue(resp.Service.ID)
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
+
+	return diags
 }

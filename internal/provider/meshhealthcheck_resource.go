@@ -22,7 +22,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
@@ -570,23 +569,13 @@ func (r *MeshHealthCheckResource) Create(ctx context.Context, req resource.Creat
 		return
 	}
 
-	var cpID string
-	cpID = data.CpID.ValueString()
+	request, requestDiags := data.ToOperationsCreateMeshHealthCheckRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var mesh string
-	mesh = data.Mesh.ValueString()
-
-	var name string
-	name = data.Name.ValueString()
-
-	meshHealthCheckItem := *data.ToSharedMeshHealthCheckItemInput()
-	request := operations.CreateMeshHealthCheckRequest{
-		CpID:                cpID,
-		Mesh:                mesh,
-		Name:                name,
-		MeshHealthCheckItem: meshHealthCheckItem,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.MeshHealthCheck.CreateMeshHealthCheck(ctx, request)
+	res, err := r.client.MeshHealthCheck.CreateMeshHealthCheck(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -606,23 +595,24 @@ func (r *MeshHealthCheckResource) Create(ctx context.Context, req resource.Creat
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshHealthCheckCreateOrUpdateSuccessResponse(res.MeshHealthCheckCreateOrUpdateSuccessResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
-	var cpId1 string
-	cpId1 = data.CpID.ValueString()
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshHealthCheckCreateOrUpdateSuccessResponse(ctx, res.MeshHealthCheckCreateOrUpdateSuccessResponse)...)
 
-	var mesh1 string
-	mesh1 = data.Mesh.ValueString()
-
-	var name1 string
-	name1 = data.Name.ValueString()
-
-	request1 := operations.GetMeshHealthCheckRequest{
-		CpID: cpId1,
-		Mesh: mesh1,
-		Name: name1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.MeshHealthCheck.GetMeshHealthCheck(ctx, request1)
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsGetMeshHealthCheckRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.MeshHealthCheck.GetMeshHealthCheck(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -642,8 +632,17 @@ func (r *MeshHealthCheckResource) Create(ctx context.Context, req resource.Creat
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshHealthCheckItem(res1.MeshHealthCheckItem)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshHealthCheckItem(ctx, res1.MeshHealthCheckItem)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -667,21 +666,13 @@ func (r *MeshHealthCheckResource) Read(ctx context.Context, req resource.ReadReq
 		return
 	}
 
-	var cpID string
-	cpID = data.CpID.ValueString()
+	request, requestDiags := data.ToOperationsGetMeshHealthCheckRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var mesh string
-	mesh = data.Mesh.ValueString()
-
-	var name string
-	name = data.Name.ValueString()
-
-	request := operations.GetMeshHealthCheckRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.MeshHealthCheck.GetMeshHealthCheck(ctx, request)
+	res, err := r.client.MeshHealthCheck.GetMeshHealthCheck(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -705,7 +696,11 @@ func (r *MeshHealthCheckResource) Read(ctx context.Context, req resource.ReadReq
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshHealthCheckItem(res.MeshHealthCheckItem)
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshHealthCheckItem(ctx, res.MeshHealthCheckItem)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -725,23 +720,13 @@ func (r *MeshHealthCheckResource) Update(ctx context.Context, req resource.Updat
 		return
 	}
 
-	var cpID string
-	cpID = data.CpID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateMeshHealthCheckRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var mesh string
-	mesh = data.Mesh.ValueString()
-
-	var name string
-	name = data.Name.ValueString()
-
-	meshHealthCheckItem := *data.ToSharedMeshHealthCheckItemInput()
-	request := operations.UpdateMeshHealthCheckRequest{
-		CpID:                cpID,
-		Mesh:                mesh,
-		Name:                name,
-		MeshHealthCheckItem: meshHealthCheckItem,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.MeshHealthCheck.UpdateMeshHealthCheck(ctx, request)
+	res, err := r.client.MeshHealthCheck.UpdateMeshHealthCheck(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -761,23 +746,24 @@ func (r *MeshHealthCheckResource) Update(ctx context.Context, req resource.Updat
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshHealthCheckCreateOrUpdateSuccessResponse(res.MeshHealthCheckCreateOrUpdateSuccessResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
-	var cpId1 string
-	cpId1 = data.CpID.ValueString()
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshHealthCheckCreateOrUpdateSuccessResponse(ctx, res.MeshHealthCheckCreateOrUpdateSuccessResponse)...)
 
-	var mesh1 string
-	mesh1 = data.Mesh.ValueString()
-
-	var name1 string
-	name1 = data.Name.ValueString()
-
-	request1 := operations.GetMeshHealthCheckRequest{
-		CpID: cpId1,
-		Mesh: mesh1,
-		Name: name1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.MeshHealthCheck.GetMeshHealthCheck(ctx, request1)
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsGetMeshHealthCheckRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.MeshHealthCheck.GetMeshHealthCheck(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -797,8 +783,17 @@ func (r *MeshHealthCheckResource) Update(ctx context.Context, req resource.Updat
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshHealthCheckItem(res1.MeshHealthCheckItem)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshHealthCheckItem(ctx, res1.MeshHealthCheckItem)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -822,21 +817,13 @@ func (r *MeshHealthCheckResource) Delete(ctx context.Context, req resource.Delet
 		return
 	}
 
-	var cpID string
-	cpID = data.CpID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteMeshHealthCheckRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var mesh string
-	mesh = data.Mesh.ValueString()
-
-	var name string
-	name = data.Name.ValueString()
-
-	request := operations.DeleteMeshHealthCheckRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.MeshHealthCheck.DeleteMeshHealthCheck(ctx, request)
+	res, err := r.client.MeshHealthCheck.DeleteMeshHealthCheck(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -865,7 +852,7 @@ func (r *MeshHealthCheckResource) ImportState(ctx context.Context, req resource.
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b",  "mesh": "",  "name": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b",  "mesh": "",  "name": ""}': `+err.Error())
 		return
 	}
 

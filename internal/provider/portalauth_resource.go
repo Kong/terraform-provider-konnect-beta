@@ -12,7 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -188,15 +187,13 @@ func (r *PortalAuthResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
+	request, requestDiags := data.ToOperationsUpdatePortalAuthenticationSettingsRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	portalAuthenticationSettingsUpdateRequest := data.ToSharedPortalAuthenticationSettingsUpdateRequest()
-	request := operations.UpdatePortalAuthenticationSettingsRequest{
-		PortalID: portalID,
-		PortalAuthenticationSettingsUpdateRequest: portalAuthenticationSettingsUpdateRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.PortalAuthSettings.UpdatePortalAuthenticationSettings(ctx, request)
+	res, err := r.client.PortalAuthSettings.UpdatePortalAuthenticationSettings(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -216,15 +213,24 @@ func (r *PortalAuthResource) Create(ctx context.Context, req resource.CreateRequ
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPortalAuthenticationSettingsResponse(res.PortalAuthenticationSettingsResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
-	var portalId1 string
-	portalId1 = data.PortalID.ValueString()
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalAuthenticationSettingsResponse(ctx, res.PortalAuthenticationSettingsResponse)...)
 
-	request1 := operations.GetPortalAuthenticationSettingsRequest{
-		PortalID: portalId1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.PortalAuthSettings.GetPortalAuthenticationSettings(ctx, request1)
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsGetPortalAuthenticationSettingsRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.PortalAuthSettings.GetPortalAuthenticationSettings(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -244,8 +250,17 @@ func (r *PortalAuthResource) Create(ctx context.Context, req resource.CreateRequ
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPortalAuthenticationSettingsResponse(res1.PortalAuthenticationSettingsResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalAuthenticationSettingsResponse(ctx, res1.PortalAuthenticationSettingsResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -269,13 +284,13 @@ func (r *PortalAuthResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
+	request, requestDiags := data.ToOperationsGetPortalAuthenticationSettingsRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.GetPortalAuthenticationSettingsRequest{
-		PortalID: portalID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.PortalAuthSettings.GetPortalAuthenticationSettings(ctx, request)
+	res, err := r.client.PortalAuthSettings.GetPortalAuthenticationSettings(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -299,7 +314,11 @@ func (r *PortalAuthResource) Read(ctx context.Context, req resource.ReadRequest,
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPortalAuthenticationSettingsResponse(res.PortalAuthenticationSettingsResponse)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalAuthenticationSettingsResponse(ctx, res.PortalAuthenticationSettingsResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -319,15 +338,13 @@ func (r *PortalAuthResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
+	request, requestDiags := data.ToOperationsUpdatePortalAuthenticationSettingsRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	portalAuthenticationSettingsUpdateRequest := data.ToSharedPortalAuthenticationSettingsUpdateRequest()
-	request := operations.UpdatePortalAuthenticationSettingsRequest{
-		PortalID: portalID,
-		PortalAuthenticationSettingsUpdateRequest: portalAuthenticationSettingsUpdateRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.PortalAuthSettings.UpdatePortalAuthenticationSettings(ctx, request)
+	res, err := r.client.PortalAuthSettings.UpdatePortalAuthenticationSettings(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -347,15 +364,24 @@ func (r *PortalAuthResource) Update(ctx context.Context, req resource.UpdateRequ
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPortalAuthenticationSettingsResponse(res.PortalAuthenticationSettingsResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
-	var portalId1 string
-	portalId1 = data.PortalID.ValueString()
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalAuthenticationSettingsResponse(ctx, res.PortalAuthenticationSettingsResponse)...)
 
-	request1 := operations.GetPortalAuthenticationSettingsRequest{
-		PortalID: portalId1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.PortalAuthSettings.GetPortalAuthenticationSettings(ctx, request1)
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsGetPortalAuthenticationSettingsRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.PortalAuthSettings.GetPortalAuthenticationSettings(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -375,8 +401,17 @@ func (r *PortalAuthResource) Update(ctx context.Context, req resource.UpdateRequ
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPortalAuthenticationSettingsResponse(res1.PortalAuthenticationSettingsResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalAuthenticationSettingsResponse(ctx, res1.PortalAuthenticationSettingsResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

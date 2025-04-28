@@ -15,7 +15,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 	"regexp"
 )
@@ -250,8 +249,13 @@ func (r *APIResource) Create(ctx context.Context, req resource.CreateRequest, re
 		return
 	}
 
-	request := *data.ToSharedCreateAPIRequest()
-	res, err := r.client.API.CreateAPI(ctx, request)
+	request, requestDiags := data.ToSharedCreateAPIRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res, err := r.client.API.CreateAPI(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -271,8 +275,17 @@ func (r *APIResource) Create(ctx context.Context, req resource.CreateRequest, re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAPIResponseSchema(res.APIResponseSchema)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAPIResponseSchema(ctx, res.APIResponseSchema)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -296,13 +309,13 @@ func (r *APIResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 		return
 	}
 
-	var apiID string
-	apiID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsFetchAPIRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.FetchAPIRequest{
-		APIID: apiID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.API.FetchAPI(ctx, request)
+	res, err := r.client.API.FetchAPI(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -326,7 +339,11 @@ func (r *APIResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAPIResponseSchema(res.APIResponseSchema)
+	resp.Diagnostics.Append(data.RefreshFromSharedAPIResponseSchema(ctx, res.APIResponseSchema)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -346,15 +363,13 @@ func (r *APIResource) Update(ctx context.Context, req resource.UpdateRequest, re
 		return
 	}
 
-	var apiID string
-	apiID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateAPIRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	updateAPIRequest := *data.ToSharedUpdateAPIRequest()
-	request := operations.UpdateAPIRequest{
-		APIID:            apiID,
-		UpdateAPIRequest: updateAPIRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.API.UpdateAPI(ctx, request)
+	res, err := r.client.API.UpdateAPI(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -374,8 +389,17 @@ func (r *APIResource) Update(ctx context.Context, req resource.UpdateRequest, re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAPIResponseSchema(res.APIResponseSchema)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAPIResponseSchema(ctx, res.APIResponseSchema)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -399,13 +423,13 @@ func (r *APIResource) Delete(ctx context.Context, req resource.DeleteRequest, re
 		return
 	}
 
-	var apiID string
-	apiID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteAPIRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.DeleteAPIRequest{
-		APIID: apiID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.API.DeleteAPI(ctx, request)
+	res, err := r.client.API.DeleteAPI(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

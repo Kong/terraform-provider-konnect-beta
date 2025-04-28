@@ -16,7 +16,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 )
 
@@ -145,15 +144,13 @@ func (r *APISpecificationResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 
-	var apiID string
-	apiID = data.APIID.ValueString()
+	request, requestDiags := data.ToOperationsCreateAPISpecRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	createAPISpecRequest := *data.ToSharedCreateAPISpecRequest()
-	request := operations.CreateAPISpecRequest{
-		APIID:                apiID,
-		CreateAPISpecRequest: createAPISpecRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APISpecification.CreateAPISpec(ctx, request)
+	res, err := r.client.APISpecification.CreateAPISpec(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -173,8 +170,17 @@ func (r *APISpecificationResource) Create(ctx context.Context, req resource.Crea
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAPISpecResponse(res.APISpecResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAPISpecResponse(ctx, res.APISpecResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -198,17 +204,13 @@ func (r *APISpecificationResource) Read(ctx context.Context, req resource.ReadRe
 		return
 	}
 
-	var apiID string
-	apiID = data.APIID.ValueString()
+	request, requestDiags := data.ToOperationsFetchAPISpecRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var specID string
-	specID = data.ID.ValueString()
-
-	request := operations.FetchAPISpecRequest{
-		APIID:  apiID,
-		SpecID: specID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APISpecification.FetchAPISpec(ctx, request)
+	res, err := r.client.APISpecification.FetchAPISpec(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -232,7 +234,11 @@ func (r *APISpecificationResource) Read(ctx context.Context, req resource.ReadRe
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAPISpecResponse(res.APISpecResponse)
+	resp.Diagnostics.Append(data.RefreshFromSharedAPISpecResponse(ctx, res.APISpecResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -252,19 +258,13 @@ func (r *APISpecificationResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
-	var apiID string
-	apiID = data.APIID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateAPISpecRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var specID string
-	specID = data.ID.ValueString()
-
-	apiSpec := *data.ToSharedAPISpec()
-	request := operations.UpdateAPISpecRequest{
-		APIID:   apiID,
-		SpecID:  specID,
-		APISpec: apiSpec,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APISpecification.UpdateAPISpec(ctx, request)
+	res, err := r.client.APISpecification.UpdateAPISpec(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -284,8 +284,17 @@ func (r *APISpecificationResource) Update(ctx context.Context, req resource.Upda
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAPISpecResponse(res.APISpecResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAPISpecResponse(ctx, res.APISpecResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -309,17 +318,13 @@ func (r *APISpecificationResource) Delete(ctx context.Context, req resource.Dele
 		return
 	}
 
-	var apiID string
-	apiID = data.APIID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteAPISpecRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var specID string
-	specID = data.ID.ValueString()
-
-	request := operations.DeleteAPISpecRequest{
-		APIID:  apiID,
-		SpecID: specID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APISpecification.DeleteAPISpec(ctx, request)
+	res, err := r.client.APISpecification.DeleteAPISpec(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -347,7 +352,7 @@ func (r *APISpecificationResource) ImportState(ctx context.Context, req resource
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "apiid": "9f5061ce-78f6-4452-9108-ad7c02821fd5",  "spec_id": "d32d905a-ed33-46a3-a093-d8f536af9a8a"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "apiid": "9f5061ce-78f6-4452-9108-ad7c02821fd5",  "id": "d32d905a-ed33-46a3-a093-d8f536af9a8a"}': `+err.Error())
 		return
 	}
 

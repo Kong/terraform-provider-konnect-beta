@@ -3,33 +3,45 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
-	"time"
 )
 
-func (r *PortalCustomDomainDataSourceModel) RefreshFromSharedPortalCustomDomain(resp *shared.PortalCustomDomain) {
+func (r *PortalCustomDomainDataSourceModel) ToOperationsGetPortalCustomDomainRequest(ctx context.Context) (*operations.GetPortalCustomDomainRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	out := operations.GetPortalCustomDomainRequest{
+		PortalID: portalID,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalCustomDomainDataSourceModel) RefreshFromSharedPortalCustomDomain(ctx context.Context, resp *shared.PortalCustomDomain) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.CnameStatus = types.StringValue(string(resp.CnameStatus))
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Enabled = types.BoolValue(resp.Enabled)
 		r.Hostname = types.StringValue(resp.Hostname)
 		r.Ssl.DomainVerificationMethod = types.StringValue(string(resp.Ssl.DomainVerificationMethod))
-		if resp.Ssl.ExpiresAt != nil {
-			r.Ssl.ExpiresAt = types.StringValue(resp.Ssl.ExpiresAt.Format(time.RFC3339Nano))
-		} else {
-			r.Ssl.ExpiresAt = types.StringNull()
-		}
-		if resp.Ssl.UploadedAt != nil {
-			r.Ssl.UploadedAt = types.StringValue(resp.Ssl.UploadedAt.Format(time.RFC3339Nano))
-		} else {
-			r.Ssl.UploadedAt = types.StringNull()
-		}
+		r.Ssl.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.Ssl.ExpiresAt))
+		r.Ssl.UploadedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.Ssl.UploadedAt))
 		r.Ssl.ValidationErrors = make([]types.String, 0, len(resp.Ssl.ValidationErrors))
 		for _, v := range resp.Ssl.ValidationErrors {
 			r.Ssl.ValidationErrors = append(r.Ssl.ValidationErrors, types.StringValue(v))
 		}
 		r.Ssl.VerificationStatus = types.StringValue(string(resp.Ssl.VerificationStatus))
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
+
+	return diags
 }

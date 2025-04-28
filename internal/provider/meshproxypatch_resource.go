@@ -20,7 +20,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
@@ -776,23 +775,13 @@ func (r *MeshProxyPatchResource) Create(ctx context.Context, req resource.Create
 		return
 	}
 
-	var cpID string
-	cpID = data.CpID.ValueString()
+	request, requestDiags := data.ToOperationsCreateMeshProxyPatchRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var mesh string
-	mesh = data.Mesh.ValueString()
-
-	var name string
-	name = data.Name.ValueString()
-
-	meshProxyPatchItem := *data.ToSharedMeshProxyPatchItemInput()
-	request := operations.CreateMeshProxyPatchRequest{
-		CpID:               cpID,
-		Mesh:               mesh,
-		Name:               name,
-		MeshProxyPatchItem: meshProxyPatchItem,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.MeshProxyPatch.CreateMeshProxyPatch(ctx, request)
+	res, err := r.client.MeshProxyPatch.CreateMeshProxyPatch(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -812,23 +801,24 @@ func (r *MeshProxyPatchResource) Create(ctx context.Context, req resource.Create
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshProxyPatchCreateOrUpdateSuccessResponse(res.MeshProxyPatchCreateOrUpdateSuccessResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
-	var cpId1 string
-	cpId1 = data.CpID.ValueString()
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshProxyPatchCreateOrUpdateSuccessResponse(ctx, res.MeshProxyPatchCreateOrUpdateSuccessResponse)...)
 
-	var mesh1 string
-	mesh1 = data.Mesh.ValueString()
-
-	var name1 string
-	name1 = data.Name.ValueString()
-
-	request1 := operations.GetMeshProxyPatchRequest{
-		CpID: cpId1,
-		Mesh: mesh1,
-		Name: name1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.MeshProxyPatch.GetMeshProxyPatch(ctx, request1)
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsGetMeshProxyPatchRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.MeshProxyPatch.GetMeshProxyPatch(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -848,8 +838,17 @@ func (r *MeshProxyPatchResource) Create(ctx context.Context, req resource.Create
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshProxyPatchItem(res1.MeshProxyPatchItem)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshProxyPatchItem(ctx, res1.MeshProxyPatchItem)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -873,21 +872,13 @@ func (r *MeshProxyPatchResource) Read(ctx context.Context, req resource.ReadRequ
 		return
 	}
 
-	var cpID string
-	cpID = data.CpID.ValueString()
+	request, requestDiags := data.ToOperationsGetMeshProxyPatchRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var mesh string
-	mesh = data.Mesh.ValueString()
-
-	var name string
-	name = data.Name.ValueString()
-
-	request := operations.GetMeshProxyPatchRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.MeshProxyPatch.GetMeshProxyPatch(ctx, request)
+	res, err := r.client.MeshProxyPatch.GetMeshProxyPatch(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -911,7 +902,11 @@ func (r *MeshProxyPatchResource) Read(ctx context.Context, req resource.ReadRequ
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshProxyPatchItem(res.MeshProxyPatchItem)
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshProxyPatchItem(ctx, res.MeshProxyPatchItem)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -931,23 +926,13 @@ func (r *MeshProxyPatchResource) Update(ctx context.Context, req resource.Update
 		return
 	}
 
-	var cpID string
-	cpID = data.CpID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateMeshProxyPatchRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var mesh string
-	mesh = data.Mesh.ValueString()
-
-	var name string
-	name = data.Name.ValueString()
-
-	meshProxyPatchItem := *data.ToSharedMeshProxyPatchItemInput()
-	request := operations.UpdateMeshProxyPatchRequest{
-		CpID:               cpID,
-		Mesh:               mesh,
-		Name:               name,
-		MeshProxyPatchItem: meshProxyPatchItem,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.MeshProxyPatch.UpdateMeshProxyPatch(ctx, request)
+	res, err := r.client.MeshProxyPatch.UpdateMeshProxyPatch(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -967,23 +952,24 @@ func (r *MeshProxyPatchResource) Update(ctx context.Context, req resource.Update
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshProxyPatchCreateOrUpdateSuccessResponse(res.MeshProxyPatchCreateOrUpdateSuccessResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
-	var cpId1 string
-	cpId1 = data.CpID.ValueString()
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshProxyPatchCreateOrUpdateSuccessResponse(ctx, res.MeshProxyPatchCreateOrUpdateSuccessResponse)...)
 
-	var mesh1 string
-	mesh1 = data.Mesh.ValueString()
-
-	var name1 string
-	name1 = data.Name.ValueString()
-
-	request1 := operations.GetMeshProxyPatchRequest{
-		CpID: cpId1,
-		Mesh: mesh1,
-		Name: name1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.MeshProxyPatch.GetMeshProxyPatch(ctx, request1)
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsGetMeshProxyPatchRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.MeshProxyPatch.GetMeshProxyPatch(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -1003,8 +989,17 @@ func (r *MeshProxyPatchResource) Update(ctx context.Context, req resource.Update
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshProxyPatchItem(res1.MeshProxyPatchItem)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshProxyPatchItem(ctx, res1.MeshProxyPatchItem)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -1028,21 +1023,13 @@ func (r *MeshProxyPatchResource) Delete(ctx context.Context, req resource.Delete
 		return
 	}
 
-	var cpID string
-	cpID = data.CpID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteMeshProxyPatchRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var mesh string
-	mesh = data.Mesh.ValueString()
-
-	var name string
-	name = data.Name.ValueString()
-
-	request := operations.DeleteMeshProxyPatchRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.MeshProxyPatch.DeleteMeshProxyPatch(ctx, request)
+	res, err := r.client.MeshProxyPatch.DeleteMeshProxyPatch(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1071,7 +1058,7 @@ func (r *MeshProxyPatchResource) ImportState(ctx context.Context, req resource.I
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b",  "mesh": "",  "name": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b",  "mesh": "",  "name": ""}': `+err.Error())
 		return
 	}
 

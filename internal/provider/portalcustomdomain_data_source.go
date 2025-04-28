@@ -11,7 +11,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -135,13 +134,13 @@ func (r *PortalCustomDomainDataSource) Read(ctx context.Context, req datasource.
 		return
 	}
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
+	request, requestDiags := data.ToOperationsGetPortalCustomDomainRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.GetPortalCustomDomainRequest{
-		PortalID: portalID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.PortalCustomDomains.GetPortalCustomDomain(ctx, request)
+	res, err := r.client.PortalCustomDomains.GetPortalCustomDomain(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -153,10 +152,6 @@ func (r *PortalCustomDomainDataSource) Read(ctx context.Context, req datasource.
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode == 404 {
-		resp.State.RemoveResource(ctx)
-		return
-	}
 	if res.StatusCode != 200 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
@@ -165,7 +160,11 @@ func (r *PortalCustomDomainDataSource) Read(ctx context.Context, req datasource.
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPortalCustomDomain(res.PortalCustomDomain)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalCustomDomain(ctx, res.PortalCustomDomain)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

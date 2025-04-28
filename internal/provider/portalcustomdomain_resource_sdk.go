@@ -3,12 +3,17 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
-	"time"
 )
 
-func (r *PortalCustomDomainResourceModel) ToSharedCreatePortalCustomDomainRequest() *shared.CreatePortalCustomDomainRequest {
+func (r *PortalCustomDomainResourceModel) ToSharedCreatePortalCustomDomainRequest(ctx context.Context) (*shared.CreatePortalCustomDomainRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var hostname string
 	hostname = r.Hostname.ValueString()
 
@@ -38,36 +43,34 @@ func (r *PortalCustomDomainResourceModel) ToSharedCreatePortalCustomDomainReques
 		Enabled:  enabled,
 		Ssl:      ssl,
 	}
-	return &out
+
+	return &out, diags
 }
 
-func (r *PortalCustomDomainResourceModel) RefreshFromSharedPortalCustomDomain(resp *shared.PortalCustomDomain) {
-	if resp != nil {
-		r.CnameStatus = types.StringValue(string(resp.CnameStatus))
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
-		r.Enabled = types.BoolValue(resp.Enabled)
-		r.Hostname = types.StringValue(resp.Hostname)
-		r.Ssl.DomainVerificationMethod = types.StringValue(string(resp.Ssl.DomainVerificationMethod))
-		if resp.Ssl.ExpiresAt != nil {
-			r.Ssl.ExpiresAt = types.StringValue(resp.Ssl.ExpiresAt.Format(time.RFC3339Nano))
-		} else {
-			r.Ssl.ExpiresAt = types.StringNull()
-		}
-		if resp.Ssl.UploadedAt != nil {
-			r.Ssl.UploadedAt = types.StringValue(resp.Ssl.UploadedAt.Format(time.RFC3339Nano))
-		} else {
-			r.Ssl.UploadedAt = types.StringNull()
-		}
-		r.Ssl.ValidationErrors = make([]types.String, 0, len(resp.Ssl.ValidationErrors))
-		for _, v := range resp.Ssl.ValidationErrors {
-			r.Ssl.ValidationErrors = append(r.Ssl.ValidationErrors, types.StringValue(v))
-		}
-		r.Ssl.VerificationStatus = types.StringValue(string(resp.Ssl.VerificationStatus))
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+func (r *PortalCustomDomainResourceModel) ToOperationsCreatePortalCustomDomainRequest(ctx context.Context) (*operations.CreatePortalCustomDomainRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	createPortalCustomDomainRequest, createPortalCustomDomainRequestDiags := r.ToSharedCreatePortalCustomDomainRequest(ctx)
+	diags.Append(createPortalCustomDomainRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
 	}
+
+	out := operations.CreatePortalCustomDomainRequest{
+		PortalID:                        portalID,
+		CreatePortalCustomDomainRequest: *createPortalCustomDomainRequest,
+	}
+
+	return &out, diags
 }
 
-func (r *PortalCustomDomainResourceModel) ToSharedUpdatePortalCustomDomainRequest() *shared.UpdatePortalCustomDomainRequest {
+func (r *PortalCustomDomainResourceModel) ToSharedUpdatePortalCustomDomainRequest(ctx context.Context) (*shared.UpdatePortalCustomDomainRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -77,5 +80,75 @@ func (r *PortalCustomDomainResourceModel) ToSharedUpdatePortalCustomDomainReques
 	out := shared.UpdatePortalCustomDomainRequest{
 		Enabled: enabled,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *PortalCustomDomainResourceModel) ToOperationsUpdatePortalCustomDomainRequest(ctx context.Context) (*operations.UpdatePortalCustomDomainRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	updatePortalCustomDomainRequest, updatePortalCustomDomainRequestDiags := r.ToSharedUpdatePortalCustomDomainRequest(ctx)
+	diags.Append(updatePortalCustomDomainRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdatePortalCustomDomainRequest{
+		PortalID:                        portalID,
+		UpdatePortalCustomDomainRequest: *updatePortalCustomDomainRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalCustomDomainResourceModel) ToOperationsGetPortalCustomDomainRequest(ctx context.Context) (*operations.GetPortalCustomDomainRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	out := operations.GetPortalCustomDomainRequest{
+		PortalID: portalID,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalCustomDomainResourceModel) ToOperationsDeletePortalCustomDomainRequest(ctx context.Context) (*operations.DeletePortalCustomDomainRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	out := operations.DeletePortalCustomDomainRequest{
+		PortalID: portalID,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalCustomDomainResourceModel) RefreshFromSharedPortalCustomDomain(ctx context.Context, resp *shared.PortalCustomDomain) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.CnameStatus = types.StringValue(string(resp.CnameStatus))
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.Enabled = types.BoolValue(resp.Enabled)
+		r.Hostname = types.StringValue(resp.Hostname)
+		r.Ssl.DomainVerificationMethod = types.StringValue(string(resp.Ssl.DomainVerificationMethod))
+		r.Ssl.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.Ssl.ExpiresAt))
+		r.Ssl.UploadedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.Ssl.UploadedAt))
+		r.Ssl.ValidationErrors = make([]types.String, 0, len(resp.Ssl.ValidationErrors))
+		for _, v := range resp.Ssl.ValidationErrors {
+			r.Ssl.ValidationErrors = append(r.Ssl.ValidationErrors, types.StringValue(v))
+		}
+		r.Ssl.VerificationStatus = types.StringValue(string(resp.Ssl.VerificationStatus))
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+	}
+
+	return diags
 }
