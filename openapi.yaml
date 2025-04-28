@@ -8593,6 +8593,7 @@ components:
 
         If this field is not set, it will be autodetected from `content`
       enum:
+        - oas2
         - oas3
         - asyncapi
     MeshAccessLogItem:
