@@ -76,9 +76,10 @@ func (r *APISpecificationResource) Schema(ctx context.Context, req resource.Sche
 				MarkdownDescription: `The type of specification being stored. This allows us to render the specification correctly.` + "\n" +
 					`` + "\n" +
 					`If this field is not set, it will be autodetected from ` + "`" + `content` + "`" + `` + "\n" +
-					`must be one of ["oas3", "asyncapi"]`,
+					`must be one of ["oas2", "oas3", "asyncapi"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
+						"oas2",
 						"oas3",
 						"asyncapi",
 					),
