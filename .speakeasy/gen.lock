@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: 35b654afba9cf9ffee7447da15da006f
+  docChecksum: b0f30d7c211ca734b85e8bdf81c8e2fd
   docVersion: 2.0.0
   speakeasyVersion: 1.540.1
   generationVersion: 2.593.4
@@ -1760,6 +1760,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   createMeshAccessLog:
     "":
       parameters:
@@ -1812,6 +1813,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   createMeshCircuitBreaker:
     "":
       parameters:
@@ -1864,6 +1866,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   createMeshFaultInjection:
     "":
       parameters:
@@ -1916,6 +1919,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   createMeshHealthCheck:
     "":
       parameters:
@@ -1968,6 +1972,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   createMeshHTTPRoute:
     "":
       parameters:
@@ -2020,6 +2025,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   createMeshLoadBalancingStrategy:
     "":
       parameters:
@@ -2072,6 +2078,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   createMeshMetric:
     "":
       parameters:
@@ -2124,6 +2131,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   createMeshPassthrough:
     "":
       parameters:
@@ -2176,6 +2184,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   createMeshProxyPatch:
     "":
       parameters:
@@ -2228,6 +2237,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   createMeshRateLimit:
     "":
       parameters:
@@ -2280,6 +2290,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   createMeshRetry:
     "":
       parameters:
@@ -2332,6 +2343,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   createMeshTCPRoute:
     "":
       parameters:
@@ -2384,6 +2396,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   createMeshTimeout:
     "":
       parameters:
@@ -2436,6 +2449,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   createMeshTLS:
     "":
       parameters:
@@ -2488,6 +2502,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   createMeshTrace:
     "":
       parameters:
@@ -2540,6 +2555,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   createMeshTrafficPermission:
     "":
       parameters:
@@ -2598,6 +2614,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   getMeshList:
     "":
       parameters:
@@ -2685,6 +2702,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   createMeshGateway:
     "":
       parameters:
@@ -2732,6 +2750,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   createHostnameGenerator:
     "":
       parameters:
@@ -2781,6 +2800,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   createMeshExternalService:
     "":
       parameters:
@@ -2833,6 +2853,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   createMeshMultiZoneService:
     "":
       parameters:
@@ -2885,6 +2906,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   createMeshService:
     "":
       parameters:
@@ -2937,6 +2959,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   createMeshGlobalRateLimit:
     "":
       parameters:
@@ -2989,6 +3012,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   createMeshOPA:
     "":
       parameters:
