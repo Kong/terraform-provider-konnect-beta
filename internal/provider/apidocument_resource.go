@@ -16,7 +16,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 	"regexp"
 )
@@ -166,15 +165,13 @@ func (r *APIDocumentResource) Create(ctx context.Context, req resource.CreateReq
 		return
 	}
 
-	var apiID string
-	apiID = data.APIID.ValueString()
+	request, requestDiags := data.ToOperationsCreateAPIDocumentRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	createAPIDocumentRequest := *data.ToSharedCreateAPIDocumentRequest()
-	request := operations.CreateAPIDocumentRequest{
-		APIID:                    apiID,
-		CreateAPIDocumentRequest: createAPIDocumentRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIDocumentation.CreateAPIDocument(ctx, request)
+	res, err := r.client.APIDocumentation.CreateAPIDocument(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -194,8 +191,17 @@ func (r *APIDocumentResource) Create(ctx context.Context, req resource.CreateReq
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAPIDocumentResponse(res.APIDocumentResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAPIDocumentResponse(ctx, res.APIDocumentResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -219,17 +225,13 @@ func (r *APIDocumentResource) Read(ctx context.Context, req resource.ReadRequest
 		return
 	}
 
-	var apiID string
-	apiID = data.APIID.ValueString()
+	request, requestDiags := data.ToOperationsFetchAPIDocumentRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var documentID string
-	documentID = data.ID.ValueString()
-
-	request := operations.FetchAPIDocumentRequest{
-		APIID:      apiID,
-		DocumentID: documentID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIDocumentation.FetchAPIDocument(ctx, request)
+	res, err := r.client.APIDocumentation.FetchAPIDocument(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -253,7 +255,11 @@ func (r *APIDocumentResource) Read(ctx context.Context, req resource.ReadRequest
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAPIDocumentResponse(res.APIDocumentResponse)
+	resp.Diagnostics.Append(data.RefreshFromSharedAPIDocumentResponse(ctx, res.APIDocumentResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -273,19 +279,13 @@ func (r *APIDocumentResource) Update(ctx context.Context, req resource.UpdateReq
 		return
 	}
 
-	var apiID string
-	apiID = data.APIID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateAPIDocumentRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var documentID string
-	documentID = data.ID.ValueString()
-
-	apiDocument := *data.ToSharedAPIDocument()
-	request := operations.UpdateAPIDocumentRequest{
-		APIID:       apiID,
-		DocumentID:  documentID,
-		APIDocument: apiDocument,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIDocumentation.UpdateAPIDocument(ctx, request)
+	res, err := r.client.APIDocumentation.UpdateAPIDocument(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -305,8 +305,17 @@ func (r *APIDocumentResource) Update(ctx context.Context, req resource.UpdateReq
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAPIDocumentResponse(res.APIDocumentResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAPIDocumentResponse(ctx, res.APIDocumentResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -330,17 +339,13 @@ func (r *APIDocumentResource) Delete(ctx context.Context, req resource.DeleteReq
 		return
 	}
 
-	var apiID string
-	apiID = data.APIID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteAPIDocumentRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var documentID string
-	documentID = data.ID.ValueString()
-
-	request := operations.DeleteAPIDocumentRequest{
-		APIID:      apiID,
-		DocumentID: documentID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIDocumentation.DeleteAPIDocument(ctx, request)
+	res, err := r.client.APIDocumentation.DeleteAPIDocument(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -368,7 +373,7 @@ func (r *APIDocumentResource) ImportState(ctx context.Context, req resource.Impo
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "apiid": "9f5061ce-78f6-4452-9108-ad7c02821fd5",  "document_id": "de5c9818-be5c-42e6-b514-e3d4bc30ddeb"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "apiid": "9f5061ce-78f6-4452-9108-ad7c02821fd5",  "id": "de5c9818-be5c-42e6-b514-e3d4bc30ddeb"}': `+err.Error())
 		return
 	}
 

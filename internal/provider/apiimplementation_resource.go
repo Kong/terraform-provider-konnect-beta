@@ -20,7 +20,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 )
 
@@ -147,15 +146,13 @@ func (r *APIImplementationResource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
-	var apiID string
-	apiID = data.APIID.ValueString()
+	request, requestDiags := data.ToOperationsCreateAPIImplementationRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	apiImplementation := *data.ToSharedAPIImplementation()
-	request := operations.CreateAPIImplementationRequest{
-		APIID:             apiID,
-		APIImplementation: apiImplementation,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIImplementation.CreateAPIImplementation(ctx, request)
+	res, err := r.client.APIImplementation.CreateAPIImplementation(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -175,8 +172,17 @@ func (r *APIImplementationResource) Create(ctx context.Context, req resource.Cre
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAPIImplementationResponse(res.APIImplementationResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAPIImplementationResponse(ctx, res.APIImplementationResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -200,17 +206,13 @@ func (r *APIImplementationResource) Read(ctx context.Context, req resource.ReadR
 		return
 	}
 
-	var apiID string
-	apiID = data.APIID.ValueString()
+	request, requestDiags := data.ToOperationsFetchAPIImplementationRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var implementationID string
-	implementationID = data.ID.ValueString()
-
-	request := operations.FetchAPIImplementationRequest{
-		APIID:            apiID,
-		ImplementationID: implementationID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIImplementation.FetchAPIImplementation(ctx, request)
+	res, err := r.client.APIImplementation.FetchAPIImplementation(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -234,7 +236,11 @@ func (r *APIImplementationResource) Read(ctx context.Context, req resource.ReadR
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAPIImplementationResponse(res.APIImplementationResponse)
+	resp.Diagnostics.Append(data.RefreshFromSharedAPIImplementationResponse(ctx, res.APIImplementationResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -278,17 +284,13 @@ func (r *APIImplementationResource) Delete(ctx context.Context, req resource.Del
 		return
 	}
 
-	var apiID string
-	apiID = data.APIID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteAPIImplementationRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var implementationID string
-	implementationID = data.ID.ValueString()
-
-	request := operations.DeleteAPIImplementationRequest{
-		APIID:            apiID,
-		ImplementationID: implementationID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIImplementation.DeleteAPIImplementation(ctx, request)
+	res, err := r.client.APIImplementation.DeleteAPIImplementation(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -316,7 +318,7 @@ func (r *APIImplementationResource) ImportState(ctx context.Context, req resourc
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "apiid": "9f5061ce-78f6-4452-9108-ad7c02821fd5",  "implementation_id": "032d905a-ed33-46a3-a093-d8f536af9a8a"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "apiid": "9f5061ce-78f6-4452-9108-ad7c02821fd5",  "id": "032d905a-ed33-46a3-a093-d8f536af9a8a"}': `+err.Error())
 		return
 	}
 

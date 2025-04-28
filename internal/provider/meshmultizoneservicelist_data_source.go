@@ -11,7 +11,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -36,7 +35,7 @@ type MeshMultiZoneServiceListDataSourceModel struct {
 	Next   types.String                       `tfsdk:"next"`
 	Offset types.Int64                        `queryParam:"style=form,explode=true,name=offset" tfsdk:"offset"`
 	Size   types.Int64                        `queryParam:"style=form,explode=true,name=size" tfsdk:"size"`
-	Total  types.Number                       `tfsdk:"total"`
+	Total  types.Float64                      `tfsdk:"total"`
 	Value  types.String                       `queryParam:"name=value" tfsdk:"value"`
 }
 
@@ -252,7 +251,7 @@ func (r *MeshMultiZoneServiceListDataSource) Schema(ctx context.Context, req dat
 				Optional:    true,
 				Description: `the number of items per page`,
 			},
-			"total": schema.NumberAttribute{
+			"total": schema.Float64Attribute{
 				Computed:    true,
 				Description: `The total number of entities`,
 			},
@@ -301,49 +300,13 @@ func (r *MeshMultiZoneServiceListDataSource) Read(ctx context.Context, req datas
 		return
 	}
 
-	var cpID string
-	cpID = data.CpID.ValueString()
+	request, requestDiags := data.ToOperationsGetMeshMultiZoneServiceListRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	offset := new(int64)
-	if !data.Offset.IsUnknown() && !data.Offset.IsNull() {
-		*offset = data.Offset.ValueInt64()
-	} else {
-		offset = nil
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	size := new(int64)
-	if !data.Size.IsUnknown() && !data.Size.IsNull() {
-		*size = data.Size.ValueInt64()
-	} else {
-		size = nil
-	}
-	var filter *operations.GetMeshMultiZoneServiceListQueryParamFilter
-	key := new(string)
-	if !data.Key.IsUnknown() && !data.Key.IsNull() {
-		*key = data.Key.ValueString()
-	} else {
-		key = nil
-	}
-	value := new(string)
-	if !data.Value.IsUnknown() && !data.Value.IsNull() {
-		*value = data.Value.ValueString()
-	} else {
-		value = nil
-	}
-	filter = &operations.GetMeshMultiZoneServiceListQueryParamFilter{
-		Key:   key,
-		Value: value,
-	}
-	var mesh string
-	mesh = data.Mesh.ValueString()
-
-	request := operations.GetMeshMultiZoneServiceListRequest{
-		CpID:   cpID,
-		Offset: offset,
-		Size:   size,
-		Filter: filter,
-		Mesh:   mesh,
-	}
-	res, err := r.client.MeshMultiZoneService.GetMeshMultiZoneServiceList(ctx, request)
+	res, err := r.client.MeshMultiZoneService.GetMeshMultiZoneServiceList(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -355,10 +318,6 @@ func (r *MeshMultiZoneServiceListDataSource) Read(ctx context.Context, req datas
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode == 404 {
-		resp.State.RemoveResource(ctx)
-		return
-	}
 	if res.StatusCode != 200 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
@@ -367,7 +326,11 @@ func (r *MeshMultiZoneServiceListDataSource) Read(ctx context.Context, req datas
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshMultiZoneServiceList(res.MeshMultiZoneServiceList)
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshMultiZoneServiceList(ctx, res.MeshMultiZoneServiceList)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

@@ -20,7 +20,6 @@ import (
 	custom_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 )
 
@@ -301,23 +300,13 @@ func (r *MeshGatewayResource) Create(ctx context.Context, req resource.CreateReq
 		return
 	}
 
-	var cpID string
-	cpID = data.CpID.ValueString()
+	request, requestDiags := data.ToOperationsCreateMeshGatewayRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var mesh string
-	mesh = data.Mesh.ValueString()
-
-	var name string
-	name = data.Name.ValueString()
-
-	meshGatewayItem := *data.ToSharedMeshGatewayItem()
-	request := operations.CreateMeshGatewayRequest{
-		CpID:            cpID,
-		Mesh:            mesh,
-		Name:            name,
-		MeshGatewayItem: meshGatewayItem,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.MeshGateway.CreateMeshGateway(ctx, request)
+	res, err := r.client.MeshGateway.CreateMeshGateway(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -337,23 +326,24 @@ func (r *MeshGatewayResource) Create(ctx context.Context, req resource.CreateReq
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshGatewayCreateOrUpdateSuccessResponse(res.MeshGatewayCreateOrUpdateSuccessResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
-	var cpId1 string
-	cpId1 = data.CpID.ValueString()
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshGatewayCreateOrUpdateSuccessResponse(ctx, res.MeshGatewayCreateOrUpdateSuccessResponse)...)
 
-	var mesh1 string
-	mesh1 = data.Mesh.ValueString()
-
-	var name1 string
-	name1 = data.Name.ValueString()
-
-	request1 := operations.GetMeshGatewayRequest{
-		CpID: cpId1,
-		Mesh: mesh1,
-		Name: name1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.MeshGateway.GetMeshGateway(ctx, request1)
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsGetMeshGatewayRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.MeshGateway.GetMeshGateway(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -373,8 +363,17 @@ func (r *MeshGatewayResource) Create(ctx context.Context, req resource.CreateReq
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshGatewayItem(res1.MeshGatewayItem)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshGatewayItem(ctx, res1.MeshGatewayItem)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -398,21 +397,13 @@ func (r *MeshGatewayResource) Read(ctx context.Context, req resource.ReadRequest
 		return
 	}
 
-	var cpID string
-	cpID = data.CpID.ValueString()
+	request, requestDiags := data.ToOperationsGetMeshGatewayRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var mesh string
-	mesh = data.Mesh.ValueString()
-
-	var name string
-	name = data.Name.ValueString()
-
-	request := operations.GetMeshGatewayRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.MeshGateway.GetMeshGateway(ctx, request)
+	res, err := r.client.MeshGateway.GetMeshGateway(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -436,7 +427,11 @@ func (r *MeshGatewayResource) Read(ctx context.Context, req resource.ReadRequest
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshGatewayItem(res.MeshGatewayItem)
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshGatewayItem(ctx, res.MeshGatewayItem)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -456,23 +451,13 @@ func (r *MeshGatewayResource) Update(ctx context.Context, req resource.UpdateReq
 		return
 	}
 
-	var cpID string
-	cpID = data.CpID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateMeshGatewayRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var mesh string
-	mesh = data.Mesh.ValueString()
-
-	var name string
-	name = data.Name.ValueString()
-
-	meshGatewayItem := *data.ToSharedMeshGatewayItem()
-	request := operations.UpdateMeshGatewayRequest{
-		CpID:            cpID,
-		Mesh:            mesh,
-		Name:            name,
-		MeshGatewayItem: meshGatewayItem,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.MeshGateway.UpdateMeshGateway(ctx, request)
+	res, err := r.client.MeshGateway.UpdateMeshGateway(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -492,23 +477,24 @@ func (r *MeshGatewayResource) Update(ctx context.Context, req resource.UpdateReq
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshGatewayCreateOrUpdateSuccessResponse(res.MeshGatewayCreateOrUpdateSuccessResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
-	var cpId1 string
-	cpId1 = data.CpID.ValueString()
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshGatewayCreateOrUpdateSuccessResponse(ctx, res.MeshGatewayCreateOrUpdateSuccessResponse)...)
 
-	var mesh1 string
-	mesh1 = data.Mesh.ValueString()
-
-	var name1 string
-	name1 = data.Name.ValueString()
-
-	request1 := operations.GetMeshGatewayRequest{
-		CpID: cpId1,
-		Mesh: mesh1,
-		Name: name1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.MeshGateway.GetMeshGateway(ctx, request1)
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsGetMeshGatewayRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.MeshGateway.GetMeshGateway(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -528,8 +514,17 @@ func (r *MeshGatewayResource) Update(ctx context.Context, req resource.UpdateReq
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshGatewayItem(res1.MeshGatewayItem)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshGatewayItem(ctx, res1.MeshGatewayItem)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -553,21 +548,13 @@ func (r *MeshGatewayResource) Delete(ctx context.Context, req resource.DeleteReq
 		return
 	}
 
-	var cpID string
-	cpID = data.CpID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteMeshGatewayRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var mesh string
-	mesh = data.Mesh.ValueString()
-
-	var name string
-	name = data.Name.ValueString()
-
-	request := operations.DeleteMeshGatewayRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.MeshGateway.DeleteMeshGateway(ctx, request)
+	res, err := r.client.MeshGateway.DeleteMeshGateway(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -596,7 +583,7 @@ func (r *MeshGatewayResource) ImportState(ctx context.Context, req resource.Impo
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b",  "mesh": "",  "name": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b",  "mesh": "",  "name": ""}': `+err.Error())
 		return
 	}
 

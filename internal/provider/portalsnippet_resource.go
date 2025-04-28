@@ -16,7 +16,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 )
 
@@ -165,15 +164,13 @@ func (r *PortalSnippetResource) Create(ctx context.Context, req resource.CreateR
 		return
 	}
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
+	request, requestDiags := data.ToOperationsCreatePortalSnippetRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	createPortalSnippetRequest := *data.ToSharedCreatePortalSnippetRequest()
-	request := operations.CreatePortalSnippetRequest{
-		PortalID:                   portalID,
-		CreatePortalSnippetRequest: createPortalSnippetRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Snippets.CreatePortalSnippet(ctx, request)
+	res, err := r.client.Snippets.CreatePortalSnippet(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -193,8 +190,17 @@ func (r *PortalSnippetResource) Create(ctx context.Context, req resource.CreateR
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPortalSnippetResponse(res.PortalSnippetResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalSnippetResponse(ctx, res.PortalSnippetResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -218,17 +224,13 @@ func (r *PortalSnippetResource) Read(ctx context.Context, req resource.ReadReque
 		return
 	}
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
+	request, requestDiags := data.ToOperationsGetPortalSnippetRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var snippetID string
-	snippetID = data.ID.ValueString()
-
-	request := operations.GetPortalSnippetRequest{
-		PortalID:  portalID,
-		SnippetID: snippetID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Snippets.GetPortalSnippet(ctx, request)
+	res, err := r.client.Snippets.GetPortalSnippet(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -252,7 +254,11 @@ func (r *PortalSnippetResource) Read(ctx context.Context, req resource.ReadReque
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPortalSnippetResponse(res.PortalSnippetResponse)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalSnippetResponse(ctx, res.PortalSnippetResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -272,19 +278,13 @@ func (r *PortalSnippetResource) Update(ctx context.Context, req resource.UpdateR
 		return
 	}
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
+	request, requestDiags := data.ToOperationsUpdatePortalSnippetRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var snippetID string
-	snippetID = data.ID.ValueString()
-
-	updatePortalSnippetRequest := *data.ToSharedUpdatePortalSnippetRequest()
-	request := operations.UpdatePortalSnippetRequest{
-		PortalID:                   portalID,
-		SnippetID:                  snippetID,
-		UpdatePortalSnippetRequest: updatePortalSnippetRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Snippets.UpdatePortalSnippet(ctx, request)
+	res, err := r.client.Snippets.UpdatePortalSnippet(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -304,8 +304,17 @@ func (r *PortalSnippetResource) Update(ctx context.Context, req resource.UpdateR
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPortalSnippetResponse(res.PortalSnippetResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalSnippetResponse(ctx, res.PortalSnippetResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -329,17 +338,13 @@ func (r *PortalSnippetResource) Delete(ctx context.Context, req resource.DeleteR
 		return
 	}
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
+	request, requestDiags := data.ToOperationsDeletePortalSnippetRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var snippetID string
-	snippetID = data.ID.ValueString()
-
-	request := operations.DeletePortalSnippetRequest{
-		PortalID:  portalID,
-		SnippetID: snippetID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Snippets.DeletePortalSnippet(ctx, request)
+	res, err := r.client.Snippets.DeletePortalSnippet(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -367,7 +372,7 @@ func (r *PortalSnippetResource) ImportState(ctx context.Context, req resource.Im
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "portal_id": "f32d905a-ed33-46a3-a093-d8f536af9a8a",  "snippet_id": "ebbac5b0-ac89-45c3-9d2e-c4542c657e79"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "portal_id": "f32d905a-ed33-46a3-a093-d8f536af9a8a",  "id": "ebbac5b0-ac89-45c3-9d2e-c4542c657e79"}': `+err.Error())
 		return
 	}
 

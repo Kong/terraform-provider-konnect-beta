@@ -20,7 +20,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
@@ -338,23 +337,13 @@ func (r *MeshTrafficPermissionResource) Create(ctx context.Context, req resource
 		return
 	}
 
-	var cpID string
-	cpID = data.CpID.ValueString()
+	request, requestDiags := data.ToOperationsCreateMeshTrafficPermissionRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var mesh string
-	mesh = data.Mesh.ValueString()
-
-	var name string
-	name = data.Name.ValueString()
-
-	meshTrafficPermissionItem := *data.ToSharedMeshTrafficPermissionItemInput()
-	request := operations.CreateMeshTrafficPermissionRequest{
-		CpID:                      cpID,
-		Mesh:                      mesh,
-		Name:                      name,
-		MeshTrafficPermissionItem: meshTrafficPermissionItem,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.MeshTrafficPermission.CreateMeshTrafficPermission(ctx, request)
+	res, err := r.client.MeshTrafficPermission.CreateMeshTrafficPermission(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -374,23 +363,24 @@ func (r *MeshTrafficPermissionResource) Create(ctx context.Context, req resource
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshTrafficPermissionCreateOrUpdateSuccessResponse(res.MeshTrafficPermissionCreateOrUpdateSuccessResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
-	var cpId1 string
-	cpId1 = data.CpID.ValueString()
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshTrafficPermissionCreateOrUpdateSuccessResponse(ctx, res.MeshTrafficPermissionCreateOrUpdateSuccessResponse)...)
 
-	var mesh1 string
-	mesh1 = data.Mesh.ValueString()
-
-	var name1 string
-	name1 = data.Name.ValueString()
-
-	request1 := operations.GetMeshTrafficPermissionRequest{
-		CpID: cpId1,
-		Mesh: mesh1,
-		Name: name1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.MeshTrafficPermission.GetMeshTrafficPermission(ctx, request1)
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsGetMeshTrafficPermissionRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.MeshTrafficPermission.GetMeshTrafficPermission(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -410,8 +400,17 @@ func (r *MeshTrafficPermissionResource) Create(ctx context.Context, req resource
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshTrafficPermissionItem(res1.MeshTrafficPermissionItem)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshTrafficPermissionItem(ctx, res1.MeshTrafficPermissionItem)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -435,21 +434,13 @@ func (r *MeshTrafficPermissionResource) Read(ctx context.Context, req resource.R
 		return
 	}
 
-	var cpID string
-	cpID = data.CpID.ValueString()
+	request, requestDiags := data.ToOperationsGetMeshTrafficPermissionRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var mesh string
-	mesh = data.Mesh.ValueString()
-
-	var name string
-	name = data.Name.ValueString()
-
-	request := operations.GetMeshTrafficPermissionRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.MeshTrafficPermission.GetMeshTrafficPermission(ctx, request)
+	res, err := r.client.MeshTrafficPermission.GetMeshTrafficPermission(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -473,7 +464,11 @@ func (r *MeshTrafficPermissionResource) Read(ctx context.Context, req resource.R
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshTrafficPermissionItem(res.MeshTrafficPermissionItem)
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshTrafficPermissionItem(ctx, res.MeshTrafficPermissionItem)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -493,23 +488,13 @@ func (r *MeshTrafficPermissionResource) Update(ctx context.Context, req resource
 		return
 	}
 
-	var cpID string
-	cpID = data.CpID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateMeshTrafficPermissionRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var mesh string
-	mesh = data.Mesh.ValueString()
-
-	var name string
-	name = data.Name.ValueString()
-
-	meshTrafficPermissionItem := *data.ToSharedMeshTrafficPermissionItemInput()
-	request := operations.UpdateMeshTrafficPermissionRequest{
-		CpID:                      cpID,
-		Mesh:                      mesh,
-		Name:                      name,
-		MeshTrafficPermissionItem: meshTrafficPermissionItem,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.MeshTrafficPermission.UpdateMeshTrafficPermission(ctx, request)
+	res, err := r.client.MeshTrafficPermission.UpdateMeshTrafficPermission(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -529,23 +514,24 @@ func (r *MeshTrafficPermissionResource) Update(ctx context.Context, req resource
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshTrafficPermissionCreateOrUpdateSuccessResponse(res.MeshTrafficPermissionCreateOrUpdateSuccessResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
-	var cpId1 string
-	cpId1 = data.CpID.ValueString()
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshTrafficPermissionCreateOrUpdateSuccessResponse(ctx, res.MeshTrafficPermissionCreateOrUpdateSuccessResponse)...)
 
-	var mesh1 string
-	mesh1 = data.Mesh.ValueString()
-
-	var name1 string
-	name1 = data.Name.ValueString()
-
-	request1 := operations.GetMeshTrafficPermissionRequest{
-		CpID: cpId1,
-		Mesh: mesh1,
-		Name: name1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.MeshTrafficPermission.GetMeshTrafficPermission(ctx, request1)
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsGetMeshTrafficPermissionRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.MeshTrafficPermission.GetMeshTrafficPermission(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -565,8 +551,17 @@ func (r *MeshTrafficPermissionResource) Update(ctx context.Context, req resource
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshTrafficPermissionItem(res1.MeshTrafficPermissionItem)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshTrafficPermissionItem(ctx, res1.MeshTrafficPermissionItem)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -590,21 +585,13 @@ func (r *MeshTrafficPermissionResource) Delete(ctx context.Context, req resource
 		return
 	}
 
-	var cpID string
-	cpID = data.CpID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteMeshTrafficPermissionRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var mesh string
-	mesh = data.Mesh.ValueString()
-
-	var name string
-	name = data.Name.ValueString()
-
-	request := operations.DeleteMeshTrafficPermissionRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.MeshTrafficPermission.DeleteMeshTrafficPermission(ctx, request)
+	res, err := r.client.MeshTrafficPermission.DeleteMeshTrafficPermission(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -633,7 +620,7 @@ func (r *MeshTrafficPermissionResource) ImportState(ctx context.Context, req res
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b",  "mesh": "",  "name": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b",  "mesh": "",  "name": ""}': `+err.Error())
 		return
 	}
 

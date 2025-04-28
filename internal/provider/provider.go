@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
+	"github.com/hashicorp/terraform-plugin-framework/ephemeral"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -15,7 +16,8 @@ import (
 	"os"
 )
 
-var _ provider.Provider = &KonnectBetaProvider{}
+var _ provider.Provider = (*KonnectBetaProvider)(nil)
+var _ provider.ProviderWithEphemeralResources = (*KonnectBetaProvider)(nil)
 
 type KonnectBetaProvider struct {
 	// version is set to the provider version on release, "dev" when the
@@ -127,6 +129,7 @@ func (p *KonnectBetaProvider) Configure(ctx context.Context, req provider.Config
 	client := sdk.New(opts...)
 
 	resp.DataSourceData = client
+	resp.EphemeralResourceData = client
 	resp.ResourceData = client
 }
 
@@ -236,6 +239,10 @@ func (p *KonnectBetaProvider) DataSources(ctx context.Context) []func() datasour
 		NewPortalSnippetDataSource,
 		NewPortalTeamDataSource,
 	}
+}
+
+func (p *KonnectBetaProvider) EphemeralResources(ctx context.Context) []func() ephemeral.EphemeralResource {
+	return []func() ephemeral.EphemeralResource{}
 }
 
 func New(version string) func() provider.Provider {

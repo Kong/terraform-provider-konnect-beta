@@ -20,7 +20,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 )
 
@@ -194,19 +193,13 @@ func (r *MeshHostnameGeneratorResource) Create(ctx context.Context, req resource
 		return
 	}
 
-	var cpID string
-	cpID = data.CpID.ValueString()
+	request, requestDiags := data.ToOperationsCreateHostnameGeneratorRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var name string
-	name = data.Name.ValueString()
-
-	hostnameGeneratorItem := *data.ToSharedHostnameGeneratorItemInput()
-	request := operations.CreateHostnameGeneratorRequest{
-		CpID:                  cpID,
-		Name:                  name,
-		HostnameGeneratorItem: hostnameGeneratorItem,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.HostnameGenerator.CreateHostnameGenerator(ctx, request)
+	res, err := r.client.HostnameGenerator.CreateHostnameGenerator(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -226,19 +219,24 @@ func (r *MeshHostnameGeneratorResource) Create(ctx context.Context, req resource
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedHostnameGeneratorCreateOrUpdateSuccessResponse(res.HostnameGeneratorCreateOrUpdateSuccessResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
-	var cpId1 string
-	cpId1 = data.CpID.ValueString()
+	resp.Diagnostics.Append(data.RefreshFromSharedHostnameGeneratorCreateOrUpdateSuccessResponse(ctx, res.HostnameGeneratorCreateOrUpdateSuccessResponse)...)
 
-	var name1 string
-	name1 = data.Name.ValueString()
-
-	request1 := operations.GetHostnameGeneratorRequest{
-		CpID: cpId1,
-		Name: name1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.HostnameGenerator.GetHostnameGenerator(ctx, request1)
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsGetHostnameGeneratorRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.HostnameGenerator.GetHostnameGenerator(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -258,8 +256,17 @@ func (r *MeshHostnameGeneratorResource) Create(ctx context.Context, req resource
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	data.RefreshFromSharedHostnameGeneratorItem(res1.HostnameGeneratorItem)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedHostnameGeneratorItem(ctx, res1.HostnameGeneratorItem)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -283,17 +290,13 @@ func (r *MeshHostnameGeneratorResource) Read(ctx context.Context, req resource.R
 		return
 	}
 
-	var cpID string
-	cpID = data.CpID.ValueString()
+	request, requestDiags := data.ToOperationsGetHostnameGeneratorRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var name string
-	name = data.Name.ValueString()
-
-	request := operations.GetHostnameGeneratorRequest{
-		CpID: cpID,
-		Name: name,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.HostnameGenerator.GetHostnameGenerator(ctx, request)
+	res, err := r.client.HostnameGenerator.GetHostnameGenerator(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -317,7 +320,11 @@ func (r *MeshHostnameGeneratorResource) Read(ctx context.Context, req resource.R
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedHostnameGeneratorItem(res.HostnameGeneratorItem)
+	resp.Diagnostics.Append(data.RefreshFromSharedHostnameGeneratorItem(ctx, res.HostnameGeneratorItem)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -337,19 +344,13 @@ func (r *MeshHostnameGeneratorResource) Update(ctx context.Context, req resource
 		return
 	}
 
-	var cpID string
-	cpID = data.CpID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateHostnameGeneratorRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var name string
-	name = data.Name.ValueString()
-
-	hostnameGeneratorItem := *data.ToSharedHostnameGeneratorItemInput()
-	request := operations.UpdateHostnameGeneratorRequest{
-		CpID:                  cpID,
-		Name:                  name,
-		HostnameGeneratorItem: hostnameGeneratorItem,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.HostnameGenerator.UpdateHostnameGenerator(ctx, request)
+	res, err := r.client.HostnameGenerator.UpdateHostnameGenerator(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -369,19 +370,24 @@ func (r *MeshHostnameGeneratorResource) Update(ctx context.Context, req resource
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedHostnameGeneratorCreateOrUpdateSuccessResponse(res.HostnameGeneratorCreateOrUpdateSuccessResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
-	var cpId1 string
-	cpId1 = data.CpID.ValueString()
+	resp.Diagnostics.Append(data.RefreshFromSharedHostnameGeneratorCreateOrUpdateSuccessResponse(ctx, res.HostnameGeneratorCreateOrUpdateSuccessResponse)...)
 
-	var name1 string
-	name1 = data.Name.ValueString()
-
-	request1 := operations.GetHostnameGeneratorRequest{
-		CpID: cpId1,
-		Name: name1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.HostnameGenerator.GetHostnameGenerator(ctx, request1)
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsGetHostnameGeneratorRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.HostnameGenerator.GetHostnameGenerator(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -401,8 +407,17 @@ func (r *MeshHostnameGeneratorResource) Update(ctx context.Context, req resource
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	data.RefreshFromSharedHostnameGeneratorItem(res1.HostnameGeneratorItem)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedHostnameGeneratorItem(ctx, res1.HostnameGeneratorItem)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -426,17 +441,13 @@ func (r *MeshHostnameGeneratorResource) Delete(ctx context.Context, req resource
 		return
 	}
 
-	var cpID string
-	cpID = data.CpID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteHostnameGeneratorRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var name string
-	name = data.Name.ValueString()
-
-	request := operations.DeleteHostnameGeneratorRequest{
-		CpID: cpID,
-		Name: name,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.HostnameGenerator.DeleteHostnameGenerator(ctx, request)
+	res, err := r.client.HostnameGenerator.DeleteHostnameGenerator(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -464,7 +475,7 @@ func (r *MeshHostnameGeneratorResource) ImportState(ctx context.Context, req res
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b",  "name": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b",  "name": ""}': `+err.Error())
 		return
 	}
 

@@ -13,7 +13,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 )
 
@@ -206,8 +205,13 @@ func (r *PortalResource) Create(ctx context.Context, req resource.CreateRequest,
 		return
 	}
 
-	request := *data.ToSharedCreatePortal()
-	res, err := r.client.Portals.CreatePortal(ctx, request)
+	request, requestDiags := data.ToSharedCreatePortal(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res, err := r.client.Portals.CreatePortal(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -227,8 +231,17 @@ func (r *PortalResource) Create(ctx context.Context, req resource.CreateRequest,
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPortalResponse(res.PortalResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalResponse(ctx, res.PortalResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -252,13 +265,13 @@ func (r *PortalResource) Read(ctx context.Context, req resource.ReadRequest, res
 		return
 	}
 
-	var portalID string
-	portalID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetPortalRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.GetPortalRequest{
-		PortalID: portalID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Portals.GetPortal(ctx, request)
+	res, err := r.client.Portals.GetPortal(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -282,7 +295,11 @@ func (r *PortalResource) Read(ctx context.Context, req resource.ReadRequest, res
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPortalResponse(res.PortalResponse)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalResponse(ctx, res.PortalResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -302,15 +319,13 @@ func (r *PortalResource) Update(ctx context.Context, req resource.UpdateRequest,
 		return
 	}
 
-	var portalID string
-	portalID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdatePortalRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	updatePortal := *data.ToSharedUpdatePortal()
-	request := operations.UpdatePortalRequest{
-		PortalID:     portalID,
-		UpdatePortal: updatePortal,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Portals.UpdatePortal(ctx, request)
+	res, err := r.client.Portals.UpdatePortal(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -330,8 +345,17 @@ func (r *PortalResource) Update(ctx context.Context, req resource.UpdateRequest,
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPortalResponse(res.PortalResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalResponse(ctx, res.PortalResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -355,13 +379,13 @@ func (r *PortalResource) Delete(ctx context.Context, req resource.DeleteRequest,
 		return
 	}
 
-	var portalID string
-	portalID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeletePortalRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.DeletePortalRequest{
-		PortalID: portalID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Portals.DeletePortal(ctx, request)
+	res, err := r.client.Portals.DeletePortal(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

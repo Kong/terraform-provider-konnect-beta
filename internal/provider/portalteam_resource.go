@@ -15,7 +15,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 	"regexp"
 )
@@ -126,15 +125,13 @@ func (r *PortalTeamResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
+	request, requestDiags := data.ToOperationsCreatePortalTeamRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	portalCreateTeamRequest := data.ToSharedPortalCreateTeamRequest()
-	request := operations.CreatePortalTeamRequest{
-		PortalID:                portalID,
-		PortalCreateTeamRequest: portalCreateTeamRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.PortalTeams.CreatePortalTeam(ctx, request)
+	res, err := r.client.PortalTeams.CreatePortalTeam(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -154,8 +151,17 @@ func (r *PortalTeamResource) Create(ctx context.Context, req resource.CreateRequ
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPortalTeamResponse(res.PortalTeamResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalTeamResponse(ctx, res.PortalTeamResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -179,17 +185,13 @@ func (r *PortalTeamResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	var teamID string
-	teamID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetPortalTeamRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
-
-	request := operations.GetPortalTeamRequest{
-		TeamID:   teamID,
-		PortalID: portalID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.PortalTeams.GetPortalTeam(ctx, request)
+	res, err := r.client.PortalTeams.GetPortalTeam(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -213,7 +215,11 @@ func (r *PortalTeamResource) Read(ctx context.Context, req resource.ReadRequest,
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPortalTeamResponse(res.PortalTeamResponse)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalTeamResponse(ctx, res.PortalTeamResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -233,19 +239,13 @@ func (r *PortalTeamResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 
-	var teamID string
-	teamID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdatePortalTeamRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
-
-	portalUpdateTeamRequest := data.ToSharedPortalUpdateTeamRequest()
-	request := operations.UpdatePortalTeamRequest{
-		TeamID:                  teamID,
-		PortalID:                portalID,
-		PortalUpdateTeamRequest: portalUpdateTeamRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.PortalTeams.UpdatePortalTeam(ctx, request)
+	res, err := r.client.PortalTeams.UpdatePortalTeam(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -265,8 +265,17 @@ func (r *PortalTeamResource) Update(ctx context.Context, req resource.UpdateRequ
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPortalTeamResponse(res.PortalTeamResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalTeamResponse(ctx, res.PortalTeamResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -290,17 +299,13 @@ func (r *PortalTeamResource) Delete(ctx context.Context, req resource.DeleteRequ
 		return
 	}
 
-	var teamID string
-	teamID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeletePortalTeamRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var portalID string
-	portalID = data.PortalID.ValueString()
-
-	request := operations.DeletePortalTeamRequest{
-		TeamID:   teamID,
-		PortalID: portalID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.PortalTeams.DeletePortalTeam(ctx, request)
+	res, err := r.client.PortalTeams.DeletePortalTeam(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -328,7 +333,7 @@ func (r *PortalTeamResource) ImportState(ctx context.Context, req resource.Impor
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "portal_id": "f32d905a-ed33-46a3-a093-d8f536af9a8a",  "team_id": "d32d905a-ed33-46a3-a093-d8f536af9a8a"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "portal_id": "f32d905a-ed33-46a3-a093-d8f536af9a8a",  "id": "d32d905a-ed33-46a3-a093-d8f536af9a8a"}': `+err.Error())
 		return
 	}
 

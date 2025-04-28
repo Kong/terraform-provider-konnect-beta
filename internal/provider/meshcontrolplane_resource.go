@@ -23,7 +23,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 	speakeasy_boolvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/boolvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
@@ -233,8 +232,13 @@ func (r *MeshControlPlaneResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 
-	request := *data.ToSharedCreateMeshControlPlaneRequest()
-	res, err := r.client.Mesh.CreateCp(ctx, request)
+	request, requestDiags := data.ToSharedCreateMeshControlPlaneRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res, err := r.client.Mesh.CreateCp(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -254,8 +258,17 @@ func (r *MeshControlPlaneResource) Create(ctx context.Context, req resource.Crea
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshControlPlane(res.MeshControlPlane)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshControlPlane(ctx, res.MeshControlPlane)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -279,13 +292,13 @@ func (r *MeshControlPlaneResource) Read(ctx context.Context, req resource.ReadRe
 		return
 	}
 
-	var cpID string
-	cpID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetMeshControlPlaneRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.GetMeshControlPlaneRequest{
-		CpID: cpID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Mesh.GetMeshControlPlane(ctx, request)
+	res, err := r.client.Mesh.GetMeshControlPlane(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -309,7 +322,11 @@ func (r *MeshControlPlaneResource) Read(ctx context.Context, req resource.ReadRe
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshControlPlane(res.MeshControlPlane)
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshControlPlane(ctx, res.MeshControlPlane)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -329,15 +346,13 @@ func (r *MeshControlPlaneResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
-	var cpID string
-	cpID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateCpRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	putMeshControlPlaneRequest := *data.ToSharedPutMeshControlPlaneRequest()
-	request := operations.UpdateCpRequest{
-		CpID:                       cpID,
-		PutMeshControlPlaneRequest: putMeshControlPlaneRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Mesh.UpdateCp(ctx, request)
+	res, err := r.client.Mesh.UpdateCp(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -357,8 +372,17 @@ func (r *MeshControlPlaneResource) Update(ctx context.Context, req resource.Upda
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshControlPlane(res.MeshControlPlane)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshControlPlane(ctx, res.MeshControlPlane)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -382,13 +406,13 @@ func (r *MeshControlPlaneResource) Delete(ctx context.Context, req resource.Dele
 		return
 	}
 
-	var cpID string
-	cpID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteMeshControlPlaneRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.DeleteMeshControlPlaneRequest{
-		CpID: cpID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Mesh.DeleteMeshControlPlane(ctx, request)
+	res, err := r.client.Mesh.DeleteMeshControlPlane(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -3,18 +3,36 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
-	"time"
 )
 
-func (r *PortalDataSourceModel) RefreshFromSharedPortalResponse(resp *shared.PortalResponse) {
+func (r *PortalDataSourceModel) ToOperationsGetPortalRequest(ctx context.Context) (*operations.GetPortalRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.ID.ValueString()
+
+	out := operations.GetPortalRequest{
+		PortalID: portalID,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalDataSourceModel) RefreshFromSharedPortalResponse(ctx context.Context, resp *shared.PortalResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.AuthenticationEnabled = types.BoolValue(resp.AuthenticationEnabled)
 		r.AutoApproveApplications = types.BoolValue(resp.AutoApproveApplications)
 		r.AutoApproveDevelopers = types.BoolValue(resp.AutoApproveDevelopers)
 		r.CanonicalDomain = types.StringValue(resp.CanonicalDomain)
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.DefaultAPIVisibility = types.StringValue(string(resp.DefaultAPIVisibility))
 		r.DefaultApplicationAuthStrategyID = types.StringPointerValue(resp.DefaultApplicationAuthStrategyID)
 		r.DefaultDomain = types.StringValue(resp.DefaultDomain)
@@ -30,6 +48,8 @@ func (r *PortalDataSourceModel) RefreshFromSharedPortalResponse(resp *shared.Por
 		}
 		r.Name = types.StringValue(resp.Name)
 		r.RbacEnabled = types.BoolValue(resp.RbacEnabled)
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
+
+	return diags
 }

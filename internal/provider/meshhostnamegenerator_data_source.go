@@ -11,7 +11,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -157,17 +156,13 @@ func (r *MeshHostnameGeneratorDataSource) Read(ctx context.Context, req datasour
 		return
 	}
 
-	var cpID string
-	cpID = data.CpID.ValueString()
+	request, requestDiags := data.ToOperationsGetHostnameGeneratorRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var name string
-	name = data.Name.ValueString()
-
-	request := operations.GetHostnameGeneratorRequest{
-		CpID: cpID,
-		Name: name,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.HostnameGenerator.GetHostnameGenerator(ctx, request)
+	res, err := r.client.HostnameGenerator.GetHostnameGenerator(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -179,10 +174,6 @@ func (r *MeshHostnameGeneratorDataSource) Read(ctx context.Context, req datasour
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode == 404 {
-		resp.State.RemoveResource(ctx)
-		return
-	}
 	if res.StatusCode != 200 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
@@ -191,7 +182,11 @@ func (r *MeshHostnameGeneratorDataSource) Read(ctx context.Context, req datasour
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedHostnameGeneratorItem(res.HostnameGeneratorItem)
+	resp.Diagnostics.Append(data.RefreshFromSharedHostnameGeneratorItem(ctx, res.HostnameGeneratorItem)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
