@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.1
+> Released on 2025/04/29
+
+### Improvements
+
+* Use common test cases for Kong Mesh and Konnect via shared-speakeasy
+
 ## 0.2.0
 > Released on 2025/04/28
 
