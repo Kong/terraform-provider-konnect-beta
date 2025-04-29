@@ -42,7 +42,6 @@ func TestMesh(t *testing.T) {
                 "kuma.io/zone":   "default",
             })
         builder.AddMesh(mesh)
-        builder.AddPolicy(mtp)
 
         resource.ParallelTest(t, tfbuilder.CreatePolicyAndModifyFieldsOnIt(providerFactory, builder, mtp))
     })
