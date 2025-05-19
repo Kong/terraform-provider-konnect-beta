@@ -195,7 +195,9 @@ type APIResponseSchema struct {
 	//
 	// Defaults to `slugify(name + version)`
 	//
-	Slug                  *string                `json:"slug"`
+	Slug *string `json:"slug"`
+	// The list of API specification ids for the API.
+	APISpecIds            []string               `json:"api_spec_ids"`
 	AuthStrategySyncError *AuthStrategySyncError `json:"auth_strategy_sync_error,omitempty"`
 	// The list of portals which this API is published to.
 	Portals []Portals `json:"portals"`
@@ -204,13 +206,6 @@ type APIResponseSchema struct {
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels"`
-	// Public labels store information about an entity that can be used for filtering a list of objects.
-	//
-	// Public labels are intended to store **PUBLIC** metadata.
-	//
-	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
-	//
-	PublicLabels map[string]string `json:"public_labels"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
@@ -270,6 +265,13 @@ func (o *APIResponseSchema) GetSlug() *string {
 	return o.Slug
 }
 
+func (o *APIResponseSchema) GetAPISpecIds() []string {
+	if o == nil {
+		return []string{}
+	}
+	return o.APISpecIds
+}
+
 func (o *APIResponseSchema) GetAuthStrategySyncError() *AuthStrategySyncError {
 	if o == nil {
 		return nil
@@ -289,13 +291,6 @@ func (o *APIResponseSchema) GetLabels() map[string]*string {
 		return map[string]*string{}
 	}
 	return o.Labels
-}
-
-func (o *APIResponseSchema) GetPublicLabels() map[string]string {
-	if o == nil {
-		return map[string]string{}
-	}
-	return o.PublicLabels
 }
 
 func (o *APIResponseSchema) GetCreatedAt() time.Time {

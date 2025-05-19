@@ -8,6 +8,7 @@ resource "konnect_portal" "my_portal" {
   default_page_visibility              = "private"
   description                          = "...my_description..."
   display_name                         = "...my_display_name..."
+  force_destroy                        = "false"
   labels = {
     key = "value"
   }

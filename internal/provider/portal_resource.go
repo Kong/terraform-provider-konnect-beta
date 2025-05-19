@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -42,6 +43,7 @@ type PortalResourceModel struct {
 	DefaultPageVisibility            types.String            `tfsdk:"default_page_visibility"`
 	Description                      types.String            `tfsdk:"description"`
 	DisplayName                      types.String            `tfsdk:"display_name"`
+	ForceDestroy                     types.String            `queryParam:"style=form,explode=true,name=force" tfsdk:"force_destroy"`
 	ID                               types.String            `tfsdk:"id"`
 	Labels                           map[string]types.String `tfsdk:"labels"`
 	Name                             types.String            `tfsdk:"name"`
@@ -128,6 +130,21 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Description: `The display name of the portal. This value will be the portal's ` + "`" + `name` + "`" + ` in Portal API.`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthBetween(1, 255),
+				},
+			},
+			"force_destroy": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`false`),
+				MarkdownDescription: `If set to "true", the portal and all child entities will be deleted when running ` + "`" + `terraform destroy` + "`" + `.` + "\n" +
+					`If set to "false", the portal will not be deleted until all child entities are manually removed.` + "\n" +
+					`This will IRREVERSIBLY DELETE ALL REGISTERED DEVELOPERS AND THEIR CREDENTIALS. Only set to "true" if you want this behavior.` + "\n" +
+					`Default: "false"; must be one of ["true", "false"]`,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						"true",
+						"false",
+					),
 				},
 			},
 			"id": schema.StringAttribute{

@@ -28,7 +28,7 @@ func newAPISpecification(sdkConfig sdkConfiguration) *APISpecification {
 // **Pre-release Endpoint**
 // This endpoint is currently in beta and is subject to change.
 //
-// Creates a specification for an API.
+// Creates a specification (OpenAPI or AsyncAPI) for an API.
 // **Note:** You can only have one specification for an API.
 func (s *APISpecification) CreateAPISpec(ctx context.Context, request operations.CreateAPISpecRequest, opts ...operations.Option) (*operations.CreateAPISpecResponse, error) {
 	o := operations.Options{}
@@ -299,7 +299,7 @@ func (s *APISpecification) CreateAPISpec(ctx context.Context, request operations
 // **Pre-release Endpoint**
 // This endpoint is currently in beta and is subject to change.
 //
-// Fetches the specification of an API.
+// Fetches the specification (OpenAPI or AsyncAPI) of an API.
 func (s *APISpecification) FetchAPISpec(ctx context.Context, request operations.FetchAPISpecRequest, opts ...operations.Option) (*operations.FetchAPISpecResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -499,7 +499,7 @@ func (s *APISpecification) FetchAPISpec(ctx context.Context, request operations.
 // **Pre-release Endpoint**
 // This endpoint is currently in beta and is subject to change.
 //
-// Updates the specification of an API.
+// Updates the specification (OpenAPI or AsyncAPI) of an API.
 func (s *APISpecification) UpdateAPISpec(ctx context.Context, request operations.UpdateAPISpecRequest, opts ...operations.Option) (*operations.UpdateAPISpecResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -769,7 +769,7 @@ func (s *APISpecification) UpdateAPISpec(ctx context.Context, request operations
 // **Pre-release Endpoint**
 // This endpoint is currently in beta and is subject to change.
 //
-// Deletes the specification of an API.
+// Deletes the specification (OpenAPI or AsyncAPI) of an API.
 func (s *APISpecification) DeleteAPISpec(ctx context.Context, request operations.DeleteAPISpecRequest, opts ...operations.Option) (*operations.DeleteAPISpecResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

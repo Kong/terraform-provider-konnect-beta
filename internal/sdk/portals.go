@@ -237,7 +237,7 @@ func (s *Portals) CreatePortal(ctx context.Context, request shared.CreatePortal,
 // **Pre-release Endpoint**
 // This endpoint is currently in beta and is subject to change.
 //
-// Returns the configuration for a single developer portal, including  the current visibility, access, and domain settings.
+// Returns the configuration for a single developer portal, including the current visibility, access, and domain settings.
 func (s *Portals) GetPortal(ctx context.Context, request operations.GetPortalRequest, opts ...operations.Option) (*operations.GetPortalResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

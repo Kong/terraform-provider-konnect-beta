@@ -53,21 +53,20 @@ func (r *APIResourceModel) ToSharedCreateAPIRequest(ctx context.Context) (*share
 		}
 		labels[labelsKey] = labelsInst
 	}
-	publicLabels := make(map[string]string)
-	for publicLabelsKey, publicLabelsValue := range r.PublicLabels {
-		var publicLabelsInst string
-		publicLabelsInst = publicLabelsValue.ValueString()
-
-		publicLabels[publicLabelsKey] = publicLabelsInst
+	specContent := new(string)
+	if !r.SpecContent.IsUnknown() && !r.SpecContent.IsNull() {
+		*specContent = r.SpecContent.ValueString()
+	} else {
+		specContent = nil
 	}
 	out := shared.CreateAPIRequest{
-		Name:         name,
-		Description:  description,
-		Version:      version,
-		Deprecated:   deprecated,
-		Slug:         slug,
-		Labels:       labels,
-		PublicLabels: publicLabels,
+		Name:        name,
+		Description: description,
+		Version:     version,
+		Deprecated:  deprecated,
+		Slug:        slug,
+		Labels:      labels,
+		SpecContent: specContent,
 	}
 
 	return &out, diags
@@ -116,24 +115,13 @@ func (r *APIResourceModel) ToSharedUpdateAPIRequest(ctx context.Context) (*share
 		}
 		labels[labelsKey] = labelsInst
 	}
-	publicLabels := make(map[string]*string)
-	for publicLabelsKey, publicLabelsValue := range r.PublicLabels {
-		publicLabelsInst := new(string)
-		if !publicLabelsValue.IsUnknown() && !publicLabelsValue.IsNull() {
-			*publicLabelsInst = publicLabelsValue.ValueString()
-		} else {
-			publicLabelsInst = nil
-		}
-		publicLabels[publicLabelsKey] = publicLabelsInst
-	}
 	out := shared.UpdateAPIRequest{
-		Name:         name,
-		Description:  description,
-		Version:      version,
-		Deprecated:   deprecated,
-		Slug:         slug,
-		Labels:       labels,
-		PublicLabels: publicLabels,
+		Name:        name,
+		Description: description,
+		Version:     version,
+		Deprecated:  deprecated,
+		Slug:        slug,
+		Labels:      labels,
 	}
 
 	return &out, diags
@@ -190,6 +178,10 @@ func (r *APIResourceModel) RefreshFromSharedAPIResponseSchema(ctx context.Contex
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.APISpecIds = make([]types.String, 0, len(resp.APISpecIds))
+		for _, v := range resp.APISpecIds {
+			r.APISpecIds = append(r.APISpecIds, types.StringValue(v))
+		}
 		if resp.AuthStrategySyncError == nil {
 			r.AuthStrategySyncError = nil
 		} else {
@@ -263,12 +255,6 @@ func (r *APIResourceModel) RefreshFromSharedAPIResponseSchema(ctx context.Contex
 				r.Portals[portalsCount].DisplayName = portals.DisplayName
 				r.Portals[portalsCount].ID = portals.ID
 				r.Portals[portalsCount].Name = portals.Name
-			}
-		}
-		if len(resp.PublicLabels) > 0 {
-			r.PublicLabels = make(map[string]types.String, len(resp.PublicLabels))
-			for key1, value1 := range resp.PublicLabels {
-				r.PublicLabels[key1] = types.StringValue(value1)
 			}
 		}
 		r.Slug = types.StringPointerValue(resp.Slug)
