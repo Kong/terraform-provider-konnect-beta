@@ -23,6 +23,7 @@ resource "konnect_portal" "my_portal" {
   default_page_visibility              = "private"
   description                          = "...my_description..."
   display_name                         = "...my_display_name..."
+  force_destroy                        = "false"
   labels = {
     key = "value"
   }
@@ -48,6 +49,10 @@ resource "konnect_portal" "my_portal" {
 - `default_page_visibility` (String) The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers. must be one of ["public", "private"]
 - `description` (String) A description of the portal.
 - `display_name` (String) The display name of the portal. This value will be the portal's `name` in Portal API.
+- `force_destroy` (String) If set to "true", the portal and all child entities will be deleted when running `terraform destroy`.
+If set to "false", the portal will not be deleted until all child entities are manually removed.
+This will IRREVERSIBLY DELETE ALL REGISTERED DEVELOPERS AND THEIR CREDENTIALS. Only set to "true" if you want this behavior.
+Default: "false"; must be one of ["true", "false"]
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Labels are intended to store **INTERNAL** metadata.

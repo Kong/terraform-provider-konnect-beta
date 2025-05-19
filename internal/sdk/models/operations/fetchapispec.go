@@ -35,7 +35,7 @@ type FetchAPISpecResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// API specification
+	// API specification (OpenAPI or AsyncAPI)
 	APISpecResponse *shared.APISpecResponse
 	// ApiUnauthorized
 	UnauthorizedError *shared.UnauthorizedError

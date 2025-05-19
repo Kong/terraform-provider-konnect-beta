@@ -24,13 +24,6 @@ type UpdateAPIRequest struct {
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
-	// Public labels store information about an entity that can be used for filtering a list of objects.
-	//
-	// Public labels are intended to store **PUBLIC** metadata.
-	//
-	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
-	//
-	PublicLabels map[string]*string `json:"public_labels,omitempty"`
 }
 
 func (o *UpdateAPIRequest) GetName() *string {
@@ -73,11 +66,4 @@ func (o *UpdateAPIRequest) GetLabels() map[string]*string {
 		return nil
 	}
 	return o.Labels
-}
-
-func (o *UpdateAPIRequest) GetPublicLabels() map[string]*string {
-	if o == nil {
-		return nil
-	}
-	return o.PublicLabels
 }

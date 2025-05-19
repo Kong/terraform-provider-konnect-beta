@@ -18,11 +18,11 @@ func (o *ValidationMessages) GetMessage() string {
 	return o.Message
 }
 
-// APISpecResponse - API specification
+// APISpecResponse - API specification (OpenAPI or AsyncAPI)
 type APISpecResponse struct {
 	// The API specification identifier.
 	ID string `json:"id"`
-	// The raw content of your API specification, in json or yaml.
+	// The raw content of your API specification, in json or yaml format (OpenAPI or AsyncAPI).
 	//
 	Content string `json:"content"`
 	// The errors that occurred while parsing the API specification.

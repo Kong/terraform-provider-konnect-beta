@@ -92,7 +92,7 @@ paths:
         This endpoint is currently in beta and is subject to change.
 
 
-        Returns the configuration for a single developer portal, including  the
+        Returns the configuration for a single developer portal, including the
         current visibility, access, and domain settings.
       operationId: get-portal
       tags:
@@ -148,12 +148,21 @@ paths:
         - name: force
           in: query
           description: >-
-            [Overlay change] Always cascade delete when being managed with
-            declarative configuation
+            If set to "true", the portal and all child entities will be deleted
+            when running `terraform destroy`.
+
+            If set to "false", the portal will not be deleted until all child
+            entities are manually removed.
+
+            This will IRREVERSIBLY DELETE ALL REGISTERED DEVELOPERS AND THEIR
+            CREDENTIALS. Only set to "true" if you want this behavior.
           schema:
             type: string
-            const: 'true'
-          required: true
+            default: 'false'
+            enum:
+              - 'true'
+              - 'false'
+          x-speakeasy-name-override: force_destroy
       description: |-
         **Pre-release Endpoint**
         This endpoint is currently in beta and is subject to change.
@@ -988,7 +997,7 @@ paths:
         **Pre-release Endpoint**
         This endpoint is currently in beta and is subject to change.
 
-        Creates a specification for an API.
+        Creates a specification (OpenAPI or AsyncAPI) for an API.
         **Note:** You can only have one specification for an API.
       operationId: create-api-spec
       responses:
@@ -1026,7 +1035,7 @@ paths:
         **Pre-release Endpoint**
         This endpoint is currently in beta and is subject to change.
 
-        Fetches the specification of an API.
+        Fetches the specification (OpenAPI or AsyncAPI) of an API.
       operationId: fetch-api-spec
       responses:
         '200':
@@ -1047,7 +1056,7 @@ paths:
         **Pre-release Endpoint**
         This endpoint is currently in beta and is subject to change.
 
-        Updates the specification of an API.
+        Updates the specification (OpenAPI or AsyncAPI) of an API.
       operationId: update-api-spec
       responses:
         '200':
@@ -1080,7 +1089,7 @@ paths:
         **Pre-release Endpoint**
         This endpoint is currently in beta and is subject to change.
 
-        Deletes the specification of an API.
+        Deletes the specification (OpenAPI or AsyncAPI) of an API.
       operationId: delete-api-spec
       responses:
         '204':
@@ -5704,6 +5713,10 @@ components:
             title: API
             type: object
             additionalProperties: false
+            x-property-annotations:
+              attributes:
+                - x-unstable
+                - x-internal
             properties:
               id:
                 type: string
@@ -5747,6 +5760,15 @@ components:
                   Defaults to `slugify(name + version)`
                 example: my-api-v1
                 nullable: true
+              api_spec_ids:
+                readOnly: true
+                type: array
+                description: The list of API specification ids for the API.
+                items:
+                  type: string
+                  format: uuid
+                  description: The id of the API specification.
+                  example: 123e4567-e89b-12d3-a456-426614174000
               auth_strategy_sync_error:
                 readOnly: true
                 allOf:
@@ -5784,12 +5806,18 @@ components:
                         portal's `name` in Portal API.
               labels:
                 $ref: '#/components/schemas/Labels'
-              public_labels:
-                $ref: '#/components/schemas/PublicLabels'
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
                 $ref: '#/components/schemas/UpdatedAt'
+              spec_content:
+                description: >-
+                  The content of the API specification. This is the raw content
+                  of the API specification, in json or yaml. By including this
+                  field, you can add a API specification without having to make
+                  a separate call to update the API specification.
+                type: string
+                writeOnly: true
             required:
               - name
     CreateApiSpecRequest:
@@ -5809,8 +5837,9 @@ components:
                 readOnly: true
               content:
                 type: string
-                description: |
-                  The raw content of your API specification, in json or yaml.
+                description: >
+                  The raw content of your API specification, in json or yaml
+                  format (OpenAPI or AsyncAPI).
                 example: >-
                   {"openapi":"3.0.3","info":{"title":"Example
                   API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example
@@ -5873,6 +5902,10 @@ components:
             title: API
             type: object
             additionalProperties: false
+            x-property-annotations:
+              attributes:
+                - x-unstable
+                - x-internal
             properties:
               id:
                 type: string
@@ -5916,6 +5949,15 @@ components:
                   Defaults to `slugify(name + version)`
                 example: my-api-v1
                 nullable: true
+              api_spec_ids:
+                readOnly: true
+                type: array
+                description: The list of API specification ids for the API.
+                items:
+                  type: string
+                  format: uuid
+                  description: The id of the API specification.
+                  example: 123e4567-e89b-12d3-a456-426614174000
               auth_strategy_sync_error:
                 readOnly: true
                 allOf:
@@ -5953,8 +5995,6 @@ components:
                         portal's `name` in Portal API.
               labels:
                 $ref: '#/components/schemas/LabelsUpdate'
-              public_labels:
-                $ref: '#/components/schemas/PublicLabelsUpdate'
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
@@ -6361,7 +6401,7 @@ components:
               - updated_at
               - created_at
     ApiSpecResponse:
-      description: API specification
+      description: API specification (OpenAPI or AsyncAPI)
       content:
         application/json:
           schema:
@@ -6377,8 +6417,9 @@ components:
                 readOnly: true
               content:
                 type: string
-                description: |
-                  The raw content of your API specification, in json or yaml.
+                description: >
+                  The raw content of your API specification, in json or yaml
+                  format (OpenAPI or AsyncAPI).
                 example: >-
                   {"openapi":"3.0.3","info":{"title":"Example
                   API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example
@@ -8114,6 +8155,10 @@ components:
       description: The custom settings of this portal
       type: object
       additionalProperties: false
+      x-property-annotations:
+        js:
+          - x-unstable
+          - x-internal
       properties:
         theme:
           type: object
@@ -8192,6 +8237,10 @@ components:
       title: API
       type: object
       additionalProperties: false
+      x-property-annotations:
+        attributes:
+          - x-unstable
+          - x-internal
       properties:
         id:
           type: string
@@ -8233,6 +8282,15 @@ components:
             Defaults to `slugify(name + version)`
           example: my-api-v1
           nullable: true
+        api_spec_ids:
+          readOnly: true
+          type: array
+          description: The list of API specification ids for the API.
+          items:
+            type: string
+            format: uuid
+            description: The id of the API specification.
+            example: 123e4567-e89b-12d3-a456-426614174000
         auth_strategy_sync_error:
           readOnly: true
           allOf:
@@ -8270,8 +8328,6 @@ components:
                   portal's `name` in Portal API.
         labels:
           $ref: '#/components/schemas/Labels'
-        public_labels:
-          $ref: '#/components/schemas/PublicLabels'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -8281,12 +8337,12 @@ components:
         - name
         - version
         - labels
-        - public_labels
         - deprecated
         - created_at
         - updated_at
         - slug
         - portals
+        - api_spec_ids
     AuthStrategyApiSyncError:
       type: object
       additionalProperties: false
@@ -8408,8 +8464,9 @@ components:
           readOnly: true
         content:
           type: string
-          description: |
-            The raw content of your API specification, in json or yaml.
+          description: >
+            The raw content of your API specification, in json or yaml format
+            (OpenAPI or AsyncAPI).
           example: >-
             {"openapi":"3.0.3","info":{"title":"Example
             API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example
@@ -8523,27 +8580,6 @@ components:
           $ref: '#/components/schemas/UpdatedAt'
         service:
           $ref: '#/components/schemas/ApiImplementationService'
-    PublicLabels:
-      title: PublicLabels
-      type: object
-      example:
-        category: finance
-      maxProperties: 50
-      description: >
-        Public labels store information about an entity that can be used for
-        filtering a list of objects.
-
-
-        Public labels are intended to store **PUBLIC** metadata. 
-
-
-        Keys must be of length 1-63 characters, and cannot start with "kong",
-        "konnect", "mesh", "kic", or "_".
-      additionalProperties:
-        type: string
-        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$
-        minLength: 1
-        maxLength: 63
     UnsupportedMediaTypeError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -8559,29 +8595,6 @@ components:
               example: kong:trace:1234567890
             detail:
               example: UnsupportedMediaType
-    PublicLabelsUpdate:
-      title: PublicLabelsUpdate
-      type: object
-      example:
-        category: finance
-      maxProperties: 50
-      description: >
-        Public labels store information about an entity that can be used for
-        filtering a list of objects.
-
-
-        Public labels are intended to store **PUBLIC** metadata.
-
-
-        Keys must be of length 1-63 characters, and cannot start with "kong",
-        "konnect", "mesh", "kic", or "_".
-      additionalProperties:
-        type: string
-        pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$
-        minLength: 1
-        maxLength: 63
-        nullable: true
-      writeOnly: true
     ApiSpecType:
       title: API Spec Type
       type: string
@@ -8596,6 +8609,132 @@ components:
         - oas2
         - oas3
         - asyncapi
+    PrometheusMetricsBackendConfig:
+      properties:
+        aggregate:
+          description: >-
+            Map with the configuration of applications which metrics are going
+            to be
+
+            scrapped by kuma-dp.
+          items:
+            description: >-
+              PrometheusAggregateMetricsConfig defines endpoints that should be
+              scrapped by kuma-dp for prometheus metrics.
+            properties:
+              address:
+                description: >-
+                  Address on which a service expose HTTP endpoint with
+                  Prometheus metrics.
+                type: string
+                x-speakeasy-param-computed: false
+              enabled:
+                description: >-
+                  If false then the application won't be scrapped. If nil, then
+                  it is treated
+
+                  as true and kuma-dp scrapes metrics from the service.
+                type: boolean
+                x-speakeasy-param-computed: false
+              name:
+                description: Name which identify given configuration.
+                type: string
+                x-speakeasy-param-computed: false
+              path:
+                description: >-
+                  Path on which a service expose HTTP endpoint with Prometheus
+                  metrics.
+                type: string
+                x-speakeasy-param-computed: false
+              port:
+                description: >-
+                  Port on which a service expose HTTP endpoint with Prometheus
+                  metrics.
+                type: integer
+                x-speakeasy-param-computed: false
+            type: object
+            x-speakeasy-param-computed: false
+          type: array
+          x-speakeasy-param-computed: false
+        envoy:
+          description: Configuration of Envoy's metrics.
+          properties:
+            filterRegex:
+              description: >-
+                FilterRegex value that is going to be passed to Envoy for
+                filtering
+
+                Envoy metrics.
+              type: string
+              x-speakeasy-param-computed: false
+            usedOnly:
+              description: >-
+                If true then return metrics that Envoy has updated (counters
+                incremented
+
+                at least once, gauges changed at least once, and histograms
+                added to at
+
+                least once). If nil, then it is treated as false.
+              type: boolean
+              x-speakeasy-param-computed: false
+          type: object
+          x-speakeasy-param-computed: false
+        path:
+          description: >-
+            Path on which a dataplane should expose HTTP endpoint with
+            Prometheus
+
+            metrics.
+          type: string
+          x-speakeasy-param-computed: false
+        port:
+          description: >-
+            Port on which a dataplane should expose HTTP endpoint with
+            Prometheus
+
+            metrics.
+          type: integer
+          x-speakeasy-param-computed: false
+        skipMTLS:
+          description: >-
+            If true then endpoints for scraping metrics won't require mTLS even
+            if mTLS
+
+            is enabled in Mesh. If nil, then it is treated as false.
+          type: boolean
+          x-speakeasy-param-computed: false
+        tags:
+          additionalProperties:
+            type: string
+          description: >-
+            Tags associated with an application this dataplane is deployed next
+            to,
+
+            e.g. service=web, version=1.0.
+
+            `service` tag is mandatory.
+          type: object
+          x-speakeasy-param-computed: false
+        tls:
+          description: Configuration of TLS for prometheus listener.
+          properties:
+            mode:
+              description: >-
+                mode defines how configured is the TLS for Prometheus.
+
+                Supported values, delegated, disabled, activeMTLSBackend.
+                Default to
+
+                `activeMTLSBackend`.
+              oneOf:
+                - type: string
+                - type: integer
+              x-speakeasy-param-computed: false
+          type: object
+          x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
+      type: object
     MeshAccessLogItem:
       type: object
       required:
@@ -20124,132 +20263,6 @@ components:
           type: string
           x-speakeasy-param-computed: false
       type: object
-    PrometheusMetricsBackendConfig:
-      properties:
-        aggregate:
-          description: >-
-            Map with the configuration of applications which metrics are going
-            to be
-
-            scrapped by kuma-dp.
-          items:
-            description: >-
-              PrometheusAggregateMetricsConfig defines endpoints that should be
-              scrapped by kuma-dp for prometheus metrics.
-            properties:
-              address:
-                description: >-
-                  Address on which a service expose HTTP endpoint with
-                  Prometheus metrics.
-                type: string
-                x-speakeasy-param-computed: false
-              enabled:
-                description: >-
-                  If false then the application won't be scrapped. If nil, then
-                  it is treated
-
-                  as true and kuma-dp scrapes metrics from the service.
-                type: boolean
-                x-speakeasy-param-computed: false
-              name:
-                description: Name which identify given configuration.
-                type: string
-                x-speakeasy-param-computed: false
-              path:
-                description: >-
-                  Path on which a service expose HTTP endpoint with Prometheus
-                  metrics.
-                type: string
-                x-speakeasy-param-computed: false
-              port:
-                description: >-
-                  Port on which a service expose HTTP endpoint with Prometheus
-                  metrics.
-                type: integer
-                x-speakeasy-param-computed: false
-            type: object
-            x-speakeasy-param-computed: false
-          type: array
-          x-speakeasy-param-computed: false
-        envoy:
-          description: Configuration of Envoy's metrics.
-          properties:
-            filterRegex:
-              description: >-
-                FilterRegex value that is going to be passed to Envoy for
-                filtering
-
-                Envoy metrics.
-              type: string
-              x-speakeasy-param-computed: false
-            usedOnly:
-              description: >-
-                If true then return metrics that Envoy has updated (counters
-                incremented
-
-                at least once, gauges changed at least once, and histograms
-                added to at
-
-                least once). If nil, then it is treated as false.
-              type: boolean
-              x-speakeasy-param-computed: false
-          type: object
-          x-speakeasy-param-computed: false
-        path:
-          description: >-
-            Path on which a dataplane should expose HTTP endpoint with
-            Prometheus
-
-            metrics.
-          type: string
-          x-speakeasy-param-computed: false
-        port:
-          description: >-
-            Port on which a dataplane should expose HTTP endpoint with
-            Prometheus
-
-            metrics.
-          type: integer
-          x-speakeasy-param-computed: false
-        skipMTLS:
-          description: >-
-            If true then endpoints for scraping metrics won't require mTLS even
-            if mTLS
-
-            is enabled in Mesh. If nil, then it is treated as false.
-          type: boolean
-          x-speakeasy-param-computed: false
-        tags:
-          additionalProperties:
-            type: string
-          description: >-
-            Tags associated with an application this dataplane is deployed next
-            to,
-
-            e.g. service=web, version=1.0.
-
-            `service` tag is mandatory.
-          type: object
-          x-speakeasy-param-computed: false
-        tls:
-          description: Configuration of TLS for prometheus listener.
-          properties:
-            mode:
-              description: >-
-                mode defines how configured is the TLS for Prometheus.
-
-                Supported values, delegated, disabled, activeMTLSBackend.
-                Default to
-
-                `activeMTLSBackend`.
-              oneOf:
-                - type: string
-                - type: integer
-              x-speakeasy-param-computed: false
-          type: object
-          x-speakeasy-plan-modifiers: SupressZeroNullModifier
-          x-speakeasy-param-computed: false
-      type: object
     ProvidedCertificateAuthorityConfig:
       properties:
         cert:
@@ -20351,7 +20364,7 @@ components:
                       Resources is used to specify listener-specific resource
                       settings.
                     properties:
-                      connection_limit:
+                      connectionLimit:
                         type: integer
                         x-speakeasy-param-computed: false
                     type: object

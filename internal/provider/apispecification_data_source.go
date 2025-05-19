@@ -54,7 +54,7 @@ func (r *APISpecificationDataSource) Schema(ctx context.Context, req datasource.
 			},
 			"content": schema.StringAttribute{
 				Computed:    true,
-				Description: `The raw content of your API specification, in json or yaml.`,
+				Description: `The raw content of your API specification, in json or yaml format (OpenAPI or AsyncAPI).`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed:    true,

@@ -5,10 +5,8 @@ resource "konnect_api" "my_api" {
   labels = {
     key = "value"
   }
-  name = "MyAPI"
-  public_labels = {
-    key = "value"
-  }
-  slug    = "my-api-v1"
-  version = "...my_version..."
+  name         = "MyAPI"
+  slug         = "my-api-v1"
+  spec_content = "...my_spec_content..."
+  version      = "...my_version..."
 }

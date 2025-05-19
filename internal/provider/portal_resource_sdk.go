@@ -228,8 +228,15 @@ func (r *PortalResourceModel) ToOperationsDeletePortalRequest(ctx context.Contex
 	var portalID string
 	portalID = r.ID.ValueString()
 
+	forceDestroy := new(operations.Force)
+	if !r.ForceDestroy.IsUnknown() && !r.ForceDestroy.IsNull() {
+		*forceDestroy = operations.Force(r.ForceDestroy.ValueString())
+	} else {
+		forceDestroy = nil
+	}
 	out := operations.DeletePortalRequest{
-		PortalID: portalID,
+		PortalID:     portalID,
+		ForceDestroy: forceDestroy,
 	}
 
 	return &out, diags
