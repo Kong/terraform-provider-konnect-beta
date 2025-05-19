@@ -12,10 +12,6 @@
 * Add `spec_content` to `konnect_api` to allow publishing of specifications when creating an API
 * Add `force_destroy` option to `konnect_portal` to allow deletion of Portals with child resources
 
-### Bug fixes
-
-* Fix plan output for non-computed entities in Mesh
-* Support sending empty arrays in Mesh
 
 ## 0.2.1
 > Released on 2025/04/29
