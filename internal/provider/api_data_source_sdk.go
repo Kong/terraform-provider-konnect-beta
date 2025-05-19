@@ -30,6 +30,10 @@ func (r *APIDataSourceModel) RefreshFromSharedAPIResponseSchema(ctx context.Cont
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.APISpecIds = make([]types.String, 0, len(resp.APISpecIds))
+		for _, v := range resp.APISpecIds {
+			r.APISpecIds = append(r.APISpecIds, types.StringValue(v))
+		}
 		if resp.AuthStrategySyncError == nil {
 			r.AuthStrategySyncError = nil
 		} else {
@@ -103,12 +107,6 @@ func (r *APIDataSourceModel) RefreshFromSharedAPIResponseSchema(ctx context.Cont
 				r.Portals[portalsCount].DisplayName = portals.DisplayName
 				r.Portals[portalsCount].ID = portals.ID
 				r.Portals[portalsCount].Name = portals.Name
-			}
-		}
-		if len(resp.PublicLabels) > 0 {
-			r.PublicLabels = make(map[string]types.String, len(resp.PublicLabels))
-			for key1, value1 := range resp.PublicLabels {
-				r.PublicLabels[key1] = types.StringValue(value1)
 			}
 		}
 		r.Slug = types.StringPointerValue(resp.Slug)

@@ -3,16 +3,49 @@
 package operations
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 	"net/http"
 )
 
+// Force - If set to "true", the portal and all child entities will be deleted when running `terraform destroy`.
+// If set to "false", the portal will not be deleted until all child entities are manually removed.
+// This will IRREVERSIBLY DELETE ALL REGISTERED DEVELOPERS AND THEIR CREDENTIALS. Only set to "true" if you want this behavior.
+type Force string
+
+const (
+	ForceTrue  Force = "true"
+	ForceFalse Force = "false"
+)
+
+func (e Force) ToPointer() *Force {
+	return &e
+}
+func (e *Force) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "true":
+		fallthrough
+	case "false":
+		*e = Force(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for Force: %v", v)
+	}
+}
+
 type DeletePortalRequest struct {
 	// ID of the portal.
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
-	// [Overlay change] Always cascade delete when being managed with declarative configuation
-	force string `const:"true" queryParam:"style=form,explode=true,name=force"`
+	// If set to "true", the portal and all child entities will be deleted when running `terraform destroy`.
+	// If set to "false", the portal will not be deleted until all child entities are manually removed.
+	// This will IRREVERSIBLY DELETE ALL REGISTERED DEVELOPERS AND THEIR CREDENTIALS. Only set to "true" if you want this behavior.
+	ForceDestroy *Force `default:"false" queryParam:"style=form,explode=true,name=force"`
 }
 
 func (d DeletePortalRequest) MarshalJSON() ([]byte, error) {
@@ -33,8 +66,11 @@ func (o *DeletePortalRequest) GetPortalID() string {
 	return o.PortalID
 }
 
-func (o *DeletePortalRequest) GetForce() string {
-	return "true"
+func (o *DeletePortalRequest) GetForceDestroy() *Force {
+	if o == nil {
+		return nil
+	}
+	return o.ForceDestroy
 }
 
 type DeletePortalResponse struct {

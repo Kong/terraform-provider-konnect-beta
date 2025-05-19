@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: b0f30d7c211ca734b85e8bdf81c8e2fd
+  docChecksum: 5499cb218e4d108dd2eeed67701cad6a
   docVersion: 2.0.0
   speakeasyVersion: 1.540.1
   generationVersion: 2.593.4
-  releaseVersion: 0.2.1
-  configChecksum: 6eb4937915791f241c64ed3aa035e76e
+  releaseVersion: 0.3.0
+  configChecksum: 9c3c62a6f7094f50ec242644ef9a89e2
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -17,6 +17,7 @@ features:
     globalSecurity: 2.81.10
     globalServerURLs: 2.82.1
     inputOutputModels: 2.83.0
+    nameOverrides: 2.81.3
     nullables: 0.0.0
     unions: 2.81.17
 generatedFiles:
@@ -1119,7 +1120,8 @@ examples:
       parameters:
         path:
           portalId: "26c09d31-d506-4332-bd96-76cbc2428b6d"
-        query: {}
+        query:
+          force: "false"
       responses:
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
@@ -1437,10 +1439,10 @@ examples:
   create-api:
     speakeasy-default-create-api:
       requestBody:
-        application/json: {"name": "MyAPI", "slug": "my-api-v1", "labels": {"env": "test"}, "public_labels": {"category": "finance"}}
+        application/json: {"name": "MyAPI", "slug": "my-api-v1", "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "version": "<value>", "deprecated": true, "slug": "my-api-v1", "auth_strategy_sync_error": {"control_plane_error": "control_plane_error_unavailable", "message": "Unable to connect to the control plane to update plugin"}, "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "public_labels": {"category": "finance"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "version": "<value>", "deprecated": true, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "auth_strategy_sync_error": {"control_plane_error": "control_plane_error_unavailable", "message": "Unable to connect to the control plane to update plugin"}, "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 202165, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -1458,7 +1460,7 @@ examples:
           apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
       responses:
         "200":
-          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "version": "<value>", "deprecated": true, "slug": "my-api-v1", "auth_strategy_sync_error": {"control_plane_error": "control_plane_error_unavailable", "message": "Unable to connect to the control plane to update plugin"}, "portals": [], "labels": {"env": "test"}, "public_labels": {"category": "finance"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "version": "<value>", "deprecated": true, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "auth_strategy_sync_error": {"control_plane_error": "control_plane_error_unavailable", "message": "Unable to connect to the control plane to update plugin"}, "portals": [], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -1471,10 +1473,10 @@ examples:
         path:
           apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
       requestBody:
-        application/json: {"name": "MyAPI", "slug": "my-api-v1", "labels": {"env": "test"}, "public_labels": {"category": "finance"}}
+        application/json: {"name": "MyAPI", "slug": "my-api-v1", "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "version": "<value>", "deprecated": true, "slug": "my-api-v1", "auth_strategy_sync_error": {"control_plane_error": "control_plane_error_unavailable", "message": "Unable to connect to the control plane to update plugin"}, "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "public_labels": {"category": "finance"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "version": "<value>", "deprecated": true, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "auth_strategy_sync_error": {"control_plane_error": "control_plane_error_unavailable", "message": "Unable to connect to the control plane to update plugin"}, "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 107431, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}, {"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value>", "<value>", "<value>"], "source": "body"}]}
         "401":

@@ -27,7 +27,7 @@ resource "konnect_api_specification" "my_apispecification" {
 ### Required
 
 - `api_id` (String) The UUID API identifier
-- `content` (String) The raw content of your API specification, in json or yaml.
+- `content` (String) The raw content of your API specification, in json or yaml format (OpenAPI or AsyncAPI).
 
 ### Optional
 

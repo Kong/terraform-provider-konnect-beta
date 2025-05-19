@@ -28,6 +28,7 @@ type APIDataSource struct {
 
 // APIDataSourceModel describes the data model.
 type APIDataSourceModel struct {
+	APISpecIds            []types.String                 `tfsdk:"api_spec_ids"`
 	AuthStrategySyncError *tfTypes.AuthStrategySyncError `tfsdk:"auth_strategy_sync_error"`
 	CreatedAt             types.String                   `tfsdk:"created_at"`
 	Deprecated            types.Bool                     `tfsdk:"deprecated"`
@@ -36,7 +37,6 @@ type APIDataSourceModel struct {
 	Labels                map[string]types.String        `tfsdk:"labels"`
 	Name                  types.String                   `tfsdk:"name"`
 	Portals               []tfTypes.Portals              `tfsdk:"portals"`
-	PublicLabels          map[string]types.String        `tfsdk:"public_labels"`
 	Slug                  types.String                   `tfsdk:"slug"`
 	UpdatedAt             types.String                   `tfsdk:"updated_at"`
 	Version               types.String                   `tfsdk:"version"`
@@ -53,6 +53,11 @@ func (r *APIDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 		MarkdownDescription: "API DataSource",
 
 		Attributes: map[string]schema.Attribute{
+			"api_spec_ids": schema.ListAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				Description: `The list of API specification ids for the API.`,
+			},
 			"auth_strategy_sync_error": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
@@ -137,15 +142,6 @@ func (r *APIDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 					},
 				},
 				Description: `The list of portals which this API is published to.`,
-			},
-			"public_labels": schema.MapAttribute{
-				Computed:    true,
-				ElementType: types.StringType,
-				MarkdownDescription: `Public labels store information about an entity that can be used for filtering a list of objects.` + "\n" +
-					`` + "\n" +
-					`Public labels are intended to store **PUBLIC** metadata. ` + "\n" +
-					`` + "\n" +
-					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
 			"slug": schema.StringAttribute{
 				Computed: true,

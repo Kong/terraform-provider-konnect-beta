@@ -20,12 +20,10 @@ resource "konnect_api" "my_api" {
   labels = {
     key = "value"
   }
-  name = "MyAPI"
-  public_labels = {
-    key = "value"
-  }
-  slug    = "my-api-v1"
-  version = "...my_version..."
+  name         = "MyAPI"
+  slug         = "my-api-v1"
+  spec_content = "...my_spec_content..."
+  version      = "...my_version..."
 }
 ```
 
@@ -43,18 +41,15 @@ resource "konnect_api" "my_api" {
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
-- `public_labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
-
-Public labels are intended to store **PUBLIC** metadata. 
-
-Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `slug` (String) The `slug` is used in generated URLs to provide human readable paths.
 
 Defaults to `slugify(name + version)`
+- `spec_content` (String) The content of the API specification. This is the raw content of the API specification, in json or yaml. By including this field, you can add a API specification without having to make a separate call to update the API specification. Requires replacement if changed.
 - `version` (String) An optional version for your API. Leave this empty if your API is unversioned.
 
 ### Read-Only
 
+- `api_spec_ids` (List of String) The list of API specification ids for the API.
 - `auth_strategy_sync_error` (Attributes) (see [below for nested schema](#nestedatt--auth_strategy_sync_error))
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) The API identifier.

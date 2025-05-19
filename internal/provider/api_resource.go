@@ -10,6 +10,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -34,6 +36,7 @@ type APIResource struct {
 
 // APIResourceModel describes the resource data model.
 type APIResourceModel struct {
+	APISpecIds            []types.String                 `tfsdk:"api_spec_ids"`
 	AuthStrategySyncError *tfTypes.AuthStrategySyncError `tfsdk:"auth_strategy_sync_error"`
 	CreatedAt             types.String                   `tfsdk:"created_at"`
 	Deprecated            types.Bool                     `tfsdk:"deprecated"`
@@ -42,8 +45,8 @@ type APIResourceModel struct {
 	Labels                map[string]types.String        `tfsdk:"labels"`
 	Name                  types.String                   `tfsdk:"name"`
 	Portals               []tfTypes.Portals              `tfsdk:"portals"`
-	PublicLabels          map[string]types.String        `tfsdk:"public_labels"`
 	Slug                  types.String                   `tfsdk:"slug"`
+	SpecContent           types.String                   `tfsdk:"spec_content"`
 	UpdatedAt             types.String                   `tfsdk:"updated_at"`
 	Version               types.String                   `tfsdk:"version"`
 }
@@ -56,6 +59,11 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "API Resource",
 		Attributes: map[string]schema.Attribute{
+			"api_spec_ids": schema.ListAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				Description: `The list of API specification ids for the API.`,
+			},
 			"auth_strategy_sync_error": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
@@ -172,16 +180,6 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					listvalidator.UniqueValues(),
 				},
 			},
-			"public_labels": schema.MapAttribute{
-				Computed:    true,
-				Optional:    true,
-				ElementType: types.StringType,
-				MarkdownDescription: `Public labels store information about an entity that can be used for filtering a list of objects.` + "\n" +
-					`` + "\n" +
-					`Public labels are intended to store **PUBLIC** metadata. ` + "\n" +
-					`` + "\n" +
-					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
-			},
 			"slug": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
@@ -191,6 +189,13 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Validators: []validator.String{
 					stringvalidator.RegexMatches(regexp.MustCompile(`^[\w-]+$`), "must match pattern "+regexp.MustCompile(`^[\w-]+$`).String()),
 				},
+			},
+			"spec_content": schema.StringAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The content of the API specification. This is the raw content of the API specification, in json or yaml. By including this field, you can add a API specification without having to make a separate call to update the API specification. Requires replacement if changed.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed:    true,
@@ -276,6 +281,43 @@ func (r *APIResource) Create(ctx context.Context, req resource.CreateRequest, re
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedAPIResponseSchema(ctx, res.APIResponseSchema)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsFetchAPIRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.API.FetchAPI(ctx, *request1)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res1 != nil && res1.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
+		}
+		return
+	}
+	if res1 == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
+		return
+	}
+	if res1.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
+		return
+	}
+	if !(res1.APIResponseSchema != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
+		return
+	}
+	resp.Diagnostics.Append(data.RefreshFromSharedAPIResponseSchema(ctx, res1.APIResponseSchema)...)
 
 	if resp.Diagnostics.HasError() {
 		return
