@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type SpecRenderer struct {
 	InfiniteScroll types.Bool `tfsdk:"infinite_scroll"`

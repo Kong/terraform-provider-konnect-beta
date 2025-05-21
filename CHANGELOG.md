@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.0
+> Released on 2025/05/21
+
+### Bug fixes
+
+* Updates generator to capture fixes for mismatched attribute names
+ 
 ## 0.4.0
 > Released on 2025/05/21
 
