@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type AuthStrategySyncError struct {
 	ControlPlaneError types.String `tfsdk:"control_plane_error"`

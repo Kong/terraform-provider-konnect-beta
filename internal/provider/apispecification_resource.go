@@ -348,20 +348,20 @@ func (r *APISpecificationResource) ImportState(ctx context.Context, req resource
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		APIID string `json:"apiid"`
+		APIID string `json:"api_id"`
 		ID    string `json:"id"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "apiid": "9f5061ce-78f6-4452-9108-ad7c02821fd5",  "id": "d32d905a-ed33-46a3-a093-d8f536af9a8a"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "api_id": "9f5061ce-78f6-4452-9108-ad7c02821fd5",  "id": "d32d905a-ed33-46a3-a093-d8f536af9a8a"}': `+err.Error())
 		return
 	}
 
 	if len(data.APIID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field apiid is required but was not found in the json encoded ID. It's expected to be a value alike '"9f5061ce-78f6-4452-9108-ad7c02821fd5"`)
+		resp.Diagnostics.AddError("Missing required field", `The field api_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9f5061ce-78f6-4452-9108-ad7c02821fd5"`)
 		return
 	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("apiid"), data.APIID)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("api_id"), data.APIID)...)
 	if len(data.ID) == 0 {
 		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"d32d905a-ed33-46a3-a093-d8f536af9a8a"`)
 		return
