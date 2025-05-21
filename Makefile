@@ -1,6 +1,6 @@
 .PHONY: *
 
-all: speakeasy
+all: speakeasy generate-plan-modifiers
 
 speakeasy: check-speakeasy
 	@rm -rf examples/resources
@@ -39,3 +39,16 @@ dev/use-local-shared-speakeasy:
 
 acceptance:
 	@TF_ACC=1 go test -count=1 -v ./tests/resources
+
+.PHONY: generate-plan-modifiers
+generate-plan-modifiers:
+	# MeshControlPlane is identfied by uuid so we can skip it
+	mkdir -p "resouce-plan-modifiers"
+	cat internal/provider/mesh*_resource.go \
+	| grep "Resource struct" \
+	| cut -d ' ' -f 2 \
+	| sed 's/Resource$$//' \
+	| grep -v "MeshControlPlane" \
+	| xargs -n1 -I{} sh -c '\
+		go run github.com/Kong/shared-speakeasy/generators/resource_plan_modifier@v0.0.7 \
+		internal/provider/$$(echo {} | tr A-Z a-z)_resource_plan_modify.go {} terraform-provider-konnect-beta'
