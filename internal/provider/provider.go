@@ -189,6 +189,7 @@ func (p *KonnectBetaProvider) DataSources(ctx context.Context) []func() datasour
 		NewMeshCircuitBreakerDataSource,
 		NewMeshCircuitBreakerListDataSource,
 		NewMeshControlPlaneDataSource,
+		NewMeshControlPlanesDataSource,
 		NewMeshExternalServiceDataSource,
 		NewMeshExternalServiceListDataSource,
 		NewMeshFaultInjectionDataSource,
