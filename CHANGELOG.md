@@ -5,6 +5,7 @@
 
 ### Features
 * Add `MeshControlPlanes` data source to list all control planes
+* Add a meaningful message when a user forgets to import a resource
 
 ## 0.3.0
 > Released on 2025/05/19

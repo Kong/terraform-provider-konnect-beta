@@ -37,7 +37,7 @@ resource "konnect_api_document" "my_apidocument" {
 
 ### Optional
 
-- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
+- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `parent_document_id` (String) API Documents may be rendered as a tree of files.
