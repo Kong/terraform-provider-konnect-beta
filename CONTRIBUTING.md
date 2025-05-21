@@ -17,12 +17,12 @@ Assuming that your changes are working, raise a PR to `platform-api` for review 
 ## Contributing features
 
 - Create a new release branch (if needed) named `release/x.y.z`, where `x.y.z` is the new version
+- Update the `terraform.version` key in the `gen.yaml` file to `x.y.z` and `git add gen.yaml`
 - Run `./tools/gen_beta_terraform.sh` on the `main` branch of `platform-api` to update the `openapi.yaml` file in this repo
 - Run `make speakeasy` to generate the provider (see [local generation](#local-generation))
 - Test your changes to ensure the provider still works
 - `git add openapi.yaml` and commit the changes as a single commit
 - `git add` and commit the provider's `.go` files, plus the `.speakeasy` and `docs` directory
-- Update the `terraform.version` key in the `gen.yaml` file to `x.y.z` and `git add gen.yaml`
 - Add examples for your new resources to `examples/resources`, `git add` them and make a third commit
 - Update `CHANGELOG.md` with descriptions of fixes and changes and `git add` for a fourth commit
 - Raise a PR against `release/x.y.z` for review
