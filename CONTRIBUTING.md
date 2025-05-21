@@ -8,6 +8,7 @@ This provider is generated from `openapi.yaml` using Speakeasy. To test a new ve
 
 - Run `make speakeasy`
 - Run `go mod tidy` to download all dependencies
+- If you use the `KONNECT_TOKEN` env var to authenticate, run `export KONNECT_TOKEN` before running the provider
 - Run `go run main.go -debug`
 - Take the `TF_REATTACH_PROVIDERS` variable and run `export TF_REATTACH_PROVIDERS=...` in your terminal
 - Run `terraform apply` in the same directory as your manifests
