@@ -5330,6 +5330,23 @@ paths:
     parameters:
       - $ref: '#/components/parameters/cpId'
   /v1/mesh/control-planes:
+    get:
+      x-speakeasy-entity-operation: MeshControlPlanes#get
+      summary: List Control Planes
+      responses:
+        '200':
+          $ref: '#/components/responses/ListMeshControlPlanesResponse'
+        '401':
+          $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
+        '403':
+          $ref: '#/components/responses/MeshControlPlaneForbiddenError'
+      operationId: list-mesh-control-planes
+      description: Returns an array of control planes objects.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+      tags:
+        - Mesh
     post:
       x-speakeasy-entity-operation: MeshControlPlane#create
       summary: Create a new control plane
@@ -6024,6 +6041,26 @@ components:
           schema:
             $ref: '#/components/schemas/ApiImplementation'
   parameters:
+    PageSize:
+      name: page[size]
+      description: >-
+        The maximum number of items to include per page. The last page of a
+        collection may include fewer items.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 10
+    PageNumber:
+      name: page[number]
+      description: Determines which page of the entities to retrieve.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 1
     PortalId:
       schema:
         type: string
@@ -7104,6 +7141,20 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/MeshControlPlane'
+    ListMeshControlPlanesResponse:
+      description: A paginated list response for a collection of control planes.
+      content:
+        application/json:
+          schema:
+            title: ListMeshControlPlanesResponse
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MeshControlPlane'
   schemas:
     PageSlug:
       title: PageSlug
@@ -7768,6 +7819,34 @@ components:
         minLength: 1
         maxLength: 63
         nullable: true
+    PageMeta:
+      type: object
+      description: >-
+        Contains pagination query parameters and the total number of objects
+        returned.
+      required:
+        - number
+        - size
+        - total
+      properties:
+        number:
+          type: number
+          example: 1
+        size:
+          type: number
+          example: 10
+        total:
+          type: number
+          example: 100
+    PaginatedMeta:
+      type: object
+      title: PaginatedMeta
+      description: returns the pagination information
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMeta'
+      required:
+        - page
     BaseError:
       type: object
       title: Error
