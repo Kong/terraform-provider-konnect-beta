@@ -53,7 +53,7 @@ resource "konnect_portal" "my_portal" {
 If set to "false", the portal will not be deleted until all child entities are manually removed.
 This will IRREVERSIBLY DELETE ALL REGISTERED DEVELOPERS AND THEIR CREDENTIALS. Only set to "true" if you want this behavior.
 Default: "false"; must be one of ["true", "false"]
-- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
+- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Labels are intended to store **INTERNAL** metadata.
 

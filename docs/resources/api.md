@@ -38,7 +38,7 @@ resource "konnect_api" "my_api" {
 
 - `deprecated` (Boolean) Marks this API as deprecated.
 - `description` (String) A description of your API. Will be visible on your live Portal.
-- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
+- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `slug` (String) The `slug` is used in generated URLs to provide human readable paths.
