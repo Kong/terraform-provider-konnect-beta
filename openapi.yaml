@@ -5330,6 +5330,20 @@ paths:
     parameters:
       - $ref: '#/components/parameters/cpId'
   /v1/mesh/control-planes:
+    get:
+      x-speakeasy-entity-operation: MeshControlPlanes#get
+      summary: List all control planes
+      description: List all control planes
+      operationId: list-cps
+      tags:
+        - Mesh
+      responses:
+        '200':
+          $ref: '#/components/responses/GetMeshControlPlanesResponse'
+        '401':
+          $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
+        '403':
+          $ref: '#/components/responses/MeshControlPlaneForbiddenError'
     post:
       x-speakeasy-entity-operation: MeshControlPlane#create
       summary: Create a new control plane
@@ -7062,6 +7076,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/MeshControlPlane'
+    GetMeshControlPlanesResponse:
+      description: A response to listing control planes.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MeshControlPlaneList'
     CreateMeshControlPlaneResponse:
       description: A response to creating a control plane.
       content:
@@ -7757,7 +7777,7 @@ components:
       maxProperties: 50
       description: >
         Labels store metadata of an entity that can be used for filtering an
-        entity list or for searching across entity types. 
+        entity list or for searching across entity types.
 
 
         Keys must be of length 1-63 characters, and cannot start with "kong",
@@ -8057,7 +8077,7 @@ components:
       nullable: true
       description: >
         Labels store metadata of an entity that can be used for filtering an
-        entity list or for searching across entity types. 
+        entity list or for searching across entity types.
 
 
         Labels are intended to store **INTERNAL** metadata.
@@ -22872,6 +22892,28 @@ components:
         pattern: ^[a-z0-9A-Z]{1}([a-z0-9A-Z\-\.\_]*[a-z0-9A-Z]+)?$
         minLength: 1
         maxLength: 63
+    MeshControlPlaneList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/MeshControlPlane'
+        meta:
+          type: object
+          properties:
+            page:
+              type: object
+              properties:
+                number:
+                  type: integer
+                  example: 1
+                size:
+                  type: integer
+                  example: 4
+                total:
+                  type: integer
+                  example: 4
     MeshControlPlane:
       type: object
       title: ControlPlane

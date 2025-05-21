@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: 5499cb218e4d108dd2eeed67701cad6a
+  docChecksum: 33a850fec0f09d8475a3930ae6fa20ed
   docVersion: 2.0.0
   speakeasyVersion: 1.540.1
   generationVersion: 2.593.4
@@ -36,6 +36,7 @@ generatedFiles:
   - examples/data-sources/konnect-beta_mesh_circuit_breaker/data-source.tf
   - examples/data-sources/konnect-beta_mesh_circuit_breaker_list/data-source.tf
   - examples/data-sources/konnect-beta_mesh_control_plane/data-source.tf
+  - examples/data-sources/konnect-beta_mesh_control_planes/data-source.tf
   - examples/data-sources/konnect-beta_mesh_external_service/data-source.tf
   - examples/data-sources/konnect-beta_mesh_external_service_list/data-source.tf
   - examples/data-sources/konnect-beta_mesh_fault_injection/data-source.tf
@@ -216,6 +217,8 @@ generatedFiles:
   - internal/provider/meshcontrolplane_data_source_sdk.go
   - internal/provider/meshcontrolplane_resource.go
   - internal/provider/meshcontrolplane_resource_sdk.go
+  - internal/provider/meshcontrolplanes_data_source.go
+  - internal/provider/meshcontrolplanes_data_source_sdk.go
   - internal/provider/meshexternalservice_data_source.go
   - internal/provider/meshexternalservice_data_source_sdk.go
   - internal/provider/meshexternalservice_resource.go
@@ -485,6 +488,7 @@ generatedFiles:
   - internal/provider/types/mesh_circuit_breaker_item_from.go
   - internal/provider/types/mesh_circuit_breaker_item_rules.go
   - internal/provider/types/mesh_circuit_breaker_item_spec.go
+  - internal/provider/types/mesh_control_plane.go
   - internal/provider/types/mesh_control_plane_feature.go
   - internal/provider/types/mesh_control_plane_feature_hostname_generation_creation.go
   - internal/provider/types/mesh_external_service.go
@@ -600,6 +604,7 @@ generatedFiles:
   - internal/provider/types/mesh_traffic_permission_item_default.go
   - internal/provider/types/mesh_traffic_permission_item_from.go
   - internal/provider/types/mesh_traffic_permission_item_spec.go
+  - internal/provider/types/meta.go
   - internal/provider/types/metrics.go
   - internal/provider/types/mtls.go
   - internal/provider/types/networking.go
@@ -608,6 +613,7 @@ generatedFiles:
   - internal/provider/types/options_obj.go
   - internal/provider/types/outbound.go
   - internal/provider/types/outlier_detection.go
+  - internal/provider/types/page.go
   - internal/provider/types/path.go
   - internal/provider/types/portal_claim_mappings.go
   - internal/provider/types/portal_custom_domain_ssl.go
@@ -836,6 +842,7 @@ generatedFiles:
   - internal/sdk/models/operations/getportalpage.go
   - internal/sdk/models/operations/getportalsnippet.go
   - internal/sdk/models/operations/getportalteam.go
+  - internal/sdk/models/operations/listcps.go
   - internal/sdk/models/operations/options.go
   - internal/sdk/models/operations/publishapitoportal.go
   - internal/sdk/models/operations/putmesh.go
@@ -922,6 +929,7 @@ generatedFiles:
   - internal/sdk/models/shared/meshcontrolplanefeature.go
   - internal/sdk/models/shared/meshcontrolplanefeaturehostnamegenerationcreation.go
   - internal/sdk/models/shared/meshcontrolplanefeaturemeshcreation.go
+  - internal/sdk/models/shared/meshcontrolplanelist.go
   - internal/sdk/models/shared/meshcreateorupdatesuccessresponse.go
   - internal/sdk/models/shared/meshdeletesuccessresponse.go
   - internal/sdk/models/shared/meshexternalservicecreateorupdatesuccessresponse.go
@@ -3045,5 +3053,16 @@ examples:
       responses:
         "200":
           application/json: {"items": [{"type": "MeshOPA", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}, {"type": "MeshOPA", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}, {"type": "MeshOPA", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+  list-cps:
+    speakeasy-default-list-cps:
+      responses:
+        "201":
+          application/json: [{"id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "name": "Test control plane", "description": "A control plane to handle traffic on development environment.", "labels": {"test": "true"}, "created_at": "2023-01-11T02:30:42.227Z", "updated_at": "2023-01-11T02:30:42.227Z"}]
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "200":
+          application/json: {"data": [{"id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "name": "Test control plane", "description": "A control plane to handle traffic on development environment.", "labels": {"test": "true"}, "created_at": "2023-01-11T02:30:42.227Z", "updated_at": "2023-01-11T02:30:42.227Z"}], "meta": {"page": {"number": 1, "size": 4, "total": 4}}}
 examplesVersion: 1.0.1
 generatedTests: {}
