@@ -1,10 +1,10 @@
 # Changelog
 
-## 0.3.1
+## 0.4.0
 > Released on 2025/05/21
 
-### Dependencies
-* Sync platform-api to c82098d86d2345575281ec043c7d960e57fe63df
+### Features
+* Add `MeshControlPlanes` data source to list all control planes
 
 ## 0.3.0
 > Released on 2025/05/19
