@@ -87,6 +87,9 @@ func createAnMTP(t *testing.T, cpName, meshName, mtpName string) {
 	ctx := t.Context()
 	serverHost, serverPort, serverScheme := providerConfigFromEnv()
 	token := os.Getenv("KONNECT_TOKEN")
+	if token == "" {
+		token = os.Getenv("KONNECT_SPAT")
+	}
 	require.NotEmpty(t, token)
 	client := sdk.New(
 		sdk.WithServerURL(fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort)),
