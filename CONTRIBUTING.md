@@ -22,8 +22,9 @@ Assuming that your changes are working, raise a PR to `platform-api` for review 
 - Test your changes to ensure the provider still works
 - `git add openapi.yaml` and commit the changes as a single commit
 - `git add` and commit the provider's `.go` files, plus the `.speakeasy` and `docs` directory
-- Add examples for your new resources to `examples/resources` and commit them as a third commit
-- Finally, update `CHANGELOG.md` and add it as a fourth commit
+- Update the `terraform.version` key in the `gen.yaml` file to `x.y.z` and `git add gen.yaml`
+- Add examples for your new resources to `examples/resources`, `git add` them and make a third commit
+- Update `CHANGELOG.md` with descriptions of fixes and changes and `git add` for a fourth commit
 - Raise a PR against `release/x.y.z` for review
 
 Submitting your changes as four commits is not a hard requirement, but it makes it easier to review the PR as four distinct sets of work:
