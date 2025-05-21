@@ -87,12 +87,15 @@ func createAnMTP(t *testing.T, cpName, meshName, mtpName string) {
 	ctx := t.Context()
 	serverHost, serverPort, serverScheme := providerConfigFromEnv()
 	token := os.Getenv("KONNECT_TOKEN")
+	require.NotEmpty(t, token)
 	client := sdk.New(
 		sdk.WithServerURL(fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort)),
 		sdk.WithSecurity(shared.Security{PersonalAccessToken: &token}),
 	)
 	cps, err := client.Mesh.ListMeshControlPlanes(ctx, operations.ListMeshControlPlanesRequest{})
 	require.NoError(t, err)
+	require.Equal(t, 200, cps.StatusCode)
+	require.NotNil(t, cps.ListMeshControlPlanesResponse)
 
 	var myCp shared.MeshControlPlane
 	for _, cp := range cps.ListMeshControlPlanesResponse.Data {
