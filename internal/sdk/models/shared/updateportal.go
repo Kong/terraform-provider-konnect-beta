@@ -77,7 +77,7 @@ type UpdatePortal struct {
 	DefaultAPIVisibility *UpdatePortalDefaultAPIVisibility `json:"default_api_visibility,omitempty"`
 	// The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.
 	DefaultPageVisibility *UpdatePortalDefaultPageVisibility `json:"default_page_visibility,omitempty"`
-	// The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication. DCR support for Auth Strategies is currently in development.
+	// The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.
 	DefaultApplicationAuthStrategyID *string `json:"default_application_auth_strategy_id,omitempty"`
 	// Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.
 	AutoApproveDevelopers *bool `json:"auto_approve_developers,omitempty"`

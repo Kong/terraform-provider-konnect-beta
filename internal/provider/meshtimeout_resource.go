@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/Kong/shared-speakeasy/customtypes/kumalabels"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -40,15 +41,15 @@ type MeshTimeoutResource struct {
 
 // MeshTimeoutResourceModel describes the resource data model.
 type MeshTimeoutResourceModel struct {
-	CpID             types.String                `tfsdk:"cp_id"`
-	CreationTime     types.String                `tfsdk:"creation_time"`
-	Labels           map[string]types.String     `tfsdk:"labels"`
-	Mesh             types.String                `tfsdk:"mesh"`
-	ModificationTime types.String                `tfsdk:"modification_time"`
-	Name             types.String                `tfsdk:"name"`
-	Spec             tfTypes.MeshTimeoutItemSpec `tfsdk:"spec"`
-	Type             types.String                `tfsdk:"type"`
-	Warnings         []types.String              `tfsdk:"warnings"`
+	CpID             types.String                  `tfsdk:"cp_id"`
+	CreationTime     types.String                  `tfsdk:"creation_time"`
+	Labels           kumalabels.KumaLabelsMapValue `tfsdk:"labels"`
+	Mesh             types.String                  `tfsdk:"mesh"`
+	ModificationTime types.String                  `tfsdk:"modification_time"`
+	Name             types.String                  `tfsdk:"name"`
+	Spec             tfTypes.MeshTimeoutItemSpec   `tfsdk:"spec"`
+	Type             types.String                  `tfsdk:"type"`
+	Warnings         []types.String                `tfsdk:"warnings"`
 }
 
 func (r *MeshTimeoutResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -77,6 +78,7 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 				},
 			},
 			"labels": schema.MapAttribute{
+				CustomType:  kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType: types.StringType}},
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The labels to help identity resources`,

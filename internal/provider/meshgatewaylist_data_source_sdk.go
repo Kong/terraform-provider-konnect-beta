@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"github.com/Kong/shared-speakeasy/customtypes/kumalabels"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
@@ -127,12 +128,11 @@ func (r *MeshGatewayListDataSourceModel) RefreshFromSharedMeshGatewayList(ctx co
 					}
 				}
 			}
-			if len(itemsItem.Labels) > 0 {
-				items.Labels = make(map[string]types.String, len(itemsItem.Labels))
-				for key1, value1 := range itemsItem.Labels {
-					items.Labels[key1] = types.StringValue(value1)
-				}
-			}
+			labelsValue, labelsDiags := types.MapValueFrom(ctx, types.StringType, itemsItem.Labels)
+			diags.Append(labelsDiags...)
+			labelsValuable, labelsDiags := kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType: types.StringType}}.ValueFromMap(ctx, labelsValue)
+			diags.Append(labelsDiags...)
+			items.Labels, _ = labelsValuable.(kumalabels.KumaLabelsMapValue)
 			items.Mesh = types.StringValue(itemsItem.Mesh)
 			items.Name = types.StringValue(itemsItem.Name)
 			items.Selectors = []tfTypes.Selectors{}
@@ -140,8 +140,8 @@ func (r *MeshGatewayListDataSourceModel) RefreshFromSharedMeshGatewayList(ctx co
 				var selectors tfTypes.Selectors
 				if len(selectorsItem.Match) > 0 {
 					selectors.Match = make(map[string]types.String, len(selectorsItem.Match))
-					for key2, value2 := range selectorsItem.Match {
-						selectors.Match[key2] = types.StringValue(value2)
+					for key1, value1 := range selectorsItem.Match {
+						selectors.Match[key1] = types.StringValue(value1)
 					}
 				}
 				if selectorsCount+1 > len(items.Selectors) {
@@ -152,8 +152,8 @@ func (r *MeshGatewayListDataSourceModel) RefreshFromSharedMeshGatewayList(ctx co
 			}
 			if len(itemsItem.Tags) > 0 {
 				items.Tags = make(map[string]types.String, len(itemsItem.Tags))
-				for key3, value3 := range itemsItem.Tags {
-					items.Tags[key3] = types.StringValue(value3)
+				for key2, value2 := range itemsItem.Tags {
+					items.Tags[key2] = types.StringValue(value2)
 				}
 			}
 			items.Type = types.StringValue(itemsItem.Type)
