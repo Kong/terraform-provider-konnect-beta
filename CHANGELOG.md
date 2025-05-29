@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.1
+> Released on 2025/05/29
+
+### Update dependencies
+* Bump `shared-speakeasy/hooks/mesh_defaults` to `v0.0.3`
+
 ## 0.5.0
 > Released on 2025/05/27
 
