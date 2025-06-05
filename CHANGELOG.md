@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.5.2
+
+> Released on 2025/06/05
+
+### Bug Fixes
+* Fix `terraform apply` for the `konnect_api` resource by ignoring the removed `deprecated` field
+
+### Update dependencies
+* Bump `shared-speakeasy/hooks/mesh_defaults` to `v0.0.3`
+
 ## 0.5.1
 > Released on 2025/06/05
 
