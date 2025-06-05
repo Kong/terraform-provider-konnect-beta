@@ -2,7 +2,7 @@
 
 ## 0.5.2
 
-> Released on 2025/06/??
+> Released on 2025/06/05
 
 ### Bug Fixes
 * Fix `terraform apply` for the `konnect_api` resource by ignoring the removed `deprecated` field
