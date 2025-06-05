@@ -41,13 +41,7 @@ func TestMesh(t *testing.T) {
         mtp := tfbuilder.NewPolicyBuilder("mesh_traffic_permission", "allow_all", "allow-all", "MeshTrafficPermission").
             WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
             WithMeshRef(builder.ResourceAddress("mesh", mesh.ResourceName) + ".name").
-            WithDependsOn(builder.ResourceAddress("mesh", mesh.ResourceName)).
-            WithLabels(map[string]string{
-                "kuma.io/mesh":   mesh.MeshName,
-                "kuma.io/env":    "universal",
-                "kuma.io/origin": "zone",
-                "kuma.io/zone":   "default",
-            })
+            WithDependsOn(builder.ResourceAddress("mesh", mesh.ResourceName))
         builder.AddMesh(mesh)
 
         resource.ParallelTest(t, tfbuilder.CreatePolicyAndModifyFieldsOnIt(providerFactory, builder, mtp))
@@ -68,13 +62,7 @@ func TestMesh(t *testing.T) {
         mtp := tfbuilder.NewPolicyBuilder("mesh_traffic_permission", "allow_all", mtpName, "MeshTrafficPermission").
             WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
             WithMeshRef(builder.ResourceAddress("mesh", mesh.ResourceName) + ".name").
-            WithDependsOn(builder.ResourceAddress("mesh", mesh.ResourceName)).
-            WithLabels(map[string]string{
-                "kuma.io/mesh":   mesh.MeshName,
-                "kuma.io/env":    "universal",
-                "kuma.io/origin": "zone",
-                "kuma.io/zone":   "default",
-            })
+            WithDependsOn(builder.ResourceAddress("mesh", mesh.ResourceName))
         builder.AddMesh(mesh)
 
         resource.ParallelTest(t, tfbuilder.NotImportedResourceShouldErrorOutWithMeaningfulMessage(providerFactory, builder, mtp, func() { createAnMTP(t, cpName, meshName, mtpName) }))
