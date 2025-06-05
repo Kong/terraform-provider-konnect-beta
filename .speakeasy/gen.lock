@@ -3,8 +3,8 @@ id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
   docChecksum: e03572fcf70ffa3250125346a08dc453
   docVersion: 2.0.0
-  speakeasyVersion: 1.551.0
-  generationVersion: 2.610.0
+  speakeasyVersion: 1.555.3
+  generationVersion: 2.620.2
   releaseVersion: 0.5.2
   configChecksum: a34c339e14bb8afa8872f96b3801cdf7
 features:
@@ -389,7 +389,7 @@ generatedFiles:
   - internal/provider/reflect/struct.go
   - internal/provider/typeconvert/date.go
   - internal/provider/typeconvert/datetime.go
-  - internal/provider/typeconvert/int32.go
+  - internal/provider/typeconvert/int.go
   - internal/provider/types/abort.go
   - internal/provider/types/access_key.go
   - internal/provider/types/acm_certificate_authority_config.go
@@ -675,6 +675,7 @@ generatedFiles:
   - internal/sdk/apipublication.go
   - internal/sdk/apispecification.go
   - internal/sdk/hostnamegenerator.go
+  - internal/sdk/internal/config/sdkconfiguration.go
   - internal/sdk/internal/hooks/hooks.go
   - internal/sdk/internal/utils/contenttype.go
   - internal/sdk/internal/utils/env.go

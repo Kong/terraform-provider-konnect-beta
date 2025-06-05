@@ -6,6 +6,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/config"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/hooks"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/errors"
@@ -15,12 +16,16 @@ import (
 )
 
 type MeshOPA struct {
-	sdkConfiguration sdkConfiguration
+	rootSDK          *KonnectBeta
+	sdkConfiguration config.SDKConfiguration
+	hooks            *hooks.Hooks
 }
 
-func newMeshOPA(sdkConfig sdkConfiguration) *MeshOPA {
+func newMeshOPA(rootSDK *KonnectBeta, sdkConfig config.SDKConfiguration, hooks *hooks.Hooks) *MeshOPA {
 	return &MeshOPA{
+		rootSDK:          rootSDK,
 		sdkConfiguration: sdkConfig,
+		hooks:            hooks,
 	}
 }
 
@@ -50,11 +55,13 @@ func (s *MeshOPA) GetMeshOPA(ctx context.Context, request operations.GetMeshOPAR
 	}
 
 	hookCtx := hooks.HookContext{
-		BaseURL:        baseURL,
-		Context:        ctx,
-		OperationID:    "getMeshOPA",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
+		SDK:              s.rootSDK,
+		SDKConfiguration: s.sdkConfiguration,
+		BaseURL:          baseURL,
+		Context:          ctx,
+		OperationID:      "getMeshOPA",
+		OAuth2Scopes:     []string{},
+		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -88,7 +95,7 @@ func (s *MeshOPA) GetMeshOPA(ctx context.Context, request operations.GetMeshOPAR
 		req.Header.Set(k, v)
 	}
 
-	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
 	if err != nil {
 		return nil, err
 	}
@@ -101,17 +108,17 @@ func (s *MeshOPA) GetMeshOPA(ctx context.Context, request operations.GetMeshOPAR
 			err = fmt.Errorf("error sending request: no response")
 		}
 
-		_, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
 		return nil, err
 	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
-		_httpRes, err := s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		_httpRes, err := s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
 		if err != nil {
 			return nil, err
 		} else if _httpRes != nil {
 			httpRes = _httpRes
 		}
 	} else {
-		httpRes, err = s.sdkConfiguration.Hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
 		if err != nil {
 			return nil, err
 		}
@@ -204,11 +211,13 @@ func (s *MeshOPA) DeleteMeshOPA(ctx context.Context, request operations.DeleteMe
 	}
 
 	hookCtx := hooks.HookContext{
-		BaseURL:        baseURL,
-		Context:        ctx,
-		OperationID:    "deleteMeshOPA",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
+		SDK:              s.rootSDK,
+		SDKConfiguration: s.sdkConfiguration,
+		BaseURL:          baseURL,
+		Context:          ctx,
+		OperationID:      "deleteMeshOPA",
+		OAuth2Scopes:     []string{},
+		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -242,7 +251,7 @@ func (s *MeshOPA) DeleteMeshOPA(ctx context.Context, request operations.DeleteMe
 		req.Header.Set(k, v)
 	}
 
-	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
 	if err != nil {
 		return nil, err
 	}
@@ -255,17 +264,17 @@ func (s *MeshOPA) DeleteMeshOPA(ctx context.Context, request operations.DeleteMe
 			err = fmt.Errorf("error sending request: no response")
 		}
 
-		_, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
 		return nil, err
 	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
-		_httpRes, err := s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		_httpRes, err := s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
 		if err != nil {
 			return nil, err
 		} else if _httpRes != nil {
 			httpRes = _httpRes
 		}
 	} else {
-		httpRes, err = s.sdkConfiguration.Hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
 		if err != nil {
 			return nil, err
 		}
@@ -357,11 +366,13 @@ func (s *MeshOPA) CreateMeshOPA(ctx context.Context, request operations.CreateMe
 	}
 
 	hookCtx := hooks.HookContext{
-		BaseURL:        baseURL,
-		Context:        ctx,
-		OperationID:    "createMeshOPA",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
+		SDK:              s.rootSDK,
+		SDKConfiguration: s.sdkConfiguration,
+		BaseURL:          baseURL,
+		Context:          ctx,
+		OperationID:      "createMeshOPA",
+		OAuth2Scopes:     []string{},
+		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MeshOPAItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
@@ -397,7 +408,7 @@ func (s *MeshOPA) CreateMeshOPA(ctx context.Context, request operations.CreateMe
 		req.Header.Set(k, v)
 	}
 
-	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
 	if err != nil {
 		return nil, err
 	}
@@ -410,17 +421,17 @@ func (s *MeshOPA) CreateMeshOPA(ctx context.Context, request operations.CreateMe
 			err = fmt.Errorf("error sending request: no response")
 		}
 
-		_, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
 		return nil, err
 	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
-		_httpRes, err := s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		_httpRes, err := s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
 		if err != nil {
 			return nil, err
 		} else if _httpRes != nil {
 			httpRes = _httpRes
 		}
 	} else {
-		httpRes, err = s.sdkConfiguration.Hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
 		if err != nil {
 			return nil, err
 		}
@@ -491,11 +502,13 @@ func (s *MeshOPA) UpdateMeshOPA(ctx context.Context, request operations.UpdateMe
 	}
 
 	hookCtx := hooks.HookContext{
-		BaseURL:        baseURL,
-		Context:        ctx,
-		OperationID:    "updateMeshOPA",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
+		SDK:              s.rootSDK,
+		SDKConfiguration: s.sdkConfiguration,
+		BaseURL:          baseURL,
+		Context:          ctx,
+		OperationID:      "updateMeshOPA",
+		OAuth2Scopes:     []string{},
+		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MeshOPAItem", "json", `request:"mediaType=application/json"`)
 	if err != nil {
@@ -531,7 +544,7 @@ func (s *MeshOPA) UpdateMeshOPA(ctx context.Context, request operations.UpdateMe
 		req.Header.Set(k, v)
 	}
 
-	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
 	if err != nil {
 		return nil, err
 	}
@@ -544,17 +557,17 @@ func (s *MeshOPA) UpdateMeshOPA(ctx context.Context, request operations.UpdateMe
 			err = fmt.Errorf("error sending request: no response")
 		}
 
-		_, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
 		return nil, err
 	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
-		_httpRes, err := s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		_httpRes, err := s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
 		if err != nil {
 			return nil, err
 		} else if _httpRes != nil {
 			httpRes = _httpRes
 		}
 	} else {
-		httpRes, err = s.sdkConfiguration.Hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
 		if err != nil {
 			return nil, err
 		}
@@ -625,11 +638,13 @@ func (s *MeshOPA) GetMeshOPAList(ctx context.Context, request operations.GetMesh
 	}
 
 	hookCtx := hooks.HookContext{
-		BaseURL:        baseURL,
-		Context:        ctx,
-		OperationID:    "getMeshOPAList",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
+		SDK:              s.rootSDK,
+		SDKConfiguration: s.sdkConfiguration,
+		BaseURL:          baseURL,
+		Context:          ctx,
+		OperationID:      "getMeshOPAList",
+		OAuth2Scopes:     []string{},
+		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -662,7 +677,7 @@ func (s *MeshOPA) GetMeshOPAList(ctx context.Context, request operations.GetMesh
 		req.Header.Set(k, v)
 	}
 
-	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
 	if err != nil {
 		return nil, err
 	}
@@ -675,17 +690,17 @@ func (s *MeshOPA) GetMeshOPAList(ctx context.Context, request operations.GetMesh
 			err = fmt.Errorf("error sending request: no response")
 		}
 
-		_, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
 		return nil, err
 	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
-		_httpRes, err := s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		_httpRes, err := s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
 		if err != nil {
 			return nil, err
 		} else if _httpRes != nil {
 			httpRes = _httpRes
 		}
 	} else {
-		httpRes, err = s.sdkConfiguration.Hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
 		if err != nil {
 			return nil, err
 		}
