@@ -6344,33 +6344,39 @@ components:
                 type: string
                 description: The version of the api.
                 example: 1.0.0
-              spec_content:
-                type: string
-                description: >
-                  The raw content of your API spec, in json or yaml format
-                  (OpenAPI or AsyncAPI).
-                example: >-
-                  {"openapi":"3.0.3","info":{"title":"Example
-                  API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example
-                  endpoint","responses":{"200":{"description":"Successful
-                  response"}}}}}}
-              spec_validation_messages:
-                type: array
-                description: The errors that occurred while parsing the API version spec.
-                readOnly: true
-                items:
-                  type: object
-                  additionalProperties: false
-                  required:
-                    - message
-                  properties:
-                    message:
-                      type: string
-              spec_type:
-                x-flatten-allOf: true
-                allOf:
-                  - $ref: '#/components/schemas/ApiSpecType'
-                  - readOnly: true
+              spec:
+                type: object
+                additionalProperties: false
+                properties:
+                  content:
+                    type: string
+                    description: >
+                      The raw content of your API spec, in json or yaml format
+                      (OpenAPI or AsyncAPI).
+                    example: >-
+                      {"openapi":"3.0.3","info":{"title":"Example
+                      API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example
+                      endpoint","responses":{"200":{"description":"Successful
+                      response"}}}}}}
+                  type:
+                    x-flatten-allOf: true
+                    allOf:
+                      - $ref: '#/components/schemas/ApiSpecType'
+                      - readOnly: true
+                  validation_messages:
+                    type: array
+                    description: >-
+                      The errors that occurred while parsing the API version
+                      spec.
+                    readOnly: true
+                    items:
+                      type: object
+                      additionalProperties: false
+                      required:
+                        - message
+                      properties:
+                        message:
+                          type: string
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
@@ -7257,42 +7263,48 @@ components:
                 type: string
                 description: The version of the api.
                 example: 1.0.0
-              spec_content:
-                type: string
-                description: >
-                  The raw content of your API spec, in json or yaml format
-                  (OpenAPI or AsyncAPI).
-                example: >-
-                  {"openapi":"3.0.3","info":{"title":"Example
-                  API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example
-                  endpoint","responses":{"200":{"description":"Successful
-                  response"}}}}}}
-              spec_validation_messages:
-                type: array
-                description: The errors that occurred while parsing the API version spec.
-                readOnly: true
-                items:
-                  type: object
-                  additionalProperties: false
-                  required:
-                    - message
-                  properties:
-                    message:
-                      type: string
-              spec_type:
-                x-flatten-allOf: true
-                allOf:
-                  - $ref: '#/components/schemas/ApiSpecType'
-                  - readOnly: true
+              spec:
+                type: object
+                additionalProperties: false
+                properties:
+                  content:
+                    type: string
+                    description: >
+                      The raw content of your API spec, in json or yaml format
+                      (OpenAPI or AsyncAPI).
+                    example: >-
+                      {"openapi":"3.0.3","info":{"title":"Example
+                      API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example
+                      endpoint","responses":{"200":{"description":"Successful
+                      response"}}}}}}
+                  type:
+                    x-flatten-allOf: true
+                    allOf:
+                      - $ref: '#/components/schemas/ApiSpecType'
+                      - readOnly: true
+                  validation_messages:
+                    type: array
+                    description: >-
+                      The errors that occurred while parsing the API version
+                      spec.
+                    readOnly: true
+                    items:
+                      type: object
+                      additionalProperties: false
+                      required:
+                        - message
+                      properties:
+                        message:
+                          type: string
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
                 $ref: '#/components/schemas/UpdatedAt'
             required:
               - id
+              - version
               - created_at
               - updated_at
-              - spec_validation_messages
     ApiPublicationResponse:
       description: An API publication in a portal
       content:
@@ -9383,40 +9395,44 @@ components:
           type: string
           description: The version of the api.
           example: 1.0.0
-        spec_content:
-          type: string
-          description: >
-            The raw content of your API spec, in json or yaml format (OpenAPI or
-            AsyncAPI).
-          example: >-
-            {"openapi":"3.0.3","info":{"title":"Example
-            API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example
-            endpoint","responses":{"200":{"description":"Successful
-            response"}}}}}}
-        spec_validation_messages:
-          type: array
-          description: The errors that occurred while parsing the API version spec.
-          readOnly: true
-          items:
-            type: object
-            additionalProperties: false
-            required:
-              - message
-            properties:
-              message:
-                type: string
-        spec_type:
-          title: API Spec Type
-          type: string
-          example: oas3
-          description: >
-            The type of specification being stored. This allows us to render the
-            specification correctly.
-          enum:
-            - oas2
-            - oas3
-            - asyncapi
-          readOnly: true
+        spec:
+          type: object
+          additionalProperties: false
+          properties:
+            content:
+              type: string
+              description: >
+                The raw content of your API spec, in json or yaml format
+                (OpenAPI or AsyncAPI).
+              example: >-
+                {"openapi":"3.0.3","info":{"title":"Example
+                API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example
+                endpoint","responses":{"200":{"description":"Successful
+                response"}}}}}}
+            type:
+              title: API Spec Type
+              type: string
+              example: oas3
+              description: >
+                The type of specification being stored. This allows us to render
+                the specification correctly.
+              enum:
+                - oas2
+                - oas3
+                - asyncapi
+              readOnly: true
+            validation_messages:
+              type: array
+              description: The errors that occurred while parsing the API version spec.
+              readOnly: true
+              items:
+                type: object
+                additionalProperties: false
+                required:
+                  - message
+                properties:
+                  message:
+                    type: string
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
