@@ -1,7 +1,7 @@
 # Changelog
 
 ## 0.6.0
-> Released on 2025/06/??
+> Released on 2025/06/05
 
 ### BREAKING CHANGES
 * The `deprecated` field has been removed from the `konnect_api` resource
