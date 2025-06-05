@@ -99,6 +99,8 @@ type KonnectBeta struct {
 	MeshService               *MeshService
 	MeshGlobalRateLimit       *MeshGlobalRateLimit
 	MeshOPA                   *MeshOPA
+	// Auth server management API
+	Authserver *Authserver
 
 	sdkConfiguration config.SDKConfiguration
 	hooks            *hooks.Hooks
@@ -234,6 +236,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.MeshService = newMeshService(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshGlobalRateLimit = newMeshGlobalRateLimit(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshOPA = newMeshOPA(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Authserver = newAuthserver(sdk, sdk.sdkConfiguration, sdk.hooks)
 
 	return sdk
 }
