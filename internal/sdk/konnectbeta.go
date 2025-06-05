@@ -2,9 +2,12 @@
 
 package sdk
 
+// Generated from OpenAPI doc version 2.0.0 and generator version 2.620.2
+
 import (
 	"context"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/config"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/hooks"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
@@ -23,7 +26,7 @@ var ServerList = []string{
 	"https://in.api.konghq.com",
 }
 
-// HTTPClient provides an interface for suplying the SDK with a custom HTTP client
+// HTTPClient provides an interface for supplying the SDK with a custom HTTP client
 type HTTPClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }
@@ -49,31 +52,9 @@ func Float64(f float64) *float64 { return &f }
 // Pointer provides a helper function to return a pointer to a type
 func Pointer[T any](v T) *T { return &v }
 
-type sdkConfiguration struct {
-	Client            HTTPClient
-	Security          func(context.Context) (interface{}, error)
-	ServerURL         string
-	ServerIndex       int
-	Language          string
-	OpenAPIDocVersion string
-	SDKVersion        string
-	GenVersion        string
-	UserAgent         string
-	RetryConfig       *retry.Config
-	Hooks             *hooks.Hooks
-	Timeout           *time.Duration
-}
-
-func (c *sdkConfiguration) GetServerDetails() (string, map[string]string) {
-	if c.ServerURL != "" {
-		return c.ServerURL, nil
-	}
-
-	return ServerList[c.ServerIndex], nil
-}
-
 // KonnectBeta - Konnect API (BETA): This is a BETA specification. Endpoints in this specification may change with zero notice
 type KonnectBeta struct {
+	SDKVersion string
 	// APIs related to configuration of Konnect Developer Portals.
 	Portals *Portals
 	// APIs related to configuration of Konnect Developer Portals custom domains.
@@ -118,7 +99,8 @@ type KonnectBeta struct {
 	MeshGlobalRateLimit       *MeshGlobalRateLimit
 	MeshOPA                   *MeshOPA
 
-	sdkConfiguration sdkConfiguration
+	sdkConfiguration config.SDKConfiguration
+	hooks            *hooks.Hooks
 }
 
 type SDKOption func(*KonnectBeta)
@@ -191,14 +173,12 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *KonnectBeta {
 	sdk := &KonnectBeta{
-		sdkConfiguration: sdkConfiguration{
-			Language:          "go",
-			OpenAPIDocVersion: "2.0.0",
-			SDKVersion:        "0.6.0",
-			GenVersion:        "2.610.0",
-			UserAgent:         "speakeasy-sdk/terraform 0.6.0 2.610.0 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
-			Hooks:             hooks.New(),
+		SDKVersion: "0.6.0",
+		sdkConfiguration: config.SDKConfiguration{
+			UserAgent:  "speakeasy-sdk/terraform 0.6.0 2.620.2 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
+			ServerList: ServerList,
 		},
+		hooks: hooks.New(),
 	}
 	for _, opt := range opts {
 		opt(sdk)
@@ -211,82 +191,47 @@ func New(opts ...SDKOption) *KonnectBeta {
 
 	currentServerURL, _ := sdk.sdkConfiguration.GetServerDetails()
 	serverURL := currentServerURL
-	serverURL, sdk.sdkConfiguration.Client = sdk.sdkConfiguration.Hooks.SDKInit(currentServerURL, sdk.sdkConfiguration.Client)
-	if serverURL != currentServerURL {
+	serverURL, sdk.sdkConfiguration.Client = sdk.hooks.SDKInit(currentServerURL, sdk.sdkConfiguration.Client)
+	if currentServerURL != serverURL {
 		sdk.sdkConfiguration.ServerURL = serverURL
 	}
 
-	sdk.Portals = newPortals(sdk.sdkConfiguration)
-
-	sdk.PortalCustomDomains = newPortalCustomDomains(sdk.sdkConfiguration)
-
-	sdk.PortalCustomization = newPortalCustomization(sdk.sdkConfiguration)
-
-	sdk.Pages = newPages(sdk.sdkConfiguration)
-
-	sdk.Snippets = newSnippets(sdk.sdkConfiguration)
-
-	sdk.PortalAuthSettings = newPortalAuthSettings(sdk.sdkConfiguration)
-
-	sdk.PortalTeams = newPortalTeams(sdk.sdkConfiguration)
-
-	sdk.API = newAPI(sdk.sdkConfiguration)
-
-	sdk.APIDocumentation = newAPIDocumentation(sdk.sdkConfiguration)
-
-	sdk.APISpecification = newAPISpecification(sdk.sdkConfiguration)
-
-	sdk.APIPublication = newAPIPublication(sdk.sdkConfiguration)
-
-	sdk.APIImplementation = newAPIImplementation(sdk.sdkConfiguration)
-
-	sdk.MeshAccessLog = newMeshAccessLog(sdk.sdkConfiguration)
-
-	sdk.MeshCircuitBreaker = newMeshCircuitBreaker(sdk.sdkConfiguration)
-
-	sdk.MeshFaultInjection = newMeshFaultInjection(sdk.sdkConfiguration)
-
-	sdk.MeshHealthCheck = newMeshHealthCheck(sdk.sdkConfiguration)
-
-	sdk.MeshHTTPRoute = newMeshHTTPRoute(sdk.sdkConfiguration)
-
-	sdk.MeshLoadBalancingStrategy = newMeshLoadBalancingStrategy(sdk.sdkConfiguration)
-
-	sdk.MeshMetric = newMeshMetric(sdk.sdkConfiguration)
-
-	sdk.MeshPassthrough = newMeshPassthrough(sdk.sdkConfiguration)
-
-	sdk.MeshProxyPatch = newMeshProxyPatch(sdk.sdkConfiguration)
-
-	sdk.MeshRateLimit = newMeshRateLimit(sdk.sdkConfiguration)
-
-	sdk.MeshRetry = newMeshRetry(sdk.sdkConfiguration)
-
-	sdk.MeshTCPRoute = newMeshTCPRoute(sdk.sdkConfiguration)
-
-	sdk.MeshTimeout = newMeshTimeout(sdk.sdkConfiguration)
-
-	sdk.MeshTLS = newMeshTLS(sdk.sdkConfiguration)
-
-	sdk.MeshTrace = newMeshTrace(sdk.sdkConfiguration)
-
-	sdk.MeshTrafficPermission = newMeshTrafficPermission(sdk.sdkConfiguration)
-
-	sdk.Mesh = newMesh(sdk.sdkConfiguration)
-
-	sdk.MeshGateway = newMeshGateway(sdk.sdkConfiguration)
-
-	sdk.HostnameGenerator = newHostnameGenerator(sdk.sdkConfiguration)
-
-	sdk.MeshExternalService = newMeshExternalService(sdk.sdkConfiguration)
-
-	sdk.MeshMultiZoneService = newMeshMultiZoneService(sdk.sdkConfiguration)
-
-	sdk.MeshService = newMeshService(sdk.sdkConfiguration)
-
-	sdk.MeshGlobalRateLimit = newMeshGlobalRateLimit(sdk.sdkConfiguration)
-
-	sdk.MeshOPA = newMeshOPA(sdk.sdkConfiguration)
+	sdk.Portals = newPortals(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalCustomDomains = newPortalCustomDomains(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalCustomization = newPortalCustomization(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Pages = newPages(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Snippets = newSnippets(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalAuthSettings = newPortalAuthSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalTeams = newPortalTeams(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.API = newAPI(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.APIDocumentation = newAPIDocumentation(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.APISpecification = newAPISpecification(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.APIPublication = newAPIPublication(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.APIImplementation = newAPIImplementation(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshAccessLog = newMeshAccessLog(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshCircuitBreaker = newMeshCircuitBreaker(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshFaultInjection = newMeshFaultInjection(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshHealthCheck = newMeshHealthCheck(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshHTTPRoute = newMeshHTTPRoute(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshLoadBalancingStrategy = newMeshLoadBalancingStrategy(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshMetric = newMeshMetric(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshPassthrough = newMeshPassthrough(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshProxyPatch = newMeshProxyPatch(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshRateLimit = newMeshRateLimit(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshRetry = newMeshRetry(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshTCPRoute = newMeshTCPRoute(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshTimeout = newMeshTimeout(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshTLS = newMeshTLS(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshTrace = newMeshTrace(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshTrafficPermission = newMeshTrafficPermission(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Mesh = newMesh(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshGateway = newMeshGateway(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.HostnameGenerator = newHostnameGenerator(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshExternalService = newMeshExternalService(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshMultiZoneService = newMeshMultiZoneService(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshService = newMeshService(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshGlobalRateLimit = newMeshGlobalRateLimit(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshOPA = newMeshOPA(sdk, sdk.sdkConfiguration, sdk.hooks)
 
 	return sdk
 }
