@@ -23548,3 +23548,18 @@ components:
       description: >
         The Konnect access token is meant to be used by the Konnect dashboard
         and the decK CLI authenticate with.
+x-speakeasy-retries:
+  strategy: backoff
+  backoff:
+    initialInterval: 100
+    maxInterval: 500
+    maxElapsedTime: 500
+  statusCodes:
+    - 404
+    - 408
+    - 429
+    - 500
+    - 502
+    - 503
+    - 504
+  retryConnectionErrors: true
