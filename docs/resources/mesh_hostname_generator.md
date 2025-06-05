@@ -21,6 +21,10 @@ resource "konnect_mesh_hostname_generator" "my_meshhostnamegenerator" {
   }
   name = "...my_name..."
   spec = {
+    extension = {
+      config = "{ \"see\": \"documentation\" }"
+      type   = "...my_type..."
+    }
     selector = {
       mesh_external_service = {
         match_labels = {
@@ -70,8 +74,21 @@ Warning messages describe a problem the client making the API request should cor
 
 Optional:
 
+- `extension` (Attributes) Extension struct for a plugin configuration (see [below for nested schema](#nestedatt--spec--extension))
 - `selector` (Attributes) (see [below for nested schema](#nestedatt--spec--selector))
 - `template` (String)
+
+<a id="nestedatt--spec--extension"></a>
+### Nested Schema for `spec.extension`
+
+Required:
+
+- `type` (String) Type of the extension.
+
+Optional:
+
+- `config` (String) Config freeform configuration for the extension. Parsed as JSON.
+
 
 <a id="nestedatt--spec--selector"></a>
 ### Nested Schema for `spec.selector`

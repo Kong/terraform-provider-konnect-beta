@@ -39,7 +39,6 @@ type APIResourceModel struct {
 	APISpecIds            []types.String                 `tfsdk:"api_spec_ids"`
 	AuthStrategySyncError *tfTypes.AuthStrategySyncError `tfsdk:"auth_strategy_sync_error"`
 	CreatedAt             types.String                   `tfsdk:"created_at"`
-	Deprecated            types.Bool                     `tfsdk:"deprecated" tfPlanOnly:"true"`
 	Description           types.String                   `tfsdk:"description"`
 	ID                    types.String                   `tfsdk:"id"`
 	Labels                map[string]types.String        `tfsdk:"labels"`
@@ -127,11 +126,6 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Validators: []validator.String{
 					validators.IsRFC3339(),
 				},
-			},
-			"deprecated": schema.BoolAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `Marks this API as deprecated.`,
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,

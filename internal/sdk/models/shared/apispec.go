@@ -6,11 +6,6 @@ type APISpec struct {
 	// The raw content of your API specification, in json or yaml format (OpenAPI or AsyncAPI).
 	//
 	Content *string `json:"content,omitempty"`
-	// The type of specification being stored. This allows us to render the specification correctly.
-	//
-	// If this field is not set, it will be autodetected from `content`
-	//
-	Type *APISpecType `json:"type,omitempty"`
 }
 
 func (o *APISpec) GetContent() *string {
@@ -18,11 +13,4 @@ func (o *APISpec) GetContent() *string {
 		return nil
 	}
 	return o.Content
-}
-
-func (o *APISpec) GetType() *APISpecType {
-	if o == nil {
-		return nil
-	}
-	return o.Type
 }

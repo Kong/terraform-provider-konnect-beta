@@ -6,6 +6,10 @@ resource "konnect_mesh_hostname_generator" "my_meshhostnamegenerator" {
   }
   name = "...my_name..."
   spec = {
+    extension = {
+      config = "{ \"see\": \"documentation\" }"
+      type   = "...my_type..."
+    }
     selector = {
       mesh_external_service = {
         match_labels = {

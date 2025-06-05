@@ -992,13 +992,18 @@ paths:
     post:
       x-speakeasy-entity-operation: ApiSpecification#create
       x-unstable: true
+      deprecated: true
       summary: Create API Specification
-      description: |-
+      description: >-
         **Pre-release Endpoint**
+
         This endpoint is currently in beta and is subject to change.
 
+
         Creates a specification (OpenAPI or AsyncAPI) for an API.
-        **Note:** You can only have one specification for an API.
+
+        **Note:** You can only have one specification for an API. This endpoint
+        is deprecated and will be removed: use /versions instead.
       operationId: create-api-spec
       responses:
         '201':
@@ -1030,12 +1035,18 @@ paths:
     get:
       x-speakeasy-entity-operation: ApiSpecification#read
       x-unstable: true
+      deprecated: true
       summary: Fetch API Specification
-      description: |-
+      description: >-
         **Pre-release Endpoint**
+
         This endpoint is currently in beta and is subject to change.
 
-        Fetches the specification (OpenAPI or AsyncAPI) of an API.
+
+        Fetches the specification (OpenAPI or AsyncAPI) of an API. 
+
+        **Note:** This endpoint is deprecated and will be removed: use /versions
+        instead.
       operationId: fetch-api-spec
       responses:
         '200':
@@ -1051,12 +1062,18 @@ paths:
     patch:
       x-speakeasy-entity-operation: ApiSpecification#update
       x-unstable: true
+      deprecated: true
       summary: Update API Specification
-      description: |-
+      description: >-
         **Pre-release Endpoint**
+
         This endpoint is currently in beta and is subject to change.
 
+
         Updates the specification (OpenAPI or AsyncAPI) of an API.
+
+        **Note:** This endpoint is deprecated and will be removed: use /versions
+        instead.
       operationId: update-api-spec
       responses:
         '200':
@@ -1084,12 +1101,18 @@ paths:
     delete:
       x-speakeasy-entity-operation: ApiSpecification#delete
       x-unstable: true
+      deprecated: true
       summary: Delete API Specification
-      description: |-
+      description: >-
         **Pre-release Endpoint**
+
         This endpoint is currently in beta and is subject to change.
 
+
         Deletes the specification (OpenAPI or AsyncAPI) of an API.
+
+        **Note:** This endpoint is deprecated and will be removed: use /versions
+        instead.
       operationId: delete-api-spec
       responses:
         '204':
@@ -1102,6 +1125,121 @@ paths:
           $ref: '#/components/responses/ApiNotFound'
       tags:
         - API Specification
+  /v3/apis/{apiId}/versions:
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+    post:
+      x-speakeasy-entity-operation: ApiVersion#create
+      x-unstable: true
+      summary: Create API Version
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Creates a version (OpenAPI or AsyncAPI) for an API.
+      operationId: create-api-version
+      responses:
+        '201':
+          $ref: '#/components/responses/ApiVersionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+        '409':
+          $ref: '#/components/responses/ApiSpecConflict'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - API Version
+      requestBody:
+        $ref: '#/components/requestBodies/CreateApiVersionRequest'
+  /v3/apis/{apiId}/versions/{specId}:
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+      - $ref: '#/components/parameters/VersionId'
+    get:
+      x-speakeasy-entity-operation: ApiVersion#read
+      x-unstable: true
+      summary: Fetch API Version
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Fetches the version (OpenAPI or AsyncAPI) of an API.
+      operationId: fetch-api-version
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiVersionResponse'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Version
+    patch:
+      x-speakeasy-entity-operation: ApiVersion#update
+      x-unstable: true
+      summary: Update API Version
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Updates the version (OpenAPI or AsyncAPI) of an API.
+      operationId: update-api-version
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiVersionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+        '409':
+          $ref: '#/components/responses/ApiSpecHiddenConflict'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - API Version
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateApiVersionRequest'
+    delete:
+      x-speakeasy-entity-operation: ApiVersion#delete
+      x-unstable: true
+      summary: Delete API Version
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Deletes the version (OpenAPI or AsyncAPI) of an API.
+      operationId: delete-api-version
+      responses:
+        '204':
+          description: API Version was deleted successfully.
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Version
   /v3/apis/{apiId}/publications/{portalId}:
     parameters:
       - $ref: '#/components/parameters/ApiId'
@@ -5761,10 +5899,6 @@ components:
                   An optional version for your API. Leave this empty if your API
                   is unversioned.
                 nullable: true
-              deprecated:
-                type: boolean
-                description: Marks this API as deprecated.
-                x-speakeasy-terraform-plan-only: true
               slug:
                 type: string
                 pattern: ^[\w-]+$
@@ -5874,13 +6008,66 @@ components:
                     message:
                       type: string
               type:
-                $ref: '#/components/schemas/ApiSpecType'
+                x-flatten-allOf: true
+                allOf:
+                  - $ref: '#/components/schemas/ApiSpecType'
+                  - readOnly: true
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
                 $ref: '#/components/schemas/UpdatedAt'
             required:
               - content
+    CreateApiVersionRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            title: API Version
+            type: object
+            additionalProperties: false
+            properties:
+              id:
+                type: string
+                format: uuid
+                example: 7710d5c4-d902-410b-992f-18b814155b53
+                description: The API version identifier.
+                readOnly: true
+              version:
+                type: string
+                description: The version of the api.
+                example: 1.0.0
+              spec_content:
+                type: string
+                description: >
+                  The raw content of your API spec, in json or yaml format
+                  (OpenAPI or AsyncAPI).
+                example: >-
+                  {"openapi":"3.0.3","info":{"title":"Example
+                  API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example
+                  endpoint","responses":{"200":{"description":"Successful
+                  response"}}}}}}
+              spec_validation_messages:
+                type: array
+                description: The errors that occurred while parsing the API version spec.
+                readOnly: true
+                items:
+                  type: object
+                  additionalProperties: false
+                  required:
+                    - message
+                  properties:
+                    message:
+                      type: string
+              spec_type:
+                x-flatten-allOf: true
+                allOf:
+                  - $ref: '#/components/schemas/ApiSpecType'
+                  - readOnly: true
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
     CreateApiDocumentRequest:
       required: true
       content:
@@ -5951,10 +6138,6 @@ components:
                   An optional version for your API. Leave this empty if your API
                   is unversioned.
                 nullable: true
-              deprecated:
-                type: boolean
-                description: Marks this API as deprecated.
-                x-speakeasy-terraform-plan-only: true
               slug:
                 type: string
                 pattern: ^[\w-]+$
@@ -6028,6 +6211,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ApiSpec'
+    UpdateApiVersionRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiVersion'
     PutApiPublicationRequest:
       required: true
       content:
@@ -6126,6 +6315,16 @@ components:
         example: d32d905a-ed33-46a3-a093-d8f536af9a8a
       name: specId
       description: The API specification identifier
+      in: path
+      required: true
+      x-speakeasy-match: id
+    VersionId:
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: specId
+      description: The API version identifier
       in: path
       required: true
       x-speakeasy-match: id
@@ -6474,7 +6673,10 @@ components:
                     message:
                       type: string
               type:
-                $ref: '#/components/schemas/ApiSpecType'
+                x-flatten-allOf: true
+                allOf:
+                  - $ref: '#/components/schemas/ApiSpecType'
+                  - readOnly: true
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
@@ -6486,6 +6688,61 @@ components:
               - created_at
               - updated_at
               - validation_messages
+    ApiVersionResponse:
+      description: API version (OpenAPI or AsyncAPI)
+      content:
+        application/json:
+          schema:
+            title: API Version
+            type: object
+            additionalProperties: false
+            properties:
+              id:
+                type: string
+                format: uuid
+                example: 7710d5c4-d902-410b-992f-18b814155b53
+                description: The API version identifier.
+                readOnly: true
+              version:
+                type: string
+                description: The version of the api.
+                example: 1.0.0
+              spec_content:
+                type: string
+                description: >
+                  The raw content of your API spec, in json or yaml format
+                  (OpenAPI or AsyncAPI).
+                example: >-
+                  {"openapi":"3.0.3","info":{"title":"Example
+                  API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example
+                  endpoint","responses":{"200":{"description":"Successful
+                  response"}}}}}}
+              spec_validation_messages:
+                type: array
+                description: The errors that occurred while parsing the API version spec.
+                readOnly: true
+                items:
+                  type: object
+                  additionalProperties: false
+                  required:
+                    - message
+                  properties:
+                    message:
+                      type: string
+              spec_type:
+                x-flatten-allOf: true
+                allOf:
+                  - $ref: '#/components/schemas/ApiSpecType'
+                  - readOnly: true
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+            required:
+              - id
+              - created_at
+              - updated_at
+              - spec_validation_messages
     ApiPublicationResponse:
       description: An API publication in a portal
       content:
@@ -8346,9 +8603,6 @@ components:
             An optional version for your API. Leave this empty if your API is
             unversioned.
           nullable: true
-        deprecated:
-          type: boolean
-          description: Marks this API as deprecated.
         slug:
           type: string
           pattern: ^[\w-]+$
@@ -8415,7 +8669,6 @@ components:
         - name
         - version
         - labels
-        - deprecated
         - created_at
         - updated_at
         - slug
@@ -8529,6 +8782,59 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
+    ApiVersion:
+      title: API Version
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 7710d5c4-d902-410b-992f-18b814155b53
+          description: The API version identifier.
+          readOnly: true
+        version:
+          type: string
+          description: The version of the api.
+          example: 1.0.0
+        spec_content:
+          type: string
+          description: >
+            The raw content of your API spec, in json or yaml format (OpenAPI or
+            AsyncAPI).
+          example: >-
+            {"openapi":"3.0.3","info":{"title":"Example
+            API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example
+            endpoint","responses":{"200":{"description":"Successful
+            response"}}}}}}
+        spec_validation_messages:
+          type: array
+          description: The errors that occurred while parsing the API version spec.
+          readOnly: true
+          items:
+            type: object
+            additionalProperties: false
+            required:
+              - message
+            properties:
+              message:
+                type: string
+        spec_type:
+          title: API Spec Type
+          type: string
+          example: oas3
+          description: >
+            The type of specification being stored. This allows us to render the
+            specification correctly.
+          enum:
+            - oas2
+            - oas3
+            - asyncapi
+          readOnly: true
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
     ApiSpec:
       title: API Specification
       type: object
@@ -8563,7 +8869,17 @@ components:
               message:
                 type: string
         type:
-          $ref: '#/components/schemas/ApiSpecType'
+          title: API Spec Type
+          type: string
+          example: oas3
+          description: >
+            The type of specification being stored. This allows us to render the
+            specification correctly.
+          enum:
+            - oas2
+            - oas3
+            - asyncapi
+          readOnly: true
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -8680,9 +8996,6 @@ components:
       description: >
         The type of specification being stored. This allows us to render the
         specification correctly.
-
-
-        If this field is not set, it will be autodetected from `content`
       enum:
         - oas2
         - oas3
@@ -20767,6 +21080,20 @@ components:
         spec:
           description: Spec is the specification of the Kuma HostnameGenerator resource.
           properties:
+            extension:
+              description: Extension struct for a plugin configuration
+              properties:
+                config:
+                  description: Config freeform configuration for the extension.
+                  x-kubernetes-preserve-unknown-fields: true
+                type:
+                  description: Type of the extension.
+                  type: string
+                  x-speakeasy-param-computed: false
+              required:
+                - type
+              type: object
+              x-speakeasy-param-computed: false
             selector:
               properties:
                 meshExternalService:
@@ -23221,3 +23548,18 @@ components:
       description: >
         The Konnect access token is meant to be used by the Konnect dashboard
         and the decK CLI authenticate with.
+x-speakeasy-retries:
+  strategy: backoff
+  backoff:
+    initialInterval: 100
+    maxInterval: 500
+    maxElapsedTime: 500
+  statusCodes:
+    - 404
+    - 408
+    - 429
+    - 500
+    - 502
+    - 503
+    - 504
+  retryConnectionErrors: true

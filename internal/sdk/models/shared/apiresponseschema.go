@@ -189,8 +189,6 @@ type APIResponseSchema struct {
 	Description *string `json:"description,omitempty"`
 	// An optional version for your API. Leave this empty if your API is unversioned.
 	Version *string `json:"version"`
-	// Marks this API as deprecated.
-	Deprecated bool `json:"deprecated"`
 	// The `slug` is used in generated URLs to provide human readable paths.
 	//
 	// Defaults to `slugify(name + version)`
@@ -249,13 +247,6 @@ func (o *APIResponseSchema) GetVersion() *string {
 		return nil
 	}
 	return o.Version
-}
-
-func (o *APIResponseSchema) GetDeprecated() bool {
-	if o == nil {
-		return false
-	}
-	return o.Deprecated
 }
 
 func (o *APIResponseSchema) GetSlug() *string {

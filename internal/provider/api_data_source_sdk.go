@@ -82,7 +82,6 @@ func (r *APIDataSourceModel) RefreshFromSharedAPIResponseSchema(ctx context.Cont
 			r.AuthStrategySyncError.Message = types.StringValue(resp.AuthStrategySyncError.Message)
 		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.Deprecated = types.BoolValue(resp.Deprecated)
 		r.Description = types.StringPointerValue(resp.Description)
 		r.ID = types.StringValue(resp.ID)
 		if len(resp.Labels) > 0 {
