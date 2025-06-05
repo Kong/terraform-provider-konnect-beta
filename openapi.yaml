@@ -5547,12 +5547,24 @@ paths:
       responses:
         '204':
           description: No Content
+        '400':
+          $ref: '#/components/responses/DeleteMeshControlPlaneValidationError'
         '401':
           $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
         '403':
           $ref: '#/components/responses/MeshControlPlaneForbiddenError'
         '404':
           $ref: '#/components/responses/MeshControlPlaneNotFoundError'
+      x-speakeasy-retries:
+        strategy: backoff
+        backoff:
+          initialInterval: 1000
+          maxInterval: 60000
+          maxElapsedTime: 360000
+          exponent: 2
+        statusCodes:
+          - 400
+        retryConnectionErrors: true
     put:
       x-speakeasy-entity-operation: MeshControlPlane#update
       summary: Update a whole control plane
@@ -7906,6 +7918,12 @@ components:
           schema:
             $ref: '#/components/schemas/BadRequestError'
     PutMeshControlPlaneValidationError:
+      description: Validation Error
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+    DeleteMeshControlPlaneValidationError:
       description: Validation Error
       content:
         application/problem+json:
