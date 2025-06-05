@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// Claim - A claim
 type Claim struct {
 	// The ID of the claim
 	ID string `json:"id"`

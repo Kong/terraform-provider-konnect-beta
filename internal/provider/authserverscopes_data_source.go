@@ -59,7 +59,7 @@ func (r *AuthServerScopesDataSource) Schema(ctx context.Context, req datasource.
 			},
 			"default": schema.BoolAttribute{
 				Computed:    true,
-				Description: `Specifies whether the scope is a default scope`,
+				Description: `Specifies whether the scope is included by default in access tokens without being explicitly requested by the client. If the scope is not allowed by the client, it will not be included in the access token.`,
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,

@@ -1,5 +1,5 @@
 resource "konnect_auth_server_clients" "my_authserverclients" {
-  provider              = konnect-beta
+  provider = konnect-beta
   access_token_duration = 17749669
   allow_all_scopes      = true
   allow_scopes = [

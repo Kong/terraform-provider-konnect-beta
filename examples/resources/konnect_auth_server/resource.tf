@@ -1,5 +1,5 @@
 resource "konnect_auth_server" "my_authserver" {
-  provider    = konnect-beta
+  provider = konnect-beta
   audience    = "...my_audience..."
   description = "...my_description..."
   labels = {

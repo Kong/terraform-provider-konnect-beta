@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// Client - A client
 type Client struct {
 	// The OAuth 2.0 client ID
 	ID string `json:"id"`

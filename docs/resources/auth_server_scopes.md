@@ -34,7 +34,7 @@ resource "konnect_auth_server_scopes" "my_authserverscopes" {
 
 ### Optional
 
-- `default` (Boolean) Specifies whether the scope is a default scope. Default: false
+- `default` (Boolean) Specifies whether the scope is included by default in access tokens without being explicitly requested by the client. If the scope is not allowed by the client, it will not be included in the access token. Default: false
 - `description` (String) Description of the scope
 - `enabled` (Boolean) Specifies whether the scope is enabled. Default: true
 - `include_in_metadata` (Boolean) Specifies whether to include the scope in the metadata document. Default: false

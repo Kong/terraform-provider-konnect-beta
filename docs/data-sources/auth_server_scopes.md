@@ -28,7 +28,7 @@ data "konnect-beta_auth_server_scopes" "my_authserverscopes" {
 ### Read-Only
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `default` (Boolean) Specifies whether the scope is a default scope
+- `default` (Boolean) Specifies whether the scope is included by default in access tokens without being explicitly requested by the client. If the scope is not allowed by the client, it will not be included in the access token.
 - `description` (String) Description of the scope
 - `enabled` (Boolean) Specifies whether the scope is enabled
 - `id` (String) The ID of the scope

@@ -12,7 +12,7 @@ type UpdateScope struct {
 	Name *string `json:"name,omitempty"`
 	// Description of the scope
 	Description *string `json:"description,omitempty"`
-	// Specifies whether the scope is a default scope
+	// Specifies whether the scope is included by default in access tokens without being explicitly requested by the client. If the scope is not allowed by the client, it will not be included in the access token.
 	Default *bool `default:"false" json:"default"`
 	// Specifies whether to include the scope in the metadata document
 	IncludeInMetadata *bool `default:"false" json:"include_in_metadata"`

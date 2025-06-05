@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// AuthServer - An auth server
 type AuthServer struct {
 	// The ID of the auth server
 	ID string `json:"id"`
