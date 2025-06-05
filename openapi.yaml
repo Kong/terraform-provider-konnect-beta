@@ -21080,6 +21080,20 @@ components:
         spec:
           description: Spec is the specification of the Kuma HostnameGenerator resource.
           properties:
+            extension:
+              description: Extension struct for a plugin configuration
+              properties:
+                config:
+                  description: Config freeform configuration for the extension.
+                  x-kubernetes-preserve-unknown-fields: true
+                type:
+                  description: Type of the extension.
+                  type: string
+                  x-speakeasy-param-computed: false
+              required:
+                - type
+              type: object
+              x-speakeasy-param-computed: false
             selector:
               properties:
                 meshExternalService:
