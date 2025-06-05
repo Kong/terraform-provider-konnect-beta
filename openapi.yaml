@@ -40,6 +40,8 @@ tags:
   - name: API Publication
   - name: API Implementation
   - name: Mesh
+  - name: authserver
+    description: Auth server management API
 paths:
   /v3/portals:
     post:
@@ -992,13 +994,18 @@ paths:
     post:
       x-speakeasy-entity-operation: ApiSpecification#create
       x-unstable: true
+      deprecated: true
       summary: Create API Specification
-      description: |-
+      description: >-
         **Pre-release Endpoint**
+
         This endpoint is currently in beta and is subject to change.
 
+
         Creates a specification (OpenAPI or AsyncAPI) for an API.
-        **Note:** You can only have one specification for an API.
+
+        **Note:** You can only have one specification for an API. This endpoint
+        is deprecated and will be removed: use /versions instead.
       operationId: create-api-spec
       responses:
         '201':
@@ -1030,12 +1037,18 @@ paths:
     get:
       x-speakeasy-entity-operation: ApiSpecification#read
       x-unstable: true
+      deprecated: true
       summary: Fetch API Specification
-      description: |-
+      description: >-
         **Pre-release Endpoint**
+
         This endpoint is currently in beta and is subject to change.
 
-        Fetches the specification (OpenAPI or AsyncAPI) of an API.
+
+        Fetches the specification (OpenAPI or AsyncAPI) of an API. 
+
+        **Note:** This endpoint is deprecated and will be removed: use /versions
+        instead.
       operationId: fetch-api-spec
       responses:
         '200':
@@ -1051,12 +1064,18 @@ paths:
     patch:
       x-speakeasy-entity-operation: ApiSpecification#update
       x-unstable: true
+      deprecated: true
       summary: Update API Specification
-      description: |-
+      description: >-
         **Pre-release Endpoint**
+
         This endpoint is currently in beta and is subject to change.
 
+
         Updates the specification (OpenAPI or AsyncAPI) of an API.
+
+        **Note:** This endpoint is deprecated and will be removed: use /versions
+        instead.
       operationId: update-api-spec
       responses:
         '200':
@@ -1084,12 +1103,18 @@ paths:
     delete:
       x-speakeasy-entity-operation: ApiSpecification#delete
       x-unstable: true
+      deprecated: true
       summary: Delete API Specification
-      description: |-
+      description: >-
         **Pre-release Endpoint**
+
         This endpoint is currently in beta and is subject to change.
 
+
         Deletes the specification (OpenAPI or AsyncAPI) of an API.
+
+        **Note:** This endpoint is deprecated and will be removed: use /versions
+        instead.
       operationId: delete-api-spec
       responses:
         '204':
@@ -1102,6 +1127,121 @@ paths:
           $ref: '#/components/responses/ApiNotFound'
       tags:
         - API Specification
+  /v3/apis/{apiId}/versions:
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+    post:
+      x-speakeasy-entity-operation: ApiVersion#create
+      x-unstable: true
+      summary: Create API Version
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Creates a version (OpenAPI or AsyncAPI) for an API.
+      operationId: create-api-version
+      responses:
+        '201':
+          $ref: '#/components/responses/ApiVersionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+        '409':
+          $ref: '#/components/responses/ApiSpecConflict'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - API Version
+      requestBody:
+        $ref: '#/components/requestBodies/CreateApiVersionRequest'
+  /v3/apis/{apiId}/versions/{specId}:
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+      - $ref: '#/components/parameters/VersionId'
+    get:
+      x-speakeasy-entity-operation: ApiVersion#read
+      x-unstable: true
+      summary: Fetch API Version
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Fetches the version (OpenAPI or AsyncAPI) of an API.
+      operationId: fetch-api-version
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiVersionResponse'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Version
+    patch:
+      x-speakeasy-entity-operation: ApiVersion#update
+      x-unstable: true
+      summary: Update API Version
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Updates the version (OpenAPI or AsyncAPI) of an API.
+      operationId: update-api-version
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiVersionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+        '409':
+          $ref: '#/components/responses/ApiSpecHiddenConflict'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - API Version
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateApiVersionRequest'
+    delete:
+      x-speakeasy-entity-operation: ApiVersion#delete
+      x-unstable: true
+      summary: Delete API Version
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Deletes the version (OpenAPI or AsyncAPI) of an API.
+      operationId: delete-api-version
+      responses:
+        '204':
+          description: API Version was deleted successfully.
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Version
   /v3/apis/{apiId}/publications/{portalId}:
     parameters:
       - $ref: '#/components/parameters/ApiId'
@@ -5407,12 +5547,24 @@ paths:
       responses:
         '204':
           description: No Content
+        '400':
+          $ref: '#/components/responses/DeleteMeshControlPlaneValidationError'
         '401':
           $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
         '403':
           $ref: '#/components/responses/MeshControlPlaneForbiddenError'
         '404':
           $ref: '#/components/responses/MeshControlPlaneNotFoundError'
+      x-speakeasy-retries:
+        strategy: backoff
+        backoff:
+          initialInterval: 1000
+          maxInterval: 60000
+          maxElapsedTime: 360000
+          exponent: 2
+        statusCodes:
+          - 400
+        retryConnectionErrors: true
     put:
       x-speakeasy-entity-operation: MeshControlPlane#update
       summary: Update a whole control plane
@@ -5437,6 +5589,299 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PutMeshControlPlaneRequest'
+  /v1/auth-servers:
+    post:
+      x-speakeasy-entity-operation: AuthServer#create
+      x-unstable: true
+      x-internal: true
+      operationId: createAuthServer
+      description: Create a new auth server
+      summary: Create a new auth server
+      requestBody:
+        $ref: '#/components/requestBodies/CreateAuthServer'
+      responses:
+        '201':
+          $ref: '#/components/responses/AuthServer'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - authserver
+  /v1/auth-servers/{authServerId}:
+    parameters:
+      - $ref: '#/components/parameters/authServerId'
+    get:
+      x-speakeasy-entity-operation: AuthServer#read
+      x-unstable: true
+      x-internal: true
+      operationId: getAuthServer
+      description: Get an auth server
+      summary: Get an auth server
+      responses:
+        '200':
+          $ref: '#/components/responses/AuthServer'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - authserver
+    patch:
+      x-speakeasy-entity-operation: AuthServer#update
+      x-unstable: true
+      x-internal: true
+      operationId: updateAuthServer
+      description: Update an auth server
+      summary: Update an auth server
+      responses:
+        '200':
+          $ref: '#/components/responses/AuthServer'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateAuthServer'
+      tags:
+        - authserver
+    delete:
+      x-speakeasy-entity-operation: AuthServer#delete
+      x-unstable: true
+      x-internal: true
+      operationId: deleteAuthServer
+      description: Delete an auth server
+      summary: Delete an auth server
+      responses:
+        '204':
+          description: Success
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - authserver
+  /v1/auth-servers/{authServerId}/claims:
+    parameters:
+      - $ref: '#/components/parameters/authServerIdForChildren'
+    post:
+      x-speakeasy-entity-operation: AuthServerClaims#create
+      x-unstable: true
+      x-internal: true
+      operationId: createAuthServerClaim
+      description: Create a new claim for a given auth server
+      summary: Create a new auth server claim
+      requestBody:
+        $ref: '#/components/requestBodies/CreateClaim'
+      responses:
+        '201':
+          $ref: '#/components/responses/Claim'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - authserver
+  /v1/auth-servers/{authServerId}/claims/{claimId}:
+    parameters:
+      - $ref: '#/components/parameters/authServerIdForChildren'
+      - $ref: '#/components/parameters/claimId'
+    get:
+      x-speakeasy-entity-operation: AuthServerClaims#read
+      x-unstable: true
+      x-internal: true
+      operationId: getAuthServerClaim
+      description: Get a claim for given auth server
+      summary: Get an auth server claim
+      responses:
+        '200':
+          $ref: '#/components/responses/Claim'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - authserver
+    patch:
+      x-speakeasy-entity-operation: AuthServerClaims#update
+      x-unstable: true
+      x-internal: true
+      operationId: updateAuthServerClaim
+      description: Update a claim for a given auth server
+      summary: Update an auth server claim
+      responses:
+        '200':
+          $ref: '#/components/responses/Claim'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateClaim'
+      tags:
+        - authserver
+    delete:
+      x-speakeasy-entity-operation: AuthServerClaims#delete
+      x-unstable: true
+      x-internal: true
+      operationId: deleteAuthServerClaim
+      description: Delete a claim for a given auth server
+      summary: Delete an auth server claim
+      responses:
+        '204':
+          description: Success
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - authserver
+  /v1/auth-servers/{authServerId}/scopes:
+    parameters:
+      - $ref: '#/components/parameters/authServerIdForChildren'
+    post:
+      x-speakeasy-entity-operation: AuthServerScopes#create
+      x-unstable: true
+      x-internal: true
+      operationId: createAuthServerScope
+      description: Create a new scope for a given auth server
+      summary: Create a new auth server scope
+      requestBody:
+        $ref: '#/components/requestBodies/CreateScope'
+      responses:
+        '201':
+          $ref: '#/components/responses/Scope'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - authserver
+  /v1/auth-servers/{authServerId}/scopes/{scopeId}:
+    parameters:
+      - $ref: '#/components/parameters/authServerIdForChildren'
+      - $ref: '#/components/parameters/scopeId'
+    get:
+      x-speakeasy-entity-operation: AuthServerScopes#read
+      x-unstable: true
+      x-internal: true
+      operationId: getAuthServerScope
+      description: Get a scope for given auth server
+      summary: Get an auth server scope
+      responses:
+        '200':
+          $ref: '#/components/responses/Scope'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - authserver
+    patch:
+      x-speakeasy-entity-operation: AuthServerScopes#update
+      x-unstable: true
+      x-internal: true
+      operationId: updateAuthServerScope
+      description: Update a scope for a given auth server
+      summary: Update an auth server scope
+      responses:
+        '200':
+          $ref: '#/components/responses/Scope'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateScope'
+      tags:
+        - authserver
+    delete:
+      x-speakeasy-entity-operation: AuthServerScopes#delete
+      x-unstable: true
+      x-internal: true
+      operationId: deleteAuthServerScope
+      description: Delete a scope for a given auth server
+      summary: Delete an auth server scope
+      responses:
+        '204':
+          description: Success
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - authserver
+  /v1/auth-servers/{authServerId}/clients:
+    parameters:
+      - $ref: '#/components/parameters/authServerIdForChildren'
+    post:
+      x-speakeasy-entity-operation: AuthServerClients#create
+      x-unstable: true
+      x-internal: true
+      operationId: createAuthServerClient
+      description: Create a new client for a given auth server
+      summary: Create a new auth server client
+      requestBody:
+        $ref: '#/components/requestBodies/CreateClient'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreatedClient'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - authserver
+  /v1/auth-servers/{authServerId}/clients/{clientId}:
+    parameters:
+      - $ref: '#/components/parameters/authServerIdForChildren'
+      - $ref: '#/components/parameters/clientId'
+    get:
+      x-speakeasy-entity-operation: AuthServerClients#read
+      x-unstable: true
+      x-internal: true
+      operationId: getAuthServerClient
+      description: Get a client for given auth server
+      summary: Get an auth server client
+      responses:
+        '200':
+          $ref: '#/components/responses/Client'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - authserver
+    put:
+      x-speakeasy-entity-operation: AuthServerClients#update
+      x-unstable: true
+      x-internal: true
+      operationId: replaceAuthServerClient
+      description: Replace a client for a given auth server
+      summary: Replace an auth server client
+      responses:
+        '200':
+          $ref: '#/components/responses/Client'
+        '201':
+          $ref: '#/components/responses/Client'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      requestBody:
+        $ref: '#/components/requestBodies/ReplaceClient'
+      tags:
+        - authserver
+    delete:
+      x-speakeasy-entity-operation: AuthServerClients#delete
+      x-unstable: true
+      x-internal: true
+      operationId: deleteAuthServerClient
+      description: Delete a client for a given auth server
+      summary: Delete an auth server client
+      responses:
+        '204':
+          description: Success
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - authserver
 components:
   requestBodies:
     CreatePortalCustomDomain:
@@ -5761,10 +6206,6 @@ components:
                   An optional version for your API. Leave this empty if your API
                   is unversioned.
                 nullable: true
-              deprecated:
-                type: boolean
-                description: Marks this API as deprecated.
-                x-speakeasy-terraform-plan-only: true
               slug:
                 type: string
                 pattern: ^[\w-]+$
@@ -5874,13 +6315,72 @@ components:
                     message:
                       type: string
               type:
-                $ref: '#/components/schemas/ApiSpecType'
+                x-flatten-allOf: true
+                allOf:
+                  - $ref: '#/components/schemas/ApiSpecType'
+                  - readOnly: true
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
                 $ref: '#/components/schemas/UpdatedAt'
             required:
               - content
+    CreateApiVersionRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            title: API Version
+            type: object
+            additionalProperties: false
+            properties:
+              id:
+                type: string
+                format: uuid
+                example: 7710d5c4-d902-410b-992f-18b814155b53
+                description: The API version identifier.
+                readOnly: true
+              version:
+                type: string
+                description: The version of the api.
+                example: 1.0.0
+              spec:
+                type: object
+                additionalProperties: false
+                properties:
+                  content:
+                    type: string
+                    description: >
+                      The raw content of your API spec, in json or yaml format
+                      (OpenAPI or AsyncAPI).
+                    example: >-
+                      {"openapi":"3.0.3","info":{"title":"Example
+                      API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example
+                      endpoint","responses":{"200":{"description":"Successful
+                      response"}}}}}}
+                  type:
+                    x-flatten-allOf: true
+                    allOf:
+                      - $ref: '#/components/schemas/ApiSpecType'
+                      - readOnly: true
+                  validation_messages:
+                    type: array
+                    description: >-
+                      The errors that occurred while parsing the API version
+                      spec.
+                    readOnly: true
+                    items:
+                      type: object
+                      additionalProperties: false
+                      required:
+                        - message
+                      properties:
+                        message:
+                          type: string
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
     CreateApiDocumentRequest:
       required: true
       content:
@@ -5951,10 +6451,6 @@ components:
                   An optional version for your API. Leave this empty if your API
                   is unversioned.
                 nullable: true
-              deprecated:
-                type: boolean
-                description: Marks this API as deprecated.
-                x-speakeasy-terraform-plan-only: true
               slug:
                 type: string
                 pattern: ^[\w-]+$
@@ -6028,6 +6524,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ApiSpec'
+    UpdateApiVersionRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiVersion'
     PutApiPublicationRequest:
       required: true
       content:
@@ -6040,6 +6542,195 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ApiImplementation'
+    CreateAuthServer:
+      description: Auth server to be created
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - name
+              - audience
+            properties:
+              name:
+                $ref: '#/components/schemas/AuthServerName'
+              description:
+                $ref: '#/components/schemas/AuthServerDescription'
+              audience:
+                $ref: '#/components/schemas/Audience'
+              signing_algorithm:
+                $ref: '#/components/schemas/Algorithm'
+              labels:
+                $ref: '#/components/schemas/Labels'
+    UpdateAuthServer:
+      description: Auth server to be updated
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/AuthServerName'
+              description:
+                $ref: '#/components/schemas/AuthServerDescription'
+              audience:
+                $ref: '#/components/schemas/Audience'
+              signing_algorithm:
+                $ref: '#/components/schemas/Algorithm'
+              labels:
+                $ref: '#/components/schemas/LabelsUpdate'
+    CreateClaim:
+      description: Claim to be created
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - name
+              - value
+            properties:
+              name:
+                $ref: '#/components/schemas/ClaimName'
+              value:
+                $ref: '#/components/schemas/ClaimValue'
+              include_in_token:
+                $ref: '#/components/schemas/ClaimIncludeInToken'
+              include_in_all_scopes:
+                $ref: '#/components/schemas/ClaimIncludeInAllScopes'
+              include_in_scopes:
+                $ref: '#/components/schemas/ClaimIncludeInScopes'
+              enabled:
+                $ref: '#/components/schemas/ClaimEnabled'
+    UpdateClaim:
+      description: Claim to be updated
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/ClaimName'
+              value:
+                $ref: '#/components/schemas/ClaimValue'
+              include_in_token:
+                $ref: '#/components/schemas/ClaimIncludeInToken'
+              include_in_all_scopes:
+                $ref: '#/components/schemas/ClaimIncludeInAllScopes'
+              include_in_scopes:
+                $ref: '#/components/schemas/ClaimIncludeInScopes'
+              enabled:
+                $ref: '#/components/schemas/ClaimEnabled'
+    CreateScope:
+      description: Scope to be created
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                $ref: '#/components/schemas/ScopeName'
+              description:
+                $ref: '#/components/schemas/ScopeDescription'
+              default:
+                $ref: '#/components/schemas/ScopeDefault'
+              include_in_metadata:
+                $ref: '#/components/schemas/ScopeIncludeInMetadata'
+              enabled:
+                $ref: '#/components/schemas/ScopeEnabled'
+    UpdateScope:
+      description: Scope to be updated
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/ScopeName'
+              description:
+                $ref: '#/components/schemas/ScopeDescription'
+              default:
+                $ref: '#/components/schemas/ScopeDefault'
+              include_in_metadata:
+                $ref: '#/components/schemas/ScopeIncludeInMetadata'
+              enabled:
+                $ref: '#/components/schemas/ScopeEnabled'
+    CreateClient:
+      description: Client to be created
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - name
+              - grant_types
+              - response_types
+            properties:
+              name:
+                $ref: '#/components/schemas/ClientName'
+              grant_types:
+                $ref: '#/components/schemas/GrantTypes'
+              response_types:
+                $ref: '#/components/schemas/ResponseTypes'
+              redirect_uris:
+                $ref: '#/components/schemas/RedirectURIs'
+              login_uri:
+                $ref: '#/components/schemas/LoginURI'
+              access_token_duration:
+                $ref: '#/components/schemas/TokenDuration'
+              id_token_duration:
+                $ref: '#/components/schemas/TokenDuration'
+              allow_all_scopes:
+                $ref: '#/components/schemas/ClientAllowAllScopes'
+              allow_scopes:
+                $ref: '#/components/schemas/ClientAllowScopes'
+              labels:
+                $ref: '#/components/schemas/Labels'
+    ReplaceClient:
+      description: Client to be replaced
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/ClientName'
+              client_secret:
+                type: string
+                minLength: 1
+                description: Secret of the client
+              grant_types:
+                $ref: '#/components/schemas/GrantTypes'
+              response_types:
+                $ref: '#/components/schemas/ResponseTypes'
+              redirect_uris:
+                $ref: '#/components/schemas/RedirectURIs'
+              login_uri:
+                $ref: '#/components/schemas/LoginURI'
+              access_token_duration:
+                $ref: '#/components/schemas/TokenDuration'
+              id_token_duration:
+                $ref: '#/components/schemas/TokenDuration'
+              allow_all_scopes:
+                $ref: '#/components/schemas/ClientAllowAllScopes'
+              allow_scopes:
+                $ref: '#/components/schemas/ClientAllowScopes'
+              labels:
+                $ref: '#/components/schemas/Labels'
+            required:
+              - name
+              - client_secret
+              - grant_types
+              - response_types
   parameters:
     PageSize:
       name: page[size]
@@ -6129,6 +6820,16 @@ components:
       in: path
       required: true
       x-speakeasy-match: id
+    VersionId:
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: specId
+      description: The API version identifier
+      in: path
+      required: true
+      x-speakeasy-match: id
     ImplementationId:
       schema:
         type: string
@@ -6149,6 +6850,54 @@ components:
       schema:
         type: string
         format: uuid
+    authServerId:
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: authServerId
+      in: path
+      required: true
+      description: The auth server ID
+      x-speakeasy-match: id
+    claimId:
+      schema:
+        type: string
+        format: uuid
+        example: 07d05309-45cc-4b37-92fb-1524846deec3
+      name: claimId
+      in: path
+      required: true
+      description: The claim ID
+      x-speakeasy-match: id
+    scopeId:
+      schema:
+        type: string
+        format: uuid
+        example: c5e12516-182c-4928-ae04-05374b3b1cca
+      name: scopeId
+      in: path
+      required: true
+      description: The scope ID
+      x-speakeasy-match: id
+    clientId:
+      schema:
+        $ref: '#/components/schemas/ClientId'
+      name: clientId
+      in: path
+      required: true
+      description: The OAuth 2.0 client ID
+      x-speakeasy-match: id
+    authServerIdForChildren:
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: authServerId
+      in: path
+      required: true
+      description: The auth server ID
+      x-speakeasy-name-override: auth_server_id
   responses:
     PortalAuthenticationSettings:
       description: Details about a portal's authentication settings.
@@ -6332,6 +7081,12 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/ConflictError'
+    BadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
     ApiSlugConflict:
       description: Conflict - `slug` property must be unique
       content:
@@ -6474,7 +7229,10 @@ components:
                     message:
                       type: string
               type:
-                $ref: '#/components/schemas/ApiSpecType'
+                x-flatten-allOf: true
+                allOf:
+                  - $ref: '#/components/schemas/ApiSpecType'
+                  - readOnly: true
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
@@ -6486,6 +7244,67 @@ components:
               - created_at
               - updated_at
               - validation_messages
+    ApiVersionResponse:
+      description: API version (OpenAPI or AsyncAPI)
+      content:
+        application/json:
+          schema:
+            title: API Version
+            type: object
+            additionalProperties: false
+            properties:
+              id:
+                type: string
+                format: uuid
+                example: 7710d5c4-d902-410b-992f-18b814155b53
+                description: The API version identifier.
+                readOnly: true
+              version:
+                type: string
+                description: The version of the api.
+                example: 1.0.0
+              spec:
+                type: object
+                additionalProperties: false
+                properties:
+                  content:
+                    type: string
+                    description: >
+                      The raw content of your API spec, in json or yaml format
+                      (OpenAPI or AsyncAPI).
+                    example: >-
+                      {"openapi":"3.0.3","info":{"title":"Example
+                      API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example
+                      endpoint","responses":{"200":{"description":"Successful
+                      response"}}}}}}
+                  type:
+                    x-flatten-allOf: true
+                    allOf:
+                      - $ref: '#/components/schemas/ApiSpecType'
+                      - readOnly: true
+                  validation_messages:
+                    type: array
+                    description: >-
+                      The errors that occurred while parsing the API version
+                      spec.
+                    readOnly: true
+                    items:
+                      type: object
+                      additionalProperties: false
+                      required:
+                        - message
+                      properties:
+                        message:
+                          type: string
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+            required:
+              - id
+              - version
+              - created_at
+              - updated_at
     ApiPublicationResponse:
       description: An API publication in a portal
       content:
@@ -7116,6 +7935,12 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/BadRequestError'
+    DeleteMeshControlPlaneValidationError:
+      description: Validation Error
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
     MeshControlPlaneForbiddenError:
       description: Permission denied
       content:
@@ -7154,6 +7979,36 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/MeshControlPlane'
+    AuthServer:
+      description: An auth server
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthServer'
+    Claim:
+      description: A claim
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Claim'
+    Scope:
+      description: A scope
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Scope'
+    Client:
+      description: A client
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Client'
+    CreatedClient:
+      description: A client with a secret
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatedClient'
   schemas:
     PageSlug:
       title: PageSlug
@@ -8346,9 +9201,6 @@ components:
             An optional version for your API. Leave this empty if your API is
             unversioned.
           nullable: true
-        deprecated:
-          type: boolean
-          description: Marks this API as deprecated.
         slug:
           type: string
           pattern: ^[\w-]+$
@@ -8415,7 +9267,6 @@ components:
         - name
         - version
         - labels
-        - deprecated
         - created_at
         - updated_at
         - slug
@@ -8529,6 +9380,63 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
+    ApiVersion:
+      title: API Version
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 7710d5c4-d902-410b-992f-18b814155b53
+          description: The API version identifier.
+          readOnly: true
+        version:
+          type: string
+          description: The version of the api.
+          example: 1.0.0
+        spec:
+          type: object
+          additionalProperties: false
+          properties:
+            content:
+              type: string
+              description: >
+                The raw content of your API spec, in json or yaml format
+                (OpenAPI or AsyncAPI).
+              example: >-
+                {"openapi":"3.0.3","info":{"title":"Example
+                API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example
+                endpoint","responses":{"200":{"description":"Successful
+                response"}}}}}}
+            type:
+              title: API Spec Type
+              type: string
+              example: oas3
+              description: >
+                The type of specification being stored. This allows us to render
+                the specification correctly.
+              enum:
+                - oas2
+                - oas3
+                - asyncapi
+              readOnly: true
+            validation_messages:
+              type: array
+              description: The errors that occurred while parsing the API version spec.
+              readOnly: true
+              items:
+                type: object
+                additionalProperties: false
+                required:
+                  - message
+                properties:
+                  message:
+                    type: string
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
     ApiSpec:
       title: API Specification
       type: object
@@ -8563,7 +9471,17 @@ components:
               message:
                 type: string
         type:
-          $ref: '#/components/schemas/ApiSpecType'
+          title: API Spec Type
+          type: string
+          example: oas3
+          description: >
+            The type of specification being stored. This allows us to render the
+            specification correctly.
+          enum:
+            - oas2
+            - oas3
+            - asyncapi
+          readOnly: true
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -8680,9 +9598,6 @@ components:
       description: >
         The type of specification being stored. This allows us to render the
         specification correctly.
-
-
-        If this field is not set, it will be autodetected from `content`
       enum:
         - oas2
         - oas3
@@ -20767,6 +21682,20 @@ components:
         spec:
           description: Spec is the specification of the Kuma HostnameGenerator resource.
           properties:
+            extension:
+              description: Extension struct for a plugin configuration
+              properties:
+                config:
+                  description: Config freeform configuration for the extension.
+                  x-kubernetes-preserve-unknown-fields: true
+                type:
+                  description: Type of the extension.
+                  type: string
+                  x-speakeasy-param-computed: false
+              required:
+                - type
+              type: object
+              x-speakeasy-param-computed: false
             selector:
               properties:
                 meshExternalService:
@@ -23181,6 +24110,322 @@ components:
       type: string
       example: A control plane to handle traffic on development environment.
       maxLength: 250
+    ResponseType:
+      type: string
+      description: OAuth 2.0 response type
+      enum:
+        - none
+        - token
+        - code
+        - id_token
+    ResponseTypes:
+      type: array
+      description: List of OAuth 2.0 response types
+      items:
+        $ref: '#/components/schemas/ResponseType'
+      nullable: false
+    GrantType:
+      type: string
+      description: OAuth 2.0 grant type
+      enum:
+        - authorization_code
+        - implicit
+        - client_credentials
+    GrantTypes:
+      description: List of OAuth 2.0 grant types
+      type: array
+      items:
+        $ref: '#/components/schemas/GrantType'
+      uniqueItems: true
+      nullable: false
+    RedirectURIs:
+      type: array
+      items:
+        type: string
+        format: uri
+      description: >-
+        The URIs that the client is allowed to redirect to after authentication
+        in interactive flows. All redirect URIs must be absolute URIs, be secure
+        (HTTPS), and must not include a fragment component.
+      nullable: false
+    LoginURI:
+      type: string
+      format: uri
+      description: >-
+        The URI of the login page where the user is redirected to authenticate
+        in interactive flows. The login page must be secure (HTTPS).
+      nullable: true
+    TokenDuration:
+      description: The duration of the minted token is valid for, in seconds
+      type: integer
+      default: 300
+      minimum: 60
+      maximum: 31536000
+    ClientAllowAllScopes:
+      type: boolean
+      default: false
+      description: Specifies whether the client is allowed to request all scopes
+    ClientAllowScopes:
+      type: array
+      items:
+        type: string
+        format: uuid
+      description: Specifies the scopes IDs that the client is allowed to request
+      nullable: false
+    ClientId:
+      type: string
+      description: The OAuth 2.0 client ID
+      minLength: 1
+      maxLength: 36
+      pattern: '[-_\w]+'
+      example: kYa9iQFU5xPDSIUH9z1z
+      readOnly: true
+    AuthServerName:
+      type: string
+      description: The name of the auth server
+      minLength: 1
+    AuthServerDescription:
+      type: string
+      description: The description of the auth server
+    Audience:
+      type: string
+      description: >-
+        The recipients that the tokens are intended for. This becomes the 'aud'
+        claim in an access token
+      minLength: 1
+    Algorithm:
+      type: string
+      description: Algorithm used in the key signing process
+      enum:
+        - RS256
+        - RS384
+        - RS512
+        - PS256
+        - PS384
+        - PS512
+      default: RS256
+    Issuer:
+      type: string
+      description: >-
+        The complete URL for the custom authorization server. This becomes the
+        'iss' claim in an access token.
+    AuthServer:
+      type: object
+      required:
+        - id
+        - name
+        - description
+        - audience
+        - signing_algorithm
+        - issuer
+        - metadata_uri
+        - labels
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The ID of the auth server
+        name:
+          $ref: '#/components/schemas/AuthServerName'
+        description:
+          $ref: '#/components/schemas/AuthServerDescription'
+        audience:
+          $ref: '#/components/schemas/Audience'
+        signing_algorithm:
+          $ref: '#/components/schemas/Algorithm'
+        issuer:
+          $ref: '#/components/schemas/Issuer'
+        metadata_uri:
+          type: string
+          format: uri
+          description: The URI of the metadata document for the auth server
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+    ClaimName:
+      type: string
+      description: The name of the claim
+      minLength: 1
+    ClaimValue:
+      type: string
+      description: >-
+        Specifies the value of the claim. It may contain a static value or a
+        dynamic (templated) value. Static values which are valid JSON will
+        result in a JSON object in the token claims.
+      minLength: 1
+    ClaimIncludeInToken:
+      type: boolean
+      default: false
+      description: >-
+        Specifies whether to include claim in the token. If the value is set to
+        'false' for a claim, the client instead uses the access token to get
+        claims from the '/userinfo' endpoint.
+    ClaimIncludeInAllScopes:
+      type: boolean
+      default: false
+      description: >-
+        Specifies whether to include the claim in all scopes. If the value is
+        set to 'false' for a claim, the claim is only included in the scopes
+        that explicitly list it.
+    ClaimIncludeInScopes:
+      type: array
+      items:
+        type: string
+        format: uuid
+      description: Specifies the scopes IDs in which the claim is included
+      nullable: false
+    ClaimEnabled:
+      type: boolean
+      default: true
+      description: Specifies whether the claim is enabled
+    Claim:
+      type: object
+      required:
+        - id
+        - name
+        - value
+        - include_in_token
+        - include_in_all_scopes
+        - include_in_scopes
+        - enabled
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The ID of the claim
+        name:
+          $ref: '#/components/schemas/ClaimName'
+        value:
+          $ref: '#/components/schemas/ClaimValue'
+        include_in_token:
+          $ref: '#/components/schemas/ClaimIncludeInToken'
+        include_in_all_scopes:
+          $ref: '#/components/schemas/ClaimIncludeInAllScopes'
+        include_in_scopes:
+          $ref: '#/components/schemas/ClaimIncludeInScopes'
+        enabled:
+          $ref: '#/components/schemas/ClaimEnabled'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+    ScopeName:
+      type: string
+      description: The name of the scope
+      minLength: 1
+    ScopeDescription:
+      type: string
+      description: Description of the scope
+    ScopeDefault:
+      type: boolean
+      default: false
+      description: >-
+        Specifies whether the scope is included by default in access tokens
+        without being explicitly requested by the client. If the scope is not
+        allowed by the client, it will not be included in the access token.
+    ScopeIncludeInMetadata:
+      type: boolean
+      default: false
+      description: Specifies whether to include the scope in the metadata document
+    ScopeEnabled:
+      type: boolean
+      default: true
+      description: Specifies whether the scope is enabled
+    Scope:
+      type: object
+      required:
+        - id
+        - name
+        - description
+        - default
+        - include_in_metadata
+        - enabled
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The ID of the scope
+        name:
+          $ref: '#/components/schemas/ScopeName'
+        description:
+          $ref: '#/components/schemas/ScopeDescription'
+        default:
+          $ref: '#/components/schemas/ScopeDefault'
+        include_in_metadata:
+          $ref: '#/components/schemas/ScopeIncludeInMetadata'
+        enabled:
+          $ref: '#/components/schemas/ScopeEnabled'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+    ClientName:
+      type: string
+      description: The name of the client
+      minLength: 1
+    Client:
+      type: object
+      required:
+        - id
+        - name
+        - grant_types
+        - redirect_uris
+        - allow_all_scopes
+        - allow_scopes
+        - login_uri
+        - access_token_duration
+        - id_token_duration
+        - labels
+        - response_types
+        - created_at
+        - updated_at
+      properties:
+        id:
+          $ref: '#/components/schemas/ClientId'
+        name:
+          $ref: '#/components/schemas/ClientName'
+        grant_types:
+          $ref: '#/components/schemas/GrantTypes'
+        redirect_uris:
+          $ref: '#/components/schemas/RedirectURIs'
+        login_uri:
+          $ref: '#/components/schemas/LoginURI'
+        access_token_duration:
+          $ref: '#/components/schemas/TokenDuration'
+        id_token_duration:
+          $ref: '#/components/schemas/TokenDuration'
+        allow_all_scopes:
+          $ref: '#/components/schemas/ClientAllowAllScopes'
+        allow_scopes:
+          $ref: '#/components/schemas/ClientAllowScopes'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        response_types:
+          $ref: '#/components/schemas/ResponseTypes'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+    CreatedClient:
+      allOf:
+        - $ref: '#/components/schemas/Client'
+        - type: object
+          required:
+            - client_secret
+          properties:
+            client_secret:
+              type: string
+              example: YAzsyUlNZ5gNGeKS9H3VAdxVPzhPo4ae
+              description: The OAuth 2.0 client secret
   securitySchemes:
     personalAccessToken:
       type: http
@@ -23221,3 +24466,18 @@ components:
       description: >
         The Konnect access token is meant to be used by the Konnect dashboard
         and the decK CLI authenticate with.
+x-speakeasy-retries:
+  strategy: backoff
+  backoff:
+    initialInterval: 100
+    maxInterval: 500
+    maxElapsedTime: 500
+  statusCodes:
+    - 404
+    - 408
+    - 429
+    - 500
+    - 502
+    - 503
+    - 504
+  retryConnectionErrors: true

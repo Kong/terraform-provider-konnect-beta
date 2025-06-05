@@ -72,6 +72,7 @@ type KonnectBeta struct {
 	API                       *API
 	APIDocumentation          *APIDocumentation
 	APISpecification          *APISpecification
+	APIVersion                *APIVersion
 	APIPublication            *APIPublication
 	APIImplementation         *APIImplementation
 	MeshAccessLog             *MeshAccessLog
@@ -98,6 +99,8 @@ type KonnectBeta struct {
 	MeshService               *MeshService
 	MeshGlobalRateLimit       *MeshGlobalRateLimit
 	MeshOPA                   *MeshOPA
+	// Auth server management API
+	Authserver *Authserver
 
 	sdkConfiguration config.SDKConfiguration
 	hooks            *hooks.Hooks
@@ -173,9 +176,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *KonnectBeta {
 	sdk := &KonnectBeta{
-		SDKVersion: "0.5.2",
+		SDKVersion: "0.6.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 0.5.2 2.620.2 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 0.6.0 2.620.2 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
 			ServerList: ServerList,
 		},
 		hooks: hooks.New(),
@@ -206,6 +209,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.API = newAPI(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.APIDocumentation = newAPIDocumentation(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.APISpecification = newAPISpecification(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.APIVersion = newAPIVersion(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.APIPublication = newAPIPublication(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.APIImplementation = newAPIImplementation(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshAccessLog = newMeshAccessLog(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -232,6 +236,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.MeshService = newMeshService(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshGlobalRateLimit = newMeshGlobalRateLimit(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshOPA = newMeshOPA(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Authserver = newAuthserver(sdk, sdk.sdkConfiguration, sdk.hooks)
 
 	return sdk
 }

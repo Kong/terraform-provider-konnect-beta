@@ -10,8 +10,6 @@ type UpdateAPIRequest struct {
 	Description *string `json:"description,omitempty"`
 	// An optional version for your API. Leave this empty if your API is unversioned.
 	Version *string `json:"version,omitempty"`
-	// Marks this API as deprecated.
-	Deprecated *bool `json:"deprecated,omitempty"`
 	// The `slug` is used in generated URLs to provide human readable paths.
 	//
 	// Defaults to `slugify(name + version)`
@@ -45,13 +43,6 @@ func (o *UpdateAPIRequest) GetVersion() *string {
 		return nil
 	}
 	return o.Version
-}
-
-func (o *UpdateAPIRequest) GetDeprecated() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.Deprecated
 }
 
 func (o *UpdateAPIRequest) GetSlug() *string {

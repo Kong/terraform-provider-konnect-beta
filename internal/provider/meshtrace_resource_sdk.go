@@ -62,9 +62,9 @@ func (r *MeshTraceResourceModel) ToSharedMeshTraceItemInput(ctx context.Context)
 			type1 := shared.MeshTraceItemSpecType(backendsItem.Type.ValueString())
 			var zipkin *shared.Zipkin
 			if backendsItem.Zipkin != nil {
-				apiVersion := new(shared.APIVersion)
+				apiVersion := new(shared.MeshTraceItemAPIVersion)
 				if !backendsItem.Zipkin.APIVersion.IsUnknown() && !backendsItem.Zipkin.APIVersion.IsNull() {
-					*apiVersion = shared.APIVersion(backendsItem.Zipkin.APIVersion.ValueString())
+					*apiVersion = shared.MeshTraceItemAPIVersion(backendsItem.Zipkin.APIVersion.ValueString())
 				} else {
 					apiVersion = nil
 				}
@@ -99,7 +99,7 @@ func (r *MeshTraceResourceModel) ToSharedMeshTraceItemInput(ctx context.Context)
 		}
 		var sampling *shared.Sampling
 		if r.Spec.Default.Sampling != nil {
-			var client *shared.Client
+			var client *shared.MeshTraceItemClient
 			if r.Spec.Default.Sampling.Client != nil {
 				integer := new(int64)
 				if !r.Spec.Default.Sampling.Client.Integer.IsUnknown() && !r.Spec.Default.Sampling.Client.Integer.IsNull() {
@@ -108,7 +108,7 @@ func (r *MeshTraceResourceModel) ToSharedMeshTraceItemInput(ctx context.Context)
 					integer = nil
 				}
 				if integer != nil {
-					client = &shared.Client{
+					client = &shared.MeshTraceItemClient{
 						Integer: integer,
 					}
 				}
@@ -119,7 +119,7 @@ func (r *MeshTraceResourceModel) ToSharedMeshTraceItemInput(ctx context.Context)
 					str = nil
 				}
 				if str != nil {
-					client = &shared.Client{
+					client = &shared.MeshTraceItemClient{
 						Str: str,
 					}
 				}

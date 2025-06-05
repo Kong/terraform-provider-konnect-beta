@@ -1,23 +1,25 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: e03572fcf70ffa3250125346a08dc453
+  docChecksum: 73a397e4ff362698318e32bb1992d19f
   docVersion: 2.0.0
   speakeasyVersion: 1.555.3
   generationVersion: 2.620.2
-  releaseVersion: 0.5.2
-  configChecksum: a34c339e14bb8afa8872f96b3801cdf7
+  releaseVersion: 0.6.0
+  configChecksum: 135ff4a738c664428a24a3bf64b5b994
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.2
     constsAndDefaults: 0.2.1
     core: 3.41.10
+    deprecations: 2.82.0
     globalSecurity: 2.81.12
     globalServerURLs: 2.82.2
     inputOutputModels: 2.83.0
     nameOverrides: 2.81.3
     nullables: 0.0.0
+    retries: 2.81.3
     unions: 2.81.17
 generatedFiles:
   - .gitattributes
@@ -28,6 +30,11 @@ generatedFiles:
   - examples/data-sources/konnect-beta_api_implementation/data-source.tf
   - examples/data-sources/konnect-beta_api_publication/data-source.tf
   - examples/data-sources/konnect-beta_api_specification/data-source.tf
+  - examples/data-sources/konnect-beta_api_version/data-source.tf
+  - examples/data-sources/konnect-beta_auth_server/data-source.tf
+  - examples/data-sources/konnect-beta_auth_server_claims/data-source.tf
+  - examples/data-sources/konnect-beta_auth_server_clients/data-source.tf
+  - examples/data-sources/konnect-beta_auth_server_scopes/data-source.tf
   - examples/data-sources/konnect-beta_hostname_generator_list/data-source.tf
   - examples/data-sources/konnect-beta_mesh/data-source.tf
   - examples/data-sources/konnect-beta_mesh_access_log/data-source.tf
@@ -96,6 +103,16 @@ generatedFiles:
   - examples/resources/konnect-beta_api_publication/resource.tf
   - examples/resources/konnect-beta_api_specification/import.sh
   - examples/resources/konnect-beta_api_specification/resource.tf
+  - examples/resources/konnect-beta_api_version/import.sh
+  - examples/resources/konnect-beta_api_version/resource.tf
+  - examples/resources/konnect-beta_auth_server/import.sh
+  - examples/resources/konnect-beta_auth_server/resource.tf
+  - examples/resources/konnect-beta_auth_server_claims/import.sh
+  - examples/resources/konnect-beta_auth_server_claims/resource.tf
+  - examples/resources/konnect-beta_auth_server_clients/import.sh
+  - examples/resources/konnect-beta_auth_server_clients/resource.tf
+  - examples/resources/konnect-beta_auth_server_scopes/import.sh
+  - examples/resources/konnect-beta_auth_server_scopes/resource.tf
   - examples/resources/konnect-beta_mesh/import.sh
   - examples/resources/konnect-beta_mesh/resource.tf
   - examples/resources/konnect-beta_mesh_access_log/import.sh
@@ -194,6 +211,26 @@ generatedFiles:
   - internal/provider/apispecification_data_source_sdk.go
   - internal/provider/apispecification_resource.go
   - internal/provider/apispecification_resource_sdk.go
+  - internal/provider/apiversion_data_source.go
+  - internal/provider/apiversion_data_source_sdk.go
+  - internal/provider/apiversion_resource.go
+  - internal/provider/apiversion_resource_sdk.go
+  - internal/provider/authserver_data_source.go
+  - internal/provider/authserver_data_source_sdk.go
+  - internal/provider/authserver_resource.go
+  - internal/provider/authserver_resource_sdk.go
+  - internal/provider/authserverclaims_data_source.go
+  - internal/provider/authserverclaims_data_source_sdk.go
+  - internal/provider/authserverclaims_resource.go
+  - internal/provider/authserverclaims_resource_sdk.go
+  - internal/provider/authserverclients_data_source.go
+  - internal/provider/authserverclients_data_source_sdk.go
+  - internal/provider/authserverclients_resource.go
+  - internal/provider/authserverclients_resource_sdk.go
+  - internal/provider/authserverscopes_data_source.go
+  - internal/provider/authserverscopes_data_source_sdk.go
+  - internal/provider/authserverscopes_resource.go
+  - internal/provider/authserverscopes_resource_sdk.go
   - internal/provider/hostnamegeneratorlist_data_source.go
   - internal/provider/hostnamegeneratorlist_data_source_sdk.go
   - internal/provider/mesh_data_source.go
@@ -421,6 +458,7 @@ generatedFiles:
   - internal/provider/types/connection_limits.go
   - internal/provider/types/constraints.go
   - internal/provider/types/cookie.go
+  - internal/provider/types/create_api_version_request_spec.go
   - internal/provider/types/create_portal_custom_domain_ssl.go
   - internal/provider/types/cross_zone.go
   - internal/provider/types/datadog.go
@@ -436,7 +474,6 @@ generatedFiles:
   - internal/provider/types/endpoints.go
   - internal/provider/types/envoy.go
   - internal/provider/types/exclude.go
-  - internal/provider/types/extension.go
   - internal/provider/types/failover.go
   - internal/provider/types/failover_threshold.go
   - internal/provider/types/failure_percentage.go
@@ -477,6 +514,7 @@ generatedFiles:
   - internal/provider/types/matches.go
   - internal/provider/types/menu.go
   - internal/provider/types/mesh_access_log_item.go
+  - internal/provider/types/mesh_access_log_item_spec.go
   - internal/provider/types/mesh_access_log_item_spec_from_backends.go
   - internal/provider/types/mesh_access_log_item_spec_from_default.go
   - internal/provider/types/mesh_access_log_item_spec_from_open_telemetry.go
@@ -492,6 +530,7 @@ generatedFiles:
   - internal/provider/types/mesh_control_plane_feature_hostname_generation_creation.go
   - internal/provider/types/mesh_external_service.go
   - internal/provider/types/mesh_external_service_item.go
+  - internal/provider/types/mesh_external_service_item_extension.go
   - internal/provider/types/mesh_external_service_item_spec.go
   - internal/provider/types/mesh_fault_injection_item.go
   - internal/provider/types/mesh_fault_injection_item_default.go
@@ -647,7 +686,6 @@ generatedFiles:
   - internal/provider/types/selector.go
   - internal/provider/types/selectors.go
   - internal/provider/types/sidecar.go
-  - internal/provider/types/spec.go
   - internal/provider/types/spec_renderer.go
   - internal/provider/types/status.go
   - internal/provider/types/subject_alt_names.go
@@ -674,6 +712,9 @@ generatedFiles:
   - internal/sdk/apiimplementation.go
   - internal/sdk/apipublication.go
   - internal/sdk/apispecification.go
+  - internal/sdk/apiversion.go
+  - internal/sdk/authserver.go
+  - internal/sdk/docs/models/operations/option.md
   - internal/sdk/hostnamegenerator.go
   - internal/sdk/internal/config/sdkconfiguration.go
   - internal/sdk/internal/hooks/hooks.go
@@ -717,6 +758,11 @@ generatedFiles:
   - internal/sdk/models/operations/createapidocument.go
   - internal/sdk/models/operations/createapiimplementation.go
   - internal/sdk/models/operations/createapispec.go
+  - internal/sdk/models/operations/createapiversion.go
+  - internal/sdk/models/operations/createauthserver.go
+  - internal/sdk/models/operations/createauthserverclaim.go
+  - internal/sdk/models/operations/createauthserverclient.go
+  - internal/sdk/models/operations/createauthserverscope.go
   - internal/sdk/models/operations/createcp.go
   - internal/sdk/models/operations/createhostnamegenerator.go
   - internal/sdk/models/operations/createmeshaccesslog.go
@@ -750,6 +796,11 @@ generatedFiles:
   - internal/sdk/models/operations/deleteapidocument.go
   - internal/sdk/models/operations/deleteapiimplementation.go
   - internal/sdk/models/operations/deleteapispec.go
+  - internal/sdk/models/operations/deleteapiversion.go
+  - internal/sdk/models/operations/deleteauthserver.go
+  - internal/sdk/models/operations/deleteauthserverclaim.go
+  - internal/sdk/models/operations/deleteauthserverclient.go
+  - internal/sdk/models/operations/deleteauthserverscope.go
   - internal/sdk/models/operations/deletehostnamegenerator.go
   - internal/sdk/models/operations/deletemesh.go
   - internal/sdk/models/operations/deletemeshaccesslog.go
@@ -785,7 +836,12 @@ generatedFiles:
   - internal/sdk/models/operations/fetchapidocument.go
   - internal/sdk/models/operations/fetchapiimplementation.go
   - internal/sdk/models/operations/fetchapispec.go
+  - internal/sdk/models/operations/fetchapiversion.go
   - internal/sdk/models/operations/fetchpublication.go
+  - internal/sdk/models/operations/getauthserver.go
+  - internal/sdk/models/operations/getauthserverclaim.go
+  - internal/sdk/models/operations/getauthserverclient.go
+  - internal/sdk/models/operations/getauthserverscope.go
   - internal/sdk/models/operations/gethostnamegenerator.go
   - internal/sdk/models/operations/gethostnamegeneratorlist.go
   - internal/sdk/models/operations/getmesh.go
@@ -846,10 +902,15 @@ generatedFiles:
   - internal/sdk/models/operations/options.go
   - internal/sdk/models/operations/publishapitoportal.go
   - internal/sdk/models/operations/putmesh.go
+  - internal/sdk/models/operations/replaceauthserverclient.go
   - internal/sdk/models/operations/replaceportalcustomization.go
   - internal/sdk/models/operations/updateapi.go
   - internal/sdk/models/operations/updateapidocument.go
   - internal/sdk/models/operations/updateapispec.go
+  - internal/sdk/models/operations/updateapiversion.go
+  - internal/sdk/models/operations/updateauthserver.go
+  - internal/sdk/models/operations/updateauthserverclaim.go
+  - internal/sdk/models/operations/updateauthserverscope.go
   - internal/sdk/models/operations/updatecp.go
   - internal/sdk/models/operations/updatehostnamegenerator.go
   - internal/sdk/models/operations/updatemeshaccesslog.go
@@ -880,6 +941,7 @@ generatedFiles:
   - internal/sdk/models/operations/updateportalpage.go
   - internal/sdk/models/operations/updateportalsnippet.go
   - internal/sdk/models/operations/updateportalteam.go
+  - internal/sdk/models/shared/algorithm.go
   - internal/sdk/models/shared/apidocument.go
   - internal/sdk/models/shared/apidocumentresponse.go
   - internal/sdk/models/shared/apidocumentstatus.go
@@ -893,19 +955,30 @@ generatedFiles:
   - internal/sdk/models/shared/apislugconflict.go
   - internal/sdk/models/shared/apispec.go
   - internal/sdk/models/shared/apispecresponse.go
-  - internal/sdk/models/shared/apispectype.go
+  - internal/sdk/models/shared/apiversion.go
+  - internal/sdk/models/shared/apiversionresponse.go
+  - internal/sdk/models/shared/authserver.go
   - internal/sdk/models/shared/badrequesterror.go
+  - internal/sdk/models/shared/claim.go
+  - internal/sdk/models/shared/client.go
   - internal/sdk/models/shared/conflicterror.go
   - internal/sdk/models/shared/createapidocumentrequest.go
   - internal/sdk/models/shared/createapirequest.go
   - internal/sdk/models/shared/createapispecrequest.go
+  - internal/sdk/models/shared/createapiversionrequest.go
+  - internal/sdk/models/shared/createauthserver.go
+  - internal/sdk/models/shared/createclaim.go
+  - internal/sdk/models/shared/createclient.go
+  - internal/sdk/models/shared/createdclient.go
   - internal/sdk/models/shared/createmeshcontrolplanerequest.go
   - internal/sdk/models/shared/createportal.go
   - internal/sdk/models/shared/createportalcustomdomainrequest.go
   - internal/sdk/models/shared/createportalcustomdomainssl.go
   - internal/sdk/models/shared/createportalpagerequest.go
   - internal/sdk/models/shared/createportalsnippetrequest.go
+  - internal/sdk/models/shared/createscope.go
   - internal/sdk/models/shared/forbiddenerror.go
+  - internal/sdk/models/shared/granttype.go
   - internal/sdk/models/shared/hostnamegeneratorcreateorupdatesuccessresponse.go
   - internal/sdk/models/shared/hostnamegeneratordeletesuccessresponse.go
   - internal/sdk/models/shared/hostnamegeneratoritem.go
@@ -1037,14 +1110,20 @@ generatedFiles:
   - internal/sdk/models/shared/portalupdateteamrequest.go
   - internal/sdk/models/shared/publishedstatus.go
   - internal/sdk/models/shared/putmeshcontrolplanerequest.go
+  - internal/sdk/models/shared/replaceclient.go
+  - internal/sdk/models/shared/responsetype.go
+  - internal/sdk/models/shared/scope.go
   - internal/sdk/models/shared/security.go
   - internal/sdk/models/shared/unauthorizederror.go
   - internal/sdk/models/shared/unsupportedmediatypeerror.go
   - internal/sdk/models/shared/updateapirequest.go
+  - internal/sdk/models/shared/updateauthserver.go
+  - internal/sdk/models/shared/updateclaim.go
   - internal/sdk/models/shared/updateportal.go
   - internal/sdk/models/shared/updateportalcustomdomainrequest.go
   - internal/sdk/models/shared/updateportalpagerequest.go
   - internal/sdk/models/shared/updateportalsnippetrequest.go
+  - internal/sdk/models/shared/updatescope.go
   - internal/sdk/models/shared/visibilitystatus.go
   - internal/sdk/pages.go
   - internal/sdk/portalauthsettings.go
@@ -1452,7 +1531,7 @@ examples:
         application/json: {"name": "MyAPI", "slug": "my-api-v1", "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "version": null, "deprecated": true, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "auth_strategy_sync_error": {"control_plane_error": "control_plane_error_unavailable", "message": "Unable to connect to the control plane to update plugin"}, "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "version": null, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "auth_strategy_sync_error": {"control_plane_error": "control_plane_error_unavailable", "message": "Unable to connect to the control plane to update plugin"}, "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 497005, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -1470,7 +1549,7 @@ examples:
           apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
       responses:
         "200":
-          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "version": "<value>", "deprecated": true, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "auth_strategy_sync_error": {"control_plane_error": "control_plane_error_unavailable", "message": "Unable to connect to the control plane to update plugin"}, "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "version": "<value>", "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "auth_strategy_sync_error": {"control_plane_error": "control_plane_error_unavailable", "message": "Unable to connect to the control plane to update plugin"}, "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -1486,7 +1565,7 @@ examples:
         application/json: {"name": "MyAPI", "slug": "my-api-v1", "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "version": null, "deprecated": true, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "auth_strategy_sync_error": {"control_plane_error": "control_plane_error_unavailable", "message": "Unable to connect to the control plane to update plugin"}, "portals": [], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "version": null, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "auth_strategy_sync_error": {"control_plane_error": "control_plane_error_unavailable", "message": "Unable to connect to the control plane to update plugin"}, "portals": [], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 683837, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
@@ -1626,7 +1705,7 @@ examples:
           apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
           specId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
-        application/json: {"content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "type": "oas3"}
+        application/json: {"content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}"}
       responses:
         "200":
           application/json: {"id": "7710d5c4-d902-410b-992f-18b814155b53", "content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "validation_messages": [{"message": "<value>"}, {"message": "<value>"}, {"message": "<value>"}], "type": "oas3", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -2823,6 +2902,8 @@ examples:
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "400":
+          application/problem+json: {"status": 812290, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
   update-cp:
     "":
       parameters:
@@ -3263,5 +3344,278 @@ examples:
       responses:
         "200":
           application/json: {"items": [{"type": "MeshOPA", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}, {"type": "MeshOPA", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}, {"type": "MeshOPA", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+  create-api-version:
+    speakeasy-default-create-api-version:
+      parameters:
+        path:
+          apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+      requestBody:
+        application/json: {"version": "1.0.0", "spec": {"content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "type": "oas3"}}
+      responses:
+        "201":
+          application/json: {"id": "7710d5c4-d902-410b-992f-18b814155b53", "version": "1.0.0", "spec": {"content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "type": "oas3"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 856624, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+        "415":
+          application/problem+json: {"status": 415, "title": "UnsupportedMediaType", "type": "https://httpstatuses.com/415", "instance": "kong:trace:1234567890", "detail": "UnsupportedMediaType"}
+  fetch-api-version:
+    speakeasy-default-fetch-api-version:
+      parameters:
+        path:
+          apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+          specId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "200":
+          application/json: {"id": "7710d5c4-d902-410b-992f-18b814155b53", "version": "1.0.0", "spec": {"content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "type": "oas3"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-api-version:
+    speakeasy-default-update-api-version:
+      parameters:
+        path:
+          apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+          specId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      requestBody:
+        application/json: {"version": "1.0.0", "spec": {"content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}"}}
+      responses:
+        "200":
+          application/json: {"id": "7710d5c4-d902-410b-992f-18b814155b53", "version": "1.0.0", "spec": {"content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "type": "oas3"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 230880, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_items", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+        "415":
+          application/problem+json: {"status": 415, "title": "UnsupportedMediaType", "type": "https://httpstatuses.com/415", "instance": "kong:trace:1234567890", "detail": "UnsupportedMediaType"}
+  delete-api-version:
+    speakeasy-default-delete-api-version:
+      parameters:
+        path:
+          apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+          specId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  createAuthServer:
+    speakeasy-default-create-auth-server:
+      requestBody:
+        application/json: {"name": "<value>", "audience": "<value>", "signing_algorithm": "RS256", "labels": {"env": "test"}}
+      responses:
+        "201":
+          application/json: {"id": "5824f903-e3fd-4fc9-9773-3f647e11baa4", "name": "<value>", "description": "zowie why or", "audience": "<value>", "signing_algorithm": "RS256", "issuer": "diners_club", "metadata_uri": "https://leading-valuable.biz/", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 57224, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  getAuthServer:
+    speakeasy-default-get-auth-server:
+      parameters:
+        path:
+          authServerId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "200":
+          application/json: {"id": "695aa2b2-4456-4089-827a-a2c4b24aae4e", "name": "<value>", "description": "awkwardly following mockingly stable", "audience": "<value>", "signing_algorithm": "RS256", "issuer": "american_express", "metadata_uri": "https://nautical-bell.biz/", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  updateAuthServer:
+    speakeasy-default-update-auth-server:
+      parameters:
+        path:
+          authServerId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      requestBody:
+        application/json: {"signing_algorithm": "RS256", "labels": {"env": "test"}}
+      responses:
+        "200":
+          application/json: {"id": "68d4f2fa-7ace-4e1f-af19-1fbd364cf434", "name": "<value>", "description": "whimsical pretend bruised oof yieldingly save archaeology political pish strait", "audience": "<value>", "signing_algorithm": "RS256", "issuer": "discover", "metadata_uri": "https://disloyal-pneumonia.org", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 579061, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  deleteAuthServer:
+    speakeasy-default-delete-auth-server:
+      parameters:
+        path:
+          authServerId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  createAuthServerClaim:
+    speakeasy-default-create-auth-server-claim:
+      parameters:
+        path:
+          authServerId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      requestBody:
+        application/json: {"name": "<value>", "value": "<value>", "include_in_token": false, "include_in_all_scopes": false, "enabled": true}
+      responses:
+        "201":
+          application/json: {"id": "0cddf577-225c-43a1-82cd-8849a2b1abbf", "name": "<value>", "value": "<value>", "include_in_token": false, "include_in_all_scopes": false, "include_in_scopes": ["49d7990c-9492-463a-bb7e-99ac3e1d86d4"], "enabled": true, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 270641, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  getAuthServerClaim:
+    speakeasy-default-get-auth-server-claim:
+      parameters:
+        path:
+          authServerId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+          claimId: "07d05309-45cc-4b37-92fb-1524846deec3"
+      responses:
+        "200":
+          application/json: {"id": "32806b43-94ae-4e40-bea1-95ba73123373", "name": "<value>", "value": "<value>", "include_in_token": false, "include_in_all_scopes": false, "include_in_scopes": ["964ec559-ed2c-4163-becb-5316ffedbccc"], "enabled": true, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  updateAuthServerClaim:
+    speakeasy-default-update-auth-server-claim:
+      parameters:
+        path:
+          authServerId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+          claimId: "07d05309-45cc-4b37-92fb-1524846deec3"
+      requestBody:
+        application/json: {"include_in_token": false, "include_in_all_scopes": false, "enabled": true}
+      responses:
+        "200":
+          application/json: {"id": "298d07b9-74c8-4ec8-a4d3-589bc550a91d", "name": "<value>", "value": "<value>", "include_in_token": false, "include_in_all_scopes": false, "include_in_scopes": [], "enabled": true, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 288364, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>", "<value 3>"], "source": "body"}]}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  deleteAuthServerClaim:
+    speakeasy-default-delete-auth-server-claim:
+      parameters:
+        path:
+          authServerId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+          claimId: "07d05309-45cc-4b37-92fb-1524846deec3"
+      responses:
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  createAuthServerScope:
+    speakeasy-default-create-auth-server-scope:
+      parameters:
+        path:
+          authServerId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      requestBody:
+        application/json: {"name": "<value>", "default": false, "include_in_metadata": false, "enabled": true}
+      responses:
+        "201":
+          application/json: {"id": "1032fdee-7321-4433-9030-c762ed4992dc", "name": "<value>", "description": "frantically excluding now responsibility eek um highly unimpressively bleach", "default": false, "include_in_metadata": false, "enabled": true, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 801972, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max_length", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  getAuthServerScope:
+    speakeasy-default-get-auth-server-scope:
+      parameters:
+        path:
+          authServerId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+          scopeId: "c5e12516-182c-4928-ae04-05374b3b1cca"
+      responses:
+        "200":
+          application/json: {"id": "5abe3d0d-ebe2-444a-a000-79ac606d14ba", "name": "<value>", "description": "responsible that bah narrate", "default": false, "include_in_metadata": false, "enabled": true, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  updateAuthServerScope:
+    speakeasy-default-update-auth-server-scope:
+      parameters:
+        path:
+          authServerId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+          scopeId: "c5e12516-182c-4928-ae04-05374b3b1cca"
+      requestBody:
+        application/json: {"default": false, "include_in_metadata": false, "enabled": true}
+      responses:
+        "200":
+          application/json: {"id": "e3b61511-2524-46dd-b444-e26d1fe65b49", "name": "<value>", "description": "beside because delirious any successfully yippee although", "default": false, "include_in_metadata": false, "enabled": true, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 192618, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_uppercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  deleteAuthServerScope:
+    speakeasy-default-delete-auth-server-scope:
+      parameters:
+        path:
+          authServerId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+          scopeId: "c5e12516-182c-4928-ae04-05374b3b1cca"
+      responses:
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  createAuthServerClient:
+    speakeasy-default-create-auth-server-client:
+      parameters:
+        path:
+          authServerId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      requestBody:
+        application/json: {"name": "<value>", "grant_types": ["client_credentials"], "response_types": [], "access_token_duration": 300, "id_token_duration": 300, "allow_all_scopes": false, "labels": {"env": "test"}}
+      responses:
+        "201":
+          application/json: {"id": "kYa9iQFU5xPDSIUH9z1z", "name": "<value>", "grant_types": [], "redirect_uris": ["https://improbable-stitcher.net", "https://caring-switchboard.net"], "login_uri": "https://stunning-husband.info/", "access_token_duration": 300, "id_token_duration": 300, "allow_all_scopes": false, "allow_scopes": ["ee2ba59e-da21-42fb-8fe0-5795664e508c", "708d5afa-b5af-42bc-b519-345a24cd65bf"], "labels": {"env": "test"}, "response_types": ["none"], "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "client_secret": "YAzsyUlNZ5gNGeKS9H3VAdxVPzhPo4ae"}
+        "400":
+          application/problem+json: {"status": 696696, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_digits", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  getAuthServerClient:
+    speakeasy-default-get-auth-server-client:
+      parameters:
+        path:
+          authServerId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+          clientId: "kYa9iQFU5xPDSIUH9z1z"
+      responses:
+        "200":
+          application/json: {"id": "kYa9iQFU5xPDSIUH9z1z", "name": "<value>", "grant_types": [], "redirect_uris": ["https://considerate-duster.org/", "https://mature-reward.name/"], "login_uri": "https://well-lit-suitcase.biz/", "access_token_duration": 300, "id_token_duration": 300, "allow_all_scopes": false, "allow_scopes": ["fa1d7070-1590-41da-bb80-cb595abf3c5a"], "labels": {"env": "test"}, "response_types": [], "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  replaceAuthServerClient:
+    speakeasy-default-replace-auth-server-client:
+      parameters:
+        path:
+          authServerId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+          clientId: "kYa9iQFU5xPDSIUH9z1z"
+      requestBody:
+        application/json: {"name": "<value>", "client_secret": "<value>", "grant_types": ["implicit"], "response_types": ["token"], "access_token_duration": 300, "id_token_duration": 300, "allow_all_scopes": false, "labels": {"env": "test"}}
+      responses:
+        "200":
+          application/json: {"id": "kYa9iQFU5xPDSIUH9z1z", "name": "<value>", "grant_types": [], "redirect_uris": ["https://waterlogged-hawk.name", "https://difficult-dress.name/"], "login_uri": "https://forceful-runway.org/", "access_token_duration": 300, "id_token_duration": 300, "allow_all_scopes": false, "allow_scopes": ["93b41707-d271-44fa-b251-d7b877d625f5", "f5754ec2-8c7b-40b2-bbee-00625d564ac0"], "labels": {"env": "test"}, "response_types": [], "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 84109, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  deleteAuthServerClient:
+    speakeasy-default-delete-auth-server-client:
+      parameters:
+        path:
+          authServerId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+          clientId: "kYa9iQFU5xPDSIUH9z1z"
+      responses:
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
 examplesVersion: 1.0.2
 generatedTests: {}

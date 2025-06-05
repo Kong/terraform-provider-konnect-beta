@@ -35,7 +35,7 @@ type MeshAccessLogDataSourceModel struct {
 	Mesh             types.String                  `tfsdk:"mesh"`
 	ModificationTime types.String                  `tfsdk:"modification_time"`
 	Name             types.String                  `tfsdk:"name"`
-	Spec             tfTypes.Spec                  `tfsdk:"spec"`
+	Spec             tfTypes.MeshAccessLogItemSpec `tfsdk:"spec"`
 	Type             types.String                  `tfsdk:"type"`
 }
 

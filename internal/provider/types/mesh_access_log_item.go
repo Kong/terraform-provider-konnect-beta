@@ -13,6 +13,6 @@ type MeshAccessLogItem struct {
 	Mesh             types.String                  `tfsdk:"mesh"`
 	ModificationTime types.String                  `tfsdk:"modification_time"`
 	Name             types.String                  `tfsdk:"name"`
-	Spec             Spec                          `tfsdk:"spec"`
+	Spec             MeshAccessLogItemSpec         `tfsdk:"spec"`
 	Type             types.String                  `tfsdk:"type"`
 }

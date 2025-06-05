@@ -2,15 +2,46 @@
 
 package shared
 
+import (
+	"encoding/json"
+	"fmt"
+)
+
+// APISpecType - The type of specification being stored. This allows us to render the specification correctly.
+type APISpecType string
+
+const (
+	APISpecTypeOas2     APISpecType = "oas2"
+	APISpecTypeOas3     APISpecType = "oas3"
+	APISpecTypeAsyncapi APISpecType = "asyncapi"
+)
+
+func (e APISpecType) ToPointer() *APISpecType {
+	return &e
+}
+func (e *APISpecType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "oas2":
+		fallthrough
+	case "oas3":
+		fallthrough
+	case "asyncapi":
+		*e = APISpecType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for APISpecType: %v", v)
+	}
+}
+
 type CreateAPISpecRequest struct {
 	// The raw content of your API specification, in json or yaml format (OpenAPI or AsyncAPI).
 	//
-	Content string `json:"content"`
-	// The type of specification being stored. This allows us to render the specification correctly.
-	//
-	// If this field is not set, it will be autodetected from `content`
-	//
-	Type *APISpecType `json:"type,omitempty"`
+	Content string       `json:"content"`
+	Type    *APISpecType `json:"type,omitempty"`
 }
 
 func (o *CreateAPISpecRequest) GetContent() string {

@@ -1660,8 +1660,8 @@ func (o *To) GetTargetRef() MeshAccessLogItemSpecTargetRef {
 	return o.TargetRef
 }
 
-// Spec is the specification of the Kuma MeshAccessLog resource.
-type Spec struct {
+// MeshAccessLogItemSpec - Spec is the specification of the Kuma MeshAccessLog resource.
+type MeshAccessLogItemSpec struct {
 	// From list makes a match between clients and corresponding configurations
 	From []From `json:"from,omitempty"`
 	// Rules defines inbound access log configurations. Currently limited to
@@ -1675,28 +1675,28 @@ type Spec struct {
 	To []To `json:"to,omitempty"`
 }
 
-func (o *Spec) GetFrom() []From {
+func (o *MeshAccessLogItemSpec) GetFrom() []From {
 	if o == nil {
 		return nil
 	}
 	return o.From
 }
 
-func (o *Spec) GetRules() []Rules {
+func (o *MeshAccessLogItemSpec) GetRules() []Rules {
 	if o == nil {
 		return nil
 	}
 	return o.Rules
 }
 
-func (o *Spec) GetTargetRef() *TargetRef {
+func (o *MeshAccessLogItemSpec) GetTargetRef() *TargetRef {
 	if o == nil {
 		return nil
 	}
 	return o.TargetRef
 }
 
-func (o *Spec) GetTo() []To {
+func (o *MeshAccessLogItemSpec) GetTo() []To {
 	if o == nil {
 		return nil
 	}
@@ -1714,7 +1714,7 @@ type MeshAccessLogItem struct {
 	// The labels to help identity resources
 	Labels map[string]string `json:"labels,omitempty"`
 	// Spec is the specification of the Kuma MeshAccessLog resource.
-	Spec Spec `json:"spec"`
+	Spec MeshAccessLogItemSpec `json:"spec"`
 	// Time at which the resource was created
 	CreationTime *time.Time `json:"creationTime,omitempty"`
 	// Time at which the resource was updated
@@ -1760,9 +1760,9 @@ func (o *MeshAccessLogItem) GetLabels() map[string]string {
 	return o.Labels
 }
 
-func (o *MeshAccessLogItem) GetSpec() Spec {
+func (o *MeshAccessLogItem) GetSpec() MeshAccessLogItemSpec {
 	if o == nil {
-		return Spec{}
+		return MeshAccessLogItemSpec{}
 	}
 	return o.Spec
 }
@@ -1791,7 +1791,7 @@ type MeshAccessLogItemInput struct {
 	// The labels to help identity resources
 	Labels map[string]string `json:"labels,omitempty"`
 	// Spec is the specification of the Kuma MeshAccessLog resource.
-	Spec Spec `json:"spec"`
+	Spec MeshAccessLogItemSpec `json:"spec"`
 }
 
 func (m MeshAccessLogItemInput) MarshalJSON() ([]byte, error) {
@@ -1833,9 +1833,9 @@ func (o *MeshAccessLogItemInput) GetLabels() map[string]string {
 	return o.Labels
 }
 
-func (o *MeshAccessLogItemInput) GetSpec() Spec {
+func (o *MeshAccessLogItemInput) GetSpec() MeshAccessLogItemSpec {
 	if o == nil {
-		return Spec{}
+		return MeshAccessLogItemSpec{}
 	}
 	return o.Spec
 }

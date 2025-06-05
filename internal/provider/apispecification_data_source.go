@@ -65,10 +65,8 @@ func (r *APISpecificationDataSource) Schema(ctx context.Context, req datasource.
 				Description: `The API specification identifier.`,
 			},
 			"type": schema.StringAttribute{
-				Computed: true,
-				MarkdownDescription: `The type of specification being stored. This allows us to render the specification correctly.` + "\n" +
-					`` + "\n" +
-					`If this field is not set, it will be autodetected from ` + "`" + `content` + "`" + ``,
+				Computed:    true,
+				Description: `The type of specification being stored. This allows us to render the specification correctly.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed:    true,
