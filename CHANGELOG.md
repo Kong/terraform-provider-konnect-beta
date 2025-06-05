@@ -7,6 +7,7 @@
 * The `deprecated` field has been removed from the `konnect_api` resource
 
 ### Features
+* Add support for the Konnect IDP server. Adds the `konnect_auth_server`, `konnect_auth_server_claims`, `konnect_auth_server_scopes`, and `konnect_auth_server_clients` resources
 * A new `konnect_api_version` resource has been added. This is a replacement for the deprecated `konnect_api_specification` resource.
 * Add retries to all 404 returned from the API to combat replication lag
 * Add retries to other retriable status codes (408, 429, 500, 502, 503, 504)
