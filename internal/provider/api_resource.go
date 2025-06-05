@@ -39,7 +39,7 @@ type APIResourceModel struct {
 	APISpecIds            []types.String                 `tfsdk:"api_spec_ids"`
 	AuthStrategySyncError *tfTypes.AuthStrategySyncError `tfsdk:"auth_strategy_sync_error"`
 	CreatedAt             types.String                   `tfsdk:"created_at"`
-	Deprecated            types.Bool                     `tfsdk:"deprecated"`
+	Deprecated            types.Bool                     `tfsdk:"deprecated" tfPlanOnly:"true"`
 	Description           types.String                   `tfsdk:"description"`
 	ID                    types.String                   `tfsdk:"id"`
 	Labels                map[string]types.String        `tfsdk:"labels"`
