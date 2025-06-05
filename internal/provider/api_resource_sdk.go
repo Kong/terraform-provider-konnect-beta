@@ -31,12 +31,6 @@ func (r *APIResourceModel) ToSharedCreateAPIRequest(ctx context.Context) (*share
 	} else {
 		version = nil
 	}
-	deprecated := new(bool)
-	if !r.Deprecated.IsUnknown() && !r.Deprecated.IsNull() {
-		*deprecated = r.Deprecated.ValueBool()
-	} else {
-		deprecated = nil
-	}
 	slug := new(string)
 	if !r.Slug.IsUnknown() && !r.Slug.IsNull() {
 		*slug = r.Slug.ValueString()
@@ -63,7 +57,6 @@ func (r *APIResourceModel) ToSharedCreateAPIRequest(ctx context.Context) (*share
 		Name:        name,
 		Description: description,
 		Version:     version,
-		Deprecated:  deprecated,
 		Slug:        slug,
 		Labels:      labels,
 		SpecContent: specContent,
@@ -93,12 +86,6 @@ func (r *APIResourceModel) ToSharedUpdateAPIRequest(ctx context.Context) (*share
 	} else {
 		version = nil
 	}
-	deprecated := new(bool)
-	if !r.Deprecated.IsUnknown() && !r.Deprecated.IsNull() {
-		*deprecated = r.Deprecated.ValueBool()
-	} else {
-		deprecated = nil
-	}
 	slug := new(string)
 	if !r.Slug.IsUnknown() && !r.Slug.IsNull() {
 		*slug = r.Slug.ValueString()
@@ -119,7 +106,6 @@ func (r *APIResourceModel) ToSharedUpdateAPIRequest(ctx context.Context) (*share
 		Name:        name,
 		Description: description,
 		Version:     version,
-		Deprecated:  deprecated,
 		Slug:        slug,
 		Labels:      labels,
 	}
@@ -230,7 +216,6 @@ func (r *APIResourceModel) RefreshFromSharedAPIResponseSchema(ctx context.Contex
 			r.AuthStrategySyncError.Message = types.StringValue(resp.AuthStrategySyncError.Message)
 		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.Deprecated = types.BoolValue(resp.Deprecated)
 		r.Description = types.StringPointerValue(resp.Description)
 		r.ID = types.StringValue(resp.ID)
 		if len(resp.Labels) > 0 {

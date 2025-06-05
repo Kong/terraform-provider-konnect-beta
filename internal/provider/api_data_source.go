@@ -31,7 +31,6 @@ type APIDataSourceModel struct {
 	APISpecIds            []types.String                 `tfsdk:"api_spec_ids"`
 	AuthStrategySyncError *tfTypes.AuthStrategySyncError `tfsdk:"auth_strategy_sync_error"`
 	CreatedAt             types.String                   `tfsdk:"created_at"`
-	Deprecated            types.Bool                     `tfsdk:"deprecated"`
 	Description           types.String                   `tfsdk:"description"`
 	ID                    types.String                   `tfsdk:"id"`
 	Labels                map[string]types.String        `tfsdk:"labels"`
@@ -99,10 +98,6 @@ func (r *APIDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 			"created_at": schema.StringAttribute{
 				Computed:    true,
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-			},
-			"deprecated": schema.BoolAttribute{
-				Computed:    true,
-				Description: `Marks this API as deprecated.`,
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,

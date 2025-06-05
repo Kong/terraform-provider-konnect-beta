@@ -114,19 +114,19 @@ func (e *MeshTraceItemSpecType) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// APIVersion - Version of the API.
+// MeshTraceItemAPIVersion - Version of the API.
 // https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/trace/v3/zipkin.proto#L66
-type APIVersion string
+type MeshTraceItemAPIVersion string
 
 const (
-	APIVersionHTTPJSON  APIVersion = "httpJson"
-	APIVersionHTTPProto APIVersion = "httpProto"
+	MeshTraceItemAPIVersionHTTPJSON  MeshTraceItemAPIVersion = "httpJson"
+	MeshTraceItemAPIVersionHTTPProto MeshTraceItemAPIVersion = "httpProto"
 )
 
-func (e APIVersion) ToPointer() *APIVersion {
+func (e MeshTraceItemAPIVersion) ToPointer() *MeshTraceItemAPIVersion {
 	return &e
 }
-func (e *APIVersion) UnmarshalJSON(data []byte) error {
+func (e *MeshTraceItemAPIVersion) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -135,10 +135,10 @@ func (e *APIVersion) UnmarshalJSON(data []byte) error {
 	case "httpJson":
 		fallthrough
 	case "httpProto":
-		*e = APIVersion(v)
+		*e = MeshTraceItemAPIVersion(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for APIVersion: %v", v)
+		return fmt.Errorf("invalid value for MeshTraceItemAPIVersion: %v", v)
 	}
 }
 
@@ -146,7 +146,7 @@ func (e *APIVersion) UnmarshalJSON(data []byte) error {
 type Zipkin struct {
 	// Version of the API.
 	// https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/trace/v3/zipkin.proto#L66
-	APIVersion *APIVersion `default:"httpJson" json:"apiVersion"`
+	APIVersion *MeshTraceItemAPIVersion `default:"httpJson" json:"apiVersion"`
 	// Determines whether client and server spans will share the same span
 	// context.
 	// https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/trace/v3/zipkin.proto#L63
@@ -168,7 +168,7 @@ func (z *Zipkin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *Zipkin) GetAPIVersion() *APIVersion {
+func (o *Zipkin) GetAPIVersion() *MeshTraceItemAPIVersion {
 	if o == nil {
 		return nil
 	}

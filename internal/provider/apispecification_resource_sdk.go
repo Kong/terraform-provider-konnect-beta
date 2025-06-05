@@ -62,15 +62,8 @@ func (r *APISpecificationResourceModel) ToSharedAPISpec(ctx context.Context) (*s
 	} else {
 		content = nil
 	}
-	typeVar := new(shared.APISpecType)
-	if !r.Type.IsUnknown() && !r.Type.IsNull() {
-		*typeVar = shared.APISpecType(r.Type.ValueString())
-	} else {
-		typeVar = nil
-	}
 	out := shared.APISpec{
 		Content: content,
-		Type:    typeVar,
 	}
 
 	return &out, diags

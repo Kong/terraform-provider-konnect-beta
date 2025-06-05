@@ -72,6 +72,7 @@ type KonnectBeta struct {
 	API                       *API
 	APIDocumentation          *APIDocumentation
 	APISpecification          *APISpecification
+	APIVersion                *APIVersion
 	APIPublication            *APIPublication
 	APIImplementation         *APIImplementation
 	MeshAccessLog             *MeshAccessLog
@@ -206,6 +207,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.API = newAPI(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.APIDocumentation = newAPIDocumentation(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.APISpecification = newAPISpecification(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.APIVersion = newAPIVersion(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.APIPublication = newAPIPublication(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.APIImplementation = newAPIImplementation(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshAccessLog = newMeshAccessLog(sdk, sdk.sdkConfiguration, sdk.hooks)
