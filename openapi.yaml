@@ -5530,8 +5530,7 @@ components:
                   portal. Newly published APIs will use this authentication
                   strategy unless overridden during publication. If set to
                   `null`, API publications will not use an authentication
-                  strategy unless set during publication. DCR support for Auth
-                  Strategies is currently in development.
+                  strategy unless set during publication.
                 nullable: true
               auto_approve_developers:
                 type: boolean
@@ -5640,8 +5639,7 @@ components:
                   portal. Newly published APIs will use this authentication
                   strategy unless overridden during publication. If set to
                   `null`, API publications will not use an authentication
-                  strategy unless set during publication. DCR support for Auth
-                  Strategies is currently in development.
+                  strategy unless set during publication.
                 nullable: true
               auto_approve_developers:
                 type: boolean
@@ -5766,6 +5764,7 @@ components:
               deprecated:
                 type: boolean
                 description: Marks this API as deprecated.
+                x-speakeasy-terraform-plan-only: true
               slug:
                 type: string
                 pattern: ^[\w-]+$
@@ -5955,6 +5954,7 @@ components:
               deprecated:
                 type: boolean
                 description: Marks this API as deprecated.
+                x-speakeasy-terraform-plan-only: true
               slug:
                 type: string
                 pattern: ^[\w-]+$
@@ -6244,8 +6244,7 @@ components:
                   portal. Newly published APIs will use this authentication
                   strategy unless overridden during publication. If set to
                   `null`, API publications will not use an authentication
-                  strategy unless set during publication. DCR support for Auth
-                  Strategies is currently in development.
+                  strategy unless set during publication.
                 nullable: true
               auto_approve_developers:
                 type: boolean
@@ -8846,6 +8845,13 @@ components:
           description: The labels to help identity resources
           type: object
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaType: >-
+              kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType:
+              types.StringType}}
+            valueType: kumalabels.KumaLabelsMapValue
         spec:
           description: Spec is the specification of the Kuma MeshAccessLog resource.
           properties:
@@ -9847,6 +9853,13 @@ components:
           description: The labels to help identity resources
           type: object
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaType: >-
+              kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType:
+              types.StringType}}
+            valueType: kumalabels.KumaLabelsMapValue
         spec:
           description: Spec is the specification of the Kuma MeshCircuitBreaker resource.
           properties:
@@ -11714,6 +11727,13 @@ components:
           description: The labels to help identity resources
           type: object
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaType: >-
+              kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType:
+              types.StringType}}
+            valueType: kumalabels.KumaLabelsMapValue
         spec:
           description: Spec is the specification of the Kuma MeshFaultInjection resource.
           properties:
@@ -12309,6 +12329,13 @@ components:
           description: The labels to help identity resources
           type: object
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaType: >-
+              kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType:
+              types.StringType}}
+            valueType: kumalabels.KumaLabelsMapValue
         spec:
           description: Spec is the specification of the Kuma MeshHealthCheck resource.
           properties:
@@ -12886,6 +12913,13 @@ components:
           description: The labels to help identity resources
           type: object
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaType: >-
+              kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType:
+              types.StringType}}
+            valueType: kumalabels.KumaLabelsMapValue
         spec:
           description: Spec is the specification of the Kuma MeshHTTPRoute resource.
           properties:
@@ -13830,6 +13864,13 @@ components:
           description: The labels to help identity resources
           type: object
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaType: >-
+              kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType:
+              types.StringType}}
+            valueType: kumalabels.KumaLabelsMapValue
         spec:
           description: >-
             Spec is the specification of the Kuma MeshLoadBalancingStrategy
@@ -14702,6 +14743,13 @@ components:
           description: The labels to help identity resources
           type: object
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaType: >-
+              kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType:
+              types.StringType}}
+            valueType: kumalabels.KumaLabelsMapValue
         spec:
           description: Spec is the specification of the Kuma MeshMetric resource.
           properties:
@@ -15093,6 +15141,13 @@ components:
           description: The labels to help identity resources
           type: object
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaType: >-
+              kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType:
+              types.StringType}}
+            valueType: kumalabels.KumaLabelsMapValue
         spec:
           description: Spec is the specification of the Kuma MeshPassthrough resource.
           properties:
@@ -15322,6 +15377,13 @@ components:
           description: The labels to help identity resources
           type: object
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaType: >-
+              kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType:
+              types.StringType}}
+            valueType: kumalabels.KumaLabelsMapValue
         spec:
           description: Spec is the specification of the Kuma MeshProxyPatch resource.
           properties:
@@ -16136,6 +16198,13 @@ components:
           description: The labels to help identity resources
           type: object
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaType: >-
+              kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType:
+              types.StringType}}
+            valueType: kumalabels.KumaLabelsMapValue
         spec:
           description: Spec is the specification of the Kuma MeshRateLimit resource.
           properties:
@@ -16994,6 +17063,13 @@ components:
           description: The labels to help identity resources
           type: object
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaType: >-
+              kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType:
+              types.StringType}}
+            valueType: kumalabels.KumaLabelsMapValue
         spec:
           description: Spec is the specification of the Kuma MeshRetry resource.
           properties:
@@ -17739,6 +17815,13 @@ components:
           description: The labels to help identity resources
           type: object
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaType: >-
+              kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType:
+              types.StringType}}
+            valueType: kumalabels.KumaLabelsMapValue
         spec:
           description: Spec is the specification of the Kuma MeshTCPRoute resource.
           properties:
@@ -18139,6 +18222,13 @@ components:
           description: The labels to help identity resources
           type: object
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaType: >-
+              kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType:
+              types.StringType}}
+            valueType: kumalabels.KumaLabelsMapValue
         spec:
           description: Spec is the specification of the Kuma MeshTimeout resource.
           properties:
@@ -18796,6 +18886,13 @@ components:
           description: The labels to help identity resources
           type: object
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaType: >-
+              kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType:
+              types.StringType}}
+            valueType: kumalabels.KumaLabelsMapValue
         spec:
           description: Spec is the specification of the Kuma MeshTLS resource.
           properties:
@@ -19200,6 +19297,13 @@ components:
           description: The labels to help identity resources
           type: object
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaType: >-
+              kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType:
+              types.StringType}}
+            valueType: kumalabels.KumaLabelsMapValue
         spec:
           description: Spec is the specification of the Kuma MeshTrace resource.
           properties:
@@ -19608,6 +19712,13 @@ components:
           description: The labels to help identity resources
           type: object
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaType: >-
+              kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType:
+              types.StringType}}
+            valueType: kumalabels.KumaLabelsMapValue
         spec:
           description: >-
             Spec is the specification of the Kuma MeshTrafficPermission
@@ -20556,6 +20667,13 @@ components:
             type: string
           type: object
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaType: >-
+              kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType:
+              types.StringType}}
+            valueType: kumalabels.KumaLabelsMapValue
         mesh:
           type: string
           x-speakeasy-param-force-new: true
@@ -20751,6 +20869,13 @@ components:
           description: The labels to help identity resources
           type: object
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaType: >-
+              kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType:
+              types.StringType}}
+            valueType: kumalabels.KumaLabelsMapValue
         spec:
           description: Spec is the specification of the Kuma MeshExternalService resource.
           properties:
@@ -21180,6 +21305,13 @@ components:
           description: The labels to help identity resources
           type: object
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaType: >-
+              kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType:
+              types.StringType}}
+            valueType: kumalabels.KumaLabelsMapValue
         spec:
           description: Spec is the specification of the Kuma MeshMultiZoneService resource.
           properties:
@@ -21446,6 +21578,13 @@ components:
           description: The labels to help identity resources
           type: object
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaType: >-
+              kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType:
+              types.StringType}}
+            valueType: kumalabels.KumaLabelsMapValue
         spec:
           description: Spec is the specification of the Kuma MeshService resource.
           properties:
@@ -21852,6 +21991,13 @@ components:
           description: The labels to help identity resources
           type: object
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaType: >-
+              kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType:
+              types.StringType}}
+            valueType: kumalabels.KumaLabelsMapValue
         spec:
           description: Spec is the specification of the Kuma MeshGlobalRateLimit resource.
           properties:
@@ -22667,6 +22813,13 @@ components:
           description: The labels to help identity resources
           type: object
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaType: >-
+              kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType:
+              types.StringType}}
+            valueType: kumalabels.KumaLabelsMapValue
         spec:
           description: Spec is the specification of the Kuma MeshOPA resource.
           properties:
