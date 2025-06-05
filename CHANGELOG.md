@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.1
+> Released on 2025/06/05
+
+### Bug fixes
+
+* Correctly define dependencies in gen.yaml under `terraform` and not `go`
+
 ## 0.5.0
 > Released on 2025/05/27
 
