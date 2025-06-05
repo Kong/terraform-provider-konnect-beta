@@ -5,6 +5,7 @@
 
 ### Update dependencies
 * Bump `shared-speakeasy/hooks/mesh_defaults` to `v0.0.3`
+* Fix the errors in updating `konnect_api` resource due to discontinued fields on API
 
 ## 0.5.0
 > Released on 2025/05/27
