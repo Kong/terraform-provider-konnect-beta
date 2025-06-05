@@ -28,14 +28,12 @@ type APIVersionDataSource struct {
 
 // APIVersionDataSourceModel describes the data model.
 type APIVersionDataSourceModel struct {
-	APIID                  types.String                 `tfsdk:"api_id"`
-	CreatedAt              types.String                 `tfsdk:"created_at"`
-	ID                     types.String                 `tfsdk:"id"`
-	SpecContent            types.String                 `tfsdk:"spec_content"`
-	SpecType               types.String                 `tfsdk:"spec_type"`
-	SpecValidationMessages []tfTypes.ValidationMessages `tfsdk:"spec_validation_messages"`
-	UpdatedAt              types.String                 `tfsdk:"updated_at"`
-	Version                types.String                 `tfsdk:"version"`
+	APIID     types.String                         `tfsdk:"api_id"`
+	CreatedAt types.String                         `tfsdk:"created_at"`
+	ID        types.String                         `tfsdk:"id"`
+	Spec      *tfTypes.CreateAPIVersionRequestSpec `tfsdk:"spec"`
+	UpdatedAt types.String                         `tfsdk:"updated_at"`
+	Version   types.String                         `tfsdk:"version"`
 }
 
 // Metadata returns the data source type name.
@@ -61,24 +59,29 @@ func (r *APIVersionDataSource) Schema(ctx context.Context, req datasource.Schema
 				Computed:    true,
 				Description: `The API version identifier.`,
 			},
-			"spec_content": schema.StringAttribute{
-				Computed:    true,
-				Description: `The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).`,
-			},
-			"spec_type": schema.StringAttribute{
-				Computed:    true,
-				Description: `The type of specification being stored. This allows us to render the specification correctly.`,
-			},
-			"spec_validation_messages": schema.ListNestedAttribute{
+			"spec": schema.SingleNestedAttribute{
 				Computed: true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"message": schema.StringAttribute{
-							Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"content": schema.StringAttribute{
+						Computed:    true,
+						Description: `The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).`,
+					},
+					"type": schema.StringAttribute{
+						Computed:    true,
+						Description: `The type of specification being stored. This allows us to render the specification correctly.`,
+					},
+					"validation_messages": schema.ListNestedAttribute{
+						Computed: true,
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"message": schema.StringAttribute{
+									Computed: true,
+								},
+							},
 						},
+						Description: `The errors that occurred while parsing the API version spec.`,
 					},
 				},
-				Description: `The errors that occurred while parsing the API version spec.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed:    true,

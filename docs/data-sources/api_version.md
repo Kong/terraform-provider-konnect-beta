@@ -29,14 +29,21 @@ data "konnect-beta_api_version" "my_apiversion" {
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) The API version identifier.
-- `spec_content` (String) The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).
-- `spec_type` (String) The type of specification being stored. This allows us to render the specification correctly.
-- `spec_validation_messages` (Attributes List) The errors that occurred while parsing the API version spec. (see [below for nested schema](#nestedatt--spec_validation_messages))
+- `spec` (Attributes) (see [below for nested schema](#nestedatt--spec))
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 - `version` (String) The version of the api.
 
-<a id="nestedatt--spec_validation_messages"></a>
-### Nested Schema for `spec_validation_messages`
+<a id="nestedatt--spec"></a>
+### Nested Schema for `spec`
+
+Read-Only:
+
+- `content` (String) The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).
+- `type` (String) The type of specification being stored. This allows us to render the specification correctly.
+- `validation_messages` (Attributes List) The errors that occurred while parsing the API version spec. (see [below for nested schema](#nestedatt--spec--validation_messages))
+
+<a id="nestedatt--spec--validation_messages"></a>
+### Nested Schema for `spec.validation_messages`
 
 Read-Only:
 

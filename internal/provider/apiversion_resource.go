@@ -37,14 +37,12 @@ type APIVersionResource struct {
 
 // APIVersionResourceModel describes the resource data model.
 type APIVersionResourceModel struct {
-	APIID                  types.String                 `tfsdk:"api_id"`
-	CreatedAt              types.String                 `tfsdk:"created_at"`
-	ID                     types.String                 `tfsdk:"id"`
-	SpecContent            types.String                 `tfsdk:"spec_content"`
-	SpecType               types.String                 `tfsdk:"spec_type"`
-	SpecValidationMessages []tfTypes.ValidationMessages `tfsdk:"spec_validation_messages"`
-	UpdatedAt              types.String                 `tfsdk:"updated_at"`
-	Version                types.String                 `tfsdk:"version"`
+	APIID     types.String                         `tfsdk:"api_id"`
+	CreatedAt types.String                         `tfsdk:"created_at"`
+	ID        types.String                         `tfsdk:"id"`
+	Spec      *tfTypes.CreateAPIVersionRequestSpec `tfsdk:"spec"`
+	UpdatedAt types.String                         `tfsdk:"updated_at"`
+	Version   types.String                         `tfsdk:"version"`
 }
 
 func (r *APIVersionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -70,37 +68,43 @@ func (r *APIVersionResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Computed:    true,
 				Description: `The API version identifier.`,
 			},
-			"spec_content": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).`,
-			},
-			"spec_type": schema.StringAttribute{
+			"spec": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
-				Description: `The type of specification being stored. This allows us to render the specification correctly. must be one of ["oas2", "oas3", "asyncapi"]; Requires replacement if changed.`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"oas2",
-						"oas3",
-						"asyncapi",
-					),
-				},
-			},
-			"spec_validation_messages": schema.ListNestedAttribute{
-				Computed: true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"message": schema.StringAttribute{
-							Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"content": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).`,
+					},
+					"type": schema.StringAttribute{
+						Computed: true,
+						Optional: true,
+						PlanModifiers: []planmodifier.String{
+							stringplanmodifier.RequiresReplaceIfConfigured(),
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `The type of specification being stored. This allows us to render the specification correctly. must be one of ["oas2", "oas3", "asyncapi"]; Requires replacement if changed.`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"oas2",
+								"oas3",
+								"asyncapi",
+							),
 						},
 					},
+					"validation_messages": schema.ListNestedAttribute{
+						Computed: true,
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"message": schema.StringAttribute{
+									Computed: true,
+								},
+							},
+						},
+						Description: `The errors that occurred while parsing the API version spec.`,
+					},
 				},
-				Description: `The errors that occurred while parsing the API version spec.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed:    true,

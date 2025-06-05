@@ -35,27 +35,32 @@ func (r *APIVersionDataSourceModel) RefreshFromSharedAPIVersionResponse(ctx cont
 	if resp != nil {
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.ID = types.StringValue(resp.ID)
-		r.SpecContent = types.StringPointerValue(resp.SpecContent)
-		if resp.SpecType != nil {
-			r.SpecType = types.StringValue(string(*resp.SpecType))
+		if resp.Spec == nil {
+			r.Spec = nil
 		} else {
-			r.SpecType = types.StringNull()
-		}
-		r.SpecValidationMessages = []tfTypes.ValidationMessages{}
-		if len(r.SpecValidationMessages) > len(resp.SpecValidationMessages) {
-			r.SpecValidationMessages = r.SpecValidationMessages[:len(resp.SpecValidationMessages)]
-		}
-		for specValidationMessagesCount, specValidationMessagesItem := range resp.SpecValidationMessages {
-			var specValidationMessages tfTypes.ValidationMessages
-			specValidationMessages.Message = types.StringValue(specValidationMessagesItem.Message)
-			if specValidationMessagesCount+1 > len(r.SpecValidationMessages) {
-				r.SpecValidationMessages = append(r.SpecValidationMessages, specValidationMessages)
+			r.Spec = &tfTypes.CreateAPIVersionRequestSpec{}
+			r.Spec.Content = types.StringPointerValue(resp.Spec.Content)
+			if resp.Spec.Type != nil {
+				r.Spec.Type = types.StringValue(string(*resp.Spec.Type))
 			} else {
-				r.SpecValidationMessages[specValidationMessagesCount].Message = specValidationMessages.Message
+				r.Spec.Type = types.StringNull()
+			}
+			r.Spec.ValidationMessages = []tfTypes.ValidationMessages{}
+			if len(r.Spec.ValidationMessages) > len(resp.Spec.ValidationMessages) {
+				r.Spec.ValidationMessages = r.Spec.ValidationMessages[:len(resp.Spec.ValidationMessages)]
+			}
+			for validationMessagesCount, validationMessagesItem := range resp.Spec.ValidationMessages {
+				var validationMessages tfTypes.ValidationMessages
+				validationMessages.Message = types.StringValue(validationMessagesItem.Message)
+				if validationMessagesCount+1 > len(r.Spec.ValidationMessages) {
+					r.Spec.ValidationMessages = append(r.Spec.ValidationMessages, validationMessages)
+				} else {
+					r.Spec.ValidationMessages[validationMessagesCount].Message = validationMessages.Message
+				}
 			}
 		}
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
-		r.Version = types.StringPointerValue(resp.Version)
+		r.Version = types.StringValue(resp.Version)
 	}
 
 	return diags

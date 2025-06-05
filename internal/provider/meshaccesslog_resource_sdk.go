@@ -606,7 +606,7 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput(ctx context.
 			TargetRef: targetRef2,
 		})
 	}
-	spec := shared.Spec{
+	spec := shared.MeshAccessLogItemSpec{
 		From:      from,
 		Rules:     rules,
 		TargetRef: targetRef1,

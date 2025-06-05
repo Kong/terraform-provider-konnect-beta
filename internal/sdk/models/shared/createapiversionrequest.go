@@ -37,13 +37,31 @@ func (e *CreateAPIVersionRequestAPISpecType) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type CreateAPIVersionRequest struct {
-	// The version of the api.
-	Version *string `json:"version,omitempty"`
+type CreateAPIVersionRequestSpec struct {
 	// The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).
 	//
-	SpecContent *string                             `json:"spec_content,omitempty"`
-	SpecType    *CreateAPIVersionRequestAPISpecType `json:"spec_type,omitempty"`
+	Content *string                             `json:"content,omitempty"`
+	Type    *CreateAPIVersionRequestAPISpecType `json:"type,omitempty"`
+}
+
+func (o *CreateAPIVersionRequestSpec) GetContent() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Content
+}
+
+func (o *CreateAPIVersionRequestSpec) GetType() *CreateAPIVersionRequestAPISpecType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+type CreateAPIVersionRequest struct {
+	// The version of the api.
+	Version *string                      `json:"version,omitempty"`
+	Spec    *CreateAPIVersionRequestSpec `json:"spec,omitempty"`
 }
 
 func (o *CreateAPIVersionRequest) GetVersion() *string {
@@ -53,16 +71,9 @@ func (o *CreateAPIVersionRequest) GetVersion() *string {
 	return o.Version
 }
 
-func (o *CreateAPIVersionRequest) GetSpecContent() *string {
+func (o *CreateAPIVersionRequest) GetSpec() *CreateAPIVersionRequestSpec {
 	if o == nil {
 		return nil
 	}
-	return o.SpecContent
-}
-
-func (o *CreateAPIVersionRequest) GetSpecType() *CreateAPIVersionRequestAPISpecType {
-	if o == nil {
-		return nil
-	}
-	return o.SpecType
+	return o.Spec
 }

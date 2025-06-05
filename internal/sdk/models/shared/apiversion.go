@@ -2,12 +2,23 @@
 
 package shared
 
-type APIVersion struct {
-	// The version of the api.
-	Version *string `json:"version,omitempty"`
+type APIVersionSpec struct {
 	// The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).
 	//
-	SpecContent *string `json:"spec_content,omitempty"`
+	Content *string `json:"content,omitempty"`
+}
+
+func (o *APIVersionSpec) GetContent() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Content
+}
+
+type APIVersion struct {
+	// The version of the api.
+	Version *string         `json:"version,omitempty"`
+	Spec    *APIVersionSpec `json:"spec,omitempty"`
 }
 
 func (o *APIVersion) GetVersion() *string {
@@ -17,9 +28,9 @@ func (o *APIVersion) GetVersion() *string {
 	return o.Version
 }
 
-func (o *APIVersion) GetSpecContent() *string {
+func (o *APIVersion) GetSpec() *APIVersionSpec {
 	if o == nil {
 		return nil
 	}
-	return o.SpecContent
+	return o.Spec
 }
