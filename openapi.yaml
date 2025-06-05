@@ -5764,6 +5764,7 @@ components:
               deprecated:
                 type: boolean
                 description: Marks this API as deprecated.
+                x-speakeasy-terraform-plan-only: true
               slug:
                 type: string
                 pattern: ^[\w-]+$
@@ -5953,6 +5954,7 @@ components:
               deprecated:
                 type: boolean
                 description: Marks this API as deprecated.
+                x-speakeasy-terraform-plan-only: true
               slug:
                 type: string
                 pattern: ^[\w-]+$
