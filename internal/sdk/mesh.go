@@ -1796,10 +1796,10 @@ func (s *Mesh) DeleteMeshControlPlane(ctx context.Context, request operations.De
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
-					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					InitialInterval: 1000,
+					MaxInterval:     60000,
+					Exponent:        2,
+					MaxElapsedTime:  360000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -1811,13 +1811,7 @@ func (s *Mesh) DeleteMeshControlPlane(ctx context.Context, request operations.De
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
-				"429",
-				"500",
-				"502",
-				"503",
-				"504",
+				"400",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -1899,6 +1893,27 @@ func (s *Mesh) DeleteMeshControlPlane(ctx context.Context, request operations.De
 
 	switch {
 	case httpRes.StatusCode == 204:
+	case httpRes.StatusCode == 400:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.BadRequestError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.BadRequestError = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
 	case httpRes.StatusCode == 401:
 		switch {
 		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
