@@ -5578,21 +5578,6 @@ paths:
             schema:
               $ref: '#/components/schemas/PutMeshControlPlaneRequest'
   /v1/auth-servers:
-    get:
-      x-speakeasy-entity-operation: AuthServerList#read
-      x-unstable: true
-      x-internal: true
-      operationId: listAuthServers
-      description: List all auth servers
-      summary: List all auth servers
-      parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
-      responses:
-        '200':
-          $ref: '#/components/responses/AuthServerList'
-      tags:
-        - authserver
     post:
       x-speakeasy-entity-operation: AuthServer#create
       x-unstable: true
@@ -5664,21 +5649,7 @@ paths:
         - authserver
   /v1/auth-servers/{authServerId}/claims:
     parameters:
-      - $ref: '#/components/parameters/authServerId'
-    get:
-      x-speakeasy-entity-operation: AuthServerClaimsList#read
-      x-unstable: true
-      x-internal: true
-      operationId: listAuthServerClaims
-      description: List all the claims for a given auth server
-      summary: List all auth server claims
-      responses:
-        '200':
-          $ref: '#/components/responses/ClaimList'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - authserver
+      - $ref: '#/components/parameters/authServerIdForChildren'
     post:
       x-speakeasy-entity-operation: AuthServerClaims#create
       x-unstable: true
@@ -5699,7 +5670,7 @@ paths:
         - authserver
   /v1/auth-servers/{authServerId}/claims/{claimId}:
     parameters:
-      - $ref: '#/components/parameters/authServerId'
+      - $ref: '#/components/parameters/authServerIdForChildren'
       - $ref: '#/components/parameters/claimId'
     get:
       x-speakeasy-entity-operation: AuthServerClaims#read
@@ -5749,21 +5720,7 @@ paths:
         - authserver
   /v1/auth-servers/{authServerId}/scopes:
     parameters:
-      - $ref: '#/components/parameters/authServerId'
-    get:
-      x-speakeasy-entity-operation: AuthServerScopesList#read
-      x-unstable: true
-      x-internal: true
-      operationId: listAuthServerScopes
-      description: List all the scopes for a given auth server
-      summary: List all auth server scopes
-      responses:
-        '200':
-          $ref: '#/components/responses/ScopeList'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - authserver
+      - $ref: '#/components/parameters/authServerIdForChildren'
     post:
       x-speakeasy-entity-operation: AuthServerScopes#create
       x-unstable: true
@@ -5786,7 +5743,7 @@ paths:
         - authserver
   /v1/auth-servers/{authServerId}/scopes/{scopeId}:
     parameters:
-      - $ref: '#/components/parameters/authServerId'
+      - $ref: '#/components/parameters/authServerIdForChildren'
       - $ref: '#/components/parameters/scopeId'
     get:
       x-speakeasy-entity-operation: AuthServerScopes#read
@@ -5838,24 +5795,7 @@ paths:
         - authserver
   /v1/auth-servers/{authServerId}/clients:
     parameters:
-      - $ref: '#/components/parameters/authServerId'
-    get:
-      x-speakeasy-entity-operation: AuthServerClientsList#read
-      x-unstable: true
-      x-internal: true
-      operationId: listAuthServerClients
-      description: List all the clients for a given auth server
-      summary: List all auth server clients
-      parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
-      responses:
-        '200':
-          $ref: '#/components/responses/ClientList'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - authserver
+      - $ref: '#/components/parameters/authServerIdForChildren'
     post:
       x-speakeasy-entity-operation: AuthServerClients#create
       x-unstable: true
@@ -5878,7 +5818,7 @@ paths:
         - authserver
   /v1/auth-servers/{authServerId}/clients/{clientId}:
     parameters:
-      - $ref: '#/components/parameters/authServerId'
+      - $ref: '#/components/parameters/authServerIdForChildren'
       - $ref: '#/components/parameters/clientId'
     get:
       x-speakeasy-entity-operation: AuthServerClients#read
@@ -5892,26 +5832,6 @@ paths:
           $ref: '#/components/responses/Client'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - authserver
-    patch:
-      x-speakeasy-entity-operation: AuthServerClients#update
-      x-unstable: true
-      x-internal: true
-      operationId: updateAuthServerClient
-      description: Update a client for a given auth server
-      summary: Update an auth server client
-      responses:
-        '200':
-          $ref: '#/components/responses/Client'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-      requestBody:
-        $ref: '#/components/requestBodies/UpdateClient'
       tags:
         - authserver
     put:
@@ -6756,38 +6676,6 @@ components:
                 $ref: '#/components/schemas/ClientAllowScopes'
               labels:
                 $ref: '#/components/schemas/Labels'
-    UpdateClient:
-      description: Client to be updated
-      required: true
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              name:
-                $ref: '#/components/schemas/ClientName'
-              client_secret:
-                type: string
-                minLength: 1
-                description: Secret of the client
-              grant_types:
-                $ref: '#/components/schemas/GrantTypes'
-              response_types:
-                $ref: '#/components/schemas/ResponseTypes'
-              redirect_uris:
-                $ref: '#/components/schemas/RedirectURIs'
-              login_uri:
-                $ref: '#/components/schemas/LoginURI'
-              access_token_duration:
-                $ref: '#/components/schemas/TokenDuration'
-              id_token_duration:
-                $ref: '#/components/schemas/TokenDuration'
-              allow_all_scopes:
-                $ref: '#/components/schemas/ClientAllowAllScopes'
-              allow_scopes:
-                $ref: '#/components/schemas/ClientAllowScopes'
-              labels:
-                $ref: '#/components/schemas/LabelsUpdate'
     ReplaceClient:
       description: Client to be replaced
       required: true
@@ -6953,6 +6841,7 @@ components:
       in: path
       required: true
       description: The auth server ID
+      x-speakeasy-match: id
     claimId:
       schema:
         type: string
@@ -6962,6 +6851,7 @@ components:
       in: path
       required: true
       description: The claim ID
+      x-speakeasy-match: id
     scopeId:
       schema:
         type: string
@@ -6971,6 +6861,7 @@ components:
       in: path
       required: true
       description: The scope ID
+      x-speakeasy-match: id
     clientId:
       schema:
         $ref: '#/components/schemas/ClientId'
@@ -6978,6 +6869,17 @@ components:
       in: path
       required: true
       description: The OAuth 2.0 client ID
+      x-speakeasy-match: id
+    authServerIdForChildren:
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: authServerId
+      in: path
+      required: true
+      description: The auth server ID
+      x-speakeasy-name-override: auth_server_id
   responses:
     PortalAuthenticationSettings:
       description: Details about a portal's authentication settings.
@@ -8053,48 +7955,24 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/AuthServer'
-    AuthServerList:
-      description: List of auth servers
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AuthServerList'
     Claim:
       description: A claim
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Claim'
-    ClaimList:
-      description: List of claims
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ClaimList'
     Scope:
       description: A scope
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Scope'
-    ScopeList:
-      description: List of scopes
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ScopeList'
     Client:
       description: A client
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Client'
-    ClientList:
-      description: List of clients
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ClientList'
     CreatedClient:
       description: A client with a secret
       content:
@@ -24335,18 +24213,6 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
-    AuthServerList:
-      type: object
-      required:
-        - data
-        - meta
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/AuthServer'
-        meta:
-          $ref: '#/components/schemas/PaginatedMeta'
     ClaimName:
       type: string
       description: The name of the claim
@@ -24416,18 +24282,6 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
-    ClaimList:
-      type: object
-      required:
-        - data
-        - meta
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Claim'
-        meta:
-          $ref: '#/components/schemas/PaginatedMeta'
     ScopeName:
       type: string
       description: The name of the scope
@@ -24438,7 +24292,10 @@ components:
     ScopeDefault:
       type: boolean
       default: false
-      description: Specifies whether the scope is a default scope
+      description: >-
+        Specifies whether the scope is included by default in access tokens
+        without being explicitly requested by the client. If the scope is not
+        allowed by the client, it will not be included in the access token.
     ScopeIncludeInMetadata:
       type: boolean
       default: false
@@ -24477,18 +24334,6 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
-    ScopeList:
-      type: object
-      required:
-        - data
-        - meta
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Scope'
-        meta:
-          $ref: '#/components/schemas/PaginatedMeta'
     ClientName:
       type: string
       description: The name of the client
@@ -24547,18 +24392,6 @@ components:
               type: string
               example: YAzsyUlNZ5gNGeKS9H3VAdxVPzhPo4ae
               description: The OAuth 2.0 client secret
-    ClientList:
-      type: object
-      required:
-        - data
-        - meta
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Client'
-        meta:
-          $ref: '#/components/schemas/PaginatedMeta'
   securitySchemes:
     personalAccessToken:
       type: http
