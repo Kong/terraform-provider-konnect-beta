@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/Kong/shared-speakeasy/customtypes/kumalabels"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -47,7 +48,7 @@ type MeshServiceResource struct {
 type MeshServiceResourceModel struct {
 	CpID             types.String                   `tfsdk:"cp_id"`
 	CreationTime     types.String                   `tfsdk:"creation_time"`
-	Labels           map[string]types.String        `tfsdk:"labels"`
+	Labels           kumalabels.KumaLabelsMapValue  `tfsdk:"labels"`
 	Mesh             types.String                   `tfsdk:"mesh"`
 	ModificationTime types.String                   `tfsdk:"modification_time"`
 	Name             types.String                   `tfsdk:"name"`
@@ -83,6 +84,7 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 				},
 			},
 			"labels": schema.MapAttribute{
+				CustomType:  kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType: types.StringType}},
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The labels to help identity resources`,

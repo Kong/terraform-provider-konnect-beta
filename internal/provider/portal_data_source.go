@@ -82,7 +82,7 @@ func (r *PortalDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 			},
 			"default_application_auth_strategy_id": schema.StringAttribute{
 				Computed:    true,
-				Description: `The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to ` + "`" + `null` + "`" + `, API publications will not use an authentication strategy unless set during publication. DCR support for Auth Strategies is currently in development.`,
+				Description: `The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to ` + "`" + `null` + "`" + `, API publications will not use an authentication strategy unless set during publication.`,
 			},
 			"default_domain": schema.StringAttribute{
 				Computed:    true,

@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/Kong/shared-speakeasy/customtypes/kumalabels"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -38,15 +39,15 @@ type MeshGatewayResource struct {
 
 // MeshGatewayResourceModel describes the resource data model.
 type MeshGatewayResourceModel struct {
-	Conf      *tfTypes.Conf           `tfsdk:"conf"`
-	CpID      types.String            `tfsdk:"cp_id"`
-	Labels    map[string]types.String `tfsdk:"labels"`
-	Mesh      types.String            `tfsdk:"mesh"`
-	Name      types.String            `tfsdk:"name"`
-	Selectors []tfTypes.Selectors     `tfsdk:"selectors"`
-	Tags      map[string]types.String `tfsdk:"tags"`
-	Type      types.String            `tfsdk:"type"`
-	Warnings  []types.String          `tfsdk:"warnings"`
+	Conf      *tfTypes.Conf                 `tfsdk:"conf"`
+	CpID      types.String                  `tfsdk:"cp_id"`
+	Labels    kumalabels.KumaLabelsMapValue `tfsdk:"labels"`
+	Mesh      types.String                  `tfsdk:"mesh"`
+	Name      types.String                  `tfsdk:"name"`
+	Selectors []tfTypes.Selectors           `tfsdk:"selectors"`
+	Tags      map[string]types.String       `tfsdk:"tags"`
+	Type      types.String                  `tfsdk:"type"`
+	Warnings  []types.String                `tfsdk:"warnings"`
 }
 
 func (r *MeshGatewayResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -207,6 +208,7 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 				Description: `Id of the Konnect resource. Requires replacement if changed.`,
 			},
 			"labels": schema.MapAttribute{
+				CustomType:  kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType: types.StringType}},
 				Optional:    true,
 				ElementType: types.StringType,
 			},
