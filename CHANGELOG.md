@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.1
+> Released on 2025/06/12
+
+### Bug Fixes
+> - Fix empty labels in Mesh resources causing an error
+
 ## 0.6.0
 > Released on 2025/06/05
 
