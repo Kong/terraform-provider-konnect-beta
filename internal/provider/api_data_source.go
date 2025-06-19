@@ -28,17 +28,16 @@ type APIDataSource struct {
 
 // APIDataSourceModel describes the data model.
 type APIDataSourceModel struct {
-	APISpecIds            []types.String                 `tfsdk:"api_spec_ids"`
-	AuthStrategySyncError *tfTypes.AuthStrategySyncError `tfsdk:"auth_strategy_sync_error"`
-	CreatedAt             types.String                   `tfsdk:"created_at"`
-	Description           types.String                   `tfsdk:"description"`
-	ID                    types.String                   `tfsdk:"id"`
-	Labels                map[string]types.String        `tfsdk:"labels"`
-	Name                  types.String                   `tfsdk:"name"`
-	Portals               []tfTypes.Portals              `tfsdk:"portals"`
-	Slug                  types.String                   `tfsdk:"slug"`
-	UpdatedAt             types.String                   `tfsdk:"updated_at"`
-	Version               types.String                   `tfsdk:"version"`
+	APISpecIds  []types.String          `tfsdk:"api_spec_ids"`
+	CreatedAt   types.String            `tfsdk:"created_at"`
+	Description types.String            `tfsdk:"description"`
+	ID          types.String            `tfsdk:"id"`
+	Labels      map[string]types.String `tfsdk:"labels"`
+	Name        types.String            `tfsdk:"name"`
+	Portals     []tfTypes.Portals       `tfsdk:"portals"`
+	Slug        types.String            `tfsdk:"slug"`
+	UpdatedAt   types.String            `tfsdk:"updated_at"`
+	Version     types.String            `tfsdk:"version"`
 }
 
 // Metadata returns the data source type name.
@@ -56,44 +55,6 @@ func (r *APIDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				Computed:    true,
 				ElementType: types.StringType,
 				Description: `The list of API specification ids for the API.`,
-			},
-			"auth_strategy_sync_error": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"control_plane_error": schema.StringAttribute{
-						Computed: true,
-					},
-					"info": schema.SingleNestedAttribute{
-						Computed: true,
-						Attributes: map[string]schema.Attribute{
-							"additional_properties": schema.StringAttribute{
-								Computed:    true,
-								Description: `Parsed as JSON.`,
-							},
-							"details": schema.ListNestedAttribute{
-								Computed: true,
-								NestedObject: schema.NestedAttributeObject{
-									Attributes: map[string]schema.Attribute{
-										"additional_properties": schema.StringAttribute{
-											Computed:    true,
-											Description: `Parsed as JSON.`,
-										},
-										"message": schema.ListAttribute{
-											Computed:    true,
-											ElementType: types.StringType,
-										},
-										"type": schema.StringAttribute{
-											Computed: true,
-										},
-									},
-								},
-							},
-						},
-					},
-					"message": schema.StringAttribute{
-						Computed: true,
-					},
-				},
 			},
 			"created_at": schema.StringAttribute{
 				Computed:    true,

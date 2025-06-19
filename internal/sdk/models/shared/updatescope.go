@@ -2,33 +2,18 @@
 
 package shared
 
-import (
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
-)
-
-// UpdateScope - Scope to be updated
+// UpdateScope - Scope to be update
 type UpdateScope struct {
 	// The name of the scope
 	Name *string `json:"name,omitempty"`
 	// Description of the scope
 	Description *string `json:"description,omitempty"`
 	// Specifies whether the scope is included by default in access tokens without being explicitly requested by the client. If the scope is not allowed by the client, it will not be included in the access token.
-	Default *bool `default:"false" json:"default"`
+	Default *bool `json:"default,omitempty"`
 	// Specifies whether to include the scope in the metadata document
-	IncludeInMetadata *bool `default:"false" json:"include_in_metadata"`
+	IncludeInMetadata *bool `json:"include_in_metadata,omitempty"`
 	// Specifies whether the scope is enabled
-	Enabled *bool `default:"true" json:"enabled"`
-}
-
-func (u UpdateScope) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(u, "", false)
-}
-
-func (u *UpdateScope) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
-		return err
-	}
-	return nil
+	Enabled *bool `json:"enabled,omitempty"`
 }
 
 func (o *UpdateScope) GetName() *string {

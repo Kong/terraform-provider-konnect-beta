@@ -16,7 +16,7 @@ type APIImplementationResponse struct {
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
 	// A Gateway service that implements an API
-	Service APIImplementationService `json:"service"`
+	Service *APIImplementationService `json:"service,omitempty"`
 }
 
 func (a APIImplementationResponse) MarshalJSON() ([]byte, error) {
@@ -51,9 +51,9 @@ func (o *APIImplementationResponse) GetUpdatedAt() time.Time {
 	return o.UpdatedAt
 }
 
-func (o *APIImplementationResponse) GetService() APIImplementationService {
+func (o *APIImplementationResponse) GetService() *APIImplementationService {
 	if o == nil {
-		return APIImplementationService{}
+		return nil
 	}
 	return o.Service
 }

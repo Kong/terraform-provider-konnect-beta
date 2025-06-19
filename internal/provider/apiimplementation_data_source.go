@@ -28,11 +28,11 @@ type APIImplementationDataSource struct {
 
 // APIImplementationDataSourceModel describes the data model.
 type APIImplementationDataSourceModel struct {
-	APIID     types.String                     `tfsdk:"api_id"`
-	CreatedAt types.String                     `tfsdk:"created_at"`
-	ID        types.String                     `tfsdk:"id"`
-	Service   tfTypes.APIImplementationService `tfsdk:"service"`
-	UpdatedAt types.String                     `tfsdk:"updated_at"`
+	APIID     types.String                      `tfsdk:"api_id"`
+	CreatedAt types.String                      `tfsdk:"created_at"`
+	ID        types.String                      `tfsdk:"id"`
+	Service   *tfTypes.APIImplementationService `tfsdk:"service"`
+	UpdatedAt types.String                      `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -61,6 +61,44 @@ func (r *APIImplementationDataSource) Schema(ctx context.Context, req datasource
 			"service": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
+					"auth_strategy_sync_error": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"control_plane_error": schema.StringAttribute{
+								Computed: true,
+							},
+							"info": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"additional_properties": schema.StringAttribute{
+										Computed:    true,
+										Description: `Parsed as JSON.`,
+									},
+									"details": schema.ListNestedAttribute{
+										Computed: true,
+										NestedObject: schema.NestedAttributeObject{
+											Attributes: map[string]schema.Attribute{
+												"additional_properties": schema.StringAttribute{
+													Computed:    true,
+													Description: `Parsed as JSON.`,
+												},
+												"message": schema.ListAttribute{
+													Computed:    true,
+													ElementType: types.StringType,
+												},
+												"type": schema.StringAttribute{
+													Computed: true,
+												},
+											},
+										},
+									},
+								},
+							},
+							"message": schema.StringAttribute{
+								Computed: true,
+							},
+						},
+					},
 					"control_plane_id": schema.StringAttribute{
 						Computed: true,
 					},

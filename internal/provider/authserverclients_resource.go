@@ -69,7 +69,7 @@ func (r *AuthServerClientsResource) Schema(ctx context.Context, req resource.Sch
 				Default:     int64default.StaticInt64(300),
 				Description: `The duration of the minted token is valid for, in seconds. Default: 300`,
 				Validators: []validator.Int64{
-					int64validator.Between(60, 31536000),
+					int64validator.Between(60, 2592000),
 				},
 			},
 			"allow_all_scopes": schema.BoolAttribute{
@@ -124,7 +124,7 @@ func (r *AuthServerClientsResource) Schema(ctx context.Context, req resource.Sch
 				Default:     int64default.StaticInt64(300),
 				Description: `The duration of the minted token is valid for, in seconds. Default: 300`,
 				Validators: []validator.Int64{
-					int64validator.Between(60, 31536000),
+					int64validator.Between(60, 2592000),
 				},
 			},
 			"labels": schema.MapAttribute{
