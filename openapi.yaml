@@ -6226,10 +6226,6 @@ components:
                   format: uuid
                   description: The id of the API specification.
                   example: 123e4567-e89b-12d3-a456-426614174000
-              auth_strategy_sync_error:
-                readOnly: true
-                allOf:
-                  - $ref: '#/components/schemas/AuthStrategyApiSyncError'
               portals:
                 readOnly: true
                 type: array
@@ -6318,7 +6314,6 @@ components:
                 x-flatten-allOf: true
                 allOf:
                   - $ref: '#/components/schemas/ApiSpecType'
-                  - readOnly: true
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
@@ -6471,10 +6466,6 @@ components:
                   format: uuid
                   description: The id of the API specification.
                   example: 123e4567-e89b-12d3-a456-426614174000
-              auth_strategy_sync_error:
-                readOnly: true
-                allOf:
-                  - $ref: '#/components/schemas/AuthStrategyApiSyncError'
               portals:
                 readOnly: true
                 type: array
@@ -6578,7 +6569,7 @@ components:
               audience:
                 $ref: '#/components/schemas/Audience'
               signing_algorithm:
-                $ref: '#/components/schemas/Algorithm'
+                $ref: '#/components/schemas/UpdateAlgorithm'
               labels:
                 $ref: '#/components/schemas/LabelsUpdate'
     CreateClaim:
@@ -6617,13 +6608,13 @@ components:
               value:
                 $ref: '#/components/schemas/ClaimValue'
               include_in_token:
-                $ref: '#/components/schemas/ClaimIncludeInToken'
+                $ref: '#/components/schemas/UpdateClaimIncludeInToken'
               include_in_all_scopes:
-                $ref: '#/components/schemas/ClaimIncludeInAllScopes'
+                $ref: '#/components/schemas/UpdateClaimIncludeInAllScopes'
               include_in_scopes:
                 $ref: '#/components/schemas/ClaimIncludeInScopes'
               enabled:
-                $ref: '#/components/schemas/ClaimEnabled'
+                $ref: '#/components/schemas/UpdateClaimEnabled'
     CreateScope:
       description: Scope to be created
       required: true
@@ -6645,7 +6636,7 @@ components:
               enabled:
                 $ref: '#/components/schemas/ScopeEnabled'
     UpdateScope:
-      description: Scope to be updated
+      description: Scope to be update
       required: true
       content:
         application/json:
@@ -6657,11 +6648,11 @@ components:
               description:
                 $ref: '#/components/schemas/ScopeDescription'
               default:
-                $ref: '#/components/schemas/ScopeDefault'
+                $ref: '#/components/schemas/UpdateScopeDefault'
               include_in_metadata:
-                $ref: '#/components/schemas/ScopeIncludeInMetadata'
+                $ref: '#/components/schemas/UpdateScopeIncludeInMetadata'
               enabled:
-                $ref: '#/components/schemas/ScopeEnabled'
+                $ref: '#/components/schemas/UpdateScopeEnabled'
     CreateClient:
       description: Client to be created
       required: true
@@ -7232,7 +7223,6 @@ components:
                 x-flatten-allOf: true
                 allOf:
                   - $ref: '#/components/schemas/ApiSpecType'
-                  - readOnly: true
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
@@ -7339,11 +7329,6 @@ components:
             type: object
             description: An entity that implements an API
             additionalProperties: false
-            required:
-              - service
-              - id
-              - created_at
-              - updated_at
             properties:
               id:
                 $ref: '#/components/schemas/UUID'
@@ -7353,6 +7338,10 @@ components:
                 $ref: '#/components/schemas/UpdatedAt'
               service:
                 $ref: '#/components/schemas/ApiImplementationService'
+            required:
+              - id
+              - created_at
+              - updated_at
     UnsupportedMediaType:
       description: Unsupported Media Type
       content:
@@ -9221,10 +9210,6 @@ components:
             format: uuid
             description: The id of the API specification.
             example: 123e4567-e89b-12d3-a456-426614174000
-        auth_strategy_sync_error:
-          readOnly: true
-          allOf:
-            - $ref: '#/components/schemas/AuthStrategyApiSyncError'
         portals:
           readOnly: true
           type: array
@@ -9481,7 +9466,6 @@ components:
             - oas2
             - oas3
             - asyncapi
-          readOnly: true
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -9560,13 +9544,15 @@ components:
           type: string
           format: uuid
           example: 7710d5c4-d902-410b-992f-18b814155b53
+        auth_strategy_sync_error:
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/AuthStrategyApiSyncError'
     ApiImplementation:
       title: API Implementation
       type: object
       description: An entity that implements an API
       additionalProperties: false
-      required:
-        - service
       properties:
         id:
           $ref: '#/components/schemas/UUID'
@@ -9602,132 +9588,6 @@ components:
         - oas2
         - oas3
         - asyncapi
-    PrometheusMetricsBackendConfig:
-      properties:
-        aggregate:
-          description: >-
-            Map with the configuration of applications which metrics are going
-            to be
-
-            scrapped by kuma-dp.
-          items:
-            description: >-
-              PrometheusAggregateMetricsConfig defines endpoints that should be
-              scrapped by kuma-dp for prometheus metrics.
-            properties:
-              address:
-                description: >-
-                  Address on which a service expose HTTP endpoint with
-                  Prometheus metrics.
-                type: string
-                x-speakeasy-param-computed: false
-              enabled:
-                description: >-
-                  If false then the application won't be scrapped. If nil, then
-                  it is treated
-
-                  as true and kuma-dp scrapes metrics from the service.
-                type: boolean
-                x-speakeasy-param-computed: false
-              name:
-                description: Name which identify given configuration.
-                type: string
-                x-speakeasy-param-computed: false
-              path:
-                description: >-
-                  Path on which a service expose HTTP endpoint with Prometheus
-                  metrics.
-                type: string
-                x-speakeasy-param-computed: false
-              port:
-                description: >-
-                  Port on which a service expose HTTP endpoint with Prometheus
-                  metrics.
-                type: integer
-                x-speakeasy-param-computed: false
-            type: object
-            x-speakeasy-param-computed: false
-          type: array
-          x-speakeasy-param-computed: false
-        envoy:
-          description: Configuration of Envoy's metrics.
-          properties:
-            filterRegex:
-              description: >-
-                FilterRegex value that is going to be passed to Envoy for
-                filtering
-
-                Envoy metrics.
-              type: string
-              x-speakeasy-param-computed: false
-            usedOnly:
-              description: >-
-                If true then return metrics that Envoy has updated (counters
-                incremented
-
-                at least once, gauges changed at least once, and histograms
-                added to at
-
-                least once). If nil, then it is treated as false.
-              type: boolean
-              x-speakeasy-param-computed: false
-          type: object
-          x-speakeasy-param-computed: false
-        path:
-          description: >-
-            Path on which a dataplane should expose HTTP endpoint with
-            Prometheus
-
-            metrics.
-          type: string
-          x-speakeasy-param-computed: false
-        port:
-          description: >-
-            Port on which a dataplane should expose HTTP endpoint with
-            Prometheus
-
-            metrics.
-          type: integer
-          x-speakeasy-param-computed: false
-        skipMTLS:
-          description: >-
-            If true then endpoints for scraping metrics won't require mTLS even
-            if mTLS
-
-            is enabled in Mesh. If nil, then it is treated as false.
-          type: boolean
-          x-speakeasy-param-computed: false
-        tags:
-          additionalProperties:
-            type: string
-          description: >-
-            Tags associated with an application this dataplane is deployed next
-            to,
-
-            e.g. service=web, version=1.0.
-
-            `service` tag is mandatory.
-          type: object
-          x-speakeasy-param-computed: false
-        tls:
-          description: Configuration of TLS for prometheus listener.
-          properties:
-            mode:
-              description: >-
-                mode defines how configured is the TLS for Prometheus.
-
-                Supported values, delegated, disabled, activeMTLSBackend.
-                Default to
-
-                `activeMTLSBackend`.
-              oneOf:
-                - type: string
-                - type: integer
-              x-speakeasy-param-computed: false
-          type: object
-          x-speakeasy-plan-modifiers: SupressZeroNullModifier
-          x-speakeasy-param-computed: false
-      type: object
     MeshAccessLogItem:
       type: object
       required:
@@ -20930,6 +20790,132 @@ components:
           type: boolean
           x-speakeasy-param-computed: false
       type: object
+    PrometheusMetricsBackendConfig:
+      properties:
+        aggregate:
+          description: >-
+            Map with the configuration of applications which metrics are going
+            to be
+
+            scrapped by kuma-dp.
+          items:
+            description: >-
+              PrometheusAggregateMetricsConfig defines endpoints that should be
+              scrapped by kuma-dp for prometheus metrics.
+            properties:
+              address:
+                description: >-
+                  Address on which a service expose HTTP endpoint with
+                  Prometheus metrics.
+                type: string
+                x-speakeasy-param-computed: false
+              enabled:
+                description: >-
+                  If false then the application won't be scrapped. If nil, then
+                  it is treated
+
+                  as true and kuma-dp scrapes metrics from the service.
+                type: boolean
+                x-speakeasy-param-computed: false
+              name:
+                description: Name which identify given configuration.
+                type: string
+                x-speakeasy-param-computed: false
+              path:
+                description: >-
+                  Path on which a service expose HTTP endpoint with Prometheus
+                  metrics.
+                type: string
+                x-speakeasy-param-computed: false
+              port:
+                description: >-
+                  Port on which a service expose HTTP endpoint with Prometheus
+                  metrics.
+                type: integer
+                x-speakeasy-param-computed: false
+            type: object
+            x-speakeasy-param-computed: false
+          type: array
+          x-speakeasy-param-computed: false
+        envoy:
+          description: Configuration of Envoy's metrics.
+          properties:
+            filterRegex:
+              description: >-
+                FilterRegex value that is going to be passed to Envoy for
+                filtering
+
+                Envoy metrics.
+              type: string
+              x-speakeasy-param-computed: false
+            usedOnly:
+              description: >-
+                If true then return metrics that Envoy has updated (counters
+                incremented
+
+                at least once, gauges changed at least once, and histograms
+                added to at
+
+                least once). If nil, then it is treated as false.
+              type: boolean
+              x-speakeasy-param-computed: false
+          type: object
+          x-speakeasy-param-computed: false
+        path:
+          description: >-
+            Path on which a dataplane should expose HTTP endpoint with
+            Prometheus
+
+            metrics.
+          type: string
+          x-speakeasy-param-computed: false
+        port:
+          description: >-
+            Port on which a dataplane should expose HTTP endpoint with
+            Prometheus
+
+            metrics.
+          type: integer
+          x-speakeasy-param-computed: false
+        skipMTLS:
+          description: >-
+            If true then endpoints for scraping metrics won't require mTLS even
+            if mTLS
+
+            is enabled in Mesh. If nil, then it is treated as false.
+          type: boolean
+          x-speakeasy-param-computed: false
+        tags:
+          additionalProperties:
+            type: string
+          description: >-
+            Tags associated with an application this dataplane is deployed next
+            to,
+
+            e.g. service=web, version=1.0.
+
+            `service` tag is mandatory.
+          type: object
+          x-speakeasy-param-computed: false
+        tls:
+          description: Configuration of TLS for prometheus listener.
+          properties:
+            mode:
+              description: >-
+                mode defines how configured is the TLS for Prometheus.
+
+                Supported values, delegated, disabled, activeMTLSBackend.
+                Default to
+
+                `activeMTLSBackend`.
+              oneOf:
+                - type: string
+                - type: integer
+              x-speakeasy-param-computed: false
+          type: object
+          x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          x-speakeasy-param-computed: false
+      type: object
     FileLoggingBackendConfig:
       properties:
         path:
@@ -24160,7 +24146,7 @@ components:
       type: integer
       default: 300
       minimum: 60
-      maximum: 31536000
+      maximum: 2592000
     ClientAllowAllScopes:
       type: boolean
       default: false
@@ -24193,6 +24179,16 @@ components:
         The recipients that the tokens are intended for. This becomes the 'aud'
         claim in an access token
       minLength: 1
+    UpdateAlgorithm:
+      type: string
+      description: Algorithm used in the key signing process
+      enum:
+        - RS256
+        - RS384
+        - RS512
+        - PS256
+        - PS384
+        - PS512
     Algorithm:
       type: string
       description: Algorithm used in the key signing process
@@ -24258,6 +24254,12 @@ components:
         dynamic (templated) value. Static values which are valid JSON will
         result in a JSON object in the token claims.
       minLength: 1
+    UpdateClaimIncludeInToken:
+      type: boolean
+      description: >-
+        Specifies whether to include claim in the token. If the value is set to
+        'false' for a claim, the client instead uses the access token to get
+        claims from the '/userinfo' endpoint.
     ClaimIncludeInToken:
       type: boolean
       default: false
@@ -24265,6 +24267,12 @@ components:
         Specifies whether to include claim in the token. If the value is set to
         'false' for a claim, the client instead uses the access token to get
         claims from the '/userinfo' endpoint.
+    UpdateClaimIncludeInAllScopes:
+      type: boolean
+      description: >-
+        Specifies whether to include the claim in all scopes. If the value is
+        set to 'false' for a claim, the claim is only included in the scopes
+        that explicitly list it.
     ClaimIncludeInAllScopes:
       type: boolean
       default: false
@@ -24279,6 +24287,9 @@ components:
         format: uuid
       description: Specifies the scopes IDs in which the claim is included
       nullable: false
+    UpdateClaimEnabled:
+      type: boolean
+      description: Specifies whether the claim is enabled
     ClaimEnabled:
       type: boolean
       default: true
@@ -24323,6 +24334,12 @@ components:
     ScopeDescription:
       type: string
       description: Description of the scope
+    UpdateScopeDefault:
+      type: boolean
+      description: >-
+        Specifies whether the scope is included by default in access tokens
+        without being explicitly requested by the client. If the scope is not
+        allowed by the client, it will not be included in the access token.
     ScopeDefault:
       type: boolean
       default: false
@@ -24330,10 +24347,16 @@ components:
         Specifies whether the scope is included by default in access tokens
         without being explicitly requested by the client. If the scope is not
         allowed by the client, it will not be included in the access token.
+    UpdateScopeIncludeInMetadata:
+      type: boolean
+      description: Specifies whether to include the scope in the metadata document
     ScopeIncludeInMetadata:
       type: boolean
       default: false
       description: Specifies whether to include the scope in the metadata document
+    UpdateScopeEnabled:
+      type: boolean
+      description: Specifies whether the scope is enabled
     ScopeEnabled:
       type: boolean
       default: true
