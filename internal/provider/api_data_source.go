@@ -28,16 +28,17 @@ type APIDataSource struct {
 
 // APIDataSourceModel describes the data model.
 type APIDataSourceModel struct {
-	APISpecIds  []types.String          `tfsdk:"api_spec_ids"`
-	CreatedAt   types.String            `tfsdk:"created_at"`
-	Description types.String            `tfsdk:"description"`
-	ID          types.String            `tfsdk:"id"`
-	Labels      map[string]types.String `tfsdk:"labels"`
-	Name        types.String            `tfsdk:"name"`
-	Portals     []tfTypes.Portals       `tfsdk:"portals"`
-	Slug        types.String            `tfsdk:"slug"`
-	UpdatedAt   types.String            `tfsdk:"updated_at"`
-	Version     types.String            `tfsdk:"version"`
+	APISpecIds            []types.String             `tfsdk:"api_spec_ids"`
+	CreatedAt             types.String               `tfsdk:"created_at"`
+	CurrentVersionSummary *tfTypes.APIVersionSummary `tfsdk:"current_version_summary"`
+	Description           types.String               `tfsdk:"description"`
+	ID                    types.String               `tfsdk:"id"`
+	Labels                map[string]types.String    `tfsdk:"labels"`
+	Name                  types.String               `tfsdk:"name"`
+	Portals               []tfTypes.Portals          `tfsdk:"portals"`
+	Slug                  types.String               `tfsdk:"slug"`
+	UpdatedAt             types.String               `tfsdk:"updated_at"`
+	Version               types.String               `tfsdk:"version"`
 }
 
 // Metadata returns the data source type name.
@@ -52,13 +53,44 @@ func (r *APIDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 
 		Attributes: map[string]schema.Attribute{
 			"api_spec_ids": schema.ListAttribute{
-				Computed:    true,
-				ElementType: types.StringType,
-				Description: `The list of API specification ids for the API.`,
+				Computed:           true,
+				ElementType:        types.StringType,
+				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+				Description:        `The list of API specification ids for the API.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed:    true,
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
+			},
+			"current_version_summary": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"created_at": schema.StringAttribute{
+						Computed:    true,
+						Description: `An ISO-8601 timestamp representation of entity creation date.`,
+					},
+					"id": schema.StringAttribute{
+						Computed:    true,
+						Description: `The API version identifier.`,
+					},
+					"spec": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"type": schema.StringAttribute{
+								Computed:    true,
+								Description: `The type of specification being stored. This allows us to render the specification correctly.`,
+							},
+						},
+					},
+					"updated_at": schema.StringAttribute{
+						Computed:    true,
+						Description: `An ISO-8601 timestamp representation of entity update date.`,
+					},
+					"version": schema.StringAttribute{
+						Computed:    true,
+						Description: `The version of this api spec.`,
+					},
+				},
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,
