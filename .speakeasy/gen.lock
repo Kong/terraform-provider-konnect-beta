@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: 73a397e4ff362698318e32bb1992d19f
+  docChecksum: abb731f8a44c777717d42fdf069e1980
   docVersion: 2.0.0
   speakeasyVersion: 1.555.3
   generationVersion: 2.620.2
@@ -948,6 +948,7 @@ generatedFiles:
   - internal/sdk/models/shared/apiimplementation.go
   - internal/sdk/models/shared/apiimplementationresponse.go
   - internal/sdk/models/shared/apiimplementationservice.go
+  - internal/sdk/models/shared/apiimplementationserviceinput.go
   - internal/sdk/models/shared/apipublication.go
   - internal/sdk/models/shared/apipublicationresponse.go
   - internal/sdk/models/shared/apipublicationvisibility.go
@@ -955,6 +956,7 @@ generatedFiles:
   - internal/sdk/models/shared/apislugconflict.go
   - internal/sdk/models/shared/apispec.go
   - internal/sdk/models/shared/apispecresponse.go
+  - internal/sdk/models/shared/apispectype.go
   - internal/sdk/models/shared/apiversion.go
   - internal/sdk/models/shared/apiversionresponse.go
   - internal/sdk/models/shared/authserver.go
@@ -1116,6 +1118,7 @@ generatedFiles:
   - internal/sdk/models/shared/security.go
   - internal/sdk/models/shared/unauthorizederror.go
   - internal/sdk/models/shared/unsupportedmediatypeerror.go
+  - internal/sdk/models/shared/updatealgorithm.go
   - internal/sdk/models/shared/updateapirequest.go
   - internal/sdk/models/shared/updateauthserver.go
   - internal/sdk/models/shared/updateclaim.go
@@ -1531,7 +1534,7 @@ examples:
         application/json: {"name": "MyAPI", "slug": "my-api-v1", "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "version": null, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "auth_strategy_sync_error": {"control_plane_error": "control_plane_error_unavailable", "message": "Unable to connect to the control plane to update plugin"}, "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "version": null, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 497005, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -1549,7 +1552,7 @@ examples:
           apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
       responses:
         "200":
-          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "version": "<value>", "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "auth_strategy_sync_error": {"control_plane_error": "control_plane_error_unavailable", "message": "Unable to connect to the control plane to update plugin"}, "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "version": "<value>", "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -1565,7 +1568,7 @@ examples:
         application/json: {"name": "MyAPI", "slug": "my-api-v1", "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "version": null, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "auth_strategy_sync_error": {"control_plane_error": "control_plane_error_unavailable", "message": "Unable to connect to the control plane to update plugin"}, "portals": [], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "version": null, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 683837, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
@@ -1705,7 +1708,7 @@ examples:
           apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
           specId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
-        application/json: {"content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}"}
+        application/json: {"content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "type": "oas3"}
       responses:
         "200":
           application/json: {"id": "7710d5c4-d902-410b-992f-18b814155b53", "content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "validation_messages": [{"message": "<value>"}, {"message": "<value>"}, {"message": "<value>"}], "type": "oas3", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -1790,7 +1793,7 @@ examples:
         application/json: {"service": {"control_plane_id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "id": "7710d5c4-d902-410b-992f-18b814155b53"}}
       responses:
         "201":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "service": {"control_plane_id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "id": "7710d5c4-d902-410b-992f-18b814155b53"}}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "service": {"control_plane_id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "id": "7710d5c4-d902-410b-992f-18b814155b53", "auth_strategy_sync_error": {"control_plane_error": "control_plane_error_unavailable", "message": "Unable to connect to the control plane to update plugin"}}}
         "400":
           application/problem+json: {"status": 371505, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>"], "source": "body"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>"], "source": "body"}]}
         "401":
@@ -1809,7 +1812,7 @@ examples:
           implementationId: "032d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "service": {"control_plane_id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "id": "7710d5c4-d902-410b-992f-18b814155b53"}}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "service": {"control_plane_id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "id": "7710d5c4-d902-410b-992f-18b814155b53", "auth_strategy_sync_error": {"control_plane_error": "control_plane_error_unavailable", "message": "Unable to connect to the control plane to update plugin"}}}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -3444,7 +3447,7 @@ examples:
         path:
           authServerId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
-        application/json: {"signing_algorithm": "RS256", "labels": {"env": "test"}}
+        application/json: {"labels": {"env": "test"}}
       responses:
         "200":
           application/json: {"id": "68d4f2fa-7ace-4e1f-af19-1fbd364cf434", "name": "<value>", "description": "whimsical pretend bruised oof yieldingly save archaeology political pish strait", "audience": "<value>", "signing_algorithm": "RS256", "issuer": "discover", "metadata_uri": "https://disloyal-pneumonia.org", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -3494,7 +3497,7 @@ examples:
           authServerId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
           claimId: "07d05309-45cc-4b37-92fb-1524846deec3"
       requestBody:
-        application/json: {"include_in_token": false, "include_in_all_scopes": false, "enabled": true}
+        application/json: {}
       responses:
         "200":
           application/json: {"id": "298d07b9-74c8-4ec8-a4d3-589bc550a91d", "name": "<value>", "value": "<value>", "include_in_token": false, "include_in_all_scopes": false, "include_in_scopes": [], "enabled": true, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -3545,7 +3548,7 @@ examples:
           authServerId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
           scopeId: "c5e12516-182c-4928-ae04-05374b3b1cca"
       requestBody:
-        application/json: {"default": false, "include_in_metadata": false, "enabled": true}
+        application/json: {}
       responses:
         "200":
           application/json: {"id": "e3b61511-2524-46dd-b444-e26d1fe65b49", "name": "<value>", "description": "beside because delirious any successfully yippee although", "default": false, "include_in_metadata": false, "enabled": true, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}

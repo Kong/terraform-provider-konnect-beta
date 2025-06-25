@@ -74,9 +74,9 @@ func (r *AuthServerResourceModel) ToSharedUpdateAuthServer(ctx context.Context) 
 	} else {
 		audience = nil
 	}
-	signingAlgorithm := new(shared.Algorithm)
+	signingAlgorithm := new(shared.UpdateAlgorithm)
 	if !r.SigningAlgorithm.IsUnknown() && !r.SigningAlgorithm.IsNull() {
-		*signingAlgorithm = shared.Algorithm(r.SigningAlgorithm.ValueString())
+		*signingAlgorithm = shared.UpdateAlgorithm(r.SigningAlgorithm.ValueString())
 	} else {
 		signingAlgorithm = nil
 	}

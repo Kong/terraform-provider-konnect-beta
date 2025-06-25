@@ -1,10 +1,19 @@
 # Changelog
 
+## 0.7.0
+> Released on 2025/??/??
+
+### BREAKING CHANGES
+* `auth_strategy_sync_error` read only field removed from `konnect_api`. It is now available on `konnect_api_implementation`
+
+### Bug Fixes
+* `service` is now optional in `konnect_api_implementation`
+
 ## 0.6.1
 > Released on 2025/06/12
 
 ### Bug Fixes
-> - Fix empty labels in Mesh resources causing an error
+* Fix empty labels in Mesh resources causing an error
 
 ## 0.6.0
 > Released on 2025/06/05

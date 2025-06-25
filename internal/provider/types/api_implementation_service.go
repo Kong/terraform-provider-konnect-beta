@@ -7,6 +7,7 @@ import (
 )
 
 type APIImplementationService struct {
-	ControlPlaneID types.String `tfsdk:"control_plane_id"`
-	ID             types.String `tfsdk:"id"`
+	AuthStrategySyncError *AuthStrategySyncError `tfsdk:"auth_strategy_sync_error"`
+	ControlPlaneID        types.String           `tfsdk:"control_plane_id"`
+	ID                    types.String           `tfsdk:"id"`
 }

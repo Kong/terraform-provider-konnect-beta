@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -21,6 +22,7 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -38,11 +40,11 @@ type APIImplementationResource struct {
 
 // APIImplementationResourceModel describes the resource data model.
 type APIImplementationResourceModel struct {
-	APIID     types.String                     `tfsdk:"api_id"`
-	CreatedAt types.String                     `tfsdk:"created_at"`
-	ID        types.String                     `tfsdk:"id"`
-	Service   tfTypes.APIImplementationService `tfsdk:"service"`
-	UpdatedAt types.String                     `tfsdk:"updated_at"`
+	APIID     types.String                      `tfsdk:"api_id"`
+	CreatedAt types.String                      `tfsdk:"created_at"`
+	ID        types.String                      `tfsdk:"id"`
+	Service   *tfTypes.APIImplementationService `tfsdk:"service"`
+	UpdatedAt types.String                      `tfsdk:"updated_at"`
 }
 
 func (r *APIImplementationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -72,27 +74,93 @@ func (r *APIImplementationResource) Schema(ctx context.Context, req resource.Sch
 				Description: `Contains a unique identifier used for this resource.`,
 			},
 			"service": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				PlanModifiers: []planmodifier.Object{
 					objectplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 				},
 				Attributes: map[string]schema.Attribute{
+					"auth_strategy_sync_error": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"control_plane_error": schema.StringAttribute{
+								Computed:    true,
+								Description: `must be one of ["control_plane_error_no_response", "control_plane_error_invalid_response", "control_plane_error_unavailable", "control_plane_error_internal_error", "control_plane_error_bad_request", "control_plane_error_plugin_conflict", "control_plane_error_data_constraint_error", "control_plane_error_implementation_not_found"]`,
+								Validators: []validator.String{
+									stringvalidator.OneOf(
+										"control_plane_error_no_response",
+										"control_plane_error_invalid_response",
+										"control_plane_error_unavailable",
+										"control_plane_error_internal_error",
+										"control_plane_error_bad_request",
+										"control_plane_error_plugin_conflict",
+										"control_plane_error_data_constraint_error",
+										"control_plane_error_implementation_not_found",
+									),
+								},
+							},
+							"info": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"additional_properties": schema.StringAttribute{
+										Computed:    true,
+										Description: `Parsed as JSON.`,
+										Validators: []validator.String{
+											validators.IsValidJSON(),
+										},
+									},
+									"details": schema.ListNestedAttribute{
+										Computed: true,
+										NestedObject: schema.NestedAttributeObject{
+											Attributes: map[string]schema.Attribute{
+												"additional_properties": schema.StringAttribute{
+													Computed:    true,
+													Description: `Parsed as JSON.`,
+													Validators: []validator.String{
+														validators.IsValidJSON(),
+													},
+												},
+												"message": schema.ListAttribute{
+													Computed:    true,
+													ElementType: types.StringType,
+												},
+												"type": schema.StringAttribute{
+													Computed: true,
+												},
+											},
+										},
+									},
+								},
+							},
+							"message": schema.StringAttribute{
+								Computed: true,
+							},
+						},
+					},
 					"control_plane_id": schema.StringAttribute{
-						Required: true,
+						Computed: true,
+						Optional: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `Requires replacement if changed.`,
+						Description: `Not Null; Requires replacement if changed.`,
+						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
+						},
 					},
 					"id": schema.StringAttribute{
-						Required: true,
+						Computed: true,
+						Optional: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `Requires replacement if changed.`,
+						Description: `Not Null; Requires replacement if changed.`,
+						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
+						},
 					},
 				},
 				Description: `A Gateway service that implements an API. Requires replacement if changed.`,

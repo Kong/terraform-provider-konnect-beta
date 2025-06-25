@@ -2,10 +2,6 @@
 
 package shared
 
-import (
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
-)
-
 // UpdateAuthServer - Auth server to be updated
 type UpdateAuthServer struct {
 	// The name of the auth server
@@ -15,7 +11,7 @@ type UpdateAuthServer struct {
 	// The recipients that the tokens are intended for. This becomes the 'aud' claim in an access token
 	Audience *string `json:"audience,omitempty"`
 	// Algorithm used in the key signing process
-	SigningAlgorithm *Algorithm `default:"RS256" json:"signing_algorithm"`
+	SigningAlgorithm *UpdateAlgorithm `json:"signing_algorithm,omitempty"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Labels are intended to store **INTERNAL** metadata.
@@ -23,17 +19,6 @@ type UpdateAuthServer struct {
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
-}
-
-func (u UpdateAuthServer) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(u, "", false)
-}
-
-func (u *UpdateAuthServer) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
-		return err
-	}
-	return nil
 }
 
 func (o *UpdateAuthServer) GetName() *string {
@@ -57,7 +42,7 @@ func (o *UpdateAuthServer) GetAudience() *string {
 	return o.Audience
 }
 
-func (o *UpdateAuthServer) GetSigningAlgorithm() *Algorithm {
+func (o *UpdateAuthServer) GetSigningAlgorithm() *UpdateAlgorithm {
 	if o == nil {
 		return nil
 	}

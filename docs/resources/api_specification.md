@@ -31,7 +31,7 @@ resource "konnect_api_specification" "my_apispecification" {
 
 ### Optional
 
-- `type` (String) The type of specification being stored. This allows us to render the specification correctly. must be one of ["oas2", "oas3", "asyncapi"]; Requires replacement if changed.
+- `type` (String) The type of specification being stored. This allows us to render the specification correctly. must be one of ["oas2", "oas3", "asyncapi"]
 
 ### Read-Only
 

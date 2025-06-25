@@ -4,7 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
@@ -33,53 +32,6 @@ func (r *APIDataSourceModel) RefreshFromSharedAPIResponseSchema(ctx context.Cont
 		r.APISpecIds = make([]types.String, 0, len(resp.APISpecIds))
 		for _, v := range resp.APISpecIds {
 			r.APISpecIds = append(r.APISpecIds, types.StringValue(v))
-		}
-		if resp.AuthStrategySyncError == nil {
-			r.AuthStrategySyncError = nil
-		} else {
-			r.AuthStrategySyncError = &tfTypes.AuthStrategySyncError{}
-			if resp.AuthStrategySyncError.ControlPlaneError != nil {
-				r.AuthStrategySyncError.ControlPlaneError = types.StringValue(string(*resp.AuthStrategySyncError.ControlPlaneError))
-			} else {
-				r.AuthStrategySyncError.ControlPlaneError = types.StringNull()
-			}
-			if resp.AuthStrategySyncError.Info == nil {
-				r.AuthStrategySyncError.Info = nil
-			} else {
-				r.AuthStrategySyncError.Info = &tfTypes.Info{}
-				if resp.AuthStrategySyncError.Info.AdditionalProperties == nil {
-					r.AuthStrategySyncError.Info.AdditionalProperties = types.StringNull()
-				} else {
-					additionalPropertiesResult, _ := json.Marshal(resp.AuthStrategySyncError.Info.AdditionalProperties)
-					r.AuthStrategySyncError.Info.AdditionalProperties = types.StringValue(string(additionalPropertiesResult))
-				}
-				r.AuthStrategySyncError.Info.Details = []tfTypes.Details{}
-				if len(r.AuthStrategySyncError.Info.Details) > len(resp.AuthStrategySyncError.Info.Details) {
-					r.AuthStrategySyncError.Info.Details = r.AuthStrategySyncError.Info.Details[:len(resp.AuthStrategySyncError.Info.Details)]
-				}
-				for detailsCount, detailsItem := range resp.AuthStrategySyncError.Info.Details {
-					var details tfTypes.Details
-					if detailsItem.AdditionalProperties == nil {
-						details.AdditionalProperties = types.StringNull()
-					} else {
-						additionalPropertiesResult1, _ := json.Marshal(detailsItem.AdditionalProperties)
-						details.AdditionalProperties = types.StringValue(string(additionalPropertiesResult1))
-					}
-					details.Message = make([]types.String, 0, len(detailsItem.Message))
-					for _, v := range detailsItem.Message {
-						details.Message = append(details.Message, types.StringValue(v))
-					}
-					details.Type = types.StringPointerValue(detailsItem.Type)
-					if detailsCount+1 > len(r.AuthStrategySyncError.Info.Details) {
-						r.AuthStrategySyncError.Info.Details = append(r.AuthStrategySyncError.Info.Details, details)
-					} else {
-						r.AuthStrategySyncError.Info.Details[detailsCount].AdditionalProperties = details.AdditionalProperties
-						r.AuthStrategySyncError.Info.Details[detailsCount].Message = details.Message
-						r.AuthStrategySyncError.Info.Details[detailsCount].Type = details.Type
-					}
-				}
-			}
-			r.AuthStrategySyncError.Message = types.StringValue(resp.AuthStrategySyncError.Message)
 		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
