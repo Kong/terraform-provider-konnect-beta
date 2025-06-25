@@ -7,7 +7,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -84,63 +83,6 @@ func (r *APIImplementationResource) Schema(ctx context.Context, req resource.Sch
 					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 				},
 				Attributes: map[string]schema.Attribute{
-					"auth_strategy_sync_error": schema.SingleNestedAttribute{
-						Computed: true,
-						Attributes: map[string]schema.Attribute{
-							"control_plane_error": schema.StringAttribute{
-								Computed:    true,
-								Description: `must be one of ["control_plane_error_no_response", "control_plane_error_invalid_response", "control_plane_error_unavailable", "control_plane_error_internal_error", "control_plane_error_bad_request", "control_plane_error_plugin_conflict", "control_plane_error_data_constraint_error", "control_plane_error_implementation_not_found"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"control_plane_error_no_response",
-										"control_plane_error_invalid_response",
-										"control_plane_error_unavailable",
-										"control_plane_error_internal_error",
-										"control_plane_error_bad_request",
-										"control_plane_error_plugin_conflict",
-										"control_plane_error_data_constraint_error",
-										"control_plane_error_implementation_not_found",
-									),
-								},
-							},
-							"info": schema.SingleNestedAttribute{
-								Computed: true,
-								Attributes: map[string]schema.Attribute{
-									"additional_properties": schema.StringAttribute{
-										Computed:    true,
-										Description: `Parsed as JSON.`,
-										Validators: []validator.String{
-											validators.IsValidJSON(),
-										},
-									},
-									"details": schema.ListNestedAttribute{
-										Computed: true,
-										NestedObject: schema.NestedAttributeObject{
-											Attributes: map[string]schema.Attribute{
-												"additional_properties": schema.StringAttribute{
-													Computed:    true,
-													Description: `Parsed as JSON.`,
-													Validators: []validator.String{
-														validators.IsValidJSON(),
-													},
-												},
-												"message": schema.ListAttribute{
-													Computed:    true,
-													ElementType: types.StringType,
-												},
-												"type": schema.StringAttribute{
-													Computed: true,
-												},
-											},
-										},
-									},
-								},
-							},
-							"message": schema.StringAttribute{
-								Computed: true,
-							},
-						},
-					},
 					"control_plane_id": schema.StringAttribute{
 						Computed: true,
 						Optional: true,

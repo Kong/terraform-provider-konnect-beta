@@ -22,6 +22,8 @@ type UpdateAPIRequest struct {
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
+	// A set of attributes that describe the API
+	Attributes any `json:"attributes,omitempty"`
 }
 
 func (o *UpdateAPIRequest) GetName() *string {
@@ -57,4 +59,11 @@ func (o *UpdateAPIRequest) GetLabels() map[string]*string {
 		return nil
 	}
 	return o.Labels
+}
+
+func (o *UpdateAPIRequest) GetAttributes() any {
+	if o == nil {
+		return nil
+	}
+	return o.Attributes
 }

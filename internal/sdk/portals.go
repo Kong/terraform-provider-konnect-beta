@@ -33,9 +33,6 @@ func newPortals(rootSDK *KonnectBeta, sdkConfig config.SDKConfiguration, hooks *
 }
 
 // CreatePortal - Create Portal
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Creates a new developer portal scoped in this region for this organization.
 func (s *Portals) CreatePortal(ctx context.Context, request shared.CreatePortal, opts ...operations.Option) (*operations.CreatePortalResponse, error) {
 	o := operations.Options{}
@@ -317,9 +314,6 @@ func (s *Portals) CreatePortal(ctx context.Context, request shared.CreatePortal,
 }
 
 // GetPortal - Fetch Portal
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Returns the configuration for a single developer portal, including the current visibility, access, and domain settings.
 func (s *Portals) GetPortal(ctx context.Context, request operations.GetPortalRequest, opts ...operations.Option) (*operations.GetPortalResponse, error) {
 	o := operations.Options{}
@@ -594,9 +588,6 @@ func (s *Portals) GetPortal(ctx context.Context, request operations.GetPortalReq
 }
 
 // UpdatePortal - Update Portal
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Updates the configuration for a single portal including the visibility, access, and custom domain settings.
 func (s *Portals) UpdatePortal(ctx context.Context, request operations.UpdatePortalRequest, opts ...operations.Option) (*operations.UpdatePortalResponse, error) {
 	o := operations.Options{}
@@ -920,9 +911,6 @@ func (s *Portals) UpdatePortal(ctx context.Context, request operations.UpdatePor
 }
 
 // DeletePortal - Delete Portal
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Deletes a single portal, along with all related entities.
 func (s *Portals) DeletePortal(ctx context.Context, request operations.DeletePortalRequest, opts ...operations.Option) (*operations.DeletePortalResponse, error) {
 	o := operations.Options{}

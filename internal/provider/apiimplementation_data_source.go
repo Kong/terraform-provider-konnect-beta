@@ -61,44 +61,6 @@ func (r *APIImplementationDataSource) Schema(ctx context.Context, req datasource
 			"service": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
-					"auth_strategy_sync_error": schema.SingleNestedAttribute{
-						Computed: true,
-						Attributes: map[string]schema.Attribute{
-							"control_plane_error": schema.StringAttribute{
-								Computed: true,
-							},
-							"info": schema.SingleNestedAttribute{
-								Computed: true,
-								Attributes: map[string]schema.Attribute{
-									"additional_properties": schema.StringAttribute{
-										Computed:    true,
-										Description: `Parsed as JSON.`,
-									},
-									"details": schema.ListNestedAttribute{
-										Computed: true,
-										NestedObject: schema.NestedAttributeObject{
-											Attributes: map[string]schema.Attribute{
-												"additional_properties": schema.StringAttribute{
-													Computed:    true,
-													Description: `Parsed as JSON.`,
-												},
-												"message": schema.ListAttribute{
-													Computed:    true,
-													ElementType: types.StringType,
-												},
-												"type": schema.StringAttribute{
-													Computed: true,
-												},
-											},
-										},
-									},
-								},
-							},
-							"message": schema.StringAttribute{
-								Computed: true,
-							},
-						},
-					},
 					"control_plane_id": schema.StringAttribute{
 						Computed: true,
 					},
