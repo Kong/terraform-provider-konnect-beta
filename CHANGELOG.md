@@ -1,7 +1,7 @@
 # Changelog
 
 ## 0.7.0
-> Released on 2025/??/??
+> Released on 2025/06/25
 
 ### BREAKING CHANGES
 * `auth_strategy_sync_error` read only field removed from `konnect_api`.
