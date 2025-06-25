@@ -6206,6 +6206,8 @@ components:
                   An optional version for your API. Leave this empty if your API
                   is unversioned.
                 nullable: true
+              current_version_summary:
+                $ref: '#/components/schemas/ApiVersionSummary'
               slug:
                 type: string
                 pattern: ^[\w-]+$
@@ -6221,6 +6223,7 @@ components:
                 readOnly: true
                 type: array
                 description: The list of API specification ids for the API.
+                deprecated: true
                 items:
                   type: string
                   format: uuid
@@ -6446,6 +6449,8 @@ components:
                   An optional version for your API. Leave this empty if your API
                   is unversioned.
                 nullable: true
+              current_version_summary:
+                $ref: '#/components/schemas/ApiVersionSummary'
               slug:
                 type: string
                 pattern: ^[\w-]+$
@@ -6461,6 +6466,7 @@ components:
                 readOnly: true
                 type: array
                 description: The list of API specification ids for the API.
+                deprecated: true
                 items:
                   type: string
                   format: uuid
@@ -8637,12 +8643,14 @@ components:
       example: '2022-11-04T20:10:06.927Z'
       description: An ISO-8601 timestamp representation of entity creation date.
       readOnly: true
+      x-speakeasy-param-suppress-computed-diff: true
     UpdatedAt:
       type: string
       format: date-time
       example: '2022-11-04T20:10:06.927Z'
       description: An ISO-8601 timestamp representation of entity update date.
       readOnly: true
+      x-speakeasy-param-suppress-computed-diff: true
     Labels:
       title: Labels
       type: object
@@ -9190,6 +9198,8 @@ components:
             An optional version for your API. Leave this empty if your API is
             unversioned.
           nullable: true
+        current_version_summary:
+          $ref: '#/components/schemas/ApiVersionSummary'
         slug:
           type: string
           pattern: ^[\w-]+$
@@ -9205,6 +9215,7 @@ components:
           readOnly: true
           type: array
           description: The list of API specification ids for the API.
+          deprecated: true
           items:
             type: string
             format: uuid
@@ -9257,6 +9268,7 @@ components:
         - slug
         - portals
         - api_spec_ids
+        - current_version_summary
     AuthStrategyApiSyncError:
       type: object
       additionalProperties: false
@@ -9422,6 +9434,32 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
+    ApiVersionSummary:
+      title: API Version Summary
+      type: object
+      additionalProperties: false
+      readOnly: true
+      nullable: true
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 7710d5c4-d902-410b-992f-18b814155b53
+          description: The API version identifier.
+          readOnly: true
+        version:
+          type: string
+          description: The version of this api spec.
+        spec:
+          type: object
+          additionalProperties: false
+          properties:
+            type:
+              $ref: '#/components/schemas/ApiSpecType'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
     ApiSpec:
       title: API Specification
       type: object
@@ -9562,6 +9600,17 @@ components:
           $ref: '#/components/schemas/UpdatedAt'
         service:
           $ref: '#/components/schemas/ApiImplementationService'
+    ApiSpecType:
+      title: API Spec Type
+      type: string
+      example: oas3
+      description: >
+        The type of specification being stored. This allows us to render the
+        specification correctly.
+      enum:
+        - oas2
+        - oas3
+        - asyncapi
     UnsupportedMediaTypeError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -9577,17 +9626,6 @@ components:
               example: kong:trace:1234567890
             detail:
               example: UnsupportedMediaType
-    ApiSpecType:
-      title: API Spec Type
-      type: string
-      example: oas3
-      description: >
-        The type of specification being stored. This allows us to render the
-        specification correctly.
-      enum:
-        - oas2
-        - oas3
-        - asyncapi
     MeshAccessLogItem:
       type: object
       required:

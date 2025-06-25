@@ -50,7 +50,7 @@ func (o *APIVersionResponseValidationMessages) GetMessage() string {
 	return o.Message
 }
 
-type Spec struct {
+type APIVersionResponseSpec struct {
 	// The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).
 	//
 	Content *string                        `json:"content,omitempty"`
@@ -59,21 +59,21 @@ type Spec struct {
 	ValidationMessages []APIVersionResponseValidationMessages `json:"validation_messages,omitempty"`
 }
 
-func (o *Spec) GetContent() *string {
+func (o *APIVersionResponseSpec) GetContent() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Content
 }
 
-func (o *Spec) GetType() *APIVersionResponseAPISpecType {
+func (o *APIVersionResponseSpec) GetType() *APIVersionResponseAPISpecType {
 	if o == nil {
 		return nil
 	}
 	return o.Type
 }
 
-func (o *Spec) GetValidationMessages() []APIVersionResponseValidationMessages {
+func (o *APIVersionResponseSpec) GetValidationMessages() []APIVersionResponseValidationMessages {
 	if o == nil {
 		return nil
 	}
@@ -85,8 +85,8 @@ type APIVersionResponse struct {
 	// The API version identifier.
 	ID string `json:"id"`
 	// The version of the api.
-	Version string `json:"version"`
-	Spec    *Spec  `json:"spec,omitempty"`
+	Version string                  `json:"version"`
+	Spec    *APIVersionResponseSpec `json:"spec,omitempty"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
@@ -118,7 +118,7 @@ func (o *APIVersionResponse) GetVersion() string {
 	return o.Version
 }
 
-func (o *APIVersionResponse) GetSpec() *Spec {
+func (o *APIVersionResponse) GetSpec() *APIVersionResponseSpec {
 	if o == nil {
 		return nil
 	}

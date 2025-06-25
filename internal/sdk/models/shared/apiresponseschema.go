@@ -47,13 +47,16 @@ type APIResponseSchema struct {
 	// A description of your API. Will be visible on your live Portal.
 	Description *string `json:"description,omitempty"`
 	// An optional version for your API. Leave this empty if your API is unversioned.
-	Version *string `json:"version"`
+	Version               *string            `json:"version"`
+	CurrentVersionSummary *APIVersionSummary `json:"current_version_summary"`
 	// The `slug` is used in generated URLs to provide human readable paths.
 	//
 	// Defaults to `slugify(name + version)`
 	//
 	Slug *string `json:"slug"`
 	// The list of API specification ids for the API.
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	APISpecIds []string `json:"api_spec_ids"`
 	// The list of portals which this API is published to.
 	Portals []Portals `json:"portals"`
@@ -105,6 +108,13 @@ func (o *APIResponseSchema) GetVersion() *string {
 		return nil
 	}
 	return o.Version
+}
+
+func (o *APIResponseSchema) GetCurrentVersionSummary() *APIVersionSummary {
+	if o == nil {
+		return nil
+	}
+	return o.CurrentVersionSummary
 }
 
 func (o *APIResponseSchema) GetSlug() *string {

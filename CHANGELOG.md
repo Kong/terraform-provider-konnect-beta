@@ -6,6 +6,9 @@
 ### BREAKING CHANGES
 * `auth_strategy_sync_error` read only field removed from `konnect_api`. It is now available on `konnect_api_implementation`
 
+### Features
+* `current_version_summary` is now available on the `konnect_api` resource
+
 ### Bug Fixes
 * `service` is now optional in `konnect_api_implementation`
 
