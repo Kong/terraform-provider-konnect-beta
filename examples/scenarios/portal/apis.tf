@@ -2,8 +2,11 @@ resource "konnect_api" "my_api" {
   provider    = konnect-beta
   name        = "Cars"
   version     = "v1"
-  deprecated  = false
   description = "This is a description of a car API"
+  attributes = jsonencode({
+    color = ["red"],
+    teams = ["team1", "team2"]
+  })
   labels = {
     key = "value"
   }

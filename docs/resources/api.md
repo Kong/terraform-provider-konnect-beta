@@ -15,6 +15,7 @@ API Resource
 ```terraform
 resource "konnect_api" "my_api" {
   provider = konnect-beta
+  attributes  = "{ \"see\": \"documentation\" }"
   description = "...my_description..."
   labels = {
     key = "value"
@@ -35,6 +36,7 @@ resource "konnect_api" "my_api" {
 
 ### Optional
 
+- `attributes` (String) A set of attributes that describe the API. Parsed as JSON.
 - `description` (String) A description of your API. Will be visible on your live Portal.
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
@@ -47,39 +49,30 @@ Defaults to `slugify(name + version)`
 
 ### Read-Only
 
-- `api_spec_ids` (List of String) The list of API specification ids for the API.
-- `auth_strategy_sync_error` (Attributes) (see [below for nested schema](#nestedatt--auth_strategy_sync_error))
+- `api_spec_ids` (List of String, Deprecated) The list of API specification ids for the API.
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
+- `current_version_summary` (Attributes) (see [below for nested schema](#nestedatt--current_version_summary))
 - `id` (String) The API identifier.
 - `portals` (Attributes List) The list of portals which this API is published to. (see [below for nested schema](#nestedatt--portals))
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
-<a id="nestedatt--auth_strategy_sync_error"></a>
-### Nested Schema for `auth_strategy_sync_error`
+<a id="nestedatt--current_version_summary"></a>
+### Nested Schema for `current_version_summary`
 
 Read-Only:
 
-- `control_plane_error` (String) must be one of ["control_plane_error_no_response", "control_plane_error_invalid_response", "control_plane_error_unavailable", "control_plane_error_internal_error", "control_plane_error_bad_request", "control_plane_error_plugin_conflict", "control_plane_error_data_constraint_error", "control_plane_error_implementation_not_found"]
-- `info` (Attributes) (see [below for nested schema](#nestedatt--auth_strategy_sync_error--info))
-- `message` (String)
+- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
+- `id` (String) The API version identifier.
+- `spec` (Attributes) (see [below for nested schema](#nestedatt--current_version_summary--spec))
+- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
+- `version` (String) The version of this api spec.
 
-<a id="nestedatt--auth_strategy_sync_error--info"></a>
-### Nested Schema for `auth_strategy_sync_error.info`
-
-Read-Only:
-
-- `additional_properties` (String) Parsed as JSON.
-- `details` (Attributes List) (see [below for nested schema](#nestedatt--auth_strategy_sync_error--info--details))
-
-<a id="nestedatt--auth_strategy_sync_error--info--details"></a>
-### Nested Schema for `auth_strategy_sync_error.info.details`
+<a id="nestedatt--current_version_summary--spec"></a>
+### Nested Schema for `current_version_summary.spec`
 
 Read-Only:
 
-- `additional_properties` (String) Parsed as JSON.
-- `message` (List of String)
-- `type` (String)
-
+- `type` (String) The type of specification being stored. This allows us to render the specification correctly. must be one of ["oas2", "oas3", "asyncapi"]
 
 
 

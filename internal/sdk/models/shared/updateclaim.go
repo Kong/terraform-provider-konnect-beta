@@ -2,10 +2,6 @@
 
 package shared
 
-import (
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
-)
-
 // UpdateClaim - Claim to be updated
 type UpdateClaim struct {
 	// The name of the claim
@@ -13,24 +9,13 @@ type UpdateClaim struct {
 	// Specifies the value of the claim. It may contain a static value or a dynamic (templated) value. Static values which are valid JSON will result in a JSON object in the token claims.
 	Value *string `json:"value,omitempty"`
 	// Specifies whether to include claim in the token. If the value is set to 'false' for a claim, the client instead uses the access token to get claims from the '/userinfo' endpoint.
-	IncludeInToken *bool `default:"false" json:"include_in_token"`
+	IncludeInToken *bool `json:"include_in_token,omitempty"`
 	// Specifies whether to include the claim in all scopes. If the value is set to 'false' for a claim, the claim is only included in the scopes that explicitly list it.
-	IncludeInAllScopes *bool `default:"false" json:"include_in_all_scopes"`
+	IncludeInAllScopes *bool `json:"include_in_all_scopes,omitempty"`
 	// Specifies the scopes IDs in which the claim is included
 	IncludeInScopes []string `json:"include_in_scopes,omitempty"`
 	// Specifies whether the claim is enabled
-	Enabled *bool `default:"true" json:"enabled"`
-}
-
-func (u UpdateClaim) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(u, "", false)
-}
-
-func (u *UpdateClaim) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
-		return err
-	}
-	return nil
+	Enabled *bool `json:"enabled,omitempty"`
 }
 
 func (o *UpdateClaim) GetName() *string {

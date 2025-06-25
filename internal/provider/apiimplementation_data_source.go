@@ -28,11 +28,11 @@ type APIImplementationDataSource struct {
 
 // APIImplementationDataSourceModel describes the data model.
 type APIImplementationDataSourceModel struct {
-	APIID     types.String                     `tfsdk:"api_id"`
-	CreatedAt types.String                     `tfsdk:"created_at"`
-	ID        types.String                     `tfsdk:"id"`
-	Service   tfTypes.APIImplementationService `tfsdk:"service"`
-	UpdatedAt types.String                     `tfsdk:"updated_at"`
+	APIID     types.String                      `tfsdk:"api_id"`
+	CreatedAt types.String                      `tfsdk:"created_at"`
+	ID        types.String                      `tfsdk:"id"`
+	Service   *tfTypes.APIImplementationService `tfsdk:"service"`
+	UpdatedAt types.String                      `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.

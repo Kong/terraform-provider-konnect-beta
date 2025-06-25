@@ -1,5 +1,6 @@
 resource "konnect_api" "my_api" {
   provider = konnect-beta
+  attributes  = "{ \"see\": \"documentation\" }"
   description = "...my_description..."
   labels = {
     key = "value"

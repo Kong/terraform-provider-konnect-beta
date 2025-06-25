@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
+	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
@@ -34,8 +35,13 @@ func (r *APIImplementationDataSourceModel) RefreshFromSharedAPIImplementationRes
 	if resp != nil {
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.ID = types.StringValue(resp.ID)
-		r.Service.ControlPlaneID = types.StringValue(resp.Service.ControlPlaneID)
-		r.Service.ID = types.StringValue(resp.Service.ID)
+		if resp.Service == nil {
+			r.Service = nil
+		} else {
+			r.Service = &tfTypes.APIImplementationService{}
+			r.Service.ControlPlaneID = types.StringValue(resp.Service.ControlPlaneID)
+			r.Service.ID = types.StringValue(resp.Service.ID)
+		}
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
 

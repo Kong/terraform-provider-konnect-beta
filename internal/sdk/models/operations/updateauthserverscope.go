@@ -12,7 +12,7 @@ type UpdateAuthServerScopeRequest struct {
 	AuthServerID string `pathParam:"style=simple,explode=false,name=authServerId"`
 	// The scope ID
 	ScopeID string `pathParam:"style=simple,explode=false,name=scopeId"`
-	// Scope to be updated
+	// Scope to be update
 	UpdateScope shared.UpdateScope `request:"mediaType=application/json"`
 }
 

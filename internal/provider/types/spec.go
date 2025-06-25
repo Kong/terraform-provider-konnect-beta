@@ -6,7 +6,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type Info struct {
-	AdditionalProperties types.String `tfsdk:"additional_properties"`
-	Details              []Details    `tfsdk:"details"`
+type Spec struct {
+	Type types.String `tfsdk:"type"`
 }

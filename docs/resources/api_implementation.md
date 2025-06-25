@@ -29,6 +29,9 @@ resource "konnect_api_implementation" "my_apiimplementation" {
 ### Required
 
 - `api_id` (String) The UUID API identifier. Requires replacement if changed.
+
+### Optional
+
 - `service` (Attributes) A Gateway service that implements an API. Requires replacement if changed. (see [below for nested schema](#nestedatt--service))
 
 ### Read-Only
@@ -40,10 +43,10 @@ resource "konnect_api_implementation" "my_apiimplementation" {
 <a id="nestedatt--service"></a>
 ### Nested Schema for `service`
 
-Required:
+Optional:
 
-- `control_plane_id` (String) Requires replacement if changed.
-- `id` (String) Requires replacement if changed.
+- `control_plane_id` (String) Not Null; Requires replacement if changed.
+- `id` (String) Not Null; Requires replacement if changed.
 
 ## Import
 

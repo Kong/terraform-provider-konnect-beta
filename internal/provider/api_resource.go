@@ -15,6 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
@@ -36,18 +37,19 @@ type APIResource struct {
 
 // APIResourceModel describes the resource data model.
 type APIResourceModel struct {
-	APISpecIds            []types.String                 `tfsdk:"api_spec_ids"`
-	AuthStrategySyncError *tfTypes.AuthStrategySyncError `tfsdk:"auth_strategy_sync_error"`
-	CreatedAt             types.String                   `tfsdk:"created_at"`
-	Description           types.String                   `tfsdk:"description"`
-	ID                    types.String                   `tfsdk:"id"`
-	Labels                map[string]types.String        `tfsdk:"labels"`
-	Name                  types.String                   `tfsdk:"name"`
-	Portals               []tfTypes.Portals              `tfsdk:"portals"`
-	Slug                  types.String                   `tfsdk:"slug"`
-	SpecContent           types.String                   `tfsdk:"spec_content"`
-	UpdatedAt             types.String                   `tfsdk:"updated_at"`
-	Version               types.String                   `tfsdk:"version"`
+	APISpecIds            []types.String             `tfsdk:"api_spec_ids"`
+	Attributes            types.String               `tfsdk:"attributes"`
+	CreatedAt             types.String               `tfsdk:"created_at"`
+	CurrentVersionSummary *tfTypes.APIVersionSummary `tfsdk:"current_version_summary"`
+	Description           types.String               `tfsdk:"description"`
+	ID                    types.String               `tfsdk:"id"`
+	Labels                map[string]types.String    `tfsdk:"labels"`
+	Name                  types.String               `tfsdk:"name"`
+	Portals               []tfTypes.Portals          `tfsdk:"portals"`
+	Slug                  types.String               `tfsdk:"slug"`
+	SpecContent           types.String               `tfsdk:"spec_content"`
+	UpdatedAt             types.String               `tfsdk:"updated_at"`
+	Version               types.String               `tfsdk:"version"`
 }
 
 func (r *APIResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -59,72 +61,76 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 		MarkdownDescription: "API Resource",
 		Attributes: map[string]schema.Attribute{
 			"api_spec_ids": schema.ListAttribute{
-				Computed:    true,
-				ElementType: types.StringType,
-				Description: `The list of API specification ids for the API.`,
+				Computed:           true,
+				ElementType:        types.StringType,
+				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+				Description:        `The list of API specification ids for the API.`,
 			},
-			"auth_strategy_sync_error": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"control_plane_error": schema.StringAttribute{
-						Computed:    true,
-						Description: `must be one of ["control_plane_error_no_response", "control_plane_error_invalid_response", "control_plane_error_unavailable", "control_plane_error_internal_error", "control_plane_error_bad_request", "control_plane_error_plugin_conflict", "control_plane_error_data_constraint_error", "control_plane_error_implementation_not_found"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"control_plane_error_no_response",
-								"control_plane_error_invalid_response",
-								"control_plane_error_unavailable",
-								"control_plane_error_internal_error",
-								"control_plane_error_bad_request",
-								"control_plane_error_plugin_conflict",
-								"control_plane_error_data_constraint_error",
-								"control_plane_error_implementation_not_found",
-							),
-						},
-					},
-					"info": schema.SingleNestedAttribute{
-						Computed: true,
-						Attributes: map[string]schema.Attribute{
-							"additional_properties": schema.StringAttribute{
-								Computed:    true,
-								Description: `Parsed as JSON.`,
-								Validators: []validator.String{
-									validators.IsValidJSON(),
-								},
-							},
-							"details": schema.ListNestedAttribute{
-								Computed: true,
-								NestedObject: schema.NestedAttributeObject{
-									Attributes: map[string]schema.Attribute{
-										"additional_properties": schema.StringAttribute{
-											Computed:    true,
-											Description: `Parsed as JSON.`,
-											Validators: []validator.String{
-												validators.IsValidJSON(),
-											},
-										},
-										"message": schema.ListAttribute{
-											Computed:    true,
-											ElementType: types.StringType,
-										},
-										"type": schema.StringAttribute{
-											Computed: true,
-										},
-									},
-								},
-							},
-						},
-					},
-					"message": schema.StringAttribute{
-						Computed: true,
-					},
+			"attributes": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `A set of attributes that describe the API. Parsed as JSON.`,
+				Validators: []validator.String{
+					validators.IsValidJSON(),
 				},
 			},
 			"created_at": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
+				},
+			},
+			"current_version_summary": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"created_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An ISO-8601 timestamp representation of entity creation date.`,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
+					},
+					"id": schema.StringAttribute{
+						Computed:    true,
+						Description: `The API version identifier.`,
+					},
+					"spec": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"type": schema.StringAttribute{
+								Computed:    true,
+								Description: `The type of specification being stored. This allows us to render the specification correctly. must be one of ["oas2", "oas3", "asyncapi"]`,
+								Validators: []validator.String{
+									stringvalidator.OneOf(
+										"oas2",
+										"oas3",
+										"asyncapi",
+									),
+								},
+							},
+						},
+					},
+					"updated_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An ISO-8601 timestamp representation of entity update date.`,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
+					},
+					"version": schema.StringAttribute{
+						Computed:    true,
+						Description: `The version of this api spec.`,
+					},
 				},
 			},
 			"description": schema.StringAttribute{
@@ -192,7 +198,10 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Description: `The content of the API specification. This is the raw content of the API specification, in json or yaml. By including this field, you can add a API specification without having to make a separate call to update the API specification. Requires replacement if changed.`,
 			},
 			"updated_at": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),

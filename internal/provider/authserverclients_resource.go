@@ -15,9 +15,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 	"regexp"
@@ -69,7 +71,7 @@ func (r *AuthServerClientsResource) Schema(ctx context.Context, req resource.Sch
 				Default:     int64default.StaticInt64(300),
 				Description: `The duration of the minted token is valid for, in seconds. Default: 300`,
 				Validators: []validator.Int64{
-					int64validator.Between(60, 31536000),
+					int64validator.Between(60, 2592000),
 				},
 			},
 			"allow_all_scopes": schema.BoolAttribute{
@@ -96,7 +98,10 @@ func (r *AuthServerClientsResource) Schema(ctx context.Context, req resource.Sch
 				},
 			},
 			"created_at": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -124,7 +129,7 @@ func (r *AuthServerClientsResource) Schema(ctx context.Context, req resource.Sch
 				Default:     int64default.StaticInt64(300),
 				Description: `The duration of the minted token is valid for, in seconds. Default: 300`,
 				Validators: []validator.Int64{
-					int64validator.Between(60, 31536000),
+					int64validator.Between(60, 2592000),
 				},
 			},
 			"labels": schema.MapAttribute{
@@ -159,7 +164,10 @@ func (r *AuthServerClientsResource) Schema(ctx context.Context, req resource.Sch
 				Description: `List of OAuth 2.0 response types`,
 			},
 			"updated_at": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),

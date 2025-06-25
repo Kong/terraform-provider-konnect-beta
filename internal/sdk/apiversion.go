@@ -31,9 +31,6 @@ func newAPIVersion(rootSDK *KonnectBeta, sdkConfig config.SDKConfiguration, hook
 }
 
 // CreateAPIVersion - Create API Version
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Creates a version (OpenAPI or AsyncAPI) for an API.
 func (s *APIVersion) CreateAPIVersion(ctx context.Context, request operations.CreateAPIVersionRequest, opts ...operations.Option) (*operations.CreateAPIVersionResponse, error) {
 	o := operations.Options{}
@@ -378,9 +375,6 @@ func (s *APIVersion) CreateAPIVersion(ctx context.Context, request operations.Cr
 }
 
 // FetchAPIVersion - Fetch API Version
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Fetches the version (OpenAPI or AsyncAPI) of an API.
 func (s *APIVersion) FetchAPIVersion(ctx context.Context, request operations.FetchAPIVersionRequest, opts ...operations.Option) (*operations.FetchAPIVersionResponse, error) {
 	o := operations.Options{}
@@ -655,9 +649,6 @@ func (s *APIVersion) FetchAPIVersion(ctx context.Context, request operations.Fet
 }
 
 // UpdateAPIVersion - Update API Version
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Updates the version (OpenAPI or AsyncAPI) of an API.
 func (s *APIVersion) UpdateAPIVersion(ctx context.Context, request operations.UpdateAPIVersionRequest, opts ...operations.Option) (*operations.UpdateAPIVersionResponse, error) {
 	o := operations.Options{}
@@ -1002,9 +993,6 @@ func (s *APIVersion) UpdateAPIVersion(ctx context.Context, request operations.Up
 }
 
 // DeleteAPIVersion - Delete API Version
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Deletes the version (OpenAPI or AsyncAPI) of an API.
 func (s *APIVersion) DeleteAPIVersion(ctx context.Context, request operations.DeleteAPIVersionRequest, opts ...operations.Option) (*operations.DeleteAPIVersionResponse, error) {
 	o := operations.Options{}
