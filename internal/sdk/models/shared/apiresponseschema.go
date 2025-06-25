@@ -65,6 +65,8 @@ type APIResponseSchema struct {
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels"`
+	// A set of attributes that describe the API
+	Attributes any `json:"attributes,omitempty"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
@@ -143,6 +145,13 @@ func (o *APIResponseSchema) GetLabels() map[string]*string {
 		return map[string]*string{}
 	}
 	return o.Labels
+}
+
+func (o *APIResponseSchema) GetAttributes() any {
+	if o == nil {
+		return nil
+	}
+	return o.Attributes
 }
 
 func (o *APIResponseSchema) GetCreatedAt() time.Time {

@@ -32,9 +32,6 @@ func newAPI(rootSDK *KonnectBeta, sdkConfig config.SDKConfiguration, hooks *hook
 }
 
 // CreateAPI - Create API
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Creates an API.
 func (s *API) CreateAPI(ctx context.Context, request shared.CreateAPIRequest, opts ...operations.Option) (*operations.CreateAPIResponse, error) {
 	o := operations.Options{}
@@ -358,9 +355,6 @@ func (s *API) CreateAPI(ctx context.Context, request shared.CreateAPIRequest, op
 }
 
 // FetchAPI - Fetch API
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Fetches an API.
 func (s *API) FetchAPI(ctx context.Context, request operations.FetchAPIRequest, opts ...operations.Option) (*operations.FetchAPIResponse, error) {
 	o := operations.Options{}
@@ -635,9 +629,6 @@ func (s *API) FetchAPI(ctx context.Context, request operations.FetchAPIRequest, 
 }
 
 // UpdateAPI - Update API
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Updates an API.
 func (s *API) UpdateAPI(ctx context.Context, request operations.UpdateAPIRequest, opts ...operations.Option) (*operations.UpdateAPIResponse, error) {
 	o := operations.Options{}
@@ -961,9 +952,6 @@ func (s *API) UpdateAPI(ctx context.Context, request operations.UpdateAPIRequest
 }
 
 // DeleteAPI - Delete API
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Deletes an API.
 func (s *API) DeleteAPI(ctx context.Context, request operations.DeleteAPIRequest, opts ...operations.Option) (*operations.DeleteAPIResponse, error) {
 	o := operations.Options{}

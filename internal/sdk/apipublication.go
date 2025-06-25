@@ -31,9 +31,6 @@ func newAPIPublication(rootSDK *KonnectBeta, sdkConfig config.SDKConfiguration, 
 }
 
 // PublishAPIToPortal - Publish API
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Publish an API to a portal.
 func (s *APIPublication) PublishAPIToPortal(ctx context.Context, request operations.PublishAPIToPortalRequest, opts ...operations.Option) (*operations.PublishAPIToPortalResponse, error) {
 	o := operations.Options{}
@@ -336,9 +333,6 @@ func (s *APIPublication) PublishAPIToPortal(ctx context.Context, request operati
 }
 
 // FetchPublication - Fetch Publication
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Retrieve an API's publication in a portal.
 // If the API is not published to the portal, a 404 response is returned.
 func (s *APIPublication) FetchPublication(ctx context.Context, request operations.FetchPublicationRequest, opts ...operations.Option) (*operations.FetchPublicationResponse, error) {
@@ -614,9 +608,6 @@ func (s *APIPublication) FetchPublication(ctx context.Context, request operation
 }
 
 // DeletePublication - Delete Publication
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Unpublish an API from a portal.
 func (s *APIPublication) DeletePublication(ctx context.Context, request operations.DeletePublicationRequest, opts ...operations.Option) (*operations.DeletePublicationResponse, error) {
 	o := operations.Options{}

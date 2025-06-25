@@ -29,6 +29,7 @@ type APIDataSource struct {
 // APIDataSourceModel describes the data model.
 type APIDataSourceModel struct {
 	APISpecIds            []types.String             `tfsdk:"api_spec_ids"`
+	Attributes            types.String               `tfsdk:"attributes"`
 	CreatedAt             types.String               `tfsdk:"created_at"`
 	CurrentVersionSummary *tfTypes.APIVersionSummary `tfsdk:"current_version_summary"`
 	Description           types.String               `tfsdk:"description"`
@@ -57,6 +58,10 @@ func (r *APIDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				ElementType:        types.StringType,
 				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
 				Description:        `The list of API specification ids for the API.`,
+			},
+			"attributes": schema.StringAttribute{
+				Computed:    true,
+				Description: `A set of attributes that describe the API. Parsed as JSON.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed:    true,

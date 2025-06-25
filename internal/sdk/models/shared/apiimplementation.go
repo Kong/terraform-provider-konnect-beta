@@ -5,10 +5,10 @@ package shared
 // APIImplementation - An entity that implements an API
 type APIImplementation struct {
 	// A Gateway service that implements an API
-	Service *APIImplementationServiceInput `json:"service,omitempty"`
+	Service *APIImplementationService `json:"service,omitempty"`
 }
 
-func (o *APIImplementation) GetService() *APIImplementationServiceInput {
+func (o *APIImplementation) GetService() *APIImplementationService {
 	if o == nil {
 		return nil
 	}

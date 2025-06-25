@@ -4,6 +4,7 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
@@ -32,6 +33,12 @@ func (r *APIDataSourceModel) RefreshFromSharedAPIResponseSchema(ctx context.Cont
 		r.APISpecIds = make([]types.String, 0, len(resp.APISpecIds))
 		for _, v := range resp.APISpecIds {
 			r.APISpecIds = append(r.APISpecIds, types.StringValue(v))
+		}
+		if resp.Attributes == nil {
+			r.Attributes = types.StringNull()
+		} else {
+			attributesResult, _ := json.Marshal(resp.Attributes)
+			r.Attributes = types.StringValue(string(attributesResult))
 		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		if resp.CurrentVersionSummary == nil {

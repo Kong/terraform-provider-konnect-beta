@@ -32,9 +32,6 @@ func newPortalCustomDomains(rootSDK *KonnectBeta, sdkConfig config.SDKConfigurat
 }
 
 // GetPortalCustomDomain - Get Custom Domain
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Get the custom domain associated to the portal.
 func (s *PortalCustomDomains) GetPortalCustomDomain(ctx context.Context, request operations.GetPortalCustomDomainRequest, opts ...operations.Option) (*operations.GetPortalCustomDomainResponse, error) {
 	o := operations.Options{}
@@ -309,9 +306,6 @@ func (s *PortalCustomDomains) GetPortalCustomDomain(ctx context.Context, request
 }
 
 // CreatePortalCustomDomain - Create Custom Domain
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Creates the custom domain associated with the portal. Only one custom domain can be associated with a portal at a time.
 func (s *PortalCustomDomains) CreatePortalCustomDomain(ctx context.Context, request operations.CreatePortalCustomDomainRequest, opts ...operations.Option) (*operations.CreatePortalCustomDomainResponse, error) {
 	o := operations.Options{}
@@ -614,9 +608,6 @@ func (s *PortalCustomDomains) CreatePortalCustomDomain(ctx context.Context, requ
 }
 
 // UpdatePortalCustomDomain - Enable or Disable Domain
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Updates the portal domain associated with the portal.
 func (s *PortalCustomDomains) UpdatePortalCustomDomain(ctx context.Context, request operations.UpdatePortalCustomDomainRequest, opts ...operations.Option) (*operations.UpdatePortalCustomDomainResponse, error) {
 	o := operations.Options{}
@@ -898,9 +889,6 @@ func (s *PortalCustomDomains) UpdatePortalCustomDomain(ctx context.Context, requ
 }
 
 // DeletePortalCustomDomain - Remove Domain
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Deletes the custom domain associated with the portal.
 func (s *PortalCustomDomains) DeletePortalCustomDomain(ctx context.Context, request operations.DeletePortalCustomDomainRequest, opts ...operations.Option) (*operations.DeletePortalCustomDomainResponse, error) {
 	o := operations.Options{}

@@ -31,9 +31,6 @@ func newAPIImplementation(rootSDK *KonnectBeta, sdkConfig config.SDKConfiguratio
 }
 
 // CreateAPIImplementation - Create API Implementation
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Creates an implementation for an API.
 // An API can be implemented by a single Gateway Service.
 func (s *APIImplementation) CreateAPIImplementation(ctx context.Context, request operations.CreateAPIImplementationRequest, opts ...operations.Option) (*operations.CreateAPIImplementationResponse, error) {
@@ -358,9 +355,6 @@ func (s *APIImplementation) CreateAPIImplementation(ctx context.Context, request
 }
 
 // FetchAPIImplementation - Fetch API Implementation
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Retrieve a gateway implementation for this API
 func (s *APIImplementation) FetchAPIImplementation(ctx context.Context, request operations.FetchAPIImplementationRequest, opts ...operations.Option) (*operations.FetchAPIImplementationResponse, error) {
 	o := operations.Options{}
@@ -635,9 +629,6 @@ func (s *APIImplementation) FetchAPIImplementation(ctx context.Context, request 
 }
 
 // DeleteAPIImplementation - Delete API Implementation
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Unlink a gateway implementation from this API
 func (s *APIImplementation) DeleteAPIImplementation(ctx context.Context, request operations.DeleteAPIImplementationRequest, opts ...operations.Option) (*operations.DeleteAPIImplementationResponse, error) {
 	o := operations.Options{}

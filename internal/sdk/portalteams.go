@@ -32,9 +32,6 @@ func newPortalTeams(rootSDK *KonnectBeta, sdkConfig config.SDKConfiguration, hoo
 }
 
 // CreatePortalTeam - Create Team
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Creates a developer team in a portal. Developers can be added to teams to provide RBAC access to API products. Teams can be assigned roles that grant permissions to perform an action on a resource.
 func (s *PortalTeams) CreatePortalTeam(ctx context.Context, request operations.CreatePortalTeamRequest, opts ...operations.Option) (*operations.CreatePortalTeamResponse, error) {
 	o := operations.Options{}
@@ -337,9 +334,6 @@ func (s *PortalTeams) CreatePortalTeam(ctx context.Context, request operations.C
 }
 
 // GetPortalTeam - Get Team
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Get an individual team.
 func (s *PortalTeams) GetPortalTeam(ctx context.Context, request operations.GetPortalTeamRequest, opts ...operations.Option) (*operations.GetPortalTeamResponse, error) {
 	o := operations.Options{}
@@ -614,9 +608,6 @@ func (s *PortalTeams) GetPortalTeam(ctx context.Context, request operations.GetP
 }
 
 // UpdatePortalTeam - Update Team
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Updates an individual developer team for a portal.
 func (s *PortalTeams) UpdatePortalTeam(ctx context.Context, request operations.UpdatePortalTeamRequest, opts ...operations.Option) (*operations.UpdatePortalTeamResponse, error) {
 	o := operations.Options{}
@@ -898,9 +889,6 @@ func (s *PortalTeams) UpdatePortalTeam(ctx context.Context, request operations.U
 }
 
 // DeletePortalTeam - Delete Team
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Deletes a developer team from a portal. Deleting a team also deletes its assigned roles. Members of the team are not deleted, but they will lose any access provided through the team.
 func (s *PortalTeams) DeletePortalTeam(ctx context.Context, request operations.DeletePortalTeamRequest, opts ...operations.Option) (*operations.DeletePortalTeamResponse, error) {
 	o := operations.Options{}

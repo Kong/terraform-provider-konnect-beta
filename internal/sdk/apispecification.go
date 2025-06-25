@@ -31,9 +31,6 @@ func newAPISpecification(rootSDK *KonnectBeta, sdkConfig config.SDKConfiguration
 }
 
 // CreateAPISpec - Create API Specification
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Creates a specification (OpenAPI or AsyncAPI) for an API.
 // **Note:** You can only have one specification for an API. This endpoint is deprecated and will be removed: use /versions instead.
 //
@@ -381,9 +378,6 @@ func (s *APISpecification) CreateAPISpec(ctx context.Context, request operations
 }
 
 // FetchAPISpec - Fetch API Specification
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Fetches the specification (OpenAPI or AsyncAPI) of an API.
 // **Note:** This endpoint is deprecated and will be removed: use /versions instead.
 //
@@ -661,9 +655,6 @@ func (s *APISpecification) FetchAPISpec(ctx context.Context, request operations.
 }
 
 // UpdateAPISpec - Update API Specification
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Updates the specification (OpenAPI or AsyncAPI) of an API.
 // **Note:** This endpoint is deprecated and will be removed: use /versions instead.
 //
@@ -1011,9 +1002,6 @@ func (s *APISpecification) UpdateAPISpec(ctx context.Context, request operations
 }
 
 // DeleteAPISpec - Delete API Specification
-// **Pre-release Endpoint**
-// This endpoint is currently in beta and is subject to change.
-//
 // Deletes the specification (OpenAPI or AsyncAPI) of an API.
 // **Note:** This endpoint is deprecated and will be removed: use /versions instead.
 //

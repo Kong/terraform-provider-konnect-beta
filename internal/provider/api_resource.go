@@ -38,6 +38,7 @@ type APIResource struct {
 // APIResourceModel describes the resource data model.
 type APIResourceModel struct {
 	APISpecIds            []types.String             `tfsdk:"api_spec_ids"`
+	Attributes            types.String               `tfsdk:"attributes"`
 	CreatedAt             types.String               `tfsdk:"created_at"`
 	CurrentVersionSummary *tfTypes.APIVersionSummary `tfsdk:"current_version_summary"`
 	Description           types.String               `tfsdk:"description"`
@@ -64,6 +65,14 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				ElementType:        types.StringType,
 				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
 				Description:        `The list of API specification ids for the API.`,
+			},
+			"attributes": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `A set of attributes that describe the API. Parsed as JSON.`,
+				Validators: []validator.String{
+					validators.IsValidJSON(),
+				},
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,

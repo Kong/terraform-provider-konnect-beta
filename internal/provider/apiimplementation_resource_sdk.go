@@ -4,7 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
@@ -16,7 +15,7 @@ import (
 func (r *APIImplementationResourceModel) ToSharedAPIImplementation(ctx context.Context) (*shared.APIImplementation, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var service *shared.APIImplementationServiceInput
+	var service *shared.APIImplementationService
 	if r.Service != nil {
 		var controlPlaneID string
 		controlPlaneID = r.Service.ControlPlaneID.ValueString()
@@ -24,7 +23,7 @@ func (r *APIImplementationResourceModel) ToSharedAPIImplementation(ctx context.C
 		var id string
 		id = r.Service.ID.ValueString()
 
-		service = &shared.APIImplementationServiceInput{
+		service = &shared.APIImplementationService{
 			ControlPlaneID: controlPlaneID,
 			ID:             id,
 		}
@@ -101,53 +100,6 @@ func (r *APIImplementationResourceModel) RefreshFromSharedAPIImplementationRespo
 			r.Service = nil
 		} else {
 			r.Service = &tfTypes.APIImplementationService{}
-			if resp.Service.AuthStrategySyncError == nil {
-				r.Service.AuthStrategySyncError = nil
-			} else {
-				r.Service.AuthStrategySyncError = &tfTypes.AuthStrategySyncError{}
-				if resp.Service.AuthStrategySyncError.ControlPlaneError != nil {
-					r.Service.AuthStrategySyncError.ControlPlaneError = types.StringValue(string(*resp.Service.AuthStrategySyncError.ControlPlaneError))
-				} else {
-					r.Service.AuthStrategySyncError.ControlPlaneError = types.StringNull()
-				}
-				if resp.Service.AuthStrategySyncError.Info == nil {
-					r.Service.AuthStrategySyncError.Info = nil
-				} else {
-					r.Service.AuthStrategySyncError.Info = &tfTypes.Info{}
-					if resp.Service.AuthStrategySyncError.Info.AdditionalProperties == nil {
-						r.Service.AuthStrategySyncError.Info.AdditionalProperties = types.StringNull()
-					} else {
-						additionalPropertiesResult, _ := json.Marshal(resp.Service.AuthStrategySyncError.Info.AdditionalProperties)
-						r.Service.AuthStrategySyncError.Info.AdditionalProperties = types.StringValue(string(additionalPropertiesResult))
-					}
-					r.Service.AuthStrategySyncError.Info.Details = []tfTypes.Details{}
-					if len(r.Service.AuthStrategySyncError.Info.Details) > len(resp.Service.AuthStrategySyncError.Info.Details) {
-						r.Service.AuthStrategySyncError.Info.Details = r.Service.AuthStrategySyncError.Info.Details[:len(resp.Service.AuthStrategySyncError.Info.Details)]
-					}
-					for detailsCount, detailsItem := range resp.Service.AuthStrategySyncError.Info.Details {
-						var details tfTypes.Details
-						if detailsItem.AdditionalProperties == nil {
-							details.AdditionalProperties = types.StringNull()
-						} else {
-							additionalPropertiesResult1, _ := json.Marshal(detailsItem.AdditionalProperties)
-							details.AdditionalProperties = types.StringValue(string(additionalPropertiesResult1))
-						}
-						details.Message = make([]types.String, 0, len(detailsItem.Message))
-						for _, v := range detailsItem.Message {
-							details.Message = append(details.Message, types.StringValue(v))
-						}
-						details.Type = types.StringPointerValue(detailsItem.Type)
-						if detailsCount+1 > len(r.Service.AuthStrategySyncError.Info.Details) {
-							r.Service.AuthStrategySyncError.Info.Details = append(r.Service.AuthStrategySyncError.Info.Details, details)
-						} else {
-							r.Service.AuthStrategySyncError.Info.Details[detailsCount].AdditionalProperties = details.AdditionalProperties
-							r.Service.AuthStrategySyncError.Info.Details[detailsCount].Message = details.Message
-							r.Service.AuthStrategySyncError.Info.Details[detailsCount].Type = details.Type
-						}
-					}
-				}
-				r.Service.AuthStrategySyncError.Message = types.StringValue(resp.Service.AuthStrategySyncError.Message)
-			}
 			r.Service.ControlPlaneID = types.StringValue(resp.Service.ControlPlaneID)
 			r.Service.ID = types.StringValue(resp.Service.ID)
 		}

@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: e87f43a7a2316a40b53d3b8471fcfea5
+  docChecksum: bd27de1d26bf31cd727f6f50b8cb7450
   docVersion: 2.0.0
   speakeasyVersion: 1.555.3
   generationVersion: 2.620.2
@@ -10,16 +10,17 @@ management:
 features:
   terraform:
     additionalDependencies: 0.1.0
-    additionalProperties: 0.1.2
     constsAndDefaults: 0.2.1
     core: 3.41.10
     deprecations: 2.82.0
     globalSecurity: 2.81.12
     globalServerURLs: 2.82.2
+    ignores: 2.81.1
     inputOutputModels: 2.83.0
     nameOverrides: 2.81.3
     nullables: 0.0.0
     retries: 2.81.3
+    typeOverrides: 2.81.1
     unions: 2.81.17
 generatedFiles:
   - .gitattributes
@@ -441,7 +442,6 @@ generatedFiles:
   - internal/provider/types/applications.go
   - internal/provider/types/auth.go
   - internal/provider/types/auth_config.go
-  - internal/provider/types/auth_strategy_sync_error.go
   - internal/provider/types/aws_credentials.go
   - internal/provider/types/back_off.go
   - internal/provider/types/backend.go
@@ -469,7 +469,6 @@ generatedFiles:
   - internal/provider/types/dataplane_ref.go
   - internal/provider/types/default.go
   - internal/provider/types/delay.go
-  - internal/provider/types/details.go
   - internal/provider/types/detectors.go
   - internal/provider/types/dp_cert.go
   - internal/provider/types/endpoints.go
@@ -496,7 +495,6 @@ generatedFiles:
   - internal/provider/types/hostname_generators.go
   - internal/provider/types/http.go
   - internal/provider/types/http_filter.go
-  - internal/provider/types/info.go
   - internal/provider/types/issuer_ref.go
   - internal/provider/types/js.go
   - internal/provider/types/json.go
@@ -950,7 +948,6 @@ generatedFiles:
   - internal/sdk/models/shared/apiimplementation.go
   - internal/sdk/models/shared/apiimplementationresponse.go
   - internal/sdk/models/shared/apiimplementationservice.go
-  - internal/sdk/models/shared/apiimplementationserviceinput.go
   - internal/sdk/models/shared/apipublication.go
   - internal/sdk/models/shared/apipublicationresponse.go
   - internal/sdk/models/shared/apipublicationvisibility.go
@@ -1796,7 +1793,7 @@ examples:
         application/json: {"service": {"control_plane_id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "id": "7710d5c4-d902-410b-992f-18b814155b53"}}
       responses:
         "201":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "service": {"control_plane_id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "id": "7710d5c4-d902-410b-992f-18b814155b53", "auth_strategy_sync_error": {"control_plane_error": "control_plane_error_unavailable", "message": "Unable to connect to the control plane to update plugin"}}}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "service": {"control_plane_id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "id": "7710d5c4-d902-410b-992f-18b814155b53"}}
         "400":
           application/problem+json: {"status": 371505, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>"], "source": "body"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>"], "source": "body"}]}
         "401":
@@ -1815,7 +1812,7 @@ examples:
           implementationId: "032d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "service": {"control_plane_id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "id": "7710d5c4-d902-410b-992f-18b814155b53", "auth_strategy_sync_error": {"control_plane_error": "control_plane_error_unavailable", "message": "Unable to connect to the control plane to update plugin"}}}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "service": {"control_plane_id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "id": "7710d5c4-d902-410b-992f-18b814155b53"}}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":

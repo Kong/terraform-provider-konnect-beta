@@ -4,6 +4,7 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
@@ -46,6 +47,10 @@ func (r *APIResourceModel) ToSharedCreateAPIRequest(ctx context.Context) (*share
 		}
 		labels[labelsKey] = labelsInst
 	}
+	var attributes interface{}
+	if !r.Attributes.IsUnknown() && !r.Attributes.IsNull() {
+		_ = json.Unmarshal([]byte(r.Attributes.ValueString()), &attributes)
+	}
 	specContent := new(string)
 	if !r.SpecContent.IsUnknown() && !r.SpecContent.IsNull() {
 		*specContent = r.SpecContent.ValueString()
@@ -58,6 +63,7 @@ func (r *APIResourceModel) ToSharedCreateAPIRequest(ctx context.Context) (*share
 		Version:     version,
 		Slug:        slug,
 		Labels:      labels,
+		Attributes:  attributes,
 		SpecContent: specContent,
 	}
 
@@ -101,12 +107,17 @@ func (r *APIResourceModel) ToSharedUpdateAPIRequest(ctx context.Context) (*share
 		}
 		labels[labelsKey] = labelsInst
 	}
+	var attributes interface{}
+	if !r.Attributes.IsUnknown() && !r.Attributes.IsNull() {
+		_ = json.Unmarshal([]byte(r.Attributes.ValueString()), &attributes)
+	}
 	out := shared.UpdateAPIRequest{
 		Name:        name,
 		Description: description,
 		Version:     version,
 		Slug:        slug,
 		Labels:      labels,
+		Attributes:  attributes,
 	}
 
 	return &out, diags
@@ -166,6 +177,12 @@ func (r *APIResourceModel) RefreshFromSharedAPIResponseSchema(ctx context.Contex
 		r.APISpecIds = make([]types.String, 0, len(resp.APISpecIds))
 		for _, v := range resp.APISpecIds {
 			r.APISpecIds = append(r.APISpecIds, types.StringValue(v))
+		}
+		if resp.Attributes == nil {
+			r.Attributes = types.StringNull()
+		} else {
+			attributesResult, _ := json.Marshal(resp.Attributes)
+			r.Attributes = types.StringValue(string(attributesResult))
 		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		if resp.CurrentVersionSummary == nil {
