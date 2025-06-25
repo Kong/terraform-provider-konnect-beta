@@ -46,14 +46,8 @@ paths:
   /v3/portals:
     post:
       x-speakeasy-entity-operation: Portal#create
-      x-unstable: true
       summary: Create Portal
       description: >-
-        **Pre-release Endpoint**
-
-        This endpoint is currently in beta and is subject to change.
-
-
         Creates a new developer portal scoped in this region for this
         organization.
       operationId: create-portal
@@ -86,14 +80,8 @@ paths:
         x-speakeasy-match: id
     get:
       x-speakeasy-entity-operation: Portal#read
-      x-unstable: true
       summary: Fetch Portal
       description: >-
-        **Pre-release Endpoint**
-
-        This endpoint is currently in beta and is subject to change.
-
-
         Returns the configuration for a single developer portal, including the
         current visibility, access, and domain settings.
       operationId: get-portal
@@ -110,14 +98,8 @@ paths:
           $ref: '#/components/responses/NotFound'
     patch:
       x-speakeasy-entity-operation: Portal#update
-      x-unstable: true
       summary: Update Portal
       description: >-
-        **Pre-release Endpoint**
-
-        This endpoint is currently in beta and is subject to change.
-
-
         Updates the configuration for a single portal including the visibility,
         access, and custom domain settings.
       operationId: update-portal
@@ -144,7 +126,6 @@ paths:
           $ref: '#/components/responses/Conflict'
     delete:
       x-speakeasy-entity-operation: Portal#delete
-      x-unstable: true
       summary: Delete Portal
       parameters:
         - name: force
@@ -165,11 +146,7 @@ paths:
               - 'true'
               - 'false'
           x-speakeasy-name-override: force_destroy
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Deletes a single portal, along with all related entities.
+      description: Deletes a single portal, along with all related entities.
       operationId: delete-portal
       tags:
         - Portals
@@ -187,13 +164,8 @@ paths:
       - $ref: '#/components/parameters/PortalId'
     get:
       x-speakeasy-entity-operation: PortalCustomDomain#read
-      x-unstable: true
       summary: Get Custom Domain
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Get the custom domain associated to the portal.
+      description: Get the custom domain associated to the portal.
       operationId: get-portal-custom-domain
       tags:
         - Portal Custom Domains
@@ -208,14 +180,8 @@ paths:
           $ref: '#/components/responses/NotFound'
     post:
       x-speakeasy-entity-operation: PortalCustomDomain#create
-      x-unstable: true
       summary: Create Custom Domain
       description: >-
-        **Pre-release Endpoint**
-
-        This endpoint is currently in beta and is subject to change.
-
-
         Creates the custom domain associated with the portal. Only one custom
         domain can be associated with a portal at a time.
       operationId: create-portal-custom-domain
@@ -240,13 +206,8 @@ paths:
           $ref: '#/components/responses/NotFound'
     patch:
       x-speakeasy-entity-operation: PortalCustomDomain#update
-      x-unstable: true
       summary: Enable or Disable Domain
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Updates the portal domain associated with the portal.
+      description: Updates the portal domain associated with the portal.
       operationId: update-portal-custom-domain
       requestBody:
         $ref: '#/components/requestBodies/UpdatePortalCustomDomain'
@@ -267,14 +228,9 @@ paths:
           $ref: '#/components/responses/Forbidden'
     delete:
       x-speakeasy-entity-operation: PortalCustomDomain#delete
-      x-unstable: true
       operationId: delete-portal-custom-domain
       summary: Remove Domain
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Deletes the custom domain associated with the portal.
+      description: Deletes the custom domain associated with the portal.
       tags:
         - Portal Custom Domains
       responses:
@@ -285,13 +241,8 @@ paths:
   /v3/portals/{portalId}/customization:
     get:
       x-speakeasy-entity-operation: PortalCustomization#read
-      x-unstable: true
       summary: Get Customization
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Returns the portal customization options.
+      description: Returns the portal customization options.
       operationId: get-portal-customization
       parameters:
         - $ref: '#/components/parameters/PortalId'
@@ -308,13 +259,8 @@ paths:
           $ref: '#/components/responses/NotFound'
     put:
       x-speakeasy-entity-operation: PortalCustomization#create,update
-      x-unstable: true
       summary: Replace Customization
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Replace the portal customization options.
+      description: Replace the portal customization options.
       operationId: replace-portal-customization
       parameters:
         - $ref: '#/components/parameters/PortalId'
@@ -340,14 +286,8 @@ paths:
   /v3/portals/{portalId}/pages:
     post:
       x-speakeasy-entity-operation: PortalPage#create
-      x-unstable: true
       summary: Create Page
       description: >-
-        **Pre-release Endpoint**
-
-        This endpoint is currently in beta and is subject to change.
-
-
         Creates a new custom page for this portal. Custom pages can be used to
         display static content, documentation, or other information to
         developers. Title and Description properties may be provided in the
@@ -379,14 +319,8 @@ paths:
   /v3/portals/{portalId}/pages/{pageId}:
     get:
       x-speakeasy-entity-operation: PortalPage#read
-      x-unstable: true
       summary: Fetch Page
       description: >-
-        **Pre-release Endpoint**
-
-        This endpoint is currently in beta and is subject to change.
-
-
         Returns the configuration of a single custom page for this portal.
         Custom pages can be used to display static content, documentation, or
         other information to developers.
@@ -407,13 +341,8 @@ paths:
           $ref: '#/components/responses/NotFound'
     patch:
       x-speakeasy-entity-operation: PortalPage#update
-      x-unstable: true
       summary: Update Page
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Updates the configuration of a single custom page for this portal.
+      description: Updates the configuration of a single custom page for this portal.
       operationId: update-portal-page
       requestBody:
         $ref: '#/components/requestBodies/UpdatePortalPage'
@@ -439,13 +368,8 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       x-speakeasy-entity-operation: PortalPage#delete
-      x-unstable: true
       summary: Delete Page
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Deletes a single custom page for this portal.
+      description: Deletes a single custom page for this portal.
       operationId: delete-portal-page
       parameters:
         - $ref: '#/components/parameters/PortalId'
@@ -464,14 +388,8 @@ paths:
   /v3/portals/{portalId}/snippets:
     post:
       x-speakeasy-entity-operation: PortalSnippet#create
-      x-unstable: true
       summary: Create Snippet
       description: >-
-        **Pre-release Endpoint**
-
-        This endpoint is currently in beta and is subject to change.
-
-
         Creates a new custom snippet for this portal. Custom snippets can be
         used to display static content, documentation, or other information to
         developers. Title and Description properties may be provided in the
@@ -503,14 +421,8 @@ paths:
   /v3/portals/{portalId}/snippets/{snippetId}:
     get:
       x-speakeasy-entity-operation: PortalSnippet#read
-      x-unstable: true
       summary: Fetch Snippet
       description: >-
-        **Pre-release Endpoint**
-
-        This endpoint is currently in beta and is subject to change.
-
-
         Returns the configuration of a single custom snippet for this portal.
         Custom snippets can be used to display static content, documentation, or
         other information to developers.
@@ -531,13 +443,8 @@ paths:
           $ref: '#/components/responses/NotFound'
     patch:
       x-speakeasy-entity-operation: PortalSnippet#update
-      x-unstable: true
       summary: Update Snippet
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Updates the configuration of a single custom snippet for this portal.
+      description: Updates the configuration of a single custom snippet for this portal.
       operationId: update-portal-snippet
       requestBody:
         $ref: '#/components/requestBodies/UpdatePortalSnippet'
@@ -563,13 +470,8 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       x-speakeasy-entity-operation: PortalSnippet#delete
-      x-unstable: true
       summary: Delete Snippet
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Deletes a single custom snippet for this portal.
+      description: Deletes a single custom snippet for this portal.
       operationId: delete-portal-snippet
       parameters:
         - $ref: '#/components/parameters/PortalId'
@@ -589,15 +491,9 @@ paths:
     parameters:
       - $ref: '#/components/parameters/PortalId'
     get:
-      x-unstable: true
       x-speakeasy-entity-operation: PortalAuth#read
       summary: Get Auth Settings
       description: >-
-        **Pre-release Endpoint**
-
-        This endpoint is currently in beta and is subject to change.
-
-
         Returns the developer authentication configuration for a portal, which
         determines how developers can log in and how they are assigned to teams.
       operationId: get-portal-authentication-settings
@@ -609,15 +505,9 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
     patch:
-      x-unstable: true
       x-speakeasy-entity-operation: PortalAuth#create,update
       summary: Update Auth Settings
       description: >-
-        **Pre-release Endpoint**
-
-        This endpoint is currently in beta and is subject to change.
-
-
         Updates the developer authentication configuration for a portal.
         Developers can be allowed to login using basic auth (email & password)
         or use Single-Sign-On (SSO) through an OIDC Identity Provider (IdP).
@@ -645,7 +535,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/PortalId'
     post:
-      x-unstable: true
       x-speakeasy-entity-operation: PortalTeam#create
       summary: Create Team
       operationId: create-portal-team
@@ -669,11 +558,6 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/PortalCreateTeam'
       description: >-
-        **Pre-release Endpoint**
-
-        This endpoint is currently in beta and is subject to change.
-
-
         Creates a developer team in a portal. Developers can be added to teams
         to provide RBAC access to API products. Teams can be assigned roles that
         grant permissions to perform an action on a resource.
@@ -682,7 +566,6 @@ paths:
       - $ref: '#/components/parameters/TeamId'
       - $ref: '#/components/parameters/PortalId'
     get:
-      x-unstable: true
       x-speakeasy-entity-operation: PortalTeam#read
       summary: Get Team
       responses:
@@ -695,21 +578,12 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       operationId: get-portal-team
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Get an individual team.
+      description: Get an individual team.
       tags:
         - Portal Teams
     patch:
-      x-unstable: true
       x-speakeasy-entity-operation: PortalTeam#update
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Updates an individual developer team for a portal.
+      description: Updates an individual developer team for a portal.
       summary: Update Team
       operationId: update-portal-team
       responses:
@@ -726,16 +600,10 @@ paths:
       tags:
         - Portal Teams
     delete:
-      x-unstable: true
       x-speakeasy-entity-operation: PortalTeam#delete
       summary: Delete Team
       operationId: delete-portal-team
       description: >-
-        **Pre-release Endpoint**
-
-        This endpoint is currently in beta and is subject to change.
-
-
         Deletes a developer team from a portal. Deleting a team also deletes its
         assigned roles. Members of the team are not deleted, but they will lose
         any access provided through the team.
@@ -753,13 +621,8 @@ paths:
   /v3/apis:
     post:
       x-speakeasy-entity-operation: Api#create
-      x-unstable: true
       summary: Create API
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Creates an API.
+      description: Creates an API.
       operationId: create-api
       responses:
         '201':
@@ -795,13 +658,8 @@ paths:
         x-speakeasy-match: id
     get:
       x-speakeasy-entity-operation: Api#read
-      x-unstable: true
       summary: Fetch API
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Fetches an API.
+      description: Fetches an API.
       operationId: fetch-api
       responses:
         '200':
@@ -816,13 +674,8 @@ paths:
         - API
     patch:
       x-speakeasy-entity-operation: Api#update
-      x-unstable: true
       summary: Update API
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Updates an API.
+      description: Updates an API.
       operationId: update-api
       responses:
         '200':
@@ -847,13 +700,8 @@ paths:
         $ref: '#/components/requestBodies/UpdateApiRequest'
     delete:
       x-speakeasy-entity-operation: Api#delete
-      x-unstable: true
       summary: Delete API
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Deletes an API.
+      description: Deletes an API.
       operationId: delete-api
       responses:
         '204':
@@ -871,14 +719,8 @@ paths:
       - $ref: '#/components/parameters/ApiId'
     post:
       x-speakeasy-entity-operation: ApiDocument#create
-      x-unstable: true
       summary: Create API Document
-      description: >-
-        **Pre-release Endpoint**
-
-        This endpoint is currently in beta and is subject to change.
-
-
+      description: >
         Publish a new document attached to an API.
 
 
@@ -915,13 +757,8 @@ paths:
       - $ref: '#/components/parameters/DocumentId'
     get:
       x-speakeasy-entity-operation: ApiDocument#read
-      x-unstable: true
       summary: Fetch API Document
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Returns a document for the API.
+      description: Returns a document for the API.
       operationId: fetch-api-document
       responses:
         '200':
@@ -936,13 +773,8 @@ paths:
         - API Documentation
     patch:
       x-speakeasy-entity-operation: ApiDocument#update
-      x-unstable: true
       summary: Update API Document
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Updates a document for an API.
+      description: Updates a document for an API.
       operationId: update-api-document
       responses:
         '200':
@@ -969,13 +801,8 @@ paths:
         $ref: '#/components/requestBodies/UpdateApiDocumentRequest'
     delete:
       x-speakeasy-entity-operation: ApiDocument#delete
-      x-unstable: true
       summary: Delete API Documentation
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Removes a document from an API.
+      description: Removes a document from an API.
       operationId: delete-api-document
       responses:
         '204':
@@ -993,15 +820,9 @@ paths:
       - $ref: '#/components/parameters/ApiId'
     post:
       x-speakeasy-entity-operation: ApiSpecification#create
-      x-unstable: true
       deprecated: true
       summary: Create API Specification
-      description: >-
-        **Pre-release Endpoint**
-
-        This endpoint is currently in beta and is subject to change.
-
-
+      description: >
         Creates a specification (OpenAPI or AsyncAPI) for an API.
 
         **Note:** You can only have one specification for an API. This endpoint
@@ -1036,16 +857,10 @@ paths:
       - $ref: '#/components/parameters/SpecId'
     get:
       x-speakeasy-entity-operation: ApiSpecification#read
-      x-unstable: true
       deprecated: true
       summary: Fetch API Specification
-      description: >-
-        **Pre-release Endpoint**
-
-        This endpoint is currently in beta and is subject to change.
-
-
-        Fetches the specification (OpenAPI or AsyncAPI) of an API. 
+      description: >
+        Fetches the specification (OpenAPI or AsyncAPI) of an API.
 
         **Note:** This endpoint is deprecated and will be removed: use /versions
         instead.
@@ -1063,15 +878,9 @@ paths:
         - API Specification
     patch:
       x-speakeasy-entity-operation: ApiSpecification#update
-      x-unstable: true
       deprecated: true
       summary: Update API Specification
-      description: >-
-        **Pre-release Endpoint**
-
-        This endpoint is currently in beta and is subject to change.
-
-
+      description: >
         Updates the specification (OpenAPI or AsyncAPI) of an API.
 
         **Note:** This endpoint is deprecated and will be removed: use /versions
@@ -1102,15 +911,9 @@ paths:
         $ref: '#/components/requestBodies/UpdateApiSpecRequest'
     delete:
       x-speakeasy-entity-operation: ApiSpecification#delete
-      x-unstable: true
       deprecated: true
       summary: Delete API Specification
-      description: >-
-        **Pre-release Endpoint**
-
-        This endpoint is currently in beta and is subject to change.
-
-
+      description: >
         Deletes the specification (OpenAPI or AsyncAPI) of an API.
 
         **Note:** This endpoint is deprecated and will be removed: use /versions
@@ -1132,12 +935,8 @@ paths:
       - $ref: '#/components/parameters/ApiId'
     post:
       x-speakeasy-entity-operation: ApiVersion#create
-      x-unstable: true
       summary: Create API Version
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
+      description: |
         Creates a version (OpenAPI or AsyncAPI) for an API.
       operationId: create-api-version
       responses:
@@ -1169,13 +968,8 @@ paths:
       - $ref: '#/components/parameters/VersionId'
     get:
       x-speakeasy-entity-operation: ApiVersion#read
-      x-unstable: true
       summary: Fetch API Version
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Fetches the version (OpenAPI or AsyncAPI) of an API.
+      description: Fetches the version (OpenAPI or AsyncAPI) of an API.
       operationId: fetch-api-version
       responses:
         '200':
@@ -1190,13 +984,8 @@ paths:
         - API Version
     patch:
       x-speakeasy-entity-operation: ApiVersion#update
-      x-unstable: true
       summary: Update API Version
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Updates the version (OpenAPI or AsyncAPI) of an API.
+      description: Updates the version (OpenAPI or AsyncAPI) of an API.
       operationId: update-api-version
       responses:
         '200':
@@ -1223,13 +1012,8 @@ paths:
         $ref: '#/components/requestBodies/UpdateApiVersionRequest'
     delete:
       x-speakeasy-entity-operation: ApiVersion#delete
-      x-unstable: true
       summary: Delete API Version
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Deletes the version (OpenAPI or AsyncAPI) of an API.
+      description: Deletes the version (OpenAPI or AsyncAPI) of an API.
       operationId: delete-api-version
       responses:
         '204':
@@ -1248,12 +1032,8 @@ paths:
       - $ref: '#/components/parameters/PortalId'
     put:
       x-speakeasy-entity-operation: ApiPublication#create,update
-      x-unstable: true
       summary: Publish API
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
+      description: |
         Publish an API to a portal.
       operationId: publish-api-to-portal
       responses:
@@ -1273,12 +1053,8 @@ paths:
         $ref: '#/components/requestBodies/PutApiPublicationRequest'
     get:
       x-speakeasy-entity-operation: ApiPublication#read
-      x-unstable: true
       summary: Fetch Publication
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
+      description: |
         Retrieve an API's publication in a portal.
         If the API is not published to the portal, a 404 response is returned.
       operationId: fetch-publication
@@ -1295,13 +1071,8 @@ paths:
         - API Publication
     delete:
       x-speakeasy-entity-operation: ApiPublication#delete
-      x-unstable: true
       summary: Delete Publication
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Unpublish an API from a portal.
+      description: Unpublish an API from a portal.
       operationId: delete-publication
       responses:
         '204':
@@ -1319,12 +1090,8 @@ paths:
       - $ref: '#/components/parameters/ApiId'
     post:
       x-speakeasy-entity-operation: ApiImplementation#create
-      x-unstable: true
       summary: Create API Implementation
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
+      description: |
         Creates an implementation for an API.
         An API can be implemented by a single Gateway Service.
       operationId: create-api-implementation
@@ -1355,13 +1122,8 @@ paths:
       - $ref: '#/components/parameters/ImplementationId'
     get:
       x-speakeasy-entity-operation: ApiImplementation#read
-      x-unstable: true
       summary: Fetch API Implementation
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Retrieve a gateway implementation for this API
+      description: Retrieve a gateway implementation for this API
       operationId: fetch-api-implementation
       responses:
         '200':
@@ -1376,13 +1138,8 @@ paths:
         - API Implementation
     delete:
       x-speakeasy-entity-operation: ApiImplementation#delete
-      x-unstable: true
       summary: Delete API Implementation
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Unlink a gateway implementation from this API
+      description: Unlink a gateway implementation from this API
       operationId: delete-api-implementation
       responses:
         '204':
@@ -6173,10 +5930,6 @@ components:
             title: API
             type: object
             additionalProperties: false
-            x-property-annotations:
-              attributes:
-                - x-unstable
-                - x-internal
             properties:
               id:
                 type: string
@@ -6262,6 +6015,8 @@ components:
                         portal's `name` in Portal API.
               labels:
                 $ref: '#/components/schemas/Labels'
+              attributes:
+                $ref: '#/components/schemas/ApiAttributes'
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
@@ -6416,10 +6171,6 @@ components:
             title: API
             type: object
             additionalProperties: false
-            x-property-annotations:
-              attributes:
-                - x-unstable
-                - x-internal
             properties:
               id:
                 type: string
@@ -6505,6 +6256,8 @@ components:
                         portal's `name` in Portal API.
               labels:
                 $ref: '#/components/schemas/LabelsUpdate'
+              attributes:
+                $ref: '#/components/schemas/ApiAttributes'
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
@@ -9167,10 +8920,6 @@ components:
       title: API
       type: object
       additionalProperties: false
-      x-property-annotations:
-        attributes:
-          - x-unstable
-          - x-internal
       properties:
         id:
           type: string
@@ -9254,6 +9003,8 @@ components:
                   portal's `name` in Portal API.
         labels:
           $ref: '#/components/schemas/Labels'
+        attributes:
+          $ref: '#/components/schemas/ApiAttributes'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -9583,6 +9334,7 @@ components:
           format: uuid
           example: 7710d5c4-d902-410b-992f-18b814155b53
         auth_strategy_sync_error:
+          x-speakeasy-ignore: true
           readOnly: true
           allOf:
             - $ref: '#/components/schemas/AuthStrategyApiSyncError'
@@ -9600,6 +9352,29 @@ components:
           $ref: '#/components/schemas/UpdatedAt'
         service:
           $ref: '#/components/schemas/ApiImplementationService'
+    ApiAttributes:
+      x-speakeasy-type-override: any
+      title: API Attributes
+      description: A set of attributes that describe the API
+      type: object
+      example:
+        env:
+          - production
+        domains:
+          - web
+          - mobile
+      additionalProperties:
+        nullable: true
+        description: >-
+          Set of attributes with unique keys. Each key can include lowercase
+          letters, numbers, hyphens, and underscores.
+        type: array
+        minItems: 1
+        maxItems: 20
+        items:
+          type: string
+          minLength: 1
+          maxLength: 512
     ApiSpecType:
       title: API Spec Type
       type: string
