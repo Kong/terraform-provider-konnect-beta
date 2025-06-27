@@ -1,0 +1,1 @@
+terraform import konnect_resource_mapping.my_konnect_resource_mapping "d277faad-ed4e-4c56-a0fb-acce065dee34"
