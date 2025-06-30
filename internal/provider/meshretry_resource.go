@@ -671,13 +671,13 @@ func (r *MeshRetryResource) Create(ctx context.Context, req resource.CreateReque
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateMeshRetryRequest(ctx)
+	request, requestDiags := data.ToOperationsPutMeshRetryRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.MeshRetry.CreateMeshRetry(ctx, *request)
+	res, err := r.client.MeshRetry.PutMeshRetry(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -689,7 +689,10 @@ func (r *MeshRetryResource) Create(ctx context.Context, req resource.CreateReque
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 201 {
+	switch res.StatusCode {
+	case 200, 201:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -822,13 +825,13 @@ func (r *MeshRetryResource) Update(ctx context.Context, req resource.UpdateReque
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateMeshRetryRequest(ctx)
+	request, requestDiags := data.ToOperationsPutMeshRetryRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.MeshRetry.UpdateMeshRetry(ctx, *request)
+	res, err := r.client.MeshRetry.PutMeshRetry(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -840,7 +843,10 @@ func (r *MeshRetryResource) Update(ctx context.Context, req resource.UpdateReque
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 201:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

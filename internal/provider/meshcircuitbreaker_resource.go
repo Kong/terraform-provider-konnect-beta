@@ -1239,13 +1239,13 @@ func (r *MeshCircuitBreakerResource) Create(ctx context.Context, req resource.Cr
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateMeshCircuitBreakerRequest(ctx)
+	request, requestDiags := data.ToOperationsPutMeshCircuitBreakerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.MeshCircuitBreaker.CreateMeshCircuitBreaker(ctx, *request)
+	res, err := r.client.MeshCircuitBreaker.PutMeshCircuitBreaker(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1257,7 +1257,10 @@ func (r *MeshCircuitBreakerResource) Create(ctx context.Context, req resource.Cr
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 201 {
+	switch res.StatusCode {
+	case 200, 201:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -1390,13 +1393,13 @@ func (r *MeshCircuitBreakerResource) Update(ctx context.Context, req resource.Up
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateMeshCircuitBreakerRequest(ctx)
+	request, requestDiags := data.ToOperationsPutMeshCircuitBreakerRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.MeshCircuitBreaker.UpdateMeshCircuitBreaker(ctx, *request)
+	res, err := r.client.MeshCircuitBreaker.PutMeshCircuitBreaker(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1408,7 +1411,10 @@ func (r *MeshCircuitBreakerResource) Update(ctx context.Context, req resource.Up
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 201:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

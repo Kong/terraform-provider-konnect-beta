@@ -27,11 +27,6 @@ type APIDocumentResponse struct {
 	// Specify the `id` of another API Document as the `parent_document_id` to add some heirarchy do your documents.
 	//
 	ParentDocumentID *string `json:"parent_document_id"`
-	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
-	//
-	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
-	//
-	Labels map[string]*string `json:"labels"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
@@ -89,13 +84,6 @@ func (o *APIDocumentResponse) GetParentDocumentID() *string {
 		return nil
 	}
 	return o.ParentDocumentID
-}
-
-func (o *APIDocumentResponse) GetLabels() map[string]*string {
-	if o == nil {
-		return map[string]*string{}
-	}
-	return o.Labels
 }
 
 func (o *APIDocumentResponse) GetCreatedAt() time.Time {

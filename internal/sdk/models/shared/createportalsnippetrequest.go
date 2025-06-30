@@ -2,10 +2,6 @@
 
 package shared
 
-import (
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
-)
-
 // CreatePortalSnippetRequest - Create a snippet in a portal.
 type CreatePortalSnippetRequest struct {
 	// The unique name of a snippet in a portal.
@@ -14,22 +10,13 @@ type CreatePortalSnippetRequest struct {
 	Title *string `json:"title,omitempty"`
 	// The renderable markdown content of a page in a portal.
 	Content string `json:"content"`
-	// Whether a page is publicly accessible to non-authenticated users.
-	Visibility *string `default:"private" json:"visibility"`
-	// Whether the resource is visible on a given portal. Defaults to false.
+	// Whether a snippet is publicly accessible to non-authenticated users.
+	// If not provided, the default_page_visibility value of the portal will be used.
+	//
+	Visibility *SnippetVisibilityStatus `json:"visibility,omitempty"`
+	// Whether the resource is visible on a given portal. Defaults to unpublished.
 	Status      *PublishedStatus `json:"status,omitempty"`
 	Description *string          `json:"description,omitempty"`
-}
-
-func (c CreatePortalSnippetRequest) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CreatePortalSnippetRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
-		return err
-	}
-	return nil
 }
 
 func (o *CreatePortalSnippetRequest) GetName() string {
@@ -53,7 +40,7 @@ func (o *CreatePortalSnippetRequest) GetContent() string {
 	return o.Content
 }
 
-func (o *CreatePortalSnippetRequest) GetVisibility() *string {
+func (o *CreatePortalSnippetRequest) GetVisibility() *SnippetVisibilityStatus {
 	if o == nil {
 		return nil
 	}

@@ -4,15 +4,19 @@ package shared
 
 // UpdatePortalPageRequest - Update a page in a portal.
 type UpdatePortalPageRequest struct {
-	// The slug of a page in a portal. Is used to compute the full path /slug1/slug2/slug3.
+	// The slug of a page in a portal, used to compute its full URL path within the portal hierarchy.
+	// When a page has a `parent_page_id`, its full path is built by joining the parent’s slug with its own.
+	// For example, if a parent page has the slug `slug1` and this page’s slug is `slug2`, the resulting path will be `/slug1/slug2`.
+	// This enables nested page structures like `/slug1/slug2/slug3`.
+	//
 	Slug *string `json:"slug,omitempty"`
 	// The title of a page in a portal.
 	Title *string `json:"title,omitempty"`
 	// The renderable markdown content of a page in a portal.
 	Content *string `json:"content,omitempty"`
-	// Whether the resource is publicly accessible to non-authenticated users. Defaults to private.
+	// Whether the resource is publicly accessible to non-authenticated users.
 	Visibility *VisibilityStatus `json:"visibility,omitempty"`
-	// Whether the resource is visible on a given portal. Defaults to false.
+	// Whether the resource is visible on a given portal. Defaults to unpublished.
 	Status      *PublishedStatus `json:"status,omitempty"`
 	Description *string          `json:"description,omitempty"`
 	// Pages may be rendered as a tree of files.

@@ -26,9 +26,9 @@ func (r *PortalSnippetResourceModel) ToSharedCreatePortalSnippetRequest(ctx cont
 	var content string
 	content = r.Content.ValueString()
 
-	visibility := new(string)
+	visibility := new(shared.SnippetVisibilityStatus)
 	if !r.Visibility.IsUnknown() && !r.Visibility.IsNull() {
-		*visibility = r.Visibility.ValueString()
+		*visibility = shared.SnippetVisibilityStatus(r.Visibility.ValueString())
 	} else {
 		visibility = nil
 	}

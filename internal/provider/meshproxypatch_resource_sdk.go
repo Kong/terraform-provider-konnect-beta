@@ -447,7 +447,7 @@ func (r *MeshProxyPatchResourceModel) ToSharedMeshProxyPatchItemInput(ctx contex
 	return &out, diags
 }
 
-func (r *MeshProxyPatchResourceModel) ToOperationsCreateMeshProxyPatchRequest(ctx context.Context) (*operations.CreateMeshProxyPatchRequest, diag.Diagnostics) {
+func (r *MeshProxyPatchResourceModel) ToOperationsPutMeshProxyPatchRequest(ctx context.Context) (*operations.PutMeshProxyPatchRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -466,36 +466,7 @@ func (r *MeshProxyPatchResourceModel) ToOperationsCreateMeshProxyPatchRequest(ct
 		return nil, diags
 	}
 
-	out := operations.CreateMeshProxyPatchRequest{
-		CpID:               cpID,
-		Mesh:               mesh,
-		Name:               name,
-		MeshProxyPatchItem: *meshProxyPatchItem,
-	}
-
-	return &out, diags
-}
-
-func (r *MeshProxyPatchResourceModel) ToOperationsUpdateMeshProxyPatchRequest(ctx context.Context) (*operations.UpdateMeshProxyPatchRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	meshProxyPatchItem, meshProxyPatchItemDiags := r.ToSharedMeshProxyPatchItemInput(ctx)
-	diags.Append(meshProxyPatchItemDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateMeshProxyPatchRequest{
+	out := operations.PutMeshProxyPatchRequest{
 		CpID:               cpID,
 		Mesh:               mesh,
 		Name:               name,

@@ -41,23 +41,12 @@ func (r *APIDocumentResourceModel) ToSharedCreateAPIDocumentRequest(ctx context.
 	} else {
 		parentDocumentID = nil
 	}
-	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
-		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
-		} else {
-			labelsInst = nil
-		}
-		labels[labelsKey] = labelsInst
-	}
 	out := shared.CreateAPIDocumentRequest{
 		Content:          content,
 		Title:            title,
 		Slug:             slug,
 		Status:           status,
 		ParentDocumentID: parentDocumentID,
-		Labels:           labels,
 	}
 
 	return &out, diags
@@ -117,23 +106,12 @@ func (r *APIDocumentResourceModel) ToSharedAPIDocument(ctx context.Context) (*sh
 	} else {
 		parentDocumentID = nil
 	}
-	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
-		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
-		} else {
-			labelsInst = nil
-		}
-		labels[labelsKey] = labelsInst
-	}
 	out := shared.APIDocument{
 		Content:          content,
 		Title:            title,
 		Slug:             slug,
 		Status:           status,
 		ParentDocumentID: parentDocumentID,
-		Labels:           labels,
 	}
 
 	return &out, diags
@@ -205,12 +183,6 @@ func (r *APIDocumentResourceModel) RefreshFromSharedAPIDocumentResponse(ctx cont
 		r.Content = types.StringValue(resp.Content)
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.ID = types.StringValue(resp.ID)
-		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String, len(resp.Labels))
-			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringPointerValue(value)
-			}
-		}
 		r.ParentDocumentID = types.StringPointerValue(resp.ParentDocumentID)
 		r.Slug = types.StringValue(resp.Slug)
 		if resp.Status != nil {

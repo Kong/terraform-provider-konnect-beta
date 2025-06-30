@@ -514,7 +514,7 @@ func (r *MeshGlobalRateLimitResourceModel) ToSharedMeshGlobalRateLimitItemInput(
 	return &out, diags
 }
 
-func (r *MeshGlobalRateLimitResourceModel) ToOperationsCreateMeshGlobalRateLimitRequest(ctx context.Context) (*operations.CreateMeshGlobalRateLimitRequest, diag.Diagnostics) {
+func (r *MeshGlobalRateLimitResourceModel) ToOperationsPutMeshGlobalRateLimitRequest(ctx context.Context) (*operations.PutMeshGlobalRateLimitRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -533,36 +533,7 @@ func (r *MeshGlobalRateLimitResourceModel) ToOperationsCreateMeshGlobalRateLimit
 		return nil, diags
 	}
 
-	out := operations.CreateMeshGlobalRateLimitRequest{
-		CpID:                    cpID,
-		Mesh:                    mesh,
-		Name:                    name,
-		MeshGlobalRateLimitItem: *meshGlobalRateLimitItem,
-	}
-
-	return &out, diags
-}
-
-func (r *MeshGlobalRateLimitResourceModel) ToOperationsUpdateMeshGlobalRateLimitRequest(ctx context.Context) (*operations.UpdateMeshGlobalRateLimitRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	meshGlobalRateLimitItem, meshGlobalRateLimitItemDiags := r.ToSharedMeshGlobalRateLimitItemInput(ctx)
-	diags.Append(meshGlobalRateLimitItemDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateMeshGlobalRateLimitRequest{
+	out := operations.PutMeshGlobalRateLimitRequest{
 		CpID:                    cpID,
 		Mesh:                    mesh,
 		Name:                    name,

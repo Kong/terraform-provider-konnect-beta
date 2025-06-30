@@ -526,7 +526,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) ToSharedMeshLoadBalancingStrate
 	return &out, diags
 }
 
-func (r *MeshLoadBalancingStrategyResourceModel) ToOperationsCreateMeshLoadBalancingStrategyRequest(ctx context.Context) (*operations.CreateMeshLoadBalancingStrategyRequest, diag.Diagnostics) {
+func (r *MeshLoadBalancingStrategyResourceModel) ToOperationsPutMeshLoadBalancingStrategyRequest(ctx context.Context) (*operations.PutMeshLoadBalancingStrategyRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -545,36 +545,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) ToOperationsCreateMeshLoadBalan
 		return nil, diags
 	}
 
-	out := operations.CreateMeshLoadBalancingStrategyRequest{
-		CpID:                          cpID,
-		Mesh:                          mesh,
-		Name:                          name,
-		MeshLoadBalancingStrategyItem: *meshLoadBalancingStrategyItem,
-	}
-
-	return &out, diags
-}
-
-func (r *MeshLoadBalancingStrategyResourceModel) ToOperationsUpdateMeshLoadBalancingStrategyRequest(ctx context.Context) (*operations.UpdateMeshLoadBalancingStrategyRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	meshLoadBalancingStrategyItem, meshLoadBalancingStrategyItemDiags := r.ToSharedMeshLoadBalancingStrategyItemInput(ctx)
-	diags.Append(meshLoadBalancingStrategyItemDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateMeshLoadBalancingStrategyRequest{
+	out := operations.PutMeshLoadBalancingStrategyRequest{
 		CpID:                          cpID,
 		Mesh:                          mesh,
 		Name:                          name,
