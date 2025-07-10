@@ -15,11 +15,8 @@ APIDocument Resource
 ```terraform
 resource "konnect_api_document" "my_apidocument" {
   provider = konnect-beta
-  api_id  = "9f5061ce-78f6-4452-9108-ad7c02821fd5"
-  content = "...my_content..."
-  labels = {
-    key = "value"
-  }
+  api_id             = "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+  content            = "...my_content..."
   parent_document_id = "b689d9da-f357-4687-8303-ec1c14d44e37"
   slug               = "api-document"
   status             = "published"
@@ -37,9 +34,6 @@ resource "konnect_api_document" "my_apidocument" {
 
 ### Optional
 
-- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
-
-Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `parent_document_id` (String) API Documents may be rendered as a tree of files.
 
 Specify the `id` of another API Document as the `parent_document_id` to add some heirarchy do your documents.

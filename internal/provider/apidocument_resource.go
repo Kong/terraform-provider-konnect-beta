@@ -37,16 +37,15 @@ type APIDocumentResource struct {
 
 // APIDocumentResourceModel describes the resource data model.
 type APIDocumentResourceModel struct {
-	APIID            types.String            `tfsdk:"api_id"`
-	Content          types.String            `tfsdk:"content"`
-	CreatedAt        types.String            `tfsdk:"created_at"`
-	ID               types.String            `tfsdk:"id"`
-	Labels           map[string]types.String `tfsdk:"labels"`
-	ParentDocumentID types.String            `tfsdk:"parent_document_id"`
-	Slug             types.String            `tfsdk:"slug"`
-	Status           types.String            `tfsdk:"status"`
-	Title            types.String            `tfsdk:"title"`
-	UpdatedAt        types.String            `tfsdk:"updated_at"`
+	APIID            types.String `tfsdk:"api_id"`
+	Content          types.String `tfsdk:"content"`
+	CreatedAt        types.String `tfsdk:"created_at"`
+	ID               types.String `tfsdk:"id"`
+	ParentDocumentID types.String `tfsdk:"parent_document_id"`
+	Slug             types.String `tfsdk:"slug"`
+	Status           types.String `tfsdk:"status"`
+	Title            types.String `tfsdk:"title"`
+	UpdatedAt        types.String `tfsdk:"updated_at"`
 }
 
 func (r *APIDocumentResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -78,14 +77,6 @@ func (r *APIDocumentResource) Schema(ctx context.Context, req resource.SchemaReq
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The API document identifier.`,
-			},
-			"labels": schema.MapAttribute{
-				Computed:    true,
-				Optional:    true,
-				ElementType: types.StringType,
-				MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
-					`` + "\n" +
-					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
 			"parent_document_id": schema.StringAttribute{
 				Computed: true,

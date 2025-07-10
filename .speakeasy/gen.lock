@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: bd27de1d26bf31cd727f6f50b8cb7450
+  docChecksum: 704872f2c54970d164c493e7edefca5b
   docVersion: 2.0.0
   speakeasyVersion: 1.555.3
   generationVersion: 2.620.2
@@ -1597,10 +1597,10 @@ examples:
         path:
           apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
       requestBody:
-        application/json: {"content": "<value>", "title": "API Document", "slug": "api-document", "status": "unpublished", "parent_document_id": null, "labels": {"env": "test"}}
+        application/json: {"content": "<value>", "title": "API Document", "slug": "api-document", "status": "unpublished", "parent_document_id": null}
       responses:
         "201":
-          application/json: {"id": "de5c9818-be5c-42e6-b514-e3d4bc30ddeb", "content": "<value>", "title": "API Document", "slug": "api-document", "status": "unpublished", "parent_document_id": null, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "de5c9818-be5c-42e6-b514-e3d4bc30ddeb", "content": "<value>", "title": "API Document", "slug": "api-document", "status": "unpublished", "parent_document_id": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 418392, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value 1>"], "source": "body"}]}
         "401":
@@ -1621,7 +1621,7 @@ examples:
           documentId: "de5c9818-be5c-42e6-b514-e3d4bc30ddeb"
       responses:
         "200":
-          application/json: {"id": "de5c9818-be5c-42e6-b514-e3d4bc30ddeb", "content": "<value>", "title": "API Document", "slug": "api-document", "status": "unpublished", "parent_document_id": null, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "de5c9818-be5c-42e6-b514-e3d4bc30ddeb", "content": "<value>", "title": "API Document", "slug": "api-document", "status": "unpublished", "parent_document_id": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -1635,10 +1635,10 @@ examples:
           apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
           documentId: "de5c9818-be5c-42e6-b514-e3d4bc30ddeb"
       requestBody:
-        application/json: {"title": "API Document", "slug": "api-document", "status": "unpublished", "parent_document_id": null, "labels": {"env": "test"}}
+        application/json: {"title": "API Document", "slug": "api-document", "status": "unpublished", "parent_document_id": null}
       responses:
         "200":
-          application/json: {"id": "de5c9818-be5c-42e6-b514-e3d4bc30ddeb", "content": "<value>", "title": "API Document", "slug": "api-document", "status": "unpublished", "parent_document_id": null, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "de5c9818-be5c-42e6-b514-e3d4bc30ddeb", "content": "<value>", "title": "API Document", "slug": "api-document", "status": "unpublished", "parent_document_id": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 98738, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": [], "source": "body"}]}
         "401":

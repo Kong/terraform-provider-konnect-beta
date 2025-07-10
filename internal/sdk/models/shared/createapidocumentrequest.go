@@ -23,11 +23,6 @@ type CreateAPIDocumentRequest struct {
 	// Specify the `id` of another API Document as the `parent_document_id` to add some heirarchy do your documents.
 	//
 	ParentDocumentID *string `json:"parent_document_id,omitempty"`
-	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
-	//
-	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
-	//
-	Labels map[string]*string `json:"labels,omitempty"`
 }
 
 func (c CreateAPIDocumentRequest) MarshalJSON() ([]byte, error) {
@@ -74,11 +69,4 @@ func (o *CreateAPIDocumentRequest) GetParentDocumentID() *string {
 		return nil
 	}
 	return o.ParentDocumentID
-}
-
-func (o *CreateAPIDocumentRequest) GetLabels() map[string]*string {
-	if o == nil {
-		return nil
-	}
-	return o.Labels
 }

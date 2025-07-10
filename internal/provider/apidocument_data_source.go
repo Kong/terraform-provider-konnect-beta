@@ -27,16 +27,15 @@ type APIDocumentDataSource struct {
 
 // APIDocumentDataSourceModel describes the data model.
 type APIDocumentDataSourceModel struct {
-	APIID            types.String            `tfsdk:"api_id"`
-	Content          types.String            `tfsdk:"content"`
-	CreatedAt        types.String            `tfsdk:"created_at"`
-	ID               types.String            `tfsdk:"id"`
-	Labels           map[string]types.String `tfsdk:"labels"`
-	ParentDocumentID types.String            `tfsdk:"parent_document_id"`
-	Slug             types.String            `tfsdk:"slug"`
-	Status           types.String            `tfsdk:"status"`
-	Title            types.String            `tfsdk:"title"`
-	UpdatedAt        types.String            `tfsdk:"updated_at"`
+	APIID            types.String `tfsdk:"api_id"`
+	Content          types.String `tfsdk:"content"`
+	CreatedAt        types.String `tfsdk:"created_at"`
+	ID               types.String `tfsdk:"id"`
+	ParentDocumentID types.String `tfsdk:"parent_document_id"`
+	Slug             types.String `tfsdk:"slug"`
+	Status           types.String `tfsdk:"status"`
+	Title            types.String `tfsdk:"title"`
+	UpdatedAt        types.String `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -65,13 +64,6 @@ func (r *APIDocumentDataSource) Schema(ctx context.Context, req datasource.Schem
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The API document identifier.`,
-			},
-			"labels": schema.MapAttribute{
-				Computed:    true,
-				ElementType: types.StringType,
-				MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
-					`` + "\n" +
-					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
 			"parent_document_id": schema.StringAttribute{
 				Computed: true,

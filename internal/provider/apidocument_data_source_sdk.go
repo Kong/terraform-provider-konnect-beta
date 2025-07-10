@@ -35,12 +35,6 @@ func (r *APIDocumentDataSourceModel) RefreshFromSharedAPIDocumentResponse(ctx co
 		r.Content = types.StringValue(resp.Content)
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.ID = types.StringValue(resp.ID)
-		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String, len(resp.Labels))
-			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringPointerValue(value)
-			}
-		}
 		r.ParentDocumentID = types.StringPointerValue(resp.ParentDocumentID)
 		r.Slug = types.StringValue(resp.Slug)
 		if resp.Status != nil {
