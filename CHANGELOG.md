@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.1
+> Released on 2025/07/10
+
+### BREAKING CHANGES
+* `labels` field is now removed from `konnect_api_document`.
+
 ## 0.7.0
 > Released on 2025/06/25
 

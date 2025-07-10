@@ -6155,8 +6155,6 @@ components:
                 $ref: '#/components/schemas/ApiDocumentStatus'
               parent_document_id:
                 $ref: '#/components/schemas/ApiDocumentParentDocumentId'
-              labels:
-                $ref: '#/components/schemas/Labels'
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
@@ -6925,8 +6923,6 @@ components:
                 $ref: '#/components/schemas/ApiDocumentStatus'
               parent_document_id:
                 $ref: '#/components/schemas/ApiDocumentParentDocumentId'
-              labels:
-                $ref: '#/components/schemas/Labels'
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
@@ -6938,7 +6934,6 @@ components:
               - slug
               - status
               - content
-              - labels
               - updated_at
               - created_at
     ApiSpecResponse:
@@ -9122,8 +9117,6 @@ components:
           $ref: '#/components/schemas/ApiDocumentStatus'
         parent_document_id:
           $ref: '#/components/schemas/ApiDocumentParentDocumentId'
-        labels:
-          $ref: '#/components/schemas/Labels'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
