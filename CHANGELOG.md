@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.2
+> Released on 2025/07/11
+
+### Bug Fixes
+* fix default mesh hook that did not set features (MeshCreation, HostnameGeneratorCreation) and "skip-initial-policies" for a new Mesh Control Plane and Mesh
+
 ## 0.7.1
 > Released on 2025/07/10
 

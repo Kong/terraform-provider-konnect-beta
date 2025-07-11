@@ -12,6 +12,9 @@ jobs:
           go-version-file: "go.mod"
           cache: true
       - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3
+      - name: Run unit tests
+        run: |
+          make unit-test
       - name: Run tests
         env:
           KONNECT_SPAT: ${{ secrets.KONNECT_SPAT }}
