@@ -2,11 +2,11 @@ module github.com/kong/terraform-provider-konnect-beta
 
 go 1.24.1
 
-toolchain go1.24.3
+toolchain go1.24.4
 
 require (
 	github.com/Kong/shared-speakeasy/customtypes v0.2.3
-	github.com/Kong/shared-speakeasy/hooks/mesh_defaults v0.0.3
+	github.com/Kong/shared-speakeasy/hooks/mesh_defaults v0.0.4
 	github.com/Kong/shared-speakeasy/planmodifiers/arbitrary_json v0.0.1
 	github.com/Kong/shared-speakeasy/planmodifiers/suppress_zero_null v0.0.1
 	github.com/Kong/shared-speakeasy/tfbuilder v0.0.4
