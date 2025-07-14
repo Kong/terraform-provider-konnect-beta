@@ -13,37 +13,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshGatewayListDataSourceModel) ToOperationsGetMeshGatewayListRequest(ctx context.Context) (*operations.GetMeshGatewayListRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	offset := new(int64)
-	if !r.Offset.IsUnknown() && !r.Offset.IsNull() {
-		*offset = r.Offset.ValueInt64()
-	} else {
-		offset = nil
-	}
-	size := new(int64)
-	if !r.Size.IsUnknown() && !r.Size.IsNull() {
-		*size = r.Size.ValueInt64()
-	} else {
-		size = nil
-	}
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	out := operations.GetMeshGatewayListRequest{
-		CpID:   cpID,
-		Offset: offset,
-		Size:   size,
-		Mesh:   mesh,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshGatewayListDataSourceModel) RefreshFromSharedMeshGatewayList(ctx context.Context, resp *shared.MeshGatewayList) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -174,4 +143,35 @@ func (r *MeshGatewayListDataSourceModel) RefreshFromSharedMeshGatewayList(ctx co
 	}
 
 	return diags
+}
+
+func (r *MeshGatewayListDataSourceModel) ToOperationsGetMeshGatewayListRequest(ctx context.Context) (*operations.GetMeshGatewayListRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	offset := new(int64)
+	if !r.Offset.IsUnknown() && !r.Offset.IsNull() {
+		*offset = r.Offset.ValueInt64()
+	} else {
+		offset = nil
+	}
+	size := new(int64)
+	if !r.Size.IsUnknown() && !r.Size.IsNull() {
+		*size = r.Size.ValueInt64()
+	} else {
+		size = nil
+	}
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	out := operations.GetMeshGatewayListRequest{
+		CpID:   cpID,
+		Offset: offset,
+		Size:   size,
+		Mesh:   mesh,
+	}
+
+	return &out, diags
 }

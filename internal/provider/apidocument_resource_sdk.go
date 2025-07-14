@@ -11,45 +11,25 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *APIDocumentResourceModel) ToSharedCreateAPIDocumentRequest(ctx context.Context) (*shared.CreateAPIDocumentRequest, diag.Diagnostics) {
+func (r *APIDocumentResourceModel) RefreshFromSharedAPIDocumentResponse(ctx context.Context, resp *shared.APIDocumentResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	var content string
-	content = r.Content.ValueString()
-
-	title := new(string)
-	if !r.Title.IsUnknown() && !r.Title.IsNull() {
-		*title = r.Title.ValueString()
-	} else {
-		title = nil
-	}
-	slug := new(string)
-	if !r.Slug.IsUnknown() && !r.Slug.IsNull() {
-		*slug = r.Slug.ValueString()
-	} else {
-		slug = nil
-	}
-	status := new(shared.APIDocumentStatus)
-	if !r.Status.IsUnknown() && !r.Status.IsNull() {
-		*status = shared.APIDocumentStatus(r.Status.ValueString())
-	} else {
-		status = nil
-	}
-	parentDocumentID := new(string)
-	if !r.ParentDocumentID.IsUnknown() && !r.ParentDocumentID.IsNull() {
-		*parentDocumentID = r.ParentDocumentID.ValueString()
-	} else {
-		parentDocumentID = nil
-	}
-	out := shared.CreateAPIDocumentRequest{
-		Content:          content,
-		Title:            title,
-		Slug:             slug,
-		Status:           status,
-		ParentDocumentID: parentDocumentID,
+	if resp != nil {
+		r.Content = types.StringValue(resp.Content)
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.ID = types.StringValue(resp.ID)
+		r.ParentDocumentID = types.StringPointerValue(resp.ParentDocumentID)
+		r.Slug = types.StringValue(resp.Slug)
+		if resp.Status != nil {
+			r.Status = types.StringValue(string(*resp.Status))
+		} else {
+			r.Status = types.StringNull()
+		}
+		r.Title = types.StringValue(resp.Title)
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
 
-	return &out, diags
+	return diags
 }
 
 func (r *APIDocumentResourceModel) ToOperationsCreateAPIDocumentRequest(ctx context.Context) (*operations.CreateAPIDocumentRequest, diag.Diagnostics) {
@@ -68,6 +48,65 @@ func (r *APIDocumentResourceModel) ToOperationsCreateAPIDocumentRequest(ctx cont
 	out := operations.CreateAPIDocumentRequest{
 		APIID:                    apiID,
 		CreateAPIDocumentRequest: *createAPIDocumentRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *APIDocumentResourceModel) ToOperationsDeleteAPIDocumentRequest(ctx context.Context) (*operations.DeleteAPIDocumentRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiID string
+	apiID = r.APIID.ValueString()
+
+	var documentID string
+	documentID = r.ID.ValueString()
+
+	out := operations.DeleteAPIDocumentRequest{
+		APIID:      apiID,
+		DocumentID: documentID,
+	}
+
+	return &out, diags
+}
+
+func (r *APIDocumentResourceModel) ToOperationsFetchAPIDocumentRequest(ctx context.Context) (*operations.FetchAPIDocumentRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiID string
+	apiID = r.APIID.ValueString()
+
+	var documentID string
+	documentID = r.ID.ValueString()
+
+	out := operations.FetchAPIDocumentRequest{
+		APIID:      apiID,
+		DocumentID: documentID,
+	}
+
+	return &out, diags
+}
+
+func (r *APIDocumentResourceModel) ToOperationsUpdateAPIDocumentRequest(ctx context.Context) (*operations.UpdateAPIDocumentRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiID string
+	apiID = r.APIID.ValueString()
+
+	var documentID string
+	documentID = r.ID.ValueString()
+
+	apiDocument, apiDocumentDiags := r.ToSharedAPIDocument(ctx)
+	diags.Append(apiDocumentDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAPIDocumentRequest{
+		APIID:       apiID,
+		DocumentID:  documentID,
+		APIDocument: *apiDocument,
 	}
 
 	return &out, diags
@@ -117,82 +156,43 @@ func (r *APIDocumentResourceModel) ToSharedAPIDocument(ctx context.Context) (*sh
 	return &out, diags
 }
 
-func (r *APIDocumentResourceModel) ToOperationsUpdateAPIDocumentRequest(ctx context.Context) (*operations.UpdateAPIDocumentRequest, diag.Diagnostics) {
+func (r *APIDocumentResourceModel) ToSharedCreateAPIDocumentRequest(ctx context.Context) (*shared.CreateAPIDocumentRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var apiID string
-	apiID = r.APIID.ValueString()
+	var content string
+	content = r.Content.ValueString()
 
-	var documentID string
-	documentID = r.ID.ValueString()
-
-	apiDocument, apiDocumentDiags := r.ToSharedAPIDocument(ctx)
-	diags.Append(apiDocumentDiags...)
-
-	if diags.HasError() {
-		return nil, diags
+	title := new(string)
+	if !r.Title.IsUnknown() && !r.Title.IsNull() {
+		*title = r.Title.ValueString()
+	} else {
+		title = nil
 	}
-
-	out := operations.UpdateAPIDocumentRequest{
-		APIID:       apiID,
-		DocumentID:  documentID,
-		APIDocument: *apiDocument,
+	slug := new(string)
+	if !r.Slug.IsUnknown() && !r.Slug.IsNull() {
+		*slug = r.Slug.ValueString()
+	} else {
+		slug = nil
+	}
+	status := new(shared.APIDocumentStatus)
+	if !r.Status.IsUnknown() && !r.Status.IsNull() {
+		*status = shared.APIDocumentStatus(r.Status.ValueString())
+	} else {
+		status = nil
+	}
+	parentDocumentID := new(string)
+	if !r.ParentDocumentID.IsUnknown() && !r.ParentDocumentID.IsNull() {
+		*parentDocumentID = r.ParentDocumentID.ValueString()
+	} else {
+		parentDocumentID = nil
+	}
+	out := shared.CreateAPIDocumentRequest{
+		Content:          content,
+		Title:            title,
+		Slug:             slug,
+		Status:           status,
+		ParentDocumentID: parentDocumentID,
 	}
 
 	return &out, diags
-}
-
-func (r *APIDocumentResourceModel) ToOperationsFetchAPIDocumentRequest(ctx context.Context) (*operations.FetchAPIDocumentRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var apiID string
-	apiID = r.APIID.ValueString()
-
-	var documentID string
-	documentID = r.ID.ValueString()
-
-	out := operations.FetchAPIDocumentRequest{
-		APIID:      apiID,
-		DocumentID: documentID,
-	}
-
-	return &out, diags
-}
-
-func (r *APIDocumentResourceModel) ToOperationsDeleteAPIDocumentRequest(ctx context.Context) (*operations.DeleteAPIDocumentRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var apiID string
-	apiID = r.APIID.ValueString()
-
-	var documentID string
-	documentID = r.ID.ValueString()
-
-	out := operations.DeleteAPIDocumentRequest{
-		APIID:      apiID,
-		DocumentID: documentID,
-	}
-
-	return &out, diags
-}
-
-func (r *APIDocumentResourceModel) RefreshFromSharedAPIDocumentResponse(ctx context.Context, resp *shared.APIDocumentResponse) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.Content = types.StringValue(resp.Content)
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.ID = types.StringValue(resp.ID)
-		r.ParentDocumentID = types.StringPointerValue(resp.ParentDocumentID)
-		r.Slug = types.StringValue(resp.Slug)
-		if resp.Status != nil {
-			r.Status = types.StringValue(string(*resp.Status))
-		} else {
-			r.Status = types.StringNull()
-		}
-		r.Title = types.StringValue(resp.Title)
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
-	}
-
-	return diags
 }

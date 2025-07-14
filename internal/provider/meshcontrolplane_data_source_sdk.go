@@ -12,19 +12,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshControlPlaneDataSourceModel) ToOperationsGetMeshControlPlaneRequest(ctx context.Context) (*operations.GetMeshControlPlaneRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.ID.ValueString()
-
-	out := operations.GetMeshControlPlaneRequest{
-		CpID: cpID,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshControlPlaneDataSourceModel) RefreshFromSharedMeshControlPlane(ctx context.Context, resp *shared.MeshControlPlane) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -70,4 +57,17 @@ func (r *MeshControlPlaneDataSourceModel) RefreshFromSharedMeshControlPlane(ctx 
 	}
 
 	return diags
+}
+
+func (r *MeshControlPlaneDataSourceModel) ToOperationsGetMeshControlPlaneRequest(ctx context.Context) (*operations.GetMeshControlPlaneRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.ID.ValueString()
+
+	out := operations.GetMeshControlPlaneRequest{
+		CpID: cpID,
+	}
+
+	return &out, diags
 }

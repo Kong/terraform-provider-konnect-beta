@@ -13,174 +13,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshMultiZoneServiceResourceModel) ToSharedMeshMultiZoneServiceItemInput(ctx context.Context) (*shared.MeshMultiZoneServiceItemInput, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	typeVar := shared.MeshMultiZoneServiceItemType(r.Type.ValueString())
-	mesh := new(string)
-	if !r.Mesh.IsUnknown() && !r.Mesh.IsNull() {
-		*mesh = r.Mesh.ValueString()
-	} else {
-		mesh = nil
-	}
-	var name string
-	name = r.Name.ValueString()
-
-	var labels map[string]string
-	if !r.Labels.IsUnknown() && !r.Labels.IsNull() {
-		diags.Append(r.Labels.ElementsAs(ctx, &labels, true)...)
-	}
-	ports := make([]shared.Ports, 0, len(r.Spec.Ports))
-	for _, portsItem := range r.Spec.Ports {
-		appProtocol := new(string)
-		if !portsItem.AppProtocol.IsUnknown() && !portsItem.AppProtocol.IsNull() {
-			*appProtocol = portsItem.AppProtocol.ValueString()
-		} else {
-			appProtocol = nil
-		}
-		name1 := new(string)
-		if !portsItem.Name.IsUnknown() && !portsItem.Name.IsNull() {
-			*name1 = portsItem.Name.ValueString()
-		} else {
-			name1 = nil
-		}
-		var port int
-		port = int(portsItem.Port.ValueInt32())
-
-		ports = append(ports, shared.Ports{
-			AppProtocol: appProtocol,
-			Name:        name1,
-			Port:        port,
-		})
-	}
-	matchLabels := make(map[string]string)
-	for matchLabelsKey, matchLabelsValue := range r.Spec.Selector.MeshService.MatchLabels {
-		var matchLabelsInst string
-		matchLabelsInst = matchLabelsValue.ValueString()
-
-		matchLabels[matchLabelsKey] = matchLabelsInst
-	}
-	meshService := shared.MeshMultiZoneServiceItemMeshService{
-		MatchLabels: matchLabels,
-	}
-	selector := shared.MeshMultiZoneServiceItemSelector{
-		MeshService: meshService,
-	}
-	spec := shared.MeshMultiZoneServiceItemSpec{
-		Ports:    ports,
-		Selector: selector,
-	}
-	out := shared.MeshMultiZoneServiceItemInput{
-		Type:   typeVar,
-		Mesh:   mesh,
-		Name:   name,
-		Labels: labels,
-		Spec:   spec,
-	}
-
-	return &out, diags
-}
-
-func (r *MeshMultiZoneServiceResourceModel) ToOperationsCreateMeshMultiZoneServiceRequest(ctx context.Context) (*operations.CreateMeshMultiZoneServiceRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	meshMultiZoneServiceItem, meshMultiZoneServiceItemDiags := r.ToSharedMeshMultiZoneServiceItemInput(ctx)
-	diags.Append(meshMultiZoneServiceItemDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateMeshMultiZoneServiceRequest{
-		CpID:                     cpID,
-		Mesh:                     mesh,
-		Name:                     name,
-		MeshMultiZoneServiceItem: *meshMultiZoneServiceItem,
-	}
-
-	return &out, diags
-}
-
-func (r *MeshMultiZoneServiceResourceModel) ToOperationsUpdateMeshMultiZoneServiceRequest(ctx context.Context) (*operations.UpdateMeshMultiZoneServiceRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	meshMultiZoneServiceItem, meshMultiZoneServiceItemDiags := r.ToSharedMeshMultiZoneServiceItemInput(ctx)
-	diags.Append(meshMultiZoneServiceItemDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateMeshMultiZoneServiceRequest{
-		CpID:                     cpID,
-		Mesh:                     mesh,
-		Name:                     name,
-		MeshMultiZoneServiceItem: *meshMultiZoneServiceItem,
-	}
-
-	return &out, diags
-}
-
-func (r *MeshMultiZoneServiceResourceModel) ToOperationsGetMeshMultiZoneServiceRequest(ctx context.Context) (*operations.GetMeshMultiZoneServiceRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	out := operations.GetMeshMultiZoneServiceRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
-	}
-
-	return &out, diags
-}
-
-func (r *MeshMultiZoneServiceResourceModel) ToOperationsDeleteMeshMultiZoneServiceRequest(ctx context.Context) (*operations.DeleteMeshMultiZoneServiceRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	out := operations.DeleteMeshMultiZoneServiceRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshMultiZoneServiceResourceModel) RefreshFromSharedMeshMultiZoneServiceCreateOrUpdateSuccessResponse(ctx context.Context, resp *shared.MeshMultiZoneServiceCreateOrUpdateSuccessResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -323,4 +155,172 @@ func (r *MeshMultiZoneServiceResourceModel) RefreshFromSharedMeshMultiZoneServic
 	}
 
 	return diags
+}
+
+func (r *MeshMultiZoneServiceResourceModel) ToOperationsCreateMeshMultiZoneServiceRequest(ctx context.Context) (*operations.CreateMeshMultiZoneServiceRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	meshMultiZoneServiceItem, meshMultiZoneServiceItemDiags := r.ToSharedMeshMultiZoneServiceItemInput(ctx)
+	diags.Append(meshMultiZoneServiceItemDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateMeshMultiZoneServiceRequest{
+		CpID:                     cpID,
+		Mesh:                     mesh,
+		Name:                     name,
+		MeshMultiZoneServiceItem: *meshMultiZoneServiceItem,
+	}
+
+	return &out, diags
+}
+
+func (r *MeshMultiZoneServiceResourceModel) ToOperationsDeleteMeshMultiZoneServiceRequest(ctx context.Context) (*operations.DeleteMeshMultiZoneServiceRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	out := operations.DeleteMeshMultiZoneServiceRequest{
+		CpID: cpID,
+		Mesh: mesh,
+		Name: name,
+	}
+
+	return &out, diags
+}
+
+func (r *MeshMultiZoneServiceResourceModel) ToOperationsGetMeshMultiZoneServiceRequest(ctx context.Context) (*operations.GetMeshMultiZoneServiceRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	out := operations.GetMeshMultiZoneServiceRequest{
+		CpID: cpID,
+		Mesh: mesh,
+		Name: name,
+	}
+
+	return &out, diags
+}
+
+func (r *MeshMultiZoneServiceResourceModel) ToOperationsUpdateMeshMultiZoneServiceRequest(ctx context.Context) (*operations.UpdateMeshMultiZoneServiceRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	meshMultiZoneServiceItem, meshMultiZoneServiceItemDiags := r.ToSharedMeshMultiZoneServiceItemInput(ctx)
+	diags.Append(meshMultiZoneServiceItemDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateMeshMultiZoneServiceRequest{
+		CpID:                     cpID,
+		Mesh:                     mesh,
+		Name:                     name,
+		MeshMultiZoneServiceItem: *meshMultiZoneServiceItem,
+	}
+
+	return &out, diags
+}
+
+func (r *MeshMultiZoneServiceResourceModel) ToSharedMeshMultiZoneServiceItemInput(ctx context.Context) (*shared.MeshMultiZoneServiceItemInput, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	typeVar := shared.MeshMultiZoneServiceItemType(r.Type.ValueString())
+	mesh := new(string)
+	if !r.Mesh.IsUnknown() && !r.Mesh.IsNull() {
+		*mesh = r.Mesh.ValueString()
+	} else {
+		mesh = nil
+	}
+	var name string
+	name = r.Name.ValueString()
+
+	var labels map[string]string
+	if !r.Labels.IsUnknown() && !r.Labels.IsNull() {
+		diags.Append(r.Labels.ElementsAs(ctx, &labels, true)...)
+	}
+	ports := make([]shared.Ports, 0, len(r.Spec.Ports))
+	for _, portsItem := range r.Spec.Ports {
+		appProtocol := new(string)
+		if !portsItem.AppProtocol.IsUnknown() && !portsItem.AppProtocol.IsNull() {
+			*appProtocol = portsItem.AppProtocol.ValueString()
+		} else {
+			appProtocol = nil
+		}
+		name1 := new(string)
+		if !portsItem.Name.IsUnknown() && !portsItem.Name.IsNull() {
+			*name1 = portsItem.Name.ValueString()
+		} else {
+			name1 = nil
+		}
+		var port int
+		port = int(portsItem.Port.ValueInt32())
+
+		ports = append(ports, shared.Ports{
+			AppProtocol: appProtocol,
+			Name:        name1,
+			Port:        port,
+		})
+	}
+	matchLabels := make(map[string]string)
+	for matchLabelsKey, matchLabelsValue := range r.Spec.Selector.MeshService.MatchLabels {
+		var matchLabelsInst string
+		matchLabelsInst = matchLabelsValue.ValueString()
+
+		matchLabels[matchLabelsKey] = matchLabelsInst
+	}
+	meshService := shared.MeshMultiZoneServiceItemMeshService{
+		MatchLabels: matchLabels,
+	}
+	selector := shared.MeshMultiZoneServiceItemSelector{
+		MeshService: meshService,
+	}
+	spec := shared.MeshMultiZoneServiceItemSpec{
+		Ports:    ports,
+		Selector: selector,
+	}
+	out := shared.MeshMultiZoneServiceItemInput{
+		Type:   typeVar,
+		Mesh:   mesh,
+		Name:   name,
+		Labels: labels,
+		Spec:   spec,
+	}
+
+	return &out, diags
 }

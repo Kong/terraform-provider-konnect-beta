@@ -11,23 +11,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *AuthServerScopesDataSourceModel) ToOperationsGetAuthServerScopeRequest(ctx context.Context) (*operations.GetAuthServerScopeRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var authServerID string
-	authServerID = r.AuthServerID.ValueString()
-
-	var scopeID string
-	scopeID = r.ID.ValueString()
-
-	out := operations.GetAuthServerScopeRequest{
-		AuthServerID: authServerID,
-		ScopeID:      scopeID,
-	}
-
-	return &out, diags
-}
-
 func (r *AuthServerScopesDataSourceModel) RefreshFromSharedScope(ctx context.Context, resp *shared.Scope) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -43,4 +26,21 @@ func (r *AuthServerScopesDataSourceModel) RefreshFromSharedScope(ctx context.Con
 	}
 
 	return diags
+}
+
+func (r *AuthServerScopesDataSourceModel) ToOperationsGetAuthServerScopeRequest(ctx context.Context) (*operations.GetAuthServerScopeRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var authServerID string
+	authServerID = r.AuthServerID.ValueString()
+
+	var scopeID string
+	scopeID = r.ID.ValueString()
+
+	out := operations.GetAuthServerScopeRequest{
+		AuthServerID: authServerID,
+		ScopeID:      scopeID,
+	}
+
+	return &out, diags
 }

@@ -24,6 +24,7 @@ func NewMeshTCPRouteListDataSource() datasource.DataSource {
 
 // MeshTCPRouteListDataSource is the data source implementation.
 type MeshTCPRouteListDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

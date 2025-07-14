@@ -13,27 +13,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshRateLimitDataSourceModel) ToOperationsGetMeshRateLimitRequest(ctx context.Context) (*operations.GetMeshRateLimitRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	out := operations.GetMeshRateLimitRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshRateLimitDataSourceModel) RefreshFromSharedMeshRateLimitItem(ctx context.Context, resp *shared.MeshRateLimitItem) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -370,4 +349,25 @@ func (r *MeshRateLimitDataSourceModel) RefreshFromSharedMeshRateLimitItem(ctx co
 	}
 
 	return diags
+}
+
+func (r *MeshRateLimitDataSourceModel) ToOperationsGetMeshRateLimitRequest(ctx context.Context) (*operations.GetMeshRateLimitRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	out := operations.GetMeshRateLimitRequest{
+		CpID: cpID,
+		Mesh: mesh,
+		Name: name,
+	}
+
+	return &out, diags
 }

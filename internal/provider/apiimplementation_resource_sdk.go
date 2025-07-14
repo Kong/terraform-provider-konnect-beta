@@ -12,27 +12,23 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *APIImplementationResourceModel) ToSharedAPIImplementation(ctx context.Context) (*shared.APIImplementation, diag.Diagnostics) {
+func (r *APIImplementationResourceModel) RefreshFromSharedAPIImplementationResponse(ctx context.Context, resp *shared.APIImplementationResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	var service *shared.APIImplementationService
-	if r.Service != nil {
-		var controlPlaneID string
-		controlPlaneID = r.Service.ControlPlaneID.ValueString()
-
-		var id string
-		id = r.Service.ID.ValueString()
-
-		service = &shared.APIImplementationService{
-			ControlPlaneID: controlPlaneID,
-			ID:             id,
+	if resp != nil {
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.ID = types.StringValue(resp.ID)
+		if resp.Service == nil {
+			r.Service = nil
+		} else {
+			r.Service = &tfTypes.APIImplementationService{}
+			r.Service.ControlPlaneID = types.StringValue(resp.Service.ControlPlaneID)
+			r.Service.ID = types.StringValue(resp.Service.ID)
 		}
-	}
-	out := shared.APIImplementation{
-		Service: service,
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
 
-	return &out, diags
+	return diags
 }
 
 func (r *APIImplementationResourceModel) ToOperationsCreateAPIImplementationRequest(ctx context.Context) (*operations.CreateAPIImplementationRequest, diag.Diagnostics) {
@@ -56,23 +52,6 @@ func (r *APIImplementationResourceModel) ToOperationsCreateAPIImplementationRequ
 	return &out, diags
 }
 
-func (r *APIImplementationResourceModel) ToOperationsFetchAPIImplementationRequest(ctx context.Context) (*operations.FetchAPIImplementationRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var apiID string
-	apiID = r.APIID.ValueString()
-
-	var implementationID string
-	implementationID = r.ID.ValueString()
-
-	out := operations.FetchAPIImplementationRequest{
-		APIID:            apiID,
-		ImplementationID: implementationID,
-	}
-
-	return &out, diags
-}
-
 func (r *APIImplementationResourceModel) ToOperationsDeleteAPIImplementationRequest(ctx context.Context) (*operations.DeleteAPIImplementationRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -90,21 +69,42 @@ func (r *APIImplementationResourceModel) ToOperationsDeleteAPIImplementationRequ
 	return &out, diags
 }
 
-func (r *APIImplementationResourceModel) RefreshFromSharedAPIImplementationResponse(ctx context.Context, resp *shared.APIImplementationResponse) diag.Diagnostics {
+func (r *APIImplementationResourceModel) ToOperationsFetchAPIImplementationRequest(ctx context.Context) (*operations.FetchAPIImplementationRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	if resp != nil {
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.ID = types.StringValue(resp.ID)
-		if resp.Service == nil {
-			r.Service = nil
-		} else {
-			r.Service = &tfTypes.APIImplementationService{}
-			r.Service.ControlPlaneID = types.StringValue(resp.Service.ControlPlaneID)
-			r.Service.ID = types.StringValue(resp.Service.ID)
-		}
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+	var apiID string
+	apiID = r.APIID.ValueString()
+
+	var implementationID string
+	implementationID = r.ID.ValueString()
+
+	out := operations.FetchAPIImplementationRequest{
+		APIID:            apiID,
+		ImplementationID: implementationID,
 	}
 
-	return diags
+	return &out, diags
+}
+
+func (r *APIImplementationResourceModel) ToSharedAPIImplementation(ctx context.Context) (*shared.APIImplementation, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var service *shared.APIImplementationService
+	if r.Service != nil {
+		var controlPlaneID string
+		controlPlaneID = r.Service.ControlPlaneID.ValueString()
+
+		var id string
+		id = r.Service.ID.ValueString()
+
+		service = &shared.APIImplementationService{
+			ControlPlaneID: controlPlaneID,
+			ID:             id,
+		}
+	}
+	out := shared.APIImplementation{
+		Service: service,
+	}
+
+	return &out, diags
 }

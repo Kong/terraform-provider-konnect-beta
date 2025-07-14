@@ -22,6 +22,7 @@ func NewPortalSnippetDataSource() datasource.DataSource {
 
 // PortalSnippetDataSource is the data source implementation.
 type PortalSnippetDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

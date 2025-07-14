@@ -13,27 +13,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshTimeoutDataSourceModel) ToOperationsGetMeshTimeoutRequest(ctx context.Context) (*operations.GetMeshTimeoutRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	out := operations.GetMeshTimeoutRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshTimeoutDataSourceModel) RefreshFromSharedMeshTimeoutItem(ctx context.Context, resp *shared.MeshTimeoutItem) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -208,4 +187,25 @@ func (r *MeshTimeoutDataSourceModel) RefreshFromSharedMeshTimeoutItem(ctx contex
 	}
 
 	return diags
+}
+
+func (r *MeshTimeoutDataSourceModel) ToOperationsGetMeshTimeoutRequest(ctx context.Context) (*operations.GetMeshTimeoutRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	out := operations.GetMeshTimeoutRequest{
+		CpID: cpID,
+		Mesh: mesh,
+		Name: name,
+	}
+
+	return &out, diags
 }

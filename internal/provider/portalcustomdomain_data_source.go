@@ -23,6 +23,7 @@ func NewPortalCustomDomainDataSource() datasource.DataSource {
 
 // PortalCustomDomainDataSource is the data source implementation.
 type PortalCustomDomainDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

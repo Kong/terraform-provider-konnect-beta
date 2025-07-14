@@ -13,27 +13,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshLoadBalancingStrategyDataSourceModel) ToOperationsGetMeshLoadBalancingStrategyRequest(ctx context.Context) (*operations.GetMeshLoadBalancingStrategyRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	out := operations.GetMeshLoadBalancingStrategyRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshLoadBalancingStrategyDataSourceModel) RefreshFromSharedMeshLoadBalancingStrategyItem(ctx context.Context, resp *shared.MeshLoadBalancingStrategyItem) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -326,4 +305,25 @@ func (r *MeshLoadBalancingStrategyDataSourceModel) RefreshFromSharedMeshLoadBala
 	}
 
 	return diags
+}
+
+func (r *MeshLoadBalancingStrategyDataSourceModel) ToOperationsGetMeshLoadBalancingStrategyRequest(ctx context.Context) (*operations.GetMeshLoadBalancingStrategyRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	out := operations.GetMeshLoadBalancingStrategyRequest{
+		CpID: cpID,
+		Mesh: mesh,
+		Name: name,
+	}
+
+	return &out, diags
 }

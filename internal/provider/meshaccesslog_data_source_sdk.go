@@ -14,27 +14,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshAccessLogDataSourceModel) ToOperationsGetMeshAccessLogRequest(ctx context.Context) (*operations.GetMeshAccessLogRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	out := operations.GetMeshAccessLogRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshAccessLogDataSourceModel) RefreshFromSharedMeshAccessLogItem(ctx context.Context, resp *shared.MeshAccessLogItem) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -425,4 +404,25 @@ func (r *MeshAccessLogDataSourceModel) RefreshFromSharedMeshAccessLogItem(ctx co
 	}
 
 	return diags
+}
+
+func (r *MeshAccessLogDataSourceModel) ToOperationsGetMeshAccessLogRequest(ctx context.Context) (*operations.GetMeshAccessLogRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	out := operations.GetMeshAccessLogRequest{
+		CpID: cpID,
+		Mesh: mesh,
+		Name: name,
+	}
+
+	return &out, diags
 }

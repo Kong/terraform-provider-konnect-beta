@@ -13,37 +13,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshHTTPRouteListDataSourceModel) ToOperationsGetMeshHTTPRouteListRequest(ctx context.Context) (*operations.GetMeshHTTPRouteListRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	offset := new(int64)
-	if !r.Offset.IsUnknown() && !r.Offset.IsNull() {
-		*offset = r.Offset.ValueInt64()
-	} else {
-		offset = nil
-	}
-	size := new(int64)
-	if !r.Size.IsUnknown() && !r.Size.IsNull() {
-		*size = r.Size.ValueInt64()
-	} else {
-		size = nil
-	}
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	out := operations.GetMeshHTTPRouteListRequest{
-		CpID:   cpID,
-		Offset: offset,
-		Size:   size,
-		Mesh:   mesh,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(ctx context.Context, resp *shared.MeshHTTPRouteList) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -408,4 +377,35 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(ct
 	}
 
 	return diags
+}
+
+func (r *MeshHTTPRouteListDataSourceModel) ToOperationsGetMeshHTTPRouteListRequest(ctx context.Context) (*operations.GetMeshHTTPRouteListRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	offset := new(int64)
+	if !r.Offset.IsUnknown() && !r.Offset.IsNull() {
+		*offset = r.Offset.ValueInt64()
+	} else {
+		offset = nil
+	}
+	size := new(int64)
+	if !r.Size.IsUnknown() && !r.Size.IsNull() {
+		*size = r.Size.ValueInt64()
+	} else {
+		size = nil
+	}
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	out := operations.GetMeshHTTPRouteListRequest{
+		CpID:   cpID,
+		Offset: offset,
+		Size:   size,
+		Mesh:   mesh,
+	}
+
+	return &out, diags
 }

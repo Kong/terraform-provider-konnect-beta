@@ -24,6 +24,7 @@ func NewMeshAccessLogDataSource() datasource.DataSource {
 
 // MeshAccessLogDataSource is the data source implementation.
 type MeshAccessLogDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

@@ -11,6 +11,165 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
+func (r *AuthServerClientsResourceModel) RefreshFromSharedClient(ctx context.Context, resp *shared.Client) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.AccessTokenDuration = types.Int64PointerValue(resp.AccessTokenDuration)
+		r.AllowAllScopes = types.BoolPointerValue(resp.AllowAllScopes)
+		r.AllowScopes = make([]types.String, 0, len(resp.AllowScopes))
+		for _, v := range resp.AllowScopes {
+			r.AllowScopes = append(r.AllowScopes, types.StringValue(v))
+		}
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.GrantTypes = make([]types.String, 0, len(resp.GrantTypes))
+		for _, v := range resp.GrantTypes {
+			r.GrantTypes = append(r.GrantTypes, types.StringValue(string(v)))
+		}
+		r.ID = types.StringValue(resp.ID)
+		r.IDTokenDuration = types.Int64PointerValue(resp.IDTokenDuration)
+		if len(resp.Labels) > 0 {
+			r.Labels = make(map[string]types.String, len(resp.Labels))
+			for key, value := range resp.Labels {
+				r.Labels[key] = types.StringPointerValue(value)
+			}
+		}
+		r.LoginURI = types.StringPointerValue(resp.LoginURI)
+		r.Name = types.StringValue(resp.Name)
+		r.RedirectUris = make([]types.String, 0, len(resp.RedirectUris))
+		for _, v := range resp.RedirectUris {
+			r.RedirectUris = append(r.RedirectUris, types.StringValue(v))
+		}
+		r.ResponseTypes = make([]types.String, 0, len(resp.ResponseTypes))
+		for _, v := range resp.ResponseTypes {
+			r.ResponseTypes = append(r.ResponseTypes, types.StringValue(string(v)))
+		}
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+	}
+
+	return diags
+}
+
+func (r *AuthServerClientsResourceModel) RefreshFromSharedCreatedClient(ctx context.Context, resp *shared.CreatedClient) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.AccessTokenDuration = types.Int64PointerValue(resp.AccessTokenDuration)
+		r.AllowAllScopes = types.BoolPointerValue(resp.AllowAllScopes)
+		r.AllowScopes = make([]types.String, 0, len(resp.AllowScopes))
+		for _, v := range resp.AllowScopes {
+			r.AllowScopes = append(r.AllowScopes, types.StringValue(v))
+		}
+		r.ClientSecret = types.StringValue(resp.ClientSecret)
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.GrantTypes = make([]types.String, 0, len(resp.GrantTypes))
+		for _, v := range resp.GrantTypes {
+			r.GrantTypes = append(r.GrantTypes, types.StringValue(string(v)))
+		}
+		r.ID = types.StringValue(resp.ID)
+		r.IDTokenDuration = types.Int64PointerValue(resp.IDTokenDuration)
+		if len(resp.Labels) > 0 {
+			r.Labels = make(map[string]types.String, len(resp.Labels))
+			for key, value := range resp.Labels {
+				r.Labels[key] = types.StringPointerValue(value)
+			}
+		}
+		r.LoginURI = types.StringPointerValue(resp.LoginURI)
+		r.Name = types.StringValue(resp.Name)
+		r.RedirectUris = make([]types.String, 0, len(resp.RedirectUris))
+		for _, v := range resp.RedirectUris {
+			r.RedirectUris = append(r.RedirectUris, types.StringValue(v))
+		}
+		r.ResponseTypes = make([]types.String, 0, len(resp.ResponseTypes))
+		for _, v := range resp.ResponseTypes {
+			r.ResponseTypes = append(r.ResponseTypes, types.StringValue(string(v)))
+		}
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+	}
+
+	return diags
+}
+
+func (r *AuthServerClientsResourceModel) ToOperationsCreateAuthServerClientRequest(ctx context.Context) (*operations.CreateAuthServerClientRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var authServerID string
+	authServerID = r.AuthServerID.ValueString()
+
+	createClient, createClientDiags := r.ToSharedCreateClient(ctx)
+	diags.Append(createClientDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateAuthServerClientRequest{
+		AuthServerID: authServerID,
+		CreateClient: *createClient,
+	}
+
+	return &out, diags
+}
+
+func (r *AuthServerClientsResourceModel) ToOperationsDeleteAuthServerClientRequest(ctx context.Context) (*operations.DeleteAuthServerClientRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var authServerID string
+	authServerID = r.AuthServerID.ValueString()
+
+	var clientID string
+	clientID = r.ID.ValueString()
+
+	out := operations.DeleteAuthServerClientRequest{
+		AuthServerID: authServerID,
+		ClientID:     clientID,
+	}
+
+	return &out, diags
+}
+
+func (r *AuthServerClientsResourceModel) ToOperationsGetAuthServerClientRequest(ctx context.Context) (*operations.GetAuthServerClientRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var authServerID string
+	authServerID = r.AuthServerID.ValueString()
+
+	var clientID string
+	clientID = r.ID.ValueString()
+
+	out := operations.GetAuthServerClientRequest{
+		AuthServerID: authServerID,
+		ClientID:     clientID,
+	}
+
+	return &out, diags
+}
+
+func (r *AuthServerClientsResourceModel) ToOperationsReplaceAuthServerClientRequest(ctx context.Context) (*operations.ReplaceAuthServerClientRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var authServerID string
+	authServerID = r.AuthServerID.ValueString()
+
+	var clientID string
+	clientID = r.ID.ValueString()
+
+	replaceClient, replaceClientDiags := r.ToSharedReplaceClient(ctx)
+	diags.Append(replaceClientDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.ReplaceAuthServerClientRequest{
+		AuthServerID:  authServerID,
+		ClientID:      clientID,
+		ReplaceClient: *replaceClient,
+	}
+
+	return &out, diags
+}
+
 func (r *AuthServerClientsResourceModel) ToSharedCreateClient(ctx context.Context) (*shared.CreateClient, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -78,27 +237,6 @@ func (r *AuthServerClientsResourceModel) ToSharedCreateClient(ctx context.Contex
 		AllowAllScopes:      allowAllScopes,
 		AllowScopes:         allowScopes,
 		Labels:              labels,
-	}
-
-	return &out, diags
-}
-
-func (r *AuthServerClientsResourceModel) ToOperationsCreateAuthServerClientRequest(ctx context.Context) (*operations.CreateAuthServerClientRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var authServerID string
-	authServerID = r.AuthServerID.ValueString()
-
-	createClient, createClientDiags := r.ToSharedCreateClient(ctx)
-	diags.Append(createClientDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateAuthServerClientRequest{
-		AuthServerID: authServerID,
-		CreateClient: *createClient,
 	}
 
 	return &out, diags
@@ -178,142 +316,4 @@ func (r *AuthServerClientsResourceModel) ToSharedReplaceClient(ctx context.Conte
 	}
 
 	return &out, diags
-}
-
-func (r *AuthServerClientsResourceModel) ToOperationsReplaceAuthServerClientRequest(ctx context.Context) (*operations.ReplaceAuthServerClientRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var authServerID string
-	authServerID = r.AuthServerID.ValueString()
-
-	var clientID string
-	clientID = r.ID.ValueString()
-
-	replaceClient, replaceClientDiags := r.ToSharedReplaceClient(ctx)
-	diags.Append(replaceClientDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.ReplaceAuthServerClientRequest{
-		AuthServerID:  authServerID,
-		ClientID:      clientID,
-		ReplaceClient: *replaceClient,
-	}
-
-	return &out, diags
-}
-
-func (r *AuthServerClientsResourceModel) ToOperationsGetAuthServerClientRequest(ctx context.Context) (*operations.GetAuthServerClientRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var authServerID string
-	authServerID = r.AuthServerID.ValueString()
-
-	var clientID string
-	clientID = r.ID.ValueString()
-
-	out := operations.GetAuthServerClientRequest{
-		AuthServerID: authServerID,
-		ClientID:     clientID,
-	}
-
-	return &out, diags
-}
-
-func (r *AuthServerClientsResourceModel) ToOperationsDeleteAuthServerClientRequest(ctx context.Context) (*operations.DeleteAuthServerClientRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var authServerID string
-	authServerID = r.AuthServerID.ValueString()
-
-	var clientID string
-	clientID = r.ID.ValueString()
-
-	out := operations.DeleteAuthServerClientRequest{
-		AuthServerID: authServerID,
-		ClientID:     clientID,
-	}
-
-	return &out, diags
-}
-
-func (r *AuthServerClientsResourceModel) RefreshFromSharedCreatedClient(ctx context.Context, resp *shared.CreatedClient) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.AccessTokenDuration = types.Int64PointerValue(resp.AccessTokenDuration)
-		r.AllowAllScopes = types.BoolPointerValue(resp.AllowAllScopes)
-		r.AllowScopes = make([]types.String, 0, len(resp.AllowScopes))
-		for _, v := range resp.AllowScopes {
-			r.AllowScopes = append(r.AllowScopes, types.StringValue(v))
-		}
-		r.ClientSecret = types.StringValue(resp.ClientSecret)
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.GrantTypes = make([]types.String, 0, len(resp.GrantTypes))
-		for _, v := range resp.GrantTypes {
-			r.GrantTypes = append(r.GrantTypes, types.StringValue(string(v)))
-		}
-		r.ID = types.StringValue(resp.ID)
-		r.IDTokenDuration = types.Int64PointerValue(resp.IDTokenDuration)
-		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String, len(resp.Labels))
-			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringPointerValue(value)
-			}
-		}
-		r.LoginURI = types.StringPointerValue(resp.LoginURI)
-		r.Name = types.StringValue(resp.Name)
-		r.RedirectUris = make([]types.String, 0, len(resp.RedirectUris))
-		for _, v := range resp.RedirectUris {
-			r.RedirectUris = append(r.RedirectUris, types.StringValue(v))
-		}
-		r.ResponseTypes = make([]types.String, 0, len(resp.ResponseTypes))
-		for _, v := range resp.ResponseTypes {
-			r.ResponseTypes = append(r.ResponseTypes, types.StringValue(string(v)))
-		}
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
-	}
-
-	return diags
-}
-
-func (r *AuthServerClientsResourceModel) RefreshFromSharedClient(ctx context.Context, resp *shared.Client) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.AccessTokenDuration = types.Int64PointerValue(resp.AccessTokenDuration)
-		r.AllowAllScopes = types.BoolPointerValue(resp.AllowAllScopes)
-		r.AllowScopes = make([]types.String, 0, len(resp.AllowScopes))
-		for _, v := range resp.AllowScopes {
-			r.AllowScopes = append(r.AllowScopes, types.StringValue(v))
-		}
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.GrantTypes = make([]types.String, 0, len(resp.GrantTypes))
-		for _, v := range resp.GrantTypes {
-			r.GrantTypes = append(r.GrantTypes, types.StringValue(string(v)))
-		}
-		r.ID = types.StringValue(resp.ID)
-		r.IDTokenDuration = types.Int64PointerValue(resp.IDTokenDuration)
-		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String, len(resp.Labels))
-			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringPointerValue(value)
-			}
-		}
-		r.LoginURI = types.StringPointerValue(resp.LoginURI)
-		r.Name = types.StringValue(resp.Name)
-		r.RedirectUris = make([]types.String, 0, len(resp.RedirectUris))
-		for _, v := range resp.RedirectUris {
-			r.RedirectUris = append(r.RedirectUris, types.StringValue(v))
-		}
-		r.ResponseTypes = make([]types.String, 0, len(resp.ResponseTypes))
-		for _, v := range resp.ResponseTypes {
-			r.ResponseTypes = append(r.ResponseTypes, types.StringValue(string(v)))
-		}
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
-	}
-
-	return diags
 }

@@ -23,6 +23,7 @@ func NewPortalAuthDataSource() datasource.DataSource {
 
 // PortalAuthDataSource is the data source implementation.
 type PortalAuthDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

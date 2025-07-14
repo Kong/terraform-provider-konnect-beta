@@ -24,6 +24,7 @@ func NewMeshHTTPRouteDataSource() datasource.DataSource {
 
 // MeshHTTPRouteDataSource is the data source implementation.
 type MeshHTTPRouteDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

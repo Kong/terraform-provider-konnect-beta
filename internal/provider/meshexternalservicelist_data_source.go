@@ -24,6 +24,7 @@ func NewMeshExternalServiceListDataSource() datasource.DataSource {
 
 // MeshExternalServiceListDataSource is the data source implementation.
 type MeshExternalServiceListDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

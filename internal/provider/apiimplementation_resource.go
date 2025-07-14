@@ -34,6 +34,7 @@ func NewAPIImplementationResource() resource.Resource {
 
 // APIImplementationResource defines the resource implementation.
 type APIImplementationResource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
@@ -334,7 +335,7 @@ func (r *APIImplementationResource) ImportState(ctx context.Context, req resourc
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "api_id": "9f5061ce-78f6-4452-9108-ad7c02821fd5",  "id": "032d905a-ed33-46a3-a093-d8f536af9a8a"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"api_id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "id": "032d905a-ed33-46a3-a093-d8f536af9a8a"}': `+err.Error())
 		return
 	}
 
@@ -348,5 +349,4 @@ func (r *APIImplementationResource) ImportState(ctx context.Context, req resourc
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
-
 }

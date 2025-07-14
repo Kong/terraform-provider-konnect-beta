@@ -12,151 +12,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *APIVersionResourceModel) ToSharedCreateAPIVersionRequest(ctx context.Context) (*shared.CreateAPIVersionRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	version := new(string)
-	if !r.Version.IsUnknown() && !r.Version.IsNull() {
-		*version = r.Version.ValueString()
-	} else {
-		version = nil
-	}
-	var spec *shared.CreateAPIVersionRequestSpec
-	if r.Spec != nil {
-		content := new(string)
-		if !r.Spec.Content.IsUnknown() && !r.Spec.Content.IsNull() {
-			*content = r.Spec.Content.ValueString()
-		} else {
-			content = nil
-		}
-		typeVar := new(shared.CreateAPIVersionRequestAPISpecType)
-		if !r.Spec.Type.IsUnknown() && !r.Spec.Type.IsNull() {
-			*typeVar = shared.CreateAPIVersionRequestAPISpecType(r.Spec.Type.ValueString())
-		} else {
-			typeVar = nil
-		}
-		spec = &shared.CreateAPIVersionRequestSpec{
-			Content: content,
-			Type:    typeVar,
-		}
-	}
-	out := shared.CreateAPIVersionRequest{
-		Version: version,
-		Spec:    spec,
-	}
-
-	return &out, diags
-}
-
-func (r *APIVersionResourceModel) ToOperationsCreateAPIVersionRequest(ctx context.Context) (*operations.CreateAPIVersionRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var apiID string
-	apiID = r.APIID.ValueString()
-
-	createAPIVersionRequest, createAPIVersionRequestDiags := r.ToSharedCreateAPIVersionRequest(ctx)
-	diags.Append(createAPIVersionRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateAPIVersionRequest{
-		APIID:                   apiID,
-		CreateAPIVersionRequest: *createAPIVersionRequest,
-	}
-
-	return &out, diags
-}
-
-func (r *APIVersionResourceModel) ToSharedAPIVersion(ctx context.Context) (*shared.APIVersion, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	version := new(string)
-	if !r.Version.IsUnknown() && !r.Version.IsNull() {
-		*version = r.Version.ValueString()
-	} else {
-		version = nil
-	}
-	var spec *shared.APIVersionSpec
-	if r.Spec != nil {
-		content := new(string)
-		if !r.Spec.Content.IsUnknown() && !r.Spec.Content.IsNull() {
-			*content = r.Spec.Content.ValueString()
-		} else {
-			content = nil
-		}
-		spec = &shared.APIVersionSpec{
-			Content: content,
-		}
-	}
-	out := shared.APIVersion{
-		Version: version,
-		Spec:    spec,
-	}
-
-	return &out, diags
-}
-
-func (r *APIVersionResourceModel) ToOperationsUpdateAPIVersionRequest(ctx context.Context) (*operations.UpdateAPIVersionRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var apiID string
-	apiID = r.APIID.ValueString()
-
-	var specID string
-	specID = r.ID.ValueString()
-
-	apiVersion, apiVersionDiags := r.ToSharedAPIVersion(ctx)
-	diags.Append(apiVersionDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateAPIVersionRequest{
-		APIID:      apiID,
-		SpecID:     specID,
-		APIVersion: *apiVersion,
-	}
-
-	return &out, diags
-}
-
-func (r *APIVersionResourceModel) ToOperationsFetchAPIVersionRequest(ctx context.Context) (*operations.FetchAPIVersionRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var apiID string
-	apiID = r.APIID.ValueString()
-
-	var specID string
-	specID = r.ID.ValueString()
-
-	out := operations.FetchAPIVersionRequest{
-		APIID:  apiID,
-		SpecID: specID,
-	}
-
-	return &out, diags
-}
-
-func (r *APIVersionResourceModel) ToOperationsDeleteAPIVersionRequest(ctx context.Context) (*operations.DeleteAPIVersionRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var apiID string
-	apiID = r.APIID.ValueString()
-
-	var specID string
-	specID = r.ID.ValueString()
-
-	out := operations.DeleteAPIVersionRequest{
-		APIID:  apiID,
-		SpecID: specID,
-	}
-
-	return &out, diags
-}
-
 func (r *APIVersionResourceModel) RefreshFromSharedAPIVersionResponse(ctx context.Context, resp *shared.APIVersionResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -192,4 +47,149 @@ func (r *APIVersionResourceModel) RefreshFromSharedAPIVersionResponse(ctx contex
 	}
 
 	return diags
+}
+
+func (r *APIVersionResourceModel) ToOperationsCreateAPIVersionRequest(ctx context.Context) (*operations.CreateAPIVersionRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiID string
+	apiID = r.APIID.ValueString()
+
+	createAPIVersionRequest, createAPIVersionRequestDiags := r.ToSharedCreateAPIVersionRequest(ctx)
+	diags.Append(createAPIVersionRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateAPIVersionRequest{
+		APIID:                   apiID,
+		CreateAPIVersionRequest: *createAPIVersionRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *APIVersionResourceModel) ToOperationsDeleteAPIVersionRequest(ctx context.Context) (*operations.DeleteAPIVersionRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiID string
+	apiID = r.APIID.ValueString()
+
+	var specID string
+	specID = r.ID.ValueString()
+
+	out := operations.DeleteAPIVersionRequest{
+		APIID:  apiID,
+		SpecID: specID,
+	}
+
+	return &out, diags
+}
+
+func (r *APIVersionResourceModel) ToOperationsFetchAPIVersionRequest(ctx context.Context) (*operations.FetchAPIVersionRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiID string
+	apiID = r.APIID.ValueString()
+
+	var specID string
+	specID = r.ID.ValueString()
+
+	out := operations.FetchAPIVersionRequest{
+		APIID:  apiID,
+		SpecID: specID,
+	}
+
+	return &out, diags
+}
+
+func (r *APIVersionResourceModel) ToOperationsUpdateAPIVersionRequest(ctx context.Context) (*operations.UpdateAPIVersionRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiID string
+	apiID = r.APIID.ValueString()
+
+	var specID string
+	specID = r.ID.ValueString()
+
+	apiVersion, apiVersionDiags := r.ToSharedAPIVersion(ctx)
+	diags.Append(apiVersionDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAPIVersionRequest{
+		APIID:      apiID,
+		SpecID:     specID,
+		APIVersion: *apiVersion,
+	}
+
+	return &out, diags
+}
+
+func (r *APIVersionResourceModel) ToSharedAPIVersion(ctx context.Context) (*shared.APIVersion, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	version := new(string)
+	if !r.Version.IsUnknown() && !r.Version.IsNull() {
+		*version = r.Version.ValueString()
+	} else {
+		version = nil
+	}
+	var spec *shared.APIVersionSpec
+	if r.Spec != nil {
+		content := new(string)
+		if !r.Spec.Content.IsUnknown() && !r.Spec.Content.IsNull() {
+			*content = r.Spec.Content.ValueString()
+		} else {
+			content = nil
+		}
+		spec = &shared.APIVersionSpec{
+			Content: content,
+		}
+	}
+	out := shared.APIVersion{
+		Version: version,
+		Spec:    spec,
+	}
+
+	return &out, diags
+}
+
+func (r *APIVersionResourceModel) ToSharedCreateAPIVersionRequest(ctx context.Context) (*shared.CreateAPIVersionRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	version := new(string)
+	if !r.Version.IsUnknown() && !r.Version.IsNull() {
+		*version = r.Version.ValueString()
+	} else {
+		version = nil
+	}
+	var spec *shared.CreateAPIVersionRequestSpec
+	if r.Spec != nil {
+		content := new(string)
+		if !r.Spec.Content.IsUnknown() && !r.Spec.Content.IsNull() {
+			*content = r.Spec.Content.ValueString()
+		} else {
+			content = nil
+		}
+		typeVar := new(shared.CreateAPIVersionRequestAPISpecType)
+		if !r.Spec.Type.IsUnknown() && !r.Spec.Type.IsNull() {
+			*typeVar = shared.CreateAPIVersionRequestAPISpecType(r.Spec.Type.ValueString())
+		} else {
+			typeVar = nil
+		}
+		spec = &shared.CreateAPIVersionRequestSpec{
+			Content: content,
+			Type:    typeVar,
+		}
+	}
+	out := shared.CreateAPIVersionRequest{
+		Version: version,
+		Spec:    spec,
+	}
+
+	return &out, diags
 }

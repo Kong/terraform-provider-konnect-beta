@@ -13,27 +13,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshHealthCheckDataSourceModel) ToOperationsGetMeshHealthCheckRequest(ctx context.Context) (*operations.GetMeshHealthCheckRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	out := operations.GetMeshHealthCheckRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshHealthCheckDataSourceModel) RefreshFromSharedMeshHealthCheckItem(ctx context.Context, resp *shared.MeshHealthCheckItem) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -196,4 +175,25 @@ func (r *MeshHealthCheckDataSourceModel) RefreshFromSharedMeshHealthCheckItem(ct
 	}
 
 	return diags
+}
+
+func (r *MeshHealthCheckDataSourceModel) ToOperationsGetMeshHealthCheckRequest(ctx context.Context) (*operations.GetMeshHealthCheckRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	out := operations.GetMeshHealthCheckRequest{
+		CpID: cpID,
+		Mesh: mesh,
+		Name: name,
+	}
+
+	return &out, diags
 }

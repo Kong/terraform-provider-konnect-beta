@@ -22,6 +22,7 @@ func NewPortalDataSource() datasource.DataSource {
 
 // PortalDataSource is the data source implementation.
 type PortalDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

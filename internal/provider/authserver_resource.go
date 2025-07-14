@@ -29,6 +29,7 @@ func NewAuthServerResource() resource.Resource {
 
 // AuthServerResource defines the resource implementation.
 type AuthServerResource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

@@ -11,23 +11,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *APIPublicationDataSourceModel) ToOperationsFetchPublicationRequest(ctx context.Context) (*operations.FetchPublicationRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var apiID string
-	apiID = r.APIID.ValueString()
-
-	var portalID string
-	portalID = r.PortalID.ValueString()
-
-	out := operations.FetchPublicationRequest{
-		APIID:    apiID,
-		PortalID: portalID,
-	}
-
-	return &out, diags
-}
-
 func (r *APIPublicationDataSourceModel) RefreshFromSharedAPIPublicationResponse(ctx context.Context, resp *shared.APIPublicationResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -49,4 +32,21 @@ func (r *APIPublicationDataSourceModel) RefreshFromSharedAPIPublicationResponse(
 	}
 
 	return diags
+}
+
+func (r *APIPublicationDataSourceModel) ToOperationsFetchPublicationRequest(ctx context.Context) (*operations.FetchPublicationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiID string
+	apiID = r.APIID.ValueString()
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	out := operations.FetchPublicationRequest{
+		APIID:    apiID,
+		PortalID: portalID,
+	}
+
+	return &out, diags
 }

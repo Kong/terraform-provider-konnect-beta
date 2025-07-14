@@ -11,6 +11,99 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
+func (r *PortalCustomDomainResourceModel) RefreshFromSharedPortalCustomDomain(ctx context.Context, resp *shared.PortalCustomDomain) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.CnameStatus = types.StringValue(string(resp.CnameStatus))
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.Enabled = types.BoolValue(resp.Enabled)
+		r.Hostname = types.StringValue(resp.Hostname)
+		sslPriorData := r.Ssl
+		r.Ssl.CustomCertificate = sslPriorData.CustomCertificate
+		r.Ssl.CustomPrivateKey = sslPriorData.CustomPrivateKey
+		r.Ssl.DomainVerificationMethod = types.StringValue(string(resp.Ssl.DomainVerificationMethod))
+		r.Ssl.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.Ssl.ExpiresAt))
+		r.Ssl.UploadedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.Ssl.UploadedAt))
+		r.Ssl.ValidationErrors = make([]types.String, 0, len(resp.Ssl.ValidationErrors))
+		for _, v := range resp.Ssl.ValidationErrors {
+			r.Ssl.ValidationErrors = append(r.Ssl.ValidationErrors, types.StringValue(v))
+		}
+		r.Ssl.VerificationStatus = types.StringValue(string(resp.Ssl.VerificationStatus))
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+	}
+
+	return diags
+}
+
+func (r *PortalCustomDomainResourceModel) ToOperationsCreatePortalCustomDomainRequest(ctx context.Context) (*operations.CreatePortalCustomDomainRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	createPortalCustomDomainRequest, createPortalCustomDomainRequestDiags := r.ToSharedCreatePortalCustomDomainRequest(ctx)
+	diags.Append(createPortalCustomDomainRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreatePortalCustomDomainRequest{
+		PortalID:                        portalID,
+		CreatePortalCustomDomainRequest: *createPortalCustomDomainRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalCustomDomainResourceModel) ToOperationsDeletePortalCustomDomainRequest(ctx context.Context) (*operations.DeletePortalCustomDomainRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	out := operations.DeletePortalCustomDomainRequest{
+		PortalID: portalID,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalCustomDomainResourceModel) ToOperationsGetPortalCustomDomainRequest(ctx context.Context) (*operations.GetPortalCustomDomainRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	out := operations.GetPortalCustomDomainRequest{
+		PortalID: portalID,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalCustomDomainResourceModel) ToOperationsUpdatePortalCustomDomainRequest(ctx context.Context) (*operations.UpdatePortalCustomDomainRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	updatePortalCustomDomainRequest, updatePortalCustomDomainRequestDiags := r.ToSharedUpdatePortalCustomDomainRequest(ctx)
+	diags.Append(updatePortalCustomDomainRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdatePortalCustomDomainRequest{
+		PortalID:                        portalID,
+		UpdatePortalCustomDomainRequest: *updatePortalCustomDomainRequest,
+	}
+
+	return &out, diags
+}
+
 func (r *PortalCustomDomainResourceModel) ToSharedCreatePortalCustomDomainRequest(ctx context.Context) (*shared.CreatePortalCustomDomainRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -47,27 +140,6 @@ func (r *PortalCustomDomainResourceModel) ToSharedCreatePortalCustomDomainReques
 	return &out, diags
 }
 
-func (r *PortalCustomDomainResourceModel) ToOperationsCreatePortalCustomDomainRequest(ctx context.Context) (*operations.CreatePortalCustomDomainRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var portalID string
-	portalID = r.PortalID.ValueString()
-
-	createPortalCustomDomainRequest, createPortalCustomDomainRequestDiags := r.ToSharedCreatePortalCustomDomainRequest(ctx)
-	diags.Append(createPortalCustomDomainRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreatePortalCustomDomainRequest{
-		PortalID:                        portalID,
-		CreatePortalCustomDomainRequest: *createPortalCustomDomainRequest,
-	}
-
-	return &out, diags
-}
-
 func (r *PortalCustomDomainResourceModel) ToSharedUpdatePortalCustomDomainRequest(ctx context.Context) (*shared.UpdatePortalCustomDomainRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -82,73 +154,4 @@ func (r *PortalCustomDomainResourceModel) ToSharedUpdatePortalCustomDomainReques
 	}
 
 	return &out, diags
-}
-
-func (r *PortalCustomDomainResourceModel) ToOperationsUpdatePortalCustomDomainRequest(ctx context.Context) (*operations.UpdatePortalCustomDomainRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var portalID string
-	portalID = r.PortalID.ValueString()
-
-	updatePortalCustomDomainRequest, updatePortalCustomDomainRequestDiags := r.ToSharedUpdatePortalCustomDomainRequest(ctx)
-	diags.Append(updatePortalCustomDomainRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdatePortalCustomDomainRequest{
-		PortalID:                        portalID,
-		UpdatePortalCustomDomainRequest: *updatePortalCustomDomainRequest,
-	}
-
-	return &out, diags
-}
-
-func (r *PortalCustomDomainResourceModel) ToOperationsGetPortalCustomDomainRequest(ctx context.Context) (*operations.GetPortalCustomDomainRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var portalID string
-	portalID = r.PortalID.ValueString()
-
-	out := operations.GetPortalCustomDomainRequest{
-		PortalID: portalID,
-	}
-
-	return &out, diags
-}
-
-func (r *PortalCustomDomainResourceModel) ToOperationsDeletePortalCustomDomainRequest(ctx context.Context) (*operations.DeletePortalCustomDomainRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var portalID string
-	portalID = r.PortalID.ValueString()
-
-	out := operations.DeletePortalCustomDomainRequest{
-		PortalID: portalID,
-	}
-
-	return &out, diags
-}
-
-func (r *PortalCustomDomainResourceModel) RefreshFromSharedPortalCustomDomain(ctx context.Context, resp *shared.PortalCustomDomain) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.CnameStatus = types.StringValue(string(resp.CnameStatus))
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.Enabled = types.BoolValue(resp.Enabled)
-		r.Hostname = types.StringValue(resp.Hostname)
-		r.Ssl.DomainVerificationMethod = types.StringValue(string(resp.Ssl.DomainVerificationMethod))
-		r.Ssl.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.Ssl.ExpiresAt))
-		r.Ssl.UploadedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.Ssl.UploadedAt))
-		r.Ssl.ValidationErrors = make([]types.String, 0, len(resp.Ssl.ValidationErrors))
-		for _, v := range resp.Ssl.ValidationErrors {
-			r.Ssl.ValidationErrors = append(r.Ssl.ValidationErrors, types.StringValue(v))
-		}
-		r.Ssl.VerificationStatus = types.StringValue(string(resp.Ssl.VerificationStatus))
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
-	}
-
-	return diags
 }

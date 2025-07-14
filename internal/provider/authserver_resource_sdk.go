@@ -11,6 +11,81 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
+func (r *AuthServerResourceModel) RefreshFromSharedAuthServer(ctx context.Context, resp *shared.AuthServer) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.Audience = types.StringValue(resp.Audience)
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.Description = types.StringValue(resp.Description)
+		r.ID = types.StringValue(resp.ID)
+		r.Issuer = types.StringValue(resp.Issuer)
+		if len(resp.Labels) > 0 {
+			r.Labels = make(map[string]types.String, len(resp.Labels))
+			for key, value := range resp.Labels {
+				r.Labels[key] = types.StringPointerValue(value)
+			}
+		}
+		r.MetadataURI = types.StringValue(resp.MetadataURI)
+		r.Name = types.StringValue(resp.Name)
+		if resp.SigningAlgorithm != nil {
+			r.SigningAlgorithm = types.StringValue(string(*resp.SigningAlgorithm))
+		} else {
+			r.SigningAlgorithm = types.StringNull()
+		}
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+	}
+
+	return diags
+}
+
+func (r *AuthServerResourceModel) ToOperationsDeleteAuthServerRequest(ctx context.Context) (*operations.DeleteAuthServerRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var authServerID string
+	authServerID = r.ID.ValueString()
+
+	out := operations.DeleteAuthServerRequest{
+		AuthServerID: authServerID,
+	}
+
+	return &out, diags
+}
+
+func (r *AuthServerResourceModel) ToOperationsGetAuthServerRequest(ctx context.Context) (*operations.GetAuthServerRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var authServerID string
+	authServerID = r.ID.ValueString()
+
+	out := operations.GetAuthServerRequest{
+		AuthServerID: authServerID,
+	}
+
+	return &out, diags
+}
+
+func (r *AuthServerResourceModel) ToOperationsUpdateAuthServerRequest(ctx context.Context) (*operations.UpdateAuthServerRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var authServerID string
+	authServerID = r.ID.ValueString()
+
+	updateAuthServer, updateAuthServerDiags := r.ToSharedUpdateAuthServer(ctx)
+	diags.Append(updateAuthServerDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAuthServerRequest{
+		AuthServerID:     authServerID,
+		UpdateAuthServer: *updateAuthServer,
+	}
+
+	return &out, diags
+}
+
 func (r *AuthServerResourceModel) ToSharedCreateAuthServer(ctx context.Context) (*shared.CreateAuthServer, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -99,79 +174,4 @@ func (r *AuthServerResourceModel) ToSharedUpdateAuthServer(ctx context.Context) 
 	}
 
 	return &out, diags
-}
-
-func (r *AuthServerResourceModel) ToOperationsUpdateAuthServerRequest(ctx context.Context) (*operations.UpdateAuthServerRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var authServerID string
-	authServerID = r.ID.ValueString()
-
-	updateAuthServer, updateAuthServerDiags := r.ToSharedUpdateAuthServer(ctx)
-	diags.Append(updateAuthServerDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateAuthServerRequest{
-		AuthServerID:     authServerID,
-		UpdateAuthServer: *updateAuthServer,
-	}
-
-	return &out, diags
-}
-
-func (r *AuthServerResourceModel) ToOperationsGetAuthServerRequest(ctx context.Context) (*operations.GetAuthServerRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var authServerID string
-	authServerID = r.ID.ValueString()
-
-	out := operations.GetAuthServerRequest{
-		AuthServerID: authServerID,
-	}
-
-	return &out, diags
-}
-
-func (r *AuthServerResourceModel) ToOperationsDeleteAuthServerRequest(ctx context.Context) (*operations.DeleteAuthServerRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var authServerID string
-	authServerID = r.ID.ValueString()
-
-	out := operations.DeleteAuthServerRequest{
-		AuthServerID: authServerID,
-	}
-
-	return &out, diags
-}
-
-func (r *AuthServerResourceModel) RefreshFromSharedAuthServer(ctx context.Context, resp *shared.AuthServer) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.Audience = types.StringValue(resp.Audience)
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.Description = types.StringValue(resp.Description)
-		r.ID = types.StringValue(resp.ID)
-		r.Issuer = types.StringValue(resp.Issuer)
-		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String, len(resp.Labels))
-			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringPointerValue(value)
-			}
-		}
-		r.MetadataURI = types.StringValue(resp.MetadataURI)
-		r.Name = types.StringValue(resp.Name)
-		if resp.SigningAlgorithm != nil {
-			r.SigningAlgorithm = types.StringValue(string(*resp.SigningAlgorithm))
-		} else {
-			r.SigningAlgorithm = types.StringNull()
-		}
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
-	}
-
-	return diags
 }

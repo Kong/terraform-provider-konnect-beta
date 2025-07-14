@@ -23,6 +23,7 @@ func NewMeshHostnameGeneratorDataSource() datasource.DataSource {
 
 // MeshHostnameGeneratorDataSource is the data source implementation.
 type MeshHostnameGeneratorDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

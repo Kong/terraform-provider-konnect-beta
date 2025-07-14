@@ -23,6 +23,7 @@ func NewAPIImplementationDataSource() datasource.DataSource {
 
 // APIImplementationDataSource is the data source implementation.
 type APIImplementationDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

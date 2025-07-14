@@ -13,27 +13,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshPassthroughDataSourceModel) ToOperationsGetMeshPassthroughRequest(ctx context.Context) (*operations.GetMeshPassthroughRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	out := operations.GetMeshPassthroughRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshPassthroughDataSourceModel) RefreshFromSharedMeshPassthroughItem(ctx context.Context, resp *shared.MeshPassthroughItem) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -110,4 +89,25 @@ func (r *MeshPassthroughDataSourceModel) RefreshFromSharedMeshPassthroughItem(ct
 	}
 
 	return diags
+}
+
+func (r *MeshPassthroughDataSourceModel) ToOperationsGetMeshPassthroughRequest(ctx context.Context) (*operations.GetMeshPassthroughRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	out := operations.GetMeshPassthroughRequest{
+		CpID: cpID,
+		Mesh: mesh,
+		Name: name,
+	}
+
+	return &out, diags
 }
