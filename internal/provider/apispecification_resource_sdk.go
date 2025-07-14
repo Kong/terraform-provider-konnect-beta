@@ -148,9 +148,9 @@ func (r *APISpecificationResourceModel) ToSharedCreateAPISpecRequest(ctx context
 	var content string
 	content = r.Content.ValueString()
 
-	typeVar := new(shared.APISpecType)
+	typeVar := new(shared.CreateAPISpecRequestAPISpecType)
 	if !r.Type.IsUnknown() && !r.Type.IsNull() {
-		*typeVar = shared.APISpecType(r.Type.ValueString())
+		*typeVar = shared.CreateAPISpecRequestAPISpecType(r.Type.ValueString())
 	} else {
 		typeVar = nil
 	}

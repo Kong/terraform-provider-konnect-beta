@@ -12,7 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -98,8 +97,11 @@ func (r *PortalPageResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `The Portal identifier`,
 			},
 			"slug": schema.StringAttribute{
-				Required:    true,
-				Description: `The slug of a page in a portal. Is used to compute the full path /slug1/slug2/slug3.`,
+				Required: true,
+				MarkdownDescription: `The slug of a page in a portal, used to compute its full URL path within the portal hierarchy. ` + "\n" +
+					`When a page has a ` + "`" + `parent_page_id` + "`" + `, its full path is built by joining the parent’s slug with its own. ` + "\n" +
+					`For example, if a parent page has the slug ` + "`" + `slug1` + "`" + ` and this page’s slug is ` + "`" + `slug2` + "`" + `, the resulting path will be ` + "`" + `/slug1/slug2` + "`" + `. ` + "\n" +
+					`This enables nested page structures like ` + "`" + `/slug1/slug2/slug3` + "`" + `.`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtMost(512),
 				},
@@ -107,7 +109,7 @@ func (r *PortalPageResource) Schema(ctx context.Context, req resource.SchemaRequ
 			"status": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the resource is visible on a given portal. Defaults to false. must be one of ["published", "unpublished"]`,
+				Description: `Whether the resource is visible on a given portal. Defaults to unpublished. must be one of ["published", "unpublished"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"published",
@@ -134,10 +136,17 @@ func (r *PortalPageResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 			},
 			"visibility": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Default:     stringdefault.StaticString(`private`),
-				Description: `Whether a page is publicly accessible to non-authenticated users. Default: "private"`,
+				Computed: true,
+				Optional: true,
+				MarkdownDescription: `Whether a page is publicly accessible to non-authenticated users.` + "\n" +
+					`If not provided, the default_page_visibility value of the portal will be used.` + "\n" +
+					`must be one of ["public", "private"]`,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						"public",
+						"private",
+					),
+				},
 			},
 		},
 	}

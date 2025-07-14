@@ -175,15 +175,8 @@ func (r *APIVersionResourceModel) ToSharedCreateAPIVersionRequest(ctx context.Co
 		} else {
 			content = nil
 		}
-		typeVar := new(shared.CreateAPIVersionRequestAPISpecType)
-		if !r.Spec.Type.IsUnknown() && !r.Spec.Type.IsNull() {
-			*typeVar = shared.CreateAPIVersionRequestAPISpecType(r.Spec.Type.ValueString())
-		} else {
-			typeVar = nil
-		}
 		spec = &shared.CreateAPIVersionRequestSpec{
 			Content: content,
-			Type:    typeVar,
 		}
 	}
 	out := shared.CreateAPIVersionRequest{

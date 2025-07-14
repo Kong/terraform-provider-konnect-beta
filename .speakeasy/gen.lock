@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: 704872f2c54970d164c493e7edefca5b
+  docChecksum: b46ca68a988d55cd88566b127d014905
   docVersion: 2.0.0
   speakeasyVersion: 1.581.1
   generationVersion: 2.656.9
@@ -26,23 +26,12 @@ generatedFiles:
   - .gitattributes
   - USAGE.md
   - examples/README.md
-  - examples/data-sources/konnect-beta_api/data-source.tf
-  - examples/data-sources/konnect-beta_api_document/data-source.tf
-  - examples/data-sources/konnect-beta_api_implementation/data-source.tf
-  - examples/data-sources/konnect-beta_api_publication/data-source.tf
-  - examples/data-sources/konnect-beta_api_specification/data-source.tf
-  - examples/data-sources/konnect-beta_api_version/data-source.tf
-  - examples/data-sources/konnect-beta_auth_server/data-source.tf
-  - examples/data-sources/konnect-beta_auth_server_claims/data-source.tf
-  - examples/data-sources/konnect-beta_auth_server_clients/data-source.tf
-  - examples/data-sources/konnect-beta_auth_server_scopes/data-source.tf
   - examples/data-sources/konnect-beta_hostname_generator_list/data-source.tf
   - examples/data-sources/konnect-beta_mesh/data-source.tf
   - examples/data-sources/konnect-beta_mesh_access_log/data-source.tf
   - examples/data-sources/konnect-beta_mesh_access_log_list/data-source.tf
   - examples/data-sources/konnect-beta_mesh_circuit_breaker/data-source.tf
   - examples/data-sources/konnect-beta_mesh_circuit_breaker_list/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_control_plane/data-source.tf
   - examples/data-sources/konnect-beta_mesh_control_planes/data-source.tf
   - examples/data-sources/konnect-beta_mesh_external_service/data-source.tf
   - examples/data-sources/konnect-beta_mesh_external_service_list/data-source.tf
@@ -86,13 +75,6 @@ generatedFiles:
   - examples/data-sources/konnect-beta_mesh_trace_list/data-source.tf
   - examples/data-sources/konnect-beta_mesh_traffic_permission/data-source.tf
   - examples/data-sources/konnect-beta_mesh_traffic_permission_list/data-source.tf
-  - examples/data-sources/konnect-beta_portal/data-source.tf
-  - examples/data-sources/konnect-beta_portal_auth/data-source.tf
-  - examples/data-sources/konnect-beta_portal_custom_domain/data-source.tf
-  - examples/data-sources/konnect-beta_portal_customization/data-source.tf
-  - examples/data-sources/konnect-beta_portal_page/data-source.tf
-  - examples/data-sources/konnect-beta_portal_snippet/data-source.tf
-  - examples/data-sources/konnect-beta_portal_team/data-source.tf
   - examples/provider/provider.tf
   - examples/resources/konnect-beta_api/import.sh
   - examples/resources/konnect-beta_api/resource.tf
@@ -192,44 +174,24 @@ generatedFiles:
   - internal/planmodifiers/setplanmodifier/suppress_diff.go
   - internal/planmodifiers/stringplanmodifier/suppress_diff.go
   - internal/planmodifiers/utils/state_check.go
-  - internal/provider/api_data_source.go
-  - internal/provider/api_data_source_sdk.go
   - internal/provider/api_resource.go
   - internal/provider/api_resource_sdk.go
-  - internal/provider/apidocument_data_source.go
-  - internal/provider/apidocument_data_source_sdk.go
   - internal/provider/apidocument_resource.go
   - internal/provider/apidocument_resource_sdk.go
-  - internal/provider/apiimplementation_data_source.go
-  - internal/provider/apiimplementation_data_source_sdk.go
   - internal/provider/apiimplementation_resource.go
   - internal/provider/apiimplementation_resource_sdk.go
-  - internal/provider/apipublication_data_source.go
-  - internal/provider/apipublication_data_source_sdk.go
   - internal/provider/apipublication_resource.go
   - internal/provider/apipublication_resource_sdk.go
-  - internal/provider/apispecification_data_source.go
-  - internal/provider/apispecification_data_source_sdk.go
   - internal/provider/apispecification_resource.go
   - internal/provider/apispecification_resource_sdk.go
-  - internal/provider/apiversion_data_source.go
-  - internal/provider/apiversion_data_source_sdk.go
   - internal/provider/apiversion_resource.go
   - internal/provider/apiversion_resource_sdk.go
-  - internal/provider/authserver_data_source.go
-  - internal/provider/authserver_data_source_sdk.go
   - internal/provider/authserver_resource.go
   - internal/provider/authserver_resource_sdk.go
-  - internal/provider/authserverclaims_data_source.go
-  - internal/provider/authserverclaims_data_source_sdk.go
   - internal/provider/authserverclaims_resource.go
   - internal/provider/authserverclaims_resource_sdk.go
-  - internal/provider/authserverclients_data_source.go
-  - internal/provider/authserverclients_data_source_sdk.go
   - internal/provider/authserverclients_resource.go
   - internal/provider/authserverclients_resource_sdk.go
-  - internal/provider/authserverscopes_data_source.go
-  - internal/provider/authserverscopes_data_source_sdk.go
   - internal/provider/authserverscopes_resource.go
   - internal/provider/authserverscopes_resource_sdk.go
   - internal/provider/hostnamegeneratorlist_data_source.go
@@ -250,8 +212,6 @@ generatedFiles:
   - internal/provider/meshcircuitbreaker_resource_sdk.go
   - internal/provider/meshcircuitbreakerlist_data_source.go
   - internal/provider/meshcircuitbreakerlist_data_source_sdk.go
-  - internal/provider/meshcontrolplane_data_source.go
-  - internal/provider/meshcontrolplane_data_source_sdk.go
   - internal/provider/meshcontrolplane_resource.go
   - internal/provider/meshcontrolplane_resource_sdk.go
   - internal/provider/meshcontrolplanes_data_source.go
@@ -382,32 +342,18 @@ generatedFiles:
   - internal/provider/meshtrafficpermission_resource_sdk.go
   - internal/provider/meshtrafficpermissionlist_data_source.go
   - internal/provider/meshtrafficpermissionlist_data_source_sdk.go
-  - internal/provider/portal_data_source.go
-  - internal/provider/portal_data_source_sdk.go
   - internal/provider/portal_resource.go
   - internal/provider/portal_resource_sdk.go
-  - internal/provider/portalauth_data_source.go
-  - internal/provider/portalauth_data_source_sdk.go
   - internal/provider/portalauth_resource.go
   - internal/provider/portalauth_resource_sdk.go
-  - internal/provider/portalcustomdomain_data_source.go
-  - internal/provider/portalcustomdomain_data_source_sdk.go
   - internal/provider/portalcustomdomain_resource.go
   - internal/provider/portalcustomdomain_resource_sdk.go
-  - internal/provider/portalcustomization_data_source.go
-  - internal/provider/portalcustomization_data_source_sdk.go
   - internal/provider/portalcustomization_resource.go
   - internal/provider/portalcustomization_resource_sdk.go
-  - internal/provider/portalpage_data_source.go
-  - internal/provider/portalpage_data_source_sdk.go
   - internal/provider/portalpage_resource.go
   - internal/provider/portalpage_resource_sdk.go
-  - internal/provider/portalsnippet_data_source.go
-  - internal/provider/portalsnippet_data_source_sdk.go
   - internal/provider/portalsnippet_resource.go
   - internal/provider/portalsnippet_resource_sdk.go
-  - internal/provider/portalteam_data_source.go
-  - internal/provider/portalteam_data_source_sdk.go
   - internal/provider/portalteam_resource.go
   - internal/provider/portalteam_resource_sdk.go
   - internal/provider/provider.go
@@ -653,7 +599,6 @@ generatedFiles:
   - internal/provider/types/paginated_meta.go
   - internal/provider/types/path.go
   - internal/provider/types/portal_claim_mappings.go
-  - internal/provider/types/portal_custom_domain_ssl.go
   - internal/provider/types/portal_footer_menu_section.go
   - internal/provider/types/portal_menu_item.go
   - internal/provider/types/portal_oidc_config.go
@@ -764,29 +709,6 @@ generatedFiles:
   - internal/sdk/models/operations/createauthserverclient.go
   - internal/sdk/models/operations/createauthserverscope.go
   - internal/sdk/models/operations/createcp.go
-  - internal/sdk/models/operations/createhostnamegenerator.go
-  - internal/sdk/models/operations/createmeshaccesslog.go
-  - internal/sdk/models/operations/createmeshcircuitbreaker.go
-  - internal/sdk/models/operations/createmeshexternalservice.go
-  - internal/sdk/models/operations/createmeshfaultinjection.go
-  - internal/sdk/models/operations/createmeshgateway.go
-  - internal/sdk/models/operations/createmeshglobalratelimit.go
-  - internal/sdk/models/operations/createmeshhealthcheck.go
-  - internal/sdk/models/operations/createmeshhttproute.go
-  - internal/sdk/models/operations/createmeshloadbalancingstrategy.go
-  - internal/sdk/models/operations/createmeshmetric.go
-  - internal/sdk/models/operations/createmeshmultizoneservice.go
-  - internal/sdk/models/operations/createmeshopa.go
-  - internal/sdk/models/operations/createmeshpassthrough.go
-  - internal/sdk/models/operations/createmeshproxypatch.go
-  - internal/sdk/models/operations/createmeshratelimit.go
-  - internal/sdk/models/operations/createmeshretry.go
-  - internal/sdk/models/operations/createmeshservice.go
-  - internal/sdk/models/operations/createmeshtcproute.go
-  - internal/sdk/models/operations/createmeshtimeout.go
-  - internal/sdk/models/operations/createmeshtls.go
-  - internal/sdk/models/operations/createmeshtrace.go
-  - internal/sdk/models/operations/createmeshtrafficpermission.go
   - internal/sdk/models/operations/createportal.go
   - internal/sdk/models/operations/createportalcustomdomain.go
   - internal/sdk/models/operations/createportalpage.go
@@ -901,7 +823,30 @@ generatedFiles:
   - internal/sdk/models/operations/listmeshcontrolplanes.go
   - internal/sdk/models/operations/options.go
   - internal/sdk/models/operations/publishapitoportal.go
+  - internal/sdk/models/operations/puthostnamegenerator.go
   - internal/sdk/models/operations/putmesh.go
+  - internal/sdk/models/operations/putmeshaccesslog.go
+  - internal/sdk/models/operations/putmeshcircuitbreaker.go
+  - internal/sdk/models/operations/putmeshexternalservice.go
+  - internal/sdk/models/operations/putmeshfaultinjection.go
+  - internal/sdk/models/operations/putmeshgateway.go
+  - internal/sdk/models/operations/putmeshglobalratelimit.go
+  - internal/sdk/models/operations/putmeshhealthcheck.go
+  - internal/sdk/models/operations/putmeshhttproute.go
+  - internal/sdk/models/operations/putmeshloadbalancingstrategy.go
+  - internal/sdk/models/operations/putmeshmetric.go
+  - internal/sdk/models/operations/putmeshmultizoneservice.go
+  - internal/sdk/models/operations/putmeshopa.go
+  - internal/sdk/models/operations/putmeshpassthrough.go
+  - internal/sdk/models/operations/putmeshproxypatch.go
+  - internal/sdk/models/operations/putmeshratelimit.go
+  - internal/sdk/models/operations/putmeshretry.go
+  - internal/sdk/models/operations/putmeshservice.go
+  - internal/sdk/models/operations/putmeshtcproute.go
+  - internal/sdk/models/operations/putmeshtimeout.go
+  - internal/sdk/models/operations/putmeshtls.go
+  - internal/sdk/models/operations/putmeshtrace.go
+  - internal/sdk/models/operations/putmeshtrafficpermission.go
   - internal/sdk/models/operations/replaceauthserverclient.go
   - internal/sdk/models/operations/replaceportalcustomization.go
   - internal/sdk/models/operations/updateapi.go
@@ -912,29 +857,6 @@ generatedFiles:
   - internal/sdk/models/operations/updateauthserverclaim.go
   - internal/sdk/models/operations/updateauthserverscope.go
   - internal/sdk/models/operations/updatecp.go
-  - internal/sdk/models/operations/updatehostnamegenerator.go
-  - internal/sdk/models/operations/updatemeshaccesslog.go
-  - internal/sdk/models/operations/updatemeshcircuitbreaker.go
-  - internal/sdk/models/operations/updatemeshexternalservice.go
-  - internal/sdk/models/operations/updatemeshfaultinjection.go
-  - internal/sdk/models/operations/updatemeshgateway.go
-  - internal/sdk/models/operations/updatemeshglobalratelimit.go
-  - internal/sdk/models/operations/updatemeshhealthcheck.go
-  - internal/sdk/models/operations/updatemeshhttproute.go
-  - internal/sdk/models/operations/updatemeshloadbalancingstrategy.go
-  - internal/sdk/models/operations/updatemeshmetric.go
-  - internal/sdk/models/operations/updatemeshmultizoneservice.go
-  - internal/sdk/models/operations/updatemeshopa.go
-  - internal/sdk/models/operations/updatemeshpassthrough.go
-  - internal/sdk/models/operations/updatemeshproxypatch.go
-  - internal/sdk/models/operations/updatemeshratelimit.go
-  - internal/sdk/models/operations/updatemeshretry.go
-  - internal/sdk/models/operations/updatemeshservice.go
-  - internal/sdk/models/operations/updatemeshtcproute.go
-  - internal/sdk/models/operations/updatemeshtimeout.go
-  - internal/sdk/models/operations/updatemeshtls.go
-  - internal/sdk/models/operations/updatemeshtrace.go
-  - internal/sdk/models/operations/updatemeshtrafficpermission.go
   - internal/sdk/models/operations/updateportal.go
   - internal/sdk/models/operations/updateportalauthenticationsettings.go
   - internal/sdk/models/operations/updateportalcustomdomain.go
@@ -1091,6 +1013,7 @@ generatedFiles:
   - internal/sdk/models/shared/meshtrafficpermissionlist.go
   - internal/sdk/models/shared/notfounderror.go
   - internal/sdk/models/shared/pagemeta.go
+  - internal/sdk/models/shared/pagevisibilitystatus.go
   - internal/sdk/models/shared/paginatedmeta.go
   - internal/sdk/models/shared/portalauthenticationsettingsresponse.go
   - internal/sdk/models/shared/portalauthenticationsettingsupdaterequest.go
@@ -1116,6 +1039,7 @@ generatedFiles:
   - internal/sdk/models/shared/responsetype.go
   - internal/sdk/models/shared/scope.go
   - internal/sdk/models/shared/security.go
+  - internal/sdk/models/shared/snippetvisibilitystatus.go
   - internal/sdk/models/shared/unauthorizederror.go
   - internal/sdk/models/shared/unsupportedmediatypeerror.go
   - internal/sdk/models/shared/updatealgorithm.go
@@ -1124,6 +1048,7 @@ generatedFiles:
   - internal/sdk/models/shared/updateclaim.go
   - internal/sdk/models/shared/updateportal.go
   - internal/sdk/models/shared/updateportalcustomdomainrequest.go
+  - internal/sdk/models/shared/updateportalcustomdomainssl.go
   - internal/sdk/models/shared/updateportalpagerequest.go
   - internal/sdk/models/shared/updateportalsnippetrequest.go
   - internal/sdk/models/shared/updatescope.go
@@ -4720,7 +4645,7 @@ examples:
         path:
           apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
       requestBody:
-        application/json: {"version": "1.0.0", "spec": {"content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "type": "oas3"}}
+        application/json: {"version": "1.0.0", "spec": {"content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}"}}
       responses:
         "201":
           application/json: {"id": "7710d5c4-d902-410b-992f-18b814155b53", "version": "1.0.0", "spec": {"content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "type": "oas3"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -4987,5 +4912,280 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  putMeshAccessLog:
+    speakeasy-default-put-mesh-access-log:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshAccessLog", "mesh": "default", "name": "<value>", "spec": {"from": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "File"}]}, "targetRef": {"kind": "Mesh"}}], "rules": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}}, "type": "File"}]}}], "to": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}}, "type": "OpenTelemetry"}]}, "targetRef": {"kind": "MeshMultiZoneService"}}]}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshCircuitBreaker:
+    speakeasy-default-put-mesh-circuit-breaker:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshCircuitBreaker", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshFaultInjection:
+    speakeasy-default-put-mesh-fault-injection:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshFaultInjection", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshHealthCheck:
+    speakeasy-default-put-mesh-health-check:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshHealthCheck", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshHTTPRoute:
+    speakeasy-default-put-mesh-HTTP-route:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshHTTPRoute", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshLoadBalancingStrategy:
+    speakeasy-default-put-mesh-load-balancing-strategy:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshLoadBalancingStrategy", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshMetric:
+    speakeasy-default-put-mesh-metric:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshMetric", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshPassthrough:
+    speakeasy-default-put-mesh-passthrough:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshPassthrough", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshProxyPatch:
+    speakeasy-default-put-mesh-proxy-patch:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshProxyPatch", "mesh": "default", "name": "<value>", "spec": {"default": {}}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshRateLimit:
+    speakeasy-default-put-mesh-rate-limit:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshRateLimit", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshRetry:
+    speakeasy-default-put-mesh-retry:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshRetry", "mesh": "default", "name": "<value>", "spec": {"to": [{"default": {"grpc": {"retryOn": ["Canceled", "DeadlineExceeded", "Internal", "ResourceExhausted", "Unavailable"]}, "http": {"retryOn": ["5XX", "GatewayError", "Reset", "Retriable4xx", "ConnectFailure", "EnvoyRatelimited", "RefusedStream", "Http3PostConnectFailure", "HttpMethodConnect", "HttpMethodDelete", "HttpMethodGet", "HttpMethodHead", "HttpMethodOptions", "HttpMethodPatch", "HttpMethodPost", "HttpMethodPut", "HttpMethodTrace", "500", "503"]}}, "targetRef": {"kind": "MeshExternalService"}}]}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshTCPRoute:
+    speakeasy-default-put-mesh-TCP-route:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshTCPRoute", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshTimeout:
+    speakeasy-default-put-mesh-timeout:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshTimeout", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshTLS:
+    speakeasy-default-put-mesh-TLS:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshTLS", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshTrace:
+    speakeasy-default-put-mesh-trace:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshTrace", "mesh": "default", "name": "<value>", "spec": {"default": {"backends": [{"openTelemetry": {"endpoint": "otel-collector:4317"}, "type": "Datadog"}]}}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshTrafficPermission:
+    speakeasy-default-put-mesh-traffic-permission:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshTrafficPermission", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshGateway:
+    speakeasy-default-put-mesh-gateway:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"mesh": "<value>", "name": "<value>", "selectors": [], "type": "<value>"}
+      responses:
+        "200":
+          application/json: {}
+  putHostnameGenerator:
+    speakeasy-default-put-hostname-generator:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "HostnameGenerator", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshExternalService:
+    speakeasy-default-put-mesh-external-service:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshExternalService", "mesh": "default", "name": "<value>", "spec": {"endpoints": [{"address": "example.com", "port": 623172}], "match": {"port": 740935, "protocol": "tcp", "type": "HostnameGenerator"}}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshMultiZoneService:
+    speakeasy-default-put-mesh-multi-zone-service:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshMultiZoneService", "mesh": "default", "name": "<value>", "spec": {"ports": [{"appProtocol": "tcp", "port": 156296}], "selector": {"meshService": {"matchLabels": {"key": "<value>", "key1": "<value>"}}}}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshService:
+    speakeasy-default-put-mesh-service:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshService", "mesh": "default", "name": "<value>", "spec": {"state": "Unavailable"}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshGlobalRateLimit:
+    speakeasy-default-put-mesh-global-rate-limit:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshGlobalRateLimit", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshOPA:
+    speakeasy-default-put-mesh-OPA:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshOPA", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
 examplesVersion: 1.0.2
 generatedTests: {}

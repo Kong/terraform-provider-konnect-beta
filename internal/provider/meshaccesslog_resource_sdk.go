@@ -419,35 +419,6 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(ctx cont
 	return diags
 }
 
-func (r *MeshAccessLogResourceModel) ToOperationsCreateMeshAccessLogRequest(ctx context.Context) (*operations.CreateMeshAccessLogRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	meshAccessLogItem, meshAccessLogItemDiags := r.ToSharedMeshAccessLogItemInput(ctx)
-	diags.Append(meshAccessLogItemDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateMeshAccessLogRequest{
-		CpID:              cpID,
-		Mesh:              mesh,
-		Name:              name,
-		MeshAccessLogItem: *meshAccessLogItem,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshAccessLogResourceModel) ToOperationsDeleteMeshAccessLogRequest(ctx context.Context) (*operations.DeleteMeshAccessLogRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -490,7 +461,7 @@ func (r *MeshAccessLogResourceModel) ToOperationsGetMeshAccessLogRequest(ctx con
 	return &out, diags
 }
 
-func (r *MeshAccessLogResourceModel) ToOperationsUpdateMeshAccessLogRequest(ctx context.Context) (*operations.UpdateMeshAccessLogRequest, diag.Diagnostics) {
+func (r *MeshAccessLogResourceModel) ToOperationsPutMeshAccessLogRequest(ctx context.Context) (*operations.PutMeshAccessLogRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -509,7 +480,7 @@ func (r *MeshAccessLogResourceModel) ToOperationsUpdateMeshAccessLogRequest(ctx 
 		return nil, diags
 	}
 
-	out := operations.UpdateMeshAccessLogRequest{
+	out := operations.PutMeshAccessLogRequest{
 		CpID:              cpID,
 		Mesh:              mesh,
 		Name:              name,

@@ -375,35 +375,6 @@ func (r *MeshHTTPRouteResourceModel) RefreshFromSharedMeshHTTPRouteItem(ctx cont
 	return diags
 }
 
-func (r *MeshHTTPRouteResourceModel) ToOperationsCreateMeshHTTPRouteRequest(ctx context.Context) (*operations.CreateMeshHTTPRouteRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	meshHTTPRouteItem, meshHTTPRouteItemDiags := r.ToSharedMeshHTTPRouteItemInput(ctx)
-	diags.Append(meshHTTPRouteItemDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateMeshHTTPRouteRequest{
-		CpID:              cpID,
-		Mesh:              mesh,
-		Name:              name,
-		MeshHTTPRouteItem: *meshHTTPRouteItem,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshHTTPRouteResourceModel) ToOperationsDeleteMeshHTTPRouteRequest(ctx context.Context) (*operations.DeleteMeshHTTPRouteRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -446,7 +417,7 @@ func (r *MeshHTTPRouteResourceModel) ToOperationsGetMeshHTTPRouteRequest(ctx con
 	return &out, diags
 }
 
-func (r *MeshHTTPRouteResourceModel) ToOperationsUpdateMeshHTTPRouteRequest(ctx context.Context) (*operations.UpdateMeshHTTPRouteRequest, diag.Diagnostics) {
+func (r *MeshHTTPRouteResourceModel) ToOperationsPutMeshHTTPRouteRequest(ctx context.Context) (*operations.PutMeshHTTPRouteRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -465,7 +436,7 @@ func (r *MeshHTTPRouteResourceModel) ToOperationsUpdateMeshHTTPRouteRequest(ctx 
 		return nil, diags
 	}
 
-	out := operations.UpdateMeshHTTPRouteRequest{
+	out := operations.PutMeshHTTPRouteRequest{
 		CpID:              cpID,
 		Mesh:              mesh,
 		Name:              name,

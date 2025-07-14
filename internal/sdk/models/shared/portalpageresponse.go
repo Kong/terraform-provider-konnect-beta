@@ -11,15 +11,19 @@ import (
 type PortalPageResponse struct {
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
-	// The slug of a page in a portal. Is used to compute the full path /slug1/slug2/slug3.
+	// The slug of a page in a portal, used to compute its full URL path within the portal hierarchy.
+	// When a page has a `parent_page_id`, its full path is built by joining the parent’s slug with its own.
+	// For example, if a parent page has the slug `slug1` and this page’s slug is `slug2`, the resulting path will be `/slug1/slug2`.
+	// This enables nested page structures like `/slug1/slug2/slug3`.
+	//
 	Slug string `json:"slug"`
 	// The title of a page in a portal.
 	Title string `json:"title"`
 	// The renderable markdown content of a page in a portal.
 	Content string `json:"content"`
-	// Whether the resource is publicly accessible to non-authenticated users. Defaults to private.
+	// Whether the resource is publicly accessible to non-authenticated users.
 	Visibility VisibilityStatus `json:"visibility"`
-	// Whether the resource is visible on a given portal. Defaults to false.
+	// Whether the resource is visible on a given portal. Defaults to unpublished.
 	Status      PublishedStatus `json:"status"`
 	Description *string         `json:"description,omitempty"`
 	// An ISO-8601 timestamp representation of entity creation date.

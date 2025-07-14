@@ -441,13 +441,13 @@ func (r *MeshTCPRouteResource) Create(ctx context.Context, req resource.CreateRe
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateMeshTCPRouteRequest(ctx)
+	request, requestDiags := data.ToOperationsPutMeshTCPRouteRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.MeshTCPRoute.CreateMeshTCPRoute(ctx, *request)
+	res, err := r.client.MeshTCPRoute.PutMeshTCPRoute(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -459,7 +459,10 @@ func (r *MeshTCPRouteResource) Create(ctx context.Context, req resource.CreateRe
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 201 {
+	switch res.StatusCode {
+	case 200, 201:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -592,13 +595,13 @@ func (r *MeshTCPRouteResource) Update(ctx context.Context, req resource.UpdateRe
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateMeshTCPRouteRequest(ctx)
+	request, requestDiags := data.ToOperationsPutMeshTCPRouteRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.MeshTCPRoute.UpdateMeshTCPRoute(ctx, *request)
+	res, err := r.client.MeshTCPRoute.PutMeshTCPRoute(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -610,7 +613,10 @@ func (r *MeshTCPRouteResource) Update(ctx context.Context, req resource.UpdateRe
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 201:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

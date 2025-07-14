@@ -34,7 +34,7 @@ resource "konnect_portal_custom_domain" "my_portalcustomdomain" {
 - `enabled` (Boolean)
 - `hostname` (String) Requires replacement if changed.
 - `portal_id` (String) The Portal identifier
-- `ssl` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--ssl))
+- `ssl` (Attributes) (see [below for nested schema](#nestedatt--ssl))
 
 ### Read-Only
 
@@ -51,8 +51,8 @@ Required:
 
 Optional:
 
-- `custom_certificate` (String) Custom certificate to be used for the SSL termination. Requires replacement if changed.
-- `custom_private_key` (String) Custom certificate private key to be used for the SSL termination. Requires replacement if changed.
+- `custom_certificate` (String) Custom certificate to be used for the SSL termination.
+- `custom_private_key` (String) Custom certificate private key to be used for the SSL termination.
 
 Read-Only:
 
