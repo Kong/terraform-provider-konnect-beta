@@ -11,6 +11,20 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
+func (r *PortalTeamDataSourceModel) RefreshFromSharedPortalTeamResponse(ctx context.Context, resp *shared.PortalTeamResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.Description = types.StringPointerValue(resp.Description)
+		r.ID = types.StringPointerValue(resp.ID)
+		r.Name = types.StringPointerValue(resp.Name)
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+	}
+
+	return diags
+}
+
 func (r *PortalTeamDataSourceModel) ToOperationsGetPortalTeamRequest(ctx context.Context) (*operations.GetPortalTeamRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -26,18 +40,4 @@ func (r *PortalTeamDataSourceModel) ToOperationsGetPortalTeamRequest(ctx context
 	}
 
 	return &out, diags
-}
-
-func (r *PortalTeamDataSourceModel) RefreshFromSharedPortalTeamResponse(ctx context.Context, resp *shared.PortalTeamResponse) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.Description = types.StringPointerValue(resp.Description)
-		r.ID = types.StringPointerValue(resp.ID)
-		r.Name = types.StringPointerValue(resp.Name)
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
-	}
-
-	return diags
 }

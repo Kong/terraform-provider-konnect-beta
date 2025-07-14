@@ -22,6 +22,7 @@ func NewAuthServerClientsDataSource() datasource.DataSource {
 
 // AuthServerClientsDataSource is the data source implementation.
 type AuthServerClientsDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

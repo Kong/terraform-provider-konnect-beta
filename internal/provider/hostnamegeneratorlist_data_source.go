@@ -23,6 +23,7 @@ func NewHostnameGeneratorListDataSource() datasource.DataSource {
 
 // HostnameGeneratorListDataSource is the data source implementation.
 type HostnameGeneratorListDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

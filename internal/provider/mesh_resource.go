@@ -37,6 +37,7 @@ func NewMeshResource() resource.Resource {
 
 // MeshResource defines the resource implementation.
 type MeshResource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
@@ -1146,7 +1147,7 @@ func (r *MeshResource) ImportState(ctx context.Context, req resource.ImportState
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b",  "name": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b", "name": ""}': `+err.Error())
 		return
 	}
 
@@ -1160,5 +1161,4 @@ func (r *MeshResource) ImportState(ctx context.Context, req resource.ImportState
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), data.Name)...)
-
 }

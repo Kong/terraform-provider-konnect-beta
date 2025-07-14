@@ -14,27 +14,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshProxyPatchDataSourceModel) ToOperationsGetMeshProxyPatchRequest(ctx context.Context) (*operations.GetMeshProxyPatchRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	out := operations.GetMeshProxyPatchRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshProxyPatchDataSourceModel) RefreshFromSharedMeshProxyPatchItem(ctx context.Context, resp *shared.MeshProxyPatchItem) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -285,4 +264,25 @@ func (r *MeshProxyPatchDataSourceModel) RefreshFromSharedMeshProxyPatchItem(ctx 
 	}
 
 	return diags
+}
+
+func (r *MeshProxyPatchDataSourceModel) ToOperationsGetMeshProxyPatchRequest(ctx context.Context) (*operations.GetMeshProxyPatchRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	out := operations.GetMeshProxyPatchRequest{
+		CpID: cpID,
+		Mesh: mesh,
+		Name: name,
+	}
+
+	return &out, diags
 }

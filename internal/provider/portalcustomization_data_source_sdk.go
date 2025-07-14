@@ -11,19 +11,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *PortalCustomizationDataSourceModel) ToOperationsGetPortalCustomizationRequest(ctx context.Context) (*operations.GetPortalCustomizationRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var portalID string
-	portalID = r.PortalID.ValueString()
-
-	out := operations.GetPortalCustomizationRequest{
-		PortalID: portalID,
-	}
-
-	return &out, diags
-}
-
 func (r *PortalCustomizationDataSourceModel) RefreshFromSharedPortalCustomization(ctx context.Context, resp *shared.PortalCustomization) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -143,4 +130,17 @@ func (r *PortalCustomizationDataSourceModel) RefreshFromSharedPortalCustomizatio
 	}
 
 	return diags
+}
+
+func (r *PortalCustomizationDataSourceModel) ToOperationsGetPortalCustomizationRequest(ctx context.Context) (*operations.GetPortalCustomizationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	out := operations.GetPortalCustomizationRequest{
+		PortalID: portalID,
+	}
+
+	return &out, diags
 }

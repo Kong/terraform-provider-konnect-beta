@@ -24,6 +24,7 @@ func NewMeshHealthCheckDataSource() datasource.DataSource {
 
 // MeshHealthCheckDataSource is the data source implementation.
 type MeshHealthCheckDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

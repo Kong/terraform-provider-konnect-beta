@@ -32,6 +32,7 @@ func NewPortalCustomizationResource() resource.Resource {
 
 // PortalCustomizationResource defines the resource implementation.
 type PortalCustomizationResource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

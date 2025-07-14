@@ -24,6 +24,7 @@ func NewMeshMultiZoneServiceListDataSource() datasource.DataSource {
 
 // MeshMultiZoneServiceListDataSource is the data source implementation.
 type MeshMultiZoneServiceListDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

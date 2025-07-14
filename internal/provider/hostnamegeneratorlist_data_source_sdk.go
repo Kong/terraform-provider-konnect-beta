@@ -13,33 +13,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *HostnameGeneratorListDataSourceModel) ToOperationsGetHostnameGeneratorListRequest(ctx context.Context) (*operations.GetHostnameGeneratorListRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	offset := new(int64)
-	if !r.Offset.IsUnknown() && !r.Offset.IsNull() {
-		*offset = r.Offset.ValueInt64()
-	} else {
-		offset = nil
-	}
-	size := new(int64)
-	if !r.Size.IsUnknown() && !r.Size.IsNull() {
-		*size = r.Size.ValueInt64()
-	} else {
-		size = nil
-	}
-	out := operations.GetHostnameGeneratorListRequest{
-		CpID:   cpID,
-		Offset: offset,
-		Size:   size,
-	}
-
-	return &out, diags
-}
-
 func (r *HostnameGeneratorListDataSourceModel) RefreshFromSharedHostnameGeneratorList(ctx context.Context, resp *shared.HostnameGeneratorList) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -127,4 +100,31 @@ func (r *HostnameGeneratorListDataSourceModel) RefreshFromSharedHostnameGenerato
 	}
 
 	return diags
+}
+
+func (r *HostnameGeneratorListDataSourceModel) ToOperationsGetHostnameGeneratorListRequest(ctx context.Context) (*operations.GetHostnameGeneratorListRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	offset := new(int64)
+	if !r.Offset.IsUnknown() && !r.Offset.IsNull() {
+		*offset = r.Offset.ValueInt64()
+	} else {
+		offset = nil
+	}
+	size := new(int64)
+	if !r.Size.IsUnknown() && !r.Size.IsNull() {
+		*size = r.Size.ValueInt64()
+	} else {
+		size = nil
+	}
+	out := operations.GetHostnameGeneratorListRequest{
+		CpID:   cpID,
+		Offset: offset,
+		Size:   size,
+	}
+
+	return &out, diags
 }

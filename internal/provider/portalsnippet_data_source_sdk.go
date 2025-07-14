@@ -11,23 +11,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *PortalSnippetDataSourceModel) ToOperationsGetPortalSnippetRequest(ctx context.Context) (*operations.GetPortalSnippetRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var portalID string
-	portalID = r.PortalID.ValueString()
-
-	var snippetID string
-	snippetID = r.ID.ValueString()
-
-	out := operations.GetPortalSnippetRequest{
-		PortalID:  portalID,
-		SnippetID: snippetID,
-	}
-
-	return &out, diags
-}
-
 func (r *PortalSnippetDataSourceModel) RefreshFromSharedPortalSnippetResponse(ctx context.Context, resp *shared.PortalSnippetResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -44,4 +27,21 @@ func (r *PortalSnippetDataSourceModel) RefreshFromSharedPortalSnippetResponse(ct
 	}
 
 	return diags
+}
+
+func (r *PortalSnippetDataSourceModel) ToOperationsGetPortalSnippetRequest(ctx context.Context) (*operations.GetPortalSnippetRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	var snippetID string
+	snippetID = r.ID.ValueString()
+
+	out := operations.GetPortalSnippetRequest{
+		PortalID:  portalID,
+		SnippetID: snippetID,
+	}
+
+	return &out, diags
 }

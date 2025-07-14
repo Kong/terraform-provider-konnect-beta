@@ -11,23 +11,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *AuthServerClientsDataSourceModel) ToOperationsGetAuthServerClientRequest(ctx context.Context) (*operations.GetAuthServerClientRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var authServerID string
-	authServerID = r.AuthServerID.ValueString()
-
-	var clientID string
-	clientID = r.ID.ValueString()
-
-	out := operations.GetAuthServerClientRequest{
-		AuthServerID: authServerID,
-		ClientID:     clientID,
-	}
-
-	return &out, diags
-}
-
 func (r *AuthServerClientsDataSourceModel) RefreshFromSharedClient(ctx context.Context, resp *shared.Client) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -65,4 +48,21 @@ func (r *AuthServerClientsDataSourceModel) RefreshFromSharedClient(ctx context.C
 	}
 
 	return diags
+}
+
+func (r *AuthServerClientsDataSourceModel) ToOperationsGetAuthServerClientRequest(ctx context.Context) (*operations.GetAuthServerClientRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var authServerID string
+	authServerID = r.AuthServerID.ValueString()
+
+	var clientID string
+	clientID = r.ID.ValueString()
+
+	out := operations.GetAuthServerClientRequest{
+		AuthServerID: authServerID,
+		ClientID:     clientID,
+	}
+
+	return &out, diags
 }

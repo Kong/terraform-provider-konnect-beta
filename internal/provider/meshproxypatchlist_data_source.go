@@ -24,6 +24,7 @@ func NewMeshProxyPatchListDataSource() datasource.DataSource {
 
 // MeshProxyPatchListDataSource is the data source implementation.
 type MeshProxyPatchListDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

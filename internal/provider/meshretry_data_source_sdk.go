@@ -13,27 +13,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshRetryDataSourceModel) ToOperationsGetMeshRetryRequest(ctx context.Context) (*operations.GetMeshRetryRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	out := operations.GetMeshRetryRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshRetryDataSourceModel) RefreshFromSharedMeshRetryItem(ctx context.Context, resp *shared.MeshRetryItem) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -250,4 +229,25 @@ func (r *MeshRetryDataSourceModel) RefreshFromSharedMeshRetryItem(ctx context.Co
 	}
 
 	return diags
+}
+
+func (r *MeshRetryDataSourceModel) ToOperationsGetMeshRetryRequest(ctx context.Context) (*operations.GetMeshRetryRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	out := operations.GetMeshRetryRequest{
+		CpID: cpID,
+		Mesh: mesh,
+		Name: name,
+	}
+
+	return &out, diags
 }

@@ -24,6 +24,7 @@ func NewMeshOPADataSource() datasource.DataSource {
 
 // MeshOPADataSource is the data source implementation.
 type MeshOPADataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

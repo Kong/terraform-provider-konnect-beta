@@ -13,232 +13,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshServiceResourceModel) ToSharedMeshServiceItemInput(ctx context.Context) (*shared.MeshServiceItemInput, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	typeVar := shared.MeshServiceItemType(r.Type.ValueString())
-	mesh := new(string)
-	if !r.Mesh.IsUnknown() && !r.Mesh.IsNull() {
-		*mesh = r.Mesh.ValueString()
-	} else {
-		mesh = nil
-	}
-	var name string
-	name = r.Name.ValueString()
-
-	var labels map[string]string
-	if !r.Labels.IsUnknown() && !r.Labels.IsNull() {
-		diags.Append(r.Labels.ElementsAs(ctx, &labels, true)...)
-	}
-	identities := make([]shared.Identities, 0, len(r.Spec.Identities))
-	for _, identitiesItem := range r.Spec.Identities {
-		type1 := shared.MeshServiceItemSpecType(identitiesItem.Type.ValueString())
-		var value string
-		value = identitiesItem.Value.ValueString()
-
-		identities = append(identities, shared.Identities{
-			Type:  type1,
-			Value: value,
-		})
-	}
-	ports := make([]shared.MeshServiceItemPorts, 0, len(r.Spec.Ports))
-	for _, portsItem := range r.Spec.Ports {
-		appProtocol := new(string)
-		if !portsItem.AppProtocol.IsUnknown() && !portsItem.AppProtocol.IsNull() {
-			*appProtocol = portsItem.AppProtocol.ValueString()
-		} else {
-			appProtocol = nil
-		}
-		name1 := new(string)
-		if !portsItem.Name.IsUnknown() && !portsItem.Name.IsNull() {
-			*name1 = portsItem.Name.ValueString()
-		} else {
-			name1 = nil
-		}
-		var port int
-		port = int(portsItem.Port.ValueInt32())
-
-		var targetPort *shared.TargetPort
-		if portsItem.TargetPort != nil {
-			integer := new(int64)
-			if !portsItem.TargetPort.Integer.IsUnknown() && !portsItem.TargetPort.Integer.IsNull() {
-				*integer = portsItem.TargetPort.Integer.ValueInt64()
-			} else {
-				integer = nil
-			}
-			if integer != nil {
-				targetPort = &shared.TargetPort{
-					Integer: integer,
-				}
-			}
-			str := new(string)
-			if !portsItem.TargetPort.Str.IsUnknown() && !portsItem.TargetPort.Str.IsNull() {
-				*str = portsItem.TargetPort.Str.ValueString()
-			} else {
-				str = nil
-			}
-			if str != nil {
-				targetPort = &shared.TargetPort{
-					Str: str,
-				}
-			}
-		}
-		ports = append(ports, shared.MeshServiceItemPorts{
-			AppProtocol: appProtocol,
-			Name:        name1,
-			Port:        port,
-			TargetPort:  targetPort,
-		})
-	}
-	var selector *shared.MeshServiceItemSelector
-	if r.Spec.Selector != nil {
-		var dataplaneRef *shared.DataplaneRef
-		if r.Spec.Selector.DataplaneRef != nil {
-			name2 := new(string)
-			if !r.Spec.Selector.DataplaneRef.Name.IsUnknown() && !r.Spec.Selector.DataplaneRef.Name.IsNull() {
-				*name2 = r.Spec.Selector.DataplaneRef.Name.ValueString()
-			} else {
-				name2 = nil
-			}
-			dataplaneRef = &shared.DataplaneRef{
-				Name: name2,
-			}
-		}
-		dataplaneTags := make(map[string]string)
-		for dataplaneTagsKey, dataplaneTagsValue := range r.Spec.Selector.DataplaneTags {
-			var dataplaneTagsInst string
-			dataplaneTagsInst = dataplaneTagsValue.ValueString()
-
-			dataplaneTags[dataplaneTagsKey] = dataplaneTagsInst
-		}
-		selector = &shared.MeshServiceItemSelector{
-			DataplaneRef:  dataplaneRef,
-			DataplaneTags: dataplaneTags,
-		}
-	}
-	state := new(shared.State)
-	if !r.Spec.State.IsUnknown() && !r.Spec.State.IsNull() {
-		*state = shared.State(r.Spec.State.ValueString())
-	} else {
-		state = nil
-	}
-	spec := shared.MeshServiceItemSpec{
-		Identities: identities,
-		Ports:      ports,
-		Selector:   selector,
-		State:      state,
-	}
-	out := shared.MeshServiceItemInput{
-		Type:   typeVar,
-		Mesh:   mesh,
-		Name:   name,
-		Labels: labels,
-		Spec:   spec,
-	}
-
-	return &out, diags
-}
-
-func (r *MeshServiceResourceModel) ToOperationsCreateMeshServiceRequest(ctx context.Context) (*operations.CreateMeshServiceRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	meshServiceItem, meshServiceItemDiags := r.ToSharedMeshServiceItemInput(ctx)
-	diags.Append(meshServiceItemDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateMeshServiceRequest{
-		CpID:            cpID,
-		Mesh:            mesh,
-		Name:            name,
-		MeshServiceItem: *meshServiceItem,
-	}
-
-	return &out, diags
-}
-
-func (r *MeshServiceResourceModel) ToOperationsUpdateMeshServiceRequest(ctx context.Context) (*operations.UpdateMeshServiceRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	meshServiceItem, meshServiceItemDiags := r.ToSharedMeshServiceItemInput(ctx)
-	diags.Append(meshServiceItemDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateMeshServiceRequest{
-		CpID:            cpID,
-		Mesh:            mesh,
-		Name:            name,
-		MeshServiceItem: *meshServiceItem,
-	}
-
-	return &out, diags
-}
-
-func (r *MeshServiceResourceModel) ToOperationsGetMeshServiceRequest(ctx context.Context) (*operations.GetMeshServiceRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	out := operations.GetMeshServiceRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
-	}
-
-	return &out, diags
-}
-
-func (r *MeshServiceResourceModel) ToOperationsDeleteMeshServiceRequest(ctx context.Context) (*operations.DeleteMeshServiceRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	out := operations.DeleteMeshServiceRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshServiceResourceModel) RefreshFromSharedMeshServiceCreateOrUpdateSuccessResponse(ctx context.Context, resp *shared.MeshServiceCreateOrUpdateSuccessResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -421,4 +195,230 @@ func (r *MeshServiceResourceModel) RefreshFromSharedMeshServiceItem(ctx context.
 	}
 
 	return diags
+}
+
+func (r *MeshServiceResourceModel) ToOperationsCreateMeshServiceRequest(ctx context.Context) (*operations.CreateMeshServiceRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	meshServiceItem, meshServiceItemDiags := r.ToSharedMeshServiceItemInput(ctx)
+	diags.Append(meshServiceItemDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateMeshServiceRequest{
+		CpID:            cpID,
+		Mesh:            mesh,
+		Name:            name,
+		MeshServiceItem: *meshServiceItem,
+	}
+
+	return &out, diags
+}
+
+func (r *MeshServiceResourceModel) ToOperationsDeleteMeshServiceRequest(ctx context.Context) (*operations.DeleteMeshServiceRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	out := operations.DeleteMeshServiceRequest{
+		CpID: cpID,
+		Mesh: mesh,
+		Name: name,
+	}
+
+	return &out, diags
+}
+
+func (r *MeshServiceResourceModel) ToOperationsGetMeshServiceRequest(ctx context.Context) (*operations.GetMeshServiceRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	out := operations.GetMeshServiceRequest{
+		CpID: cpID,
+		Mesh: mesh,
+		Name: name,
+	}
+
+	return &out, diags
+}
+
+func (r *MeshServiceResourceModel) ToOperationsUpdateMeshServiceRequest(ctx context.Context) (*operations.UpdateMeshServiceRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	meshServiceItem, meshServiceItemDiags := r.ToSharedMeshServiceItemInput(ctx)
+	diags.Append(meshServiceItemDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateMeshServiceRequest{
+		CpID:            cpID,
+		Mesh:            mesh,
+		Name:            name,
+		MeshServiceItem: *meshServiceItem,
+	}
+
+	return &out, diags
+}
+
+func (r *MeshServiceResourceModel) ToSharedMeshServiceItemInput(ctx context.Context) (*shared.MeshServiceItemInput, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	typeVar := shared.MeshServiceItemType(r.Type.ValueString())
+	mesh := new(string)
+	if !r.Mesh.IsUnknown() && !r.Mesh.IsNull() {
+		*mesh = r.Mesh.ValueString()
+	} else {
+		mesh = nil
+	}
+	var name string
+	name = r.Name.ValueString()
+
+	var labels map[string]string
+	if !r.Labels.IsUnknown() && !r.Labels.IsNull() {
+		diags.Append(r.Labels.ElementsAs(ctx, &labels, true)...)
+	}
+	identities := make([]shared.Identities, 0, len(r.Spec.Identities))
+	for _, identitiesItem := range r.Spec.Identities {
+		type1 := shared.MeshServiceItemSpecType(identitiesItem.Type.ValueString())
+		var value string
+		value = identitiesItem.Value.ValueString()
+
+		identities = append(identities, shared.Identities{
+			Type:  type1,
+			Value: value,
+		})
+	}
+	ports := make([]shared.MeshServiceItemPorts, 0, len(r.Spec.Ports))
+	for _, portsItem := range r.Spec.Ports {
+		appProtocol := new(string)
+		if !portsItem.AppProtocol.IsUnknown() && !portsItem.AppProtocol.IsNull() {
+			*appProtocol = portsItem.AppProtocol.ValueString()
+		} else {
+			appProtocol = nil
+		}
+		name1 := new(string)
+		if !portsItem.Name.IsUnknown() && !portsItem.Name.IsNull() {
+			*name1 = portsItem.Name.ValueString()
+		} else {
+			name1 = nil
+		}
+		var port int
+		port = int(portsItem.Port.ValueInt32())
+
+		var targetPort *shared.TargetPort
+		if portsItem.TargetPort != nil {
+			integer := new(int64)
+			if !portsItem.TargetPort.Integer.IsUnknown() && !portsItem.TargetPort.Integer.IsNull() {
+				*integer = portsItem.TargetPort.Integer.ValueInt64()
+			} else {
+				integer = nil
+			}
+			if integer != nil {
+				targetPort = &shared.TargetPort{
+					Integer: integer,
+				}
+			}
+			str := new(string)
+			if !portsItem.TargetPort.Str.IsUnknown() && !portsItem.TargetPort.Str.IsNull() {
+				*str = portsItem.TargetPort.Str.ValueString()
+			} else {
+				str = nil
+			}
+			if str != nil {
+				targetPort = &shared.TargetPort{
+					Str: str,
+				}
+			}
+		}
+		ports = append(ports, shared.MeshServiceItemPorts{
+			AppProtocol: appProtocol,
+			Name:        name1,
+			Port:        port,
+			TargetPort:  targetPort,
+		})
+	}
+	var selector *shared.MeshServiceItemSelector
+	if r.Spec.Selector != nil {
+		var dataplaneRef *shared.DataplaneRef
+		if r.Spec.Selector.DataplaneRef != nil {
+			name2 := new(string)
+			if !r.Spec.Selector.DataplaneRef.Name.IsUnknown() && !r.Spec.Selector.DataplaneRef.Name.IsNull() {
+				*name2 = r.Spec.Selector.DataplaneRef.Name.ValueString()
+			} else {
+				name2 = nil
+			}
+			dataplaneRef = &shared.DataplaneRef{
+				Name: name2,
+			}
+		}
+		dataplaneTags := make(map[string]string)
+		for dataplaneTagsKey, dataplaneTagsValue := range r.Spec.Selector.DataplaneTags {
+			var dataplaneTagsInst string
+			dataplaneTagsInst = dataplaneTagsValue.ValueString()
+
+			dataplaneTags[dataplaneTagsKey] = dataplaneTagsInst
+		}
+		selector = &shared.MeshServiceItemSelector{
+			DataplaneRef:  dataplaneRef,
+			DataplaneTags: dataplaneTags,
+		}
+	}
+	state := new(shared.State)
+	if !r.Spec.State.IsUnknown() && !r.Spec.State.IsNull() {
+		*state = shared.State(r.Spec.State.ValueString())
+	} else {
+		state = nil
+	}
+	spec := shared.MeshServiceItemSpec{
+		Identities: identities,
+		Ports:      ports,
+		Selector:   selector,
+		State:      state,
+	}
+	out := shared.MeshServiceItemInput{
+		Type:   typeVar,
+		Mesh:   mesh,
+		Name:   name,
+		Labels: labels,
+		Spec:   spec,
+	}
+
+	return &out, diags
 }

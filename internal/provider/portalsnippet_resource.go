@@ -31,6 +31,7 @@ func NewPortalSnippetResource() resource.Resource {
 
 // PortalSnippetResource defines the resource implementation.
 type PortalSnippetResource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
@@ -380,7 +381,7 @@ func (r *PortalSnippetResource) ImportState(ctx context.Context, req resource.Im
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "portal_id": "f32d905a-ed33-46a3-a093-d8f536af9a8a",  "id": "ebbac5b0-ac89-45c3-9d2e-c4542c657e79"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"id": "ebbac5b0-ac89-45c3-9d2e-c4542c657e79", "portal_id": "f32d905a-ed33-46a3-a093-d8f536af9a8a"}': `+err.Error())
 		return
 	}
 
@@ -394,5 +395,4 @@ func (r *PortalSnippetResource) ImportState(ctx context.Context, req resource.Im
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
-
 }

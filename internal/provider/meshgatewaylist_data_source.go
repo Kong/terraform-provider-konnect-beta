@@ -24,6 +24,7 @@ func NewMeshGatewayListDataSource() datasource.DataSource {
 
 // MeshGatewayListDataSource is the data source implementation.
 type MeshGatewayListDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

@@ -24,6 +24,7 @@ func NewMeshCircuitBreakerDataSource() datasource.DataSource {
 
 // MeshCircuitBreakerDataSource is the data source implementation.
 type MeshCircuitBreakerDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

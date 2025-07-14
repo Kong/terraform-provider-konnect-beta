@@ -24,6 +24,7 @@ func NewMeshTimeoutListDataSource() datasource.DataSource {
 
 // MeshTimeoutListDataSource is the data source implementation.
 type MeshTimeoutListDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

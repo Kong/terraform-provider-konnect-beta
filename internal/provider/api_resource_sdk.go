@@ -13,6 +13,121 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
+func (r *APIResourceModel) RefreshFromSharedAPIResponseSchema(ctx context.Context, resp *shared.APIResponseSchema) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.APISpecIds = make([]types.String, 0, len(resp.APISpecIds))
+		for _, v := range resp.APISpecIds {
+			r.APISpecIds = append(r.APISpecIds, types.StringValue(v))
+		}
+		if resp.Attributes == nil {
+			r.Attributes = types.StringNull()
+		} else {
+			attributesResult, _ := json.Marshal(resp.Attributes)
+			r.Attributes = types.StringValue(string(attributesResult))
+		}
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		if resp.CurrentVersionSummary == nil {
+			r.CurrentVersionSummary = nil
+		} else {
+			r.CurrentVersionSummary = &tfTypes.APIVersionSummary{}
+			r.CurrentVersionSummary.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CurrentVersionSummary.CreatedAt))
+			r.CurrentVersionSummary.ID = types.StringPointerValue(resp.CurrentVersionSummary.ID)
+			if resp.CurrentVersionSummary.Spec == nil {
+				r.CurrentVersionSummary.Spec = nil
+			} else {
+				r.CurrentVersionSummary.Spec = &tfTypes.Spec{}
+				if resp.CurrentVersionSummary.Spec.Type != nil {
+					r.CurrentVersionSummary.Spec.Type = types.StringValue(string(*resp.CurrentVersionSummary.Spec.Type))
+				} else {
+					r.CurrentVersionSummary.Spec.Type = types.StringNull()
+				}
+			}
+			r.CurrentVersionSummary.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CurrentVersionSummary.UpdatedAt))
+			r.CurrentVersionSummary.Version = types.StringPointerValue(resp.CurrentVersionSummary.Version)
+		}
+		r.Description = types.StringPointerValue(resp.Description)
+		r.ID = types.StringValue(resp.ID)
+		if len(resp.Labels) > 0 {
+			r.Labels = make(map[string]types.String, len(resp.Labels))
+			for key, value := range resp.Labels {
+				r.Labels[key] = types.StringPointerValue(value)
+			}
+		}
+		r.Name = types.StringValue(resp.Name)
+		r.Portals = []tfTypes.Portals{}
+		if len(r.Portals) > len(resp.Portals) {
+			r.Portals = r.Portals[:len(resp.Portals)]
+		}
+		for portalsCount, portalsItem := range resp.Portals {
+			var portals tfTypes.Portals
+			portals.DisplayName = types.StringValue(portalsItem.DisplayName)
+			portals.ID = types.StringValue(portalsItem.ID)
+			portals.Name = types.StringValue(portalsItem.Name)
+			if portalsCount+1 > len(r.Portals) {
+				r.Portals = append(r.Portals, portals)
+			} else {
+				r.Portals[portalsCount].DisplayName = portals.DisplayName
+				r.Portals[portalsCount].ID = portals.ID
+				r.Portals[portalsCount].Name = portals.Name
+			}
+		}
+		r.Slug = types.StringPointerValue(resp.Slug)
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+		r.Version = types.StringPointerValue(resp.Version)
+	}
+
+	return diags
+}
+
+func (r *APIResourceModel) ToOperationsDeleteAPIRequest(ctx context.Context) (*operations.DeleteAPIRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiID string
+	apiID = r.ID.ValueString()
+
+	out := operations.DeleteAPIRequest{
+		APIID: apiID,
+	}
+
+	return &out, diags
+}
+
+func (r *APIResourceModel) ToOperationsFetchAPIRequest(ctx context.Context) (*operations.FetchAPIRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiID string
+	apiID = r.ID.ValueString()
+
+	out := operations.FetchAPIRequest{
+		APIID: apiID,
+	}
+
+	return &out, diags
+}
+
+func (r *APIResourceModel) ToOperationsUpdateAPIRequest(ctx context.Context) (*operations.UpdateAPIRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiID string
+	apiID = r.ID.ValueString()
+
+	updateAPIRequest, updateAPIRequestDiags := r.ToSharedUpdateAPIRequest(ctx)
+	diags.Append(updateAPIRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAPIRequest{
+		APIID:            apiID,
+		UpdateAPIRequest: *updateAPIRequest,
+	}
+
+	return &out, diags
+}
+
 func (r *APIResourceModel) ToSharedCreateAPIRequest(ctx context.Context) (*shared.CreateAPIRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -121,119 +236,4 @@ func (r *APIResourceModel) ToSharedUpdateAPIRequest(ctx context.Context) (*share
 	}
 
 	return &out, diags
-}
-
-func (r *APIResourceModel) ToOperationsUpdateAPIRequest(ctx context.Context) (*operations.UpdateAPIRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var apiID string
-	apiID = r.ID.ValueString()
-
-	updateAPIRequest, updateAPIRequestDiags := r.ToSharedUpdateAPIRequest(ctx)
-	diags.Append(updateAPIRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateAPIRequest{
-		APIID:            apiID,
-		UpdateAPIRequest: *updateAPIRequest,
-	}
-
-	return &out, diags
-}
-
-func (r *APIResourceModel) ToOperationsFetchAPIRequest(ctx context.Context) (*operations.FetchAPIRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var apiID string
-	apiID = r.ID.ValueString()
-
-	out := operations.FetchAPIRequest{
-		APIID: apiID,
-	}
-
-	return &out, diags
-}
-
-func (r *APIResourceModel) ToOperationsDeleteAPIRequest(ctx context.Context) (*operations.DeleteAPIRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var apiID string
-	apiID = r.ID.ValueString()
-
-	out := operations.DeleteAPIRequest{
-		APIID: apiID,
-	}
-
-	return &out, diags
-}
-
-func (r *APIResourceModel) RefreshFromSharedAPIResponseSchema(ctx context.Context, resp *shared.APIResponseSchema) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.APISpecIds = make([]types.String, 0, len(resp.APISpecIds))
-		for _, v := range resp.APISpecIds {
-			r.APISpecIds = append(r.APISpecIds, types.StringValue(v))
-		}
-		if resp.Attributes == nil {
-			r.Attributes = types.StringNull()
-		} else {
-			attributesResult, _ := json.Marshal(resp.Attributes)
-			r.Attributes = types.StringValue(string(attributesResult))
-		}
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		if resp.CurrentVersionSummary == nil {
-			r.CurrentVersionSummary = nil
-		} else {
-			r.CurrentVersionSummary = &tfTypes.APIVersionSummary{}
-			r.CurrentVersionSummary.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CurrentVersionSummary.CreatedAt))
-			r.CurrentVersionSummary.ID = types.StringPointerValue(resp.CurrentVersionSummary.ID)
-			if resp.CurrentVersionSummary.Spec == nil {
-				r.CurrentVersionSummary.Spec = nil
-			} else {
-				r.CurrentVersionSummary.Spec = &tfTypes.Spec{}
-				if resp.CurrentVersionSummary.Spec.Type != nil {
-					r.CurrentVersionSummary.Spec.Type = types.StringValue(string(*resp.CurrentVersionSummary.Spec.Type))
-				} else {
-					r.CurrentVersionSummary.Spec.Type = types.StringNull()
-				}
-			}
-			r.CurrentVersionSummary.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CurrentVersionSummary.UpdatedAt))
-			r.CurrentVersionSummary.Version = types.StringPointerValue(resp.CurrentVersionSummary.Version)
-		}
-		r.Description = types.StringPointerValue(resp.Description)
-		r.ID = types.StringValue(resp.ID)
-		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String, len(resp.Labels))
-			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringPointerValue(value)
-			}
-		}
-		r.Name = types.StringValue(resp.Name)
-		r.Portals = []tfTypes.Portals{}
-		if len(r.Portals) > len(resp.Portals) {
-			r.Portals = r.Portals[:len(resp.Portals)]
-		}
-		for portalsCount, portalsItem := range resp.Portals {
-			var portals tfTypes.Portals
-			portals.DisplayName = types.StringValue(portalsItem.DisplayName)
-			portals.ID = types.StringValue(portalsItem.ID)
-			portals.Name = types.StringValue(portalsItem.Name)
-			if portalsCount+1 > len(r.Portals) {
-				r.Portals = append(r.Portals, portals)
-			} else {
-				r.Portals[portalsCount].DisplayName = portals.DisplayName
-				r.Portals[portalsCount].ID = portals.ID
-				r.Portals[portalsCount].Name = portals.Name
-			}
-		}
-		r.Slug = types.StringPointerValue(resp.Slug)
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
-		r.Version = types.StringPointerValue(resp.Version)
-	}
-
-	return diags
 }

@@ -24,6 +24,7 @@ func NewMeshLoadBalancingStrategyListDataSource() datasource.DataSource {
 
 // MeshLoadBalancingStrategyListDataSource is the data source implementation.
 type MeshLoadBalancingStrategyListDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

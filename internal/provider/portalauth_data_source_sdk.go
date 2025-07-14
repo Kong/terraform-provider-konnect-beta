@@ -11,19 +11,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *PortalAuthDataSourceModel) ToOperationsGetPortalAuthenticationSettingsRequest(ctx context.Context) (*operations.GetPortalAuthenticationSettingsRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var portalID string
-	portalID = r.PortalID.ValueString()
-
-	out := operations.GetPortalAuthenticationSettingsRequest{
-		PortalID: portalID,
-	}
-
-	return &out, diags
-}
-
 func (r *PortalAuthDataSourceModel) RefreshFromSharedPortalAuthenticationSettingsResponse(ctx context.Context, resp *shared.PortalAuthenticationSettingsResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -56,4 +43,17 @@ func (r *PortalAuthDataSourceModel) RefreshFromSharedPortalAuthenticationSetting
 	}
 
 	return diags
+}
+
+func (r *PortalAuthDataSourceModel) ToOperationsGetPortalAuthenticationSettingsRequest(ctx context.Context) (*operations.GetPortalAuthenticationSettingsRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	out := operations.GetPortalAuthenticationSettingsRequest{
+		PortalID: portalID,
+	}
+
+	return &out, diags
 }

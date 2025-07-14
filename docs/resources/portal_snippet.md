@@ -52,5 +52,5 @@ resource "konnect_portal_snippet" "my_portalsnippet" {
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_portal_snippet.my_konnect_portal_snippet "{ \"portal_id\": \"f32d905a-ed33-46a3-a093-d8f536af9a8a\",  \"id\": \"ebbac5b0-ac89-45c3-9d2e-c4542c657e79\"}"
+terraform import konnect_portal_snippet.my_konnect_portal_snippet '{"id": "ebbac5b0-ac89-45c3-9d2e-c4542c657e79", "portal_id": "f32d905a-ed33-46a3-a093-d8f536af9a8a"}'
 ```

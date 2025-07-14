@@ -31,6 +31,7 @@ func NewAuthServerClaimsResource() resource.Resource {
 
 // AuthServerClaimsResource defines the resource implementation.
 type AuthServerClaimsResource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
@@ -372,7 +373,7 @@ func (r *AuthServerClaimsResource) ImportState(ctx context.Context, req resource
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "auth_server_id": "d32d905a-ed33-46a3-a093-d8f536af9a8a",  "id": "07d05309-45cc-4b37-92fb-1524846deec3"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"auth_server_id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "id": "07d05309-45cc-4b37-92fb-1524846deec3"}': `+err.Error())
 		return
 	}
 
@@ -386,5 +387,4 @@ func (r *AuthServerClaimsResource) ImportState(ctx context.Context, req resource
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
-
 }

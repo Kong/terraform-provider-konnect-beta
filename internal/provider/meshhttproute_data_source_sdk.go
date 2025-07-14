@@ -13,27 +13,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshHTTPRouteDataSourceModel) ToOperationsGetMeshHTTPRouteRequest(ctx context.Context) (*operations.GetMeshHTTPRouteRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	out := operations.GetMeshHTTPRouteRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshHTTPRouteDataSourceModel) RefreshFromSharedMeshHTTPRouteItem(ctx context.Context, resp *shared.MeshHTTPRouteItem) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -381,4 +360,25 @@ func (r *MeshHTTPRouteDataSourceModel) RefreshFromSharedMeshHTTPRouteItem(ctx co
 	}
 
 	return diags
+}
+
+func (r *MeshHTTPRouteDataSourceModel) ToOperationsGetMeshHTTPRouteRequest(ctx context.Context) (*operations.GetMeshHTTPRouteRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	out := operations.GetMeshHTTPRouteRequest{
+		CpID: cpID,
+		Mesh: mesh,
+		Name: name,
+	}
+
+	return &out, diags
 }

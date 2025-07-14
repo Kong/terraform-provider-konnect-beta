@@ -11,6 +11,90 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
+func (r *PortalResourceModel) RefreshFromSharedPortalResponse(ctx context.Context, resp *shared.PortalResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.AuthenticationEnabled = types.BoolValue(resp.AuthenticationEnabled)
+		r.AutoApproveApplications = types.BoolValue(resp.AutoApproveApplications)
+		r.AutoApproveDevelopers = types.BoolValue(resp.AutoApproveDevelopers)
+		r.CanonicalDomain = types.StringValue(resp.CanonicalDomain)
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.DefaultAPIVisibility = types.StringValue(string(resp.DefaultAPIVisibility))
+		r.DefaultApplicationAuthStrategyID = types.StringPointerValue(resp.DefaultApplicationAuthStrategyID)
+		r.DefaultDomain = types.StringValue(resp.DefaultDomain)
+		r.DefaultPageVisibility = types.StringValue(string(resp.DefaultPageVisibility))
+		r.Description = types.StringPointerValue(resp.Description)
+		r.DisplayName = types.StringValue(resp.DisplayName)
+		r.ID = types.StringValue(resp.ID)
+		if resp.Labels != nil {
+			r.Labels = make(map[string]types.String, len(resp.Labels))
+			for key, value := range resp.Labels {
+				r.Labels[key] = types.StringPointerValue(value)
+			}
+		}
+		r.Name = types.StringValue(resp.Name)
+		r.RbacEnabled = types.BoolValue(resp.RbacEnabled)
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+	}
+
+	return diags
+}
+
+func (r *PortalResourceModel) ToOperationsDeletePortalRequest(ctx context.Context) (*operations.DeletePortalRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.ID.ValueString()
+
+	forceDestroy := new(operations.Force)
+	if !r.ForceDestroy.IsUnknown() && !r.ForceDestroy.IsNull() {
+		*forceDestroy = operations.Force(r.ForceDestroy.ValueString())
+	} else {
+		forceDestroy = nil
+	}
+	out := operations.DeletePortalRequest{
+		PortalID:     portalID,
+		ForceDestroy: forceDestroy,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalResourceModel) ToOperationsGetPortalRequest(ctx context.Context) (*operations.GetPortalRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.ID.ValueString()
+
+	out := operations.GetPortalRequest{
+		PortalID: portalID,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalResourceModel) ToOperationsUpdatePortalRequest(ctx context.Context) (*operations.UpdatePortalRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.ID.ValueString()
+
+	updatePortal, updatePortalDiags := r.ToSharedUpdatePortal(ctx)
+	diags.Append(updatePortalDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdatePortalRequest{
+		PortalID:     portalID,
+		UpdatePortal: *updatePortal,
+	}
+
+	return &out, diags
+}
+
 func (r *PortalResourceModel) ToSharedCreatePortal(ctx context.Context) (*shared.CreatePortal, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -186,88 +270,4 @@ func (r *PortalResourceModel) ToSharedUpdatePortal(ctx context.Context) (*shared
 	}
 
 	return &out, diags
-}
-
-func (r *PortalResourceModel) ToOperationsUpdatePortalRequest(ctx context.Context) (*operations.UpdatePortalRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var portalID string
-	portalID = r.ID.ValueString()
-
-	updatePortal, updatePortalDiags := r.ToSharedUpdatePortal(ctx)
-	diags.Append(updatePortalDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdatePortalRequest{
-		PortalID:     portalID,
-		UpdatePortal: *updatePortal,
-	}
-
-	return &out, diags
-}
-
-func (r *PortalResourceModel) ToOperationsGetPortalRequest(ctx context.Context) (*operations.GetPortalRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var portalID string
-	portalID = r.ID.ValueString()
-
-	out := operations.GetPortalRequest{
-		PortalID: portalID,
-	}
-
-	return &out, diags
-}
-
-func (r *PortalResourceModel) ToOperationsDeletePortalRequest(ctx context.Context) (*operations.DeletePortalRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var portalID string
-	portalID = r.ID.ValueString()
-
-	forceDestroy := new(operations.Force)
-	if !r.ForceDestroy.IsUnknown() && !r.ForceDestroy.IsNull() {
-		*forceDestroy = operations.Force(r.ForceDestroy.ValueString())
-	} else {
-		forceDestroy = nil
-	}
-	out := operations.DeletePortalRequest{
-		PortalID:     portalID,
-		ForceDestroy: forceDestroy,
-	}
-
-	return &out, diags
-}
-
-func (r *PortalResourceModel) RefreshFromSharedPortalResponse(ctx context.Context, resp *shared.PortalResponse) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.AuthenticationEnabled = types.BoolValue(resp.AuthenticationEnabled)
-		r.AutoApproveApplications = types.BoolValue(resp.AutoApproveApplications)
-		r.AutoApproveDevelopers = types.BoolValue(resp.AutoApproveDevelopers)
-		r.CanonicalDomain = types.StringValue(resp.CanonicalDomain)
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.DefaultAPIVisibility = types.StringValue(string(resp.DefaultAPIVisibility))
-		r.DefaultApplicationAuthStrategyID = types.StringPointerValue(resp.DefaultApplicationAuthStrategyID)
-		r.DefaultDomain = types.StringValue(resp.DefaultDomain)
-		r.DefaultPageVisibility = types.StringValue(string(resp.DefaultPageVisibility))
-		r.Description = types.StringPointerValue(resp.Description)
-		r.DisplayName = types.StringValue(resp.DisplayName)
-		r.ID = types.StringValue(resp.ID)
-		if resp.Labels != nil {
-			r.Labels = make(map[string]types.String, len(resp.Labels))
-			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringPointerValue(value)
-			}
-		}
-		r.Name = types.StringValue(resp.Name)
-		r.RbacEnabled = types.BoolValue(resp.RbacEnabled)
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
-	}
-
-	return diags
 }

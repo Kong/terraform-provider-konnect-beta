@@ -13,37 +13,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshRateLimitListDataSourceModel) ToOperationsGetMeshRateLimitListRequest(ctx context.Context) (*operations.GetMeshRateLimitListRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	offset := new(int64)
-	if !r.Offset.IsUnknown() && !r.Offset.IsNull() {
-		*offset = r.Offset.ValueInt64()
-	} else {
-		offset = nil
-	}
-	size := new(int64)
-	if !r.Size.IsUnknown() && !r.Size.IsNull() {
-		*size = r.Size.ValueInt64()
-	} else {
-		size = nil
-	}
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	out := operations.GetMeshRateLimitListRequest{
-		CpID:   cpID,
-		Offset: offset,
-		Size:   size,
-		Mesh:   mesh,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshRateLimitListDataSourceModel) RefreshFromSharedMeshRateLimitList(ctx context.Context, resp *shared.MeshRateLimitList) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -391,4 +360,35 @@ func (r *MeshRateLimitListDataSourceModel) RefreshFromSharedMeshRateLimitList(ct
 	}
 
 	return diags
+}
+
+func (r *MeshRateLimitListDataSourceModel) ToOperationsGetMeshRateLimitListRequest(ctx context.Context) (*operations.GetMeshRateLimitListRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	offset := new(int64)
+	if !r.Offset.IsUnknown() && !r.Offset.IsNull() {
+		*offset = r.Offset.ValueInt64()
+	} else {
+		offset = nil
+	}
+	size := new(int64)
+	if !r.Size.IsUnknown() && !r.Size.IsNull() {
+		*size = r.Size.ValueInt64()
+	} else {
+		size = nil
+	}
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	out := operations.GetMeshRateLimitListRequest{
+		CpID:   cpID,
+		Offset: offset,
+		Size:   size,
+		Mesh:   mesh,
+	}
+
+	return &out, diags
 }

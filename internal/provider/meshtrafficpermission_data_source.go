@@ -24,6 +24,7 @@ func NewMeshTrafficPermissionDataSource() datasource.DataSource {
 
 // MeshTrafficPermissionDataSource is the data source implementation.
 type MeshTrafficPermissionDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

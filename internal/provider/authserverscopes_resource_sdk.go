@@ -11,6 +11,103 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
+func (r *AuthServerScopesResourceModel) RefreshFromSharedScope(ctx context.Context, resp *shared.Scope) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.Default = types.BoolPointerValue(resp.Default)
+		r.Description = types.StringValue(resp.Description)
+		r.Enabled = types.BoolPointerValue(resp.Enabled)
+		r.ID = types.StringValue(resp.ID)
+		r.IncludeInMetadata = types.BoolPointerValue(resp.IncludeInMetadata)
+		r.Name = types.StringValue(resp.Name)
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+	}
+
+	return diags
+}
+
+func (r *AuthServerScopesResourceModel) ToOperationsCreateAuthServerScopeRequest(ctx context.Context) (*operations.CreateAuthServerScopeRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var authServerID string
+	authServerID = r.AuthServerID.ValueString()
+
+	createScope, createScopeDiags := r.ToSharedCreateScope(ctx)
+	diags.Append(createScopeDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateAuthServerScopeRequest{
+		AuthServerID: authServerID,
+		CreateScope:  *createScope,
+	}
+
+	return &out, diags
+}
+
+func (r *AuthServerScopesResourceModel) ToOperationsDeleteAuthServerScopeRequest(ctx context.Context) (*operations.DeleteAuthServerScopeRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var authServerID string
+	authServerID = r.AuthServerID.ValueString()
+
+	var scopeID string
+	scopeID = r.ID.ValueString()
+
+	out := operations.DeleteAuthServerScopeRequest{
+		AuthServerID: authServerID,
+		ScopeID:      scopeID,
+	}
+
+	return &out, diags
+}
+
+func (r *AuthServerScopesResourceModel) ToOperationsGetAuthServerScopeRequest(ctx context.Context) (*operations.GetAuthServerScopeRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var authServerID string
+	authServerID = r.AuthServerID.ValueString()
+
+	var scopeID string
+	scopeID = r.ID.ValueString()
+
+	out := operations.GetAuthServerScopeRequest{
+		AuthServerID: authServerID,
+		ScopeID:      scopeID,
+	}
+
+	return &out, diags
+}
+
+func (r *AuthServerScopesResourceModel) ToOperationsUpdateAuthServerScopeRequest(ctx context.Context) (*operations.UpdateAuthServerScopeRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var authServerID string
+	authServerID = r.AuthServerID.ValueString()
+
+	var scopeID string
+	scopeID = r.ID.ValueString()
+
+	updateScope, updateScopeDiags := r.ToSharedUpdateScope(ctx)
+	diags.Append(updateScopeDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAuthServerScopeRequest{
+		AuthServerID: authServerID,
+		ScopeID:      scopeID,
+		UpdateScope:  *updateScope,
+	}
+
+	return &out, diags
+}
+
 func (r *AuthServerScopesResourceModel) ToSharedCreateScope(ctx context.Context) (*shared.CreateScope, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -47,27 +144,6 @@ func (r *AuthServerScopesResourceModel) ToSharedCreateScope(ctx context.Context)
 		Default:           defaultVar,
 		IncludeInMetadata: includeInMetadata,
 		Enabled:           enabled,
-	}
-
-	return &out, diags
-}
-
-func (r *AuthServerScopesResourceModel) ToOperationsCreateAuthServerScopeRequest(ctx context.Context) (*operations.CreateAuthServerScopeRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var authServerID string
-	authServerID = r.AuthServerID.ValueString()
-
-	createScope, createScopeDiags := r.ToSharedCreateScope(ctx)
-	diags.Append(createScopeDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateAuthServerScopeRequest{
-		AuthServerID: authServerID,
-		CreateScope:  *createScope,
 	}
 
 	return &out, diags
@@ -115,80 +191,4 @@ func (r *AuthServerScopesResourceModel) ToSharedUpdateScope(ctx context.Context)
 	}
 
 	return &out, diags
-}
-
-func (r *AuthServerScopesResourceModel) ToOperationsUpdateAuthServerScopeRequest(ctx context.Context) (*operations.UpdateAuthServerScopeRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var authServerID string
-	authServerID = r.AuthServerID.ValueString()
-
-	var scopeID string
-	scopeID = r.ID.ValueString()
-
-	updateScope, updateScopeDiags := r.ToSharedUpdateScope(ctx)
-	diags.Append(updateScopeDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateAuthServerScopeRequest{
-		AuthServerID: authServerID,
-		ScopeID:      scopeID,
-		UpdateScope:  *updateScope,
-	}
-
-	return &out, diags
-}
-
-func (r *AuthServerScopesResourceModel) ToOperationsGetAuthServerScopeRequest(ctx context.Context) (*operations.GetAuthServerScopeRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var authServerID string
-	authServerID = r.AuthServerID.ValueString()
-
-	var scopeID string
-	scopeID = r.ID.ValueString()
-
-	out := operations.GetAuthServerScopeRequest{
-		AuthServerID: authServerID,
-		ScopeID:      scopeID,
-	}
-
-	return &out, diags
-}
-
-func (r *AuthServerScopesResourceModel) ToOperationsDeleteAuthServerScopeRequest(ctx context.Context) (*operations.DeleteAuthServerScopeRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var authServerID string
-	authServerID = r.AuthServerID.ValueString()
-
-	var scopeID string
-	scopeID = r.ID.ValueString()
-
-	out := operations.DeleteAuthServerScopeRequest{
-		AuthServerID: authServerID,
-		ScopeID:      scopeID,
-	}
-
-	return &out, diags
-}
-
-func (r *AuthServerScopesResourceModel) RefreshFromSharedScope(ctx context.Context, resp *shared.Scope) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.Default = types.BoolPointerValue(resp.Default)
-		r.Description = types.StringValue(resp.Description)
-		r.Enabled = types.BoolPointerValue(resp.Enabled)
-		r.ID = types.StringValue(resp.ID)
-		r.IncludeInMetadata = types.BoolPointerValue(resp.IncludeInMetadata)
-		r.Name = types.StringValue(resp.Name)
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
-	}
-
-	return diags
 }

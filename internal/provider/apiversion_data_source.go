@@ -23,6 +23,7 @@ func NewAPIVersionDataSource() datasource.DataSource {
 
 // APIVersionDataSource is the data source implementation.
 type APIVersionDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

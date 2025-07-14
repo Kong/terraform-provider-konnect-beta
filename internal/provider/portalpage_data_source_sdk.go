@@ -11,23 +11,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *PortalPageDataSourceModel) ToOperationsGetPortalPageRequest(ctx context.Context) (*operations.GetPortalPageRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var portalID string
-	portalID = r.PortalID.ValueString()
-
-	var pageID string
-	pageID = r.ID.ValueString()
-
-	out := operations.GetPortalPageRequest{
-		PortalID: portalID,
-		PageID:   pageID,
-	}
-
-	return &out, diags
-}
-
 func (r *PortalPageDataSourceModel) RefreshFromSharedPortalPageResponse(ctx context.Context, resp *shared.PortalPageResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -45,4 +28,21 @@ func (r *PortalPageDataSourceModel) RefreshFromSharedPortalPageResponse(ctx cont
 	}
 
 	return diags
+}
+
+func (r *PortalPageDataSourceModel) ToOperationsGetPortalPageRequest(ctx context.Context) (*operations.GetPortalPageRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	var pageID string
+	pageID = r.ID.ValueString()
+
+	out := operations.GetPortalPageRequest{
+		PortalID: portalID,
+		PageID:   pageID,
+	}
+
+	return &out, diags
 }

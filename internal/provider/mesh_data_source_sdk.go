@@ -12,23 +12,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshDataSourceModel) ToOperationsGetMeshRequest(ctx context.Context) (*operations.GetMeshRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	out := operations.GetMeshRequest{
-		CpID: cpID,
-		Name: name,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshDataSourceModel) RefreshFromSharedMeshItem(ctx context.Context, resp *shared.MeshItem) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -441,4 +424,21 @@ func (r *MeshDataSourceModel) RefreshFromSharedMeshItem(ctx context.Context, res
 	}
 
 	return diags
+}
+
+func (r *MeshDataSourceModel) ToOperationsGetMeshRequest(ctx context.Context) (*operations.GetMeshRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	out := operations.GetMeshRequest{
+		CpID: cpID,
+		Name: name,
+	}
+
+	return &out, diags
 }

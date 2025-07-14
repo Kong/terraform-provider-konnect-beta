@@ -13,23 +13,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshHostnameGeneratorDataSourceModel) ToOperationsGetHostnameGeneratorRequest(ctx context.Context) (*operations.GetHostnameGeneratorRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	out := operations.GetHostnameGeneratorRequest{
-		CpID: cpID,
-		Name: name,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshHostnameGeneratorDataSourceModel) RefreshFromSharedHostnameGeneratorItem(ctx context.Context, resp *shared.HostnameGeneratorItem) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -98,4 +81,21 @@ func (r *MeshHostnameGeneratorDataSourceModel) RefreshFromSharedHostnameGenerato
 	}
 
 	return diags
+}
+
+func (r *MeshHostnameGeneratorDataSourceModel) ToOperationsGetHostnameGeneratorRequest(ctx context.Context) (*operations.GetHostnameGeneratorRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	out := operations.GetHostnameGeneratorRequest{
+		CpID: cpID,
+		Name: name,
+	}
+
+	return &out, diags
 }

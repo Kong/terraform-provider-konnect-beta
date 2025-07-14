@@ -24,6 +24,7 @@ func NewMeshTraceListDataSource() datasource.DataSource {
 
 // MeshTraceListDataSource is the data source implementation.
 type MeshTraceListDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

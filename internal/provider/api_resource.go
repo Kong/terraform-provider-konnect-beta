@@ -32,6 +32,7 @@ func NewAPIResource() resource.Resource {
 
 // APIResource defines the resource implementation.
 type APIResource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

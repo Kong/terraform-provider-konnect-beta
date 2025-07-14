@@ -12,23 +12,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *APISpecificationDataSourceModel) ToOperationsFetchAPISpecRequest(ctx context.Context) (*operations.FetchAPISpecRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var apiID string
-	apiID = r.APIID.ValueString()
-
-	var specID string
-	specID = r.ID.ValueString()
-
-	out := operations.FetchAPISpecRequest{
-		APIID:  apiID,
-		SpecID: specID,
-	}
-
-	return &out, diags
-}
-
 func (r *APISpecificationDataSourceModel) RefreshFromSharedAPISpecResponse(ctx context.Context, resp *shared.APISpecResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -54,4 +37,21 @@ func (r *APISpecificationDataSourceModel) RefreshFromSharedAPISpecResponse(ctx c
 	}
 
 	return diags
+}
+
+func (r *APISpecificationDataSourceModel) ToOperationsFetchAPISpecRequest(ctx context.Context) (*operations.FetchAPISpecRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiID string
+	apiID = r.APIID.ValueString()
+
+	var specID string
+	specID = r.ID.ValueString()
+
+	out := operations.FetchAPISpecRequest{
+		APIID:  apiID,
+		SpecID: specID,
+	}
+
+	return &out, diags
 }

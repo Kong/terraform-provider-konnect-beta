@@ -24,6 +24,7 @@ func NewMeshRetryListDataSource() datasource.DataSource {
 
 // MeshRetryListDataSource is the data source implementation.
 type MeshRetryListDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

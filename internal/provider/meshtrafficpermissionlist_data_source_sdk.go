@@ -13,37 +13,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshTrafficPermissionListDataSourceModel) ToOperationsGetMeshTrafficPermissionListRequest(ctx context.Context) (*operations.GetMeshTrafficPermissionListRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	offset := new(int64)
-	if !r.Offset.IsUnknown() && !r.Offset.IsNull() {
-		*offset = r.Offset.ValueInt64()
-	} else {
-		offset = nil
-	}
-	size := new(int64)
-	if !r.Size.IsUnknown() && !r.Size.IsNull() {
-		*size = r.Size.ValueInt64()
-	} else {
-		size = nil
-	}
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	out := operations.GetMeshTrafficPermissionListRequest{
-		CpID:   cpID,
-		Offset: offset,
-		Size:   size,
-		Mesh:   mesh,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshTrafficPermissionListDataSourceModel) RefreshFromSharedMeshTrafficPermissionList(ctx context.Context, resp *shared.MeshTrafficPermissionList) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -148,4 +117,35 @@ func (r *MeshTrafficPermissionListDataSourceModel) RefreshFromSharedMeshTrafficP
 	}
 
 	return diags
+}
+
+func (r *MeshTrafficPermissionListDataSourceModel) ToOperationsGetMeshTrafficPermissionListRequest(ctx context.Context) (*operations.GetMeshTrafficPermissionListRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	offset := new(int64)
+	if !r.Offset.IsUnknown() && !r.Offset.IsNull() {
+		*offset = r.Offset.ValueInt64()
+	} else {
+		offset = nil
+	}
+	size := new(int64)
+	if !r.Size.IsUnknown() && !r.Size.IsNull() {
+		*size = r.Size.ValueInt64()
+	} else {
+		size = nil
+	}
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	out := operations.GetMeshTrafficPermissionListRequest{
+		CpID:   cpID,
+		Offset: offset,
+		Size:   size,
+		Mesh:   mesh,
+	}
+
+	return &out, diags
 }
