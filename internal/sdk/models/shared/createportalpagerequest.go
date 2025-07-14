@@ -2,21 +2,23 @@
 
 package shared
 
-import (
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
-)
-
 // CreatePortalPageRequest - Create a page in a portal.
 type CreatePortalPageRequest struct {
-	// The slug of a page in a portal. Is used to compute the full path /slug1/slug2/slug3.
+	// The slug of a page in a portal, used to compute its full URL path within the portal hierarchy.
+	// When a page has a `parent_page_id`, its full path is built by joining the parent’s slug with its own.
+	// For example, if a parent page has the slug `slug1` and this page’s slug is `slug2`, the resulting path will be `/slug1/slug2`.
+	// This enables nested page structures like `/slug1/slug2/slug3`.
+	//
 	Slug string `json:"slug"`
 	// The title of a page in a portal.
 	Title *string `json:"title,omitempty"`
 	// The renderable markdown content of a page in a portal.
 	Content string `json:"content"`
 	// Whether a page is publicly accessible to non-authenticated users.
-	Visibility *string `default:"private" json:"visibility"`
-	// Whether the resource is visible on a given portal. Defaults to false.
+	// If not provided, the default_page_visibility value of the portal will be used.
+	//
+	Visibility *PageVisibilityStatus `json:"visibility,omitempty"`
+	// Whether the resource is visible on a given portal. Defaults to unpublished.
 	Status      *PublishedStatus `json:"status,omitempty"`
 	Description *string          `json:"description,omitempty"`
 	// Pages may be rendered as a tree of files.
@@ -24,17 +26,6 @@ type CreatePortalPageRequest struct {
 	// Specify the `id` of another page as the `parent_page_id` to add some hierarchy to your pages.
 	//
 	ParentPageID *string `json:"parent_page_id,omitempty"`
-}
-
-func (c CreatePortalPageRequest) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CreatePortalPageRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
-		return err
-	}
-	return nil
 }
 
 func (o *CreatePortalPageRequest) GetSlug() string {
@@ -58,7 +49,7 @@ func (o *CreatePortalPageRequest) GetContent() string {
 	return o.Content
 }
 
-func (o *CreatePortalPageRequest) GetVisibility() *string {
+func (o *CreatePortalPageRequest) GetVisibility() *PageVisibilityStatus {
 	if o == nil {
 		return nil
 	}

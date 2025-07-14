@@ -96,31 +96,6 @@ func (r *MeshHostnameGeneratorResourceModel) RefreshFromSharedHostnameGeneratorI
 	return diags
 }
 
-func (r *MeshHostnameGeneratorResourceModel) ToOperationsCreateHostnameGeneratorRequest(ctx context.Context) (*operations.CreateHostnameGeneratorRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	hostnameGeneratorItem, hostnameGeneratorItemDiags := r.ToSharedHostnameGeneratorItemInput(ctx)
-	diags.Append(hostnameGeneratorItemDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateHostnameGeneratorRequest{
-		CpID:                  cpID,
-		Name:                  name,
-		HostnameGeneratorItem: *hostnameGeneratorItem,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshHostnameGeneratorResourceModel) ToOperationsDeleteHostnameGeneratorRequest(ctx context.Context) (*operations.DeleteHostnameGeneratorRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -155,7 +130,7 @@ func (r *MeshHostnameGeneratorResourceModel) ToOperationsGetHostnameGeneratorReq
 	return &out, diags
 }
 
-func (r *MeshHostnameGeneratorResourceModel) ToOperationsUpdateHostnameGeneratorRequest(ctx context.Context) (*operations.UpdateHostnameGeneratorRequest, diag.Diagnostics) {
+func (r *MeshHostnameGeneratorResourceModel) ToOperationsPutHostnameGeneratorRequest(ctx context.Context) (*operations.PutHostnameGeneratorRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -171,7 +146,7 @@ func (r *MeshHostnameGeneratorResourceModel) ToOperationsUpdateHostnameGenerator
 		return nil, diags
 	}
 
-	out := operations.UpdateHostnameGeneratorRequest{
+	out := operations.PutHostnameGeneratorRequest{
 		CpID:                  cpID,
 		Name:                  name,
 		HostnameGeneratorItem: *hostnameGeneratorItem,

@@ -18,7 +18,6 @@ resource "konnect_api_version" "my_apiversion" {
   api_id = "9f5061ce-78f6-4452-9108-ad7c02821fd5"
   spec = {
     content = "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}"
-    type    = "oas3"
   }
   version = "1.0.0"
 }
@@ -48,10 +47,10 @@ resource "konnect_api_version" "my_apiversion" {
 Optional:
 
 - `content` (String) The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).
-- `type` (String) The type of specification being stored. This allows us to render the specification correctly. must be one of ["oas2", "oas3", "asyncapi"]; Requires replacement if changed.
 
 Read-Only:
 
+- `type` (String) The type of specification being stored. This allows us to render the specification correctly. must be one of ["oas2", "oas3", "asyncapi"]
 - `validation_messages` (Attributes List) The errors that occurred while parsing the API version spec. (see [below for nested schema](#nestedatt--spec--validation_messages))
 
 <a id="nestedatt--spec--validation_messages"></a>

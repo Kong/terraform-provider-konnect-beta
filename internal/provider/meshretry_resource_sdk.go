@@ -244,35 +244,6 @@ func (r *MeshRetryResourceModel) RefreshFromSharedMeshRetryItem(ctx context.Cont
 	return diags
 }
 
-func (r *MeshRetryResourceModel) ToOperationsCreateMeshRetryRequest(ctx context.Context) (*operations.CreateMeshRetryRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	meshRetryItem, meshRetryItemDiags := r.ToSharedMeshRetryItemInput(ctx)
-	diags.Append(meshRetryItemDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateMeshRetryRequest{
-		CpID:          cpID,
-		Mesh:          mesh,
-		Name:          name,
-		MeshRetryItem: *meshRetryItem,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshRetryResourceModel) ToOperationsDeleteMeshRetryRequest(ctx context.Context) (*operations.DeleteMeshRetryRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -315,7 +286,7 @@ func (r *MeshRetryResourceModel) ToOperationsGetMeshRetryRequest(ctx context.Con
 	return &out, diags
 }
 
-func (r *MeshRetryResourceModel) ToOperationsUpdateMeshRetryRequest(ctx context.Context) (*operations.UpdateMeshRetryRequest, diag.Diagnostics) {
+func (r *MeshRetryResourceModel) ToOperationsPutMeshRetryRequest(ctx context.Context) (*operations.PutMeshRetryRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -334,7 +305,7 @@ func (r *MeshRetryResourceModel) ToOperationsUpdateMeshRetryRequest(ctx context.
 		return nil, diags
 	}
 
-	out := operations.UpdateMeshRetryRequest{
+	out := operations.PutMeshRetryRequest{
 		CpID:          cpID,
 		Mesh:          mesh,
 		Name:          name,

@@ -190,35 +190,6 @@ func (r *MeshHealthCheckResourceModel) RefreshFromSharedMeshHealthCheckItem(ctx 
 	return diags
 }
 
-func (r *MeshHealthCheckResourceModel) ToOperationsCreateMeshHealthCheckRequest(ctx context.Context) (*operations.CreateMeshHealthCheckRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	meshHealthCheckItem, meshHealthCheckItemDiags := r.ToSharedMeshHealthCheckItemInput(ctx)
-	diags.Append(meshHealthCheckItemDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateMeshHealthCheckRequest{
-		CpID:                cpID,
-		Mesh:                mesh,
-		Name:                name,
-		MeshHealthCheckItem: *meshHealthCheckItem,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshHealthCheckResourceModel) ToOperationsDeleteMeshHealthCheckRequest(ctx context.Context) (*operations.DeleteMeshHealthCheckRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -261,7 +232,7 @@ func (r *MeshHealthCheckResourceModel) ToOperationsGetMeshHealthCheckRequest(ctx
 	return &out, diags
 }
 
-func (r *MeshHealthCheckResourceModel) ToOperationsUpdateMeshHealthCheckRequest(ctx context.Context) (*operations.UpdateMeshHealthCheckRequest, diag.Diagnostics) {
+func (r *MeshHealthCheckResourceModel) ToOperationsPutMeshHealthCheckRequest(ctx context.Context) (*operations.PutMeshHealthCheckRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -280,7 +251,7 @@ func (r *MeshHealthCheckResourceModel) ToOperationsUpdateMeshHealthCheckRequest(
 		return nil, diags
 	}
 
-	out := operations.UpdateMeshHealthCheckRequest{
+	out := operations.PutMeshHealthCheckRequest{
 		CpID:                cpID,
 		Mesh:                mesh,
 		Name:                name,

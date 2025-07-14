@@ -12,7 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -99,7 +98,7 @@ func (r *PortalSnippetResource) Schema(ctx context.Context, req resource.SchemaR
 			"status": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the resource is visible on a given portal. Defaults to false. must be one of ["published", "unpublished"]`,
+				Description: `Whether the resource is visible on a given portal. Defaults to unpublished. must be one of ["published", "unpublished"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"published",
@@ -126,10 +125,17 @@ func (r *PortalSnippetResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 			},
 			"visibility": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Default:     stringdefault.StaticString(`private`),
-				Description: `Whether a page is publicly accessible to non-authenticated users. Default: "private"`,
+				Computed: true,
+				Optional: true,
+				MarkdownDescription: `Whether a snippet is publicly accessible to non-authenticated users.` + "\n" +
+					`If not provided, the default_page_visibility value of the portal will be used.` + "\n" +
+					`must be one of ["public", "private"]`,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						"public",
+						"private",
+					),
+				},
 			},
 		},
 	}

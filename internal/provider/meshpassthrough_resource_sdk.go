@@ -104,35 +104,6 @@ func (r *MeshPassthroughResourceModel) RefreshFromSharedMeshPassthroughItem(ctx 
 	return diags
 }
 
-func (r *MeshPassthroughResourceModel) ToOperationsCreateMeshPassthroughRequest(ctx context.Context) (*operations.CreateMeshPassthroughRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	meshPassthroughItem, meshPassthroughItemDiags := r.ToSharedMeshPassthroughItemInput(ctx)
-	diags.Append(meshPassthroughItemDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateMeshPassthroughRequest{
-		CpID:                cpID,
-		Mesh:                mesh,
-		Name:                name,
-		MeshPassthroughItem: *meshPassthroughItem,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshPassthroughResourceModel) ToOperationsDeleteMeshPassthroughRequest(ctx context.Context) (*operations.DeleteMeshPassthroughRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -175,7 +146,7 @@ func (r *MeshPassthroughResourceModel) ToOperationsGetMeshPassthroughRequest(ctx
 	return &out, diags
 }
 
-func (r *MeshPassthroughResourceModel) ToOperationsUpdateMeshPassthroughRequest(ctx context.Context) (*operations.UpdateMeshPassthroughRequest, diag.Diagnostics) {
+func (r *MeshPassthroughResourceModel) ToOperationsPutMeshPassthroughRequest(ctx context.Context) (*operations.PutMeshPassthroughRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -194,7 +165,7 @@ func (r *MeshPassthroughResourceModel) ToOperationsUpdateMeshPassthroughRequest(
 		return nil, diags
 	}
 
-	out := operations.UpdateMeshPassthroughRequest{
+	out := operations.PutMeshPassthroughRequest{
 		CpID:                cpID,
 		Mesh:                mesh,
 		Name:                name,

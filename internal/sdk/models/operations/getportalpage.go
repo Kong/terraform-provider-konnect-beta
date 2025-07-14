@@ -39,8 +39,6 @@ type GetPortalPageResponse struct {
 	PortalPageResponse *shared.PortalPageResponse
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError
-	// Forbidden
-	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
 }
@@ -78,13 +76,6 @@ func (o *GetPortalPageResponse) GetUnauthorizedError() *shared.UnauthorizedError
 		return nil
 	}
 	return o.UnauthorizedError
-}
-
-func (o *GetPortalPageResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
-		return nil
-	}
-	return o.ForbiddenError
 }
 
 func (o *GetPortalPageResponse) GetNotFoundError() *shared.NotFoundError {

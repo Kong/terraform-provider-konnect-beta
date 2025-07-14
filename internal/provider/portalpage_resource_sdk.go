@@ -125,9 +125,9 @@ func (r *PortalPageResourceModel) ToSharedCreatePortalPageRequest(ctx context.Co
 	var content string
 	content = r.Content.ValueString()
 
-	visibility := new(string)
+	visibility := new(shared.PageVisibilityStatus)
 	if !r.Visibility.IsUnknown() && !r.Visibility.IsNull() {
-		*visibility = r.Visibility.ValueString()
+		*visibility = shared.PageVisibilityStatus(r.Visibility.ValueString())
 	} else {
 		visibility = nil
 	}
