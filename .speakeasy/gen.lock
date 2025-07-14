@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: b46ca68a988d55cd88566b127d014905
+  docChecksum: 950b36bbbdadf84b5276c42d3b0fc4ea
   docVersion: 2.0.0
   speakeasyVersion: 1.581.1
   generationVersion: 2.656.9
@@ -154,6 +154,10 @@ generatedFiles:
   - examples/resources/konnect-beta_portal_custom_domain/resource.tf
   - examples/resources/konnect-beta_portal_customization/import.sh
   - examples/resources/konnect-beta_portal_customization/resource.tf
+  - examples/resources/konnect-beta_portal_favicon/import.sh
+  - examples/resources/konnect-beta_portal_favicon/resource.tf
+  - examples/resources/konnect-beta_portal_logo/import.sh
+  - examples/resources/konnect-beta_portal_logo/resource.tf
   - examples/resources/konnect-beta_portal_page/import.sh
   - examples/resources/konnect-beta_portal_page/resource.tf
   - examples/resources/konnect-beta_portal_snippet/import.sh
@@ -350,6 +354,10 @@ generatedFiles:
   - internal/provider/portalcustomdomain_resource_sdk.go
   - internal/provider/portalcustomization_resource.go
   - internal/provider/portalcustomization_resource_sdk.go
+  - internal/provider/portalfavicon_resource.go
+  - internal/provider/portalfavicon_resource_sdk.go
+  - internal/provider/portallogo_resource.go
+  - internal/provider/portallogo_resource_sdk.go
   - internal/provider/portalpage_resource.go
   - internal/provider/portalpage_resource_sdk.go
   - internal/provider/portalsnippet_resource.go
@@ -658,6 +666,7 @@ generatedFiles:
   - internal/sdk/apipublication.go
   - internal/sdk/apispecification.go
   - internal/sdk/apiversion.go
+  - internal/sdk/assets.go
   - internal/sdk/authserver.go
   - internal/sdk/docs/models/operations/option.md
   - internal/sdk/hostnamegenerator.go
@@ -814,6 +823,8 @@ generatedFiles:
   - internal/sdk/models/operations/getmeshtrafficpermission.go
   - internal/sdk/models/operations/getmeshtrafficpermissionlist.go
   - internal/sdk/models/operations/getportal.go
+  - internal/sdk/models/operations/getportalassetfavicon.go
+  - internal/sdk/models/operations/getportalassetlogo.go
   - internal/sdk/models/operations/getportalauthenticationsettings.go
   - internal/sdk/models/operations/getportalcustomdomain.go
   - internal/sdk/models/operations/getportalcustomization.go
@@ -848,6 +859,8 @@ generatedFiles:
   - internal/sdk/models/operations/putmeshtrace.go
   - internal/sdk/models/operations/putmeshtrafficpermission.go
   - internal/sdk/models/operations/replaceauthserverclient.go
+  - internal/sdk/models/operations/replaceportalassetfavicon.go
+  - internal/sdk/models/operations/replaceportalassetlogo.go
   - internal/sdk/models/operations/replaceportalcustomization.go
   - internal/sdk/models/operations/updateapi.go
   - internal/sdk/models/operations/updateapidocument.go
@@ -1015,6 +1028,7 @@ generatedFiles:
   - internal/sdk/models/shared/pagemeta.go
   - internal/sdk/models/shared/pagevisibilitystatus.go
   - internal/sdk/models/shared/paginatedmeta.go
+  - internal/sdk/models/shared/portalassetresponse.go
   - internal/sdk/models/shared/portalauthenticationsettingsresponse.go
   - internal/sdk/models/shared/portalauthenticationsettingsupdaterequest.go
   - internal/sdk/models/shared/portalclaimmappings.go
@@ -1036,6 +1050,7 @@ generatedFiles:
   - internal/sdk/models/shared/publishedstatus.go
   - internal/sdk/models/shared/putmeshcontrolplanerequest.go
   - internal/sdk/models/shared/replaceclient.go
+  - internal/sdk/models/shared/replaceportalimageasset.go
   - internal/sdk/models/shared/responsetype.go
   - internal/sdk/models/shared/scope.go
   - internal/sdk/models/shared/security.go
@@ -5187,5 +5202,61 @@ examples:
       responses:
         "200":
           application/json: {}
+  get-portal-asset-logo:
+    speakeasy-default-get-portal-asset-logo:
+      parameters:
+        path:
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "200":
+          application/json: {"data": "data:image/png;base64,YW5faW1hZ2VfZmlsZQ=="}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  replace-portal-asset-logo:
+    speakeasy-default-replace-portal-asset-logo:
+      parameters:
+        path:
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+      requestBody:
+        application/json: {"data": "data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU="}
+      responses:
+        "200":
+          application/json: {"data": "data:image/png;base64,YW5faW1hZ2VfZmlsZQ=="}
+        "400":
+          application/problem+json: {"status": 763533, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": [], "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  get-portal-asset-favicon:
+    speakeasy-default-get-portal-asset-favicon:
+      parameters:
+        path:
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "200":
+          application/json: {"data": "data:image/png;base64,YW5faW1hZ2VfZmlsZQ=="}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  replace-portal-asset-favicon:
+    speakeasy-default-replace-portal-asset-favicon:
+      parameters:
+        path:
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+      requestBody:
+        application/json: {"data": "data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU="}
+      responses:
+        "200":
+          application/json: {"data": "data:image/png;base64,YW5faW1hZ2VfZmlsZQ=="}
+        "400":
+          application/problem+json: {"status": 457688, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max_items", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
 examplesVersion: 1.0.2
 generatedTests: {}

@@ -59,6 +59,8 @@ type KonnectBeta struct {
 	Portals *Portals
 	// APIs related to configuration of Konnect Developer Portals custom domains.
 	PortalCustomDomains *PortalCustomDomains
+	// APIs for managing static assets for Konnect Developer Portals.
+	Assets *Assets
 	// APIs related to customization of Konnect Developer Portals.
 	PortalCustomization *PortalCustomization
 	// APIs related to Konnect Developer Portal Custom Pages.
@@ -201,6 +203,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 
 	sdk.Portals = newPortals(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalCustomDomains = newPortalCustomDomains(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Assets = newAssets(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalCustomization = newPortalCustomization(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Pages = newPages(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Snippets = newSnippets(sdk, sdk.sdkConfiguration, sdk.hooks)

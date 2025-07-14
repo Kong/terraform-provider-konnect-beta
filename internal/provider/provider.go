@@ -164,6 +164,8 @@ func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.R
 		NewPortalAuthResource,
 		NewPortalCustomDomainResource,
 		NewPortalCustomizationResource,
+		NewPortalFaviconResource,
+		NewPortalLogoResource,
 		NewPortalPageResource,
 		NewPortalSnippetResource,
 		NewPortalTeamResource,
