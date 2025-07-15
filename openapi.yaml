@@ -213,6 +213,92 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Custom Domains
+  '/v3/portals/{portalId}/assets/logo':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalLogo#read
+        terraform-datasource: null
+      operationId: get-portal-asset-logo
+      summary: Get Logo
+      description: Returns the logo of the portal.
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalAssetResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Assets
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: 'PortalLogo#create,update'
+        terraform-datasource: null
+      operationId: replace-portal-asset-logo
+      summary: Replace Logo
+      description: Replaces the logo of the portal.
+      requestBody:
+        $ref: '#/components/requestBodies/ReplacePortalImageAsset'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalAssetResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Assets
+  '/v3/portals/{portalId}/assets/favicon':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalFavicon#read
+        terraform-datasource: null
+      operationId: get-portal-asset-favicon
+      summary: Get Favicon
+      description: Returns the favicon of the portal.
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalAssetResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Assets
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: 'PortalFavicon#create,update'
+        terraform-datasource: null
+      operationId: replace-portal-asset-favicon
+      summary: Replace Favicon
+      description: Replaces the favicon of the portal. The favicon is used in the browser tab of the portal.
+      requestBody:
+        $ref: '#/components/requestBodies/ReplacePortalImageAsset'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalAssetResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Assets
   '/v3/portals/{portalId}/customization':
     get:
       x-speakeasy-entity-operation:
@@ -5149,6 +5235,27 @@ components:
       description: The scope ID
       x-speakeasy-match: id
   schemas:
+    PortalImageDataUri:
+      description: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
+      type: string
+      format: uri
+      example: 'data:image/png;base64,YW5faW1hZ2VfZmlsZQ=='
+      pattern: '^data:image/(png|jpeg|svg\+xml|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
+      title: PortalImageDataUri
+      x-validation-message: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
+    ReplacePortalImageAsset:
+      description: 'The image data to upload. Images must be a data URL with binary image data in base 64 format. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs.'
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/PortalImageDataUri'
+      example:
+        data: 'data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
+      additionalProperties: false
+      nullable: true
+      required:
+        - data
+      title: ReplacePortalImageAsset
     PageSlug:
       description: |
         The slug of a page in a portal, used to compute its full URL path within the portal hierarchy. 
@@ -18733,6 +18840,13 @@ components:
                 $ref: '#/components/schemas/LabelsUpdate'
             additionalProperties: false
             title: Portal
+    ReplacePortalImageAsset:
+      description: Update an image asset for the portal.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReplacePortalImageAsset'
     ReplacePortalCustomization:
       content:
         application/json:
@@ -19422,6 +19536,18 @@ components:
               - updated_at
               - created_at
             title: Portal
+    PortalAssetResponse:
+      description: 'Image asset for the portal. Can be either png, jpeg or svg'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/PortalImageDataUri'
+            additionalProperties: false
+            required:
+              - data
     PortalCustomizationResponse:
       description: The current customization options for a portal.
       content:
@@ -20423,6 +20549,8 @@ tags:
     description: APIs related to configuration of Konnect Developer Portal auth settings.
   - name: Portal Teams
     description: APIs related to configuration of Konnect Developer Portal developer teams.
+  - name: Assets
+    description: APIs for managing static assets for Konnect Developer Portals.
   - name: Pages
     description: APIs related to Konnect Developer Portal Custom Pages.
   - name: Snippets

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.0
+> Released on 2025/??
+
+### Features
+* Add support for the `konnect_portal_logo` and `konnect_portal_favicon` resources
+
 ## 0.7.2
 > Released on 2025/07/11
 
