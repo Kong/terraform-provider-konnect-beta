@@ -77,7 +77,6 @@ type KonnectBeta struct {
 	APIVersion                *APIVersion
 	APIPublication            *APIPublication
 	APIImplementation         *APIImplementation
-	APIPackages               *APIPackages
 	MeshAccessLog             *MeshAccessLog
 	MeshCircuitBreaker        *MeshCircuitBreaker
 	MeshFaultInjection        *MeshFaultInjection
@@ -216,7 +215,6 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.APIVersion = newAPIVersion(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.APIPublication = newAPIPublication(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.APIImplementation = newAPIImplementation(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.APIPackages = newAPIPackages(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshAccessLog = newMeshAccessLog(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshCircuitBreaker = newMeshCircuitBreaker(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshFaultInjection = newMeshFaultInjection(sdk, sdk.sdkConfiguration, sdk.hooks)

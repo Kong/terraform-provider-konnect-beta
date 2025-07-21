@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: c727be2329ccc557bd57b0e3e776431e
+  docChecksum: 30ae5baa9e50ce939ede1f2464298157
   docVersion: 2.0.0
   speakeasyVersion: 1.581.1
   generationVersion: 2.656.9
@@ -82,8 +82,6 @@ generatedFiles:
   - examples/resources/konnect-beta_api_document/resource.tf
   - examples/resources/konnect-beta_api_implementation/import.sh
   - examples/resources/konnect-beta_api_implementation/resource.tf
-  - examples/resources/konnect-beta_api_package/import.sh
-  - examples/resources/konnect-beta_api_package/resource.tf
   - examples/resources/konnect-beta_api_publication/import.sh
   - examples/resources/konnect-beta_api_publication/resource.tf
   - examples/resources/konnect-beta_api_specification/import.sh
@@ -186,8 +184,6 @@ generatedFiles:
   - internal/provider/apidocument_resource_sdk.go
   - internal/provider/apiimplementation_resource.go
   - internal/provider/apiimplementation_resource_sdk.go
-  - internal/provider/apipackage_resource.go
-  - internal/provider/apipackage_resource_sdk.go
   - internal/provider/apipublication_resource.go
   - internal/provider/apipublication_resource_sdk.go
   - internal/provider/apispecification_resource.go
@@ -626,7 +622,6 @@ generatedFiles:
   - internal/provider/types/query_params.go
   - internal/provider/types/rate_limit_service.go
   - internal/provider/types/rate_limited_back_off.go
-  - internal/provider/types/rate_limiting_config.go
   - internal/provider/types/ratelimit_on_request.go
   - internal/provider/types/request_body.go
   - internal/provider/types/request_header_modifier.go
@@ -671,7 +666,6 @@ generatedFiles:
   - internal/sdk/api.go
   - internal/sdk/apidocumentation.go
   - internal/sdk/apiimplementation.go
-  - internal/sdk/apipackages.go
   - internal/sdk/apipublication.go
   - internal/sdk/apispecification.go
   - internal/sdk/apiversion.go
@@ -720,7 +714,6 @@ generatedFiles:
   - internal/sdk/models/operations/createapi.go
   - internal/sdk/models/operations/createapidocument.go
   - internal/sdk/models/operations/createapiimplementation.go
-  - internal/sdk/models/operations/createapipackage.go
   - internal/sdk/models/operations/createapispec.go
   - internal/sdk/models/operations/createapiversion.go
   - internal/sdk/models/operations/createauthserver.go
@@ -736,7 +729,6 @@ generatedFiles:
   - internal/sdk/models/operations/deleteapi.go
   - internal/sdk/models/operations/deleteapidocument.go
   - internal/sdk/models/operations/deleteapiimplementation.go
-  - internal/sdk/models/operations/deleteapipackage.go
   - internal/sdk/models/operations/deleteapispec.go
   - internal/sdk/models/operations/deleteapiversion.go
   - internal/sdk/models/operations/deleteauthserver.go
@@ -780,7 +772,6 @@ generatedFiles:
   - internal/sdk/models/operations/fetchapispec.go
   - internal/sdk/models/operations/fetchapiversion.go
   - internal/sdk/models/operations/fetchpublication.go
-  - internal/sdk/models/operations/getapipackage.go
   - internal/sdk/models/operations/getauthserver.go
   - internal/sdk/models/operations/getauthserverclaim.go
   - internal/sdk/models/operations/getauthserverclient.go
@@ -845,7 +836,6 @@ generatedFiles:
   - internal/sdk/models/operations/getportalteam.go
   - internal/sdk/models/operations/listmeshcontrolplanes.go
   - internal/sdk/models/operations/options.go
-  - internal/sdk/models/operations/patchapipackage.go
   - internal/sdk/models/operations/publishapitoportal.go
   - internal/sdk/models/operations/puthostnamegenerator.go
   - internal/sdk/models/operations/putmesh.go
@@ -900,7 +890,6 @@ generatedFiles:
   - internal/sdk/models/shared/apiimplementationgatewayserviceentity.go
   - internal/sdk/models/shared/apiimplementationresponse.go
   - internal/sdk/models/shared/apiimplementationservice.go
-  - internal/sdk/models/shared/apipackageresponseschema.go
   - internal/sdk/models/shared/apipublication.go
   - internal/sdk/models/shared/apipublicationresponse.go
   - internal/sdk/models/shared/apipublicationvisibility.go
@@ -918,7 +907,6 @@ generatedFiles:
   - internal/sdk/models/shared/client.go
   - internal/sdk/models/shared/conflicterror.go
   - internal/sdk/models/shared/createapidocumentrequest.go
-  - internal/sdk/models/shared/createapipackagerequest.go
   - internal/sdk/models/shared/createapirequest.go
   - internal/sdk/models/shared/createapispecrequest.go
   - internal/sdk/models/shared/createapiversionrequest.go
@@ -1068,7 +1056,6 @@ generatedFiles:
   - internal/sdk/models/shared/portalupdateteamrequest.go
   - internal/sdk/models/shared/publishedstatus.go
   - internal/sdk/models/shared/putmeshcontrolplanerequest.go
-  - internal/sdk/models/shared/ratelimitingconfig.go
   - internal/sdk/models/shared/replaceclient.go
   - internal/sdk/models/shared/replaceportalimageasset.go
   - internal/sdk/models/shared/responsetype.go
@@ -1078,7 +1065,6 @@ generatedFiles:
   - internal/sdk/models/shared/unauthorizederror.go
   - internal/sdk/models/shared/unsupportedmediatypeerror.go
   - internal/sdk/models/shared/updatealgorithm.go
-  - internal/sdk/models/shared/updateapipackagerequest.go
   - internal/sdk/models/shared/updateapirequest.go
   - internal/sdk/models/shared/updateauthserver.go
   - internal/sdk/models/shared/updateclaim.go

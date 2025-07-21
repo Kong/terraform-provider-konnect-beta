@@ -128,7 +128,6 @@ func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.R
 		NewAPIResource,
 		NewAPIDocumentResource,
 		NewAPIImplementationResource,
-		NewAPIPackageResource,
 		NewAPIPublicationResource,
 		NewAPISpecificationResource,
 		NewAPIVersionResource,
