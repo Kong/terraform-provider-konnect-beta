@@ -7,28 +7,19 @@ import (
 	"net/http"
 )
 
-type DeleteAPIVersionRequest struct {
-	// The UUID API identifier
-	APIID string `pathParam:"style=simple,explode=false,name=apiId"`
-	// The API version identifier
-	VersionID string `pathParam:"style=simple,explode=false,name=versionId"`
+type DeleteAPIPackageRequest struct {
+	// The UUID API Package identifier
+	PackageID string `pathParam:"style=simple,explode=false,name=packageId"`
 }
 
-func (o *DeleteAPIVersionRequest) GetAPIID() string {
+func (o *DeleteAPIPackageRequest) GetPackageID() string {
 	if o == nil {
 		return ""
 	}
-	return o.APIID
+	return o.PackageID
 }
 
-func (o *DeleteAPIVersionRequest) GetVersionID() string {
-	if o == nil {
-		return ""
-	}
-	return o.VersionID
-}
-
-type DeleteAPIVersionResponse struct {
+type DeleteAPIPackageResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
@@ -43,42 +34,42 @@ type DeleteAPIVersionResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *DeleteAPIVersionResponse) GetContentType() string {
+func (o *DeleteAPIPackageResponse) GetContentType() string {
 	if o == nil {
 		return ""
 	}
 	return o.ContentType
 }
 
-func (o *DeleteAPIVersionResponse) GetStatusCode() int {
+func (o *DeleteAPIPackageResponse) GetStatusCode() int {
 	if o == nil {
 		return 0
 	}
 	return o.StatusCode
 }
 
-func (o *DeleteAPIVersionResponse) GetRawResponse() *http.Response {
+func (o *DeleteAPIPackageResponse) GetRawResponse() *http.Response {
 	if o == nil {
 		return nil
 	}
 	return o.RawResponse
 }
 
-func (o *DeleteAPIVersionResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *DeleteAPIPackageResponse) GetUnauthorizedError() *shared.UnauthorizedError {
 	if o == nil {
 		return nil
 	}
 	return o.UnauthorizedError
 }
 
-func (o *DeleteAPIVersionResponse) GetForbiddenError() *shared.ForbiddenError {
+func (o *DeleteAPIPackageResponse) GetForbiddenError() *shared.ForbiddenError {
 	if o == nil {
 		return nil
 	}
 	return o.ForbiddenError
 }
 
-func (o *DeleteAPIVersionResponse) GetNotFoundError() *shared.NotFoundError {
+func (o *DeleteAPIPackageResponse) GetNotFoundError() *shared.NotFoundError {
 	if o == nil {
 		return nil
 	}

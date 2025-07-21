@@ -14,25 +14,27 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/retry"
 	"net/http"
+	"net/url"
 )
 
-type APIVersion struct {
+type APIPackages struct {
 	rootSDK          *KonnectBeta
 	sdkConfiguration config.SDKConfiguration
 	hooks            *hooks.Hooks
 }
 
-func newAPIVersion(rootSDK *KonnectBeta, sdkConfig config.SDKConfiguration, hooks *hooks.Hooks) *APIVersion {
-	return &APIVersion{
+func newAPIPackages(rootSDK *KonnectBeta, sdkConfig config.SDKConfiguration, hooks *hooks.Hooks) *APIPackages {
+	return &APIPackages{
 		rootSDK:          rootSDK,
 		sdkConfiguration: sdkConfig,
 		hooks:            hooks,
 	}
 }
 
-// CreateAPIVersion - Create API Version
-// Creates a version (OpenAPI or AsyncAPI) for an API.
-func (s *APIVersion) CreateAPIVersion(ctx context.Context, request operations.CreateAPIVersionRequest, opts ...operations.Option) (*operations.CreateAPIVersionResponse, error) {
+// CreateAPIPackage - Create API Package
+// Creates a package of APIs.
+// An API package is a collection of APIs that can be used to group related APIs together.
+func (s *APIPackages) CreateAPIPackage(ctx context.Context, request shared.CreateAPIPackageRequest, opts ...operations.Option) (*operations.CreateAPIPackageResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -52,7 +54,7 @@ func (s *APIVersion) CreateAPIVersion(ctx context.Context, request operations.Cr
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/apis/{apiId}/versions", request, nil)
+	opURL, err := url.JoinPath(baseURL, "/v3/api-packages")
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -62,11 +64,11 @@ func (s *APIVersion) CreateAPIVersion(ctx context.Context, request operations.Cr
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "create-api-version",
+		OperationID:      "create-api-package",
 		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CreateAPIVersionRequest", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -208,7 +210,7 @@ func (s *APIVersion) CreateAPIVersion(ctx context.Context, request operations.Cr
 		}
 	}
 
-	res := &operations.CreateAPIVersionResponse{
+	res := &operations.CreateAPIPackageResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -223,12 +225,12 @@ func (s *APIVersion) CreateAPIVersion(ctx context.Context, request operations.Cr
 				return nil, err
 			}
 
-			var out shared.APIVersionResponse
+			var out shared.APIPackageResponseSchema
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.APIVersionResponse = &out
+			res.APIPackageResponseSchema = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -320,48 +322,6 @@ func (s *APIVersion) CreateAPIVersion(ctx context.Context, request operations.Cr
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
-	case httpRes.StatusCode == 409:
-		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-
-			var out shared.ConflictError
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
-				return nil, err
-			}
-
-			res.ConflictError = &out
-		default:
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
-		}
-	case httpRes.StatusCode == 415:
-		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-
-			var out shared.UnsupportedMediaTypeError
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
-				return nil, err
-			}
-
-			res.UnsupportedMediaTypeError = &out
-		default:
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
-		}
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -374,9 +334,9 @@ func (s *APIVersion) CreateAPIVersion(ctx context.Context, request operations.Cr
 
 }
 
-// FetchAPIVersion - Fetch API Version
-// Fetches the version (OpenAPI or AsyncAPI) of an API.
-func (s *APIVersion) FetchAPIVersion(ctx context.Context, request operations.FetchAPIVersionRequest, opts ...operations.Option) (*operations.FetchAPIVersionResponse, error) {
+// GetAPIPackage - Get API Package
+// Get details of a specific API package.
+func (s *APIPackages) GetAPIPackage(ctx context.Context, request operations.GetAPIPackageRequest, opts ...operations.Option) (*operations.GetAPIPackageResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -396,7 +356,7 @@ func (s *APIVersion) FetchAPIVersion(ctx context.Context, request operations.Fet
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/apis/{apiId}/versions/{versionId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/api-packages/{packageId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -406,7 +366,7 @@ func (s *APIVersion) FetchAPIVersion(ctx context.Context, request operations.Fet
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "fetch-api-version",
+		OperationID:      "get-api-package",
 		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -545,7 +505,7 @@ func (s *APIVersion) FetchAPIVersion(ctx context.Context, request operations.Fet
 		}
 	}
 
-	res := &operations.FetchAPIVersionResponse{
+	res := &operations.GetAPIPackageResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -560,12 +520,12 @@ func (s *APIVersion) FetchAPIVersion(ctx context.Context, request operations.Fet
 				return nil, err
 			}
 
-			var out shared.APIVersionResponse
+			var out shared.APIPackageResponseSchema
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.APIVersionResponse = &out
+			res.APIPackageResponseSchema = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -648,9 +608,10 @@ func (s *APIVersion) FetchAPIVersion(ctx context.Context, request operations.Fet
 
 }
 
-// UpdateAPIVersion - Update API Version
-// Updates the version (OpenAPI or AsyncAPI) of an API.
-func (s *APIVersion) UpdateAPIVersion(ctx context.Context, request operations.UpdateAPIVersionRequest, opts ...operations.Option) (*operations.UpdateAPIVersionResponse, error) {
+// PatchAPIPackage - Patch API Package
+// Updates an existing API package.
+// You can modify the name, description and version of the API Package.
+func (s *APIPackages) PatchAPIPackage(ctx context.Context, request operations.PatchAPIPackageRequest, opts ...operations.Option) (*operations.PatchAPIPackageResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -670,7 +631,7 @@ func (s *APIVersion) UpdateAPIVersion(ctx context.Context, request operations.Up
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/apis/{apiId}/versions/{versionId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/api-packages/{packageId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -680,11 +641,11 @@ func (s *APIVersion) UpdateAPIVersion(ctx context.Context, request operations.Up
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-api-version",
+		OperationID:      "patch-api-package",
 		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "APIVersion", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateAPIPackageRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -826,7 +787,7 @@ func (s *APIVersion) UpdateAPIVersion(ctx context.Context, request operations.Up
 		}
 	}
 
-	res := &operations.UpdateAPIVersionResponse{
+	res := &operations.PatchAPIPackageResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -841,12 +802,12 @@ func (s *APIVersion) UpdateAPIVersion(ctx context.Context, request operations.Up
 				return nil, err
 			}
 
-			var out shared.APIVersionResponse
+			var out shared.APIPackageResponseSchema
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.APIVersionResponse = &out
+			res.APIPackageResponseSchema = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -917,69 +878,6 @@ func (s *APIVersion) UpdateAPIVersion(ctx context.Context, request operations.Up
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
-	case httpRes.StatusCode == 404:
-		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-
-			var out shared.NotFoundError
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
-				return nil, err
-			}
-
-			res.NotFoundError = &out
-		default:
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
-		}
-	case httpRes.StatusCode == 409:
-		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-
-			var out shared.ConflictError
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
-				return nil, err
-			}
-
-			res.ConflictError = &out
-		default:
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
-		}
-	case httpRes.StatusCode == 415:
-		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-
-			var out shared.UnsupportedMediaTypeError
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
-				return nil, err
-			}
-
-			res.UnsupportedMediaTypeError = &out
-		default:
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
-		}
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -992,9 +890,9 @@ func (s *APIVersion) UpdateAPIVersion(ctx context.Context, request operations.Up
 
 }
 
-// DeleteAPIVersion - Delete API Version
-// Deletes the version (OpenAPI or AsyncAPI) of an API.
-func (s *APIVersion) DeleteAPIVersion(ctx context.Context, request operations.DeleteAPIVersionRequest, opts ...operations.Option) (*operations.DeleteAPIVersionResponse, error) {
+// DeleteAPIPackage - Delete API Package
+// Deletes an API package.
+func (s *APIPackages) DeleteAPIPackage(ctx context.Context, request operations.DeleteAPIPackageRequest, opts ...operations.Option) (*operations.DeleteAPIPackageResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -1013,7 +911,7 @@ func (s *APIVersion) DeleteAPIVersion(ctx context.Context, request operations.De
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/apis/{apiId}/versions/{versionId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/api-packages/{packageId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -1023,7 +921,7 @@ func (s *APIVersion) DeleteAPIVersion(ctx context.Context, request operations.De
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "delete-api-version",
+		OperationID:      "delete-api-package",
 		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -1157,7 +1055,7 @@ func (s *APIVersion) DeleteAPIVersion(ctx context.Context, request operations.De
 		}
 	}
 
-	res := &operations.DeleteAPIVersionResponse{
+	res := &operations.DeleteAPIPackageResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

@@ -16,16 +16,34 @@ func (r *APIImplementationResourceModel) RefreshFromSharedAPIImplementationRespo
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.ID = types.StringValue(resp.ID)
-		if resp.Service == nil {
-			r.Service = nil
-		} else {
-			r.Service = &tfTypes.APIImplementationService{}
-			r.Service.ControlPlaneID = types.StringValue(resp.Service.ControlPlaneID)
-			r.Service.ID = types.StringValue(resp.Service.ID)
+		if resp.APIImplementationResponseAPIImplementationControlPlaneEntity != nil {
+			r.APIImplementationControlPlaneEntity = &tfTypes.APIImplementationControlPlaneEntity{}
+			if resp.APIImplementationResponseAPIImplementationControlPlaneEntity.ControlPlane == nil {
+				r.APIImplementationControlPlaneEntity.ControlPlane = nil
+			} else {
+				r.APIImplementationControlPlaneEntity.ControlPlane = &tfTypes.APIImplementationControlPlane{}
+				r.APIImplementationControlPlaneEntity.ControlPlane.AccessControlEnforcementEnabled = types.BoolPointerValue(resp.APIImplementationResponseAPIImplementationControlPlaneEntity.ControlPlane.AccessControlEnforcementEnabled)
+				r.APIImplementationControlPlaneEntity.ControlPlane.ControlPlaneID = types.StringValue(resp.APIImplementationResponseAPIImplementationControlPlaneEntity.ControlPlane.ControlPlaneID)
+			}
+			r.APIImplementationControlPlaneEntity.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.APIImplementationResponseAPIImplementationControlPlaneEntity.CreatedAt))
+			r.APIImplementationControlPlaneEntity.ID = types.StringValue(resp.APIImplementationResponseAPIImplementationControlPlaneEntity.ID)
+			r.ID = r.APIImplementationControlPlaneEntity.ID
+			r.APIImplementationControlPlaneEntity.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.APIImplementationResponseAPIImplementationControlPlaneEntity.UpdatedAt))
 		}
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+		if resp.APIImplementationResponseAPIImplementationGatewayServiceEntity != nil {
+			r.APIImplementationGatewayServiceEntity = &tfTypes.APIImplementationGatewayServiceEntity{}
+			r.APIImplementationGatewayServiceEntity.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.APIImplementationResponseAPIImplementationGatewayServiceEntity.CreatedAt))
+			r.APIImplementationGatewayServiceEntity.ID = types.StringValue(resp.APIImplementationResponseAPIImplementationGatewayServiceEntity.ID)
+			r.ID = r.APIImplementationGatewayServiceEntity.ID
+			if resp.APIImplementationResponseAPIImplementationGatewayServiceEntity.Service == nil {
+				r.APIImplementationGatewayServiceEntity.Service = nil
+			} else {
+				r.APIImplementationGatewayServiceEntity.Service = &tfTypes.APIImplementationService{}
+				r.APIImplementationGatewayServiceEntity.Service.ControlPlaneID = types.StringValue(resp.APIImplementationResponseAPIImplementationGatewayServiceEntity.Service.ControlPlaneID)
+				r.APIImplementationGatewayServiceEntity.Service.ID = types.StringValue(resp.APIImplementationResponseAPIImplementationGatewayServiceEntity.Service.ID)
+			}
+			r.APIImplementationGatewayServiceEntity.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.APIImplementationResponseAPIImplementationGatewayServiceEntity.UpdatedAt))
+		}
 	}
 
 	return diags
@@ -89,21 +107,50 @@ func (r *APIImplementationResourceModel) ToOperationsFetchAPIImplementationReque
 func (r *APIImplementationResourceModel) ToSharedAPIImplementation(ctx context.Context) (*shared.APIImplementation, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var service *shared.APIImplementationService
-	if r.Service != nil {
-		var controlPlaneID string
-		controlPlaneID = r.Service.ControlPlaneID.ValueString()
+	var out shared.APIImplementation
+	var apiImplementationGatewayServiceEntity *shared.APIImplementationGatewayServiceEntity
+	if r.APIImplementationGatewayServiceEntity != nil {
+		var service *shared.APIImplementationService
+		if r.APIImplementationGatewayServiceEntity.Service != nil {
+			var controlPlaneID string
+			controlPlaneID = r.APIImplementationGatewayServiceEntity.Service.ControlPlaneID.ValueString()
 
-		var id string
-		id = r.Service.ID.ValueString()
+			var id string
+			id = r.APIImplementationGatewayServiceEntity.Service.ID.ValueString()
 
-		service = &shared.APIImplementationService{
-			ControlPlaneID: controlPlaneID,
-			ID:             id,
+			service = &shared.APIImplementationService{
+				ControlPlaneID: controlPlaneID,
+				ID:             id,
+			}
+		}
+		apiImplementationGatewayServiceEntity = &shared.APIImplementationGatewayServiceEntity{
+			Service: service,
 		}
 	}
-	out := shared.APIImplementation{
-		Service: service,
+	if apiImplementationGatewayServiceEntity != nil {
+		out = shared.APIImplementation{
+			APIImplementationGatewayServiceEntity: apiImplementationGatewayServiceEntity,
+		}
+	}
+	var apiImplementationControlPlaneEntity *shared.APIImplementationControlPlaneEntity
+	if r.APIImplementationControlPlaneEntity != nil {
+		var controlPlane *shared.APIImplementationControlPlaneInput
+		if r.APIImplementationControlPlaneEntity.ControlPlane != nil {
+			var controlPlaneId1 string
+			controlPlaneId1 = r.APIImplementationControlPlaneEntity.ControlPlane.ControlPlaneID.ValueString()
+
+			controlPlane = &shared.APIImplementationControlPlaneInput{
+				ControlPlaneID: controlPlaneId1,
+			}
+		}
+		apiImplementationControlPlaneEntity = &shared.APIImplementationControlPlaneEntity{
+			ControlPlane: controlPlane,
+		}
+	}
+	if apiImplementationControlPlaneEntity != nil {
+		out = shared.APIImplementation{
+			APIImplementationControlPlaneEntity: apiImplementationControlPlaneEntity,
+		}
 	}
 
 	return &out, diags

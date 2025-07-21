@@ -2,15 +2,72 @@
 
 package shared
 
+import (
+	"errors"
+	"fmt"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
+)
+
+type APIImplementationType string
+
+const (
+	APIImplementationTypeAPIImplementationGatewayServiceEntity APIImplementationType = "ApiImplementationGatewayServiceEntity"
+	APIImplementationTypeAPIImplementationControlPlaneEntity   APIImplementationType = "ApiImplementationControlPlaneEntity"
+)
+
 // APIImplementation - An entity that implements an API
 type APIImplementation struct {
-	// A Gateway service that implements an API
-	Service *APIImplementationService `json:"service,omitempty"`
+	APIImplementationGatewayServiceEntity *APIImplementationGatewayServiceEntity `queryParam:"inline"`
+	APIImplementationControlPlaneEntity   *APIImplementationControlPlaneEntity   `queryParam:"inline"`
+
+	Type APIImplementationType
 }
 
-func (o *APIImplementation) GetService() *APIImplementationService {
-	if o == nil {
+func CreateAPIImplementationAPIImplementationGatewayServiceEntity(apiImplementationGatewayServiceEntity APIImplementationGatewayServiceEntity) APIImplementation {
+	typ := APIImplementationTypeAPIImplementationGatewayServiceEntity
+
+	return APIImplementation{
+		APIImplementationGatewayServiceEntity: &apiImplementationGatewayServiceEntity,
+		Type:                                  typ,
+	}
+}
+
+func CreateAPIImplementationAPIImplementationControlPlaneEntity(apiImplementationControlPlaneEntity APIImplementationControlPlaneEntity) APIImplementation {
+	typ := APIImplementationTypeAPIImplementationControlPlaneEntity
+
+	return APIImplementation{
+		APIImplementationControlPlaneEntity: &apiImplementationControlPlaneEntity,
+		Type:                                typ,
+	}
+}
+
+func (u *APIImplementation) UnmarshalJSON(data []byte) error {
+
+	var apiImplementationGatewayServiceEntity APIImplementationGatewayServiceEntity = APIImplementationGatewayServiceEntity{}
+	if err := utils.UnmarshalJSON(data, &apiImplementationGatewayServiceEntity, "", true, true); err == nil {
+		u.APIImplementationGatewayServiceEntity = &apiImplementationGatewayServiceEntity
+		u.Type = APIImplementationTypeAPIImplementationGatewayServiceEntity
 		return nil
 	}
-	return o.Service
+
+	var apiImplementationControlPlaneEntity APIImplementationControlPlaneEntity = APIImplementationControlPlaneEntity{}
+	if err := utils.UnmarshalJSON(data, &apiImplementationControlPlaneEntity, "", true, true); err == nil {
+		u.APIImplementationControlPlaneEntity = &apiImplementationControlPlaneEntity
+		u.Type = APIImplementationTypeAPIImplementationControlPlaneEntity
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for APIImplementation", string(data))
+}
+
+func (u APIImplementation) MarshalJSON() ([]byte, error) {
+	if u.APIImplementationGatewayServiceEntity != nil {
+		return utils.MarshalJSON(u.APIImplementationGatewayServiceEntity, "", true)
+	}
+
+	if u.APIImplementationControlPlaneEntity != nil {
+		return utils.MarshalJSON(u.APIImplementationControlPlaneEntity, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type APIImplementation: all fields are null")
 }

@@ -7,34 +7,17 @@ import (
 	"net/http"
 )
 
-type DeleteAPIVersionRequest struct {
-	// The UUID API identifier
-	APIID string `pathParam:"style=simple,explode=false,name=apiId"`
-	// The API version identifier
-	VersionID string `pathParam:"style=simple,explode=false,name=versionId"`
-}
-
-func (o *DeleteAPIVersionRequest) GetAPIID() string {
-	if o == nil {
-		return ""
-	}
-	return o.APIID
-}
-
-func (o *DeleteAPIVersionRequest) GetVersionID() string {
-	if o == nil {
-		return ""
-	}
-	return o.VersionID
-}
-
-type DeleteAPIVersionResponse struct {
+type CreateAPIPackageResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// API Package
+	APIPackageResponseSchema *shared.APIPackageResponseSchema
+	// Bad Request
+	BadRequestError *shared.BadRequestError
 	// ApiUnauthorized
 	UnauthorizedError *shared.UnauthorizedError
 	// ApiForbidden
@@ -43,42 +26,56 @@ type DeleteAPIVersionResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *DeleteAPIVersionResponse) GetContentType() string {
+func (o *CreateAPIPackageResponse) GetContentType() string {
 	if o == nil {
 		return ""
 	}
 	return o.ContentType
 }
 
-func (o *DeleteAPIVersionResponse) GetStatusCode() int {
+func (o *CreateAPIPackageResponse) GetStatusCode() int {
 	if o == nil {
 		return 0
 	}
 	return o.StatusCode
 }
 
-func (o *DeleteAPIVersionResponse) GetRawResponse() *http.Response {
+func (o *CreateAPIPackageResponse) GetRawResponse() *http.Response {
 	if o == nil {
 		return nil
 	}
 	return o.RawResponse
 }
 
-func (o *DeleteAPIVersionResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *CreateAPIPackageResponse) GetAPIPackageResponseSchema() *shared.APIPackageResponseSchema {
+	if o == nil {
+		return nil
+	}
+	return o.APIPackageResponseSchema
+}
+
+func (o *CreateAPIPackageResponse) GetBadRequestError() *shared.BadRequestError {
+	if o == nil {
+		return nil
+	}
+	return o.BadRequestError
+}
+
+func (o *CreateAPIPackageResponse) GetUnauthorizedError() *shared.UnauthorizedError {
 	if o == nil {
 		return nil
 	}
 	return o.UnauthorizedError
 }
 
-func (o *DeleteAPIVersionResponse) GetForbiddenError() *shared.ForbiddenError {
+func (o *CreateAPIPackageResponse) GetForbiddenError() *shared.ForbiddenError {
 	if o == nil {
 		return nil
 	}
 	return o.ForbiddenError
 }
 
-func (o *DeleteAPIVersionResponse) GetNotFoundError() *shared.NotFoundError {
+func (o *CreateAPIPackageResponse) GetNotFoundError() *shared.NotFoundError {
 	if o == nil {
 		return nil
 	}

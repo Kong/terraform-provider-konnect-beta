@@ -76,12 +76,12 @@ func (r *APIVersionResourceModel) ToOperationsDeleteAPIVersionRequest(ctx contex
 	var apiID string
 	apiID = r.APIID.ValueString()
 
-	var specID string
-	specID = r.ID.ValueString()
+	var versionID string
+	versionID = r.ID.ValueString()
 
 	out := operations.DeleteAPIVersionRequest{
-		APIID:  apiID,
-		SpecID: specID,
+		APIID:     apiID,
+		VersionID: versionID,
 	}
 
 	return &out, diags
@@ -93,12 +93,12 @@ func (r *APIVersionResourceModel) ToOperationsFetchAPIVersionRequest(ctx context
 	var apiID string
 	apiID = r.APIID.ValueString()
 
-	var specID string
-	specID = r.ID.ValueString()
+	var versionID string
+	versionID = r.ID.ValueString()
 
 	out := operations.FetchAPIVersionRequest{
-		APIID:  apiID,
-		SpecID: specID,
+		APIID:     apiID,
+		VersionID: versionID,
 	}
 
 	return &out, diags
@@ -110,8 +110,8 @@ func (r *APIVersionResourceModel) ToOperationsUpdateAPIVersionRequest(ctx contex
 	var apiID string
 	apiID = r.APIID.ValueString()
 
-	var specID string
-	specID = r.ID.ValueString()
+	var versionID string
+	versionID = r.ID.ValueString()
 
 	apiVersion, apiVersionDiags := r.ToSharedAPIVersion(ctx)
 	diags.Append(apiVersionDiags...)
@@ -122,7 +122,7 @@ func (r *APIVersionResourceModel) ToOperationsUpdateAPIVersionRequest(ctx contex
 
 	out := operations.UpdateAPIVersionRequest{
 		APIID:      apiID,
-		SpecID:     specID,
+		VersionID:  versionID,
 		APIVersion: *apiVersion,
 	}
 
