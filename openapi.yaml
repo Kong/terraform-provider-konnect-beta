@@ -1047,7 +1047,7 @@ paths:
           $ref: '#/components/responses/UnsupportedMediaType'
       tags:
         - API Version
-  '/v3/apis/{apiId}/versions/{specId}':
+  '/v3/apis/{apiId}/versions/{versionId}':
     parameters:
       - $ref: '#/components/parameters/ApiId'
       - $ref: '#/components/parameters/VersionId'
@@ -1255,6 +1255,116 @@ paths:
           $ref: '#/components/responses/ApiNotFound'
       tags:
         - API Implementation
+  /v3/api-packages:
+    post:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: ApiPackage#create
+        terraform-datasource: null
+      operationId: create-api-package
+      summary: Create API Package
+      description: |
+        Creates a package of APIs.
+        An API package is a collection of APIs that can be used to group related APIs together.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateApiPackageRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/ApiPackageResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Packages
+  '/v3/api-packages/{packageId}':
+    parameters:
+      - name: packageId
+        in: path
+        description: The UUID API Package identifier
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+        x-speakeasy-match: id
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: ApiPackage#read
+        terraform-datasource: null
+      operationId: get-api-package
+      summary: Get API Package
+      description: Get details of a specific API package.
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiPackageResponse'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Packages
+    patch:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: ApiPackage#update
+        terraform-datasource: null
+      operationId: patch-api-package
+      summary: Patch API Package
+      description: |
+        Updates an existing API package.
+        You can modify the name, description and version of the API Package.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateApiPackageRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiPackageResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+      tags:
+        - API Packages
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: ApiPackage#delete
+        terraform-datasource: null
+      operationId: delete-api-package
+      summary: Delete API Package
+      description: Deletes an API package.
+      responses:
+        '204':
+          description: API package was deleted successfully.
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Packages
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshaccesslogs/{name}':
     get:
       x-speakeasy-entity-operation: MeshAccessLog#get
@@ -5171,7 +5281,7 @@ components:
         type: string
         format: uuid
         example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-      name: specId
+      name: versionId
       description: The API version identifier
       in: path
       required: true
@@ -6471,6 +6581,13 @@ components:
           uniqueItems: true
         labels:
           $ref: '#/components/schemas/Labels'
+        implementation_mode:
+          description: the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement
+          type: string
+          nullable: true
+          readOnly: true
+          x-internal: true
+          x-unstable: true
         attributes:
           $ref: '#/components/schemas/ApiAttributes'
         created_at:
@@ -6490,6 +6607,10 @@ components:
         - api_spec_ids
         - current_version_summary
       title: API
+      x-property-annotations:
+        implementation_mode:
+          - x-unstable
+          - x-internal
     AuthStrategyApiSyncError:
       type: object
       properties:
@@ -6778,8 +6899,33 @@ components:
         - control_plane_id
         - id
       title: API Implementation Service
+    ApiImplementationControlPlane:
+      description: A Control plane that implements an API
+      type: object
+      properties:
+        access_control_enforcement_enabled:
+          description: Indicates if the access control enforcement plugin is installed globally in the target control plane
+          type: boolean
+          readOnly: true
+        control_plane_id:
+          type: string
+          format: uuid
+          example: 7710d5c4-d902-410b-992f-18b814155b53
+      additionalProperties: false
+      required:
+        - control_plane_id
+      title: API Implementation Control Plane
+      x-internal: true
+      x-unstable: true
     ApiImplementation:
       description: An entity that implements an API
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/ApiImplementationGatewayServiceEntity'
+        - $ref: '#/components/schemas/ApiImplementationControlPlaneEntity'
+      title: API Implementation
+    ApiImplementationGatewayServiceEntity:
+      description: A gateway service that implements an API
       type: object
       properties:
         id:
@@ -6791,7 +6937,23 @@ components:
         service:
           $ref: '#/components/schemas/ApiImplementationService'
       additionalProperties: false
-      title: API Implementation
+      title: ApiImplementationGatewayServiceEntity
+    ApiImplementationControlPlaneEntity:
+      description: A control plane that implements an API
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        control_plane:
+          $ref: '#/components/schemas/ApiImplementationControlPlane'
+      additionalProperties: false
+      title: ApiImplementationControlPlaneEntity
+      x-internal: true
+      x-unstable: true
     ApiAttributes:
       description: A set of attributes that describe the API
       type: object
@@ -6814,6 +6976,71 @@ components:
           pattern: '^[^,<>]*$'
       title: API Attributes
       x-speakeasy-type-override: any
+    ApiPackageResponseSchema:
+      type: object
+      properties:
+        id:
+          description: The API Package identifier.
+          type: string
+          format: uuid
+          example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+          readOnly: true
+        name:
+          description: |
+            The name of your API Package. The `name + version` combination must be unique for each API Package you publish.
+          type: string
+          example: MyAPIPackage
+          maxLength: 255
+          minLength: 1
+        description:
+          description: A description of your API Package. Will be visible on your live Portal.
+          type: string
+          nullable: true
+        slug:
+          description: |
+            The unique slug for your API Package, It should be unique across all APIs and API Packages.
+          type: string
+          example: my-api-package-v1
+          nullable: true
+          pattern: '^[\w-]+$'
+        version:
+          description: An optional version for your API Package. Leave this empty if your API Package is unversioned.
+          type: string
+          maxLength: 255
+          minLength: 1
+          nullable: true
+        rate_limiting_config:
+          $ref: '#/components/schemas/RateLimitingConfig'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - slug
+        - version
+        - created_at
+        - updated_at
+      title: API Package
+    RateLimitingConfig:
+      description: Rate limit configuration that can be applied to an API Package or an API Package Operation.
+      type: object
+      properties:
+        limit:
+          description: The amount of requests allowed for each operation within the specified duration.
+          type: integer
+          minimum: 0
+        duration:
+          description: The timeframe to ensure that an application does not exceed the request limit.
+          type: string
+          enum:
+            - seconds
+            - minutes
+            - hours
+      additionalProperties: false
+      title: Rate Limiting configuration
     ApiSpecType:
       description: |
         The type of specification being stored. This allows us to render the specification correctly.
@@ -18978,6 +19205,13 @@ components:
                 uniqueItems: true
               labels:
                 $ref: '#/components/schemas/Labels'
+              implementation_mode:
+                description: the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement
+                type: string
+                nullable: true
+                readOnly: true
+                x-internal: true
+                x-unstable: true
               attributes:
                 $ref: '#/components/schemas/ApiAttributes'
               created_at:
@@ -18992,6 +19226,57 @@ components:
             required:
               - name
             title: API
+            x-property-annotations:
+              implementation_mode:
+                - x-unstable
+                - x-internal
+    CreateApiPackageRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                description: The API Package identifier.
+                type: string
+                format: uuid
+                example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+                readOnly: true
+              name:
+                description: |
+                  The name of your API Package. The `name + version` combination must be unique for each API Package you publish.
+                type: string
+                example: MyAPIPackage
+                maxLength: 255
+                minLength: 1
+              description:
+                description: A description of your API Package. Will be visible on your live Portal.
+                type: string
+                nullable: true
+              slug:
+                description: |
+                  The unique slug for your API Package, It should be unique across all APIs and API Packages.
+                type: string
+                example: my-api-package-v1
+                nullable: true
+                pattern: '^[\w-]+$'
+              version:
+                description: An optional version for your API Package. Leave this empty if your API Package is unversioned.
+                type: string
+                maxLength: 255
+                minLength: 1
+                nullable: true
+              rate_limiting_config:
+                $ref: '#/components/schemas/RateLimitingConfig'
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+            additionalProperties: false
+            required:
+              - name
+            title: API Package
     CreateApiSpecRequest:
       required: true
       content:
@@ -19202,6 +19487,13 @@ components:
                 uniqueItems: true
               labels:
                 $ref: '#/components/schemas/LabelsUpdate'
+              implementation_mode:
+                description: the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement
+                type: string
+                nullable: true
+                readOnly: true
+                x-internal: true
+                x-unstable: true
               attributes:
                 $ref: '#/components/schemas/ApiAttributes'
               created_at:
@@ -19210,6 +19502,55 @@ components:
                 $ref: '#/components/schemas/UpdatedAt'
             additionalProperties: false
             title: API
+            x-property-annotations:
+              implementation_mode:
+                - x-unstable
+                - x-internal
+    UpdateApiPackageRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                description: The API Package identifier.
+                type: string
+                format: uuid
+                example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+                readOnly: true
+              name:
+                description: |
+                  The name of your API Package. The `name + version` combination must be unique for each API Package you publish.
+                type: string
+                example: MyAPIPackage
+                maxLength: 255
+                minLength: 1
+              description:
+                description: A description of your API Package. Will be visible on your live Portal.
+                type: string
+                nullable: true
+              slug:
+                description: |
+                  The unique slug for your API Package, It should be unique across all APIs and API Packages.
+                type: string
+                example: my-api-package-v1
+                nullable: true
+                pattern: '^[\w-]+$'
+              version:
+                description: An optional version for your API Package. Leave this empty if your API Package is unversioned.
+                type: string
+                maxLength: 255
+                minLength: 1
+                nullable: true
+              rate_limiting_config:
+                $ref: '#/components/schemas/RateLimitingConfig'
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+            additionalProperties: false
+            title: API Package
     UpdateApiDocumentRequest:
       required: true
       content:
@@ -19663,6 +20004,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ApiResponseSchema'
+    ApiPackageResponse:
+      description: API Package
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiPackageResponseSchema'
     ApiDocumentResponse:
       description: API document
       content:
@@ -19842,16 +20189,9 @@ components:
           schema:
             description: An entity that implements an API
             type: object
-            properties:
-              id:
-                $ref: '#/components/schemas/UUID'
-              created_at:
-                $ref: '#/components/schemas/CreatedAt'
-              updated_at:
-                $ref: '#/components/schemas/UpdatedAt'
-              service:
-                $ref: '#/components/schemas/ApiImplementationService'
-            additionalProperties: false
+            oneOf:
+              - $ref: '#/components/schemas/ApiImplementationGatewayServiceEntity'
+              - $ref: '#/components/schemas/ApiImplementationControlPlaneEntity'
             required:
               - id
               - created_at
@@ -20560,6 +20900,7 @@ tags:
   - name: API Specification
   - name: API Publication
   - name: API Implementation
+  - name: API Packages
   - name: Mesh
   - name: authserver
     description: Auth server management API
