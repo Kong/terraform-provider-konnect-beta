@@ -3,6 +3,9 @@
 ## 0.8.0
 > Released on 2025/??
 
+### BREAKING CHANGES
+* `service` field in `konnect_api_implementation` resource is now nested under `api_implementation_gateway_service_entity` field.
+
 ### Features
 * Add support for the `konnect_portal_logo` and `konnect_portal_favicon` resources
 
