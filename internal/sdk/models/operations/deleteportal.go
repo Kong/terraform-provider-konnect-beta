@@ -45,6 +45,7 @@ type DeletePortalRequest struct {
 	// If set to "true", the portal and all child entities will be deleted when running `terraform destroy`.
 	// If set to "false", the portal will not be deleted until all child entities are manually removed.
 	// This will IRREVERSIBLY DELETE ALL REGISTERED DEVELOPERS AND THEIR CREDENTIALS. Only set to "true" if you want this behavior.
+	//
 	ForceDestroy *Force `default:"false" queryParam:"style=form,explode=true,name=force"`
 }
 

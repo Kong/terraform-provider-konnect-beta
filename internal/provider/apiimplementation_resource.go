@@ -7,7 +7,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -41,10 +40,12 @@ type APIImplementationResource struct {
 
 // APIImplementationResourceModel describes the resource data model.
 type APIImplementationResourceModel struct {
-	APIID                                 types.String                                   `tfsdk:"api_id"`
-	APIImplementationControlPlaneEntity   *tfTypes.APIImplementationControlPlaneEntity   `queryParam:"inline" tfsdk:"api_implementation_control_plane_entity" tfPlanOnly:"true"`
-	APIImplementationGatewayServiceEntity *tfTypes.APIImplementationGatewayServiceEntity `queryParam:"inline" tfsdk:"api_implementation_gateway_service_entity" tfPlanOnly:"true"`
-	ID                                    types.String                                   `tfsdk:"id"`
+	APIID            types.String                      `tfsdk:"api_id"`
+	CreatedAt        types.String                      `tfsdk:"created_at"`
+	ID               types.String                      `tfsdk:"id"`
+	Service          *tfTypes.APIImplementationService `tfsdk:"service"`
+	ServiceReference *tfTypes.ServiceReference         `queryParam:"inline" tfsdk:"service_reference" tfPlanOnly:"true"`
+	UpdatedAt        types.String                      `tfsdk:"updated_at"`
 }
 
 func (r *APIImplementationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -62,74 +63,33 @@ func (r *APIImplementationResource) Schema(ctx context.Context, req resource.Sch
 				},
 				Description: `The UUID API identifier. Requires replacement if changed.`,
 			},
-			"api_implementation_control_plane_entity": schema.SingleNestedAttribute{
+			"created_at": schema.StringAttribute{
 				Computed: true,
-				Optional: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Attributes: map[string]schema.Attribute{
-					"control_plane": schema.SingleNestedAttribute{
-						Computed: true,
-						Optional: true,
-						PlanModifiers: []planmodifier.Object{
-							objectplanmodifier.RequiresReplaceIfConfigured(),
-							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-						},
-						Attributes: map[string]schema.Attribute{
-							"access_control_enforcement_enabled": schema.BoolAttribute{
-								Computed:    true,
-								Description: `Indicates if the access control enforcement plugin is installed globally in the target control plane`,
-							},
-							"control_plane_id": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
-								PlanModifiers: []planmodifier.String{
-									stringplanmodifier.RequiresReplaceIfConfigured(),
-									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-								},
-								Description: `Not Null; Requires replacement if changed.`,
-								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
-								},
-							},
-						},
-						Description: `A Control plane that implements an API. Requires replacement if changed.`,
-					},
-					"created_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `An ISO-8601 timestamp representation of entity creation date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
-					},
-					"id": schema.StringAttribute{
-						Computed:    true,
-						Description: `Contains a unique identifier used for this resource.`,
-					},
-					"updated_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `An ISO-8601 timestamp representation of entity update date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
-					},
-				},
-				Description: `A control plane that implements an API. Requires replacement if changed.`,
-				Validators: []validator.Object{
-					objectvalidator.ConflictsWith(path.Expressions{
-						path.MatchRelative().AtParent().AtName("api_implementation_gateway_service_entity"),
-					}...),
+				Description: `An ISO-8601 timestamp representation of entity creation date.`,
+				Validators: []validator.String{
+					validators.IsRFC3339(),
 				},
 			},
-			"api_implementation_gateway_service_entity": schema.SingleNestedAttribute{
+			"id": schema.StringAttribute{
+				Computed:    true,
+				Description: `Contains a unique identifier used for this resource.`,
+			},
+			"service": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"control_plane_id": schema.StringAttribute{
+						Computed: true,
+					},
+					"id": schema.StringAttribute{
+						Computed: true,
+					},
+				},
+				Description: `A Gateway service that implements an API`,
+			},
+			"service_reference": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
 				PlanModifiers: []planmodifier.Object{
@@ -198,15 +158,16 @@ func (r *APIImplementationResource) Schema(ctx context.Context, req resource.Sch
 					},
 				},
 				Description: `A gateway service that implements an API. Requires replacement if changed.`,
-				Validators: []validator.Object{
-					objectvalidator.ConflictsWith(path.Expressions{
-						path.MatchRelative().AtParent().AtName("api_implementation_control_plane_entity"),
-					}...),
-				},
 			},
-			"id": schema.StringAttribute{
-				Computed:    true,
-				Description: `Contains a unique identifier used for this resource.`,
+			"updated_at": schema.StringAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				Description: `An ISO-8601 timestamp representation of entity update date.`,
+				Validators: []validator.String{
+					validators.IsRFC3339(),
+				},
 			},
 		},
 	}

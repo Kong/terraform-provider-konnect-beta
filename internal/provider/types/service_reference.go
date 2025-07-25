@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type APIImplementationGatewayServiceEntity struct {
+type ServiceReference struct {
 	CreatedAt types.String              `tfsdk:"created_at"`
 	ID        types.String              `tfsdk:"id"`
 	Service   *APIImplementationService `tfsdk:"service"`

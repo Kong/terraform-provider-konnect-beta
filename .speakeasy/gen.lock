@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: 30ae5baa9e50ce939ede1f2464298157
+  docChecksum: 8f5ad98401923f5f1e25ae870796f9ea
   docVersion: 2.0.0
   speakeasyVersion: 1.581.1
   generationVersion: 2.656.9
@@ -388,9 +388,6 @@ generatedFiles:
   - internal/provider/types/addresses.go
   - internal/provider/types/affinity_tags.go
   - internal/provider/types/aggregate.go
-  - internal/provider/types/api_implementation_control_plane.go
-  - internal/provider/types/api_implementation_control_plane_entity.go
-  - internal/provider/types/api_implementation_gateway_service_entity.go
   - internal/provider/types/api_implementation_service.go
   - internal/provider/types/api_version_summary.go
   - internal/provider/types/append_match.go
@@ -640,6 +637,7 @@ generatedFiles:
   - internal/provider/types/sampling.go
   - internal/provider/types/selector.go
   - internal/provider/types/selectors.go
+  - internal/provider/types/service_reference.go
   - internal/provider/types/sidecar.go
   - internal/provider/types/spec.go
   - internal/provider/types/spec_renderer.go
@@ -884,10 +882,6 @@ generatedFiles:
   - internal/sdk/models/shared/apidocumentresponse.go
   - internal/sdk/models/shared/apidocumentstatus.go
   - internal/sdk/models/shared/apiimplementation.go
-  - internal/sdk/models/shared/apiimplementationcontrolplane.go
-  - internal/sdk/models/shared/apiimplementationcontrolplaneentity.go
-  - internal/sdk/models/shared/apiimplementationcontrolplaneinput.go
-  - internal/sdk/models/shared/apiimplementationgatewayserviceentity.go
   - internal/sdk/models/shared/apiimplementationresponse.go
   - internal/sdk/models/shared/apiimplementationservice.go
   - internal/sdk/models/shared/apipublication.go
@@ -1061,6 +1055,7 @@ generatedFiles:
   - internal/sdk/models/shared/responsetype.go
   - internal/sdk/models/shared/scope.go
   - internal/sdk/models/shared/security.go
+  - internal/sdk/models/shared/servicereference.go
   - internal/sdk/models/shared/snippetvisibilitystatus.go
   - internal/sdk/models/shared/unauthorizederror.go
   - internal/sdk/models/shared/unsupportedmediatypeerror.go

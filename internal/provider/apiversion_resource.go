@@ -37,12 +37,12 @@ type APIVersionResource struct {
 
 // APIVersionResourceModel describes the resource data model.
 type APIVersionResourceModel struct {
-	APIID     types.String                         `tfsdk:"api_id"`
-	CreatedAt types.String                         `tfsdk:"created_at"`
-	ID        types.String                         `tfsdk:"id"`
-	Spec      *tfTypes.CreateAPIVersionRequestSpec `tfsdk:"spec"`
-	UpdatedAt types.String                         `tfsdk:"updated_at"`
-	Version   types.String                         `tfsdk:"version"`
+	APIID     types.String                        `tfsdk:"api_id"`
+	CreatedAt types.String                        `tfsdk:"created_at"`
+	ID        types.String                        `tfsdk:"id"`
+	Spec      tfTypes.CreateAPIVersionRequestSpec `tfsdk:"spec"`
+	UpdatedAt types.String                        `tfsdk:"updated_at"`
+	Version   types.String                        `tfsdk:"version"`
 }
 
 func (r *APIVersionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -72,8 +72,7 @@ func (r *APIVersionResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `The API version identifier.`,
 			},
 			"spec": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"content": schema.StringAttribute{
 						Computed:    true,

@@ -105,6 +105,8 @@ func (r *PortalCustomizationResourceModel) RefreshFromSharedPortalCustomization(
 			r.SpecRenderer = nil
 		} else {
 			r.SpecRenderer = &tfTypes.SpecRenderer{}
+			r.SpecRenderer.HideDeprecated = types.BoolPointerValue(resp.SpecRenderer.HideDeprecated)
+			r.SpecRenderer.HideInternal = types.BoolPointerValue(resp.SpecRenderer.HideInternal)
 			r.SpecRenderer.InfiniteScroll = types.BoolPointerValue(resp.SpecRenderer.InfiniteScroll)
 			r.SpecRenderer.ShowSchemas = types.BoolPointerValue(resp.SpecRenderer.ShowSchemas)
 			r.SpecRenderer.TryItInsomnia = types.BoolPointerValue(resp.SpecRenderer.TryItInsomnia)
@@ -331,11 +333,25 @@ func (r *PortalCustomizationResourceModel) ToSharedPortalCustomization(ctx conte
 		} else {
 			showSchemas = nil
 		}
+		hideInternal := new(bool)
+		if !r.SpecRenderer.HideInternal.IsUnknown() && !r.SpecRenderer.HideInternal.IsNull() {
+			*hideInternal = r.SpecRenderer.HideInternal.ValueBool()
+		} else {
+			hideInternal = nil
+		}
+		hideDeprecated := new(bool)
+		if !r.SpecRenderer.HideDeprecated.IsUnknown() && !r.SpecRenderer.HideDeprecated.IsNull() {
+			*hideDeprecated = r.SpecRenderer.HideDeprecated.ValueBool()
+		} else {
+			hideDeprecated = nil
+		}
 		specRenderer = &shared.SpecRenderer{
 			TryItUI:        tryItUI,
 			TryItInsomnia:  tryItInsomnia,
 			InfiniteScroll: infiniteScroll,
 			ShowSchemas:    showSchemas,
+			HideInternal:   hideInternal,
+			HideDeprecated: hideDeprecated,
 		}
 	}
 	robots := new(string)

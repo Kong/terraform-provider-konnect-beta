@@ -44,7 +44,6 @@ type APIResourceModel struct {
 	CurrentVersionSummary *tfTypes.APIVersionSummary `tfsdk:"current_version_summary"`
 	Description           types.String               `tfsdk:"description"`
 	ID                    types.String               `tfsdk:"id"`
-	ImplementationMode    types.String               `tfsdk:"implementation_mode"`
 	Labels                map[string]types.String    `tfsdk:"labels"`
 	Name                  types.String               `tfsdk:"name"`
 	Portals               []tfTypes.Portals          `tfsdk:"portals"`
@@ -143,10 +142,6 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The API identifier.`,
-			},
-			"implementation_mode": schema.StringAttribute{
-				Computed:    true,
-				Description: `the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement`,
 			},
 			"labels": schema.MapAttribute{
 				Computed:    true,
