@@ -106,7 +106,7 @@ paths:
       parameters:
         - name: force
           in: query
-          description: |-
+          description: |
             If set to "true", the portal and all child entities will be deleted when running `terraform destroy`.
             If set to "false", the portal will not be deleted until all child entities are manually removed.
             This will IRREVERSIBLY DELETE ALL REGISTERED DEVELOPERS AND THEIR CREDENTIALS. Only set to "true" if you want this behavior.
@@ -6386,6 +6386,10 @@ components:
               type: boolean
             show_schemas:
               type: boolean
+            hide_internal:
+              type: boolean
+            hide_deprecated:
+              type: boolean
         robots:
           type: string
           nullable: true
@@ -6471,13 +6475,6 @@ components:
           uniqueItems: true
         labels:
           $ref: '#/components/schemas/Labels'
-        implementation_mode:
-          description: the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement
-          type: string
-          nullable: true
-          readOnly: true
-          x-internal: true
-          x-unstable: true
         attributes:
           $ref: '#/components/schemas/ApiAttributes'
         created_at:
@@ -6789,30 +6786,11 @@ components:
         - control_plane_id
         - id
       title: API Implementation Service
-    ApiImplementationControlPlane:
-      description: A Control plane that implements an API
-      type: object
-      properties:
-        access_control_enforcement_enabled:
-          description: Indicates if the access control enforcement plugin is installed globally in the target control plane
-          type: boolean
-          readOnly: true
-        control_plane_id:
-          type: string
-          format: uuid
-          example: 7710d5c4-d902-410b-992f-18b814155b53
-      additionalProperties: false
-      required:
-        - control_plane_id
-      title: API Implementation Control Plane
-      x-internal: true
-      x-unstable: true
     ApiImplementation:
       description: An entity that implements an API
       type: object
       oneOf:
         - $ref: '#/components/schemas/ApiImplementationGatewayServiceEntity'
-        - $ref: '#/components/schemas/ApiImplementationControlPlaneEntity'
       title: API Implementation
     ApiImplementationGatewayServiceEntity:
       description: A gateway service that implements an API
@@ -6828,22 +6806,7 @@ components:
           $ref: '#/components/schemas/ApiImplementationService'
       additionalProperties: false
       title: ApiImplementationGatewayServiceEntity
-    ApiImplementationControlPlaneEntity:
-      description: A control plane that implements an API
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-        control_plane:
-          $ref: '#/components/schemas/ApiImplementationControlPlane'
-      additionalProperties: false
-      title: ApiImplementationControlPlaneEntity
-      x-internal: true
-      x-unstable: true
+      x-speakeasy-name-override: Service Reference
     ApiAttributes:
       description: A set of attributes that describe the API
       type: object
@@ -19030,13 +18993,6 @@ components:
                 uniqueItems: true
               labels:
                 $ref: '#/components/schemas/Labels'
-              implementation_mode:
-                description: the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement
-                type: string
-                nullable: true
-                readOnly: true
-                x-internal: true
-                x-unstable: true
               attributes:
                 $ref: '#/components/schemas/ApiAttributes'
               created_at:
@@ -19157,6 +19113,8 @@ components:
               updated_at:
                 $ref: '#/components/schemas/UpdatedAt'
             additionalProperties: false
+            required:
+              - spec
             title: API Version
     CreateApiDocumentRequest:
       required: true
@@ -19265,13 +19223,6 @@ components:
                 uniqueItems: true
               labels:
                 $ref: '#/components/schemas/LabelsUpdate'
-              implementation_mode:
-                description: the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement
-                type: string
-                nullable: true
-                readOnly: true
-                x-internal: true
-                x-unstable: true
               attributes:
                 $ref: '#/components/schemas/ApiAttributes'
               created_at:
@@ -19918,7 +19869,6 @@ components:
             type: object
             oneOf:
               - $ref: '#/components/schemas/ApiImplementationGatewayServiceEntity'
-              - $ref: '#/components/schemas/ApiImplementationControlPlaneEntity'
             required:
               - id
               - created_at
