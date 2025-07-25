@@ -16,7 +16,7 @@ resource "konnect_api_implementation" "my_apiimplementation" {
   provider = konnect-beta
   api_id   = konnect_api.my_api.id
 
-  api_implementation_gateway_service_entity = {
+  service_reference = {
     service = {
       control_plane_id = konnect_gateway_control_plane.demo_cp.id
       id               = konnect_gateway_service.httpbin.id
