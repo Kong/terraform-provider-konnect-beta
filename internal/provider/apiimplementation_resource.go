@@ -40,11 +40,12 @@ type APIImplementationResource struct {
 
 // APIImplementationResourceModel describes the resource data model.
 type APIImplementationResourceModel struct {
-	APIID     types.String                      `tfsdk:"api_id"`
-	CreatedAt types.String                      `tfsdk:"created_at"`
-	ID        types.String                      `tfsdk:"id"`
-	Service   *tfTypes.APIImplementationService `tfsdk:"service"`
-	UpdatedAt types.String                      `tfsdk:"updated_at"`
+	APIID            types.String                      `tfsdk:"api_id"`
+	CreatedAt        types.String                      `tfsdk:"created_at"`
+	ID               types.String                      `tfsdk:"id"`
+	Service          *tfTypes.APIImplementationService `tfsdk:"service"`
+	ServiceReference *tfTypes.ServiceReference         `queryParam:"inline" tfsdk:"service_reference" tfPlanOnly:"true"`
+	UpdatedAt        types.String                      `tfsdk:"updated_at"`
 }
 
 func (r *APIImplementationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -78,38 +79,85 @@ func (r *APIImplementationResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"service": schema.SingleNestedAttribute{
 				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"control_plane_id": schema.StringAttribute{
+						Computed: true,
+					},
+					"id": schema.StringAttribute{
+						Computed: true,
+					},
+				},
+				Description: `A Gateway service that implements an API`,
+			},
+			"service_reference": schema.SingleNestedAttribute{
+				Computed: true,
 				Optional: true,
 				PlanModifiers: []planmodifier.Object{
 					objectplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 				},
 				Attributes: map[string]schema.Attribute{
-					"control_plane_id": schema.StringAttribute{
+					"created_at": schema.StringAttribute{
 						Computed: true,
-						Optional: true,
 						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `Not Null; Requires replacement if changed.`,
+						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
+							validators.IsRFC3339(),
 						},
 					},
 					"id": schema.StringAttribute{
+						Computed:    true,
+						Description: `Contains a unique identifier used for this resource.`,
+					},
+					"service": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						PlanModifiers: []planmodifier.Object{
+							objectplanmodifier.RequiresReplaceIfConfigured(),
+							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+						},
+						Attributes: map[string]schema.Attribute{
+							"control_plane_id": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+								},
+								Description: `Not Null; Requires replacement if changed.`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
+							},
+							"id": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+								},
+								Description: `Not Null; Requires replacement if changed.`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
+							},
+						},
+						Description: `A Gateway service that implements an API. Requires replacement if changed.`,
+					},
+					"updated_at": schema.StringAttribute{
+						Computed: true,
 						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `Not Null; Requires replacement if changed.`,
+						Description: `An ISO-8601 timestamp representation of entity update date.`,
 						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
+							validators.IsRFC3339(),
 						},
 					},
 				},
-				Description: `A Gateway service that implements an API. Requires replacement if changed.`,
+				Description: `A gateway service that implements an API. Requires replacement if changed.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

@@ -16,9 +16,11 @@ APIImplementation Resource
 resource "konnect_api_implementation" "my_apiimplementation" {
   provider = konnect-beta
   api_id = "9f5061ce-78f6-4452-9108-ad7c02821fd5"
-  service = {
-    control_plane_id = "9f5061ce-78f6-4452-9108-ad7c02821fd5"
-    id               = "7710d5c4-d902-410b-992f-18b814155b53"
+  service_reference = {
+    service = {
+      control_plane_id = "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+      id               = "7710d5c4-d902-410b-992f-18b814155b53"
+    }
   }
 }
 ```
@@ -32,21 +34,45 @@ resource "konnect_api_implementation" "my_apiimplementation" {
 
 ### Optional
 
-- `service` (Attributes) A Gateway service that implements an API. Requires replacement if changed. (see [below for nested schema](#nestedatt--service))
+- `service_reference` (Attributes) A gateway service that implements an API. Requires replacement if changed. (see [below for nested schema](#nestedatt--service_reference))
 
 ### Read-Only
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) Contains a unique identifier used for this resource.
+- `service` (Attributes) A Gateway service that implements an API (see [below for nested schema](#nestedatt--service))
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
-<a id="nestedatt--service"></a>
-### Nested Schema for `service`
+<a id="nestedatt--service_reference"></a>
+### Nested Schema for `service_reference`
+
+Optional:
+
+- `service` (Attributes) A Gateway service that implements an API. Requires replacement if changed. (see [below for nested schema](#nestedatt--service_reference--service))
+
+Read-Only:
+
+- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
+- `id` (String) Contains a unique identifier used for this resource.
+- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
+
+<a id="nestedatt--service_reference--service"></a>
+### Nested Schema for `service_reference.service`
 
 Optional:
 
 - `control_plane_id` (String) Not Null; Requires replacement if changed.
 - `id` (String) Not Null; Requires replacement if changed.
+
+
+
+<a id="nestedatt--service"></a>
+### Nested Schema for `service`
+
+Read-Only:
+
+- `control_plane_id` (String)
+- `id` (String)
 
 ## Import
 

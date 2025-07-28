@@ -29,10 +29,10 @@ resource "konnect_api_version" "my_apiversion" {
 ### Required
 
 - `api_id` (String) The UUID API identifier
+- `spec` (Attributes) (see [below for nested schema](#nestedatt--spec))
 
 ### Optional
 
-- `spec` (Attributes) (see [below for nested schema](#nestedatt--spec))
 - `version` (String) The version of the api.
 
 ### Read-Only

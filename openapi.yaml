@@ -106,7 +106,7 @@ paths:
       parameters:
         - name: force
           in: query
-          description: |-
+          description: |
             If set to "true", the portal and all child entities will be deleted when running `terraform destroy`.
             If set to "false", the portal will not be deleted until all child entities are manually removed.
             This will IRREVERSIBLY DELETE ALL REGISTERED DEVELOPERS AND THEIR CREDENTIALS. Only set to "true" if you want this behavior.
@@ -1047,7 +1047,7 @@ paths:
           $ref: '#/components/responses/UnsupportedMediaType'
       tags:
         - API Version
-  '/v3/apis/{apiId}/versions/{specId}':
+  '/v3/apis/{apiId}/versions/{versionId}':
     parameters:
       - $ref: '#/components/parameters/ApiId'
       - $ref: '#/components/parameters/VersionId'
@@ -5171,7 +5171,7 @@ components:
         type: string
         format: uuid
         example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-      name: specId
+      name: versionId
       description: The API version identifier
       in: path
       required: true
@@ -6386,6 +6386,10 @@ components:
               type: boolean
             show_schemas:
               type: boolean
+            hide_internal:
+              type: boolean
+            hide_deprecated:
+              type: boolean
         robots:
           type: string
           nullable: true
@@ -6490,6 +6494,10 @@ components:
         - api_spec_ids
         - current_version_summary
       title: API
+      x-property-annotations:
+        implementation_mode:
+          - x-unstable
+          - x-internal
     AuthStrategyApiSyncError:
       type: object
       properties:
@@ -6781,6 +6789,12 @@ components:
     ApiImplementation:
       description: An entity that implements an API
       type: object
+      oneOf:
+        - $ref: '#/components/schemas/ApiImplementationGatewayServiceEntity'
+      title: API Implementation
+    ApiImplementationGatewayServiceEntity:
+      description: A gateway service that implements an API
+      type: object
       properties:
         id:
           $ref: '#/components/schemas/UUID'
@@ -6791,7 +6805,8 @@ components:
         service:
           $ref: '#/components/schemas/ApiImplementationService'
       additionalProperties: false
-      title: API Implementation
+      title: ApiImplementationGatewayServiceEntity
+      x-speakeasy-name-override: Service Reference
     ApiAttributes:
       description: A set of attributes that describe the API
       type: object
@@ -18992,6 +19007,10 @@ components:
             required:
               - name
             title: API
+            x-property-annotations:
+              implementation_mode:
+                - x-unstable
+                - x-internal
     CreateApiSpecRequest:
       required: true
       content:
@@ -19094,6 +19113,8 @@ components:
               updated_at:
                 $ref: '#/components/schemas/UpdatedAt'
             additionalProperties: false
+            required:
+              - spec
             title: API Version
     CreateApiDocumentRequest:
       required: true
@@ -19210,6 +19231,10 @@ components:
                 $ref: '#/components/schemas/UpdatedAt'
             additionalProperties: false
             title: API
+            x-property-annotations:
+              implementation_mode:
+                - x-unstable
+                - x-internal
     UpdateApiDocumentRequest:
       required: true
       content:
@@ -19842,16 +19867,8 @@ components:
           schema:
             description: An entity that implements an API
             type: object
-            properties:
-              id:
-                $ref: '#/components/schemas/UUID'
-              created_at:
-                $ref: '#/components/schemas/CreatedAt'
-              updated_at:
-                $ref: '#/components/schemas/UpdatedAt'
-              service:
-                $ref: '#/components/schemas/ApiImplementationService'
-            additionalProperties: false
+            oneOf:
+              - $ref: '#/components/schemas/ApiImplementationGatewayServiceEntity'
             required:
               - id
               - created_at

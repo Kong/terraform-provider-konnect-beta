@@ -3,12 +3,14 @@
 package shared
 
 import (
+	"errors"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 	"time"
 )
 
-// APIImplementationResponse - An entity that implements an API
-type APIImplementationResponse struct {
+// APIImplementationResponseServiceReference - A gateway service that implements an API
+type APIImplementationResponseServiceReference struct {
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
 	// An ISO-8601 timestamp representation of entity creation date.
@@ -19,41 +21,83 @@ type APIImplementationResponse struct {
 	Service *APIImplementationService `json:"service,omitempty"`
 }
 
-func (a APIImplementationResponse) MarshalJSON() ([]byte, error) {
+func (a APIImplementationResponseServiceReference) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(a, "", false)
 }
 
-func (a *APIImplementationResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+func (a *APIImplementationResponseServiceReference) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, true); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *APIImplementationResponse) GetID() string {
+func (o *APIImplementationResponseServiceReference) GetID() string {
 	if o == nil {
 		return ""
 	}
 	return o.ID
 }
 
-func (o *APIImplementationResponse) GetCreatedAt() time.Time {
+func (o *APIImplementationResponseServiceReference) GetCreatedAt() time.Time {
 	if o == nil {
 		return time.Time{}
 	}
 	return o.CreatedAt
 }
 
-func (o *APIImplementationResponse) GetUpdatedAt() time.Time {
+func (o *APIImplementationResponseServiceReference) GetUpdatedAt() time.Time {
 	if o == nil {
 		return time.Time{}
 	}
 	return o.UpdatedAt
 }
 
-func (o *APIImplementationResponse) GetService() *APIImplementationService {
+func (o *APIImplementationResponseServiceReference) GetService() *APIImplementationService {
 	if o == nil {
 		return nil
 	}
 	return o.Service
+}
+
+type APIImplementationResponseType string
+
+const (
+	APIImplementationResponseTypeAPIImplementationResponseServiceReference APIImplementationResponseType = "ApiImplementationResponse_Service Reference"
+)
+
+// APIImplementationResponse - An entity that implements an API
+type APIImplementationResponse struct {
+	APIImplementationResponseServiceReference *APIImplementationResponseServiceReference `queryParam:"inline"`
+
+	Type APIImplementationResponseType
+}
+
+func CreateAPIImplementationResponseAPIImplementationResponseServiceReference(apiImplementationResponseServiceReference APIImplementationResponseServiceReference) APIImplementationResponse {
+	typ := APIImplementationResponseTypeAPIImplementationResponseServiceReference
+
+	return APIImplementationResponse{
+		APIImplementationResponseServiceReference: &apiImplementationResponseServiceReference,
+		Type: typ,
+	}
+}
+
+func (u *APIImplementationResponse) UnmarshalJSON(data []byte) error {
+
+	var apiImplementationResponseServiceReference APIImplementationResponseServiceReference = APIImplementationResponseServiceReference{}
+	if err := utils.UnmarshalJSON(data, &apiImplementationResponseServiceReference, "", true, true); err == nil {
+		u.APIImplementationResponseServiceReference = &apiImplementationResponseServiceReference
+		u.Type = APIImplementationResponseTypeAPIImplementationResponseServiceReference
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for APIImplementationResponse", string(data))
+}
+
+func (u APIImplementationResponse) MarshalJSON() ([]byte, error) {
+	if u.APIImplementationResponseServiceReference != nil {
+		return utils.MarshalJSON(u.APIImplementationResponseServiceReference, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type APIImplementationResponse: all fields are null")
 }

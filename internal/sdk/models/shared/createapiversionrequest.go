@@ -17,8 +17,8 @@ func (o *CreateAPIVersionRequestSpec) GetContent() *string {
 
 type CreateAPIVersionRequest struct {
 	// The version of the api.
-	Version *string                      `json:"version,omitempty"`
-	Spec    *CreateAPIVersionRequestSpec `json:"spec,omitempty"`
+	Version *string                     `json:"version,omitempty"`
+	Spec    CreateAPIVersionRequestSpec `json:"spec"`
 }
 
 func (o *CreateAPIVersionRequest) GetVersion() *string {
@@ -28,9 +28,9 @@ func (o *CreateAPIVersionRequest) GetVersion() *string {
 	return o.Version
 }
 
-func (o *CreateAPIVersionRequest) GetSpec() *CreateAPIVersionRequestSpec {
+func (o *CreateAPIVersionRequest) GetSpec() CreateAPIVersionRequestSpec {
 	if o == nil {
-		return nil
+		return CreateAPIVersionRequestSpec{}
 	}
 	return o.Spec
 }

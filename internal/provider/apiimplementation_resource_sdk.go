@@ -16,16 +16,22 @@ func (r *APIImplementationResourceModel) RefreshFromSharedAPIImplementationRespo
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.ID = types.StringValue(resp.ID)
-		if resp.Service == nil {
-			r.Service = nil
-		} else {
-			r.Service = &tfTypes.APIImplementationService{}
-			r.Service.ControlPlaneID = types.StringValue(resp.Service.ControlPlaneID)
-			r.Service.ID = types.StringValue(resp.Service.ID)
+		if resp.APIImplementationResponseServiceReference != nil {
+			r.ServiceReference = &tfTypes.ServiceReference{}
+			r.ServiceReference.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.APIImplementationResponseServiceReference.CreatedAt))
+			r.CreatedAt = r.ServiceReference.CreatedAt
+			r.ServiceReference.ID = types.StringValue(resp.APIImplementationResponseServiceReference.ID)
+			r.ID = r.ServiceReference.ID
+			if resp.APIImplementationResponseServiceReference.Service == nil {
+				r.ServiceReference.Service = nil
+			} else {
+				r.ServiceReference.Service = &tfTypes.APIImplementationService{}
+				r.ServiceReference.Service.ControlPlaneID = types.StringValue(resp.APIImplementationResponseServiceReference.Service.ControlPlaneID)
+				r.ServiceReference.Service.ID = types.StringValue(resp.APIImplementationResponseServiceReference.Service.ID)
+			}
+			r.ServiceReference.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.APIImplementationResponseServiceReference.UpdatedAt))
+			r.UpdatedAt = r.ServiceReference.UpdatedAt
 		}
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
 
 	return diags
@@ -89,21 +95,30 @@ func (r *APIImplementationResourceModel) ToOperationsFetchAPIImplementationReque
 func (r *APIImplementationResourceModel) ToSharedAPIImplementation(ctx context.Context) (*shared.APIImplementation, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var service *shared.APIImplementationService
-	if r.Service != nil {
-		var controlPlaneID string
-		controlPlaneID = r.Service.ControlPlaneID.ValueString()
+	var out shared.APIImplementation
+	var serviceReference *shared.ServiceReference
+	if r.ServiceReference != nil {
+		var service *shared.APIImplementationService
+		if r.ServiceReference.Service != nil {
+			var controlPlaneID string
+			controlPlaneID = r.ServiceReference.Service.ControlPlaneID.ValueString()
 
-		var id string
-		id = r.Service.ID.ValueString()
+			var id string
+			id = r.ServiceReference.Service.ID.ValueString()
 
-		service = &shared.APIImplementationService{
-			ControlPlaneID: controlPlaneID,
-			ID:             id,
+			service = &shared.APIImplementationService{
+				ControlPlaneID: controlPlaneID,
+				ID:             id,
+			}
+		}
+		serviceReference = &shared.ServiceReference{
+			Service: service,
 		}
 	}
-	out := shared.APIImplementation{
-		Service: service,
+	if serviceReference != nil {
+		out = shared.APIImplementation{
+			ServiceReference: serviceReference,
+		}
 	}
 
 	return &out, diags
