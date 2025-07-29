@@ -38,7 +38,7 @@ resource "konnect_auth_server_claims" "my_authserverclaims" {
 
 ### Optional
 
-- `enabled` (Boolean) Specifies whether the claim is enabled. Default: true
+- `enabled` (Boolean) Specifies whether the claim is enabled. If the claim is not enabled, it will not be included in the token or the '/userinfo' endpoint. Default: true
 - `include_in_all_scopes` (Boolean) Specifies whether to include the claim in all scopes. If the value is set to 'false' for a claim, the claim is only included in the scopes that explicitly list it. Default: false
 - `include_in_scopes` (List of String) Specifies the scopes IDs in which the claim is included
 - `include_in_token` (Boolean) Specifies whether to include claim in the token. If the value is set to 'false' for a claim, the client instead uses the access token to get claims from the '/userinfo' endpoint. Default: false

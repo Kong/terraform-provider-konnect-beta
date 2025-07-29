@@ -4745,14 +4745,12 @@ paths:
         - Mesh
   /v1/auth-servers:
     post:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: AuthServer#create
         terraform-datasource: null
       operationId: createAuthServer
       summary: Create a new auth server
-      description: Create a new auth server
+      description: 'Create a new auth server. Each auth server has a unique, randomly generated, public issuer URL.'
       requestBody:
         $ref: '#/components/requestBodies/CreateAuthServer'
       responses:
@@ -4763,35 +4761,31 @@ paths:
         '409':
           $ref: '#/components/responses/Conflict'
       tags:
-        - authserver
+        - Auth Server
   '/v1/auth-servers/{authServerId}':
     parameters:
       - $ref: '#/components/parameters/authServerId'
     get:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: AuthServer#read
         terraform-datasource: null
       operationId: getAuthServer
       summary: Get an auth server
-      description: Get an auth server
+      description: Get an auth server.
       responses:
         '200':
           $ref: '#/components/responses/AuthServer'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
-        - authserver
+        - Auth Server
     patch:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: AuthServer#update
         terraform-datasource: null
       operationId: updateAuthServer
       summary: Update an auth server
-      description: Update an auth server
+      description: Update an auth server.
       requestBody:
         $ref: '#/components/requestBodies/UpdateAuthServer'
       responses:
@@ -4804,35 +4798,31 @@ paths:
         '409':
           $ref: '#/components/responses/Conflict'
       tags:
-        - authserver
+        - Auth Server
     delete:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: AuthServer#delete
         terraform-datasource: null
       operationId: deleteAuthServer
       summary: Delete an auth server
-      description: Delete an auth server
+      description: Delete an auth server. All resources associated with the auth server will also be deleted. This action is irreversible.
       responses:
         '204':
           description: Success
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
-        - authserver
+        - Auth Server
   '/v1/auth-servers/{authServerId}/claims':
     parameters:
       - $ref: '#/components/parameters/authServerIdForChildren'
     post:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: AuthServerClaims#create
         terraform-datasource: null
       operationId: createAuthServerClaim
       summary: Create a new auth server claim
-      description: Create a new claim for a given auth server
+      description: 'Create a new claim for a given auth server. The `name` attribute will appear in the JWT access token as a claim with the given case-sensitive name. The `value` attribute will be used to populate the claim value in the JWT access token. The value can be templated, which allows you to use variables like `${ uuidv4 }` to generate dynamic values. Claim values are hydrated based on their types, which may include JSON.'
       requestBody:
         $ref: '#/components/requestBodies/CreateClaim'
       responses:
@@ -4843,36 +4833,32 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
-        - authserver
+        - Auth Server Claims
   '/v1/auth-servers/{authServerId}/claims/{claimId}':
     parameters:
       - $ref: '#/components/parameters/authServerIdForChildren'
       - $ref: '#/components/parameters/claimId'
     get:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: AuthServerClaims#read
         terraform-datasource: null
       operationId: getAuthServerClaim
       summary: Get an auth server claim
-      description: Get a claim for given auth server
+      description: Get a claim for given auth server.
       responses:
         '200':
           $ref: '#/components/responses/Claim'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
-        - authserver
+        - Auth Server Claims
     patch:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: AuthServerClaims#update
         terraform-datasource: null
       operationId: updateAuthServerClaim
       summary: Update an auth server claim
-      description: Update a claim for a given auth server
+      description: Update a claim for a given auth server.
       requestBody:
         $ref: '#/components/requestBodies/UpdateClaim'
       responses:
@@ -4883,35 +4869,31 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
-        - authserver
+        - Auth Server Claims
     delete:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: AuthServerClaims#delete
         terraform-datasource: null
       operationId: deleteAuthServerClaim
       summary: Delete an auth server claim
-      description: Delete a claim for a given auth server
+      description: 'Delete a claim for a given auth server. If the claim is included in any scopes, it will be removed from those scopes.'
       responses:
         '204':
           description: Success
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
-        - authserver
+        - Auth Server Claims
   '/v1/auth-servers/{authServerId}/scopes':
     parameters:
       - $ref: '#/components/parameters/authServerIdForChildren'
     post:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: AuthServerScopes#create
         terraform-datasource: null
       operationId: createAuthServerScope
       summary: Create a new auth server scope
-      description: Create a new scope for a given auth server
+      description: Create a new scope for a given auth server. The `name` attribute must be unique within the auth server.
       requestBody:
         $ref: '#/components/requestBodies/CreateScope'
       responses:
@@ -4924,36 +4906,32 @@ paths:
         '409':
           $ref: '#/components/responses/Conflict'
       tags:
-        - authserver
+        - Auth Server Scopes
   '/v1/auth-servers/{authServerId}/scopes/{scopeId}':
     parameters:
       - $ref: '#/components/parameters/authServerIdForChildren'
       - $ref: '#/components/parameters/scopeId'
     get:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: AuthServerScopes#read
         terraform-datasource: null
       operationId: getAuthServerScope
       summary: Get an auth server scope
-      description: Get a scope for given auth server
+      description: Get a scope for given auth server.
       responses:
         '200':
           $ref: '#/components/responses/Scope'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
-        - authserver
+        - Auth Server Scopes
     patch:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: AuthServerScopes#update
         terraform-datasource: null
       operationId: updateAuthServerScope
       summary: Update an auth server scope
-      description: Update a scope for a given auth server
+      description: Update a scope for a given auth server.
       requestBody:
         $ref: '#/components/requestBodies/UpdateScope'
       responses:
@@ -4966,35 +4944,31 @@ paths:
         '409':
           $ref: '#/components/responses/Conflict'
       tags:
-        - authserver
+        - Auth Server Scopes
     delete:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: AuthServerScopes#delete
         terraform-datasource: null
       operationId: deleteAuthServerScope
       summary: Delete an auth server scope
-      description: Delete a scope for a given auth server
+      description: 'Delete a scope for a given auth server. If the scope is included in any clients, it will be removed from those clients.'
       responses:
         '204':
           description: Success
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
-        - authserver
+        - Auth Server Scopes
   '/v1/auth-servers/{authServerId}/clients':
     parameters:
       - $ref: '#/components/parameters/authServerIdForChildren'
     post:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: AuthServerClients#create
         terraform-datasource: null
       operationId: createAuthServerClient
       summary: Create a new auth server client
-      description: Create a new client for a given auth server
+      description: Create a new client for a given auth server. The client ID and secret will be generated automatically. The `name` attribute must be unique within the auth server. The `grant_types` and `response_types` attributes define the OAuth 2.0 and OpenID Connect capabilities of the client.
       requestBody:
         $ref: '#/components/requestBodies/CreateClient'
       responses:
@@ -5007,36 +4981,32 @@ paths:
         '409':
           $ref: '#/components/responses/Conflict'
       tags:
-        - authserver
+        - Auth Server Clients
   '/v1/auth-servers/{authServerId}/clients/{clientId}':
     parameters:
       - $ref: '#/components/parameters/authServerIdForChildren'
       - $ref: '#/components/parameters/clientId'
     get:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: AuthServerClients#read
         terraform-datasource: null
       operationId: getAuthServerClient
       summary: Get an auth server client
-      description: Get a client for given auth server
+      description: Get a client for given auth server.
       responses:
         '200':
           $ref: '#/components/responses/Client'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
-        - authserver
+        - Auth Server Clients
     put:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: AuthServerClients#update
         terraform-datasource: null
       operationId: replaceAuthServerClient
       summary: Replace an auth server client
-      description: Replace a client for a given auth server
+      description: 'Replace a client for a given auth server. The client ID and secret can be provided to update an existing client, or to create a client with the matching ID and secret.'
       requestBody:
         $ref: '#/components/requestBodies/ReplaceClient'
       responses:
@@ -5051,23 +5021,21 @@ paths:
         '409':
           $ref: '#/components/responses/Conflict'
       tags:
-        - authserver
+        - Auth Server Clients
     delete:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: AuthServerClients#delete
         terraform-datasource: null
       operationId: deleteAuthServerClient
       summary: Delete an auth server client
-      description: Delete a client for a given auth server
+      description: Delete a client for a given auth server. All tokens associated with the client will also be deleted. This action is irreversible.
       responses:
         '204':
           description: Success
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
-        - authserver
+        - Auth Server Clients
 components:
   parameters:
     ApiId:
@@ -6816,6 +6784,7 @@ components:
         domains:
           - web
           - mobile
+      default: {}
       additionalProperties:
         nullable: true
         description: 'Set of attributes with unique keys. Each key can include lowercase letters, numbers, hyphens, and underscores.'
@@ -6827,6 +6796,7 @@ components:
           minLength: 1
           maxLength: 512
           pattern: '^[^,<>]*$'
+      nullable: false
       title: API Attributes
       x-speakeasy-type-override: any
     ApiSpecType:
@@ -18537,10 +18507,10 @@ components:
         format: uuid
       nullable: false
     UpdateClaimEnabled:
-      description: Specifies whether the claim is enabled
+      description: 'Specifies whether the claim is enabled. If the claim is not enabled, it will not be included in the token or the ''/userinfo'' endpoint.'
       type: boolean
     ClaimEnabled:
-      description: Specifies whether the claim is enabled
+      description: 'Specifies whether the claim is enabled. If the claim is not enabled, it will not be included in the token or the ''/userinfo'' endpoint.'
       type: boolean
       default: true
     Claim:
@@ -18598,10 +18568,10 @@ components:
       type: boolean
       default: false
     UpdateScopeEnabled:
-      description: Specifies whether the scope is enabled
+      description: 'Specifies whether the scope is enabled. If the scope is not enabled, it cannot be requested by clients and will not be included in the access token.'
       type: boolean
     ScopeEnabled:
-      description: Specifies whether the scope is enabled
+      description: 'Specifies whether the scope is enabled. If the scope is not enabled, it cannot be requested by clients and will not be included in the access token.'
       type: boolean
       default: true
     Scope:
@@ -20578,8 +20548,14 @@ tags:
   - name: API Publication
   - name: API Implementation
   - name: Mesh
-  - name: authserver
-    description: Auth server management API
+  - name: Auth Server
+    description: 'Auth Servers expose an OAuth 2.0 and OpenID Connect server interface for generating access tokens. The management API will give you the ability to create, configure and manage multiple Auth Servers per Konnect organization. Auth Servers are a regional Konnect entity.'
+  - name: Auth Server Clients
+    description: 'Clients represent the identity of machines, such as microservices, mobile apps, or scripts entity. The management API will give you the ability to create, configure and manage multiple Clients per Auth Server.'
+  - name: Auth Server Claims
+    description: 'Claims are statements about the Client, included in tokens issued by the Auth Server. The management API will give you the ability to create, configure and manage multiple Claims per Auth Server, and include them in tokens based on the requested Scopes.'
+  - name: Auth Server Scopes
+    description: 'Scopes define the extent of access that an access token grants to a Client. The management API will give you the ability to create, configure and manage multiple Scopes per Auth Server, and restrict their usage by Client.'
 security:
   - personalAccessToken: []
   - systemAccountAccessToken: []

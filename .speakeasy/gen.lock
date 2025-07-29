@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: 8f5ad98401923f5f1e25ae870796f9ea
+  docChecksum: c790e7f3629327a131c3f960e77565a5
   docVersion: 2.0.0
   speakeasyVersion: 1.581.1
   generationVersion: 2.656.9
@@ -669,6 +669,9 @@ generatedFiles:
   - internal/sdk/apiversion.go
   - internal/sdk/assets.go
   - internal/sdk/authserver.go
+  - internal/sdk/authserverclaims.go
+  - internal/sdk/authserverclients.go
+  - internal/sdk/authserverscopes.go
   - internal/sdk/docs/models/operations/option.md
   - internal/sdk/hostnamegenerator.go
   - internal/sdk/internal/config/sdkconfiguration.go

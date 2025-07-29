@@ -14,27 +14,26 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/retry"
 	"net/http"
-	"net/url"
 )
 
-// AuthServer - Auth Servers expose an OAuth 2.0 and OpenID Connect server interface for generating access tokens. The management API will give you the ability to create, configure and manage multiple Auth Servers per Konnect organization. Auth Servers are a regional Konnect entity.
-type AuthServer struct {
+// AuthServerClients - Clients represent the identity of machines, such as microservices, mobile apps, or scripts entity. The management API will give you the ability to create, configure and manage multiple Clients per Auth Server.
+type AuthServerClients struct {
 	rootSDK          *KonnectBeta
 	sdkConfiguration config.SDKConfiguration
 	hooks            *hooks.Hooks
 }
 
-func newAuthServer(rootSDK *KonnectBeta, sdkConfig config.SDKConfiguration, hooks *hooks.Hooks) *AuthServer {
-	return &AuthServer{
+func newAuthServerClients(rootSDK *KonnectBeta, sdkConfig config.SDKConfiguration, hooks *hooks.Hooks) *AuthServerClients {
+	return &AuthServerClients{
 		rootSDK:          rootSDK,
 		sdkConfiguration: sdkConfig,
 		hooks:            hooks,
 	}
 }
 
-// CreateAuthServer - Create a new auth server
-// Create a new auth server. Each auth server has a unique, randomly generated, public issuer URL.
-func (s *AuthServer) CreateAuthServer(ctx context.Context, request shared.CreateAuthServer, opts ...operations.Option) (*operations.CreateAuthServerResponse, error) {
+// CreateAuthServerClient - Create a new auth server client
+// Create a new client for a given auth server. The client ID and secret will be generated automatically. The `name` attribute must be unique within the auth server. The `grant_types` and `response_types` attributes define the OAuth 2.0 and OpenID Connect capabilities of the client.
+func (s *AuthServerClients) CreateAuthServerClient(ctx context.Context, request operations.CreateAuthServerClientRequest, opts ...operations.Option) (*operations.CreateAuthServerClientResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -54,7 +53,7 @@ func (s *AuthServer) CreateAuthServer(ctx context.Context, request shared.Create
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := url.JoinPath(baseURL, "/v1/auth-servers")
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/auth-servers/{authServerId}/clients", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -64,11 +63,11 @@ func (s *AuthServer) CreateAuthServer(ctx context.Context, request shared.Create
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "createAuthServer",
+		OperationID:      "createAuthServerClient",
 		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CreateClient", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -210,7 +209,7 @@ func (s *AuthServer) CreateAuthServer(ctx context.Context, request shared.Create
 		}
 	}
 
-	res := &operations.CreateAuthServerResponse{
+	res := &operations.CreateAuthServerClientResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -225,12 +224,12 @@ func (s *AuthServer) CreateAuthServer(ctx context.Context, request shared.Create
 				return nil, err
 			}
 
-			var out shared.AuthServer
+			var out shared.CreatedClient
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.AuthServer = &out
+			res.CreatedClient = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -252,6 +251,27 @@ func (s *AuthServer) CreateAuthServer(ctx context.Context, request shared.Create
 			}
 
 			res.BadRequestError = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	case httpRes.StatusCode == 404:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.NotFoundError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.NotFoundError = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -292,9 +312,9 @@ func (s *AuthServer) CreateAuthServer(ctx context.Context, request shared.Create
 
 }
 
-// GetAuthServer - Get an auth server
-// Get an auth server.
-func (s *AuthServer) GetAuthServer(ctx context.Context, request operations.GetAuthServerRequest, opts ...operations.Option) (*operations.GetAuthServerResponse, error) {
+// GetAuthServerClient - Get an auth server client
+// Get a client for given auth server.
+func (s *AuthServerClients) GetAuthServerClient(ctx context.Context, request operations.GetAuthServerClientRequest, opts ...operations.Option) (*operations.GetAuthServerClientResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -314,7 +334,7 @@ func (s *AuthServer) GetAuthServer(ctx context.Context, request operations.GetAu
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/auth-servers/{authServerId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/auth-servers/{authServerId}/clients/{clientId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -324,7 +344,7 @@ func (s *AuthServer) GetAuthServer(ctx context.Context, request operations.GetAu
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "getAuthServer",
+		OperationID:      "getAuthServerClient",
 		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -463,7 +483,7 @@ func (s *AuthServer) GetAuthServer(ctx context.Context, request operations.GetAu
 		}
 	}
 
-	res := &operations.GetAuthServerResponse{
+	res := &operations.GetAuthServerClientResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -478,12 +498,12 @@ func (s *AuthServer) GetAuthServer(ctx context.Context, request operations.GetAu
 				return nil, err
 			}
 
-			var out shared.AuthServer
+			var out shared.Client
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.AuthServer = &out
+			res.Client = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -524,9 +544,9 @@ func (s *AuthServer) GetAuthServer(ctx context.Context, request operations.GetAu
 
 }
 
-// UpdateAuthServer - Update an auth server
-// Update an auth server.
-func (s *AuthServer) UpdateAuthServer(ctx context.Context, request operations.UpdateAuthServerRequest, opts ...operations.Option) (*operations.UpdateAuthServerResponse, error) {
+// ReplaceAuthServerClient - Replace an auth server client
+// Replace a client for a given auth server. The client ID and secret can be provided to update an existing client, or to create a client with the matching ID and secret.
+func (s *AuthServerClients) ReplaceAuthServerClient(ctx context.Context, request operations.ReplaceAuthServerClientRequest, opts ...operations.Option) (*operations.ReplaceAuthServerClientResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -546,7 +566,7 @@ func (s *AuthServer) UpdateAuthServer(ctx context.Context, request operations.Up
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/auth-servers/{authServerId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/auth-servers/{authServerId}/clients/{clientId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -556,11 +576,11 @@ func (s *AuthServer) UpdateAuthServer(ctx context.Context, request operations.Up
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "updateAuthServer",
+		OperationID:      "replaceAuthServerClient",
 		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateAuthServer", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ReplaceClient", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -576,7 +596,7 @@ func (s *AuthServer) UpdateAuthServer(ctx context.Context, request operations.Up
 		defer cancel()
 	}
 
-	req, err := http.NewRequestWithContext(ctx, "PATCH", opURL, bodyReader)
+	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
@@ -702,7 +722,7 @@ func (s *AuthServer) UpdateAuthServer(ctx context.Context, request operations.Up
 		}
 	}
 
-	res := &operations.UpdateAuthServerResponse{
+	res := &operations.ReplaceAuthServerClientResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -710,6 +730,8 @@ func (s *AuthServer) UpdateAuthServer(ctx context.Context, request operations.Up
 
 	switch {
 	case httpRes.StatusCode == 200:
+		fallthrough
+	case httpRes.StatusCode == 201:
 		switch {
 		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
 			rawBody, err := utils.ConsumeRawBody(httpRes)
@@ -717,12 +739,12 @@ func (s *AuthServer) UpdateAuthServer(ctx context.Context, request operations.Up
 				return nil, err
 			}
 
-			var out shared.AuthServer
+			var out shared.Client
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.AuthServer = &out
+			res.Client = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -805,9 +827,9 @@ func (s *AuthServer) UpdateAuthServer(ctx context.Context, request operations.Up
 
 }
 
-// DeleteAuthServer - Delete an auth server
-// Delete an auth server. All resources associated with the auth server will also be deleted. This action is irreversible.
-func (s *AuthServer) DeleteAuthServer(ctx context.Context, request operations.DeleteAuthServerRequest, opts ...operations.Option) (*operations.DeleteAuthServerResponse, error) {
+// DeleteAuthServerClient - Delete an auth server client
+// Delete a client for a given auth server. All tokens associated with the client will also be deleted. This action is irreversible.
+func (s *AuthServerClients) DeleteAuthServerClient(ctx context.Context, request operations.DeleteAuthServerClientRequest, opts ...operations.Option) (*operations.DeleteAuthServerClientResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -826,7 +848,7 @@ func (s *AuthServer) DeleteAuthServer(ctx context.Context, request operations.De
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/auth-servers/{authServerId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/auth-servers/{authServerId}/clients/{clientId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -836,7 +858,7 @@ func (s *AuthServer) DeleteAuthServer(ctx context.Context, request operations.De
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "deleteAuthServer",
+		OperationID:      "deleteAuthServerClient",
 		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -970,7 +992,7 @@ func (s *AuthServer) DeleteAuthServer(ctx context.Context, request operations.De
 		}
 	}
 
-	res := &operations.DeleteAuthServerResponse{
+	res := &operations.DeleteAuthServerClientResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

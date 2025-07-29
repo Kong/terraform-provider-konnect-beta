@@ -178,7 +178,7 @@ func (r *AuthServerResource) Create(ctx context.Context, req resource.CreateRequ
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Authserver.CreateAuthServer(ctx, *request)
+	res, err := r.client.AuthServer.CreateAuthServer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -238,7 +238,7 @@ func (r *AuthServerResource) Read(ctx context.Context, req resource.ReadRequest,
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Authserver.GetAuthServer(ctx, *request)
+	res, err := r.client.AuthServer.GetAuthServer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -292,7 +292,7 @@ func (r *AuthServerResource) Update(ctx context.Context, req resource.UpdateRequ
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Authserver.UpdateAuthServer(ctx, *request)
+	res, err := r.client.AuthServer.UpdateAuthServer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -352,7 +352,7 @@ func (r *AuthServerResource) Delete(ctx context.Context, req resource.DeleteRequ
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Authserver.DeleteAuthServer(ctx, *request)
+	res, err := r.client.AuthServer.DeleteAuthServer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

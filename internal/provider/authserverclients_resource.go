@@ -222,7 +222,7 @@ func (r *AuthServerClientsResource) Create(ctx context.Context, req resource.Cre
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Authserver.CreateAuthServerClient(ctx, *request)
+	res, err := r.client.AuthServerClients.CreateAuthServerClient(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -259,7 +259,7 @@ func (r *AuthServerClientsResource) Create(ctx context.Context, req resource.Cre
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res1, err := r.client.Authserver.GetAuthServerClient(ctx, *request1)
+	res1, err := r.client.AuthServerClients.GetAuthServerClient(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -319,7 +319,7 @@ func (r *AuthServerClientsResource) Read(ctx context.Context, req resource.ReadR
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Authserver.GetAuthServerClient(ctx, *request)
+	res, err := r.client.AuthServerClients.GetAuthServerClient(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -373,7 +373,7 @@ func (r *AuthServerClientsResource) Update(ctx context.Context, req resource.Upd
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Authserver.ReplaceAuthServerClient(ctx, *request)
+	res, err := r.client.AuthServerClients.ReplaceAuthServerClient(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -413,7 +413,7 @@ func (r *AuthServerClientsResource) Update(ctx context.Context, req resource.Upd
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res1, err := r.client.Authserver.GetAuthServerClient(ctx, *request1)
+	res1, err := r.client.AuthServerClients.GetAuthServerClient(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -473,7 +473,7 @@ func (r *AuthServerClientsResource) Delete(ctx context.Context, req resource.Del
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Authserver.DeleteAuthServerClient(ctx, *request)
+	res, err := r.client.AuthServerClients.DeleteAuthServerClient(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

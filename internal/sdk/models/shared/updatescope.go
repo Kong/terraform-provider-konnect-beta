@@ -12,7 +12,7 @@ type UpdateScope struct {
 	Default *bool `json:"default,omitempty"`
 	// Specifies whether to include the scope in the metadata document
 	IncludeInMetadata *bool `json:"include_in_metadata,omitempty"`
-	// Specifies whether the scope is enabled
+	// Specifies whether the scope is enabled. If the scope is not enabled, it cannot be requested by clients and will not be included in the access token.
 	Enabled *bool `json:"enabled,omitempty"`
 }
 

@@ -75,7 +75,7 @@ func (r *AuthServerClaimsResource) Schema(ctx context.Context, req resource.Sche
 				Computed:    true,
 				Optional:    true,
 				Default:     booldefault.StaticBool(true),
-				Description: `Specifies whether the claim is enabled. Default: true`,
+				Description: `Specifies whether the claim is enabled. If the claim is not enabled, it will not be included in the token or the '/userinfo' endpoint. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -171,7 +171,7 @@ func (r *AuthServerClaimsResource) Create(ctx context.Context, req resource.Crea
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Authserver.CreateAuthServerClaim(ctx, *request)
+	res, err := r.client.AuthServerClaims.CreateAuthServerClaim(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -231,7 +231,7 @@ func (r *AuthServerClaimsResource) Read(ctx context.Context, req resource.ReadRe
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Authserver.GetAuthServerClaim(ctx, *request)
+	res, err := r.client.AuthServerClaims.GetAuthServerClaim(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -285,7 +285,7 @@ func (r *AuthServerClaimsResource) Update(ctx context.Context, req resource.Upda
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Authserver.UpdateAuthServerClaim(ctx, *request)
+	res, err := r.client.AuthServerClaims.UpdateAuthServerClaim(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -345,7 +345,7 @@ func (r *AuthServerClaimsResource) Delete(ctx context.Context, req resource.Dele
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Authserver.DeleteAuthServerClaim(ctx, *request)
+	res, err := r.client.AuthServerClaims.DeleteAuthServerClaim(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
