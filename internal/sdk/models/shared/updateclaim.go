@@ -14,7 +14,7 @@ type UpdateClaim struct {
 	IncludeInAllScopes *bool `json:"include_in_all_scopes,omitempty"`
 	// Specifies the scopes IDs in which the claim is included
 	IncludeInScopes []string `json:"include_in_scopes,omitempty"`
-	// Specifies whether the claim is enabled
+	// Specifies whether the claim is enabled. If the claim is not enabled, it will not be included in the token or the '/userinfo' endpoint.
 	Enabled *bool `json:"enabled,omitempty"`
 }
 

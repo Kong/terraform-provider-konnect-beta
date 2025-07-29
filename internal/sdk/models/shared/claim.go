@@ -21,7 +21,7 @@ type Claim struct {
 	IncludeInAllScopes *bool `default:"false" json:"include_in_all_scopes"`
 	// Specifies the scopes IDs in which the claim is included
 	IncludeInScopes []string `json:"include_in_scopes"`
-	// Specifies whether the claim is enabled
+	// Specifies whether the claim is enabled. If the claim is not enabled, it will not be included in the token or the '/userinfo' endpoint.
 	Enabled *bool `default:"true" json:"enabled"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
