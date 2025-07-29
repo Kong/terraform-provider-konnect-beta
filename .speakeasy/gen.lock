@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: c790e7f3629327a131c3f960e77565a5
+  docChecksum: 662abddce2e52887e23c296515943430
   docVersion: 2.0.0
   speakeasyVersion: 1.581.1
   generationVersion: 2.656.9
@@ -96,6 +96,8 @@ generatedFiles:
   - examples/resources/konnect-beta_auth_server_clients/resource.tf
   - examples/resources/konnect-beta_auth_server_scopes/import.sh
   - examples/resources/konnect-beta_auth_server_scopes/resource.tf
+  - examples/resources/konnect-beta_dashboard/import.sh
+  - examples/resources/konnect-beta_dashboard/resource.tf
   - examples/resources/konnect-beta_mesh/import.sh
   - examples/resources/konnect-beta_mesh/resource.tf
   - examples/resources/konnect-beta_mesh_access_log/import.sh
@@ -198,6 +200,8 @@ generatedFiles:
   - internal/provider/authserverclients_resource_sdk.go
   - internal/provider/authserverscopes_resource.go
   - internal/provider/authserverscopes_resource_sdk.go
+  - internal/provider/dashboard_resource.go
+  - internal/provider/dashboard_resource_sdk.go
   - internal/provider/hostnamegeneratorlist_data_source.go
   - internal/provider/hostnamegeneratorlist_data_source_sdk.go
   - internal/provider/mesh_data_source.go
@@ -386,6 +390,8 @@ generatedFiles:
   - internal/provider/types/access_key.go
   - internal/provider/types/acm_certificate_authority_config.go
   - internal/provider/types/addresses.go
+  - internal/provider/types/advanced_filters.go
+  - internal/provider/types/advanced_query.go
   - internal/provider/types/affinity_tags.go
   - internal/provider/types/aggregate.go
   - internal/provider/types/api_implementation_service.go
@@ -401,10 +407,13 @@ generatedFiles:
   - internal/provider/types/backend.go
   - internal/provider/types/backend_refs.go
   - internal/provider/types/backends.go
+  - internal/provider/types/bar_chart.go
   - internal/provider/types/builtin_certificate_authority_config.go
   - internal/provider/types/builtin_certificate_authority_config_conf_ca_cert.go
   - internal/provider/types/ca_cert.go
   - internal/provider/types/cert_manager_certificate_authority_config.go
+  - internal/provider/types/chart.go
+  - internal/provider/types/chart_tile.go
   - internal/provider/types/cluster.go
   - internal/provider/types/colors.go
   - internal/provider/types/conditions.go
@@ -416,14 +425,17 @@ generatedFiles:
   - internal/provider/types/create_api_version_request_spec.go
   - internal/provider/types/create_portal_custom_domain_ssl.go
   - internal/provider/types/cross_zone.go
+  - internal/provider/types/dashboard.go
   - internal/provider/types/datadog.go
   - internal/provider/types/datadog_tracing_backend_config.go
   - internal/provider/types/dataplane_proxies.go
   - internal/provider/types/dataplane_proxy.go
   - internal/provider/types/dataplane_ref.go
   - internal/provider/types/default.go
+  - internal/provider/types/definition.go
   - internal/provider/types/delay.go
   - internal/provider/types/detectors.go
+  - internal/provider/types/donut_chart.go
   - internal/provider/types/dp_cert.go
   - internal/provider/types/endpoints.go
   - internal/provider/types/envoy.go
@@ -453,6 +465,7 @@ generatedFiles:
   - internal/provider/types/js.go
   - internal/provider/types/json.go
   - internal/provider/types/json_patches.go
+  - internal/provider/types/layout.go
   - internal/provider/types/least_request.go
   - internal/provider/types/limits.go
   - internal/provider/types/listener.go
@@ -596,6 +609,8 @@ generatedFiles:
   - internal/provider/types/mesh_traffic_permission_item_from.go
   - internal/provider/types/mesh_traffic_permission_item_spec.go
   - internal/provider/types/metrics.go
+  - internal/provider/types/metrics_absolute_time_range_dto_v2.go
+  - internal/provider/types/metrics_relative_time_range_dto_v2.go
   - internal/provider/types/mtls.go
   - internal/provider/types/networking.go
   - internal/provider/types/on_rate_limit.go
@@ -612,10 +627,12 @@ generatedFiles:
   - internal/provider/types/portal_oidc_config.go
   - internal/provider/types/portals.go
   - internal/provider/types/ports.go
+  - internal/provider/types/position.go
   - internal/provider/types/profiles.go
   - internal/provider/types/prometheus.go
   - internal/provider/types/prometheus_metrics_backend_config.go
   - internal/provider/types/provided_certificate_authority_config.go
+  - internal/provider/types/query.go
   - internal/provider/types/query_params.go
   - internal/provider/types/rate_limit_service.go
   - internal/provider/types/rate_limited_back_off.go
@@ -639,6 +656,8 @@ generatedFiles:
   - internal/provider/types/selectors.go
   - internal/provider/types/service_reference.go
   - internal/provider/types/sidecar.go
+  - internal/provider/types/single_value_chart.go
+  - internal/provider/types/size.go
   - internal/provider/types/spec.go
   - internal/provider/types/spec_renderer.go
   - internal/provider/types/status.go
@@ -648,6 +667,8 @@ generatedFiles:
   - internal/provider/types/tcp.go
   - internal/provider/types/tcp_logging_backend_config.go
   - internal/provider/types/theme.go
+  - internal/provider/types/tile.go
+  - internal/provider/types/time_range.go
   - internal/provider/types/tls.go
   - internal/provider/types/tracing.go
   - internal/provider/types/url_rewrite.go
@@ -672,6 +693,7 @@ generatedFiles:
   - internal/sdk/authserverclaims.go
   - internal/sdk/authserverclients.go
   - internal/sdk/authserverscopes.go
+  - internal/sdk/dashboards.go
   - internal/sdk/docs/models/operations/option.md
   - internal/sdk/hostnamegenerator.go
   - internal/sdk/internal/config/sdkconfiguration.go
@@ -727,6 +749,10 @@ generatedFiles:
   - internal/sdk/models/operations/createportalpage.go
   - internal/sdk/models/operations/createportalsnippet.go
   - internal/sdk/models/operations/createportalteam.go
+  - internal/sdk/models/operations/dashboardscreate.go
+  - internal/sdk/models/operations/dashboardsdelete.go
+  - internal/sdk/models/operations/dashboardsget.go
+  - internal/sdk/models/operations/dashboardsupdate.go
   - internal/sdk/models/operations/deleteapi.go
   - internal/sdk/models/operations/deleteapidocument.go
   - internal/sdk/models/operations/deleteapiimplementation.go
@@ -880,6 +906,9 @@ generatedFiles:
   - internal/sdk/models/operations/updateportalpage.go
   - internal/sdk/models/operations/updateportalsnippet.go
   - internal/sdk/models/operations/updateportalteam.go
+  - internal/sdk/models/shared/advancedfilters.go
+  - internal/sdk/models/shared/advancedmetrics.go
+  - internal/sdk/models/shared/advancedquery.go
   - internal/sdk/models/shared/algorithm.go
   - internal/sdk/models/shared/apidocument.go
   - internal/sdk/models/shared/apidocumentresponse.go
@@ -900,6 +929,9 @@ generatedFiles:
   - internal/sdk/models/shared/apiversionsummary.go
   - internal/sdk/models/shared/authserver.go
   - internal/sdk/models/shared/badrequesterror.go
+  - internal/sdk/models/shared/barchart.go
+  - internal/sdk/models/shared/chart.go
+  - internal/sdk/models/shared/charttile.go
   - internal/sdk/models/shared/claim.go
   - internal/sdk/models/shared/client.go
   - internal/sdk/models/shared/conflicterror.go
@@ -918,8 +950,13 @@ generatedFiles:
   - internal/sdk/models/shared/createportalpagerequest.go
   - internal/sdk/models/shared/createportalsnippetrequest.go
   - internal/sdk/models/shared/createscope.go
+  - internal/sdk/models/shared/dashboard.go
+  - internal/sdk/models/shared/dashboardresponse.go
+  - internal/sdk/models/shared/dashboardupdaterequest.go
+  - internal/sdk/models/shared/donutchart.go
   - internal/sdk/models/shared/forbiddenerror.go
   - internal/sdk/models/shared/granttype.go
+  - internal/sdk/models/shared/granularity.go
   - internal/sdk/models/shared/hostnamegeneratorcreateorupdatesuccessresponse.go
   - internal/sdk/models/shared/hostnamegeneratordeletesuccessresponse.go
   - internal/sdk/models/shared/hostnamegeneratoritem.go
@@ -932,6 +969,9 @@ generatedFiles:
   - internal/sdk/models/shared/invalidparameterstandard.go
   - internal/sdk/models/shared/invalidrules.go
   - internal/sdk/models/shared/listmeshcontrolplanesresponse.go
+  - internal/sdk/models/shared/llmfilters.go
+  - internal/sdk/models/shared/llmmetrics.go
+  - internal/sdk/models/shared/llmquery.go
   - internal/sdk/models/shared/meshaccesslogcreateorupdatesuccessresponse.go
   - internal/sdk/models/shared/meshaccesslogdeletesuccessresponse.go
   - internal/sdk/models/shared/meshaccesslogitem.go
@@ -1028,6 +1068,8 @@ generatedFiles:
   - internal/sdk/models/shared/meshtrafficpermissiondeletesuccessresponse.go
   - internal/sdk/models/shared/meshtrafficpermissionitem.go
   - internal/sdk/models/shared/meshtrafficpermissionlist.go
+  - internal/sdk/models/shared/metricsabsolutetimerangedtov2.go
+  - internal/sdk/models/shared/metricsrelativetimerangedtov2.go
   - internal/sdk/models/shared/notfounderror.go
   - internal/sdk/models/shared/pagemeta.go
   - internal/sdk/models/shared/pagevisibilitystatus.go
@@ -1059,7 +1101,11 @@ generatedFiles:
   - internal/sdk/models/shared/scope.go
   - internal/sdk/models/shared/security.go
   - internal/sdk/models/shared/servicereference.go
+  - internal/sdk/models/shared/singlevaluechart.go
   - internal/sdk/models/shared/snippetvisibilitystatus.go
+  - internal/sdk/models/shared/tile.go
+  - internal/sdk/models/shared/timerange.go
+  - internal/sdk/models/shared/timeserieschart.go
   - internal/sdk/models/shared/unauthorizederror.go
   - internal/sdk/models/shared/unsupportedmediatypeerror.go
   - internal/sdk/models/shared/updatealgorithm.go
@@ -5316,6 +5362,59 @@ examples:
       parameters:
         path:
           packageId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  dashboards-create:
+    speakeasy-default-dashboards-create:
+      requestBody:
+        application/json: {"name": "<value>", "definition": {"tiles": []}, "labels": {"env": "test"}}
+      responses:
+        "201":
+          application/json: {"name": "<value>", "definition": {"tiles": []}, "labels": {"env": "test"}, "id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_by": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  dashboards-get:
+    speakeasy-default-dashboards-get:
+      parameters:
+        path:
+          dashboardId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "200":
+          application/json: {"name": "<value>", "definition": {"tiles": [{"layout": {"position": {"col": 3, "row": 0}, "size": {"cols": 3, "rows": 1}}, "type": "chart", "definition": {"query": {"datasource": "api_usage", "metrics": ["request_count", "response_latency_p99"], "dimensions": ["time", "gateway_service"], "filters": [{"field": "control_plane", "operator": "in", "value": ["d5ac5d88-efed-4e10-9dfe-0b0a6646c219"]}], "granularity": "hourly", "time_range": {"tz": "EST", "type": "relative", "time_range": "24h"}}, "chart": {"type": "donut"}}}]}, "labels": {"env": "test"}, "id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_by": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  dashboards-update:
+    speakeasy-default-dashboards-update:
+      parameters:
+        path:
+          dashboardId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      requestBody:
+        application/json: {"name": "<value>", "definition": {"tiles": []}, "labels": {"env": "test"}}
+      responses:
+        "200":
+          application/json: {"name": "<value>", "definition": {"tiles": []}, "labels": {"env": "test"}, "id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_by": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  dashboards-delete:
+    speakeasy-default-dashboards-delete:
+      parameters:
+        path:
+          dashboardId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
