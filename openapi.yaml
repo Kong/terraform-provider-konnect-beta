@@ -5635,34 +5635,6 @@ components:
         expires_at:
           - x-unstable
           - x-internal
-    CreatePortalCustomDomainSSL:
-      type: object
-      oneOf:
-        - title: custom_certificate
-          additionalProperties: false
-          properties:
-            domain_verification_method:
-              type: string
-              const: custom_certificate
-            custom_certificate:
-              description: Custom certificate to be used for the SSL termination.
-              type: string
-            custom_private_key:
-              description: Custom certificate private key to be used for the SSL termination.
-              type: string
-          required:
-            - domain_verification_method
-            - custom_certificate
-            - custom_private_key
-        - title: http
-          additionalProperties: false
-          properties:
-            domain_verification_method:
-              type: string
-              const: http
-          required:
-            - domain_verification_method
-      title: CreatePortalCustomDomainSSL
     UpdatePortalCustomDomainSSL:
       type: object
       properties:
@@ -20370,6 +20342,21 @@ components:
         required:
           - field
           - operator
+    CreatePortalCustomDomainSSL:
+      type: object
+      properties:
+        domain_verification_method:
+          type: string
+          enum:
+            - custom_certificate
+            - http
+        custom_certificate:
+          description: Custom certificate to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate"
+          type: string
+        custom_private_key:
+          description: Custom certificate private key to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate"
+          type: string
+      additionalProperties: false
   requestBodies:
     CreatePortalCustomDomain:
       description: Create a portal custom domain.
