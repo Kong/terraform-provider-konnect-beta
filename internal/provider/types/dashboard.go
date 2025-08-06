@@ -3,6 +3,6 @@
 package types
 
 type Dashboard struct {
-	PresetFilters [][]AllFilterItems `tfsdk:"preset_filters"`
-	Tiles         []Tile             `tfsdk:"tiles"`
+	PresetFilters []AllFilterItems `tfsdk:"preset_filters"`
+	Tiles         []Tile           `tfsdk:"tiles"`
 }

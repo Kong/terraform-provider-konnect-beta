@@ -2,9 +2,11 @@ resource "konnect_dashboard" "my_dashboard" {
   provider = konnect-beta
   definition = {
     preset_filters = [
-      [
-        # ...
-      ]
+      {
+        field    = "ai_provider"
+        operator = "not_in"
+        value    = "{ \"see\": \"documentation\" }"
+      }
     ]
     tiles = [
       {

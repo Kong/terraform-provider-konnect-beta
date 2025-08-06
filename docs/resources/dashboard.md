@@ -17,9 +17,11 @@ resource "konnect_dashboard" "my_dashboard" {
   provider = konnect-beta
   definition = {
     preset_filters = [
-      [
-        # ...
-      ]
+      {
+        field    = "ai_provider"
+        operator = "not_in"
+        value    = "{ \"see\": \"documentation\" }"
+      }
     ]
     tiles = [
       {
@@ -140,9 +142,9 @@ Required:
 
 Optional:
 
-- `preset_filters` (List of List of Object) An optional array of filters that are applied globally to all relevant tiles in the dashboard.
+- `preset_filters` (Attributes List) An optional array of filters that are applied globally to all relevant tiles in the dashboard.
 
-Whether or not a preset filter applies to a tile depends on the filter's dimension.  Some dimensions, like `control_plane`, are common to all datasources; other dimensions may only apply to one datasource.
+Whether or not a preset filter applies to a tile depends on the filter's dimension.  Some dimensions, like `control_plane`, are common to all datasources; other dimensions may only apply to one datasource. (see [below for nested schema](#nestedatt--definition--preset_filters))
 
 <a id="nestedatt--definition--tiles"></a>
 ### Nested Schema for `definition.tiles`
@@ -418,6 +420,19 @@ Optional:
 
 - `cols` (Number) Not Null
 - `rows` (Number) Not Null
+
+
+
+
+
+<a id="nestedatt--definition--preset_filters"></a>
+### Nested Schema for `definition.preset_filters`
+
+Optional:
+
+- `field` (String) Not Null; must be one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "data_plane_node", "data_plane_node_version", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]
+- `operator` (String) Not Null; must be one of ["in", "not_in", "empty", "not_empty"]
+- `value` (String) Parsed as JSON.
 
 ## Import
 

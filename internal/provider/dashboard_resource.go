@@ -9,7 +9,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -76,15 +75,70 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 			"definition": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
-					"preset_filters": schema.ListAttribute{
+					"preset_filters": schema.ListNestedAttribute{
 						Computed: true,
 						Optional: true,
-						ElementType: types.ListType{
-							ElemType: types.ObjectType{
-								AttrTypes: map[string]attr.Type{
-									`field`:    types.StringType,
-									`operator`: types.StringType,
-									`value`:    types.StringType,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"field": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `Not Null; must be one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "data_plane_node", "data_plane_node_version", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.OneOf(
+											"ai_plugin",
+											"ai_provider",
+											"ai_request_model",
+											"ai_response_model",
+											"api",
+											"api_product",
+											"api_product_version",
+											"application",
+											"consumer",
+											"control_plane",
+											"control_plane_group",
+											"data_plane_node",
+											"data_plane_node_version",
+											"gateway_service",
+											"llm_cache_status",
+											"llm_embeddings_model",
+											"llm_embeddings_provider",
+											"portal",
+											"realm",
+											"response_source",
+											"route",
+											"status_code",
+											"status_code_grouped",
+											"upstream_status_code",
+											"upstream_status_code_grouped",
+										),
+									},
+								},
+								"operator": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `Not Null; must be one of ["in", "not_in", "empty", "not_empty"]`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+										stringvalidator.OneOf(
+											"in",
+											"not_in",
+											"empty",
+											"not_empty",
+										),
+									},
+								},
+								"value": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `Parsed as JSON.`,
+									Validators: []validator.String{
+										validators.IsValidJSON(),
+									},
 								},
 							},
 						},

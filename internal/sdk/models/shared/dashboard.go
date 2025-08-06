@@ -14,7 +14,7 @@ type Dashboard struct {
 	//
 	// Whether or not a preset filter applies to a tile depends on the filter's dimension.  Some dimensions, like `control_plane`, are common to all datasources; other dimensions may only apply to one datasource.
 	//
-	PresetFilters [][]AllFilterItems `json:"preset_filters,omitempty"`
+	PresetFilters []AllFilterItems `json:"preset_filters,omitempty"`
 }
 
 func (o *Dashboard) GetTiles() []Tile {
@@ -24,7 +24,7 @@ func (o *Dashboard) GetTiles() []Tile {
 	return o.Tiles
 }
 
-func (o *Dashboard) GetPresetFilters() [][]AllFilterItems {
+func (o *Dashboard) GetPresetFilters() []AllFilterItems {
 	if o == nil {
 		return nil
 	}

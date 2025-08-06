@@ -20299,49 +20299,48 @@ components:
         - $ref: '#/components/schemas/BarChart'
         - $ref: '#/components/schemas/SingleValueChart'
     AllFilterItems:
-      items:
-        type: object
-        properties:
-          field:
-            type: string
-            enum:
-              - ai_plugin
-              - ai_provider
-              - ai_request_model
-              - ai_response_model
-              - api
-              - api_product
-              - api_product_version
-              - application
-              - consumer
-              - control_plane
-              - control_plane_group
-              - data_plane_node
-              - data_plane_node_version
-              - gateway_service
-              - llm_cache_status
-              - llm_embeddings_model
-              - llm_embeddings_provider
-              - portal
-              - realm
-              - response_source
-              - route
-              - status_code
-              - status_code_grouped
-              - upstream_status_code
-              - upstream_status_code_grouped
-          operator:
-            type: string
-            enum:
-              - in
-              - not_in
-              - empty
-              - not_empty
-          value:
-            x-speakeasy-type-override: any
-        required:
-          - field
-          - operator
+      type: object
+      properties:
+        field:
+          type: string
+          enum:
+            - ai_plugin
+            - ai_provider
+            - ai_request_model
+            - ai_response_model
+            - api
+            - api_product
+            - api_product_version
+            - application
+            - consumer
+            - control_plane
+            - control_plane_group
+            - data_plane_node
+            - data_plane_node_version
+            - gateway_service
+            - llm_cache_status
+            - llm_embeddings_model
+            - llm_embeddings_provider
+            - portal
+            - realm
+            - response_source
+            - route
+            - status_code
+            - status_code_grouped
+            - upstream_status_code
+            - upstream_status_code_grouped
+        operator:
+          type: string
+          enum:
+            - in
+            - not_in
+            - empty
+            - not_empty
+        value:
+          x-speakeasy-type-override: any
+      required:
+        - field
+        - operator
     CreatePortalCustomDomainSSL:
       type: object
       properties:

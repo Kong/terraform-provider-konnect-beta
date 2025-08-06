@@ -20,29 +20,27 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 	if resp != nil {
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.CreatedBy = types.StringPointerValue(resp.CreatedBy)
-		r.Definition.PresetFilters = nil
-		for _, presetFiltersItem := range resp.Definition.PresetFilters {
-			var presetFilters []tfTypes.AllFilterItems
-			presetFilters = []tfTypes.AllFilterItems{}
-			for presetFiltersCount, presetFiltersItem1 := range presetFiltersItem {
-				var presetFilters1 tfTypes.AllFilterItems
-				presetFilters1.Field = types.StringValue(string(presetFiltersItem1.Field))
-				presetFilters1.Operator = types.StringValue(string(presetFiltersItem1.Operator))
-				if presetFiltersItem1.Value == nil {
-					presetFilters1.Value = types.StringNull()
-				} else {
-					valueResult, _ := json.Marshal(presetFiltersItem1.Value)
-					presetFilters1.Value = types.StringValue(string(valueResult))
-				}
-				if presetFiltersCount+1 > len(presetFilters) {
-					presetFilters = append(presetFilters, presetFilters1)
-				} else {
-					presetFilters[presetFiltersCount].Field = presetFilters1.Field
-					presetFilters[presetFiltersCount].Operator = presetFilters1.Operator
-					presetFilters[presetFiltersCount].Value = presetFilters1.Value
-				}
+		r.Definition.PresetFilters = []tfTypes.AllFilterItems{}
+		if len(r.Definition.PresetFilters) > len(resp.Definition.PresetFilters) {
+			r.Definition.PresetFilters = r.Definition.PresetFilters[:len(resp.Definition.PresetFilters)]
+		}
+		for presetFiltersCount, presetFiltersItem := range resp.Definition.PresetFilters {
+			var presetFilters tfTypes.AllFilterItems
+			presetFilters.Field = types.StringValue(string(presetFiltersItem.Field))
+			presetFilters.Operator = types.StringValue(string(presetFiltersItem.Operator))
+			if presetFiltersItem.Value == nil {
+				presetFilters.Value = types.StringNull()
+			} else {
+				valueResult, _ := json.Marshal(presetFiltersItem.Value)
+				presetFilters.Value = types.StringValue(string(valueResult))
 			}
-			r.Definition.PresetFilters = append(r.Definition.PresetFilters, presetFilters)
+			if presetFiltersCount+1 > len(r.Definition.PresetFilters) {
+				r.Definition.PresetFilters = append(r.Definition.PresetFilters, presetFilters)
+			} else {
+				r.Definition.PresetFilters[presetFiltersCount].Field = presetFilters.Field
+				r.Definition.PresetFilters[presetFiltersCount].Operator = presetFilters.Operator
+				r.Definition.PresetFilters[presetFiltersCount].Value = presetFilters.Value
+			}
 		}
 		r.Definition.Tiles = []tfTypes.Tile{}
 		if len(r.Definition.Tiles) > len(resp.Definition.Tiles) {
@@ -603,23 +601,19 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 			})
 		}
 	}
-	presetFilters := make([][]shared.AllFilterItems, 0, len(r.Definition.PresetFilters))
+	presetFilters := make([]shared.AllFilterItems, 0, len(r.Definition.PresetFilters))
 	for _, presetFiltersItem := range r.Definition.PresetFilters {
-		presetFiltersTmp := make([]shared.AllFilterItems, 0, len(presetFiltersItem))
-		for _, item := range presetFiltersItem {
-			field2 := shared.AllFilterItemsField(item.Field.ValueString())
-			operator2 := shared.AllFilterItemsOperator(item.Operator.ValueString())
-			var value2 interface{}
-			if !item.Value.IsUnknown() && !item.Value.IsNull() {
-				_ = json.Unmarshal([]byte(item.Value.ValueString()), &value2)
-			}
-			presetFiltersTmp = append(presetFiltersTmp, shared.AllFilterItems{
-				Field:    field2,
-				Operator: operator2,
-				Value:    value2,
-			})
+		field2 := shared.AllFilterItemsField(presetFiltersItem.Field.ValueString())
+		operator2 := shared.AllFilterItemsOperator(presetFiltersItem.Operator.ValueString())
+		var value2 interface{}
+		if !presetFiltersItem.Value.IsUnknown() && !presetFiltersItem.Value.IsNull() {
+			_ = json.Unmarshal([]byte(presetFiltersItem.Value.ValueString()), &value2)
 		}
-		presetFilters = append(presetFilters, presetFiltersTmp)
+		presetFilters = append(presetFilters, shared.AllFilterItems{
+			Field:    field2,
+			Operator: operator2,
+			Value:    value2,
+		})
 	}
 	definition := shared.Dashboard{
 		Tiles:         tiles,
