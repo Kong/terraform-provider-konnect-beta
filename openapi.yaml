@@ -5038,8 +5038,6 @@ paths:
         - Auth Server Clients
   /v2/dashboards:
     post:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: Dashboard#create
         terraform-datasource: null
@@ -5081,8 +5079,6 @@ paths:
           example: d32d905a-ed33-46a3-a093-d8f536af9a8a
         x-speakeasy-match: id
     get:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: Dashboard#read
         terraform-datasource: null
@@ -5105,8 +5101,6 @@ paths:
       tags:
         - Dashboards
     put:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: Dashboard#update
         terraform-datasource: null
@@ -5139,8 +5133,6 @@ paths:
       tags:
         - Dashboards
     delete:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: Dashboard#delete
         terraform-datasource: null
@@ -5645,26 +5637,32 @@ components:
           - x-internal
     CreatePortalCustomDomainSSL:
       type: object
-      properties:
-        domain_verification_method:
-          $ref: '#/components/schemas/PortalCustomDomainVerificationMethod'
-        custom_certificate:
-          description: Custom certificate to be used for the SSL termination.
-          type: string
-        custom_private_key:
-          description: Custom certificate private key to be used for the SSL termination.
-          type: string
-      additionalProperties: false
-      required:
-        - domain_verification_method
+      oneOf:
+        - additionalProperties: false
+          properties:
+            domain_verification_method:
+              type: string
+              enum:
+                - custom_certificate
+            custom_certificate:
+              description: Custom certificate to be used for the SSL termination.
+              type: string
+            custom_private_key:
+              description: Custom certificate private key to be used for the SSL termination.
+              type: string
+          required:
+            - domain_verification_method
+            - custom_certificate
+            - custom_private_key
+        - additionalProperties: false
+          properties:
+            domain_verification_method:
+              type: string
+              enum:
+                - http
+          required:
+            - domain_verification_method
       title: CreatePortalCustomDomainSSL
-      x-property-annotations:
-        custom_certificate:
-          - x-unstable
-          - x-internal
-        custom_private_key:
-          - x-unstable
-          - x-internal
     UpdatePortalCustomDomainSSL:
       type: object
       properties:
@@ -5682,8 +5680,6 @@ components:
         - http
         - custom_certificate
       title: PortalCustomDomainVerificationMethod
-      x-enum-dev:
-        - custom_certificate
     PortalCustomDomainVerificationStatus:
       type: string
       enum:
@@ -18795,9 +18791,32 @@ components:
         metrics:
           $ref: '#/components/schemas/AdvancedMetrics'
         dimensions:
-          allOf:
-            - maxItems: 2
-            - $ref: '#/components/schemas/AdvancedDimensions'
+          description: List of attributes or entity types to group by.
+          type: array
+          items:
+            type: string
+            enum:
+              - api
+              - api_product
+              - api_product_version
+              - application
+              - consumer
+              - control_plane
+              - control_plane_group
+              - data_plane_node
+              - data_plane_node_version
+              - gateway_service
+              - portal
+              - response_source
+              - route
+              - status_code
+              - status_code_grouped
+              - time
+              - upstream_status_code
+              - upstream_status_code_grouped
+          example:
+            - status_code_grouped
+          maxItems: 2
         filters:
           $ref: '#/components/schemas/AdvancedFilters'
         granularity:
@@ -18836,9 +18855,29 @@ components:
         metrics:
           $ref: '#/components/schemas/LLMMetrics'
         dimensions:
-          allOf:
-            - maxItems: 2
-            - $ref: '#/components/schemas/LLMDimensions'
+          description: List of attributes or entity types to group by.
+          type: array
+          items:
+            type: string
+            enum:
+              - control_plane
+              - control_plane_group
+              - gateway_service
+              - consumer
+              - application
+              - route
+              - ai_provider
+              - ai_response_model
+              - ai_request_model
+              - llm_cache_status
+              - llm_embeddings_provider
+              - llm_embeddings_model
+              - time
+              - realm
+              - status_code
+              - status_code_grouped
+              - ai_plugin
+          maxItems: 2
         filters:
           $ref: '#/components/schemas/LLMFilters'
         granularity:
@@ -18872,7 +18911,8 @@ components:
           chart: '#/components/schemas/ChartTile'
       oneOf:
         - $ref: '#/components/schemas/ChartTile'
-    BaseTile:
+    ChartTile:
+      description: A tile that queries data and renders a chart.
       type: object
       properties:
         layout:
@@ -18927,44 +18967,37 @@ components:
           required:
             - position
             - size
+        type:
+          description: The type of tile.  Chart tiles must have type 'chart'.
+          type: string
+          enum:
+            - chart
+        definition:
+          description: |
+            The tile's definition, which consists of a query to fetch data and a chart to render the data.
+            Note that some charts expect certain types of queries to render properly.  The documentation for the individual chart types has more information.
+          type: object
+          additionalProperties: false
+          properties:
+            query:
+              discriminator:
+                propertyName: datasource
+                mapping:
+                  api_usage: '#/components/schemas/AdvancedQuery'
+                  llm_usage: '#/components/schemas/LLMQuery'
+              oneOf:
+                - $ref: '#/components/schemas/AdvancedQuery'
+                - $ref: '#/components/schemas/LLMQuery'
+            chart:
+              $ref: '#/components/schemas/Chart'
+          required:
+            - query
+            - chart
+      additionalProperties: false
       required:
         - layout
-    ChartTile:
-      allOf:
-        - $ref: '#/components/schemas/BaseTile'
-        - type: object
-          description: A tile that queries data and renders a chart.
-          properties:
-            type:
-              description: The type of tile.  Chart tiles must have type 'chart'.
-              type: string
-              enum:
-                - chart
-            definition:
-              description: |
-                The tile's definition, which consists of a query to fetch data and a chart to render the data.
-                Note that some charts expect certain types of queries to render properly.  The documentation for the individual chart types has more information.
-              type: object
-              additionalProperties: false
-              properties:
-                query:
-                  discriminator:
-                    propertyName: datasource
-                    mapping:
-                      api_usage: '#/components/schemas/AdvancedQuery'
-                      llm_usage: '#/components/schemas/LLMQuery'
-                  oneOf:
-                    - $ref: '#/components/schemas/AdvancedQuery'
-                    - $ref: '#/components/schemas/LLMQuery'
-                chart:
-                  $ref: '#/components/schemas/Chart'
-              required:
-                - query
-                - chart
-          required:
-            - type
-            - definition
-          additionalProperties: false
+        - type
+        - definition
     Dashboard:
       description: |
         A JSON object describing a dashboard.
@@ -18982,26 +19015,25 @@ components:
           maxLength: 102
           minLength: 0
         preset_filters:
-          description: An optional array of filters that are applied globally to all relevant tiles in the dashboard.
+          description: |
+            An optional array of filters that are applied globally to all relevant tiles in the dashboard.
+
+            Whether or not a preset filter applies to a tile depends on the filter's dimension.  Some dimensions, like `control_plane`, are common to all datasources; other dimensions may only apply to one datasource.
           type: array
           items:
-            oneOf:
-              - $ref: '#/components/schemas/AdvancedFilters'
-              - $ref: '#/components/schemas/LLMFilters'
+            $ref: '#/components/schemas/AllFilterItems'
+          example:
+            - operator: in
+              field: control_plane
+              value:
+                - 00000000-0000-0000-0000-000000000000
+            - operator: in
+              field: ai_request_model
+              value:
+                - request_model1
       additionalProperties: false
       required:
         - tiles
-    DashboardMetadata:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        created_by:
-          $ref: '#/components/schemas/UUID'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
     DashboardUpdateRequest:
       type: object
       properties:
@@ -19021,10 +19053,31 @@ components:
         - definition
       title: Dashboard Request
     DashboardResponse:
-      allOf:
-        - $ref: '#/components/schemas/DashboardUpdateRequest'
-        - $ref: '#/components/schemas/DashboardMetadata'
-      title: Dashboard Response
+      type: object
+      properties:
+        name:
+          description: |
+            The dashboard name, which is displayed at the top of the dashboard and in lists.
+            It does not need to be unique.
+          type: string
+          maxLength: 255
+          minLength: 1
+        definition:
+          $ref: '#/components/schemas/Dashboard'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_by:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - name
+        - definition
+      title: Dashboard Request
     AdvancedMetrics:
       description: 'List of aggregated metrics to collect across the requested time span. If no metrics are specified, request_count will be computed by default.'
       type: array
@@ -19057,32 +19110,6 @@ components:
           - upstream_latency_p99
       default:
         - request_count
-    AdvancedDimensions:
-      description: List of attributes or entity types to group by.
-      type: array
-      items:
-        type: string
-        enum:
-          - api
-          - api_product
-          - api_product_version
-          - application
-          - consumer
-          - control_plane
-          - control_plane_group
-          - data_plane_node
-          - data_plane_node_version
-          - gateway_service
-          - portal
-          - response_source
-          - route
-          - status_code
-          - status_code_grouped
-          - time
-          - upstream_status_code
-          - upstream_status_code_grouped
-      example:
-        - status_code_grouped
     RequestsFilterType:
       description: 'The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values.'
       type: string
@@ -19092,45 +19119,12 @@ components:
     UnscopedUuid:
       type: string
       pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
-    FilterMultiValueUUID:
-      type: object
-      properties:
-        operator:
-          $ref: '#/components/schemas/RequestsFilterType'
-        value:
-          description: |
-            The IDs to include in the results.
-          type: array
-          items:
-            $ref: '#/components/schemas/UnscopedUuid'
-      required:
-        - operator
-        - value
-      title: Multiselect filters
-    MetricsApiFilter:
-      type: object
-      properties:
-        field:
-          description: The field to filter.
-          type: string
-          enum:
-            - api
-      required:
-        - field
     RequestsFilterTypeEmpty:
       description: The type of filter to apply.
       type: string
       enum:
         - empty
         - not_empty
-    FilterEmpty:
-      type: object
-      properties:
-        operator:
-          $ref: '#/components/schemas/RequestsFilterTypeEmpty'
-      required:
-        - operator
-      title: Empty filters
     MetricsApiFilterByField:
       oneOf:
         - title: Multiselect filters
@@ -19167,16 +19161,6 @@ components:
             - operator
             - field
       title: Filter by api
-    MetricsApiProductFilter:
-      type: object
-      properties:
-        field:
-          description: The field to filter.
-          type: string
-          enum:
-            - api_product
-      required:
-        - field
     MetricsApiProductFilterByField:
       oneOf:
         - title: Multiselect filters
@@ -19213,16 +19197,6 @@ components:
             - operator
             - field
       title: Filter by api_product
-    MetricsApiProductVersionFilter:
-      type: object
-      properties:
-        field:
-          description: The field to filter.
-          type: string
-          enum:
-            - api_product_version
-      required:
-        - field
     MetricsApiProductVersionFilterByField:
       oneOf:
         - title: Multiselect filters
@@ -19259,16 +19233,6 @@ components:
             - operator
             - field
       title: Filter by api_product_version
-    MetricsApplicationFilter:
-      type: object
-      properties:
-        field:
-          description: The field to filter.
-          type: string
-          enum:
-            - application
-      required:
-        - field
     MetricsApplicationFilterByField:
       oneOf:
         - title: Multiselect filters
@@ -19308,31 +19272,6 @@ components:
     ScopedUuid:
       type: string
       pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
-    FilterMultiValueScopedUUID:
-      type: object
-      properties:
-        operator:
-          $ref: '#/components/schemas/RequestsFilterType'
-        value:
-          description: |
-            The IDs to include in the results. Because gateway IDs are only unique within a given control plane, the filter values must be of the form `control_plane_id:field_id` or `control_plane_group_id:field_id` for data plane nodes within a control plane group.
-          type: array
-          items:
-            $ref: '#/components/schemas/ScopedUuid'
-      required:
-        - operator
-        - value
-      title: Multiselect filters
-    MetricsConsumerFilter:
-      type: object
-      properties:
-        field:
-          description: The field to filter.
-          type: string
-          enum:
-            - consumer
-      required:
-        - field
     MetricsConsumerFilterByField:
       oneOf:
         - title: Multiselect filters
@@ -19369,16 +19308,6 @@ components:
             - operator
             - field
       title: Filter by consumer
-    MetricsControlPlaneFilter:
-      type: object
-      properties:
-        field:
-          description: The field to filter.
-          type: string
-          enum:
-            - control_plane
-      required:
-        - field
     MetricsControlPlaneFilterByField:
       oneOf:
         - title: Multiselect filters
@@ -19415,16 +19344,6 @@ components:
             - operator
             - field
       title: Filter by control_plane
-    MetricsControlPlaneGroupFilter:
-      type: object
-      properties:
-        field:
-          description: The field to filter.
-          type: string
-          enum:
-            - control_plane_group
-      required:
-        - field
     MetricsControlPlaneGroupFilterByField:
       oneOf:
         - title: Multiselect filters
@@ -19461,16 +19380,6 @@ components:
             - operator
             - field
       title: Filter by control_plane_group
-    MetricsDataPlaneNodeFilter:
-      type: object
-      properties:
-        field:
-          description: The field to filter.
-          type: string
-          enum:
-            - data_plane_node
-      required:
-        - field
     MetricsDataPlaneNodeFilterByField:
       oneOf:
         - title: Multiselect filters
@@ -19507,31 +19416,6 @@ components:
             - operator
             - field
       title: Filter by data_plane_node
-    FilterMultiValueString:
-      type: object
-      properties:
-        operator:
-          $ref: '#/components/schemas/RequestsFilterType'
-        value:
-          description: |
-            The values to include in the results.
-          type: array
-          items:
-            type: string
-      required:
-        - operator
-        - value
-      title: Multiselect filters
-    MetricsDataPlaneNodeVersionFilter:
-      type: object
-      properties:
-        field:
-          description: The field to filter.
-          type: string
-          enum:
-            - data_plane_node_version
-      required:
-        - field
     MetricsDataPlaneNodeVersionFilterByField:
       oneOf:
         - title: Multiselect filters
@@ -19568,16 +19452,6 @@ components:
             - operator
             - field
       title: Filter by data_plane_node_version
-    MetricsGatewayServiceFilter:
-      type: object
-      properties:
-        field:
-          description: The field to filter.
-          type: string
-          enum:
-            - gateway_service
-      required:
-        - field
     MetricsGatewayServiceFilterByField:
       oneOf:
         - title: Multiselect filters
@@ -19614,16 +19488,6 @@ components:
             - operator
             - field
       title: Filter by gateway_service
-    MetricsPortalFilter:
-      type: object
-      properties:
-        field:
-          description: The field to filter.
-          type: string
-          enum:
-            - portal
-      required:
-        - field
     MetricsPortalFilterByField:
       oneOf:
         - title: Multiselect filters
@@ -19660,16 +19524,6 @@ components:
             - operator
             - field
       title: Filter by portal
-    MetricsRealmFilter:
-      type: object
-      properties:
-        field:
-          description: The field to filter.
-          type: string
-          enum:
-            - realm
-      required:
-        - field
     MetricsRealmFilterByField:
       oneOf:
         - title: Multiselect filters
@@ -19706,16 +19560,6 @@ components:
             - operator
             - field
       title: Filter by realm
-    MetricsResponseSourceFilter:
-      type: object
-      properties:
-        field:
-          description: The field to filter.
-          type: string
-          enum:
-            - response_source
-      required:
-        - field
     MetricsResponseSourceFilterByField:
       oneOf:
         - title: Multiselect filters
@@ -19752,16 +19596,6 @@ components:
             - operator
             - field
       title: Filter by response_source
-    MetricsRouteFilter:
-      type: object
-      properties:
-        field:
-          description: The field to filter.
-          type: string
-          enum:
-            - route
-      required:
-        - field
     MetricsRouteFilterByField:
       oneOf:
         - title: Multiselect filters
@@ -19798,33 +19632,6 @@ components:
             - operator
             - field
       title: Filter by route
-    FilterMultiValueStatusCode:
-      type: object
-      properties:
-        operator:
-          $ref: '#/components/schemas/RequestsFilterType'
-        value:
-          description: |
-            The codes to include in the results.
-          type: array
-          items:
-            type: integer
-            minimum: 0
-            maximum: 999
-      required:
-        - operator
-        - value
-      title: Multiselect filters
-    MetricsStatusCodeFilter:
-      type: object
-      properties:
-        field:
-          description: The field to filter.
-          type: string
-          enum:
-            - status_code
-      required:
-        - field
     MetricsStatusCodeFilterByField:
       oneOf:
         - title: Multiselect filters
@@ -19863,32 +19670,6 @@ components:
             - operator
             - field
       title: Filter by status_code
-    FilterMultiValueStatusCodeGrouped:
-      type: object
-      properties:
-        operator:
-          $ref: '#/components/schemas/RequestsFilterType'
-        value:
-          description: |
-            The code groups to include in the results.
-          type: array
-          items:
-            type: string
-            pattern: '^\d[xX][xX]$'
-      required:
-        - operator
-        - value
-      title: Multiselect filters
-    MetricsStatusCodeGroupedFilter:
-      type: object
-      properties:
-        field:
-          description: The field to filter.
-          type: string
-          enum:
-            - status_code_grouped
-      required:
-        - field
     MetricsStatusCodeGroupedFilterByField:
       oneOf:
         - title: Multiselect filters
@@ -19926,16 +19707,6 @@ components:
             - operator
             - field
       title: Filter by status_code_grouped
-    MetricsUpstreamStatusCodeFilter:
-      type: object
-      properties:
-        field:
-          description: The field to filter.
-          type: string
-          enum:
-            - upstream_status_code
-      required:
-        - field
     MetricsUpstreamStatusCodeFilterByField:
       oneOf:
         - title: Multiselect filters
@@ -19974,16 +19745,6 @@ components:
             - operator
             - field
       title: Filter by upstream_status_code
-    MetricsUpstreamStatusCodeGroupedFilter:
-      type: object
-      properties:
-        field:
-          description: The field to filter.
-          type: string
-          enum:
-            - upstream_status_code_grouped
-      required:
-        - field
     MetricsUpstreamStatusCodeGroupedFilterByField:
       oneOf:
         - title: Multiselect filters
@@ -20175,134 +19936,257 @@ components:
           - llm_embeddings_cost
       default:
         - ai_request_count
-    LLMDimensions:
-      description: List of attributes or entity types to group by.
-      type: array
-      items:
-        type: string
-        enum:
-          - control_plane
-          - control_plane_group
-          - gateway_service
-          - consumer
-          - application
-          - route
-          - ai_provider
-          - ai_response_model
-          - ai_request_model
-          - llm_cache_status
-          - llm_embeddings_provider
-          - llm_embeddings_model
-          - time
-          - realm
-          - status_code
-          - status_code_grouped
-          - ai_plugin
-      maxItems: 2
     MetricsAiPluginFilterByField:
-      allOf:
-        - type: object
+      oneOf:
+        - title: Multiselect filters
+          type: object
           properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The values to include in the results.
+              type: array
+              items:
+                type: string
             field:
               description: The field to filter.
               type: string
               enum:
                 - ai_plugin
           required:
+            - operator
+            - value
             - field
-        - oneOf:
-            - $ref: '#/components/schemas/FilterMultiValueString'
-            - $ref: '#/components/schemas/FilterEmpty'
+        - title: Empty filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - ai_plugin
+          required:
+            - operator
+            - field
       title: Filter by ai_plugin
     MetricsAiProviderFilterByField:
-      allOf:
-        - type: object
+      oneOf:
+        - title: Multiselect filters
+          type: object
           properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The values to include in the results.
+              type: array
+              items:
+                type: string
             field:
               description: The field to filter.
               type: string
               enum:
                 - ai_provider
           required:
+            - operator
+            - value
             - field
-        - oneOf:
-            - $ref: '#/components/schemas/FilterMultiValueString'
-            - $ref: '#/components/schemas/FilterEmpty'
+        - title: Empty filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - ai_provider
+          required:
+            - operator
+            - field
       title: Filter by ai_provider
     MetricsAiRequestModelFilterByField:
-      allOf:
-        - type: object
+      oneOf:
+        - title: Multiselect filters
+          type: object
           properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The values to include in the results.
+              type: array
+              items:
+                type: string
             field:
               description: The field to filter.
               type: string
               enum:
                 - ai_request_model
           required:
+            - operator
+            - value
             - field
-        - oneOf:
-            - $ref: '#/components/schemas/FilterMultiValueString'
-            - $ref: '#/components/schemas/FilterEmpty'
+        - title: Empty filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - ai_request_model
+          required:
+            - operator
+            - field
       title: Filter by ai_request_model
     MetricsAiResponseModelFilterByField:
-      allOf:
-        - type: object
+      oneOf:
+        - title: Multiselect filters
+          type: object
           properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The values to include in the results.
+              type: array
+              items:
+                type: string
             field:
               description: The field to filter.
               type: string
               enum:
                 - ai_response_model
           required:
+            - operator
+            - value
             - field
-        - oneOf:
-            - $ref: '#/components/schemas/FilterMultiValueString'
-            - $ref: '#/components/schemas/FilterEmpty'
-      title: Filter by ai_response_model
-    MetricsLLMCacheStatusFilterByField:
-      allOf:
-        - type: object
+        - title: Empty filters
+          type: object
           properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - ai_response_model
+          required:
+            - operator
+            - field
+      title: Filter by ai_response_model
+    MetricsLlmCacheStatusFilterByField:
+      oneOf:
+        - title: Multiselect filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The values to include in the results.
+              type: array
+              items:
+                type: string
             field:
               description: The field to filter.
               type: string
               enum:
                 - llm_cache_status
           required:
+            - operator
+            - value
             - field
-        - oneOf:
-            - $ref: '#/components/schemas/FilterMultiValueString'
-            - $ref: '#/components/schemas/FilterEmpty'
-      title: Filter by llm_cache_status
-    MetricsLLMEmbeddingsModelFilterByField:
-      allOf:
-        - type: object
+        - title: Empty filters
+          type: object
           properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - llm_cache_status
+          required:
+            - operator
+            - field
+      title: Filter by llm_cache_status
+    MetricsLlmEmbeddingsModelFilterByField:
+      oneOf:
+        - title: Multiselect filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The values to include in the results.
+              type: array
+              items:
+                type: string
             field:
               description: The field to filter.
               type: string
               enum:
                 - llm_embeddings_model
           required:
+            - operator
+            - value
             - field
-        - oneOf:
-            - $ref: '#/components/schemas/FilterMultiValueString'
-            - $ref: '#/components/schemas/FilterEmpty'
-      title: Filter by llm_embeddings_model
-    MetricsLLMEmbeddingsProviderFilterByField:
-      allOf:
-        - type: object
+        - title: Empty filters
+          type: object
           properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - llm_embeddings_model
+          required:
+            - operator
+            - field
+      title: Filter by llm_embeddings_model
+    MetricsLlmEmbeddingsProviderFilterByField:
+      oneOf:
+        - title: Multiselect filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The values to include in the results.
+              type: array
+              items:
+                type: string
             field:
               description: The field to filter.
               type: string
               enum:
                 - llm_embeddings_provider
           required:
+            - operator
+            - value
             - field
-        - oneOf:
-            - $ref: '#/components/schemas/FilterMultiValueString'
-            - $ref: '#/components/schemas/FilterEmpty'
+        - title: Empty filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - llm_embeddings_provider
+          required:
+            - operator
+            - field
       title: Filter by llm_embeddings_provider
     LLMFilters:
       description: A list of filters to apply to the query.
@@ -20341,99 +20225,91 @@ components:
         required:
           - field
           - operator
-    ChartMeta:
+    DonutChart:
+      description: |
+        A chart that can display one-dimensional data in a hollow, segmented circle.  To use this chart, ensure that
+        the query includes only one dimension (not `time`).
       type: object
       properties:
         chart_title:
           description: 'The title of the chart, which is displayed in the tile''s header.'
           type: string
-    DonutChart:
-      allOf:
-        - $ref: '#/components/schemas/ChartMeta'
-        - type: object
-          title: Donut chart
-          description: |
-            A chart that can display one-dimensional data in a hollow, segmented circle.  To use this chart, ensure that
-            the query includes only one dimension (not `time`).
-          properties:
-            type:
-              type: string
-              enum:
-                - donut
-            chart_title:
-              type: string
-          required:
-            - type
-          additionalProperties: false
+        type:
+          type: string
+          enum:
+            - donut
+      additionalProperties: false
+      required:
+        - type
+      title: Donut chart
     TimeseriesChart:
-      allOf:
-        - $ref: '#/components/schemas/ChartMeta'
-        - type: object
-          title: Timeseries chart
+      description: |
+        A chart that can render timeseries data -- data from a query that has `time` as a dimension -- as lines or bars.
+
+        This type of chart can support:
+
+        - One or more metrics: `{ metrics: ["response_latency_p99", "response_latency_p95"], dimensions: ["time"] }`
+        - One metric plus one non-time dimension: `{ metrics: ["request_count"], dimensions: ["time", "gateway_service"] }` 
+
+        Either way, ensure that `time` is in the list of query dimensions.
+      type: object
+      properties:
+        chart_title:
+          description: 'The title of the chart, which is displayed in the tile''s header.'
+          type: string
+        type:
+          type: string
+          enum:
+            - timeseries_line
+            - timeseries_bar
+        stacked:
           description: |
-            A chart that can render timeseries data -- data from a query that has `time` as a dimension -- as lines or bars.
-
-            This type of chart can support:
-
-            - One or more metrics: `{ metrics: ["response_latency_p99", "response_latency_p95"], dimensions: ["time"] }`
-            - One metric plus one non-time dimension: `{ metrics: ["request_count"], dimensions: ["time", "gateway_service"] }` 
-
-            Either way, ensure that `time` is in the list of query dimensions.
-          properties:
-            type:
-              type: string
-              enum:
-                - timeseries_line
-                - timeseries_bar
-            stacked:
-              description: |
-                Whether to stack the bars or lines (implicitly adding them together to form a total), or leave them independent from each other.
-              type: boolean
-          required:
-            - type
-          additionalProperties: false
+            Whether to stack the bars or lines (implicitly adding them together to form a total), or leave them independent from each other.
+          type: boolean
+      additionalProperties: false
+      required:
+        - type
+      title: Timeseries chart
     BarChart:
-      allOf:
-        - $ref: '#/components/schemas/ChartMeta'
-        - type: object
-          title: Bar chart
+      description: |
+        A chart that can display non-timeseries data as bars.  This type of chart supports up to 2 dimensions (not `time`).
+        To render a bar chart of timeseries data, use a `timeseries_bar` chart instead.
+      type: object
+      properties:
+        chart_title:
+          description: 'The title of the chart, which is displayed in the tile''s header.'
+          type: string
+        type:
+          type: string
+          enum:
+            - horizontal_bar
+            - vertical_bar
+        stacked:
           description: |
-            A chart that can display non-timeseries data as bars.  This type of chart supports up to 2 dimensions (not `time`).
-            To render a bar chart of timeseries data, use a `timeseries_bar` chart instead.
-          properties:
-            type:
-              type: string
-              enum:
-                - horizontal_bar
-                - vertical_bar
-            stacked:
-              description: |
-                Whether to stack the bars (implicitly adding them together to form a total), or leave them independent from each other.
-              type: boolean
-            chart_title:
-              type: string
-          required:
-            - type
-          additionalProperties: false
+            Whether to stack the bars (implicitly adding them together to form a total), or leave them independent from each other.
+          type: boolean
+      additionalProperties: false
+      required:
+        - type
+      title: Bar chart
     SingleValueChart:
-      allOf:
-        - $ref: '#/components/schemas/ChartMeta'
-        - type: object
-          title: Single value chart
-          description: A chart that can render a single number.  This chart works with a single metric and no dimensions.
-          properties:
-            type:
-              type: string
-              enum:
-                - single_value
-            decimal_points:
-              description: 'The number of figures to render after the decimal.  Most metrics only support up to 2 decimals, but some may support more.'
-              type: number
-            chart_title:
-              type: string
-          required:
-            - type
-          additionalProperties: false
+      description: A chart that can render a single number.  This chart works with a single metric and no dimensions.
+      type: object
+      properties:
+        chart_title:
+          description: 'The title of the chart, which is displayed in the tile''s header.'
+          type: string
+        type:
+          type: string
+          enum:
+            - single_value
+        decimal_points:
+          description: 'The number of figures to render after the decimal.  Most metrics only support up to 2 decimals, but some may support more.'
+          type: number
+      additionalProperties: false
+      required:
+        - type
+      title: Single value chart
     Chart:
       description: The type of chart to render.
       discriminator:
@@ -20450,6 +20326,50 @@ components:
         - $ref: '#/components/schemas/TimeseriesChart'
         - $ref: '#/components/schemas/BarChart'
         - $ref: '#/components/schemas/SingleValueChart'
+    AllFilterItems:
+      items:
+        type: object
+        properties:
+          field:
+            type: string
+            enum:
+              - ai_plugin
+              - ai_provider
+              - ai_request_model
+              - ai_response_model
+              - api
+              - api_product
+              - api_product_version
+              - application
+              - consumer
+              - control_plane
+              - control_plane_group
+              - data_plane_node
+              - data_plane_node_version
+              - gateway_service
+              - llm_cache_status
+              - llm_embeddings_model
+              - llm_embeddings_provider
+              - portal
+              - realm
+              - response_source
+              - route
+              - status_code
+              - status_code_grouped
+              - upstream_status_code
+              - upstream_status_code_grouped
+          operator:
+            type: string
+            enum:
+              - in
+              - not_in
+              - empty
+              - not_empty
+          value:
+            x-speakeasy-type-override: any
+        required:
+          - field
+          - operator
   requestBodies:
     CreatePortalCustomDomain:
       description: Create a portal custom domain.
