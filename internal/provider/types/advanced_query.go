@@ -7,10 +7,10 @@ import (
 )
 
 type AdvancedQuery struct {
-	Datasource  types.String      `tfsdk:"datasource"`
-	Dimensions  []types.String    `tfsdk:"dimensions"`
-	Filters     []AdvancedFilters `tfsdk:"filters"`
-	Granularity types.String      `tfsdk:"granularity"`
-	Metrics     []types.String    `tfsdk:"metrics"`
-	TimeRange   *TimeRange        `tfsdk:"time_range"`
+	Datasource  types.String     `tfsdk:"datasource"`
+	Dimensions  []types.String   `tfsdk:"dimensions"`
+	Filters     []AllFilterItems `tfsdk:"filters"`
+	Granularity types.String     `tfsdk:"granularity"`
+	Metrics     []types.String   `tfsdk:"metrics"`
+	TimeRange   *TimeRange       `tfsdk:"time_range"`
 }

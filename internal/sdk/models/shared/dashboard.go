@@ -11,7 +11,10 @@ type Dashboard struct {
 	// The array of tiles.  We currently support up to 102 tiles, which is 17 rows of 6x1 tiles.
 	Tiles []Tile `json:"tiles"`
 	// An optional array of filters that are applied globally to all relevant tiles in the dashboard.
-	PresetFilters [][]AdvancedFilters `json:"preset_filters,omitempty"`
+	//
+	// Whether or not a preset filter applies to a tile depends on the filter's dimension.  Some dimensions, like `control_plane`, are common to all datasources; other dimensions may only apply to one datasource.
+	//
+	PresetFilters [][]AllFilterItems `json:"preset_filters,omitempty"`
 }
 
 func (o *Dashboard) GetTiles() []Tile {
@@ -21,7 +24,7 @@ func (o *Dashboard) GetTiles() []Tile {
 	return o.Tiles
 }
 
-func (o *Dashboard) GetPresetFilters() [][]AdvancedFilters {
+func (o *Dashboard) GetPresetFilters() [][]AllFilterItems {
 	if o == nil {
 		return nil
 	}

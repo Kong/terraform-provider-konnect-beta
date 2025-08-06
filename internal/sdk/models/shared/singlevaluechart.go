@@ -32,6 +32,7 @@ func (e *SingleValueChartType) UnmarshalJSON(data []byte) error {
 
 // SingleValueChart - A chart that can render a single number.  This chart works with a single metric and no dimensions.
 type SingleValueChart struct {
+	// The title of the chart, which is displayed in the tile's header.
 	ChartTitle *string              `json:"chart_title,omitempty"`
 	Type       SingleValueChartType `json:"type"`
 	// The number of figures to render after the decimal.  Most metrics only support up to 2 decimals, but some may support more.

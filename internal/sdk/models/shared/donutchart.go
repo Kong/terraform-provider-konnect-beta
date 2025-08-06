@@ -33,6 +33,7 @@ func (e *DonutChartType) UnmarshalJSON(data []byte) error {
 // DonutChart - A chart that can display one-dimensional data in a hollow, segmented circle.  To use this chart, ensure that
 // the query includes only one dimension (not `time`).
 type DonutChart struct {
+	// The title of the chart, which is displayed in the tile's header.
 	ChartTitle *string        `json:"chart_title,omitempty"`
 	Type       DonutChartType `json:"type"`
 }

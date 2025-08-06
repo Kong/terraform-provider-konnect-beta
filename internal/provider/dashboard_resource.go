@@ -88,7 +88,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 								},
 							},
 						},
-						Description: `An optional array of filters that are applied globally to all relevant tiles in the dashboard.`,
+						MarkdownDescription: `An optional array of filters that are applied globally to all relevant tiles in the dashboard.` + "\n" +
+							`` + "\n" +
+							`Whether or not a preset filter applies to a tile depends on the filter's dimension.  Some dimensions, like ` + "`" + `control_plane` + "`" + `, are common to all datasources; other dimensions may only apply to one datasource.`,
 					},
 					"tiles": schema.ListNestedAttribute{
 						Required: true,
@@ -114,8 +116,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"chart_title": schema.StringAttribute{
-																	Computed: true,
-																	Optional: true,
+																	Computed:    true,
+																	Optional:    true,
+																	Description: `The title of the chart, which is displayed in the tile's header.`,
 																},
 																"type": schema.StringAttribute{
 																	Computed:    true,
@@ -142,8 +145,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"chart_title": schema.StringAttribute{
-																	Computed: true,
-																	Optional: true,
+																	Computed:    true,
+																	Optional:    true,
+																	Description: `The title of the chart, which is displayed in the tile's header.`,
 																},
 																"stacked": schema.BoolAttribute{
 																	Computed:    true,
@@ -178,8 +182,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"chart_title": schema.StringAttribute{
-																	Computed: true,
-																	Optional: true,
+																	Computed:    true,
+																	Optional:    true,
+																	Description: `The title of the chart, which is displayed in the tile's header.`,
 																},
 																"decimal_points": schema.Float64Attribute{
 																	Computed:    true,
@@ -279,6 +284,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																	Computed:    true,
 																	Optional:    true,
 																	ElementType: types.StringType,
+																	Description: `List of attributes or entity types to group by.`,
 																	Validators: []validator.List{
 																		listvalidator.SizeAtMost(2),
 																	},
@@ -512,6 +518,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																	Computed:    true,
 																	Optional:    true,
 																	ElementType: types.StringType,
+																	Description: `List of attributes or entity types to group by.`,
 																	Validators: []validator.List{
 																		listvalidator.SizeAtMost(2),
 																	},

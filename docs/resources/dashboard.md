@@ -142,6 +142,8 @@ Optional:
 
 - `preset_filters` (List of List of Object) An optional array of filters that are applied globally to all relevant tiles in the dashboard.
 
+Whether or not a preset filter applies to a tile depends on the filter's dimension.  Some dimensions, like `control_plane`, are common to all datasources; other dimensions may only apply to one datasource.
+
 <a id="nestedatt--definition--tiles"></a>
 ### Nested Schema for `definition.tiles`
 
@@ -197,7 +199,7 @@ Either way, ensure that `time` is in the list of query dimensions. (see [below f
 
 Optional:
 
-- `chart_title` (String)
+- `chart_title` (String) The title of the chart, which is displayed in the tile's header.
 - `type` (String) Not Null; must be "donut"
 
 
@@ -206,7 +208,7 @@ Optional:
 
 Optional:
 
-- `chart_title` (String)
+- `chart_title` (String) The title of the chart, which is displayed in the tile's header.
 - `stacked` (Boolean) Whether to stack the bars (implicitly adding them together to form a total), or leave them independent from each other.
 - `type` (String) Not Null; must be one of ["horizontal_bar", "vertical_bar"]
 
@@ -216,7 +218,7 @@ Optional:
 
 Optional:
 
-- `chart_title` (String)
+- `chart_title` (String) The title of the chart, which is displayed in the tile's header.
 - `decimal_points` (Number) The number of figures to render after the decimal.  Most metrics only support up to 2 decimals, but some may support more.
 - `type` (String) Not Null; must be "single_value"
 
@@ -246,7 +248,7 @@ Optional:
 Optional:
 
 - `datasource` (String) Not Null; must be "api_usage"
-- `dimensions` (List of String)
+- `dimensions` (List of String) List of attributes or entity types to group by.
 - `filters` (Attributes List) A list of filters to apply to the query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--api_usage--filters))
 - `granularity` (String) Force time grouping into buckets of the specified duration.  Only has an effect if "time" is in the "dimensions" list.
 
@@ -321,7 +323,7 @@ Optional:
 Optional:
 
 - `datasource` (String) Not Null; must be "llm_usage"
-- `dimensions` (List of String)
+- `dimensions` (List of String) List of attributes or entity types to group by.
 - `filters` (Attributes List) A list of filters to apply to the query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--llm_usage--filters))
 - `granularity` (String) Force time grouping into buckets of the specified duration.  Only has an effect if "time" is in the "dimensions" list.
 

@@ -36,6 +36,7 @@ func (e *BarChartType) UnmarshalJSON(data []byte) error {
 // BarChart - A chart that can display non-timeseries data as bars.  This type of chart supports up to 2 dimensions (not `time`).
 // To render a bar chart of timeseries data, use a `timeseries_bar` chart instead.
 type BarChart struct {
+	// The title of the chart, which is displayed in the tile's header.
 	ChartTitle *string      `json:"chart_title,omitempty"`
 	Type       BarChartType `json:"type"`
 	// Whether to stack the bars (implicitly adding them together to form a total), or leave them independent from each other.

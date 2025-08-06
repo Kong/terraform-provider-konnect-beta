@@ -113,7 +113,12 @@ func (r *PortalCustomDomainResourceModel) ToSharedCreatePortalCustomDomainReques
 	var enabled bool
 	enabled = r.Enabled.ValueBool()
 
-	domainVerificationMethod := shared.PortalCustomDomainVerificationMethod(r.Ssl.DomainVerificationMethod.ValueString())
+	domainVerificationMethod := new(shared.DomainVerificationMethod)
+	if !r.Ssl.DomainVerificationMethod.IsUnknown() && !r.Ssl.DomainVerificationMethod.IsNull() {
+		*domainVerificationMethod = shared.DomainVerificationMethod(r.Ssl.DomainVerificationMethod.ValueString())
+	} else {
+		domainVerificationMethod = nil
+	}
 	customCertificate := new(string)
 	if !r.Ssl.CustomCertificate.IsUnknown() && !r.Ssl.CustomCertificate.IsNull() {
 		*customCertificate = r.Ssl.CustomCertificate.ValueString()

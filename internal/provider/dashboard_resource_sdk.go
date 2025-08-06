@@ -22,10 +22,10 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 		r.CreatedBy = types.StringPointerValue(resp.CreatedBy)
 		r.Definition.PresetFilters = nil
 		for _, presetFiltersItem := range resp.Definition.PresetFilters {
-			var presetFilters []tfTypes.AdvancedFilters
-			presetFilters = []tfTypes.AdvancedFilters{}
+			var presetFilters []tfTypes.AllFilterItems
+			presetFilters = []tfTypes.AllFilterItems{}
 			for presetFiltersCount, presetFiltersItem1 := range presetFiltersItem {
-				var presetFilters1 tfTypes.AdvancedFilters
+				var presetFilters1 tfTypes.AllFilterItems
 				presetFilters1.Field = types.StringValue(string(presetFiltersItem1.Field))
 				presetFilters1.Operator = types.StringValue(string(presetFiltersItem1.Operator))
 				if presetFiltersItem1.Value == nil {
@@ -82,9 +82,9 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 					for _, v := range tilesItem.ChartTile.Definition.Query.AdvancedQuery.Dimensions {
 						tiles.Chart.Definition.Query.APIUsage.Dimensions = append(tiles.Chart.Definition.Query.APIUsage.Dimensions, types.StringValue(string(v)))
 					}
-					tiles.Chart.Definition.Query.APIUsage.Filters = []tfTypes.AdvancedFilters{}
+					tiles.Chart.Definition.Query.APIUsage.Filters = []tfTypes.AllFilterItems{}
 					for filtersCount, filtersItem := range tilesItem.ChartTile.Definition.Query.AdvancedQuery.Filters {
-						var filters tfTypes.AdvancedFilters
+						var filters tfTypes.AllFilterItems
 						filters.Field = types.StringValue(string(filtersItem.Field))
 						filters.Operator = types.StringValue(string(filtersItem.Operator))
 						if filtersItem.Value == nil {
@@ -134,9 +134,9 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 					for _, v := range tilesItem.ChartTile.Definition.Query.LLMQuery.Dimensions {
 						tiles.Chart.Definition.Query.LlmUsage.Dimensions = append(tiles.Chart.Definition.Query.LlmUsage.Dimensions, types.StringValue(string(v)))
 					}
-					tiles.Chart.Definition.Query.LlmUsage.Filters = []tfTypes.AdvancedFilters{}
+					tiles.Chart.Definition.Query.LlmUsage.Filters = []tfTypes.AllFilterItems{}
 					for filtersCount1, filtersItem1 := range tilesItem.ChartTile.Definition.Query.LLMQuery.Filters {
-						var filters1 tfTypes.AdvancedFilters
+						var filters1 tfTypes.AllFilterItems
 						filters1.Field = types.StringValue(string(filtersItem1.Field))
 						filters1.Operator = types.StringValue(string(filtersItem1.Operator))
 						if filtersItem1.Value == nil {
@@ -603,17 +603,17 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 			})
 		}
 	}
-	presetFilters := make([][]shared.AdvancedFilters, 0, len(r.Definition.PresetFilters))
+	presetFilters := make([][]shared.AllFilterItems, 0, len(r.Definition.PresetFilters))
 	for _, presetFiltersItem := range r.Definition.PresetFilters {
-		presetFiltersTmp := make([]shared.AdvancedFilters, 0, len(presetFiltersItem))
+		presetFiltersTmp := make([]shared.AllFilterItems, 0, len(presetFiltersItem))
 		for _, item := range presetFiltersItem {
-			field2 := shared.Field(item.Field.ValueString())
-			operator2 := shared.Operator(item.Operator.ValueString())
+			field2 := shared.AllFilterItemsField(item.Field.ValueString())
+			operator2 := shared.AllFilterItemsOperator(item.Operator.ValueString())
 			var value2 interface{}
 			if !item.Value.IsUnknown() && !item.Value.IsNull() {
 				_ = json.Unmarshal([]byte(item.Value.ValueString()), &value2)
 			}
-			presetFiltersTmp = append(presetFiltersTmp, shared.AdvancedFilters{
+			presetFiltersTmp = append(presetFiltersTmp, shared.AllFilterItems{
 				Field:    field2,
 				Operator: operator2,
 				Value:    value2,

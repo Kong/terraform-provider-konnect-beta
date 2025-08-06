@@ -105,7 +105,8 @@ func (e *LLMQueryDimensions) UnmarshalJSON(data []byte) error {
 type LLMQuery struct {
 	Datasource LLMQueryDatasource `json:"datasource"`
 	// List of aggregated metrics to collect across the requested time span.
-	Metrics    []LLMMetrics         `json:"metrics,omitempty"`
+	Metrics []LLMMetrics `json:"metrics,omitempty"`
+	// List of attributes or entity types to group by.
 	Dimensions []LLMQueryDimensions `json:"dimensions,omitempty"`
 	// A list of filters to apply to the query.
 	Filters []LLMFilters `json:"filters,omitempty"`

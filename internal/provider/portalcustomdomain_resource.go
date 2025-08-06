@@ -93,23 +93,24 @@ func (r *PortalCustomDomainResource) Schema(ctx context.Context, req resource.Sc
 				Attributes: map[string]schema.Attribute{
 					"custom_certificate": schema.StringAttribute{
 						Optional:    true,
-						Description: `Custom certificate to be used for the SSL termination.`,
+						Description: `Custom certificate to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate"`,
 					},
 					"custom_private_key": schema.StringAttribute{
 						Optional:    true,
-						Description: `Custom certificate private key to be used for the SSL termination.`,
+						Description: `Custom certificate private key to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate"`,
 					},
 					"domain_verification_method": schema.StringAttribute{
-						Required: true,
+						Computed: true,
+						Optional: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `must be one of ["http", "custom_certificate"]; Requires replacement if changed.`,
+						Description: `must be one of ["custom_certificate", "http"]; Requires replacement if changed.`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
-								"http",
 								"custom_certificate",
+								"http",
 							),
 						},
 					},

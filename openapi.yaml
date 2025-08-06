@@ -5638,12 +5638,12 @@ components:
     CreatePortalCustomDomainSSL:
       type: object
       oneOf:
-        - additionalProperties: false
+        - title: custom_certificate
+          additionalProperties: false
           properties:
             domain_verification_method:
               type: string
-              enum:
-                - custom_certificate
+              const: custom_certificate
             custom_certificate:
               description: Custom certificate to be used for the SSL termination.
               type: string
@@ -5654,12 +5654,12 @@ components:
             - domain_verification_method
             - custom_certificate
             - custom_private_key
-        - additionalProperties: false
+        - title: http
+          additionalProperties: false
           properties:
             domain_verification_method:
               type: string
-              enum:
-                - http
+              const: http
           required:
             - domain_verification_method
       title: CreatePortalCustomDomainSSL
