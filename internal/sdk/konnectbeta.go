@@ -109,6 +109,7 @@ type KonnectBeta struct {
 	AuthServerScopes *AuthServerScopes
 	// Clients represent the identity of machines, such as microservices, mobile apps, or scripts entity. The management API will give you the ability to create, configure and manage multiple Clients per Auth Server.
 	AuthServerClients *AuthServerClients
+	Dashboards        *Dashboards
 
 	sdkConfiguration config.SDKConfiguration
 	hooks            *hooks.Hooks
@@ -249,6 +250,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.AuthServerClaims = newAuthServerClaims(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthServerScopes = newAuthServerScopes(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthServerClients = newAuthServerClients(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Dashboards = newDashboards(sdk, sdk.sdkConfiguration, sdk.hooks)
 
 	return sdk
 }

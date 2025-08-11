@@ -6,6 +6,6 @@ resource "konnect_portal_custom_domain" "my_portalcustomdomain" {
   ssl = {
     custom_certificate         = "...my_custom_certificate..."
     custom_private_key         = "...my_custom_private_key..."
-    domain_verification_method = "http"
+    domain_verification_method = "custom_certificate"
   }
 }
