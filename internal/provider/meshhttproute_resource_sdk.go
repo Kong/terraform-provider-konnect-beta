@@ -66,21 +66,24 @@ func (r *MeshHTTPRouteResourceModel) RefreshFromSharedMeshHTTPRouteItem(ctx cont
 			}
 		}
 		r.Spec.To = []tfTypes.MeshHTTPRouteItemTo{}
-		if len(r.Spec.To) > len(resp.Spec.To) {
-			r.Spec.To = r.Spec.To[:len(resp.Spec.To)]
-		}
-		for toCount, toItem := range resp.Spec.To {
+
+		for _, toItem := range resp.Spec.To {
 			var to tfTypes.MeshHTTPRouteItemTo
+
 			to.Hostnames = make([]types.String, 0, len(toItem.Hostnames))
 			for _, v := range toItem.Hostnames {
 				to.Hostnames = append(to.Hostnames, types.StringValue(v))
 			}
 			to.Rules = []tfTypes.MeshHTTPRouteItemRules{}
-			for rulesCount, rulesItem := range toItem.Rules {
+
+			for _, rulesItem := range toItem.Rules {
 				var rules tfTypes.MeshHTTPRouteItemRules
+
 				rules.Default.BackendRefs = []tfTypes.BackendRefs{}
-				for backendRefsCount, backendRefsItem := range rulesItem.Default.BackendRefs {
+
+				for _, backendRefsItem := range rulesItem.Default.BackendRefs {
 					var backendRefs tfTypes.BackendRefs
+
 					backendRefs.Kind = types.StringValue(string(backendRefsItem.Kind))
 					if len(backendRefsItem.Labels) > 0 {
 						backendRefs.Labels = make(map[string]types.String, len(backendRefsItem.Labels))
@@ -104,55 +107,41 @@ func (r *MeshHTTPRouteResourceModel) RefreshFromSharedMeshHTTPRouteItem(ctx cont
 						}
 					}
 					backendRefs.Weight = types.Int64PointerValue(backendRefsItem.Weight)
-					if backendRefsCount+1 > len(rules.Default.BackendRefs) {
-						rules.Default.BackendRefs = append(rules.Default.BackendRefs, backendRefs)
-					} else {
-						rules.Default.BackendRefs[backendRefsCount].Kind = backendRefs.Kind
-						rules.Default.BackendRefs[backendRefsCount].Labels = backendRefs.Labels
-						rules.Default.BackendRefs[backendRefsCount].Mesh = backendRefs.Mesh
-						rules.Default.BackendRefs[backendRefsCount].Name = backendRefs.Name
-						rules.Default.BackendRefs[backendRefsCount].Namespace = backendRefs.Namespace
-						rules.Default.BackendRefs[backendRefsCount].Port = backendRefs.Port
-						rules.Default.BackendRefs[backendRefsCount].ProxyTypes = backendRefs.ProxyTypes
-						rules.Default.BackendRefs[backendRefsCount].SectionName = backendRefs.SectionName
-						rules.Default.BackendRefs[backendRefsCount].Tags = backendRefs.Tags
-						rules.Default.BackendRefs[backendRefsCount].Weight = backendRefs.Weight
-					}
+
+					rules.Default.BackendRefs = append(rules.Default.BackendRefs, backendRefs)
 				}
 				rules.Default.Filters = []tfTypes.Filters{}
-				for filtersCount, filtersItem := range rulesItem.Default.Filters {
+
+				for _, filtersItem := range rulesItem.Default.Filters {
 					var filters tfTypes.Filters
+
 					if filtersItem.RequestHeaderModifier == nil {
 						filters.RequestHeaderModifier = nil
 					} else {
 						filters.RequestHeaderModifier = &tfTypes.RequestHeaderModifier{}
 						filters.RequestHeaderModifier.Add = []tfTypes.MeshGlobalRateLimitItemAdd{}
-						for addCount, addItem := range filtersItem.RequestHeaderModifier.Add {
+
+						for _, addItem := range filtersItem.RequestHeaderModifier.Add {
 							var add tfTypes.MeshGlobalRateLimitItemAdd
+
 							add.Name = types.StringValue(addItem.Name)
 							add.Value = types.StringValue(addItem.Value)
-							if addCount+1 > len(filters.RequestHeaderModifier.Add) {
-								filters.RequestHeaderModifier.Add = append(filters.RequestHeaderModifier.Add, add)
-							} else {
-								filters.RequestHeaderModifier.Add[addCount].Name = add.Name
-								filters.RequestHeaderModifier.Add[addCount].Value = add.Value
-							}
+
+							filters.RequestHeaderModifier.Add = append(filters.RequestHeaderModifier.Add, add)
 						}
 						filters.RequestHeaderModifier.Remove = make([]types.String, 0, len(filtersItem.RequestHeaderModifier.Remove))
 						for _, v := range filtersItem.RequestHeaderModifier.Remove {
 							filters.RequestHeaderModifier.Remove = append(filters.RequestHeaderModifier.Remove, types.StringValue(v))
 						}
 						filters.RequestHeaderModifier.Set = []tfTypes.MeshGlobalRateLimitItemAdd{}
-						for setCount, setItem := range filtersItem.RequestHeaderModifier.Set {
+
+						for _, setItem := range filtersItem.RequestHeaderModifier.Set {
 							var set tfTypes.MeshGlobalRateLimitItemAdd
+
 							set.Name = types.StringValue(setItem.Name)
 							set.Value = types.StringValue(setItem.Value)
-							if setCount+1 > len(filters.RequestHeaderModifier.Set) {
-								filters.RequestHeaderModifier.Set = append(filters.RequestHeaderModifier.Set, set)
-							} else {
-								filters.RequestHeaderModifier.Set[setCount].Name = set.Name
-								filters.RequestHeaderModifier.Set[setCount].Value = set.Value
-							}
+
+							filters.RequestHeaderModifier.Set = append(filters.RequestHeaderModifier.Set, set)
 						}
 					}
 					if filtersItem.RequestMirror == nil {
@@ -222,32 +211,28 @@ func (r *MeshHTTPRouteResourceModel) RefreshFromSharedMeshHTTPRouteItem(ctx cont
 					} else {
 						filters.ResponseHeaderModifier = &tfTypes.RequestHeaderModifier{}
 						filters.ResponseHeaderModifier.Add = []tfTypes.MeshGlobalRateLimitItemAdd{}
-						for addCount1, addItem1 := range filtersItem.ResponseHeaderModifier.Add {
+
+						for _, addItem1 := range filtersItem.ResponseHeaderModifier.Add {
 							var add1 tfTypes.MeshGlobalRateLimitItemAdd
+
 							add1.Name = types.StringValue(addItem1.Name)
 							add1.Value = types.StringValue(addItem1.Value)
-							if addCount1+1 > len(filters.ResponseHeaderModifier.Add) {
-								filters.ResponseHeaderModifier.Add = append(filters.ResponseHeaderModifier.Add, add1)
-							} else {
-								filters.ResponseHeaderModifier.Add[addCount1].Name = add1.Name
-								filters.ResponseHeaderModifier.Add[addCount1].Value = add1.Value
-							}
+
+							filters.ResponseHeaderModifier.Add = append(filters.ResponseHeaderModifier.Add, add1)
 						}
 						filters.ResponseHeaderModifier.Remove = make([]types.String, 0, len(filtersItem.ResponseHeaderModifier.Remove))
 						for _, v := range filtersItem.ResponseHeaderModifier.Remove {
 							filters.ResponseHeaderModifier.Remove = append(filters.ResponseHeaderModifier.Remove, types.StringValue(v))
 						}
 						filters.ResponseHeaderModifier.Set = []tfTypes.MeshGlobalRateLimitItemAdd{}
-						for setCount1, setItem1 := range filtersItem.ResponseHeaderModifier.Set {
+
+						for _, setItem1 := range filtersItem.ResponseHeaderModifier.Set {
 							var set1 tfTypes.MeshGlobalRateLimitItemAdd
+
 							set1.Name = types.StringValue(setItem1.Name)
 							set1.Value = types.StringValue(setItem1.Value)
-							if setCount1+1 > len(filters.ResponseHeaderModifier.Set) {
-								filters.ResponseHeaderModifier.Set = append(filters.ResponseHeaderModifier.Set, set1)
-							} else {
-								filters.ResponseHeaderModifier.Set[setCount1].Name = set1.Name
-								filters.ResponseHeaderModifier.Set[setCount1].Value = set1.Value
-							}
+
+							filters.ResponseHeaderModifier.Set = append(filters.ResponseHeaderModifier.Set, set1)
 						}
 					}
 					filters.Type = types.StringValue(string(filtersItem.Type))
@@ -266,23 +251,19 @@ func (r *MeshHTTPRouteResourceModel) RefreshFromSharedMeshHTTPRouteItem(ctx cont
 							filters.URLRewrite.Path.Type = types.StringValue(string(filtersItem.URLRewrite.Path.Type))
 						}
 					}
-					if filtersCount+1 > len(rules.Default.Filters) {
-						rules.Default.Filters = append(rules.Default.Filters, filters)
-					} else {
-						rules.Default.Filters[filtersCount].RequestHeaderModifier = filters.RequestHeaderModifier
-						rules.Default.Filters[filtersCount].RequestMirror = filters.RequestMirror
-						rules.Default.Filters[filtersCount].RequestRedirect = filters.RequestRedirect
-						rules.Default.Filters[filtersCount].ResponseHeaderModifier = filters.ResponseHeaderModifier
-						rules.Default.Filters[filtersCount].Type = filters.Type
-						rules.Default.Filters[filtersCount].URLRewrite = filters.URLRewrite
-					}
+
+					rules.Default.Filters = append(rules.Default.Filters, filters)
 				}
 				rules.Matches = []tfTypes.Matches{}
-				for matchesCount, matchesItem := range rulesItem.Matches {
+
+				for _, matchesItem := range rulesItem.Matches {
 					var matches tfTypes.Matches
+
 					matches.Headers = []tfTypes.Headers{}
-					for headersCount, headersItem := range matchesItem.Headers {
+
+					for _, headersItem := range matchesItem.Headers {
 						var headers tfTypes.Headers
+
 						headers.Name = types.StringValue(headersItem.Name)
 						if headersItem.Type != nil {
 							headers.Type = types.StringValue(string(*headersItem.Type))
@@ -290,13 +271,8 @@ func (r *MeshHTTPRouteResourceModel) RefreshFromSharedMeshHTTPRouteItem(ctx cont
 							headers.Type = types.StringNull()
 						}
 						headers.Value = types.StringPointerValue(headersItem.Value)
-						if headersCount+1 > len(matches.Headers) {
-							matches.Headers = append(matches.Headers, headers)
-						} else {
-							matches.Headers[headersCount].Name = headers.Name
-							matches.Headers[headersCount].Type = headers.Type
-							matches.Headers[headersCount].Value = headers.Value
-						}
+
+						matches.Headers = append(matches.Headers, headers)
 					}
 					if matchesItem.Method != nil {
 						matches.Method = types.StringValue(string(*matchesItem.Method))
@@ -311,34 +287,21 @@ func (r *MeshHTTPRouteResourceModel) RefreshFromSharedMeshHTTPRouteItem(ctx cont
 						matches.Path.Value = types.StringValue(matchesItem.Path.Value)
 					}
 					matches.QueryParams = []tfTypes.QueryParams{}
-					for queryParamsCount, queryParamsItem := range matchesItem.QueryParams {
+
+					for _, queryParamsItem := range matchesItem.QueryParams {
 						var queryParams tfTypes.QueryParams
+
 						queryParams.Name = types.StringValue(queryParamsItem.Name)
 						queryParams.Type = types.StringValue(string(queryParamsItem.Type))
 						queryParams.Value = types.StringValue(queryParamsItem.Value)
-						if queryParamsCount+1 > len(matches.QueryParams) {
-							matches.QueryParams = append(matches.QueryParams, queryParams)
-						} else {
-							matches.QueryParams[queryParamsCount].Name = queryParams.Name
-							matches.QueryParams[queryParamsCount].Type = queryParams.Type
-							matches.QueryParams[queryParamsCount].Value = queryParams.Value
-						}
+
+						matches.QueryParams = append(matches.QueryParams, queryParams)
 					}
-					if matchesCount+1 > len(rules.Matches) {
-						rules.Matches = append(rules.Matches, matches)
-					} else {
-						rules.Matches[matchesCount].Headers = matches.Headers
-						rules.Matches[matchesCount].Method = matches.Method
-						rules.Matches[matchesCount].Path = matches.Path
-						rules.Matches[matchesCount].QueryParams = matches.QueryParams
-					}
+
+					rules.Matches = append(rules.Matches, matches)
 				}
-				if rulesCount+1 > len(to.Rules) {
-					to.Rules = append(to.Rules, rules)
-				} else {
-					to.Rules[rulesCount].Default = rules.Default
-					to.Rules[rulesCount].Matches = rules.Matches
-				}
+
+				to.Rules = append(to.Rules, rules)
 			}
 			to.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 			if len(toItem.TargetRef.Labels) > 0 {
@@ -361,13 +324,8 @@ func (r *MeshHTTPRouteResourceModel) RefreshFromSharedMeshHTTPRouteItem(ctx cont
 					to.TargetRef.Tags[key7] = types.StringValue(value7)
 				}
 			}
-			if toCount+1 > len(r.Spec.To) {
-				r.Spec.To = append(r.Spec.To, to)
-			} else {
-				r.Spec.To[toCount].Hostnames = to.Hostnames
-				r.Spec.To[toCount].Rules = to.Rules
-				r.Spec.To[toCount].TargetRef = to.TargetRef
-			}
+
+			r.Spec.To = append(r.Spec.To, to)
 		}
 		r.Type = types.StringValue(string(resp.Type))
 	}

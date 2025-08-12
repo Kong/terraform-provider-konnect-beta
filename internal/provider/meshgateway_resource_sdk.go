@@ -6,6 +6,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/Kong/shared-speakeasy/customtypes/kumalabels"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
@@ -35,11 +36,10 @@ func (r *MeshGatewayResourceModel) RefreshFromSharedMeshGatewayItem(ctx context.
 		} else {
 			r.Conf = &tfTypes.Conf{}
 			r.Conf.Listeners = []tfTypes.Listeners{}
-			if len(r.Conf.Listeners) > len(resp.Conf.Listeners) {
-				r.Conf.Listeners = r.Conf.Listeners[:len(resp.Conf.Listeners)]
-			}
-			for listenersCount, listenersItem := range resp.Conf.Listeners {
+
+			for _, listenersItem := range resp.Conf.Listeners {
 				var listeners tfTypes.Listeners
+
 				listeners.CrossMesh = types.BoolPointerValue(listenersItem.CrossMesh)
 				listeners.Hostname = types.StringPointerValue(listenersItem.Hostname)
 				listeners.Port = types.Int64PointerValue(listenersItem.Port)
@@ -69,15 +69,14 @@ func (r *MeshGatewayResourceModel) RefreshFromSharedMeshGatewayItem(ctx context.
 				} else {
 					listeners.TLS = &tfTypes.MeshGatewayItemTLS{}
 					listeners.TLS.Certificates = []tfTypes.AccessKey{}
-					for certificatesCount, certificatesItem := range listenersItem.TLS.Certificates {
+
+					for _, certificatesItem := range listenersItem.TLS.Certificates {
 						var certificates tfTypes.AccessKey
+
 						typeVarResult, _ := json.Marshal(certificatesItem.Type)
-						certificates.Type = types.StringValue(string(typeVarResult))
-						if certificatesCount+1 > len(listeners.TLS.Certificates) {
-							listeners.TLS.Certificates = append(listeners.TLS.Certificates, certificates)
-						} else {
-							listeners.TLS.Certificates[certificatesCount].Type = certificates.Type
-						}
+						certificates.Type = jsontypes.NewNormalizedValue(string(typeVarResult))
+
+						listeners.TLS.Certificates = append(listeners.TLS.Certificates, certificates)
 					}
 					if listenersItem.TLS.Mode != nil {
 						listeners.TLS.Mode = &tfTypes.MeshItemMode{}
@@ -94,17 +93,8 @@ func (r *MeshGatewayResourceModel) RefreshFromSharedMeshGatewayItem(ctx context.
 						listeners.TLS.Options = &tfTypes.OptionsObj{}
 					}
 				}
-				if listenersCount+1 > len(r.Conf.Listeners) {
-					r.Conf.Listeners = append(r.Conf.Listeners, listeners)
-				} else {
-					r.Conf.Listeners[listenersCount].CrossMesh = listeners.CrossMesh
-					r.Conf.Listeners[listenersCount].Hostname = listeners.Hostname
-					r.Conf.Listeners[listenersCount].Port = listeners.Port
-					r.Conf.Listeners[listenersCount].Protocol = listeners.Protocol
-					r.Conf.Listeners[listenersCount].Resources = listeners.Resources
-					r.Conf.Listeners[listenersCount].Tags = listeners.Tags
-					r.Conf.Listeners[listenersCount].TLS = listeners.TLS
-				}
+
+				r.Conf.Listeners = append(r.Conf.Listeners, listeners)
 			}
 		}
 		labelsValue, labelsDiags := types.MapValueFrom(ctx, types.StringType, resp.Labels)
@@ -115,22 +105,18 @@ func (r *MeshGatewayResourceModel) RefreshFromSharedMeshGatewayItem(ctx context.
 		r.Mesh = types.StringValue(resp.Mesh)
 		r.Name = types.StringValue(resp.Name)
 		r.Selectors = []tfTypes.Selectors{}
-		if len(r.Selectors) > len(resp.Selectors) {
-			r.Selectors = r.Selectors[:len(resp.Selectors)]
-		}
-		for selectorsCount, selectorsItem := range resp.Selectors {
+
+		for _, selectorsItem := range resp.Selectors {
 			var selectors tfTypes.Selectors
+
 			if len(selectorsItem.Match) > 0 {
 				selectors.Match = make(map[string]types.String, len(selectorsItem.Match))
 				for key1, value1 := range selectorsItem.Match {
 					selectors.Match[key1] = types.StringValue(value1)
 				}
 			}
-			if selectorsCount+1 > len(r.Selectors) {
-				r.Selectors = append(r.Selectors, selectors)
-			} else {
-				r.Selectors[selectorsCount].Match = selectors.Match
-			}
+
+			r.Selectors = append(r.Selectors, selectors)
 		}
 		if len(resp.Tags) > 0 {
 			r.Tags = make(map[string]types.String, len(resp.Tags))

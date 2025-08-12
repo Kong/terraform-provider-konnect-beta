@@ -40,11 +40,10 @@ func (r *MeshTrafficPermissionResourceModel) RefreshFromSharedMeshTrafficPermiss
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
 		r.Spec.From = []tfTypes.MeshTrafficPermissionItemFrom{}
-		if len(r.Spec.From) > len(resp.Spec.From) {
-			r.Spec.From = r.Spec.From[:len(resp.Spec.From)]
-		}
-		for fromCount, fromItem := range resp.Spec.From {
+
+		for _, fromItem := range resp.Spec.From {
 			var from tfTypes.MeshTrafficPermissionItemFrom
+
 			if fromItem.Default == nil {
 				from.Default = nil
 			} else {
@@ -76,12 +75,8 @@ func (r *MeshTrafficPermissionResourceModel) RefreshFromSharedMeshTrafficPermiss
 					from.TargetRef.Tags[key1] = types.StringValue(value1)
 				}
 			}
-			if fromCount+1 > len(r.Spec.From) {
-				r.Spec.From = append(r.Spec.From, from)
-			} else {
-				r.Spec.From[fromCount].Default = from.Default
-				r.Spec.From[fromCount].TargetRef = from.TargetRef
-			}
+
+			r.Spec.From = append(r.Spec.From, from)
 		}
 		if resp.Spec.TargetRef == nil {
 			r.Spec.TargetRef = nil

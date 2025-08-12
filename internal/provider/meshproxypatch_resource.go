@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Kong/shared-speakeasy/customtypes/kumalabels"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -163,11 +164,9 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 																},
 															},
 															"value": schema.StringAttribute{
+																CustomType:  jsontypes.NormalizedType{},
 																Optional:    true,
 																Description: `Value must be a valid json value used by replace and add operations. Parsed as JSON.`,
-																Validators: []validator.String{
-																	validators.IsValidJSON(),
-																},
 															},
 														},
 													},
@@ -259,11 +258,9 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 																},
 															},
 															"value": schema.StringAttribute{
+																CustomType:  jsontypes.NormalizedType{},
 																Optional:    true,
 																Description: `Value must be a valid json value used by replace and add operations. Parsed as JSON.`,
-																Validators: []validator.String{
-																	validators.IsValidJSON(),
-																},
 															},
 														},
 													},
@@ -368,11 +365,9 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 																},
 															},
 															"value": schema.StringAttribute{
+																CustomType:  jsontypes.NormalizedType{},
 																Optional:    true,
 																Description: `Value must be a valid json value used by replace and add operations. Parsed as JSON.`,
-																Validators: []validator.String{
-																	validators.IsValidJSON(),
-																},
 															},
 														},
 													},
@@ -469,11 +464,9 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 																},
 															},
 															"value": schema.StringAttribute{
+																CustomType:  jsontypes.NormalizedType{},
 																Optional:    true,
 																Description: `Value must be a valid json value used by replace and add operations. Parsed as JSON.`,
-																Validators: []validator.String{
-																	validators.IsValidJSON(),
-																},
 															},
 														},
 													},
@@ -577,11 +570,9 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 																},
 															},
 															"value": schema.StringAttribute{
+																CustomType:  jsontypes.NormalizedType{},
 																Optional:    true,
 																Description: `Value must be a valid json value used by replace and add operations. Parsed as JSON.`,
-																Validators: []validator.String{
-																	validators.IsValidJSON(),
-																},
 															},
 														},
 													},

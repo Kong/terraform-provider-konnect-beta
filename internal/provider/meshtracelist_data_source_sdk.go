@@ -18,11 +18,10 @@ func (r *MeshTraceListDataSourceModel) RefreshFromSharedMeshTraceList(ctx contex
 
 	if resp != nil {
 		r.Items = []tfTypes.MeshTraceItem{}
-		if len(r.Items) > len(resp.Items) {
-			r.Items = r.Items[:len(resp.Items)]
-		}
-		for itemsCount, itemsItem := range resp.Items {
+
+		for _, itemsItem := range resp.Items {
 			var items tfTypes.MeshTraceItem
+
 			items.CreationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(itemsItem.CreationTime))
 			labelsValue, labelsDiags := types.MapValueFrom(ctx, types.StringType, itemsItem.Labels)
 			diags.Append(labelsDiags...)
@@ -37,8 +36,10 @@ func (r *MeshTraceListDataSourceModel) RefreshFromSharedMeshTraceList(ctx contex
 			} else {
 				items.Spec.Default = &tfTypes.MeshTraceItemDefault{}
 				items.Spec.Default.Backends = []tfTypes.MeshTraceItemBackends{}
-				for backendsCount, backendsItem := range itemsItem.Spec.Default.Backends {
+
+				for _, backendsItem := range itemsItem.Spec.Default.Backends {
 					var backends tfTypes.MeshTraceItemBackends
+
 					if backendsItem.Datadog == nil {
 						backends.Datadog = nil
 					} else {
@@ -66,14 +67,8 @@ func (r *MeshTraceListDataSourceModel) RefreshFromSharedMeshTraceList(ctx contex
 						backends.Zipkin.TraceId128bit = types.BoolPointerValue(backendsItem.Zipkin.TraceId128bit)
 						backends.Zipkin.URL = types.StringValue(backendsItem.Zipkin.URL)
 					}
-					if backendsCount+1 > len(items.Spec.Default.Backends) {
-						items.Spec.Default.Backends = append(items.Spec.Default.Backends, backends)
-					} else {
-						items.Spec.Default.Backends[backendsCount].Datadog = backends.Datadog
-						items.Spec.Default.Backends[backendsCount].OpenTelemetry = backends.OpenTelemetry
-						items.Spec.Default.Backends[backendsCount].Type = backends.Type
-						items.Spec.Default.Backends[backendsCount].Zipkin = backends.Zipkin
-					}
+
+					items.Spec.Default.Backends = append(items.Spec.Default.Backends, backends)
 				}
 				if itemsItem.Spec.Default.Sampling == nil {
 					items.Spec.Default.Sampling = nil
@@ -108,8 +103,10 @@ func (r *MeshTraceListDataSourceModel) RefreshFromSharedMeshTraceList(ctx contex
 					}
 				}
 				items.Spec.Default.Tags = []tfTypes.Tags{}
-				for tagsCount, tagsItem := range itemsItem.Spec.Default.Tags {
+
+				for _, tagsItem := range itemsItem.Spec.Default.Tags {
 					var tags tfTypes.Tags
+
 					if tagsItem.Header == nil {
 						tags.Header = nil
 					} else {
@@ -119,13 +116,8 @@ func (r *MeshTraceListDataSourceModel) RefreshFromSharedMeshTraceList(ctx contex
 					}
 					tags.Literal = types.StringPointerValue(tagsItem.Literal)
 					tags.Name = types.StringValue(tagsItem.Name)
-					if tagsCount+1 > len(items.Spec.Default.Tags) {
-						items.Spec.Default.Tags = append(items.Spec.Default.Tags, tags)
-					} else {
-						items.Spec.Default.Tags[tagsCount].Header = tags.Header
-						items.Spec.Default.Tags[tagsCount].Literal = tags.Literal
-						items.Spec.Default.Tags[tagsCount].Name = tags.Name
-					}
+
+					items.Spec.Default.Tags = append(items.Spec.Default.Tags, tags)
 				}
 			}
 			if itemsItem.Spec.TargetRef == nil {
@@ -155,17 +147,8 @@ func (r *MeshTraceListDataSourceModel) RefreshFromSharedMeshTraceList(ctx contex
 				}
 			}
 			items.Type = types.StringValue(string(itemsItem.Type))
-			if itemsCount+1 > len(r.Items) {
-				r.Items = append(r.Items, items)
-			} else {
-				r.Items[itemsCount].CreationTime = items.CreationTime
-				r.Items[itemsCount].Labels = items.Labels
-				r.Items[itemsCount].Mesh = items.Mesh
-				r.Items[itemsCount].ModificationTime = items.ModificationTime
-				r.Items[itemsCount].Name = items.Name
-				r.Items[itemsCount].Spec = items.Spec
-				r.Items[itemsCount].Type = items.Type
-			}
+
+			r.Items = append(r.Items, items)
 		}
 		r.Next = types.StringPointerValue(resp.Next)
 		r.Total = types.Float64PointerValue(resp.Total)
@@ -192,6 +175,25 @@ func (r *MeshTraceListDataSourceModel) ToOperationsGetMeshTraceListRequest(ctx c
 	} else {
 		size = nil
 	}
+	var filter *operations.GetMeshTraceListQueryParamFilter
+	if r.Filter != nil {
+		key := new(string)
+		if !r.Filter.Key.IsUnknown() && !r.Filter.Key.IsNull() {
+			*key = r.Filter.Key.ValueString()
+		} else {
+			key = nil
+		}
+		value := new(string)
+		if !r.Filter.Value.IsUnknown() && !r.Filter.Value.IsNull() {
+			*value = r.Filter.Value.ValueString()
+		} else {
+			value = nil
+		}
+		filter = &operations.GetMeshTraceListQueryParamFilter{
+			Key:   key,
+			Value: value,
+		}
+	}
 	var mesh string
 	mesh = r.Mesh.ValueString()
 
@@ -199,6 +201,7 @@ func (r *MeshTraceListDataSourceModel) ToOperationsGetMeshTraceListRequest(ctx c
 		CpID:   cpID,
 		Offset: offset,
 		Size:   size,
+		Filter: filter,
 		Mesh:   mesh,
 	}
 

@@ -6,6 +6,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/Kong/shared-speakeasy/customtypes/kumalabels"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
@@ -28,29 +29,24 @@ func (r *MeshExternalServiceDataSourceModel) RefreshFromSharedMeshExternalServic
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
 		r.Spec.Endpoints = []tfTypes.Endpoints{}
-		if len(r.Spec.Endpoints) > len(resp.Spec.Endpoints) {
-			r.Spec.Endpoints = r.Spec.Endpoints[:len(resp.Spec.Endpoints)]
-		}
-		for endpointsCount, endpointsItem := range resp.Spec.Endpoints {
+
+		for _, endpointsItem := range resp.Spec.Endpoints {
 			var endpoints tfTypes.Endpoints
+
 			endpoints.Address = types.StringValue(endpointsItem.Address)
 			endpoints.Port = types.Int64Value(endpointsItem.Port)
-			if endpointsCount+1 > len(r.Spec.Endpoints) {
-				r.Spec.Endpoints = append(r.Spec.Endpoints, endpoints)
-			} else {
-				r.Spec.Endpoints[endpointsCount].Address = endpoints.Address
-				r.Spec.Endpoints[endpointsCount].Port = endpoints.Port
-			}
+
+			r.Spec.Endpoints = append(r.Spec.Endpoints, endpoints)
 		}
 		if resp.Spec.Extension == nil {
 			r.Spec.Extension = nil
 		} else {
 			r.Spec.Extension = &tfTypes.MeshExternalServiceItemExtension{}
 			if resp.Spec.Extension.Config == nil {
-				r.Spec.Extension.Config = types.StringNull()
+				r.Spec.Extension.Config = jsontypes.NewNormalizedNull()
 			} else {
 				configResult, _ := json.Marshal(resp.Spec.Extension.Config)
-				r.Spec.Extension.Config = types.StringValue(string(configResult))
+				r.Spec.Extension.Config = jsontypes.NewNormalizedValue(string(configResult))
 			}
 			r.Spec.Extension.Type = types.StringValue(resp.Spec.Extension.Type)
 		}
@@ -106,23 +102,18 @@ func (r *MeshExternalServiceDataSourceModel) RefreshFromSharedMeshExternalServic
 				}
 				r.Spec.TLS.Verification.ServerName = types.StringPointerValue(resp.Spec.TLS.Verification.ServerName)
 				r.Spec.TLS.Verification.SubjectAltNames = []tfTypes.SubjectAltNames{}
-				if len(r.Spec.TLS.Verification.SubjectAltNames) > len(resp.Spec.TLS.Verification.SubjectAltNames) {
-					r.Spec.TLS.Verification.SubjectAltNames = r.Spec.TLS.Verification.SubjectAltNames[:len(resp.Spec.TLS.Verification.SubjectAltNames)]
-				}
-				for subjectAltNamesCount, subjectAltNamesItem := range resp.Spec.TLS.Verification.SubjectAltNames {
+
+				for _, subjectAltNamesItem := range resp.Spec.TLS.Verification.SubjectAltNames {
 					var subjectAltNames tfTypes.SubjectAltNames
+
 					if subjectAltNamesItem.Type != nil {
 						subjectAltNames.Type = types.StringValue(string(*subjectAltNamesItem.Type))
 					} else {
 						subjectAltNames.Type = types.StringNull()
 					}
 					subjectAltNames.Value = types.StringValue(subjectAltNamesItem.Value)
-					if subjectAltNamesCount+1 > len(r.Spec.TLS.Verification.SubjectAltNames) {
-						r.Spec.TLS.Verification.SubjectAltNames = append(r.Spec.TLS.Verification.SubjectAltNames, subjectAltNames)
-					} else {
-						r.Spec.TLS.Verification.SubjectAltNames[subjectAltNamesCount].Type = subjectAltNames.Type
-						r.Spec.TLS.Verification.SubjectAltNames[subjectAltNamesCount].Value = subjectAltNames.Value
-					}
+
+					r.Spec.TLS.Verification.SubjectAltNames = append(r.Spec.TLS.Verification.SubjectAltNames, subjectAltNames)
 				}
 			}
 			if resp.Spec.TLS.Version == nil {
@@ -146,11 +137,10 @@ func (r *MeshExternalServiceDataSourceModel) RefreshFromSharedMeshExternalServic
 		} else {
 			r.Status = &tfTypes.Status{}
 			r.Status.Addresses = []tfTypes.Addresses{}
-			if len(r.Status.Addresses) > len(resp.Status.Addresses) {
-				r.Status.Addresses = r.Status.Addresses[:len(resp.Status.Addresses)]
-			}
-			for addressesCount, addressesItem := range resp.Status.Addresses {
+
+			for _, addressesItem := range resp.Status.Addresses {
 				var addresses tfTypes.Addresses
+
 				addresses.Hostname = types.StringPointerValue(addressesItem.Hostname)
 				if addressesItem.HostnameGeneratorRef == nil {
 					addresses.HostnameGeneratorRef = nil
@@ -159,43 +149,29 @@ func (r *MeshExternalServiceDataSourceModel) RefreshFromSharedMeshExternalServic
 					addresses.HostnameGeneratorRef.CoreName = types.StringValue(addressesItem.HostnameGeneratorRef.CoreName)
 				}
 				addresses.Origin = types.StringPointerValue(addressesItem.Origin)
-				if addressesCount+1 > len(r.Status.Addresses) {
-					r.Status.Addresses = append(r.Status.Addresses, addresses)
-				} else {
-					r.Status.Addresses[addressesCount].Hostname = addresses.Hostname
-					r.Status.Addresses[addressesCount].HostnameGeneratorRef = addresses.HostnameGeneratorRef
-					r.Status.Addresses[addressesCount].Origin = addresses.Origin
-				}
+
+				r.Status.Addresses = append(r.Status.Addresses, addresses)
 			}
 			r.Status.HostnameGenerators = []tfTypes.HostnameGenerators{}
-			if len(r.Status.HostnameGenerators) > len(resp.Status.HostnameGenerators) {
-				r.Status.HostnameGenerators = r.Status.HostnameGenerators[:len(resp.Status.HostnameGenerators)]
-			}
-			for hostnameGeneratorsCount, hostnameGeneratorsItem := range resp.Status.HostnameGenerators {
+
+			for _, hostnameGeneratorsItem := range resp.Status.HostnameGenerators {
 				var hostnameGenerators tfTypes.HostnameGenerators
+
 				hostnameGenerators.Conditions = []tfTypes.Conditions{}
-				for conditionsCount, conditionsItem := range hostnameGeneratorsItem.Conditions {
+
+				for _, conditionsItem := range hostnameGeneratorsItem.Conditions {
 					var conditions tfTypes.Conditions
+
 					conditions.Message = types.StringValue(conditionsItem.Message)
 					conditions.Reason = types.StringValue(conditionsItem.Reason)
 					conditions.Status = types.StringValue(string(conditionsItem.Status))
 					conditions.Type = types.StringValue(conditionsItem.Type)
-					if conditionsCount+1 > len(hostnameGenerators.Conditions) {
-						hostnameGenerators.Conditions = append(hostnameGenerators.Conditions, conditions)
-					} else {
-						hostnameGenerators.Conditions[conditionsCount].Message = conditions.Message
-						hostnameGenerators.Conditions[conditionsCount].Reason = conditions.Reason
-						hostnameGenerators.Conditions[conditionsCount].Status = conditions.Status
-						hostnameGenerators.Conditions[conditionsCount].Type = conditions.Type
-					}
+
+					hostnameGenerators.Conditions = append(hostnameGenerators.Conditions, conditions)
 				}
 				hostnameGenerators.HostnameGeneratorRef.CoreName = types.StringValue(hostnameGeneratorsItem.HostnameGeneratorRef.CoreName)
-				if hostnameGeneratorsCount+1 > len(r.Status.HostnameGenerators) {
-					r.Status.HostnameGenerators = append(r.Status.HostnameGenerators, hostnameGenerators)
-				} else {
-					r.Status.HostnameGenerators[hostnameGeneratorsCount].Conditions = hostnameGenerators.Conditions
-					r.Status.HostnameGenerators[hostnameGeneratorsCount].HostnameGeneratorRef = hostnameGenerators.HostnameGeneratorRef
-				}
+
+				r.Status.HostnameGenerators = append(r.Status.HostnameGenerators, hostnameGenerators)
 			}
 			if resp.Status.Vip == nil {
 				r.Status.Vip = nil

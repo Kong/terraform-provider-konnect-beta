@@ -40,11 +40,10 @@ func (r *MeshTLSResourceModel) RefreshFromSharedMeshTLSItem(ctx context.Context,
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
 		r.Spec.From = []tfTypes.MeshTLSItemFrom{}
-		if len(r.Spec.From) > len(resp.Spec.From) {
-			r.Spec.From = r.Spec.From[:len(resp.Spec.From)]
-		}
-		for fromCount, fromItem := range resp.Spec.From {
+
+		for _, fromItem := range resp.Spec.From {
 			var from tfTypes.MeshTLSItemFrom
+
 			if fromItem.Default == nil {
 				from.Default = nil
 			} else {
@@ -95,19 +94,14 @@ func (r *MeshTLSResourceModel) RefreshFromSharedMeshTLSItem(ctx context.Context,
 					from.TargetRef.Tags[key1] = types.StringValue(value1)
 				}
 			}
-			if fromCount+1 > len(r.Spec.From) {
-				r.Spec.From = append(r.Spec.From, from)
-			} else {
-				r.Spec.From[fromCount].Default = from.Default
-				r.Spec.From[fromCount].TargetRef = from.TargetRef
-			}
+
+			r.Spec.From = append(r.Spec.From, from)
 		}
 		r.Spec.Rules = []tfTypes.MeshTLSItemRules{}
-		if len(r.Spec.Rules) > len(resp.Spec.Rules) {
-			r.Spec.Rules = r.Spec.Rules[:len(resp.Spec.Rules)]
-		}
-		for rulesCount, rulesItem := range resp.Spec.Rules {
+
+		for _, rulesItem := range resp.Spec.Rules {
 			var rules tfTypes.MeshTLSItemRules
+
 			if rulesItem.Default == nil {
 				rules.Default = nil
 			} else {
@@ -137,11 +131,8 @@ func (r *MeshTLSResourceModel) RefreshFromSharedMeshTLSItem(ctx context.Context,
 					}
 				}
 			}
-			if rulesCount+1 > len(r.Spec.Rules) {
-				r.Spec.Rules = append(r.Spec.Rules, rules)
-			} else {
-				r.Spec.Rules[rulesCount].Default = rules.Default
-			}
+
+			r.Spec.Rules = append(r.Spec.Rules, rules)
 		}
 		if resp.Spec.TargetRef == nil {
 			r.Spec.TargetRef = nil

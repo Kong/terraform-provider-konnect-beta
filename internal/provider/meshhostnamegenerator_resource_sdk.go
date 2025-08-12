@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
@@ -44,10 +45,10 @@ func (r *MeshHostnameGeneratorResourceModel) RefreshFromSharedHostnameGeneratorI
 		} else {
 			r.Spec.Extension = &tfTypes.MeshExternalServiceItemExtension{}
 			if resp.Spec.Extension.Config == nil {
-				r.Spec.Extension.Config = types.StringNull()
+				r.Spec.Extension.Config = jsontypes.NewNormalizedNull()
 			} else {
 				configResult, _ := json.Marshal(resp.Spec.Extension.Config)
-				r.Spec.Extension.Config = types.StringValue(string(configResult))
+				r.Spec.Extension.Config = jsontypes.NewNormalizedValue(string(configResult))
 			}
 			r.Spec.Extension.Type = types.StringValue(resp.Spec.Extension.Type)
 		}

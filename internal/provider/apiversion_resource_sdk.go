@@ -26,17 +26,13 @@ func (r *APIVersionResourceModel) RefreshFromSharedAPIVersionResponse(ctx contex
 				r.Spec.Type = types.StringNull()
 			}
 			r.Spec.ValidationMessages = []tfTypes.ValidationMessages{}
-			if len(r.Spec.ValidationMessages) > len(resp.Spec.ValidationMessages) {
-				r.Spec.ValidationMessages = r.Spec.ValidationMessages[:len(resp.Spec.ValidationMessages)]
-			}
-			for validationMessagesCount, validationMessagesItem := range resp.Spec.ValidationMessages {
+
+			for _, validationMessagesItem := range resp.Spec.ValidationMessages {
 				var validationMessages tfTypes.ValidationMessages
+
 				validationMessages.Message = types.StringValue(validationMessagesItem.Message)
-				if validationMessagesCount+1 > len(r.Spec.ValidationMessages) {
-					r.Spec.ValidationMessages = append(r.Spec.ValidationMessages, validationMessages)
-				} else {
-					r.Spec.ValidationMessages[validationMessagesCount].Message = validationMessages.Message
-				}
+
+				r.Spec.ValidationMessages = append(r.Spec.ValidationMessages, validationMessages)
 			}
 		}
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))

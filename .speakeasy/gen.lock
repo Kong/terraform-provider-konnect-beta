@@ -3,23 +3,23 @@ id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
   docChecksum: d5eea2cba9fea7b68145bdb2598f9728
   docVersion: 2.0.0
-  speakeasyVersion: 1.581.1
-  generationVersion: 2.656.9
+  speakeasyVersion: 1.602.0
+  generationVersion: 2.681.1
   releaseVersion: 0.7.2
   configChecksum: b14e20e62700625f1f7c7d08310408d2
 features:
   terraform:
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.2.1
-    core: 3.41.16
+    core: 3.44.0
     deprecations: 2.82.0
     globalSecurity: 2.81.12
-    globalServerURLs: 2.82.2
+    globalServerURLs: 2.83.0
     ignores: 2.81.1
     inputOutputModels: 2.83.0
     nameOverrides: 2.81.3
     nullables: 0.0.0
-    retries: 2.81.3
+    retries: 2.81.4
     typeOverrides: 2.81.1
     unions: 2.81.17
 generatedFiles:
@@ -450,6 +450,7 @@ generatedFiles:
   - internal/provider/types/format.go
   - internal/provider/types/from.go
   - internal/provider/types/gateway_failures.go
+  - internal/provider/types/get_hostname_generator_list_query_param_filter.go
   - internal/provider/types/grpc.go
   - internal/provider/types/hash_policies.go
   - internal/provider/types/header.go

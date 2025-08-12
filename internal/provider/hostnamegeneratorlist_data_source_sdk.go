@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
@@ -18,11 +19,10 @@ func (r *HostnameGeneratorListDataSourceModel) RefreshFromSharedHostnameGenerato
 
 	if resp != nil {
 		r.Items = []tfTypes.HostnameGeneratorItem{}
-		if len(r.Items) > len(resp.Items) {
-			r.Items = r.Items[:len(resp.Items)]
-		}
-		for itemsCount, itemsItem := range resp.Items {
+
+		for _, itemsItem := range resp.Items {
 			var items tfTypes.HostnameGeneratorItem
+
 			items.CreationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(itemsItem.CreationTime))
 			if len(itemsItem.Labels) > 0 {
 				items.Labels = make(map[string]types.String, len(itemsItem.Labels))
@@ -37,10 +37,10 @@ func (r *HostnameGeneratorListDataSourceModel) RefreshFromSharedHostnameGenerato
 			} else {
 				items.Spec.Extension = &tfTypes.MeshExternalServiceItemExtension{}
 				if itemsItem.Spec.Extension.Config == nil {
-					items.Spec.Extension.Config = types.StringNull()
+					items.Spec.Extension.Config = jsontypes.NewNormalizedNull()
 				} else {
 					configResult, _ := json.Marshal(itemsItem.Spec.Extension.Config)
-					items.Spec.Extension.Config = types.StringValue(string(configResult))
+					items.Spec.Extension.Config = jsontypes.NewNormalizedValue(string(configResult))
 				}
 				items.Spec.Extension.Type = types.StringValue(itemsItem.Spec.Extension.Type)
 			}
@@ -84,16 +84,8 @@ func (r *HostnameGeneratorListDataSourceModel) RefreshFromSharedHostnameGenerato
 			}
 			items.Spec.Template = types.StringPointerValue(itemsItem.Spec.Template)
 			items.Type = types.StringValue(string(itemsItem.Type))
-			if itemsCount+1 > len(r.Items) {
-				r.Items = append(r.Items, items)
-			} else {
-				r.Items[itemsCount].CreationTime = items.CreationTime
-				r.Items[itemsCount].Labels = items.Labels
-				r.Items[itemsCount].ModificationTime = items.ModificationTime
-				r.Items[itemsCount].Name = items.Name
-				r.Items[itemsCount].Spec = items.Spec
-				r.Items[itemsCount].Type = items.Type
-			}
+
+			r.Items = append(r.Items, items)
 		}
 		r.Next = types.StringPointerValue(resp.Next)
 		r.Total = types.Float64PointerValue(resp.Total)
@@ -120,10 +112,30 @@ func (r *HostnameGeneratorListDataSourceModel) ToOperationsGetHostnameGeneratorL
 	} else {
 		size = nil
 	}
+	var filter *operations.GetHostnameGeneratorListQueryParamFilter
+	if r.Filter != nil {
+		key := new(string)
+		if !r.Filter.Key.IsUnknown() && !r.Filter.Key.IsNull() {
+			*key = r.Filter.Key.ValueString()
+		} else {
+			key = nil
+		}
+		value := new(string)
+		if !r.Filter.Value.IsUnknown() && !r.Filter.Value.IsNull() {
+			*value = r.Filter.Value.ValueString()
+		} else {
+			value = nil
+		}
+		filter = &operations.GetHostnameGeneratorListQueryParamFilter{
+			Key:   key,
+			Value: value,
+		}
+	}
 	out := operations.GetHostnameGeneratorListRequest{
 		CpID:   cpID,
 		Offset: offset,
 		Size:   size,
+		Filter: filter,
 	}
 
 	return &out, diags

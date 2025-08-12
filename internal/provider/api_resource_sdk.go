@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
@@ -22,10 +23,10 @@ func (r *APIResourceModel) RefreshFromSharedAPIResponseSchema(ctx context.Contex
 			r.APISpecIds = append(r.APISpecIds, types.StringValue(v))
 		}
 		if resp.Attributes == nil {
-			r.Attributes = types.StringNull()
+			r.Attributes = jsontypes.NewNormalizedNull()
 		} else {
 			attributesResult, _ := json.Marshal(resp.Attributes)
-			r.Attributes = types.StringValue(string(attributesResult))
+			r.Attributes = jsontypes.NewNormalizedValue(string(attributesResult))
 		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		if resp.CurrentVersionSummary == nil {
@@ -57,21 +58,15 @@ func (r *APIResourceModel) RefreshFromSharedAPIResponseSchema(ctx context.Contex
 		}
 		r.Name = types.StringValue(resp.Name)
 		r.Portals = []tfTypes.Portals{}
-		if len(r.Portals) > len(resp.Portals) {
-			r.Portals = r.Portals[:len(resp.Portals)]
-		}
-		for portalsCount, portalsItem := range resp.Portals {
+
+		for _, portalsItem := range resp.Portals {
 			var portals tfTypes.Portals
+
 			portals.DisplayName = types.StringValue(portalsItem.DisplayName)
 			portals.ID = types.StringValue(portalsItem.ID)
 			portals.Name = types.StringValue(portalsItem.Name)
-			if portalsCount+1 > len(r.Portals) {
-				r.Portals = append(r.Portals, portals)
-			} else {
-				r.Portals[portalsCount].DisplayName = portals.DisplayName
-				r.Portals[portalsCount].ID = portals.ID
-				r.Portals[portalsCount].Name = portals.Name
-			}
+
+			r.Portals = append(r.Portals, portals)
 		}
 		r.Slug = types.StringPointerValue(resp.Slug)
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))

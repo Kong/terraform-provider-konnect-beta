@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -100,12 +101,10 @@ func (r *MeshHostnameGeneratorResource) Schema(ctx context.Context, req resource
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"config": schema.StringAttribute{
+								CustomType:  jsontypes.NormalizedType{},
 								Computed:    true,
 								Optional:    true,
 								Description: `Config freeform configuration for the extension. Parsed as JSON.`,
-								Validators: []validator.String{
-									validators.IsValidJSON(),
-								},
 							},
 							"type": schema.StringAttribute{
 								Required:    true,

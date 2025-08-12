@@ -31,11 +31,10 @@ func (r *MeshPassthroughDataSourceModel) RefreshFromSharedMeshPassthroughItem(ct
 		} else {
 			r.Spec.Default = &tfTypes.MeshPassthroughItemDefault{}
 			r.Spec.Default.AppendMatch = []tfTypes.AppendMatch{}
-			if len(r.Spec.Default.AppendMatch) > len(resp.Spec.Default.AppendMatch) {
-				r.Spec.Default.AppendMatch = r.Spec.Default.AppendMatch[:len(resp.Spec.Default.AppendMatch)]
-			}
-			for appendMatchCount, appendMatchItem := range resp.Spec.Default.AppendMatch {
+
+			for _, appendMatchItem := range resp.Spec.Default.AppendMatch {
 				var appendMatch tfTypes.AppendMatch
+
 				appendMatch.Port = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(appendMatchItem.Port))
 				if appendMatchItem.Protocol != nil {
 					appendMatch.Protocol = types.StringValue(string(*appendMatchItem.Protocol))
@@ -44,14 +43,8 @@ func (r *MeshPassthroughDataSourceModel) RefreshFromSharedMeshPassthroughItem(ct
 				}
 				appendMatch.Type = types.StringValue(string(appendMatchItem.Type))
 				appendMatch.Value = types.StringValue(appendMatchItem.Value)
-				if appendMatchCount+1 > len(r.Spec.Default.AppendMatch) {
-					r.Spec.Default.AppendMatch = append(r.Spec.Default.AppendMatch, appendMatch)
-				} else {
-					r.Spec.Default.AppendMatch[appendMatchCount].Port = appendMatch.Port
-					r.Spec.Default.AppendMatch[appendMatchCount].Protocol = appendMatch.Protocol
-					r.Spec.Default.AppendMatch[appendMatchCount].Type = appendMatch.Type
-					r.Spec.Default.AppendMatch[appendMatchCount].Value = appendMatch.Value
-				}
+
+				r.Spec.Default.AppendMatch = append(r.Spec.Default.AppendMatch, appendMatch)
 			}
 			if resp.Spec.Default.PassthroughMode != nil {
 				r.Spec.Default.PassthroughMode = types.StringValue(string(*resp.Spec.Default.PassthroughMode))

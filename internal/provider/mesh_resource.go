@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -24,7 +25,6 @@ import (
 	custom_objectplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/objectplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -386,11 +386,9 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 																	Optional: true,
 																	Attributes: map[string]schema.Attribute{
 																		"type": schema.StringAttribute{
+																			CustomType:  jsontypes.NormalizedType{},
 																			Required:    true,
 																			Description: `Parsed as JSON.`,
-																			Validators: []validator.String{
-																				validators.IsValidJSON(),
-																			},
 																		},
 																	},
 																},
@@ -398,11 +396,9 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 																	Optional: true,
 																	Attributes: map[string]schema.Attribute{
 																		"type": schema.StringAttribute{
+																			CustomType:  jsontypes.NormalizedType{},
 																			Required:    true,
 																			Description: `Parsed as JSON.`,
-																			Validators: []validator.String{
-																				validators.IsValidJSON(),
-																			},
 																		},
 																	},
 																},
@@ -414,11 +410,9 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"type": schema.StringAttribute{
+															CustomType:  jsontypes.NormalizedType{},
 															Required:    true,
 															Description: `Parsed as JSON.`,
-															Validators: []validator.String{
-																validators.IsValidJSON(),
-															},
 														},
 													},
 												},
@@ -466,11 +460,9 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"type": schema.StringAttribute{
+															CustomType:  jsontypes.NormalizedType{},
 															Required:    true,
 															Description: `Parsed as JSON.`,
-															Validators: []validator.String{
-																validators.IsValidJSON(),
-															},
 														},
 													},
 												},
@@ -512,11 +504,9 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"type": schema.StringAttribute{
+															CustomType:  jsontypes.NormalizedType{},
 															Required:    true,
 															Description: `Parsed as JSON.`,
-															Validators: []validator.String{
-																validators.IsValidJSON(),
-															},
 														},
 													},
 												},
@@ -524,11 +514,9 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"type": schema.StringAttribute{
+															CustomType:  jsontypes.NormalizedType{},
 															Required:    true,
 															Description: `Parsed as JSON.`,
-															Validators: []validator.String{
-																validators.IsValidJSON(),
-															},
 														},
 													},
 												},
@@ -546,12 +534,10 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"mode": schema.StringAttribute{
+													CustomType:  jsontypes.NormalizedType{},
 													Computed:    true,
 													Optional:    true,
 													Description: `Parsed as JSON.`,
-													Validators: []validator.String{
-														validators.IsValidJSON(),
-													},
 												},
 											},
 											Validators: []validator.Object{
