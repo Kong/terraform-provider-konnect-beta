@@ -32,6 +32,7 @@ func NewPortalCustomizationResource() resource.Resource {
 
 // PortalCustomizationResource defines the resource implementation.
 type PortalCustomizationResource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
@@ -267,6 +268,14 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
+					"hide_deprecated": schema.BoolAttribute{
+						Computed: true,
+						Optional: true,
+					},
+					"hide_internal": schema.BoolAttribute{
+						Computed: true,
+						Optional: true,
+					},
 					"infinite_scroll": schema.BoolAttribute{
 						Computed: true,
 						Optional: true,

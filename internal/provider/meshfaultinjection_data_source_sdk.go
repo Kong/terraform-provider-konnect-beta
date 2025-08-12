@@ -13,27 +13,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshFaultInjectionDataSourceModel) ToOperationsGetMeshFaultInjectionRequest(ctx context.Context) (*operations.GetMeshFaultInjectionRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	out := operations.GetMeshFaultInjectionRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshFaultInjectionDataSourceModel) RefreshFromSharedMeshFaultInjectionItem(ctx context.Context, resp *shared.MeshFaultInjectionItem) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -48,18 +27,19 @@ func (r *MeshFaultInjectionDataSourceModel) RefreshFromSharedMeshFaultInjectionI
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
 		r.Spec.From = []tfTypes.MeshFaultInjectionItemFrom{}
-		if len(r.Spec.From) > len(resp.Spec.From) {
-			r.Spec.From = r.Spec.From[:len(resp.Spec.From)]
-		}
-		for fromCount, fromItem := range resp.Spec.From {
+
+		for _, fromItem := range resp.Spec.From {
 			var from tfTypes.MeshFaultInjectionItemFrom
+
 			if fromItem.Default == nil {
 				from.Default = nil
 			} else {
 				from.Default = &tfTypes.MeshFaultInjectionItemDefault{}
 				from.Default.HTTP = []tfTypes.HTTP{}
-				for httpCount, httpItem := range fromItem.Default.HTTP {
+
+				for _, httpItem := range fromItem.Default.HTTP {
 					var http tfTypes.HTTP
+
 					if httpItem.Abort == nil {
 						http.Abort = nil
 					} else {
@@ -96,13 +76,8 @@ func (r *MeshFaultInjectionDataSourceModel) RefreshFromSharedMeshFaultInjectionI
 							http.ResponseBandwidth.Percentage.Str = types.StringPointerValue(httpItem.ResponseBandwidth.Percentage.Str)
 						}
 					}
-					if httpCount+1 > len(from.Default.HTTP) {
-						from.Default.HTTP = append(from.Default.HTTP, http)
-					} else {
-						from.Default.HTTP[httpCount].Abort = http.Abort
-						from.Default.HTTP[httpCount].Delay = http.Delay
-						from.Default.HTTP[httpCount].ResponseBandwidth = http.ResponseBandwidth
-					}
+
+					from.Default.HTTP = append(from.Default.HTTP, http)
 				}
 			}
 			from.TargetRef.Kind = types.StringValue(string(fromItem.TargetRef.Kind))
@@ -126,12 +101,8 @@ func (r *MeshFaultInjectionDataSourceModel) RefreshFromSharedMeshFaultInjectionI
 					from.TargetRef.Tags[key1] = types.StringValue(value1)
 				}
 			}
-			if fromCount+1 > len(r.Spec.From) {
-				r.Spec.From = append(r.Spec.From, from)
-			} else {
-				r.Spec.From[fromCount].Default = from.Default
-				r.Spec.From[fromCount].TargetRef = from.TargetRef
-			}
+
+			r.Spec.From = append(r.Spec.From, from)
 		}
 		if resp.Spec.TargetRef == nil {
 			r.Spec.TargetRef = nil
@@ -160,18 +131,19 @@ func (r *MeshFaultInjectionDataSourceModel) RefreshFromSharedMeshFaultInjectionI
 			}
 		}
 		r.Spec.To = []tfTypes.MeshFaultInjectionItemFrom{}
-		if len(r.Spec.To) > len(resp.Spec.To) {
-			r.Spec.To = r.Spec.To[:len(resp.Spec.To)]
-		}
-		for toCount, toItem := range resp.Spec.To {
+
+		for _, toItem := range resp.Spec.To {
 			var to tfTypes.MeshFaultInjectionItemFrom
+
 			if toItem.Default == nil {
 				to.Default = nil
 			} else {
 				to.Default = &tfTypes.MeshFaultInjectionItemDefault{}
 				to.Default.HTTP = []tfTypes.HTTP{}
-				for httpCount1, httpItem1 := range toItem.Default.HTTP {
+
+				for _, httpItem1 := range toItem.Default.HTTP {
 					var http1 tfTypes.HTTP
+
 					if httpItem1.Abort == nil {
 						http1.Abort = nil
 					} else {
@@ -208,13 +180,8 @@ func (r *MeshFaultInjectionDataSourceModel) RefreshFromSharedMeshFaultInjectionI
 							http1.ResponseBandwidth.Percentage.Str = types.StringPointerValue(httpItem1.ResponseBandwidth.Percentage.Str)
 						}
 					}
-					if httpCount1+1 > len(to.Default.HTTP) {
-						to.Default.HTTP = append(to.Default.HTTP, http1)
-					} else {
-						to.Default.HTTP[httpCount1].Abort = http1.Abort
-						to.Default.HTTP[httpCount1].Delay = http1.Delay
-						to.Default.HTTP[httpCount1].ResponseBandwidth = http1.ResponseBandwidth
-					}
+
+					to.Default.HTTP = append(to.Default.HTTP, http1)
 				}
 			}
 			to.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
@@ -238,15 +205,32 @@ func (r *MeshFaultInjectionDataSourceModel) RefreshFromSharedMeshFaultInjectionI
 					to.TargetRef.Tags[key5] = types.StringValue(value5)
 				}
 			}
-			if toCount+1 > len(r.Spec.To) {
-				r.Spec.To = append(r.Spec.To, to)
-			} else {
-				r.Spec.To[toCount].Default = to.Default
-				r.Spec.To[toCount].TargetRef = to.TargetRef
-			}
+
+			r.Spec.To = append(r.Spec.To, to)
 		}
 		r.Type = types.StringValue(string(resp.Type))
 	}
 
 	return diags
+}
+
+func (r *MeshFaultInjectionDataSourceModel) ToOperationsGetMeshFaultInjectionRequest(ctx context.Context) (*operations.GetMeshFaultInjectionRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	out := operations.GetMeshFaultInjectionRequest{
+		CpID: cpID,
+		Mesh: mesh,
+		Name: name,
+	}
+
+	return &out, diags
 }

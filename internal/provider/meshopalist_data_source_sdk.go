@@ -13,47 +13,15 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshOPAListDataSourceModel) ToOperationsGetMeshOPAListRequest(ctx context.Context) (*operations.GetMeshOPAListRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	offset := new(int64)
-	if !r.Offset.IsUnknown() && !r.Offset.IsNull() {
-		*offset = r.Offset.ValueInt64()
-	} else {
-		offset = nil
-	}
-	size := new(int64)
-	if !r.Size.IsUnknown() && !r.Size.IsNull() {
-		*size = r.Size.ValueInt64()
-	} else {
-		size = nil
-	}
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	out := operations.GetMeshOPAListRequest{
-		CpID:   cpID,
-		Offset: offset,
-		Size:   size,
-		Mesh:   mesh,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshOPAListDataSourceModel) RefreshFromSharedMeshOPAList(ctx context.Context, resp *shared.MeshOPAList) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
 		r.Items = []tfTypes.MeshOPAItem{}
-		if len(r.Items) > len(resp.Items) {
-			r.Items = r.Items[:len(resp.Items)]
-		}
-		for itemsCount, itemsItem := range resp.Items {
+
+		for _, itemsItem := range resp.Items {
 			var items tfTypes.MeshOPAItem
+
 			items.CreationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(itemsItem.CreationTime))
 			labelsValue, labelsDiags := types.MapValueFrom(ctx, types.StringType, itemsItem.Labels)
 			diags.Append(labelsDiags...)
@@ -76,18 +44,16 @@ func (r *MeshOPAListDataSourceModel) RefreshFromSharedMeshOPAList(ctx context.Co
 					items.Spec.Default.AgentConfig.Secret = types.StringPointerValue(itemsItem.Spec.Default.AgentConfig.Secret)
 				}
 				items.Spec.Default.AppendPolicies = []tfTypes.AppendPolicies{}
-				for appendPoliciesCount, appendPoliciesItem := range itemsItem.Spec.Default.AppendPolicies {
+
+				for _, appendPoliciesItem := range itemsItem.Spec.Default.AppendPolicies {
 					var appendPolicies tfTypes.AppendPolicies
+
 					appendPolicies.IgnoreDecision = types.BoolPointerValue(appendPoliciesItem.IgnoreDecision)
 					appendPolicies.Rego.Inline = types.StringPointerValue(appendPoliciesItem.Rego.Inline)
 					appendPolicies.Rego.InlineString = types.StringPointerValue(appendPoliciesItem.Rego.InlineString)
 					appendPolicies.Rego.Secret = types.StringPointerValue(appendPoliciesItem.Rego.Secret)
-					if appendPoliciesCount+1 > len(items.Spec.Default.AppendPolicies) {
-						items.Spec.Default.AppendPolicies = append(items.Spec.Default.AppendPolicies, appendPolicies)
-					} else {
-						items.Spec.Default.AppendPolicies[appendPoliciesCount].IgnoreDecision = appendPolicies.IgnoreDecision
-						items.Spec.Default.AppendPolicies[appendPoliciesCount].Rego = appendPolicies.Rego
-					}
+
+					items.Spec.Default.AppendPolicies = append(items.Spec.Default.AppendPolicies, appendPolicies)
 				}
 				if itemsItem.Spec.Default.AuthConfig == nil {
 					items.Spec.Default.AuthConfig = nil
@@ -136,21 +102,63 @@ func (r *MeshOPAListDataSourceModel) RefreshFromSharedMeshOPAList(ctx context.Co
 				}
 			}
 			items.Type = types.StringValue(string(itemsItem.Type))
-			if itemsCount+1 > len(r.Items) {
-				r.Items = append(r.Items, items)
-			} else {
-				r.Items[itemsCount].CreationTime = items.CreationTime
-				r.Items[itemsCount].Labels = items.Labels
-				r.Items[itemsCount].Mesh = items.Mesh
-				r.Items[itemsCount].ModificationTime = items.ModificationTime
-				r.Items[itemsCount].Name = items.Name
-				r.Items[itemsCount].Spec = items.Spec
-				r.Items[itemsCount].Type = items.Type
-			}
+
+			r.Items = append(r.Items, items)
 		}
 		r.Next = types.StringPointerValue(resp.Next)
 		r.Total = types.Float64PointerValue(resp.Total)
 	}
 
 	return diags
+}
+
+func (r *MeshOPAListDataSourceModel) ToOperationsGetMeshOPAListRequest(ctx context.Context) (*operations.GetMeshOPAListRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	offset := new(int64)
+	if !r.Offset.IsUnknown() && !r.Offset.IsNull() {
+		*offset = r.Offset.ValueInt64()
+	} else {
+		offset = nil
+	}
+	size := new(int64)
+	if !r.Size.IsUnknown() && !r.Size.IsNull() {
+		*size = r.Size.ValueInt64()
+	} else {
+		size = nil
+	}
+	var filter *operations.GetMeshOPAListQueryParamFilter
+	if r.Filter != nil {
+		key := new(string)
+		if !r.Filter.Key.IsUnknown() && !r.Filter.Key.IsNull() {
+			*key = r.Filter.Key.ValueString()
+		} else {
+			key = nil
+		}
+		value := new(string)
+		if !r.Filter.Value.IsUnknown() && !r.Filter.Value.IsNull() {
+			*value = r.Filter.Value.ValueString()
+		} else {
+			value = nil
+		}
+		filter = &operations.GetMeshOPAListQueryParamFilter{
+			Key:   key,
+			Value: value,
+		}
+	}
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	out := operations.GetMeshOPAListRequest{
+		CpID:   cpID,
+		Offset: offset,
+		Size:   size,
+		Filter: filter,
+		Mesh:   mesh,
+	}
+
+	return &out, diags
 }

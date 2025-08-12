@@ -2,17 +2,48 @@
 
 package shared
 
+import (
+	"encoding/json"
+	"fmt"
+)
+
+type DomainVerificationMethod string
+
+const (
+	DomainVerificationMethodCustomCertificate DomainVerificationMethod = "custom_certificate"
+	DomainVerificationMethodHTTP              DomainVerificationMethod = "http"
+)
+
+func (e DomainVerificationMethod) ToPointer() *DomainVerificationMethod {
+	return &e
+}
+func (e *DomainVerificationMethod) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "custom_certificate":
+		fallthrough
+	case "http":
+		*e = DomainVerificationMethod(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for DomainVerificationMethod: %v", v)
+	}
+}
+
 type CreatePortalCustomDomainSSL struct {
-	DomainVerificationMethod PortalCustomDomainVerificationMethod `json:"domain_verification_method"`
-	// Custom certificate to be used for the SSL termination.
+	DomainVerificationMethod *DomainVerificationMethod `json:"domain_verification_method,omitempty"`
+	// Custom certificate to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate"
 	CustomCertificate *string `json:"custom_certificate,omitempty"`
-	// Custom certificate private key to be used for the SSL termination.
+	// Custom certificate private key to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate"
 	CustomPrivateKey *string `json:"custom_private_key,omitempty"`
 }
 
-func (o *CreatePortalCustomDomainSSL) GetDomainVerificationMethod() PortalCustomDomainVerificationMethod {
+func (o *CreatePortalCustomDomainSSL) GetDomainVerificationMethod() *DomainVerificationMethod {
 	if o == nil {
-		return PortalCustomDomainVerificationMethod("")
+		return nil
 	}
 	return o.DomainVerificationMethod
 }

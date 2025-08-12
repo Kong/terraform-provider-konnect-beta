@@ -6,6 +6,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/Kong/shared-speakeasy/customtypes/kumalabels"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
@@ -13,54 +14,24 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshGatewayListDataSourceModel) ToOperationsGetMeshGatewayListRequest(ctx context.Context) (*operations.GetMeshGatewayListRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	offset := new(int64)
-	if !r.Offset.IsUnknown() && !r.Offset.IsNull() {
-		*offset = r.Offset.ValueInt64()
-	} else {
-		offset = nil
-	}
-	size := new(int64)
-	if !r.Size.IsUnknown() && !r.Size.IsNull() {
-		*size = r.Size.ValueInt64()
-	} else {
-		size = nil
-	}
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	out := operations.GetMeshGatewayListRequest{
-		CpID:   cpID,
-		Offset: offset,
-		Size:   size,
-		Mesh:   mesh,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshGatewayListDataSourceModel) RefreshFromSharedMeshGatewayList(ctx context.Context, resp *shared.MeshGatewayList) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
 		r.Items = []tfTypes.MeshGatewayItem{}
-		if len(r.Items) > len(resp.Items) {
-			r.Items = r.Items[:len(resp.Items)]
-		}
-		for itemsCount, itemsItem := range resp.Items {
+
+		for _, itemsItem := range resp.Items {
 			var items tfTypes.MeshGatewayItem
+
 			if itemsItem.Conf == nil {
 				items.Conf = nil
 			} else {
 				items.Conf = &tfTypes.Conf{}
 				items.Conf.Listeners = []tfTypes.Listeners{}
-				for listenersCount, listenersItem := range itemsItem.Conf.Listeners {
+
+				for _, listenersItem := range itemsItem.Conf.Listeners {
 					var listeners tfTypes.Listeners
+
 					listeners.CrossMesh = types.BoolPointerValue(listenersItem.CrossMesh)
 					listeners.Hostname = types.StringPointerValue(listenersItem.Hostname)
 					listeners.Port = types.Int64PointerValue(listenersItem.Port)
@@ -90,15 +61,14 @@ func (r *MeshGatewayListDataSourceModel) RefreshFromSharedMeshGatewayList(ctx co
 					} else {
 						listeners.TLS = &tfTypes.MeshGatewayItemTLS{}
 						listeners.TLS.Certificates = []tfTypes.AccessKey{}
-						for certificatesCount, certificatesItem := range listenersItem.TLS.Certificates {
+
+						for _, certificatesItem := range listenersItem.TLS.Certificates {
 							var certificates tfTypes.AccessKey
+
 							typeVarResult, _ := json.Marshal(certificatesItem.Type)
-							certificates.Type = types.StringValue(string(typeVarResult))
-							if certificatesCount+1 > len(listeners.TLS.Certificates) {
-								listeners.TLS.Certificates = append(listeners.TLS.Certificates, certificates)
-							} else {
-								listeners.TLS.Certificates[certificatesCount].Type = certificates.Type
-							}
+							certificates.Type = jsontypes.NewNormalizedValue(string(typeVarResult))
+
+							listeners.TLS.Certificates = append(listeners.TLS.Certificates, certificates)
 						}
 						if listenersItem.TLS.Mode != nil {
 							listeners.TLS.Mode = &tfTypes.MeshItemMode{}
@@ -115,17 +85,8 @@ func (r *MeshGatewayListDataSourceModel) RefreshFromSharedMeshGatewayList(ctx co
 							listeners.TLS.Options = &tfTypes.OptionsObj{}
 						}
 					}
-					if listenersCount+1 > len(items.Conf.Listeners) {
-						items.Conf.Listeners = append(items.Conf.Listeners, listeners)
-					} else {
-						items.Conf.Listeners[listenersCount].CrossMesh = listeners.CrossMesh
-						items.Conf.Listeners[listenersCount].Hostname = listeners.Hostname
-						items.Conf.Listeners[listenersCount].Port = listeners.Port
-						items.Conf.Listeners[listenersCount].Protocol = listeners.Protocol
-						items.Conf.Listeners[listenersCount].Resources = listeners.Resources
-						items.Conf.Listeners[listenersCount].Tags = listeners.Tags
-						items.Conf.Listeners[listenersCount].TLS = listeners.TLS
-					}
+
+					items.Conf.Listeners = append(items.Conf.Listeners, listeners)
 				}
 			}
 			labelsValue, labelsDiags := types.MapValueFrom(ctx, types.StringType, itemsItem.Labels)
@@ -136,19 +97,18 @@ func (r *MeshGatewayListDataSourceModel) RefreshFromSharedMeshGatewayList(ctx co
 			items.Mesh = types.StringValue(itemsItem.Mesh)
 			items.Name = types.StringValue(itemsItem.Name)
 			items.Selectors = []tfTypes.Selectors{}
-			for selectorsCount, selectorsItem := range itemsItem.Selectors {
+
+			for _, selectorsItem := range itemsItem.Selectors {
 				var selectors tfTypes.Selectors
+
 				if len(selectorsItem.Match) > 0 {
 					selectors.Match = make(map[string]types.String, len(selectorsItem.Match))
 					for key1, value1 := range selectorsItem.Match {
 						selectors.Match[key1] = types.StringValue(value1)
 					}
 				}
-				if selectorsCount+1 > len(items.Selectors) {
-					items.Selectors = append(items.Selectors, selectors)
-				} else {
-					items.Selectors[selectorsCount].Match = selectors.Match
-				}
+
+				items.Selectors = append(items.Selectors, selectors)
 			}
 			if len(itemsItem.Tags) > 0 {
 				items.Tags = make(map[string]types.String, len(itemsItem.Tags))
@@ -157,21 +117,63 @@ func (r *MeshGatewayListDataSourceModel) RefreshFromSharedMeshGatewayList(ctx co
 				}
 			}
 			items.Type = types.StringValue(itemsItem.Type)
-			if itemsCount+1 > len(r.Items) {
-				r.Items = append(r.Items, items)
-			} else {
-				r.Items[itemsCount].Conf = items.Conf
-				r.Items[itemsCount].Labels = items.Labels
-				r.Items[itemsCount].Mesh = items.Mesh
-				r.Items[itemsCount].Name = items.Name
-				r.Items[itemsCount].Selectors = items.Selectors
-				r.Items[itemsCount].Tags = items.Tags
-				r.Items[itemsCount].Type = items.Type
-			}
+
+			r.Items = append(r.Items, items)
 		}
 		r.Next = types.StringPointerValue(resp.Next)
 		r.Total = types.Float64PointerValue(resp.Total)
 	}
 
 	return diags
+}
+
+func (r *MeshGatewayListDataSourceModel) ToOperationsGetMeshGatewayListRequest(ctx context.Context) (*operations.GetMeshGatewayListRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	offset := new(int64)
+	if !r.Offset.IsUnknown() && !r.Offset.IsNull() {
+		*offset = r.Offset.ValueInt64()
+	} else {
+		offset = nil
+	}
+	size := new(int64)
+	if !r.Size.IsUnknown() && !r.Size.IsNull() {
+		*size = r.Size.ValueInt64()
+	} else {
+		size = nil
+	}
+	var filter *operations.GetMeshGatewayListQueryParamFilter
+	if r.Filter != nil {
+		key := new(string)
+		if !r.Filter.Key.IsUnknown() && !r.Filter.Key.IsNull() {
+			*key = r.Filter.Key.ValueString()
+		} else {
+			key = nil
+		}
+		value := new(string)
+		if !r.Filter.Value.IsUnknown() && !r.Filter.Value.IsNull() {
+			*value = r.Filter.Value.ValueString()
+		} else {
+			value = nil
+		}
+		filter = &operations.GetMeshGatewayListQueryParamFilter{
+			Key:   key,
+			Value: value,
+		}
+	}
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	out := operations.GetMeshGatewayListRequest{
+		CpID:   cpID,
+		Offset: offset,
+		Size:   size,
+		Filter: filter,
+		Mesh:   mesh,
+	}
+
+	return &out, diags
 }

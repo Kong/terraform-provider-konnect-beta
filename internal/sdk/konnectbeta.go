@@ -2,7 +2,7 @@
 
 package sdk
 
-// Generated from OpenAPI doc version 2.0.0 and generator version 2.620.2
+// Generated from OpenAPI doc version 2.0.0 and generator version 2.681.1
 
 import (
 	"context"
@@ -59,6 +59,8 @@ type KonnectBeta struct {
 	Portals *Portals
 	// APIs related to configuration of Konnect Developer Portals custom domains.
 	PortalCustomDomains *PortalCustomDomains
+	// APIs for managing static assets for Konnect Developer Portals.
+	Assets *Assets
 	// APIs related to customization of Konnect Developer Portals.
 	PortalCustomization *PortalCustomization
 	// APIs related to Konnect Developer Portal Custom Pages.
@@ -99,8 +101,15 @@ type KonnectBeta struct {
 	MeshService               *MeshService
 	MeshGlobalRateLimit       *MeshGlobalRateLimit
 	MeshOPA                   *MeshOPA
-	// Auth server management API
-	Authserver *Authserver
+	// Auth Servers expose an OAuth 2.0 and OpenID Connect server interface for generating access tokens. The management API will give you the ability to create, configure and manage multiple Auth Servers per Konnect organization. Auth Servers are a regional Konnect entity.
+	AuthServer *AuthServer
+	// Claims are statements about the Client, included in tokens issued by the Auth Server. The management API will give you the ability to create, configure and manage multiple Claims per Auth Server, and include them in tokens based on the requested Scopes.
+	AuthServerClaims *AuthServerClaims
+	// Scopes define the extent of access that an access token grants to a Client. The management API will give you the ability to create, configure and manage multiple Scopes per Auth Server, and restrict their usage by Client.
+	AuthServerScopes *AuthServerScopes
+	// Clients represent the identity of machines, such as microservices, mobile apps, or scripts entity. The management API will give you the ability to create, configure and manage multiple Clients per Auth Server.
+	AuthServerClients *AuthServerClients
+	Dashboards        *Dashboards
 
 	sdkConfiguration config.SDKConfiguration
 	hooks            *hooks.Hooks
@@ -176,9 +185,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *KonnectBeta {
 	sdk := &KonnectBeta{
-		SDKVersion: "0.7.2",
+		SDKVersion: "0.8.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 0.7.2 2.620.2 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 0.8.0 2.681.1 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
 			ServerList: ServerList,
 		},
 		hooks: hooks.New(),
@@ -201,6 +210,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 
 	sdk.Portals = newPortals(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalCustomDomains = newPortalCustomDomains(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Assets = newAssets(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalCustomization = newPortalCustomization(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Pages = newPages(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Snippets = newSnippets(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -236,7 +246,11 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.MeshService = newMeshService(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshGlobalRateLimit = newMeshGlobalRateLimit(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshOPA = newMeshOPA(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.Authserver = newAuthserver(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AuthServer = newAuthServer(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AuthServerClaims = newAuthServerClaims(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AuthServerScopes = newAuthServerScopes(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AuthServerClients = newAuthServerClients(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Dashboards = newDashboards(sdk, sdk.sdkConfiguration, sdk.hooks)
 
 	return sdk
 }

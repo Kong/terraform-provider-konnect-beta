@@ -13,27 +13,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshTrafficPermissionDataSourceModel) ToOperationsGetMeshTrafficPermissionRequest(ctx context.Context) (*operations.GetMeshTrafficPermissionRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	out := operations.GetMeshTrafficPermissionRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshTrafficPermissionDataSourceModel) RefreshFromSharedMeshTrafficPermissionItem(ctx context.Context, resp *shared.MeshTrafficPermissionItem) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -48,11 +27,10 @@ func (r *MeshTrafficPermissionDataSourceModel) RefreshFromSharedMeshTrafficPermi
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
 		r.Spec.From = []tfTypes.MeshTrafficPermissionItemFrom{}
-		if len(r.Spec.From) > len(resp.Spec.From) {
-			r.Spec.From = r.Spec.From[:len(resp.Spec.From)]
-		}
-		for fromCount, fromItem := range resp.Spec.From {
+
+		for _, fromItem := range resp.Spec.From {
 			var from tfTypes.MeshTrafficPermissionItemFrom
+
 			if fromItem.Default == nil {
 				from.Default = nil
 			} else {
@@ -84,12 +62,8 @@ func (r *MeshTrafficPermissionDataSourceModel) RefreshFromSharedMeshTrafficPermi
 					from.TargetRef.Tags[key1] = types.StringValue(value1)
 				}
 			}
-			if fromCount+1 > len(r.Spec.From) {
-				r.Spec.From = append(r.Spec.From, from)
-			} else {
-				r.Spec.From[fromCount].Default = from.Default
-				r.Spec.From[fromCount].TargetRef = from.TargetRef
-			}
+
+			r.Spec.From = append(r.Spec.From, from)
 		}
 		if resp.Spec.TargetRef == nil {
 			r.Spec.TargetRef = nil
@@ -121,4 +95,25 @@ func (r *MeshTrafficPermissionDataSourceModel) RefreshFromSharedMeshTrafficPermi
 	}
 
 	return diags
+}
+
+func (r *MeshTrafficPermissionDataSourceModel) ToOperationsGetMeshTrafficPermissionRequest(ctx context.Context) (*operations.GetMeshTrafficPermissionRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	out := operations.GetMeshTrafficPermissionRequest{
+		CpID: cpID,
+		Mesh: mesh,
+		Name: name,
+	}
+
+	return &out, diags
 }

@@ -35,6 +35,7 @@ func NewAuthServerClientsResource() resource.Resource {
 
 // AuthServerClientsResource defines the resource implementation.
 type AuthServerClientsResource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
@@ -221,7 +222,7 @@ func (r *AuthServerClientsResource) Create(ctx context.Context, req resource.Cre
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Authserver.CreateAuthServerClient(ctx, *request)
+	res, err := r.client.AuthServerClients.CreateAuthServerClient(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -258,7 +259,7 @@ func (r *AuthServerClientsResource) Create(ctx context.Context, req resource.Cre
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res1, err := r.client.Authserver.GetAuthServerClient(ctx, *request1)
+	res1, err := r.client.AuthServerClients.GetAuthServerClient(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -318,7 +319,7 @@ func (r *AuthServerClientsResource) Read(ctx context.Context, req resource.ReadR
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Authserver.GetAuthServerClient(ctx, *request)
+	res, err := r.client.AuthServerClients.GetAuthServerClient(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -372,7 +373,7 @@ func (r *AuthServerClientsResource) Update(ctx context.Context, req resource.Upd
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Authserver.ReplaceAuthServerClient(ctx, *request)
+	res, err := r.client.AuthServerClients.ReplaceAuthServerClient(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -412,7 +413,7 @@ func (r *AuthServerClientsResource) Update(ctx context.Context, req resource.Upd
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res1, err := r.client.Authserver.GetAuthServerClient(ctx, *request1)
+	res1, err := r.client.AuthServerClients.GetAuthServerClient(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -472,7 +473,7 @@ func (r *AuthServerClientsResource) Delete(ctx context.Context, req resource.Del
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Authserver.DeleteAuthServerClient(ctx, *request)
+	res, err := r.client.AuthServerClients.DeleteAuthServerClient(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -500,7 +501,7 @@ func (r *AuthServerClientsResource) ImportState(ctx context.Context, req resourc
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "auth_server_id": "d32d905a-ed33-46a3-a093-d8f536af9a8a",  "id": "kYa9iQFU5xPDSIUH9z1z"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"auth_server_id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "id": "kYa9iQFU5xPDSIUH9z1z"}': `+err.Error())
 		return
 	}
 
@@ -514,5 +515,4 @@ func (r *AuthServerClientsResource) ImportState(ctx context.Context, req resourc
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
-
 }

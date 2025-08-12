@@ -38,7 +38,7 @@ resource "konnect_auth_server_claims" "my_authserverclaims" {
 
 ### Optional
 
-- `enabled` (Boolean) Specifies whether the claim is enabled. Default: true
+- `enabled` (Boolean) Specifies whether the claim is enabled. If the claim is not enabled, it will not be included in the token or the '/userinfo' endpoint. Default: true
 - `include_in_all_scopes` (Boolean) Specifies whether to include the claim in all scopes. If the value is set to 'false' for a claim, the claim is only included in the scopes that explicitly list it. Default: false
 - `include_in_scopes` (List of String) Specifies the scopes IDs in which the claim is included
 - `include_in_token` (Boolean) Specifies whether to include claim in the token. If the value is set to 'false' for a claim, the client instead uses the access token to get claims from the '/userinfo' endpoint. Default: false
@@ -54,5 +54,5 @@ resource "konnect_auth_server_claims" "my_authserverclaims" {
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_auth_server_claims.my_konnect_auth_server_claims "{ \"auth_server_id\": \"d32d905a-ed33-46a3-a093-d8f536af9a8a\",  \"id\": \"07d05309-45cc-4b37-92fb-1524846deec3\"}"
+terraform import konnect_auth_server_claims.my_konnect_auth_server_claims '{"auth_server_id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "id": "07d05309-45cc-4b37-92fb-1524846deec3"}'
 ```

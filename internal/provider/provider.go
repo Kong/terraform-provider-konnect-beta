@@ -72,13 +72,14 @@ func (p *KonnectBetaProvider) Configure(ctx context.Context, req provider.Config
 		return
 	}
 
-	ServerURL := data.ServerURL.ValueString()
+	serverUrl := data.ServerURL.ValueString()
 
-	if ServerURL == "" && len(os.Getenv("KONNECT_SERVER_URL")) > 0 {
-		ServerURL = os.Getenv("KONNECT_SERVER_URL")
+	if serverUrl == "" && os.Getenv("KONNECT_SERVER_URL") != "" {
+		serverUrl = os.Getenv("KONNECT_SERVER_URL")
 	}
-	if ServerURL == "" {
-		ServerURL = "https://global.api.konghq.com"
+
+	if serverUrl == "" {
+		serverUrl = "https://global.api.konghq.com"
 	}
 
 	security := shared.Security{}
@@ -112,12 +113,12 @@ func (p *KonnectBetaProvider) Configure(ctx context.Context, req provider.Config
 	httpClient.Transport = NewProviderHTTPTransport(providerHTTPTransportOpts)
 
 	opts := []sdk.SDKOption{
-		sdk.WithServerURL(ServerURL),
+		sdk.WithServerURL(serverUrl),
 		sdk.WithSecurity(security),
 		sdk.WithClient(httpClient),
 	}
-	client := sdk.New(opts...)
 
+	client := sdk.New(opts...)
 	resp.DataSourceData = client
 	resp.EphemeralResourceData = client
 	resp.ResourceData = client
@@ -135,6 +136,7 @@ func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.R
 		NewAuthServerClaimsResource,
 		NewAuthServerClientsResource,
 		NewAuthServerScopesResource,
+		NewDashboardResource,
 		NewMeshResource,
 		NewMeshAccessLogResource,
 		NewMeshCircuitBreakerResource,
@@ -164,6 +166,8 @@ func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.R
 		NewPortalAuthResource,
 		NewPortalCustomDomainResource,
 		NewPortalCustomizationResource,
+		NewPortalFaviconResource,
+		NewPortalLogoResource,
 		NewPortalPageResource,
 		NewPortalSnippetResource,
 		NewPortalTeamResource,
@@ -172,23 +176,12 @@ func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.R
 
 func (p *KonnectBetaProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
-		NewAPIDataSource,
-		NewAPIDocumentDataSource,
-		NewAPIImplementationDataSource,
-		NewAPIPublicationDataSource,
-		NewAPISpecificationDataSource,
-		NewAPIVersionDataSource,
-		NewAuthServerDataSource,
-		NewAuthServerClaimsDataSource,
-		NewAuthServerClientsDataSource,
-		NewAuthServerScopesDataSource,
 		NewHostnameGeneratorListDataSource,
 		NewMeshDataSource,
 		NewMeshAccessLogDataSource,
 		NewMeshAccessLogListDataSource,
 		NewMeshCircuitBreakerDataSource,
 		NewMeshCircuitBreakerListDataSource,
-		NewMeshControlPlaneDataSource,
 		NewMeshControlPlanesDataSource,
 		NewMeshExternalServiceDataSource,
 		NewMeshExternalServiceListDataSource,
@@ -232,13 +225,6 @@ func (p *KonnectBetaProvider) DataSources(ctx context.Context) []func() datasour
 		NewMeshTraceListDataSource,
 		NewMeshTrafficPermissionDataSource,
 		NewMeshTrafficPermissionListDataSource,
-		NewPortalDataSource,
-		NewPortalAuthDataSource,
-		NewPortalCustomDomainDataSource,
-		NewPortalCustomizationDataSource,
-		NewPortalPageDataSource,
-		NewPortalSnippetDataSource,
-		NewPortalTeamDataSource,
 	}
 }
 

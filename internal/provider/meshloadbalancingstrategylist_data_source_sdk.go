@@ -13,47 +13,15 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshLoadBalancingStrategyListDataSourceModel) ToOperationsGetMeshLoadBalancingStrategyListRequest(ctx context.Context) (*operations.GetMeshLoadBalancingStrategyListRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	offset := new(int64)
-	if !r.Offset.IsUnknown() && !r.Offset.IsNull() {
-		*offset = r.Offset.ValueInt64()
-	} else {
-		offset = nil
-	}
-	size := new(int64)
-	if !r.Size.IsUnknown() && !r.Size.IsNull() {
-		*size = r.Size.ValueInt64()
-	} else {
-		size = nil
-	}
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	out := operations.GetMeshLoadBalancingStrategyListRequest{
-		CpID:   cpID,
-		Offset: offset,
-		Size:   size,
-		Mesh:   mesh,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshLoadBalancingStrategyListDataSourceModel) RefreshFromSharedMeshLoadBalancingStrategyList(ctx context.Context, resp *shared.MeshLoadBalancingStrategyList) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
 		r.Items = []tfTypes.MeshLoadBalancingStrategyItem{}
-		if len(r.Items) > len(resp.Items) {
-			r.Items = r.Items[:len(resp.Items)]
-		}
-		for itemsCount, itemsItem := range resp.Items {
+
+		for _, itemsItem := range resp.Items {
 			var items tfTypes.MeshLoadBalancingStrategyItem
+
 			items.CreationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(itemsItem.CreationTime))
 			labelsValue, labelsDiags := types.MapValueFrom(ctx, types.StringType, itemsItem.Labels)
 			diags.Append(labelsDiags...)
@@ -90,8 +58,10 @@ func (r *MeshLoadBalancingStrategyListDataSourceModel) RefreshFromSharedMeshLoad
 				}
 			}
 			items.Spec.To = []tfTypes.MeshLoadBalancingStrategyItemTo{}
-			for toCount, toItem := range itemsItem.Spec.To {
+
+			for _, toItem := range itemsItem.Spec.To {
 				var to tfTypes.MeshLoadBalancingStrategyItemTo
+
 				if toItem.Default == nil {
 					to.Default = nil
 				} else {
@@ -120,8 +90,10 @@ func (r *MeshLoadBalancingStrategyListDataSourceModel) RefreshFromSharedMeshLoad
 						} else {
 							to.Default.LoadBalancer.Maglev = &tfTypes.Maglev{}
 							to.Default.LoadBalancer.Maglev.HashPolicies = []tfTypes.HashPolicies{}
-							for hashPoliciesCount, hashPoliciesItem := range toItem.Default.LoadBalancer.Maglev.HashPolicies {
+
+							for _, hashPoliciesItem := range toItem.Default.LoadBalancer.Maglev.HashPolicies {
 								var hashPolicies tfTypes.HashPolicies
+
 								if hashPoliciesItem.Connection == nil {
 									hashPolicies.Connection = nil
 								} else {
@@ -156,17 +128,8 @@ func (r *MeshLoadBalancingStrategyListDataSourceModel) RefreshFromSharedMeshLoad
 								}
 								hashPolicies.Terminal = types.BoolPointerValue(hashPoliciesItem.Terminal)
 								hashPolicies.Type = types.StringValue(string(hashPoliciesItem.Type))
-								if hashPoliciesCount+1 > len(to.Default.LoadBalancer.Maglev.HashPolicies) {
-									to.Default.LoadBalancer.Maglev.HashPolicies = append(to.Default.LoadBalancer.Maglev.HashPolicies, hashPolicies)
-								} else {
-									to.Default.LoadBalancer.Maglev.HashPolicies[hashPoliciesCount].Connection = hashPolicies.Connection
-									to.Default.LoadBalancer.Maglev.HashPolicies[hashPoliciesCount].Cookie = hashPolicies.Cookie
-									to.Default.LoadBalancer.Maglev.HashPolicies[hashPoliciesCount].FilterState = hashPolicies.FilterState
-									to.Default.LoadBalancer.Maglev.HashPolicies[hashPoliciesCount].Header = hashPolicies.Header
-									to.Default.LoadBalancer.Maglev.HashPolicies[hashPoliciesCount].QueryParameter = hashPolicies.QueryParameter
-									to.Default.LoadBalancer.Maglev.HashPolicies[hashPoliciesCount].Terminal = hashPolicies.Terminal
-									to.Default.LoadBalancer.Maglev.HashPolicies[hashPoliciesCount].Type = hashPolicies.Type
-								}
+
+								to.Default.LoadBalancer.Maglev.HashPolicies = append(to.Default.LoadBalancer.Maglev.HashPolicies, hashPolicies)
 							}
 							to.Default.LoadBalancer.Maglev.TableSize = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(toItem.Default.LoadBalancer.Maglev.TableSize))
 						}
@@ -185,8 +148,10 @@ func (r *MeshLoadBalancingStrategyListDataSourceModel) RefreshFromSharedMeshLoad
 								to.Default.LoadBalancer.RingHash.HashFunction = types.StringNull()
 							}
 							to.Default.LoadBalancer.RingHash.HashPolicies = []tfTypes.HashPolicies{}
-							for hashPoliciesCount1, hashPoliciesItem1 := range toItem.Default.LoadBalancer.RingHash.HashPolicies {
+
+							for _, hashPoliciesItem1 := range toItem.Default.LoadBalancer.RingHash.HashPolicies {
 								var hashPolicies1 tfTypes.HashPolicies
+
 								if hashPoliciesItem1.Connection == nil {
 									hashPolicies1.Connection = nil
 								} else {
@@ -221,17 +186,8 @@ func (r *MeshLoadBalancingStrategyListDataSourceModel) RefreshFromSharedMeshLoad
 								}
 								hashPolicies1.Terminal = types.BoolPointerValue(hashPoliciesItem1.Terminal)
 								hashPolicies1.Type = types.StringValue(string(hashPoliciesItem1.Type))
-								if hashPoliciesCount1+1 > len(to.Default.LoadBalancer.RingHash.HashPolicies) {
-									to.Default.LoadBalancer.RingHash.HashPolicies = append(to.Default.LoadBalancer.RingHash.HashPolicies, hashPolicies1)
-								} else {
-									to.Default.LoadBalancer.RingHash.HashPolicies[hashPoliciesCount1].Connection = hashPolicies1.Connection
-									to.Default.LoadBalancer.RingHash.HashPolicies[hashPoliciesCount1].Cookie = hashPolicies1.Cookie
-									to.Default.LoadBalancer.RingHash.HashPolicies[hashPoliciesCount1].FilterState = hashPolicies1.FilterState
-									to.Default.LoadBalancer.RingHash.HashPolicies[hashPoliciesCount1].Header = hashPolicies1.Header
-									to.Default.LoadBalancer.RingHash.HashPolicies[hashPoliciesCount1].QueryParameter = hashPolicies1.QueryParameter
-									to.Default.LoadBalancer.RingHash.HashPolicies[hashPoliciesCount1].Terminal = hashPolicies1.Terminal
-									to.Default.LoadBalancer.RingHash.HashPolicies[hashPoliciesCount1].Type = hashPolicies1.Type
-								}
+
+								to.Default.LoadBalancer.RingHash.HashPolicies = append(to.Default.LoadBalancer.RingHash.HashPolicies, hashPolicies1)
 							}
 							to.Default.LoadBalancer.RingHash.MaxRingSize = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(toItem.Default.LoadBalancer.RingHash.MaxRingSize))
 							to.Default.LoadBalancer.RingHash.MinRingSize = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(toItem.Default.LoadBalancer.RingHash.MinRingSize))
@@ -252,8 +208,10 @@ func (r *MeshLoadBalancingStrategyListDataSourceModel) RefreshFromSharedMeshLoad
 						} else {
 							to.Default.LocalityAwareness.CrossZone = &tfTypes.CrossZone{}
 							to.Default.LocalityAwareness.CrossZone.Failover = []tfTypes.Failover{}
-							for failoverCount, failoverItem := range toItem.Default.LocalityAwareness.CrossZone.Failover {
+
+							for _, failoverItem := range toItem.Default.LocalityAwareness.CrossZone.Failover {
 								var failover tfTypes.Failover
+
 								if failoverItem.From == nil {
 									failover.From = nil
 								} else {
@@ -268,12 +226,8 @@ func (r *MeshLoadBalancingStrategyListDataSourceModel) RefreshFromSharedMeshLoad
 								for _, v := range failoverItem.To.Zones {
 									failover.To.Zones = append(failover.To.Zones, types.StringValue(v))
 								}
-								if failoverCount+1 > len(to.Default.LocalityAwareness.CrossZone.Failover) {
-									to.Default.LocalityAwareness.CrossZone.Failover = append(to.Default.LocalityAwareness.CrossZone.Failover, failover)
-								} else {
-									to.Default.LocalityAwareness.CrossZone.Failover[failoverCount].From = failover.From
-									to.Default.LocalityAwareness.CrossZone.Failover[failoverCount].To = failover.To
-								}
+
+								to.Default.LocalityAwareness.CrossZone.Failover = append(to.Default.LocalityAwareness.CrossZone.Failover, failover)
 							}
 							if toItem.Default.LocalityAwareness.CrossZone.FailoverThreshold == nil {
 								to.Default.LocalityAwareness.CrossZone.FailoverThreshold = nil
@@ -293,16 +247,14 @@ func (r *MeshLoadBalancingStrategyListDataSourceModel) RefreshFromSharedMeshLoad
 						} else {
 							to.Default.LocalityAwareness.LocalZone = &tfTypes.LocalZone{}
 							to.Default.LocalityAwareness.LocalZone.AffinityTags = []tfTypes.AffinityTags{}
-							for affinityTagsCount, affinityTagsItem := range toItem.Default.LocalityAwareness.LocalZone.AffinityTags {
+
+							for _, affinityTagsItem := range toItem.Default.LocalityAwareness.LocalZone.AffinityTags {
 								var affinityTags tfTypes.AffinityTags
+
 								affinityTags.Key = types.StringValue(affinityTagsItem.Key)
 								affinityTags.Weight = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(affinityTagsItem.Weight))
-								if affinityTagsCount+1 > len(to.Default.LocalityAwareness.LocalZone.AffinityTags) {
-									to.Default.LocalityAwareness.LocalZone.AffinityTags = append(to.Default.LocalityAwareness.LocalZone.AffinityTags, affinityTags)
-								} else {
-									to.Default.LocalityAwareness.LocalZone.AffinityTags[affinityTagsCount].Key = affinityTags.Key
-									to.Default.LocalityAwareness.LocalZone.AffinityTags[affinityTagsCount].Weight = affinityTags.Weight
-								}
+
+								to.Default.LocalityAwareness.LocalZone.AffinityTags = append(to.Default.LocalityAwareness.LocalZone.AffinityTags, affinityTags)
 							}
 						}
 					}
@@ -328,29 +280,67 @@ func (r *MeshLoadBalancingStrategyListDataSourceModel) RefreshFromSharedMeshLoad
 						to.TargetRef.Tags[key3] = types.StringValue(value3)
 					}
 				}
-				if toCount+1 > len(items.Spec.To) {
-					items.Spec.To = append(items.Spec.To, to)
-				} else {
-					items.Spec.To[toCount].Default = to.Default
-					items.Spec.To[toCount].TargetRef = to.TargetRef
-				}
+
+				items.Spec.To = append(items.Spec.To, to)
 			}
 			items.Type = types.StringValue(string(itemsItem.Type))
-			if itemsCount+1 > len(r.Items) {
-				r.Items = append(r.Items, items)
-			} else {
-				r.Items[itemsCount].CreationTime = items.CreationTime
-				r.Items[itemsCount].Labels = items.Labels
-				r.Items[itemsCount].Mesh = items.Mesh
-				r.Items[itemsCount].ModificationTime = items.ModificationTime
-				r.Items[itemsCount].Name = items.Name
-				r.Items[itemsCount].Spec = items.Spec
-				r.Items[itemsCount].Type = items.Type
-			}
+
+			r.Items = append(r.Items, items)
 		}
 		r.Next = types.StringPointerValue(resp.Next)
 		r.Total = types.Float64PointerValue(resp.Total)
 	}
 
 	return diags
+}
+
+func (r *MeshLoadBalancingStrategyListDataSourceModel) ToOperationsGetMeshLoadBalancingStrategyListRequest(ctx context.Context) (*operations.GetMeshLoadBalancingStrategyListRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	offset := new(int64)
+	if !r.Offset.IsUnknown() && !r.Offset.IsNull() {
+		*offset = r.Offset.ValueInt64()
+	} else {
+		offset = nil
+	}
+	size := new(int64)
+	if !r.Size.IsUnknown() && !r.Size.IsNull() {
+		*size = r.Size.ValueInt64()
+	} else {
+		size = nil
+	}
+	var filter *operations.GetMeshLoadBalancingStrategyListQueryParamFilter
+	if r.Filter != nil {
+		key := new(string)
+		if !r.Filter.Key.IsUnknown() && !r.Filter.Key.IsNull() {
+			*key = r.Filter.Key.ValueString()
+		} else {
+			key = nil
+		}
+		value := new(string)
+		if !r.Filter.Value.IsUnknown() && !r.Filter.Value.IsNull() {
+			*value = r.Filter.Value.ValueString()
+		} else {
+			value = nil
+		}
+		filter = &operations.GetMeshLoadBalancingStrategyListQueryParamFilter{
+			Key:   key,
+			Value: value,
+		}
+	}
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	out := operations.GetMeshLoadBalancingStrategyListRequest{
+		CpID:   cpID,
+		Offset: offset,
+		Size:   size,
+		Filter: filter,
+		Mesh:   mesh,
+	}
+
+	return &out, diags
 }

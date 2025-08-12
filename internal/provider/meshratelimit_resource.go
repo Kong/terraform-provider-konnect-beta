@@ -39,6 +39,7 @@ func NewMeshRateLimitResource() resource.Resource {
 
 // MeshRateLimitResource defines the resource implementation.
 type MeshRateLimitResource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
@@ -904,13 +905,13 @@ func (r *MeshRateLimitResource) Create(ctx context.Context, req resource.CreateR
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateMeshRateLimitRequest(ctx)
+	request, requestDiags := data.ToOperationsPutMeshRateLimitRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.MeshRateLimit.CreateMeshRateLimit(ctx, *request)
+	res, err := r.client.MeshRateLimit.PutMeshRateLimit(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -922,7 +923,10 @@ func (r *MeshRateLimitResource) Create(ctx context.Context, req resource.CreateR
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 201 {
+	switch res.StatusCode {
+	case 200, 201:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -1055,13 +1059,13 @@ func (r *MeshRateLimitResource) Update(ctx context.Context, req resource.UpdateR
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateMeshRateLimitRequest(ctx)
+	request, requestDiags := data.ToOperationsPutMeshRateLimitRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.MeshRateLimit.UpdateMeshRateLimit(ctx, *request)
+	res, err := r.client.MeshRateLimit.PutMeshRateLimit(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1073,7 +1077,10 @@ func (r *MeshRateLimitResource) Update(ctx context.Context, req resource.UpdateR
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 201:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -1187,7 +1194,7 @@ func (r *MeshRateLimitResource) ImportState(ctx context.Context, req resource.Im
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b",  "mesh": "",  "name": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b", "mesh": "", "name": ""}': `+err.Error())
 		return
 	}
 
@@ -1206,5 +1213,4 @@ func (r *MeshRateLimitResource) ImportState(ctx context.Context, req resource.Im
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), data.Name)...)
-
 }

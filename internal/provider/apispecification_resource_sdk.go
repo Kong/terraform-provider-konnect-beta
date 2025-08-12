@@ -12,24 +12,27 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *APISpecificationResourceModel) ToSharedCreateAPISpecRequest(ctx context.Context) (*shared.CreateAPISpecRequest, diag.Diagnostics) {
+func (r *APISpecificationResourceModel) RefreshFromSharedAPISpecResponse(ctx context.Context, resp *shared.APISpecResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	var content string
-	content = r.Content.ValueString()
+	if resp != nil {
+		r.Content = types.StringValue(resp.Content)
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.ID = types.StringValue(resp.ID)
+		r.Type = types.StringValue(string(resp.Type))
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+		r.ValidationMessages = []tfTypes.ValidationMessages{}
 
-	typeVar := new(shared.APISpecType)
-	if !r.Type.IsUnknown() && !r.Type.IsNull() {
-		*typeVar = shared.APISpecType(r.Type.ValueString())
-	} else {
-		typeVar = nil
-	}
-	out := shared.CreateAPISpecRequest{
-		Content: content,
-		Type:    typeVar,
+		for _, validationMessagesItem := range resp.ValidationMessages {
+			var validationMessages tfTypes.ValidationMessages
+
+			validationMessages.Message = types.StringValue(validationMessagesItem.Message)
+
+			r.ValidationMessages = append(r.ValidationMessages, validationMessages)
+		}
 	}
 
-	return &out, diags
+	return diags
 }
 
 func (r *APISpecificationResourceModel) ToOperationsCreateAPISpecRequest(ctx context.Context) (*operations.CreateAPISpecRequest, diag.Diagnostics) {
@@ -53,24 +56,35 @@ func (r *APISpecificationResourceModel) ToOperationsCreateAPISpecRequest(ctx con
 	return &out, diags
 }
 
-func (r *APISpecificationResourceModel) ToSharedAPISpec(ctx context.Context) (*shared.APISpec, diag.Diagnostics) {
+func (r *APISpecificationResourceModel) ToOperationsDeleteAPISpecRequest(ctx context.Context) (*operations.DeleteAPISpecRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	content := new(string)
-	if !r.Content.IsUnknown() && !r.Content.IsNull() {
-		*content = r.Content.ValueString()
-	} else {
-		content = nil
+	var apiID string
+	apiID = r.APIID.ValueString()
+
+	var specID string
+	specID = r.ID.ValueString()
+
+	out := operations.DeleteAPISpecRequest{
+		APIID:  apiID,
+		SpecID: specID,
 	}
-	typeVar := new(shared.APISpecAPISpecType)
-	if !r.Type.IsUnknown() && !r.Type.IsNull() {
-		*typeVar = shared.APISpecAPISpecType(r.Type.ValueString())
-	} else {
-		typeVar = nil
-	}
-	out := shared.APISpec{
-		Content: content,
-		Type:    typeVar,
+
+	return &out, diags
+}
+
+func (r *APISpecificationResourceModel) ToOperationsFetchAPISpecRequest(ctx context.Context) (*operations.FetchAPISpecRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var apiID string
+	apiID = r.APIID.ValueString()
+
+	var specID string
+	specID = r.ID.ValueString()
+
+	out := operations.FetchAPISpecRequest{
+		APIID:  apiID,
+		SpecID: specID,
 	}
 
 	return &out, diags
@@ -101,63 +115,45 @@ func (r *APISpecificationResourceModel) ToOperationsUpdateAPISpecRequest(ctx con
 	return &out, diags
 }
 
-func (r *APISpecificationResourceModel) ToOperationsFetchAPISpecRequest(ctx context.Context) (*operations.FetchAPISpecRequest, diag.Diagnostics) {
+func (r *APISpecificationResourceModel) ToSharedAPISpec(ctx context.Context) (*shared.APISpec, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var apiID string
-	apiID = r.APIID.ValueString()
-
-	var specID string
-	specID = r.ID.ValueString()
-
-	out := operations.FetchAPISpecRequest{
-		APIID:  apiID,
-		SpecID: specID,
+	content := new(string)
+	if !r.Content.IsUnknown() && !r.Content.IsNull() {
+		*content = r.Content.ValueString()
+	} else {
+		content = nil
+	}
+	typeVar := new(shared.APISpecAPISpecType)
+	if !r.Type.IsUnknown() && !r.Type.IsNull() {
+		*typeVar = shared.APISpecAPISpecType(r.Type.ValueString())
+	} else {
+		typeVar = nil
+	}
+	out := shared.APISpec{
+		Content: content,
+		Type:    typeVar,
 	}
 
 	return &out, diags
 }
 
-func (r *APISpecificationResourceModel) ToOperationsDeleteAPISpecRequest(ctx context.Context) (*operations.DeleteAPISpecRequest, diag.Diagnostics) {
+func (r *APISpecificationResourceModel) ToSharedCreateAPISpecRequest(ctx context.Context) (*shared.CreateAPISpecRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var apiID string
-	apiID = r.APIID.ValueString()
+	var content string
+	content = r.Content.ValueString()
 
-	var specID string
-	specID = r.ID.ValueString()
-
-	out := operations.DeleteAPISpecRequest{
-		APIID:  apiID,
-		SpecID: specID,
+	typeVar := new(shared.CreateAPISpecRequestAPISpecType)
+	if !r.Type.IsUnknown() && !r.Type.IsNull() {
+		*typeVar = shared.CreateAPISpecRequestAPISpecType(r.Type.ValueString())
+	} else {
+		typeVar = nil
+	}
+	out := shared.CreateAPISpecRequest{
+		Content: content,
+		Type:    typeVar,
 	}
 
 	return &out, diags
-}
-
-func (r *APISpecificationResourceModel) RefreshFromSharedAPISpecResponse(ctx context.Context, resp *shared.APISpecResponse) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.Content = types.StringValue(resp.Content)
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.ID = types.StringValue(resp.ID)
-		r.Type = types.StringValue(string(resp.Type))
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
-		r.ValidationMessages = []tfTypes.ValidationMessages{}
-		if len(r.ValidationMessages) > len(resp.ValidationMessages) {
-			r.ValidationMessages = r.ValidationMessages[:len(resp.ValidationMessages)]
-		}
-		for validationMessagesCount, validationMessagesItem := range resp.ValidationMessages {
-			var validationMessages tfTypes.ValidationMessages
-			validationMessages.Message = types.StringValue(validationMessagesItem.Message)
-			if validationMessagesCount+1 > len(r.ValidationMessages) {
-				r.ValidationMessages = append(r.ValidationMessages, validationMessages)
-			} else {
-				r.ValidationMessages[validationMessagesCount].Message = validationMessages.Message
-			}
-		}
-	}
-
-	return diags
 }

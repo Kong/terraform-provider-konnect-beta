@@ -13,47 +13,15 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshPassthroughListDataSourceModel) ToOperationsGetMeshPassthroughListRequest(ctx context.Context) (*operations.GetMeshPassthroughListRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	offset := new(int64)
-	if !r.Offset.IsUnknown() && !r.Offset.IsNull() {
-		*offset = r.Offset.ValueInt64()
-	} else {
-		offset = nil
-	}
-	size := new(int64)
-	if !r.Size.IsUnknown() && !r.Size.IsNull() {
-		*size = r.Size.ValueInt64()
-	} else {
-		size = nil
-	}
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	out := operations.GetMeshPassthroughListRequest{
-		CpID:   cpID,
-		Offset: offset,
-		Size:   size,
-		Mesh:   mesh,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshPassthroughListDataSourceModel) RefreshFromSharedMeshPassthroughList(ctx context.Context, resp *shared.MeshPassthroughList) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
 		r.Items = []tfTypes.MeshPassthroughItem{}
-		if len(r.Items) > len(resp.Items) {
-			r.Items = r.Items[:len(resp.Items)]
-		}
-		for itemsCount, itemsItem := range resp.Items {
+
+		for _, itemsItem := range resp.Items {
 			var items tfTypes.MeshPassthroughItem
+
 			items.CreationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(itemsItem.CreationTime))
 			labelsValue, labelsDiags := types.MapValueFrom(ctx, types.StringType, itemsItem.Labels)
 			diags.Append(labelsDiags...)
@@ -68,8 +36,10 @@ func (r *MeshPassthroughListDataSourceModel) RefreshFromSharedMeshPassthroughLis
 			} else {
 				items.Spec.Default = &tfTypes.MeshPassthroughItemDefault{}
 				items.Spec.Default.AppendMatch = []tfTypes.AppendMatch{}
-				for appendMatchCount, appendMatchItem := range itemsItem.Spec.Default.AppendMatch {
+
+				for _, appendMatchItem := range itemsItem.Spec.Default.AppendMatch {
 					var appendMatch tfTypes.AppendMatch
+
 					appendMatch.Port = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(appendMatchItem.Port))
 					if appendMatchItem.Protocol != nil {
 						appendMatch.Protocol = types.StringValue(string(*appendMatchItem.Protocol))
@@ -78,14 +48,8 @@ func (r *MeshPassthroughListDataSourceModel) RefreshFromSharedMeshPassthroughLis
 					}
 					appendMatch.Type = types.StringValue(string(appendMatchItem.Type))
 					appendMatch.Value = types.StringValue(appendMatchItem.Value)
-					if appendMatchCount+1 > len(items.Spec.Default.AppendMatch) {
-						items.Spec.Default.AppendMatch = append(items.Spec.Default.AppendMatch, appendMatch)
-					} else {
-						items.Spec.Default.AppendMatch[appendMatchCount].Port = appendMatch.Port
-						items.Spec.Default.AppendMatch[appendMatchCount].Protocol = appendMatch.Protocol
-						items.Spec.Default.AppendMatch[appendMatchCount].Type = appendMatch.Type
-						items.Spec.Default.AppendMatch[appendMatchCount].Value = appendMatch.Value
-					}
+
+					items.Spec.Default.AppendMatch = append(items.Spec.Default.AppendMatch, appendMatch)
 				}
 				if itemsItem.Spec.Default.PassthroughMode != nil {
 					items.Spec.Default.PassthroughMode = types.StringValue(string(*itemsItem.Spec.Default.PassthroughMode))
@@ -120,21 +84,63 @@ func (r *MeshPassthroughListDataSourceModel) RefreshFromSharedMeshPassthroughLis
 				}
 			}
 			items.Type = types.StringValue(string(itemsItem.Type))
-			if itemsCount+1 > len(r.Items) {
-				r.Items = append(r.Items, items)
-			} else {
-				r.Items[itemsCount].CreationTime = items.CreationTime
-				r.Items[itemsCount].Labels = items.Labels
-				r.Items[itemsCount].Mesh = items.Mesh
-				r.Items[itemsCount].ModificationTime = items.ModificationTime
-				r.Items[itemsCount].Name = items.Name
-				r.Items[itemsCount].Spec = items.Spec
-				r.Items[itemsCount].Type = items.Type
-			}
+
+			r.Items = append(r.Items, items)
 		}
 		r.Next = types.StringPointerValue(resp.Next)
 		r.Total = types.Float64PointerValue(resp.Total)
 	}
 
 	return diags
+}
+
+func (r *MeshPassthroughListDataSourceModel) ToOperationsGetMeshPassthroughListRequest(ctx context.Context) (*operations.GetMeshPassthroughListRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	offset := new(int64)
+	if !r.Offset.IsUnknown() && !r.Offset.IsNull() {
+		*offset = r.Offset.ValueInt64()
+	} else {
+		offset = nil
+	}
+	size := new(int64)
+	if !r.Size.IsUnknown() && !r.Size.IsNull() {
+		*size = r.Size.ValueInt64()
+	} else {
+		size = nil
+	}
+	var filter *operations.GetMeshPassthroughListQueryParamFilter
+	if r.Filter != nil {
+		key := new(string)
+		if !r.Filter.Key.IsUnknown() && !r.Filter.Key.IsNull() {
+			*key = r.Filter.Key.ValueString()
+		} else {
+			key = nil
+		}
+		value := new(string)
+		if !r.Filter.Value.IsUnknown() && !r.Filter.Value.IsNull() {
+			*value = r.Filter.Value.ValueString()
+		} else {
+			value = nil
+		}
+		filter = &operations.GetMeshPassthroughListQueryParamFilter{
+			Key:   key,
+			Value: value,
+		}
+	}
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	out := operations.GetMeshPassthroughListRequest{
+		CpID:   cpID,
+		Offset: offset,
+		Size:   size,
+		Filter: filter,
+		Mesh:   mesh,
+	}
+
+	return &out, diags
 }

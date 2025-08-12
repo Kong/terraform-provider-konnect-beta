@@ -11,6 +11,107 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
+func (r *AuthServerClaimsResourceModel) RefreshFromSharedClaim(ctx context.Context, resp *shared.Claim) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.Enabled = types.BoolPointerValue(resp.Enabled)
+		r.ID = types.StringValue(resp.ID)
+		r.IncludeInAllScopes = types.BoolPointerValue(resp.IncludeInAllScopes)
+		r.IncludeInScopes = make([]types.String, 0, len(resp.IncludeInScopes))
+		for _, v := range resp.IncludeInScopes {
+			r.IncludeInScopes = append(r.IncludeInScopes, types.StringValue(v))
+		}
+		r.IncludeInToken = types.BoolPointerValue(resp.IncludeInToken)
+		r.Name = types.StringValue(resp.Name)
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+		r.Value = types.StringValue(resp.Value)
+	}
+
+	return diags
+}
+
+func (r *AuthServerClaimsResourceModel) ToOperationsCreateAuthServerClaimRequest(ctx context.Context) (*operations.CreateAuthServerClaimRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var authServerID string
+	authServerID = r.AuthServerID.ValueString()
+
+	createClaim, createClaimDiags := r.ToSharedCreateClaim(ctx)
+	diags.Append(createClaimDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateAuthServerClaimRequest{
+		AuthServerID: authServerID,
+		CreateClaim:  *createClaim,
+	}
+
+	return &out, diags
+}
+
+func (r *AuthServerClaimsResourceModel) ToOperationsDeleteAuthServerClaimRequest(ctx context.Context) (*operations.DeleteAuthServerClaimRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var authServerID string
+	authServerID = r.AuthServerID.ValueString()
+
+	var claimID string
+	claimID = r.ID.ValueString()
+
+	out := operations.DeleteAuthServerClaimRequest{
+		AuthServerID: authServerID,
+		ClaimID:      claimID,
+	}
+
+	return &out, diags
+}
+
+func (r *AuthServerClaimsResourceModel) ToOperationsGetAuthServerClaimRequest(ctx context.Context) (*operations.GetAuthServerClaimRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var authServerID string
+	authServerID = r.AuthServerID.ValueString()
+
+	var claimID string
+	claimID = r.ID.ValueString()
+
+	out := operations.GetAuthServerClaimRequest{
+		AuthServerID: authServerID,
+		ClaimID:      claimID,
+	}
+
+	return &out, diags
+}
+
+func (r *AuthServerClaimsResourceModel) ToOperationsUpdateAuthServerClaimRequest(ctx context.Context) (*operations.UpdateAuthServerClaimRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var authServerID string
+	authServerID = r.AuthServerID.ValueString()
+
+	var claimID string
+	claimID = r.ID.ValueString()
+
+	updateClaim, updateClaimDiags := r.ToSharedUpdateClaim(ctx)
+	diags.Append(updateClaimDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAuthServerClaimRequest{
+		AuthServerID: authServerID,
+		ClaimID:      claimID,
+		UpdateClaim:  *updateClaim,
+	}
+
+	return &out, diags
+}
+
 func (r *AuthServerClaimsResourceModel) ToSharedCreateClaim(ctx context.Context) (*shared.CreateClaim, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -49,27 +150,6 @@ func (r *AuthServerClaimsResourceModel) ToSharedCreateClaim(ctx context.Context)
 		IncludeInAllScopes: includeInAllScopes,
 		IncludeInScopes:    includeInScopes,
 		Enabled:            enabled,
-	}
-
-	return &out, diags
-}
-
-func (r *AuthServerClaimsResourceModel) ToOperationsCreateAuthServerClaimRequest(ctx context.Context) (*operations.CreateAuthServerClaimRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var authServerID string
-	authServerID = r.AuthServerID.ValueString()
-
-	createClaim, createClaimDiags := r.ToSharedCreateClaim(ctx)
-	diags.Append(createClaimDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateAuthServerClaimRequest{
-		AuthServerID: authServerID,
-		CreateClaim:  *createClaim,
 	}
 
 	return &out, diags
@@ -122,84 +202,4 @@ func (r *AuthServerClaimsResourceModel) ToSharedUpdateClaim(ctx context.Context)
 	}
 
 	return &out, diags
-}
-
-func (r *AuthServerClaimsResourceModel) ToOperationsUpdateAuthServerClaimRequest(ctx context.Context) (*operations.UpdateAuthServerClaimRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var authServerID string
-	authServerID = r.AuthServerID.ValueString()
-
-	var claimID string
-	claimID = r.ID.ValueString()
-
-	updateClaim, updateClaimDiags := r.ToSharedUpdateClaim(ctx)
-	diags.Append(updateClaimDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateAuthServerClaimRequest{
-		AuthServerID: authServerID,
-		ClaimID:      claimID,
-		UpdateClaim:  *updateClaim,
-	}
-
-	return &out, diags
-}
-
-func (r *AuthServerClaimsResourceModel) ToOperationsGetAuthServerClaimRequest(ctx context.Context) (*operations.GetAuthServerClaimRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var authServerID string
-	authServerID = r.AuthServerID.ValueString()
-
-	var claimID string
-	claimID = r.ID.ValueString()
-
-	out := operations.GetAuthServerClaimRequest{
-		AuthServerID: authServerID,
-		ClaimID:      claimID,
-	}
-
-	return &out, diags
-}
-
-func (r *AuthServerClaimsResourceModel) ToOperationsDeleteAuthServerClaimRequest(ctx context.Context) (*operations.DeleteAuthServerClaimRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var authServerID string
-	authServerID = r.AuthServerID.ValueString()
-
-	var claimID string
-	claimID = r.ID.ValueString()
-
-	out := operations.DeleteAuthServerClaimRequest{
-		AuthServerID: authServerID,
-		ClaimID:      claimID,
-	}
-
-	return &out, diags
-}
-
-func (r *AuthServerClaimsResourceModel) RefreshFromSharedClaim(ctx context.Context, resp *shared.Claim) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.Enabled = types.BoolPointerValue(resp.Enabled)
-		r.ID = types.StringValue(resp.ID)
-		r.IncludeInAllScopes = types.BoolPointerValue(resp.IncludeInAllScopes)
-		r.IncludeInScopes = make([]types.String, 0, len(resp.IncludeInScopes))
-		for _, v := range resp.IncludeInScopes {
-			r.IncludeInScopes = append(r.IncludeInScopes, types.StringValue(v))
-		}
-		r.IncludeInToken = types.BoolPointerValue(resp.IncludeInToken)
-		r.Name = types.StringValue(resp.Name)
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
-		r.Value = types.StringValue(resp.Value)
-	}
-
-	return diags
 }

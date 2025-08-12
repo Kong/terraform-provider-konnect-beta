@@ -288,5 +288,5 @@ For example, you can target port from MeshService.ports[] by its name. Only traf
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_mesh_trace.my_konnect_mesh_trace "{ \"cp_id\": \"bf138ba2-c9b1-4229-b268-04d9d8a6410b\",  \"mesh\": \"\",  \"name\": \"\"}"
+terraform import konnect_mesh_trace.my_konnect_mesh_trace '{"cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b", "mesh": "", "name": ""}'
 ```

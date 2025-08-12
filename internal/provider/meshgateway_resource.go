@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Kong/shared-speakeasy/customtypes/kumalabels"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -21,7 +22,6 @@ import (
 	custom_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -34,6 +34,7 @@ func NewMeshGatewayResource() resource.Resource {
 
 // MeshGatewayResource defines the resource implementation.
 type MeshGatewayResource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
@@ -132,7 +133,8 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 											NestedObject: schema.NestedAttributeObject{
 												Attributes: map[string]schema.Attribute{
 													"type": schema.StringAttribute{
-														Required: true,
+														CustomType: jsontypes.NormalizedType{},
+														Required:   true,
 														MarkdownDescription: `Types that are assignable to Type:` + "\n" +
 															`` + "\n" +
 															`	*DataSource_Secret` + "\n" +
@@ -140,9 +142,6 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 															`	*DataSource_Inline` + "\n" +
 															`	*DataSource_InlineString` + "\n" +
 															`Parsed as JSON.`,
-														Validators: []validator.String{
-															validators.IsValidJSON(),
-														},
 													},
 												},
 											},
@@ -302,13 +301,13 @@ func (r *MeshGatewayResource) Create(ctx context.Context, req resource.CreateReq
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateMeshGatewayRequest(ctx)
+	request, requestDiags := data.ToOperationsPutMeshGatewayRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.MeshGateway.CreateMeshGateway(ctx, *request)
+	res, err := r.client.MeshGateway.PutMeshGateway(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -320,7 +319,10 @@ func (r *MeshGatewayResource) Create(ctx context.Context, req resource.CreateReq
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 201 {
+	switch res.StatusCode {
+	case 200, 201:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -453,13 +455,13 @@ func (r *MeshGatewayResource) Update(ctx context.Context, req resource.UpdateReq
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateMeshGatewayRequest(ctx)
+	request, requestDiags := data.ToOperationsPutMeshGatewayRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.MeshGateway.UpdateMeshGateway(ctx, *request)
+	res, err := r.client.MeshGateway.PutMeshGateway(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -471,7 +473,10 @@ func (r *MeshGatewayResource) Update(ctx context.Context, req resource.UpdateReq
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 201:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -585,7 +590,7 @@ func (r *MeshGatewayResource) ImportState(ctx context.Context, req resource.Impo
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b",  "mesh": "",  "name": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b", "mesh": "", "name": ""}': `+err.Error())
 		return
 	}
 
@@ -604,5 +609,4 @@ func (r *MeshGatewayResource) ImportState(ctx context.Context, req resource.Impo
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), data.Name)...)
-
 }

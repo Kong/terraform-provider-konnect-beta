@@ -24,6 +24,7 @@ func NewMeshTLSDataSource() datasource.DataSource {
 
 // MeshTLSDataSource is the data source implementation.
 type MeshTLSDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

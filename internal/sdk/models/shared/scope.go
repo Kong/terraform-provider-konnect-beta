@@ -19,7 +19,7 @@ type Scope struct {
 	Default *bool `default:"false" json:"default"`
 	// Specifies whether to include the scope in the metadata document
 	IncludeInMetadata *bool `default:"false" json:"include_in_metadata"`
-	// Specifies whether the scope is enabled
+	// Specifies whether the scope is enabled. If the scope is not enabled, it cannot be requested by clients and will not be included in the access token.
 	Enabled *bool `default:"true" json:"enabled"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`

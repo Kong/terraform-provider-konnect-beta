@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
@@ -12,43 +13,15 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshListDataSourceModel) ToOperationsGetMeshListRequest(ctx context.Context) (*operations.GetMeshListRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	offset := new(int64)
-	if !r.Offset.IsUnknown() && !r.Offset.IsNull() {
-		*offset = r.Offset.ValueInt64()
-	} else {
-		offset = nil
-	}
-	size := new(int64)
-	if !r.Size.IsUnknown() && !r.Size.IsNull() {
-		*size = r.Size.ValueInt64()
-	} else {
-		size = nil
-	}
-	out := operations.GetMeshListRequest{
-		CpID:   cpID,
-		Offset: offset,
-		Size:   size,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(ctx context.Context, resp *shared.MeshList) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
 		r.Items = []tfTypes.MeshItem{}
-		if len(r.Items) > len(resp.Items) {
-			r.Items = r.Items[:len(resp.Items)]
-		}
-		for itemsCount, itemsItem := range resp.Items {
+
+		for _, itemsItem := range resp.Items {
 			var items tfTypes.MeshItem
+
 			if itemsItem.Constraints == nil {
 				items.Constraints = nil
 			} else {
@@ -58,34 +31,32 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(ctx context.Context,
 				} else {
 					items.Constraints.DataplaneProxy = &tfTypes.DataplaneProxy{}
 					items.Constraints.DataplaneProxy.Requirements = []tfTypes.Requirements{}
-					for requirementsCount, requirementsItem := range itemsItem.Constraints.DataplaneProxy.Requirements {
+
+					for _, requirementsItem := range itemsItem.Constraints.DataplaneProxy.Requirements {
 						var requirements tfTypes.Requirements
+
 						if len(requirementsItem.Tags) > 0 {
 							requirements.Tags = make(map[string]types.String, len(requirementsItem.Tags))
 							for key, value := range requirementsItem.Tags {
 								requirements.Tags[key] = types.StringValue(value)
 							}
 						}
-						if requirementsCount+1 > len(items.Constraints.DataplaneProxy.Requirements) {
-							items.Constraints.DataplaneProxy.Requirements = append(items.Constraints.DataplaneProxy.Requirements, requirements)
-						} else {
-							items.Constraints.DataplaneProxy.Requirements[requirementsCount].Tags = requirements.Tags
-						}
+
+						items.Constraints.DataplaneProxy.Requirements = append(items.Constraints.DataplaneProxy.Requirements, requirements)
 					}
 					items.Constraints.DataplaneProxy.Restrictions = []tfTypes.Requirements{}
-					for restrictionsCount, restrictionsItem := range itemsItem.Constraints.DataplaneProxy.Restrictions {
+
+					for _, restrictionsItem := range itemsItem.Constraints.DataplaneProxy.Restrictions {
 						var restrictions tfTypes.Requirements
+
 						if len(restrictionsItem.Tags) > 0 {
 							restrictions.Tags = make(map[string]types.String, len(restrictionsItem.Tags))
 							for key1, value1 := range restrictionsItem.Tags {
 								restrictions.Tags[key1] = types.StringValue(value1)
 							}
 						}
-						if restrictionsCount+1 > len(items.Constraints.DataplaneProxy.Restrictions) {
-							items.Constraints.DataplaneProxy.Restrictions = append(items.Constraints.DataplaneProxy.Restrictions, restrictions)
-						} else {
-							items.Constraints.DataplaneProxy.Restrictions[restrictionsCount].Tags = restrictions.Tags
-						}
+
+						items.Constraints.DataplaneProxy.Restrictions = append(items.Constraints.DataplaneProxy.Restrictions, restrictions)
 					}
 				}
 			}
@@ -100,8 +71,10 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(ctx context.Context,
 			} else {
 				items.Logging = &tfTypes.Logging{}
 				items.Logging.Backends = []tfTypes.Backends{}
-				for backendsCount, backendsItem := range itemsItem.Logging.Backends {
+
+				for _, backendsItem := range itemsItem.Logging.Backends {
 					var backends tfTypes.Backends
+
 					if backendsItem.Conf != nil {
 						backends.Conf = &tfTypes.MeshItemLoggingConf{}
 						if backendsItem.Conf.FileLoggingBackendConfig != nil {
@@ -116,14 +89,8 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(ctx context.Context,
 					backends.Format = types.StringPointerValue(backendsItem.Format)
 					backends.Name = types.StringPointerValue(backendsItem.Name)
 					backends.Type = types.StringPointerValue(backendsItem.Type)
-					if backendsCount+1 > len(items.Logging.Backends) {
-						items.Logging.Backends = append(items.Logging.Backends, backends)
-					} else {
-						items.Logging.Backends[backendsCount].Conf = backends.Conf
-						items.Logging.Backends[backendsCount].Format = backends.Format
-						items.Logging.Backends[backendsCount].Name = backends.Name
-						items.Logging.Backends[backendsCount].Type = backends.Type
-					}
+
+					items.Logging.Backends = append(items.Logging.Backends, backends)
 				}
 				items.Logging.DefaultBackend = types.StringPointerValue(itemsItem.Logging.DefaultBackend)
 			}
@@ -146,29 +113,26 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(ctx context.Context,
 			} else {
 				items.Metrics = &tfTypes.Metrics{}
 				items.Metrics.Backends = []tfTypes.MeshItemBackends{}
-				for backendsCount1, backendsItem1 := range itemsItem.Metrics.Backends {
+
+				for _, backendsItem1 := range itemsItem.Metrics.Backends {
 					var backends1 tfTypes.MeshItemBackends
+
 					if backendsItem1.Conf != nil {
 						backends1.Conf = &tfTypes.MeshItemConf{}
 						if backendsItem1.Conf.PrometheusMetricsBackendConfig != nil {
 							backends1.Conf.PrometheusMetricsBackendConfig = &tfTypes.PrometheusMetricsBackendConfig{}
 							backends1.Conf.PrometheusMetricsBackendConfig.Aggregate = []tfTypes.Aggregate{}
-							for aggregateCount, aggregateItem := range backendsItem1.Conf.PrometheusMetricsBackendConfig.Aggregate {
+
+							for _, aggregateItem := range backendsItem1.Conf.PrometheusMetricsBackendConfig.Aggregate {
 								var aggregate tfTypes.Aggregate
+
 								aggregate.Address = types.StringPointerValue(aggregateItem.Address)
 								aggregate.Enabled = types.BoolPointerValue(aggregateItem.Enabled)
 								aggregate.Name = types.StringPointerValue(aggregateItem.Name)
 								aggregate.Path = types.StringPointerValue(aggregateItem.Path)
 								aggregate.Port = types.Int64PointerValue(aggregateItem.Port)
-								if aggregateCount+1 > len(backends1.Conf.PrometheusMetricsBackendConfig.Aggregate) {
-									backends1.Conf.PrometheusMetricsBackendConfig.Aggregate = append(backends1.Conf.PrometheusMetricsBackendConfig.Aggregate, aggregate)
-								} else {
-									backends1.Conf.PrometheusMetricsBackendConfig.Aggregate[aggregateCount].Address = aggregate.Address
-									backends1.Conf.PrometheusMetricsBackendConfig.Aggregate[aggregateCount].Enabled = aggregate.Enabled
-									backends1.Conf.PrometheusMetricsBackendConfig.Aggregate[aggregateCount].Name = aggregate.Name
-									backends1.Conf.PrometheusMetricsBackendConfig.Aggregate[aggregateCount].Path = aggregate.Path
-									backends1.Conf.PrometheusMetricsBackendConfig.Aggregate[aggregateCount].Port = aggregate.Port
-								}
+
+								backends1.Conf.PrometheusMetricsBackendConfig.Aggregate = append(backends1.Conf.PrometheusMetricsBackendConfig.Aggregate, aggregate)
 							}
 							if backendsItem1.Conf.PrometheusMetricsBackendConfig.Envoy == nil {
 								backends1.Conf.PrometheusMetricsBackendConfig.Envoy = nil
@@ -204,13 +168,8 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(ctx context.Context,
 					}
 					backends1.Name = types.StringPointerValue(backendsItem1.Name)
 					backends1.Type = types.StringPointerValue(backendsItem1.Type)
-					if backendsCount1+1 > len(items.Metrics.Backends) {
-						items.Metrics.Backends = append(items.Metrics.Backends, backends1)
-					} else {
-						items.Metrics.Backends[backendsCount1].Conf = backends1.Conf
-						items.Metrics.Backends[backendsCount1].Name = backends1.Name
-						items.Metrics.Backends[backendsCount1].Type = backends1.Type
-					}
+
+					items.Metrics.Backends = append(items.Metrics.Backends, backends1)
 				}
 				items.Metrics.EnabledBackend = types.StringPointerValue(itemsItem.Metrics.EnabledBackend)
 			}
@@ -219,8 +178,10 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(ctx context.Context,
 			} else {
 				items.Mtls = &tfTypes.Mtls{}
 				items.Mtls.Backends = []tfTypes.MeshItemMtlsBackends{}
-				for backendsCount2, backendsItem2 := range itemsItem.Mtls.Backends {
+
+				for _, backendsItem2 := range itemsItem.Mtls.Backends {
 					var backends2 tfTypes.MeshItemMtlsBackends
+
 					if backendsItem2.Conf != nil {
 						backends2.Conf = &tfTypes.MeshItemMtlsConf{}
 						if backendsItem2.Conf.ACMCertificateAuthorityConfig != nil {
@@ -239,14 +200,14 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(ctx context.Context,
 									} else {
 										backends2.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials.AccessKey = &tfTypes.AccessKey{}
 										typeVarResult, _ := json.Marshal(backendsItem2.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials.AccessKey.Type)
-										backends2.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials.AccessKey.Type = types.StringValue(string(typeVarResult))
+										backends2.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials.AccessKey.Type = jsontypes.NewNormalizedValue(string(typeVarResult))
 									}
 									if backendsItem2.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials.AccessKeySecret == nil {
 										backends2.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials.AccessKeySecret = nil
 									} else {
 										backends2.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials.AccessKeySecret = &tfTypes.AccessKey{}
 										typeVarResult1, _ := json.Marshal(backendsItem2.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials.AccessKeySecret.Type)
-										backends2.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials.AccessKeySecret.Type = types.StringValue(string(typeVarResult1))
+										backends2.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials.AccessKeySecret.Type = jsontypes.NewNormalizedValue(string(typeVarResult1))
 									}
 								}
 							}
@@ -255,7 +216,7 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(ctx context.Context,
 							} else {
 								backends2.Conf.ACMCertificateAuthorityConfig.CaCert = &tfTypes.AccessKey{}
 								typeVarResult2, _ := json.Marshal(backendsItem2.Conf.ACMCertificateAuthorityConfig.CaCert.Type)
-								backends2.Conf.ACMCertificateAuthorityConfig.CaCert.Type = types.StringValue(string(typeVarResult2))
+								backends2.Conf.ACMCertificateAuthorityConfig.CaCert.Type = jsontypes.NewNormalizedValue(string(typeVarResult2))
 							}
 							backends2.Conf.ACMCertificateAuthorityConfig.CommonName = types.StringPointerValue(backendsItem2.Conf.ACMCertificateAuthorityConfig.CommonName)
 						}
@@ -276,7 +237,7 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(ctx context.Context,
 							} else {
 								backends2.Conf.CertManagerCertificateAuthorityConfig.CaCert = &tfTypes.AccessKey{}
 								typeVarResult3, _ := json.Marshal(backendsItem2.Conf.CertManagerCertificateAuthorityConfig.CaCert.Type)
-								backends2.Conf.CertManagerCertificateAuthorityConfig.CaCert.Type = types.StringValue(string(typeVarResult3))
+								backends2.Conf.CertManagerCertificateAuthorityConfig.CaCert.Type = jsontypes.NewNormalizedValue(string(typeVarResult3))
 							}
 							backends2.Conf.CertManagerCertificateAuthorityConfig.CommonName = types.StringPointerValue(backendsItem2.Conf.CertManagerCertificateAuthorityConfig.CommonName)
 							backends2.Conf.CertManagerCertificateAuthorityConfig.DNSNames = make([]types.String, 0, len(backendsItem2.Conf.CertManagerCertificateAuthorityConfig.DNSNames))
@@ -299,23 +260,23 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(ctx context.Context,
 							} else {
 								backends2.Conf.ProvidedCertificateAuthorityConfig.Cert = &tfTypes.AccessKey{}
 								typeVarResult4, _ := json.Marshal(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.Type)
-								backends2.Conf.ProvidedCertificateAuthorityConfig.Cert.Type = types.StringValue(string(typeVarResult4))
+								backends2.Conf.ProvidedCertificateAuthorityConfig.Cert.Type = jsontypes.NewNormalizedValue(string(typeVarResult4))
 							}
 							if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key == nil {
 								backends2.Conf.ProvidedCertificateAuthorityConfig.Key = nil
 							} else {
 								backends2.Conf.ProvidedCertificateAuthorityConfig.Key = &tfTypes.AccessKey{}
 								typeVarResult5, _ := json.Marshal(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.Type)
-								backends2.Conf.ProvidedCertificateAuthorityConfig.Key.Type = types.StringValue(string(typeVarResult5))
+								backends2.Conf.ProvidedCertificateAuthorityConfig.Key.Type = jsontypes.NewNormalizedValue(string(typeVarResult5))
 							}
 						}
 						if backendsItem2.Conf.VaultCertificateAuthorityConfig != nil {
 							backends2.Conf.VaultCertificateAuthorityConfig = &tfTypes.VaultCertificateAuthorityConfig{}
 							if backendsItem2.Conf.VaultCertificateAuthorityConfig.Mode == nil {
-								backends2.Conf.VaultCertificateAuthorityConfig.Mode = types.StringNull()
+								backends2.Conf.VaultCertificateAuthorityConfig.Mode = jsontypes.NewNormalizedNull()
 							} else {
 								modeResult, _ := json.Marshal(backendsItem2.Conf.VaultCertificateAuthorityConfig.Mode)
-								backends2.Conf.VaultCertificateAuthorityConfig.Mode = types.StringValue(string(modeResult))
+								backends2.Conf.VaultCertificateAuthorityConfig.Mode = jsontypes.NewNormalizedValue(string(modeResult))
 							}
 						}
 					}
@@ -360,16 +321,8 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(ctx context.Context,
 						}
 					}
 					backends2.Type = types.StringPointerValue(backendsItem2.Type)
-					if backendsCount2+1 > len(items.Mtls.Backends) {
-						items.Mtls.Backends = append(items.Mtls.Backends, backends2)
-					} else {
-						items.Mtls.Backends[backendsCount2].Conf = backends2.Conf
-						items.Mtls.Backends[backendsCount2].DpCert = backends2.DpCert
-						items.Mtls.Backends[backendsCount2].Mode = backends2.Mode
-						items.Mtls.Backends[backendsCount2].Name = backends2.Name
-						items.Mtls.Backends[backendsCount2].RootChain = backends2.RootChain
-						items.Mtls.Backends[backendsCount2].Type = backends2.Type
-					}
+
+					items.Mtls.Backends = append(items.Mtls.Backends, backends2)
 				}
 				items.Mtls.EnabledBackend = types.StringPointerValue(itemsItem.Mtls.EnabledBackend)
 				items.Mtls.SkipValidation = types.BoolPointerValue(itemsItem.Mtls.SkipValidation)
@@ -403,8 +356,10 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(ctx context.Context,
 			} else {
 				items.Tracing = &tfTypes.Tracing{}
 				items.Tracing.Backends = []tfTypes.MeshItemTracingBackends{}
-				for backendsCount3, backendsItem3 := range itemsItem.Tracing.Backends {
+
+				for _, backendsItem3 := range itemsItem.Tracing.Backends {
 					var backends3 tfTypes.MeshItemTracingBackends
+
 					if backendsItem3.Conf != nil {
 						backends3.Conf = &tfTypes.MeshItemTracingConf{}
 						if backendsItem3.Conf.DatadogTracingBackendConfig != nil {
@@ -424,38 +379,65 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(ctx context.Context,
 					backends3.Name = types.StringPointerValue(backendsItem3.Name)
 					backends3.Sampling = types.Float64PointerValue(backendsItem3.Sampling)
 					backends3.Type = types.StringPointerValue(backendsItem3.Type)
-					if backendsCount3+1 > len(items.Tracing.Backends) {
-						items.Tracing.Backends = append(items.Tracing.Backends, backends3)
-					} else {
-						items.Tracing.Backends[backendsCount3].Conf = backends3.Conf
-						items.Tracing.Backends[backendsCount3].Name = backends3.Name
-						items.Tracing.Backends[backendsCount3].Sampling = backends3.Sampling
-						items.Tracing.Backends[backendsCount3].Type = backends3.Type
-					}
+
+					items.Tracing.Backends = append(items.Tracing.Backends, backends3)
 				}
 				items.Tracing.DefaultBackend = types.StringPointerValue(itemsItem.Tracing.DefaultBackend)
 			}
 			items.Type = types.StringValue(itemsItem.Type)
-			if itemsCount+1 > len(r.Items) {
-				r.Items = append(r.Items, items)
-			} else {
-				r.Items[itemsCount].Constraints = items.Constraints
-				r.Items[itemsCount].Labels = items.Labels
-				r.Items[itemsCount].Logging = items.Logging
-				r.Items[itemsCount].MeshServices = items.MeshServices
-				r.Items[itemsCount].Metrics = items.Metrics
-				r.Items[itemsCount].Mtls = items.Mtls
-				r.Items[itemsCount].Name = items.Name
-				r.Items[itemsCount].Networking = items.Networking
-				r.Items[itemsCount].Routing = items.Routing
-				r.Items[itemsCount].SkipCreatingInitialPolicies = items.SkipCreatingInitialPolicies
-				r.Items[itemsCount].Tracing = items.Tracing
-				r.Items[itemsCount].Type = items.Type
-			}
+
+			r.Items = append(r.Items, items)
 		}
 		r.Next = types.StringPointerValue(resp.Next)
 		r.Total = types.Float64PointerValue(resp.Total)
 	}
 
 	return diags
+}
+
+func (r *MeshListDataSourceModel) ToOperationsGetMeshListRequest(ctx context.Context) (*operations.GetMeshListRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	offset := new(int64)
+	if !r.Offset.IsUnknown() && !r.Offset.IsNull() {
+		*offset = r.Offset.ValueInt64()
+	} else {
+		offset = nil
+	}
+	size := new(int64)
+	if !r.Size.IsUnknown() && !r.Size.IsNull() {
+		*size = r.Size.ValueInt64()
+	} else {
+		size = nil
+	}
+	var filter *operations.GetMeshListQueryParamFilter
+	if r.Filter != nil {
+		key := new(string)
+		if !r.Filter.Key.IsUnknown() && !r.Filter.Key.IsNull() {
+			*key = r.Filter.Key.ValueString()
+		} else {
+			key = nil
+		}
+		value := new(string)
+		if !r.Filter.Value.IsUnknown() && !r.Filter.Value.IsNull() {
+			*value = r.Filter.Value.ValueString()
+		} else {
+			value = nil
+		}
+		filter = &operations.GetMeshListQueryParamFilter{
+			Key:   key,
+			Value: value,
+		}
+	}
+	out := operations.GetMeshListRequest{
+		CpID:   cpID,
+		Offset: offset,
+		Size:   size,
+		Filter: filter,
+	}
+
+	return &out, diags
 }

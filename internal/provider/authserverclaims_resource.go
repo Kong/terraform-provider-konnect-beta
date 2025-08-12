@@ -31,6 +31,7 @@ func NewAuthServerClaimsResource() resource.Resource {
 
 // AuthServerClaimsResource defines the resource implementation.
 type AuthServerClaimsResource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
@@ -74,7 +75,7 @@ func (r *AuthServerClaimsResource) Schema(ctx context.Context, req resource.Sche
 				Computed:    true,
 				Optional:    true,
 				Default:     booldefault.StaticBool(true),
-				Description: `Specifies whether the claim is enabled. Default: true`,
+				Description: `Specifies whether the claim is enabled. If the claim is not enabled, it will not be included in the token or the '/userinfo' endpoint. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -170,7 +171,7 @@ func (r *AuthServerClaimsResource) Create(ctx context.Context, req resource.Crea
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Authserver.CreateAuthServerClaim(ctx, *request)
+	res, err := r.client.AuthServerClaims.CreateAuthServerClaim(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -230,7 +231,7 @@ func (r *AuthServerClaimsResource) Read(ctx context.Context, req resource.ReadRe
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Authserver.GetAuthServerClaim(ctx, *request)
+	res, err := r.client.AuthServerClaims.GetAuthServerClaim(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -284,7 +285,7 @@ func (r *AuthServerClaimsResource) Update(ctx context.Context, req resource.Upda
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Authserver.UpdateAuthServerClaim(ctx, *request)
+	res, err := r.client.AuthServerClaims.UpdateAuthServerClaim(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -344,7 +345,7 @@ func (r *AuthServerClaimsResource) Delete(ctx context.Context, req resource.Dele
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Authserver.DeleteAuthServerClaim(ctx, *request)
+	res, err := r.client.AuthServerClaims.DeleteAuthServerClaim(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -372,7 +373,7 @@ func (r *AuthServerClaimsResource) ImportState(ctx context.Context, req resource
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "auth_server_id": "d32d905a-ed33-46a3-a093-d8f536af9a8a",  "id": "07d05309-45cc-4b37-92fb-1524846deec3"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"auth_server_id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "id": "07d05309-45cc-4b37-92fb-1524846deec3"}': `+err.Error())
 		return
 	}
 
@@ -386,5 +387,4 @@ func (r *AuthServerClaimsResource) ImportState(ctx context.Context, req resource
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
-
 }

@@ -13,27 +13,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshRateLimitDataSourceModel) ToOperationsGetMeshRateLimitRequest(ctx context.Context) (*operations.GetMeshRateLimitRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	out := operations.GetMeshRateLimitRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshRateLimitDataSourceModel) RefreshFromSharedMeshRateLimitItem(ctx context.Context, resp *shared.MeshRateLimitItem) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -48,11 +27,10 @@ func (r *MeshRateLimitDataSourceModel) RefreshFromSharedMeshRateLimitItem(ctx co
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
 		r.Spec.From = []tfTypes.MeshRateLimitItemFrom{}
-		if len(r.Spec.From) > len(resp.Spec.From) {
-			r.Spec.From = r.Spec.From[:len(resp.Spec.From)]
-		}
-		for fromCount, fromItem := range resp.Spec.From {
+
+		for _, fromItem := range resp.Spec.From {
 			var from tfTypes.MeshRateLimitItemFrom
+
 			if fromItem.Default == nil {
 				from.Default = nil
 			} else {
@@ -75,28 +53,24 @@ func (r *MeshRateLimitDataSourceModel) RefreshFromSharedMeshRateLimitItem(ctx co
 							} else {
 								from.Default.Local.HTTP.OnRateLimit.Headers = &tfTypes.MeshGlobalRateLimitItemHeaders{}
 								from.Default.Local.HTTP.OnRateLimit.Headers.Add = []tfTypes.MeshGlobalRateLimitItemAdd{}
-								for addCount, addItem := range fromItem.Default.Local.HTTP.OnRateLimit.Headers.Add {
+
+								for _, addItem := range fromItem.Default.Local.HTTP.OnRateLimit.Headers.Add {
 									var add tfTypes.MeshGlobalRateLimitItemAdd
+
 									add.Name = types.StringValue(addItem.Name)
 									add.Value = types.StringValue(addItem.Value)
-									if addCount+1 > len(from.Default.Local.HTTP.OnRateLimit.Headers.Add) {
-										from.Default.Local.HTTP.OnRateLimit.Headers.Add = append(from.Default.Local.HTTP.OnRateLimit.Headers.Add, add)
-									} else {
-										from.Default.Local.HTTP.OnRateLimit.Headers.Add[addCount].Name = add.Name
-										from.Default.Local.HTTP.OnRateLimit.Headers.Add[addCount].Value = add.Value
-									}
+
+									from.Default.Local.HTTP.OnRateLimit.Headers.Add = append(from.Default.Local.HTTP.OnRateLimit.Headers.Add, add)
 								}
 								from.Default.Local.HTTP.OnRateLimit.Headers.Set = []tfTypes.MeshGlobalRateLimitItemAdd{}
-								for setCount, setItem := range fromItem.Default.Local.HTTP.OnRateLimit.Headers.Set {
+
+								for _, setItem := range fromItem.Default.Local.HTTP.OnRateLimit.Headers.Set {
 									var set tfTypes.MeshGlobalRateLimitItemAdd
+
 									set.Name = types.StringValue(setItem.Name)
 									set.Value = types.StringValue(setItem.Value)
-									if setCount+1 > len(from.Default.Local.HTTP.OnRateLimit.Headers.Set) {
-										from.Default.Local.HTTP.OnRateLimit.Headers.Set = append(from.Default.Local.HTTP.OnRateLimit.Headers.Set, set)
-									} else {
-										from.Default.Local.HTTP.OnRateLimit.Headers.Set[setCount].Name = set.Name
-										from.Default.Local.HTTP.OnRateLimit.Headers.Set[setCount].Value = set.Value
-									}
+
+									from.Default.Local.HTTP.OnRateLimit.Headers.Set = append(from.Default.Local.HTTP.OnRateLimit.Headers.Set, set)
 								}
 							}
 							from.Default.Local.HTTP.OnRateLimit.Status = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(fromItem.Default.Local.HTTP.OnRateLimit.Status))
@@ -145,19 +119,14 @@ func (r *MeshRateLimitDataSourceModel) RefreshFromSharedMeshRateLimitItem(ctx co
 					from.TargetRef.Tags[key1] = types.StringValue(value1)
 				}
 			}
-			if fromCount+1 > len(r.Spec.From) {
-				r.Spec.From = append(r.Spec.From, from)
-			} else {
-				r.Spec.From[fromCount].Default = from.Default
-				r.Spec.From[fromCount].TargetRef = from.TargetRef
-			}
+
+			r.Spec.From = append(r.Spec.From, from)
 		}
 		r.Spec.Rules = []tfTypes.MeshRateLimitItemRules{}
-		if len(r.Spec.Rules) > len(resp.Spec.Rules) {
-			r.Spec.Rules = r.Spec.Rules[:len(resp.Spec.Rules)]
-		}
-		for rulesCount, rulesItem := range resp.Spec.Rules {
+
+		for _, rulesItem := range resp.Spec.Rules {
 			var rules tfTypes.MeshRateLimitItemRules
+
 			if rulesItem.Default == nil {
 				rules.Default = nil
 			} else {
@@ -180,28 +149,24 @@ func (r *MeshRateLimitDataSourceModel) RefreshFromSharedMeshRateLimitItem(ctx co
 							} else {
 								rules.Default.Local.HTTP.OnRateLimit.Headers = &tfTypes.MeshGlobalRateLimitItemHeaders{}
 								rules.Default.Local.HTTP.OnRateLimit.Headers.Add = []tfTypes.MeshGlobalRateLimitItemAdd{}
-								for addCount1, addItem1 := range rulesItem.Default.Local.HTTP.OnRateLimit.Headers.Add {
+
+								for _, addItem1 := range rulesItem.Default.Local.HTTP.OnRateLimit.Headers.Add {
 									var add1 tfTypes.MeshGlobalRateLimitItemAdd
+
 									add1.Name = types.StringValue(addItem1.Name)
 									add1.Value = types.StringValue(addItem1.Value)
-									if addCount1+1 > len(rules.Default.Local.HTTP.OnRateLimit.Headers.Add) {
-										rules.Default.Local.HTTP.OnRateLimit.Headers.Add = append(rules.Default.Local.HTTP.OnRateLimit.Headers.Add, add1)
-									} else {
-										rules.Default.Local.HTTP.OnRateLimit.Headers.Add[addCount1].Name = add1.Name
-										rules.Default.Local.HTTP.OnRateLimit.Headers.Add[addCount1].Value = add1.Value
-									}
+
+									rules.Default.Local.HTTP.OnRateLimit.Headers.Add = append(rules.Default.Local.HTTP.OnRateLimit.Headers.Add, add1)
 								}
 								rules.Default.Local.HTTP.OnRateLimit.Headers.Set = []tfTypes.MeshGlobalRateLimitItemAdd{}
-								for setCount1, setItem1 := range rulesItem.Default.Local.HTTP.OnRateLimit.Headers.Set {
+
+								for _, setItem1 := range rulesItem.Default.Local.HTTP.OnRateLimit.Headers.Set {
 									var set1 tfTypes.MeshGlobalRateLimitItemAdd
+
 									set1.Name = types.StringValue(setItem1.Name)
 									set1.Value = types.StringValue(setItem1.Value)
-									if setCount1+1 > len(rules.Default.Local.HTTP.OnRateLimit.Headers.Set) {
-										rules.Default.Local.HTTP.OnRateLimit.Headers.Set = append(rules.Default.Local.HTTP.OnRateLimit.Headers.Set, set1)
-									} else {
-										rules.Default.Local.HTTP.OnRateLimit.Headers.Set[setCount1].Name = set1.Name
-										rules.Default.Local.HTTP.OnRateLimit.Headers.Set[setCount1].Value = set1.Value
-									}
+
+									rules.Default.Local.HTTP.OnRateLimit.Headers.Set = append(rules.Default.Local.HTTP.OnRateLimit.Headers.Set, set1)
 								}
 							}
 							rules.Default.Local.HTTP.OnRateLimit.Status = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(rulesItem.Default.Local.HTTP.OnRateLimit.Status))
@@ -229,11 +194,8 @@ func (r *MeshRateLimitDataSourceModel) RefreshFromSharedMeshRateLimitItem(ctx co
 					}
 				}
 			}
-			if rulesCount+1 > len(r.Spec.Rules) {
-				r.Spec.Rules = append(r.Spec.Rules, rules)
-			} else {
-				r.Spec.Rules[rulesCount].Default = rules.Default
-			}
+
+			r.Spec.Rules = append(r.Spec.Rules, rules)
 		}
 		if resp.Spec.TargetRef == nil {
 			r.Spec.TargetRef = nil
@@ -262,11 +224,10 @@ func (r *MeshRateLimitDataSourceModel) RefreshFromSharedMeshRateLimitItem(ctx co
 			}
 		}
 		r.Spec.To = []tfTypes.MeshRateLimitItemFrom{}
-		if len(r.Spec.To) > len(resp.Spec.To) {
-			r.Spec.To = r.Spec.To[:len(resp.Spec.To)]
-		}
-		for toCount, toItem := range resp.Spec.To {
+
+		for _, toItem := range resp.Spec.To {
 			var to tfTypes.MeshRateLimitItemFrom
+
 			if toItem.Default == nil {
 				to.Default = nil
 			} else {
@@ -289,28 +250,24 @@ func (r *MeshRateLimitDataSourceModel) RefreshFromSharedMeshRateLimitItem(ctx co
 							} else {
 								to.Default.Local.HTTP.OnRateLimit.Headers = &tfTypes.MeshGlobalRateLimitItemHeaders{}
 								to.Default.Local.HTTP.OnRateLimit.Headers.Add = []tfTypes.MeshGlobalRateLimitItemAdd{}
-								for addCount2, addItem2 := range toItem.Default.Local.HTTP.OnRateLimit.Headers.Add {
+
+								for _, addItem2 := range toItem.Default.Local.HTTP.OnRateLimit.Headers.Add {
 									var add2 tfTypes.MeshGlobalRateLimitItemAdd
+
 									add2.Name = types.StringValue(addItem2.Name)
 									add2.Value = types.StringValue(addItem2.Value)
-									if addCount2+1 > len(to.Default.Local.HTTP.OnRateLimit.Headers.Add) {
-										to.Default.Local.HTTP.OnRateLimit.Headers.Add = append(to.Default.Local.HTTP.OnRateLimit.Headers.Add, add2)
-									} else {
-										to.Default.Local.HTTP.OnRateLimit.Headers.Add[addCount2].Name = add2.Name
-										to.Default.Local.HTTP.OnRateLimit.Headers.Add[addCount2].Value = add2.Value
-									}
+
+									to.Default.Local.HTTP.OnRateLimit.Headers.Add = append(to.Default.Local.HTTP.OnRateLimit.Headers.Add, add2)
 								}
 								to.Default.Local.HTTP.OnRateLimit.Headers.Set = []tfTypes.MeshGlobalRateLimitItemAdd{}
-								for setCount2, setItem2 := range toItem.Default.Local.HTTP.OnRateLimit.Headers.Set {
+
+								for _, setItem2 := range toItem.Default.Local.HTTP.OnRateLimit.Headers.Set {
 									var set2 tfTypes.MeshGlobalRateLimitItemAdd
+
 									set2.Name = types.StringValue(setItem2.Name)
 									set2.Value = types.StringValue(setItem2.Value)
-									if setCount2+1 > len(to.Default.Local.HTTP.OnRateLimit.Headers.Set) {
-										to.Default.Local.HTTP.OnRateLimit.Headers.Set = append(to.Default.Local.HTTP.OnRateLimit.Headers.Set, set2)
-									} else {
-										to.Default.Local.HTTP.OnRateLimit.Headers.Set[setCount2].Name = set2.Name
-										to.Default.Local.HTTP.OnRateLimit.Headers.Set[setCount2].Value = set2.Value
-									}
+
+									to.Default.Local.HTTP.OnRateLimit.Headers.Set = append(to.Default.Local.HTTP.OnRateLimit.Headers.Set, set2)
 								}
 							}
 							to.Default.Local.HTTP.OnRateLimit.Status = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(toItem.Default.Local.HTTP.OnRateLimit.Status))
@@ -359,15 +316,32 @@ func (r *MeshRateLimitDataSourceModel) RefreshFromSharedMeshRateLimitItem(ctx co
 					to.TargetRef.Tags[key5] = types.StringValue(value5)
 				}
 			}
-			if toCount+1 > len(r.Spec.To) {
-				r.Spec.To = append(r.Spec.To, to)
-			} else {
-				r.Spec.To[toCount].Default = to.Default
-				r.Spec.To[toCount].TargetRef = to.TargetRef
-			}
+
+			r.Spec.To = append(r.Spec.To, to)
 		}
 		r.Type = types.StringValue(string(resp.Type))
 	}
 
 	return diags
+}
+
+func (r *MeshRateLimitDataSourceModel) ToOperationsGetMeshRateLimitRequest(ctx context.Context) (*operations.GetMeshRateLimitRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	out := operations.GetMeshRateLimitRequest{
+		CpID: cpID,
+		Mesh: mesh,
+		Name: name,
+	}
+
+	return &out, diags
 }

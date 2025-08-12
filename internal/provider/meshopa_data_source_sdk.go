@@ -13,27 +13,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshOPADataSourceModel) ToOperationsGetMeshOPARequest(ctx context.Context) (*operations.GetMeshOPARequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	out := operations.GetMeshOPARequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshOPADataSourceModel) RefreshFromSharedMeshOPAItem(ctx context.Context, resp *shared.MeshOPAItem) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -60,21 +39,16 @@ func (r *MeshOPADataSourceModel) RefreshFromSharedMeshOPAItem(ctx context.Contex
 				r.Spec.Default.AgentConfig.Secret = types.StringPointerValue(resp.Spec.Default.AgentConfig.Secret)
 			}
 			r.Spec.Default.AppendPolicies = []tfTypes.AppendPolicies{}
-			if len(r.Spec.Default.AppendPolicies) > len(resp.Spec.Default.AppendPolicies) {
-				r.Spec.Default.AppendPolicies = r.Spec.Default.AppendPolicies[:len(resp.Spec.Default.AppendPolicies)]
-			}
-			for appendPoliciesCount, appendPoliciesItem := range resp.Spec.Default.AppendPolicies {
+
+			for _, appendPoliciesItem := range resp.Spec.Default.AppendPolicies {
 				var appendPolicies tfTypes.AppendPolicies
+
 				appendPolicies.IgnoreDecision = types.BoolPointerValue(appendPoliciesItem.IgnoreDecision)
 				appendPolicies.Rego.Inline = types.StringPointerValue(appendPoliciesItem.Rego.Inline)
 				appendPolicies.Rego.InlineString = types.StringPointerValue(appendPoliciesItem.Rego.InlineString)
 				appendPolicies.Rego.Secret = types.StringPointerValue(appendPoliciesItem.Rego.Secret)
-				if appendPoliciesCount+1 > len(r.Spec.Default.AppendPolicies) {
-					r.Spec.Default.AppendPolicies = append(r.Spec.Default.AppendPolicies, appendPolicies)
-				} else {
-					r.Spec.Default.AppendPolicies[appendPoliciesCount].IgnoreDecision = appendPolicies.IgnoreDecision
-					r.Spec.Default.AppendPolicies[appendPoliciesCount].Rego = appendPolicies.Rego
-				}
+
+				r.Spec.Default.AppendPolicies = append(r.Spec.Default.AppendPolicies, appendPolicies)
 			}
 			if resp.Spec.Default.AuthConfig == nil {
 				r.Spec.Default.AuthConfig = nil
@@ -126,4 +100,25 @@ func (r *MeshOPADataSourceModel) RefreshFromSharedMeshOPAItem(ctx context.Contex
 	}
 
 	return diags
+}
+
+func (r *MeshOPADataSourceModel) ToOperationsGetMeshOPARequest(ctx context.Context) (*operations.GetMeshOPARequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	out := operations.GetMeshOPARequest{
+		CpID: cpID,
+		Mesh: mesh,
+		Name: name,
+	}
+
+	return &out, diags
 }

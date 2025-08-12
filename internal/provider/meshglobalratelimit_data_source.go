@@ -24,6 +24,7 @@ func NewMeshGlobalRateLimitDataSource() datasource.DataSource {
 
 // MeshGlobalRateLimitDataSource is the data source implementation.
 type MeshGlobalRateLimitDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

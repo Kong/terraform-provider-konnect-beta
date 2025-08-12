@@ -5,8 +5,11 @@ package provider
 import (
 	"context"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
@@ -23,19 +26,19 @@ func NewMeshListDataSource() datasource.DataSource {
 
 // MeshListDataSource is the data source implementation.
 type MeshListDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
 // MeshListDataSourceModel describes the data model.
 type MeshListDataSourceModel struct {
-	CpID   types.String       `tfsdk:"cp_id"`
-	Items  []tfTypes.MeshItem `tfsdk:"items"`
-	Key    types.String       `queryParam:"name=key" tfsdk:"key"`
-	Next   types.String       `tfsdk:"next"`
-	Offset types.Int64        `queryParam:"style=form,explode=true,name=offset" tfsdk:"offset"`
-	Size   types.Int64        `queryParam:"style=form,explode=true,name=size" tfsdk:"size"`
-	Total  types.Float64      `tfsdk:"total"`
-	Value  types.String       `queryParam:"name=value" tfsdk:"value"`
+	CpID   types.String                                      `tfsdk:"cp_id"`
+	Filter *tfTypes.GetHostnameGeneratorListQueryParamFilter `queryParam:"style=form,explode=true,name=filter" tfsdk:"filter"`
+	Items  []tfTypes.MeshItem                                `tfsdk:"items"`
+	Next   types.String                                      `tfsdk:"next"`
+	Offset types.Int64                                       `queryParam:"style=form,explode=true,name=offset" tfsdk:"offset"`
+	Size   types.Int64                                       `queryParam:"style=form,explode=true,name=size" tfsdk:"size"`
+	Total  types.Float64                                     `tfsdk:"total"`
 }
 
 // Metadata returns the data source type name.
@@ -52,6 +55,18 @@ func (r *MeshListDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 			"cp_id": schema.StringAttribute{
 				Required:    true,
 				Description: `Id of the Konnect resource`,
+			},
+			"filter": schema.SingleNestedAttribute{
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"key": schema.StringAttribute{
+						Optional: true,
+					},
+					"value": schema.StringAttribute{
+						Optional: true,
+					},
+				},
+				Description: `filter by labels when multiple filters are present, they are ANDed`,
 			},
 			"items": schema.ListNestedAttribute{
 				Computed: true,
@@ -336,6 +351,7 @@ func (r *MeshListDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 																				Computed: true,
 																				Attributes: map[string]schema.Attribute{
 																					"type": schema.StringAttribute{
+																						CustomType:  jsontypes.NormalizedType{},
 																						Computed:    true,
 																						Description: `Parsed as JSON.`,
 																					},
@@ -345,6 +361,7 @@ func (r *MeshListDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 																				Computed: true,
 																				Attributes: map[string]schema.Attribute{
 																					"type": schema.StringAttribute{
+																						CustomType:  jsontypes.NormalizedType{},
 																						Computed:    true,
 																						Description: `Parsed as JSON.`,
 																					},
@@ -358,6 +375,7 @@ func (r *MeshListDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 																Computed: true,
 																Attributes: map[string]schema.Attribute{
 																	"type": schema.StringAttribute{
+																		CustomType:  jsontypes.NormalizedType{},
 																		Computed:    true,
 																		Description: `Parsed as JSON.`,
 																	},
@@ -391,6 +409,7 @@ func (r *MeshListDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 																Computed: true,
 																Attributes: map[string]schema.Attribute{
 																	"type": schema.StringAttribute{
+																		CustomType:  jsontypes.NormalizedType{},
 																		Computed:    true,
 																		Description: `Parsed as JSON.`,
 																	},
@@ -426,6 +445,7 @@ func (r *MeshListDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 																Computed: true,
 																Attributes: map[string]schema.Attribute{
 																	"type": schema.StringAttribute{
+																		CustomType:  jsontypes.NormalizedType{},
 																		Computed:    true,
 																		Description: `Parsed as JSON.`,
 																	},
@@ -435,6 +455,7 @@ func (r *MeshListDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 																Computed: true,
 																Attributes: map[string]schema.Attribute{
 																	"type": schema.StringAttribute{
+																		CustomType:  jsontypes.NormalizedType{},
 																		Computed:    true,
 																		Description: `Parsed as JSON.`,
 																	},
@@ -446,6 +467,7 @@ func (r *MeshListDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 														Computed: true,
 														Attributes: map[string]schema.Attribute{
 															"mode": schema.StringAttribute{
+																CustomType:  jsontypes.NormalizedType{},
 																Computed:    true,
 																Description: `Parsed as JSON.`,
 															},
@@ -673,9 +695,6 @@ func (r *MeshListDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 					},
 				},
 			},
-			"key": schema.StringAttribute{
-				Optional: true,
-			},
 			"next": schema.StringAttribute{
 				Computed:    true,
 				Description: `URL to the next page`,
@@ -687,13 +706,13 @@ func (r *MeshListDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 			"size": schema.Int64Attribute{
 				Optional:    true,
 				Description: `the number of items per page`,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 1000),
+				},
 			},
 			"total": schema.Float64Attribute{
 				Computed:    true,
 				Description: `The total number of entities`,
-			},
-			"value": schema.StringAttribute{
-				Optional: true,
 			},
 		},
 	}

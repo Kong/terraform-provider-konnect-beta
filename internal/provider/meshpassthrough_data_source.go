@@ -24,6 +24,7 @@ func NewMeshPassthroughDataSource() datasource.DataSource {
 
 // MeshPassthroughDataSource is the data source implementation.
 type MeshPassthroughDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

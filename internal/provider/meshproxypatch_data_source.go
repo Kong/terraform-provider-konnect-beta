@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/Kong/shared-speakeasy/customtypes/kumalabels"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -24,6 +25,7 @@ func NewMeshProxyPatchDataSource() datasource.DataSource {
 
 // MeshProxyPatchDataSource is the data source implementation.
 type MeshProxyPatchDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
@@ -106,6 +108,7 @@ func (r *MeshProxyPatchDataSource) Schema(ctx context.Context, req datasource.Sc
 																Description: `Path is a jsonpatch path string.`,
 															},
 															"value": schema.StringAttribute{
+																CustomType:  jsontypes.NormalizedType{},
 																Computed:    true,
 																Description: `Value must be a valid json value used by replace and add operations. Parsed as JSON.`,
 															},
@@ -172,6 +175,7 @@ func (r *MeshProxyPatchDataSource) Schema(ctx context.Context, req datasource.Sc
 																Description: `Path is a jsonpatch path string.`,
 															},
 															"value": schema.StringAttribute{
+																CustomType:  jsontypes.NormalizedType{},
 																Computed:    true,
 																Description: `Value must be a valid json value used by replace and add operations. Parsed as JSON.`,
 															},
@@ -248,6 +252,7 @@ func (r *MeshProxyPatchDataSource) Schema(ctx context.Context, req datasource.Sc
 																Description: `Path is a jsonpatch path string.`,
 															},
 															"value": schema.StringAttribute{
+																CustomType:  jsontypes.NormalizedType{},
 																Computed:    true,
 																Description: `Value must be a valid json value used by replace and add operations. Parsed as JSON.`,
 															},
@@ -319,6 +324,7 @@ func (r *MeshProxyPatchDataSource) Schema(ctx context.Context, req datasource.Sc
 																Description: `Path is a jsonpatch path string.`,
 															},
 															"value": schema.StringAttribute{
+																CustomType:  jsontypes.NormalizedType{},
 																Computed:    true,
 																Description: `Value must be a valid json value used by replace and add operations. Parsed as JSON.`,
 															},
@@ -394,6 +400,7 @@ func (r *MeshProxyPatchDataSource) Schema(ctx context.Context, req datasource.Sc
 																Description: `Path is a jsonpatch path string.`,
 															},
 															"value": schema.StringAttribute{
+																CustomType:  jsontypes.NormalizedType{},
 																Computed:    true,
 																Description: `Value must be a valid json value used by replace and add operations. Parsed as JSON.`,
 															},

@@ -2,15 +2,50 @@
 
 package shared
 
+import (
+	"errors"
+	"fmt"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
+)
+
+type APIImplementationType string
+
+const (
+	APIImplementationTypeServiceReference APIImplementationType = "Service Reference"
+)
+
 // APIImplementation - An entity that implements an API
 type APIImplementation struct {
-	// A Gateway service that implements an API
-	Service *APIImplementationService `json:"service,omitempty"`
+	ServiceReference *ServiceReference `queryParam:"inline"`
+
+	Type APIImplementationType
 }
 
-func (o *APIImplementation) GetService() *APIImplementationService {
-	if o == nil {
+func CreateAPIImplementationServiceReference(serviceReference ServiceReference) APIImplementation {
+	typ := APIImplementationTypeServiceReference
+
+	return APIImplementation{
+		ServiceReference: &serviceReference,
+		Type:             typ,
+	}
+}
+
+func (u *APIImplementation) UnmarshalJSON(data []byte) error {
+
+	var serviceReference ServiceReference = ServiceReference{}
+	if err := utils.UnmarshalJSON(data, &serviceReference, "", true, true); err == nil {
+		u.ServiceReference = &serviceReference
+		u.Type = APIImplementationTypeServiceReference
 		return nil
 	}
-	return o.Service
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for APIImplementation", string(data))
+}
+
+func (u APIImplementation) MarshalJSON() ([]byte, error) {
+	if u.ServiceReference != nil {
+		return utils.MarshalJSON(u.ServiceReference, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type APIImplementation: all fields are null")
 }

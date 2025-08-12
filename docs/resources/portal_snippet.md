@@ -37,9 +37,11 @@ resource "konnect_portal_snippet" "my_portalsnippet" {
 ### Optional
 
 - `description` (String)
-- `status` (String) Whether the resource is visible on a given portal. Defaults to false. must be one of ["published", "unpublished"]
+- `status` (String) Whether the resource is visible on a given portal. Defaults to unpublished. must be one of ["published", "unpublished"]
 - `title` (String) The display title of a snippet in a portal.
-- `visibility` (String) Whether a page is publicly accessible to non-authenticated users. Default: "private"
+- `visibility` (String) Whether a snippet is publicly accessible to non-authenticated users.
+If not provided, the default_page_visibility value of the portal will be used.
+must be one of ["public", "private"]
 
 ### Read-Only
 
@@ -52,5 +54,5 @@ resource "konnect_portal_snippet" "my_portalsnippet" {
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_portal_snippet.my_konnect_portal_snippet "{ \"portal_id\": \"f32d905a-ed33-46a3-a093-d8f536af9a8a\",  \"id\": \"ebbac5b0-ac89-45c3-9d2e-c4542c657e79\"}"
+terraform import konnect_portal_snippet.my_konnect_portal_snippet '{"id": "ebbac5b0-ac89-45c3-9d2e-c4542c657e79", "portal_id": "f32d905a-ed33-46a3-a093-d8f536af9a8a"}'
 ```

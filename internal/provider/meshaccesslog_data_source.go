@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/Kong/shared-speakeasy/customtypes/kumalabels"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -24,6 +25,7 @@ func NewMeshAccessLogDataSource() datasource.DataSource {
 
 // MeshAccessLogDataSource is the data source implementation.
 type MeshAccessLogDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
@@ -148,7 +150,8 @@ func (r *MeshAccessLogDataSource) Schema(ctx context.Context, req datasource.Sch
 																	`https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators`,
 															},
 															"body": schema.StringAttribute{
-																Computed: true,
+																CustomType: jsontypes.NormalizedType{},
+																Computed:   true,
 																MarkdownDescription: `Body is a raw string or an OTLP any value as described at` + "\n" +
 																	`https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/logs/data-model.md#field-body` + "\n" +
 																	`It can contain placeholders available on` + "\n" +
@@ -332,7 +335,8 @@ func (r *MeshAccessLogDataSource) Schema(ctx context.Context, req datasource.Sch
 																	`https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators`,
 															},
 															"body": schema.StringAttribute{
-																Computed: true,
+																CustomType: jsontypes.NormalizedType{},
+																Computed:   true,
 																MarkdownDescription: `Body is a raw string or an OTLP any value as described at` + "\n" +
 																	`https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/logs/data-model.md#field-body` + "\n" +
 																	`It can contain placeholders available on` + "\n" +
@@ -517,7 +521,8 @@ func (r *MeshAccessLogDataSource) Schema(ctx context.Context, req datasource.Sch
 																	`https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators`,
 															},
 															"body": schema.StringAttribute{
-																Computed: true,
+																CustomType: jsontypes.NormalizedType{},
+																Computed:   true,
 																MarkdownDescription: `Body is a raw string or an OTLP any value as described at` + "\n" +
 																	`https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/logs/data-model.md#field-body` + "\n" +
 																	`It can contain placeholders available on` + "\n" +

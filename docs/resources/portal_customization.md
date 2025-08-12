@@ -57,6 +57,8 @@ resource "konnect_portal_customization" "my_portalcustomization" {
   portal_id = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
   robots    = "...my_robots..."
   spec_renderer = {
+    hide_deprecated = true
+    hide_internal   = false
     infinite_scroll = false
     show_schemas    = false
     try_it_insomnia = false
@@ -155,6 +157,8 @@ Optional:
 
 Optional:
 
+- `hide_deprecated` (Boolean)
+- `hide_internal` (Boolean)
 - `infinite_scroll` (Boolean)
 - `show_schemas` (Boolean)
 - `try_it_insomnia` (Boolean)

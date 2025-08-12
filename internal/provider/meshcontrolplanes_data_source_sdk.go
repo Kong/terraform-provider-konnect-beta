@@ -12,6 +12,63 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
+func (r *MeshControlPlanesDataSourceModel) RefreshFromSharedListMeshControlPlanesResponse(ctx context.Context, resp *shared.ListMeshControlPlanesResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.Data = []tfTypes.MeshControlPlane{}
+
+		for _, dataItem := range resp.Data {
+			var data tfTypes.MeshControlPlane
+
+			data.CreatedAt = types.StringValue(typeconvert.TimeToString(dataItem.CreatedAt))
+			data.Description = types.StringPointerValue(dataItem.Description)
+			data.Features = []tfTypes.MeshControlPlaneFeature{}
+
+			for _, featuresItem := range dataItem.Features {
+				var features tfTypes.MeshControlPlaneFeature
+
+				if featuresItem.HostnameGeneratorCreation == nil {
+					features.HostnameGeneratorCreation = nil
+				} else {
+					features.HostnameGeneratorCreation = &tfTypes.MeshControlPlaneFeatureHostnameGenerationCreation{}
+					features.HostnameGeneratorCreation.Enabled = types.BoolValue(featuresItem.HostnameGeneratorCreation.Enabled)
+				}
+				if featuresItem.MeshCreation == nil {
+					features.MeshCreation = nil
+				} else {
+					features.MeshCreation = &tfTypes.MeshControlPlaneFeatureHostnameGenerationCreation{}
+					features.MeshCreation.Enabled = types.BoolValue(featuresItem.MeshCreation.Enabled)
+				}
+				features.Type = types.StringValue(string(featuresItem.Type))
+
+				data.Features = append(data.Features, features)
+			}
+			data.ID = types.StringValue(dataItem.ID)
+			if dataItem.Labels != nil {
+				data.Labels = make(map[string]types.String, len(dataItem.Labels))
+				for key, value := range dataItem.Labels {
+					data.Labels[key] = types.StringPointerValue(value)
+				}
+			}
+			data.Name = types.StringValue(dataItem.Name)
+			data.UpdatedAt = types.StringValue(typeconvert.TimeToString(dataItem.UpdatedAt))
+
+			r.Data = append(r.Data, data)
+		}
+		if resp.Meta == nil {
+			r.Meta = nil
+		} else {
+			r.Meta = &tfTypes.PaginatedMeta{}
+			r.Meta.Page.Number = types.Float64Value(resp.Meta.Page.Number)
+			r.Meta.Page.Size = types.Float64Value(resp.Meta.Page.Size)
+			r.Meta.Page.Total = types.Float64Value(resp.Meta.Page.Total)
+		}
+	}
+
+	return diags
+}
+
 func (r *MeshControlPlanesDataSourceModel) ToOperationsListMeshControlPlanesRequest(ctx context.Context) (*operations.ListMeshControlPlanesRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -33,74 +90,4 @@ func (r *MeshControlPlanesDataSourceModel) ToOperationsListMeshControlPlanesRequ
 	}
 
 	return &out, diags
-}
-
-func (r *MeshControlPlanesDataSourceModel) RefreshFromSharedListMeshControlPlanesResponse(ctx context.Context, resp *shared.ListMeshControlPlanesResponse) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.Data = []tfTypes.MeshControlPlane{}
-		if len(r.Data) > len(resp.Data) {
-			r.Data = r.Data[:len(resp.Data)]
-		}
-		for dataCount, dataItem := range resp.Data {
-			var data tfTypes.MeshControlPlane
-			data.CreatedAt = types.StringValue(typeconvert.TimeToString(dataItem.CreatedAt))
-			data.Description = types.StringPointerValue(dataItem.Description)
-			data.Features = []tfTypes.MeshControlPlaneFeature{}
-			for featuresCount, featuresItem := range dataItem.Features {
-				var features tfTypes.MeshControlPlaneFeature
-				if featuresItem.HostnameGeneratorCreation == nil {
-					features.HostnameGeneratorCreation = nil
-				} else {
-					features.HostnameGeneratorCreation = &tfTypes.MeshControlPlaneFeatureHostnameGenerationCreation{}
-					features.HostnameGeneratorCreation.Enabled = types.BoolValue(featuresItem.HostnameGeneratorCreation.Enabled)
-				}
-				if featuresItem.MeshCreation == nil {
-					features.MeshCreation = nil
-				} else {
-					features.MeshCreation = &tfTypes.MeshControlPlaneFeatureHostnameGenerationCreation{}
-					features.MeshCreation.Enabled = types.BoolValue(featuresItem.MeshCreation.Enabled)
-				}
-				features.Type = types.StringValue(string(featuresItem.Type))
-				if featuresCount+1 > len(data.Features) {
-					data.Features = append(data.Features, features)
-				} else {
-					data.Features[featuresCount].HostnameGeneratorCreation = features.HostnameGeneratorCreation
-					data.Features[featuresCount].MeshCreation = features.MeshCreation
-					data.Features[featuresCount].Type = features.Type
-				}
-			}
-			data.ID = types.StringValue(dataItem.ID)
-			if dataItem.Labels != nil {
-				data.Labels = make(map[string]types.String, len(dataItem.Labels))
-				for key, value := range dataItem.Labels {
-					data.Labels[key] = types.StringPointerValue(value)
-				}
-			}
-			data.Name = types.StringValue(dataItem.Name)
-			data.UpdatedAt = types.StringValue(typeconvert.TimeToString(dataItem.UpdatedAt))
-			if dataCount+1 > len(r.Data) {
-				r.Data = append(r.Data, data)
-			} else {
-				r.Data[dataCount].CreatedAt = data.CreatedAt
-				r.Data[dataCount].Description = data.Description
-				r.Data[dataCount].Features = data.Features
-				r.Data[dataCount].ID = data.ID
-				r.Data[dataCount].Labels = data.Labels
-				r.Data[dataCount].Name = data.Name
-				r.Data[dataCount].UpdatedAt = data.UpdatedAt
-			}
-		}
-		if resp.Meta == nil {
-			r.Meta = nil
-		} else {
-			r.Meta = &tfTypes.PaginatedMeta{}
-			r.Meta.Page.Number = types.Float64Value(resp.Meta.Page.Number)
-			r.Meta.Page.Size = types.Float64Value(resp.Meta.Page.Size)
-			r.Meta.Page.Total = types.Float64Value(resp.Meta.Page.Total)
-		}
-	}
-
-	return diags
 }

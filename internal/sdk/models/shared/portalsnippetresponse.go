@@ -17,9 +17,9 @@ type PortalSnippetResponse struct {
 	Title *string `json:"title,omitempty"`
 	// The renderable markdown content of a page in a portal.
 	Content string `json:"content"`
-	// Whether the resource is publicly accessible to non-authenticated users. Defaults to private.
+	// Whether the resource is publicly accessible to non-authenticated users.
 	Visibility VisibilityStatus `json:"visibility"`
-	// Whether the resource is visible on a given portal. Defaults to false.
+	// Whether the resource is visible on a given portal. Defaults to unpublished.
 	Status      PublishedStatus `json:"status"`
 	Description *string         `json:"description,omitempty"`
 	// An ISO-8601 timestamp representation of entity creation date.

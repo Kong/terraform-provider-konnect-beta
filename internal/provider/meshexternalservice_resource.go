@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Kong/shared-speakeasy/customtypes/kumalabels"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -43,6 +44,7 @@ func NewMeshExternalServiceResource() resource.Resource {
 
 // MeshExternalServiceResource defines the resource implementation.
 type MeshExternalServiceResource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
@@ -152,15 +154,13 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"config": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
+								CustomType: jsontypes.NormalizedType{},
+								Computed:   true,
+								Optional:   true,
 								PlanModifiers: []planmodifier.String{
 									custom_stringplanmodifier.ArbitraryJSONModifier(),
 								},
 								Description: `Config freeform configuration for the extension. Parsed as JSON.`,
-								Validators: []validator.String{
-									validators.IsValidJSON(),
-								},
 							},
 							"type": schema.StringAttribute{
 								Required:    true,
@@ -561,13 +561,13 @@ func (r *MeshExternalServiceResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateMeshExternalServiceRequest(ctx)
+	request, requestDiags := data.ToOperationsPutMeshExternalServiceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.MeshExternalService.CreateMeshExternalService(ctx, *request)
+	res, err := r.client.MeshExternalService.PutMeshExternalService(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -579,7 +579,10 @@ func (r *MeshExternalServiceResource) Create(ctx context.Context, req resource.C
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 201 {
+	switch res.StatusCode {
+	case 200, 201:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -712,13 +715,13 @@ func (r *MeshExternalServiceResource) Update(ctx context.Context, req resource.U
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateMeshExternalServiceRequest(ctx)
+	request, requestDiags := data.ToOperationsPutMeshExternalServiceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.MeshExternalService.UpdateMeshExternalService(ctx, *request)
+	res, err := r.client.MeshExternalService.PutMeshExternalService(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -730,7 +733,10 @@ func (r *MeshExternalServiceResource) Update(ctx context.Context, req resource.U
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 201:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -844,7 +850,7 @@ func (r *MeshExternalServiceResource) ImportState(ctx context.Context, req resou
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b",  "mesh": "",  "name": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b", "mesh": "", "name": ""}': `+err.Error())
 		return
 	}
 
@@ -863,5 +869,4 @@ func (r *MeshExternalServiceResource) ImportState(ctx context.Context, req resou
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), data.Name)...)
-
 }

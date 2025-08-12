@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-// VisibilityStatus - Whether the resource is publicly accessible to non-authenticated users. Defaults to private.
+// VisibilityStatus - Whether the resource is publicly accessible to non-authenticated users.
 type VisibilityStatus string
 
 const (

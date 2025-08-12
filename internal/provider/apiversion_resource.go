@@ -12,7 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -32,17 +31,18 @@ func NewAPIVersionResource() resource.Resource {
 
 // APIVersionResource defines the resource implementation.
 type APIVersionResource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
 // APIVersionResourceModel describes the resource data model.
 type APIVersionResourceModel struct {
-	APIID     types.String                         `tfsdk:"api_id"`
-	CreatedAt types.String                         `tfsdk:"created_at"`
-	ID        types.String                         `tfsdk:"id"`
-	Spec      *tfTypes.CreateAPIVersionRequestSpec `tfsdk:"spec"`
-	UpdatedAt types.String                         `tfsdk:"updated_at"`
-	Version   types.String                         `tfsdk:"version"`
+	APIID     types.String                        `tfsdk:"api_id"`
+	CreatedAt types.String                        `tfsdk:"created_at"`
+	ID        types.String                        `tfsdk:"id"`
+	Spec      tfTypes.CreateAPIVersionRequestSpec `tfsdk:"spec"`
+	UpdatedAt types.String                        `tfsdk:"updated_at"`
+	Version   types.String                        `tfsdk:"version"`
 }
 
 func (r *APIVersionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -72,8 +72,7 @@ func (r *APIVersionResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `The API version identifier.`,
 			},
 			"spec": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"content": schema.StringAttribute{
 						Computed:    true,
@@ -81,13 +80,8 @@ func (r *APIVersionResource) Schema(ctx context.Context, req resource.SchemaRequ
 						Description: `The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).`,
 					},
 					"type": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `The type of specification being stored. This allows us to render the specification correctly. must be one of ["oas2", "oas3", "asyncapi"]; Requires replacement if changed.`,
+						Computed:    true,
+						Description: `The type of specification being stored. This allows us to render the specification correctly. must be one of ["oas2", "oas3", "asyncapi"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"oas2",
@@ -374,7 +368,7 @@ func (r *APIVersionResource) ImportState(ctx context.Context, req resource.Impor
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "api_id": "9f5061ce-78f6-4452-9108-ad7c02821fd5",  "id": "d32d905a-ed33-46a3-a093-d8f536af9a8a"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"api_id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "id": "d32d905a-ed33-46a3-a093-d8f536af9a8a"}': `+err.Error())
 		return
 	}
 
@@ -388,5 +382,4 @@ func (r *APIVersionResource) ImportState(ctx context.Context, req resource.Impor
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
-
 }

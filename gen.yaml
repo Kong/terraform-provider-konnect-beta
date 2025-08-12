@@ -16,11 +16,15 @@ generation:
   auth:
     oAuth2ClientCredentialsEnabled: false
     oAuth2PasswordEnabled: false
+  tests:
+    generateTests: true
+    generateNewTests: false
+    skipResponseBodyAssertions: false
   baseServerURL: ""
 go:
   version: 1.24.1
 terraform:
-  version: 0.7.2
+  version: 0.8.0
   additionalDataSources: []
   additionalDependencies:
     github.com/Kong/shared-speakeasy/customtypes: v0.2.3
@@ -35,6 +39,7 @@ terraform:
   additionalResources: []
   allowUnknownFieldsInWeakUnions: false
   author: kong
+  baseErrorName: KonnectBetaError
   defaultErrorName: SDKError
   enableTypeDeduplication: true
   environmentVariables:

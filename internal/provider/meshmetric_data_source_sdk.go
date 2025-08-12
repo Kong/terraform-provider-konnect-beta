@@ -13,27 +13,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshMetricDataSourceModel) ToOperationsGetMeshMetricRequest(ctx context.Context) (*operations.GetMeshMetricRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	out := operations.GetMeshMetricRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshMetricDataSourceModel) RefreshFromSharedMeshMetricItem(ctx context.Context, resp *shared.MeshMetricItem) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -52,30 +31,22 @@ func (r *MeshMetricDataSourceModel) RefreshFromSharedMeshMetricItem(ctx context.
 		} else {
 			r.Spec.Default = &tfTypes.Default{}
 			r.Spec.Default.Applications = []tfTypes.Applications{}
-			if len(r.Spec.Default.Applications) > len(resp.Spec.Default.Applications) {
-				r.Spec.Default.Applications = r.Spec.Default.Applications[:len(resp.Spec.Default.Applications)]
-			}
-			for applicationsCount, applicationsItem := range resp.Spec.Default.Applications {
+
+			for _, applicationsItem := range resp.Spec.Default.Applications {
 				var applications tfTypes.Applications
+
 				applications.Address = types.StringPointerValue(applicationsItem.Address)
 				applications.Name = types.StringPointerValue(applicationsItem.Name)
 				applications.Path = types.StringPointerValue(applicationsItem.Path)
 				applications.Port = types.Int32Value(int32(applicationsItem.Port))
-				if applicationsCount+1 > len(r.Spec.Default.Applications) {
-					r.Spec.Default.Applications = append(r.Spec.Default.Applications, applications)
-				} else {
-					r.Spec.Default.Applications[applicationsCount].Address = applications.Address
-					r.Spec.Default.Applications[applicationsCount].Name = applications.Name
-					r.Spec.Default.Applications[applicationsCount].Path = applications.Path
-					r.Spec.Default.Applications[applicationsCount].Port = applications.Port
-				}
+
+				r.Spec.Default.Applications = append(r.Spec.Default.Applications, applications)
 			}
 			r.Spec.Default.Backends = []tfTypes.MeshMetricItemBackends{}
-			if len(r.Spec.Default.Backends) > len(resp.Spec.Default.Backends) {
-				r.Spec.Default.Backends = r.Spec.Default.Backends[:len(resp.Spec.Default.Backends)]
-			}
-			for backendsCount, backendsItem := range resp.Spec.Default.Backends {
+
+			for _, backendsItem := range resp.Spec.Default.Backends {
 				var backends tfTypes.MeshMetricItemBackends
+
 				if backendsItem.OpenTelemetry == nil {
 					backends.OpenTelemetry = nil
 				} else {
@@ -102,13 +73,8 @@ func (r *MeshMetricDataSourceModel) RefreshFromSharedMeshMetricItem(ctx context.
 					}
 				}
 				backends.Type = types.StringValue(string(backendsItem.Type))
-				if backendsCount+1 > len(r.Spec.Default.Backends) {
-					r.Spec.Default.Backends = append(r.Spec.Default.Backends, backends)
-				} else {
-					r.Spec.Default.Backends[backendsCount].OpenTelemetry = backends.OpenTelemetry
-					r.Spec.Default.Backends[backendsCount].Prometheus = backends.Prometheus
-					r.Spec.Default.Backends[backendsCount].Type = backends.Type
-				}
+
+				r.Spec.Default.Backends = append(r.Spec.Default.Backends, backends)
 			}
 			if resp.Spec.Default.Sidecar == nil {
 				r.Spec.Default.Sidecar = nil
@@ -120,47 +86,33 @@ func (r *MeshMetricDataSourceModel) RefreshFromSharedMeshMetricItem(ctx context.
 				} else {
 					r.Spec.Default.Sidecar.Profiles = &tfTypes.Profiles{}
 					r.Spec.Default.Sidecar.Profiles.AppendProfiles = []tfTypes.MeshLoadBalancingStrategyItemSpecHeader{}
-					if len(r.Spec.Default.Sidecar.Profiles.AppendProfiles) > len(resp.Spec.Default.Sidecar.Profiles.AppendProfiles) {
-						r.Spec.Default.Sidecar.Profiles.AppendProfiles = r.Spec.Default.Sidecar.Profiles.AppendProfiles[:len(resp.Spec.Default.Sidecar.Profiles.AppendProfiles)]
-					}
-					for appendProfilesCount, appendProfilesItem := range resp.Spec.Default.Sidecar.Profiles.AppendProfiles {
+
+					for _, appendProfilesItem := range resp.Spec.Default.Sidecar.Profiles.AppendProfiles {
 						var appendProfiles tfTypes.MeshLoadBalancingStrategyItemSpecHeader
+
 						appendProfiles.Name = types.StringValue(string(appendProfilesItem.Name))
-						if appendProfilesCount+1 > len(r.Spec.Default.Sidecar.Profiles.AppendProfiles) {
-							r.Spec.Default.Sidecar.Profiles.AppendProfiles = append(r.Spec.Default.Sidecar.Profiles.AppendProfiles, appendProfiles)
-						} else {
-							r.Spec.Default.Sidecar.Profiles.AppendProfiles[appendProfilesCount].Name = appendProfiles.Name
-						}
+
+						r.Spec.Default.Sidecar.Profiles.AppendProfiles = append(r.Spec.Default.Sidecar.Profiles.AppendProfiles, appendProfiles)
 					}
 					r.Spec.Default.Sidecar.Profiles.Exclude = []tfTypes.Exclude{}
-					if len(r.Spec.Default.Sidecar.Profiles.Exclude) > len(resp.Spec.Default.Sidecar.Profiles.Exclude) {
-						r.Spec.Default.Sidecar.Profiles.Exclude = r.Spec.Default.Sidecar.Profiles.Exclude[:len(resp.Spec.Default.Sidecar.Profiles.Exclude)]
-					}
-					for excludeCount, excludeItem := range resp.Spec.Default.Sidecar.Profiles.Exclude {
+
+					for _, excludeItem := range resp.Spec.Default.Sidecar.Profiles.Exclude {
 						var exclude tfTypes.Exclude
+
 						exclude.Match = types.StringValue(excludeItem.Match)
 						exclude.Type = types.StringValue(string(excludeItem.Type))
-						if excludeCount+1 > len(r.Spec.Default.Sidecar.Profiles.Exclude) {
-							r.Spec.Default.Sidecar.Profiles.Exclude = append(r.Spec.Default.Sidecar.Profiles.Exclude, exclude)
-						} else {
-							r.Spec.Default.Sidecar.Profiles.Exclude[excludeCount].Match = exclude.Match
-							r.Spec.Default.Sidecar.Profiles.Exclude[excludeCount].Type = exclude.Type
-						}
+
+						r.Spec.Default.Sidecar.Profiles.Exclude = append(r.Spec.Default.Sidecar.Profiles.Exclude, exclude)
 					}
 					r.Spec.Default.Sidecar.Profiles.Include = []tfTypes.Exclude{}
-					if len(r.Spec.Default.Sidecar.Profiles.Include) > len(resp.Spec.Default.Sidecar.Profiles.Include) {
-						r.Spec.Default.Sidecar.Profiles.Include = r.Spec.Default.Sidecar.Profiles.Include[:len(resp.Spec.Default.Sidecar.Profiles.Include)]
-					}
-					for includeCount, includeItem := range resp.Spec.Default.Sidecar.Profiles.Include {
+
+					for _, includeItem := range resp.Spec.Default.Sidecar.Profiles.Include {
 						var include tfTypes.Exclude
+
 						include.Match = types.StringValue(includeItem.Match)
 						include.Type = types.StringValue(string(includeItem.Type))
-						if includeCount+1 > len(r.Spec.Default.Sidecar.Profiles.Include) {
-							r.Spec.Default.Sidecar.Profiles.Include = append(r.Spec.Default.Sidecar.Profiles.Include, include)
-						} else {
-							r.Spec.Default.Sidecar.Profiles.Include[includeCount].Match = include.Match
-							r.Spec.Default.Sidecar.Profiles.Include[includeCount].Type = include.Type
-						}
+
+						r.Spec.Default.Sidecar.Profiles.Include = append(r.Spec.Default.Sidecar.Profiles.Include, include)
 					}
 				}
 			}
@@ -195,4 +147,25 @@ func (r *MeshMetricDataSourceModel) RefreshFromSharedMeshMetricItem(ctx context.
 	}
 
 	return diags
+}
+
+func (r *MeshMetricDataSourceModel) ToOperationsGetMeshMetricRequest(ctx context.Context) (*operations.GetMeshMetricRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	out := operations.GetMeshMetricRequest{
+		CpID: cpID,
+		Mesh: mesh,
+		Name: name,
+	}
+
+	return &out, diags
 }

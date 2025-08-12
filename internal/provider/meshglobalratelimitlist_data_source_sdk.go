@@ -13,47 +13,15 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshGlobalRateLimitListDataSourceModel) ToOperationsGetMeshGlobalRateLimitListRequest(ctx context.Context) (*operations.GetMeshGlobalRateLimitListRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	offset := new(int64)
-	if !r.Offset.IsUnknown() && !r.Offset.IsNull() {
-		*offset = r.Offset.ValueInt64()
-	} else {
-		offset = nil
-	}
-	size := new(int64)
-	if !r.Size.IsUnknown() && !r.Size.IsNull() {
-		*size = r.Size.ValueInt64()
-	} else {
-		size = nil
-	}
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	out := operations.GetMeshGlobalRateLimitListRequest{
-		CpID:   cpID,
-		Offset: offset,
-		Size:   size,
-		Mesh:   mesh,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshGlobalRateLimitListDataSourceModel) RefreshFromSharedMeshGlobalRateLimitList(ctx context.Context, resp *shared.MeshGlobalRateLimitList) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
 		r.Items = []tfTypes.MeshGlobalRateLimitItem{}
-		if len(r.Items) > len(resp.Items) {
-			r.Items = r.Items[:len(resp.Items)]
-		}
-		for itemsCount, itemsItem := range resp.Items {
+
+		for _, itemsItem := range resp.Items {
 			var items tfTypes.MeshGlobalRateLimitItem
+
 			items.CreationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(itemsItem.CreationTime))
 			labelsValue, labelsDiags := types.MapValueFrom(ctx, types.StringType, itemsItem.Labels)
 			diags.Append(labelsDiags...)
@@ -64,8 +32,10 @@ func (r *MeshGlobalRateLimitListDataSourceModel) RefreshFromSharedMeshGlobalRate
 			items.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(itemsItem.ModificationTime))
 			items.Name = types.StringValue(itemsItem.Name)
 			items.Spec.From = []tfTypes.MeshGlobalRateLimitItemFrom{}
-			for fromCount, fromItem := range itemsItem.Spec.From {
+
+			for _, fromItem := range itemsItem.Spec.From {
 				var from tfTypes.MeshGlobalRateLimitItemFrom
+
 				if fromItem.Default == nil {
 					from.Default = nil
 				} else {
@@ -83,39 +53,39 @@ func (r *MeshGlobalRateLimitListDataSourceModel) RefreshFromSharedMeshGlobalRate
 						} else {
 							from.Default.HTTP.OnRateLimit.Headers = &tfTypes.MeshGlobalRateLimitItemHeaders{}
 							from.Default.HTTP.OnRateLimit.Headers.Add = []tfTypes.MeshGlobalRateLimitItemAdd{}
-							for addCount, addItem := range fromItem.Default.HTTP.OnRateLimit.Headers.Add {
+
+							for _, addItem := range fromItem.Default.HTTP.OnRateLimit.Headers.Add {
 								var add tfTypes.MeshGlobalRateLimitItemAdd
+
 								add.Name = types.StringValue(addItem.Name)
 								add.Value = types.StringValue(addItem.Value)
-								if addCount+1 > len(from.Default.HTTP.OnRateLimit.Headers.Add) {
-									from.Default.HTTP.OnRateLimit.Headers.Add = append(from.Default.HTTP.OnRateLimit.Headers.Add, add)
-								} else {
-									from.Default.HTTP.OnRateLimit.Headers.Add[addCount].Name = add.Name
-									from.Default.HTTP.OnRateLimit.Headers.Add[addCount].Value = add.Value
-								}
+
+								from.Default.HTTP.OnRateLimit.Headers.Add = append(from.Default.HTTP.OnRateLimit.Headers.Add, add)
 							}
 							from.Default.HTTP.OnRateLimit.Headers.Set = []tfTypes.MeshGlobalRateLimitItemAdd{}
-							for setCount, setItem := range fromItem.Default.HTTP.OnRateLimit.Headers.Set {
+
+							for _, setItem := range fromItem.Default.HTTP.OnRateLimit.Headers.Set {
 								var set tfTypes.MeshGlobalRateLimitItemAdd
+
 								set.Name = types.StringValue(setItem.Name)
 								set.Value = types.StringValue(setItem.Value)
-								if setCount+1 > len(from.Default.HTTP.OnRateLimit.Headers.Set) {
-									from.Default.HTTP.OnRateLimit.Headers.Set = append(from.Default.HTTP.OnRateLimit.Headers.Set, set)
-								} else {
-									from.Default.HTTP.OnRateLimit.Headers.Set[setCount].Name = set.Name
-									from.Default.HTTP.OnRateLimit.Headers.Set[setCount].Value = set.Value
-								}
+
+								from.Default.HTTP.OnRateLimit.Headers.Set = append(from.Default.HTTP.OnRateLimit.Headers.Set, set)
 							}
 						}
 						from.Default.HTTP.OnRateLimit.Status = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(fromItem.Default.HTTP.OnRateLimit.Status))
 					}
 					from.Default.HTTP.RatelimitOnRequest = []tfTypes.RatelimitOnRequest{}
-					for ratelimitOnRequestCount, ratelimitOnRequestItem := range fromItem.Default.HTTP.RatelimitOnRequest {
+
+					for _, ratelimitOnRequestItem := range fromItem.Default.HTTP.RatelimitOnRequest {
 						var ratelimitOnRequest tfTypes.RatelimitOnRequest
+
 						ratelimitOnRequest.Kind = types.StringValue(string(ratelimitOnRequestItem.Kind))
 						ratelimitOnRequest.Limits = []tfTypes.Limits{}
-						for limitsCount, limitsItem := range ratelimitOnRequestItem.Limits {
+
+						for _, limitsItem := range ratelimitOnRequestItem.Limits {
 							var limits tfTypes.Limits
+
 							if limitsItem.RequestRate == nil {
 								limits.RequestRate = nil
 							} else {
@@ -124,21 +94,12 @@ func (r *MeshGlobalRateLimitListDataSourceModel) RefreshFromSharedMeshGlobalRate
 								limits.RequestRate.Num = types.Int32Value(int32(limitsItem.RequestRate.Num))
 							}
 							limits.Value = types.StringValue(limitsItem.Value)
-							if limitsCount+1 > len(ratelimitOnRequest.Limits) {
-								ratelimitOnRequest.Limits = append(ratelimitOnRequest.Limits, limits)
-							} else {
-								ratelimitOnRequest.Limits[limitsCount].RequestRate = limits.RequestRate
-								ratelimitOnRequest.Limits[limitsCount].Value = limits.Value
-							}
+
+							ratelimitOnRequest.Limits = append(ratelimitOnRequest.Limits, limits)
 						}
 						ratelimitOnRequest.Name = types.StringValue(ratelimitOnRequestItem.Name)
-						if ratelimitOnRequestCount+1 > len(from.Default.HTTP.RatelimitOnRequest) {
-							from.Default.HTTP.RatelimitOnRequest = append(from.Default.HTTP.RatelimitOnRequest, ratelimitOnRequest)
-						} else {
-							from.Default.HTTP.RatelimitOnRequest[ratelimitOnRequestCount].Kind = ratelimitOnRequest.Kind
-							from.Default.HTTP.RatelimitOnRequest[ratelimitOnRequestCount].Limits = ratelimitOnRequest.Limits
-							from.Default.HTTP.RatelimitOnRequest[ratelimitOnRequestCount].Name = ratelimitOnRequest.Name
-						}
+
+						from.Default.HTTP.RatelimitOnRequest = append(from.Default.HTTP.RatelimitOnRequest, ratelimitOnRequest)
 					}
 					if fromItem.Default.HTTP.RequestRate == nil {
 						from.Default.HTTP.RequestRate = nil
@@ -174,12 +135,8 @@ func (r *MeshGlobalRateLimitListDataSourceModel) RefreshFromSharedMeshGlobalRate
 						from.TargetRef.Tags[key1] = types.StringValue(value1)
 					}
 				}
-				if fromCount+1 > len(items.Spec.From) {
-					items.Spec.From = append(items.Spec.From, from)
-				} else {
-					items.Spec.From[fromCount].Default = from.Default
-					items.Spec.From[fromCount].TargetRef = from.TargetRef
-				}
+
+				items.Spec.From = append(items.Spec.From, from)
 			}
 			if itemsItem.Spec.TargetRef == nil {
 				items.Spec.TargetRef = nil
@@ -208,8 +165,10 @@ func (r *MeshGlobalRateLimitListDataSourceModel) RefreshFromSharedMeshGlobalRate
 				}
 			}
 			items.Spec.To = []tfTypes.MeshGlobalRateLimitItemFrom{}
-			for toCount, toItem := range itemsItem.Spec.To {
+
+			for _, toItem := range itemsItem.Spec.To {
 				var to tfTypes.MeshGlobalRateLimitItemFrom
+
 				if toItem.Default == nil {
 					to.Default = nil
 				} else {
@@ -227,39 +186,39 @@ func (r *MeshGlobalRateLimitListDataSourceModel) RefreshFromSharedMeshGlobalRate
 						} else {
 							to.Default.HTTP.OnRateLimit.Headers = &tfTypes.MeshGlobalRateLimitItemHeaders{}
 							to.Default.HTTP.OnRateLimit.Headers.Add = []tfTypes.MeshGlobalRateLimitItemAdd{}
-							for addCount1, addItem1 := range toItem.Default.HTTP.OnRateLimit.Headers.Add {
+
+							for _, addItem1 := range toItem.Default.HTTP.OnRateLimit.Headers.Add {
 								var add1 tfTypes.MeshGlobalRateLimitItemAdd
+
 								add1.Name = types.StringValue(addItem1.Name)
 								add1.Value = types.StringValue(addItem1.Value)
-								if addCount1+1 > len(to.Default.HTTP.OnRateLimit.Headers.Add) {
-									to.Default.HTTP.OnRateLimit.Headers.Add = append(to.Default.HTTP.OnRateLimit.Headers.Add, add1)
-								} else {
-									to.Default.HTTP.OnRateLimit.Headers.Add[addCount1].Name = add1.Name
-									to.Default.HTTP.OnRateLimit.Headers.Add[addCount1].Value = add1.Value
-								}
+
+								to.Default.HTTP.OnRateLimit.Headers.Add = append(to.Default.HTTP.OnRateLimit.Headers.Add, add1)
 							}
 							to.Default.HTTP.OnRateLimit.Headers.Set = []tfTypes.MeshGlobalRateLimitItemAdd{}
-							for setCount1, setItem1 := range toItem.Default.HTTP.OnRateLimit.Headers.Set {
+
+							for _, setItem1 := range toItem.Default.HTTP.OnRateLimit.Headers.Set {
 								var set1 tfTypes.MeshGlobalRateLimitItemAdd
+
 								set1.Name = types.StringValue(setItem1.Name)
 								set1.Value = types.StringValue(setItem1.Value)
-								if setCount1+1 > len(to.Default.HTTP.OnRateLimit.Headers.Set) {
-									to.Default.HTTP.OnRateLimit.Headers.Set = append(to.Default.HTTP.OnRateLimit.Headers.Set, set1)
-								} else {
-									to.Default.HTTP.OnRateLimit.Headers.Set[setCount1].Name = set1.Name
-									to.Default.HTTP.OnRateLimit.Headers.Set[setCount1].Value = set1.Value
-								}
+
+								to.Default.HTTP.OnRateLimit.Headers.Set = append(to.Default.HTTP.OnRateLimit.Headers.Set, set1)
 							}
 						}
 						to.Default.HTTP.OnRateLimit.Status = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(toItem.Default.HTTP.OnRateLimit.Status))
 					}
 					to.Default.HTTP.RatelimitOnRequest = []tfTypes.RatelimitOnRequest{}
-					for ratelimitOnRequestCount1, ratelimitOnRequestItem1 := range toItem.Default.HTTP.RatelimitOnRequest {
+
+					for _, ratelimitOnRequestItem1 := range toItem.Default.HTTP.RatelimitOnRequest {
 						var ratelimitOnRequest1 tfTypes.RatelimitOnRequest
+
 						ratelimitOnRequest1.Kind = types.StringValue(string(ratelimitOnRequestItem1.Kind))
 						ratelimitOnRequest1.Limits = []tfTypes.Limits{}
-						for limitsCount1, limitsItem1 := range ratelimitOnRequestItem1.Limits {
+
+						for _, limitsItem1 := range ratelimitOnRequestItem1.Limits {
 							var limits1 tfTypes.Limits
+
 							if limitsItem1.RequestRate == nil {
 								limits1.RequestRate = nil
 							} else {
@@ -268,21 +227,12 @@ func (r *MeshGlobalRateLimitListDataSourceModel) RefreshFromSharedMeshGlobalRate
 								limits1.RequestRate.Num = types.Int32Value(int32(limitsItem1.RequestRate.Num))
 							}
 							limits1.Value = types.StringValue(limitsItem1.Value)
-							if limitsCount1+1 > len(ratelimitOnRequest1.Limits) {
-								ratelimitOnRequest1.Limits = append(ratelimitOnRequest1.Limits, limits1)
-							} else {
-								ratelimitOnRequest1.Limits[limitsCount1].RequestRate = limits1.RequestRate
-								ratelimitOnRequest1.Limits[limitsCount1].Value = limits1.Value
-							}
+
+							ratelimitOnRequest1.Limits = append(ratelimitOnRequest1.Limits, limits1)
 						}
 						ratelimitOnRequest1.Name = types.StringValue(ratelimitOnRequestItem1.Name)
-						if ratelimitOnRequestCount1+1 > len(to.Default.HTTP.RatelimitOnRequest) {
-							to.Default.HTTP.RatelimitOnRequest = append(to.Default.HTTP.RatelimitOnRequest, ratelimitOnRequest1)
-						} else {
-							to.Default.HTTP.RatelimitOnRequest[ratelimitOnRequestCount1].Kind = ratelimitOnRequest1.Kind
-							to.Default.HTTP.RatelimitOnRequest[ratelimitOnRequestCount1].Limits = ratelimitOnRequest1.Limits
-							to.Default.HTTP.RatelimitOnRequest[ratelimitOnRequestCount1].Name = ratelimitOnRequest1.Name
-						}
+
+						to.Default.HTTP.RatelimitOnRequest = append(to.Default.HTTP.RatelimitOnRequest, ratelimitOnRequest1)
 					}
 					if toItem.Default.HTTP.RequestRate == nil {
 						to.Default.HTTP.RequestRate = nil
@@ -318,29 +268,67 @@ func (r *MeshGlobalRateLimitListDataSourceModel) RefreshFromSharedMeshGlobalRate
 						to.TargetRef.Tags[key5] = types.StringValue(value5)
 					}
 				}
-				if toCount+1 > len(items.Spec.To) {
-					items.Spec.To = append(items.Spec.To, to)
-				} else {
-					items.Spec.To[toCount].Default = to.Default
-					items.Spec.To[toCount].TargetRef = to.TargetRef
-				}
+
+				items.Spec.To = append(items.Spec.To, to)
 			}
 			items.Type = types.StringValue(string(itemsItem.Type))
-			if itemsCount+1 > len(r.Items) {
-				r.Items = append(r.Items, items)
-			} else {
-				r.Items[itemsCount].CreationTime = items.CreationTime
-				r.Items[itemsCount].Labels = items.Labels
-				r.Items[itemsCount].Mesh = items.Mesh
-				r.Items[itemsCount].ModificationTime = items.ModificationTime
-				r.Items[itemsCount].Name = items.Name
-				r.Items[itemsCount].Spec = items.Spec
-				r.Items[itemsCount].Type = items.Type
-			}
+
+			r.Items = append(r.Items, items)
 		}
 		r.Next = types.StringPointerValue(resp.Next)
 		r.Total = types.Float64PointerValue(resp.Total)
 	}
 
 	return diags
+}
+
+func (r *MeshGlobalRateLimitListDataSourceModel) ToOperationsGetMeshGlobalRateLimitListRequest(ctx context.Context) (*operations.GetMeshGlobalRateLimitListRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	offset := new(int64)
+	if !r.Offset.IsUnknown() && !r.Offset.IsNull() {
+		*offset = r.Offset.ValueInt64()
+	} else {
+		offset = nil
+	}
+	size := new(int64)
+	if !r.Size.IsUnknown() && !r.Size.IsNull() {
+		*size = r.Size.ValueInt64()
+	} else {
+		size = nil
+	}
+	var filter *operations.GetMeshGlobalRateLimitListQueryParamFilter
+	if r.Filter != nil {
+		key := new(string)
+		if !r.Filter.Key.IsUnknown() && !r.Filter.Key.IsNull() {
+			*key = r.Filter.Key.ValueString()
+		} else {
+			key = nil
+		}
+		value := new(string)
+		if !r.Filter.Value.IsUnknown() && !r.Filter.Value.IsNull() {
+			*value = r.Filter.Value.ValueString()
+		} else {
+			value = nil
+		}
+		filter = &operations.GetMeshGlobalRateLimitListQueryParamFilter{
+			Key:   key,
+			Value: value,
+		}
+	}
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	out := operations.GetMeshGlobalRateLimitListRequest{
+		CpID:   cpID,
+		Offset: offset,
+		Size:   size,
+		Filter: filter,
+		Mesh:   mesh,
+	}
+
+	return &out, diags
 }

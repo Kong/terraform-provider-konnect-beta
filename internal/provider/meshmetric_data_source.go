@@ -24,6 +24,7 @@ func NewMeshMetricDataSource() datasource.DataSource {
 
 // MeshMetricDataSource is the data source implementation.
 type MeshMetricDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 

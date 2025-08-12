@@ -40,6 +40,7 @@ func NewMeshMultiZoneServiceResource() resource.Resource {
 
 // MeshMultiZoneServiceResource defines the resource implementation.
 type MeshMultiZoneServiceResource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
@@ -387,13 +388,13 @@ func (r *MeshMultiZoneServiceResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateMeshMultiZoneServiceRequest(ctx)
+	request, requestDiags := data.ToOperationsPutMeshMultiZoneServiceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.MeshMultiZoneService.CreateMeshMultiZoneService(ctx, *request)
+	res, err := r.client.MeshMultiZoneService.PutMeshMultiZoneService(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -405,7 +406,10 @@ func (r *MeshMultiZoneServiceResource) Create(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 201 {
+	switch res.StatusCode {
+	case 200, 201:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -538,13 +542,13 @@ func (r *MeshMultiZoneServiceResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateMeshMultiZoneServiceRequest(ctx)
+	request, requestDiags := data.ToOperationsPutMeshMultiZoneServiceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.MeshMultiZoneService.UpdateMeshMultiZoneService(ctx, *request)
+	res, err := r.client.MeshMultiZoneService.PutMeshMultiZoneService(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -556,7 +560,10 @@ func (r *MeshMultiZoneServiceResource) Update(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 201:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -670,7 +677,7 @@ func (r *MeshMultiZoneServiceResource) ImportState(ctx context.Context, req reso
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b",  "mesh": "",  "name": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b", "mesh": "", "name": ""}': `+err.Error())
 		return
 	}
 
@@ -689,5 +696,4 @@ func (r *MeshMultiZoneServiceResource) ImportState(ctx context.Context, req reso
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), data.Name)...)
-
 }

@@ -125,6 +125,8 @@ type SpecRenderer struct {
 	TryItInsomnia  *bool `json:"try_it_insomnia,omitempty"`
 	InfiniteScroll *bool `json:"infinite_scroll,omitempty"`
 	ShowSchemas    *bool `json:"show_schemas,omitempty"`
+	HideInternal   *bool `json:"hide_internal,omitempty"`
+	HideDeprecated *bool `json:"hide_deprecated,omitempty"`
 }
 
 func (o *SpecRenderer) GetTryItUI() *bool {
@@ -153,6 +155,20 @@ func (o *SpecRenderer) GetShowSchemas() *bool {
 		return nil
 	}
 	return o.ShowSchemas
+}
+
+func (o *SpecRenderer) GetHideInternal() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.HideInternal
+}
+
+func (o *SpecRenderer) GetHideDeprecated() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.HideDeprecated
 }
 
 // PortalCustomization - The custom settings of this portal

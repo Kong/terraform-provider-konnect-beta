@@ -12,7 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -31,6 +30,7 @@ func NewPortalSnippetResource() resource.Resource {
 
 // PortalSnippetResource defines the resource implementation.
 type PortalSnippetResource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
@@ -98,7 +98,7 @@ func (r *PortalSnippetResource) Schema(ctx context.Context, req resource.SchemaR
 			"status": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the resource is visible on a given portal. Defaults to false. must be one of ["published", "unpublished"]`,
+				Description: `Whether the resource is visible on a given portal. Defaults to unpublished. must be one of ["published", "unpublished"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"published",
@@ -125,10 +125,17 @@ func (r *PortalSnippetResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 			},
 			"visibility": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Default:     stringdefault.StaticString(`private`),
-				Description: `Whether a page is publicly accessible to non-authenticated users. Default: "private"`,
+				Computed: true,
+				Optional: true,
+				MarkdownDescription: `Whether a snippet is publicly accessible to non-authenticated users.` + "\n" +
+					`If not provided, the default_page_visibility value of the portal will be used.` + "\n" +
+					`must be one of ["public", "private"]`,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						"public",
+						"private",
+					),
+				},
 			},
 		},
 	}
@@ -380,7 +387,7 @@ func (r *PortalSnippetResource) ImportState(ctx context.Context, req resource.Im
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "portal_id": "f32d905a-ed33-46a3-a093-d8f536af9a8a",  "id": "ebbac5b0-ac89-45c3-9d2e-c4542c657e79"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"id": "ebbac5b0-ac89-45c3-9d2e-c4542c657e79", "portal_id": "f32d905a-ed33-46a3-a093-d8f536af9a8a"}': `+err.Error())
 		return
 	}
 
@@ -394,5 +401,4 @@ func (r *PortalSnippetResource) ImportState(ctx context.Context, req resource.Im
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
-
 }

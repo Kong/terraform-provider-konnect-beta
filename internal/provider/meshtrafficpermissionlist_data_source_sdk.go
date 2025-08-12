@@ -13,47 +13,15 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshTrafficPermissionListDataSourceModel) ToOperationsGetMeshTrafficPermissionListRequest(ctx context.Context) (*operations.GetMeshTrafficPermissionListRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	offset := new(int64)
-	if !r.Offset.IsUnknown() && !r.Offset.IsNull() {
-		*offset = r.Offset.ValueInt64()
-	} else {
-		offset = nil
-	}
-	size := new(int64)
-	if !r.Size.IsUnknown() && !r.Size.IsNull() {
-		*size = r.Size.ValueInt64()
-	} else {
-		size = nil
-	}
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	out := operations.GetMeshTrafficPermissionListRequest{
-		CpID:   cpID,
-		Offset: offset,
-		Size:   size,
-		Mesh:   mesh,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshTrafficPermissionListDataSourceModel) RefreshFromSharedMeshTrafficPermissionList(ctx context.Context, resp *shared.MeshTrafficPermissionList) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
 		r.Items = []tfTypes.MeshTrafficPermissionItem{}
-		if len(r.Items) > len(resp.Items) {
-			r.Items = r.Items[:len(resp.Items)]
-		}
-		for itemsCount, itemsItem := range resp.Items {
+
+		for _, itemsItem := range resp.Items {
 			var items tfTypes.MeshTrafficPermissionItem
+
 			items.CreationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(itemsItem.CreationTime))
 			labelsValue, labelsDiags := types.MapValueFrom(ctx, types.StringType, itemsItem.Labels)
 			diags.Append(labelsDiags...)
@@ -64,8 +32,10 @@ func (r *MeshTrafficPermissionListDataSourceModel) RefreshFromSharedMeshTrafficP
 			items.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(itemsItem.ModificationTime))
 			items.Name = types.StringValue(itemsItem.Name)
 			items.Spec.From = []tfTypes.MeshTrafficPermissionItemFrom{}
-			for fromCount, fromItem := range itemsItem.Spec.From {
+
+			for _, fromItem := range itemsItem.Spec.From {
 				var from tfTypes.MeshTrafficPermissionItemFrom
+
 				if fromItem.Default == nil {
 					from.Default = nil
 				} else {
@@ -97,12 +67,8 @@ func (r *MeshTrafficPermissionListDataSourceModel) RefreshFromSharedMeshTrafficP
 						from.TargetRef.Tags[key1] = types.StringValue(value1)
 					}
 				}
-				if fromCount+1 > len(items.Spec.From) {
-					items.Spec.From = append(items.Spec.From, from)
-				} else {
-					items.Spec.From[fromCount].Default = from.Default
-					items.Spec.From[fromCount].TargetRef = from.TargetRef
-				}
+
+				items.Spec.From = append(items.Spec.From, from)
 			}
 			if itemsItem.Spec.TargetRef == nil {
 				items.Spec.TargetRef = nil
@@ -131,21 +97,63 @@ func (r *MeshTrafficPermissionListDataSourceModel) RefreshFromSharedMeshTrafficP
 				}
 			}
 			items.Type = types.StringValue(string(itemsItem.Type))
-			if itemsCount+1 > len(r.Items) {
-				r.Items = append(r.Items, items)
-			} else {
-				r.Items[itemsCount].CreationTime = items.CreationTime
-				r.Items[itemsCount].Labels = items.Labels
-				r.Items[itemsCount].Mesh = items.Mesh
-				r.Items[itemsCount].ModificationTime = items.ModificationTime
-				r.Items[itemsCount].Name = items.Name
-				r.Items[itemsCount].Spec = items.Spec
-				r.Items[itemsCount].Type = items.Type
-			}
+
+			r.Items = append(r.Items, items)
 		}
 		r.Next = types.StringPointerValue(resp.Next)
 		r.Total = types.Float64PointerValue(resp.Total)
 	}
 
 	return diags
+}
+
+func (r *MeshTrafficPermissionListDataSourceModel) ToOperationsGetMeshTrafficPermissionListRequest(ctx context.Context) (*operations.GetMeshTrafficPermissionListRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	offset := new(int64)
+	if !r.Offset.IsUnknown() && !r.Offset.IsNull() {
+		*offset = r.Offset.ValueInt64()
+	} else {
+		offset = nil
+	}
+	size := new(int64)
+	if !r.Size.IsUnknown() && !r.Size.IsNull() {
+		*size = r.Size.ValueInt64()
+	} else {
+		size = nil
+	}
+	var filter *operations.GetMeshTrafficPermissionListQueryParamFilter
+	if r.Filter != nil {
+		key := new(string)
+		if !r.Filter.Key.IsUnknown() && !r.Filter.Key.IsNull() {
+			*key = r.Filter.Key.ValueString()
+		} else {
+			key = nil
+		}
+		value := new(string)
+		if !r.Filter.Value.IsUnknown() && !r.Filter.Value.IsNull() {
+			*value = r.Filter.Value.ValueString()
+		} else {
+			value = nil
+		}
+		filter = &operations.GetMeshTrafficPermissionListQueryParamFilter{
+			Key:   key,
+			Value: value,
+		}
+	}
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	out := operations.GetMeshTrafficPermissionListRequest{
+		CpID:   cpID,
+		Offset: offset,
+		Size:   size,
+		Filter: filter,
+		Mesh:   mesh,
+	}
+
+	return &out, diags
 }

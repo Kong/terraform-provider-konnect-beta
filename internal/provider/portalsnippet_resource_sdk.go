@@ -11,6 +11,104 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
+func (r *PortalSnippetResourceModel) RefreshFromSharedPortalSnippetResponse(ctx context.Context, resp *shared.PortalSnippetResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.Content = types.StringValue(resp.Content)
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.Description = types.StringPointerValue(resp.Description)
+		r.ID = types.StringValue(resp.ID)
+		r.Name = types.StringValue(resp.Name)
+		r.Status = types.StringValue(string(resp.Status))
+		r.Title = types.StringPointerValue(resp.Title)
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+		r.Visibility = types.StringValue(string(resp.Visibility))
+	}
+
+	return diags
+}
+
+func (r *PortalSnippetResourceModel) ToOperationsCreatePortalSnippetRequest(ctx context.Context) (*operations.CreatePortalSnippetRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	createPortalSnippetRequest, createPortalSnippetRequestDiags := r.ToSharedCreatePortalSnippetRequest(ctx)
+	diags.Append(createPortalSnippetRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreatePortalSnippetRequest{
+		PortalID:                   portalID,
+		CreatePortalSnippetRequest: *createPortalSnippetRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalSnippetResourceModel) ToOperationsDeletePortalSnippetRequest(ctx context.Context) (*operations.DeletePortalSnippetRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	var snippetID string
+	snippetID = r.ID.ValueString()
+
+	out := operations.DeletePortalSnippetRequest{
+		PortalID:  portalID,
+		SnippetID: snippetID,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalSnippetResourceModel) ToOperationsGetPortalSnippetRequest(ctx context.Context) (*operations.GetPortalSnippetRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	var snippetID string
+	snippetID = r.ID.ValueString()
+
+	out := operations.GetPortalSnippetRequest{
+		PortalID:  portalID,
+		SnippetID: snippetID,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalSnippetResourceModel) ToOperationsUpdatePortalSnippetRequest(ctx context.Context) (*operations.UpdatePortalSnippetRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	var snippetID string
+	snippetID = r.ID.ValueString()
+
+	updatePortalSnippetRequest, updatePortalSnippetRequestDiags := r.ToSharedUpdatePortalSnippetRequest(ctx)
+	diags.Append(updatePortalSnippetRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdatePortalSnippetRequest{
+		PortalID:                   portalID,
+		SnippetID:                  snippetID,
+		UpdatePortalSnippetRequest: *updatePortalSnippetRequest,
+	}
+
+	return &out, diags
+}
+
 func (r *PortalSnippetResourceModel) ToSharedCreatePortalSnippetRequest(ctx context.Context) (*shared.CreatePortalSnippetRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -26,9 +124,9 @@ func (r *PortalSnippetResourceModel) ToSharedCreatePortalSnippetRequest(ctx cont
 	var content string
 	content = r.Content.ValueString()
 
-	visibility := new(string)
+	visibility := new(shared.SnippetVisibilityStatus)
 	if !r.Visibility.IsUnknown() && !r.Visibility.IsNull() {
-		*visibility = r.Visibility.ValueString()
+		*visibility = shared.SnippetVisibilityStatus(r.Visibility.ValueString())
 	} else {
 		visibility = nil
 	}
@@ -51,27 +149,6 @@ func (r *PortalSnippetResourceModel) ToSharedCreatePortalSnippetRequest(ctx cont
 		Visibility:  visibility,
 		Status:      status,
 		Description: description,
-	}
-
-	return &out, diags
-}
-
-func (r *PortalSnippetResourceModel) ToOperationsCreatePortalSnippetRequest(ctx context.Context) (*operations.CreatePortalSnippetRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var portalID string
-	portalID = r.PortalID.ValueString()
-
-	createPortalSnippetRequest, createPortalSnippetRequestDiags := r.ToSharedCreatePortalSnippetRequest(ctx)
-	diags.Append(createPortalSnippetRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreatePortalSnippetRequest{
-		PortalID:                   portalID,
-		CreatePortalSnippetRequest: *createPortalSnippetRequest,
 	}
 
 	return &out, diags
@@ -126,81 +203,4 @@ func (r *PortalSnippetResourceModel) ToSharedUpdatePortalSnippetRequest(ctx cont
 	}
 
 	return &out, diags
-}
-
-func (r *PortalSnippetResourceModel) ToOperationsUpdatePortalSnippetRequest(ctx context.Context) (*operations.UpdatePortalSnippetRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var portalID string
-	portalID = r.PortalID.ValueString()
-
-	var snippetID string
-	snippetID = r.ID.ValueString()
-
-	updatePortalSnippetRequest, updatePortalSnippetRequestDiags := r.ToSharedUpdatePortalSnippetRequest(ctx)
-	diags.Append(updatePortalSnippetRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdatePortalSnippetRequest{
-		PortalID:                   portalID,
-		SnippetID:                  snippetID,
-		UpdatePortalSnippetRequest: *updatePortalSnippetRequest,
-	}
-
-	return &out, diags
-}
-
-func (r *PortalSnippetResourceModel) ToOperationsGetPortalSnippetRequest(ctx context.Context) (*operations.GetPortalSnippetRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var portalID string
-	portalID = r.PortalID.ValueString()
-
-	var snippetID string
-	snippetID = r.ID.ValueString()
-
-	out := operations.GetPortalSnippetRequest{
-		PortalID:  portalID,
-		SnippetID: snippetID,
-	}
-
-	return &out, diags
-}
-
-func (r *PortalSnippetResourceModel) ToOperationsDeletePortalSnippetRequest(ctx context.Context) (*operations.DeletePortalSnippetRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var portalID string
-	portalID = r.PortalID.ValueString()
-
-	var snippetID string
-	snippetID = r.ID.ValueString()
-
-	out := operations.DeletePortalSnippetRequest{
-		PortalID:  portalID,
-		SnippetID: snippetID,
-	}
-
-	return &out, diags
-}
-
-func (r *PortalSnippetResourceModel) RefreshFromSharedPortalSnippetResponse(ctx context.Context, resp *shared.PortalSnippetResponse) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.Content = types.StringValue(resp.Content)
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.Description = types.StringPointerValue(resp.Description)
-		r.ID = types.StringValue(resp.ID)
-		r.Name = types.StringValue(resp.Name)
-		r.Status = types.StringValue(string(resp.Status))
-		r.Title = types.StringPointerValue(resp.Title)
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
-		r.Visibility = types.StringValue(string(resp.Visibility))
-	}
-
-	return diags
 }

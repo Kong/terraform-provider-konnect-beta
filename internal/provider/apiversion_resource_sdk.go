@@ -12,40 +12,34 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *APIVersionResourceModel) ToSharedCreateAPIVersionRequest(ctx context.Context) (*shared.CreateAPIVersionRequest, diag.Diagnostics) {
+func (r *APIVersionResourceModel) RefreshFromSharedAPIVersionResponse(ctx context.Context, resp *shared.APIVersionResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	version := new(string)
-	if !r.Version.IsUnknown() && !r.Version.IsNull() {
-		*version = r.Version.ValueString()
-	} else {
-		version = nil
-	}
-	var spec *shared.CreateAPIVersionRequestSpec
-	if r.Spec != nil {
-		content := new(string)
-		if !r.Spec.Content.IsUnknown() && !r.Spec.Content.IsNull() {
-			*content = r.Spec.Content.ValueString()
-		} else {
-			content = nil
+	if resp != nil {
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.ID = types.StringValue(resp.ID)
+		if resp.Spec != nil {
+			r.Spec.Content = types.StringPointerValue(resp.Spec.Content)
+			if resp.Spec.Type != nil {
+				r.Spec.Type = types.StringValue(string(*resp.Spec.Type))
+			} else {
+				r.Spec.Type = types.StringNull()
+			}
+			r.Spec.ValidationMessages = []tfTypes.ValidationMessages{}
+
+			for _, validationMessagesItem := range resp.Spec.ValidationMessages {
+				var validationMessages tfTypes.ValidationMessages
+
+				validationMessages.Message = types.StringValue(validationMessagesItem.Message)
+
+				r.Spec.ValidationMessages = append(r.Spec.ValidationMessages, validationMessages)
+			}
 		}
-		typeVar := new(shared.CreateAPIVersionRequestAPISpecType)
-		if !r.Spec.Type.IsUnknown() && !r.Spec.Type.IsNull() {
-			*typeVar = shared.CreateAPIVersionRequestAPISpecType(r.Spec.Type.ValueString())
-		} else {
-			typeVar = nil
-		}
-		spec = &shared.CreateAPIVersionRequestSpec{
-			Content: content,
-			Type:    typeVar,
-		}
-	}
-	out := shared.CreateAPIVersionRequest{
-		Version: version,
-		Spec:    spec,
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+		r.Version = types.StringValue(resp.Version)
 	}
 
-	return &out, diags
+	return diags
 }
 
 func (r *APIVersionResourceModel) ToOperationsCreateAPIVersionRequest(ctx context.Context) (*operations.CreateAPIVersionRequest, diag.Diagnostics) {
@@ -69,55 +63,18 @@ func (r *APIVersionResourceModel) ToOperationsCreateAPIVersionRequest(ctx contex
 	return &out, diags
 }
 
-func (r *APIVersionResourceModel) ToSharedAPIVersion(ctx context.Context) (*shared.APIVersion, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	version := new(string)
-	if !r.Version.IsUnknown() && !r.Version.IsNull() {
-		*version = r.Version.ValueString()
-	} else {
-		version = nil
-	}
-	var spec *shared.APIVersionSpec
-	if r.Spec != nil {
-		content := new(string)
-		if !r.Spec.Content.IsUnknown() && !r.Spec.Content.IsNull() {
-			*content = r.Spec.Content.ValueString()
-		} else {
-			content = nil
-		}
-		spec = &shared.APIVersionSpec{
-			Content: content,
-		}
-	}
-	out := shared.APIVersion{
-		Version: version,
-		Spec:    spec,
-	}
-
-	return &out, diags
-}
-
-func (r *APIVersionResourceModel) ToOperationsUpdateAPIVersionRequest(ctx context.Context) (*operations.UpdateAPIVersionRequest, diag.Diagnostics) {
+func (r *APIVersionResourceModel) ToOperationsDeleteAPIVersionRequest(ctx context.Context) (*operations.DeleteAPIVersionRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var apiID string
 	apiID = r.APIID.ValueString()
 
-	var specID string
-	specID = r.ID.ValueString()
+	var versionID string
+	versionID = r.ID.ValueString()
 
-	apiVersion, apiVersionDiags := r.ToSharedAPIVersion(ctx)
-	diags.Append(apiVersionDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.UpdateAPIVersionRequest{
-		APIID:      apiID,
-		SpecID:     specID,
-		APIVersion: *apiVersion,
+	out := operations.DeleteAPIVersionRequest{
+		APIID:     apiID,
+		VersionID: versionID,
 	}
 
 	return &out, diags
@@ -129,67 +86,91 @@ func (r *APIVersionResourceModel) ToOperationsFetchAPIVersionRequest(ctx context
 	var apiID string
 	apiID = r.APIID.ValueString()
 
-	var specID string
-	specID = r.ID.ValueString()
+	var versionID string
+	versionID = r.ID.ValueString()
 
 	out := operations.FetchAPIVersionRequest{
-		APIID:  apiID,
-		SpecID: specID,
+		APIID:     apiID,
+		VersionID: versionID,
 	}
 
 	return &out, diags
 }
 
-func (r *APIVersionResourceModel) ToOperationsDeleteAPIVersionRequest(ctx context.Context) (*operations.DeleteAPIVersionRequest, diag.Diagnostics) {
+func (r *APIVersionResourceModel) ToOperationsUpdateAPIVersionRequest(ctx context.Context) (*operations.UpdateAPIVersionRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var apiID string
 	apiID = r.APIID.ValueString()
 
-	var specID string
-	specID = r.ID.ValueString()
+	var versionID string
+	versionID = r.ID.ValueString()
 
-	out := operations.DeleteAPIVersionRequest{
-		APIID:  apiID,
-		SpecID: specID,
+	apiVersion, apiVersionDiags := r.ToSharedAPIVersion(ctx)
+	diags.Append(apiVersionDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAPIVersionRequest{
+		APIID:      apiID,
+		VersionID:  versionID,
+		APIVersion: *apiVersion,
 	}
 
 	return &out, diags
 }
 
-func (r *APIVersionResourceModel) RefreshFromSharedAPIVersionResponse(ctx context.Context, resp *shared.APIVersionResponse) diag.Diagnostics {
+func (r *APIVersionResourceModel) ToSharedAPIVersion(ctx context.Context) (*shared.APIVersion, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	if resp != nil {
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.ID = types.StringValue(resp.ID)
-		if resp.Spec == nil {
-			r.Spec = nil
-		} else {
-			r.Spec = &tfTypes.CreateAPIVersionRequestSpec{}
-			r.Spec.Content = types.StringPointerValue(resp.Spec.Content)
-			if resp.Spec.Type != nil {
-				r.Spec.Type = types.StringValue(string(*resp.Spec.Type))
-			} else {
-				r.Spec.Type = types.StringNull()
-			}
-			r.Spec.ValidationMessages = []tfTypes.ValidationMessages{}
-			if len(r.Spec.ValidationMessages) > len(resp.Spec.ValidationMessages) {
-				r.Spec.ValidationMessages = r.Spec.ValidationMessages[:len(resp.Spec.ValidationMessages)]
-			}
-			for validationMessagesCount, validationMessagesItem := range resp.Spec.ValidationMessages {
-				var validationMessages tfTypes.ValidationMessages
-				validationMessages.Message = types.StringValue(validationMessagesItem.Message)
-				if validationMessagesCount+1 > len(r.Spec.ValidationMessages) {
-					r.Spec.ValidationMessages = append(r.Spec.ValidationMessages, validationMessages)
-				} else {
-					r.Spec.ValidationMessages[validationMessagesCount].Message = validationMessages.Message
-				}
-			}
-		}
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
-		r.Version = types.StringValue(resp.Version)
+	version := new(string)
+	if !r.Version.IsUnknown() && !r.Version.IsNull() {
+		*version = r.Version.ValueString()
+	} else {
+		version = nil
+	}
+	var spec *shared.APIVersionSpec
+	content := new(string)
+	if !r.Spec.Content.IsUnknown() && !r.Spec.Content.IsNull() {
+		*content = r.Spec.Content.ValueString()
+	} else {
+		content = nil
+	}
+	spec = &shared.APIVersionSpec{
+		Content: content,
+	}
+	out := shared.APIVersion{
+		Version: version,
+		Spec:    spec,
 	}
 
-	return diags
+	return &out, diags
+}
+
+func (r *APIVersionResourceModel) ToSharedCreateAPIVersionRequest(ctx context.Context) (*shared.CreateAPIVersionRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	version := new(string)
+	if !r.Version.IsUnknown() && !r.Version.IsNull() {
+		*version = r.Version.ValueString()
+	} else {
+		version = nil
+	}
+	content := new(string)
+	if !r.Spec.Content.IsUnknown() && !r.Spec.Content.IsNull() {
+		*content = r.Spec.Content.ValueString()
+	} else {
+		content = nil
+	}
+	spec := shared.CreateAPIVersionRequestSpec{
+		Content: content,
+	}
+	out := shared.CreateAPIVersionRequest{
+		Version: version,
+		Spec:    spec,
+	}
+
+	return &out, diags
 }

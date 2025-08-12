@@ -9,14 +9,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
-	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
@@ -33,6 +30,7 @@ func NewPortalCustomDomainResource() resource.Resource {
 
 // PortalCustomDomainResource defines the resource implementation.
 type PortalCustomDomainResource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
@@ -92,71 +90,50 @@ func (r *PortalCustomDomainResource) Schema(ctx context.Context, req resource.Sc
 			},
 			"ssl": schema.SingleNestedAttribute{
 				Required: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-				},
 				Attributes: map[string]schema.Attribute{
 					"custom_certificate": schema.StringAttribute{
-						Optional: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `Custom certificate to be used for the SSL termination. Requires replacement if changed.`,
+						Optional:    true,
+						Description: `Custom certificate to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate"`,
 					},
 					"custom_private_key": schema.StringAttribute{
-						Optional: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `Custom certificate private key to be used for the SSL termination. Requires replacement if changed.`,
+						Optional:    true,
+						Description: `Custom certificate private key to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate"`,
 					},
 					"domain_verification_method": schema.StringAttribute{
-						Required: true,
+						Computed: true,
+						Optional: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `must be one of ["http", "custom_certificate"]; Requires replacement if changed.`,
+						Description: `must be one of ["custom_certificate", "http"]; Requires replacement if changed.`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
-								"http",
 								"custom_certificate",
+								"http",
 							),
 						},
 					},
 					"expires_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
+						Computed:    true,
 						Description: `An ISO-8601 timestamp representation of the ssl certificate expiration date.`,
 						Validators: []validator.String{
 							validators.IsRFC3339(),
 						},
 					},
 					"uploaded_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
+						Computed:    true,
 						Description: `An ISO-8601 timestamp representation of the ssl certificate upload date.`,
 						Validators: []validator.String{
 							validators.IsRFC3339(),
 						},
 					},
 					"validation_errors": schema.ListAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.List{
-							speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
-						},
+						Computed:    true,
 						ElementType: types.StringType,
 					},
 					"verification_status": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
+						Computed:    true,
 						Description: `must be one of ["verified", "pending", "error"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
@@ -167,7 +144,6 @@ func (r *PortalCustomDomainResource) Schema(ctx context.Context, req resource.Sc
 						},
 					},
 				},
-				Description: `Requires replacement if changed.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

@@ -38,6 +38,7 @@ func NewMeshFaultInjectionResource() resource.Resource {
 
 // MeshFaultInjectionResource defines the resource implementation.
 type MeshFaultInjectionResource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
@@ -698,13 +699,13 @@ func (r *MeshFaultInjectionResource) Create(ctx context.Context, req resource.Cr
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateMeshFaultInjectionRequest(ctx)
+	request, requestDiags := data.ToOperationsPutMeshFaultInjectionRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.MeshFaultInjection.CreateMeshFaultInjection(ctx, *request)
+	res, err := r.client.MeshFaultInjection.PutMeshFaultInjection(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -716,7 +717,10 @@ func (r *MeshFaultInjectionResource) Create(ctx context.Context, req resource.Cr
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 201 {
+	switch res.StatusCode {
+	case 200, 201:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -849,13 +853,13 @@ func (r *MeshFaultInjectionResource) Update(ctx context.Context, req resource.Up
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateMeshFaultInjectionRequest(ctx)
+	request, requestDiags := data.ToOperationsPutMeshFaultInjectionRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.MeshFaultInjection.UpdateMeshFaultInjection(ctx, *request)
+	res, err := r.client.MeshFaultInjection.PutMeshFaultInjection(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -867,7 +871,10 @@ func (r *MeshFaultInjectionResource) Update(ctx context.Context, req resource.Up
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 201:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -981,7 +988,7 @@ func (r *MeshFaultInjectionResource) ImportState(ctx context.Context, req resour
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b",  "mesh": "",  "name": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b", "mesh": "", "name": ""}': `+err.Error())
 		return
 	}
 
@@ -1000,5 +1007,4 @@ func (r *MeshFaultInjectionResource) ImportState(ctx context.Context, req resour
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), data.Name)...)
-
 }

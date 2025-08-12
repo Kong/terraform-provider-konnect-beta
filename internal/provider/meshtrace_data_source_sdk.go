@@ -13,27 +13,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *MeshTraceDataSourceModel) ToOperationsGetMeshTraceRequest(ctx context.Context) (*operations.GetMeshTraceRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	out := operations.GetMeshTraceRequest{
-		CpID: cpID,
-		Mesh: mesh,
-		Name: name,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshTraceDataSourceModel) RefreshFromSharedMeshTraceItem(ctx context.Context, resp *shared.MeshTraceItem) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -52,11 +31,10 @@ func (r *MeshTraceDataSourceModel) RefreshFromSharedMeshTraceItem(ctx context.Co
 		} else {
 			r.Spec.Default = &tfTypes.MeshTraceItemDefault{}
 			r.Spec.Default.Backends = []tfTypes.MeshTraceItemBackends{}
-			if len(r.Spec.Default.Backends) > len(resp.Spec.Default.Backends) {
-				r.Spec.Default.Backends = r.Spec.Default.Backends[:len(resp.Spec.Default.Backends)]
-			}
-			for backendsCount, backendsItem := range resp.Spec.Default.Backends {
+
+			for _, backendsItem := range resp.Spec.Default.Backends {
 				var backends tfTypes.MeshTraceItemBackends
+
 				if backendsItem.Datadog == nil {
 					backends.Datadog = nil
 				} else {
@@ -84,14 +62,8 @@ func (r *MeshTraceDataSourceModel) RefreshFromSharedMeshTraceItem(ctx context.Co
 					backends.Zipkin.TraceId128bit = types.BoolPointerValue(backendsItem.Zipkin.TraceId128bit)
 					backends.Zipkin.URL = types.StringValue(backendsItem.Zipkin.URL)
 				}
-				if backendsCount+1 > len(r.Spec.Default.Backends) {
-					r.Spec.Default.Backends = append(r.Spec.Default.Backends, backends)
-				} else {
-					r.Spec.Default.Backends[backendsCount].Datadog = backends.Datadog
-					r.Spec.Default.Backends[backendsCount].OpenTelemetry = backends.OpenTelemetry
-					r.Spec.Default.Backends[backendsCount].Type = backends.Type
-					r.Spec.Default.Backends[backendsCount].Zipkin = backends.Zipkin
-				}
+
+				r.Spec.Default.Backends = append(r.Spec.Default.Backends, backends)
 			}
 			if resp.Spec.Default.Sampling == nil {
 				r.Spec.Default.Sampling = nil
@@ -126,11 +98,10 @@ func (r *MeshTraceDataSourceModel) RefreshFromSharedMeshTraceItem(ctx context.Co
 				}
 			}
 			r.Spec.Default.Tags = []tfTypes.Tags{}
-			if len(r.Spec.Default.Tags) > len(resp.Spec.Default.Tags) {
-				r.Spec.Default.Tags = r.Spec.Default.Tags[:len(resp.Spec.Default.Tags)]
-			}
-			for tagsCount, tagsItem := range resp.Spec.Default.Tags {
+
+			for _, tagsItem := range resp.Spec.Default.Tags {
 				var tags tfTypes.Tags
+
 				if tagsItem.Header == nil {
 					tags.Header = nil
 				} else {
@@ -140,13 +111,8 @@ func (r *MeshTraceDataSourceModel) RefreshFromSharedMeshTraceItem(ctx context.Co
 				}
 				tags.Literal = types.StringPointerValue(tagsItem.Literal)
 				tags.Name = types.StringValue(tagsItem.Name)
-				if tagsCount+1 > len(r.Spec.Default.Tags) {
-					r.Spec.Default.Tags = append(r.Spec.Default.Tags, tags)
-				} else {
-					r.Spec.Default.Tags[tagsCount].Header = tags.Header
-					r.Spec.Default.Tags[tagsCount].Literal = tags.Literal
-					r.Spec.Default.Tags[tagsCount].Name = tags.Name
-				}
+
+				r.Spec.Default.Tags = append(r.Spec.Default.Tags, tags)
 			}
 		}
 		if resp.Spec.TargetRef == nil {
@@ -179,4 +145,25 @@ func (r *MeshTraceDataSourceModel) RefreshFromSharedMeshTraceItem(ctx context.Co
 	}
 
 	return diags
+}
+
+func (r *MeshTraceDataSourceModel) ToOperationsGetMeshTraceRequest(ctx context.Context) (*operations.GetMeshTraceRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	out := operations.GetMeshTraceRequest{
+		CpID: cpID,
+		Mesh: mesh,
+		Name: name,
+	}
+
+	return &out, diags
 }

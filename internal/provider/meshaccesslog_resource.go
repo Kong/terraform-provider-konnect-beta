@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Kong/shared-speakeasy/customtypes/kumalabels"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -38,6 +39,7 @@ func NewMeshAccessLogResource() resource.Resource {
 
 // MeshAccessLogResource defines the resource implementation.
 type MeshAccessLogResource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
@@ -236,8 +238,9 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																	`https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators`,
 															},
 															"body": schema.StringAttribute{
-																Computed: true,
-																Optional: true,
+																CustomType: jsontypes.NormalizedType{},
+																Computed:   true,
+																Optional:   true,
 																PlanModifiers: []planmodifier.String{
 																	custom_stringplanmodifier.ArbitraryJSONModifier(),
 																},
@@ -246,9 +249,6 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																	`It can contain placeholders available on` + "\n" +
 																	`https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators` + "\n" +
 																	`Parsed as JSON.`,
-																Validators: []validator.String{
-																	validators.IsValidJSON(),
-																},
 															},
 															"endpoint": schema.StringAttribute{
 																Optional:    true,
@@ -549,16 +549,14 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																	`https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators`,
 															},
 															"body": schema.StringAttribute{
-																Computed: true,
-																Optional: true,
+																CustomType: jsontypes.NormalizedType{},
+																Computed:   true,
+																Optional:   true,
 																MarkdownDescription: `Body is a raw string or an OTLP any value as described at` + "\n" +
 																	`https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/logs/data-model.md#field-body` + "\n" +
 																	`It can contain placeholders available on` + "\n" +
 																	`https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators` + "\n" +
 																	`Parsed as JSON.`,
-																Validators: []validator.String{
-																	validators.IsValidJSON(),
-																},
 															},
 															"endpoint": schema.StringAttribute{
 																Optional:    true,
@@ -854,8 +852,9 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																	`https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators`,
 															},
 															"body": schema.StringAttribute{
-																Computed: true,
-																Optional: true,
+																CustomType: jsontypes.NormalizedType{},
+																Computed:   true,
+																Optional:   true,
 																PlanModifiers: []planmodifier.String{
 																	custom_stringplanmodifier.ArbitraryJSONModifier(),
 																},
@@ -864,9 +863,6 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																	`It can contain placeholders available on` + "\n" +
 																	`https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators` + "\n" +
 																	`Parsed as JSON.`,
-																Validators: []validator.String{
-																	validators.IsValidJSON(),
-																},
 															},
 															"endpoint": schema.StringAttribute{
 																Optional:    true,
@@ -1106,13 +1102,13 @@ func (r *MeshAccessLogResource) Create(ctx context.Context, req resource.CreateR
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateMeshAccessLogRequest(ctx)
+	request, requestDiags := data.ToOperationsPutMeshAccessLogRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.MeshAccessLog.CreateMeshAccessLog(ctx, *request)
+	res, err := r.client.MeshAccessLog.PutMeshAccessLog(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1124,7 +1120,10 @@ func (r *MeshAccessLogResource) Create(ctx context.Context, req resource.CreateR
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 201 {
+	switch res.StatusCode {
+	case 200, 201:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -1257,13 +1256,13 @@ func (r *MeshAccessLogResource) Update(ctx context.Context, req resource.UpdateR
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateMeshAccessLogRequest(ctx)
+	request, requestDiags := data.ToOperationsPutMeshAccessLogRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.MeshAccessLog.UpdateMeshAccessLog(ctx, *request)
+	res, err := r.client.MeshAccessLog.PutMeshAccessLog(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1275,7 +1274,10 @@ func (r *MeshAccessLogResource) Update(ctx context.Context, req resource.UpdateR
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 201:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -1389,7 +1391,7 @@ func (r *MeshAccessLogResource) ImportState(ctx context.Context, req resource.Im
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b",  "mesh": "",  "name": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b", "mesh": "", "name": ""}': `+err.Error())
 		return
 	}
 
@@ -1408,5 +1410,4 @@ func (r *MeshAccessLogResource) ImportState(ctx context.Context, req resource.Im
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), data.Name)...)
-
 }

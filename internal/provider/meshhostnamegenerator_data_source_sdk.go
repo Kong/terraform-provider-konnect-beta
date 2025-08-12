@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
@@ -12,23 +13,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
-
-func (r *MeshHostnameGeneratorDataSourceModel) ToOperationsGetHostnameGeneratorRequest(ctx context.Context) (*operations.GetHostnameGeneratorRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	out := operations.GetHostnameGeneratorRequest{
-		CpID: cpID,
-		Name: name,
-	}
-
-	return &out, diags
-}
 
 func (r *MeshHostnameGeneratorDataSourceModel) RefreshFromSharedHostnameGeneratorItem(ctx context.Context, resp *shared.HostnameGeneratorItem) diag.Diagnostics {
 	var diags diag.Diagnostics
@@ -48,10 +32,10 @@ func (r *MeshHostnameGeneratorDataSourceModel) RefreshFromSharedHostnameGenerato
 		} else {
 			r.Spec.Extension = &tfTypes.MeshExternalServiceItemExtension{}
 			if resp.Spec.Extension.Config == nil {
-				r.Spec.Extension.Config = types.StringNull()
+				r.Spec.Extension.Config = jsontypes.NewNormalizedNull()
 			} else {
 				configResult, _ := json.Marshal(resp.Spec.Extension.Config)
-				r.Spec.Extension.Config = types.StringValue(string(configResult))
+				r.Spec.Extension.Config = jsontypes.NewNormalizedValue(string(configResult))
 			}
 			r.Spec.Extension.Type = types.StringValue(resp.Spec.Extension.Type)
 		}
@@ -98,4 +82,21 @@ func (r *MeshHostnameGeneratorDataSourceModel) RefreshFromSharedHostnameGenerato
 	}
 
 	return diags
+}
+
+func (r *MeshHostnameGeneratorDataSourceModel) ToOperationsGetHostnameGeneratorRequest(ctx context.Context) (*operations.GetHostnameGeneratorRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	out := operations.GetHostnameGeneratorRequest{
+		CpID: cpID,
+		Name: name,
+	}
+
+	return &out, diags
 }

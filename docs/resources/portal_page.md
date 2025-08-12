@@ -33,7 +33,10 @@ resource "konnect_portal_page" "my_portalpage" {
 
 - `content` (String) The renderable markdown content of a page in a portal.
 - `portal_id` (String) The Portal identifier
-- `slug` (String) The slug of a page in a portal. Is used to compute the full path /slug1/slug2/slug3.
+- `slug` (String) The slug of a page in a portal, used to compute its full URL path within the portal hierarchy. 
+When a page has a `parent_page_id`, its full path is built by joining the parent’s slug with its own. 
+For example, if a parent page has the slug `slug1` and this page’s slug is `slug2`, the resulting path will be `/slug1/slug2`. 
+This enables nested page structures like `/slug1/slug2/slug3`.
 
 ### Optional
 
@@ -41,9 +44,11 @@ resource "konnect_portal_page" "my_portalpage" {
 - `parent_page_id` (String) Pages may be rendered as a tree of files.
 
 Specify the `id` of another page as the `parent_page_id` to add some hierarchy to your pages.
-- `status` (String) Whether the resource is visible on a given portal. Defaults to false. must be one of ["published", "unpublished"]
+- `status` (String) Whether the resource is visible on a given portal. Defaults to unpublished. must be one of ["published", "unpublished"]
 - `title` (String) The title of a page in a portal.
-- `visibility` (String) Whether a page is publicly accessible to non-authenticated users. Default: "private"
+- `visibility` (String) Whether a page is publicly accessible to non-authenticated users.
+If not provided, the default_page_visibility value of the portal will be used.
+must be one of ["public", "private"]
 
 ### Read-Only
 
@@ -56,5 +61,5 @@ Specify the `id` of another page as the `parent_page_id` to add some hierarchy t
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_portal_page.my_konnect_portal_page "{ \"id\": \"ebbac5b0-ac89-45c3-9d2e-c4542c657e79\",  \"portal_id\": \"f32d905a-ed33-46a3-a093-d8f536af9a8a\"}"
+terraform import konnect_portal_page.my_konnect_portal_page '{"id": "ebbac5b0-ac89-45c3-9d2e-c4542c657e79", "portal_id": "f32d905a-ed33-46a3-a093-d8f536af9a8a"}'
 ```

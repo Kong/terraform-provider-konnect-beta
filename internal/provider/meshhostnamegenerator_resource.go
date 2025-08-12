@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -33,6 +34,7 @@ func NewMeshHostnameGeneratorResource() resource.Resource {
 
 // MeshHostnameGeneratorResource defines the resource implementation.
 type MeshHostnameGeneratorResource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
@@ -99,12 +101,10 @@ func (r *MeshHostnameGeneratorResource) Schema(ctx context.Context, req resource
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"config": schema.StringAttribute{
+								CustomType:  jsontypes.NormalizedType{},
 								Computed:    true,
 								Optional:    true,
 								Description: `Config freeform configuration for the extension. Parsed as JSON.`,
-								Validators: []validator.String{
-									validators.IsValidJSON(),
-								},
 							},
 							"type": schema.StringAttribute{
 								Required:    true,
@@ -211,13 +211,13 @@ func (r *MeshHostnameGeneratorResource) Create(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateHostnameGeneratorRequest(ctx)
+	request, requestDiags := data.ToOperationsPutHostnameGeneratorRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.HostnameGenerator.CreateHostnameGenerator(ctx, *request)
+	res, err := r.client.HostnameGenerator.PutHostnameGenerator(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -229,7 +229,10 @@ func (r *MeshHostnameGeneratorResource) Create(ctx context.Context, req resource
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 201 {
+	switch res.StatusCode {
+	case 200, 201:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -362,13 +365,13 @@ func (r *MeshHostnameGeneratorResource) Update(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateHostnameGeneratorRequest(ctx)
+	request, requestDiags := data.ToOperationsPutHostnameGeneratorRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.HostnameGenerator.UpdateHostnameGenerator(ctx, *request)
+	res, err := r.client.HostnameGenerator.PutHostnameGenerator(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -380,7 +383,10 @@ func (r *MeshHostnameGeneratorResource) Update(ctx context.Context, req resource
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 201:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -493,7 +499,7 @@ func (r *MeshHostnameGeneratorResource) ImportState(ctx context.Context, req res
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b",  "name": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b", "name": ""}': `+err.Error())
 		return
 	}
 
@@ -507,5 +513,4 @@ func (r *MeshHostnameGeneratorResource) ImportState(ctx context.Context, req res
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), data.Name)...)
-
 }

@@ -31,6 +31,7 @@ func NewAuthServerScopesResource() resource.Resource {
 
 // AuthServerScopesResource defines the resource implementation.
 type AuthServerScopesResource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
@@ -84,7 +85,7 @@ func (r *AuthServerScopesResource) Schema(ctx context.Context, req resource.Sche
 				Computed:    true,
 				Optional:    true,
 				Default:     booldefault.StaticBool(true),
-				Description: `Specifies whether the scope is enabled. Default: true`,
+				Description: `Specifies whether the scope is enabled. If the scope is not enabled, it cannot be requested by clients and will not be included in the access token. Default: true`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -161,7 +162,7 @@ func (r *AuthServerScopesResource) Create(ctx context.Context, req resource.Crea
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Authserver.CreateAuthServerScope(ctx, *request)
+	res, err := r.client.AuthServerScopes.CreateAuthServerScope(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -221,7 +222,7 @@ func (r *AuthServerScopesResource) Read(ctx context.Context, req resource.ReadRe
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Authserver.GetAuthServerScope(ctx, *request)
+	res, err := r.client.AuthServerScopes.GetAuthServerScope(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -275,7 +276,7 @@ func (r *AuthServerScopesResource) Update(ctx context.Context, req resource.Upda
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Authserver.UpdateAuthServerScope(ctx, *request)
+	res, err := r.client.AuthServerScopes.UpdateAuthServerScope(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -335,7 +336,7 @@ func (r *AuthServerScopesResource) Delete(ctx context.Context, req resource.Dele
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Authserver.DeleteAuthServerScope(ctx, *request)
+	res, err := r.client.AuthServerScopes.DeleteAuthServerScope(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -363,7 +364,7 @@ func (r *AuthServerScopesResource) ImportState(ctx context.Context, req resource
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "auth_server_id": "d32d905a-ed33-46a3-a093-d8f536af9a8a",  "id": "c5e12516-182c-4928-ae04-05374b3b1cca"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"auth_server_id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "id": "c5e12516-182c-4928-ae04-05374b3b1cca"}': `+err.Error())
 		return
 	}
 
@@ -377,5 +378,4 @@ func (r *AuthServerScopesResource) ImportState(ctx context.Context, req resource
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
-
 }

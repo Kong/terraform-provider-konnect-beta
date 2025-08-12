@@ -396,7 +396,7 @@ func (s *APIVersion) FetchAPIVersion(ctx context.Context, request operations.Fet
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/apis/{apiId}/versions/{specId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/apis/{apiId}/versions/{versionId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -670,7 +670,7 @@ func (s *APIVersion) UpdateAPIVersion(ctx context.Context, request operations.Up
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/apis/{apiId}/versions/{specId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/apis/{apiId}/versions/{versionId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -1013,7 +1013,7 @@ func (s *APIVersion) DeleteAPIVersion(ctx context.Context, request operations.De
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/apis/{apiId}/versions/{specId}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/apis/{apiId}/versions/{versionId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}

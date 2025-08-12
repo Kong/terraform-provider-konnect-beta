@@ -1,48 +1,37 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: 704872f2c54970d164c493e7edefca5b
+  docChecksum: d5eea2cba9fea7b68145bdb2598f9728
   docVersion: 2.0.0
-  speakeasyVersion: 1.555.3
-  generationVersion: 2.620.2
-  releaseVersion: 0.7.2
-  configChecksum: b0c9d3bfc675b7fb9e70bfea49dcfb07
+  speakeasyVersion: 1.602.0
+  generationVersion: 2.681.1
+  releaseVersion: 0.8.0
+  configChecksum: e5940e108e57fc7030e38476eb9ee8f8
 features:
   terraform:
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.2.1
-    core: 3.41.10
+    core: 3.44.0
     deprecations: 2.82.0
     globalSecurity: 2.81.12
-    globalServerURLs: 2.82.2
+    globalServerURLs: 2.83.0
     ignores: 2.81.1
     inputOutputModels: 2.83.0
     nameOverrides: 2.81.3
     nullables: 0.0.0
-    retries: 2.81.3
+    retries: 2.81.4
     typeOverrides: 2.81.1
     unions: 2.81.17
 generatedFiles:
   - .gitattributes
   - USAGE.md
   - examples/README.md
-  - examples/data-sources/konnect-beta_api/data-source.tf
-  - examples/data-sources/konnect-beta_api_document/data-source.tf
-  - examples/data-sources/konnect-beta_api_implementation/data-source.tf
-  - examples/data-sources/konnect-beta_api_publication/data-source.tf
-  - examples/data-sources/konnect-beta_api_specification/data-source.tf
-  - examples/data-sources/konnect-beta_api_version/data-source.tf
-  - examples/data-sources/konnect-beta_auth_server/data-source.tf
-  - examples/data-sources/konnect-beta_auth_server_claims/data-source.tf
-  - examples/data-sources/konnect-beta_auth_server_clients/data-source.tf
-  - examples/data-sources/konnect-beta_auth_server_scopes/data-source.tf
   - examples/data-sources/konnect-beta_hostname_generator_list/data-source.tf
   - examples/data-sources/konnect-beta_mesh/data-source.tf
   - examples/data-sources/konnect-beta_mesh_access_log/data-source.tf
   - examples/data-sources/konnect-beta_mesh_access_log_list/data-source.tf
   - examples/data-sources/konnect-beta_mesh_circuit_breaker/data-source.tf
   - examples/data-sources/konnect-beta_mesh_circuit_breaker_list/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_control_plane/data-source.tf
   - examples/data-sources/konnect-beta_mesh_control_planes/data-source.tf
   - examples/data-sources/konnect-beta_mesh_external_service/data-source.tf
   - examples/data-sources/konnect-beta_mesh_external_service_list/data-source.tf
@@ -86,13 +75,6 @@ generatedFiles:
   - examples/data-sources/konnect-beta_mesh_trace_list/data-source.tf
   - examples/data-sources/konnect-beta_mesh_traffic_permission/data-source.tf
   - examples/data-sources/konnect-beta_mesh_traffic_permission_list/data-source.tf
-  - examples/data-sources/konnect-beta_portal/data-source.tf
-  - examples/data-sources/konnect-beta_portal_auth/data-source.tf
-  - examples/data-sources/konnect-beta_portal_custom_domain/data-source.tf
-  - examples/data-sources/konnect-beta_portal_customization/data-source.tf
-  - examples/data-sources/konnect-beta_portal_page/data-source.tf
-  - examples/data-sources/konnect-beta_portal_snippet/data-source.tf
-  - examples/data-sources/konnect-beta_portal_team/data-source.tf
   - examples/provider/provider.tf
   - examples/resources/konnect-beta_api/import.sh
   - examples/resources/konnect-beta_api/resource.tf
@@ -114,6 +96,8 @@ generatedFiles:
   - examples/resources/konnect-beta_auth_server_clients/resource.tf
   - examples/resources/konnect-beta_auth_server_scopes/import.sh
   - examples/resources/konnect-beta_auth_server_scopes/resource.tf
+  - examples/resources/konnect-beta_dashboard/import.sh
+  - examples/resources/konnect-beta_dashboard/resource.tf
   - examples/resources/konnect-beta_mesh/import.sh
   - examples/resources/konnect-beta_mesh/resource.tf
   - examples/resources/konnect-beta_mesh_access_log/import.sh
@@ -172,6 +156,10 @@ generatedFiles:
   - examples/resources/konnect-beta_portal_custom_domain/resource.tf
   - examples/resources/konnect-beta_portal_customization/import.sh
   - examples/resources/konnect-beta_portal_customization/resource.tf
+  - examples/resources/konnect-beta_portal_favicon/import.sh
+  - examples/resources/konnect-beta_portal_favicon/resource.tf
+  - examples/resources/konnect-beta_portal_logo/import.sh
+  - examples/resources/konnect-beta_portal_logo/resource.tf
   - examples/resources/konnect-beta_portal_page/import.sh
   - examples/resources/konnect-beta_portal_page/resource.tf
   - examples/resources/konnect-beta_portal_snippet/import.sh
@@ -192,46 +180,28 @@ generatedFiles:
   - internal/planmodifiers/setplanmodifier/suppress_diff.go
   - internal/planmodifiers/stringplanmodifier/suppress_diff.go
   - internal/planmodifiers/utils/state_check.go
-  - internal/provider/api_data_source.go
-  - internal/provider/api_data_source_sdk.go
   - internal/provider/api_resource.go
   - internal/provider/api_resource_sdk.go
-  - internal/provider/apidocument_data_source.go
-  - internal/provider/apidocument_data_source_sdk.go
   - internal/provider/apidocument_resource.go
   - internal/provider/apidocument_resource_sdk.go
-  - internal/provider/apiimplementation_data_source.go
-  - internal/provider/apiimplementation_data_source_sdk.go
   - internal/provider/apiimplementation_resource.go
   - internal/provider/apiimplementation_resource_sdk.go
-  - internal/provider/apipublication_data_source.go
-  - internal/provider/apipublication_data_source_sdk.go
   - internal/provider/apipublication_resource.go
   - internal/provider/apipublication_resource_sdk.go
-  - internal/provider/apispecification_data_source.go
-  - internal/provider/apispecification_data_source_sdk.go
   - internal/provider/apispecification_resource.go
   - internal/provider/apispecification_resource_sdk.go
-  - internal/provider/apiversion_data_source.go
-  - internal/provider/apiversion_data_source_sdk.go
   - internal/provider/apiversion_resource.go
   - internal/provider/apiversion_resource_sdk.go
-  - internal/provider/authserver_data_source.go
-  - internal/provider/authserver_data_source_sdk.go
   - internal/provider/authserver_resource.go
   - internal/provider/authserver_resource_sdk.go
-  - internal/provider/authserverclaims_data_source.go
-  - internal/provider/authserverclaims_data_source_sdk.go
   - internal/provider/authserverclaims_resource.go
   - internal/provider/authserverclaims_resource_sdk.go
-  - internal/provider/authserverclients_data_source.go
-  - internal/provider/authserverclients_data_source_sdk.go
   - internal/provider/authserverclients_resource.go
   - internal/provider/authserverclients_resource_sdk.go
-  - internal/provider/authserverscopes_data_source.go
-  - internal/provider/authserverscopes_data_source_sdk.go
   - internal/provider/authserverscopes_resource.go
   - internal/provider/authserverscopes_resource_sdk.go
+  - internal/provider/dashboard_resource.go
+  - internal/provider/dashboard_resource_sdk.go
   - internal/provider/hostnamegeneratorlist_data_source.go
   - internal/provider/hostnamegeneratorlist_data_source_sdk.go
   - internal/provider/mesh_data_source.go
@@ -250,8 +220,6 @@ generatedFiles:
   - internal/provider/meshcircuitbreaker_resource_sdk.go
   - internal/provider/meshcircuitbreakerlist_data_source.go
   - internal/provider/meshcircuitbreakerlist_data_source_sdk.go
-  - internal/provider/meshcontrolplane_data_source.go
-  - internal/provider/meshcontrolplane_data_source_sdk.go
   - internal/provider/meshcontrolplane_resource.go
   - internal/provider/meshcontrolplane_resource_sdk.go
   - internal/provider/meshcontrolplanes_data_source.go
@@ -382,32 +350,22 @@ generatedFiles:
   - internal/provider/meshtrafficpermission_resource_sdk.go
   - internal/provider/meshtrafficpermissionlist_data_source.go
   - internal/provider/meshtrafficpermissionlist_data_source_sdk.go
-  - internal/provider/portal_data_source.go
-  - internal/provider/portal_data_source_sdk.go
   - internal/provider/portal_resource.go
   - internal/provider/portal_resource_sdk.go
-  - internal/provider/portalauth_data_source.go
-  - internal/provider/portalauth_data_source_sdk.go
   - internal/provider/portalauth_resource.go
   - internal/provider/portalauth_resource_sdk.go
-  - internal/provider/portalcustomdomain_data_source.go
-  - internal/provider/portalcustomdomain_data_source_sdk.go
   - internal/provider/portalcustomdomain_resource.go
   - internal/provider/portalcustomdomain_resource_sdk.go
-  - internal/provider/portalcustomization_data_source.go
-  - internal/provider/portalcustomization_data_source_sdk.go
   - internal/provider/portalcustomization_resource.go
   - internal/provider/portalcustomization_resource_sdk.go
-  - internal/provider/portalpage_data_source.go
-  - internal/provider/portalpage_data_source_sdk.go
+  - internal/provider/portalfavicon_resource.go
+  - internal/provider/portalfavicon_resource_sdk.go
+  - internal/provider/portallogo_resource.go
+  - internal/provider/portallogo_resource_sdk.go
   - internal/provider/portalpage_resource.go
   - internal/provider/portalpage_resource_sdk.go
-  - internal/provider/portalsnippet_data_source.go
-  - internal/provider/portalsnippet_data_source_sdk.go
   - internal/provider/portalsnippet_resource.go
   - internal/provider/portalsnippet_resource_sdk.go
-  - internal/provider/portalteam_data_source.go
-  - internal/provider/portalteam_data_source_sdk.go
   - internal/provider/portalteam_resource.go
   - internal/provider/portalteam_resource_sdk.go
   - internal/provider/provider.go
@@ -432,8 +390,10 @@ generatedFiles:
   - internal/provider/types/access_key.go
   - internal/provider/types/acm_certificate_authority_config.go
   - internal/provider/types/addresses.go
+  - internal/provider/types/advanced_query.go
   - internal/provider/types/affinity_tags.go
   - internal/provider/types/aggregate.go
+  - internal/provider/types/all_filter_items.go
   - internal/provider/types/api_implementation_service.go
   - internal/provider/types/api_version_summary.go
   - internal/provider/types/append_match.go
@@ -447,10 +407,13 @@ generatedFiles:
   - internal/provider/types/backend.go
   - internal/provider/types/backend_refs.go
   - internal/provider/types/backends.go
+  - internal/provider/types/bar_chart.go
   - internal/provider/types/builtin_certificate_authority_config.go
   - internal/provider/types/builtin_certificate_authority_config_conf_ca_cert.go
   - internal/provider/types/ca_cert.go
   - internal/provider/types/cert_manager_certificate_authority_config.go
+  - internal/provider/types/chart.go
+  - internal/provider/types/chart_tile.go
   - internal/provider/types/cluster.go
   - internal/provider/types/colors.go
   - internal/provider/types/conditions.go
@@ -462,14 +425,17 @@ generatedFiles:
   - internal/provider/types/create_api_version_request_spec.go
   - internal/provider/types/create_portal_custom_domain_ssl.go
   - internal/provider/types/cross_zone.go
+  - internal/provider/types/dashboard.go
   - internal/provider/types/datadog.go
   - internal/provider/types/datadog_tracing_backend_config.go
   - internal/provider/types/dataplane_proxies.go
   - internal/provider/types/dataplane_proxy.go
   - internal/provider/types/dataplane_ref.go
   - internal/provider/types/default.go
+  - internal/provider/types/definition.go
   - internal/provider/types/delay.go
   - internal/provider/types/detectors.go
+  - internal/provider/types/donut_chart.go
   - internal/provider/types/dp_cert.go
   - internal/provider/types/endpoints.go
   - internal/provider/types/envoy.go
@@ -484,6 +450,7 @@ generatedFiles:
   - internal/provider/types/format.go
   - internal/provider/types/from.go
   - internal/provider/types/gateway_failures.go
+  - internal/provider/types/get_hostname_generator_list_query_param_filter.go
   - internal/provider/types/grpc.go
   - internal/provider/types/hash_policies.go
   - internal/provider/types/header.go
@@ -499,6 +466,7 @@ generatedFiles:
   - internal/provider/types/js.go
   - internal/provider/types/json.go
   - internal/provider/types/json_patches.go
+  - internal/provider/types/layout.go
   - internal/provider/types/least_request.go
   - internal/provider/types/limits.go
   - internal/provider/types/listener.go
@@ -642,6 +610,8 @@ generatedFiles:
   - internal/provider/types/mesh_traffic_permission_item_from.go
   - internal/provider/types/mesh_traffic_permission_item_spec.go
   - internal/provider/types/metrics.go
+  - internal/provider/types/metrics_absolute_time_range_dto_v2.go
+  - internal/provider/types/metrics_relative_time_range_dto_v2.go
   - internal/provider/types/mtls.go
   - internal/provider/types/networking.go
   - internal/provider/types/on_rate_limit.go
@@ -653,16 +623,17 @@ generatedFiles:
   - internal/provider/types/paginated_meta.go
   - internal/provider/types/path.go
   - internal/provider/types/portal_claim_mappings.go
-  - internal/provider/types/portal_custom_domain_ssl.go
   - internal/provider/types/portal_footer_menu_section.go
   - internal/provider/types/portal_menu_item.go
   - internal/provider/types/portal_oidc_config.go
   - internal/provider/types/portals.go
   - internal/provider/types/ports.go
+  - internal/provider/types/position.go
   - internal/provider/types/profiles.go
   - internal/provider/types/prometheus.go
   - internal/provider/types/prometheus_metrics_backend_config.go
   - internal/provider/types/provided_certificate_authority_config.go
+  - internal/provider/types/query.go
   - internal/provider/types/query_params.go
   - internal/provider/types/rate_limit_service.go
   - internal/provider/types/rate_limited_back_off.go
@@ -684,7 +655,10 @@ generatedFiles:
   - internal/provider/types/sampling.go
   - internal/provider/types/selector.go
   - internal/provider/types/selectors.go
+  - internal/provider/types/service_reference.go
   - internal/provider/types/sidecar.go
+  - internal/provider/types/single_value_chart.go
+  - internal/provider/types/size.go
   - internal/provider/types/spec.go
   - internal/provider/types/spec_renderer.go
   - internal/provider/types/status.go
@@ -694,6 +668,8 @@ generatedFiles:
   - internal/provider/types/tcp.go
   - internal/provider/types/tcp_logging_backend_config.go
   - internal/provider/types/theme.go
+  - internal/provider/types/tile.go
+  - internal/provider/types/time_range.go
   - internal/provider/types/tls.go
   - internal/provider/types/tracing.go
   - internal/provider/types/url_rewrite.go
@@ -713,7 +689,12 @@ generatedFiles:
   - internal/sdk/apipublication.go
   - internal/sdk/apispecification.go
   - internal/sdk/apiversion.go
+  - internal/sdk/assets.go
   - internal/sdk/authserver.go
+  - internal/sdk/authserverclaims.go
+  - internal/sdk/authserverclients.go
+  - internal/sdk/authserverscopes.go
+  - internal/sdk/dashboards.go
   - internal/sdk/docs/models/operations/option.md
   - internal/sdk/hostnamegenerator.go
   - internal/sdk/internal/config/sdkconfiguration.go
@@ -764,34 +745,15 @@ generatedFiles:
   - internal/sdk/models/operations/createauthserverclient.go
   - internal/sdk/models/operations/createauthserverscope.go
   - internal/sdk/models/operations/createcp.go
-  - internal/sdk/models/operations/createhostnamegenerator.go
-  - internal/sdk/models/operations/createmeshaccesslog.go
-  - internal/sdk/models/operations/createmeshcircuitbreaker.go
-  - internal/sdk/models/operations/createmeshexternalservice.go
-  - internal/sdk/models/operations/createmeshfaultinjection.go
-  - internal/sdk/models/operations/createmeshgateway.go
-  - internal/sdk/models/operations/createmeshglobalratelimit.go
-  - internal/sdk/models/operations/createmeshhealthcheck.go
-  - internal/sdk/models/operations/createmeshhttproute.go
-  - internal/sdk/models/operations/createmeshloadbalancingstrategy.go
-  - internal/sdk/models/operations/createmeshmetric.go
-  - internal/sdk/models/operations/createmeshmultizoneservice.go
-  - internal/sdk/models/operations/createmeshopa.go
-  - internal/sdk/models/operations/createmeshpassthrough.go
-  - internal/sdk/models/operations/createmeshproxypatch.go
-  - internal/sdk/models/operations/createmeshratelimit.go
-  - internal/sdk/models/operations/createmeshretry.go
-  - internal/sdk/models/operations/createmeshservice.go
-  - internal/sdk/models/operations/createmeshtcproute.go
-  - internal/sdk/models/operations/createmeshtimeout.go
-  - internal/sdk/models/operations/createmeshtls.go
-  - internal/sdk/models/operations/createmeshtrace.go
-  - internal/sdk/models/operations/createmeshtrafficpermission.go
   - internal/sdk/models/operations/createportal.go
   - internal/sdk/models/operations/createportalcustomdomain.go
   - internal/sdk/models/operations/createportalpage.go
   - internal/sdk/models/operations/createportalsnippet.go
   - internal/sdk/models/operations/createportalteam.go
+  - internal/sdk/models/operations/dashboardscreate.go
+  - internal/sdk/models/operations/dashboardsdelete.go
+  - internal/sdk/models/operations/dashboardsget.go
+  - internal/sdk/models/operations/dashboardsupdate.go
   - internal/sdk/models/operations/deleteapi.go
   - internal/sdk/models/operations/deleteapidocument.go
   - internal/sdk/models/operations/deleteapiimplementation.go
@@ -892,6 +854,8 @@ generatedFiles:
   - internal/sdk/models/operations/getmeshtrafficpermission.go
   - internal/sdk/models/operations/getmeshtrafficpermissionlist.go
   - internal/sdk/models/operations/getportal.go
+  - internal/sdk/models/operations/getportalassetfavicon.go
+  - internal/sdk/models/operations/getportalassetlogo.go
   - internal/sdk/models/operations/getportalauthenticationsettings.go
   - internal/sdk/models/operations/getportalcustomdomain.go
   - internal/sdk/models/operations/getportalcustomization.go
@@ -901,8 +865,33 @@ generatedFiles:
   - internal/sdk/models/operations/listmeshcontrolplanes.go
   - internal/sdk/models/operations/options.go
   - internal/sdk/models/operations/publishapitoportal.go
+  - internal/sdk/models/operations/puthostnamegenerator.go
   - internal/sdk/models/operations/putmesh.go
+  - internal/sdk/models/operations/putmeshaccesslog.go
+  - internal/sdk/models/operations/putmeshcircuitbreaker.go
+  - internal/sdk/models/operations/putmeshexternalservice.go
+  - internal/sdk/models/operations/putmeshfaultinjection.go
+  - internal/sdk/models/operations/putmeshgateway.go
+  - internal/sdk/models/operations/putmeshglobalratelimit.go
+  - internal/sdk/models/operations/putmeshhealthcheck.go
+  - internal/sdk/models/operations/putmeshhttproute.go
+  - internal/sdk/models/operations/putmeshloadbalancingstrategy.go
+  - internal/sdk/models/operations/putmeshmetric.go
+  - internal/sdk/models/operations/putmeshmultizoneservice.go
+  - internal/sdk/models/operations/putmeshopa.go
+  - internal/sdk/models/operations/putmeshpassthrough.go
+  - internal/sdk/models/operations/putmeshproxypatch.go
+  - internal/sdk/models/operations/putmeshratelimit.go
+  - internal/sdk/models/operations/putmeshretry.go
+  - internal/sdk/models/operations/putmeshservice.go
+  - internal/sdk/models/operations/putmeshtcproute.go
+  - internal/sdk/models/operations/putmeshtimeout.go
+  - internal/sdk/models/operations/putmeshtls.go
+  - internal/sdk/models/operations/putmeshtrace.go
+  - internal/sdk/models/operations/putmeshtrafficpermission.go
   - internal/sdk/models/operations/replaceauthserverclient.go
+  - internal/sdk/models/operations/replaceportalassetfavicon.go
+  - internal/sdk/models/operations/replaceportalassetlogo.go
   - internal/sdk/models/operations/replaceportalcustomization.go
   - internal/sdk/models/operations/updateapi.go
   - internal/sdk/models/operations/updateapidocument.go
@@ -912,36 +901,17 @@ generatedFiles:
   - internal/sdk/models/operations/updateauthserverclaim.go
   - internal/sdk/models/operations/updateauthserverscope.go
   - internal/sdk/models/operations/updatecp.go
-  - internal/sdk/models/operations/updatehostnamegenerator.go
-  - internal/sdk/models/operations/updatemeshaccesslog.go
-  - internal/sdk/models/operations/updatemeshcircuitbreaker.go
-  - internal/sdk/models/operations/updatemeshexternalservice.go
-  - internal/sdk/models/operations/updatemeshfaultinjection.go
-  - internal/sdk/models/operations/updatemeshgateway.go
-  - internal/sdk/models/operations/updatemeshglobalratelimit.go
-  - internal/sdk/models/operations/updatemeshhealthcheck.go
-  - internal/sdk/models/operations/updatemeshhttproute.go
-  - internal/sdk/models/operations/updatemeshloadbalancingstrategy.go
-  - internal/sdk/models/operations/updatemeshmetric.go
-  - internal/sdk/models/operations/updatemeshmultizoneservice.go
-  - internal/sdk/models/operations/updatemeshopa.go
-  - internal/sdk/models/operations/updatemeshpassthrough.go
-  - internal/sdk/models/operations/updatemeshproxypatch.go
-  - internal/sdk/models/operations/updatemeshratelimit.go
-  - internal/sdk/models/operations/updatemeshretry.go
-  - internal/sdk/models/operations/updatemeshservice.go
-  - internal/sdk/models/operations/updatemeshtcproute.go
-  - internal/sdk/models/operations/updatemeshtimeout.go
-  - internal/sdk/models/operations/updatemeshtls.go
-  - internal/sdk/models/operations/updatemeshtrace.go
-  - internal/sdk/models/operations/updatemeshtrafficpermission.go
   - internal/sdk/models/operations/updateportal.go
   - internal/sdk/models/operations/updateportalauthenticationsettings.go
   - internal/sdk/models/operations/updateportalcustomdomain.go
   - internal/sdk/models/operations/updateportalpage.go
   - internal/sdk/models/operations/updateportalsnippet.go
   - internal/sdk/models/operations/updateportalteam.go
+  - internal/sdk/models/shared/advancedfilters.go
+  - internal/sdk/models/shared/advancedmetrics.go
+  - internal/sdk/models/shared/advancedquery.go
   - internal/sdk/models/shared/algorithm.go
+  - internal/sdk/models/shared/allfilteritems.go
   - internal/sdk/models/shared/apidocument.go
   - internal/sdk/models/shared/apidocumentresponse.go
   - internal/sdk/models/shared/apidocumentstatus.go
@@ -961,6 +931,9 @@ generatedFiles:
   - internal/sdk/models/shared/apiversionsummary.go
   - internal/sdk/models/shared/authserver.go
   - internal/sdk/models/shared/badrequesterror.go
+  - internal/sdk/models/shared/barchart.go
+  - internal/sdk/models/shared/chart.go
+  - internal/sdk/models/shared/charttile.go
   - internal/sdk/models/shared/claim.go
   - internal/sdk/models/shared/client.go
   - internal/sdk/models/shared/conflicterror.go
@@ -979,8 +952,13 @@ generatedFiles:
   - internal/sdk/models/shared/createportalpagerequest.go
   - internal/sdk/models/shared/createportalsnippetrequest.go
   - internal/sdk/models/shared/createscope.go
+  - internal/sdk/models/shared/dashboard.go
+  - internal/sdk/models/shared/dashboardresponse.go
+  - internal/sdk/models/shared/dashboardupdaterequest.go
+  - internal/sdk/models/shared/donutchart.go
   - internal/sdk/models/shared/forbiddenerror.go
   - internal/sdk/models/shared/granttype.go
+  - internal/sdk/models/shared/granularity.go
   - internal/sdk/models/shared/hostnamegeneratorcreateorupdatesuccessresponse.go
   - internal/sdk/models/shared/hostnamegeneratordeletesuccessresponse.go
   - internal/sdk/models/shared/hostnamegeneratoritem.go
@@ -993,6 +971,9 @@ generatedFiles:
   - internal/sdk/models/shared/invalidparameterstandard.go
   - internal/sdk/models/shared/invalidrules.go
   - internal/sdk/models/shared/listmeshcontrolplanesresponse.go
+  - internal/sdk/models/shared/llmfilters.go
+  - internal/sdk/models/shared/llmmetrics.go
+  - internal/sdk/models/shared/llmquery.go
   - internal/sdk/models/shared/meshaccesslogcreateorupdatesuccessresponse.go
   - internal/sdk/models/shared/meshaccesslogdeletesuccessresponse.go
   - internal/sdk/models/shared/meshaccesslogitem.go
@@ -1089,9 +1070,13 @@ generatedFiles:
   - internal/sdk/models/shared/meshtrafficpermissiondeletesuccessresponse.go
   - internal/sdk/models/shared/meshtrafficpermissionitem.go
   - internal/sdk/models/shared/meshtrafficpermissionlist.go
+  - internal/sdk/models/shared/metricsabsolutetimerangedtov2.go
+  - internal/sdk/models/shared/metricsrelativetimerangedtov2.go
   - internal/sdk/models/shared/notfounderror.go
   - internal/sdk/models/shared/pagemeta.go
+  - internal/sdk/models/shared/pagevisibilitystatus.go
   - internal/sdk/models/shared/paginatedmeta.go
+  - internal/sdk/models/shared/portalassetresponse.go
   - internal/sdk/models/shared/portalauthenticationsettingsresponse.go
   - internal/sdk/models/shared/portalauthenticationsettingsupdaterequest.go
   - internal/sdk/models/shared/portalclaimmappings.go
@@ -1113,9 +1098,16 @@ generatedFiles:
   - internal/sdk/models/shared/publishedstatus.go
   - internal/sdk/models/shared/putmeshcontrolplanerequest.go
   - internal/sdk/models/shared/replaceclient.go
+  - internal/sdk/models/shared/replaceportalimageasset.go
   - internal/sdk/models/shared/responsetype.go
   - internal/sdk/models/shared/scope.go
   - internal/sdk/models/shared/security.go
+  - internal/sdk/models/shared/servicereference.go
+  - internal/sdk/models/shared/singlevaluechart.go
+  - internal/sdk/models/shared/snippetvisibilitystatus.go
+  - internal/sdk/models/shared/tile.go
+  - internal/sdk/models/shared/timerange.go
+  - internal/sdk/models/shared/timeserieschart.go
   - internal/sdk/models/shared/unauthorizederror.go
   - internal/sdk/models/shared/unsupportedmediatypeerror.go
   - internal/sdk/models/shared/updatealgorithm.go
@@ -1124,6 +1116,7 @@ generatedFiles:
   - internal/sdk/models/shared/updateclaim.go
   - internal/sdk/models/shared/updateportal.go
   - internal/sdk/models/shared/updateportalcustomdomainrequest.go
+  - internal/sdk/models/shared/updateportalcustomdomainssl.go
   - internal/sdk/models/shared/updateportalpagerequest.go
   - internal/sdk/models/shared/updateportalsnippetrequest.go
   - internal/sdk/models/shared/updatescope.go
@@ -1241,7 +1234,7 @@ examples:
         path:
           portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
-        application/json: {"hostname": "lavish-custody.org", "enabled": true, "ssl": {"domain_verification_method": "http"}}
+        application/json: {"hostname": "lavish-custody.org", "enabled": true, "ssl": {}}
       responses:
         "201":
           application/json: {"hostname": "considerate-bookend.biz", "enabled": false, "ssl": {"domain_verification_method": "http", "verification_status": "pending", "uploaded_at": "2022-11-04T20:10:06.927Z", "expires_at": "2022-11-04T20:10:06.927Z"}, "cname_status": "verified", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -1844,8 +1837,30 @@ examples:
           application/json: {"type": "MeshAccessLog", "mesh": "default", "name": "<value>", "spec": {"from": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}}, "type": "Tcp"}]}, "targetRef": {"kind": "MeshService"}}, {"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}}, "type": "Tcp"}]}, "targetRef": {"kind": "MeshService"}}, {"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}}, "type": "Tcp"}]}, "targetRef": {"kind": "MeshService"}}], "rules": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "File"}, {"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "File"}]}}, {"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "File"}, {"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "File"}]}}, {"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "File"}, {"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "File"}]}}], "to": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "File"}]}, "targetRef": {"kind": "MeshGateway"}}]}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-get-mesh-access-log:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"type": "MeshAccessLog", "mesh": "default", "name": "<value>", "spec": {"from": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}}, "type": "OpenTelemetry"}]}, "targetRef": {"kind": "MeshGateway"}}], "rules": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}}, "type": "OpenTelemetry"}]}}], "to": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}]}, "targetRef": {"kind": "MeshExternalService"}}]}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshAccessLog:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-delete-mesh-access-log:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -1868,6 +1883,17 @@ examples:
       responses:
         "201":
           application/json: {}
+    speakeasy-default-create-mesh-access-log:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshAccessLog", "mesh": "default", "name": "<value>", "spec": {"from": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}}, "type": "OpenTelemetry"}]}, "targetRef": {"kind": "MeshMultiZoneService"}}], "rules": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "File"}]}}], "to": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "File"}]}, "targetRef": {"kind": "MeshSubset"}}]}}
+      responses:
+        "201":
+          application/json: {}
   updateMeshAccessLog:
     "":
       parameters:
@@ -1877,6 +1903,17 @@ examples:
           name: "<value>"
       requestBody:
         application/json: {"type": "MeshAccessLog", "mesh": "default", "name": "<value>", "spec": {"from": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "File"}, {"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "File"}, {"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "File"}]}, "targetRef": {"kind": "MeshMultiZoneService"}}], "rules": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}}, "type": "Tcp"}, {"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}}, "type": "Tcp"}]}}, {"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}}, "type": "Tcp"}, {"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}}, "type": "Tcp"}]}}, {"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}}, "type": "Tcp"}, {"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}}, "type": "Tcp"}]}}], "to": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}]}, "targetRef": {"kind": "MeshGateway"}}, {"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}]}, "targetRef": {"kind": "MeshGateway"}}]}}
+      responses:
+        "200":
+          application/json: {}
+    speakeasy-default-update-mesh-access-log:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshAccessLog", "mesh": "default", "name": "<value>", "spec": {"from": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}]}, "targetRef": {"kind": "MeshHTTPRoute"}}], "rules": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}]}}], "to": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "Tcp"}]}, "targetRef": {"kind": "MeshSubset"}}]}}
       responses:
         "200":
           application/json: {}
@@ -1893,8 +1930,31 @@ examples:
       responses:
         "200":
           application/json: {"items": [{"type": "MeshAccessLog", "mesh": "default", "name": "<value>", "spec": {"from": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "Tcp"}]}, "targetRef": {"kind": "MeshMultiZoneService"}}], "rules": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}, {"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}]}}, {"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}, {"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}]}}], "to": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}, {"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}]}, "targetRef": {"kind": "MeshExternalService"}}, {"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}, {"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}]}, "targetRef": {"kind": "MeshExternalService"}}, {"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}, {"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}]}, "targetRef": {"kind": "MeshExternalService"}}]}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}, {"type": "MeshAccessLog", "mesh": "default", "name": "<value>", "spec": {"from": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "Tcp"}]}, "targetRef": {"kind": "MeshMultiZoneService"}}], "rules": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}, {"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}]}}, {"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}, {"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}]}}], "to": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}, {"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}]}, "targetRef": {"kind": "MeshExternalService"}}, {"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}, {"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}]}, "targetRef": {"kind": "MeshExternalService"}}, {"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}, {"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}]}, "targetRef": {"kind": "MeshExternalService"}}]}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+    speakeasy-default-get-mesh-access-log-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {"items": [{"type": "MeshAccessLog", "mesh": "default", "name": "<value>", "spec": {"from": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}}, "type": "Tcp"}]}, "targetRef": {"kind": "MeshHTTPRoute"}}], "rules": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}}, "type": "File"}]}}], "to": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}}, "type": "Tcp"}]}, "targetRef": {"kind": "MeshHTTPRoute"}}]}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
   getMeshCircuitBreaker:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"type": "MeshCircuitBreaker", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-get-mesh-circuit-breaker:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -1917,6 +1977,17 @@ examples:
           application/json: {}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-delete-mesh-circuit-breaker:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   createMeshCircuitBreaker:
     "":
       parameters:
@@ -1929,8 +2000,30 @@ examples:
       responses:
         "201":
           application/json: {}
+    speakeasy-default-create-mesh-circuit-breaker:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshCircuitBreaker", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "201":
+          application/json: {}
   updateMeshCircuitBreaker:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshCircuitBreaker", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+    speakeasy-default-update-mesh-circuit-breaker:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -1954,8 +2047,31 @@ examples:
       responses:
         "200":
           application/json: {"items": [{"type": "MeshCircuitBreaker", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}, {"type": "MeshCircuitBreaker", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+    speakeasy-default-get-mesh-circuit-breaker-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {"items": [{"type": "MeshCircuitBreaker", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
   getMeshFaultInjection:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"type": "MeshFaultInjection", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-get-mesh-fault-injection:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -1978,6 +2094,17 @@ examples:
           application/json: {}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-delete-mesh-fault-injection:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   createMeshFaultInjection:
     "":
       parameters:
@@ -1990,8 +2117,30 @@ examples:
       responses:
         "201":
           application/json: {}
+    speakeasy-default-create-mesh-fault-injection:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshFaultInjection", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "201":
+          application/json: {}
   updateMeshFaultInjection:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshFaultInjection", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+    speakeasy-default-update-mesh-fault-injection:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2015,8 +2164,31 @@ examples:
       responses:
         "200":
           application/json: {"items": [{"type": "MeshFaultInjection", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+    speakeasy-default-get-mesh-fault-injection-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {"items": [{"type": "MeshFaultInjection", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
   getMeshHealthCheck:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"type": "MeshHealthCheck", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-get-mesh-health-check:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2039,6 +2211,17 @@ examples:
           application/json: {}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-delete-mesh-health-check:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   createMeshHealthCheck:
     "":
       parameters:
@@ -2051,8 +2234,30 @@ examples:
       responses:
         "201":
           application/json: {}
+    speakeasy-default-create-mesh-health-check:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshHealthCheck", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "201":
+          application/json: {}
   updateMeshHealthCheck:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshHealthCheck", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+    speakeasy-default-update-mesh-health-check:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2076,8 +2281,31 @@ examples:
       responses:
         "200":
           application/json: {"items": [{"type": "MeshHealthCheck", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+    speakeasy-default-get-mesh-health-check-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {"items": [{"type": "MeshHealthCheck", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
   getMeshHTTPRoute:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"type": "MeshHTTPRoute", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-get-mesh-HTTP-route:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2100,6 +2328,17 @@ examples:
           application/json: {}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-delete-mesh-HTTP-route:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   createMeshHTTPRoute:
     "":
       parameters:
@@ -2112,8 +2351,30 @@ examples:
       responses:
         "201":
           application/json: {}
+    speakeasy-default-create-mesh-HTTP-route:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshHTTPRoute", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "201":
+          application/json: {}
   updateMeshHTTPRoute:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshHTTPRoute", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+    speakeasy-default-update-mesh-HTTP-route:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2137,8 +2398,31 @@ examples:
       responses:
         "200":
           application/json: {"items": [{"type": "MeshHTTPRoute", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}, {"type": "MeshHTTPRoute", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+    speakeasy-default-get-mesh-HTTP-route-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {"items": [{"type": "MeshHTTPRoute", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
   getMeshLoadBalancingStrategy:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"type": "MeshLoadBalancingStrategy", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-get-mesh-load-balancing-strategy:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2161,6 +2445,17 @@ examples:
           application/json: {}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-delete-mesh-load-balancing-strategy:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   createMeshLoadBalancingStrategy:
     "":
       parameters:
@@ -2173,8 +2468,30 @@ examples:
       responses:
         "201":
           application/json: {}
+    speakeasy-default-create-mesh-load-balancing-strategy:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshLoadBalancingStrategy", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "201":
+          application/json: {}
   updateMeshLoadBalancingStrategy:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshLoadBalancingStrategy", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+    speakeasy-default-update-mesh-load-balancing-strategy:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2198,8 +2515,31 @@ examples:
       responses:
         "200":
           application/json: {"items": [{"type": "MeshLoadBalancingStrategy", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}, {"type": "MeshLoadBalancingStrategy", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+    speakeasy-default-get-mesh-load-balancing-strategy-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {"items": [{"type": "MeshLoadBalancingStrategy", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
   getMeshMetric:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"type": "MeshMetric", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-get-mesh-metric:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2222,6 +2562,17 @@ examples:
           application/json: {}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-delete-mesh-metric:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   createMeshMetric:
     "":
       parameters:
@@ -2234,8 +2585,30 @@ examples:
       responses:
         "201":
           application/json: {}
+    speakeasy-default-create-mesh-metric:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshMetric", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "201":
+          application/json: {}
   updateMeshMetric:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshMetric", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+    speakeasy-default-update-mesh-metric:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2259,8 +2632,31 @@ examples:
       responses:
         "200":
           application/json: {"items": [{"type": "MeshMetric", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}, {"type": "MeshMetric", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+    speakeasy-default-get-mesh-metric-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {"items": [{"type": "MeshMetric", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
   getMeshPassthrough:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"type": "MeshPassthrough", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-get-mesh-passthrough:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2283,6 +2679,17 @@ examples:
           application/json: {}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-delete-mesh-passthrough:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   createMeshPassthrough:
     "":
       parameters:
@@ -2295,8 +2702,30 @@ examples:
       responses:
         "201":
           application/json: {}
+    speakeasy-default-create-mesh-passthrough:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshPassthrough", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "201":
+          application/json: {}
   updateMeshPassthrough:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshPassthrough", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+    speakeasy-default-update-mesh-passthrough:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2320,8 +2749,31 @@ examples:
       responses:
         "200":
           application/json: {"items": [{"type": "MeshPassthrough", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}, {"type": "MeshPassthrough", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+    speakeasy-default-get-mesh-passthrough-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {"items": [{"type": "MeshPassthrough", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
   getMeshProxyPatch:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"type": "MeshProxyPatch", "mesh": "default", "name": "<value>", "spec": {"default": {}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-get-mesh-proxy-patch:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2344,6 +2796,17 @@ examples:
           application/json: {}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-delete-mesh-proxy-patch:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   createMeshProxyPatch:
     "":
       parameters:
@@ -2356,8 +2819,30 @@ examples:
       responses:
         "201":
           application/json: {}
+    speakeasy-default-create-mesh-proxy-patch:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshProxyPatch", "mesh": "default", "name": "<value>", "spec": {"default": {}}}
+      responses:
+        "201":
+          application/json: {}
   updateMeshProxyPatch:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshProxyPatch", "mesh": "default", "name": "<value>", "spec": {"default": {}}}
+      responses:
+        "200":
+          application/json: {}
+    speakeasy-default-update-mesh-proxy-patch:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2381,8 +2866,31 @@ examples:
       responses:
         "200":
           application/json: {"items": [{"type": "MeshProxyPatch", "mesh": "default", "name": "<value>", "spec": {"default": {}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}, {"type": "MeshProxyPatch", "mesh": "default", "name": "<value>", "spec": {"default": {}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+    speakeasy-default-get-mesh-proxy-patch-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {"items": [{"type": "MeshProxyPatch", "mesh": "default", "name": "<value>", "spec": {"default": {}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
   getMeshRateLimit:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"type": "MeshRateLimit", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-get-mesh-rate-limit:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2405,6 +2913,17 @@ examples:
           application/json: {}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-delete-mesh-rate-limit:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   createMeshRateLimit:
     "":
       parameters:
@@ -2417,8 +2936,30 @@ examples:
       responses:
         "201":
           application/json: {}
+    speakeasy-default-create-mesh-rate-limit:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshRateLimit", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "201":
+          application/json: {}
   updateMeshRateLimit:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshRateLimit", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+    speakeasy-default-update-mesh-rate-limit:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2442,6 +2983,18 @@ examples:
       responses:
         "200":
           application/json: {"items": [{"type": "MeshRateLimit", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}, {"type": "MeshRateLimit", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+    speakeasy-default-get-mesh-rate-limit-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {"items": [{"type": "MeshRateLimit", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
   getMeshRetry:
     "":
       parameters:
@@ -2454,8 +3007,30 @@ examples:
           application/json: {"type": "MeshRetry", "mesh": "default", "name": "<value>", "spec": {"to": [{"default": {"grpc": {"retryOn": ["Canceled", "DeadlineExceeded", "Internal", "ResourceExhausted", "Unavailable"]}, "http": {"retryOn": ["5XX", "GatewayError", "Reset", "Retriable4xx", "ConnectFailure", "EnvoyRatelimited", "RefusedStream", "Http3PostConnectFailure", "HttpMethodConnect", "HttpMethodDelete", "HttpMethodGet", "HttpMethodHead", "HttpMethodOptions", "HttpMethodPatch", "HttpMethodPost", "HttpMethodPut", "HttpMethodTrace", "500", "503"]}}, "targetRef": {"kind": "Mesh"}}]}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-get-mesh-retry:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"type": "MeshRetry", "mesh": "default", "name": "<value>", "spec": {"to": [{"default": {"grpc": {"retryOn": ["Canceled", "DeadlineExceeded", "Internal", "ResourceExhausted", "Unavailable"]}, "http": {"retryOn": ["5XX", "GatewayError", "Reset", "Retriable4xx", "ConnectFailure", "EnvoyRatelimited", "RefusedStream", "Http3PostConnectFailure", "HttpMethodConnect", "HttpMethodDelete", "HttpMethodGet", "HttpMethodHead", "HttpMethodOptions", "HttpMethodPatch", "HttpMethodPost", "HttpMethodPut", "HttpMethodTrace", "500", "503"]}}, "targetRef": {"kind": "MeshSubset"}}]}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshRetry:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-delete-mesh-retry:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2478,6 +3053,17 @@ examples:
       responses:
         "201":
           application/json: {}
+    speakeasy-default-create-mesh-retry:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshRetry", "mesh": "default", "name": "<value>", "spec": {"to": [{"default": {"grpc": {"retryOn": ["Canceled", "DeadlineExceeded", "Internal", "ResourceExhausted", "Unavailable"]}, "http": {"retryOn": ["5XX", "GatewayError", "Reset", "Retriable4xx", "ConnectFailure", "EnvoyRatelimited", "RefusedStream", "Http3PostConnectFailure", "HttpMethodConnect", "HttpMethodDelete", "HttpMethodGet", "HttpMethodHead", "HttpMethodOptions", "HttpMethodPatch", "HttpMethodPost", "HttpMethodPut", "HttpMethodTrace", "500", "503"]}}, "targetRef": {"kind": "MeshGateway"}}]}}
+      responses:
+        "201":
+          application/json: {}
   updateMeshRetry:
     "":
       parameters:
@@ -2487,6 +3073,17 @@ examples:
           name: "<value>"
       requestBody:
         application/json: {"type": "MeshRetry", "mesh": "default", "name": "<value>", "spec": {"to": [{"default": {"grpc": {"retryOn": ["Canceled", "DeadlineExceeded", "Internal", "ResourceExhausted", "Unavailable"]}, "http": {"retryOn": ["5XX", "GatewayError", "Reset", "Retriable4xx", "ConnectFailure", "EnvoyRatelimited", "RefusedStream", "Http3PostConnectFailure", "HttpMethodConnect", "HttpMethodDelete", "HttpMethodGet", "HttpMethodHead", "HttpMethodOptions", "HttpMethodPatch", "HttpMethodPost", "HttpMethodPut", "HttpMethodTrace", "500", "503"]}}, "targetRef": {"kind": "MeshMultiZoneService"}}]}}
+      responses:
+        "200":
+          application/json: {}
+    speakeasy-default-update-mesh-retry:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshRetry", "mesh": "default", "name": "<value>", "spec": {"to": [{"default": {"grpc": {"retryOn": ["Canceled", "DeadlineExceeded", "Internal", "ResourceExhausted", "Unavailable"]}, "http": {"retryOn": ["5XX", "GatewayError", "Reset", "Retriable4xx", "ConnectFailure", "EnvoyRatelimited", "RefusedStream", "Http3PostConnectFailure", "HttpMethodConnect", "HttpMethodDelete", "HttpMethodGet", "HttpMethodHead", "HttpMethodOptions", "HttpMethodPatch", "HttpMethodPost", "HttpMethodPut", "HttpMethodTrace", "500", "503"]}}, "targetRef": {"kind": "MeshSubset"}}]}}
       responses:
         "200":
           application/json: {}
@@ -2503,8 +3100,31 @@ examples:
       responses:
         "200":
           application/json: {"items": [{"type": "MeshRetry", "mesh": "default", "name": "<value>", "spec": {"to": [{"default": {"grpc": {"retryOn": ["Canceled", "DeadlineExceeded", "Internal", "ResourceExhausted", "Unavailable"]}, "http": {"retryOn": ["5XX", "GatewayError", "Reset", "Retriable4xx", "ConnectFailure", "EnvoyRatelimited", "RefusedStream", "Http3PostConnectFailure", "HttpMethodConnect", "HttpMethodDelete", "HttpMethodGet", "HttpMethodHead", "HttpMethodOptions", "HttpMethodPatch", "HttpMethodPost", "HttpMethodPut", "HttpMethodTrace", "500", "503"]}}, "targetRef": {"kind": "MeshServiceSubset"}}, {"default": {"grpc": {"retryOn": ["Canceled", "DeadlineExceeded", "Internal", "ResourceExhausted", "Unavailable"]}, "http": {"retryOn": ["5XX", "GatewayError", "Reset", "Retriable4xx", "ConnectFailure", "EnvoyRatelimited", "RefusedStream", "Http3PostConnectFailure", "HttpMethodConnect", "HttpMethodDelete", "HttpMethodGet", "HttpMethodHead", "HttpMethodOptions", "HttpMethodPatch", "HttpMethodPost", "HttpMethodPut", "HttpMethodTrace", "500", "503"]}}, "targetRef": {"kind": "MeshServiceSubset"}}, {"default": {"grpc": {"retryOn": ["Canceled", "DeadlineExceeded", "Internal", "ResourceExhausted", "Unavailable"]}, "http": {"retryOn": ["5XX", "GatewayError", "Reset", "Retriable4xx", "ConnectFailure", "EnvoyRatelimited", "RefusedStream", "Http3PostConnectFailure", "HttpMethodConnect", "HttpMethodDelete", "HttpMethodGet", "HttpMethodHead", "HttpMethodOptions", "HttpMethodPatch", "HttpMethodPost", "HttpMethodPut", "HttpMethodTrace", "500", "503"]}}, "targetRef": {"kind": "MeshServiceSubset"}}]}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}, {"type": "MeshRetry", "mesh": "default", "name": "<value>", "spec": {"to": [{"default": {"grpc": {"retryOn": ["Canceled", "DeadlineExceeded", "Internal", "ResourceExhausted", "Unavailable"]}, "http": {"retryOn": ["5XX", "GatewayError", "Reset", "Retriable4xx", "ConnectFailure", "EnvoyRatelimited", "RefusedStream", "Http3PostConnectFailure", "HttpMethodConnect", "HttpMethodDelete", "HttpMethodGet", "HttpMethodHead", "HttpMethodOptions", "HttpMethodPatch", "HttpMethodPost", "HttpMethodPut", "HttpMethodTrace", "500", "503"]}}, "targetRef": {"kind": "MeshServiceSubset"}}, {"default": {"grpc": {"retryOn": ["Canceled", "DeadlineExceeded", "Internal", "ResourceExhausted", "Unavailable"]}, "http": {"retryOn": ["5XX", "GatewayError", "Reset", "Retriable4xx", "ConnectFailure", "EnvoyRatelimited", "RefusedStream", "Http3PostConnectFailure", "HttpMethodConnect", "HttpMethodDelete", "HttpMethodGet", "HttpMethodHead", "HttpMethodOptions", "HttpMethodPatch", "HttpMethodPost", "HttpMethodPut", "HttpMethodTrace", "500", "503"]}}, "targetRef": {"kind": "MeshServiceSubset"}}, {"default": {"grpc": {"retryOn": ["Canceled", "DeadlineExceeded", "Internal", "ResourceExhausted", "Unavailable"]}, "http": {"retryOn": ["5XX", "GatewayError", "Reset", "Retriable4xx", "ConnectFailure", "EnvoyRatelimited", "RefusedStream", "Http3PostConnectFailure", "HttpMethodConnect", "HttpMethodDelete", "HttpMethodGet", "HttpMethodHead", "HttpMethodOptions", "HttpMethodPatch", "HttpMethodPost", "HttpMethodPut", "HttpMethodTrace", "500", "503"]}}, "targetRef": {"kind": "MeshServiceSubset"}}]}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}, {"type": "MeshRetry", "mesh": "default", "name": "<value>", "spec": {"to": [{"default": {"grpc": {"retryOn": ["Canceled", "DeadlineExceeded", "Internal", "ResourceExhausted", "Unavailable"]}, "http": {"retryOn": ["5XX", "GatewayError", "Reset", "Retriable4xx", "ConnectFailure", "EnvoyRatelimited", "RefusedStream", "Http3PostConnectFailure", "HttpMethodConnect", "HttpMethodDelete", "HttpMethodGet", "HttpMethodHead", "HttpMethodOptions", "HttpMethodPatch", "HttpMethodPost", "HttpMethodPut", "HttpMethodTrace", "500", "503"]}}, "targetRef": {"kind": "MeshServiceSubset"}}, {"default": {"grpc": {"retryOn": ["Canceled", "DeadlineExceeded", "Internal", "ResourceExhausted", "Unavailable"]}, "http": {"retryOn": ["5XX", "GatewayError", "Reset", "Retriable4xx", "ConnectFailure", "EnvoyRatelimited", "RefusedStream", "Http3PostConnectFailure", "HttpMethodConnect", "HttpMethodDelete", "HttpMethodGet", "HttpMethodHead", "HttpMethodOptions", "HttpMethodPatch", "HttpMethodPost", "HttpMethodPut", "HttpMethodTrace", "500", "503"]}}, "targetRef": {"kind": "MeshServiceSubset"}}, {"default": {"grpc": {"retryOn": ["Canceled", "DeadlineExceeded", "Internal", "ResourceExhausted", "Unavailable"]}, "http": {"retryOn": ["5XX", "GatewayError", "Reset", "Retriable4xx", "ConnectFailure", "EnvoyRatelimited", "RefusedStream", "Http3PostConnectFailure", "HttpMethodConnect", "HttpMethodDelete", "HttpMethodGet", "HttpMethodHead", "HttpMethodOptions", "HttpMethodPatch", "HttpMethodPost", "HttpMethodPut", "HttpMethodTrace", "500", "503"]}}, "targetRef": {"kind": "MeshServiceSubset"}}]}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+    speakeasy-default-get-mesh-retry-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {"items": [{"type": "MeshRetry", "mesh": "default", "name": "<value>", "spec": {"to": [{"default": {"grpc": {"retryOn": ["Canceled", "DeadlineExceeded", "Internal", "ResourceExhausted", "Unavailable"]}, "http": {"retryOn": ["5XX", "GatewayError", "Reset", "Retriable4xx", "ConnectFailure", "EnvoyRatelimited", "RefusedStream", "Http3PostConnectFailure", "HttpMethodConnect", "HttpMethodDelete", "HttpMethodGet", "HttpMethodHead", "HttpMethodOptions", "HttpMethodPatch", "HttpMethodPost", "HttpMethodPut", "HttpMethodTrace", "500", "503"]}}, "targetRef": {"kind": "MeshServiceSubset"}}]}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
   getMeshTCPRoute:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"type": "MeshTCPRoute", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-get-mesh-TCP-route:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2527,6 +3147,17 @@ examples:
           application/json: {}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-delete-mesh-TCP-route:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   createMeshTCPRoute:
     "":
       parameters:
@@ -2539,8 +3170,30 @@ examples:
       responses:
         "201":
           application/json: {}
+    speakeasy-default-create-mesh-TCP-route:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshTCPRoute", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "201":
+          application/json: {}
   updateMeshTCPRoute:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshTCPRoute", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+    speakeasy-default-update-mesh-TCP-route:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2564,8 +3217,31 @@ examples:
       responses:
         "200":
           application/json: {"items": [{"type": "MeshTCPRoute", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}, {"type": "MeshTCPRoute", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+    speakeasy-default-get-mesh-TCP-route-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {"items": [{"type": "MeshTCPRoute", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
   getMeshTimeout:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"type": "MeshTimeout", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-get-mesh-timeout:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2588,6 +3264,17 @@ examples:
           application/json: {}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-delete-mesh-timeout:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   createMeshTimeout:
     "":
       parameters:
@@ -2600,8 +3287,30 @@ examples:
       responses:
         "201":
           application/json: {}
+    speakeasy-default-create-mesh-timeout:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshTimeout", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "201":
+          application/json: {}
   updateMeshTimeout:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshTimeout", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+    speakeasy-default-update-mesh-timeout:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2625,8 +3334,31 @@ examples:
       responses:
         "200":
           application/json: {"items": [{"type": "MeshTimeout", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+    speakeasy-default-get-mesh-timeout-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {"items": [{"type": "MeshTimeout", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
   getMeshTLS:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"type": "MeshTLS", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-get-mesh-TLS:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2649,6 +3381,17 @@ examples:
           application/json: {}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-delete-mesh-TLS:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   createMeshTLS:
     "":
       parameters:
@@ -2661,8 +3404,30 @@ examples:
       responses:
         "201":
           application/json: {}
+    speakeasy-default-create-mesh-TLS:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshTLS", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "201":
+          application/json: {}
   updateMeshTLS:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshTLS", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+    speakeasy-default-update-mesh-TLS:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2686,6 +3451,18 @@ examples:
       responses:
         "200":
           application/json: {"items": [{"type": "MeshTLS", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}, {"type": "MeshTLS", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+    speakeasy-default-get-mesh-TLS-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {"items": [{"type": "MeshTLS", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
   getMeshTrace:
     "":
       parameters:
@@ -2698,8 +3475,30 @@ examples:
           application/json: {"type": "MeshTrace", "mesh": "default", "name": "<value>", "spec": {"default": {"backends": [{"openTelemetry": {"endpoint": "otel-collector:4317"}, "type": "Zipkin"}, {"openTelemetry": {"endpoint": "otel-collector:4317"}, "type": "Zipkin"}, {"openTelemetry": {"endpoint": "otel-collector:4317"}, "type": "Zipkin"}]}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-get-mesh-trace:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"type": "MeshTrace", "mesh": "default", "name": "<value>", "spec": {"default": {"backends": [{"openTelemetry": {"endpoint": "otel-collector:4317"}, "type": "OpenTelemetry"}]}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshTrace:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-delete-mesh-trace:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2722,6 +3521,17 @@ examples:
       responses:
         "201":
           application/json: {}
+    speakeasy-default-create-mesh-trace:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshTrace", "mesh": "default", "name": "<value>", "spec": {"default": {"backends": [{"openTelemetry": {"endpoint": "otel-collector:4317"}, "type": "Datadog"}]}}}
+      responses:
+        "201":
+          application/json: {}
   updateMeshTrace:
     "":
       parameters:
@@ -2731,6 +3541,17 @@ examples:
           name: "<value>"
       requestBody:
         application/json: {"type": "MeshTrace", "mesh": "default", "name": "<value>", "spec": {"default": {"backends": [{"openTelemetry": {"endpoint": "otel-collector:4317"}, "type": "Zipkin"}, {"openTelemetry": {"endpoint": "otel-collector:4317"}, "type": "Zipkin"}]}}}
+      responses:
+        "200":
+          application/json: {}
+    speakeasy-default-update-mesh-trace:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshTrace", "mesh": "default", "name": "<value>", "spec": {"default": {"backends": [{"openTelemetry": {"endpoint": "otel-collector:4317"}, "type": "Datadog"}]}}}
       responses:
         "200":
           application/json: {}
@@ -2747,8 +3568,31 @@ examples:
       responses:
         "200":
           application/json: {"items": [{"type": "MeshTrace", "mesh": "default", "name": "<value>", "spec": {"default": {"backends": [{"openTelemetry": {"endpoint": "otel-collector:4317"}, "type": "Datadog"}, {"openTelemetry": {"endpoint": "otel-collector:4317"}, "type": "Datadog"}]}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}, {"type": "MeshTrace", "mesh": "default", "name": "<value>", "spec": {"default": {"backends": [{"openTelemetry": {"endpoint": "otel-collector:4317"}, "type": "Datadog"}, {"openTelemetry": {"endpoint": "otel-collector:4317"}, "type": "Datadog"}]}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+    speakeasy-default-get-mesh-trace-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {"items": [{"type": "MeshTrace", "mesh": "default", "name": "<value>", "spec": {"default": {"backends": [{"openTelemetry": {"endpoint": "otel-collector:4317"}, "type": "Datadog"}]}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
   getMeshTrafficPermission:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"type": "MeshTrafficPermission", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-get-mesh-traffic-permission:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2771,6 +3615,17 @@ examples:
           application/json: {}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-delete-mesh-traffic-permission:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   createMeshTrafficPermission:
     "":
       parameters:
@@ -2783,8 +3638,30 @@ examples:
       responses:
         "201":
           application/json: {}
+    speakeasy-default-create-mesh-traffic-permission:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshTrafficPermission", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "201":
+          application/json: {}
   updateMeshTrafficPermission:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshTrafficPermission", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+    speakeasy-default-update-mesh-traffic-permission:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2808,8 +3685,30 @@ examples:
       responses:
         "200":
           application/json: {"items": [{"type": "MeshTrafficPermission", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+    speakeasy-default-get-mesh-traffic-permission-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {"items": [{"type": "MeshTrafficPermission", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
   getMesh:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"name": "<value>", "skipCreatingInitialPolicies": [], "type": "<value>"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-get-mesh:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2830,6 +3729,16 @@ examples:
       responses:
         "200":
           application/json: {}
+    speakeasy-default-put-mesh:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          name: "<value>"
+      requestBody:
+        application/json: {"name": "<value>", "skipCreatingInitialPolicies": [], "type": "<value>"}
+      responses:
+        "200":
+          application/json: {}
   deleteMesh:
     "":
       parameters:
@@ -2841,8 +3750,29 @@ examples:
           application/json: {}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-delete-mesh:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   getMeshList:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {}
+    speakeasy-default-get-mesh-list:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2893,6 +3823,19 @@ examples:
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-get-mesh-control-plane:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+      responses:
+        "200":
+          application/json: {"id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "name": "Test control plane", "description": "A control plane to handle traffic on development environment.", "labels": {"test": "true"}, "created_at": "2023-01-11T02:30:42.227Z", "updated_at": "2023-01-11T02:30:42.227Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   delete-mesh-control-plane:
     "":
       parameters:
@@ -2907,6 +3850,19 @@ examples:
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
         "400":
           application/problem+json: {"status": 812290, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
+    speakeasy-default-delete-mesh-control-plane:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+      responses:
+        "400":
+          application/problem+json: {"status": 812290, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   update-cp:
     "":
       parameters:
@@ -2925,8 +3881,36 @@ examples:
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-update-cp:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+      requestBody:
+        application/json: {"name": "Test control plane", "description": "A control plane to handle traffic on development environment.", "labels": {"test": "true"}}
+      responses:
+        "200":
+          application/json: {"id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "name": "Test control plane", "description": "A control plane to handle traffic on development environment.", "labels": {"test": "true"}, "created_at": "2023-01-11T02:30:42.227Z", "updated_at": "2023-01-11T02:30:42.227Z"}
+        "400":
+          application/problem+json: {"status": 245905, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max_items", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   getMeshGateway:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"mesh": "<value>", "name": "<value>", "selectors": [], "type": "<value>"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-get-mesh-gateway:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2949,6 +3933,17 @@ examples:
           application/json: {}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-delete-mesh-gateway:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   createMeshGateway:
     "":
       parameters:
@@ -2961,8 +3956,30 @@ examples:
       responses:
         "201":
           application/json: {}
+    speakeasy-default-create-mesh-gateway:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"mesh": "<value>", "name": "<value>", "selectors": [], "type": "<value>"}
+      responses:
+        "201":
+          application/json: {}
   updateMeshGateway:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"mesh": "<value>", "name": "<value>", "selectors": [], "type": "<value>"}
+      responses:
+        "200":
+          application/json: {}
+    speakeasy-default-update-mesh-gateway:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -2986,8 +4003,30 @@ examples:
       responses:
         "200":
           application/json: {}
+    speakeasy-default-get-mesh-gateway-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {}
   getHostnameGenerator:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"type": "HostnameGenerator", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-get-hostname-generator:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -3008,6 +4047,16 @@ examples:
           application/json: {}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-delete-hostname-generator:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   createHostnameGenerator:
     "":
       parameters:
@@ -3019,8 +4068,28 @@ examples:
       responses:
         "201":
           application/json: {}
+    speakeasy-default-create-hostname-generator:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "HostnameGenerator", "name": "<value>", "spec": {}}
+      responses:
+        "201":
+          application/json: {}
   updateHostnameGenerator:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "HostnameGenerator", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+    speakeasy-default-update-hostname-generator:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -3042,6 +4111,17 @@ examples:
       responses:
         "200":
           application/json: {"items": [{"type": "HostnameGenerator", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}, {"type": "HostnameGenerator", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+    speakeasy-default-get-hostname-generator-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {"items": [{"type": "HostnameGenerator", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
   getMeshExternalService:
     "":
       parameters:
@@ -3054,8 +4134,30 @@ examples:
           application/json: {"type": "MeshExternalService", "mesh": "default", "name": "<value>", "spec": {"endpoints": [{"address": "example.com", "port": 882453}, {"address": "example.com", "port": 882453}], "match": {"port": 254056, "protocol": "tcp", "type": "HostnameGenerator"}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-get-mesh-external-service:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"type": "MeshExternalService", "mesh": "default", "name": "<value>", "spec": {"endpoints": [{"address": "example.com", "port": 525825}], "match": {"port": 882453, "protocol": "tcp", "type": "HostnameGenerator"}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshExternalService:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-delete-mesh-external-service:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -3078,6 +4180,17 @@ examples:
       responses:
         "201":
           application/json: {}
+    speakeasy-default-create-mesh-external-service:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshExternalService", "mesh": "default", "name": "<value>", "spec": {"endpoints": [{"address": "example.com", "port": 16916}], "match": {"port": 169067, "protocol": "tcp", "type": "HostnameGenerator"}}}
+      responses:
+        "201":
+          application/json: {}
   updateMeshExternalService:
     "":
       parameters:
@@ -3087,6 +4200,17 @@ examples:
           name: "<value>"
       requestBody:
         application/json: {"type": "MeshExternalService", "mesh": "default", "name": "<value>", "spec": {"endpoints": [{"address": "example.com", "port": 770511}, {"address": "example.com", "port": 770511}], "match": {"port": 993566, "protocol": "tcp", "type": "HostnameGenerator"}}}
+      responses:
+        "200":
+          application/json: {}
+    speakeasy-default-update-mesh-external-service:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshExternalService", "mesh": "default", "name": "<value>", "spec": {"endpoints": [{"address": "example.com", "port": 487061}], "match": {"port": 770511, "protocol": "tcp", "type": "HostnameGenerator"}}}
       responses:
         "200":
           application/json: {}
@@ -3103,6 +4227,18 @@ examples:
       responses:
         "200":
           application/json: {"items": [{"type": "MeshExternalService", "mesh": "default", "name": "<value>", "spec": {"endpoints": [{"address": "example.com", "port": 717874}], "match": {"port": 920900, "protocol": "tcp", "type": "HostnameGenerator"}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}, {"type": "MeshExternalService", "mesh": "default", "name": "<value>", "spec": {"endpoints": [{"address": "example.com", "port": 717874}], "match": {"port": 920900, "protocol": "tcp", "type": "HostnameGenerator"}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}, {"type": "MeshExternalService", "mesh": "default", "name": "<value>", "spec": {"endpoints": [{"address": "example.com", "port": 717874}], "match": {"port": 920900, "protocol": "tcp", "type": "HostnameGenerator"}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+    speakeasy-default-get-mesh-external-service-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {"items": [{"type": "MeshExternalService", "mesh": "default", "name": "<value>", "spec": {"endpoints": [{"address": "example.com", "port": 675432}], "match": {"port": 122649, "protocol": "tcp", "type": "HostnameGenerator"}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
   getMeshMultiZoneService:
     "":
       parameters:
@@ -3115,8 +4251,30 @@ examples:
           application/json: {"type": "MeshMultiZoneService", "mesh": "default", "name": "<value>", "spec": {"ports": [{"appProtocol": "tcp", "port": 585793}, {"appProtocol": "tcp", "port": 585793}], "selector": {"meshService": {"matchLabels": {"key": "<value>"}}}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-get-mesh-multi-zone-service:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"type": "MeshMultiZoneService", "mesh": "default", "name": "<value>", "spec": {"ports": [{"appProtocol": "tcp", "port": 585793}], "selector": {"meshService": {"matchLabels": {"key": "<value>"}}}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshMultiZoneService:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-delete-mesh-multi-zone-service:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -3139,6 +4297,17 @@ examples:
       responses:
         "201":
           application/json: {}
+    speakeasy-default-create-mesh-multi-zone-service:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshMultiZoneService", "mesh": "default", "name": "<value>", "spec": {"ports": [], "selector": {"meshService": {"matchLabels": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}}}}
+      responses:
+        "201":
+          application/json: {}
   updateMeshMultiZoneService:
     "":
       parameters:
@@ -3148,6 +4317,17 @@ examples:
           name: "<value>"
       requestBody:
         application/json: {"type": "MeshMultiZoneService", "mesh": "default", "name": "<value>", "spec": {"ports": [{"appProtocol": "tcp", "port": 444602}], "selector": {"meshService": {"matchLabels": {"key": "<value>", "key1": "<value>"}}}}}
+      responses:
+        "200":
+          application/json: {}
+    speakeasy-default-update-mesh-multi-zone-service:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshMultiZoneService", "mesh": "default", "name": "<value>", "spec": {"ports": [], "selector": {"meshService": {"matchLabels": {"key": "<value>"}}}}}
       responses:
         "200":
           application/json: {}
@@ -3164,8 +4344,31 @@ examples:
       responses:
         "200":
           application/json: {"items": [{"type": "MeshMultiZoneService", "mesh": "default", "name": "<value>", "spec": {"ports": [{"appProtocol": "tcp", "port": 553761}, {"appProtocol": "tcp", "port": 553761}, {"appProtocol": "tcp", "port": 553761}], "selector": {"meshService": {"matchLabels": {"key": "<value>", "key1": "<value>"}}}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}, {"type": "MeshMultiZoneService", "mesh": "default", "name": "<value>", "spec": {"ports": [{"appProtocol": "tcp", "port": 553761}, {"appProtocol": "tcp", "port": 553761}, {"appProtocol": "tcp", "port": 553761}], "selector": {"meshService": {"matchLabels": {"key": "<value>", "key1": "<value>"}}}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+    speakeasy-default-get-mesh-multi-zone-service-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {"items": [{"type": "MeshMultiZoneService", "mesh": "default", "name": "<value>", "spec": {"ports": [], "selector": {"meshService": {"matchLabels": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
   getMeshService:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"type": "MeshService", "mesh": "default", "name": "<value>", "spec": {"state": "Unavailable"}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-get-mesh-service:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -3188,6 +4391,17 @@ examples:
           application/json: {}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-delete-mesh-service:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   createMeshService:
     "":
       parameters:
@@ -3200,8 +4414,30 @@ examples:
       responses:
         "201":
           application/json: {}
+    speakeasy-default-create-mesh-service:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshService", "mesh": "default", "name": "<value>", "spec": {"state": "Unavailable"}}
+      responses:
+        "201":
+          application/json: {}
   updateMeshService:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshService", "mesh": "default", "name": "<value>", "spec": {"state": "Unavailable"}}
+      responses:
+        "200":
+          application/json: {}
+    speakeasy-default-update-mesh-service:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -3225,8 +4461,31 @@ examples:
       responses:
         "200":
           application/json: {"items": [{"type": "MeshService", "mesh": "default", "name": "<value>", "spec": {"state": "Unavailable"}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+    speakeasy-default-get-mesh-service-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {"items": [{"type": "MeshService", "mesh": "default", "name": "<value>", "spec": {"state": "Unavailable"}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
   getMeshGlobalRateLimit:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"type": "MeshGlobalRateLimit", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-get-mesh-global-rate-limit:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -3249,6 +4508,17 @@ examples:
           application/json: {}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-delete-mesh-global-rate-limit:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   createMeshGlobalRateLimit:
     "":
       parameters:
@@ -3261,8 +4531,30 @@ examples:
       responses:
         "201":
           application/json: {}
+    speakeasy-default-create-mesh-global-rate-limit:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshGlobalRateLimit", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "201":
+          application/json: {}
   updateMeshGlobalRateLimit:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshGlobalRateLimit", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+    speakeasy-default-update-mesh-global-rate-limit:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -3286,8 +4578,31 @@ examples:
       responses:
         "200":
           application/json: {"items": [{"type": "MeshGlobalRateLimit", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+    speakeasy-default-get-mesh-global-rate-limit-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {"items": [{"type": "MeshGlobalRateLimit", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
   getMeshOPA:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"type": "MeshOPA", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-get-mesh-OPA:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -3310,6 +4625,17 @@ examples:
           application/json: {}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+    speakeasy-default-delete-mesh-OPA:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   createMeshOPA:
     "":
       parameters:
@@ -3322,8 +4648,30 @@ examples:
       responses:
         "201":
           application/json: {}
+    speakeasy-default-create-mesh-OPA:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshOPA", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "201":
+          application/json: {}
   updateMeshOPA:
     "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshOPA", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+    speakeasy-default-update-mesh-OPA:
       parameters:
         path:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
@@ -3347,13 +4695,25 @@ examples:
       responses:
         "200":
           application/json: {"items": [{"type": "MeshOPA", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}, {"type": "MeshOPA", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}, {"type": "MeshOPA", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+    speakeasy-default-get-mesh-OPA-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {"items": [{"type": "MeshOPA", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
   create-api-version:
     speakeasy-default-create-api-version:
       parameters:
         path:
           apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
       requestBody:
-        application/json: {"version": "1.0.0", "spec": {"content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "type": "oas3"}}
+        application/json: {"version": "1.0.0", "spec": {"content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}"}}
       responses:
         "201":
           application/json: {"id": "7710d5c4-d902-410b-992f-18b814155b53", "version": "1.0.0", "spec": {"content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "type": "oas3"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -3375,6 +4735,7 @@ examples:
         path:
           apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
           specId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+          versionId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
           application/json: {"id": "7710d5c4-d902-410b-992f-18b814155b53", "version": "1.0.0", "spec": {"content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "type": "oas3"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -3390,6 +4751,7 @@ examples:
         path:
           apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
           specId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+          versionId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
         application/json: {"version": "1.0.0", "spec": {"content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}"}}
       responses:
@@ -3413,6 +4775,7 @@ examples:
         path:
           apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
           specId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+          versionId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
@@ -3618,6 +4981,447 @@ examples:
           authServerId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
           clientId: "kYa9iQFU5xPDSIUH9z1z"
       responses:
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  putMeshAccessLog:
+    speakeasy-default-put-mesh-access-log:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshAccessLog", "mesh": "default", "name": "<value>", "spec": {"from": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "File"}]}, "targetRef": {"kind": "Mesh"}}], "rules": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}}, "type": "File"}]}}], "to": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}}, "type": "OpenTelemetry"}]}, "targetRef": {"kind": "MeshMultiZoneService"}}]}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshCircuitBreaker:
+    speakeasy-default-put-mesh-circuit-breaker:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshCircuitBreaker", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshFaultInjection:
+    speakeasy-default-put-mesh-fault-injection:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshFaultInjection", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshHealthCheck:
+    speakeasy-default-put-mesh-health-check:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshHealthCheck", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshHTTPRoute:
+    speakeasy-default-put-mesh-HTTP-route:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshHTTPRoute", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshLoadBalancingStrategy:
+    speakeasy-default-put-mesh-load-balancing-strategy:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshLoadBalancingStrategy", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshMetric:
+    speakeasy-default-put-mesh-metric:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshMetric", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshPassthrough:
+    speakeasy-default-put-mesh-passthrough:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshPassthrough", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshProxyPatch:
+    speakeasy-default-put-mesh-proxy-patch:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshProxyPatch", "mesh": "default", "name": "<value>", "spec": {"default": {}}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshRateLimit:
+    speakeasy-default-put-mesh-rate-limit:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshRateLimit", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshRetry:
+    speakeasy-default-put-mesh-retry:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshRetry", "mesh": "default", "name": "<value>", "spec": {"to": [{"default": {"grpc": {"retryOn": ["Canceled", "DeadlineExceeded", "Internal", "ResourceExhausted", "Unavailable"]}, "http": {"retryOn": ["5XX", "GatewayError", "Reset", "Retriable4xx", "ConnectFailure", "EnvoyRatelimited", "RefusedStream", "Http3PostConnectFailure", "HttpMethodConnect", "HttpMethodDelete", "HttpMethodGet", "HttpMethodHead", "HttpMethodOptions", "HttpMethodPatch", "HttpMethodPost", "HttpMethodPut", "HttpMethodTrace", "500", "503"]}}, "targetRef": {"kind": "MeshExternalService"}}]}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshTCPRoute:
+    speakeasy-default-put-mesh-TCP-route:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshTCPRoute", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshTimeout:
+    speakeasy-default-put-mesh-timeout:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshTimeout", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshTLS:
+    speakeasy-default-put-mesh-TLS:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshTLS", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshTrace:
+    speakeasy-default-put-mesh-trace:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshTrace", "mesh": "default", "name": "<value>", "spec": {"default": {"backends": [{"openTelemetry": {"endpoint": "otel-collector:4317"}, "type": "Datadog"}]}}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshTrafficPermission:
+    speakeasy-default-put-mesh-traffic-permission:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshTrafficPermission", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshGateway:
+    speakeasy-default-put-mesh-gateway:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"mesh": "<value>", "name": "<value>", "selectors": [], "type": "<value>"}
+      responses:
+        "200":
+          application/json: {}
+  putHostnameGenerator:
+    speakeasy-default-put-hostname-generator:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "HostnameGenerator", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshExternalService:
+    speakeasy-default-put-mesh-external-service:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshExternalService", "mesh": "default", "name": "<value>", "spec": {"endpoints": [{"address": "example.com", "port": 623172}], "match": {"port": 740935, "protocol": "tcp", "type": "HostnameGenerator"}}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshMultiZoneService:
+    speakeasy-default-put-mesh-multi-zone-service:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshMultiZoneService", "mesh": "default", "name": "<value>", "spec": {"ports": [{"appProtocol": "tcp", "port": 156296}], "selector": {"meshService": {"matchLabels": {"key": "<value>", "key1": "<value>"}}}}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshService:
+    speakeasy-default-put-mesh-service:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshService", "mesh": "default", "name": "<value>", "spec": {"state": "Unavailable"}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshGlobalRateLimit:
+    speakeasy-default-put-mesh-global-rate-limit:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshGlobalRateLimit", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  putMeshOPA:
+    speakeasy-default-put-mesh-OPA:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshOPA", "mesh": "default", "name": "<value>", "spec": {}}
+      responses:
+        "200":
+          application/json: {}
+  get-portal-asset-logo:
+    speakeasy-default-get-portal-asset-logo:
+      parameters:
+        path:
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "200":
+          application/json: {"data": "data:image/png;base64,YW5faW1hZ2VfZmlsZQ=="}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  replace-portal-asset-logo:
+    speakeasy-default-replace-portal-asset-logo:
+      parameters:
+        path:
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+      requestBody:
+        application/json: {"data": "data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU="}
+      responses:
+        "200":
+          application/json: {"data": "data:image/png;base64,YW5faW1hZ2VfZmlsZQ=="}
+        "400":
+          application/problem+json: {"status": 763533, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": [], "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  get-portal-asset-favicon:
+    speakeasy-default-get-portal-asset-favicon:
+      parameters:
+        path:
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "200":
+          application/json: {"data": "data:image/png;base64,YW5faW1hZ2VfZmlsZQ=="}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  replace-portal-asset-favicon:
+    speakeasy-default-replace-portal-asset-favicon:
+      parameters:
+        path:
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+      requestBody:
+        application/json: {"data": "data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU="}
+      responses:
+        "200":
+          application/json: {"data": "data:image/png;base64,YW5faW1hZ2VfZmlsZQ=="}
+        "400":
+          application/problem+json: {"status": 457688, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max_items", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  create-api-package:
+    speakeasy-default-create-api-package:
+      requestBody:
+        application/json: {"name": "MyAPIPackage", "slug": "my-api-package-v1"}
+      responses:
+        "201":
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPIPackage", "slug": "my-api-package-v1", "version": "<value>", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 166135, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  get-api-package:
+    speakeasy-default-get-api-package:
+      parameters:
+        path:
+          packageId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+      responses:
+        "200":
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPIPackage", "slug": "my-api-package-v1", "version": "<value>", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  patch-api-package:
+    speakeasy-default-patch-api-package:
+      parameters:
+        path:
+          packageId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+      requestBody:
+        application/json: {"name": "MyAPIPackage", "slug": "my-api-package-v1"}
+      responses:
+        "200":
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPIPackage", "slug": "my-api-package-v1", "version": "<value>", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 888616, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  delete-api-package:
+    speakeasy-default-delete-api-package:
+      parameters:
+        path:
+          packageId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  dashboards-create:
+    speakeasy-default-dashboards-create:
+      requestBody:
+        application/json: {"name": "<value>", "definition": {"tiles": [], "preset_filters": [{"field": "control_plane", "operator": "in", "value": ["00000000-0000-0000-0000-000000000000"]}, {"field": "ai_request_model", "operator": "in", "value": ["request_model1"]}]}, "labels": {"env": "test"}}
+      responses:
+        "201":
+          application/json: {"name": "<value>", "definition": {"tiles": [], "preset_filters": [{"field": "control_plane", "operator": "in", "value": ["00000000-0000-0000-0000-000000000000"]}, {"field": "ai_request_model", "operator": "in", "value": ["request_model1"]}]}, "labels": {"env": "test"}, "id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_by": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  dashboards-get:
+    speakeasy-default-dashboards-get:
+      parameters:
+        path:
+          dashboardId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "200":
+          application/json: {"name": "<value>", "definition": {"tiles": [{"layout": {"position": {"col": 3, "row": 0}, "size": {"cols": 3, "rows": 1}}, "type": "chart", "definition": {"query": {"datasource": "api_usage", "metrics": ["request_count", "response_latency_p99"], "dimensions": ["time", "gateway_service"], "filters": [{"field": "upstream_status_code_grouped", "operator": "in"}], "granularity": "hourly", "time_range": {"tz": "EST", "type": "relative", "time_range": "24h"}}, "chart": {"type": "donut"}}}], "preset_filters": [{"field": "control_plane", "operator": "in", "value": ["00000000-0000-0000-0000-000000000000"]}, {"field": "ai_request_model", "operator": "in", "value": ["request_model1"]}]}, "labels": {"env": "test"}, "id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_by": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  dashboards-update:
+    speakeasy-default-dashboards-update:
+      parameters:
+        path:
+          dashboardId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      requestBody:
+        application/json: {"name": "<value>", "definition": {"tiles": [], "preset_filters": [{"field": "control_plane", "operator": "in", "value": ["00000000-0000-0000-0000-000000000000"]}, {"field": "ai_request_model", "operator": "in", "value": ["request_model1"]}]}, "labels": {"env": "test"}}
+      responses:
+        "200":
+          application/json: {"name": "<value>", "definition": {"tiles": [], "preset_filters": [{"field": "control_plane", "operator": "in", "value": ["00000000-0000-0000-0000-000000000000"]}, {"field": "ai_request_model", "operator": "in", "value": ["request_model1"]}]}, "labels": {"env": "test"}, "id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_by": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  dashboards-delete:
+    speakeasy-default-dashboards-delete:
+      parameters:
+        path:
+          dashboardId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
 examplesVersion: 1.0.2

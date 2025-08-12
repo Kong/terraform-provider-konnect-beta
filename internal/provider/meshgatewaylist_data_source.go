@@ -6,8 +6,11 @@ import (
 	"context"
 	"fmt"
 	"github.com/Kong/shared-speakeasy/customtypes/kumalabels"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
@@ -24,20 +27,20 @@ func NewMeshGatewayListDataSource() datasource.DataSource {
 
 // MeshGatewayListDataSource is the data source implementation.
 type MeshGatewayListDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
 // MeshGatewayListDataSourceModel describes the data model.
 type MeshGatewayListDataSourceModel struct {
-	CpID   types.String              `tfsdk:"cp_id"`
-	Items  []tfTypes.MeshGatewayItem `tfsdk:"items"`
-	Key    types.String              `queryParam:"name=key" tfsdk:"key"`
-	Mesh   types.String              `tfsdk:"mesh"`
-	Next   types.String              `tfsdk:"next"`
-	Offset types.Int64               `queryParam:"style=form,explode=true,name=offset" tfsdk:"offset"`
-	Size   types.Int64               `queryParam:"style=form,explode=true,name=size" tfsdk:"size"`
-	Total  types.Float64             `tfsdk:"total"`
-	Value  types.String              `queryParam:"name=value" tfsdk:"value"`
+	CpID   types.String                                      `tfsdk:"cp_id"`
+	Filter *tfTypes.GetHostnameGeneratorListQueryParamFilter `queryParam:"style=form,explode=true,name=filter" tfsdk:"filter"`
+	Items  []tfTypes.MeshGatewayItem                         `tfsdk:"items"`
+	Mesh   types.String                                      `tfsdk:"mesh"`
+	Next   types.String                                      `tfsdk:"next"`
+	Offset types.Int64                                       `queryParam:"style=form,explode=true,name=offset" tfsdk:"offset"`
+	Size   types.Int64                                       `queryParam:"style=form,explode=true,name=size" tfsdk:"size"`
+	Total  types.Float64                                     `tfsdk:"total"`
 }
 
 // Metadata returns the data source type name.
@@ -54,6 +57,18 @@ func (r *MeshGatewayListDataSource) Schema(ctx context.Context, req datasource.S
 			"cp_id": schema.StringAttribute{
 				Required:    true,
 				Description: `Id of the Konnect resource`,
+			},
+			"filter": schema.SingleNestedAttribute{
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"key": schema.StringAttribute{
+						Optional: true,
+					},
+					"value": schema.StringAttribute{
+						Optional: true,
+					},
+				},
+				Description: `filter by labels when multiple filters are present, they are ANDed`,
 			},
 			"items": schema.ListNestedAttribute{
 				Computed: true,
@@ -123,7 +138,8 @@ func (r *MeshGatewayListDataSource) Schema(ctx context.Context, req datasource.S
 														NestedObject: schema.NestedAttributeObject{
 															Attributes: map[string]schema.Attribute{
 																"type": schema.StringAttribute{
-																	Computed: true,
+																	CustomType: jsontypes.NormalizedType{},
+																	Computed:   true,
 																	MarkdownDescription: `Types that are assignable to Type:` + "\n" +
 																		`` + "\n" +
 																		`	*DataSource_Secret` + "\n" +
@@ -217,9 +233,6 @@ func (r *MeshGatewayListDataSource) Schema(ctx context.Context, req datasource.S
 					},
 				},
 			},
-			"key": schema.StringAttribute{
-				Optional: true,
-			},
 			"mesh": schema.StringAttribute{
 				Required:    true,
 				Description: `name of the mesh`,
@@ -235,13 +248,13 @@ func (r *MeshGatewayListDataSource) Schema(ctx context.Context, req datasource.S
 			"size": schema.Int64Attribute{
 				Optional:    true,
 				Description: `the number of items per page`,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 1000),
+				},
 			},
 			"total": schema.Float64Attribute{
 				Computed:    true,
 				Description: `The total number of entities`,
-			},
-			"value": schema.StringAttribute{
-				Optional: true,
 			},
 		},
 	}

@@ -24,6 +24,7 @@ func NewMeshFaultInjectionDataSource() datasource.DataSource {
 
 // MeshFaultInjectionDataSource is the data source implementation.
 type MeshFaultInjectionDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
