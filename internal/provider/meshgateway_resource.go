@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Kong/shared-speakeasy/customtypes/kumalabels"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -21,7 +22,6 @@ import (
 	custom_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -133,7 +133,8 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 											NestedObject: schema.NestedAttributeObject{
 												Attributes: map[string]schema.Attribute{
 													"type": schema.StringAttribute{
-														Required: true,
+														CustomType: jsontypes.NormalizedType{},
+														Required:   true,
 														MarkdownDescription: `Types that are assignable to Type:` + "\n" +
 															`` + "\n" +
 															`	*DataSource_Secret` + "\n" +
@@ -141,9 +142,6 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 															`	*DataSource_Inline` + "\n" +
 															`	*DataSource_InlineString` + "\n" +
 															`Parsed as JSON.`,
-														Validators: []validator.String{
-															validators.IsValidJSON(),
-														},
 													},
 												},
 											},

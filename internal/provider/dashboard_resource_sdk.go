@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
@@ -21,33 +22,26 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.CreatedBy = types.StringPointerValue(resp.CreatedBy)
 		r.Definition.PresetFilters = []tfTypes.AllFilterItems{}
-		if len(r.Definition.PresetFilters) > len(resp.Definition.PresetFilters) {
-			r.Definition.PresetFilters = r.Definition.PresetFilters[:len(resp.Definition.PresetFilters)]
-		}
-		for presetFiltersCount, presetFiltersItem := range resp.Definition.PresetFilters {
+
+		for _, presetFiltersItem := range resp.Definition.PresetFilters {
 			var presetFilters tfTypes.AllFilterItems
+
 			presetFilters.Field = types.StringValue(string(presetFiltersItem.Field))
 			presetFilters.Operator = types.StringValue(string(presetFiltersItem.Operator))
 			if presetFiltersItem.Value == nil {
-				presetFilters.Value = types.StringNull()
+				presetFilters.Value = jsontypes.NewNormalizedNull()
 			} else {
 				valueResult, _ := json.Marshal(presetFiltersItem.Value)
-				presetFilters.Value = types.StringValue(string(valueResult))
+				presetFilters.Value = jsontypes.NewNormalizedValue(string(valueResult))
 			}
-			if presetFiltersCount+1 > len(r.Definition.PresetFilters) {
-				r.Definition.PresetFilters = append(r.Definition.PresetFilters, presetFilters)
-			} else {
-				r.Definition.PresetFilters[presetFiltersCount].Field = presetFilters.Field
-				r.Definition.PresetFilters[presetFiltersCount].Operator = presetFilters.Operator
-				r.Definition.PresetFilters[presetFiltersCount].Value = presetFilters.Value
-			}
+
+			r.Definition.PresetFilters = append(r.Definition.PresetFilters, presetFilters)
 		}
 		r.Definition.Tiles = []tfTypes.Tile{}
-		if len(r.Definition.Tiles) > len(resp.Definition.Tiles) {
-			r.Definition.Tiles = r.Definition.Tiles[:len(resp.Definition.Tiles)]
-		}
-		for tilesCount, tilesItem := range resp.Definition.Tiles {
+
+		for _, tilesItem := range resp.Definition.Tiles {
 			var tiles tfTypes.Tile
+
 			if tilesItem.ChartTile != nil {
 				tiles.Chart = &tfTypes.ChartTile{}
 				if tilesItem.ChartTile.Definition.Chart.BarChart != nil {
@@ -81,23 +75,20 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 						tiles.Chart.Definition.Query.APIUsage.Dimensions = append(tiles.Chart.Definition.Query.APIUsage.Dimensions, types.StringValue(string(v)))
 					}
 					tiles.Chart.Definition.Query.APIUsage.Filters = []tfTypes.AllFilterItems{}
-					for filtersCount, filtersItem := range tilesItem.ChartTile.Definition.Query.AdvancedQuery.Filters {
+
+					for _, filtersItem := range tilesItem.ChartTile.Definition.Query.AdvancedQuery.Filters {
 						var filters tfTypes.AllFilterItems
+
 						filters.Field = types.StringValue(string(filtersItem.Field))
 						filters.Operator = types.StringValue(string(filtersItem.Operator))
 						if filtersItem.Value == nil {
-							filters.Value = types.StringNull()
+							filters.Value = jsontypes.NewNormalizedNull()
 						} else {
 							valueResult1, _ := json.Marshal(filtersItem.Value)
-							filters.Value = types.StringValue(string(valueResult1))
+							filters.Value = jsontypes.NewNormalizedValue(string(valueResult1))
 						}
-						if filtersCount+1 > len(tiles.Chart.Definition.Query.APIUsage.Filters) {
-							tiles.Chart.Definition.Query.APIUsage.Filters = append(tiles.Chart.Definition.Query.APIUsage.Filters, filters)
-						} else {
-							tiles.Chart.Definition.Query.APIUsage.Filters[filtersCount].Field = filters.Field
-							tiles.Chart.Definition.Query.APIUsage.Filters[filtersCount].Operator = filters.Operator
-							tiles.Chart.Definition.Query.APIUsage.Filters[filtersCount].Value = filters.Value
-						}
+
+						tiles.Chart.Definition.Query.APIUsage.Filters = append(tiles.Chart.Definition.Query.APIUsage.Filters, filters)
 					}
 					if tilesItem.ChartTile.Definition.Query.AdvancedQuery.Granularity != nil {
 						tiles.Chart.Definition.Query.APIUsage.Granularity = types.StringValue(string(*tilesItem.ChartTile.Definition.Query.AdvancedQuery.Granularity))
@@ -133,23 +124,20 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 						tiles.Chart.Definition.Query.LlmUsage.Dimensions = append(tiles.Chart.Definition.Query.LlmUsage.Dimensions, types.StringValue(string(v)))
 					}
 					tiles.Chart.Definition.Query.LlmUsage.Filters = []tfTypes.AllFilterItems{}
-					for filtersCount1, filtersItem1 := range tilesItem.ChartTile.Definition.Query.LLMQuery.Filters {
+
+					for _, filtersItem1 := range tilesItem.ChartTile.Definition.Query.LLMQuery.Filters {
 						var filters1 tfTypes.AllFilterItems
+
 						filters1.Field = types.StringValue(string(filtersItem1.Field))
 						filters1.Operator = types.StringValue(string(filtersItem1.Operator))
 						if filtersItem1.Value == nil {
-							filters1.Value = types.StringNull()
+							filters1.Value = jsontypes.NewNormalizedNull()
 						} else {
 							valueResult2, _ := json.Marshal(filtersItem1.Value)
-							filters1.Value = types.StringValue(string(valueResult2))
+							filters1.Value = jsontypes.NewNormalizedValue(string(valueResult2))
 						}
-						if filtersCount1+1 > len(tiles.Chart.Definition.Query.LlmUsage.Filters) {
-							tiles.Chart.Definition.Query.LlmUsage.Filters = append(tiles.Chart.Definition.Query.LlmUsage.Filters, filters1)
-						} else {
-							tiles.Chart.Definition.Query.LlmUsage.Filters[filtersCount1].Field = filters1.Field
-							tiles.Chart.Definition.Query.LlmUsage.Filters[filtersCount1].Operator = filters1.Operator
-							tiles.Chart.Definition.Query.LlmUsage.Filters[filtersCount1].Value = filters1.Value
-						}
+
+						tiles.Chart.Definition.Query.LlmUsage.Filters = append(tiles.Chart.Definition.Query.LlmUsage.Filters, filters1)
 					}
 					if tilesItem.ChartTile.Definition.Query.LLMQuery.Granularity != nil {
 						tiles.Chart.Definition.Query.LlmUsage.Granularity = types.StringValue(string(*tilesItem.ChartTile.Definition.Query.LLMQuery.Granularity))
@@ -183,11 +171,8 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 				tiles.Chart.Layout.Size.Rows = types.Int64Value(tilesItem.ChartTile.Layout.Size.Rows)
 				tiles.Chart.Type = types.StringValue(string(tilesItem.ChartTile.Type))
 			}
-			if tilesCount+1 > len(r.Definition.Tiles) {
-				r.Definition.Tiles = append(r.Definition.Tiles, tiles)
-			} else {
-				r.Definition.Tiles[tilesCount].Chart = tiles.Chart
-			}
+
+			r.Definition.Tiles = append(r.Definition.Tiles, tiles)
 		}
 		r.ID = types.StringPointerValue(resp.ID)
 		if len(resp.Labels) > 0 {

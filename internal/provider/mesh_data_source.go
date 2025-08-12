@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -338,6 +339,7 @@ func (r *MeshDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 																	Computed: true,
 																	Attributes: map[string]schema.Attribute{
 																		"type": schema.StringAttribute{
+																			CustomType:  jsontypes.NormalizedType{},
 																			Computed:    true,
 																			Description: `Parsed as JSON.`,
 																		},
@@ -347,6 +349,7 @@ func (r *MeshDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 																	Computed: true,
 																	Attributes: map[string]schema.Attribute{
 																		"type": schema.StringAttribute{
+																			CustomType:  jsontypes.NormalizedType{},
 																			Computed:    true,
 																			Description: `Parsed as JSON.`,
 																		},
@@ -360,6 +363,7 @@ func (r *MeshDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 													Computed: true,
 													Attributes: map[string]schema.Attribute{
 														"type": schema.StringAttribute{
+															CustomType:  jsontypes.NormalizedType{},
 															Computed:    true,
 															Description: `Parsed as JSON.`,
 														},
@@ -393,6 +397,7 @@ func (r *MeshDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 													Computed: true,
 													Attributes: map[string]schema.Attribute{
 														"type": schema.StringAttribute{
+															CustomType:  jsontypes.NormalizedType{},
 															Computed:    true,
 															Description: `Parsed as JSON.`,
 														},
@@ -428,6 +433,7 @@ func (r *MeshDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 													Computed: true,
 													Attributes: map[string]schema.Attribute{
 														"type": schema.StringAttribute{
+															CustomType:  jsontypes.NormalizedType{},
 															Computed:    true,
 															Description: `Parsed as JSON.`,
 														},
@@ -437,6 +443,7 @@ func (r *MeshDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 													Computed: true,
 													Attributes: map[string]schema.Attribute{
 														"type": schema.StringAttribute{
+															CustomType:  jsontypes.NormalizedType{},
 															Computed:    true,
 															Description: `Parsed as JSON.`,
 														},
@@ -448,6 +455,7 @@ func (r *MeshDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 											Computed: true,
 											Attributes: map[string]schema.Attribute{
 												"mode": schema.StringAttribute{
+													CustomType:  jsontypes.NormalizedType{},
 													Computed:    true,
 													Description: `Parsed as JSON.`,
 												},

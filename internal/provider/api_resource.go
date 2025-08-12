@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -39,7 +40,7 @@ type APIResource struct {
 // APIResourceModel describes the resource data model.
 type APIResourceModel struct {
 	APISpecIds            []types.String             `tfsdk:"api_spec_ids"`
-	Attributes            types.String               `tfsdk:"attributes"`
+	Attributes            jsontypes.Normalized       `tfsdk:"attributes"`
 	CreatedAt             types.String               `tfsdk:"created_at"`
 	CurrentVersionSummary *tfTypes.APIVersionSummary `tfsdk:"current_version_summary"`
 	Description           types.String               `tfsdk:"description"`
@@ -68,12 +69,10 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Description:        `The list of API specification ids for the API.`,
 			},
 			"attributes": schema.StringAttribute{
+				CustomType:  jsontypes.NormalizedType{},
 				Computed:    true,
 				Optional:    true,
 				Description: `A set of attributes that describe the API. Parsed as JSON.`,
-				Validators: []validator.String{
-					validators.IsValidJSON(),
-				},
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,

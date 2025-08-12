@@ -66,17 +66,20 @@ func (r *MeshTCPRouteResourceModel) RefreshFromSharedMeshTCPRouteItem(ctx contex
 			}
 		}
 		r.Spec.To = []tfTypes.MeshTCPRouteItemTo{}
-		if len(r.Spec.To) > len(resp.Spec.To) {
-			r.Spec.To = r.Spec.To[:len(resp.Spec.To)]
-		}
-		for toCount, toItem := range resp.Spec.To {
+
+		for _, toItem := range resp.Spec.To {
 			var to tfTypes.MeshTCPRouteItemTo
+
 			to.Rules = []tfTypes.MeshTCPRouteItemRules{}
-			for rulesCount, rulesItem := range toItem.Rules {
+
+			for _, rulesItem := range toItem.Rules {
 				var rules tfTypes.MeshTCPRouteItemRules
+
 				rules.Default.BackendRefs = []tfTypes.BackendRefs{}
-				for backendRefsCount, backendRefsItem := range rulesItem.Default.BackendRefs {
+
+				for _, backendRefsItem := range rulesItem.Default.BackendRefs {
 					var backendRefs tfTypes.BackendRefs
+
 					backendRefs.Kind = types.StringValue(string(backendRefsItem.Kind))
 					if len(backendRefsItem.Labels) > 0 {
 						backendRefs.Labels = make(map[string]types.String, len(backendRefsItem.Labels))
@@ -100,26 +103,11 @@ func (r *MeshTCPRouteResourceModel) RefreshFromSharedMeshTCPRouteItem(ctx contex
 						}
 					}
 					backendRefs.Weight = types.Int64PointerValue(backendRefsItem.Weight)
-					if backendRefsCount+1 > len(rules.Default.BackendRefs) {
-						rules.Default.BackendRefs = append(rules.Default.BackendRefs, backendRefs)
-					} else {
-						rules.Default.BackendRefs[backendRefsCount].Kind = backendRefs.Kind
-						rules.Default.BackendRefs[backendRefsCount].Labels = backendRefs.Labels
-						rules.Default.BackendRefs[backendRefsCount].Mesh = backendRefs.Mesh
-						rules.Default.BackendRefs[backendRefsCount].Name = backendRefs.Name
-						rules.Default.BackendRefs[backendRefsCount].Namespace = backendRefs.Namespace
-						rules.Default.BackendRefs[backendRefsCount].Port = backendRefs.Port
-						rules.Default.BackendRefs[backendRefsCount].ProxyTypes = backendRefs.ProxyTypes
-						rules.Default.BackendRefs[backendRefsCount].SectionName = backendRefs.SectionName
-						rules.Default.BackendRefs[backendRefsCount].Tags = backendRefs.Tags
-						rules.Default.BackendRefs[backendRefsCount].Weight = backendRefs.Weight
-					}
+
+					rules.Default.BackendRefs = append(rules.Default.BackendRefs, backendRefs)
 				}
-				if rulesCount+1 > len(to.Rules) {
-					to.Rules = append(to.Rules, rules)
-				} else {
-					to.Rules[rulesCount].Default = rules.Default
-				}
+
+				to.Rules = append(to.Rules, rules)
 			}
 			to.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 			if len(toItem.TargetRef.Labels) > 0 {
@@ -142,12 +130,8 @@ func (r *MeshTCPRouteResourceModel) RefreshFromSharedMeshTCPRouteItem(ctx contex
 					to.TargetRef.Tags[key5] = types.StringValue(value5)
 				}
 			}
-			if toCount+1 > len(r.Spec.To) {
-				r.Spec.To = append(r.Spec.To, to)
-			} else {
-				r.Spec.To[toCount].Rules = to.Rules
-				r.Spec.To[toCount].TargetRef = to.TargetRef
-			}
+
+			r.Spec.To = append(r.Spec.To, to)
 		}
 		r.Type = types.StringValue(string(resp.Type))
 	}

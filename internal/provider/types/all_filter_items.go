@@ -3,11 +3,12 @@
 package types
 
 import (
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type AllFilterItems struct {
-	Field    types.String `tfsdk:"field"`
-	Operator types.String `tfsdk:"operator"`
-	Value    types.String `tfsdk:"value"`
+	Field    types.String         `tfsdk:"field"`
+	Operator types.String         `tfsdk:"operator"`
+	Value    jsontypes.Normalized `tfsdk:"value"`
 }

@@ -40,11 +40,10 @@ func (r *MeshCircuitBreakerResourceModel) RefreshFromSharedMeshCircuitBreakerIte
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
 		r.Spec.From = []tfTypes.MeshCircuitBreakerItemFrom{}
-		if len(r.Spec.From) > len(resp.Spec.From) {
-			r.Spec.From = r.Spec.From[:len(resp.Spec.From)]
-		}
-		for fromCount, fromItem := range resp.Spec.From {
+
+		for _, fromItem := range resp.Spec.From {
 			var from tfTypes.MeshCircuitBreakerItemFrom
+
 			if fromItem.Default == nil {
 				from.Default = nil
 			} else {
@@ -147,19 +146,14 @@ func (r *MeshCircuitBreakerResourceModel) RefreshFromSharedMeshCircuitBreakerIte
 					from.TargetRef.Tags[key1] = types.StringValue(value1)
 				}
 			}
-			if fromCount+1 > len(r.Spec.From) {
-				r.Spec.From = append(r.Spec.From, from)
-			} else {
-				r.Spec.From[fromCount].Default = from.Default
-				r.Spec.From[fromCount].TargetRef = from.TargetRef
-			}
+
+			r.Spec.From = append(r.Spec.From, from)
 		}
 		r.Spec.Rules = []tfTypes.MeshCircuitBreakerItemRules{}
-		if len(r.Spec.Rules) > len(resp.Spec.Rules) {
-			r.Spec.Rules = r.Spec.Rules[:len(resp.Spec.Rules)]
-		}
-		for rulesCount, rulesItem := range resp.Spec.Rules {
+
+		for _, rulesItem := range resp.Spec.Rules {
 			var rules tfTypes.MeshCircuitBreakerItemRules
+
 			if rulesItem.Default == nil {
 				rules.Default = nil
 			} else {
@@ -241,11 +235,8 @@ func (r *MeshCircuitBreakerResourceModel) RefreshFromSharedMeshCircuitBreakerIte
 					rules.Default.OutlierDetection.SplitExternalAndLocalErrors = types.BoolPointerValue(rulesItem.Default.OutlierDetection.SplitExternalAndLocalErrors)
 				}
 			}
-			if rulesCount+1 > len(r.Spec.Rules) {
-				r.Spec.Rules = append(r.Spec.Rules, rules)
-			} else {
-				r.Spec.Rules[rulesCount].Default = rules.Default
-			}
+
+			r.Spec.Rules = append(r.Spec.Rules, rules)
 		}
 		if resp.Spec.TargetRef == nil {
 			r.Spec.TargetRef = nil
@@ -274,11 +265,10 @@ func (r *MeshCircuitBreakerResourceModel) RefreshFromSharedMeshCircuitBreakerIte
 			}
 		}
 		r.Spec.To = []tfTypes.MeshCircuitBreakerItemFrom{}
-		if len(r.Spec.To) > len(resp.Spec.To) {
-			r.Spec.To = r.Spec.To[:len(resp.Spec.To)]
-		}
-		for toCount, toItem := range resp.Spec.To {
+
+		for _, toItem := range resp.Spec.To {
 			var to tfTypes.MeshCircuitBreakerItemFrom
+
 			if toItem.Default == nil {
 				to.Default = nil
 			} else {
@@ -381,12 +371,8 @@ func (r *MeshCircuitBreakerResourceModel) RefreshFromSharedMeshCircuitBreakerIte
 					to.TargetRef.Tags[key5] = types.StringValue(value5)
 				}
 			}
-			if toCount+1 > len(r.Spec.To) {
-				r.Spec.To = append(r.Spec.To, to)
-			} else {
-				r.Spec.To[toCount].Default = to.Default
-				r.Spec.To[toCount].TargetRef = to.TargetRef
-			}
+
+			r.Spec.To = append(r.Spec.To, to)
 		}
 		r.Type = types.StringValue(string(resp.Type))
 	}

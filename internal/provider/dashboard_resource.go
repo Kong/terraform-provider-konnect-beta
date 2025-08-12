@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
@@ -133,12 +134,10 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 									},
 								},
 								"value": schema.StringAttribute{
+									CustomType:  jsontypes.NormalizedType{},
 									Computed:    true,
 									Optional:    true,
 									Description: `Parsed as JSON.`,
-									Validators: []validator.String{
-										validators.IsValidJSON(),
-									},
 								},
 							},
 						},
@@ -394,12 +393,10 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																				},
 																			},
 																			"value": schema.StringAttribute{
+																				CustomType:  jsontypes.NormalizedType{},
 																				Computed:    true,
 																				Optional:    true,
 																				Description: `Parsed as JSON.`,
-																				Validators: []validator.String{
-																					validators.IsValidJSON(),
-																				},
 																			},
 																		},
 																	},
@@ -626,12 +623,10 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																				},
 																			},
 																			"value": schema.StringAttribute{
+																				CustomType:  jsontypes.NormalizedType{},
 																				Computed:    true,
 																				Optional:    true,
 																				Description: `Parsed as JSON.`,
-																				Validators: []validator.String{
-																					validators.IsValidJSON(),
-																				},
 																			},
 																		},
 																	},

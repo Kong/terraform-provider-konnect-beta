@@ -3,9 +3,9 @@
 package types
 
 import (
-	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 )
 
 type AccessKey struct {
-	Type types.String `tfsdk:"type"`
+	Type jsontypes.Normalized `tfsdk:"type"`
 }

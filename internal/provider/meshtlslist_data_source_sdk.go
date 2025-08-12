@@ -18,11 +18,10 @@ func (r *MeshTLSListDataSourceModel) RefreshFromSharedMeshTLSList(ctx context.Co
 
 	if resp != nil {
 		r.Items = []tfTypes.MeshTLSItem{}
-		if len(r.Items) > len(resp.Items) {
-			r.Items = r.Items[:len(resp.Items)]
-		}
-		for itemsCount, itemsItem := range resp.Items {
+
+		for _, itemsItem := range resp.Items {
 			var items tfTypes.MeshTLSItem
+
 			items.CreationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(itemsItem.CreationTime))
 			labelsValue, labelsDiags := types.MapValueFrom(ctx, types.StringType, itemsItem.Labels)
 			diags.Append(labelsDiags...)
@@ -33,8 +32,10 @@ func (r *MeshTLSListDataSourceModel) RefreshFromSharedMeshTLSList(ctx context.Co
 			items.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(itemsItem.ModificationTime))
 			items.Name = types.StringValue(itemsItem.Name)
 			items.Spec.From = []tfTypes.MeshTLSItemFrom{}
-			for fromCount, fromItem := range itemsItem.Spec.From {
+
+			for _, fromItem := range itemsItem.Spec.From {
 				var from tfTypes.MeshTLSItemFrom
+
 				if fromItem.Default == nil {
 					from.Default = nil
 				} else {
@@ -85,16 +86,14 @@ func (r *MeshTLSListDataSourceModel) RefreshFromSharedMeshTLSList(ctx context.Co
 						from.TargetRef.Tags[key1] = types.StringValue(value1)
 					}
 				}
-				if fromCount+1 > len(items.Spec.From) {
-					items.Spec.From = append(items.Spec.From, from)
-				} else {
-					items.Spec.From[fromCount].Default = from.Default
-					items.Spec.From[fromCount].TargetRef = from.TargetRef
-				}
+
+				items.Spec.From = append(items.Spec.From, from)
 			}
 			items.Spec.Rules = []tfTypes.MeshTLSItemRules{}
-			for rulesCount, rulesItem := range itemsItem.Spec.Rules {
+
+			for _, rulesItem := range itemsItem.Spec.Rules {
 				var rules tfTypes.MeshTLSItemRules
+
 				if rulesItem.Default == nil {
 					rules.Default = nil
 				} else {
@@ -124,11 +123,8 @@ func (r *MeshTLSListDataSourceModel) RefreshFromSharedMeshTLSList(ctx context.Co
 						}
 					}
 				}
-				if rulesCount+1 > len(items.Spec.Rules) {
-					items.Spec.Rules = append(items.Spec.Rules, rules)
-				} else {
-					items.Spec.Rules[rulesCount].Default = rules.Default
-				}
+
+				items.Spec.Rules = append(items.Spec.Rules, rules)
 			}
 			if itemsItem.Spec.TargetRef == nil {
 				items.Spec.TargetRef = nil
@@ -157,17 +153,8 @@ func (r *MeshTLSListDataSourceModel) RefreshFromSharedMeshTLSList(ctx context.Co
 				}
 			}
 			items.Type = types.StringValue(string(itemsItem.Type))
-			if itemsCount+1 > len(r.Items) {
-				r.Items = append(r.Items, items)
-			} else {
-				r.Items[itemsCount].CreationTime = items.CreationTime
-				r.Items[itemsCount].Labels = items.Labels
-				r.Items[itemsCount].Mesh = items.Mesh
-				r.Items[itemsCount].ModificationTime = items.ModificationTime
-				r.Items[itemsCount].Name = items.Name
-				r.Items[itemsCount].Spec = items.Spec
-				r.Items[itemsCount].Type = items.Type
-			}
+
+			r.Items = append(r.Items, items)
 		}
 		r.Next = types.StringPointerValue(resp.Next)
 		r.Total = types.Float64PointerValue(resp.Total)
@@ -194,6 +181,25 @@ func (r *MeshTLSListDataSourceModel) ToOperationsGetMeshTLSListRequest(ctx conte
 	} else {
 		size = nil
 	}
+	var filter *operations.GetMeshTLSListQueryParamFilter
+	if r.Filter != nil {
+		key := new(string)
+		if !r.Filter.Key.IsUnknown() && !r.Filter.Key.IsNull() {
+			*key = r.Filter.Key.ValueString()
+		} else {
+			key = nil
+		}
+		value := new(string)
+		if !r.Filter.Value.IsUnknown() && !r.Filter.Value.IsNull() {
+			*value = r.Filter.Value.ValueString()
+		} else {
+			value = nil
+		}
+		filter = &operations.GetMeshTLSListQueryParamFilter{
+			Key:   key,
+			Value: value,
+		}
+	}
 	var mesh string
 	mesh = r.Mesh.ValueString()
 
@@ -201,6 +207,7 @@ func (r *MeshTLSListDataSourceModel) ToOperationsGetMeshTLSListRequest(ctx conte
 		CpID:   cpID,
 		Offset: offset,
 		Size:   size,
+		Filter: filter,
 		Mesh:   mesh,
 	}
 

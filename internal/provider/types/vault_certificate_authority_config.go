@@ -3,9 +3,9 @@
 package types
 
 import (
-	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 )
 
 type VaultCertificateAuthorityConfig struct {
-	Mode types.String `tfsdk:"mode"`
+	Mode jsontypes.Normalized `tfsdk:"mode"`
 }

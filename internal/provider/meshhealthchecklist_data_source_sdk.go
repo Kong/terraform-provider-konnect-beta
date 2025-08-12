@@ -18,11 +18,10 @@ func (r *MeshHealthCheckListDataSourceModel) RefreshFromSharedMeshHealthCheckLis
 
 	if resp != nil {
 		r.Items = []tfTypes.MeshHealthCheckItem{}
-		if len(r.Items) > len(resp.Items) {
-			r.Items = r.Items[:len(resp.Items)]
-		}
-		for itemsCount, itemsItem := range resp.Items {
+
+		for _, itemsItem := range resp.Items {
 			var items tfTypes.MeshHealthCheckItem
+
 			items.CreationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(itemsItem.CreationTime))
 			labelsValue, labelsDiags := types.MapValueFrom(ctx, types.StringType, itemsItem.Labels)
 			diags.Append(labelsDiags...)
@@ -59,8 +58,10 @@ func (r *MeshHealthCheckListDataSourceModel) RefreshFromSharedMeshHealthCheckLis
 				}
 			}
 			items.Spec.To = []tfTypes.MeshHealthCheckItemTo{}
-			for toCount, toItem := range itemsItem.Spec.To {
+
+			for _, toItem := range itemsItem.Spec.To {
 				var to tfTypes.MeshHealthCheckItemTo
+
 				if toItem.Default == nil {
 					to.Default = nil
 				} else {
@@ -101,28 +102,24 @@ func (r *MeshHealthCheckListDataSourceModel) RefreshFromSharedMeshHealthCheckLis
 						} else {
 							to.Default.HTTP.RequestHeadersToAdd = &tfTypes.MeshGlobalRateLimitItemHeaders{}
 							to.Default.HTTP.RequestHeadersToAdd.Add = []tfTypes.MeshGlobalRateLimitItemAdd{}
-							for addCount, addItem := range toItem.Default.HTTP.RequestHeadersToAdd.Add {
+
+							for _, addItem := range toItem.Default.HTTP.RequestHeadersToAdd.Add {
 								var add tfTypes.MeshGlobalRateLimitItemAdd
+
 								add.Name = types.StringValue(addItem.Name)
 								add.Value = types.StringValue(addItem.Value)
-								if addCount+1 > len(to.Default.HTTP.RequestHeadersToAdd.Add) {
-									to.Default.HTTP.RequestHeadersToAdd.Add = append(to.Default.HTTP.RequestHeadersToAdd.Add, add)
-								} else {
-									to.Default.HTTP.RequestHeadersToAdd.Add[addCount].Name = add.Name
-									to.Default.HTTP.RequestHeadersToAdd.Add[addCount].Value = add.Value
-								}
+
+								to.Default.HTTP.RequestHeadersToAdd.Add = append(to.Default.HTTP.RequestHeadersToAdd.Add, add)
 							}
 							to.Default.HTTP.RequestHeadersToAdd.Set = []tfTypes.MeshGlobalRateLimitItemAdd{}
-							for setCount, setItem := range toItem.Default.HTTP.RequestHeadersToAdd.Set {
+
+							for _, setItem := range toItem.Default.HTTP.RequestHeadersToAdd.Set {
 								var set tfTypes.MeshGlobalRateLimitItemAdd
+
 								set.Name = types.StringValue(setItem.Name)
 								set.Value = types.StringValue(setItem.Value)
-								if setCount+1 > len(to.Default.HTTP.RequestHeadersToAdd.Set) {
-									to.Default.HTTP.RequestHeadersToAdd.Set = append(to.Default.HTTP.RequestHeadersToAdd.Set, set)
-								} else {
-									to.Default.HTTP.RequestHeadersToAdd.Set[setCount].Name = set.Name
-									to.Default.HTTP.RequestHeadersToAdd.Set[setCount].Value = set.Value
-								}
+
+								to.Default.HTTP.RequestHeadersToAdd.Set = append(to.Default.HTTP.RequestHeadersToAdd.Set, set)
 							}
 						}
 					}
@@ -167,25 +164,12 @@ func (r *MeshHealthCheckListDataSourceModel) RefreshFromSharedMeshHealthCheckLis
 						to.TargetRef.Tags[key3] = types.StringValue(value3)
 					}
 				}
-				if toCount+1 > len(items.Spec.To) {
-					items.Spec.To = append(items.Spec.To, to)
-				} else {
-					items.Spec.To[toCount].Default = to.Default
-					items.Spec.To[toCount].TargetRef = to.TargetRef
-				}
+
+				items.Spec.To = append(items.Spec.To, to)
 			}
 			items.Type = types.StringValue(string(itemsItem.Type))
-			if itemsCount+1 > len(r.Items) {
-				r.Items = append(r.Items, items)
-			} else {
-				r.Items[itemsCount].CreationTime = items.CreationTime
-				r.Items[itemsCount].Labels = items.Labels
-				r.Items[itemsCount].Mesh = items.Mesh
-				r.Items[itemsCount].ModificationTime = items.ModificationTime
-				r.Items[itemsCount].Name = items.Name
-				r.Items[itemsCount].Spec = items.Spec
-				r.Items[itemsCount].Type = items.Type
-			}
+
+			r.Items = append(r.Items, items)
 		}
 		r.Next = types.StringPointerValue(resp.Next)
 		r.Total = types.Float64PointerValue(resp.Total)
@@ -212,6 +196,25 @@ func (r *MeshHealthCheckListDataSourceModel) ToOperationsGetMeshHealthCheckListR
 	} else {
 		size = nil
 	}
+	var filter *operations.GetMeshHealthCheckListQueryParamFilter
+	if r.Filter != nil {
+		key := new(string)
+		if !r.Filter.Key.IsUnknown() && !r.Filter.Key.IsNull() {
+			*key = r.Filter.Key.ValueString()
+		} else {
+			key = nil
+		}
+		value := new(string)
+		if !r.Filter.Value.IsUnknown() && !r.Filter.Value.IsNull() {
+			*value = r.Filter.Value.ValueString()
+		} else {
+			value = nil
+		}
+		filter = &operations.GetMeshHealthCheckListQueryParamFilter{
+			Key:   key,
+			Value: value,
+		}
+	}
 	var mesh string
 	mesh = r.Mesh.ValueString()
 
@@ -219,6 +222,7 @@ func (r *MeshHealthCheckListDataSourceModel) ToOperationsGetMeshHealthCheckListR
 		CpID:   cpID,
 		Offset: offset,
 		Size:   size,
+		Filter: filter,
 		Mesh:   mesh,
 	}
 

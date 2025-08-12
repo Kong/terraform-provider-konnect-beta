@@ -22,17 +22,13 @@ func (r *APISpecificationResourceModel) RefreshFromSharedAPISpecResponse(ctx con
 		r.Type = types.StringValue(string(resp.Type))
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 		r.ValidationMessages = []tfTypes.ValidationMessages{}
-		if len(r.ValidationMessages) > len(resp.ValidationMessages) {
-			r.ValidationMessages = r.ValidationMessages[:len(resp.ValidationMessages)]
-		}
-		for validationMessagesCount, validationMessagesItem := range resp.ValidationMessages {
+
+		for _, validationMessagesItem := range resp.ValidationMessages {
 			var validationMessages tfTypes.ValidationMessages
+
 			validationMessages.Message = types.StringValue(validationMessagesItem.Message)
-			if validationMessagesCount+1 > len(r.ValidationMessages) {
-				r.ValidationMessages = append(r.ValidationMessages, validationMessages)
-			} else {
-				r.ValidationMessages[validationMessagesCount].Message = validationMessages.Message
-			}
+
+			r.ValidationMessages = append(r.ValidationMessages, validationMessages)
 		}
 	}
 

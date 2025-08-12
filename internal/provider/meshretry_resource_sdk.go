@@ -66,11 +66,10 @@ func (r *MeshRetryResourceModel) RefreshFromSharedMeshRetryItem(ctx context.Cont
 			}
 		}
 		r.Spec.To = []tfTypes.MeshRetryItemTo{}
-		if len(r.Spec.To) > len(resp.Spec.To) {
-			r.Spec.To = r.Spec.To[:len(resp.Spec.To)]
-		}
-		for toCount, toItem := range resp.Spec.To {
+
+		for _, toItem := range resp.Spec.To {
 			var to tfTypes.MeshRetryItemTo
+
 			if toItem.Default == nil {
 				to.Default = nil
 			} else {
@@ -94,16 +93,14 @@ func (r *MeshRetryResourceModel) RefreshFromSharedMeshRetryItem(ctx context.Cont
 						to.Default.Grpc.RateLimitedBackOff = &tfTypes.RateLimitedBackOff{}
 						to.Default.Grpc.RateLimitedBackOff.MaxInterval = types.StringPointerValue(toItem.Default.Grpc.RateLimitedBackOff.MaxInterval)
 						to.Default.Grpc.RateLimitedBackOff.ResetHeaders = []tfTypes.ResetHeaders{}
-						for resetHeadersCount, resetHeadersItem := range toItem.Default.Grpc.RateLimitedBackOff.ResetHeaders {
+
+						for _, resetHeadersItem := range toItem.Default.Grpc.RateLimitedBackOff.ResetHeaders {
 							var resetHeaders tfTypes.ResetHeaders
+
 							resetHeaders.Format = types.StringValue(string(resetHeadersItem.Format))
 							resetHeaders.Name = types.StringValue(resetHeadersItem.Name)
-							if resetHeadersCount+1 > len(to.Default.Grpc.RateLimitedBackOff.ResetHeaders) {
-								to.Default.Grpc.RateLimitedBackOff.ResetHeaders = append(to.Default.Grpc.RateLimitedBackOff.ResetHeaders, resetHeaders)
-							} else {
-								to.Default.Grpc.RateLimitedBackOff.ResetHeaders[resetHeadersCount].Format = resetHeaders.Format
-								to.Default.Grpc.RateLimitedBackOff.ResetHeaders[resetHeadersCount].Name = resetHeaders.Name
-							}
+
+							to.Default.Grpc.RateLimitedBackOff.ResetHeaders = append(to.Default.Grpc.RateLimitedBackOff.ResetHeaders, resetHeaders)
 						}
 					}
 					to.Default.Grpc.RetryOn = make([]types.String, 0, len(toItem.Default.Grpc.RetryOn))
@@ -123,8 +120,10 @@ func (r *MeshRetryResourceModel) RefreshFromSharedMeshRetryItem(ctx context.Cont
 						to.Default.HTTP.BackOff.MaxInterval = types.StringPointerValue(toItem.Default.HTTP.BackOff.MaxInterval)
 					}
 					to.Default.HTTP.HostSelection = []tfTypes.HostSelection{}
-					for hostSelectionCount, hostSelectionItem := range toItem.Default.HTTP.HostSelection {
+
+					for _, hostSelectionItem := range toItem.Default.HTTP.HostSelection {
 						var hostSelection tfTypes.HostSelection
+
 						hostSelection.Predicate = types.StringValue(string(hostSelectionItem.Predicate))
 						if len(hostSelectionItem.Tags) > 0 {
 							hostSelection.Tags = make(map[string]types.String, len(hostSelectionItem.Tags))
@@ -133,13 +132,8 @@ func (r *MeshRetryResourceModel) RefreshFromSharedMeshRetryItem(ctx context.Cont
 							}
 						}
 						hostSelection.UpdateFrequency = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(hostSelectionItem.UpdateFrequency))
-						if hostSelectionCount+1 > len(to.Default.HTTP.HostSelection) {
-							to.Default.HTTP.HostSelection = append(to.Default.HTTP.HostSelection, hostSelection)
-						} else {
-							to.Default.HTTP.HostSelection[hostSelectionCount].Predicate = hostSelection.Predicate
-							to.Default.HTTP.HostSelection[hostSelectionCount].Tags = hostSelection.Tags
-							to.Default.HTTP.HostSelection[hostSelectionCount].UpdateFrequency = hostSelection.UpdateFrequency
-						}
+
+						to.Default.HTTP.HostSelection = append(to.Default.HTTP.HostSelection, hostSelection)
 					}
 					to.Default.HTTP.HostSelectionMaxAttempts = types.Int64PointerValue(toItem.Default.HTTP.HostSelectionMaxAttempts)
 					to.Default.HTTP.NumRetries = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(toItem.Default.HTTP.NumRetries))
@@ -150,21 +144,21 @@ func (r *MeshRetryResourceModel) RefreshFromSharedMeshRetryItem(ctx context.Cont
 						to.Default.HTTP.RateLimitedBackOff = &tfTypes.RateLimitedBackOff{}
 						to.Default.HTTP.RateLimitedBackOff.MaxInterval = types.StringPointerValue(toItem.Default.HTTP.RateLimitedBackOff.MaxInterval)
 						to.Default.HTTP.RateLimitedBackOff.ResetHeaders = []tfTypes.ResetHeaders{}
-						for resetHeadersCount1, resetHeadersItem1 := range toItem.Default.HTTP.RateLimitedBackOff.ResetHeaders {
+
+						for _, resetHeadersItem1 := range toItem.Default.HTTP.RateLimitedBackOff.ResetHeaders {
 							var resetHeaders1 tfTypes.ResetHeaders
+
 							resetHeaders1.Format = types.StringValue(string(resetHeadersItem1.Format))
 							resetHeaders1.Name = types.StringValue(resetHeadersItem1.Name)
-							if resetHeadersCount1+1 > len(to.Default.HTTP.RateLimitedBackOff.ResetHeaders) {
-								to.Default.HTTP.RateLimitedBackOff.ResetHeaders = append(to.Default.HTTP.RateLimitedBackOff.ResetHeaders, resetHeaders1)
-							} else {
-								to.Default.HTTP.RateLimitedBackOff.ResetHeaders[resetHeadersCount1].Format = resetHeaders1.Format
-								to.Default.HTTP.RateLimitedBackOff.ResetHeaders[resetHeadersCount1].Name = resetHeaders1.Name
-							}
+
+							to.Default.HTTP.RateLimitedBackOff.ResetHeaders = append(to.Default.HTTP.RateLimitedBackOff.ResetHeaders, resetHeaders1)
 						}
 					}
 					to.Default.HTTP.RetriableRequestHeaders = []tfTypes.Headers{}
-					for retriableRequestHeadersCount, retriableRequestHeadersItem := range toItem.Default.HTTP.RetriableRequestHeaders {
+
+					for _, retriableRequestHeadersItem := range toItem.Default.HTTP.RetriableRequestHeaders {
 						var retriableRequestHeaders tfTypes.Headers
+
 						retriableRequestHeaders.Name = types.StringValue(retriableRequestHeadersItem.Name)
 						if retriableRequestHeadersItem.Type != nil {
 							retriableRequestHeaders.Type = types.StringValue(string(*retriableRequestHeadersItem.Type))
@@ -172,17 +166,14 @@ func (r *MeshRetryResourceModel) RefreshFromSharedMeshRetryItem(ctx context.Cont
 							retriableRequestHeaders.Type = types.StringNull()
 						}
 						retriableRequestHeaders.Value = types.StringPointerValue(retriableRequestHeadersItem.Value)
-						if retriableRequestHeadersCount+1 > len(to.Default.HTTP.RetriableRequestHeaders) {
-							to.Default.HTTP.RetriableRequestHeaders = append(to.Default.HTTP.RetriableRequestHeaders, retriableRequestHeaders)
-						} else {
-							to.Default.HTTP.RetriableRequestHeaders[retriableRequestHeadersCount].Name = retriableRequestHeaders.Name
-							to.Default.HTTP.RetriableRequestHeaders[retriableRequestHeadersCount].Type = retriableRequestHeaders.Type
-							to.Default.HTTP.RetriableRequestHeaders[retriableRequestHeadersCount].Value = retriableRequestHeaders.Value
-						}
+
+						to.Default.HTTP.RetriableRequestHeaders = append(to.Default.HTTP.RetriableRequestHeaders, retriableRequestHeaders)
 					}
 					to.Default.HTTP.RetriableResponseHeaders = []tfTypes.Headers{}
-					for retriableResponseHeadersCount, retriableResponseHeadersItem := range toItem.Default.HTTP.RetriableResponseHeaders {
+
+					for _, retriableResponseHeadersItem := range toItem.Default.HTTP.RetriableResponseHeaders {
 						var retriableResponseHeaders tfTypes.Headers
+
 						retriableResponseHeaders.Name = types.StringValue(retriableResponseHeadersItem.Name)
 						if retriableResponseHeadersItem.Type != nil {
 							retriableResponseHeaders.Type = types.StringValue(string(*retriableResponseHeadersItem.Type))
@@ -190,13 +181,8 @@ func (r *MeshRetryResourceModel) RefreshFromSharedMeshRetryItem(ctx context.Cont
 							retriableResponseHeaders.Type = types.StringNull()
 						}
 						retriableResponseHeaders.Value = types.StringPointerValue(retriableResponseHeadersItem.Value)
-						if retriableResponseHeadersCount+1 > len(to.Default.HTTP.RetriableResponseHeaders) {
-							to.Default.HTTP.RetriableResponseHeaders = append(to.Default.HTTP.RetriableResponseHeaders, retriableResponseHeaders)
-						} else {
-							to.Default.HTTP.RetriableResponseHeaders[retriableResponseHeadersCount].Name = retriableResponseHeaders.Name
-							to.Default.HTTP.RetriableResponseHeaders[retriableResponseHeadersCount].Type = retriableResponseHeaders.Type
-							to.Default.HTTP.RetriableResponseHeaders[retriableResponseHeadersCount].Value = retriableResponseHeaders.Value
-						}
+
+						to.Default.HTTP.RetriableResponseHeaders = append(to.Default.HTTP.RetriableResponseHeaders, retriableResponseHeaders)
 					}
 					to.Default.HTTP.RetryOn = make([]types.String, 0, len(toItem.Default.HTTP.RetryOn))
 					for _, v := range toItem.Default.HTTP.RetryOn {
@@ -231,12 +217,8 @@ func (r *MeshRetryResourceModel) RefreshFromSharedMeshRetryItem(ctx context.Cont
 					to.TargetRef.Tags[key4] = types.StringValue(value4)
 				}
 			}
-			if toCount+1 > len(r.Spec.To) {
-				r.Spec.To = append(r.Spec.To, to)
-			} else {
-				r.Spec.To[toCount].Default = to.Default
-				r.Spec.To[toCount].TargetRef = to.TargetRef
-			}
+
+			r.Spec.To = append(r.Spec.To, to)
 		}
 		r.Type = types.StringValue(string(resp.Type))
 	}

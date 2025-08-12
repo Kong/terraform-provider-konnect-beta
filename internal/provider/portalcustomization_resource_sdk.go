@@ -32,72 +32,49 @@ func (r *PortalCustomizationResourceModel) RefreshFromSharedPortalCustomization(
 		} else {
 			r.Menu = &tfTypes.Menu{}
 			r.Menu.FooterBottom = []tfTypes.PortalMenuItem{}
-			if len(r.Menu.FooterBottom) > len(resp.Menu.FooterBottom) {
-				r.Menu.FooterBottom = r.Menu.FooterBottom[:len(resp.Menu.FooterBottom)]
-			}
-			for footerBottomCount, footerBottomItem := range resp.Menu.FooterBottom {
+
+			for _, footerBottomItem := range resp.Menu.FooterBottom {
 				var footerBottom tfTypes.PortalMenuItem
+
 				footerBottom.External = types.BoolValue(footerBottomItem.External)
 				footerBottom.Path = types.StringValue(footerBottomItem.Path)
 				footerBottom.Title = types.StringValue(footerBottomItem.Title)
 				footerBottom.Visibility = types.StringValue(string(footerBottomItem.Visibility))
-				if footerBottomCount+1 > len(r.Menu.FooterBottom) {
-					r.Menu.FooterBottom = append(r.Menu.FooterBottom, footerBottom)
-				} else {
-					r.Menu.FooterBottom[footerBottomCount].External = footerBottom.External
-					r.Menu.FooterBottom[footerBottomCount].Path = footerBottom.Path
-					r.Menu.FooterBottom[footerBottomCount].Title = footerBottom.Title
-					r.Menu.FooterBottom[footerBottomCount].Visibility = footerBottom.Visibility
-				}
+
+				r.Menu.FooterBottom = append(r.Menu.FooterBottom, footerBottom)
 			}
 			r.Menu.FooterSections = []tfTypes.PortalFooterMenuSection{}
-			if len(r.Menu.FooterSections) > len(resp.Menu.FooterSections) {
-				r.Menu.FooterSections = r.Menu.FooterSections[:len(resp.Menu.FooterSections)]
-			}
-			for footerSectionsCount, footerSectionsItem := range resp.Menu.FooterSections {
+
+			for _, footerSectionsItem := range resp.Menu.FooterSections {
 				var footerSections tfTypes.PortalFooterMenuSection
+
 				footerSections.Items = []tfTypes.PortalMenuItem{}
-				for itemsCount, itemsItem := range footerSectionsItem.Items {
+
+				for _, itemsItem := range footerSectionsItem.Items {
 					var items tfTypes.PortalMenuItem
+
 					items.External = types.BoolValue(itemsItem.External)
 					items.Path = types.StringValue(itemsItem.Path)
 					items.Title = types.StringValue(itemsItem.Title)
 					items.Visibility = types.StringValue(string(itemsItem.Visibility))
-					if itemsCount+1 > len(footerSections.Items) {
-						footerSections.Items = append(footerSections.Items, items)
-					} else {
-						footerSections.Items[itemsCount].External = items.External
-						footerSections.Items[itemsCount].Path = items.Path
-						footerSections.Items[itemsCount].Title = items.Title
-						footerSections.Items[itemsCount].Visibility = items.Visibility
-					}
+
+					footerSections.Items = append(footerSections.Items, items)
 				}
 				footerSections.Title = types.StringValue(footerSectionsItem.Title)
-				if footerSectionsCount+1 > len(r.Menu.FooterSections) {
-					r.Menu.FooterSections = append(r.Menu.FooterSections, footerSections)
-				} else {
-					r.Menu.FooterSections[footerSectionsCount].Items = footerSections.Items
-					r.Menu.FooterSections[footerSectionsCount].Title = footerSections.Title
-				}
+
+				r.Menu.FooterSections = append(r.Menu.FooterSections, footerSections)
 			}
 			r.Menu.Main = []tfTypes.PortalMenuItem{}
-			if len(r.Menu.Main) > len(resp.Menu.Main) {
-				r.Menu.Main = r.Menu.Main[:len(resp.Menu.Main)]
-			}
-			for mainCount, mainItem := range resp.Menu.Main {
+
+			for _, mainItem := range resp.Menu.Main {
 				var main tfTypes.PortalMenuItem
+
 				main.External = types.BoolValue(mainItem.External)
 				main.Path = types.StringValue(mainItem.Path)
 				main.Title = types.StringValue(mainItem.Title)
 				main.Visibility = types.StringValue(string(mainItem.Visibility))
-				if mainCount+1 > len(r.Menu.Main) {
-					r.Menu.Main = append(r.Menu.Main, main)
-				} else {
-					r.Menu.Main[mainCount].External = main.External
-					r.Menu.Main[mainCount].Path = main.Path
-					r.Menu.Main[mainCount].Title = main.Title
-					r.Menu.Main[mainCount].Visibility = main.Visibility
-				}
+
+				r.Menu.Main = append(r.Menu.Main, main)
 			}
 		}
 		r.Robots = types.StringPointerValue(resp.Robots)

@@ -66,11 +66,10 @@ func (r *MeshHealthCheckResourceModel) RefreshFromSharedMeshHealthCheckItem(ctx 
 			}
 		}
 		r.Spec.To = []tfTypes.MeshHealthCheckItemTo{}
-		if len(r.Spec.To) > len(resp.Spec.To) {
-			r.Spec.To = r.Spec.To[:len(resp.Spec.To)]
-		}
-		for toCount, toItem := range resp.Spec.To {
+
+		for _, toItem := range resp.Spec.To {
 			var to tfTypes.MeshHealthCheckItemTo
+
 			if toItem.Default == nil {
 				to.Default = nil
 			} else {
@@ -111,28 +110,24 @@ func (r *MeshHealthCheckResourceModel) RefreshFromSharedMeshHealthCheckItem(ctx 
 					} else {
 						to.Default.HTTP.RequestHeadersToAdd = &tfTypes.MeshGlobalRateLimitItemHeaders{}
 						to.Default.HTTP.RequestHeadersToAdd.Add = []tfTypes.MeshGlobalRateLimitItemAdd{}
-						for addCount, addItem := range toItem.Default.HTTP.RequestHeadersToAdd.Add {
+
+						for _, addItem := range toItem.Default.HTTP.RequestHeadersToAdd.Add {
 							var add tfTypes.MeshGlobalRateLimitItemAdd
+
 							add.Name = types.StringValue(addItem.Name)
 							add.Value = types.StringValue(addItem.Value)
-							if addCount+1 > len(to.Default.HTTP.RequestHeadersToAdd.Add) {
-								to.Default.HTTP.RequestHeadersToAdd.Add = append(to.Default.HTTP.RequestHeadersToAdd.Add, add)
-							} else {
-								to.Default.HTTP.RequestHeadersToAdd.Add[addCount].Name = add.Name
-								to.Default.HTTP.RequestHeadersToAdd.Add[addCount].Value = add.Value
-							}
+
+							to.Default.HTTP.RequestHeadersToAdd.Add = append(to.Default.HTTP.RequestHeadersToAdd.Add, add)
 						}
 						to.Default.HTTP.RequestHeadersToAdd.Set = []tfTypes.MeshGlobalRateLimitItemAdd{}
-						for setCount, setItem := range toItem.Default.HTTP.RequestHeadersToAdd.Set {
+
+						for _, setItem := range toItem.Default.HTTP.RequestHeadersToAdd.Set {
 							var set tfTypes.MeshGlobalRateLimitItemAdd
+
 							set.Name = types.StringValue(setItem.Name)
 							set.Value = types.StringValue(setItem.Value)
-							if setCount+1 > len(to.Default.HTTP.RequestHeadersToAdd.Set) {
-								to.Default.HTTP.RequestHeadersToAdd.Set = append(to.Default.HTTP.RequestHeadersToAdd.Set, set)
-							} else {
-								to.Default.HTTP.RequestHeadersToAdd.Set[setCount].Name = set.Name
-								to.Default.HTTP.RequestHeadersToAdd.Set[setCount].Value = set.Value
-							}
+
+							to.Default.HTTP.RequestHeadersToAdd.Set = append(to.Default.HTTP.RequestHeadersToAdd.Set, set)
 						}
 					}
 				}
@@ -177,12 +172,8 @@ func (r *MeshHealthCheckResourceModel) RefreshFromSharedMeshHealthCheckItem(ctx 
 					to.TargetRef.Tags[key3] = types.StringValue(value3)
 				}
 			}
-			if toCount+1 > len(r.Spec.To) {
-				r.Spec.To = append(r.Spec.To, to)
-			} else {
-				r.Spec.To[toCount].Default = to.Default
-				r.Spec.To[toCount].TargetRef = to.TargetRef
-			}
+
+			r.Spec.To = append(r.Spec.To, to)
 		}
 		r.Type = types.StringValue(string(resp.Type))
 	}

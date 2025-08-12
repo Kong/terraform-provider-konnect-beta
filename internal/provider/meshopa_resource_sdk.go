@@ -52,21 +52,16 @@ func (r *MeshOPAResourceModel) RefreshFromSharedMeshOPAItem(ctx context.Context,
 				r.Spec.Default.AgentConfig.Secret = types.StringPointerValue(resp.Spec.Default.AgentConfig.Secret)
 			}
 			r.Spec.Default.AppendPolicies = []tfTypes.AppendPolicies{}
-			if len(r.Spec.Default.AppendPolicies) > len(resp.Spec.Default.AppendPolicies) {
-				r.Spec.Default.AppendPolicies = r.Spec.Default.AppendPolicies[:len(resp.Spec.Default.AppendPolicies)]
-			}
-			for appendPoliciesCount, appendPoliciesItem := range resp.Spec.Default.AppendPolicies {
+
+			for _, appendPoliciesItem := range resp.Spec.Default.AppendPolicies {
 				var appendPolicies tfTypes.AppendPolicies
+
 				appendPolicies.IgnoreDecision = types.BoolPointerValue(appendPoliciesItem.IgnoreDecision)
 				appendPolicies.Rego.Inline = types.StringPointerValue(appendPoliciesItem.Rego.Inline)
 				appendPolicies.Rego.InlineString = types.StringPointerValue(appendPoliciesItem.Rego.InlineString)
 				appendPolicies.Rego.Secret = types.StringPointerValue(appendPoliciesItem.Rego.Secret)
-				if appendPoliciesCount+1 > len(r.Spec.Default.AppendPolicies) {
-					r.Spec.Default.AppendPolicies = append(r.Spec.Default.AppendPolicies, appendPolicies)
-				} else {
-					r.Spec.Default.AppendPolicies[appendPoliciesCount].IgnoreDecision = appendPolicies.IgnoreDecision
-					r.Spec.Default.AppendPolicies[appendPoliciesCount].Rego = appendPolicies.Rego
-				}
+
+				r.Spec.Default.AppendPolicies = append(r.Spec.Default.AppendPolicies, appendPolicies)
 			}
 			if resp.Spec.Default.AuthConfig == nil {
 				r.Spec.Default.AuthConfig = nil

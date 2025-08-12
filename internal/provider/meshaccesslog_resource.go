@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Kong/shared-speakeasy/customtypes/kumalabels"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -237,8 +238,9 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																	`https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators`,
 															},
 															"body": schema.StringAttribute{
-																Computed: true,
-																Optional: true,
+																CustomType: jsontypes.NormalizedType{},
+																Computed:   true,
+																Optional:   true,
 																PlanModifiers: []planmodifier.String{
 																	custom_stringplanmodifier.ArbitraryJSONModifier(),
 																},
@@ -247,9 +249,6 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																	`It can contain placeholders available on` + "\n" +
 																	`https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators` + "\n" +
 																	`Parsed as JSON.`,
-																Validators: []validator.String{
-																	validators.IsValidJSON(),
-																},
 															},
 															"endpoint": schema.StringAttribute{
 																Optional:    true,
@@ -550,16 +549,14 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																	`https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators`,
 															},
 															"body": schema.StringAttribute{
-																Computed: true,
-																Optional: true,
+																CustomType: jsontypes.NormalizedType{},
+																Computed:   true,
+																Optional:   true,
 																MarkdownDescription: `Body is a raw string or an OTLP any value as described at` + "\n" +
 																	`https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/logs/data-model.md#field-body` + "\n" +
 																	`It can contain placeholders available on` + "\n" +
 																	`https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators` + "\n" +
 																	`Parsed as JSON.`,
-																Validators: []validator.String{
-																	validators.IsValidJSON(),
-																},
 															},
 															"endpoint": schema.StringAttribute{
 																Optional:    true,
@@ -855,8 +852,9 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																	`https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators`,
 															},
 															"body": schema.StringAttribute{
-																Computed: true,
-																Optional: true,
+																CustomType: jsontypes.NormalizedType{},
+																Computed:   true,
+																Optional:   true,
 																PlanModifiers: []planmodifier.String{
 																	custom_stringplanmodifier.ArbitraryJSONModifier(),
 																},
@@ -865,9 +863,6 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																	`It can contain placeholders available on` + "\n" +
 																	`https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators` + "\n" +
 																	`Parsed as JSON.`,
-																Validators: []validator.String{
-																	validators.IsValidJSON(),
-																},
 															},
 															"endpoint": schema.StringAttribute{
 																Optional:    true,

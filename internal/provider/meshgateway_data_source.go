@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/Kong/shared-speakeasy/customtypes/kumalabels"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -115,7 +116,8 @@ func (r *MeshGatewayDataSource) Schema(ctx context.Context, req datasource.Schem
 											NestedObject: schema.NestedAttributeObject{
 												Attributes: map[string]schema.Attribute{
 													"type": schema.StringAttribute{
-														Computed: true,
+														CustomType: jsontypes.NormalizedType{},
+														Computed:   true,
 														MarkdownDescription: `Types that are assignable to Type:` + "\n" +
 															`` + "\n" +
 															`	*DataSource_Secret` + "\n" +

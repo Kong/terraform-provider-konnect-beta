@@ -18,11 +18,10 @@ func (r *MeshTCPRouteListDataSourceModel) RefreshFromSharedMeshTCPRouteList(ctx 
 
 	if resp != nil {
 		r.Items = []tfTypes.MeshTCPRouteItem{}
-		if len(r.Items) > len(resp.Items) {
-			r.Items = r.Items[:len(resp.Items)]
-		}
-		for itemsCount, itemsItem := range resp.Items {
+
+		for _, itemsItem := range resp.Items {
 			var items tfTypes.MeshTCPRouteItem
+
 			items.CreationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(itemsItem.CreationTime))
 			labelsValue, labelsDiags := types.MapValueFrom(ctx, types.StringType, itemsItem.Labels)
 			diags.Append(labelsDiags...)
@@ -59,14 +58,20 @@ func (r *MeshTCPRouteListDataSourceModel) RefreshFromSharedMeshTCPRouteList(ctx 
 				}
 			}
 			items.Spec.To = []tfTypes.MeshTCPRouteItemTo{}
-			for toCount, toItem := range itemsItem.Spec.To {
+
+			for _, toItem := range itemsItem.Spec.To {
 				var to tfTypes.MeshTCPRouteItemTo
+
 				to.Rules = []tfTypes.MeshTCPRouteItemRules{}
-				for rulesCount, rulesItem := range toItem.Rules {
+
+				for _, rulesItem := range toItem.Rules {
 					var rules tfTypes.MeshTCPRouteItemRules
+
 					rules.Default.BackendRefs = []tfTypes.BackendRefs{}
-					for backendRefsCount, backendRefsItem := range rulesItem.Default.BackendRefs {
+
+					for _, backendRefsItem := range rulesItem.Default.BackendRefs {
 						var backendRefs tfTypes.BackendRefs
+
 						backendRefs.Kind = types.StringValue(string(backendRefsItem.Kind))
 						if len(backendRefsItem.Labels) > 0 {
 							backendRefs.Labels = make(map[string]types.String, len(backendRefsItem.Labels))
@@ -90,26 +95,11 @@ func (r *MeshTCPRouteListDataSourceModel) RefreshFromSharedMeshTCPRouteList(ctx 
 							}
 						}
 						backendRefs.Weight = types.Int64PointerValue(backendRefsItem.Weight)
-						if backendRefsCount+1 > len(rules.Default.BackendRefs) {
-							rules.Default.BackendRefs = append(rules.Default.BackendRefs, backendRefs)
-						} else {
-							rules.Default.BackendRefs[backendRefsCount].Kind = backendRefs.Kind
-							rules.Default.BackendRefs[backendRefsCount].Labels = backendRefs.Labels
-							rules.Default.BackendRefs[backendRefsCount].Mesh = backendRefs.Mesh
-							rules.Default.BackendRefs[backendRefsCount].Name = backendRefs.Name
-							rules.Default.BackendRefs[backendRefsCount].Namespace = backendRefs.Namespace
-							rules.Default.BackendRefs[backendRefsCount].Port = backendRefs.Port
-							rules.Default.BackendRefs[backendRefsCount].ProxyTypes = backendRefs.ProxyTypes
-							rules.Default.BackendRefs[backendRefsCount].SectionName = backendRefs.SectionName
-							rules.Default.BackendRefs[backendRefsCount].Tags = backendRefs.Tags
-							rules.Default.BackendRefs[backendRefsCount].Weight = backendRefs.Weight
-						}
+
+						rules.Default.BackendRefs = append(rules.Default.BackendRefs, backendRefs)
 					}
-					if rulesCount+1 > len(to.Rules) {
-						to.Rules = append(to.Rules, rules)
-					} else {
-						to.Rules[rulesCount].Default = rules.Default
-					}
+
+					to.Rules = append(to.Rules, rules)
 				}
 				to.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 				if len(toItem.TargetRef.Labels) > 0 {
@@ -132,25 +122,12 @@ func (r *MeshTCPRouteListDataSourceModel) RefreshFromSharedMeshTCPRouteList(ctx 
 						to.TargetRef.Tags[key5] = types.StringValue(value5)
 					}
 				}
-				if toCount+1 > len(items.Spec.To) {
-					items.Spec.To = append(items.Spec.To, to)
-				} else {
-					items.Spec.To[toCount].Rules = to.Rules
-					items.Spec.To[toCount].TargetRef = to.TargetRef
-				}
+
+				items.Spec.To = append(items.Spec.To, to)
 			}
 			items.Type = types.StringValue(string(itemsItem.Type))
-			if itemsCount+1 > len(r.Items) {
-				r.Items = append(r.Items, items)
-			} else {
-				r.Items[itemsCount].CreationTime = items.CreationTime
-				r.Items[itemsCount].Labels = items.Labels
-				r.Items[itemsCount].Mesh = items.Mesh
-				r.Items[itemsCount].ModificationTime = items.ModificationTime
-				r.Items[itemsCount].Name = items.Name
-				r.Items[itemsCount].Spec = items.Spec
-				r.Items[itemsCount].Type = items.Type
-			}
+
+			r.Items = append(r.Items, items)
 		}
 		r.Next = types.StringPointerValue(resp.Next)
 		r.Total = types.Float64PointerValue(resp.Total)
@@ -177,6 +154,25 @@ func (r *MeshTCPRouteListDataSourceModel) ToOperationsGetMeshTCPRouteListRequest
 	} else {
 		size = nil
 	}
+	var filter *operations.GetMeshTCPRouteListQueryParamFilter
+	if r.Filter != nil {
+		key := new(string)
+		if !r.Filter.Key.IsUnknown() && !r.Filter.Key.IsNull() {
+			*key = r.Filter.Key.ValueString()
+		} else {
+			key = nil
+		}
+		value := new(string)
+		if !r.Filter.Value.IsUnknown() && !r.Filter.Value.IsNull() {
+			*value = r.Filter.Value.ValueString()
+		} else {
+			value = nil
+		}
+		filter = &operations.GetMeshTCPRouteListQueryParamFilter{
+			Key:   key,
+			Value: value,
+		}
+	}
 	var mesh string
 	mesh = r.Mesh.ValueString()
 
@@ -184,6 +180,7 @@ func (r *MeshTCPRouteListDataSourceModel) ToOperationsGetMeshTCPRouteListRequest
 		CpID:   cpID,
 		Offset: offset,
 		Size:   size,
+		Filter: filter,
 		Mesh:   mesh,
 	}
 

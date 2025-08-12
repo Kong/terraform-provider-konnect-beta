@@ -18,11 +18,10 @@ func (r *MeshMetricListDataSourceModel) RefreshFromSharedMeshMetricList(ctx cont
 
 	if resp != nil {
 		r.Items = []tfTypes.MeshMetricItem{}
-		if len(r.Items) > len(resp.Items) {
-			r.Items = r.Items[:len(resp.Items)]
-		}
-		for itemsCount, itemsItem := range resp.Items {
+
+		for _, itemsItem := range resp.Items {
 			var items tfTypes.MeshMetricItem
+
 			items.CreationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(itemsItem.CreationTime))
 			labelsValue, labelsDiags := types.MapValueFrom(ctx, types.StringType, itemsItem.Labels)
 			diags.Append(labelsDiags...)
@@ -37,24 +36,22 @@ func (r *MeshMetricListDataSourceModel) RefreshFromSharedMeshMetricList(ctx cont
 			} else {
 				items.Spec.Default = &tfTypes.Default{}
 				items.Spec.Default.Applications = []tfTypes.Applications{}
-				for applicationsCount, applicationsItem := range itemsItem.Spec.Default.Applications {
+
+				for _, applicationsItem := range itemsItem.Spec.Default.Applications {
 					var applications tfTypes.Applications
+
 					applications.Address = types.StringPointerValue(applicationsItem.Address)
 					applications.Name = types.StringPointerValue(applicationsItem.Name)
 					applications.Path = types.StringPointerValue(applicationsItem.Path)
 					applications.Port = types.Int32Value(int32(applicationsItem.Port))
-					if applicationsCount+1 > len(items.Spec.Default.Applications) {
-						items.Spec.Default.Applications = append(items.Spec.Default.Applications, applications)
-					} else {
-						items.Spec.Default.Applications[applicationsCount].Address = applications.Address
-						items.Spec.Default.Applications[applicationsCount].Name = applications.Name
-						items.Spec.Default.Applications[applicationsCount].Path = applications.Path
-						items.Spec.Default.Applications[applicationsCount].Port = applications.Port
-					}
+
+					items.Spec.Default.Applications = append(items.Spec.Default.Applications, applications)
 				}
 				items.Spec.Default.Backends = []tfTypes.MeshMetricItemBackends{}
-				for backendsCount, backendsItem := range itemsItem.Spec.Default.Backends {
+
+				for _, backendsItem := range itemsItem.Spec.Default.Backends {
 					var backends tfTypes.MeshMetricItemBackends
+
 					if backendsItem.OpenTelemetry == nil {
 						backends.OpenTelemetry = nil
 					} else {
@@ -81,13 +78,8 @@ func (r *MeshMetricListDataSourceModel) RefreshFromSharedMeshMetricList(ctx cont
 						}
 					}
 					backends.Type = types.StringValue(string(backendsItem.Type))
-					if backendsCount+1 > len(items.Spec.Default.Backends) {
-						items.Spec.Default.Backends = append(items.Spec.Default.Backends, backends)
-					} else {
-						items.Spec.Default.Backends[backendsCount].OpenTelemetry = backends.OpenTelemetry
-						items.Spec.Default.Backends[backendsCount].Prometheus = backends.Prometheus
-						items.Spec.Default.Backends[backendsCount].Type = backends.Type
-					}
+
+					items.Spec.Default.Backends = append(items.Spec.Default.Backends, backends)
 				}
 				if itemsItem.Spec.Default.Sidecar == nil {
 					items.Spec.Default.Sidecar = nil
@@ -99,38 +91,33 @@ func (r *MeshMetricListDataSourceModel) RefreshFromSharedMeshMetricList(ctx cont
 					} else {
 						items.Spec.Default.Sidecar.Profiles = &tfTypes.Profiles{}
 						items.Spec.Default.Sidecar.Profiles.AppendProfiles = []tfTypes.MeshLoadBalancingStrategyItemSpecHeader{}
-						for appendProfilesCount, appendProfilesItem := range itemsItem.Spec.Default.Sidecar.Profiles.AppendProfiles {
+
+						for _, appendProfilesItem := range itemsItem.Spec.Default.Sidecar.Profiles.AppendProfiles {
 							var appendProfiles tfTypes.MeshLoadBalancingStrategyItemSpecHeader
+
 							appendProfiles.Name = types.StringValue(string(appendProfilesItem.Name))
-							if appendProfilesCount+1 > len(items.Spec.Default.Sidecar.Profiles.AppendProfiles) {
-								items.Spec.Default.Sidecar.Profiles.AppendProfiles = append(items.Spec.Default.Sidecar.Profiles.AppendProfiles, appendProfiles)
-							} else {
-								items.Spec.Default.Sidecar.Profiles.AppendProfiles[appendProfilesCount].Name = appendProfiles.Name
-							}
+
+							items.Spec.Default.Sidecar.Profiles.AppendProfiles = append(items.Spec.Default.Sidecar.Profiles.AppendProfiles, appendProfiles)
 						}
 						items.Spec.Default.Sidecar.Profiles.Exclude = []tfTypes.Exclude{}
-						for excludeCount, excludeItem := range itemsItem.Spec.Default.Sidecar.Profiles.Exclude {
+
+						for _, excludeItem := range itemsItem.Spec.Default.Sidecar.Profiles.Exclude {
 							var exclude tfTypes.Exclude
+
 							exclude.Match = types.StringValue(excludeItem.Match)
 							exclude.Type = types.StringValue(string(excludeItem.Type))
-							if excludeCount+1 > len(items.Spec.Default.Sidecar.Profiles.Exclude) {
-								items.Spec.Default.Sidecar.Profiles.Exclude = append(items.Spec.Default.Sidecar.Profiles.Exclude, exclude)
-							} else {
-								items.Spec.Default.Sidecar.Profiles.Exclude[excludeCount].Match = exclude.Match
-								items.Spec.Default.Sidecar.Profiles.Exclude[excludeCount].Type = exclude.Type
-							}
+
+							items.Spec.Default.Sidecar.Profiles.Exclude = append(items.Spec.Default.Sidecar.Profiles.Exclude, exclude)
 						}
 						items.Spec.Default.Sidecar.Profiles.Include = []tfTypes.Exclude{}
-						for includeCount, includeItem := range itemsItem.Spec.Default.Sidecar.Profiles.Include {
+
+						for _, includeItem := range itemsItem.Spec.Default.Sidecar.Profiles.Include {
 							var include tfTypes.Exclude
+
 							include.Match = types.StringValue(includeItem.Match)
 							include.Type = types.StringValue(string(includeItem.Type))
-							if includeCount+1 > len(items.Spec.Default.Sidecar.Profiles.Include) {
-								items.Spec.Default.Sidecar.Profiles.Include = append(items.Spec.Default.Sidecar.Profiles.Include, include)
-							} else {
-								items.Spec.Default.Sidecar.Profiles.Include[includeCount].Match = include.Match
-								items.Spec.Default.Sidecar.Profiles.Include[includeCount].Type = include.Type
-							}
+
+							items.Spec.Default.Sidecar.Profiles.Include = append(items.Spec.Default.Sidecar.Profiles.Include, include)
 						}
 					}
 				}
@@ -162,17 +149,8 @@ func (r *MeshMetricListDataSourceModel) RefreshFromSharedMeshMetricList(ctx cont
 				}
 			}
 			items.Type = types.StringValue(string(itemsItem.Type))
-			if itemsCount+1 > len(r.Items) {
-				r.Items = append(r.Items, items)
-			} else {
-				r.Items[itemsCount].CreationTime = items.CreationTime
-				r.Items[itemsCount].Labels = items.Labels
-				r.Items[itemsCount].Mesh = items.Mesh
-				r.Items[itemsCount].ModificationTime = items.ModificationTime
-				r.Items[itemsCount].Name = items.Name
-				r.Items[itemsCount].Spec = items.Spec
-				r.Items[itemsCount].Type = items.Type
-			}
+
+			r.Items = append(r.Items, items)
 		}
 		r.Next = types.StringPointerValue(resp.Next)
 		r.Total = types.Float64PointerValue(resp.Total)
@@ -199,6 +177,25 @@ func (r *MeshMetricListDataSourceModel) ToOperationsGetMeshMetricListRequest(ctx
 	} else {
 		size = nil
 	}
+	var filter *operations.GetMeshMetricListQueryParamFilter
+	if r.Filter != nil {
+		key := new(string)
+		if !r.Filter.Key.IsUnknown() && !r.Filter.Key.IsNull() {
+			*key = r.Filter.Key.ValueString()
+		} else {
+			key = nil
+		}
+		value := new(string)
+		if !r.Filter.Value.IsUnknown() && !r.Filter.Value.IsNull() {
+			*value = r.Filter.Value.ValueString()
+		} else {
+			value = nil
+		}
+		filter = &operations.GetMeshMetricListQueryParamFilter{
+			Key:   key,
+			Value: value,
+		}
+	}
 	var mesh string
 	mesh = r.Mesh.ValueString()
 
@@ -206,6 +203,7 @@ func (r *MeshMetricListDataSourceModel) ToOperationsGetMeshMetricListRequest(ctx
 		CpID:   cpID,
 		Offset: offset,
 		Size:   size,
+		Filter: filter,
 		Mesh:   mesh,
 	}
 

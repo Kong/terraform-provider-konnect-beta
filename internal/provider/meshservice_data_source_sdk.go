@@ -27,26 +27,20 @@ func (r *MeshServiceDataSourceModel) RefreshFromSharedMeshServiceItem(ctx contex
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
 		r.Spec.Identities = []tfTypes.Path{}
-		if len(r.Spec.Identities) > len(resp.Spec.Identities) {
-			r.Spec.Identities = r.Spec.Identities[:len(resp.Spec.Identities)]
-		}
-		for identitiesCount, identitiesItem := range resp.Spec.Identities {
+
+		for _, identitiesItem := range resp.Spec.Identities {
 			var identities tfTypes.Path
+
 			identities.Type = types.StringValue(string(identitiesItem.Type))
 			identities.Value = types.StringValue(identitiesItem.Value)
-			if identitiesCount+1 > len(r.Spec.Identities) {
-				r.Spec.Identities = append(r.Spec.Identities, identities)
-			} else {
-				r.Spec.Identities[identitiesCount].Type = identities.Type
-				r.Spec.Identities[identitiesCount].Value = identities.Value
-			}
+
+			r.Spec.Identities = append(r.Spec.Identities, identities)
 		}
 		r.Spec.Ports = []tfTypes.MeshServiceItemPorts{}
-		if len(r.Spec.Ports) > len(resp.Spec.Ports) {
-			r.Spec.Ports = r.Spec.Ports[:len(resp.Spec.Ports)]
-		}
-		for portsCount, portsItem := range resp.Spec.Ports {
+
+		for _, portsItem := range resp.Spec.Ports {
 			var ports tfTypes.MeshServiceItemPorts
+
 			ports.AppProtocol = types.StringPointerValue(portsItem.AppProtocol)
 			ports.Name = types.StringPointerValue(portsItem.Name)
 			ports.Port = types.Int32Value(int32(portsItem.Port))
@@ -59,14 +53,8 @@ func (r *MeshServiceDataSourceModel) RefreshFromSharedMeshServiceItem(ctx contex
 					ports.TargetPort.Str = types.StringPointerValue(portsItem.TargetPort.Str)
 				}
 			}
-			if portsCount+1 > len(r.Spec.Ports) {
-				r.Spec.Ports = append(r.Spec.Ports, ports)
-			} else {
-				r.Spec.Ports[portsCount].AppProtocol = ports.AppProtocol
-				r.Spec.Ports[portsCount].Name = ports.Name
-				r.Spec.Ports[portsCount].Port = ports.Port
-				r.Spec.Ports[portsCount].TargetPort = ports.TargetPort
-			}
+
+			r.Spec.Ports = append(r.Spec.Ports, ports)
 		}
 		if resp.Spec.Selector == nil {
 			r.Spec.Selector = nil
@@ -95,11 +83,10 @@ func (r *MeshServiceDataSourceModel) RefreshFromSharedMeshServiceItem(ctx contex
 		} else {
 			r.Status = &tfTypes.MeshServiceItemStatus{}
 			r.Status.Addresses = []tfTypes.Addresses{}
-			if len(r.Status.Addresses) > len(resp.Status.Addresses) {
-				r.Status.Addresses = r.Status.Addresses[:len(resp.Status.Addresses)]
-			}
-			for addressesCount, addressesItem := range resp.Status.Addresses {
+
+			for _, addressesItem := range resp.Status.Addresses {
 				var addresses tfTypes.Addresses
+
 				addresses.Hostname = types.StringPointerValue(addressesItem.Hostname)
 				if addressesItem.HostnameGeneratorRef == nil {
 					addresses.HostnameGeneratorRef = nil
@@ -108,13 +95,8 @@ func (r *MeshServiceDataSourceModel) RefreshFromSharedMeshServiceItem(ctx contex
 					addresses.HostnameGeneratorRef.CoreName = types.StringValue(addressesItem.HostnameGeneratorRef.CoreName)
 				}
 				addresses.Origin = types.StringPointerValue(addressesItem.Origin)
-				if addressesCount+1 > len(r.Status.Addresses) {
-					r.Status.Addresses = append(r.Status.Addresses, addresses)
-				} else {
-					r.Status.Addresses[addressesCount].Hostname = addresses.Hostname
-					r.Status.Addresses[addressesCount].HostnameGeneratorRef = addresses.HostnameGeneratorRef
-					r.Status.Addresses[addressesCount].Origin = addresses.Origin
-				}
+
+				r.Status.Addresses = append(r.Status.Addresses, addresses)
 			}
 			if resp.Status.DataplaneProxies == nil {
 				r.Status.DataplaneProxies = nil
@@ -125,34 +107,25 @@ func (r *MeshServiceDataSourceModel) RefreshFromSharedMeshServiceItem(ctx contex
 				r.Status.DataplaneProxies.Total = types.Int64PointerValue(resp.Status.DataplaneProxies.Total)
 			}
 			r.Status.HostnameGenerators = []tfTypes.HostnameGenerators{}
-			if len(r.Status.HostnameGenerators) > len(resp.Status.HostnameGenerators) {
-				r.Status.HostnameGenerators = r.Status.HostnameGenerators[:len(resp.Status.HostnameGenerators)]
-			}
-			for hostnameGeneratorsCount, hostnameGeneratorsItem := range resp.Status.HostnameGenerators {
+
+			for _, hostnameGeneratorsItem := range resp.Status.HostnameGenerators {
 				var hostnameGenerators tfTypes.HostnameGenerators
+
 				hostnameGenerators.Conditions = []tfTypes.Conditions{}
-				for conditionsCount, conditionsItem := range hostnameGeneratorsItem.Conditions {
+
+				for _, conditionsItem := range hostnameGeneratorsItem.Conditions {
 					var conditions tfTypes.Conditions
+
 					conditions.Message = types.StringValue(conditionsItem.Message)
 					conditions.Reason = types.StringValue(conditionsItem.Reason)
 					conditions.Status = types.StringValue(string(conditionsItem.Status))
 					conditions.Type = types.StringValue(conditionsItem.Type)
-					if conditionsCount+1 > len(hostnameGenerators.Conditions) {
-						hostnameGenerators.Conditions = append(hostnameGenerators.Conditions, conditions)
-					} else {
-						hostnameGenerators.Conditions[conditionsCount].Message = conditions.Message
-						hostnameGenerators.Conditions[conditionsCount].Reason = conditions.Reason
-						hostnameGenerators.Conditions[conditionsCount].Status = conditions.Status
-						hostnameGenerators.Conditions[conditionsCount].Type = conditions.Type
-					}
+
+					hostnameGenerators.Conditions = append(hostnameGenerators.Conditions, conditions)
 				}
 				hostnameGenerators.HostnameGeneratorRef.CoreName = types.StringValue(hostnameGeneratorsItem.HostnameGeneratorRef.CoreName)
-				if hostnameGeneratorsCount+1 > len(r.Status.HostnameGenerators) {
-					r.Status.HostnameGenerators = append(r.Status.HostnameGenerators, hostnameGenerators)
-				} else {
-					r.Status.HostnameGenerators[hostnameGeneratorsCount].Conditions = hostnameGenerators.Conditions
-					r.Status.HostnameGenerators[hostnameGeneratorsCount].HostnameGeneratorRef = hostnameGenerators.HostnameGeneratorRef
-				}
+
+				r.Status.HostnameGenerators = append(r.Status.HostnameGenerators, hostnameGenerators)
 			}
 			if resp.Status.TLS == nil {
 				r.Status.TLS = nil
@@ -165,17 +138,13 @@ func (r *MeshServiceDataSourceModel) RefreshFromSharedMeshServiceItem(ctx contex
 				}
 			}
 			r.Status.Vips = []tfTypes.Vip{}
-			if len(r.Status.Vips) > len(resp.Status.Vips) {
-				r.Status.Vips = r.Status.Vips[:len(resp.Status.Vips)]
-			}
-			for vipsCount, vipsItem := range resp.Status.Vips {
+
+			for _, vipsItem := range resp.Status.Vips {
 				var vips tfTypes.Vip
+
 				vips.IP = types.StringPointerValue(vipsItem.IP)
-				if vipsCount+1 > len(r.Status.Vips) {
-					r.Status.Vips = append(r.Status.Vips, vips)
-				} else {
-					r.Status.Vips[vipsCount].IP = vips.IP
-				}
+
+				r.Status.Vips = append(r.Status.Vips, vips)
 			}
 		}
 		r.Type = types.StringValue(string(resp.Type))
