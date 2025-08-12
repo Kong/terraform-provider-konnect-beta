@@ -1,7 +1,7 @@
 # Changelog
 
 ## 0.8.0
-> Released on 2025/??
+> Released on 2025/08/12
 
 ### BREAKING CHANGES
 * `service` field in `konnect_api_implementation` resource is now nested under `service_reference` field.
