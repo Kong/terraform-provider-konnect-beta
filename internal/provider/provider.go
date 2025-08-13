@@ -31,6 +31,7 @@ type KonnectBetaProviderModel struct {
 	KonnectAccessToken       types.String `tfsdk:"konnect_access_token"`
 	PersonalAccessToken      types.String `tfsdk:"personal_access_token"`
 	ServerURL                types.String `tfsdk:"server_url"`
+	ServiceAccessToken       types.String `tfsdk:"service_access_token"`
 	SystemAccountAccessToken types.String `tfsdk:"system_account_access_token"`
 }
 
@@ -53,6 +54,10 @@ func (p *KonnectBetaProvider) Schema(ctx context.Context, req provider.SchemaReq
 			"server_url": schema.StringAttribute{
 				Description: `Server URL (defaults to https://global.api.konghq.com)`,
 				Optional:    true,
+			},
+			"service_access_token": schema.StringAttribute{
+				Optional:  true,
+				Sensitive: true,
 			},
 			"system_account_access_token": schema.StringAttribute{
 				Optional:  true,
@@ -102,6 +107,10 @@ func (p *KonnectBetaProvider) Configure(ctx context.Context, req provider.Config
 
 	if !data.KonnectAccessToken.IsUnknown() {
 		security.KonnectAccessToken = data.KonnectAccessToken.ValueStringPointer()
+	}
+
+	if !data.ServiceAccessToken.IsUnknown() {
+		security.ServiceAccessToken = data.ServiceAccessToken.ValueStringPointer()
 	}
 
 	providerHTTPTransportOpts := ProviderHTTPTransportOpts{
@@ -162,6 +171,7 @@ func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.R
 		NewMeshTLSResource,
 		NewMeshTraceResource,
 		NewMeshTrafficPermissionResource,
+		NewOrganizationPersonalAccessTokenSettingsResource,
 		NewPortalResource,
 		NewPortalAuthResource,
 		NewPortalCustomDomainResource,
