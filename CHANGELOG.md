@@ -4,7 +4,7 @@
 > Released on 2025/??/??
 
 ### Features
-* ...
+* Add support for `konnect_organization_personal_access_token_settings` resource
 
 ## 0.8.0
 > Released on 2025/08/12

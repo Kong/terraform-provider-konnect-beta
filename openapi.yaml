@@ -5150,6 +5150,64 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Dashboards
+  '/v3/organizations/{organizationId}/personal-access-token-settings':
+    parameters:
+      - name: organizationId
+        in: path
+        description: A UUID representing an organization.
+        required: true
+        schema:
+          description: UUID representing an organization
+          type: string
+          format: uuid
+          example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: OrganizationPersonalAccessTokenSettings#read
+        terraform-datasource: null
+      operationId: get-organizations-personal-access-token-settings
+      summary: Get personal access token policy settings
+      description: Get personal access token policy settings. Only organization administrators are authorized  to perform this action.
+      responses:
+        '200':
+          $ref: '#/components/responses/PersonalAccessTokenSettingsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      security:
+        - personalAccessToken: []
+        - konnectAccessToken: []
+        - serviceAccessToken: []
+      tags:
+        - Personal Access Tokens
+    patch:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: 'OrganizationPersonalAccessTokenSettings#create,update'
+        terraform-datasource: null
+      operationId: update-personal-access-token-settings
+      summary: Update personal access token policy settings
+      description: Update personal access token policy settings. Only organization administrators are authorized  to perform this action.
+      requestBody:
+        $ref: '#/components/requestBodies/PersonalAccessTokenSettingsUpdateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/PersonalAccessTokenSettingsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      security:
+        - personalAccessToken: []
+        - konnectAccessToken: []
+      tags:
+        - Personal Access Tokens
 components:
   parameters:
     ApiId:
@@ -20341,6 +20399,10 @@ components:
       required:
         - field
         - operator
+    MaxPATExpirationPeriodDays:
+      type: integer
+      maximum: 365
+      minimum: 1
     CreatePortalCustomDomainSSL:
       type: object
       properties:
@@ -21118,6 +21180,19 @@ components:
               - client_secret
               - grant_types
               - response_types
+    PersonalAccessTokenSettingsUpdateRequest:
+      description: Request body schema for updating personal access token settings.
+      content:
+        application/json:
+          schema:
+            x-speakeasy-entity: OrganizationPersonalAccessTokenSettings
+            type: object
+            properties:
+              pats_enabled:
+                type: boolean
+              max_expiration_period_days:
+                $ref: '#/components/schemas/MaxPATExpirationPeriodDays'
+            minProperties: 1
   responses:
     PortalAuthenticationSettings:
       description: Details about a portal's authentication settings.
@@ -22194,6 +22269,22 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CreatedClient'
+    PersonalAccessTokenSettingsResponse:
+      description: Response containing personal access token settings.
+      content:
+        application/json:
+          schema:
+            x-speakeasy-entity: OrganizationPersonalAccessTokenSettings
+            type: object
+            properties:
+              pats_enabled:
+                type: boolean
+              max_expiration_period_days:
+                $ref: '#/components/schemas/MaxPATExpirationPeriodDays'
+            additionalProperties: false
+            required:
+              - pats_enabled
+              - max_expiration_period_days
   securitySchemes:
     personalAccessToken:
       type: http
@@ -22219,6 +22310,12 @@ components:
       bearerFormat: JWT
       description: |
         The Konnect access token is meant to be used by the Konnect dashboard and the decK CLI authenticate with.
+    serviceAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        The Service access token is meant to be used between internal services.
 tags:
   - name: Portals
     description: APIs related to configuration of Konnect Developer Portals.
@@ -22255,6 +22352,7 @@ security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
   - konnectAccessToken: []
+  - serviceAccessToken: []
 x-speakeasy-retries:
   strategy: backoff
   backoff:

@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: d5eea2cba9fea7b68145bdb2598f9728
+  docChecksum: a88a4b0796a5d5bb81091e56edce6264
   docVersion: 2.0.0
   speakeasyVersion: 1.602.0
   generationVersion: 2.681.1
@@ -148,6 +148,8 @@ generatedFiles:
   - examples/resources/konnect-beta_mesh_trace/resource.tf
   - examples/resources/konnect-beta_mesh_traffic_permission/import.sh
   - examples/resources/konnect-beta_mesh_traffic_permission/resource.tf
+  - examples/resources/konnect-beta_organization_personal_access_token_settings/import.sh
+  - examples/resources/konnect-beta_organization_personal_access_token_settings/resource.tf
   - examples/resources/konnect-beta_portal/import.sh
   - examples/resources/konnect-beta_portal/resource.tf
   - examples/resources/konnect-beta_portal_auth/import.sh
@@ -350,6 +352,8 @@ generatedFiles:
   - internal/provider/meshtrafficpermission_resource_sdk.go
   - internal/provider/meshtrafficpermissionlist_data_source.go
   - internal/provider/meshtrafficpermissionlist_data_source_sdk.go
+  - internal/provider/organizationpersonalaccesstokensettings_resource.go
+  - internal/provider/organizationpersonalaccesstokensettings_resource_sdk.go
   - internal/provider/portal_resource.go
   - internal/provider/portal_resource_sdk.go
   - internal/provider/portalauth_resource.go
@@ -853,6 +857,7 @@ generatedFiles:
   - internal/sdk/models/operations/getmeshtracelist.go
   - internal/sdk/models/operations/getmeshtrafficpermission.go
   - internal/sdk/models/operations/getmeshtrafficpermissionlist.go
+  - internal/sdk/models/operations/getorganizationspersonalaccesstokensettings.go
   - internal/sdk/models/operations/getportal.go
   - internal/sdk/models/operations/getportalassetfavicon.go
   - internal/sdk/models/operations/getportalassetlogo.go
@@ -901,6 +906,7 @@ generatedFiles:
   - internal/sdk/models/operations/updateauthserverclaim.go
   - internal/sdk/models/operations/updateauthserverscope.go
   - internal/sdk/models/operations/updatecp.go
+  - internal/sdk/models/operations/updatepersonalaccesstokensettings.go
   - internal/sdk/models/operations/updateportal.go
   - internal/sdk/models/operations/updateportalauthenticationsettings.go
   - internal/sdk/models/operations/updateportalcustomdomain.go
@@ -1076,6 +1082,8 @@ generatedFiles:
   - internal/sdk/models/shared/pagemeta.go
   - internal/sdk/models/shared/pagevisibilitystatus.go
   - internal/sdk/models/shared/paginatedmeta.go
+  - internal/sdk/models/shared/personalaccesstokensettingsresponse.go
+  - internal/sdk/models/shared/personalaccesstokensettingsupdaterequest.go
   - internal/sdk/models/shared/portalassetresponse.go
   - internal/sdk/models/shared/portalauthenticationsettingsresponse.go
   - internal/sdk/models/shared/portalauthenticationsettingsupdaterequest.go
@@ -1122,6 +1130,7 @@ generatedFiles:
   - internal/sdk/models/shared/updatescope.go
   - internal/sdk/models/shared/visibilitystatus.go
   - internal/sdk/pages.go
+  - internal/sdk/personalaccesstokens.go
   - internal/sdk/portalauthsettings.go
   - internal/sdk/portalcustomdomains.go
   - internal/sdk/portalcustomization.go
@@ -5424,5 +5433,31 @@ examples:
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  get-organizations-personal-access-token-settings:
+    speakeasy-default-get-organizations-personal-access-token-settings:
+      parameters:
+        path:
+          organizationId: "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
+      responses:
+        "200":
+          application/json: {"pats_enabled": false, "max_expiration_period_days": 339745}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  update-personal-access-token-settings:
+    speakeasy-default-update-personal-access-token-settings:
+      parameters:
+        path:
+          organizationId: "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
+      responses:
+        "200":
+          application/json: {"pats_enabled": false, "max_expiration_period_days": 913465}
+        "400":
+          application/problem+json: {"status": 556307, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value 1>", "<value 2>"], "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
 examplesVersion: 1.0.2
 generatedTests: {}
