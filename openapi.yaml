@@ -5180,7 +5180,6 @@ paths:
       security:
         - personalAccessToken: []
         - konnectAccessToken: []
-        - serviceAccessToken: []
       tags:
         - Personal Access Tokens
     patch:
@@ -22346,7 +22345,6 @@ security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
   - konnectAccessToken: []
-  - serviceAccessToken: []
 x-speakeasy-retries:
   strategy: backoff
   backoff:
