@@ -19,7 +19,6 @@ func TestMesh(t *testing.T) {
 	serverHost, serverPort, serverScheme := providerConfigFromEnv()
 
 	t.Run("should fail on creating a default mesh", func(t *testing.T) {
-		t.Skip("Flaky test")
 		builder := tfbuilder.NewBuilder(tfbuilder.Konnect, serverScheme, serverHost, serverPort).WithProviderProperty(tfbuilder.KonnectBeta)
 		cp := tfbuilder.NewControlPlane("e2e-test", "e2e-test", "e2e test cp")
 		mesh := tfbuilder.NewMeshBuilder("default", "default").
@@ -47,7 +46,6 @@ func TestMesh(t *testing.T) {
 	})
 
 	t.Run("create a mesh and modify fields on it", func(t *testing.T) {
-		t.Skip("Flaky test")
 		builder := tfbuilder.NewBuilder(tfbuilder.Konnect, serverScheme, serverHost, serverPort).WithProviderProperty(tfbuilder.KonnectBeta)
 		cp := tfbuilder.NewControlPlane("e2e-test", "e2e-test", "e2e test cp")
 		mesh := tfbuilder.NewMeshBuilder("m1", "m1").
@@ -61,7 +59,6 @@ func TestMesh(t *testing.T) {
 	})
 
 	t.Run("create a policy and modify fields on it", func(t *testing.T) {
-		t.Skip("Flaky test")
 		builder := tfbuilder.NewBuilder(tfbuilder.Konnect, serverScheme, serverHost, serverPort).WithProviderProperty(tfbuilder.KonnectBeta)
 		cp := tfbuilder.NewControlPlane("e2e-test", "e2e-test", "e2e test cp")
 		builder.AddControlPlane(cp)
@@ -79,7 +76,6 @@ func TestMesh(t *testing.T) {
 	})
 
 	t.Run("not imported resource should error out with meaningful message", func(t *testing.T) {
-		t.Skip("Flaky test")
 		meshName := "m3"
 		mtpName := "allow-all"
 		cpName := fmt.Sprintf("e2e-test-%d", acctest.RandInt())
