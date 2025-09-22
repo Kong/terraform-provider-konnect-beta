@@ -7533,9 +7533,8 @@ components:
       properties:
         theme:
           type: object
-          default: null
           additionalProperties: false
-          nullable: true
+          nullable: false
           properties:
             name:
               type: string
@@ -7548,9 +7547,8 @@ components:
                 - system
             colors:
               type: object
-              default: null
               additionalProperties: false
-              nullable: true
+              nullable: false
               properties:
                 primary:
                   type: string
@@ -7563,6 +7561,7 @@ components:
         layout:
           type: string
           nullable: false
+          x-speakeasy-param-computed: false
         css:
           type: string
           default: null
@@ -7570,9 +7569,8 @@ components:
           x-speakeasy-param-computed: false
         js:
           type: object
-          default: null
           additionalProperties: false
-          nullable: true
+          nullable: false
           properties:
             custom:
               type: string
@@ -7615,6 +7613,7 @@ components:
               default: null
               nullable: true
               x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: false
         spec_renderer:
           type: object
           additionalProperties: false
@@ -7648,6 +7647,7 @@ components:
               description: Let users define a custom server URL for endpoints. This will be used to generate code snippets and to test the API. The URL is client-side only and is not saved.
               type: boolean
               default: true
+          x-speakeasy-param-computed: false
         robots:
           type: string
           default: null
@@ -23778,12 +23778,6 @@ components:
       bearerFormat: JWT
       description: |
         The Konnect access token is meant to be used by the Konnect dashboard and the decK CLI authenticate with.
-    serviceAccessToken:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-      description: |
-        The Service access token is meant to be used between internal services.
 tags:
   - name: Portals
     description: APIs related to configuration of Konnect Developer Portals.
@@ -23820,7 +23814,6 @@ security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
   - konnectAccessToken: []
-  - serviceAccessToken: []
 x-speakeasy-retries:
   strategy: backoff
   backoff:
