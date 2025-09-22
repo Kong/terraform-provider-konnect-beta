@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: bf4f52ce3e65aef08d54f73ac1f5d4d4
+  docChecksum: 7569302994f76e851292ee1412b82d4f
   docVersion: 2.0.0
   speakeasyVersion: 1.602.0
   generationVersion: 2.681.1
@@ -1143,7 +1143,7 @@ examples:
           portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
-          application/json: {"theme": null, "css": null, "js": null, "menu": {"main": null, "footer_sections": null, "footer_bottom": null}, "robots": null}
+          application/json: {"theme": {"colors": {"primary": "#000000"}}, "css": null, "menu": {"main": null, "footer_sections": null, "footer_bottom": null}, "robots": null}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -1156,10 +1156,10 @@ examples:
         path:
           portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
-        application/json: {"theme": null, "css": null, "js": null, "menu": {"main": null, "footer_sections": null, "footer_bottom": null}, "robots": null}
+        application/json: {"theme": {"colors": {"primary": "#000000"}}, "css": null, "menu": {"main": null, "footer_sections": null, "footer_bottom": null}, "robots": null}
       responses:
         "200":
-          application/json: {"theme": null, "css": null, "js": null, "menu": {"main": null, "footer_sections": null, "footer_bottom": null}, "robots": null}
+          application/json: {"theme": {"colors": {"primary": "#000000"}}, "css": null, "menu": {"main": null, "footer_sections": null, "footer_bottom": null}, "robots": null}
         "400":
           application/problem+json: {"status": 301976, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
