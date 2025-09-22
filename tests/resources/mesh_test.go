@@ -2,6 +2,9 @@ package tests
 
 import (
 	"fmt"
+	"os"
+	"testing"
+
 	"github.com/Kong/shared-speakeasy/tfbuilder"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/plancheck"
@@ -9,8 +12,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 	"github.com/stretchr/testify/require"
-	"os"
-	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
@@ -128,7 +129,7 @@ func createAnMTP(t *testing.T, cpName, meshName, mtpName string) {
 	require.NotNil(t, myCp)
 
 	action := shared.ActionAllow
-	resp, err := client.MeshTrafficPermission.PutMeshTrafficPermission(ctx, operations.PutMeshTrafficPermissionRequest{
+	resp, err := client.MeshTrafficPermission.UpdateMeshTrafficPermission(ctx, operations.UpdateMeshTrafficPermissionRequest{
 		Mesh: meshName,
 		Name: mtpName,
 		CpID: myCp.ID,
