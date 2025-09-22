@@ -16,6 +16,40 @@ servers:
   - url: 'https://in.api.konghq.com'
 paths:
   /v3/portals:
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: null
+        terraform-datasource:
+          - Portal#read
+      operationId: list-portals
+      summary: List Portals
+      description: 'Lists developer portals defined in this region for this organization. Each developer portal is available at a unique address and has isolated configuration, customization, developers, and applications.'
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/SortPortals'
+        - name: filter
+          in: query
+          description: Filter portals returned in the response.
+          required: false
+          schema:
+            $ref: '#/components/schemas/PortalFilterParameters'
+          style: deepObject
+      responses:
+        '200':
+          $ref: '#/components/responses/ListPortalsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Portals
     post:
       x-speakeasy-entity-operation:
         terraform-resource: Portal#create
@@ -753,6 +787,21 @@ paths:
       operationId: update-api
       summary: Update API
       description: Updates an API.
+      parameters:
+        - name: force
+          in: query
+          description: |
+            If true, allows operations to be removed from the current version when using access control enforcement.
+            If false, operations removal will be rejected with a 409 error.
+            Omitting the value means true.
+          schema:
+            type: string
+            default: 'false'
+            enum:
+              - 'true'
+              - 'false'
+          x-internal: true
+          x-unstable: true
       requestBody:
         $ref: '#/components/requestBodies/UpdateApiRequest'
       responses:
@@ -770,6 +819,8 @@ paths:
           $ref: '#/components/responses/ApiForbidden'
         '404':
           $ref: '#/components/responses/ApiNotFound'
+        '409':
+          $ref: '#/components/responses/ApiVersionPatchConflict'
         '415':
           $ref: '#/components/responses/UnsupportedMediaType'
       tags:
@@ -1076,6 +1127,21 @@ paths:
       operationId: update-api-version
       summary: Update API Version
       description: Updates the version (OpenAPI or AsyncAPI) of an API.
+      parameters:
+        - name: force
+          in: query
+          description: |
+            If true, allows operations to be removed from the current version when using access control enforcement.
+            If false, operations removal will be rejected with a 409 error.
+            Omitting the value (i.e., setting `?force`) means true.
+          schema:
+            type: string
+            default: 'false'
+            enum:
+              - 'true'
+              - 'false'
+          x-internal: true
+          x-unstable: true
       requestBody:
         $ref: '#/components/requestBodies/UpdateApiVersionRequest'
       responses:
@@ -1094,7 +1160,7 @@ paths:
         '404':
           $ref: '#/components/responses/ApiNotFound'
         '409':
-          $ref: '#/components/responses/ApiSpecHiddenConflict'
+          $ref: '#/components/responses/ApiVersionPatchConflict'
         '415':
           $ref: '#/components/responses/UnsupportedMediaType'
       tags:
@@ -1255,9 +1321,11 @@ paths:
           $ref: '#/components/responses/ApiNotFound'
       tags:
         - API Implementation
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshaccesslogs/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshaccesslogs/{name}#create':
     get:
-      x-speakeasy-entity-operation: MeshAccessLog#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshAccessLog#get
+        terraform-datasource: null
       operationId: getMeshAccessLog
       summary: Returns MeshAccessLog entity
       parameters:
@@ -1280,9 +1348,79 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshAccessLog
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshAccessLog#delete
+        terraform-datasource: null
+      operationId: deleteMeshAccessLog
+      summary: Deletes MeshAccessLog entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshAccessLog
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshAccessLogDeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshAccessLog
     put:
-      x-speakeasy-entity-operation: 'MeshAccessLog#create,update'
-      operationId: putMeshAccessLog
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshAccessLog#create
+        terraform-datasource: null
+      operationId: createMeshAccessLog
+      summary: Creates or Updates MeshAccessLog entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshAccessLog
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshAccessLogItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshAccessLogCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshAccessLog
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshaccesslogs/{name}#update':
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshAccessLog#update
+        terraform-datasource: null
+      operationId: updateMeshAccessLog
       summary: Creates or Updates MeshAccessLog entity
       parameters:
         - name: mesh
@@ -1311,47 +1449,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MeshAccessLogCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshAccessLogCreateOrUpdateSuccessResponse'
-      tags:
-        - MeshAccessLog
-    delete:
-      x-speakeasy-entity-operation: MeshAccessLog#delete
-      operationId: deleteMeshAccessLog
-      summary: Deletes MeshAccessLog entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshAccessLog
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshAccessLogDeleteSuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
       tags:
         - MeshAccessLog
     parameters:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshaccesslogs':
     get:
-      x-speakeasy-entity-operation: MeshAccessLogList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshAccessLogList#get
+        terraform-datasource: null
       operationId: getMeshAccessLogList
       summary: Returns a list of MeshAccessLog in the mesh.
       parameters:
@@ -1397,9 +1503,11 @@ paths:
         - MeshAccessLog
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshcircuitbreakers/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshcircuitbreakers/{name}#create':
     get:
-      x-speakeasy-entity-operation: MeshCircuitBreaker#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshCircuitBreaker#get
+        terraform-datasource: null
       operationId: getMeshCircuitBreaker
       summary: Returns MeshCircuitBreaker entity
       parameters:
@@ -1422,9 +1530,79 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshCircuitBreaker
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshCircuitBreaker#delete
+        terraform-datasource: null
+      operationId: deleteMeshCircuitBreaker
+      summary: Deletes MeshCircuitBreaker entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshCircuitBreaker
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshCircuitBreakerDeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshCircuitBreaker
     put:
-      x-speakeasy-entity-operation: 'MeshCircuitBreaker#create,update'
-      operationId: putMeshCircuitBreaker
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshCircuitBreaker#create
+        terraform-datasource: null
+      operationId: createMeshCircuitBreaker
+      summary: Creates or Updates MeshCircuitBreaker entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshCircuitBreaker
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshCircuitBreakerItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshCircuitBreakerCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshCircuitBreaker
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshcircuitbreakers/{name}#update':
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshCircuitBreaker#update
+        terraform-datasource: null
+      operationId: updateMeshCircuitBreaker
       summary: Creates or Updates MeshCircuitBreaker entity
       parameters:
         - name: mesh
@@ -1453,47 +1631,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MeshCircuitBreakerCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshCircuitBreakerCreateOrUpdateSuccessResponse'
-      tags:
-        - MeshCircuitBreaker
-    delete:
-      x-speakeasy-entity-operation: MeshCircuitBreaker#delete
-      operationId: deleteMeshCircuitBreaker
-      summary: Deletes MeshCircuitBreaker entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshCircuitBreaker
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshCircuitBreakerDeleteSuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
       tags:
         - MeshCircuitBreaker
     parameters:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshcircuitbreakers':
     get:
-      x-speakeasy-entity-operation: MeshCircuitBreakerList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshCircuitBreakerList#get
+        terraform-datasource: null
       operationId: getMeshCircuitBreakerList
       summary: Returns a list of MeshCircuitBreaker in the mesh.
       parameters:
@@ -1539,9 +1685,11 @@ paths:
         - MeshCircuitBreaker
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshfaultinjections/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshfaultinjections/{name}#create':
     get:
-      x-speakeasy-entity-operation: MeshFaultInjection#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshFaultInjection#get
+        terraform-datasource: null
       operationId: getMeshFaultInjection
       summary: Returns MeshFaultInjection entity
       parameters:
@@ -1564,9 +1712,79 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshFaultInjection
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshFaultInjection#delete
+        terraform-datasource: null
+      operationId: deleteMeshFaultInjection
+      summary: Deletes MeshFaultInjection entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshFaultInjection
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshFaultInjectionDeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshFaultInjection
     put:
-      x-speakeasy-entity-operation: 'MeshFaultInjection#create,update'
-      operationId: putMeshFaultInjection
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshFaultInjection#create
+        terraform-datasource: null
+      operationId: createMeshFaultInjection
+      summary: Creates or Updates MeshFaultInjection entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshFaultInjection
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshFaultInjectionItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshFaultInjectionCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshFaultInjection
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshfaultinjections/{name}#update':
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshFaultInjection#update
+        terraform-datasource: null
+      operationId: updateMeshFaultInjection
       summary: Creates or Updates MeshFaultInjection entity
       parameters:
         - name: mesh
@@ -1595,47 +1813,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MeshFaultInjectionCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshFaultInjectionCreateOrUpdateSuccessResponse'
-      tags:
-        - MeshFaultInjection
-    delete:
-      x-speakeasy-entity-operation: MeshFaultInjection#delete
-      operationId: deleteMeshFaultInjection
-      summary: Deletes MeshFaultInjection entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshFaultInjection
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshFaultInjectionDeleteSuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
       tags:
         - MeshFaultInjection
     parameters:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshfaultinjections':
     get:
-      x-speakeasy-entity-operation: MeshFaultInjectionList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshFaultInjectionList#get
+        terraform-datasource: null
       operationId: getMeshFaultInjectionList
       summary: Returns a list of MeshFaultInjection in the mesh.
       parameters:
@@ -1681,9 +1867,11 @@ paths:
         - MeshFaultInjection
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhealthchecks/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhealthchecks/{name}#create':
     get:
-      x-speakeasy-entity-operation: MeshHealthCheck#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshHealthCheck#get
+        terraform-datasource: null
       operationId: getMeshHealthCheck
       summary: Returns MeshHealthCheck entity
       parameters:
@@ -1706,9 +1894,79 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshHealthCheck
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshHealthCheck#delete
+        terraform-datasource: null
+      operationId: deleteMeshHealthCheck
+      summary: Deletes MeshHealthCheck entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshHealthCheck
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshHealthCheckDeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshHealthCheck
     put:
-      x-speakeasy-entity-operation: 'MeshHealthCheck#create,update'
-      operationId: putMeshHealthCheck
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshHealthCheck#create
+        terraform-datasource: null
+      operationId: createMeshHealthCheck
+      summary: Creates or Updates MeshHealthCheck entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshHealthCheck
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshHealthCheckItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshHealthCheckCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshHealthCheck
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhealthchecks/{name}#update':
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshHealthCheck#update
+        terraform-datasource: null
+      operationId: updateMeshHealthCheck
       summary: Creates or Updates MeshHealthCheck entity
       parameters:
         - name: mesh
@@ -1737,47 +1995,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MeshHealthCheckCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshHealthCheckCreateOrUpdateSuccessResponse'
-      tags:
-        - MeshHealthCheck
-    delete:
-      x-speakeasy-entity-operation: MeshHealthCheck#delete
-      operationId: deleteMeshHealthCheck
-      summary: Deletes MeshHealthCheck entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshHealthCheck
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshHealthCheckDeleteSuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
       tags:
         - MeshHealthCheck
     parameters:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhealthchecks':
     get:
-      x-speakeasy-entity-operation: MeshHealthCheckList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshHealthCheckList#get
+        terraform-datasource: null
       operationId: getMeshHealthCheckList
       summary: Returns a list of MeshHealthCheck in the mesh.
       parameters:
@@ -1823,9 +2049,11 @@ paths:
         - MeshHealthCheck
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhttproutes/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhttproutes/{name}#create':
     get:
-      x-speakeasy-entity-operation: MeshHTTPRoute#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshHTTPRoute#get
+        terraform-datasource: null
       operationId: getMeshHTTPRoute
       summary: Returns MeshHTTPRoute entity
       parameters:
@@ -1848,9 +2076,79 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshHTTPRoute
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshHTTPRoute#delete
+        terraform-datasource: null
+      operationId: deleteMeshHTTPRoute
+      summary: Deletes MeshHTTPRoute entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshHTTPRoute
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshHTTPRouteDeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshHTTPRoute
     put:
-      x-speakeasy-entity-operation: 'MeshHTTPRoute#create,update'
-      operationId: putMeshHTTPRoute
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshHTTPRoute#create
+        terraform-datasource: null
+      operationId: createMeshHTTPRoute
+      summary: Creates or Updates MeshHTTPRoute entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshHTTPRoute
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshHTTPRouteItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshHTTPRouteCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshHTTPRoute
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhttproutes/{name}#update':
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshHTTPRoute#update
+        terraform-datasource: null
+      operationId: updateMeshHTTPRoute
       summary: Creates or Updates MeshHTTPRoute entity
       parameters:
         - name: mesh
@@ -1879,47 +2177,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MeshHTTPRouteCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshHTTPRouteCreateOrUpdateSuccessResponse'
-      tags:
-        - MeshHTTPRoute
-    delete:
-      x-speakeasy-entity-operation: MeshHTTPRoute#delete
-      operationId: deleteMeshHTTPRoute
-      summary: Deletes MeshHTTPRoute entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshHTTPRoute
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshHTTPRouteDeleteSuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
       tags:
         - MeshHTTPRoute
     parameters:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhttproutes':
     get:
-      x-speakeasy-entity-operation: MeshHTTPRouteList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshHTTPRouteList#get
+        terraform-datasource: null
       operationId: getMeshHTTPRouteList
       summary: Returns a list of MeshHTTPRoute in the mesh.
       parameters:
@@ -1965,9 +2231,11 @@ paths:
         - MeshHTTPRoute
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshloadbalancingstrategies/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshloadbalancingstrategies/{name}#create':
     get:
-      x-speakeasy-entity-operation: MeshLoadBalancingStrategy#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshLoadBalancingStrategy#get
+        terraform-datasource: null
       operationId: getMeshLoadBalancingStrategy
       summary: Returns MeshLoadBalancingStrategy entity
       parameters:
@@ -1990,9 +2258,79 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshLoadBalancingStrategy
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshLoadBalancingStrategy#delete
+        terraform-datasource: null
+      operationId: deleteMeshLoadBalancingStrategy
+      summary: Deletes MeshLoadBalancingStrategy entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshLoadBalancingStrategy
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshLoadBalancingStrategyDeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshLoadBalancingStrategy
     put:
-      x-speakeasy-entity-operation: 'MeshLoadBalancingStrategy#create,update'
-      operationId: putMeshLoadBalancingStrategy
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshLoadBalancingStrategy#create
+        terraform-datasource: null
+      operationId: createMeshLoadBalancingStrategy
+      summary: Creates or Updates MeshLoadBalancingStrategy entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshLoadBalancingStrategy
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshLoadBalancingStrategyItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshLoadBalancingStrategyCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshLoadBalancingStrategy
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshloadbalancingstrategies/{name}#update':
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshLoadBalancingStrategy#update
+        terraform-datasource: null
+      operationId: updateMeshLoadBalancingStrategy
       summary: Creates or Updates MeshLoadBalancingStrategy entity
       parameters:
         - name: mesh
@@ -2021,47 +2359,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MeshLoadBalancingStrategyCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshLoadBalancingStrategyCreateOrUpdateSuccessResponse'
-      tags:
-        - MeshLoadBalancingStrategy
-    delete:
-      x-speakeasy-entity-operation: MeshLoadBalancingStrategy#delete
-      operationId: deleteMeshLoadBalancingStrategy
-      summary: Deletes MeshLoadBalancingStrategy entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshLoadBalancingStrategy
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshLoadBalancingStrategyDeleteSuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
       tags:
         - MeshLoadBalancingStrategy
     parameters:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshloadbalancingstrategies':
     get:
-      x-speakeasy-entity-operation: MeshLoadBalancingStrategyList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshLoadBalancingStrategyList#get
+        terraform-datasource: null
       operationId: getMeshLoadBalancingStrategyList
       summary: Returns a list of MeshLoadBalancingStrategy in the mesh.
       parameters:
@@ -2107,9 +2413,11 @@ paths:
         - MeshLoadBalancingStrategy
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmetrics/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmetrics/{name}#create':
     get:
-      x-speakeasy-entity-operation: MeshMetric#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshMetric#get
+        terraform-datasource: null
       operationId: getMeshMetric
       summary: Returns MeshMetric entity
       parameters:
@@ -2132,9 +2440,79 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshMetric
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshMetric#delete
+        terraform-datasource: null
+      operationId: deleteMeshMetric
+      summary: Deletes MeshMetric entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshMetric
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshMetricDeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshMetric
     put:
-      x-speakeasy-entity-operation: 'MeshMetric#create,update'
-      operationId: putMeshMetric
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshMetric#create
+        terraform-datasource: null
+      operationId: createMeshMetric
+      summary: Creates or Updates MeshMetric entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshMetric
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshMetricItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshMetricCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshMetric
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmetrics/{name}#update':
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshMetric#update
+        terraform-datasource: null
+      operationId: updateMeshMetric
       summary: Creates or Updates MeshMetric entity
       parameters:
         - name: mesh
@@ -2163,47 +2541,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MeshMetricCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshMetricCreateOrUpdateSuccessResponse'
-      tags:
-        - MeshMetric
-    delete:
-      x-speakeasy-entity-operation: MeshMetric#delete
-      operationId: deleteMeshMetric
-      summary: Deletes MeshMetric entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshMetric
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshMetricDeleteSuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
       tags:
         - MeshMetric
     parameters:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmetrics':
     get:
-      x-speakeasy-entity-operation: MeshMetricList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshMetricList#get
+        terraform-datasource: null
       operationId: getMeshMetricList
       summary: Returns a list of MeshMetric in the mesh.
       parameters:
@@ -2249,9 +2595,11 @@ paths:
         - MeshMetric
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshpassthroughs/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshpassthroughs/{name}#create':
     get:
-      x-speakeasy-entity-operation: MeshPassthrough#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshPassthrough#get
+        terraform-datasource: null
       operationId: getMeshPassthrough
       summary: Returns MeshPassthrough entity
       parameters:
@@ -2274,9 +2622,79 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshPassthrough
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshPassthrough#delete
+        terraform-datasource: null
+      operationId: deleteMeshPassthrough
+      summary: Deletes MeshPassthrough entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshPassthrough
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshPassthroughDeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshPassthrough
     put:
-      x-speakeasy-entity-operation: 'MeshPassthrough#create,update'
-      operationId: putMeshPassthrough
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshPassthrough#create
+        terraform-datasource: null
+      operationId: createMeshPassthrough
+      summary: Creates or Updates MeshPassthrough entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshPassthrough
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshPassthroughItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshPassthroughCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshPassthrough
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshpassthroughs/{name}#update':
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshPassthrough#update
+        terraform-datasource: null
+      operationId: updateMeshPassthrough
       summary: Creates or Updates MeshPassthrough entity
       parameters:
         - name: mesh
@@ -2305,47 +2723,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MeshPassthroughCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshPassthroughCreateOrUpdateSuccessResponse'
-      tags:
-        - MeshPassthrough
-    delete:
-      x-speakeasy-entity-operation: MeshPassthrough#delete
-      operationId: deleteMeshPassthrough
-      summary: Deletes MeshPassthrough entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshPassthrough
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshPassthroughDeleteSuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
       tags:
         - MeshPassthrough
     parameters:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshpassthroughs':
     get:
-      x-speakeasy-entity-operation: MeshPassthroughList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshPassthroughList#get
+        terraform-datasource: null
       operationId: getMeshPassthroughList
       summary: Returns a list of MeshPassthrough in the mesh.
       parameters:
@@ -2391,9 +2777,11 @@ paths:
         - MeshPassthrough
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshproxypatches/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshproxypatches/{name}#create':
     get:
-      x-speakeasy-entity-operation: MeshProxyPatch#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshProxyPatch#get
+        terraform-datasource: null
       operationId: getMeshProxyPatch
       summary: Returns MeshProxyPatch entity
       parameters:
@@ -2416,9 +2804,79 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshProxyPatch
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshProxyPatch#delete
+        terraform-datasource: null
+      operationId: deleteMeshProxyPatch
+      summary: Deletes MeshProxyPatch entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshProxyPatch
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshProxyPatchDeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshProxyPatch
     put:
-      x-speakeasy-entity-operation: 'MeshProxyPatch#create,update'
-      operationId: putMeshProxyPatch
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshProxyPatch#create
+        terraform-datasource: null
+      operationId: createMeshProxyPatch
+      summary: Creates or Updates MeshProxyPatch entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshProxyPatch
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshProxyPatchItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshProxyPatchCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshProxyPatch
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshproxypatches/{name}#update':
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshProxyPatch#update
+        terraform-datasource: null
+      operationId: updateMeshProxyPatch
       summary: Creates or Updates MeshProxyPatch entity
       parameters:
         - name: mesh
@@ -2447,47 +2905,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MeshProxyPatchCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshProxyPatchCreateOrUpdateSuccessResponse'
-      tags:
-        - MeshProxyPatch
-    delete:
-      x-speakeasy-entity-operation: MeshProxyPatch#delete
-      operationId: deleteMeshProxyPatch
-      summary: Deletes MeshProxyPatch entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshProxyPatch
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshProxyPatchDeleteSuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
       tags:
         - MeshProxyPatch
     parameters:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshproxypatches':
     get:
-      x-speakeasy-entity-operation: MeshProxyPatchList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshProxyPatchList#get
+        terraform-datasource: null
       operationId: getMeshProxyPatchList
       summary: Returns a list of MeshProxyPatch in the mesh.
       parameters:
@@ -2533,9 +2959,11 @@ paths:
         - MeshProxyPatch
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshratelimits/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshratelimits/{name}#create':
     get:
-      x-speakeasy-entity-operation: MeshRateLimit#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshRateLimit#get
+        terraform-datasource: null
       operationId: getMeshRateLimit
       summary: Returns MeshRateLimit entity
       parameters:
@@ -2558,9 +2986,79 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshRateLimit
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshRateLimit#delete
+        terraform-datasource: null
+      operationId: deleteMeshRateLimit
+      summary: Deletes MeshRateLimit entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshRateLimit
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshRateLimitDeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshRateLimit
     put:
-      x-speakeasy-entity-operation: 'MeshRateLimit#create,update'
-      operationId: putMeshRateLimit
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshRateLimit#create
+        terraform-datasource: null
+      operationId: createMeshRateLimit
+      summary: Creates or Updates MeshRateLimit entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshRateLimit
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshRateLimitItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshRateLimitCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshRateLimit
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshratelimits/{name}#update':
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshRateLimit#update
+        terraform-datasource: null
+      operationId: updateMeshRateLimit
       summary: Creates or Updates MeshRateLimit entity
       parameters:
         - name: mesh
@@ -2589,47 +3087,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MeshRateLimitCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshRateLimitCreateOrUpdateSuccessResponse'
-      tags:
-        - MeshRateLimit
-    delete:
-      x-speakeasy-entity-operation: MeshRateLimit#delete
-      operationId: deleteMeshRateLimit
-      summary: Deletes MeshRateLimit entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshRateLimit
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshRateLimitDeleteSuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
       tags:
         - MeshRateLimit
     parameters:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshratelimits':
     get:
-      x-speakeasy-entity-operation: MeshRateLimitList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshRateLimitList#get
+        terraform-datasource: null
       operationId: getMeshRateLimitList
       summary: Returns a list of MeshRateLimit in the mesh.
       parameters:
@@ -2675,9 +3141,11 @@ paths:
         - MeshRateLimit
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshretries/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshretries/{name}#create':
     get:
-      x-speakeasy-entity-operation: MeshRetry#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshRetry#get
+        terraform-datasource: null
       operationId: getMeshRetry
       summary: Returns MeshRetry entity
       parameters:
@@ -2700,9 +3168,79 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshRetry
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshRetry#delete
+        terraform-datasource: null
+      operationId: deleteMeshRetry
+      summary: Deletes MeshRetry entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshRetry
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshRetryDeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshRetry
     put:
-      x-speakeasy-entity-operation: 'MeshRetry#create,update'
-      operationId: putMeshRetry
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshRetry#create
+        terraform-datasource: null
+      operationId: createMeshRetry
+      summary: Creates or Updates MeshRetry entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshRetry
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshRetryItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshRetryCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshRetry
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshretries/{name}#update':
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshRetry#update
+        terraform-datasource: null
+      operationId: updateMeshRetry
       summary: Creates or Updates MeshRetry entity
       parameters:
         - name: mesh
@@ -2731,47 +3269,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MeshRetryCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshRetryCreateOrUpdateSuccessResponse'
-      tags:
-        - MeshRetry
-    delete:
-      x-speakeasy-entity-operation: MeshRetry#delete
-      operationId: deleteMeshRetry
-      summary: Deletes MeshRetry entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshRetry
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshRetryDeleteSuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
       tags:
         - MeshRetry
     parameters:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshretries':
     get:
-      x-speakeasy-entity-operation: MeshRetryList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshRetryList#get
+        terraform-datasource: null
       operationId: getMeshRetryList
       summary: Returns a list of MeshRetry in the mesh.
       parameters:
@@ -2817,9 +3323,11 @@ paths:
         - MeshRetry
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtcproutes/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtcproutes/{name}#create':
     get:
-      x-speakeasy-entity-operation: MeshTCPRoute#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTCPRoute#get
+        terraform-datasource: null
       operationId: getMeshTCPRoute
       summary: Returns MeshTCPRoute entity
       parameters:
@@ -2842,9 +3350,79 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshTCPRoute
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTCPRoute#delete
+        terraform-datasource: null
+      operationId: deleteMeshTCPRoute
+      summary: Deletes MeshTCPRoute entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshTCPRoute
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTCPRouteDeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshTCPRoute
     put:
-      x-speakeasy-entity-operation: 'MeshTCPRoute#create,update'
-      operationId: putMeshTCPRoute
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTCPRoute#create
+        terraform-datasource: null
+      operationId: createMeshTCPRoute
+      summary: Creates or Updates MeshTCPRoute entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshTCPRoute
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshTCPRouteItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTCPRouteCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshTCPRoute
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtcproutes/{name}#update':
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTCPRoute#update
+        terraform-datasource: null
+      operationId: updateMeshTCPRoute
       summary: Creates or Updates MeshTCPRoute entity
       parameters:
         - name: mesh
@@ -2873,47 +3451,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MeshTCPRouteCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshTCPRouteCreateOrUpdateSuccessResponse'
-      tags:
-        - MeshTCPRoute
-    delete:
-      x-speakeasy-entity-operation: MeshTCPRoute#delete
-      operationId: deleteMeshTCPRoute
-      summary: Deletes MeshTCPRoute entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshTCPRoute
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshTCPRouteDeleteSuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
       tags:
         - MeshTCPRoute
     parameters:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtcproutes':
     get:
-      x-speakeasy-entity-operation: MeshTCPRouteList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTCPRouteList#get
+        terraform-datasource: null
       operationId: getMeshTCPRouteList
       summary: Returns a list of MeshTCPRoute in the mesh.
       parameters:
@@ -2959,9 +3505,11 @@ paths:
         - MeshTCPRoute
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtimeouts/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtimeouts/{name}#create':
     get:
-      x-speakeasy-entity-operation: MeshTimeout#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTimeout#get
+        terraform-datasource: null
       operationId: getMeshTimeout
       summary: Returns MeshTimeout entity
       parameters:
@@ -2984,9 +3532,79 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshTimeout
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTimeout#delete
+        terraform-datasource: null
+      operationId: deleteMeshTimeout
+      summary: Deletes MeshTimeout entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshTimeout
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTimeoutDeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshTimeout
     put:
-      x-speakeasy-entity-operation: 'MeshTimeout#create,update'
-      operationId: putMeshTimeout
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTimeout#create
+        terraform-datasource: null
+      operationId: createMeshTimeout
+      summary: Creates or Updates MeshTimeout entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshTimeout
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshTimeoutItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTimeoutCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshTimeout
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtimeouts/{name}#update':
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTimeout#update
+        terraform-datasource: null
+      operationId: updateMeshTimeout
       summary: Creates or Updates MeshTimeout entity
       parameters:
         - name: mesh
@@ -3015,47 +3633,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MeshTimeoutCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshTimeoutCreateOrUpdateSuccessResponse'
-      tags:
-        - MeshTimeout
-    delete:
-      x-speakeasy-entity-operation: MeshTimeout#delete
-      operationId: deleteMeshTimeout
-      summary: Deletes MeshTimeout entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshTimeout
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshTimeoutDeleteSuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
       tags:
         - MeshTimeout
     parameters:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtimeouts':
     get:
-      x-speakeasy-entity-operation: MeshTimeoutList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTimeoutList#get
+        terraform-datasource: null
       operationId: getMeshTimeoutList
       summary: Returns a list of MeshTimeout in the mesh.
       parameters:
@@ -3101,9 +3687,11 @@ paths:
         - MeshTimeout
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtlses/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtlses/{name}#create':
     get:
-      x-speakeasy-entity-operation: MeshTLS#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTLS#get
+        terraform-datasource: null
       operationId: getMeshTLS
       summary: Returns MeshTLS entity
       parameters:
@@ -3126,9 +3714,79 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshTLS
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTLS#delete
+        terraform-datasource: null
+      operationId: deleteMeshTLS
+      summary: Deletes MeshTLS entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshTLS
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTLSDeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshTLS
     put:
-      x-speakeasy-entity-operation: 'MeshTLS#create,update'
-      operationId: putMeshTLS
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTLS#create
+        terraform-datasource: null
+      operationId: createMeshTLS
+      summary: Creates or Updates MeshTLS entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshTLS
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshTLSItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTLSCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshTLS
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtlses/{name}#update':
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTLS#update
+        terraform-datasource: null
+      operationId: updateMeshTLS
       summary: Creates or Updates MeshTLS entity
       parameters:
         - name: mesh
@@ -3157,47 +3815,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MeshTLSCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshTLSCreateOrUpdateSuccessResponse'
-      tags:
-        - MeshTLS
-    delete:
-      x-speakeasy-entity-operation: MeshTLS#delete
-      operationId: deleteMeshTLS
-      summary: Deletes MeshTLS entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshTLS
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshTLSDeleteSuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
       tags:
         - MeshTLS
     parameters:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtlses':
     get:
-      x-speakeasy-entity-operation: MeshTLSList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTLSList#get
+        terraform-datasource: null
       operationId: getMeshTLSList
       summary: Returns a list of MeshTLS in the mesh.
       parameters:
@@ -3243,9 +3869,11 @@ paths:
         - MeshTLS
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtraces/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtraces/{name}#create':
     get:
-      x-speakeasy-entity-operation: MeshTrace#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTrace#get
+        terraform-datasource: null
       operationId: getMeshTrace
       summary: Returns MeshTrace entity
       parameters:
@@ -3268,9 +3896,79 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshTrace
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTrace#delete
+        terraform-datasource: null
+      operationId: deleteMeshTrace
+      summary: Deletes MeshTrace entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshTrace
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTraceDeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshTrace
     put:
-      x-speakeasy-entity-operation: 'MeshTrace#create,update'
-      operationId: putMeshTrace
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTrace#create
+        terraform-datasource: null
+      operationId: createMeshTrace
+      summary: Creates or Updates MeshTrace entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshTrace
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshTraceItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTraceCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshTrace
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtraces/{name}#update':
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTrace#update
+        terraform-datasource: null
+      operationId: updateMeshTrace
       summary: Creates or Updates MeshTrace entity
       parameters:
         - name: mesh
@@ -3299,47 +3997,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MeshTraceCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshTraceCreateOrUpdateSuccessResponse'
-      tags:
-        - MeshTrace
-    delete:
-      x-speakeasy-entity-operation: MeshTrace#delete
-      operationId: deleteMeshTrace
-      summary: Deletes MeshTrace entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshTrace
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshTraceDeleteSuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
       tags:
         - MeshTrace
     parameters:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtraces':
     get:
-      x-speakeasy-entity-operation: MeshTraceList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTraceList#get
+        terraform-datasource: null
       operationId: getMeshTraceList
       summary: Returns a list of MeshTrace in the mesh.
       parameters:
@@ -3385,9 +4051,11 @@ paths:
         - MeshTrace
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtrafficpermissions/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtrafficpermissions/{name}#create':
     get:
-      x-speakeasy-entity-operation: MeshTrafficPermission#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTrafficPermission#get
+        terraform-datasource: null
       operationId: getMeshTrafficPermission
       summary: Returns MeshTrafficPermission entity
       parameters:
@@ -3410,9 +4078,79 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshTrafficPermission
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTrafficPermission#delete
+        terraform-datasource: null
+      operationId: deleteMeshTrafficPermission
+      summary: Deletes MeshTrafficPermission entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshTrafficPermission
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTrafficPermissionDeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshTrafficPermission
     put:
-      x-speakeasy-entity-operation: 'MeshTrafficPermission#create,update'
-      operationId: putMeshTrafficPermission
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTrafficPermission#create
+        terraform-datasource: null
+      operationId: createMeshTrafficPermission
+      summary: Creates or Updates MeshTrafficPermission entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshTrafficPermission
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshTrafficPermissionItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTrafficPermissionCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshTrafficPermission
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtrafficpermissions/{name}#update':
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTrafficPermission#update
+        terraform-datasource: null
+      operationId: updateMeshTrafficPermission
       summary: Creates or Updates MeshTrafficPermission entity
       parameters:
         - name: mesh
@@ -3441,47 +4179,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MeshTrafficPermissionCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshTrafficPermissionCreateOrUpdateSuccessResponse'
-      tags:
-        - MeshTrafficPermission
-    delete:
-      x-speakeasy-entity-operation: MeshTrafficPermission#delete
-      operationId: deleteMeshTrafficPermission
-      summary: Deletes MeshTrafficPermission entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshTrafficPermission
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshTrafficPermissionDeleteSuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
       tags:
         - MeshTrafficPermission
     parameters:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtrafficpermissions':
     get:
-      x-speakeasy-entity-operation: MeshTrafficPermissionList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTrafficPermissionList#get
+        terraform-datasource: null
       operationId: getMeshTrafficPermissionList
       summary: Returns a list of MeshTrafficPermission in the mesh.
       parameters:
@@ -3529,7 +4235,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{name}':
     get:
-      x-speakeasy-entity-operation: Mesh#get
+      x-speakeasy-entity-operation:
+        terraform-resource: Mesh#get
+        terraform-datasource: null
       operationId: getMesh
       summary: Returns Mesh entity
       parameters:
@@ -3547,7 +4255,9 @@ paths:
       tags:
         - Mesh
     put:
-      x-speakeasy-entity-operation: 'Mesh#create,update'
+      x-speakeasy-entity-operation:
+        terraform-resource: 'Mesh#create,update'
+        terraform-datasource: null
       operationId: putMesh
       summary: Creates or Updates Mesh entity
       parameters:
@@ -3580,7 +4290,9 @@ paths:
       tags:
         - Mesh
     delete:
-      x-speakeasy-entity-operation: Mesh#delete
+      x-speakeasy-entity-operation:
+        terraform-resource: Mesh#delete
+        terraform-datasource: null
       operationId: deleteMesh
       summary: Deletes Mesh entity
       parameters:
@@ -3605,7 +4317,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes':
     get:
-      x-speakeasy-entity-operation: MeshList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshList#get
+        terraform-datasource: null
       operationId: getMeshList
       summary: Returns a list of Mesh in the mesh.
       parameters:
@@ -3645,9 +4359,11 @@ paths:
         - Mesh
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshgateways/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshgateways/{name}#create':
     get:
-      x-speakeasy-entity-operation: MeshGateway#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshGateway#get
+        terraform-datasource: null
       operationId: getMeshGateway
       summary: Returns MeshGateway entity
       parameters:
@@ -3670,9 +4386,79 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshGateway
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshGateway#delete
+        terraform-datasource: null
+      operationId: deleteMeshGateway
+      summary: Deletes MeshGateway entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshGateway
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshGatewayDeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshGateway
     put:
-      x-speakeasy-entity-operation: 'MeshGateway#create,update'
-      operationId: putMeshGateway
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshGateway#create
+        terraform-datasource: null
+      operationId: createMeshGateway
+      summary: Creates or Updates MeshGateway entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshGateway
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshGatewayItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshGatewayCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshGateway
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshgateways/{name}#update':
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshGateway#update
+        terraform-datasource: null
+      operationId: updateMeshGateway
       summary: Creates or Updates MeshGateway entity
       parameters:
         - name: mesh
@@ -3701,47 +4487,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MeshGatewayCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshGatewayCreateOrUpdateSuccessResponse'
-      tags:
-        - MeshGateway
-    delete:
-      x-speakeasy-entity-operation: MeshGateway#delete
-      operationId: deleteMeshGateway
-      summary: Deletes MeshGateway entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshGateway
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshGatewayDeleteSuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
       tags:
         - MeshGateway
     parameters:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshgateways':
     get:
-      x-speakeasy-entity-operation: MeshGatewayList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshGatewayList#get
+        terraform-datasource: null
       operationId: getMeshGatewayList
       summary: Returns a list of MeshGateway in the mesh.
       parameters:
@@ -3787,9 +4541,11 @@ paths:
         - MeshGateway
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/hostnamegenerators/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/hostnamegenerators/{name}#create':
     get:
-      x-speakeasy-entity-operation: MeshHostnameGenerator#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshHostnameGenerator#get
+        terraform-datasource: null
       operationId: getHostnameGenerator
       summary: Returns HostnameGenerator entity
       parameters:
@@ -3806,9 +4562,67 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - HostnameGenerator
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshHostnameGenerator#delete
+        terraform-datasource: null
+      operationId: deleteHostnameGenerator
+      summary: Deletes HostnameGenerator entity
+      parameters:
+        - name: name
+          in: path
+          description: name of the HostnameGenerator
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HostnameGeneratorDeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - HostnameGenerator
     put:
-      x-speakeasy-entity-operation: 'MeshHostnameGenerator#create,update'
-      operationId: putHostnameGenerator
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshHostnameGenerator#create
+        terraform-datasource: null
+      operationId: createHostnameGenerator
+      summary: Creates or Updates HostnameGenerator entity
+      parameters:
+        - name: name
+          in: path
+          description: name of the HostnameGenerator
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HostnameGeneratorItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HostnameGeneratorCreateOrUpdateSuccessResponse'
+      tags:
+        - HostnameGenerator
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/hostnamegenerators/{name}#update':
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshHostnameGenerator#update
+        terraform-datasource: null
+      operationId: updateHostnameGenerator
       summary: Creates or Updates HostnameGenerator entity
       parameters:
         - name: name
@@ -3831,41 +4645,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HostnameGeneratorCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HostnameGeneratorCreateOrUpdateSuccessResponse'
-      tags:
-        - HostnameGenerator
-    delete:
-      x-speakeasy-entity-operation: MeshHostnameGenerator#delete
-      operationId: deleteHostnameGenerator
-      summary: Deletes HostnameGenerator entity
-      parameters:
-        - name: name
-          in: path
-          description: name of the HostnameGenerator
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HostnameGeneratorDeleteSuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
       tags:
         - HostnameGenerator
     parameters:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/hostnamegenerators':
     get:
-      x-speakeasy-entity-operation: HostnameGeneratorList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: HostnameGeneratorList#get
+        terraform-datasource: null
       operationId: getHostnameGeneratorList
       summary: Returns a list of HostnameGenerator in the mesh.
       parameters:
@@ -3905,9 +4693,11 @@ paths:
         - HostnameGenerator
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshexternalservices/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshexternalservices/{name}#create':
     get:
-      x-speakeasy-entity-operation: MeshExternalService#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshExternalService#get
+        terraform-datasource: null
       operationId: getMeshExternalService
       summary: Returns MeshExternalService entity
       parameters:
@@ -3930,9 +4720,79 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshExternalService
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshExternalService#delete
+        terraform-datasource: null
+      operationId: deleteMeshExternalService
+      summary: Deletes MeshExternalService entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshExternalService
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshExternalServiceDeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshExternalService
     put:
-      x-speakeasy-entity-operation: 'MeshExternalService#create,update'
-      operationId: putMeshExternalService
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshExternalService#create
+        terraform-datasource: null
+      operationId: createMeshExternalService
+      summary: Creates or Updates MeshExternalService entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshExternalService
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshExternalServiceItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshExternalServiceCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshExternalService
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshexternalservices/{name}#update':
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshExternalService#update
+        terraform-datasource: null
+      operationId: updateMeshExternalService
       summary: Creates or Updates MeshExternalService entity
       parameters:
         - name: mesh
@@ -3961,47 +4821,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MeshExternalServiceCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshExternalServiceCreateOrUpdateSuccessResponse'
-      tags:
-        - MeshExternalService
-    delete:
-      x-speakeasy-entity-operation: MeshExternalService#delete
-      operationId: deleteMeshExternalService
-      summary: Deletes MeshExternalService entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshExternalService
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshExternalServiceDeleteSuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
       tags:
         - MeshExternalService
     parameters:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshexternalservices':
     get:
-      x-speakeasy-entity-operation: MeshExternalServiceList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshExternalServiceList#get
+        terraform-datasource: null
       operationId: getMeshExternalServiceList
       summary: Returns a list of MeshExternalService in the mesh.
       parameters:
@@ -4047,9 +4875,11 @@ paths:
         - MeshExternalService
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmultizoneservices/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmultizoneservices/{name}#create':
     get:
-      x-speakeasy-entity-operation: MeshMultiZoneService#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshMultiZoneService#get
+        terraform-datasource: null
       operationId: getMeshMultiZoneService
       summary: Returns MeshMultiZoneService entity
       parameters:
@@ -4072,9 +4902,79 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshMultiZoneService
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshMultiZoneService#delete
+        terraform-datasource: null
+      operationId: deleteMeshMultiZoneService
+      summary: Deletes MeshMultiZoneService entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshMultiZoneService
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshMultiZoneServiceDeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshMultiZoneService
     put:
-      x-speakeasy-entity-operation: 'MeshMultiZoneService#create,update'
-      operationId: putMeshMultiZoneService
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshMultiZoneService#create
+        terraform-datasource: null
+      operationId: createMeshMultiZoneService
+      summary: Creates or Updates MeshMultiZoneService entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshMultiZoneService
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshMultiZoneServiceItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshMultiZoneServiceCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshMultiZoneService
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmultizoneservices/{name}#update':
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshMultiZoneService#update
+        terraform-datasource: null
+      operationId: updateMeshMultiZoneService
       summary: Creates or Updates MeshMultiZoneService entity
       parameters:
         - name: mesh
@@ -4103,47 +5003,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MeshMultiZoneServiceCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshMultiZoneServiceCreateOrUpdateSuccessResponse'
-      tags:
-        - MeshMultiZoneService
-    delete:
-      x-speakeasy-entity-operation: MeshMultiZoneService#delete
-      operationId: deleteMeshMultiZoneService
-      summary: Deletes MeshMultiZoneService entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshMultiZoneService
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshMultiZoneServiceDeleteSuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
       tags:
         - MeshMultiZoneService
     parameters:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmultizoneservices':
     get:
-      x-speakeasy-entity-operation: MeshMultiZoneServiceList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshMultiZoneServiceList#get
+        terraform-datasource: null
       operationId: getMeshMultiZoneServiceList
       summary: Returns a list of MeshMultiZoneService in the mesh.
       parameters:
@@ -4189,9 +5057,11 @@ paths:
         - MeshMultiZoneService
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshservices/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshservices/{name}#create':
     get:
-      x-speakeasy-entity-operation: MeshService#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshService#get
+        terraform-datasource: null
       operationId: getMeshService
       summary: Returns MeshService entity
       parameters:
@@ -4214,9 +5084,79 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshService
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshService#delete
+        terraform-datasource: null
+      operationId: deleteMeshService
+      summary: Deletes MeshService entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshService
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshServiceDeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshService
     put:
-      x-speakeasy-entity-operation: 'MeshService#create,update'
-      operationId: putMeshService
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshService#create
+        terraform-datasource: null
+      operationId: createMeshService
+      summary: Creates or Updates MeshService entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshService
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshServiceItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshServiceCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshService
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshservices/{name}#update':
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshService#update
+        terraform-datasource: null
+      operationId: updateMeshService
       summary: Creates or Updates MeshService entity
       parameters:
         - name: mesh
@@ -4245,47 +5185,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MeshServiceCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshServiceCreateOrUpdateSuccessResponse'
-      tags:
-        - MeshService
-    delete:
-      x-speakeasy-entity-operation: MeshService#delete
-      operationId: deleteMeshService
-      summary: Deletes MeshService entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshService
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshServiceDeleteSuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
       tags:
         - MeshService
     parameters:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshservices':
     get:
-      x-speakeasy-entity-operation: MeshServiceList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshServiceList#get
+        terraform-datasource: null
       operationId: getMeshServiceList
       summary: Returns a list of MeshService in the mesh.
       parameters:
@@ -4331,9 +5239,11 @@ paths:
         - MeshService
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshglobalratelimits/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshglobalratelimits/{name}#create':
     get:
-      x-speakeasy-entity-operation: MeshGlobalRateLimit#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshGlobalRateLimit#get
+        terraform-datasource: null
       operationId: getMeshGlobalRateLimit
       summary: Returns MeshGlobalRateLimit entity
       parameters:
@@ -4356,9 +5266,79 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshGlobalRateLimit
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshGlobalRateLimit#delete
+        terraform-datasource: null
+      operationId: deleteMeshGlobalRateLimit
+      summary: Deletes MeshGlobalRateLimit entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshGlobalRateLimit
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshGlobalRateLimitDeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshGlobalRateLimit
     put:
-      x-speakeasy-entity-operation: 'MeshGlobalRateLimit#create,update'
-      operationId: putMeshGlobalRateLimit
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshGlobalRateLimit#create
+        terraform-datasource: null
+      operationId: createMeshGlobalRateLimit
+      summary: Creates or Updates MeshGlobalRateLimit entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshGlobalRateLimit
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshGlobalRateLimitItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshGlobalRateLimitCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshGlobalRateLimit
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshglobalratelimits/{name}#update':
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshGlobalRateLimit#update
+        terraform-datasource: null
+      operationId: updateMeshGlobalRateLimit
       summary: Creates or Updates MeshGlobalRateLimit entity
       parameters:
         - name: mesh
@@ -4387,47 +5367,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MeshGlobalRateLimitCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshGlobalRateLimitCreateOrUpdateSuccessResponse'
-      tags:
-        - MeshGlobalRateLimit
-    delete:
-      x-speakeasy-entity-operation: MeshGlobalRateLimit#delete
-      operationId: deleteMeshGlobalRateLimit
-      summary: Deletes MeshGlobalRateLimit entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshGlobalRateLimit
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshGlobalRateLimitDeleteSuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
       tags:
         - MeshGlobalRateLimit
     parameters:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshglobalratelimits':
     get:
-      x-speakeasy-entity-operation: MeshGlobalRateLimitList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshGlobalRateLimitList#get
+        terraform-datasource: null
       operationId: getMeshGlobalRateLimitList
       summary: Returns a list of MeshGlobalRateLimit in the mesh.
       parameters:
@@ -4473,9 +5421,11 @@ paths:
         - MeshGlobalRateLimit
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshopas/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshopas/{name}#create':
     get:
-      x-speakeasy-entity-operation: MeshOPA#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshOPA#get
+        terraform-datasource: null
       operationId: getMeshOPA
       summary: Returns MeshOPA entity
       parameters:
@@ -4498,9 +5448,79 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshOPA
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshOPA#delete
+        terraform-datasource: null
+      operationId: deleteMeshOPA
+      summary: Deletes MeshOPA entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshOPA
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshOPADeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshOPA
     put:
-      x-speakeasy-entity-operation: 'MeshOPA#create,update'
-      operationId: putMeshOPA
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshOPA#create
+        terraform-datasource: null
+      operationId: createMeshOPA
+      summary: Creates or Updates MeshOPA entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshOPA
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshOPAItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshOPACreateOrUpdateSuccessResponse'
+      tags:
+        - MeshOPA
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshopas/{name}#update':
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshOPA#update
+        terraform-datasource: null
+      operationId: updateMeshOPA
       summary: Creates or Updates MeshOPA entity
       parameters:
         - name: mesh
@@ -4529,47 +5549,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MeshOPACreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshOPACreateOrUpdateSuccessResponse'
-      tags:
-        - MeshOPA
-    delete:
-      x-speakeasy-entity-operation: MeshOPA#delete
-      operationId: deleteMeshOPA
-      summary: Deletes MeshOPA entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshOPA
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshOPADeleteSuccessResponse'
-        '404':
-          $ref: '#/components/responses/NotFound'
       tags:
         - MeshOPA
     parameters:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshopas':
     get:
-      x-speakeasy-entity-operation: MeshOPAList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshOPAList#get
+        terraform-datasource: null
       operationId: getMeshOPAList
       summary: Returns a list of MeshOPA in the mesh.
       parameters:
@@ -5228,6 +6216,24 @@ components:
       required: true
       description: ID of the snippet.
       x-speakeasy-match: id
+    SortPortals:
+      name: sort
+      description: |
+        Sorts a collection of portals. Supported sort attributes are:
+          - name
+          - description
+          - authentication_enabled
+          - rbac_enabled
+          - auto_approve_applications
+          - auto_approve_developers
+          - default_domain
+          - canonical_domain
+          - created_at
+          - updated_at
+      in: query
+      required: false
+      schema:
+        type: string
     SpecId:
       schema:
         type: string
@@ -5333,11 +6339,13 @@ components:
           $ref: '#/components/schemas/PortalImageDataUri'
       example:
         data: 'data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
+      default: null
       additionalProperties: false
       nullable: true
       required:
         - data
       title: ReplacePortalImageAsset
+      x-speakeasy-param-computed: false
     PageSlug:
       description: |
         The slug of a page in a portal, used to compute its full URL path within the portal hierarchy. 
@@ -5356,7 +6364,9 @@ components:
       type: string
       format: uuid
       example: null
+      default: null
       nullable: true
+      x-speakeasy-param-computed: false
     PageTitle:
       description: The title of a page in a portal.
       type: string
@@ -5578,6 +6588,34 @@ components:
         - name
         - content
       title: CreatePortalSnippetRequest
+    PortalFilterParameters:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UuidFieldFilter'
+        name:
+          $ref: '#/components/schemas/StringFieldFilter'
+        description:
+          $ref: '#/components/schemas/StringFieldFilter'
+        authentication_enabled:
+          $ref: '#/components/schemas/BooleanFieldFilter'
+        rbac_enabled:
+          $ref: '#/components/schemas/BooleanFieldFilter'
+        default_api_visibility:
+          $ref: '#/components/schemas/StringFieldFilter'
+        default_page_visibility:
+          $ref: '#/components/schemas/StringFieldFilter'
+        default_application_auth_strategy_id:
+          $ref: '#/components/schemas/UuidFieldFilter'
+        auto_approve_developers:
+          $ref: '#/components/schemas/BooleanFieldFilter'
+        auto_approve_applications:
+          $ref: '#/components/schemas/BooleanFieldFilter'
+        default_domain:
+          $ref: '#/components/schemas/StringFieldFilter'
+        canonical_domain:
+          $ref: '#/components/schemas/StringFieldFilter'
+      title: PortalFilterParameters
     PortalCustomDomain:
       type: object
       properties:
@@ -5623,6 +6661,11 @@ components:
           format: date-time
           example: '2022-11-04T20:10:06.927Z'
           readOnly: true
+        skip_ca_check:
+          description: |
+            True when the provided certificate chain is served as-is without validation against a public trust store.
+          type: boolean
+          readOnly: true
       additionalProperties: false
       required:
         - domain_verification_method
@@ -5635,17 +6678,33 @@ components:
         expires_at:
           - x-unstable
           - x-internal
+        skip_ca_check:
+          - x-internal
     UpdatePortalCustomDomainSSL:
       type: object
       properties:
         custom_certificate:
           description: Custom certificate to be used for the SSL termination.
           type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         custom_private_key:
           description: Custom certificate private key to be used for the SSL termination.
           type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        skip_ca_check:
+          description: |
+            Advanced option. If true, the custom certificate is served exactly as provided, without attempting to bundle against a public trust store. Required for certificates issued by an internal/private CA.
+          type: boolean
+          default: false
       additionalProperties: false
       title: UpdatePortalCustomDomainSSL
+      x-property-annotations:
+        skip_ca_check:
+          - x-internal
     PortalCustomDomainVerificationMethod:
       type: string
       enum:
@@ -5693,6 +6752,9 @@ components:
       properties:
         enabled:
           type: boolean
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         ssl:
           $ref: '#/components/schemas/UpdatePortalCustomDomainSSL'
       additionalProperties: false
@@ -5708,12 +6770,15 @@ components:
         name:
           type: string
           example: name
+          default: name
         email:
           type: string
           example: email
+          default: email
         groups:
           type: string
           example: custom-group-claim
+          default: groups
       example:
         name: name
         email: email
@@ -5735,7 +6800,12 @@ components:
           type: array
           items:
             type: string
+            default: openid
           example:
+            - email
+            - openid
+            - profile
+          default:
             - email
             - openid
             - profile
@@ -5773,6 +6843,9 @@ components:
           description: The portal has SAML enabled or disabled.
           type: boolean
           example: false
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         oidc_team_mapping_enabled:
           description: IdP groups determine the Portal Teams a developer has.
           type: boolean
@@ -5781,6 +6854,9 @@ components:
           description: IdP groups determine the Portal Teams a developer has. This will soon replace oidc_team_mapping_enabled.
           type: boolean
           example: true
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         konnect_mapping_enabled:
           description: A Konnect Identity Admin assigns teams to a developer.
           type: boolean
@@ -5818,36 +6894,54 @@ components:
           description: The organization has basic auth enabled.
           type: boolean
           example: true
+          x-speakeasy-param-computed: true
         oidc_auth_enabled:
           description: The organization has OIDC disabled.
           type: boolean
           example: false
+          x-speakeasy-param-computed: true
         saml_auth_enabled:
           description: The portal has SAML enabled or disabled.
           type: boolean
           example: false
+          x-speakeasy-param-computed: true
         oidc_team_mapping_enabled:
           description: Whether IdP groups determine the Konnect Portal teams a developer has.
           type: boolean
           example: true
+          x-speakeasy-param-computed: true
         konnect_mapping_enabled:
           description: Whether a Konnect Identity Admin assigns teams to a developer.
           type: boolean
           example: false
+          x-speakeasy-param-computed: true
         idp_mapping_enabled:
           description: Whether IdP groups determine the Konnect Portal teams a developer has. This will soon replace oidc_team_mapping_enabled.
           type: boolean
           example: true
+          x-speakeasy-param-computed: true
         oidc_issuer:
           type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         oidc_client_id:
           type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         oidc_client_secret:
           type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         oidc_scopes:
           type: array
           items:
             type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         oidc_claim_mappings:
           $ref: '#/components/schemas/PortalClaimMappings'
       example:
@@ -5873,13 +6967,19 @@ components:
         name:
           type: string
           example: IDM - Developers
+          default: null
+          nullable: true
           pattern: '^[\w \W]+$'
           writeOnly: true
+          x-speakeasy-param-computed: false
         description:
           type: string
           example: The Identity Management (IDM) API team.
+          default: null
           maxLength: 250
+          nullable: true
           writeOnly: true
+          x-speakeasy-param-computed: false
       example:
         name: IDM - Developers
         description: The Identity Management (IDM) API team.
@@ -5897,8 +6997,11 @@ components:
         description:
           type: string
           example: The Identity Management (IDM) team.
+          default: null
           maxLength: 250
+          nullable: true
           writeOnly: true
+          x-speakeasy-param-computed: false
       example:
         name: IDM - Developers
         description: The Identity Management (IDM) team.
@@ -5917,12 +7020,18 @@ components:
         name:
           type: string
           example: IDM - Developers
+          default: null
           maxLength: 250
+          nullable: true
           pattern: '^[\w \W]+$'
+          x-speakeasy-param-computed: false
         description:
           type: string
           example: The developers for the IDM API.
+          default: null
           maxLength: 250
+          nullable: true
+          x-speakeasy-param-computed: false
         created_at:
           type: string
           format: date-time
@@ -5940,6 +7049,36 @@ components:
         created_at: '1992-02-07T17:46:57.52Z'
         updated_at: '2022-08-31T17:00:00.52Z'
       title: PortalTeamResponse
+    UuidFieldFilter:
+      description: Filters on the given string field value by exact match inequality.
+      type: object
+      properties:
+        eq:
+          type: string
+        oeq:
+          type: string
+        neq:
+          type: string
+      additionalProperties: false
+    StringFieldFilter:
+      description: Filters on the given string field value by exact match inequality.
+      type: object
+      properties:
+        eq:
+          type: string
+        contains:
+          type: string
+        ocontains:
+          type: string
+        oeq:
+          type: string
+        neq:
+          type: string
+      additionalProperties: false
+    BooleanFieldFilter:
+      description: Filter by a boolean value (true/false).
+      type: boolean
+      title: BooleanFieldFilter
     UUID:
       description: Contains a unique identifier used for this resource.
       type: string
@@ -6083,6 +7222,9 @@ components:
         source:
           type: string
           example: body
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         reason:
           type: string
           example: is a required field
@@ -6117,6 +7259,9 @@ components:
         source:
           type: string
           example: body
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         reason:
           type: string
           example: must have at least 8 characters
@@ -6149,6 +7294,9 @@ components:
         source:
           type: string
           example: body
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         reason:
           type: string
           example: must not have more than 8 characters
@@ -6187,6 +7335,9 @@ components:
         source:
           type: string
           example: body
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
       additionalProperties: false
       required:
         - field
@@ -6214,12 +7365,17 @@ components:
         dependents:
           type: array
           items: {}
+          default: null
           nullable: true
           readOnly: true
           uniqueItems: true
+          x-speakeasy-param-computed: false
         source:
           type: string
           example: body
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
       additionalProperties: false
       required:
         - field
@@ -6297,6 +7453,7 @@ components:
       maxProperties: 50
       nullable: true
       writeOnly: true
+      x-speakeasy-param-computed: true
     NotFoundError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -6376,7 +7533,9 @@ components:
       properties:
         theme:
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             name:
               type: string
@@ -6389,7 +7548,9 @@ components:
                 - system
             colors:
               type: object
+              default: null
               additionalProperties: false
+              nullable: true
               properties:
                 primary:
                   type: string
@@ -6397,60 +7558,101 @@ components:
                   nullable: false
                   pattern: '^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$'
                   x-validation-message: must be a valid hex color value
+              x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: false
         layout:
           type: string
           nullable: false
         css:
           type: string
+          default: null
           nullable: true
+          x-speakeasy-param-computed: false
         js:
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             custom:
               type: string
+              default: null
               nullable: true
+              x-speakeasy-param-computed: false
             scripts:
               type: array
               items:
                 type: string
                 pattern: '^https://[^:.]+\..+$'
+              default: null
               maxItems: 20
+              nullable: true
+              x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: false
         menu:
           type: object
           additionalProperties: false
+          nullable: false
           properties:
             main:
               type: array
               items:
                 $ref: '#/components/schemas/PortalMenuItem'
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
             footer_sections:
               type: array
               items:
                 $ref: '#/components/schemas/PortalFooterMenuSection'
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
             footer_bottom:
               type: array
               items:
                 $ref: '#/components/schemas/PortalMenuItem'
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
         spec_renderer:
           type: object
           additionalProperties: false
+          nullable: false
           properties:
             try_it_ui:
+              description: Enable in-browser testing for your APIs. All linked gateways must have the CORS plugin configured.
               type: boolean
+              default: true
             try_it_insomnia:
+              description: Enables users to open the API spec in Insomnia to explore and send requests with the native client.
               type: boolean
+              default: true
             infinite_scroll:
+              description: 'Display the full spec on a single, scrollable page. If disabled, documentation, endpoints, and schemas appear on separate pages.'
               type: boolean
+              default: true
             show_schemas:
+              description: 'Control whether schemas are visible in your API specs. When enabled, schemas appear in the side navigation below the endpoints.'
               type: boolean
+              default: true
             hide_internal:
+              description: Manage visibility of internal endpoints and models.
               type: boolean
+              default: false
             hide_deprecated:
+              description: Manage visibility of deprecated endpoints and models.
               type: boolean
+              default: false
+            allow_custom_server_urls:
+              description: Let users define a custom server URL for endpoints. This will be used to generate code snippets and to test the API. The URL is client-side only and is not saved.
+              type: boolean
+              default: true
         robots:
           type: string
+          default: null
           nullable: true
+          x-speakeasy-param-computed: false
       additionalProperties: false
       title: PortalCustomization
       x-property-annotations:
@@ -6476,13 +7678,16 @@ components:
         description:
           description: A description of your API. Will be visible on your live Portal.
           type: string
+          default: null
           nullable: true
+          x-speakeasy-param-computed: false
         version:
           description: An optional version for your API. Leave this empty if your API is unversioned.
           type: string
           maxLength: 255
           minLength: 1
           nullable: true
+          x-speakeasy-param-computed: true
         current_version_summary:
           $ref: '#/components/schemas/ApiVersionSummary'
         slug:
@@ -6494,6 +7699,7 @@ components:
           example: my-api-v1
           nullable: true
           pattern: '^[\w-]+$'
+          x-speakeasy-param-computed: true
         api_spec_ids:
           description: The list of API specification ids for the API.
           type: array
@@ -6626,8 +7832,10 @@ components:
       type: string
       format: uuid
       example: null
+      default: null
       nullable: true
       title: API Document Parent Document ID
+      x-speakeasy-param-computed: false
     ApiDocumentSlug:
       description: |
         The `slug` is used in generated URLs to provide human readable paths.
@@ -6671,15 +7879,23 @@ components:
           description: The version of the api.
           type: string
           example: 1.0.0
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         spec:
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             content:
+              default: null
               description: |
                 The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).
               example: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
+              nullable: true
               type: string
+              x-speakeasy-param-computed: false
             type:
               description: |
                 The type of specification being stored. This allows us to render the specification correctly.
@@ -6703,6 +7919,7 @@ components:
                   message:
                     type: string
               readOnly: true
+          x-speakeasy-param-computed: false
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -6721,12 +7938,18 @@ components:
         version:
           description: The version of this api spec.
           type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         spec:
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             type:
               $ref: '#/components/schemas/ApiSpecType'
+          x-speakeasy-param-computed: false
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -6735,6 +7958,7 @@ components:
       nullable: true
       readOnly: true
       title: API Version Summary
+      x-speakeasy-terraform-ignore: true
     ApiSpec:
       type: object
       properties:
@@ -6745,10 +7969,13 @@ components:
           example: 7710d5c4-d902-410b-992f-18b814155b53
           readOnly: true
         content:
+          default: null
           description: |
             The raw content of your API specification, in json or yaml format (OpenAPI or AsyncAPI).
           example: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
+          nullable: true
           type: string
+          x-speakeasy-param-computed: false
         validation_messages:
           description: The errors that occurred while parsing the API specification.
           type: array
@@ -6798,10 +8025,12 @@ components:
       items:
         type: string
         format: uuid
+      default: null
       maxItems: 1
       minItems: 1
       nullable: true
       title: API Publication Auth Strategy IDs
+      x-speakeasy-param-computed: false
     AutoApproveRegistrations:
       description: 'Whether the application registration auto approval on this portal for the api is enabled. If set to false, fallbacks on portal''s auto_approve_applications value.'
       type: boolean
@@ -15548,13 +16777,19 @@ components:
       properties:
         caCert:
           type: object
+          default: null
+          nullable: true
           properties:
             expiration:
               type: string
+              default: null
+              nullable: true
               x-speakeasy-param-computed: false
             rsaBits:
               type: integer
               format: uint32
+              default: null
+              nullable: true
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
     DatadogTracingBackendConfig:
@@ -15563,10 +16798,14 @@ components:
         address:
           description: Address of datadog collector.
           type: string
+          default: null
+          nullable: true
           x-speakeasy-param-computed: false
         port:
           description: Port of datadog collector
           type: integer
+          default: null
+          nullable: true
           x-speakeasy-param-computed: false
         splitService:
           description: |-
@@ -15576,6 +16815,8 @@ components:
             get service names like `backend_INBOUND`, `backend_OUTBOUND_db1`, and
             `backend_OUTBOUND_db2` in Datadog. Default: false
           type: boolean
+          default: null
+          nullable: true
           x-speakeasy-param-computed: false
     PrometheusMetricsBackendConfig:
       type: object
@@ -15591,37 +16832,52 @@ components:
               address:
                 description: Address on which a service expose HTTP endpoint with Prometheus metrics.
                 type: string
+                default: null
+                nullable: true
                 x-speakeasy-param-computed: false
               enabled:
                 description: |-
                   If false then the application won't be scrapped. If nil, then it is treated
                   as true and kuma-dp scrapes metrics from the service.
                 type: boolean
+                default: null
+                nullable: true
                 x-speakeasy-param-computed: false
               name:
                 description: Name which identify given configuration.
                 type: string
+                default: null
+                nullable: true
                 x-speakeasy-param-computed: false
               path:
                 description: Path on which a service expose HTTP endpoint with Prometheus metrics.
                 type: string
+                default: null
+                nullable: true
                 x-speakeasy-param-computed: false
               port:
                 description: Port on which a service expose HTTP endpoint with Prometheus metrics.
                 type: integer
+                default: null
+                nullable: true
                 x-speakeasy-param-computed: false
             type: object
             x-speakeasy-param-computed: false
+          default: []
           x-speakeasy-param-computed: false
         envoy:
           description: Configuration of Envoy's metrics.
           type: object
+          default: null
+          nullable: true
           properties:
             filterRegex:
               description: |-
                 FilterRegex value that is going to be passed to Envoy for filtering
                 Envoy metrics.
               type: string
+              default: null
+              nullable: true
               x-speakeasy-param-computed: false
             usedOnly:
               description: |-
@@ -15629,6 +16885,8 @@ components:
                 at least once, gauges changed at least once, and histograms added to at
                 least once). If nil, then it is treated as false.
               type: boolean
+              default: null
+              nullable: true
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
         path:
@@ -15636,18 +16894,24 @@ components:
             Path on which a dataplane should expose HTTP endpoint with Prometheus
             metrics.
           type: string
+          default: null
+          nullable: true
           x-speakeasy-param-computed: false
         port:
           description: |-
             Port on which a dataplane should expose HTTP endpoint with Prometheus
             metrics.
           type: integer
+          default: null
+          nullable: true
           x-speakeasy-param-computed: false
         skipMTLS:
           description: |-
             If true then endpoints for scraping metrics won't require mTLS even if mTLS
             is enabled in Mesh. If nil, then it is treated as false.
           type: boolean
+          default: null
+          nullable: true
           x-speakeasy-param-computed: false
         tags:
           description: |-
@@ -15655,12 +16919,15 @@ components:
             e.g. service=web, version=1.0.
             `service` tag is mandatory.
           type: object
+          default: null
           additionalProperties:
             type: string
+          nullable: true
           x-speakeasy-param-computed: false
         tls:
           description: Configuration of TLS for prometheus listener.
           type: object
+          default: {}
           properties:
             mode:
               description: |-
@@ -15679,6 +16946,8 @@ components:
         path:
           description: Path to a file that logs will be written to
           type: string
+          default: null
+          nullable: true
           x-speakeasy-param-computed: false
     MeshItem:
       type: object
@@ -16050,12 +17319,16 @@ components:
         address:
           description: Address to TCP service that will receive logs
           type: string
+          default: null
+          nullable: true
           x-speakeasy-param-computed: false
     ProvidedCertificateAuthorityConfig:
       type: object
       properties:
         cert:
           type: object
+          default: null
+          nullable: true
           properties:
             Type: {}
           required:
@@ -16063,6 +17336,8 @@ components:
           x-speakeasy-param-computed: false
         key:
           type: object
+          default: null
+          nullable: true
           properties:
             Type: {}
           required:
@@ -16077,6 +17352,8 @@ components:
             httpJson see
             https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/trace.proto#envoy-v3-api-enum-config-trace-v3-zipkinconfig-collectorendpointversion
           type: string
+          default: null
+          nullable: true
           x-speakeasy-param-computed: false
         sharedSpanContext:
           description: |-
@@ -16084,14 +17361,20 @@ components:
             context. Default: true.
             https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/zipkin.proto#config-trace-v3-zipkinconfig
           type: boolean
+          default: null
+          nullable: true
           x-speakeasy-param-computed: false
         traceId128bit:
           description: 'Generate 128bit traces. Default: false'
           type: boolean
+          default: null
+          nullable: true
           x-speakeasy-param-computed: false
         url:
           description: Address of Zipkin collector.
           type: string
+          default: null
+          nullable: true
           x-speakeasy-param-computed: false
     MeshGatewayItem:
       type: object
@@ -16295,8 +17578,10 @@ components:
         labels:
           description: The labels to help identity resources
           type: object
+          default: null
           additionalProperties:
             type: string
+          nullable: true
           x-speakeasy-param-computed: false
         spec:
           description: Spec is the specification of the Kuma HostnameGenerator resource.
@@ -16305,10 +17590,15 @@ components:
             extension:
               description: Extension struct for a plugin configuration
               type: object
+              default: null
+              nullable: true
               properties:
                 config:
                   description: Config freeform configuration for the extension.
+                  default: null
+                  nullable: true
                   x-kubernetes-preserve-unknown-fields: true
+                  x-speakeasy-param-computed: false
                 type:
                   description: Type of the extension.
                   type: string
@@ -16318,37 +17608,53 @@ components:
               x-speakeasy-param-computed: false
             selector:
               type: object
+              default: null
+              nullable: true
               properties:
                 meshExternalService:
                   type: object
+                  default: null
+                  nullable: true
                   properties:
                     matchLabels:
                       type: object
+                      default: null
                       additionalProperties:
                         type: string
+                      nullable: true
                       x-speakeasy-param-computed: false
                   x-speakeasy-param-computed: false
                 meshMultiZoneService:
                   type: object
+                  default: null
+                  nullable: true
                   properties:
                     matchLabels:
                       type: object
+                      default: null
                       additionalProperties:
                         type: string
+                      nullable: true
                       x-speakeasy-param-computed: false
                   x-speakeasy-param-computed: false
                 meshService:
                   type: object
+                  default: null
+                  nullable: true
                   properties:
                     matchLabels:
                       type: object
+                      default: null
                       additionalProperties:
                         type: string
+                      nullable: true
                       x-speakeasy-param-computed: false
                   x-speakeasy-param-computed: false
               x-speakeasy-param-computed: false
             template:
               type: string
+              default: null
+              nullable: true
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
         creationTime:
@@ -17305,15 +18611,23 @@ components:
       properties:
         arn:
           type: string
+          default: null
+          nullable: true
           x-speakeasy-param-computed: false
         auth:
           type: object
+          default: null
+          nullable: true
           properties:
             awsCredentials:
               type: object
+              default: null
+              nullable: true
               properties:
                 accessKey:
                   type: object
+                  default: null
+                  nullable: true
                   properties:
                     Type: {}
                   required:
@@ -17321,6 +18635,8 @@ components:
                   x-speakeasy-param-computed: false
                 accessKeySecret:
                   type: object
+                  default: null
+                  nullable: true
                   properties:
                     Type: {}
                   required:
@@ -17330,6 +18646,8 @@ components:
           x-speakeasy-param-computed: false
         caCert:
           type: object
+          default: null
+          nullable: true
           properties:
             Type: {}
           required:
@@ -17337,12 +18655,16 @@ components:
           x-speakeasy-param-computed: false
         commonName:
           type: string
+          default: null
+          nullable: true
           x-speakeasy-param-computed: false
     CertManagerCertificateAuthorityConfig:
       type: object
       properties:
         caCert:
           type: object
+          default: null
+          nullable: true
           properties:
             Type: {}
           required:
@@ -17350,24 +18672,35 @@ components:
           x-speakeasy-param-computed: false
         commonName:
           type: string
+          default: null
+          nullable: true
           x-speakeasy-param-computed: false
         dnsNames:
           type: array
           items:
             type: string
             x-speakeasy-param-computed: false
+          default: []
           x-speakeasy-param-computed: false
         issuerRef:
           type: object
+          default: null
+          nullable: true
           properties:
             group:
               type: string
+              default: null
+              nullable: true
               x-speakeasy-param-computed: false
             kind:
               type: string
+              default: null
+              nullable: true
               x-speakeasy-param-computed: false
             name:
               type: string
+              default: null
+              nullable: true
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
     MeshControlPlaneFeatures:
@@ -18468,7 +19801,9 @@ components:
       description: The URI of the login page where the user is redirected to authenticate in interactive flows. The login page must be secure (HTTPS).
       type: string
       format: uri
+      default: null
       nullable: true
+      x-speakeasy-param-computed: false
     TokenDuration:
       description: 'The duration of the minted token is valid for, in seconds'
       type: integer
@@ -18529,6 +19864,13 @@ components:
     Issuer:
       description: The complete URL for the custom authorization server. This becomes the 'iss' claim in an access token.
       type: string
+    TokenEndpointAuthMethod:
+      description: Requested authentication method for OAuth 2.0 endpoints.
+      type: string
+      default: client_secret_post
+      enum:
+        - client_secret_post
+        - none
     AuthServer:
       type: object
       properties:
@@ -18723,6 +20065,8 @@ components:
           $ref: '#/components/schemas/Labels'
         response_types:
           $ref: '#/components/schemas/ResponseTypes'
+        token_endpoint_auth_method:
+          $ref: '#/components/schemas/TokenEndpointAuthMethod'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -18788,7 +20132,10 @@ components:
               - upstream_status_code_grouped
           example:
             - status_code_grouped
+          default: null
           maxItems: 2
+          nullable: true
+          x-speakeasy-param-computed: false
         filters:
           $ref: '#/components/schemas/AdvancedFilters'
         granularity:
@@ -18849,7 +20196,10 @@ components:
               - status_code
               - status_code_grouped
               - ai_plugin
+          default: null
           maxItems: 2
+          nullable: true
+          x-speakeasy-param-computed: false
         filters:
           $ref: '#/components/schemas/LLMFilters'
         granularity:
@@ -19003,6 +20353,7 @@ components:
               field: ai_request_model
               value:
                 - request_model1
+          nullable: false
       additionalProperties: false
       required:
         - tiles
@@ -19836,12 +21187,14 @@ components:
       properties:
         tz:
           type: string
+          default: Etc/UTC
         type:
           type: string
           enum:
             - relative
         time_range:
           type: string
+          default: 1h
           enum:
             - 15m
             - 1h
@@ -19864,6 +21217,7 @@ components:
       properties:
         tz:
           type: string
+          default: Etc/UTC
         type:
           type: string
           enum:
@@ -19871,9 +21225,15 @@ components:
         start:
           type: string
           format: date-time
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         end:
           type: string
           format: date-time
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
       required:
         - type
       title: Absolute time range
@@ -20206,6 +21566,7 @@ components:
         chart_title:
           description: 'The title of the chart, which is displayed in the tile''s header.'
           type: string
+          nullable: false
         type:
           type: string
           enum:
@@ -20229,6 +21590,7 @@ components:
         chart_title:
           description: 'The title of the chart, which is displayed in the tile''s header.'
           type: string
+          nullable: false
         type:
           type: string
           enum:
@@ -20238,6 +21600,7 @@ components:
           description: |
             Whether to stack the bars or lines (implicitly adding them together to form a total), or leave them independent from each other.
           type: boolean
+          nullable: false
       additionalProperties: false
       required:
         - type
@@ -20251,6 +21614,7 @@ components:
         chart_title:
           description: 'The title of the chart, which is displayed in the tile''s header.'
           type: string
+          nullable: false
         type:
           type: string
           enum:
@@ -20260,6 +21624,7 @@ components:
           description: |
             Whether to stack the bars (implicitly adding them together to form a total), or leave them independent from each other.
           type: boolean
+          nullable: false
       additionalProperties: false
       required:
         - type
@@ -20271,6 +21636,7 @@ components:
         chart_title:
           description: 'The title of the chart, which is displayed in the tile''s header.'
           type: string
+          nullable: false
         type:
           type: string
           enum:
@@ -20278,6 +21644,9 @@ components:
         decimal_points:
           description: 'The number of figures to render after the decimal.  Most metrics only support up to 2 decimals, but some may support more.'
           type: number
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
       additionalProperties: false
       required:
         - type
@@ -20352,9 +21721,11 @@ components:
         custom_certificate:
           description: Custom certificate to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate"
           type: string
+          nullable: false
         custom_private_key:
           description: Custom certificate private key to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate"
           type: string
+          nullable: false
       additionalProperties: false
   requestBodies:
     CreatePortalCustomDomain:
@@ -20377,6 +21748,7 @@ components:
       content:
         application/json:
           schema:
+            x-speakeasy-entity: Portal
             type: object
             properties:
               id:
@@ -20395,17 +21767,22 @@ components:
                 type: string
                 maxLength: 255
                 minLength: 1
+                nullable: false
               description:
                 description: A description of the portal.
                 type: string
+                default: null
                 maxLength: 512
                 nullable: true
+                x-speakeasy-param-computed: false
               authentication_enabled:
                 description: 'Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications.'
                 type: boolean
+                default: true
               rbac_enabled:
                 description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.'
                 type: boolean
+                default: false
               default_api_visibility:
                 description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
                 type: string
@@ -20422,13 +21799,17 @@ components:
                 description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
                 type: string
                 format: uuid
+                default: null
                 nullable: true
+                x-speakeasy-param-computed: false
               auto_approve_developers:
                 description: 'Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.'
                 type: boolean
+                default: false
               auto_approve_applications:
                 description: 'Whether requests from applications to register for APIs will be automatically approved, or if they will be set to pending until approved by an admin.'
                 type: boolean
+                default: false
               default_domain:
                 description: The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a `custom_domain``.
                 type: string
@@ -20452,6 +21833,7 @@ components:
       content:
         application/json:
           schema:
+            x-speakeasy-entity: Portal
             type: object
             properties:
               id:
@@ -20463,24 +21845,32 @@ components:
               name:
                 description: 'The name of the portal, used to distinguish it from other portals. Name must be unique.'
                 type: string
+                default: null
                 maxLength: 255
                 minLength: 1
+                nullable: true
+                x-speakeasy-param-computed: false
               display_name:
                 description: The display name of the portal. This value will be the portal's `name` in Portal API.
                 type: string
                 maxLength: 255
                 minLength: 1
+                nullable: false
               description:
                 description: A description of the portal.
                 type: string
+                default: null
                 maxLength: 512
                 nullable: true
+                x-speakeasy-param-computed: false
               authentication_enabled:
                 description: 'Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications.'
                 type: boolean
+                default: true
               rbac_enabled:
                 description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.'
                 type: boolean
+                default: false
               default_api_visibility:
                 description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
                 type: string
@@ -20497,13 +21887,17 @@ components:
                 description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
                 type: string
                 format: uuid
+                default: null
                 nullable: true
+                x-speakeasy-param-computed: false
               auto_approve_developers:
                 description: 'Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.'
                 type: boolean
+                default: false
               auto_approve_applications:
                 description: 'Whether requests from applications to register for APIs will be automatically approved, or if they will be set to pending until approved by an admin.'
                 type: boolean
+                default: false
               default_domain:
                 description: The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a `custom_domain``.
                 type: string
@@ -20600,13 +21994,16 @@ components:
               description:
                 description: A description of your API. Will be visible on your live Portal.
                 type: string
+                default: null
                 nullable: true
+                x-speakeasy-param-computed: false
               version:
                 description: An optional version for your API. Leave this empty if your API is unversioned.
                 type: string
                 maxLength: 255
                 minLength: 1
                 nullable: true
+                x-speakeasy-param-computed: true
               current_version_summary:
                 $ref: '#/components/schemas/ApiVersionSummary'
               slug:
@@ -20618,6 +22015,7 @@ components:
                 example: my-api-v1
                 nullable: true
                 pattern: '^[\w-]+$'
+                x-speakeasy-param-computed: true
               api_spec_ids:
                 description: The list of API specification ids for the API.
                 type: array
@@ -20666,6 +22064,7 @@ components:
               spec_content:
                 description: 'The content of the API specification. This is the raw content of the API specification, in json or yaml. By including this field, you can add a API specification without having to make a separate call to update the API specification.'
                 type: string
+                nullable: false
                 writeOnly: true
             additionalProperties: false
             required:
@@ -20740,15 +22139,21 @@ components:
                 description: The version of the api.
                 type: string
                 example: 1.0.0
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
               spec:
                 type: object
                 additionalProperties: false
                 properties:
                   content:
+                    default: null
                     description: |
                       The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).
                     example: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
+                    nullable: true
                     type: string
+                    x-speakeasy-param-computed: false
                   type:
                     description: |
                       The type of specification being stored. This allows us to render the specification correctly.
@@ -20825,18 +22230,24 @@ components:
                   The name of your API. The `name + version` combination must be unique for each API you publish.
                 type: string
                 example: MyAPI
+                default: null
                 maxLength: 255
                 minLength: 1
+                nullable: true
+                x-speakeasy-param-computed: false
               description:
                 description: A description of your API. Will be visible on your live Portal.
                 type: string
+                default: null
                 nullable: true
+                x-speakeasy-param-computed: false
               version:
                 description: An optional version for your API. Leave this empty if your API is unversioned.
                 type: string
                 maxLength: 255
                 minLength: 1
                 nullable: true
+                x-speakeasy-param-computed: true
               current_version_summary:
                 $ref: '#/components/schemas/ApiVersionSummary'
               slug:
@@ -20848,6 +22259,7 @@ components:
                 example: my-api-v1
                 nullable: true
                 pattern: '^[\w-]+$'
+                x-speakeasy-param-computed: true
               api_spec_ids:
                 description: The list of API specification ids for the API.
                 type: array
@@ -21077,6 +22489,8 @@ components:
                 $ref: '#/components/schemas/ClientAllowScopes'
               labels:
                 $ref: '#/components/schemas/Labels'
+              token_endpoint_auth_method:
+                $ref: '#/components/schemas/TokenEndpointAuthMethod'
             required:
               - name
               - grant_types
@@ -21111,6 +22525,8 @@ components:
                 $ref: '#/components/schemas/ClientAllowAllScopes'
               allow_scopes:
                 $ref: '#/components/schemas/ClientAllowScopes'
+              token_endpoint_auth_method:
+                $ref: '#/components/schemas/TokenEndpointAuthMethod'
               labels:
                 $ref: '#/components/schemas/Labels'
             required:
@@ -21137,11 +22553,121 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalCustomDomain'
+    ListPortalsResponse:
+      description: A paginated list of portals in the current region of an organization.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  x-speakeasy-entity: Portal
+                  title: Portal
+                  type: object
+                  additionalProperties: false
+                  properties:
+                    id:
+                      $ref: '#/components/schemas/UUID'
+                    created_at:
+                      $ref: '#/components/schemas/CreatedAt'
+                    updated_at:
+                      $ref: '#/components/schemas/UpdatedAt'
+                    name:
+                      description: 'The name of the portal, used to distinguish it from other portals. Name must be unique.'
+                      type: string
+                      maxLength: 255
+                      minLength: 1
+                    display_name:
+                      description: The display name of the portal. This value will be the portal's `name` in Portal API.
+                      type: string
+                      maxLength: 255
+                      minLength: 1
+                      nullable: false
+                    description:
+                      description: A description of the portal.
+                      type: string
+                      default: null
+                      maxLength: 512
+                      nullable: true
+                      x-speakeasy-param-computed: false
+                    authentication_enabled:
+                      description: 'Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications.'
+                      type: boolean
+                      default: true
+                    rbac_enabled:
+                      description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.'
+                      type: boolean
+                      default: false
+                    default_api_visibility:
+                      description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
+                      type: string
+                      enum:
+                        - public
+                        - private
+                    default_page_visibility:
+                      description: 'The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.'
+                      type: string
+                      enum:
+                        - public
+                        - private
+                    default_application_auth_strategy_id:
+                      description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
+                      type: string
+                      format: uuid
+                      default: null
+                      nullable: true
+                      x-speakeasy-param-computed: false
+                    auto_approve_developers:
+                      description: 'Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.'
+                      type: boolean
+                      default: false
+                    auto_approve_applications:
+                      description: 'Whether requests from applications to register for APIs will be automatically approved, or if they will be set to pending until approved by an admin.'
+                      type: boolean
+                      default: false
+                    default_domain:
+                      description: The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a `custom_domain``.
+                      type: string
+                      format: hostname
+                      readOnly: true
+                    canonical_domain:
+                      description: The canonical domain of the developer portal
+                      type: string
+                      format: hostname
+                      nullable: false
+                      readOnly: true
+                    labels:
+                      $ref: '#/components/schemas/Labels'
+                  required:
+                    - id
+                    - name
+                    - display_name
+                    - description
+                    - authentication_enabled
+                    - rbac_enabled
+                    - default_api_visibility
+                    - default_page_visibility
+                    - default_application_auth_strategy_id
+                    - auto_approve_applications
+                    - auto_approve_developers
+                    - default_domain
+                    - canonical_domain
+                    - created_at
+                    - updated_at
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+            additionalProperties: false
+            required:
+              - data
+              - meta
     PortalResponse:
       description: Details about a portal.
       content:
         application/json:
           schema:
+            x-speakeasy-entity: Portal
             type: object
             properties:
               id:
@@ -21160,17 +22686,22 @@ components:
                 type: string
                 maxLength: 255
                 minLength: 1
+                nullable: false
               description:
                 description: A description of the portal.
                 type: string
+                default: null
                 maxLength: 512
                 nullable: true
+                x-speakeasy-param-computed: false
               authentication_enabled:
                 description: 'Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications.'
                 type: boolean
+                default: true
               rbac_enabled:
                 description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.'
                 type: boolean
+                default: false
               default_api_visibility:
                 description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
                 type: string
@@ -21187,13 +22718,17 @@ components:
                 description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
                 type: string
                 format: uuid
+                default: null
                 nullable: true
+                x-speakeasy-param-computed: false
               auto_approve_developers:
                 description: 'Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.'
                 type: boolean
+                default: false
               auto_approve_applications:
                 description: 'Whether requests from applications to register for APIs will be automatically approved, or if they will be set to pending until approved by an admin.'
                 type: boolean
+                default: false
               default_domain:
                 description: The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a `custom_domain``.
                 type: string
@@ -21298,6 +22833,9 @@ components:
                 type: string
               type:
                 type: string
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
               instance:
                 type: string
             required:
@@ -21312,6 +22850,12 @@ components:
             $ref: '#/components/schemas/ConflictError'
     ApiSpecHiddenConflict:
       description: Conflict - name attribute must be unique across specifications
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
+    ApiVersionPatchConflict:
+      description: Conflict - May occur when constraints are violated
       content:
         application/problem+json:
           schema:
@@ -21458,13 +23002,18 @@ components:
                 example: 1.0.0
               spec:
                 type: object
+                default: null
                 additionalProperties: false
+                nullable: true
                 properties:
                   content:
+                    default: null
                     description: |
                       The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).
                     example: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
+                    nullable: true
                     type: string
+                    x-speakeasy-param-computed: false
                   type:
                     description: |
                       The type of specification being stored. This allows us to render the specification correctly.
@@ -21488,6 +23037,7 @@ components:
                         message:
                           type: string
                     readOnly: true
+                x-speakeasy-param-computed: false
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
@@ -21975,12 +23525,21 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/HostnameGeneratorItem'
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
               total:
                 description: The total number of entities
                 type: number
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
               next:
                 description: URL to the next page
                 type: string
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
     MeshExternalServiceItem:
       description: Successful response
       content:
@@ -22219,6 +23778,12 @@ components:
       bearerFormat: JWT
       description: |
         The Konnect access token is meant to be used by the Konnect dashboard and the decK CLI authenticate with.
+    serviceAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        The Service access token is meant to be used between internal services.
 tags:
   - name: Portals
     description: APIs related to configuration of Konnect Developer Portals.
@@ -22255,6 +23820,7 @@ security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
   - konnectAccessToken: []
+  - serviceAccessToken: []
 x-speakeasy-retries:
   strategy: backoff
   backoff:
