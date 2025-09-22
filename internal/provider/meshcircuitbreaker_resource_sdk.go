@@ -380,6 +380,35 @@ func (r *MeshCircuitBreakerResourceModel) RefreshFromSharedMeshCircuitBreakerIte
 	return diags
 }
 
+func (r *MeshCircuitBreakerResourceModel) ToOperationsCreateMeshCircuitBreakerRequest(ctx context.Context) (*operations.CreateMeshCircuitBreakerRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	meshCircuitBreakerItem, meshCircuitBreakerItemDiags := r.ToSharedMeshCircuitBreakerItemInput(ctx)
+	diags.Append(meshCircuitBreakerItemDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateMeshCircuitBreakerRequest{
+		CpID:                   cpID,
+		Mesh:                   mesh,
+		Name:                   name,
+		MeshCircuitBreakerItem: *meshCircuitBreakerItem,
+	}
+
+	return &out, diags
+}
+
 func (r *MeshCircuitBreakerResourceModel) ToOperationsDeleteMeshCircuitBreakerRequest(ctx context.Context) (*operations.DeleteMeshCircuitBreakerRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -422,7 +451,7 @@ func (r *MeshCircuitBreakerResourceModel) ToOperationsGetMeshCircuitBreakerReque
 	return &out, diags
 }
 
-func (r *MeshCircuitBreakerResourceModel) ToOperationsPutMeshCircuitBreakerRequest(ctx context.Context) (*operations.PutMeshCircuitBreakerRequest, diag.Diagnostics) {
+func (r *MeshCircuitBreakerResourceModel) ToOperationsUpdateMeshCircuitBreakerRequest(ctx context.Context) (*operations.UpdateMeshCircuitBreakerRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -441,7 +470,7 @@ func (r *MeshCircuitBreakerResourceModel) ToOperationsPutMeshCircuitBreakerReque
 		return nil, diags
 	}
 
-	out := operations.PutMeshCircuitBreakerRequest{
+	out := operations.UpdateMeshCircuitBreakerRequest{
 		CpID:                   cpID,
 		Mesh:                   mesh,
 		Name:                   name,

@@ -139,6 +139,35 @@ func (r *MeshTCPRouteResourceModel) RefreshFromSharedMeshTCPRouteItem(ctx contex
 	return diags
 }
 
+func (r *MeshTCPRouteResourceModel) ToOperationsCreateMeshTCPRouteRequest(ctx context.Context) (*operations.CreateMeshTCPRouteRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	meshTCPRouteItem, meshTCPRouteItemDiags := r.ToSharedMeshTCPRouteItemInput(ctx)
+	diags.Append(meshTCPRouteItemDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateMeshTCPRouteRequest{
+		CpID:             cpID,
+		Mesh:             mesh,
+		Name:             name,
+		MeshTCPRouteItem: *meshTCPRouteItem,
+	}
+
+	return &out, diags
+}
+
 func (r *MeshTCPRouteResourceModel) ToOperationsDeleteMeshTCPRouteRequest(ctx context.Context) (*operations.DeleteMeshTCPRouteRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -181,7 +210,7 @@ func (r *MeshTCPRouteResourceModel) ToOperationsGetMeshTCPRouteRequest(ctx conte
 	return &out, diags
 }
 
-func (r *MeshTCPRouteResourceModel) ToOperationsPutMeshTCPRouteRequest(ctx context.Context) (*operations.PutMeshTCPRouteRequest, diag.Diagnostics) {
+func (r *MeshTCPRouteResourceModel) ToOperationsUpdateMeshTCPRouteRequest(ctx context.Context) (*operations.UpdateMeshTCPRouteRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -200,7 +229,7 @@ func (r *MeshTCPRouteResourceModel) ToOperationsPutMeshTCPRouteRequest(ctx conte
 		return nil, diags
 	}
 
-	out := operations.PutMeshTCPRouteRequest{
+	out := operations.UpdateMeshTCPRouteRequest{
 		CpID:             cpID,
 		Mesh:             mesh,
 		Name:             name,

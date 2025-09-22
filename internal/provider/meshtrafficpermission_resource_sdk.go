@@ -110,6 +110,35 @@ func (r *MeshTrafficPermissionResourceModel) RefreshFromSharedMeshTrafficPermiss
 	return diags
 }
 
+func (r *MeshTrafficPermissionResourceModel) ToOperationsCreateMeshTrafficPermissionRequest(ctx context.Context) (*operations.CreateMeshTrafficPermissionRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	meshTrafficPermissionItem, meshTrafficPermissionItemDiags := r.ToSharedMeshTrafficPermissionItemInput(ctx)
+	diags.Append(meshTrafficPermissionItemDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateMeshTrafficPermissionRequest{
+		CpID:                      cpID,
+		Mesh:                      mesh,
+		Name:                      name,
+		MeshTrafficPermissionItem: *meshTrafficPermissionItem,
+	}
+
+	return &out, diags
+}
+
 func (r *MeshTrafficPermissionResourceModel) ToOperationsDeleteMeshTrafficPermissionRequest(ctx context.Context) (*operations.DeleteMeshTrafficPermissionRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -152,7 +181,7 @@ func (r *MeshTrafficPermissionResourceModel) ToOperationsGetMeshTrafficPermissio
 	return &out, diags
 }
 
-func (r *MeshTrafficPermissionResourceModel) ToOperationsPutMeshTrafficPermissionRequest(ctx context.Context) (*operations.PutMeshTrafficPermissionRequest, diag.Diagnostics) {
+func (r *MeshTrafficPermissionResourceModel) ToOperationsUpdateMeshTrafficPermissionRequest(ctx context.Context) (*operations.UpdateMeshTrafficPermissionRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -171,7 +200,7 @@ func (r *MeshTrafficPermissionResourceModel) ToOperationsPutMeshTrafficPermissio
 		return nil, diags
 	}
 
-	out := operations.PutMeshTrafficPermissionRequest{
+	out := operations.UpdateMeshTrafficPermissionRequest{
 		CpID:                      cpID,
 		Mesh:                      mesh,
 		Name:                      name,

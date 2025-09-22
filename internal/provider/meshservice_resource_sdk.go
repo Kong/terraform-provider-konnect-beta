@@ -166,6 +166,35 @@ func (r *MeshServiceResourceModel) RefreshFromSharedMeshServiceItem(ctx context.
 	return diags
 }
 
+func (r *MeshServiceResourceModel) ToOperationsCreateMeshServiceRequest(ctx context.Context) (*operations.CreateMeshServiceRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	meshServiceItem, meshServiceItemDiags := r.ToSharedMeshServiceItemInput(ctx)
+	diags.Append(meshServiceItemDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateMeshServiceRequest{
+		CpID:            cpID,
+		Mesh:            mesh,
+		Name:            name,
+		MeshServiceItem: *meshServiceItem,
+	}
+
+	return &out, diags
+}
+
 func (r *MeshServiceResourceModel) ToOperationsDeleteMeshServiceRequest(ctx context.Context) (*operations.DeleteMeshServiceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -208,7 +237,7 @@ func (r *MeshServiceResourceModel) ToOperationsGetMeshServiceRequest(ctx context
 	return &out, diags
 }
 
-func (r *MeshServiceResourceModel) ToOperationsPutMeshServiceRequest(ctx context.Context) (*operations.PutMeshServiceRequest, diag.Diagnostics) {
+func (r *MeshServiceResourceModel) ToOperationsUpdateMeshServiceRequest(ctx context.Context) (*operations.UpdateMeshServiceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -227,7 +256,7 @@ func (r *MeshServiceResourceModel) ToOperationsPutMeshServiceRequest(ctx context
 		return nil, diags
 	}
 
-	out := operations.PutMeshServiceRequest{
+	out := operations.UpdateMeshServiceRequest{
 		CpID:            cpID,
 		Mesh:            mesh,
 		Name:            name,

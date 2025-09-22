@@ -252,6 +252,35 @@ func (r *MeshProxyPatchResourceModel) RefreshFromSharedMeshProxyPatchItem(ctx co
 	return diags
 }
 
+func (r *MeshProxyPatchResourceModel) ToOperationsCreateMeshProxyPatchRequest(ctx context.Context) (*operations.CreateMeshProxyPatchRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	meshProxyPatchItem, meshProxyPatchItemDiags := r.ToSharedMeshProxyPatchItemInput(ctx)
+	diags.Append(meshProxyPatchItemDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateMeshProxyPatchRequest{
+		CpID:               cpID,
+		Mesh:               mesh,
+		Name:               name,
+		MeshProxyPatchItem: *meshProxyPatchItem,
+	}
+
+	return &out, diags
+}
+
 func (r *MeshProxyPatchResourceModel) ToOperationsDeleteMeshProxyPatchRequest(ctx context.Context) (*operations.DeleteMeshProxyPatchRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -294,7 +323,7 @@ func (r *MeshProxyPatchResourceModel) ToOperationsGetMeshProxyPatchRequest(ctx c
 	return &out, diags
 }
 
-func (r *MeshProxyPatchResourceModel) ToOperationsPutMeshProxyPatchRequest(ctx context.Context) (*operations.PutMeshProxyPatchRequest, diag.Diagnostics) {
+func (r *MeshProxyPatchResourceModel) ToOperationsUpdateMeshProxyPatchRequest(ctx context.Context) (*operations.UpdateMeshProxyPatchRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -313,7 +342,7 @@ func (r *MeshProxyPatchResourceModel) ToOperationsPutMeshProxyPatchRequest(ctx c
 		return nil, diags
 	}
 
-	out := operations.PutMeshProxyPatchRequest{
+	out := operations.UpdateMeshProxyPatchRequest{
 		CpID:               cpID,
 		Mesh:               mesh,
 		Name:               name,

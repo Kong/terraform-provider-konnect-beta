@@ -16,6 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -261,7 +262,12 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 														`scrapped by kuma-dp.`,
 												},
 												"envoy": schema.SingleNestedAttribute{
+													Computed: true,
 													Optional: true,
+													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+														"filter_regex": types.StringType,
+														"used_only":    types.BoolType,
+													})),
 													Attributes: map[string]schema.Attribute{
 														"filter_regex": schema.StringAttribute{
 															Optional: true,
@@ -377,13 +383,47 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 													Optional: true,
 												},
 												"auth": schema.SingleNestedAttribute{
+													Computed: true,
 													Optional: true,
+													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+														"aws_credentials": types.ObjectType{
+															AttrTypes: map[string]attr.Type{
+																`access_key`: types.ObjectType{
+																	AttrTypes: map[string]attr.Type{
+																		`type`: jsontypes.NormalizedType{},
+																	},
+																},
+																`access_key_secret`: types.ObjectType{
+																	AttrTypes: map[string]attr.Type{
+																		`type`: jsontypes.NormalizedType{},
+																	},
+																},
+															},
+														},
+													})),
 													Attributes: map[string]schema.Attribute{
 														"aws_credentials": schema.SingleNestedAttribute{
+															Computed: true,
 															Optional: true,
+															Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+																"access_key": types.ObjectType{
+																	AttrTypes: map[string]attr.Type{
+																		`type`: jsontypes.NormalizedType{},
+																	},
+																},
+																"access_key_secret": types.ObjectType{
+																	AttrTypes: map[string]attr.Type{
+																		`type`: jsontypes.NormalizedType{},
+																	},
+																},
+															})),
 															Attributes: map[string]schema.Attribute{
 																"access_key": schema.SingleNestedAttribute{
+																	Computed: true,
 																	Optional: true,
+																	Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+																		"type": jsontypes.NormalizedType{},
+																	})),
 																	Attributes: map[string]schema.Attribute{
 																		"type": schema.StringAttribute{
 																			CustomType:  jsontypes.NormalizedType{},
@@ -393,7 +433,11 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 																	},
 																},
 																"access_key_secret": schema.SingleNestedAttribute{
+																	Computed: true,
 																	Optional: true,
+																	Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+																		"type": jsontypes.NormalizedType{},
+																	})),
 																	Attributes: map[string]schema.Attribute{
 																		"type": schema.StringAttribute{
 																			CustomType:  jsontypes.NormalizedType{},
@@ -407,7 +451,11 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 													},
 												},
 												"ca_cert": schema.SingleNestedAttribute{
+													Computed: true,
 													Optional: true,
+													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+														"type": jsontypes.NormalizedType{},
+													})),
 													Attributes: map[string]schema.Attribute{
 														"type": schema.StringAttribute{
 															CustomType:  jsontypes.NormalizedType{},
@@ -433,7 +481,12 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"ca_cert": schema.SingleNestedAttribute{
+													Computed: true,
 													Optional: true,
+													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+														"expiration": types.StringType,
+														"rsa_bits":   types.Int64Type,
+													})),
 													Attributes: map[string]schema.Attribute{
 														"expiration": schema.StringAttribute{
 															Optional: true,
@@ -457,7 +510,11 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"ca_cert": schema.SingleNestedAttribute{
+													Computed: true,
 													Optional: true,
+													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+														"type": jsontypes.NormalizedType{},
+													})),
 													Attributes: map[string]schema.Attribute{
 														"type": schema.StringAttribute{
 															CustomType:  jsontypes.NormalizedType{},
@@ -470,11 +527,19 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 													Optional: true,
 												},
 												"dns_names": schema.ListAttribute{
+													Computed:    true,
 													Optional:    true,
+													Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 													ElementType: types.StringType,
 												},
 												"issuer_ref": schema.SingleNestedAttribute{
+													Computed: true,
 													Optional: true,
+													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+														"group": types.StringType,
+														"kind":  types.StringType,
+														"name":  types.StringType,
+													})),
 													Attributes: map[string]schema.Attribute{
 														"group": schema.StringAttribute{
 															Optional: true,
@@ -501,7 +566,11 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"cert": schema.SingleNestedAttribute{
+													Computed: true,
 													Optional: true,
+													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+														"type": jsontypes.NormalizedType{},
+													})),
 													Attributes: map[string]schema.Attribute{
 														"type": schema.StringAttribute{
 															CustomType:  jsontypes.NormalizedType{},
@@ -511,7 +580,11 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 													},
 												},
 												"key": schema.SingleNestedAttribute{
+													Computed: true,
 													Optional: true,
+													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+														"type": jsontypes.NormalizedType{},
+													})),
 													Attributes: map[string]schema.Attribute{
 														"type": schema.StringAttribute{
 															CustomType:  jsontypes.NormalizedType{},

@@ -199,6 +199,35 @@ func (r *MeshExternalServiceResourceModel) RefreshFromSharedMeshExternalServiceI
 	return diags
 }
 
+func (r *MeshExternalServiceResourceModel) ToOperationsCreateMeshExternalServiceRequest(ctx context.Context) (*operations.CreateMeshExternalServiceRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var cpID string
+	cpID = r.CpID.ValueString()
+
+	var mesh string
+	mesh = r.Mesh.ValueString()
+
+	var name string
+	name = r.Name.ValueString()
+
+	meshExternalServiceItem, meshExternalServiceItemDiags := r.ToSharedMeshExternalServiceItemInput(ctx)
+	diags.Append(meshExternalServiceItemDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateMeshExternalServiceRequest{
+		CpID:                    cpID,
+		Mesh:                    mesh,
+		Name:                    name,
+		MeshExternalServiceItem: *meshExternalServiceItem,
+	}
+
+	return &out, diags
+}
+
 func (r *MeshExternalServiceResourceModel) ToOperationsDeleteMeshExternalServiceRequest(ctx context.Context) (*operations.DeleteMeshExternalServiceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -241,7 +270,7 @@ func (r *MeshExternalServiceResourceModel) ToOperationsGetMeshExternalServiceReq
 	return &out, diags
 }
 
-func (r *MeshExternalServiceResourceModel) ToOperationsPutMeshExternalServiceRequest(ctx context.Context) (*operations.PutMeshExternalServiceRequest, diag.Diagnostics) {
+func (r *MeshExternalServiceResourceModel) ToOperationsUpdateMeshExternalServiceRequest(ctx context.Context) (*operations.UpdateMeshExternalServiceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -260,7 +289,7 @@ func (r *MeshExternalServiceResourceModel) ToOperationsPutMeshExternalServiceReq
 		return nil, diags
 	}
 
-	out := operations.PutMeshExternalServiceRequest{
+	out := operations.UpdateMeshExternalServiceRequest{
 		CpID:                    cpID,
 		Mesh:                    mesh,
 		Name:                    name,
