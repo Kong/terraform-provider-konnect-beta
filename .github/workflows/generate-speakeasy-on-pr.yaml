@@ -11,6 +11,7 @@ permissions:
 
 jobs:
   speakeasy-on-pr-open:
+    name: Run Speakeasy on PR Open
     if: ${{ github.event.pull_request.head.ref == 'feat/platform-api-automated-update' }}
     runs-on: ubuntu-latest
     concurrency:
