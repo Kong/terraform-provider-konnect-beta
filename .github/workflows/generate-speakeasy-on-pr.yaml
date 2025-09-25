@@ -33,13 +33,13 @@ jobs:
           path: repo
 
       - name: Configure speakeasy CLI
-        working_directory: repo
+        working-directory: repo
         run: |
           mkdir -p ~/.speakeasy
           echo 'speakeasy_api_key: ${{ secrets.SPEAKEASY_API_KEY }}' > ~/.speakeasy/config.yaml
 
       - name: Set up Git identity
-        working_directory: repo
+        working-directory: repo
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -48,14 +48,14 @@ jobs:
       #   run: make speakeasy
       #
       - name: Create change (for test)
-        working_directory: repo
+        working-directory: repo
         run: |
           set -x
           echo "hello world" > hello-world.txt
           git status --porcelain
 
       - name: Commit & push changes (if any)
-        working_directory: repo
+        working-directory: repo
         run: |
           if [[ -n "$(git status --porcelain)" ]]; then
             git add -A
