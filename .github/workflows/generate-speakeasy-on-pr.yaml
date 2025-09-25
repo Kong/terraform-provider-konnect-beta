@@ -18,7 +18,7 @@ jobs:
       cancel-in-progress: false
     steps:
       - name: Install Speakeasy
-        uses: mheap/setup-go-cli@v1
+        uses: mheap/setup-go-cli@fa9b01cdd4115eac636164f0de43bf7d51c82697 # v1
         with:
           owner: speakeasy-api
           repo: speakeasy
