@@ -23,6 +23,19 @@ jobs:
         with:
           ref: feat/platform-api-automated-update
 
+      - name: Install Speakeasy
+        uses: mheap/setup-go-cli@v1
+        with:
+          owner: speakeasy-api
+          repo: speakeasy
+          cli_name: speakeasy
+          package_type: zip
+
+      - name: Configure speakeasy CLI
+        run: |
+          mkdir -p ~/.speakeasy
+          echo 'speakeasy_api_key: ${{ secrets.SPEAKEASY_API_KEY }}' > ~/.speakeasy/config.yaml
+
       - name: Set up Git identity
         run: |
           git config user.name "github-actions[bot]"
