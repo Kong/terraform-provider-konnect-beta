@@ -31,21 +31,23 @@ jobs:
           mkdir -p ~/.speakeasy
           echo 'speakeasy_api_key: ${{ secrets.SPEAKEASY_API_KEY }}' > ~/.speakeasy/config.yaml
 
+      - name: Checkout PR branch
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          path: repo
+
       - name: Set up Go
+        working-directory: repo
         uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6.0.0
         with:
           go-version-file: go.mod
 
       - name: Install staticcheck
+        working-directory: repo
         run: |
           set -x
           go install honnef.co/go/tools/cmd/staticcheck@v0.6.1
           echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
-
-      - name: Checkout PR branch
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-        with:
-          path: repo
 
       - name: Set up Git identity
         working-directory: repo
