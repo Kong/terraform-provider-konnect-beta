@@ -12,6 +12,7 @@ import (
 
 var (
 	providerFactory = map[string]func() (tfprotov6.ProviderServer, error){
+		"konnect":      providerserver.NewProtocol6WithError(provider.New("")()),
 		"konnect-beta": providerserver.NewProtocol6WithError(provider.New("")()),
 	}
 )
