@@ -41,8 +41,14 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Run Speakeasy
-        run: make speakeasy
+      # - name: Run Speakeasy
+      #   run: make speakeasy
+      #
+      - name: Create change (for test)
+        run: |
+          set -x
+          echo "hello world" > hello-world.txt
+          git status --porcelain
 
       - name: Commit & push changes (if any)
         run: |
