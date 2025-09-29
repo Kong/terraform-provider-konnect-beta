@@ -9,11 +9,9 @@ import (
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -100,12 +98,7 @@ func (r *MeshHostnameGeneratorResource) Schema(ctx context.Context, req resource
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"extension": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"config": jsontypes.NormalizedType{},
-							"type":   types.StringType,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"config": schema.StringAttribute{
 								CustomType:  jsontypes.NormalizedType{},
@@ -120,40 +113,10 @@ func (r *MeshHostnameGeneratorResource) Schema(ctx context.Context, req resource
 						Description: `Extension struct for a plugin configuration`,
 					},
 					"selector": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"mesh_external_service": types.ObjectType{
-								AttrTypes: map[string]attr.Type{
-									`match_labels`: types.MapType{
-										ElemType: types.StringType,
-									},
-								},
-							},
-							"mesh_multi_zone_service": types.ObjectType{
-								AttrTypes: map[string]attr.Type{
-									`match_labels`: types.MapType{
-										ElemType: types.StringType,
-									},
-								},
-							},
-							"mesh_service": types.ObjectType{
-								AttrTypes: map[string]attr.Type{
-									`match_labels`: types.MapType{
-										ElemType: types.StringType,
-									},
-								},
-							},
-						})),
 						Attributes: map[string]schema.Attribute{
 							"mesh_external_service": schema.SingleNestedAttribute{
-								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"match_labels": types.MapType{
-										ElemType: types.StringType,
-									},
-								})),
 								Attributes: map[string]schema.Attribute{
 									"match_labels": schema.MapAttribute{
 										Optional:    true,
@@ -162,13 +125,7 @@ func (r *MeshHostnameGeneratorResource) Schema(ctx context.Context, req resource
 								},
 							},
 							"mesh_multi_zone_service": schema.SingleNestedAttribute{
-								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"match_labels": types.MapType{
-										ElemType: types.StringType,
-									},
-								})),
 								Attributes: map[string]schema.Attribute{
 									"match_labels": schema.MapAttribute{
 										Optional:    true,
@@ -177,13 +134,7 @@ func (r *MeshHostnameGeneratorResource) Schema(ctx context.Context, req resource
 								},
 							},
 							"mesh_service": schema.SingleNestedAttribute{
-								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"match_labels": types.MapType{
-										ElemType: types.StringType,
-									},
-								})),
 								Attributes: map[string]schema.Attribute{
 									"match_labels": schema.MapAttribute{
 										Optional:    true,
@@ -259,13 +210,13 @@ func (r *MeshHostnameGeneratorResource) Create(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateHostnameGeneratorRequest(ctx)
+	request, requestDiags := data.ToOperationsPutHostnameGeneratorRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.HostnameGenerator.CreateHostnameGenerator(ctx, *request)
+	res, err := r.client.HostnameGenerator.PutHostnameGenerator(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -277,7 +228,10 @@ func (r *MeshHostnameGeneratorResource) Create(ctx context.Context, req resource
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 201 {
+	switch res.StatusCode {
+	case 200, 201:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -410,13 +364,13 @@ func (r *MeshHostnameGeneratorResource) Update(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateHostnameGeneratorRequest(ctx)
+	request, requestDiags := data.ToOperationsPutHostnameGeneratorRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.HostnameGenerator.UpdateHostnameGenerator(ctx, *request)
+	res, err := r.client.HostnameGenerator.PutHostnameGenerator(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -428,7 +382,10 @@ func (r *MeshHostnameGeneratorResource) Update(ctx context.Context, req resource
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 201:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

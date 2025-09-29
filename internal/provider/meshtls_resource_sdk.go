@@ -166,35 +166,6 @@ func (r *MeshTLSResourceModel) RefreshFromSharedMeshTLSItem(ctx context.Context,
 	return diags
 }
 
-func (r *MeshTLSResourceModel) ToOperationsCreateMeshTLSRequest(ctx context.Context) (*operations.CreateMeshTLSRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	meshTLSItem, meshTLSItemDiags := r.ToSharedMeshTLSItemInput(ctx)
-	diags.Append(meshTLSItemDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateMeshTLSRequest{
-		CpID:        cpID,
-		Mesh:        mesh,
-		Name:        name,
-		MeshTLSItem: *meshTLSItem,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshTLSResourceModel) ToOperationsDeleteMeshTLSRequest(ctx context.Context) (*operations.DeleteMeshTLSRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -237,7 +208,7 @@ func (r *MeshTLSResourceModel) ToOperationsGetMeshTLSRequest(ctx context.Context
 	return &out, diags
 }
 
-func (r *MeshTLSResourceModel) ToOperationsUpdateMeshTLSRequest(ctx context.Context) (*operations.UpdateMeshTLSRequest, diag.Diagnostics) {
+func (r *MeshTLSResourceModel) ToOperationsPutMeshTLSRequest(ctx context.Context) (*operations.PutMeshTLSRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -256,7 +227,7 @@ func (r *MeshTLSResourceModel) ToOperationsUpdateMeshTLSRequest(ctx context.Cont
 		return nil, diags
 	}
 
-	out := operations.UpdateMeshTLSRequest{
+	out := operations.PutMeshTLSRequest{
 		CpID:        cpID,
 		Mesh:        mesh,
 		Name:        name,

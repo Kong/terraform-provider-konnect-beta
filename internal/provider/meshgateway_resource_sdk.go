@@ -130,35 +130,6 @@ func (r *MeshGatewayResourceModel) RefreshFromSharedMeshGatewayItem(ctx context.
 	return diags
 }
 
-func (r *MeshGatewayResourceModel) ToOperationsCreateMeshGatewayRequest(ctx context.Context) (*operations.CreateMeshGatewayRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	meshGatewayItem, meshGatewayItemDiags := r.ToSharedMeshGatewayItem(ctx)
-	diags.Append(meshGatewayItemDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateMeshGatewayRequest{
-		CpID:            cpID,
-		Mesh:            mesh,
-		Name:            name,
-		MeshGatewayItem: *meshGatewayItem,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshGatewayResourceModel) ToOperationsDeleteMeshGatewayRequest(ctx context.Context) (*operations.DeleteMeshGatewayRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -201,7 +172,7 @@ func (r *MeshGatewayResourceModel) ToOperationsGetMeshGatewayRequest(ctx context
 	return &out, diags
 }
 
-func (r *MeshGatewayResourceModel) ToOperationsUpdateMeshGatewayRequest(ctx context.Context) (*operations.UpdateMeshGatewayRequest, diag.Diagnostics) {
+func (r *MeshGatewayResourceModel) ToOperationsPutMeshGatewayRequest(ctx context.Context) (*operations.PutMeshGatewayRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -220,7 +191,7 @@ func (r *MeshGatewayResourceModel) ToOperationsUpdateMeshGatewayRequest(ctx cont
 		return nil, diags
 	}
 
-	out := operations.UpdateMeshGatewayRequest{
+	out := operations.PutMeshGatewayRequest{
 		CpID:            cpID,
 		Mesh:            mesh,
 		Name:            name,

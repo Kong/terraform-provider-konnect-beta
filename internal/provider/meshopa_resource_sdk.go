@@ -115,35 +115,6 @@ func (r *MeshOPAResourceModel) RefreshFromSharedMeshOPAItem(ctx context.Context,
 	return diags
 }
 
-func (r *MeshOPAResourceModel) ToOperationsCreateMeshOPARequest(ctx context.Context) (*operations.CreateMeshOPARequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	meshOPAItem, meshOPAItemDiags := r.ToSharedMeshOPAItemInput(ctx)
-	diags.Append(meshOPAItemDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateMeshOPARequest{
-		CpID:        cpID,
-		Mesh:        mesh,
-		Name:        name,
-		MeshOPAItem: *meshOPAItem,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshOPAResourceModel) ToOperationsDeleteMeshOPARequest(ctx context.Context) (*operations.DeleteMeshOPARequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -186,7 +157,7 @@ func (r *MeshOPAResourceModel) ToOperationsGetMeshOPARequest(ctx context.Context
 	return &out, diags
 }
 
-func (r *MeshOPAResourceModel) ToOperationsUpdateMeshOPARequest(ctx context.Context) (*operations.UpdateMeshOPARequest, diag.Diagnostics) {
+func (r *MeshOPAResourceModel) ToOperationsPutMeshOPARequest(ctx context.Context) (*operations.PutMeshOPARequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -205,7 +176,7 @@ func (r *MeshOPAResourceModel) ToOperationsUpdateMeshOPARequest(ctx context.Cont
 		return nil, diags
 	}
 
-	out := operations.UpdateMeshOPARequest{
+	out := operations.PutMeshOPARequest{
 		CpID:        cpID,
 		Mesh:        mesh,
 		Name:        name,

@@ -227,35 +227,6 @@ func (r *MeshFaultInjectionResourceModel) RefreshFromSharedMeshFaultInjectionIte
 	return diags
 }
 
-func (r *MeshFaultInjectionResourceModel) ToOperationsCreateMeshFaultInjectionRequest(ctx context.Context) (*operations.CreateMeshFaultInjectionRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	meshFaultInjectionItem, meshFaultInjectionItemDiags := r.ToSharedMeshFaultInjectionItemInput(ctx)
-	diags.Append(meshFaultInjectionItemDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateMeshFaultInjectionRequest{
-		CpID:                   cpID,
-		Mesh:                   mesh,
-		Name:                   name,
-		MeshFaultInjectionItem: *meshFaultInjectionItem,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshFaultInjectionResourceModel) ToOperationsDeleteMeshFaultInjectionRequest(ctx context.Context) (*operations.DeleteMeshFaultInjectionRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -298,7 +269,7 @@ func (r *MeshFaultInjectionResourceModel) ToOperationsGetMeshFaultInjectionReque
 	return &out, diags
 }
 
-func (r *MeshFaultInjectionResourceModel) ToOperationsUpdateMeshFaultInjectionRequest(ctx context.Context) (*operations.UpdateMeshFaultInjectionRequest, diag.Diagnostics) {
+func (r *MeshFaultInjectionResourceModel) ToOperationsPutMeshFaultInjectionRequest(ctx context.Context) (*operations.PutMeshFaultInjectionRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -317,7 +288,7 @@ func (r *MeshFaultInjectionResourceModel) ToOperationsUpdateMeshFaultInjectionRe
 		return nil, diags
 	}
 
-	out := operations.UpdateMeshFaultInjectionRequest{
+	out := operations.PutMeshFaultInjectionRequest{
 		CpID:                   cpID,
 		Mesh:                   mesh,
 		Name:                   name,

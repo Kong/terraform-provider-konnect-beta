@@ -152,7 +152,7 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(ctx context.Context, resp 
 						backends1.Conf.PrometheusMetricsBackendConfig.Path = types.StringPointerValue(backendsItem1.Conf.PrometheusMetricsBackendConfig.Path)
 						backends1.Conf.PrometheusMetricsBackendConfig.Port = types.Int64PointerValue(backendsItem1.Conf.PrometheusMetricsBackendConfig.Port)
 						backends1.Conf.PrometheusMetricsBackendConfig.SkipMTLS = types.BoolPointerValue(backendsItem1.Conf.PrometheusMetricsBackendConfig.SkipMTLS)
-						if backendsItem1.Conf.PrometheusMetricsBackendConfig.Tags != nil {
+						if len(backendsItem1.Conf.PrometheusMetricsBackendConfig.Tags) > 0 {
 							backends1.Conf.PrometheusMetricsBackendConfig.Tags = make(map[string]types.String, len(backendsItem1.Conf.PrometheusMetricsBackendConfig.Tags))
 							for key3, value3 := range backendsItem1.Conf.PrometheusMetricsBackendConfig.Tags {
 								backends1.Conf.PrometheusMetricsBackendConfig.Tags[key3] = types.StringValue(value3)

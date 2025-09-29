@@ -188,35 +188,6 @@ func (r *MeshTimeoutResourceModel) RefreshFromSharedMeshTimeoutItem(ctx context.
 	return diags
 }
 
-func (r *MeshTimeoutResourceModel) ToOperationsCreateMeshTimeoutRequest(ctx context.Context) (*operations.CreateMeshTimeoutRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	meshTimeoutItem, meshTimeoutItemDiags := r.ToSharedMeshTimeoutItemInput(ctx)
-	diags.Append(meshTimeoutItemDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateMeshTimeoutRequest{
-		CpID:            cpID,
-		Mesh:            mesh,
-		Name:            name,
-		MeshTimeoutItem: *meshTimeoutItem,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshTimeoutResourceModel) ToOperationsDeleteMeshTimeoutRequest(ctx context.Context) (*operations.DeleteMeshTimeoutRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -259,7 +230,7 @@ func (r *MeshTimeoutResourceModel) ToOperationsGetMeshTimeoutRequest(ctx context
 	return &out, diags
 }
 
-func (r *MeshTimeoutResourceModel) ToOperationsUpdateMeshTimeoutRequest(ctx context.Context) (*operations.UpdateMeshTimeoutRequest, diag.Diagnostics) {
+func (r *MeshTimeoutResourceModel) ToOperationsPutMeshTimeoutRequest(ctx context.Context) (*operations.PutMeshTimeoutRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -278,7 +249,7 @@ func (r *MeshTimeoutResourceModel) ToOperationsUpdateMeshTimeoutRequest(ctx cont
 		return nil, diags
 	}
 
-	out := operations.UpdateMeshTimeoutRequest{
+	out := operations.PutMeshTimeoutRequest{
 		CpID:            cpID,
 		Mesh:            mesh,
 		Name:            name,

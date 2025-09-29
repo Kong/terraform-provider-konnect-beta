@@ -125,35 +125,6 @@ func (r *MeshMultiZoneServiceResourceModel) RefreshFromSharedMeshMultiZoneServic
 	return diags
 }
 
-func (r *MeshMultiZoneServiceResourceModel) ToOperationsCreateMeshMultiZoneServiceRequest(ctx context.Context) (*operations.CreateMeshMultiZoneServiceRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	meshMultiZoneServiceItem, meshMultiZoneServiceItemDiags := r.ToSharedMeshMultiZoneServiceItemInput(ctx)
-	diags.Append(meshMultiZoneServiceItemDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateMeshMultiZoneServiceRequest{
-		CpID:                     cpID,
-		Mesh:                     mesh,
-		Name:                     name,
-		MeshMultiZoneServiceItem: *meshMultiZoneServiceItem,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshMultiZoneServiceResourceModel) ToOperationsDeleteMeshMultiZoneServiceRequest(ctx context.Context) (*operations.DeleteMeshMultiZoneServiceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -196,7 +167,7 @@ func (r *MeshMultiZoneServiceResourceModel) ToOperationsGetMeshMultiZoneServiceR
 	return &out, diags
 }
 
-func (r *MeshMultiZoneServiceResourceModel) ToOperationsUpdateMeshMultiZoneServiceRequest(ctx context.Context) (*operations.UpdateMeshMultiZoneServiceRequest, diag.Diagnostics) {
+func (r *MeshMultiZoneServiceResourceModel) ToOperationsPutMeshMultiZoneServiceRequest(ctx context.Context) (*operations.PutMeshMultiZoneServiceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -215,7 +186,7 @@ func (r *MeshMultiZoneServiceResourceModel) ToOperationsUpdateMeshMultiZoneServi
 		return nil, diags
 	}
 
-	out := operations.UpdateMeshMultiZoneServiceRequest{
+	out := operations.PutMeshMultiZoneServiceRequest{
 		CpID:                     cpID,
 		Mesh:                     mesh,
 		Name:                     name,

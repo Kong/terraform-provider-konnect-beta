@@ -100,9 +100,9 @@ func (o *MeshService) GetMatchLabels() map[string]string {
 }
 
 type Selector struct {
-	MeshExternalService  *MeshExternalService  `json:"meshExternalService"`
-	MeshMultiZoneService *MeshMultiZoneService `json:"meshMultiZoneService"`
-	MeshService          *MeshService          `json:"meshService"`
+	MeshExternalService  *MeshExternalService  `json:"meshExternalService,omitempty"`
+	MeshMultiZoneService *MeshMultiZoneService `json:"meshMultiZoneService,omitempty"`
+	MeshService          *MeshService          `json:"meshService,omitempty"`
 }
 
 func (o *Selector) GetMeshExternalService() *MeshExternalService {
@@ -129,20 +129,9 @@ func (o *Selector) GetMeshService() *MeshService {
 // HostnameGeneratorItemSpec - Spec is the specification of the Kuma HostnameGenerator resource.
 type HostnameGeneratorItemSpec struct {
 	// Extension struct for a plugin configuration
-	Extension *Extension `json:"extension"`
-	Selector  *Selector  `json:"selector"`
-	Template  *string    `default:"null" json:"template"`
-}
-
-func (h HostnameGeneratorItemSpec) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(h, "", false)
-}
-
-func (h *HostnameGeneratorItemSpec) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &h, "", false, false); err != nil {
-		return err
-	}
-	return nil
+	Extension *Extension `json:"extension,omitempty"`
+	Selector  *Selector  `json:"selector,omitempty"`
+	Template  *string    `json:"template,omitempty"`
 }
 
 func (o *HostnameGeneratorItemSpec) GetExtension() *Extension {

@@ -162,35 +162,6 @@ func (r *MeshMetricResourceModel) RefreshFromSharedMeshMetricItem(ctx context.Co
 	return diags
 }
 
-func (r *MeshMetricResourceModel) ToOperationsCreateMeshMetricRequest(ctx context.Context) (*operations.CreateMeshMetricRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	meshMetricItem, meshMetricItemDiags := r.ToSharedMeshMetricItemInput(ctx)
-	diags.Append(meshMetricItemDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateMeshMetricRequest{
-		CpID:           cpID,
-		Mesh:           mesh,
-		Name:           name,
-		MeshMetricItem: *meshMetricItem,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshMetricResourceModel) ToOperationsDeleteMeshMetricRequest(ctx context.Context) (*operations.DeleteMeshMetricRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -233,7 +204,7 @@ func (r *MeshMetricResourceModel) ToOperationsGetMeshMetricRequest(ctx context.C
 	return &out, diags
 }
 
-func (r *MeshMetricResourceModel) ToOperationsUpdateMeshMetricRequest(ctx context.Context) (*operations.UpdateMeshMetricRequest, diag.Diagnostics) {
+func (r *MeshMetricResourceModel) ToOperationsPutMeshMetricRequest(ctx context.Context) (*operations.PutMeshMetricRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -252,7 +223,7 @@ func (r *MeshMetricResourceModel) ToOperationsUpdateMeshMetricRequest(ctx contex
 		return nil, diags
 	}
 
-	out := operations.UpdateMeshMetricRequest{
+	out := operations.PutMeshMetricRequest{
 		CpID:           cpID,
 		Mesh:           mesh,
 		Name:           name,

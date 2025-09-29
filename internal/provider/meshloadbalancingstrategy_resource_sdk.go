@@ -297,35 +297,6 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 	return diags
 }
 
-func (r *MeshLoadBalancingStrategyResourceModel) ToOperationsCreateMeshLoadBalancingStrategyRequest(ctx context.Context) (*operations.CreateMeshLoadBalancingStrategyRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	meshLoadBalancingStrategyItem, meshLoadBalancingStrategyItemDiags := r.ToSharedMeshLoadBalancingStrategyItemInput(ctx)
-	diags.Append(meshLoadBalancingStrategyItemDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateMeshLoadBalancingStrategyRequest{
-		CpID:                          cpID,
-		Mesh:                          mesh,
-		Name:                          name,
-		MeshLoadBalancingStrategyItem: *meshLoadBalancingStrategyItem,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshLoadBalancingStrategyResourceModel) ToOperationsDeleteMeshLoadBalancingStrategyRequest(ctx context.Context) (*operations.DeleteMeshLoadBalancingStrategyRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -368,7 +339,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) ToOperationsGetMeshLoadBalancin
 	return &out, diags
 }
 
-func (r *MeshLoadBalancingStrategyResourceModel) ToOperationsUpdateMeshLoadBalancingStrategyRequest(ctx context.Context) (*operations.UpdateMeshLoadBalancingStrategyRequest, diag.Diagnostics) {
+func (r *MeshLoadBalancingStrategyResourceModel) ToOperationsPutMeshLoadBalancingStrategyRequest(ctx context.Context) (*operations.PutMeshLoadBalancingStrategyRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -387,7 +358,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) ToOperationsUpdateMeshLoadBalan
 		return nil, diags
 	}
 
-	out := operations.UpdateMeshLoadBalancingStrategyRequest{
+	out := operations.PutMeshLoadBalancingStrategyRequest{
 		CpID:                          cpID,
 		Mesh:                          mesh,
 		Name:                          name,

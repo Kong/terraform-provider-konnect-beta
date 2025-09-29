@@ -81,18 +81,7 @@ func (o *Constraints) GetDataplaneProxy() *DataplaneProxy {
 
 type TCPLoggingBackendConfig struct {
 	// Address to TCP service that will receive logs
-	Address *string `default:"null" json:"address"`
-}
-
-func (t TCPLoggingBackendConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(t, "", false)
-}
-
-func (t *TCPLoggingBackendConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, true); err != nil {
-		return err
-	}
-	return nil
+	Address *string `json:"address,omitempty"`
 }
 
 func (o *TCPLoggingBackendConfig) GetAddress() *string {
@@ -104,18 +93,7 @@ func (o *TCPLoggingBackendConfig) GetAddress() *string {
 
 type FileLoggingBackendConfig struct {
 	// Path to a file that logs will be written to
-	Path *string `default:"null" json:"path"`
-}
-
-func (f FileLoggingBackendConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(f, "", false)
-}
-
-func (f *FileLoggingBackendConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &f, "", false, true); err != nil {
-		return err
-	}
-	return nil
+	Path *string `json:"path,omitempty"`
 }
 
 func (o *FileLoggingBackendConfig) GetPath() *string {
@@ -329,27 +307,16 @@ func (o *MeshServices) GetMode() *MeshItemMode {
 // Aggregate - PrometheusAggregateMetricsConfig defines endpoints that should be scrapped by kuma-dp for prometheus metrics.
 type Aggregate struct {
 	// Address on which a service expose HTTP endpoint with Prometheus metrics.
-	Address *string `default:"null" json:"address"`
+	Address *string `json:"address,omitempty"`
 	// If false then the application won't be scrapped. If nil, then it is treated
 	// as true and kuma-dp scrapes metrics from the service.
-	Enabled *bool `default:"null" json:"enabled"`
+	Enabled *bool `json:"enabled,omitempty"`
 	// Name which identify given configuration.
-	Name *string `default:"null" json:"name"`
+	Name *string `json:"name,omitempty"`
 	// Path on which a service expose HTTP endpoint with Prometheus metrics.
-	Path *string `default:"null" json:"path"`
+	Path *string `json:"path,omitempty"`
 	// Port on which a service expose HTTP endpoint with Prometheus metrics.
-	Port *int64 `default:"null" json:"port"`
-}
-
-func (a Aggregate) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *Aggregate) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
-		return err
-	}
-	return nil
+	Port *int64 `json:"port,omitempty"`
 }
 
 func (o *Aggregate) GetAddress() *string {
@@ -391,22 +358,11 @@ func (o *Aggregate) GetPort() *int64 {
 type Envoy struct {
 	// FilterRegex value that is going to be passed to Envoy for filtering
 	// Envoy metrics.
-	FilterRegex *string `default:"null" json:"filterRegex"`
+	FilterRegex *string `json:"filterRegex,omitempty"`
 	// If true then return metrics that Envoy has updated (counters incremented
 	// at least once, gauges changed at least once, and histograms added to at
 	// least once). If nil, then it is treated as false.
-	UsedOnly *bool `default:"null" json:"usedOnly"`
-}
-
-func (e Envoy) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(e, "", false)
-}
-
-func (e *Envoy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
-		return err
-	}
-	return nil
+	UsedOnly *bool `json:"usedOnly,omitempty"`
 }
 
 func (o *Envoy) GetFilterRegex() *string {
@@ -509,33 +465,22 @@ type PrometheusMetricsBackendConfig struct {
 	// scrapped by kuma-dp.
 	Aggregate []Aggregate `json:"aggregate,omitempty"`
 	// Configuration of Envoy's metrics.
-	Envoy *Envoy `json:"envoy"`
+	Envoy *Envoy `json:"envoy,omitempty"`
 	// Path on which a dataplane should expose HTTP endpoint with Prometheus
 	// metrics.
-	Path *string `default:"null" json:"path"`
+	Path *string `json:"path,omitempty"`
 	// Port on which a dataplane should expose HTTP endpoint with Prometheus
 	// metrics.
-	Port *int64 `default:"null" json:"port"`
+	Port *int64 `json:"port,omitempty"`
 	// If true then endpoints for scraping metrics won't require mTLS even if mTLS
 	// is enabled in Mesh. If nil, then it is treated as false.
-	SkipMTLS *bool `default:"null" json:"skipMTLS"`
+	SkipMTLS *bool `json:"skipMTLS,omitempty"`
 	// Tags associated with an application this dataplane is deployed next to,
 	// e.g. service=web, version=1.0.
 	// `service` tag is mandatory.
 	Tags map[string]string `json:"tags,omitempty"`
 	// Configuration of TLS for prometheus listener.
 	TLS *ConfTLS `json:"tls,omitempty"`
-}
-
-func (p PrometheusMetricsBackendConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(p, "", false)
-}
-
-func (p *PrometheusMetricsBackendConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, true); err != nil {
-		return err
-	}
-	return nil
 }
 
 func (o *PrometheusMetricsBackendConfig) GetAggregate() []Aggregate {
@@ -697,20 +642,9 @@ func (o *CertManagerCertificateAuthorityConfigConfCaCert) GetType() any {
 }
 
 type IssuerRef struct {
-	Group *string `default:"null" json:"group"`
-	Kind  *string `default:"null" json:"kind"`
-	Name  *string `default:"null" json:"name"`
-}
-
-func (i IssuerRef) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(i, "", false)
-}
-
-func (i *IssuerRef) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &i, "", false, false); err != nil {
-		return err
-	}
-	return nil
+	Group *string `json:"group,omitempty"`
+	Kind  *string `json:"kind,omitempty"`
+	Name  *string `json:"name,omitempty"`
 }
 
 func (o *IssuerRef) GetGroup() *string {
@@ -735,21 +669,10 @@ func (o *IssuerRef) GetName() *string {
 }
 
 type CertManagerCertificateAuthorityConfig struct {
-	CaCert     *CertManagerCertificateAuthorityConfigConfCaCert `json:"caCert"`
-	CommonName *string                                          `default:"null" json:"commonName"`
+	CaCert     *CertManagerCertificateAuthorityConfigConfCaCert `json:"caCert,omitempty"`
+	CommonName *string                                          `json:"commonName,omitempty"`
 	DNSNames   []string                                         `json:"dnsNames,omitempty"`
-	IssuerRef  *IssuerRef                                       `json:"issuerRef"`
-}
-
-func (c CertManagerCertificateAuthorityConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CertManagerCertificateAuthorityConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, true); err != nil {
-		return err
-	}
-	return nil
+	IssuerRef  *IssuerRef                                       `json:"issuerRef,omitempty"`
 }
 
 func (o *CertManagerCertificateAuthorityConfig) GetCaCert() *CertManagerCertificateAuthorityConfigConfCaCert {
@@ -803,8 +726,8 @@ func (o *AccessKeySecret) GetType() any {
 }
 
 type AwsCredentials struct {
-	AccessKey       *AccessKey       `json:"accessKey"`
-	AccessKeySecret *AccessKeySecret `json:"accessKeySecret"`
+	AccessKey       *AccessKey       `json:"accessKey,omitempty"`
+	AccessKeySecret *AccessKeySecret `json:"accessKeySecret,omitempty"`
 }
 
 func (o *AwsCredentials) GetAccessKey() *AccessKey {
@@ -822,7 +745,7 @@ func (o *AwsCredentials) GetAccessKeySecret() *AccessKeySecret {
 }
 
 type Auth struct {
-	AwsCredentials *AwsCredentials `json:"awsCredentials"`
+	AwsCredentials *AwsCredentials `json:"awsCredentials,omitempty"`
 }
 
 func (o *Auth) GetAwsCredentials() *AwsCredentials {
@@ -844,21 +767,10 @@ func (o *ConfCaCert) GetType() any {
 }
 
 type ACMCertificateAuthorityConfig struct {
-	Arn        *string     `default:"null" json:"arn"`
-	Auth       *Auth       `json:"auth"`
-	CaCert     *ConfCaCert `json:"caCert"`
-	CommonName *string     `default:"null" json:"commonName"`
-}
-
-func (a ACMCertificateAuthorityConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *ACMCertificateAuthorityConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, true); err != nil {
-		return err
-	}
-	return nil
+	Arn        *string     `json:"arn,omitempty"`
+	Auth       *Auth       `json:"auth,omitempty"`
+	CaCert     *ConfCaCert `json:"caCert,omitempty"`
+	CommonName *string     `json:"commonName,omitempty"`
 }
 
 func (o *ACMCertificateAuthorityConfig) GetArn() *string {
@@ -901,19 +813,8 @@ func (o *VaultCertificateAuthorityConfig) GetMode() any {
 }
 
 type BuiltinCertificateAuthorityConfigConfCaCert struct {
-	Expiration *string `default:"null" json:"expiration"`
-	RsaBits    *int64  `default:"null" json:"rsaBits"`
-}
-
-func (b BuiltinCertificateAuthorityConfigConfCaCert) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(b, "", false)
-}
-
-func (b *BuiltinCertificateAuthorityConfigConfCaCert) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
-		return err
-	}
-	return nil
+	Expiration *string `json:"expiration,omitempty"`
+	RsaBits    *int64  `json:"rsaBits,omitempty"`
 }
 
 func (o *BuiltinCertificateAuthorityConfigConfCaCert) GetExpiration() *string {
@@ -931,7 +832,7 @@ func (o *BuiltinCertificateAuthorityConfigConfCaCert) GetRsaBits() *int64 {
 }
 
 type BuiltinCertificateAuthorityConfig struct {
-	CaCert *BuiltinCertificateAuthorityConfigConfCaCert `json:"caCert"`
+	CaCert *BuiltinCertificateAuthorityConfigConfCaCert `json:"caCert,omitempty"`
 }
 
 func (o *BuiltinCertificateAuthorityConfig) GetCaCert() *BuiltinCertificateAuthorityConfigConfCaCert {
@@ -964,8 +865,8 @@ func (o *Key) GetType() any {
 }
 
 type ProvidedCertificateAuthorityConfig struct {
-	Cert *Cert `json:"cert"`
-	Key  *Key  `json:"key"`
+	Cert *Cert `json:"cert,omitempty"`
+	Key  *Key  `json:"key,omitempty"`
 }
 
 func (o *ProvidedCertificateAuthorityConfig) GetCert() *Cert {
@@ -1418,26 +1319,15 @@ type ZipkinTracingBackendConfig struct {
 	// Version of the API. values: httpJson, httpJsonV1, httpProto. Default:
 	// httpJson see
 	// https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/trace.proto#envoy-v3-api-enum-config-trace-v3-zipkinconfig-collectorendpointversion
-	APIVersion *string `default:"null" json:"apiVersion"`
+	APIVersion *string `json:"apiVersion,omitempty"`
 	// Determines whether client and server spans will share the same span
 	// context. Default: true.
 	// https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/zipkin.proto#config-trace-v3-zipkinconfig
-	SharedSpanContext *bool `default:"null" json:"sharedSpanContext"`
+	SharedSpanContext *bool `json:"sharedSpanContext,omitempty"`
 	// Generate 128bit traces. Default: false
-	TraceId128bit *bool `default:"null" json:"traceId128bit"`
+	TraceId128bit *bool `json:"traceId128bit,omitempty"`
 	// Address of Zipkin collector.
-	URL *string `default:"null" json:"url"`
-}
-
-func (z ZipkinTracingBackendConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(z, "", false)
-}
-
-func (z *ZipkinTracingBackendConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &z, "", false, true); err != nil {
-		return err
-	}
-	return nil
+	URL *string `json:"url,omitempty"`
 }
 
 func (o *ZipkinTracingBackendConfig) GetAPIVersion() *string {
@@ -1470,26 +1360,15 @@ func (o *ZipkinTracingBackendConfig) GetURL() *string {
 
 type DatadogTracingBackendConfig struct {
 	// Address of datadog collector.
-	Address *string `default:"null" json:"address"`
+	Address *string `json:"address,omitempty"`
 	// Port of datadog collector
-	Port *int64 `default:"null" json:"port"`
+	Port *int64 `json:"port,omitempty"`
 	// Determines if datadog service name should be split based on traffic
 	// direction and destination. For example, with `splitService: true` and a
 	// `backend` service that communicates with a couple of databases, you would
 	// get service names like `backend_INBOUND`, `backend_OUTBOUND_db1`, and
 	// `backend_OUTBOUND_db2` in Datadog. Default: false
-	SplitService *bool `default:"null" json:"splitService"`
-}
-
-func (d DatadogTracingBackendConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(d, "", false)
-}
-
-func (d *DatadogTracingBackendConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, true); err != nil {
-		return err
-	}
-	return nil
+	SplitService *bool `json:"splitService,omitempty"`
 }
 
 func (o *DatadogTracingBackendConfig) GetAddress() *string {

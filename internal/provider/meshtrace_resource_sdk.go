@@ -160,35 +160,6 @@ func (r *MeshTraceResourceModel) RefreshFromSharedMeshTraceItem(ctx context.Cont
 	return diags
 }
 
-func (r *MeshTraceResourceModel) ToOperationsCreateMeshTraceRequest(ctx context.Context) (*operations.CreateMeshTraceRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var mesh string
-	mesh = r.Mesh.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	meshTraceItem, meshTraceItemDiags := r.ToSharedMeshTraceItemInput(ctx)
-	diags.Append(meshTraceItemDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateMeshTraceRequest{
-		CpID:          cpID,
-		Mesh:          mesh,
-		Name:          name,
-		MeshTraceItem: *meshTraceItem,
-	}
-
-	return &out, diags
-}
-
 func (r *MeshTraceResourceModel) ToOperationsDeleteMeshTraceRequest(ctx context.Context) (*operations.DeleteMeshTraceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -231,7 +202,7 @@ func (r *MeshTraceResourceModel) ToOperationsGetMeshTraceRequest(ctx context.Con
 	return &out, diags
 }
 
-func (r *MeshTraceResourceModel) ToOperationsUpdateMeshTraceRequest(ctx context.Context) (*operations.UpdateMeshTraceRequest, diag.Diagnostics) {
+func (r *MeshTraceResourceModel) ToOperationsPutMeshTraceRequest(ctx context.Context) (*operations.PutMeshTraceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -250,7 +221,7 @@ func (r *MeshTraceResourceModel) ToOperationsUpdateMeshTraceRequest(ctx context.
 		return nil, diags
 	}
 
-	out := operations.UpdateMeshTraceRequest{
+	out := operations.PutMeshTraceRequest{
 		CpID:          cpID,
 		Mesh:          mesh,
 		Name:          name,

@@ -32,7 +32,7 @@ func (r *MeshHostnameGeneratorResourceModel) RefreshFromSharedHostnameGeneratorI
 
 	if resp != nil {
 		r.CreationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreationTime))
-		if resp.Labels != nil {
+		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
 				r.Labels[key] = types.StringValue(value)
@@ -60,7 +60,7 @@ func (r *MeshHostnameGeneratorResourceModel) RefreshFromSharedHostnameGeneratorI
 				r.Spec.Selector.MeshExternalService = nil
 			} else {
 				r.Spec.Selector.MeshExternalService = &tfTypes.MeshExternalService{}
-				if resp.Spec.Selector.MeshExternalService.MatchLabels != nil {
+				if len(resp.Spec.Selector.MeshExternalService.MatchLabels) > 0 {
 					r.Spec.Selector.MeshExternalService.MatchLabels = make(map[string]types.String, len(resp.Spec.Selector.MeshExternalService.MatchLabels))
 					for key1, value1 := range resp.Spec.Selector.MeshExternalService.MatchLabels {
 						r.Spec.Selector.MeshExternalService.MatchLabels[key1] = types.StringValue(value1)
@@ -71,7 +71,7 @@ func (r *MeshHostnameGeneratorResourceModel) RefreshFromSharedHostnameGeneratorI
 				r.Spec.Selector.MeshMultiZoneService = nil
 			} else {
 				r.Spec.Selector.MeshMultiZoneService = &tfTypes.MeshExternalService{}
-				if resp.Spec.Selector.MeshMultiZoneService.MatchLabels != nil {
+				if len(resp.Spec.Selector.MeshMultiZoneService.MatchLabels) > 0 {
 					r.Spec.Selector.MeshMultiZoneService.MatchLabels = make(map[string]types.String, len(resp.Spec.Selector.MeshMultiZoneService.MatchLabels))
 					for key2, value2 := range resp.Spec.Selector.MeshMultiZoneService.MatchLabels {
 						r.Spec.Selector.MeshMultiZoneService.MatchLabels[key2] = types.StringValue(value2)
@@ -82,7 +82,7 @@ func (r *MeshHostnameGeneratorResourceModel) RefreshFromSharedHostnameGeneratorI
 				r.Spec.Selector.MeshService = nil
 			} else {
 				r.Spec.Selector.MeshService = &tfTypes.MeshExternalService{}
-				if resp.Spec.Selector.MeshService.MatchLabels != nil {
+				if len(resp.Spec.Selector.MeshService.MatchLabels) > 0 {
 					r.Spec.Selector.MeshService.MatchLabels = make(map[string]types.String, len(resp.Spec.Selector.MeshService.MatchLabels))
 					for key3, value3 := range resp.Spec.Selector.MeshService.MatchLabels {
 						r.Spec.Selector.MeshService.MatchLabels[key3] = types.StringValue(value3)
@@ -95,31 +95,6 @@ func (r *MeshHostnameGeneratorResourceModel) RefreshFromSharedHostnameGeneratorI
 	}
 
 	return diags
-}
-
-func (r *MeshHostnameGeneratorResourceModel) ToOperationsCreateHostnameGeneratorRequest(ctx context.Context) (*operations.CreateHostnameGeneratorRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var cpID string
-	cpID = r.CpID.ValueString()
-
-	var name string
-	name = r.Name.ValueString()
-
-	hostnameGeneratorItem, hostnameGeneratorItemDiags := r.ToSharedHostnameGeneratorItemInput(ctx)
-	diags.Append(hostnameGeneratorItemDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.CreateHostnameGeneratorRequest{
-		CpID:                  cpID,
-		Name:                  name,
-		HostnameGeneratorItem: *hostnameGeneratorItem,
-	}
-
-	return &out, diags
 }
 
 func (r *MeshHostnameGeneratorResourceModel) ToOperationsDeleteHostnameGeneratorRequest(ctx context.Context) (*operations.DeleteHostnameGeneratorRequest, diag.Diagnostics) {
@@ -156,7 +131,7 @@ func (r *MeshHostnameGeneratorResourceModel) ToOperationsGetHostnameGeneratorReq
 	return &out, diags
 }
 
-func (r *MeshHostnameGeneratorResourceModel) ToOperationsUpdateHostnameGeneratorRequest(ctx context.Context) (*operations.UpdateHostnameGeneratorRequest, diag.Diagnostics) {
+func (r *MeshHostnameGeneratorResourceModel) ToOperationsPutHostnameGeneratorRequest(ctx context.Context) (*operations.PutHostnameGeneratorRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -172,7 +147,7 @@ func (r *MeshHostnameGeneratorResourceModel) ToOperationsUpdateHostnameGenerator
 		return nil, diags
 	}
 
-	out := operations.UpdateHostnameGeneratorRequest{
+	out := operations.PutHostnameGeneratorRequest{
 		CpID:                  cpID,
 		Name:                  name,
 		HostnameGeneratorItem: *hostnameGeneratorItem,
