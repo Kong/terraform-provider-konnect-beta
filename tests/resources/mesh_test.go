@@ -129,7 +129,7 @@ func createAnMTP(t *testing.T, cpName, meshName, mtpName string) {
 	require.NotNil(t, myCp)
 
 	action := shared.ActionAllow
-	resp, err := client.MeshTrafficPermission.UpdateMeshTrafficPermission(ctx, operations.UpdateMeshTrafficPermissionRequest{
+	resp, err := client.MeshTrafficPermission.PutMeshTrafficPermission(ctx, operations.PutMeshTrafficPermissionRequest{
 		Mesh: meshName,
 		Name: mtpName,
 		CpID: myCp.ID,
