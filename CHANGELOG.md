@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.0
+> Released on 2025/10/??
+
+### Bug Fixes
+* Fields that are nullable can be set to null
+
 ## 0.8.0
 > Released on 2025/08/12
 

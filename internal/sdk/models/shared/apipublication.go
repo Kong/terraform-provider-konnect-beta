@@ -15,7 +15,7 @@ type APIPublication struct {
 	// Setting to null means the API will not require application authentication.
 	// DCR support for application registration is currently in development.
 	//
-	AuthStrategyIds []string `json:"auth_strategy_ids,omitempty"`
+	AuthStrategyIds []string `json:"auth_strategy_ids"`
 	// The visibility of the API in the portal.
 	// Public API publications do not require authentication to view and retrieve information about them.
 	// Private API publications require authentication to retrieve information about them.

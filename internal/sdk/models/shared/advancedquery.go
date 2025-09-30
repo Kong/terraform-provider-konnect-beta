@@ -110,7 +110,7 @@ type AdvancedQuery struct {
 	// List of aggregated metrics to collect across the requested time span. If no metrics are specified, request_count will be computed by default.
 	Metrics []AdvancedMetrics `json:"metrics,omitempty"`
 	// List of attributes or entity types to group by.
-	Dimensions []Dimensions `json:"dimensions,omitempty"`
+	Dimensions []Dimensions `json:"dimensions"`
 	// A list of filters to apply to the query.
 	Filters []AdvancedFilters `json:"filters,omitempty"`
 	// Force time grouping into buckets of the specified duration.  Only has an effect if "time" is in the "dimensions" list.

@@ -18,7 +18,7 @@ type Client struct {
 	// The URIs that the client is allowed to redirect to after authentication in interactive flows. All redirect URIs must be absolute URIs, be secure (HTTPS), and must not include a fragment component.
 	RedirectUris []string `json:"redirect_uris"`
 	// The URI of the login page where the user is redirected to authenticate in interactive flows. The login page must be secure (HTTPS).
-	LoginURI *string `json:"login_uri"`
+	LoginURI *string `default:"null" json:"login_uri"`
 	// The duration of the minted token is valid for, in seconds
 	AccessTokenDuration *int64 `default:"300" json:"access_token_duration"`
 	// The duration of the minted token is valid for, in seconds
@@ -34,6 +34,8 @@ type Client struct {
 	Labels map[string]*string `json:"labels"`
 	// List of OAuth 2.0 response types
 	ResponseTypes []ResponseType `json:"response_types"`
+	// Requested authentication method for OAuth 2.0 endpoints.
+	TokenEndpointAuthMethod *TokenEndpointAuthMethod `default:"client_secret_post" json:"token_endpoint_auth_method"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
@@ -126,6 +128,13 @@ func (o *Client) GetResponseTypes() []ResponseType {
 		return []ResponseType{}
 	}
 	return o.ResponseTypes
+}
+
+func (o *Client) GetTokenEndpointAuthMethod() *TokenEndpointAuthMethod {
+	if o == nil {
+		return nil
+	}
+	return o.TokenEndpointAuthMethod
 }
 
 func (o *Client) GetCreatedAt() time.Time {

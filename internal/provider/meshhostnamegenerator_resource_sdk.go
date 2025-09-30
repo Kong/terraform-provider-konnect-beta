@@ -43,7 +43,7 @@ func (r *MeshHostnameGeneratorResourceModel) RefreshFromSharedHostnameGeneratorI
 		if resp.Spec.Extension == nil {
 			r.Spec.Extension = nil
 		} else {
-			r.Spec.Extension = &tfTypes.MeshExternalServiceItemExtension{}
+			r.Spec.Extension = &tfTypes.Extension{}
 			if resp.Spec.Extension.Config == nil {
 				r.Spec.Extension.Config = jsontypes.NewNormalizedNull()
 			} else {
