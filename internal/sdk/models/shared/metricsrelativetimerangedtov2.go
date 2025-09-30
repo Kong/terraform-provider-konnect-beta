@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
 type MetricsRelativeTimeRangeDtoV2Type string
@@ -85,9 +86,20 @@ func (e *MetricsRelativeTimeRangeDtoV2TimeRange) UnmarshalJSON(data []byte) erro
 
 // MetricsRelativeTimeRangeDtoV2 - A duration representing a relative-to-now span of time. Generally the start time is floored to the requested granularity. Eg 7d from now, with 1day granularity initiated at 2024-01-08T17:11:00+05:00 will query for the time range from 2024-01-01T00:00:00+05:00 to 2024-01-08T17:11:00+05:00. The exact start and end timestamps are returned in the result query in the meta.start and meta.end fields. If the granularity for the previous query was 1hour, it would query a time range from 2024-01-01T17:00:00+05:00 to 2024-01-08T17:11:00+05:00.
 type MetricsRelativeTimeRangeDtoV2 struct {
-	Tz        *string                                `json:"tz,omitempty"`
-	Type      MetricsRelativeTimeRangeDtoV2Type      `json:"type"`
-	TimeRange MetricsRelativeTimeRangeDtoV2TimeRange `json:"time_range"`
+	Tz        *string                                 `default:"Etc/UTC" json:"tz"`
+	Type      MetricsRelativeTimeRangeDtoV2Type       `json:"type"`
+	TimeRange *MetricsRelativeTimeRangeDtoV2TimeRange `default:"1h" json:"time_range"`
+}
+
+func (m MetricsRelativeTimeRangeDtoV2) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MetricsRelativeTimeRangeDtoV2) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *MetricsRelativeTimeRangeDtoV2) GetTz() *string {
@@ -104,9 +116,9 @@ func (o *MetricsRelativeTimeRangeDtoV2) GetType() MetricsRelativeTimeRangeDtoV2T
 	return o.Type
 }
 
-func (o *MetricsRelativeTimeRangeDtoV2) GetTimeRange() MetricsRelativeTimeRangeDtoV2TimeRange {
+func (o *MetricsRelativeTimeRangeDtoV2) GetTimeRange() *MetricsRelativeTimeRangeDtoV2TimeRange {
 	if o == nil {
-		return MetricsRelativeTimeRangeDtoV2TimeRange("")
+		return nil
 	}
 	return o.TimeRange
 }
