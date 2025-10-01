@@ -132,7 +132,7 @@ func (r *MeshExternalServiceResourceModel) RefreshFromSharedMeshExternalServiceI
 			if resp.Spec.TLS.Version == nil {
 				r.Spec.TLS.Version = nil
 			} else {
-				r.Spec.TLS.Version = &tfTypes.Version{}
+				r.Spec.TLS.Version = &tfTypes.TLSVersionRange{}
 				if resp.Spec.TLS.Version.Max != nil {
 					r.Spec.TLS.Version.Max = types.StringValue(string(*resp.Spec.TLS.Version.Max))
 				} else {
@@ -467,15 +467,15 @@ func (r *MeshExternalServiceResourceModel) ToSharedMeshExternalServiceItemInput(
 		}
 		var version *shared.Version
 		if r.Spec.TLS.Version != nil {
-			max := new(shared.Max)
+			max := new(shared.MeshExternalServiceItemMax)
 			if !r.Spec.TLS.Version.Max.IsUnknown() && !r.Spec.TLS.Version.Max.IsNull() {
-				*max = shared.Max(r.Spec.TLS.Version.Max.ValueString())
+				*max = shared.MeshExternalServiceItemMax(r.Spec.TLS.Version.Max.ValueString())
 			} else {
 				max = nil
 			}
-			min := new(shared.Min)
+			min := new(shared.MeshExternalServiceItemMin)
 			if !r.Spec.TLS.Version.Min.IsUnknown() && !r.Spec.TLS.Version.Min.IsNull() {
-				*min = shared.Min(r.Spec.TLS.Version.Min.ValueString())
+				*min = shared.MeshExternalServiceItemMin(r.Spec.TLS.Version.Min.ValueString())
 			} else {
 				min = nil
 			}

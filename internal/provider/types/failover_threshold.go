@@ -3,5 +3,5 @@
 package types
 
 type FailoverThreshold struct {
-	Percentage MeshItemMode `tfsdk:"percentage"`
+	Percentage EventGatewayListenerPort `tfsdk:"percentage"`
 }

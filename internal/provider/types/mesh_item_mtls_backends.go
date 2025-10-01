@@ -7,10 +7,10 @@ import (
 )
 
 type MeshItemMtlsBackends struct {
-	Conf      *MeshItemMtlsConf `tfsdk:"conf"`
-	DpCert    *DpCert           `tfsdk:"dp_cert"`
-	Mode      *MeshItemMode     `tfsdk:"mode"`
-	Name      types.String      `tfsdk:"name"`
-	RootChain *RootChain        `tfsdk:"root_chain"`
-	Type      types.String      `tfsdk:"type"`
+	Conf      *MeshItemMtlsConf         `tfsdk:"conf"`
+	DpCert    *DpCert                   `tfsdk:"dp_cert"`
+	Mode      *EventGatewayListenerPort `tfsdk:"mode"`
+	Name      types.String              `tfsdk:"name"`
+	RootChain *RootChain                `tfsdk:"root_chain"`
+	Type      types.String              `tfsdk:"type"`
 }

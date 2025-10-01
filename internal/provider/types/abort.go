@@ -7,6 +7,6 @@ import (
 )
 
 type Abort struct {
-	HTTPStatus types.Int32  `tfsdk:"http_status"`
-	Percentage MeshItemMode `tfsdk:"percentage"`
+	HTTPStatus types.Int32              `tfsdk:"http_status"`
+	Percentage EventGatewayListenerPort `tfsdk:"percentage"`
 }

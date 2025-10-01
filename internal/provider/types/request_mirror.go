@@ -3,6 +3,6 @@
 package types
 
 type RequestMirror struct {
-	BackendRef BackendRefs   `tfsdk:"backend_ref"`
-	Percentage *MeshItemMode `tfsdk:"percentage"`
+	BackendRef BackendRefs               `tfsdk:"backend_ref"`
+	Percentage *EventGatewayListenerPort `tfsdk:"percentage"`
 }

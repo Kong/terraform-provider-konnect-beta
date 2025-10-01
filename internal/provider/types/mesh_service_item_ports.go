@@ -7,8 +7,8 @@ import (
 )
 
 type MeshServiceItemPorts struct {
-	AppProtocol types.String  `tfsdk:"app_protocol"`
-	Name        types.String  `tfsdk:"name"`
-	Port        types.Int32   `tfsdk:"port"`
-	TargetPort  *MeshItemMode `tfsdk:"target_port"`
+	AppProtocol types.String              `tfsdk:"app_protocol"`
+	Name        types.String              `tfsdk:"name"`
+	Port        types.Int32               `tfsdk:"port"`
+	TargetPort  *EventGatewayListenerPort `tfsdk:"target_port"`
 }

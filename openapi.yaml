@@ -5408,6 +5408,1257 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Dashboards
+  /v1/event-gateways:
+    parameters: []
+    post:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGateway#create
+        terraform-datasource: null
+      operationId: create-event-gateway
+      summary: Create Event Gateway
+      description: Create a Event gateway in the Konnect Organization.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGatewayRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateGatewayResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/Internal'
+        '503':
+          $ref: '#/components/responses/NotAvailable'
+      tags:
+        - Houdini Event Gateways
+  '/v1/event-gateways/{gatewayId}':
+    parameters:
+      - name: gatewayId
+        in: path
+        description: The UUID of your Gateway.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
+        x-speakeasy-match: id
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGateway#read
+        terraform-datasource: null
+      operationId: get-event-gateway
+      summary: Fetch Event Gateway
+      description: Returns information about an individual Event gateway.
+      responses:
+        '200':
+          description: A response to retrieving a single eventgateway.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayInfo'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/Internal'
+        '503':
+          $ref: '#/components/responses/NotAvailable'
+      tags:
+        - Houdini Event Gateways
+    put:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGateway#update
+        terraform-datasource: null
+      operationId: update-houdini-event-gateway
+      summary: Update Houdini Event Gateway
+      description: Update an individual gateway.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateGatewayRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateGatewayResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/Internal'
+        '503':
+          $ref: '#/components/responses/NotAvailable'
+      tags:
+        - Houdini Event Gateways
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGateway#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway
+      summary: Delete Event Gateway
+      description: Delete an individual gateway.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Houdini Event Gateways
+  '/v1/event-gateways/{gatewayId}/listeners':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+    post:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayListener#create
+        terraform-datasource: null
+      operationId: create-event-gateway-listener
+      summary: Create Event Gateway Listener
+      description: Creates a new listener associated with the specified Event Gateway.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateEventGatewayListenerRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayListener'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Listeners
+  '/v1/event-gateways/{gatewayId}/listeners/{eventGatewayListenerId}':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - name: eventGatewayListenerId
+        in: path
+        description: The ID of the Event Gateway Listener.
+        required: true
+        schema:
+          type: string
+          format: uuid
+        x-speakeasy-match: id
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayListener#read
+        terraform-datasource: null
+      operationId: get-event-gateway-listener
+      summary: Fetch Event Gateway Listener
+      description: Returns information about a specific listener associated with the Event Gateway.
+      responses:
+        '200':
+          description: A single event gateway listener object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayListener'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Listeners
+    put:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayListener#update
+        terraform-datasource: null
+      operationId: update-event-gateway-listener
+      summary: Update Event Gateway Listener
+      description: Updates an existing listener associated with the specified Event Gateway.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateEventGatewayListenerRequest'
+      responses:
+        '200':
+          description: Updated event gateway listener object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayListener'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Listeners
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayListener#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-listener
+      summary: Delete Event Gateway Listener
+      description: Deletes a specific listener associated with the Event Gateway.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Listeners
+  '/v1/event-gateways/{gatewayId}/virtual-clusters':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+    post:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayVirtualCluster#create
+        terraform-datasource: null
+      operationId: create-event-gateway-virtual-cluster
+      summary: Create Virtual Cluster
+      description: Creates a new virtual cluster associated with the specified Event Gateway.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateVirtualClusterRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VirtualCluster'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Clusters
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - name: virtualClusterId
+        in: path
+        description: The ID of the Virtual Cluster.
+        required: true
+        schema:
+          type: string
+          format: uuid
+        x-speakeasy-match: id
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayVirtualCluster#read
+        terraform-datasource: null
+      operationId: get-event-gateway-virtual-cluster
+      summary: Fetch Virtual Cluster
+      description: Returns information about a specific virtual cluster associated with the Event Gateway.
+      responses:
+        '200':
+          description: A single virtual cluster object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VirtualCluster'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Clusters
+    put:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayVirtualCluster#update
+        terraform-datasource: null
+      operationId: update-event-gateway-virtual-cluster
+      summary: Update Virtual Cluster
+      description: Updates an existing virtual cluster associated with the specified Event Gateway.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateVirtualClusterRequest'
+      responses:
+        '200':
+          description: Updated virtual cluster object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VirtualCluster'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Clusters
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayVirtualCluster#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-virtual-cluster
+      summary: Delete Virtual Cluster
+      description: Deletes a specific virtual cluster associated with the Event Gateway.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Clusters
+  '/v1/event-gateways/{gatewayId}/backend-clusters':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+    post:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayBackendCluster#create
+        terraform-datasource: null
+      operationId: create-event-gateway-backend-cluster
+      summary: Create Backend Cluster
+      description: Creates a new backend cluster.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateBackendClusterRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackendCluster'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Backend Clusters
+  '/v1/event-gateways/{gatewayId}/backend-clusters/{backendClusterId}':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - name: backendClusterId
+        in: path
+        description: The ID of the Backend Cluster.
+        required: true
+        schema:
+          type: string
+          format: uuid
+        x-speakeasy-match: id
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayBackendCluster#read
+        terraform-datasource: null
+      operationId: get-event-gateway-backend-cluster
+      summary: Fetch Backend Cluster
+      description: Returns information about a specific backend cluster.
+      responses:
+        '200':
+          description: A single backend cluster object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackendCluster'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Backend Clusters
+    put:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayBackendCluster#update
+        terraform-datasource: null
+      operationId: update-event-gateway-backend-cluster
+      summary: Update Backend Cluster
+      description: Updates an existing backend cluster.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateBackendClusterRequest'
+      responses:
+        '200':
+          description: Updated backend cluster object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackendCluster'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Backend Clusters
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayBackendCluster#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-backend-cluster
+      summary: Delete Backend Cluster
+      description: Deletes a specific backend cluster.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Backend Clusters
+  '/v1/event-gateways/{gatewayId}/vaults':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+    post:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayVault#create
+        terraform-datasource: null
+      operationId: create-event-gateway-vault
+      summary: Create Vault
+      description: Creates a new vault associated with the specified Event Gateway.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateEventGatewayVaultRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayVault'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Vaults
+  '/v1/event-gateways/{gatewayId}/vaults/{vaultId}':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - name: vaultId
+        in: path
+        description: The ID of the Vault.
+        required: true
+        schema:
+          type: string
+          format: uuid
+        x-speakeasy-match: id
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayVault#read
+        terraform-datasource: null
+      operationId: get-event-gateway-vault
+      summary: Fetch Vault
+      description: Returns information about a specific vault associated with the Event Gateway.
+      responses:
+        '200':
+          description: A single vault object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayVault'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Vaults
+    put:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayVault#update
+        terraform-datasource: null
+      operationId: update-event-gateway-vault
+      summary: Update Vault
+      description: Updates an existing vault associated with the specified Event Gateway.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateEventGatewayVaultRequest'
+      responses:
+        '200':
+          description: Updated vault object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayVault'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Vaults
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayVault#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-vault
+      summary: Delete Vault
+      description: Deletes a specific vault associated with the Event Gateway.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Vaults
+  '/v1/event-gateways/{gatewayId}/schema-registries':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+    post:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewaySchemaRegistry#create
+        terraform-datasource: null
+      operationId: create-event-gateway-schema-registry
+      summary: Create Schema Registry
+      description: Creates a new schema registry associated with the specified Event Gateway.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateSchemaRegistryRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SchemaRegistry'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Schema Registries
+  '/v1/event-gateways/{gatewayId}/schema-registries/{schemaRegistryId}':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - name: schemaRegistryId
+        in: path
+        description: The ID of the Schema Registry.
+        required: true
+        schema:
+          type: string
+          format: uuid
+        x-speakeasy-match: id
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewaySchemaRegistry#read
+        terraform-datasource: null
+      operationId: get-event-gateway-schema-registry
+      summary: Fetch Schema Registry
+      description: Returns information about a specific schema registry associated with the Event Gateway.
+      responses:
+        '200':
+          description: A single schema registry object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SchemaRegistry'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Schema Registries
+    put:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewaySchemaRegistry#update
+        terraform-datasource: null
+      operationId: update-event-gateway-schema-registry
+      summary: Update Schema Registry
+      description: Updates an existing schema registry associated with the specified Event Gateway.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateSchemaRegistryRequest'
+      responses:
+        '200':
+          description: Updated schema registry object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SchemaRegistry'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Schema Registries
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewaySchemaRegistry#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-schema-registry
+      summary: Delete Schema Registry
+      description: Deletes a specific schema registry associated with the Event Gateway.
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Schema Registries
+  '/v1/event-gateways/{gatewayId}/listeners/{eventGatewayListenerId}/policies':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/eventGatewayListenerId'
+    post:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayListenerPolicy#create
+        terraform-datasource: null
+      operationId: create-event-gateway-listener-policy
+      summary: Create Policy for Listener
+      description: Creates a new policy associated with the specified Event Gateway listener.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateEventGatewayListenerPolicyRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Listener Policies
+  '/v1/event-gateways/{gatewayId}/listeners/{eventGatewayListenerId}/policies/{policyId}':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/eventGatewayListenerId'
+      - name: policyId
+        in: path
+        description: The UUID of the policy.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
+        x-speakeasy-match: id
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayListenerPolicy#read
+        terraform-datasource: null
+      operationId: get-event-gateway-listener-policy
+      summary: Fetch Policy for Listener
+      description: Returns information about a specific policy associated with the Event Gateway listener.
+      responses:
+        '200':
+          description: A single policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Listener Policies
+    put:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayListenerPolicy#update
+        terraform-datasource: null
+      operationId: update-event-gateway-listener-policy
+      summary: Update Policy for Listener
+      description: Updates an existing policy associated with the specified Event Gateway listener.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateEventGatewayListenerPolicyRequest'
+      responses:
+        '200':
+          description: Updated policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Listener Policies
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayListenerPolicy#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-listener-policy
+      summary: Delete Policy for Listener
+      description: Deletes a specific policy associated with the Event Gateway listener.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Listener Policies
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
+    post:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayVirtualClusterConsumePolicy#create
+        terraform-datasource: null
+      operationId: create-event-gateway-virtual-cluster-consume-policy
+      summary: Create Consume Policy for Virtual Cluster
+      description: Creates a new consume policy associated with the specified Event Gateway virtual cluster.
+      parameters:
+        - $ref: '#/components/parameters/parentPolicyId'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateEventGatewayConsumePolicyRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies/{policyId}':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
+      - name: policyId
+        in: path
+        description: The UUID of the policy.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
+        x-speakeasy-match: id
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayVirtualClusterConsumePolicy#read
+        terraform-datasource: null
+      operationId: get-event-gateway-virtual-cluster-consume-policy
+      summary: Fetch Consume Policy for Virtual Cluster
+      description: Returns information about a specific consume policy associated with the Event Gateway virtual cluster.
+      responses:
+        '200':
+          description: A single consume policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+    put:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayVirtualClusterConsumePolicy#update
+        terraform-datasource: null
+      operationId: update-event-gateway-virtual-cluster-consume-policy
+      summary: Update Consume Policy for Virtual Cluster
+      description: Updates an existing consume policy associated with the specified Event Gateway virtual cluster.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateEventGatewayConsumePolicyRequest'
+      responses:
+        '200':
+          description: Updated consume policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayVirtualClusterConsumePolicy#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-virtual-cluster-consume-policy
+      summary: Delete Consume Policy for Virtual Cluster
+      description: Deletes a specific consume policy associated with the Event Gateway virtual cluster.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
+    post:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayVirtualClusterProducePolicy#create
+        terraform-datasource: null
+      operationId: create-event-gateway-virtual-cluster-produce-policy
+      summary: Create Produce Policy for Virtual Cluster
+      description: Creates a new produce policy associated with the specified Event Gateway virtual cluster.
+      parameters:
+        - $ref: '#/components/parameters/parentPolicyId'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateEventGatewayProducePolicyRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies/{policyId}':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
+      - name: policyId
+        in: path
+        description: The UUID of the policy.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
+        x-speakeasy-match: id
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayVirtualClusterProducePolicy#read
+        terraform-datasource: null
+      operationId: get-event-gateway-virtual-cluster-produce-policy
+      summary: Fetch Produce Policy for Virtual Cluster
+      description: Returns information about a specific produce policy associated with the Event Gateway virtual cluster.
+      responses:
+        '200':
+          description: A single produce policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+    put:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayVirtualClusterProducePolicy#update
+        terraform-datasource: null
+      operationId: update-event-gateway-virtual-cluster-produce-policy
+      summary: Update Produce Policy for Virtual Cluster
+      description: Updates an existing produce policy associated with the specified Event Gateway virtual cluster.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateEventGatewayProducePolicyRequest'
+      responses:
+        '200':
+          description: Updated produce policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayVirtualClusterProducePolicy#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-virtual-cluster-produce-policy
+      summary: Delete Produce Policy for Virtual Cluster
+      description: Deletes a specific produce policy associated with the Event Gateway virtual cluster.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/cluster-policies':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
+    post:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayVirtualClusterClusterPolicy#create
+        terraform-datasource: null
+      operationId: create-event-gateway-virtual-cluster-cluster-level-policy
+      summary: Create Cluster Policy for Virtual Cluster
+      description: Creates a new cluster-level policy associated with the specified Event Gateway virtual cluster.
+      parameters:
+        - $ref: '#/components/parameters/parentPolicyId'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateEventGatewayClusterPolicyRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Policies
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/cluster-policies/{policyId}':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
+      - name: policyId
+        in: path
+        description: The UUID of the policy.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
+        x-speakeasy-match: id
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayVirtualClusterClusterPolicy#read
+        terraform-datasource: null
+      operationId: get-event-gateway-virtual-cluster-cluster-level-policy
+      summary: Fetch Cluster Policy for Virtual Cluster
+      description: Returns information about a specific cluster-level policy associated with the Event Gateway virtual cluster.
+      responses:
+        '200':
+          description: A single cluster-level policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Policies
+    put:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayVirtualClusterClusterPolicy#update
+        terraform-datasource: null
+      operationId: update-event-gateway-virtual-cluster-cluster-level-policy
+      summary: Update Cluster Policy for Virtual Cluster
+      description: Updates an existing cluster-level policy associated with the specified Event Gateway virtual cluster.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateEventGatewayClusterPolicyRequest'
+      responses:
+        '200':
+          description: Updated cluster-level policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Policies
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayVirtualClusterClusterPolicy#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-virtual-cluster-cluster-level-policy
+      summary: Delete Cluster Policy for Virtual Cluster
+      description: Deletes a specific cluster-level policy associated with the Event Gateway virtual cluster.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Policies
+  '/v1/event-gateways/{gatewayId}/data-plane-certificates':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+    post:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayDataPlaneCertificate#create
+        terraform-datasource: null
+      operationId: create-event-gateway-data-plane-certificate
+      summary: Create a New DataPlane Certificate
+      description: Create new dataplane certificate to this event gateway. A dataplane certificate allows dataplanes configured with the certificate and corresponding private key to establish connection with this event gateway.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateEventGatewayDataPlaneCertificateRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayDataPlaneCertificate'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway DataPlane Certificates
+  '/v1/event-gateways/{gatewayId}/data-plane-certificates/{certificateId}':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - name: certificateId
+        in: path
+        description: The ID of the dataplane certificate.
+        required: true
+        schema:
+          type: string
+          format: uuid
+        x-speakeasy-match: id
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayDataPlaneCertificate#read
+        terraform-datasource: null
+      operationId: get-event-gateway-data-plane-certificate
+      summary: Fetch a DataPlane Certificate
+      description: Returns information about an individual dataplane certificate.
+      responses:
+        '200':
+          description: A single dataplane certificate.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayDataPlaneCertificate'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway DataPlane Certificates
+    put:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayDataPlaneCertificate#update
+        terraform-datasource: null
+      operationId: update-event-gateway-data-plane-certificate
+      summary: Update Event Gateway DataPlane Certificate
+      description: Updates an existing dataplane certificate associated with the specified Event Gateway.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateEventGatewayDataPlaneCertificateRequest'
+      responses:
+        '200':
+          description: Updated event gateway dataplane certificate object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayDataPlaneCertificate'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway DataPlane Certificates
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayDataPlaneCertificate#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-data-plane-certificate
+      summary: Delete Event Gateway DataPlane Certificate
+      description: Deletes a specific dataplane certificate associated with the Event Gateway.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway DataPlane Certificates
 components:
   parameters:
     ApiId:
@@ -5582,6 +6833,30 @@ components:
       schema:
         type: string
         format: uuid
+    eventGatewayListenerId:
+      schema:
+        type: string
+        format: uuid
+      name: eventGatewayListenerId
+      in: path
+      required: true
+      description: The ID of the Event Gateway Listener.
+    gatewayId:
+      name: gatewayId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
+      description: The UUID of your Gateway.
+    parentPolicyId:
+      schema:
+        type: string
+        format: uuid
+      name: parent_policy_id
+      in: query
+      description: 'When specified, it sets the ID of the parent policy.'
     scopeId:
       schema:
         type: string
@@ -5592,6 +6867,14 @@ components:
       required: true
       description: The scope ID
       x-speakeasy-match: id
+    virtualClusterId:
+      schema:
+        type: string
+        format: uuid
+      name: virtualClusterId
+      in: path
+      required: true
+      description: The ID of the Virtual Cluster.
   schemas:
     PortalImageDataUri:
       description: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
@@ -20882,6 +22165,1758 @@ components:
       required:
         - field
         - operator
+    EventGatewayInfo:
+      allOf:
+        - $ref: '#/components/schemas/Gateway'
+        - type: object
+          required:
+            - nodes_total
+            - virtual_clusters_total
+            - version
+          properties:
+            nodes_total:
+              description: The total number of nodes associated with the Event Gateway.
+              type: integer
+            virtual_clusters_total:
+              description: The total number of virtual clusters associated with the Event Gateway.
+              type: integer
+            version:
+              description: |
+                The version number of the event gateway. Every change to an entity
+                under this gateway will modify the version.
+              type: string
+              example: v1_123
+    EventGatewayListener:
+      description: Listeners are used to expose virtual clusters to clients.
+      type: object
+      properties:
+        id:
+          description: The unique identifier of the listener.
+          type: string
+          format: uuid
+        name:
+          description: The unique name of the listener.
+          type: string
+          maxLength: 255
+          minLength: 1
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the listener.
+          type: string
+          default: null
+          maxLength: 512
+          nullable: true
+          x-speakeasy-param-computed: false
+        addresses:
+          $ref: '#/components/schemas/EventGatewayListenerAddresses'
+        ports:
+          $ref: '#/components/schemas/EventGatewayListenerPorts'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - addresses
+        - ports
+        - created_at
+        - updated_at
+    EventGatewayListenerAddresses:
+      description: |
+        Which address or addresses to listen on.
+        `0.0.0.0` means all addresses on the host.
+        `::` means all addresses on the host in IPv6.
+
+          If `0.0.0.0` or `::` is used, there can't be other extra addresses defined.
+          WARNING: there are use cases where listening on all addresses is insecure. So use this with caution.
+
+          `localhost` means only the localhost ipv4 address.
+      type: array
+      items:
+        type: string
+      minItems: 1
+    EventGatewayListenerPorts:
+      description: |
+        Which port or ports to listen on.
+        There can be multiple ways to define ports:
+          - as a single port, e.g. 9092
+          - as a range of ports, e.g. 9092-9094
+
+        It's possible to combine both, e.g. [9092, "9093-9095", 9096].
+      type: array
+      items:
+        $ref: '#/components/schemas/EventGatewayListenerPort'
+      minItems: 1
+    EventGatewayListenerPort:
+      oneOf:
+        - type: string
+          pattern: '^(\d{1,5}|\d{1,5}-\d{1,5})$'
+          description: A port or a range of ports in the format 9092 or 9092-9094.
+        - type: integer
+          minimum: 1
+          maximum: 65535
+    VirtualCluster:
+      description: A representation of a Kafka cluster that maps to a backend cluster.
+      type: object
+      properties:
+        id:
+          description: The unique identifier of the virtual cluster.
+          type: string
+          format: uuid
+        description:
+          description: A human-readable description of the virtual cluster.
+          type: string
+          default: null
+          maxLength: 512
+          nullable: true
+          x-speakeasy-param-computed: false
+        destination:
+          $ref: '#/components/schemas/BackendClusterReference'
+        authentication:
+          $ref: '#/components/schemas/VirtualClusterAuthenticationSchemes'
+        name:
+          $ref: '#/components/schemas/VirtualClusterName'
+        dns_label:
+          $ref: '#/components/schemas/VirtualClusterDNSLabel'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - dns_label
+        - destination
+        - authentication
+        - created_at
+        - updated_at
+    VirtualClusterName:
+      description: The name of the virtual cluster.
+      type: string
+      maxLength: 255
+      minLength: 1
+      x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+    VirtualClusterReference:
+      description: A reference to a virtual cluster.
+      oneOf:
+        - $ref: '#/components/schemas/VirtualClusterReferenceById'
+        - $ref: '#/components/schemas/VirtualClusterReferenceByName'
+    VirtualClusterReferenceById:
+      description: Reference a virtual cluster by its unique identifier.
+      type: object
+      properties:
+        id:
+          description: The unique identifier of the virtual cluster.
+          type: string
+          format: uuid
+      additionalProperties: false
+      required:
+        - id
+    VirtualClusterReferenceByName:
+      description: Reference a virtual cluster by its unique name.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/VirtualClusterName'
+      additionalProperties: false
+      required:
+        - name
+    VirtualClusterAuthenticationSchemes:
+      description: |
+        How to handle authentication from clients.
+
+        It tries to authenticate with every rule sequentially one by one.
+        It succeeds on the first match, and fails if no rule matches.
+      type: array
+      items:
+        $ref: '#/components/schemas/VirtualClusterAuthenticationScheme'
+      minItems: 1
+    VirtualClusterAuthenticationScheme:
+      discriminator:
+        propertyName: type
+        mapping:
+          anonymous: '#/components/schemas/VirtualClusterAuthenticationAnonymous'
+          sasl_plain: '#/components/schemas/VirtualClusterAuthenticationSaslPlain'
+          sasl_scram: '#/components/schemas/VirtualClusterAuthenticationSaslScram'
+          oauth_bearer: '#/components/schemas/VirtualClusterAuthenticationOauthBearer'
+      oneOf:
+        - $ref: '#/components/schemas/VirtualClusterAuthenticationAnonymous'
+        - $ref: '#/components/schemas/VirtualClusterAuthenticationSaslPlain'
+        - $ref: '#/components/schemas/VirtualClusterAuthenticationSaslScram'
+        - $ref: '#/components/schemas/VirtualClusterAuthenticationOauthBearer'
+    VirtualClusterAuthenticationAnonymous:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - anonymous
+      required:
+        - type
+    VirtualClusterAuthenticationSaslPlain:
+      description: SASL/PLAIN authentication scheme for the virtual cluster.
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - sasl_plain
+        mediation:
+          description: The mediation type for SASL/PLAIN authentication.
+          type: string
+          enum:
+            - passthrough
+            - terminate
+        principals:
+          description: 'List of principals to be able to authenticate with, used with `terminate` mediation.'
+          type: array
+          items:
+            $ref: '#/components/schemas/VirtualClusterAuthenticationPrincipal'
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      required:
+        - type
+        - mediation
+    VirtualClusterAuthenticationPrincipal:
+      description: A principal for authentication.
+      type: object
+      properties:
+        username:
+          $ref: '#/components/schemas/GatewaySecretReferenceOrLiteral'
+        password:
+          $ref: '#/components/schemas/GatewaySecretReference'
+    VirtualClusterAuthenticationJWKS:
+      description: JSON Web Key Set configuration for verifying token signatures.
+      type: object
+      properties:
+        endpoint:
+          description: URL for JWKS endpoint.
+          type: string
+          format: uri
+          minLength: 1
+        timeout:
+          description: Total time from establishing connection to receive a response from JWKS endpoint.
+          type: string
+          default: 10s
+        cache_expiration:
+          description: Duration after which the gateway will fetch and cache JWKS.
+          type: string
+          default: 1h
+      required:
+        - endpoint
+    VirtualClusterAuthenticationClaimsMapping:
+      description: Maps JWT claims in the case when sub and scope are presented as different claims in your JWT token.
+      type: object
+      properties:
+        sub:
+          description: Maps the subject claim.
+          type: string
+          default: null
+          minLength: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+        scope:
+          description: Maps the scope claim.
+          type: string
+          default: null
+          minLength: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+    VirtualClusterAuthenticationSaslScram:
+      description: SASL/SCRAM authentication scheme for the virtual cluster.
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - sasl_scram
+        algorithm:
+          description: The algorithm used for SASL/SCRAM authentication.
+          type: string
+          enum:
+            - sha256
+            - sha512
+      additionalProperties: false
+      required:
+        - type
+        - algorithm
+    VirtualClusterAuthenticationOauthBearer:
+      description: Oauth Bearer authentication scheme for the virtual cluster.
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - oauth_bearer
+        mediation:
+          description: |
+            Methods to mediate authentication:
+            * passthrough - pass authentication from the client through proxy to the backend cluster without any kind of
+
+              validation
+            * validate_forward - pass authentication from the client through proxy to the backend cluster.
+
+              Proxy does the validation before forwarding it to the client.
+            * terminate - terminate authentication at the proxy level and originate authentication to the backend cluster
+
+              using the configuration defined at BackendCluster's authentication.
+              SASL auth is not originated if authentication on the backend_cluster is not configured.
+          type: string
+          enum:
+            - passthrough
+            - validate_forward
+            - terminate
+        claims_mapping:
+          $ref: '#/components/schemas/VirtualClusterAuthenticationClaimsMapping'
+        jwks:
+          $ref: '#/components/schemas/VirtualClusterAuthenticationJWKS'
+        validate:
+          $ref: '#/components/schemas/VirtualClusterAuthenticationValidate'
+      additionalProperties: false
+      required:
+        - type
+        - mediation
+    VirtualClusterAuthenticationValidate:
+      description: Validation rules.
+      type: object
+      properties:
+        audiences:
+          description: List of expected audience values. One of them has to match the audience claim in the token.
+          type: array
+          items:
+            $ref: '#/components/schemas/VirtualClusterAuthenticationAudience'
+          default: null
+          minItems: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+        issuer:
+          description: Expected token issuer in the token.
+          type: string
+          default: null
+          minLength: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+    VirtualClusterAuthenticationAudience:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+      required:
+        - name
+    VirtualClusterDNSLabel:
+      description: |-
+        The DNS label used in the bootstrap server URL to identify the virtual cluster when using SNI routing.
+        The format follows the RFC1035: 1-63 chars, lowercase alphanumeric or '-', must start with a letter and end with an alphanumeric character.
+      type: string
+      example: vcluster-1
+      maxLength: 63
+      minLength: 1
+      pattern: '^[a-z]([-a-z0-9]*[a-z0-9])?$'
+    BackendCluster:
+      description: The Kafka cluster.
+      type: object
+      properties:
+        id:
+          description: The unique identifier of the backend cluster.
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          $ref: '#/components/schemas/BackendClusterName'
+        description:
+          description: A human-readable description of the backend cluster.
+          type: string
+          default: null
+          maxLength: 512
+          nullable: true
+          x-speakeasy-param-computed: false
+        authentication:
+          $ref: '#/components/schemas/BackendClusterAuthenticationScheme'
+        insecure_allow_anonymous_virtual_cluster_auth:
+          description: |
+            If true, virtual clusters can have allow anonymous authentication and use this backend cluster.
+            This setting is not recommended for production use as it may create privilege escalation vulnerabilities.
+          type: boolean
+          default: false
+        bootstrap_servers:
+          $ref: '#/components/schemas/BootstrapServers'
+        tls:
+          $ref: '#/components/schemas/BackendClusterTLS'
+        metadata_update_interval_seconds:
+          $ref: '#/components/schemas/BackendMetadataUpdateIntervalSeconds'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - authentication
+        - bootstrap_servers
+        - created_at
+        - updated_at
+    BackendClusterName:
+      description: The unique name of the backend cluster.
+      type: string
+      maxLength: 255
+      minLength: 1
+      x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+    BackendClusterReference:
+      description: The backend cluster associated with the virtual cluster.
+      type: object
+      properties:
+        id:
+          description: The unique identifier of the backend cluster.
+          type: string
+          format: uuid
+        name:
+          $ref: '#/components/schemas/BackendClusterName'
+      additionalProperties: false
+      required:
+        - id
+        - name
+    BackendClusterReferenceModify:
+      description: |
+        The backend cluster associated with the virtual cluster.
+
+        Either `id` or `name` must be provided. Following changes to the backend cluster name won't affect the
+        reference, as the system will create the entities relationship by `id`.
+      properties:
+        id:
+          description: The unique identifier of the backend cluster.
+          type: string
+          format: uuid
+        name:
+          $ref: '#/components/schemas/BackendClusterName'
+    BootstrapServers:
+      description: 'A list of cluster bootstrap servers in the format address:port.'
+      type: array
+      items:
+        type: string
+        description: 'Endpoint in address:port format.'
+        pattern: '^(([a-zA-Z0-9\.\-]+)|\[([a-fA-F0-9:]+)\]):\d+$'
+        minLength: 1
+      minItems: 1
+    BackendClusterTLS:
+      type: object
+      properties:
+        insecure_skip_verify:
+          description: 'If true, skip certificate verification. It''s not secure to use for production.'
+          type: boolean
+          default: false
+        ca_bundle:
+          $ref: '#/components/schemas/GatewaySecretReferenceOrLiteral'
+        tls_versions:
+          description: List of supported TLS versions.
+          type: array
+          items:
+            type: string
+            enum:
+              - tls12
+              - tls13
+          default:
+            - tls12
+            - tls13
+    BackendMetadataUpdateIntervalSeconds:
+      description: The interval at which metadata is updated in seconds.
+      type: integer
+      default: 60
+      maximum: 43200
+      minimum: 1
+    BackendClusterAuthenticationScheme:
+      discriminator:
+        propertyName: type
+        mapping:
+          anonymous: '#/components/schemas/BackendClusterAuthenticationAnonymous'
+          sasl_plain: '#/components/schemas/BackendClusterAuthenticationSaslPlain'
+          sasl_scram: '#/components/schemas/BackendClusterAuthenticationSaslScram'
+      oneOf:
+        - $ref: '#/components/schemas/BackendClusterAuthenticationAnonymous'
+        - $ref: '#/components/schemas/BackendClusterAuthenticationSaslPlain'
+        - $ref: '#/components/schemas/BackendClusterAuthenticationSaslScram'
+    BackendClusterAuthenticationAnonymous:
+      description: Anonymous authentication scheme for the backend cluster.
+      type: object
+      properties:
+        type:
+          description: The type of authentication scheme.
+          type: string
+          enum:
+            - anonymous
+      additionalProperties: false
+      required:
+        - type
+    BackendClusterAuthenticationSaslPlain:
+      description: SASL/PLAIN authentication scheme for the backend cluster.
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - sasl_plain
+        username:
+          $ref: '#/components/schemas/GatewaySecretReferenceOrLiteral'
+        password:
+          $ref: '#/components/schemas/GatewaySecretReference'
+      additionalProperties: false
+      required:
+        - type
+        - username
+        - password
+    BackendClusterAuthenticationSaslScram:
+      description: SASL/SCRAM-SHA-256 authentication scheme for the backend cluster.
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - sasl_scram
+        algorithm:
+          description: The algorithm used for SASL/SCRAM authentication.
+          type: string
+          enum:
+            - sha256
+            - sha512
+        username:
+          $ref: '#/components/schemas/GatewaySecretReferenceOrLiteral'
+        password:
+          $ref: '#/components/schemas/GatewaySecretReference'
+      additionalProperties: false
+      required:
+        - type
+        - username
+        - password
+        - algorithm
+    EventGatewayVault:
+      allOf:
+        - $ref: '#/components/schemas/EventGatewayBaseVault'
+        - type: object
+          description: A vault that contains secrets.
+          required:
+            - id
+            - created_at
+            - updated_at
+          properties:
+            id:
+              description: The unique identifier of the vault.
+              type: string
+              format: uuid
+            created_at:
+              $ref: '#/components/schemas/CreatedAt'
+            updated_at:
+              $ref: '#/components/schemas/UpdatedAt'
+    EventGatewayBaseVault:
+      description: Base properties of a vault.
+      type: object
+      properties:
+        name:
+          description: The name of the vault.
+          type: string
+          maxLength: 255
+          minLength: 1
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the vault.
+          type: string
+          default: null
+          maxLength: 512
+          nullable: true
+          x-speakeasy-param-computed: false
+        type:
+          description: The type of the vault.
+          type: string
+        config:
+          description: The configuration of the vault.
+          type: object
+        labels:
+          $ref: '#/components/schemas/Labels'
+      required:
+        - name
+        - type
+        - config
+    EventGatewayVaultEnv:
+      allOf:
+        - $ref: '#/components/schemas/EventGatewayBaseVault'
+        - type: object
+          description: An environment vault.
+          properties:
+            type:
+              type: string
+              enum:
+                - env
+            config:
+              description: The configuration of the environment vault.
+              type: object
+              default: null
+              nullable: true
+              properties:
+                prefix:
+                  description: The optional prefix for environment variables.
+                  type: string
+                  example: KONG_
+                  default: null
+                  nullable: true
+                  x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: false
+    EventGatewayModifyVault:
+      description: The typed schema of the vault to modify it.
+      discriminator:
+        propertyName: type
+        mapping:
+          env: '#/components/schemas/EventGatewayVaultEnv'
+      oneOf:
+        - $ref: '#/components/schemas/EventGatewayVaultEnv'
+    BaseSchemaRegistry:
+      description: Base properties of a schema registry.
+      type: object
+      properties:
+        name:
+          description: The unique name of the schema registry.
+          type: string
+          maxLength: 255
+          minLength: 1
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the virtual cluster.
+          type: string
+          default: null
+          maxLength: 512
+          nullable: true
+          x-speakeasy-param-computed: false
+        type:
+          description: The type of the schema registry.
+          type: string
+        config:
+          description: The configuration of the schema registry.
+          type: object
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
+      required:
+        - name
+        - type
+    SchemaRegistry:
+      allOf:
+        - $ref: '#/components/schemas/BaseSchemaRegistry'
+        - type: object
+          description: A schema registry that contains schemas.
+          required:
+            - id
+            - created_at
+            - updated_at
+          properties:
+            id:
+              description: The unique identifier of the schema registry.
+              type: string
+              format: uuid
+            created_at:
+              $ref: '#/components/schemas/CreatedAt'
+            updated_at:
+              $ref: '#/components/schemas/UpdatedAt'
+    SchemaRegistryConfluent:
+      allOf:
+        - $ref: '#/components/schemas/BaseSchemaRegistry'
+        - type: object
+          description: A Confluent schema registry.
+          required:
+            - config
+            - type
+          properties:
+            type:
+              type: string
+              enum:
+                - confluent
+            config:
+              description: |
+                The configuration of [Confluent Schema Registry](https://github.com/confluentinc/schema-registry)
+              type: object
+              properties:
+                schema_type:
+                  description: The format of the message.
+                  type: string
+                  enum:
+                    - avro
+                    - json
+                endpoint:
+                  description: The endpoint of the Confluent schema registry.
+                  type: string
+                  format: uri
+                  minLength: 1
+                timeout_seconds:
+                  description: |
+                    Total time in seconds from establishing connection to receive a response from schema registry.
+                  type: integer
+                  default: 10
+                  minimum: 1
+                authentication:
+                  $ref: '#/components/schemas/SchemaRegistryAuthenticationScheme'
+              required:
+                - schema_type
+                - endpoint
+    SchemaRegistryAuthenticationScheme:
+      description: The authentication configuration for the schema registry.
+      discriminator:
+        propertyName: type
+        mapping:
+          basic: '#/components/schemas/SchemaRegistryAuthenticationBasic'
+      oneOf:
+        - $ref: '#/components/schemas/SchemaRegistryAuthenticationBasic'
+    SchemaRegistryAuthenticationBasic:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - basic
+        username:
+          $ref: '#/components/schemas/GatewaySecretReferenceOrLiteral'
+        password:
+          $ref: '#/components/schemas/GatewaySecretReference'
+      required:
+        - type
+        - username
+        - password
+    SchemaRegistryReference:
+      description: A reference to a schema Registry.
+      oneOf:
+        - $ref: '#/components/schemas/SchemaRegistryReferenceById'
+        - $ref: '#/components/schemas/SchemaRegistryReferenceByName'
+    SchemaRegistryReferenceById:
+      type: object
+      properties:
+        id:
+          description: The unique identifier of the schema registry.
+          type: string
+          format: uuid
+      required:
+        - id
+    SchemaRegistryReferenceByName:
+      description: Reference a schema registry by its unique name.
+      type: object
+      properties:
+        name:
+          description: The unique name of the schema registry.
+          type: string
+          maxLength: 255
+          minLength: 1
+      required:
+        - name
+    SchemaValidationType:
+      description: |
+        How to validate the schema and parse the record.
+        * confluent_schema_registry - validates against confluent schema registry.
+        * json - simple JSON parsing without the schema.
+      type: string
+      enum:
+        - confluent_schema_registry
+        - json
+    ModifySchemaRegistry:
+      description: The typed schema of the schema registry to modify it.
+      discriminator:
+        propertyName: type
+        mapping:
+          confluent: '#/components/schemas/SchemaRegistryConfluent'
+      oneOf:
+        - $ref: '#/components/schemas/SchemaRegistryConfluent'
+    BaseEventGatewayPolicy:
+      description: The base schema for policies.
+      type: object
+      properties:
+        type:
+          description: The type name of the policy.
+          type: string
+          maxLength: 255
+          minLength: 1
+        name:
+          description: A unique user-defined name of the policy.
+          type: string
+          default: null
+          maxLength: 255
+          minLength: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the policy.
+          type: string
+          default: null
+          maxLength: 512
+          nullable: true
+          x-speakeasy-param-computed: false
+        enabled:
+          description: Whether the policy is enabled.
+          type: boolean
+          default: true
+        condition:
+          description: A string containing the boolean expression that determines whether the policy is applied.
+          type: string
+          example: context.topic.name.endsWith('my_suffix')
+          maxLength: 1000
+          minLength: 1
+          nullable: false
+          x-expression:
+            type: boolean
+            fields:
+              - context.topic.name
+              - context.auth.principal.name
+              - context.auth.type
+        config:
+          description: The configuration of the policy.
+          type: object
+        labels:
+          $ref: '#/components/schemas/Labels'
+      required:
+        - type
+        - config
+    EventGatewayPolicy:
+      allOf:
+        - $ref: '#/components/schemas/BaseEventGatewayPolicy'
+        - type: object
+          description: A policy associated with an Event Gateway.
+          required:
+            - id
+            - created_at
+            - updated_at
+          properties:
+            id:
+              description: The unique identifier of the policy.
+              type: string
+              format: uuid
+            created_at:
+              $ref: '#/components/schemas/CreatedAt'
+            parent_policy_id:
+              description: 'The unique identifier of the parent policy, if any.'
+              type: string
+              format: uuid
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            updated_at:
+              $ref: '#/components/schemas/UpdatedAt'
+    EventGatewayTLSListenerPolicy:
+      allOf:
+        - $ref: '#/components/schemas/BaseEventGatewayPolicy'
+        - type: object
+          description: |
+            The TLS Server policy defines the certificates and keys used by the gateway server when the client connects
+            to the gateway over TLS.
+
+            While it is possible to have multiple TLS policies on a listener, only one can be active at a time.
+          properties:
+            type:
+              type: string
+              enum:
+                - tls_server
+            config:
+              type: object
+              default: null
+              nullable: true
+              properties:
+                certificates:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/TLSCertificate'
+                  maxItems: 1
+                  minItems: 1
+                versions:
+                  $ref: '#/components/schemas/TLSVersionRange'
+                allow_plaintext:
+                  description: |
+                    If false, only TLS connections are allowed. If true, both TLS and plaintext connections are allowed.
+                  type: boolean
+                  default: false
+              required:
+                - certificates
+              x-speakeasy-param-computed: false
+    TLSCertificate:
+      type: object
+      properties:
+        certificate:
+          $ref: '#/components/schemas/GatewaySecretReferenceOrLiteral'
+        key:
+          $ref: '#/components/schemas/GatewaySecretReference'
+      required:
+        - certificate
+        - key
+    EventGatewayListenerPolicyModify:
+      description: The typed schema of the policy to modify it.
+      discriminator:
+        propertyName: type
+        mapping:
+          tls_server: '#/components/schemas/EventGatewayTLSListenerPolicy'
+          forward_to_virtual_cluster: '#/components/schemas/ForwardToVirtualClusterPolicy'
+      oneOf:
+        - $ref: '#/components/schemas/EventGatewayTLSListenerPolicy'
+        - $ref: '#/components/schemas/ForwardToVirtualClusterPolicy'
+    TLSVersionRange:
+      description: A range of TLS versions.
+      type: object
+      properties:
+        min:
+          description: Minimum TLS version to use.
+          type: string
+          default: TLSv1.2
+          enum:
+            - TLSv1.2
+            - TLSv1.3
+        max:
+          description: Maximum TLS version to use.
+          type: string
+          default: TLSv1.3
+          enum:
+            - TLSv1.2
+            - TLSv1.3
+      default:
+        min: TLSv1.2
+        max: TLSv1.3
+    ForwardToVirtualClusterPolicy:
+      allOf:
+        - $ref: '#/components/schemas/BaseEventGatewayPolicy'
+        - type: object
+          description: |
+            Forwards requests to virtual clusters configured with port routing or SNI routing.
+            While there can be multiple of these policies configured on a listener, there can only be one instance of
+            `port_mapping`.
+            When multiple policies are configured, the first one that matches the connection is used.
+            If no policy matches, the connection is rejected.
+
+            When using `port_mapping`, there must be a mapping port for each broker on the backend cluster see
+            `ForwardToClusterBySNIConfig` for more details.
+          properties:
+            type:
+              type: string
+              enum:
+                - forward_to_virtual_cluster
+            config:
+              discriminator:
+                propertyName: type
+                mapping:
+                  port_mapping: '#/components/schemas/ForwardToClusterByPortMappingConfig'
+                  sni: '#/components/schemas/ForwardToClusterBySNIConfig'
+              oneOf:
+                - $ref: '#/components/schemas/ForwardToClusterBySNIConfig'
+                - $ref: '#/components/schemas/ForwardToClusterByPortMappingConfig'
+    ForwardToClusterByPortMappingConfig:
+      description: |
+        The configuration to forward request to `destination` and rewrite ports accordingly.
+        All broker ids must fit in the range of ports defined in the listener, if it doesn't the metadata request will
+        return an error.
+
+        For example with ports: [9000, "9092-9094", "9100"] and `bootstrap_port: at_start` and brokers with ids
+        1, 2, 3, 4 we will map: bootstrap to 9000 broker 1 to 9001, broker 2 to 9002, broker 3 to 9003, and broker 4
+        to 9004 and fail the metadata request as these ports are not open.
+
+        However, with the same configuration but with brokers with ids: 92,93,94,100 we will map: bootstrap to 9000,
+        broker 92 to 9092, broker 93 to 9093, broker 94 to 9094, and broker 100 to 9100.
+
+        In most cases users should use a single range `["9090-9094"] ` and `bootstrap_port: at_start` and connect with
+        `<host>:9090` as bootstrap server. Being able to use multiple ranges is only useful when when dealing with
+        gaps in broker ids.
+
+        It is strongly discouraged to use port mapping in production.
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - port_mapping
+        destination:
+          $ref: '#/components/schemas/VirtualClusterReference'
+        advertised_host:
+          description: 'Virtual brokers are advertised to clients using this host. Any kind of host supported by kafka can be used. If not defined, it''s listen_address. If listen_address is `0.0.0.0` it''s the destination IP of the TCP connection.'
+          type: string
+        bootstrap_port:
+          description: |
+            If set to `at_start`, the first port will be used as a bootstrap port.
+            It provides a stable endpoint to use as the bootstrap server for clients, regardless of broker
+            IDs in the cluster.
+
+            Additionally, it offsets all ports by one, so for example, if there are 3 brokers (id=1, id=2, id=3)
+            then we will use 4 ports: 9092 (bootstrap), 9093 (id=1), 9094 (id=2), 9095 (id=3)
+            With `none` we will use 3 ports: 9092 (id=1), 9093 (id=2), 9094 (id=3).
+          type: string
+          default: at_start
+          enum:
+            - none
+            - at_start
+        min_broker_id:
+          description: The lowest broker node ID in the cluster.
+          type: integer
+          default: 1
+      additionalProperties: false
+      required:
+        - type
+        - destination
+        - advertised_host
+    ForwardToClusterBySNIConfig:
+      description: |
+        The configuration to forward requests to virtual clusters configured with SNI routing.
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - sni
+        sni_suffix:
+          description: |
+            Optional suffix for TLS SNI validation.
+
+            This suffix is concatenated with the virtual cluster "dns.label" label to form the base name for the SNI.
+            If not provided, the virtual cluster "dns.label" label alone is used as the base name for the SNI.
+            For example with sni_suffix: `.example.com` and virtual cluster "dns.label" label: `my-cluster`,
+            the SNI suffix for it is `my-cluster.example.com`.
+            If "dns.label" label is absent on the virtual cluster, the traffic won't be routed there.
+
+            The bootstrap host is `bootstrap.my-cluster.example.com` and then each broker is addressable at `broker-0.my-cluster.example.com`, `broker-1.my-cluster.example.com`, etc.
+            This means that your deployment needs to have a wildcard certificate for the domain and a DNS resolver that routes `*.my-cluster.example.com` to the proxy.
+          type: string
+          example: .example.com
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        advertised_port:
+          description: |
+            Virtual brokers are advertised to clients with this port instead of listen_port. Useful when proxy is
+            behind loadbalancer listening on different port.
+          type: integer
+          default: null
+          maximum: 65535
+          minimum: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      required:
+        - type
+    EventGatewayConsumePolicyModify:
+      description: The typed schema of the consume policy to modify it.
+      discriminator:
+        propertyName: type
+        mapping:
+          modify_headers: '#/components/schemas/EventGatewayModifyHeadersPolicy'
+          schema_validation: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicy'
+          decrypt: '#/components/schemas/EventGatewayDecryptPolicy'
+      oneOf:
+        - $ref: '#/components/schemas/EventGatewayModifyHeadersPolicy'
+        - $ref: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicy'
+        - $ref: '#/components/schemas/EventGatewayDecryptPolicy'
+    EventGatewayProducePolicyModify:
+      description: The typed schema of the produce policy to modify it.
+      discriminator:
+        propertyName: type
+        mapping:
+          modify_headers: '#/components/schemas/EventGatewayModifyHeadersPolicy'
+          schema_validation: '#/components/schemas/EventGatewayProduceSchemaValidationPolicy'
+          encrypt: '#/components/schemas/EventGatewayEncryptPolicy'
+      oneOf:
+        - $ref: '#/components/schemas/EventGatewayModifyHeadersPolicy'
+        - $ref: '#/components/schemas/EventGatewayProduceSchemaValidationPolicy'
+        - $ref: '#/components/schemas/EventGatewayEncryptPolicy'
+    EventGatewayClusterPolicyModify:
+      description: The typed schema of the cluster policy to modify it.
+      discriminator:
+        propertyName: type
+        mapping:
+          id_prefix: '#/components/schemas/EventGatewayIDPrefixPolicy'
+          topic_rewrite: '#/components/schemas/EventGatewayTopicRewritePolicy'
+      oneOf:
+        - $ref: '#/components/schemas/EventGatewayIDPrefixPolicy'
+        - $ref: '#/components/schemas/EventGatewayTopicRewritePolicy'
+    EventGatewayEncryptPolicy:
+      allOf:
+        - $ref: '#/components/schemas/BaseEventGatewayPolicy'
+        - type: object
+          description: Encrypts portions of Kafka records using AES_128_GCM. Keys are therefore 128 bits long.
+          properties:
+            type:
+              type: string
+              enum:
+                - encrypt
+            config:
+              description: The configuration of the encrypt policy.
+              type: object
+              default: null
+              nullable: true
+              properties:
+                failure_mode:
+                  $ref: '#/components/schemas/EncryptionFailureMode'
+                key_sources:
+                  description: |
+                    Describes how to find a symmetric key for encryption.
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/EventGatewayKeySource'
+                  minItems: 1
+                encrypt:
+                  description: Describes what parts of a record to encrypt.
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/EncryptionRecordSelector'
+                  minItems: 1
+              required:
+                - failure_mode
+                - key_sources
+                - encrypt
+              x-speakeasy-param-computed: false
+    EventGatewayDecryptPolicy:
+      allOf:
+        - $ref: '#/components/schemas/BaseEventGatewayPolicy'
+        - type: object
+          description: Decrypts portions of Kafka records using AES_128_GCM. Keys are therefore 128 bits long.
+          properties:
+            type:
+              type: string
+              enum:
+                - decrypt
+            config:
+              description: The configuration of the decrypt policy.
+              type: object
+              default: null
+              nullable: true
+              properties:
+                failure_mode:
+                  $ref: '#/components/schemas/EncryptionFailureMode'
+                key_sources:
+                  description: |
+                    Describes how to find a symmetric key for decryption.
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/EventGatewayKeySource'
+                  minItems: 1
+                decrypt:
+                  description: Describes what parts of a record to decrypt.
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/DecryptionRecordSelector'
+                  minItems: 1
+              required:
+                - failure_mode
+                - key_sources
+                - decrypt
+              x-speakeasy-param-computed: false
+    EventGatewayModifyHeadersPolicy:
+      allOf:
+        - $ref: '#/components/schemas/BaseEventGatewayPolicy'
+        - type: object
+          description: A policy that modifies headers for requests.
+          required:
+            - type
+            - config
+          properties:
+            type:
+              type: string
+              enum:
+                - modify_headers
+            config:
+              description: The configuration of the modify headers policy.
+              type: object
+              properties:
+                actions:
+                  description: Actions are run in sequential order and act on individual headers.
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/EventGatewayModifyHeaderAction'
+                  default: null
+                  minItems: 1
+                  nullable: true
+                  x-speakeasy-param-computed: false
+    EventGatewayModifyHeaderAction:
+      description: An action that modifies a header.
+      discriminator:
+        propertyName: op
+        mapping:
+          remove: '#/components/schemas/EventGatewayModifyHeaderRemoveAction'
+          set: '#/components/schemas/EventGatewayModifyHeaderSetAction'
+      oneOf:
+        - $ref: '#/components/schemas/EventGatewayModifyHeaderRemoveAction'
+        - $ref: '#/components/schemas/EventGatewayModifyHeaderSetAction'
+    EventGatewayModifyHeaderRemoveAction:
+      description: An action that removes a header by key.
+      type: object
+      properties:
+        op:
+          type: string
+          enum:
+            - remove
+        key:
+          description: The key of the header to remove.
+          type: string
+      required:
+        - op
+        - key
+    EventGatewayModifyHeaderSetAction:
+      description: An action that sets a header key and value.
+      type: object
+      properties:
+        op:
+          type: string
+          enum:
+            - set
+        key:
+          description: The key of the header to set.
+          type: string
+        value:
+          description: The value of the header to set.
+          type: string
+      required:
+        - op
+        - key
+        - value
+    EventGatewayConsumeSchemaValidationPolicy:
+      allOf:
+        - $ref: '#/components/schemas/BaseEventGatewayPolicy'
+        - type: object
+          description: A policy that validates consume messages against a schema registry.
+          properties:
+            type:
+              type: string
+              enum:
+                - schema_validation
+            config:
+              description: The configuration of the schema validation policy.
+              type: object
+              default: null
+              nullable: true
+              properties:
+                type:
+                  $ref: '#/components/schemas/SchemaValidationType'
+                schema_registry:
+                  $ref: '#/components/schemas/SchemaRegistryReference'
+                key_validation_action:
+                  $ref: '#/components/schemas/ConsumeKeyValidationAction'
+                value_validation_action:
+                  $ref: '#/components/schemas/ConsumeValueValidationAction'
+              required:
+                - type
+                - key_validation_action
+                - value_validation_action
+              x-speakeasy-param-computed: false
+    EventGatewayProduceSchemaValidationPolicy:
+      allOf:
+        - $ref: '#/components/schemas/BaseEventGatewayPolicy'
+        - type: object
+          description: A policy that validates produce messages against a schema registry.
+          required:
+            - type
+            - config
+          properties:
+            type:
+              type: string
+              enum:
+                - schema_validation
+            config:
+              $ref: '#/components/schemas/EventGatewayProduceSchemaValidationPolicyConfig'
+    EventGatewayProduceSchemaValidationPolicyConfig:
+      description: The configuration of the produce schema validation policy.
+      discriminator:
+        propertyName: type
+        mapping:
+          confluent_schema_registry: '#/components/schemas/EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig'
+          json: '#/components/schemas/EventGatewayProduceSchemaValidationPolicyJsonConfig'
+      oneOf:
+        - $ref: '#/components/schemas/EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig'
+        - $ref: '#/components/schemas/EventGatewayProduceSchemaValidationPolicyJsonConfig'
+    EventGatewayProduceSchemaValidationPolicyJsonConfig:
+      allOf:
+        - $ref: '#/components/schemas/BaseEventGatewayProduceSchemaValidationPolicyConfig'
+        - type: object
+          description: The configuration of the produce schema validation policy when using JSON parsing without schema.
+          required:
+            - type
+          properties:
+            type:
+              type: string
+              enum:
+                - json
+    EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig:
+      allOf:
+        - $ref: '#/components/schemas/BaseEventGatewayProduceSchemaValidationPolicyConfig'
+        - type: object
+          description: The configuration of the produce schema validation policy when using a schema registry.
+          required:
+            - type
+          properties:
+            type:
+              type: string
+              enum:
+                - confluent_schema_registry
+            schema_registry:
+              $ref: '#/components/schemas/SchemaRegistryReference'
+    BaseEventGatewayProduceSchemaValidationPolicyConfig:
+      description: The base configuration of the produce schema validation policy.
+      type: object
+      properties:
+        schema_registry:
+          $ref: '#/components/schemas/SchemaRegistryReference'
+        key_validation_action:
+          $ref: '#/components/schemas/ProduceKeyValidationAction'
+        value_validation_action:
+          $ref: '#/components/schemas/ProduceValueValidationAction'
+      required:
+        - key_validation_action
+        - value_validation_action
+    EventGatewayIDPrefixPolicy:
+      allOf:
+        - $ref: '#/components/schemas/BaseEventGatewayPolicy'
+        - type: object
+          description: A policy that rewriting transaction and consumer group ids by adding the virtual cluster prefix.
+          properties:
+            type:
+              type: string
+              enum:
+                - id_prefix
+            config:
+              description: An empty configuration object.
+              type: object
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+    EventGatewayTopicRewritePolicy:
+      allOf:
+        - $ref: '#/components/schemas/BaseEventGatewayPolicy'
+        - type: object
+          description: Defines a strategy for rewriting virtual topic names.
+          properties:
+            type:
+              type: string
+              enum:
+                - topic_rewrite
+            config:
+              description: The configuration of the topic rewrite policy.
+              type: object
+              default: null
+              nullable: true
+              properties:
+                type:
+                  description: Type of renaming rule.
+                  type: string
+                  enum:
+                    - prefix
+                    - expression
+                prefix:
+                  type: object
+                  default: null
+                  nullable: true
+                  properties:
+                    value:
+                      description: |
+                        A prefix that is added to a backend topic name.
+                        If a response contains a topic without a prefix, it's omitted from the response.
+                      type: string
+                      minLength: 1
+                  required:
+                    - value
+                  x-speakeasy-param-computed: false
+                expression:
+                  type: object
+                  default: null
+                  additionalProperties: false
+                  nullable: true
+                  properties:
+                    virtual_to_backend:
+                      description: |
+                        The expression that evaluates to a string - a backend topic name.
+                        If expression evaluates to an empty string, the request fails.
+                      type: string
+                      example: context.topic.name + '-suffix'
+                      minLength: 1
+                      x-expression:
+                        type: string
+                        fields:
+                          - context.topic.name
+                          - context.auth.principal.name
+                          - context.auth.type
+                    backend_to_virtual:
+                      description: |
+                        The expression that evaluates to a string - a virtual topic name.
+                        If expression evaluates to an empty string, the request fails.
+                      type: string
+                      example: 'context.topic.name.substring(0, context.topic.name.length - 7)'
+                      minLength: 1
+                      x-expression:
+                        type: string
+                        fields:
+                          - context.topic.name
+                          - context.auth.principal.name
+                          - context.auth.type
+                  required:
+                    - virtual_to_backend
+                    - backend_to_virtual
+                  x-speakeasy-param-computed: false
+              required:
+                - type
+              x-speakeasy-param-computed: false
+    EventGatewayKeySource:
+      description: |
+        A key source that describes how to find a symmetric key for encryption or decryption.
+        It can be an AWS KMS key source that uses a KMS to find a symmetric key,
+        or a static key source that uses a static symmetric key provided as secrets.
+      discriminator:
+        propertyName: type
+        mapping:
+          aws: '#/components/schemas/EventGatewayAWSKeySource'
+          static: '#/components/schemas/EventGatewayStaticKeySource'
+      oneOf:
+        - $ref: '#/components/schemas/EventGatewayAWSKeySource'
+        - $ref: '#/components/schemas/EventGatewayStaticKeySource'
+    EventGatewayAWSKeySource:
+      description: |
+        A key source that uses an AWS KMS to find a symmetric key. Load KMS credentials from the environment.
+
+        See [aws docs](https://docs.aws.amazon.com/sdk-for-rust/latest/dg/credproviders.html#credproviders-default-credentials-provider-chain)
+        for more information about how credential retrieval.
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - aws
+      additionalProperties: false
+      required:
+        - type
+    EventGatewayStaticKeySource:
+      description: |
+        A key source that uses a static symmetric key. The key is provided as a base64-encoded string.
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - static
+        keys:
+          description: 'A list of static, user-provided keys. Each one must be 128 bits long.'
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            required:
+              - id
+              - key
+            properties:
+              id:
+                description: The unique identifier of the key.
+                type: string
+              key:
+                $ref: '#/components/schemas/GatewaySecretReference'
+          minItems: 1
+      additionalProperties: false
+      required:
+        - type
+        - keys
+    EncryptionFailureMode:
+      description: |
+        Describes how to handle failing encryption or decryption.
+        Use `error` if the record should be rejected if encryption or decryption fails.
+        Use `passthrough` to ignore encryption or decryption failure and continue proxying the record.
+      type: string
+      enum:
+        - error
+        - passthrough
+    EncryptionRecordSelector:
+      description: Defines how to select part of a record for encryption as well as what key to encrypt it with.
+      type: object
+      properties:
+        part_of_record:
+          description: |
+            * key - encrypt the record key
+            * value - encrypt the record value
+          type: string
+          enum:
+            - key
+            - value
+        key_id:
+          $ref: '#/components/schemas/EncryptionKeyId'
+      required:
+        - part_of_record
+        - key_id
+    DecryptionRecordSelector:
+      description: Defines how to select part of a record for decryption.
+      type: object
+      properties:
+        part_of_record:
+          description: |
+            * key - decrypt the record key
+            * value - decrypt the record value
+          type: string
+          enum:
+            - key
+            - value
+      required:
+        - part_of_record
+    EncryptionKeyId:
+      description: |
+        The id of the key to use for encryption. It must match one of the keys defined in the policy's key_sources.
+
+        An ID is a URI where the scheme refers to the type of key source and the rest is source-specific:
+        - static: the id defined in the list of static keys
+        - aws: a KMS key ARN
+      type: string
+      format: uri
+      example: 'static://static-key-named-in-source'
+    ConsumeKeyValidationAction:
+      description: |
+        Defines a behavior when record key is not valid.
+        * mark - marks a record with kong/server header and client ID value
+          to help to identify the clients violating schema.
+        * skip - skips delivering a record.
+      type: string
+      enum:
+        - mark
+        - skip
+    ConsumeValueValidationAction:
+      description: |
+        Defines a behavior when record value is not valid.
+        * mark - marks a record with kong/server header and client ID value
+          to help to identify the clients violating schema.
+        * skip - skips delivering a record.
+      type: string
+      enum:
+        - mark
+        - skip
+    ProduceKeyValidationAction:
+      description: |
+        Defines a behavior when record key is not valid.
+        * reject - rejects a batch for topic partition. Only available for produce.
+        * mark - marks a record with kong/server header and client ID value
+
+          to help to identify the clients violating schema.
+      type: string
+      enum:
+        - reject
+        - mark
+    ProduceValueValidationAction:
+      description: |
+        Defines a behavior when record value is not valid.
+        * reject - rejects a batch for topic partition. Only available for produce.
+        * mark - marks a record with kong/server header and client ID value
+
+          to help to identify the clients violating schema.
+      type: string
+      enum:
+        - reject
+        - mark
+    EventGatewayDataPlaneCertificate:
+      description: A dataplane certficate.
+      type: object
+      properties:
+        id:
+          description: The unique identifier of the certificate.
+          type: string
+          format: uuid
+        certificate:
+          description: JSON escaped string of the certificate.
+          type: string
+        name:
+          description: The name to identify of the certificate.
+          type: string
+          default: null
+          maxLength: 255
+          minLength: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A description of the certificate.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        metadata:
+          $ref: '#/components/schemas/CertificateMetadata'
+      required:
+        - id
+        - certificate
+        - created_at
+        - updated_at
+    CertificateMetadata:
+      description: Metadata extracted from a certificate.
+      type: object
+      properties:
+        issuer:
+          description: The issuer of the certificate.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        subject:
+          description: The subject of the certificate.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        key_usages:
+          description: The key usages of the certificate.
+          type: array
+          items:
+            type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        expiry:
+          description: The expiry date of the certificate as a unix timestamp.
+          type: integer
+          format: int64
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        san_names:
+          description: The Subject Alternative Names (SAN) of the certificate.
+          type: array
+          items:
+            type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        dns_names:
+          description: The DNS names in the certificate SAN.
+          type: array
+          items:
+            type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        email_addresses:
+          description: The email addresses in the certificate SAN.
+          type: array
+          items:
+            type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        ip_addresses:
+          description: The IP addresses in the certificate SAN.
+          type: array
+          items:
+            type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        uris:
+          description: The URIs in the certificate SAN.
+          type: array
+          items:
+            type: string
+            format: uri
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        sha256_fingerprint:
+          description: The SHA-256 fingerprint of the certificate.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+    GatewayName:
+      description: The name of the Gateway.
+      type: string
+      maxLength: 255
+      minLength: 1
+      x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+    GatewayDescription:
+      description: A human-readable description of the Gateway.
+      type: string
+      maxLength: 512
+      x-speakeasy-terraform-ignore: true
+    Gateway:
+      x-speakeasy-entity: EventGateway
+      description: The gateway object contains information about a Konnect gateway.
+      type: object
+      properties:
+        id:
+          description: The gateway ID.
+          type: string
+          format: uuid
+          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        name:
+          $ref: '#/components/schemas/GatewayName'
+        description:
+          $ref: '#/components/schemas/GatewayDescription'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          description: An ISO-8604 timestamp representation of gateway creation date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+          x-speakeasy-terraform-ignore: true
+        updated_at:
+          description: An ISO-8604 timestamp representation of gateway update date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+          x-speakeasy-terraform-ignore: true
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - created_at
+        - updated_at
+    CreateGatewayRequest:
+      x-speakeasy-entity: EventGateway
+      description: The request schema for the create gateway request.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/GatewayName'
+        description:
+          $ref: '#/components/schemas/GatewayDescription'
+        labels:
+          $ref: '#/components/schemas/Labels'
+      additionalProperties: false
+      required:
+        - name
+      title: CreateGatewayRequest
+    UpdateGatewayRequest:
+      description: The request schema for the update gateway request.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/GatewayName'
+        description:
+          $ref: '#/components/schemas/GatewayDescription'
+        labels:
+          $ref: '#/components/schemas/Labels'
+      additionalProperties: false
+      title: UpdateGatewayRequest
+    GatewaySecretReferenceOrLiteral:
+      description: A template string expression containing a reference to a secret or a literal value
+      type: string
+      x-expression:
+        type: secret-template-or-literal
+        fields:
+          - env
+          - vaults
+    GatewaySecretReference:
+      description: A template string expression containing a reference to a secret
+      type: string
+      example: '${env[''MY_SECRET'']}'
+      x-expression:
+        type: secret-template
+        fields:
+          - env
+          - vaults
     CreatePortalCustomDomainSSL:
       type: object
       properties:
@@ -21706,6 +24741,322 @@ components:
               - client_secret
               - grant_types
               - response_types
+    CreateEventGatewayListenerRequest:
+      description: The request schema for creating a listener.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                description: The unique name of the listener.
+                type: string
+                maxLength: 255
+                minLength: 1
+              description:
+                description: A human-readable description of the virtual cluster.
+                type: string
+                default: null
+                maxLength: 512
+                nullable: true
+                x-speakeasy-param-computed: false
+              addresses:
+                $ref: '#/components/schemas/EventGatewayListenerAddresses'
+              ports:
+                $ref: '#/components/schemas/EventGatewayListenerPorts'
+              labels:
+                $ref: '#/components/schemas/Labels'
+            additionalProperties: false
+            required:
+              - name
+              - addresses
+              - ports
+    UpdateEventGatewayListenerRequest:
+      description: The request schema for updating a listener.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                description: The unique name of the listener.
+                type: string
+                maxLength: 255
+                minLength: 1
+              description:
+                description: A human-readable description of the virtual cluster.
+                type: string
+                default: null
+                maxLength: 512
+                nullable: true
+                x-speakeasy-param-computed: false
+              addresses:
+                $ref: '#/components/schemas/EventGatewayListenerAddresses'
+              ports:
+                $ref: '#/components/schemas/EventGatewayListenerPorts'
+              labels:
+                $ref: '#/components/schemas/Labels'
+            additionalProperties: false
+            required:
+              - name
+              - addresses
+              - ports
+    CreateVirtualClusterRequest:
+      description: The request schema for creating a virtual cluster.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/VirtualClusterName'
+              description:
+                description: A human-readable description of the virtual cluster.
+                type: string
+                default: null
+                maxLength: 512
+                nullable: true
+                x-speakeasy-param-computed: false
+              destination:
+                $ref: '#/components/schemas/BackendClusterReferenceModify'
+              authentication:
+                $ref: '#/components/schemas/VirtualClusterAuthenticationSchemes'
+              dns_label:
+                $ref: '#/components/schemas/VirtualClusterDNSLabel'
+              labels:
+                $ref: '#/components/schemas/Labels'
+            additionalProperties: false
+            required:
+              - name
+              - destination
+              - authentication
+              - dns_label
+    UpdateVirtualClusterRequest:
+      description: The request schema for updating a virtual cluster.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/VirtualClusterName'
+              description:
+                description: A human-readable description of the virtual cluster.
+                type: string
+                default: null
+                maxLength: 512
+                nullable: true
+                x-speakeasy-param-computed: false
+              destination:
+                $ref: '#/components/schemas/BackendClusterReferenceModify'
+              authentication:
+                $ref: '#/components/schemas/VirtualClusterAuthenticationSchemes'
+              dns_label:
+                $ref: '#/components/schemas/VirtualClusterDNSLabel'
+              labels:
+                $ref: '#/components/schemas/Labels'
+            additionalProperties: false
+            required:
+              - name
+              - destination
+              - authentication
+              - dns_label
+    CreateBackendClusterRequest:
+      description: The request schema for creating a backend cluster.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/BackendClusterName'
+              description:
+                description: A human-readable description of the virtual cluster.
+                type: string
+                default: null
+                maxLength: 512
+                nullable: true
+                x-speakeasy-param-computed: false
+              authentication:
+                $ref: '#/components/schemas/BackendClusterAuthenticationScheme'
+              insecure_allow_anonymous_virtual_cluster_auth:
+                description: |
+                  If true, virtual clusters can have allow anonymous authentication and use this backend cluster.
+                  This setting is not recommended for production use as it may create privilege escalation vulnerabilities.
+                type: boolean
+                default: false
+              bootstrap_servers:
+                $ref: '#/components/schemas/BootstrapServers'
+              tls:
+                $ref: '#/components/schemas/BackendClusterTLS'
+              metadata_update_interval_seconds:
+                $ref: '#/components/schemas/BackendMetadataUpdateIntervalSeconds'
+              labels:
+                $ref: '#/components/schemas/Labels'
+            additionalProperties: false
+            required:
+              - name
+              - authentication
+              - bootstrap_servers
+    UpdateBackendClusterRequest:
+      description: The request schema for updating a backend cluster.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/BackendClusterName'
+              description:
+                description: A human-readable description of the virtual cluster.
+                type: string
+                default: null
+                maxLength: 512
+                nullable: true
+                x-speakeasy-param-computed: false
+              authentication:
+                $ref: '#/components/schemas/BackendClusterAuthenticationScheme'
+              insecure_allow_anonymous_virtual_cluster_auth:
+                description: |
+                  If true, virtual clusters can have allow anonymous authentication and use this backend cluster.
+                  This setting is not recommended for production use as it may create privilege escalation vulnerabilities.
+                type: boolean
+                default: false
+              bootstrap_servers:
+                $ref: '#/components/schemas/BootstrapServers'
+              tls:
+                $ref: '#/components/schemas/BackendClusterTLS'
+              metadata_update_interval_seconds:
+                $ref: '#/components/schemas/BackendMetadataUpdateIntervalSeconds'
+              labels:
+                $ref: '#/components/schemas/Labels'
+            additionalProperties: false
+            required:
+              - name
+              - authentication
+              - bootstrap_servers
+    CreateEventGatewayVaultRequest:
+      description: The request schema for creating a vault.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventGatewayModifyVault'
+    UpdateEventGatewayVaultRequest:
+      description: The request schema for updating a vault.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventGatewayModifyVault'
+    CreateSchemaRegistryRequest:
+      description: The request schema for creating a schema registry.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ModifySchemaRegistry'
+    UpdateSchemaRegistryRequest:
+      description: The request schema for updating a schema registry.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ModifySchemaRegistry'
+    CreateEventGatewayListenerPolicyRequest:
+      description: The request schema for creating a policy.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventGatewayListenerPolicyModify'
+    UpdateEventGatewayListenerPolicyRequest:
+      description: The request schema for updating a policy.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventGatewayListenerPolicyModify'
+    CreateEventGatewayConsumePolicyRequest:
+      description: The request schema for creating a consume policy.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventGatewayConsumePolicyModify'
+    UpdateEventGatewayConsumePolicyRequest:
+      description: The request schema for updating a consume policy.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventGatewayConsumePolicyModify'
+    CreateEventGatewayProducePolicyRequest:
+      description: The request schema for creating a produce policy.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventGatewayProducePolicyModify'
+    UpdateEventGatewayProducePolicyRequest:
+      description: The request schema for updating a produce policy.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventGatewayProducePolicyModify'
+    CreateEventGatewayClusterPolicyRequest:
+      description: The request schema for creating a cluster-level policy.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventGatewayClusterPolicyModify'
+    UpdateEventGatewayClusterPolicyRequest:
+      description: The request schema for updating a cluster-level policy.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventGatewayClusterPolicyModify'
+    CreateEventGatewayDataPlaneCertificateRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              certificate:
+                description: JSON escaped string of the certificate.
+                type: string
+              name:
+                description: The name to identify of the certificate.
+                type: string
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+              description:
+                description: A description of the certificate.
+                type: string
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+            required:
+              - certificate
+      description: Request body for creating a certificate.
+    UpdateEventGatewayDataPlaneCertificateRequest:
+      description: The request schema for updating a dataplane certificate.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              certificate:
+                description: JSON escaped string of the certificate.
+                type: string
+              name:
+                description: The name to identify of the certificate.
+                type: string
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+              description:
+                description: A description of the certificate.
+                type: string
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+            required:
+              - certificate
   responses:
     PortalAuthenticationSettings:
       description: Details about a portal's authentication settings.
@@ -22895,6 +26246,12 @@ components:
                 items:
                   $ref: '#/components/schemas/MeshControlPlane'
             title: ListMeshControlPlanesResponse
+    Internal:
+      description: Internal
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BaseError'
     AuthServer:
       description: An auth server
       content:
@@ -22925,6 +26282,24 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CreatedClient'
+    CreateGatewayResponse:
+      description: A response to creating a gateway.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventGatewayInfo'
+    UpdateGatewayResponse:
+      description: A response to updating a gateway.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventGatewayInfo'
+    NotAvailable:
+      description: Service not available
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BaseError'
   securitySchemes:
     personalAccessToken:
       type: http
@@ -22982,6 +26357,7 @@ tags:
   - name: Auth Server Scopes
     description: 'Scopes define the extent of access that an access token grants to a Client. The management API will give you the ability to create, configure and manage multiple Scopes per Auth Server, and restrict their usage by Client.'
   - name: Dashboards
+  - name: Houdini Event Gateways
 security:
   - personalAccessToken: []
   - systemAccountAccessToken: []

@@ -352,7 +352,7 @@ func (r *MeshProxyPatchResourceModel) ToSharedMeshProxyPatchItemInput(ctx contex
 				} else {
 					from = nil
 				}
-				op := shared.Op(jsonPatchesItem.Op.ValueString())
+				op := shared.MeshProxyPatchItemSpecDefaultAppendModificationsClusterOp(jsonPatchesItem.Op.ValueString())
 				var path string
 				path = jsonPatchesItem.Path.ValueString()
 

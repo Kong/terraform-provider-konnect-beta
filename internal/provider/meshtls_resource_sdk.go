@@ -60,7 +60,7 @@ func (r *MeshTLSResourceModel) RefreshFromSharedMeshTLSItem(ctx context.Context,
 				if fromItem.Default.TLSVersion == nil {
 					from.Default.TLSVersion = nil
 				} else {
-					from.Default.TLSVersion = &tfTypes.Version{}
+					from.Default.TLSVersion = &tfTypes.TLSVersionRange{}
 					if fromItem.Default.TLSVersion.Max != nil {
 						from.Default.TLSVersion.Max = types.StringValue(string(*fromItem.Default.TLSVersion.Max))
 					} else {
@@ -118,7 +118,7 @@ func (r *MeshTLSResourceModel) RefreshFromSharedMeshTLSItem(ctx context.Context,
 				if rulesItem.Default.TLSVersion == nil {
 					rules.Default.TLSVersion = nil
 				} else {
-					rules.Default.TLSVersion = &tfTypes.Version{}
+					rules.Default.TLSVersion = &tfTypes.TLSVersionRange{}
 					if rulesItem.Default.TLSVersion.Max != nil {
 						rules.Default.TLSVersion.Max = types.StringValue(string(*rulesItem.Default.TLSVersion.Max))
 					} else {
