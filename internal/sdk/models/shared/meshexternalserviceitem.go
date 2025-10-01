@@ -429,21 +429,21 @@ func (o *Verification) GetSubjectAltNames() []SubjectAltNames {
 	return o.SubjectAltNames
 }
 
-// Max defines maximum supported version. One of `TLSAuto`, `TLS10`, `TLS11`, `TLS12`, `TLS13`.
-type Max string
+// MeshExternalServiceItemMax - Max defines maximum supported version. One of `TLSAuto`, `TLS10`, `TLS11`, `TLS12`, `TLS13`.
+type MeshExternalServiceItemMax string
 
 const (
-	MaxTLSAuto Max = "TLSAuto"
-	MaxTls10   Max = "TLS10"
-	MaxTls11   Max = "TLS11"
-	MaxTls12   Max = "TLS12"
-	MaxTls13   Max = "TLS13"
+	MeshExternalServiceItemMaxTLSAuto MeshExternalServiceItemMax = "TLSAuto"
+	MeshExternalServiceItemMaxTls10   MeshExternalServiceItemMax = "TLS10"
+	MeshExternalServiceItemMaxTls11   MeshExternalServiceItemMax = "TLS11"
+	MeshExternalServiceItemMaxTls12   MeshExternalServiceItemMax = "TLS12"
+	MeshExternalServiceItemMaxTls13   MeshExternalServiceItemMax = "TLS13"
 )
 
-func (e Max) ToPointer() *Max {
+func (e MeshExternalServiceItemMax) ToPointer() *MeshExternalServiceItemMax {
 	return &e
 }
-func (e *Max) UnmarshalJSON(data []byte) error {
+func (e *MeshExternalServiceItemMax) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -458,28 +458,28 @@ func (e *Max) UnmarshalJSON(data []byte) error {
 	case "TLS12":
 		fallthrough
 	case "TLS13":
-		*e = Max(v)
+		*e = MeshExternalServiceItemMax(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Max: %v", v)
+		return fmt.Errorf("invalid value for MeshExternalServiceItemMax: %v", v)
 	}
 }
 
-// Min defines minimum supported version. One of `TLSAuto`, `TLS10`, `TLS11`, `TLS12`, `TLS13`.
-type Min string
+// MeshExternalServiceItemMin - Min defines minimum supported version. One of `TLSAuto`, `TLS10`, `TLS11`, `TLS12`, `TLS13`.
+type MeshExternalServiceItemMin string
 
 const (
-	MinTLSAuto Min = "TLSAuto"
-	MinTls10   Min = "TLS10"
-	MinTls11   Min = "TLS11"
-	MinTls12   Min = "TLS12"
-	MinTls13   Min = "TLS13"
+	MeshExternalServiceItemMinTLSAuto MeshExternalServiceItemMin = "TLSAuto"
+	MeshExternalServiceItemMinTls10   MeshExternalServiceItemMin = "TLS10"
+	MeshExternalServiceItemMinTls11   MeshExternalServiceItemMin = "TLS11"
+	MeshExternalServiceItemMinTls12   MeshExternalServiceItemMin = "TLS12"
+	MeshExternalServiceItemMinTls13   MeshExternalServiceItemMin = "TLS13"
 )
 
-func (e Min) ToPointer() *Min {
+func (e MeshExternalServiceItemMin) ToPointer() *MeshExternalServiceItemMin {
 	return &e
 }
-func (e *Min) UnmarshalJSON(data []byte) error {
+func (e *MeshExternalServiceItemMin) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -494,19 +494,19 @@ func (e *Min) UnmarshalJSON(data []byte) error {
 	case "TLS12":
 		fallthrough
 	case "TLS13":
-		*e = Min(v)
+		*e = MeshExternalServiceItemMin(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Min: %v", v)
+		return fmt.Errorf("invalid value for MeshExternalServiceItemMin: %v", v)
 	}
 }
 
 // Version section for providing version specification.
 type Version struct {
 	// Max defines maximum supported version. One of `TLSAuto`, `TLS10`, `TLS11`, `TLS12`, `TLS13`.
-	Max *Max `default:"TLSAuto" json:"max"`
+	Max *MeshExternalServiceItemMax `default:"TLSAuto" json:"max"`
 	// Min defines minimum supported version. One of `TLSAuto`, `TLS10`, `TLS11`, `TLS12`, `TLS13`.
-	Min *Min `default:"TLSAuto" json:"min"`
+	Min *MeshExternalServiceItemMin `default:"TLSAuto" json:"min"`
 }
 
 func (v Version) MarshalJSON() ([]byte, error) {
@@ -520,14 +520,14 @@ func (v *Version) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *Version) GetMax() *Max {
+func (o *Version) GetMax() *MeshExternalServiceItemMax {
 	if o == nil {
 		return nil
 	}
 	return o.Max
 }
 
-func (o *Version) GetMin() *Min {
+func (o *Version) GetMin() *MeshExternalServiceItemMin {
 	if o == nil {
 		return nil
 	}

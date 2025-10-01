@@ -33,21 +33,21 @@ func (e *MeshProxyPatchItemType) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// Op is a jsonpatch operation string.
-type Op string
+// MeshProxyPatchItemSpecDefaultAppendModificationsClusterOp - Op is a jsonpatch operation string.
+type MeshProxyPatchItemSpecDefaultAppendModificationsClusterOp string
 
 const (
-	OpAdd     Op = "add"
-	OpRemove  Op = "remove"
-	OpReplace Op = "replace"
-	OpMove    Op = "move"
-	OpCopy    Op = "copy"
+	MeshProxyPatchItemSpecDefaultAppendModificationsClusterOpAdd     MeshProxyPatchItemSpecDefaultAppendModificationsClusterOp = "add"
+	MeshProxyPatchItemSpecDefaultAppendModificationsClusterOpRemove  MeshProxyPatchItemSpecDefaultAppendModificationsClusterOp = "remove"
+	MeshProxyPatchItemSpecDefaultAppendModificationsClusterOpReplace MeshProxyPatchItemSpecDefaultAppendModificationsClusterOp = "replace"
+	MeshProxyPatchItemSpecDefaultAppendModificationsClusterOpMove    MeshProxyPatchItemSpecDefaultAppendModificationsClusterOp = "move"
+	MeshProxyPatchItemSpecDefaultAppendModificationsClusterOpCopy    MeshProxyPatchItemSpecDefaultAppendModificationsClusterOp = "copy"
 )
 
-func (e Op) ToPointer() *Op {
+func (e MeshProxyPatchItemSpecDefaultAppendModificationsClusterOp) ToPointer() *MeshProxyPatchItemSpecDefaultAppendModificationsClusterOp {
 	return &e
 }
-func (e *Op) UnmarshalJSON(data []byte) error {
+func (e *MeshProxyPatchItemSpecDefaultAppendModificationsClusterOp) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -62,10 +62,10 @@ func (e *Op) UnmarshalJSON(data []byte) error {
 	case "move":
 		fallthrough
 	case "copy":
-		*e = Op(v)
+		*e = MeshProxyPatchItemSpecDefaultAppendModificationsClusterOp(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Op: %v", v)
+		return fmt.Errorf("invalid value for MeshProxyPatchItemSpecDefaultAppendModificationsClusterOp: %v", v)
 	}
 }
 
@@ -74,7 +74,7 @@ type JSONPatches struct {
 	// From is a jsonpatch from string, used by move and copy operations.
 	From *string `json:"from,omitempty"`
 	// Op is a jsonpatch operation string.
-	Op Op `json:"op"`
+	Op MeshProxyPatchItemSpecDefaultAppendModificationsClusterOp `json:"op"`
 	// Path is a jsonpatch path string.
 	Path string `json:"path"`
 	// Value must be a valid json value used by replace and add operations.
@@ -88,9 +88,9 @@ func (o *JSONPatches) GetFrom() *string {
 	return o.From
 }
 
-func (o *JSONPatches) GetOp() Op {
+func (o *JSONPatches) GetOp() MeshProxyPatchItemSpecDefaultAppendModificationsClusterOp {
 	if o == nil {
-		return Op("")
+		return MeshProxyPatchItemSpecDefaultAppendModificationsClusterOp("")
 	}
 	return o.Op
 }

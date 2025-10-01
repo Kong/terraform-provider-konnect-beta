@@ -7,6 +7,6 @@ import (
 )
 
 type Delay struct {
-	Percentage MeshItemMode `tfsdk:"percentage"`
-	Value      types.String `tfsdk:"value"`
+	Percentage EventGatewayListenerPort `tfsdk:"percentage"`
+	Value      types.String             `tfsdk:"value"`
 }

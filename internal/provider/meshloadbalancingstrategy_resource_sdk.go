@@ -83,7 +83,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 					} else {
 						to.Default.LoadBalancer.LeastRequest = &tfTypes.LeastRequest{}
 						if toItem.Default.LoadBalancer.LeastRequest.ActiveRequestBias != nil {
-							to.Default.LoadBalancer.LeastRequest.ActiveRequestBias = &tfTypes.MeshItemMode{}
+							to.Default.LoadBalancer.LeastRequest.ActiveRequestBias = &tfTypes.EventGatewayListenerPort{}
 							if toItem.Default.LoadBalancer.LeastRequest.ActiveRequestBias.Integer != nil {
 								to.Default.LoadBalancer.LeastRequest.ActiveRequestBias.Integer = types.Int64PointerValue(toItem.Default.LoadBalancer.LeastRequest.ActiveRequestBias.Integer)
 							}
@@ -125,13 +125,13 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 							if hashPoliciesItem.Header == nil {
 								hashPolicies.Header = nil
 							} else {
-								hashPolicies.Header = &tfTypes.MeshLoadBalancingStrategyItemSpecHeader{}
+								hashPolicies.Header = &tfTypes.VirtualClusterReferenceByName{}
 								hashPolicies.Header.Name = types.StringValue(hashPoliciesItem.Header.Name)
 							}
 							if hashPoliciesItem.QueryParameter == nil {
 								hashPolicies.QueryParameter = nil
 							} else {
-								hashPolicies.QueryParameter = &tfTypes.MeshLoadBalancingStrategyItemSpecHeader{}
+								hashPolicies.QueryParameter = &tfTypes.VirtualClusterReferenceByName{}
 								hashPolicies.QueryParameter.Name = types.StringValue(hashPoliciesItem.QueryParameter.Name)
 							}
 							hashPolicies.Terminal = types.BoolPointerValue(hashPoliciesItem.Terminal)
@@ -144,7 +144,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 					if toItem.Default.LoadBalancer.Random == nil {
 						to.Default.LoadBalancer.Random = nil
 					} else {
-						to.Default.LoadBalancer.Random = &tfTypes.OptionsObj{}
+						to.Default.LoadBalancer.Random = &tfTypes.EventGatewayPolicyConfig{}
 					}
 					if toItem.Default.LoadBalancer.RingHash == nil {
 						to.Default.LoadBalancer.RingHash = nil
@@ -183,13 +183,13 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 							if hashPoliciesItem1.Header == nil {
 								hashPolicies1.Header = nil
 							} else {
-								hashPolicies1.Header = &tfTypes.MeshLoadBalancingStrategyItemSpecHeader{}
+								hashPolicies1.Header = &tfTypes.VirtualClusterReferenceByName{}
 								hashPolicies1.Header.Name = types.StringValue(hashPoliciesItem1.Header.Name)
 							}
 							if hashPoliciesItem1.QueryParameter == nil {
 								hashPolicies1.QueryParameter = nil
 							} else {
-								hashPolicies1.QueryParameter = &tfTypes.MeshLoadBalancingStrategyItemSpecHeader{}
+								hashPolicies1.QueryParameter = &tfTypes.VirtualClusterReferenceByName{}
 								hashPolicies1.QueryParameter.Name = types.StringValue(hashPoliciesItem1.QueryParameter.Name)
 							}
 							hashPolicies1.Terminal = types.BoolPointerValue(hashPoliciesItem1.Terminal)
@@ -203,7 +203,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 					if toItem.Default.LoadBalancer.RoundRobin == nil {
 						to.Default.LoadBalancer.RoundRobin = nil
 					} else {
-						to.Default.LoadBalancer.RoundRobin = &tfTypes.OptionsObj{}
+						to.Default.LoadBalancer.RoundRobin = &tfTypes.EventGatewayPolicyConfig{}
 					}
 					to.Default.LoadBalancer.Type = types.StringValue(string(toItem.Default.LoadBalancer.Type))
 				}

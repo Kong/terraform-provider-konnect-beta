@@ -107,7 +107,7 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(ctx context.Context, resp 
 		} else {
 			r.MeshServices = &tfTypes.MeshServices{}
 			if resp.MeshServices.Mode != nil {
-				r.MeshServices.Mode = &tfTypes.MeshItemMode{}
+				r.MeshServices.Mode = &tfTypes.EventGatewayListenerPort{}
 				if resp.MeshServices.Mode.Str != nil {
 					r.MeshServices.Mode.Str = types.StringPointerValue(resp.MeshServices.Mode.Str)
 				}
@@ -163,7 +163,7 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(ctx context.Context, resp 
 						} else {
 							backends1.Conf.PrometheusMetricsBackendConfig.TLS = &tfTypes.MeshServices{}
 							if backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode != nil {
-								backends1.Conf.PrometheusMetricsBackendConfig.TLS.Mode = &tfTypes.MeshItemMode{}
+								backends1.Conf.PrometheusMetricsBackendConfig.TLS.Mode = &tfTypes.EventGatewayListenerPort{}
 								if backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Str != nil {
 									backends1.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Str = types.StringPointerValue(backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Str)
 								}
@@ -307,7 +307,7 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(ctx context.Context, resp 
 					}
 				}
 				if backendsItem2.Mode != nil {
-					backends2.Mode = &tfTypes.MeshItemMode{}
+					backends2.Mode = &tfTypes.EventGatewayListenerPort{}
 					if backendsItem2.Mode.Str != nil {
 						backends2.Mode.Str = types.StringPointerValue(backendsItem2.Mode.Str)
 					}
