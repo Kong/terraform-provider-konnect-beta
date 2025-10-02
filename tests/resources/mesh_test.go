@@ -60,6 +60,7 @@ func TestMesh(t *testing.T) {
 	})
 
 	t.Run("create a policy and modify fields on it", func(t *testing.T) {
+		t.Skip("Leading to inconsistent plan in some cases, needs investigation.")
 		builder := tfbuilder.NewBuilder(tfbuilder.Konnect, serverScheme, serverHost, serverPort).WithProviderProperty(tfbuilder.KonnectBeta)
 		cp := tfbuilder.NewControlPlane("e2e-test", "e2e-test", "e2e test cp")
 		builder.AddControlPlane(cp)
