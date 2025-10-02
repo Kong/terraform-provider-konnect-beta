@@ -97,8 +97,10 @@ type KonnectBeta struct {
 	MeshGateway               *MeshGateway
 	HostnameGenerator         *HostnameGenerator
 	MeshExternalService       *MeshExternalService
+	MeshIdentity              *MeshIdentity
 	MeshMultiZoneService      *MeshMultiZoneService
 	MeshService               *MeshService
+	MeshTrust                 *MeshTrust
 	MeshGlobalRateLimit       *MeshGlobalRateLimit
 	MeshOPA                   *MeshOPA
 	// Auth Servers expose an OAuth 2.0 and OpenID Connect server interface for generating access tokens. The management API will give you the ability to create, configure and manage multiple Auth Servers per Konnect organization. Auth Servers are a regional Konnect entity.
@@ -108,8 +110,15 @@ type KonnectBeta struct {
 	// Scopes define the extent of access that an access token grants to a Client. The management API will give you the ability to create, configure and manage multiple Scopes per Auth Server, and restrict their usage by Client.
 	AuthServerScopes *AuthServerScopes
 	// Clients represent the identity of machines, such as microservices, mobile apps, or scripts entity. The management API will give you the ability to create, configure and manage multiple Clients per Auth Server.
-	AuthServerClients *AuthServerClients
-	Dashboards        *Dashboards
+	AuthServerClients                 *AuthServerClients
+	Dashboards                        *Dashboards
+	HoudiniEventGateways              *HoudiniEventGateways
+	EventGatewayListeners             *EventGatewayListeners
+	EventGatewayVirtualClusters       *EventGatewayVirtualClusters
+	EventGatewayBackendClusters       *EventGatewayBackendClusters
+	EventGatewayVaults                *EventGatewayVaults
+	EventGatewaySchemaRegistries      *EventGatewaySchemaRegistries
+	EventGatewayDataPlaneCertificates *EventGatewayDataPlaneCertificates
 
 	sdkConfiguration config.SDKConfiguration
 	hooks            *hooks.Hooks
@@ -185,9 +194,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *KonnectBeta {
 	sdk := &KonnectBeta{
-		SDKVersion: "0.8.0",
+		SDKVersion: "0.9.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 0.8.0 2.681.1 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 0.9.0 2.681.1 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
 			ServerList: ServerList,
 		},
 		hooks: hooks.New(),
@@ -242,8 +251,10 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.MeshGateway = newMeshGateway(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.HostnameGenerator = newHostnameGenerator(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshExternalService = newMeshExternalService(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshIdentity = newMeshIdentity(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshMultiZoneService = newMeshMultiZoneService(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshService = newMeshService(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshTrust = newMeshTrust(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshGlobalRateLimit = newMeshGlobalRateLimit(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshOPA = newMeshOPA(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthServer = newAuthServer(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -251,6 +262,13 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.AuthServerScopes = newAuthServerScopes(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthServerClients = newAuthServerClients(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Dashboards = newDashboards(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.HoudiniEventGateways = newHoudiniEventGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.EventGatewayListeners = newEventGatewayListeners(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.EventGatewayVirtualClusters = newEventGatewayVirtualClusters(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.EventGatewayBackendClusters = newEventGatewayBackendClusters(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.EventGatewayVaults = newEventGatewayVaults(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.EventGatewaySchemaRegistries = newEventGatewaySchemaRegistries(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.EventGatewayDataPlaneCertificates = newEventGatewayDataPlaneCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
 
 	return sdk
 }

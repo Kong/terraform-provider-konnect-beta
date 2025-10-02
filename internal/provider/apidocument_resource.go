@@ -80,7 +80,6 @@ func (r *APIDocumentResource) Schema(ctx context.Context, req resource.SchemaReq
 				Description: `The API document identifier.`,
 			},
 			"parent_document_id": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 				MarkdownDescription: `API Documents may be rendered as a tree of files.` + "\n" +
 					`` + "\n" +

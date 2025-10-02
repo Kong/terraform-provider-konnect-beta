@@ -21,9 +21,11 @@ func (r *PortalCustomizationResourceModel) RefreshFromSharedPortalCustomization(
 		} else {
 			r.Js = &tfTypes.Js{}
 			r.Js.Custom = types.StringPointerValue(resp.Js.Custom)
-			r.Js.Scripts = make([]types.String, 0, len(resp.Js.Scripts))
-			for _, v := range resp.Js.Scripts {
-				r.Js.Scripts = append(r.Js.Scripts, types.StringValue(v))
+			if resp.Js.Scripts != nil {
+				r.Js.Scripts = make([]types.String, 0, len(resp.Js.Scripts))
+				for _, v := range resp.Js.Scripts {
+					r.Js.Scripts = append(r.Js.Scripts, types.StringValue(v))
+				}
 			}
 		}
 		r.Layout = types.StringPointerValue(resp.Layout)
@@ -31,50 +33,56 @@ func (r *PortalCustomizationResourceModel) RefreshFromSharedPortalCustomization(
 			r.Menu = nil
 		} else {
 			r.Menu = &tfTypes.Menu{}
-			r.Menu.FooterBottom = []tfTypes.PortalMenuItem{}
+			if resp.Menu.FooterBottom != nil {
+				r.Menu.FooterBottom = []tfTypes.PortalMenuItem{}
 
-			for _, footerBottomItem := range resp.Menu.FooterBottom {
-				var footerBottom tfTypes.PortalMenuItem
+				for _, footerBottomItem := range resp.Menu.FooterBottom {
+					var footerBottom tfTypes.PortalMenuItem
 
-				footerBottom.External = types.BoolValue(footerBottomItem.External)
-				footerBottom.Path = types.StringValue(footerBottomItem.Path)
-				footerBottom.Title = types.StringValue(footerBottomItem.Title)
-				footerBottom.Visibility = types.StringValue(string(footerBottomItem.Visibility))
+					footerBottom.External = types.BoolValue(footerBottomItem.External)
+					footerBottom.Path = types.StringValue(footerBottomItem.Path)
+					footerBottom.Title = types.StringValue(footerBottomItem.Title)
+					footerBottom.Visibility = types.StringValue(string(footerBottomItem.Visibility))
 
-				r.Menu.FooterBottom = append(r.Menu.FooterBottom, footerBottom)
-			}
-			r.Menu.FooterSections = []tfTypes.PortalFooterMenuSection{}
-
-			for _, footerSectionsItem := range resp.Menu.FooterSections {
-				var footerSections tfTypes.PortalFooterMenuSection
-
-				footerSections.Items = []tfTypes.PortalMenuItem{}
-
-				for _, itemsItem := range footerSectionsItem.Items {
-					var items tfTypes.PortalMenuItem
-
-					items.External = types.BoolValue(itemsItem.External)
-					items.Path = types.StringValue(itemsItem.Path)
-					items.Title = types.StringValue(itemsItem.Title)
-					items.Visibility = types.StringValue(string(itemsItem.Visibility))
-
-					footerSections.Items = append(footerSections.Items, items)
+					r.Menu.FooterBottom = append(r.Menu.FooterBottom, footerBottom)
 				}
-				footerSections.Title = types.StringValue(footerSectionsItem.Title)
-
-				r.Menu.FooterSections = append(r.Menu.FooterSections, footerSections)
 			}
-			r.Menu.Main = []tfTypes.PortalMenuItem{}
+			if resp.Menu.FooterSections != nil {
+				r.Menu.FooterSections = []tfTypes.PortalFooterMenuSection{}
 
-			for _, mainItem := range resp.Menu.Main {
-				var main tfTypes.PortalMenuItem
+				for _, footerSectionsItem := range resp.Menu.FooterSections {
+					var footerSections tfTypes.PortalFooterMenuSection
 
-				main.External = types.BoolValue(mainItem.External)
-				main.Path = types.StringValue(mainItem.Path)
-				main.Title = types.StringValue(mainItem.Title)
-				main.Visibility = types.StringValue(string(mainItem.Visibility))
+					footerSections.Items = []tfTypes.PortalMenuItem{}
 
-				r.Menu.Main = append(r.Menu.Main, main)
+					for _, itemsItem := range footerSectionsItem.Items {
+						var items tfTypes.PortalMenuItem
+
+						items.External = types.BoolValue(itemsItem.External)
+						items.Path = types.StringValue(itemsItem.Path)
+						items.Title = types.StringValue(itemsItem.Title)
+						items.Visibility = types.StringValue(string(itemsItem.Visibility))
+
+						footerSections.Items = append(footerSections.Items, items)
+					}
+					footerSections.Title = types.StringValue(footerSectionsItem.Title)
+
+					r.Menu.FooterSections = append(r.Menu.FooterSections, footerSections)
+				}
+			}
+			if resp.Menu.Main != nil {
+				r.Menu.Main = []tfTypes.PortalMenuItem{}
+
+				for _, mainItem := range resp.Menu.Main {
+					var main tfTypes.PortalMenuItem
+
+					main.External = types.BoolValue(mainItem.External)
+					main.Path = types.StringValue(mainItem.Path)
+					main.Title = types.StringValue(mainItem.Title)
+					main.Visibility = types.StringValue(string(mainItem.Visibility))
+
+					r.Menu.Main = append(r.Menu.Main, main)
+				}
 			}
 		}
 		r.Robots = types.StringPointerValue(resp.Robots)
@@ -82,6 +90,7 @@ func (r *PortalCustomizationResourceModel) RefreshFromSharedPortalCustomization(
 			r.SpecRenderer = nil
 		} else {
 			r.SpecRenderer = &tfTypes.SpecRenderer{}
+			r.SpecRenderer.AllowCustomServerUrls = types.BoolPointerValue(resp.SpecRenderer.AllowCustomServerUrls)
 			r.SpecRenderer.HideDeprecated = types.BoolPointerValue(resp.SpecRenderer.HideDeprecated)
 			r.SpecRenderer.HideInternal = types.BoolPointerValue(resp.SpecRenderer.HideInternal)
 			r.SpecRenderer.InfiniteScroll = types.BoolPointerValue(resp.SpecRenderer.InfiniteScroll)
@@ -156,9 +165,9 @@ func (r *PortalCustomizationResourceModel) ToSharedPortalCustomization(ctx conte
 		} else {
 			name = nil
 		}
-		mode := new(shared.Mode)
+		mode := new(shared.PortalCustomizationMode)
 		if !r.Theme.Mode.IsUnknown() && !r.Theme.Mode.IsNull() {
-			*mode = shared.Mode(r.Theme.Mode.ValueString())
+			*mode = shared.PortalCustomizationMode(r.Theme.Mode.ValueString())
 		} else {
 			mode = nil
 		}
@@ -200,9 +209,12 @@ func (r *PortalCustomizationResourceModel) ToSharedPortalCustomization(ctx conte
 		} else {
 			custom = nil
 		}
-		scripts := make([]string, 0, len(r.Js.Scripts))
-		for _, scriptsItem := range r.Js.Scripts {
-			scripts = append(scripts, scriptsItem.ValueString())
+		var scripts []string
+		if r.Js.Scripts != nil {
+			scripts = make([]string, 0, len(r.Js.Scripts))
+			for _, scriptsItem := range r.Js.Scripts {
+				scripts = append(scripts, scriptsItem.ValueString())
+			}
 		}
 		js = &shared.Js{
 			Custom:  custom,
@@ -211,72 +223,81 @@ func (r *PortalCustomizationResourceModel) ToSharedPortalCustomization(ctx conte
 	}
 	var menu *shared.Menu
 	if r.Menu != nil {
-		main := make([]shared.PortalMenuItem, 0, len(r.Menu.Main))
-		for _, mainItem := range r.Menu.Main {
-			var path string
-			path = mainItem.Path.ValueString()
+		var main []shared.PortalMenuItem
+		if r.Menu.Main != nil {
+			main = make([]shared.PortalMenuItem, 0, len(r.Menu.Main))
+			for _, mainItem := range r.Menu.Main {
+				var path string
+				path = mainItem.Path.ValueString()
 
-			var title string
-			title = mainItem.Title.ValueString()
+				var title string
+				title = mainItem.Title.ValueString()
 
-			visibility := shared.Visibility(mainItem.Visibility.ValueString())
-			var external bool
-			external = mainItem.External.ValueBool()
+				visibility := shared.Visibility(mainItem.Visibility.ValueString())
+				var external bool
+				external = mainItem.External.ValueBool()
 
-			main = append(main, shared.PortalMenuItem{
-				Path:       path,
-				Title:      title,
-				Visibility: visibility,
-				External:   external,
-			})
-		}
-		footerSections := make([]shared.PortalFooterMenuSection, 0, len(r.Menu.FooterSections))
-		for _, footerSectionsItem := range r.Menu.FooterSections {
-			var title1 string
-			title1 = footerSectionsItem.Title.ValueString()
-
-			items := make([]shared.PortalMenuItem, 0, len(footerSectionsItem.Items))
-			for _, itemsItem := range footerSectionsItem.Items {
-				var path1 string
-				path1 = itemsItem.Path.ValueString()
-
-				var title2 string
-				title2 = itemsItem.Title.ValueString()
-
-				visibility1 := shared.Visibility(itemsItem.Visibility.ValueString())
-				var external1 bool
-				external1 = itemsItem.External.ValueBool()
-
-				items = append(items, shared.PortalMenuItem{
-					Path:       path1,
-					Title:      title2,
-					Visibility: visibility1,
-					External:   external1,
+				main = append(main, shared.PortalMenuItem{
+					Path:       path,
+					Title:      title,
+					Visibility: visibility,
+					External:   external,
 				})
 			}
-			footerSections = append(footerSections, shared.PortalFooterMenuSection{
-				Title: title1,
-				Items: items,
-			})
 		}
-		footerBottom := make([]shared.PortalMenuItem, 0, len(r.Menu.FooterBottom))
-		for _, footerBottomItem := range r.Menu.FooterBottom {
-			var path2 string
-			path2 = footerBottomItem.Path.ValueString()
+		var footerSections []shared.PortalFooterMenuSection
+		if r.Menu.FooterSections != nil {
+			footerSections = make([]shared.PortalFooterMenuSection, 0, len(r.Menu.FooterSections))
+			for _, footerSectionsItem := range r.Menu.FooterSections {
+				var title1 string
+				title1 = footerSectionsItem.Title.ValueString()
 
-			var title3 string
-			title3 = footerBottomItem.Title.ValueString()
+				items := make([]shared.PortalMenuItem, 0, len(footerSectionsItem.Items))
+				for _, itemsItem := range footerSectionsItem.Items {
+					var path1 string
+					path1 = itemsItem.Path.ValueString()
 
-			visibility2 := shared.Visibility(footerBottomItem.Visibility.ValueString())
-			var external2 bool
-			external2 = footerBottomItem.External.ValueBool()
+					var title2 string
+					title2 = itemsItem.Title.ValueString()
 
-			footerBottom = append(footerBottom, shared.PortalMenuItem{
-				Path:       path2,
-				Title:      title3,
-				Visibility: visibility2,
-				External:   external2,
-			})
+					visibility1 := shared.Visibility(itemsItem.Visibility.ValueString())
+					var external1 bool
+					external1 = itemsItem.External.ValueBool()
+
+					items = append(items, shared.PortalMenuItem{
+						Path:       path1,
+						Title:      title2,
+						Visibility: visibility1,
+						External:   external1,
+					})
+				}
+				footerSections = append(footerSections, shared.PortalFooterMenuSection{
+					Title: title1,
+					Items: items,
+				})
+			}
+		}
+		var footerBottom []shared.PortalMenuItem
+		if r.Menu.FooterBottom != nil {
+			footerBottom = make([]shared.PortalMenuItem, 0, len(r.Menu.FooterBottom))
+			for _, footerBottomItem := range r.Menu.FooterBottom {
+				var path2 string
+				path2 = footerBottomItem.Path.ValueString()
+
+				var title3 string
+				title3 = footerBottomItem.Title.ValueString()
+
+				visibility2 := shared.Visibility(footerBottomItem.Visibility.ValueString())
+				var external2 bool
+				external2 = footerBottomItem.External.ValueBool()
+
+				footerBottom = append(footerBottom, shared.PortalMenuItem{
+					Path:       path2,
+					Title:      title3,
+					Visibility: visibility2,
+					External:   external2,
+				})
+			}
 		}
 		menu = &shared.Menu{
 			Main:           main,
@@ -322,13 +343,20 @@ func (r *PortalCustomizationResourceModel) ToSharedPortalCustomization(ctx conte
 		} else {
 			hideDeprecated = nil
 		}
+		allowCustomServerUrls := new(bool)
+		if !r.SpecRenderer.AllowCustomServerUrls.IsUnknown() && !r.SpecRenderer.AllowCustomServerUrls.IsNull() {
+			*allowCustomServerUrls = r.SpecRenderer.AllowCustomServerUrls.ValueBool()
+		} else {
+			allowCustomServerUrls = nil
+		}
 		specRenderer = &shared.SpecRenderer{
-			TryItUI:        tryItUI,
-			TryItInsomnia:  tryItInsomnia,
-			InfiniteScroll: infiniteScroll,
-			ShowSchemas:    showSchemas,
-			HideInternal:   hideInternal,
-			HideDeprecated: hideDeprecated,
+			TryItUI:               tryItUI,
+			TryItInsomnia:         tryItInsomnia,
+			InfiniteScroll:        infiniteScroll,
+			ShowSchemas:           showSchemas,
+			HideInternal:          hideInternal,
+			HideDeprecated:        hideDeprecated,
+			AllowCustomServerUrls: allowCustomServerUrls,
 		}
 	}
 	robots := new(string)

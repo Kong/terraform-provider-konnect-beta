@@ -75,7 +75,6 @@ func (r *APIVersionResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"content": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).`,
 					},
@@ -114,7 +113,6 @@ func (r *APIVersionResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 			},
 			"version": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `The version of the api.`,
 			},
@@ -301,6 +299,43 @@ func (r *APIVersionResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedAPIVersionResponse(ctx, res.APIVersionResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsFetchAPIVersionRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.APIVersion.FetchAPIVersion(ctx, *request1)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res1 != nil && res1.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
+		}
+		return
+	}
+	if res1 == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
+		return
+	}
+	if res1.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
+		return
+	}
+	if !(res1.APIVersionResponse != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
+		return
+	}
+	resp.Diagnostics.Append(data.RefreshFromSharedAPIVersionResponse(ctx, res1.APIVersionResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

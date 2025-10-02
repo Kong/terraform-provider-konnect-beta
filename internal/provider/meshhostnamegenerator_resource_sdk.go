@@ -43,7 +43,7 @@ func (r *MeshHostnameGeneratorResourceModel) RefreshFromSharedHostnameGeneratorI
 		if resp.Spec.Extension == nil {
 			r.Spec.Extension = nil
 		} else {
-			r.Spec.Extension = &tfTypes.MeshExternalServiceItemExtension{}
+			r.Spec.Extension = &tfTypes.Extension{}
 			if resp.Spec.Extension.Config == nil {
 				r.Spec.Extension.Config = jsontypes.NewNormalizedNull()
 			} else {
@@ -90,7 +90,7 @@ func (r *MeshHostnameGeneratorResourceModel) RefreshFromSharedHostnameGeneratorI
 				}
 			}
 		}
-		r.Spec.Template = types.StringPointerValue(resp.Spec.Template)
+		r.Spec.Template = types.StringValue(resp.Spec.Template)
 		r.Type = types.StringValue(string(resp.Type))
 	}
 
@@ -231,12 +231,9 @@ func (r *MeshHostnameGeneratorResourceModel) ToSharedHostnameGeneratorItemInput(
 			MeshService:          meshService,
 		}
 	}
-	template := new(string)
-	if !r.Spec.Template.IsUnknown() && !r.Spec.Template.IsNull() {
-		*template = r.Spec.Template.ValueString()
-	} else {
-		template = nil
-	}
+	var template string
+	template = r.Spec.Template.ValueString()
+
 	spec := shared.HostnameGeneratorItemSpec{
 		Extension: extension,
 		Selector:  selector,

@@ -170,7 +170,7 @@ client certificates enforced, and so on. (see [below for nested schema](#nesteda
 
 Required:
 
-- `type` (String) Types that are assignable to Type:
+- `type` (String) Types that are valid to be assigned to Type:
 
 	*DataSource_Secret
 	*DataSource_File

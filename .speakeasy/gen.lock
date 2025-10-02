@@ -1,17 +1,18 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: d5eea2cba9fea7b68145bdb2598f9728
+  docChecksum: 91b7e74fba3d843dc5cf258f9d879e31
   docVersion: 2.0.0
   speakeasyVersion: 1.602.0
   generationVersion: 2.681.1
-  releaseVersion: 0.8.0
-  configChecksum: e5940e108e57fc7030e38476eb9ee8f8
+  releaseVersion: 0.9.0
+  configChecksum: 3be26e9c101518a2ff9b2a7bcdef942d
 features:
   terraform:
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.2.1
     core: 3.44.0
+    deepObjectParams: 0.1.0
     deprecations: 2.82.0
     globalSecurity: 2.81.12
     globalServerURLs: 2.83.0
@@ -26,55 +27,8 @@ generatedFiles:
   - .gitattributes
   - USAGE.md
   - examples/README.md
-  - examples/data-sources/konnect-beta_hostname_generator_list/data-source.tf
-  - examples/data-sources/konnect-beta_mesh/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_access_log/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_access_log_list/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_circuit_breaker/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_circuit_breaker_list/data-source.tf
   - examples/data-sources/konnect-beta_mesh_control_planes/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_external_service/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_external_service_list/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_fault_injection/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_fault_injection_list/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_gateway/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_gateway_list/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_global_rate_limit/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_global_rate_limit_list/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_health_check/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_health_check_list/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_hostname_generator/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_http_route/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_http_route_list/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_list/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_load_balancing_strategy/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_load_balancing_strategy_list/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_metric/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_metric_list/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_multi_zone_service/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_multi_zone_service_list/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_opa/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_opa_list/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_passthrough/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_passthrough_list/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_proxy_patch/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_proxy_patch_list/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_rate_limit/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_rate_limit_list/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_retry/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_retry_list/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_service/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_service_list/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_tcp_route/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_tcp_route_list/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_timeout/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_timeout_list/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_tls/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_tls_list/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_trace/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_trace_list/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_traffic_permission/data-source.tf
-  - examples/data-sources/konnect-beta_mesh_traffic_permission_list/data-source.tf
+  - examples/data-sources/konnect-beta_portal/data-source.tf
   - examples/provider/provider.tf
   - examples/resources/konnect-beta_api/import.sh
   - examples/resources/konnect-beta_api/resource.tf
@@ -98,6 +52,20 @@ generatedFiles:
   - examples/resources/konnect-beta_auth_server_scopes/resource.tf
   - examples/resources/konnect-beta_dashboard/import.sh
   - examples/resources/konnect-beta_dashboard/resource.tf
+  - examples/resources/konnect-beta_event_gateway/import.sh
+  - examples/resources/konnect-beta_event_gateway/resource.tf
+  - examples/resources/konnect-beta_event_gateway_backend_cluster/import.sh
+  - examples/resources/konnect-beta_event_gateway_backend_cluster/resource.tf
+  - examples/resources/konnect-beta_event_gateway_data_plane_certificate/import.sh
+  - examples/resources/konnect-beta_event_gateway_data_plane_certificate/resource.tf
+  - examples/resources/konnect-beta_event_gateway_listener/import.sh
+  - examples/resources/konnect-beta_event_gateway_listener/resource.tf
+  - examples/resources/konnect-beta_event_gateway_schema_registry/import.sh
+  - examples/resources/konnect-beta_event_gateway_schema_registry/resource.tf
+  - examples/resources/konnect-beta_event_gateway_vault/import.sh
+  - examples/resources/konnect-beta_event_gateway_vault/resource.tf
+  - examples/resources/konnect-beta_event_gateway_virtual_cluster/import.sh
+  - examples/resources/konnect-beta_event_gateway_virtual_cluster/resource.tf
   - examples/resources/konnect-beta_mesh/import.sh
   - examples/resources/konnect-beta_mesh/resource.tf
   - examples/resources/konnect-beta_mesh_access_log/import.sh
@@ -120,6 +88,8 @@ generatedFiles:
   - examples/resources/konnect-beta_mesh_hostname_generator/resource.tf
   - examples/resources/konnect-beta_mesh_http_route/import.sh
   - examples/resources/konnect-beta_mesh_http_route/resource.tf
+  - examples/resources/konnect-beta_mesh_identity/import.sh
+  - examples/resources/konnect-beta_mesh_identity/resource.tf
   - examples/resources/konnect-beta_mesh_load_balancing_strategy/import.sh
   - examples/resources/konnect-beta_mesh_load_balancing_strategy/resource.tf
   - examples/resources/konnect-beta_mesh_metric/import.sh
@@ -148,6 +118,8 @@ generatedFiles:
   - examples/resources/konnect-beta_mesh_trace/resource.tf
   - examples/resources/konnect-beta_mesh_traffic_permission/import.sh
   - examples/resources/konnect-beta_mesh_traffic_permission/resource.tf
+  - examples/resources/konnect-beta_mesh_trust/import.sh
+  - examples/resources/konnect-beta_mesh_trust/resource.tf
   - examples/resources/konnect-beta_portal/import.sh
   - examples/resources/konnect-beta_portal/resource.tf
   - examples/resources/konnect-beta_portal_auth/import.sh
@@ -202,154 +174,78 @@ generatedFiles:
   - internal/provider/authserverscopes_resource_sdk.go
   - internal/provider/dashboard_resource.go
   - internal/provider/dashboard_resource_sdk.go
-  - internal/provider/hostnamegeneratorlist_data_source.go
-  - internal/provider/hostnamegeneratorlist_data_source_sdk.go
-  - internal/provider/mesh_data_source.go
-  - internal/provider/mesh_data_source_sdk.go
+  - internal/provider/eventgateway_resource.go
+  - internal/provider/eventgateway_resource_sdk.go
+  - internal/provider/eventgatewaybackendcluster_resource.go
+  - internal/provider/eventgatewaybackendcluster_resource_sdk.go
+  - internal/provider/eventgatewaydataplanecertificate_resource.go
+  - internal/provider/eventgatewaydataplanecertificate_resource_sdk.go
+  - internal/provider/eventgatewaylistener_resource.go
+  - internal/provider/eventgatewaylistener_resource_sdk.go
+  - internal/provider/eventgatewayschemaregistry_resource.go
+  - internal/provider/eventgatewayschemaregistry_resource_sdk.go
+  - internal/provider/eventgatewayvault_resource.go
+  - internal/provider/eventgatewayvault_resource_sdk.go
+  - internal/provider/eventgatewayvirtualcluster_resource.go
+  - internal/provider/eventgatewayvirtualcluster_resource_sdk.go
   - internal/provider/mesh_resource.go
   - internal/provider/mesh_resource_sdk.go
-  - internal/provider/meshaccesslog_data_source.go
-  - internal/provider/meshaccesslog_data_source_sdk.go
   - internal/provider/meshaccesslog_resource.go
   - internal/provider/meshaccesslog_resource_sdk.go
-  - internal/provider/meshaccessloglist_data_source.go
-  - internal/provider/meshaccessloglist_data_source_sdk.go
-  - internal/provider/meshcircuitbreaker_data_source.go
-  - internal/provider/meshcircuitbreaker_data_source_sdk.go
   - internal/provider/meshcircuitbreaker_resource.go
   - internal/provider/meshcircuitbreaker_resource_sdk.go
-  - internal/provider/meshcircuitbreakerlist_data_source.go
-  - internal/provider/meshcircuitbreakerlist_data_source_sdk.go
   - internal/provider/meshcontrolplane_resource.go
   - internal/provider/meshcontrolplane_resource_sdk.go
   - internal/provider/meshcontrolplanes_data_source.go
   - internal/provider/meshcontrolplanes_data_source_sdk.go
-  - internal/provider/meshexternalservice_data_source.go
-  - internal/provider/meshexternalservice_data_source_sdk.go
   - internal/provider/meshexternalservice_resource.go
   - internal/provider/meshexternalservice_resource_sdk.go
-  - internal/provider/meshexternalservicelist_data_source.go
-  - internal/provider/meshexternalservicelist_data_source_sdk.go
-  - internal/provider/meshfaultinjection_data_source.go
-  - internal/provider/meshfaultinjection_data_source_sdk.go
   - internal/provider/meshfaultinjection_resource.go
   - internal/provider/meshfaultinjection_resource_sdk.go
-  - internal/provider/meshfaultinjectionlist_data_source.go
-  - internal/provider/meshfaultinjectionlist_data_source_sdk.go
-  - internal/provider/meshgateway_data_source.go
-  - internal/provider/meshgateway_data_source_sdk.go
   - internal/provider/meshgateway_resource.go
   - internal/provider/meshgateway_resource_sdk.go
-  - internal/provider/meshgatewaylist_data_source.go
-  - internal/provider/meshgatewaylist_data_source_sdk.go
-  - internal/provider/meshglobalratelimit_data_source.go
-  - internal/provider/meshglobalratelimit_data_source_sdk.go
   - internal/provider/meshglobalratelimit_resource.go
   - internal/provider/meshglobalratelimit_resource_sdk.go
-  - internal/provider/meshglobalratelimitlist_data_source.go
-  - internal/provider/meshglobalratelimitlist_data_source_sdk.go
-  - internal/provider/meshhealthcheck_data_source.go
-  - internal/provider/meshhealthcheck_data_source_sdk.go
   - internal/provider/meshhealthcheck_resource.go
   - internal/provider/meshhealthcheck_resource_sdk.go
-  - internal/provider/meshhealthchecklist_data_source.go
-  - internal/provider/meshhealthchecklist_data_source_sdk.go
-  - internal/provider/meshhostnamegenerator_data_source.go
-  - internal/provider/meshhostnamegenerator_data_source_sdk.go
   - internal/provider/meshhostnamegenerator_resource.go
   - internal/provider/meshhostnamegenerator_resource_sdk.go
-  - internal/provider/meshhttproute_data_source.go
-  - internal/provider/meshhttproute_data_source_sdk.go
   - internal/provider/meshhttproute_resource.go
   - internal/provider/meshhttproute_resource_sdk.go
-  - internal/provider/meshhttproutelist_data_source.go
-  - internal/provider/meshhttproutelist_data_source_sdk.go
-  - internal/provider/meshlist_data_source.go
-  - internal/provider/meshlist_data_source_sdk.go
-  - internal/provider/meshloadbalancingstrategy_data_source.go
-  - internal/provider/meshloadbalancingstrategy_data_source_sdk.go
+  - internal/provider/meshidentity_resource.go
+  - internal/provider/meshidentity_resource_sdk.go
   - internal/provider/meshloadbalancingstrategy_resource.go
   - internal/provider/meshloadbalancingstrategy_resource_sdk.go
-  - internal/provider/meshloadbalancingstrategylist_data_source.go
-  - internal/provider/meshloadbalancingstrategylist_data_source_sdk.go
-  - internal/provider/meshmetric_data_source.go
-  - internal/provider/meshmetric_data_source_sdk.go
   - internal/provider/meshmetric_resource.go
   - internal/provider/meshmetric_resource_sdk.go
-  - internal/provider/meshmetriclist_data_source.go
-  - internal/provider/meshmetriclist_data_source_sdk.go
-  - internal/provider/meshmultizoneservice_data_source.go
-  - internal/provider/meshmultizoneservice_data_source_sdk.go
   - internal/provider/meshmultizoneservice_resource.go
   - internal/provider/meshmultizoneservice_resource_sdk.go
-  - internal/provider/meshmultizoneservicelist_data_source.go
-  - internal/provider/meshmultizoneservicelist_data_source_sdk.go
-  - internal/provider/meshopa_data_source.go
-  - internal/provider/meshopa_data_source_sdk.go
   - internal/provider/meshopa_resource.go
   - internal/provider/meshopa_resource_sdk.go
-  - internal/provider/meshopalist_data_source.go
-  - internal/provider/meshopalist_data_source_sdk.go
-  - internal/provider/meshpassthrough_data_source.go
-  - internal/provider/meshpassthrough_data_source_sdk.go
   - internal/provider/meshpassthrough_resource.go
   - internal/provider/meshpassthrough_resource_sdk.go
-  - internal/provider/meshpassthroughlist_data_source.go
-  - internal/provider/meshpassthroughlist_data_source_sdk.go
-  - internal/provider/meshproxypatch_data_source.go
-  - internal/provider/meshproxypatch_data_source_sdk.go
   - internal/provider/meshproxypatch_resource.go
   - internal/provider/meshproxypatch_resource_sdk.go
-  - internal/provider/meshproxypatchlist_data_source.go
-  - internal/provider/meshproxypatchlist_data_source_sdk.go
-  - internal/provider/meshratelimit_data_source.go
-  - internal/provider/meshratelimit_data_source_sdk.go
   - internal/provider/meshratelimit_resource.go
   - internal/provider/meshratelimit_resource_sdk.go
-  - internal/provider/meshratelimitlist_data_source.go
-  - internal/provider/meshratelimitlist_data_source_sdk.go
-  - internal/provider/meshretry_data_source.go
-  - internal/provider/meshretry_data_source_sdk.go
   - internal/provider/meshretry_resource.go
   - internal/provider/meshretry_resource_sdk.go
-  - internal/provider/meshretrylist_data_source.go
-  - internal/provider/meshretrylist_data_source_sdk.go
-  - internal/provider/meshservice_data_source.go
-  - internal/provider/meshservice_data_source_sdk.go
   - internal/provider/meshservice_resource.go
   - internal/provider/meshservice_resource_sdk.go
-  - internal/provider/meshservicelist_data_source.go
-  - internal/provider/meshservicelist_data_source_sdk.go
-  - internal/provider/meshtcproute_data_source.go
-  - internal/provider/meshtcproute_data_source_sdk.go
   - internal/provider/meshtcproute_resource.go
   - internal/provider/meshtcproute_resource_sdk.go
-  - internal/provider/meshtcproutelist_data_source.go
-  - internal/provider/meshtcproutelist_data_source_sdk.go
-  - internal/provider/meshtimeout_data_source.go
-  - internal/provider/meshtimeout_data_source_sdk.go
   - internal/provider/meshtimeout_resource.go
   - internal/provider/meshtimeout_resource_sdk.go
-  - internal/provider/meshtimeoutlist_data_source.go
-  - internal/provider/meshtimeoutlist_data_source_sdk.go
-  - internal/provider/meshtls_data_source.go
-  - internal/provider/meshtls_data_source_sdk.go
   - internal/provider/meshtls_resource.go
   - internal/provider/meshtls_resource_sdk.go
-  - internal/provider/meshtlslist_data_source.go
-  - internal/provider/meshtlslist_data_source_sdk.go
-  - internal/provider/meshtrace_data_source.go
-  - internal/provider/meshtrace_data_source_sdk.go
   - internal/provider/meshtrace_resource.go
   - internal/provider/meshtrace_resource_sdk.go
-  - internal/provider/meshtracelist_data_source.go
-  - internal/provider/meshtracelist_data_source_sdk.go
-  - internal/provider/meshtrafficpermission_data_source.go
-  - internal/provider/meshtrafficpermission_data_source_sdk.go
   - internal/provider/meshtrafficpermission_resource.go
   - internal/provider/meshtrafficpermission_resource_sdk.go
-  - internal/provider/meshtrafficpermissionlist_data_source.go
-  - internal/provider/meshtrafficpermissionlist_data_source_sdk.go
+  - internal/provider/meshtrust_resource.go
+  - internal/provider/meshtrust_resource_sdk.go
+  - internal/provider/portal_data_source.go
+  - internal/provider/portal_data_source_sdk.go
   - internal/provider/portal_resource.go
   - internal/provider/portal_resource_sdk.go
   - internal/provider/portalauth_resource.go
@@ -392,32 +288,46 @@ generatedFiles:
   - internal/provider/types/addresses.go
   - internal/provider/types/advanced_query.go
   - internal/provider/types/affinity_tags.go
+  - internal/provider/types/agent.go
   - internal/provider/types/aggregate.go
   - internal/provider/types/all_filter_items.go
+  - internal/provider/types/allow.go
   - internal/provider/types/api_implementation_service.go
-  - internal/provider/types/api_version_summary.go
   - internal/provider/types/append_match.go
   - internal/provider/types/append_modifications.go
   - internal/provider/types/append_policies.go
   - internal/provider/types/applications.go
   - internal/provider/types/auth.go
   - internal/provider/types/auth_config.go
+  - internal/provider/types/autogenerate.go
   - internal/provider/types/aws_credentials.go
   - internal/provider/types/back_off.go
   - internal/provider/types/backend.go
+  - internal/provider/types/backend_cluster_authentication_anonymous.go
+  - internal/provider/types/backend_cluster_authentication_sasl_plain.go
+  - internal/provider/types/backend_cluster_authentication_sasl_scram.go
+  - internal/provider/types/backend_cluster_authentication_scheme.go
+  - internal/provider/types/backend_cluster_reference_modify.go
+  - internal/provider/types/backend_cluster_tls.go
   - internal/provider/types/backend_refs.go
   - internal/provider/types/backends.go
   - internal/provider/types/bar_chart.go
   - internal/provider/types/builtin_certificate_authority_config.go
   - internal/provider/types/builtin_certificate_authority_config_conf_ca_cert.go
+  - internal/provider/types/bundled.go
+  - internal/provider/types/ca.go
+  - internal/provider/types/ca_bundles.go
   - internal/provider/types/ca_cert.go
   - internal/provider/types/cert_manager_certificate_authority_config.go
+  - internal/provider/types/certificate.go
+  - internal/provider/types/certificate_metadata.go
+  - internal/provider/types/certificate_parameters.go
   - internal/provider/types/chart.go
   - internal/provider/types/chart_tile.go
   - internal/provider/types/cluster.go
   - internal/provider/types/colors.go
-  - internal/provider/types/conditions.go
   - internal/provider/types/conf.go
+  - internal/provider/types/config.go
   - internal/provider/types/connection.go
   - internal/provider/types/connection_limits.go
   - internal/provider/types/constraints.go
@@ -439,7 +349,13 @@ generatedFiles:
   - internal/provider/types/dp_cert.go
   - internal/provider/types/endpoints.go
   - internal/provider/types/envoy.go
+  - internal/provider/types/event_gateway_env_vault.go
+  - internal/provider/types/event_gateway_konnect_vault.go
+  - internal/provider/types/event_gateway_vault_event_gateway_env_vault.go
+  - internal/provider/types/event_gateway_vault_event_gateway_konnect_vault.go
+  - internal/provider/types/exact_list.go
   - internal/provider/types/exclude.go
+  - internal/provider/types/extension.go
   - internal/provider/types/failover.go
   - internal/provider/types/failover_threshold.go
   - internal/provider/types/failure_percentage.go
@@ -450,13 +366,11 @@ generatedFiles:
   - internal/provider/types/format.go
   - internal/provider/types/from.go
   - internal/provider/types/gateway_failures.go
-  - internal/provider/types/get_hostname_generator_list_query_param_filter.go
   - internal/provider/types/grpc.go
   - internal/provider/types/hash_policies.go
   - internal/provider/types/header.go
   - internal/provider/types/headers.go
   - internal/provider/types/host_selection.go
-  - internal/provider/types/hostname_generator_item.go
   - internal/provider/types/hostname_generator_item_spec.go
   - internal/provider/types/hostname_generator_ref.go
   - internal/provider/types/hostname_generators.go
@@ -480,14 +394,12 @@ generatedFiles:
   - internal/provider/types/match.go
   - internal/provider/types/matches.go
   - internal/provider/types/menu.go
-  - internal/provider/types/mesh_access_log_item.go
   - internal/provider/types/mesh_access_log_item_spec.go
   - internal/provider/types/mesh_access_log_item_spec_from_backends.go
   - internal/provider/types/mesh_access_log_item_spec_from_default.go
   - internal/provider/types/mesh_access_log_item_spec_from_open_telemetry.go
   - internal/provider/types/mesh_access_log_item_spec_from_tcp.go
   - internal/provider/types/mesh_access_log_item_target_ref.go
-  - internal/provider/types/mesh_circuit_breaker_item.go
   - internal/provider/types/mesh_circuit_breaker_item_default.go
   - internal/provider/types/mesh_circuit_breaker_item_from.go
   - internal/provider/types/mesh_circuit_breaker_item_rules.go
@@ -496,16 +408,13 @@ generatedFiles:
   - internal/provider/types/mesh_control_plane_feature.go
   - internal/provider/types/mesh_control_plane_feature_hostname_generation_creation.go
   - internal/provider/types/mesh_external_service.go
-  - internal/provider/types/mesh_external_service_item.go
+  - internal/provider/types/mesh_external_service_item_conditions.go
   - internal/provider/types/mesh_external_service_item_extension.go
   - internal/provider/types/mesh_external_service_item_spec.go
-  - internal/provider/types/mesh_fault_injection_item.go
   - internal/provider/types/mesh_fault_injection_item_default.go
   - internal/provider/types/mesh_fault_injection_item_from.go
   - internal/provider/types/mesh_fault_injection_item_spec.go
-  - internal/provider/types/mesh_gateway_item.go
   - internal/provider/types/mesh_gateway_item_tls.go
-  - internal/provider/types/mesh_global_rate_limit_item.go
   - internal/provider/types/mesh_global_rate_limit_item_add.go
   - internal/provider/types/mesh_global_rate_limit_item_default.go
   - internal/provider/types/mesh_global_rate_limit_item_from.go
@@ -513,18 +422,19 @@ generatedFiles:
   - internal/provider/types/mesh_global_rate_limit_item_http.go
   - internal/provider/types/mesh_global_rate_limit_item_spec.go
   - internal/provider/types/mesh_global_rate_limit_item_spec_from_request_rate.go
-  - internal/provider/types/mesh_health_check_item.go
   - internal/provider/types/mesh_health_check_item_default.go
   - internal/provider/types/mesh_health_check_item_http.go
   - internal/provider/types/mesh_health_check_item_spec.go
   - internal/provider/types/mesh_health_check_item_to.go
-  - internal/provider/types/mesh_http_route_item.go
   - internal/provider/types/mesh_http_route_item_default.go
   - internal/provider/types/mesh_http_route_item_rules.go
   - internal/provider/types/mesh_http_route_item_spec.go
   - internal/provider/types/mesh_http_route_item_spec_path.go
   - internal/provider/types/mesh_http_route_item_to.go
-  - internal/provider/types/mesh_item.go
+  - internal/provider/types/mesh_identity_item_file.go
+  - internal/provider/types/mesh_identity_item_selector.go
+  - internal/provider/types/mesh_identity_item_spec.go
+  - internal/provider/types/mesh_identity_item_status.go
   - internal/provider/types/mesh_item_backends.go
   - internal/provider/types/mesh_item_conf.go
   - internal/provider/types/mesh_item_logging_conf.go
@@ -533,96 +443,85 @@ generatedFiles:
   - internal/provider/types/mesh_item_mtls_conf.go
   - internal/provider/types/mesh_item_tracing_backends.go
   - internal/provider/types/mesh_item_tracing_conf.go
-  - internal/provider/types/mesh_load_balancing_strategy_item.go
   - internal/provider/types/mesh_load_balancing_strategy_item_default.go
   - internal/provider/types/mesh_load_balancing_strategy_item_from.go
   - internal/provider/types/mesh_load_balancing_strategy_item_spec.go
-  - internal/provider/types/mesh_load_balancing_strategy_item_spec_header.go
   - internal/provider/types/mesh_load_balancing_strategy_item_spec_to.go
   - internal/provider/types/mesh_load_balancing_strategy_item_to.go
-  - internal/provider/types/mesh_metric_item.go
   - internal/provider/types/mesh_metric_item_backends.go
   - internal/provider/types/mesh_metric_item_spec.go
   - internal/provider/types/mesh_metric_item_tls.go
-  - internal/provider/types/mesh_multi_zone_service_item.go
-  - internal/provider/types/mesh_multi_zone_service_item_mesh_service.go
   - internal/provider/types/mesh_multi_zone_service_item_mesh_services.go
   - internal/provider/types/mesh_multi_zone_service_item_selector.go
   - internal/provider/types/mesh_multi_zone_service_item_spec.go
   - internal/provider/types/mesh_multi_zone_service_item_status.go
-  - internal/provider/types/mesh_opa_item.go
   - internal/provider/types/mesh_opa_item_default.go
   - internal/provider/types/mesh_opa_item_spec.go
-  - internal/provider/types/mesh_passthrough_item.go
   - internal/provider/types/mesh_passthrough_item_default.go
   - internal/provider/types/mesh_passthrough_item_spec.go
-  - internal/provider/types/mesh_proxy_patch_item.go
   - internal/provider/types/mesh_proxy_patch_item_default.go
   - internal/provider/types/mesh_proxy_patch_item_match.go
   - internal/provider/types/mesh_proxy_patch_item_spec.go
   - internal/provider/types/mesh_proxy_patch_item_spec_default_append_modifications_cluster_match.go
   - internal/provider/types/mesh_proxy_patch_item_spec_default_append_modifications_match.go
   - internal/provider/types/mesh_proxy_patch_item_spec_match.go
-  - internal/provider/types/mesh_rate_limit_item.go
   - internal/provider/types/mesh_rate_limit_item_default.go
   - internal/provider/types/mesh_rate_limit_item_from.go
   - internal/provider/types/mesh_rate_limit_item_http.go
   - internal/provider/types/mesh_rate_limit_item_rules.go
   - internal/provider/types/mesh_rate_limit_item_spec.go
   - internal/provider/types/mesh_rate_limit_item_tcp.go
-  - internal/provider/types/mesh_retry_item.go
   - internal/provider/types/mesh_retry_item_default.go
   - internal/provider/types/mesh_retry_item_grpc.go
   - internal/provider/types/mesh_retry_item_http.go
   - internal/provider/types/mesh_retry_item_spec.go
   - internal/provider/types/mesh_retry_item_tcp.go
   - internal/provider/types/mesh_retry_item_to.go
-  - internal/provider/types/mesh_service_item.go
   - internal/provider/types/mesh_service_item_ports.go
   - internal/provider/types/mesh_service_item_selector.go
   - internal/provider/types/mesh_service_item_spec.go
   - internal/provider/types/mesh_service_item_status.go
   - internal/provider/types/mesh_service_item_tls.go
   - internal/provider/types/mesh_services.go
-  - internal/provider/types/mesh_tcp_route_item.go
   - internal/provider/types/mesh_tcp_route_item_default.go
   - internal/provider/types/mesh_tcp_route_item_rules.go
   - internal/provider/types/mesh_tcp_route_item_spec.go
   - internal/provider/types/mesh_tcp_route_item_to.go
-  - internal/provider/types/mesh_timeout_item.go
   - internal/provider/types/mesh_timeout_item_default.go
   - internal/provider/types/mesh_timeout_item_from.go
   - internal/provider/types/mesh_timeout_item_http.go
   - internal/provider/types/mesh_timeout_item_rules.go
   - internal/provider/types/mesh_timeout_item_spec.go
-  - internal/provider/types/mesh_tls_item.go
   - internal/provider/types/mesh_tls_item_default.go
   - internal/provider/types/mesh_tls_item_from.go
   - internal/provider/types/mesh_tls_item_rules.go
   - internal/provider/types/mesh_tls_item_spec.go
-  - internal/provider/types/mesh_trace_item.go
   - internal/provider/types/mesh_trace_item_backends.go
   - internal/provider/types/mesh_trace_item_default.go
   - internal/provider/types/mesh_trace_item_open_telemetry.go
   - internal/provider/types/mesh_trace_item_spec.go
-  - internal/provider/types/mesh_traffic_permission_item.go
   - internal/provider/types/mesh_traffic_permission_item_default.go
   - internal/provider/types/mesh_traffic_permission_item_from.go
+  - internal/provider/types/mesh_traffic_permission_item_rules.go
   - internal/provider/types/mesh_traffic_permission_item_spec.go
+  - internal/provider/types/mesh_traffic_permission_item_spec_default.go
+  - internal/provider/types/mesh_trust_item_spec.go
   - internal/provider/types/metrics.go
   - internal/provider/types/metrics_absolute_time_range_dto_v2.go
   - internal/provider/types/metrics_relative_time_range_dto_v2.go
   - internal/provider/types/mtls.go
+  - internal/provider/types/namespace_exact_allow_list_item.go
   - internal/provider/types/networking.go
   - internal/provider/types/on_rate_limit.go
   - internal/provider/types/open_telemetry.go
-  - internal/provider/types/options_obj.go
+  - internal/provider/types/origin.go
   - internal/provider/types/outbound.go
   - internal/provider/types/outlier_detection.go
   - internal/provider/types/page_meta.go
   - internal/provider/types/paginated_meta.go
   - internal/provider/types/path.go
   - internal/provider/types/portal_claim_mappings.go
+  - internal/provider/types/portal_filter_parameters.go
   - internal/provider/types/portal_footer_menu_section.go
   - internal/provider/types/portal_menu_item.go
   - internal/provider/types/portal_oidc_config.go
@@ -633,6 +532,7 @@ generatedFiles:
   - internal/provider/types/prometheus.go
   - internal/provider/types/prometheus_metrics_backend_config.go
   - internal/provider/types/provided_certificate_authority_config.go
+  - internal/provider/types/provider.go
   - internal/provider/types/query.go
   - internal/provider/types/query_params.go
   - internal/provider/types/rate_limit_service.go
@@ -653,15 +553,21 @@ generatedFiles:
   - internal/provider/types/routing.go
   - internal/provider/types/rules.go
   - internal/provider/types/sampling.go
+  - internal/provider/types/schema_registry_authentication_scheme.go
+  - internal/provider/types/schema_registry_confluent.go
+  - internal/provider/types/schema_registry_confluent_config.go
+  - internal/provider/types/secret_ref.go
   - internal/provider/types/selector.go
   - internal/provider/types/selectors.go
   - internal/provider/types/service_reference.go
   - internal/provider/types/sidecar.go
   - internal/provider/types/single_value_chart.go
   - internal/provider/types/size.go
-  - internal/provider/types/spec.go
   - internal/provider/types/spec_renderer.go
+  - internal/provider/types/spiffe_id.go
+  - internal/provider/types/spire.go
   - internal/provider/types/status.go
+  - internal/provider/types/string_field_filter.go
   - internal/provider/types/subject_alt_names.go
   - internal/provider/types/success_rate.go
   - internal/provider/types/tags.go
@@ -673,11 +579,29 @@ generatedFiles:
   - internal/provider/types/tls.go
   - internal/provider/types/tracing.go
   - internal/provider/types/url_rewrite.go
+  - internal/provider/types/uuid_field_filter.go
   - internal/provider/types/validation_messages.go
   - internal/provider/types/vault_certificate_authority_config.go
   - internal/provider/types/verification.go
   - internal/provider/types/version.go
   - internal/provider/types/vip.go
+  - internal/provider/types/virtual_cluster_authentication_audience.go
+  - internal/provider/types/virtual_cluster_authentication_claims_mapping.go
+  - internal/provider/types/virtual_cluster_authentication_jwks.go
+  - internal/provider/types/virtual_cluster_authentication_oauth_bearer.go
+  - internal/provider/types/virtual_cluster_authentication_principal.go
+  - internal/provider/types/virtual_cluster_authentication_sasl_plain.go
+  - internal/provider/types/virtual_cluster_authentication_sasl_scram.go
+  - internal/provider/types/virtual_cluster_authentication_scheme.go
+  - internal/provider/types/virtual_cluster_authentication_validate.go
+  - internal/provider/types/virtual_cluster_namespace.go
+  - internal/provider/types/virtual_cluster_namespace_additional_properties.go
+  - internal/provider/types/virtual_cluster_namespace_id_selector.go
+  - internal/provider/types/virtual_cluster_namespace_id_selector_exact_list.go
+  - internal/provider/types/virtual_cluster_namespace_id_selector_glob.go
+  - internal/provider/types/virtual_cluster_namespace_topic_selector.go
+  - internal/provider/types/virtual_cluster_namespace_topic_selector_exact_list.go
+  - internal/provider/types/virtual_cluster_namespace_topic_selector_glob.go
   - internal/provider/types/virtual_host.go
   - internal/provider/types/zipkin.go
   - internal/provider/types/zipkin_tracing_backend_config.go
@@ -696,7 +620,14 @@ generatedFiles:
   - internal/sdk/authserverscopes.go
   - internal/sdk/dashboards.go
   - internal/sdk/docs/models/operations/option.md
+  - internal/sdk/eventgatewaybackendclusters.go
+  - internal/sdk/eventgatewaydataplanecertificates.go
+  - internal/sdk/eventgatewaylisteners.go
+  - internal/sdk/eventgatewayschemaregistries.go
+  - internal/sdk/eventgatewayvaults.go
+  - internal/sdk/eventgatewayvirtualclusters.go
   - internal/sdk/hostnamegenerator.go
+  - internal/sdk/houdinieventgateways.go
   - internal/sdk/internal/config/sdkconfiguration.go
   - internal/sdk/internal/hooks/hooks.go
   - internal/sdk/internal/utils/contenttype.go
@@ -720,6 +651,7 @@ generatedFiles:
   - internal/sdk/meshglobalratelimit.go
   - internal/sdk/meshhealthcheck.go
   - internal/sdk/meshhttproute.go
+  - internal/sdk/meshidentity.go
   - internal/sdk/meshloadbalancingstrategy.go
   - internal/sdk/meshmetric.go
   - internal/sdk/meshmultizoneservice.go
@@ -734,6 +666,7 @@ generatedFiles:
   - internal/sdk/meshtls.go
   - internal/sdk/meshtrace.go
   - internal/sdk/meshtrafficpermission.go
+  - internal/sdk/meshtrust.go
   - internal/sdk/models/errors/sdkerror.go
   - internal/sdk/models/operations/createapi.go
   - internal/sdk/models/operations/createapidocument.go
@@ -745,6 +678,13 @@ generatedFiles:
   - internal/sdk/models/operations/createauthserverclient.go
   - internal/sdk/models/operations/createauthserverscope.go
   - internal/sdk/models/operations/createcp.go
+  - internal/sdk/models/operations/createeventgateway.go
+  - internal/sdk/models/operations/createeventgatewaybackendcluster.go
+  - internal/sdk/models/operations/createeventgatewaydataplanecertificate.go
+  - internal/sdk/models/operations/createeventgatewaylistener.go
+  - internal/sdk/models/operations/createeventgatewayschemaregistry.go
+  - internal/sdk/models/operations/createeventgatewayvault.go
+  - internal/sdk/models/operations/createeventgatewayvirtualcluster.go
   - internal/sdk/models/operations/createportal.go
   - internal/sdk/models/operations/createportalcustomdomain.go
   - internal/sdk/models/operations/createportalpage.go
@@ -763,6 +703,13 @@ generatedFiles:
   - internal/sdk/models/operations/deleteauthserverclaim.go
   - internal/sdk/models/operations/deleteauthserverclient.go
   - internal/sdk/models/operations/deleteauthserverscope.go
+  - internal/sdk/models/operations/deleteeventgateway.go
+  - internal/sdk/models/operations/deleteeventgatewaybackendcluster.go
+  - internal/sdk/models/operations/deleteeventgatewaydataplanecertificate.go
+  - internal/sdk/models/operations/deleteeventgatewaylistener.go
+  - internal/sdk/models/operations/deleteeventgatewayschemaregistry.go
+  - internal/sdk/models/operations/deleteeventgatewayvault.go
+  - internal/sdk/models/operations/deleteeventgatewayvirtualcluster.go
   - internal/sdk/models/operations/deletehostnamegenerator.go
   - internal/sdk/models/operations/deletemesh.go
   - internal/sdk/models/operations/deletemeshaccesslog.go
@@ -774,6 +721,7 @@ generatedFiles:
   - internal/sdk/models/operations/deletemeshglobalratelimit.go
   - internal/sdk/models/operations/deletemeshhealthcheck.go
   - internal/sdk/models/operations/deletemeshhttproute.go
+  - internal/sdk/models/operations/deletemeshidentity.go
   - internal/sdk/models/operations/deletemeshloadbalancingstrategy.go
   - internal/sdk/models/operations/deletemeshmetric.go
   - internal/sdk/models/operations/deletemeshmultizoneservice.go
@@ -788,6 +736,7 @@ generatedFiles:
   - internal/sdk/models/operations/deletemeshtls.go
   - internal/sdk/models/operations/deletemeshtrace.go
   - internal/sdk/models/operations/deletemeshtrafficpermission.go
+  - internal/sdk/models/operations/deletemeshtrust.go
   - internal/sdk/models/operations/deleteportal.go
   - internal/sdk/models/operations/deleteportalcustomdomain.go
   - internal/sdk/models/operations/deleteportalpage.go
@@ -804,6 +753,13 @@ generatedFiles:
   - internal/sdk/models/operations/getauthserverclaim.go
   - internal/sdk/models/operations/getauthserverclient.go
   - internal/sdk/models/operations/getauthserverscope.go
+  - internal/sdk/models/operations/geteventgateway.go
+  - internal/sdk/models/operations/geteventgatewaybackendcluster.go
+  - internal/sdk/models/operations/geteventgatewaydataplanecertificate.go
+  - internal/sdk/models/operations/geteventgatewaylistener.go
+  - internal/sdk/models/operations/geteventgatewayschemaregistry.go
+  - internal/sdk/models/operations/geteventgatewayvault.go
+  - internal/sdk/models/operations/geteventgatewayvirtualcluster.go
   - internal/sdk/models/operations/gethostnamegenerator.go
   - internal/sdk/models/operations/gethostnamegeneratorlist.go
   - internal/sdk/models/operations/getmesh.go
@@ -824,6 +780,8 @@ generatedFiles:
   - internal/sdk/models/operations/getmeshhealthchecklist.go
   - internal/sdk/models/operations/getmeshhttproute.go
   - internal/sdk/models/operations/getmeshhttproutelist.go
+  - internal/sdk/models/operations/getmeshidentity.go
+  - internal/sdk/models/operations/getmeshidentitylist.go
   - internal/sdk/models/operations/getmeshlist.go
   - internal/sdk/models/operations/getmeshloadbalancingstrategy.go
   - internal/sdk/models/operations/getmeshloadbalancingstrategylist.go
@@ -853,6 +811,8 @@ generatedFiles:
   - internal/sdk/models/operations/getmeshtracelist.go
   - internal/sdk/models/operations/getmeshtrafficpermission.go
   - internal/sdk/models/operations/getmeshtrafficpermissionlist.go
+  - internal/sdk/models/operations/getmeshtrust.go
+  - internal/sdk/models/operations/getmeshtrustlist.go
   - internal/sdk/models/operations/getportal.go
   - internal/sdk/models/operations/getportalassetfavicon.go
   - internal/sdk/models/operations/getportalassetlogo.go
@@ -863,6 +823,7 @@ generatedFiles:
   - internal/sdk/models/operations/getportalsnippet.go
   - internal/sdk/models/operations/getportalteam.go
   - internal/sdk/models/operations/listmeshcontrolplanes.go
+  - internal/sdk/models/operations/listportals.go
   - internal/sdk/models/operations/options.go
   - internal/sdk/models/operations/publishapitoportal.go
   - internal/sdk/models/operations/puthostnamegenerator.go
@@ -875,6 +836,7 @@ generatedFiles:
   - internal/sdk/models/operations/putmeshglobalratelimit.go
   - internal/sdk/models/operations/putmeshhealthcheck.go
   - internal/sdk/models/operations/putmeshhttproute.go
+  - internal/sdk/models/operations/putmeshidentity.go
   - internal/sdk/models/operations/putmeshloadbalancingstrategy.go
   - internal/sdk/models/operations/putmeshmetric.go
   - internal/sdk/models/operations/putmeshmultizoneservice.go
@@ -889,6 +851,7 @@ generatedFiles:
   - internal/sdk/models/operations/putmeshtls.go
   - internal/sdk/models/operations/putmeshtrace.go
   - internal/sdk/models/operations/putmeshtrafficpermission.go
+  - internal/sdk/models/operations/putmeshtrust.go
   - internal/sdk/models/operations/replaceauthserverclient.go
   - internal/sdk/models/operations/replaceportalassetfavicon.go
   - internal/sdk/models/operations/replaceportalassetlogo.go
@@ -901,6 +864,13 @@ generatedFiles:
   - internal/sdk/models/operations/updateauthserverclaim.go
   - internal/sdk/models/operations/updateauthserverscope.go
   - internal/sdk/models/operations/updatecp.go
+  - internal/sdk/models/operations/updateeventgatewaybackendcluster.go
+  - internal/sdk/models/operations/updateeventgatewaydataplanecertificate.go
+  - internal/sdk/models/operations/updateeventgatewaylistener.go
+  - internal/sdk/models/operations/updateeventgatewayschemaregistry.go
+  - internal/sdk/models/operations/updateeventgatewayvault.go
+  - internal/sdk/models/operations/updateeventgatewayvirtualcluster.go
+  - internal/sdk/models/operations/updatehoudinieventgateway.go
   - internal/sdk/models/operations/updateportal.go
   - internal/sdk/models/operations/updateportalauthenticationsettings.go
   - internal/sdk/models/operations/updateportalcustomdomain.go
@@ -930,8 +900,18 @@ generatedFiles:
   - internal/sdk/models/shared/apiversionresponse.go
   - internal/sdk/models/shared/apiversionsummary.go
   - internal/sdk/models/shared/authserver.go
+  - internal/sdk/models/shared/backendcluster.go
+  - internal/sdk/models/shared/backendclusterauthenticationanonymous.go
+  - internal/sdk/models/shared/backendclusterauthenticationsaslplain.go
+  - internal/sdk/models/shared/backendclusterauthenticationsaslscram.go
+  - internal/sdk/models/shared/backendclusterauthenticationscheme.go
+  - internal/sdk/models/shared/backendclusterreference.go
+  - internal/sdk/models/shared/backendclusterreferencemodify.go
+  - internal/sdk/models/shared/backendclustertls.go
   - internal/sdk/models/shared/badrequesterror.go
   - internal/sdk/models/shared/barchart.go
+  - internal/sdk/models/shared/baseerror.go
+  - internal/sdk/models/shared/certificatemetadata.go
   - internal/sdk/models/shared/chart.go
   - internal/sdk/models/shared/charttile.go
   - internal/sdk/models/shared/claim.go
@@ -942,9 +922,13 @@ generatedFiles:
   - internal/sdk/models/shared/createapispecrequest.go
   - internal/sdk/models/shared/createapiversionrequest.go
   - internal/sdk/models/shared/createauthserver.go
+  - internal/sdk/models/shared/createbackendclusterrequest.go
   - internal/sdk/models/shared/createclaim.go
   - internal/sdk/models/shared/createclient.go
   - internal/sdk/models/shared/createdclient.go
+  - internal/sdk/models/shared/createeventgatewaydataplanecertificaterequest.go
+  - internal/sdk/models/shared/createeventgatewaylistenerrequest.go
+  - internal/sdk/models/shared/creategatewayrequest.go
   - internal/sdk/models/shared/createmeshcontrolplanerequest.go
   - internal/sdk/models/shared/createportal.go
   - internal/sdk/models/shared/createportalcustomdomainrequest.go
@@ -952,10 +936,18 @@ generatedFiles:
   - internal/sdk/models/shared/createportalpagerequest.go
   - internal/sdk/models/shared/createportalsnippetrequest.go
   - internal/sdk/models/shared/createscope.go
+  - internal/sdk/models/shared/createvirtualclusterrequest.go
   - internal/sdk/models/shared/dashboard.go
   - internal/sdk/models/shared/dashboardresponse.go
   - internal/sdk/models/shared/dashboardupdaterequest.go
   - internal/sdk/models/shared/donutchart.go
+  - internal/sdk/models/shared/eventgatewaydataplanecertificate.go
+  - internal/sdk/models/shared/eventgatewayenvvault.go
+  - internal/sdk/models/shared/eventgatewayinfo.go
+  - internal/sdk/models/shared/eventgatewaykonnectvault.go
+  - internal/sdk/models/shared/eventgatewaylistener.go
+  - internal/sdk/models/shared/eventgatewaymodifyvault.go
+  - internal/sdk/models/shared/eventgatewayvault.go
   - internal/sdk/models/shared/forbiddenerror.go
   - internal/sdk/models/shared/granttype.go
   - internal/sdk/models/shared/granularity.go
@@ -971,6 +963,7 @@ generatedFiles:
   - internal/sdk/models/shared/invalidparameterstandard.go
   - internal/sdk/models/shared/invalidrules.go
   - internal/sdk/models/shared/listmeshcontrolplanesresponse.go
+  - internal/sdk/models/shared/listportalsresponse.go
   - internal/sdk/models/shared/llmfilters.go
   - internal/sdk/models/shared/llmmetrics.go
   - internal/sdk/models/shared/llmquery.go
@@ -1012,6 +1005,10 @@ generatedFiles:
   - internal/sdk/models/shared/meshhttproutedeletesuccessresponse.go
   - internal/sdk/models/shared/meshhttprouteitem.go
   - internal/sdk/models/shared/meshhttproutelist.go
+  - internal/sdk/models/shared/meshidentitycreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/meshidentitydeletesuccessresponse.go
+  - internal/sdk/models/shared/meshidentityitem.go
+  - internal/sdk/models/shared/meshidentitylist.go
   - internal/sdk/models/shared/meshitem.go
   - internal/sdk/models/shared/meshlist.go
   - internal/sdk/models/shared/meshloadbalancingstrategycreateorupdatesuccessresponse.go
@@ -1070,8 +1067,14 @@ generatedFiles:
   - internal/sdk/models/shared/meshtrafficpermissiondeletesuccessresponse.go
   - internal/sdk/models/shared/meshtrafficpermissionitem.go
   - internal/sdk/models/shared/meshtrafficpermissionlist.go
+  - internal/sdk/models/shared/meshtrustcreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/meshtrustdeletesuccessresponse.go
+  - internal/sdk/models/shared/meshtrustitem.go
+  - internal/sdk/models/shared/meshtrustlist.go
   - internal/sdk/models/shared/metricsabsolutetimerangedtov2.go
   - internal/sdk/models/shared/metricsrelativetimerangedtov2.go
+  - internal/sdk/models/shared/modifyschemaregistry.go
+  - internal/sdk/models/shared/namespaceexactallowlistitem.go
   - internal/sdk/models/shared/notfounderror.go
   - internal/sdk/models/shared/pagemeta.go
   - internal/sdk/models/shared/pagevisibilitystatus.go
@@ -1087,6 +1090,7 @@ generatedFiles:
   - internal/sdk/models/shared/portalcustomdomainverificationmethod.go
   - internal/sdk/models/shared/portalcustomdomainverificationstatus.go
   - internal/sdk/models/shared/portalcustomization.go
+  - internal/sdk/models/shared/portalfilterparameters.go
   - internal/sdk/models/shared/portalfootermenusection.go
   - internal/sdk/models/shared/portalmenuitem.go
   - internal/sdk/models/shared/portaloidcconfig.go
@@ -1100,26 +1104,57 @@ generatedFiles:
   - internal/sdk/models/shared/replaceclient.go
   - internal/sdk/models/shared/replaceportalimageasset.go
   - internal/sdk/models/shared/responsetype.go
+  - internal/sdk/models/shared/schemaregistry.go
+  - internal/sdk/models/shared/schemaregistryauthenticationbasic.go
+  - internal/sdk/models/shared/schemaregistryauthenticationscheme.go
+  - internal/sdk/models/shared/schemaregistryconfluent.go
   - internal/sdk/models/shared/scope.go
   - internal/sdk/models/shared/security.go
   - internal/sdk/models/shared/servicereference.go
   - internal/sdk/models/shared/singlevaluechart.go
   - internal/sdk/models/shared/snippetvisibilitystatus.go
+  - internal/sdk/models/shared/stringfieldfilter.go
   - internal/sdk/models/shared/tile.go
   - internal/sdk/models/shared/timerange.go
   - internal/sdk/models/shared/timeserieschart.go
+  - internal/sdk/models/shared/tokenendpointauthmethod.go
   - internal/sdk/models/shared/unauthorizederror.go
   - internal/sdk/models/shared/unsupportedmediatypeerror.go
   - internal/sdk/models/shared/updatealgorithm.go
   - internal/sdk/models/shared/updateapirequest.go
   - internal/sdk/models/shared/updateauthserver.go
+  - internal/sdk/models/shared/updatebackendclusterrequest.go
   - internal/sdk/models/shared/updateclaim.go
+  - internal/sdk/models/shared/updateeventgatewaydataplanecertificaterequest.go
+  - internal/sdk/models/shared/updateeventgatewaylistenerrequest.go
+  - internal/sdk/models/shared/updategatewayrequest.go
   - internal/sdk/models/shared/updateportal.go
   - internal/sdk/models/shared/updateportalcustomdomainrequest.go
   - internal/sdk/models/shared/updateportalcustomdomainssl.go
   - internal/sdk/models/shared/updateportalpagerequest.go
   - internal/sdk/models/shared/updateportalsnippetrequest.go
   - internal/sdk/models/shared/updatescope.go
+  - internal/sdk/models/shared/updatevirtualclusterrequest.go
+  - internal/sdk/models/shared/uuidfieldfilter.go
+  - internal/sdk/models/shared/virtualcluster.go
+  - internal/sdk/models/shared/virtualclusterauthenticationanonymous.go
+  - internal/sdk/models/shared/virtualclusterauthenticationaudience.go
+  - internal/sdk/models/shared/virtualclusterauthenticationclaimsmapping.go
+  - internal/sdk/models/shared/virtualclusterauthenticationjwks.go
+  - internal/sdk/models/shared/virtualclusterauthenticationoauthbearer.go
+  - internal/sdk/models/shared/virtualclusterauthenticationprincipal.go
+  - internal/sdk/models/shared/virtualclusterauthenticationsaslplain.go
+  - internal/sdk/models/shared/virtualclusterauthenticationsaslscram.go
+  - internal/sdk/models/shared/virtualclusterauthenticationscheme.go
+  - internal/sdk/models/shared/virtualclusterauthenticationvalidate.go
+  - internal/sdk/models/shared/virtualclusternamespace.go
+  - internal/sdk/models/shared/virtualclusternamespaceadditionalproperties.go
+  - internal/sdk/models/shared/virtualclusternamespaceidselector.go
+  - internal/sdk/models/shared/virtualclusternamespaceidselectorexactlist.go
+  - internal/sdk/models/shared/virtualclusternamespaceidselectorglob.go
+  - internal/sdk/models/shared/virtualclusternamespacetopicselector.go
+  - internal/sdk/models/shared/virtualclusternamespacetopicselectorexactlist.go
+  - internal/sdk/models/shared/virtualclusternamespacetopicselectorglob.go
   - internal/sdk/models/shared/visibilitystatus.go
   - internal/sdk/pages.go
   - internal/sdk/portalauthsettings.go
@@ -1156,10 +1191,10 @@ examples:
   create-portal:
     speakeasy-default-create-portal:
       requestBody:
-        application/json: {"name": "<value>", "labels": {"env": "test"}}
+        application/json: {"name": "<value>", "description": null, "authentication_enabled": true, "rbac_enabled": false, "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "<value>", "display_name": "Ahmed41", "description": "circa dislocate and woot", "authentication_enabled": true, "rbac_enabled": false, "default_api_visibility": "private", "default_page_visibility": "private", "default_application_auth_strategy_id": "2d549e28-5d56-4dc7-9c34-242786ac720a", "auto_approve_developers": false, "auto_approve_applications": false, "default_domain": "tattered-verve.info", "canonical_domain": "crafty-jury.com", "labels": {"env": "test"}}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "<value>", "display_name": "Ahmed41", "description": null, "authentication_enabled": true, "rbac_enabled": false, "default_api_visibility": "private", "default_page_visibility": "private", "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "default_domain": "tattered-verve.info", "canonical_domain": "crafty-jury.com", "labels": {"env": "test"}}
         "400":
           application/problem+json: {"status": 114263, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>"], "source": "body"}]}
         "401":
@@ -1173,7 +1208,7 @@ examples:
           portalId: "1672e313-9f8e-4485-a62b-716aad351889"
       responses:
         "200":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "<value>", "display_name": "Brenna55", "description": "beep however from serialize seldom before contrail reconstitute at scuttle", "authentication_enabled": true, "rbac_enabled": true, "default_api_visibility": "private", "default_page_visibility": "private", "default_application_auth_strategy_id": "0603a6ed-afc4-4eb7-8184-f2cfb7cd2e06", "auto_approve_developers": true, "auto_approve_applications": true, "default_domain": "crooked-tinderbox.biz", "canonical_domain": "intent-cricket.net", "labels": {"env": "test"}}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "<value>", "display_name": "Brenna55", "description": null, "authentication_enabled": true, "rbac_enabled": false, "default_api_visibility": "private", "default_page_visibility": "private", "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "default_domain": "crooked-tinderbox.biz", "canonical_domain": "intent-cricket.net", "labels": {"env": "test"}}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -1186,10 +1221,10 @@ examples:
         path:
           portalId: "efe853b6-a55c-4929-9b80-c39a22b01c7a"
       requestBody:
-        application/json: {"labels": {"env": "test"}}
+        application/json: {"name": null, "description": null, "authentication_enabled": true, "rbac_enabled": false, "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "<value>", "display_name": "Adaline.Nolan", "description": "however that unless", "authentication_enabled": true, "rbac_enabled": true, "default_api_visibility": "public", "default_page_visibility": "private", "default_application_auth_strategy_id": "801b530d-f1fd-4f7c-bae3-c44496492f0f", "auto_approve_developers": false, "auto_approve_applications": true, "default_domain": "animated-bathrobe.name", "canonical_domain": "inferior-offset.name", "labels": {"env": "test"}}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "<value>", "display_name": "Adaline.Nolan", "description": null, "authentication_enabled": true, "rbac_enabled": false, "default_api_visibility": "public", "default_page_visibility": "private", "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "default_domain": "animated-bathrobe.name", "canonical_domain": "inferior-offset.name", "labels": {"env": "test"}}
         "400":
           application/problem+json: {"status": 293102, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
@@ -1252,7 +1287,7 @@ examples:
         path:
           portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
-        application/json: {}
+        application/json: {"enabled": null}
       responses:
         "200":
           application/json: {"hostname": "bad-dream.biz", "enabled": true, "ssl": {"domain_verification_method": "http", "verification_status": "pending", "uploaded_at": "2022-11-04T20:10:06.927Z", "expires_at": "2022-11-04T20:10:06.927Z"}, "cname_status": "verified", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -1277,7 +1312,7 @@ examples:
           portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
-          application/json: {"theme": {"colors": {"primary": "#000000"}}, "menu": {"main": [{"path": "/about/company", "title": "My Page", "visibility": "public", "external": true}, {"path": "/about/company", "title": "My Page", "visibility": "public", "external": true}, {"path": "/about/company", "title": "My Page", "visibility": "public", "external": true}], "footer_sections": [{"title": "<value>", "items": []}, {"title": "<value>", "items": []}, {"title": "<value>", "items": []}], "footer_bottom": [{"path": "/about/company", "title": "My Page", "visibility": "public", "external": false}, {"path": "/about/company", "title": "My Page", "visibility": "public", "external": false}]}}
+          application/json: {"theme": {"colors": {"primary": "#000000"}}, "css": null, "menu": {"main": null, "footer_sections": null, "footer_bottom": null}, "robots": null}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -1290,10 +1325,10 @@ examples:
         path:
           portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
-        application/json: {"theme": {"colors": {"primary": "#000000"}}, "menu": {"main": [{"path": "/about/company", "title": "My Page", "visibility": "public", "external": true}, {"path": "/about/company", "title": "My Page", "visibility": "public", "external": true}], "footer_sections": [{"title": "<value>", "items": [{"path": "/about/company", "title": "My Page", "visibility": "public", "external": false}, {"path": "/about/company", "title": "My Page", "visibility": "public", "external": false}]}, {"title": "<value>", "items": [{"path": "/about/company", "title": "My Page", "visibility": "public", "external": false}, {"path": "/about/company", "title": "My Page", "visibility": "public", "external": false}]}, {"title": "<value>", "items": [{"path": "/about/company", "title": "My Page", "visibility": "public", "external": false}, {"path": "/about/company", "title": "My Page", "visibility": "public", "external": false}]}], "footer_bottom": [{"path": "/about/company", "title": "My Page", "visibility": "public", "external": true}]}}
+        application/json: {"theme": {"colors": {"primary": "#000000"}}, "css": null, "menu": {"main": null, "footer_sections": null, "footer_bottom": null}, "robots": null}
       responses:
         "200":
-          application/json: {"theme": {"colors": {"primary": "#000000"}}, "menu": {"main": [{"path": "/about/company", "title": "My Page", "visibility": "public", "external": true}, {"path": "/about/company", "title": "My Page", "visibility": "public", "external": true}], "footer_sections": [{"title": "<value>", "items": [{"path": "/about/company", "title": "My Page", "visibility": "public", "external": false}, {"path": "/about/company", "title": "My Page", "visibility": "public", "external": false}]}, {"title": "<value>", "items": [{"path": "/about/company", "title": "My Page", "visibility": "public", "external": false}, {"path": "/about/company", "title": "My Page", "visibility": "public", "external": false}]}, {"title": "<value>", "items": [{"path": "/about/company", "title": "My Page", "visibility": "public", "external": false}, {"path": "/about/company", "title": "My Page", "visibility": "public", "external": false}]}], "footer_bottom": [{"path": "/about/company", "title": "My Page", "visibility": "public", "external": true}]}}
+          application/json: {"theme": {"colors": {"primary": "#000000"}}, "css": null, "menu": {"main": null, "footer_sections": null, "footer_bottom": null}, "robots": null}
         "400":
           application/problem+json: {"status": 301976, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
@@ -1439,7 +1474,7 @@ examples:
           portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
-          application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": true, "oidc_team_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_config": {"issuer": "https://identity.example.com/v2", "client_id": "x7id0o42lklas0blidl2", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}}
+          application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": true, "saml_auth_enabled": false, "oidc_team_mapping_enabled": true, "idp_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_config": {"issuer": "https://identity.example.com/v2", "client_id": "x7id0o42lklas0blidl2", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
   update-portal-authentication-settings:
@@ -1448,10 +1483,10 @@ examples:
         path:
           portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
-        application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": true, "oidc_team_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_issuer": "https://identity.example.com/v2", "oidc_client_id": "x7id0o42lklas0blidl2", "oidc_scopes": ["email", "openid", "profile"], "oidc_claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}
+        application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": true, "oidc_team_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_issuer": "https://identity.example.com/v2", "oidc_client_id": "x7id0o42lklas0blidl2", "oidc_client_secret": null, "oidc_scopes": ["email", "openid", "profile"], "oidc_claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}
       responses:
         "200":
-          application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": true, "oidc_team_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_config": {"issuer": "https://identity.example.com/v2", "client_id": "x7id0o42lklas0blidl2", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}}
+          application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": true, "saml_auth_enabled": false, "oidc_team_mapping_enabled": true, "idp_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_config": {"issuer": "https://identity.example.com/v2", "client_id": "x7id0o42lklas0blidl2", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}}
         "400":
           application/problem+json: {"status": 172805, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max_length", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>"], "source": "body"}, {"field": "name", "rule": "max_length", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
         "401":
@@ -1524,10 +1559,10 @@ examples:
   create-api:
     speakeasy-default-create-api:
       requestBody:
-        application/json: {"name": "MyAPI", "slug": "my-api-v1", "labels": {"env": "test"}}
+        application/json: {"name": "MyAPI", "description": null, "slug": "my-api-v1", "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "version": null, "current_version_summary": null, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "description": null, "version": null, "current_version_summary": null, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 497005, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -1545,7 +1580,7 @@ examples:
           apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
       responses:
         "200":
-          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "version": "<value>", "current_version_summary": {"id": "7710d5c4-d902-410b-992f-18b814155b53", "spec": {"type": "oas3"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "description": null, "version": "<value>", "current_version_summary": {"id": "7710d5c4-d902-410b-992f-18b814155b53", "version": null, "spec": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -1557,11 +1592,13 @@ examples:
       parameters:
         path:
           apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+        query:
+          force: "false"
       requestBody:
-        application/json: {"name": "MyAPI", "slug": "my-api-v1", "labels": {"env": "test"}}
+        application/json: {"name": "MyAPI", "description": null, "slug": "my-api-v1", "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "version": null, "current_version_summary": null, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "description": null, "version": null, "current_version_summary": null, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 683837, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
@@ -1572,6 +1609,8 @@ examples:
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
         "415":
           application/problem+json: {"status": 415, "title": "UnsupportedMediaType", "type": "https://httpstatuses.com/415", "instance": "kong:trace:1234567890", "detail": "UnsupportedMediaType"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
   delete-api:
     speakeasy-default-delete-api:
       parameters:
@@ -1603,7 +1642,7 @@ examples:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
         "409":
-          application/problem+json: {"status": 5450.12, "title": "<value>", "instance": "<value>"}
+          application/problem+json: {"status": 5450.12, "title": "<value>", "type": null, "instance": "<value>"}
         "415":
           application/problem+json: {"status": 415, "title": "UnsupportedMediaType", "type": "https://httpstatuses.com/415", "instance": "kong:trace:1234567890", "detail": "UnsupportedMediaType"}
   fetch-api-document:
@@ -1641,7 +1680,7 @@ examples:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
         "409":
-          application/problem+json: {"status": 9886.16, "title": "<value>", "instance": "<value>"}
+          application/problem+json: {"status": 9886.16, "title": "<value>", "type": null, "instance": "<value>"}
         "415":
           application/problem+json: {"status": 415, "title": "UnsupportedMediaType", "type": "https://httpstatuses.com/415", "instance": "kong:trace:1234567890", "detail": "UnsupportedMediaType"}
   delete-api-document:
@@ -1737,10 +1776,10 @@ examples:
           apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
           portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
-        application/json: {"visibility": "private"}
+        application/json: {"auth_strategy_ids": null, "visibility": "private"}
       responses:
         "200":
-          application/json: {"auth_strategy_ids": ["41a28ffa-8d19-4a07-8950-d17afdf264c3", "47897254-7536-4e18-933d-36f6f19560de", "2e9593d7-7ae5-4fea-8b30-468e0b35d343"], "visibility": "private", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"auth_strategy_ids": null, "visibility": "private", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 704017, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max_items", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
         "401":
@@ -1757,7 +1796,7 @@ examples:
           portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
-          application/json: {"auth_strategy_ids": ["fd67620f-4ce2-4d17-891d-0ce5e2473269", "610a06fd-2d27-4827-90ce-17a3b0edc2e0", "5c545cfb-eb28-4e88-a941-6f9007486ed5"], "visibility": "private", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"auth_strategy_ids": null, "visibility": "private", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -4033,7 +4072,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"type": "HostnameGenerator", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+          application/json: {"type": "HostnameGenerator", "name": "<value>", "spec": {"template": "<value>"}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteHostnameGenerator:
@@ -4074,7 +4113,7 @@ examples:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
           name: "<value>"
       requestBody:
-        application/json: {"type": "HostnameGenerator", "name": "<value>", "spec": {}}
+        application/json: {"type": "HostnameGenerator", "name": "<value>", "spec": {"extension": null, "selector": null, "template": null}}
       responses:
         "201":
           application/json: {}
@@ -4095,7 +4134,7 @@ examples:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
           name: "<value>"
       requestBody:
-        application/json: {"type": "HostnameGenerator", "name": "<value>", "spec": {}}
+        application/json: {"type": "HostnameGenerator", "name": "<value>", "spec": {"extension": null, "selector": null, "template": null}}
       responses:
         "200":
           application/json: {}
@@ -4121,7 +4160,7 @@ examples:
           filter: {}
       responses:
         "200":
-          application/json: {"items": [{"type": "HostnameGenerator", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+          application/json: {"items": null, "total": null, "next": null}
   getMeshExternalService:
     "":
       parameters:
@@ -4259,7 +4298,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"type": "MeshMultiZoneService", "mesh": "default", "name": "<value>", "spec": {"ports": [{"appProtocol": "tcp", "port": 585793}], "selector": {"meshService": {"matchLabels": {"key": "<value>"}}}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+          application/json: {"type": "MeshMultiZoneService", "mesh": "default", "name": "<value>", "spec": {"ports": [{"appProtocol": "tcp", "port": 585793}], "selector": {"meshService": {}}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshMultiZoneService:
@@ -4716,7 +4755,7 @@ examples:
         application/json: {"version": "1.0.0", "spec": {"content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}"}}
       responses:
         "201":
-          application/json: {"id": "7710d5c4-d902-410b-992f-18b814155b53", "version": "1.0.0", "spec": {"content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "type": "oas3"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "7710d5c4-d902-410b-992f-18b814155b53", "version": "1.0.0", "spec": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 856624, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -4738,7 +4777,7 @@ examples:
           versionId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
-          application/json: {"id": "7710d5c4-d902-410b-992f-18b814155b53", "version": "1.0.0", "spec": {"content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "type": "oas3"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "7710d5c4-d902-410b-992f-18b814155b53", "version": "1.0.0", "spec": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -4752,11 +4791,13 @@ examples:
           apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
           specId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
           versionId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+        query:
+          force: "false"
       requestBody:
-        application/json: {"version": "1.0.0", "spec": {"content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}"}}
+        application/json: {"version": "1.0.0", "spec": null}
       responses:
         "200":
-          application/json: {"id": "7710d5c4-d902-410b-992f-18b814155b53", "version": "1.0.0", "spec": {"content": "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}", "type": "oas3"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "7710d5c4-d902-410b-992f-18b814155b53", "version": "1.0.0", "spec": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 230880, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_items", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
@@ -4936,10 +4977,10 @@ examples:
         path:
           authServerId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
-        application/json: {"name": "<value>", "grant_types": ["client_credentials"], "response_types": [], "access_token_duration": 300, "id_token_duration": 300, "allow_all_scopes": false, "labels": {"env": "test"}}
+        application/json: {"name": "<value>", "grant_types": ["client_credentials"], "response_types": [], "login_uri": null, "access_token_duration": 300, "id_token_duration": 300, "allow_all_scopes": false, "labels": {"env": "test"}, "token_endpoint_auth_method": "client_secret_post"}
       responses:
         "201":
-          application/json: {"id": "kYa9iQFU5xPDSIUH9z1z", "name": "<value>", "grant_types": [], "redirect_uris": ["https://improbable-stitcher.net", "https://caring-switchboard.net"], "login_uri": "https://stunning-husband.info/", "access_token_duration": 300, "id_token_duration": 300, "allow_all_scopes": false, "allow_scopes": ["ee2ba59e-da21-42fb-8fe0-5795664e508c", "708d5afa-b5af-42bc-b519-345a24cd65bf"], "labels": {"env": "test"}, "response_types": ["none"], "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "client_secret": "YAzsyUlNZ5gNGeKS9H3VAdxVPzhPo4ae"}
+          application/json: {"id": "kYa9iQFU5xPDSIUH9z1z", "name": "<value>", "grant_types": [], "redirect_uris": ["https://improbable-stitcher.net", "https://caring-switchboard.net"], "login_uri": null, "access_token_duration": 300, "id_token_duration": 300, "allow_all_scopes": false, "allow_scopes": ["ee2ba59e-da21-42fb-8fe0-5795664e508c", "708d5afa-b5af-42bc-b519-345a24cd65bf"], "labels": {"env": "test"}, "response_types": ["none"], "token_endpoint_auth_method": "client_secret_post", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "client_secret": "YAzsyUlNZ5gNGeKS9H3VAdxVPzhPo4ae"}
         "400":
           application/problem+json: {"status": 696696, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_digits", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "404":
@@ -4954,7 +4995,7 @@ examples:
           clientId: "kYa9iQFU5xPDSIUH9z1z"
       responses:
         "200":
-          application/json: {"id": "kYa9iQFU5xPDSIUH9z1z", "name": "<value>", "grant_types": [], "redirect_uris": ["https://considerate-duster.org/", "https://mature-reward.name/"], "login_uri": "https://well-lit-suitcase.biz/", "access_token_duration": 300, "id_token_duration": 300, "allow_all_scopes": false, "allow_scopes": ["fa1d7070-1590-41da-bb80-cb595abf3c5a"], "labels": {"env": "test"}, "response_types": [], "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "kYa9iQFU5xPDSIUH9z1z", "name": "<value>", "grant_types": [], "redirect_uris": ["https://considerate-duster.org/", "https://mature-reward.name/"], "login_uri": null, "access_token_duration": 300, "id_token_duration": 300, "allow_all_scopes": false, "allow_scopes": ["fa1d7070-1590-41da-bb80-cb595abf3c5a"], "labels": {"env": "test"}, "response_types": [], "token_endpoint_auth_method": "client_secret_post", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   replaceAuthServerClient:
@@ -4964,10 +5005,10 @@ examples:
           authServerId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
           clientId: "kYa9iQFU5xPDSIUH9z1z"
       requestBody:
-        application/json: {"name": "<value>", "client_secret": "<value>", "grant_types": ["implicit"], "response_types": ["token"], "access_token_duration": 300, "id_token_duration": 300, "allow_all_scopes": false, "labels": {"env": "test"}}
+        application/json: {"name": "<value>", "client_secret": "<value>", "grant_types": ["implicit"], "response_types": ["token"], "login_uri": null, "access_token_duration": 300, "id_token_duration": 300, "allow_all_scopes": false, "token_endpoint_auth_method": "client_secret_post", "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"id": "kYa9iQFU5xPDSIUH9z1z", "name": "<value>", "grant_types": [], "redirect_uris": ["https://waterlogged-hawk.name", "https://difficult-dress.name/"], "login_uri": "https://forceful-runway.org/", "access_token_duration": 300, "id_token_duration": 300, "allow_all_scopes": false, "allow_scopes": ["93b41707-d271-44fa-b251-d7b877d625f5", "f5754ec2-8c7b-40b2-bbee-00625d564ac0"], "labels": {"env": "test"}, "response_types": [], "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "kYa9iQFU5xPDSIUH9z1z", "name": "<value>", "grant_types": [], "redirect_uris": ["https://waterlogged-hawk.name", "https://difficult-dress.name/"], "login_uri": null, "access_token_duration": 300, "id_token_duration": 300, "allow_all_scopes": false, "allow_scopes": ["93b41707-d271-44fa-b251-d7b877d625f5", "f5754ec2-8c7b-40b2-bbee-00625d564ac0"], "labels": {"env": "test"}, "response_types": [], "token_endpoint_auth_method": "client_secret_post", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 84109, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "404":
@@ -5194,7 +5235,7 @@ examples:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
           name: "<value>"
       requestBody:
-        application/json: {"type": "HostnameGenerator", "name": "<value>", "spec": {}}
+        application/json: {"type": "HostnameGenerator", "name": "<value>", "spec": {"template": "<value>"}}
       responses:
         "200":
           application/json: {}
@@ -5218,7 +5259,7 @@ examples:
           mesh: "<value>"
           name: "<value>"
       requestBody:
-        application/json: {"type": "MeshMultiZoneService", "mesh": "default", "name": "<value>", "spec": {"ports": [{"appProtocol": "tcp", "port": 156296}], "selector": {"meshService": {"matchLabels": {"key": "<value>", "key1": "<value>"}}}}}
+        application/json: {"type": "MeshMultiZoneService", "mesh": "default", "name": "<value>", "spec": {"ports": [{"appProtocol": "tcp", "port": 156296}], "selector": {"meshService": {}}}}
       responses:
         "200":
           application/json: {}
@@ -5389,7 +5430,7 @@ examples:
           dashboardId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
-          application/json: {"name": "<value>", "definition": {"tiles": [{"layout": {"position": {"col": 3, "row": 0}, "size": {"cols": 3, "rows": 1}}, "type": "chart", "definition": {"query": {"datasource": "api_usage", "metrics": ["request_count", "response_latency_p99"], "dimensions": ["time", "gateway_service"], "filters": [{"field": "upstream_status_code_grouped", "operator": "in"}], "granularity": "hourly", "time_range": {"tz": "EST", "type": "relative", "time_range": "24h"}}, "chart": {"type": "donut"}}}], "preset_filters": [{"field": "control_plane", "operator": "in", "value": ["00000000-0000-0000-0000-000000000000"]}, {"field": "ai_request_model", "operator": "in", "value": ["request_model1"]}]}, "labels": {"env": "test"}, "id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_by": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"name": "<value>", "definition": {"tiles": [{"layout": {"position": {"col": 3, "row": 0}, "size": {"cols": 3, "rows": 1}}, "type": "chart", "definition": {"query": {"datasource": "api_usage", "metrics": ["request_count", "response_latency_p99"], "dimensions": ["time", "gateway_service"], "filters": [{"field": "upstream_status_code_grouped", "operator": "in"}], "granularity": "hourly", "time_range": {"tz": "EST", "type": "relative", "time_range": "24h"}}, "chart": {"chart_title": "<value>", "type": "donut"}}}], "preset_filters": [{"field": "control_plane", "operator": "in", "value": ["00000000-0000-0000-0000-000000000000"]}, {"field": "ai_request_model", "operator": "in", "value": ["request_model1"]}]}, "labels": {"env": "test"}, "id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_by": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -5417,6 +5458,554 @@ examples:
       parameters:
         path:
           dashboardId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  list-portals:
+    speakeasy-default-list-portals:
+      parameters:
+        query:
+          page[size]: 10
+          page[number]: 1
+      responses:
+        "200":
+          application/json: {"data": [], "meta": {"page": {"number": 1, "size": 10, "total": 100}}}
+        "400":
+          application/problem+json: {"status": 920319, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": null, "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  getMeshIdentity:
+    speakeasy-default-get-mesh-identity:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"type": "MeshIdentity", "mesh": "default", "name": "<value>", "spec": {"provider": {"type": "Spire"}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  putMeshIdentity:
+    speakeasy-default-put-mesh-identity:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshIdentity", "mesh": "default", "name": "<value>", "spec": {"provider": {"type": "Bundled"}}}
+      responses:
+        "200":
+          application/json: {}
+  deleteMeshIdentity:
+    speakeasy-default-delete-mesh-identity:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  getMeshIdentityList:
+    speakeasy-default-get-mesh-identity-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {"items": [{"type": "MeshIdentity", "mesh": "default", "name": "<value>", "spec": {"provider": {"type": "Spire"}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+  getMeshTrust:
+    speakeasy-default-get-mesh-trust:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"type": "MeshTrust", "mesh": "default", "name": "<value>", "spec": {"caBundles": [], "trustDomain": "<value>"}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  putMeshTrust:
+    speakeasy-default-put-mesh-trust:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"type": "MeshTrust", "mesh": "default", "name": "<value>", "spec": {"caBundles": [], "trustDomain": "<value>"}}
+      responses:
+        "200":
+          application/json: {}
+  deleteMeshTrust:
+    speakeasy-default-delete-mesh-trust:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  getMeshTrustList:
+    speakeasy-default-get-mesh-trust-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {"items": [{"type": "MeshTrust", "mesh": "default", "name": "<value>", "spec": {"caBundles": [], "trustDomain": "<value>"}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}]}
+  create-event-gateway:
+    speakeasy-default-create-event-gateway:
+      requestBody:
+        application/json: {"name": "<value>", "labels": {"env": "test"}}
+      responses:
+        "201":
+          application/json: {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "nodes_total": 690918, "virtual_clusters_total": 569396, "version": "v1_123"}
+        "400":
+          application/problem+json: {"status": 945517, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max_items", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+        "500":
+          application/problem+json: {"status": 180540, "title": "<value>", "instance": "<value>", "detail": "<value>"}
+  get-event-gateway:
+    speakeasy-default-get-event-gateway:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "nodes_total": 937022, "virtual_clusters_total": 970079, "version": "v1_123"}
+        "400":
+          application/problem+json: {"status": 246020, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "500":
+          application/problem+json: {"status": 33840, "title": "<value>", "instance": "<value>", "detail": "<value>"}
+  update-houdini-event-gateway:
+    speakeasy-default-update-houdini-event-gateway:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"labels": {"env": "test"}}
+      responses:
+        "200":
+          application/json: {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "nodes_total": 418252, "virtual_clusters_total": 886630, "version": "v1_123"}
+        "400":
+          application/problem+json: {"status": 233498, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": null, "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "500":
+          application/problem+json: {"status": 182541, "title": "<value>", "instance": "<value>", "detail": "<value>"}
+  delete-event-gateway:
+    speakeasy-default-delete-event-gateway:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-event-gateway-listener:
+    speakeasy-default-create-event-gateway-listener:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"name": "<value>", "description": null, "addresses": ["<value 1>"], "ports": [], "labels": {"env": "test"}}
+      responses:
+        "201":
+          application/json: {"id": "4da08053-2b38-4cc6-9a16-78b571cad686", "name": "<value>", "description": null, "addresses": ["<value 1>", "<value 2>"], "ports": ["<value 1>"], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 347576, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_length", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  get-event-gateway-listener:
+    speakeasy-default-get-event-gateway-listener:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          eventGatewayListenerId: "31f35308-f007-42b7-9c56-aadf0a2e6fee"
+      responses:
+        "200":
+          application/json: {"id": "27a842c9-237c-490d-8a27-8a0f8874ea93", "name": "<value>", "description": null, "addresses": ["<value 1>", "<value 2>", "<value 3>"], "ports": ["<value 1>", "<value 2>", "<value 3>"], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-event-gateway-listener:
+    speakeasy-default-update-event-gateway-listener:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          eventGatewayListenerId: "927df604-cc92-426a-b160-a94aa6e5de7d"
+      requestBody:
+        application/json: {"name": "<value>", "description": null, "addresses": ["<value 1>", "<value 2>"], "ports": [], "labels": {"env": "test"}}
+      responses:
+        "200":
+          application/json: {"id": "4d10ef63-a3e3-4e39-affa-253ee12dd0ea", "name": "<value>", "description": null, "addresses": ["<value 1>"], "ports": ["<value 1>", "<value 2>", "<value 3>"], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 359512, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  delete-event-gateway-listener:
+    speakeasy-default-delete-event-gateway-listener:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          eventGatewayListenerId: "aafd826e-b37d-4b92-b5d2-2c34bf000e4a"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-event-gateway-virtual-cluster:
+    speakeasy-default-create-event-gateway-virtual-cluster:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"name": "<value>", "description": null, "destination": {}, "authentication": [{"type": "sasl_plain", "mediation": "passthrough", "principals": null}], "dns_label": "vcluster-1", "labels": {"env": "test"}}
+      responses:
+        "201":
+          application/json: {"id": "5c660d55-84a0-4c53-836d-12542cf396cb", "description": null, "destination": {"id": "6ccb8ec8-6b0d-4ad9-bc7e-3fdd2ece7b69", "name": "<value>"}, "authentication": [{"type": "anonymous"}], "name": "<value>", "dns_label": "vcluster-1", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 621528, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  get-event-gateway-virtual-cluster:
+    speakeasy-default-get-event-gateway-virtual-cluster:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "0b2723a8-8eff-4698-8224-0c823cd13fbf"
+      responses:
+        "200":
+          application/json: {"id": "f04439b9-62b9-475f-ba27-2ded26ed9d17", "description": null, "destination": {"id": "088ad9ca-e831-4eaf-bd1a-361abbf7526e", "name": "<value>"}, "authentication": [], "name": "<value>", "dns_label": "vcluster-1", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-event-gateway-virtual-cluster:
+    speakeasy-default-update-event-gateway-virtual-cluster:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "fe909fd6-277e-424b-b080-aba0bbb79170"
+      requestBody:
+        application/json: {"name": "<value>", "description": null, "destination": {}, "authentication": [], "dns_label": "vcluster-1", "labels": {"env": "test"}}
+      responses:
+        "200":
+          application/json: {"id": "f5486120-98cd-449b-821c-dc09b16296a1", "description": null, "destination": {"id": "22a0dfa3-6039-4df9-adc6-85311527aa39", "name": "<value>"}, "authentication": [], "name": "<value>", "dns_label": "vcluster-1", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 368051, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  delete-event-gateway-virtual-cluster:
+    speakeasy-default-delete-event-gateway-virtual-cluster:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "bc89fca5-c6f5-4572-8d11-4848dfbb66ad"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-event-gateway-backend-cluster:
+    speakeasy-default-create-event-gateway-backend-cluster:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"name": "<value>", "description": null, "authentication": {"type": "anonymous"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>", "<value 2>"], "metadata_update_interval_seconds": 60, "labels": {"env": "test"}}
+      responses:
+        "201":
+          application/json: {"id": "d81f0780-2250-4cde-94d5-cacf7e7ba8b3", "name": "<value>", "description": null, "authentication": {"type": "anonymous"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>"], "metadata_update_interval_seconds": 60, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 994884, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  get-event-gateway-backend-cluster:
+    speakeasy-default-get-event-gateway-backend-cluster:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          backendClusterId: "5ef7f382-5bc5-4c2e-a215-300f045de3da"
+      responses:
+        "200":
+          application/json: {"id": "5d418534-2831-4847-af7c-28c816066b03", "name": "<value>", "description": null, "authentication": {"type": "sasl_plain", "username": "Kenna_Crooks88", "password": "${env['MY_SECRET']}"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>", "<value 2>", "<value 3>"], "metadata_update_interval_seconds": 60, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-event-gateway-backend-cluster:
+    speakeasy-default-update-event-gateway-backend-cluster:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          backendClusterId: "ddaa3274-bd11-4dc5-b580-21603cfec6a6"
+      requestBody:
+        application/json: {"name": "<value>", "description": null, "authentication": {"type": "sasl_plain", "username": "Yasmin66", "password": "${env['MY_SECRET']}"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>", "<value 2>", "<value 3>"], "metadata_update_interval_seconds": 60, "labels": {"env": "test"}}
+      responses:
+        "200":
+          application/json: {"id": "ac884d5a-f703-4de9-a51c-860245e22330", "name": "<value>", "description": null, "authentication": {"type": "anonymous"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>"], "metadata_update_interval_seconds": 60, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 524449, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  delete-event-gateway-backend-cluster:
+    speakeasy-default-delete-event-gateway-backend-cluster:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          backendClusterId: "61a9ef4a-7f93-412e-8e7a-e7fd047ffd14"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-event-gateway-vault:
+    speakeasy-default-create-event-gateway-vault:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"name": "<value>", "type": "konnect", "description": null}
+      responses:
+        "201":
+          application/json: {"name": "<value>", "type": "konnect", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "description": null, "labels": {"env": "test"}, "id": "45e89a13-9f17-4048-ad93-db24242ac984"}
+        "400":
+          application/problem+json: {"status": 819761, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_length", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  get-event-gateway-vault:
+    speakeasy-default-get-event-gateway-vault:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          vaultId: "85a372b5-93ec-4ff9-9525-81c91606ab6a"
+      responses:
+        "200":
+          application/json: {"name": "<value>", "type": "konnect", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "description": null, "labels": {"env": "test"}, "id": "9e333bbb-c1ef-4c74-ba0c-d3d3b493aed5"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-event-gateway-vault:
+    speakeasy-default-update-event-gateway-vault:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          vaultId: "eb40b7d3-8efe-42d8-b0e5-e6cbba0c19a7"
+      requestBody:
+        application/json: {"name": "<value>", "type": "konnect", "description": null}
+      responses:
+        "200":
+          application/json: {"name": "<value>", "type": "konnect", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "description": null, "labels": {"env": "test"}, "id": "99e044c2-da86-40af-a710-3b45381a76d9"}
+        "400":
+          application/problem+json: {"status": 871258, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  delete-event-gateway-vault:
+    speakeasy-default-delete-event-gateway-vault:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          vaultId: "b0d99e41-8352-4982-97ac-0a4f2a3a79c3"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-event-gateway-schema-registry:
+    speakeasy-default-create-event-gateway-schema-registry:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"name": "<value>", "description": null, "type": "confluent", "config": {"schema_type": "avro", "endpoint": "https://broken-tuber.net/", "timeout_seconds": 10, "authentication": {"type": "basic", "username": "Stanley71", "password": "${env['MY_SECRET']}"}}}
+      responses:
+        "201":
+          application/json: {"name": "<value>", "description": null, "type": "<value>", "labels": {"env": "test"}, "id": "f491e878-8b03-4447-8bbe-b909087ff980", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 794688, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_lowercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  get-event-gateway-schema-registry:
+    speakeasy-default-get-event-gateway-schema-registry:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          schemaRegistryId: "cde6a4b4-3ebf-407e-8879-4fb69cbecb40"
+      responses:
+        "200":
+          application/json: {"name": "<value>", "description": null, "type": "<value>", "labels": {"env": "test"}, "id": "687c61a4-9b57-4f81-9438-36ad47eab90a", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-event-gateway-schema-registry:
+    speakeasy-default-update-event-gateway-schema-registry:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          schemaRegistryId: "703ba762-1708-4a8e-b805-03811b6dbf55"
+      requestBody:
+        application/json: {"name": "<value>", "description": null, "type": "confluent", "config": {"schema_type": "avro", "endpoint": "https://polished-caption.info/", "timeout_seconds": 10, "authentication": {"type": "basic", "username": "Kelton_Lind-Spencer42", "password": "${env['MY_SECRET']}"}}}
+      responses:
+        "200":
+          application/json: {"name": "<value>", "description": null, "type": "<value>", "labels": {"env": "test"}, "id": "96c20a96-d322-42ea-900d-42e84320a8ab", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 811142, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max_items", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  delete-event-gateway-schema-registry:
+    speakeasy-default-delete-event-gateway-schema-registry:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          schemaRegistryId: "6b0a69e8-8fc1-4c90-88c7-b9e13fb55c6a"
+      responses:
+        "400":
+          application/problem+json: {"status": 405404, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": null, "reason": "is a required field", "dependents": null, "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-event-gateway-data-plane-certificate:
+    speakeasy-default-create-event-gateway-data-plane-certificate:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "201":
+          application/json: {"id": "c57757ae-428f-4083-a643-a4748c0d5d52", "certificate": "<value>", "name": null, "description": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 483608, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  get-event-gateway-data-plane-certificate:
+    speakeasy-default-get-event-gateway-data-plane-certificate:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          certificateId: "4df4520b-0ab6-4f5e-87b1-ac5150f3968a"
+      responses:
+        "200":
+          application/json: {"id": "1a6be4e9-b1ee-4c32-859c-9662d34f84f7", "certificate": "<value>", "name": null, "description": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-event-gateway-data-plane-certificate:
+    speakeasy-default-update-event-gateway-data-plane-certificate:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          certificateId: "8a789778-d873-4a5b-ad36-40cd2f78c306"
+      responses:
+        "200":
+          application/json: {"id": "d4740ebd-d89d-4f6d-bd4f-8fd551e90c05", "certificate": "<value>", "name": null, "description": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 525659, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  delete-event-gateway-data-plane-certificate:
+    speakeasy-default-delete-event-gateway-data-plane-certificate:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          certificateId: "0ae293bb-20e2-4a8f-aaeb-70cec1594054"
       responses:
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
