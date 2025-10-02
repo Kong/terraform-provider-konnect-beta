@@ -72,11 +72,14 @@ Warning messages describe a problem the client making the API request should cor
 <a id="nestedatt--spec"></a>
 ### Nested Schema for `spec`
 
+Required:
+
+- `template` (String)
+
 Optional:
 
 - `extension` (Attributes) Extension struct for a plugin configuration (see [below for nested schema](#nestedatt--spec--extension))
 - `selector` (Attributes) (see [below for nested schema](#nestedatt--spec--selector))
-- `template` (String)
 
 <a id="nestedatt--spec--extension"></a>
 ### Nested Schema for `spec.extension`

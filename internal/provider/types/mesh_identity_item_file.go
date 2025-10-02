@@ -6,6 +6,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type MeshLoadBalancingStrategyItemSpecHeader struct {
-	Name types.String `tfsdk:"name"`
+type MeshIdentityItemFile struct {
+	Path types.String `tfsdk:"path"`
 }

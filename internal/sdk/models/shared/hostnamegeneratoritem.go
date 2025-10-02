@@ -131,7 +131,7 @@ type HostnameGeneratorItemSpec struct {
 	// Extension struct for a plugin configuration
 	Extension *Extension `json:"extension,omitempty"`
 	Selector  *Selector  `json:"selector,omitempty"`
-	Template  *string    `json:"template,omitempty"`
+	Template  string     `json:"template"`
 }
 
 func (o *HostnameGeneratorItemSpec) GetExtension() *Extension {
@@ -148,9 +148,9 @@ func (o *HostnameGeneratorItemSpec) GetSelector() *Selector {
 	return o.Selector
 }
 
-func (o *HostnameGeneratorItemSpec) GetTemplate() *string {
+func (o *HostnameGeneratorItemSpec) GetTemplate() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Template
 }

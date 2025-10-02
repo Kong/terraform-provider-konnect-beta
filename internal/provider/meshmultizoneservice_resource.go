@@ -156,9 +156,8 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 								Required: true,
 								Attributes: map[string]schema.Attribute{
 									"match_labels": schema.MapAttribute{
-										Required:    true,
+										Optional:    true,
 										ElementType: types.StringType,
-										Description: `MatchLabels matches multiple MeshServices by labels`,
 									},
 								},
 								Description: `MeshService selects MeshServices`,

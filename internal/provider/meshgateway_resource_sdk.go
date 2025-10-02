@@ -90,7 +90,7 @@ func (r *MeshGatewayResourceModel) RefreshFromSharedMeshGatewayItem(ctx context.
 					if listenersItem.TLS.Options == nil {
 						listeners.TLS.Options = nil
 					} else {
-						listeners.TLS.Options = &tfTypes.OptionsObj{}
+						listeners.TLS.Options = &tfTypes.BackendClusterAuthenticationAnonymous{}
 					}
 				}
 
