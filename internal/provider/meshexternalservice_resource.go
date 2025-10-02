@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"github.com/Kong/shared-speakeasy/customtypes/kumalabels"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
-	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int32validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -28,7 +28,7 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
-	speakeasy_int64validators "github.com/kong/terraform-provider-konnect-beta/internal/validators/int64validators"
+	speakeasy_int32validators "github.com/kong/terraform-provider-konnect-beta/internal/validators/int32validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
 	"regexp"
@@ -138,12 +138,12 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 										stringvalidator.UTF8LengthAtLeast(1),
 									},
 								},
-								"port": schema.Int64Attribute{
+								"port": schema.Int32Attribute{
 									Optional:    true,
 									Description: `Port of the endpoint. Not Null`,
-									Validators: []validator.Int64{
-										speakeasy_int64validators.NotNull(),
-										int64validator.Between(1, 65535),
+									Validators: []validator.Int32{
+										speakeasy_int32validators.NotNull(),
+										int32validator.Between(1, 65535),
 									},
 								},
 							},
@@ -172,11 +172,11 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 					"match": schema.SingleNestedAttribute{
 						Required: true,
 						Attributes: map[string]schema.Attribute{
-							"port": schema.Int64Attribute{
+							"port": schema.Int32Attribute{
 								Required:    true,
 								Description: `Port defines a port to which a user does request.`,
-								Validators: []validator.Int64{
-									int64validator.Between(1, 65535),
+								Validators: []validator.Int32{
+									int32validator.Between(1, 65535),
 								},
 							},
 							"protocol": schema.StringAttribute{

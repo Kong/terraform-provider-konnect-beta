@@ -145,7 +145,7 @@ func (r *MeshHostnameGeneratorResource) Schema(ctx context.Context, req resource
 						},
 					},
 					"template": schema.StringAttribute{
-						Optional: true,
+						Required: true,
 					},
 				},
 				Description: `Spec is the specification of the Kuma HostnameGenerator resource.`,

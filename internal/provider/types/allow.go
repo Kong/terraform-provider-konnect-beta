@@ -2,5 +2,6 @@
 
 package types
 
-type OptionsObj struct {
+type Allow struct {
+	SpiffeID *Path `tfsdk:"spiffe_id"`
 }

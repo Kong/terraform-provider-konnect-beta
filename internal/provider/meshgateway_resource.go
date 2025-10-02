@@ -135,7 +135,7 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 													"type": schema.StringAttribute{
 														CustomType: jsontypes.NormalizedType{},
 														Required:   true,
-														MarkdownDescription: `Types that are assignable to Type:` + "\n" +
+														MarkdownDescription: `Types that are valid to be assigned to Type:` + "\n" +
 															`` + "\n" +
 															`	*DataSource_Secret` + "\n" +
 															`	*DataSource_File` + "\n" +

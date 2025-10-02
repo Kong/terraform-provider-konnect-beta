@@ -165,9 +165,9 @@ func (r *PortalCustomizationResourceModel) ToSharedPortalCustomization(ctx conte
 		} else {
 			name = nil
 		}
-		mode := new(shared.Mode)
+		mode := new(shared.PortalCustomizationMode)
 		if !r.Theme.Mode.IsUnknown() && !r.Theme.Mode.IsNull() {
-			*mode = shared.Mode(r.Theme.Mode.ValueString())
+			*mode = shared.PortalCustomizationMode(r.Theme.Mode.ValueString())
 		} else {
 			mode = nil
 		}

@@ -8,18 +8,18 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-type Mode string
+type PortalCustomizationMode string
 
 const (
-	ModeLight  Mode = "light"
-	ModeDark   Mode = "dark"
-	ModeSystem Mode = "system"
+	PortalCustomizationModeLight  PortalCustomizationMode = "light"
+	PortalCustomizationModeDark   PortalCustomizationMode = "dark"
+	PortalCustomizationModeSystem PortalCustomizationMode = "system"
 )
 
-func (e Mode) ToPointer() *Mode {
+func (e PortalCustomizationMode) ToPointer() *PortalCustomizationMode {
 	return &e
 }
-func (e *Mode) UnmarshalJSON(data []byte) error {
+func (e *PortalCustomizationMode) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -30,10 +30,10 @@ func (e *Mode) UnmarshalJSON(data []byte) error {
 	case "dark":
 		fallthrough
 	case "system":
-		*e = Mode(v)
+		*e = PortalCustomizationMode(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Mode: %v", v)
+		return fmt.Errorf("invalid value for PortalCustomizationMode: %v", v)
 	}
 }
 
@@ -49,9 +49,9 @@ func (o *Colors) GetPrimary() *string {
 }
 
 type Theme struct {
-	Name   *string `json:"name,omitempty"`
-	Mode   *Mode   `json:"mode,omitempty"`
-	Colors *Colors `json:"colors,omitempty"`
+	Name   *string                  `json:"name,omitempty"`
+	Mode   *PortalCustomizationMode `json:"mode,omitempty"`
+	Colors *Colors                  `json:"colors,omitempty"`
 }
 
 func (o *Theme) GetName() *string {
@@ -61,7 +61,7 @@ func (o *Theme) GetName() *string {
 	return o.Name
 }
 
-func (o *Theme) GetMode() *Mode {
+func (o *Theme) GetMode() *PortalCustomizationMode {
 	if o == nil {
 		return nil
 	}

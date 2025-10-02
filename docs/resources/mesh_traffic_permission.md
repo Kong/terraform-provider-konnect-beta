@@ -45,6 +45,36 @@ resource "konnect_mesh_traffic_permission" "my_meshtrafficpermission" {
         }
       }
     ]
+    rules = [
+      {
+        default = {
+          allow = [
+            {
+              spiffe_id = {
+                type  = "Exact"
+                value = "...my_value..."
+              }
+            }
+          ]
+          allow_with_shadow_deny = [
+            {
+              spiffe_id = {
+                type  = "Prefix"
+                value = "...my_value..."
+              }
+            }
+          ]
+          deny = [
+            {
+              spiffe_id = {
+                type  = "Prefix"
+                value = "...my_value..."
+              }
+            }
+          ]
+        }
+      }
+    ]
     target_ref = {
       kind = "MeshHTTPRoute"
       labels = {
@@ -94,6 +124,7 @@ Warning messages describe a problem the client making the API request should cor
 Optional:
 
 - `from` (Attributes List) From list makes a match between clients and corresponding configurations (see [below for nested schema](#nestedatt--spec--from))
+- `rules` (Attributes List) Rules defines inbound permissions configuration (see [below for nested schema](#nestedatt--spec--rules))
 - `target_ref` (Attributes) TargetRef is a reference to the resource the policy takes an effect on.
 The resource could be either a real store object or virtual resource
 defined inplace. (see [below for nested schema](#nestedatt--spec--target_ref))
@@ -136,6 +167,76 @@ all data plane types are targeted by the policy.
 For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.
 - `tags` (Map of String) Tags used to select a subset of proxies by tags. Can only be used with kinds
 `MeshSubset` and `MeshServiceSubset`
+
+
+
+<a id="nestedatt--spec--rules"></a>
+### Nested Schema for `spec.rules`
+
+Optional:
+
+- `default` (Attributes) Not Null (see [below for nested schema](#nestedatt--spec--rules--default))
+
+<a id="nestedatt--spec--rules--default"></a>
+### Nested Schema for `spec.rules.default`
+
+Optional:
+
+- `allow` (Attributes List) Allow definees a list of matches for which access will be allowed (see [below for nested schema](#nestedatt--spec--rules--default--allow))
+- `allow_with_shadow_deny` (Attributes List) AllowWithShadowDeny defines a list of matches for which access will be allowed but emits logs as if
+requests are denied (see [below for nested schema](#nestedatt--spec--rules--default--allow_with_shadow_deny))
+- `deny` (Attributes List) Deny defines a list of matches for which access will be denied (see [below for nested schema](#nestedatt--spec--rules--default--deny))
+
+<a id="nestedatt--spec--rules--default--allow"></a>
+### Nested Schema for `spec.rules.default.allow`
+
+Optional:
+
+- `spiffe_id` (Attributes) SpiffeID defines a matcher configuration for SpiffeID matching (see [below for nested schema](#nestedatt--spec--rules--default--allow--spiffe_id))
+
+<a id="nestedatt--spec--rules--default--allow--spiffe_id"></a>
+### Nested Schema for `spec.rules.default.allow.spiffe_id`
+
+Optional:
+
+- `type` (String) Type defines how to match incoming traffic by SpiffeID. `Exact` or `Prefix` are allowed. Not Null; must be one of ["Exact", "Prefix"]
+- `value` (String) Value is SpiffeId of a client that needs to match for the configuration to be applied. Not Null
+
+
+
+<a id="nestedatt--spec--rules--default--allow_with_shadow_deny"></a>
+### Nested Schema for `spec.rules.default.allow_with_shadow_deny`
+
+Optional:
+
+- `spiffe_id` (Attributes) SpiffeID defines a matcher configuration for SpiffeID matching (see [below for nested schema](#nestedatt--spec--rules--default--allow_with_shadow_deny--spiffe_id))
+
+<a id="nestedatt--spec--rules--default--allow_with_shadow_deny--spiffe_id"></a>
+### Nested Schema for `spec.rules.default.allow_with_shadow_deny.spiffe_id`
+
+Optional:
+
+- `type` (String) Type defines how to match incoming traffic by SpiffeID. `Exact` or `Prefix` are allowed. Not Null; must be one of ["Exact", "Prefix"]
+- `value` (String) Value is SpiffeId of a client that needs to match for the configuration to be applied. Not Null
+
+
+
+<a id="nestedatt--spec--rules--default--deny"></a>
+### Nested Schema for `spec.rules.default.deny`
+
+Optional:
+
+- `spiffe_id` (Attributes) SpiffeID defines a matcher configuration for SpiffeID matching (see [below for nested schema](#nestedatt--spec--rules--default--deny--spiffe_id))
+
+<a id="nestedatt--spec--rules--default--deny--spiffe_id"></a>
+### Nested Schema for `spec.rules.default.deny.spiffe_id`
+
+Optional:
+
+- `type` (String) Type defines how to match incoming traffic by SpiffeID. `Exact` or `Prefix` are allowed. Not Null; must be one of ["Exact", "Prefix"]
+- `value` (String) Value is SpiffeId of a client that needs to match for the configuration to be applied. Not Null
+
+
 
 
 
