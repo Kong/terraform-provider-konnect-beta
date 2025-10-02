@@ -3,6 +3,9 @@
 ## 0.9.0
 > Released on 2025/10/02
 
+### Features
+* Add support for `konnect_mesh_identity` and `konnect_mesh_trust` resources
+
 ### Bug Fixes
 * Fields that are nullable can be set to null
 
