@@ -129,11 +129,12 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 							Attributes: map[string]schema.Attribute{
 								"type": schema.StringAttribute{
 									Optional:    true,
-									Description: `Not Null; must be "ServiceTag"`,
+									Description: `Not Null; must be one of ["ServiceTag", "SpiffeID"]`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
 										stringvalidator.OneOf(
 											"ServiceTag",
+											"SpiffeID",
 										),
 									},
 								},

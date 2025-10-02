@@ -7,7 +7,7 @@ import (
 )
 
 type Match struct {
-	Port     types.Int64  `tfsdk:"port"`
+	Port     types.Int32  `tfsdk:"port"`
 	Protocol types.String `tfsdk:"protocol"`
 	Type     types.String `tfsdk:"type"`
 }
