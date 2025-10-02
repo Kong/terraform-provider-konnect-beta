@@ -2,12 +2,16 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
+)
+
 type CreateAPIRequest struct {
 	// The name of your API. The `name + version` combination must be unique for each API you publish.
 	//
 	Name string `json:"name"`
 	// A description of your API. Will be visible on your live Portal.
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"null" json:"description"`
 	// An optional version for your API. Leave this empty if your API is unversioned.
 	Version *string `json:"version,omitempty"`
 	// The `slug` is used in generated URLs to provide human readable paths.
@@ -24,6 +28,17 @@ type CreateAPIRequest struct {
 	Attributes any `json:"attributes,omitempty"`
 	// The content of the API specification. This is the raw content of the API specification, in json or yaml. By including this field, you can add a API specification without having to make a separate call to update the API specification.
 	SpecContent *string `json:"spec_content,omitempty"`
+}
+
+func (c CreateAPIRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAPIRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *CreateAPIRequest) GetName() string {

@@ -17,7 +17,7 @@ type CreateClient struct {
 	// The URIs that the client is allowed to redirect to after authentication in interactive flows. All redirect URIs must be absolute URIs, be secure (HTTPS), and must not include a fragment component.
 	RedirectUris []string `json:"redirect_uris,omitempty"`
 	// The URI of the login page where the user is redirected to authenticate in interactive flows. The login page must be secure (HTTPS).
-	LoginURI *string `json:"login_uri,omitempty"`
+	LoginURI *string `default:"null" json:"login_uri"`
 	// The duration of the minted token is valid for, in seconds
 	AccessTokenDuration *int64 `default:"300" json:"access_token_duration"`
 	// The duration of the minted token is valid for, in seconds
@@ -31,6 +31,8 @@ type CreateClient struct {
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
+	// Requested authentication method for OAuth 2.0 endpoints.
+	TokenEndpointAuthMethod *TokenEndpointAuthMethod `default:"client_secret_post" json:"token_endpoint_auth_method"`
 }
 
 func (c CreateClient) MarshalJSON() ([]byte, error) {
@@ -112,4 +114,11 @@ func (o *CreateClient) GetLabels() map[string]*string {
 		return nil
 	}
 	return o.Labels
+}
+
+func (o *CreateClient) GetTokenEndpointAuthMethod() *TokenEndpointAuthMethod {
+	if o == nil {
+		return nil
+	}
+	return o.TokenEndpointAuthMethod
 }

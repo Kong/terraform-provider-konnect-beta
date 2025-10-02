@@ -15,6 +15,9 @@ type PortalCustomDomainSSL struct {
 	UploadedAt *time.Time `json:"uploaded_at,omitempty"`
 	// An ISO-8601 timestamp representation of the ssl certificate expiration date.
 	ExpiresAt *time.Time `json:"expires_at,omitempty"`
+	// True when the provided certificate chain is served as-is without validation against a public trust store.
+	//
+	SkipCaCheck *bool `json:"skip_ca_check,omitempty"`
 }
 
 func (p PortalCustomDomainSSL) MarshalJSON() ([]byte, error) {
@@ -61,4 +64,11 @@ func (o *PortalCustomDomainSSL) GetExpiresAt() *time.Time {
 		return nil
 	}
 	return o.ExpiresAt
+}
+
+func (o *PortalCustomDomainSSL) GetSkipCaCheck() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SkipCaCheck
 }

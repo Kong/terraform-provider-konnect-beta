@@ -86,7 +86,7 @@ func (o *Resources) GetConnectionLimit() *int64 {
 
 // Certificates - DataSource defines the source of bytes to use.
 type Certificates struct {
-	// Types that are assignable to Type:
+	// Types that are valid to be assigned to Type:
 	//
 	// 	*DataSource_Secret
 	// 	*DataSource_File

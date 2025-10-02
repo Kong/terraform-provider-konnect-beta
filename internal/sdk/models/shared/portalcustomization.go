@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
 type Mode string
@@ -75,8 +76,19 @@ func (o *Theme) GetColors() *Colors {
 }
 
 type Js struct {
-	Custom  *string  `json:"custom,omitempty"`
-	Scripts []string `json:"scripts,omitempty"`
+	Custom  *string  `default:"null" json:"custom"`
+	Scripts []string `json:"scripts"`
+}
+
+func (j Js) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *Js) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Js) GetCustom() *string {
@@ -94,9 +106,9 @@ func (o *Js) GetScripts() []string {
 }
 
 type Menu struct {
-	Main           []PortalMenuItem          `json:"main,omitempty"`
-	FooterSections []PortalFooterMenuSection `json:"footer_sections,omitempty"`
-	FooterBottom   []PortalMenuItem          `json:"footer_bottom,omitempty"`
+	Main           []PortalMenuItem          `json:"main"`
+	FooterSections []PortalFooterMenuSection `json:"footer_sections"`
+	FooterBottom   []PortalMenuItem          `json:"footer_bottom"`
 }
 
 func (o *Menu) GetMain() []PortalMenuItem {
@@ -121,12 +133,31 @@ func (o *Menu) GetFooterBottom() []PortalMenuItem {
 }
 
 type SpecRenderer struct {
-	TryItUI        *bool `json:"try_it_ui,omitempty"`
-	TryItInsomnia  *bool `json:"try_it_insomnia,omitempty"`
-	InfiniteScroll *bool `json:"infinite_scroll,omitempty"`
-	ShowSchemas    *bool `json:"show_schemas,omitempty"`
-	HideInternal   *bool `json:"hide_internal,omitempty"`
-	HideDeprecated *bool `json:"hide_deprecated,omitempty"`
+	// Enable in-browser testing for your APIs. All linked gateways must have the CORS plugin configured.
+	TryItUI *bool `default:"true" json:"try_it_ui"`
+	// Enables users to open the API spec in Insomnia to explore and send requests with the native client.
+	TryItInsomnia *bool `default:"true" json:"try_it_insomnia"`
+	// Display the full spec on a single, scrollable page. If disabled, documentation, endpoints, and schemas appear on separate pages.
+	InfiniteScroll *bool `default:"true" json:"infinite_scroll"`
+	// Control whether schemas are visible in your API specs. When enabled, schemas appear in the side navigation below the endpoints.
+	ShowSchemas *bool `default:"true" json:"show_schemas"`
+	// Manage visibility of internal endpoints and models.
+	HideInternal *bool `default:"false" json:"hide_internal"`
+	// Manage visibility of deprecated endpoints and models.
+	HideDeprecated *bool `default:"false" json:"hide_deprecated"`
+	// Let users define a custom server URL for endpoints. This will be used to generate code snippets and to test the API. The URL is client-side only and is not saved.
+	AllowCustomServerUrls *bool `default:"true" json:"allow_custom_server_urls"`
+}
+
+func (s SpecRenderer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SpecRenderer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *SpecRenderer) GetTryItUI() *bool {
@@ -171,15 +202,33 @@ func (o *SpecRenderer) GetHideDeprecated() *bool {
 	return o.HideDeprecated
 }
 
+func (o *SpecRenderer) GetAllowCustomServerUrls() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AllowCustomServerUrls
+}
+
 // PortalCustomization - The custom settings of this portal
 type PortalCustomization struct {
 	Theme        *Theme        `json:"theme,omitempty"`
 	Layout       *string       `json:"layout,omitempty"`
-	CSS          *string       `json:"css,omitempty"`
+	CSS          *string       `default:"null" json:"css"`
 	Js           *Js           `json:"js,omitempty"`
 	Menu         *Menu         `json:"menu,omitempty"`
 	SpecRenderer *SpecRenderer `json:"spec_renderer,omitempty"`
-	Robots       *string       `json:"robots,omitempty"`
+	Robots       *string       `default:"null" json:"robots"`
+}
+
+func (p PortalCustomization) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PortalCustomization) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *PortalCustomization) GetTheme() *Theme {

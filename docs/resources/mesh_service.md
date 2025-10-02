@@ -24,7 +24,7 @@ resource "konnect_mesh_service" "my_meshservice" {
   spec = {
     identities = [
       {
-        type  = "ServiceTag"
+        type  = "SpiffeID"
         value = "...my_value..."
       }
     ]
@@ -92,7 +92,7 @@ Default: "Unavailable"; must be one of ["Available", "Unavailable"]
 
 Optional:
 
-- `type` (String) Not Null; must be "ServiceTag"
+- `type` (String) Not Null; must be one of ["ServiceTag", "SpiffeID"]
 - `value` (String) Not Null
 
 

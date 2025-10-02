@@ -304,7 +304,7 @@ Optional:
 - `end` (String)
 - `start` (String)
 - `type` (String) Not Null; must be "absolute"
-- `tz` (String)
+- `tz` (String) Default: "Etc/UTC"
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--api_usage--time_range--relative"></a>
@@ -312,9 +312,9 @@ Optional:
 
 Optional:
 
-- `time_range` (String) Not Null; must be one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]
+- `time_range` (String) Default: "1h"; must be one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]
 - `type` (String) Not Null; must be "relative"
-- `tz` (String)
+- `tz` (String) Default: "Etc/UTC"
 
 
 
@@ -379,7 +379,7 @@ Optional:
 - `end` (String)
 - `start` (String)
 - `type` (String) Not Null; must be "absolute"
-- `tz` (String)
+- `tz` (String) Default: "Etc/UTC"
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--llm_usage--time_range--relative"></a>
@@ -387,9 +387,9 @@ Optional:
 
 Optional:
 
-- `time_range` (String) Not Null; must be one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]
+- `time_range` (String) Default: "1h"; must be one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]
 - `type` (String) Not Null; must be "relative"
-- `tz` (String)
+- `tz` (String) Default: "Etc/UTC"
 
 
 

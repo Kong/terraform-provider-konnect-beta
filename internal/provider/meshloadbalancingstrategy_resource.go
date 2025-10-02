@@ -192,6 +192,120 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 								"default": schema.SingleNestedAttribute{
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
+										"hash_policies": schema.ListNestedAttribute{
+											Optional: true,
+											PlanModifiers: []planmodifier.List{
+												custom_listplanmodifier.SupressZeroNullModifier(),
+											},
+											NestedObject: schema.NestedAttributeObject{
+												Validators: []validator.Object{
+													speakeasy_objectvalidators.NotNull(),
+												},
+												Attributes: map[string]schema.Attribute{
+													"connection": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"source_ip": schema.BoolAttribute{
+																Optional:    true,
+																Description: `Hash on source IP address.`,
+															},
+														},
+													},
+													"cookie": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"name": schema.StringAttribute{
+																Optional:    true,
+																Description: `The name of the cookie that will be used to obtain the hash key. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+															"path": schema.StringAttribute{
+																Optional:    true,
+																Description: `The name of the path for the cookie.`,
+															},
+															"ttl": schema.StringAttribute{
+																Optional:    true,
+																Description: `If specified, a cookie with the TTL will be generated if the cookie is not present.`,
+															},
+														},
+													},
+													"filter_state": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"key": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the Object in the per-request filterState, which is` + "\n" +
+																	`an Envoy::Hashable object. If there is no data associated with the key,` + "\n" +
+																	`or the stored object is not Envoy::Hashable, no hash will be produced.` + "\n" +
+																	`Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													"header": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"name": schema.StringAttribute{
+																Optional:    true,
+																Description: `The name of the request header that will be used to obtain the hash key. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													"query_parameter": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"name": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `The name of the URL query parameter that will be used to obtain the hash key.` + "\n" +
+																	`If the parameter is not present, no hash will be produced. Query parameter names` + "\n" +
+																	`are case-sensitive.` + "\n" +
+																	`Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.UTF8LengthAtLeast(1),
+																},
+															},
+														},
+													},
+													"terminal": schema.BoolAttribute{
+														Optional: true,
+														MarkdownDescription: `Terminal is a flag that short-circuits the hash computing. This field provides` + "\n" +
+															`a ‘fallback’ style of configuration: “if a terminal policy doesn’t work, fallback` + "\n" +
+															`to rest of the policy list”, it saves time when the terminal policy works.` + "\n" +
+															`If true, and there is already a hash computed, ignore rest of the list of hash polices.`,
+													},
+													"type": schema.StringAttribute{
+														Optional:    true,
+														Description: `Not Null; must be one of ["Header", "Cookie", "Connection", "SourceIP", "QueryParameter", "FilterState"]`,
+														Validators: []validator.String{
+															speakeasy_stringvalidators.NotNull(),
+															stringvalidator.OneOf(
+																"Header",
+																"Cookie",
+																"Connection",
+																"SourceIP",
+																"QueryParameter",
+																"FilterState",
+															),
+														},
+													},
+												},
+											},
+											MarkdownDescription: `HashPolicies specify a list of request/connection properties that are used to calculate a hash.` + "\n" +
+												`These hash policies are executed in the specified order. If a hash policy has the “terminal” attribute` + "\n" +
+												`set to true, and there is already a hash generated, the hash is returned immediately,` + "\n" +
+												`ignoring the rest of the hash policy list.`,
+										},
 										"load_balancer": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{

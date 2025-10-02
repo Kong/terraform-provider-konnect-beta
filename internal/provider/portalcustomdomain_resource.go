@@ -121,6 +121,10 @@ func (r *PortalCustomDomainResource) Schema(ctx context.Context, req resource.Sc
 							validators.IsRFC3339(),
 						},
 					},
+					"skip_ca_check": schema.BoolAttribute{
+						Computed:    true,
+						Description: `True when the provided certificate chain is served as-is without validation against a public trust store.`,
+					},
 					"uploaded_at": schema.StringAttribute{
 						Computed:    true,
 						Description: `An ISO-8601 timestamp representation of the ssl certificate upload date.`,

@@ -45,7 +45,7 @@ type APIResponseSchema struct {
 	//
 	Name string `json:"name"`
 	// A description of your API. Will be visible on your live Portal.
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"null" json:"description"`
 	// An optional version for your API. Leave this empty if your API is unversioned.
 	Version               *string            `json:"version"`
 	CurrentVersionSummary *APIVersionSummary `json:"current_version_summary"`

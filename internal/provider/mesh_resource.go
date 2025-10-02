@@ -470,7 +470,9 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 													Optional: true,
 												},
 												"dns_names": schema.ListAttribute{
+													Computed:    true,
 													Optional:    true,
+													Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 													ElementType: types.StringType,
 												},
 												"issuer_ref": schema.SingleNestedAttribute{

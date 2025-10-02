@@ -44,6 +44,11 @@ func (r *AuthServerClientsResourceModel) RefreshFromSharedClient(ctx context.Con
 		for _, v := range resp.ResponseTypes {
 			r.ResponseTypes = append(r.ResponseTypes, types.StringValue(string(v)))
 		}
+		if resp.TokenEndpointAuthMethod != nil {
+			r.TokenEndpointAuthMethod = types.StringValue(string(*resp.TokenEndpointAuthMethod))
+		} else {
+			r.TokenEndpointAuthMethod = types.StringNull()
+		}
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
 
@@ -83,6 +88,11 @@ func (r *AuthServerClientsResourceModel) RefreshFromSharedCreatedClient(ctx cont
 		r.ResponseTypes = make([]types.String, 0, len(resp.ResponseTypes))
 		for _, v := range resp.ResponseTypes {
 			r.ResponseTypes = append(r.ResponseTypes, types.StringValue(string(v)))
+		}
+		if resp.TokenEndpointAuthMethod != nil {
+			r.TokenEndpointAuthMethod = types.StringValue(string(*resp.TokenEndpointAuthMethod))
+		} else {
+			r.TokenEndpointAuthMethod = types.StringNull()
 		}
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
@@ -226,17 +236,24 @@ func (r *AuthServerClientsResourceModel) ToSharedCreateClient(ctx context.Contex
 		}
 		labels[labelsKey] = labelsInst
 	}
+	tokenEndpointAuthMethod := new(shared.TokenEndpointAuthMethod)
+	if !r.TokenEndpointAuthMethod.IsUnknown() && !r.TokenEndpointAuthMethod.IsNull() {
+		*tokenEndpointAuthMethod = shared.TokenEndpointAuthMethod(r.TokenEndpointAuthMethod.ValueString())
+	} else {
+		tokenEndpointAuthMethod = nil
+	}
 	out := shared.CreateClient{
-		Name:                name,
-		GrantTypes:          grantTypes,
-		ResponseTypes:       responseTypes,
-		RedirectUris:        redirectUris,
-		LoginURI:            loginURI,
-		AccessTokenDuration: accessTokenDuration,
-		IDTokenDuration:     idTokenDuration,
-		AllowAllScopes:      allowAllScopes,
-		AllowScopes:         allowScopes,
-		Labels:              labels,
+		Name:                    name,
+		GrantTypes:              grantTypes,
+		ResponseTypes:           responseTypes,
+		RedirectUris:            redirectUris,
+		LoginURI:                loginURI,
+		AccessTokenDuration:     accessTokenDuration,
+		IDTokenDuration:         idTokenDuration,
+		AllowAllScopes:          allowAllScopes,
+		AllowScopes:             allowScopes,
+		Labels:                  labels,
+		TokenEndpointAuthMethod: tokenEndpointAuthMethod,
 	}
 
 	return &out, diags
@@ -291,6 +308,12 @@ func (r *AuthServerClientsResourceModel) ToSharedReplaceClient(ctx context.Conte
 	for _, allowScopesItem := range r.AllowScopes {
 		allowScopes = append(allowScopes, allowScopesItem.ValueString())
 	}
+	tokenEndpointAuthMethod := new(shared.TokenEndpointAuthMethod)
+	if !r.TokenEndpointAuthMethod.IsUnknown() && !r.TokenEndpointAuthMethod.IsNull() {
+		*tokenEndpointAuthMethod = shared.TokenEndpointAuthMethod(r.TokenEndpointAuthMethod.ValueString())
+	} else {
+		tokenEndpointAuthMethod = nil
+	}
 	labels := make(map[string]*string)
 	for labelsKey, labelsValue := range r.Labels {
 		labelsInst := new(string)
@@ -302,17 +325,18 @@ func (r *AuthServerClientsResourceModel) ToSharedReplaceClient(ctx context.Conte
 		labels[labelsKey] = labelsInst
 	}
 	out := shared.ReplaceClient{
-		Name:                name,
-		ClientSecret:        clientSecret,
-		GrantTypes:          grantTypes,
-		ResponseTypes:       responseTypes,
-		RedirectUris:        redirectUris,
-		LoginURI:            loginURI,
-		AccessTokenDuration: accessTokenDuration,
-		IDTokenDuration:     idTokenDuration,
-		AllowAllScopes:      allowAllScopes,
-		AllowScopes:         allowScopes,
-		Labels:              labels,
+		Name:                    name,
+		ClientSecret:            clientSecret,
+		GrantTypes:              grantTypes,
+		ResponseTypes:           responseTypes,
+		RedirectUris:            redirectUris,
+		LoginURI:                loginURI,
+		AccessTokenDuration:     accessTokenDuration,
+		IDTokenDuration:         idTokenDuration,
+		AllowAllScopes:          allowAllScopes,
+		AllowScopes:             allowScopes,
+		TokenEndpointAuthMethod: tokenEndpointAuthMethod,
+		Labels:                  labels,
 	}
 
 	return &out, diags

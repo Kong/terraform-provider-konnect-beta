@@ -97,8 +97,10 @@ type KonnectBeta struct {
 	MeshGateway               *MeshGateway
 	HostnameGenerator         *HostnameGenerator
 	MeshExternalService       *MeshExternalService
+	MeshIdentity              *MeshIdentity
 	MeshMultiZoneService      *MeshMultiZoneService
 	MeshService               *MeshService
+	MeshTrust                 *MeshTrust
 	MeshGlobalRateLimit       *MeshGlobalRateLimit
 	MeshOPA                   *MeshOPA
 	// Auth Servers expose an OAuth 2.0 and OpenID Connect server interface for generating access tokens. The management API will give you the ability to create, configure and manage multiple Auth Servers per Konnect organization. Auth Servers are a regional Konnect entity.
@@ -242,8 +244,10 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.MeshGateway = newMeshGateway(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.HostnameGenerator = newHostnameGenerator(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshExternalService = newMeshExternalService(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshIdentity = newMeshIdentity(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshMultiZoneService = newMeshMultiZoneService(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshService = newMeshService(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshTrust = newMeshTrust(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshGlobalRateLimit = newMeshGlobalRateLimit(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshOPA = newMeshOPA(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthServer = newAuthServer(sdk, sdk.sdkConfiguration, sdk.hooks)

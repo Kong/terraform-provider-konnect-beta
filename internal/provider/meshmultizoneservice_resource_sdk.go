@@ -81,10 +81,10 @@ func (r *MeshMultiZoneServiceResourceModel) RefreshFromSharedMeshMultiZoneServic
 			for _, hostnameGeneratorsItem := range resp.Status.HostnameGenerators {
 				var hostnameGenerators tfTypes.HostnameGenerators
 
-				hostnameGenerators.Conditions = []tfTypes.Conditions{}
+				hostnameGenerators.Conditions = []tfTypes.MeshExternalServiceItemConditions{}
 
 				for _, conditionsItem := range hostnameGeneratorsItem.Conditions {
-					var conditions tfTypes.Conditions
+					var conditions tfTypes.MeshExternalServiceItemConditions
 
 					conditions.Message = types.StringValue(conditionsItem.Message)
 					conditions.Reason = types.StringValue(conditionsItem.Reason)

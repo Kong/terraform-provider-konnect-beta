@@ -47,7 +47,7 @@ func (r *MeshExternalServiceResourceModel) RefreshFromSharedMeshExternalServiceI
 			var endpoints tfTypes.Endpoints
 
 			endpoints.Address = types.StringValue(endpointsItem.Address)
-			endpoints.Port = types.Int64Value(endpointsItem.Port)
+			endpoints.Port = types.Int32Value(int32(endpointsItem.Port))
 
 			r.Spec.Endpoints = append(r.Spec.Endpoints, endpoints)
 		}
@@ -63,7 +63,7 @@ func (r *MeshExternalServiceResourceModel) RefreshFromSharedMeshExternalServiceI
 			}
 			r.Spec.Extension.Type = types.StringValue(resp.Spec.Extension.Type)
 		}
-		r.Spec.Match.Port = types.Int64Value(resp.Spec.Match.Port)
+		r.Spec.Match.Port = types.Int32Value(int32(resp.Spec.Match.Port))
 		if resp.Spec.Match.Protocol != nil {
 			r.Spec.Match.Protocol = types.StringValue(string(*resp.Spec.Match.Protocol))
 		} else {
@@ -170,10 +170,10 @@ func (r *MeshExternalServiceResourceModel) RefreshFromSharedMeshExternalServiceI
 			for _, hostnameGeneratorsItem := range resp.Status.HostnameGenerators {
 				var hostnameGenerators tfTypes.HostnameGenerators
 
-				hostnameGenerators.Conditions = []tfTypes.Conditions{}
+				hostnameGenerators.Conditions = []tfTypes.MeshExternalServiceItemConditions{}
 
 				for _, conditionsItem := range hostnameGeneratorsItem.Conditions {
-					var conditions tfTypes.Conditions
+					var conditions tfTypes.MeshExternalServiceItemConditions
 
 					conditions.Message = types.StringValue(conditionsItem.Message)
 					conditions.Reason = types.StringValue(conditionsItem.Reason)
@@ -292,8 +292,8 @@ func (r *MeshExternalServiceResourceModel) ToSharedMeshExternalServiceItemInput(
 		var address string
 		address = endpointsItem.Address.ValueString()
 
-		var port int64
-		port = endpointsItem.Port.ValueInt64()
+		var port int
+		port = int(endpointsItem.Port.ValueInt32())
 
 		endpoints = append(endpoints, shared.Endpoints{
 			Address: address,
@@ -314,8 +314,8 @@ func (r *MeshExternalServiceResourceModel) ToSharedMeshExternalServiceItemInput(
 			Type:   typeVar1,
 		}
 	}
-	var port1 int64
-	port1 = r.Spec.Match.Port.ValueInt64()
+	var port1 int
+	port1 = int(r.Spec.Match.Port.ValueInt32())
 
 	protocol := new(shared.MeshExternalServiceItemProtocol)
 	if !r.Spec.Match.Protocol.IsUnknown() && !r.Spec.Match.Protocol.IsNull() {

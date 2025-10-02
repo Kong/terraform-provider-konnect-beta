@@ -92,9 +92,9 @@ Required:
 <a id="nestedatt--spec--selector--mesh_service"></a>
 ### Nested Schema for `spec.selector.mesh_service`
 
-Required:
+Optional:
 
-- `match_labels` (Map of String) MatchLabels matches multiple MeshServices by labels
+- `match_labels` (Map of String)
 
 
 

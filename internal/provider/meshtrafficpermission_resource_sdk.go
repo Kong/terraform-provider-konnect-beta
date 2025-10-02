@@ -78,6 +78,59 @@ func (r *MeshTrafficPermissionResourceModel) RefreshFromSharedMeshTrafficPermiss
 
 			r.Spec.From = append(r.Spec.From, from)
 		}
+		r.Spec.Rules = []tfTypes.MeshTrafficPermissionItemRules{}
+
+		for _, rulesItem := range resp.Spec.Rules {
+			var rules tfTypes.MeshTrafficPermissionItemRules
+
+			rules.Default.Allow = []tfTypes.Allow{}
+
+			for _, allowItem := range rulesItem.Default.Allow {
+				var allow tfTypes.Allow
+
+				if allowItem.SpiffeID == nil {
+					allow.SpiffeID = nil
+				} else {
+					allow.SpiffeID = &tfTypes.Path{}
+					allow.SpiffeID.Type = types.StringValue(string(allowItem.SpiffeID.Type))
+					allow.SpiffeID.Value = types.StringValue(allowItem.SpiffeID.Value)
+				}
+
+				rules.Default.Allow = append(rules.Default.Allow, allow)
+			}
+			rules.Default.AllowWithShadowDeny = []tfTypes.Allow{}
+
+			for _, allowWithShadowDenyItem := range rulesItem.Default.AllowWithShadowDeny {
+				var allowWithShadowDeny tfTypes.Allow
+
+				if allowWithShadowDenyItem.SpiffeID == nil {
+					allowWithShadowDeny.SpiffeID = nil
+				} else {
+					allowWithShadowDeny.SpiffeID = &tfTypes.Path{}
+					allowWithShadowDeny.SpiffeID.Type = types.StringValue(string(allowWithShadowDenyItem.SpiffeID.Type))
+					allowWithShadowDeny.SpiffeID.Value = types.StringValue(allowWithShadowDenyItem.SpiffeID.Value)
+				}
+
+				rules.Default.AllowWithShadowDeny = append(rules.Default.AllowWithShadowDeny, allowWithShadowDeny)
+			}
+			rules.Default.Deny = []tfTypes.Allow{}
+
+			for _, denyItem := range rulesItem.Default.Deny {
+				var deny tfTypes.Allow
+
+				if denyItem.SpiffeID == nil {
+					deny.SpiffeID = nil
+				} else {
+					deny.SpiffeID = &tfTypes.Path{}
+					deny.SpiffeID.Type = types.StringValue(string(denyItem.SpiffeID.Type))
+					deny.SpiffeID.Value = types.StringValue(denyItem.SpiffeID.Value)
+				}
+
+				rules.Default.Deny = append(rules.Default.Deny, deny)
+			}
+
+			r.Spec.Rules = append(r.Spec.Rules, rules)
+		}
 		if resp.Spec.TargetRef == nil {
 			r.Spec.TargetRef = nil
 		} else {
@@ -270,6 +323,68 @@ func (r *MeshTrafficPermissionResourceModel) ToSharedMeshTrafficPermissionItemIn
 			TargetRef: targetRef,
 		})
 	}
+	rules := make([]shared.MeshTrafficPermissionItemRules, 0, len(r.Spec.Rules))
+	for _, rulesItem := range r.Spec.Rules {
+		allow := make([]shared.Allow, 0, len(rulesItem.Default.Allow))
+		for _, allowItem := range rulesItem.Default.Allow {
+			var spiffeID *shared.MeshTrafficPermissionItemSpecRulesSpiffeID
+			if allowItem.SpiffeID != nil {
+				typeVar1 := shared.MeshTrafficPermissionItemSpecType(allowItem.SpiffeID.Type.ValueString())
+				var value string
+				value = allowItem.SpiffeID.Value.ValueString()
+
+				spiffeID = &shared.MeshTrafficPermissionItemSpecRulesSpiffeID{
+					Type:  typeVar1,
+					Value: value,
+				}
+			}
+			allow = append(allow, shared.Allow{
+				SpiffeID: spiffeID,
+			})
+		}
+		allowWithShadowDeny := make([]shared.AllowWithShadowDeny, 0, len(rulesItem.Default.AllowWithShadowDeny))
+		for _, allowWithShadowDenyItem := range rulesItem.Default.AllowWithShadowDeny {
+			var spiffeId1 *shared.MeshTrafficPermissionItemSpiffeID
+			if allowWithShadowDenyItem.SpiffeID != nil {
+				typeVar2 := shared.MeshTrafficPermissionItemSpecRulesType(allowWithShadowDenyItem.SpiffeID.Type.ValueString())
+				var value1 string
+				value1 = allowWithShadowDenyItem.SpiffeID.Value.ValueString()
+
+				spiffeId1 = &shared.MeshTrafficPermissionItemSpiffeID{
+					Type:  typeVar2,
+					Value: value1,
+				}
+			}
+			allowWithShadowDeny = append(allowWithShadowDeny, shared.AllowWithShadowDeny{
+				SpiffeID: spiffeId1,
+			})
+		}
+		deny := make([]shared.Deny, 0, len(rulesItem.Default.Deny))
+		for _, denyItem := range rulesItem.Default.Deny {
+			var spiffeId2 *shared.MeshTrafficPermissionItemSpecSpiffeID
+			if denyItem.SpiffeID != nil {
+				typeVar3 := shared.MeshTrafficPermissionItemSpecRulesDefaultType(denyItem.SpiffeID.Type.ValueString())
+				var value2 string
+				value2 = denyItem.SpiffeID.Value.ValueString()
+
+				spiffeId2 = &shared.MeshTrafficPermissionItemSpecSpiffeID{
+					Type:  typeVar3,
+					Value: value2,
+				}
+			}
+			deny = append(deny, shared.Deny{
+				SpiffeID: spiffeId2,
+			})
+		}
+		default1 := shared.MeshTrafficPermissionItemSpecDefault{
+			Allow:               allow,
+			AllowWithShadowDeny: allowWithShadowDeny,
+			Deny:                deny,
+		}
+		rules = append(rules, shared.MeshTrafficPermissionItemRules{
+			Default: default1,
+		})
+	}
 	var targetRef1 *shared.MeshTrafficPermissionItemTargetRef
 	if r.Spec.TargetRef != nil {
 		kind1 := shared.MeshTrafficPermissionItemKind(r.Spec.TargetRef.Kind.ValueString())
@@ -328,6 +443,7 @@ func (r *MeshTrafficPermissionResourceModel) ToSharedMeshTrafficPermissionItemIn
 	}
 	spec := shared.MeshTrafficPermissionItemSpec{
 		From:      from,
+		Rules:     rules,
 		TargetRef: targetRef1,
 	}
 	out := shared.MeshTrafficPermissionItemInput{

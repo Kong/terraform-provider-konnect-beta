@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -57,19 +58,15 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "PortalCustomization Resource",
 		Attributes: map[string]schema.Attribute{
 			"css": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 			},
 			"js": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"custom": schema.StringAttribute{
-						Computed: true,
 						Optional: true,
 					},
 					"scripts": schema.ListAttribute{
-						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Validators: []validator.List{
@@ -79,15 +76,12 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"layout": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 			},
 			"menu": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"footer_bottom": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -135,7 +129,6 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 						},
 					},
 					"footer_sections": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -207,7 +200,6 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 						},
 					},
 					"main": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -261,45 +253,59 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 				Description: `The Portal identifier`,
 			},
 			"robots": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
 			},
 			"spec_renderer": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
+					"allow_custom_server_urls": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(true),
+						Description: `Let users define a custom server URL for endpoints. This will be used to generate code snippets and to test the API. The URL is client-side only and is not saved. Default: true`,
+					},
 					"hide_deprecated": schema.BoolAttribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `Manage visibility of deprecated endpoints and models. Default: false`,
 					},
 					"hide_internal": schema.BoolAttribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `Manage visibility of internal endpoints and models. Default: false`,
 					},
 					"infinite_scroll": schema.BoolAttribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(true),
+						Description: `Display the full spec on a single, scrollable page. If disabled, documentation, endpoints, and schemas appear on separate pages. Default: true`,
 					},
 					"show_schemas": schema.BoolAttribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(true),
+						Description: `Control whether schemas are visible in your API specs. When enabled, schemas appear in the side navigation below the endpoints. Default: true`,
 					},
 					"try_it_insomnia": schema.BoolAttribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(true),
+						Description: `Enables users to open the API spec in Insomnia to explore and send requests with the native client. Default: true`,
 					},
 					"try_it_ui": schema.BoolAttribute{
-						Computed: true,
-						Optional: true,
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(true),
+						Description: `Enable in-browser testing for your APIs. All linked gateways must have the CORS plugin configured. Default: true`,
 					},
 				},
 			},
 			"theme": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"colors": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"primary": schema.StringAttribute{

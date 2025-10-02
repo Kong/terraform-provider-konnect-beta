@@ -3,14 +3,62 @@
 package operations
 
 import (
+	"encoding/json"
+	"fmt"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 	"net/http"
 )
 
+// QueryParamForce - If true, allows operations to be removed from the current version when using access control enforcement.
+// If false, operations removal will be rejected with a 409 error.
+// Omitting the value means true.
+type QueryParamForce string
+
+const (
+	QueryParamForceTrue  QueryParamForce = "true"
+	QueryParamForceFalse QueryParamForce = "false"
+)
+
+func (e QueryParamForce) ToPointer() *QueryParamForce {
+	return &e
+}
+func (e *QueryParamForce) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "true":
+		fallthrough
+	case "false":
+		*e = QueryParamForce(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for QueryParamForce: %v", v)
+	}
+}
+
 type UpdateAPIRequest struct {
 	// The UUID API identifier
-	APIID            string                  `pathParam:"style=simple,explode=false,name=apiId"`
+	APIID string `pathParam:"style=simple,explode=false,name=apiId"`
+	// If true, allows operations to be removed from the current version when using access control enforcement.
+	// If false, operations removal will be rejected with a 409 error.
+	// Omitting the value means true.
+	//
+	Force            *QueryParamForce        `default:"false" queryParam:"style=form,explode=true,name=force"`
 	UpdateAPIRequest shared.UpdateAPIRequest `request:"mediaType=application/json"`
+}
+
+func (u UpdateAPIRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateAPIRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *UpdateAPIRequest) GetAPIID() string {
@@ -18,6 +66,13 @@ func (o *UpdateAPIRequest) GetAPIID() string {
 		return ""
 	}
 	return o.APIID
+}
+
+func (o *UpdateAPIRequest) GetForce() *QueryParamForce {
+	if o == nil {
+		return nil
+	}
+	return o.Force
 }
 
 func (o *UpdateAPIRequest) GetUpdateAPIRequest() shared.UpdateAPIRequest {
@@ -44,6 +99,8 @@ type UpdateAPIResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+	// Conflict - May occur when constraints are violated
+	ConflictError *shared.ConflictError
 	// Unsupported Media Type
 	UnsupportedMediaTypeError *shared.UnsupportedMediaTypeError
 }
@@ -102,6 +159,13 @@ func (o *UpdateAPIResponse) GetNotFoundError() *shared.NotFoundError {
 		return nil
 	}
 	return o.NotFoundError
+}
+
+func (o *UpdateAPIResponse) GetConflictError() *shared.ConflictError {
+	if o == nil {
+		return nil
+	}
+	return o.ConflictError
 }
 
 func (o *UpdateAPIResponse) GetUnsupportedMediaTypeError() *shared.UnsupportedMediaTypeError {

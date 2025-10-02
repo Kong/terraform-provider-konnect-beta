@@ -2,10 +2,25 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
+)
+
 type CreateAPIVersionRequestSpec struct {
 	// The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).
 	//
-	Content *string `json:"content,omitempty"`
+	Content *string `default:"null" json:"content"`
+}
+
+func (c CreateAPIVersionRequestSpec) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAPIVersionRequestSpec) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *CreateAPIVersionRequestSpec) GetContent() *string {
@@ -17,8 +32,19 @@ func (o *CreateAPIVersionRequestSpec) GetContent() *string {
 
 type CreateAPIVersionRequest struct {
 	// The version of the api.
-	Version *string                     `json:"version,omitempty"`
+	Version *string                     `default:"null" json:"version"`
 	Spec    CreateAPIVersionRequestSpec `json:"spec"`
+}
+
+func (c CreateAPIVersionRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAPIVersionRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *CreateAPIVersionRequest) GetVersion() *string {

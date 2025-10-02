@@ -8,5 +8,5 @@ import (
 
 type Endpoints struct {
 	Address types.String `tfsdk:"address"`
-	Port    types.Int64  `tfsdk:"port"`
+	Port    types.Int32  `tfsdk:"port"`
 }

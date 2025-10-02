@@ -14,6 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -240,7 +241,6 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																	Description: `The title of the chart, which is displayed in the tile's header.`,
 																},
 																"decimal_points": schema.Float64Attribute{
-																	Computed:    true,
 																	Optional:    true,
 																	Description: `The number of figures to render after the decimal.  Most metrics only support up to 2 decimals, but some may support more.`,
 																},
@@ -334,7 +334,6 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																	},
 																},
 																"dimensions": schema.ListAttribute{
-																	Computed:    true,
 																	Optional:    true,
 																	ElementType: types.StringType,
 																	Description: `List of attributes or entity types to group by.`,
@@ -459,14 +458,12 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																			Optional: true,
 																			Attributes: map[string]schema.Attribute{
 																				"end": schema.StringAttribute{
-																					Computed: true,
 																					Optional: true,
 																					Validators: []validator.String{
 																						validators.IsRFC3339(),
 																					},
 																				},
 																				"start": schema.StringAttribute{
-																					Computed: true,
 																					Optional: true,
 																					Validators: []validator.String{
 																						validators.IsRFC3339(),
@@ -482,8 +479,10 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																					},
 																				},
 																				"tz": schema.StringAttribute{
-																					Computed: true,
-																					Optional: true,
+																					Computed:    true,
+																					Optional:    true,
+																					Default:     stringdefault.StaticString(`Etc/UTC`),
+																					Description: `Default: "Etc/UTC"`,
 																				},
 																			},
 																			Description: `A duration representing an exact start and end time.`,
@@ -500,9 +499,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																				"time_range": schema.StringAttribute{
 																					Computed:    true,
 																					Optional:    true,
-																					Description: `Not Null; must be one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]`,
+																					Default:     stringdefault.StaticString(`1h`),
+																					Description: `Default: "1h"; must be one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]`,
 																					Validators: []validator.String{
-																						speakeasy_stringvalidators.NotNull(),
 																						stringvalidator.OneOf(
 																							"15m",
 																							"1h",
@@ -528,8 +527,10 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																					},
 																				},
 																				"tz": schema.StringAttribute{
-																					Computed: true,
-																					Optional: true,
+																					Computed:    true,
+																					Optional:    true,
+																					Default:     stringdefault.StaticString(`Etc/UTC`),
+																					Description: `Default: "Etc/UTC"`,
 																				},
 																			},
 																			Description: `A duration representing a relative-to-now span of time. Generally the start time is floored to the requested granularity. Eg 7d from now, with 1day granularity initiated at 2024-01-08T17:11:00+05:00 will query for the time range from 2024-01-01T00:00:00+05:00 to 2024-01-08T17:11:00+05:00. The exact start and end timestamps are returned in the result query in the meta.start and meta.end fields. If the granularity for the previous query was 1hour, it would query a time range from 2024-01-01T17:00:00+05:00 to 2024-01-08T17:11:00+05:00.`,
@@ -566,7 +567,6 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																	},
 																},
 																"dimensions": schema.ListAttribute{
-																	Computed:    true,
 																	Optional:    true,
 																	ElementType: types.StringType,
 																	Description: `List of attributes or entity types to group by.`,
@@ -689,14 +689,12 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																			Optional: true,
 																			Attributes: map[string]schema.Attribute{
 																				"end": schema.StringAttribute{
-																					Computed: true,
 																					Optional: true,
 																					Validators: []validator.String{
 																						validators.IsRFC3339(),
 																					},
 																				},
 																				"start": schema.StringAttribute{
-																					Computed: true,
 																					Optional: true,
 																					Validators: []validator.String{
 																						validators.IsRFC3339(),
@@ -712,8 +710,10 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																					},
 																				},
 																				"tz": schema.StringAttribute{
-																					Computed: true,
-																					Optional: true,
+																					Computed:    true,
+																					Optional:    true,
+																					Default:     stringdefault.StaticString(`Etc/UTC`),
+																					Description: `Default: "Etc/UTC"`,
 																				},
 																			},
 																			Description: `A duration representing an exact start and end time.`,
@@ -730,9 +730,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																				"time_range": schema.StringAttribute{
 																					Computed:    true,
 																					Optional:    true,
-																					Description: `Not Null; must be one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]`,
+																					Default:     stringdefault.StaticString(`1h`),
+																					Description: `Default: "1h"; must be one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]`,
 																					Validators: []validator.String{
-																						speakeasy_stringvalidators.NotNull(),
 																						stringvalidator.OneOf(
 																							"15m",
 																							"1h",
@@ -758,8 +758,10 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																					},
 																				},
 																				"tz": schema.StringAttribute{
-																					Computed: true,
-																					Optional: true,
+																					Computed:    true,
+																					Optional:    true,
+																					Default:     stringdefault.StaticString(`Etc/UTC`),
+																					Description: `Default: "Etc/UTC"`,
 																				},
 																			},
 																			Description: `A duration representing a relative-to-now span of time. Generally the start time is floored to the requested granularity. Eg 7d from now, with 1day granularity initiated at 2024-01-08T17:11:00+05:00 will query for the time range from 2024-01-01T00:00:00+05:00 to 2024-01-08T17:11:00+05:00. The exact start and end timestamps are returned in the result query in the meta.start and meta.end fields. If the granularity for the previous query was 1hour, it would query a time range from 2024-01-01T17:00:00+05:00 to 2024-01-08T17:11:00+05:00.`,

@@ -16,6 +16,40 @@ servers:
   - url: 'https://in.api.konghq.com'
 paths:
   /v3/portals:
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: null
+        terraform-datasource:
+          - Portal#read
+      operationId: list-portals
+      summary: List Portals
+      description: 'Lists developer portals defined in this region for this organization. Each developer portal is available at a unique address and has isolated configuration, customization, developers, and applications.'
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/SortPortals'
+        - name: filter
+          in: query
+          description: Filter portals returned in the response.
+          required: false
+          schema:
+            $ref: '#/components/schemas/PortalFilterParameters'
+          style: deepObject
+      responses:
+        '200':
+          $ref: '#/components/responses/ListPortalsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Portals
     post:
       x-speakeasy-entity-operation:
         terraform-resource: Portal#create
@@ -753,6 +787,21 @@ paths:
       operationId: update-api
       summary: Update API
       description: Updates an API.
+      parameters:
+        - name: force
+          in: query
+          description: |
+            If true, allows operations to be removed from the current version when using access control enforcement.
+            If false, operations removal will be rejected with a 409 error.
+            Omitting the value means true.
+          schema:
+            type: string
+            default: 'false'
+            enum:
+              - 'true'
+              - 'false'
+          x-internal: true
+          x-unstable: true
       requestBody:
         $ref: '#/components/requestBodies/UpdateApiRequest'
       responses:
@@ -770,6 +819,8 @@ paths:
           $ref: '#/components/responses/ApiForbidden'
         '404':
           $ref: '#/components/responses/ApiNotFound'
+        '409':
+          $ref: '#/components/responses/ApiVersionPatchConflict'
         '415':
           $ref: '#/components/responses/UnsupportedMediaType'
       tags:
@@ -1076,6 +1127,21 @@ paths:
       operationId: update-api-version
       summary: Update API Version
       description: Updates the version (OpenAPI or AsyncAPI) of an API.
+      parameters:
+        - name: force
+          in: query
+          description: |
+            If true, allows operations to be removed from the current version when using access control enforcement.
+            If false, operations removal will be rejected with a 409 error.
+            Omitting the value (i.e., setting `?force`) means true.
+          schema:
+            type: string
+            default: 'false'
+            enum:
+              - 'true'
+              - 'false'
+          x-internal: true
+          x-unstable: true
       requestBody:
         $ref: '#/components/requestBodies/UpdateApiVersionRequest'
       responses:
@@ -1094,7 +1160,7 @@ paths:
         '404':
           $ref: '#/components/responses/ApiNotFound'
         '409':
-          $ref: '#/components/responses/ApiSpecHiddenConflict'
+          $ref: '#/components/responses/ApiVersionPatchConflict'
         '415':
           $ref: '#/components/responses/UnsupportedMediaType'
       tags:
@@ -1257,7 +1323,9 @@ paths:
         - API Implementation
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshaccesslogs/{name}':
     get:
-      x-speakeasy-entity-operation: MeshAccessLog#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshAccessLog#get
+        terraform-datasource: null
       operationId: getMeshAccessLog
       summary: Returns MeshAccessLog entity
       parameters:
@@ -1281,7 +1349,9 @@ paths:
       tags:
         - MeshAccessLog
     put:
-      x-speakeasy-entity-operation: 'MeshAccessLog#create,update'
+      x-speakeasy-entity-operation:
+        terraform-resource: 'MeshAccessLog#create,update'
+        terraform-datasource: null
       operationId: putMeshAccessLog
       summary: Creates or Updates MeshAccessLog entity
       parameters:
@@ -1320,7 +1390,9 @@ paths:
       tags:
         - MeshAccessLog
     delete:
-      x-speakeasy-entity-operation: MeshAccessLog#delete
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshAccessLog#delete
+        terraform-datasource: null
       operationId: deleteMeshAccessLog
       summary: Deletes MeshAccessLog entity
       parameters:
@@ -1351,7 +1423,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshaccesslogs':
     get:
-      x-speakeasy-entity-operation: MeshAccessLogList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshAccessLogList#get
+        terraform-datasource: null
       operationId: getMeshAccessLogList
       summary: Returns a list of MeshAccessLog in the mesh.
       parameters:
@@ -1399,7 +1473,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshcircuitbreakers/{name}':
     get:
-      x-speakeasy-entity-operation: MeshCircuitBreaker#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshCircuitBreaker#get
+        terraform-datasource: null
       operationId: getMeshCircuitBreaker
       summary: Returns MeshCircuitBreaker entity
       parameters:
@@ -1423,7 +1499,9 @@ paths:
       tags:
         - MeshCircuitBreaker
     put:
-      x-speakeasy-entity-operation: 'MeshCircuitBreaker#create,update'
+      x-speakeasy-entity-operation:
+        terraform-resource: 'MeshCircuitBreaker#create,update'
+        terraform-datasource: null
       operationId: putMeshCircuitBreaker
       summary: Creates or Updates MeshCircuitBreaker entity
       parameters:
@@ -1462,7 +1540,9 @@ paths:
       tags:
         - MeshCircuitBreaker
     delete:
-      x-speakeasy-entity-operation: MeshCircuitBreaker#delete
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshCircuitBreaker#delete
+        terraform-datasource: null
       operationId: deleteMeshCircuitBreaker
       summary: Deletes MeshCircuitBreaker entity
       parameters:
@@ -1493,7 +1573,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshcircuitbreakers':
     get:
-      x-speakeasy-entity-operation: MeshCircuitBreakerList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshCircuitBreakerList#get
+        terraform-datasource: null
       operationId: getMeshCircuitBreakerList
       summary: Returns a list of MeshCircuitBreaker in the mesh.
       parameters:
@@ -1541,7 +1623,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshfaultinjections/{name}':
     get:
-      x-speakeasy-entity-operation: MeshFaultInjection#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshFaultInjection#get
+        terraform-datasource: null
       operationId: getMeshFaultInjection
       summary: Returns MeshFaultInjection entity
       parameters:
@@ -1565,7 +1649,9 @@ paths:
       tags:
         - MeshFaultInjection
     put:
-      x-speakeasy-entity-operation: 'MeshFaultInjection#create,update'
+      x-speakeasy-entity-operation:
+        terraform-resource: 'MeshFaultInjection#create,update'
+        terraform-datasource: null
       operationId: putMeshFaultInjection
       summary: Creates or Updates MeshFaultInjection entity
       parameters:
@@ -1604,7 +1690,9 @@ paths:
       tags:
         - MeshFaultInjection
     delete:
-      x-speakeasy-entity-operation: MeshFaultInjection#delete
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshFaultInjection#delete
+        terraform-datasource: null
       operationId: deleteMeshFaultInjection
       summary: Deletes MeshFaultInjection entity
       parameters:
@@ -1635,7 +1723,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshfaultinjections':
     get:
-      x-speakeasy-entity-operation: MeshFaultInjectionList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshFaultInjectionList#get
+        terraform-datasource: null
       operationId: getMeshFaultInjectionList
       summary: Returns a list of MeshFaultInjection in the mesh.
       parameters:
@@ -1683,7 +1773,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhealthchecks/{name}':
     get:
-      x-speakeasy-entity-operation: MeshHealthCheck#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshHealthCheck#get
+        terraform-datasource: null
       operationId: getMeshHealthCheck
       summary: Returns MeshHealthCheck entity
       parameters:
@@ -1707,7 +1799,9 @@ paths:
       tags:
         - MeshHealthCheck
     put:
-      x-speakeasy-entity-operation: 'MeshHealthCheck#create,update'
+      x-speakeasy-entity-operation:
+        terraform-resource: 'MeshHealthCheck#create,update'
+        terraform-datasource: null
       operationId: putMeshHealthCheck
       summary: Creates or Updates MeshHealthCheck entity
       parameters:
@@ -1746,7 +1840,9 @@ paths:
       tags:
         - MeshHealthCheck
     delete:
-      x-speakeasy-entity-operation: MeshHealthCheck#delete
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshHealthCheck#delete
+        terraform-datasource: null
       operationId: deleteMeshHealthCheck
       summary: Deletes MeshHealthCheck entity
       parameters:
@@ -1777,7 +1873,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhealthchecks':
     get:
-      x-speakeasy-entity-operation: MeshHealthCheckList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshHealthCheckList#get
+        terraform-datasource: null
       operationId: getMeshHealthCheckList
       summary: Returns a list of MeshHealthCheck in the mesh.
       parameters:
@@ -1825,7 +1923,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhttproutes/{name}':
     get:
-      x-speakeasy-entity-operation: MeshHTTPRoute#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshHTTPRoute#get
+        terraform-datasource: null
       operationId: getMeshHTTPRoute
       summary: Returns MeshHTTPRoute entity
       parameters:
@@ -1849,7 +1949,9 @@ paths:
       tags:
         - MeshHTTPRoute
     put:
-      x-speakeasy-entity-operation: 'MeshHTTPRoute#create,update'
+      x-speakeasy-entity-operation:
+        terraform-resource: 'MeshHTTPRoute#create,update'
+        terraform-datasource: null
       operationId: putMeshHTTPRoute
       summary: Creates or Updates MeshHTTPRoute entity
       parameters:
@@ -1888,7 +1990,9 @@ paths:
       tags:
         - MeshHTTPRoute
     delete:
-      x-speakeasy-entity-operation: MeshHTTPRoute#delete
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshHTTPRoute#delete
+        terraform-datasource: null
       operationId: deleteMeshHTTPRoute
       summary: Deletes MeshHTTPRoute entity
       parameters:
@@ -1919,7 +2023,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhttproutes':
     get:
-      x-speakeasy-entity-operation: MeshHTTPRouteList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshHTTPRouteList#get
+        terraform-datasource: null
       operationId: getMeshHTTPRouteList
       summary: Returns a list of MeshHTTPRoute in the mesh.
       parameters:
@@ -1967,7 +2073,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshloadbalancingstrategies/{name}':
     get:
-      x-speakeasy-entity-operation: MeshLoadBalancingStrategy#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshLoadBalancingStrategy#get
+        terraform-datasource: null
       operationId: getMeshLoadBalancingStrategy
       summary: Returns MeshLoadBalancingStrategy entity
       parameters:
@@ -1991,7 +2099,9 @@ paths:
       tags:
         - MeshLoadBalancingStrategy
     put:
-      x-speakeasy-entity-operation: 'MeshLoadBalancingStrategy#create,update'
+      x-speakeasy-entity-operation:
+        terraform-resource: 'MeshLoadBalancingStrategy#create,update'
+        terraform-datasource: null
       operationId: putMeshLoadBalancingStrategy
       summary: Creates or Updates MeshLoadBalancingStrategy entity
       parameters:
@@ -2030,7 +2140,9 @@ paths:
       tags:
         - MeshLoadBalancingStrategy
     delete:
-      x-speakeasy-entity-operation: MeshLoadBalancingStrategy#delete
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshLoadBalancingStrategy#delete
+        terraform-datasource: null
       operationId: deleteMeshLoadBalancingStrategy
       summary: Deletes MeshLoadBalancingStrategy entity
       parameters:
@@ -2061,7 +2173,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshloadbalancingstrategies':
     get:
-      x-speakeasy-entity-operation: MeshLoadBalancingStrategyList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshLoadBalancingStrategyList#get
+        terraform-datasource: null
       operationId: getMeshLoadBalancingStrategyList
       summary: Returns a list of MeshLoadBalancingStrategy in the mesh.
       parameters:
@@ -2109,7 +2223,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmetrics/{name}':
     get:
-      x-speakeasy-entity-operation: MeshMetric#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshMetric#get
+        terraform-datasource: null
       operationId: getMeshMetric
       summary: Returns MeshMetric entity
       parameters:
@@ -2133,7 +2249,9 @@ paths:
       tags:
         - MeshMetric
     put:
-      x-speakeasy-entity-operation: 'MeshMetric#create,update'
+      x-speakeasy-entity-operation:
+        terraform-resource: 'MeshMetric#create,update'
+        terraform-datasource: null
       operationId: putMeshMetric
       summary: Creates or Updates MeshMetric entity
       parameters:
@@ -2172,7 +2290,9 @@ paths:
       tags:
         - MeshMetric
     delete:
-      x-speakeasy-entity-operation: MeshMetric#delete
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshMetric#delete
+        terraform-datasource: null
       operationId: deleteMeshMetric
       summary: Deletes MeshMetric entity
       parameters:
@@ -2203,7 +2323,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmetrics':
     get:
-      x-speakeasy-entity-operation: MeshMetricList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshMetricList#get
+        terraform-datasource: null
       operationId: getMeshMetricList
       summary: Returns a list of MeshMetric in the mesh.
       parameters:
@@ -2251,7 +2373,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshpassthroughs/{name}':
     get:
-      x-speakeasy-entity-operation: MeshPassthrough#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshPassthrough#get
+        terraform-datasource: null
       operationId: getMeshPassthrough
       summary: Returns MeshPassthrough entity
       parameters:
@@ -2275,7 +2399,9 @@ paths:
       tags:
         - MeshPassthrough
     put:
-      x-speakeasy-entity-operation: 'MeshPassthrough#create,update'
+      x-speakeasy-entity-operation:
+        terraform-resource: 'MeshPassthrough#create,update'
+        terraform-datasource: null
       operationId: putMeshPassthrough
       summary: Creates or Updates MeshPassthrough entity
       parameters:
@@ -2314,7 +2440,9 @@ paths:
       tags:
         - MeshPassthrough
     delete:
-      x-speakeasy-entity-operation: MeshPassthrough#delete
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshPassthrough#delete
+        terraform-datasource: null
       operationId: deleteMeshPassthrough
       summary: Deletes MeshPassthrough entity
       parameters:
@@ -2345,7 +2473,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshpassthroughs':
     get:
-      x-speakeasy-entity-operation: MeshPassthroughList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshPassthroughList#get
+        terraform-datasource: null
       operationId: getMeshPassthroughList
       summary: Returns a list of MeshPassthrough in the mesh.
       parameters:
@@ -2393,7 +2523,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshproxypatches/{name}':
     get:
-      x-speakeasy-entity-operation: MeshProxyPatch#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshProxyPatch#get
+        terraform-datasource: null
       operationId: getMeshProxyPatch
       summary: Returns MeshProxyPatch entity
       parameters:
@@ -2417,7 +2549,9 @@ paths:
       tags:
         - MeshProxyPatch
     put:
-      x-speakeasy-entity-operation: 'MeshProxyPatch#create,update'
+      x-speakeasy-entity-operation:
+        terraform-resource: 'MeshProxyPatch#create,update'
+        terraform-datasource: null
       operationId: putMeshProxyPatch
       summary: Creates or Updates MeshProxyPatch entity
       parameters:
@@ -2456,7 +2590,9 @@ paths:
       tags:
         - MeshProxyPatch
     delete:
-      x-speakeasy-entity-operation: MeshProxyPatch#delete
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshProxyPatch#delete
+        terraform-datasource: null
       operationId: deleteMeshProxyPatch
       summary: Deletes MeshProxyPatch entity
       parameters:
@@ -2487,7 +2623,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshproxypatches':
     get:
-      x-speakeasy-entity-operation: MeshProxyPatchList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshProxyPatchList#get
+        terraform-datasource: null
       operationId: getMeshProxyPatchList
       summary: Returns a list of MeshProxyPatch in the mesh.
       parameters:
@@ -2535,7 +2673,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshratelimits/{name}':
     get:
-      x-speakeasy-entity-operation: MeshRateLimit#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshRateLimit#get
+        terraform-datasource: null
       operationId: getMeshRateLimit
       summary: Returns MeshRateLimit entity
       parameters:
@@ -2559,7 +2699,9 @@ paths:
       tags:
         - MeshRateLimit
     put:
-      x-speakeasy-entity-operation: 'MeshRateLimit#create,update'
+      x-speakeasy-entity-operation:
+        terraform-resource: 'MeshRateLimit#create,update'
+        terraform-datasource: null
       operationId: putMeshRateLimit
       summary: Creates or Updates MeshRateLimit entity
       parameters:
@@ -2598,7 +2740,9 @@ paths:
       tags:
         - MeshRateLimit
     delete:
-      x-speakeasy-entity-operation: MeshRateLimit#delete
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshRateLimit#delete
+        terraform-datasource: null
       operationId: deleteMeshRateLimit
       summary: Deletes MeshRateLimit entity
       parameters:
@@ -2629,7 +2773,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshratelimits':
     get:
-      x-speakeasy-entity-operation: MeshRateLimitList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshRateLimitList#get
+        terraform-datasource: null
       operationId: getMeshRateLimitList
       summary: Returns a list of MeshRateLimit in the mesh.
       parameters:
@@ -2677,7 +2823,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshretries/{name}':
     get:
-      x-speakeasy-entity-operation: MeshRetry#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshRetry#get
+        terraform-datasource: null
       operationId: getMeshRetry
       summary: Returns MeshRetry entity
       parameters:
@@ -2701,7 +2849,9 @@ paths:
       tags:
         - MeshRetry
     put:
-      x-speakeasy-entity-operation: 'MeshRetry#create,update'
+      x-speakeasy-entity-operation:
+        terraform-resource: 'MeshRetry#create,update'
+        terraform-datasource: null
       operationId: putMeshRetry
       summary: Creates or Updates MeshRetry entity
       parameters:
@@ -2740,7 +2890,9 @@ paths:
       tags:
         - MeshRetry
     delete:
-      x-speakeasy-entity-operation: MeshRetry#delete
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshRetry#delete
+        terraform-datasource: null
       operationId: deleteMeshRetry
       summary: Deletes MeshRetry entity
       parameters:
@@ -2771,7 +2923,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshretries':
     get:
-      x-speakeasy-entity-operation: MeshRetryList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshRetryList#get
+        terraform-datasource: null
       operationId: getMeshRetryList
       summary: Returns a list of MeshRetry in the mesh.
       parameters:
@@ -2819,7 +2973,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtcproutes/{name}':
     get:
-      x-speakeasy-entity-operation: MeshTCPRoute#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTCPRoute#get
+        terraform-datasource: null
       operationId: getMeshTCPRoute
       summary: Returns MeshTCPRoute entity
       parameters:
@@ -2843,7 +2999,9 @@ paths:
       tags:
         - MeshTCPRoute
     put:
-      x-speakeasy-entity-operation: 'MeshTCPRoute#create,update'
+      x-speakeasy-entity-operation:
+        terraform-resource: 'MeshTCPRoute#create,update'
+        terraform-datasource: null
       operationId: putMeshTCPRoute
       summary: Creates or Updates MeshTCPRoute entity
       parameters:
@@ -2882,7 +3040,9 @@ paths:
       tags:
         - MeshTCPRoute
     delete:
-      x-speakeasy-entity-operation: MeshTCPRoute#delete
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTCPRoute#delete
+        terraform-datasource: null
       operationId: deleteMeshTCPRoute
       summary: Deletes MeshTCPRoute entity
       parameters:
@@ -2913,7 +3073,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtcproutes':
     get:
-      x-speakeasy-entity-operation: MeshTCPRouteList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTCPRouteList#get
+        terraform-datasource: null
       operationId: getMeshTCPRouteList
       summary: Returns a list of MeshTCPRoute in the mesh.
       parameters:
@@ -2961,7 +3123,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtimeouts/{name}':
     get:
-      x-speakeasy-entity-operation: MeshTimeout#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTimeout#get
+        terraform-datasource: null
       operationId: getMeshTimeout
       summary: Returns MeshTimeout entity
       parameters:
@@ -2985,7 +3149,9 @@ paths:
       tags:
         - MeshTimeout
     put:
-      x-speakeasy-entity-operation: 'MeshTimeout#create,update'
+      x-speakeasy-entity-operation:
+        terraform-resource: 'MeshTimeout#create,update'
+        terraform-datasource: null
       operationId: putMeshTimeout
       summary: Creates or Updates MeshTimeout entity
       parameters:
@@ -3024,7 +3190,9 @@ paths:
       tags:
         - MeshTimeout
     delete:
-      x-speakeasy-entity-operation: MeshTimeout#delete
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTimeout#delete
+        terraform-datasource: null
       operationId: deleteMeshTimeout
       summary: Deletes MeshTimeout entity
       parameters:
@@ -3055,7 +3223,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtimeouts':
     get:
-      x-speakeasy-entity-operation: MeshTimeoutList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTimeoutList#get
+        terraform-datasource: null
       operationId: getMeshTimeoutList
       summary: Returns a list of MeshTimeout in the mesh.
       parameters:
@@ -3103,7 +3273,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtlses/{name}':
     get:
-      x-speakeasy-entity-operation: MeshTLS#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTLS#get
+        terraform-datasource: null
       operationId: getMeshTLS
       summary: Returns MeshTLS entity
       parameters:
@@ -3127,7 +3299,9 @@ paths:
       tags:
         - MeshTLS
     put:
-      x-speakeasy-entity-operation: 'MeshTLS#create,update'
+      x-speakeasy-entity-operation:
+        terraform-resource: 'MeshTLS#create,update'
+        terraform-datasource: null
       operationId: putMeshTLS
       summary: Creates or Updates MeshTLS entity
       parameters:
@@ -3166,7 +3340,9 @@ paths:
       tags:
         - MeshTLS
     delete:
-      x-speakeasy-entity-operation: MeshTLS#delete
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTLS#delete
+        terraform-datasource: null
       operationId: deleteMeshTLS
       summary: Deletes MeshTLS entity
       parameters:
@@ -3197,7 +3373,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtlses':
     get:
-      x-speakeasy-entity-operation: MeshTLSList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTLSList#get
+        terraform-datasource: null
       operationId: getMeshTLSList
       summary: Returns a list of MeshTLS in the mesh.
       parameters:
@@ -3245,7 +3423,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtraces/{name}':
     get:
-      x-speakeasy-entity-operation: MeshTrace#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTrace#get
+        terraform-datasource: null
       operationId: getMeshTrace
       summary: Returns MeshTrace entity
       parameters:
@@ -3269,7 +3449,9 @@ paths:
       tags:
         - MeshTrace
     put:
-      x-speakeasy-entity-operation: 'MeshTrace#create,update'
+      x-speakeasy-entity-operation:
+        terraform-resource: 'MeshTrace#create,update'
+        terraform-datasource: null
       operationId: putMeshTrace
       summary: Creates or Updates MeshTrace entity
       parameters:
@@ -3308,7 +3490,9 @@ paths:
       tags:
         - MeshTrace
     delete:
-      x-speakeasy-entity-operation: MeshTrace#delete
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTrace#delete
+        terraform-datasource: null
       operationId: deleteMeshTrace
       summary: Deletes MeshTrace entity
       parameters:
@@ -3339,7 +3523,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtraces':
     get:
-      x-speakeasy-entity-operation: MeshTraceList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTraceList#get
+        terraform-datasource: null
       operationId: getMeshTraceList
       summary: Returns a list of MeshTrace in the mesh.
       parameters:
@@ -3387,7 +3573,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtrafficpermissions/{name}':
     get:
-      x-speakeasy-entity-operation: MeshTrafficPermission#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTrafficPermission#get
+        terraform-datasource: null
       operationId: getMeshTrafficPermission
       summary: Returns MeshTrafficPermission entity
       parameters:
@@ -3411,7 +3599,9 @@ paths:
       tags:
         - MeshTrafficPermission
     put:
-      x-speakeasy-entity-operation: 'MeshTrafficPermission#create,update'
+      x-speakeasy-entity-operation:
+        terraform-resource: 'MeshTrafficPermission#create,update'
+        terraform-datasource: null
       operationId: putMeshTrafficPermission
       summary: Creates or Updates MeshTrafficPermission entity
       parameters:
@@ -3450,7 +3640,9 @@ paths:
       tags:
         - MeshTrafficPermission
     delete:
-      x-speakeasy-entity-operation: MeshTrafficPermission#delete
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTrafficPermission#delete
+        terraform-datasource: null
       operationId: deleteMeshTrafficPermission
       summary: Deletes MeshTrafficPermission entity
       parameters:
@@ -3481,7 +3673,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtrafficpermissions':
     get:
-      x-speakeasy-entity-operation: MeshTrafficPermissionList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTrafficPermissionList#get
+        terraform-datasource: null
       operationId: getMeshTrafficPermissionList
       summary: Returns a list of MeshTrafficPermission in the mesh.
       parameters:
@@ -3529,7 +3723,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{name}':
     get:
-      x-speakeasy-entity-operation: Mesh#get
+      x-speakeasy-entity-operation:
+        terraform-resource: Mesh#get
+        terraform-datasource: null
       operationId: getMesh
       summary: Returns Mesh entity
       parameters:
@@ -3547,7 +3743,9 @@ paths:
       tags:
         - Mesh
     put:
-      x-speakeasy-entity-operation: 'Mesh#create,update'
+      x-speakeasy-entity-operation:
+        terraform-resource: 'Mesh#create,update'
+        terraform-datasource: null
       operationId: putMesh
       summary: Creates or Updates Mesh entity
       parameters:
@@ -3580,7 +3778,9 @@ paths:
       tags:
         - Mesh
     delete:
-      x-speakeasy-entity-operation: Mesh#delete
+      x-speakeasy-entity-operation:
+        terraform-resource: Mesh#delete
+        terraform-datasource: null
       operationId: deleteMesh
       summary: Deletes Mesh entity
       parameters:
@@ -3605,7 +3805,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes':
     get:
-      x-speakeasy-entity-operation: MeshList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshList#get
+        terraform-datasource: null
       operationId: getMeshList
       summary: Returns a list of Mesh in the mesh.
       parameters:
@@ -3647,7 +3849,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshgateways/{name}':
     get:
-      x-speakeasy-entity-operation: MeshGateway#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshGateway#get
+        terraform-datasource: null
       operationId: getMeshGateway
       summary: Returns MeshGateway entity
       parameters:
@@ -3671,7 +3875,9 @@ paths:
       tags:
         - MeshGateway
     put:
-      x-speakeasy-entity-operation: 'MeshGateway#create,update'
+      x-speakeasy-entity-operation:
+        terraform-resource: 'MeshGateway#create,update'
+        terraform-datasource: null
       operationId: putMeshGateway
       summary: Creates or Updates MeshGateway entity
       parameters:
@@ -3710,7 +3916,9 @@ paths:
       tags:
         - MeshGateway
     delete:
-      x-speakeasy-entity-operation: MeshGateway#delete
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshGateway#delete
+        terraform-datasource: null
       operationId: deleteMeshGateway
       summary: Deletes MeshGateway entity
       parameters:
@@ -3741,7 +3949,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshgateways':
     get:
-      x-speakeasy-entity-operation: MeshGatewayList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshGatewayList#get
+        terraform-datasource: null
       operationId: getMeshGatewayList
       summary: Returns a list of MeshGateway in the mesh.
       parameters:
@@ -3789,7 +3999,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/hostnamegenerators/{name}':
     get:
-      x-speakeasy-entity-operation: MeshHostnameGenerator#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshHostnameGenerator#get
+        terraform-datasource: null
       operationId: getHostnameGenerator
       summary: Returns HostnameGenerator entity
       parameters:
@@ -3807,7 +4019,9 @@ paths:
       tags:
         - HostnameGenerator
     put:
-      x-speakeasy-entity-operation: 'MeshHostnameGenerator#create,update'
+      x-speakeasy-entity-operation:
+        terraform-resource: 'MeshHostnameGenerator#create,update'
+        terraform-datasource: null
       operationId: putHostnameGenerator
       summary: Creates or Updates HostnameGenerator entity
       parameters:
@@ -3840,7 +4054,9 @@ paths:
       tags:
         - HostnameGenerator
     delete:
-      x-speakeasy-entity-operation: MeshHostnameGenerator#delete
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshHostnameGenerator#delete
+        terraform-datasource: null
       operationId: deleteHostnameGenerator
       summary: Deletes HostnameGenerator entity
       parameters:
@@ -3865,7 +4081,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/hostnamegenerators':
     get:
-      x-speakeasy-entity-operation: HostnameGeneratorList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: HostnameGeneratorList#get
+        terraform-datasource: null
       operationId: getHostnameGeneratorList
       summary: Returns a list of HostnameGenerator in the mesh.
       parameters:
@@ -3907,7 +4125,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshexternalservices/{name}':
     get:
-      x-speakeasy-entity-operation: MeshExternalService#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshExternalService#get
+        terraform-datasource: null
       operationId: getMeshExternalService
       summary: Returns MeshExternalService entity
       parameters:
@@ -3931,7 +4151,9 @@ paths:
       tags:
         - MeshExternalService
     put:
-      x-speakeasy-entity-operation: 'MeshExternalService#create,update'
+      x-speakeasy-entity-operation:
+        terraform-resource: 'MeshExternalService#create,update'
+        terraform-datasource: null
       operationId: putMeshExternalService
       summary: Creates or Updates MeshExternalService entity
       parameters:
@@ -3970,7 +4192,9 @@ paths:
       tags:
         - MeshExternalService
     delete:
-      x-speakeasy-entity-operation: MeshExternalService#delete
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshExternalService#delete
+        terraform-datasource: null
       operationId: deleteMeshExternalService
       summary: Deletes MeshExternalService entity
       parameters:
@@ -4001,7 +4225,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshexternalservices':
     get:
-      x-speakeasy-entity-operation: MeshExternalServiceList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshExternalServiceList#get
+        terraform-datasource: null
       operationId: getMeshExternalServiceList
       summary: Returns a list of MeshExternalService in the mesh.
       parameters:
@@ -4047,9 +4273,161 @@ paths:
         - MeshExternalService
     parameters:
       - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshidentities/{name}':
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshIdentity#get
+        terraform-datasource: null
+      operationId: getMeshIdentity
+      summary: Returns MeshIdentity entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshIdentity
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/MeshIdentityItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshIdentity
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: 'MeshIdentity#create,update'
+        terraform-datasource: null
+      operationId: putMeshIdentity
+      summary: Creates or Updates MeshIdentity entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshIdentity
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshIdentityItem'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshIdentityCreateOrUpdateSuccessResponse'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshIdentityCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshIdentity
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshIdentity#delete
+        terraform-datasource: null
+      operationId: deleteMeshIdentity
+      summary: Deletes MeshIdentity entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshIdentity
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshIdentityDeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshIdentity
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshidentities':
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshIdentityList#get
+        terraform-datasource: null
+      operationId: getMeshIdentityList
+      summary: Returns a list of MeshIdentity in the mesh.
+      parameters:
+        - name: offset
+          in: query
+          description: offset in the list of entities
+          required: false
+          schema:
+            type: integer
+          example: 0
+        - name: size
+          in: query
+          description: the number of items per page
+          required: false
+          schema:
+            type: integer
+            default: 100
+            maximum: 1000
+            minimum: 1
+        - name: filter
+          in: query
+          description: 'filter by labels when multiple filters are present, they are ANDed'
+          required: false
+          schema:
+            type: object
+            properties:
+              key:
+                type: string
+              value:
+                type: string
+          example:
+            label.k8s.kuma.io/namespace: my-ns
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/MeshIdentityList'
+      tags:
+        - MeshIdentity
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmultizoneservices/{name}':
     get:
-      x-speakeasy-entity-operation: MeshMultiZoneService#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshMultiZoneService#get
+        terraform-datasource: null
       operationId: getMeshMultiZoneService
       summary: Returns MeshMultiZoneService entity
       parameters:
@@ -4073,7 +4451,9 @@ paths:
       tags:
         - MeshMultiZoneService
     put:
-      x-speakeasy-entity-operation: 'MeshMultiZoneService#create,update'
+      x-speakeasy-entity-operation:
+        terraform-resource: 'MeshMultiZoneService#create,update'
+        terraform-datasource: null
       operationId: putMeshMultiZoneService
       summary: Creates or Updates MeshMultiZoneService entity
       parameters:
@@ -4112,7 +4492,9 @@ paths:
       tags:
         - MeshMultiZoneService
     delete:
-      x-speakeasy-entity-operation: MeshMultiZoneService#delete
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshMultiZoneService#delete
+        terraform-datasource: null
       operationId: deleteMeshMultiZoneService
       summary: Deletes MeshMultiZoneService entity
       parameters:
@@ -4143,7 +4525,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmultizoneservices':
     get:
-      x-speakeasy-entity-operation: MeshMultiZoneServiceList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshMultiZoneServiceList#get
+        terraform-datasource: null
       operationId: getMeshMultiZoneServiceList
       summary: Returns a list of MeshMultiZoneService in the mesh.
       parameters:
@@ -4191,7 +4575,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshservices/{name}':
     get:
-      x-speakeasy-entity-operation: MeshService#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshService#get
+        terraform-datasource: null
       operationId: getMeshService
       summary: Returns MeshService entity
       parameters:
@@ -4215,7 +4601,9 @@ paths:
       tags:
         - MeshService
     put:
-      x-speakeasy-entity-operation: 'MeshService#create,update'
+      x-speakeasy-entity-operation:
+        terraform-resource: 'MeshService#create,update'
+        terraform-datasource: null
       operationId: putMeshService
       summary: Creates or Updates MeshService entity
       parameters:
@@ -4254,7 +4642,9 @@ paths:
       tags:
         - MeshService
     delete:
-      x-speakeasy-entity-operation: MeshService#delete
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshService#delete
+        terraform-datasource: null
       operationId: deleteMeshService
       summary: Deletes MeshService entity
       parameters:
@@ -4285,7 +4675,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshservices':
     get:
-      x-speakeasy-entity-operation: MeshServiceList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshServiceList#get
+        terraform-datasource: null
       operationId: getMeshServiceList
       summary: Returns a list of MeshService in the mesh.
       parameters:
@@ -4331,9 +4723,161 @@ paths:
         - MeshService
     parameters:
       - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtrusts/{name}':
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTrust#get
+        terraform-datasource: null
+      operationId: getMeshTrust
+      summary: Returns MeshTrust entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshTrust
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/MeshTrustItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshTrust
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: 'MeshTrust#create,update'
+        terraform-datasource: null
+      operationId: putMeshTrust
+      summary: Creates or Updates MeshTrust entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshTrust
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshTrustItem'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTrustCreateOrUpdateSuccessResponse'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTrustCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshTrust
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTrust#delete
+        terraform-datasource: null
+      operationId: deleteMeshTrust
+      summary: Deletes MeshTrust entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshTrust
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTrustDeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshTrust
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtrusts':
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshTrustList#get
+        terraform-datasource: null
+      operationId: getMeshTrustList
+      summary: Returns a list of MeshTrust in the mesh.
+      parameters:
+        - name: offset
+          in: query
+          description: offset in the list of entities
+          required: false
+          schema:
+            type: integer
+          example: 0
+        - name: size
+          in: query
+          description: the number of items per page
+          required: false
+          schema:
+            type: integer
+            default: 100
+            maximum: 1000
+            minimum: 1
+        - name: filter
+          in: query
+          description: 'filter by labels when multiple filters are present, they are ANDed'
+          required: false
+          schema:
+            type: object
+            properties:
+              key:
+                type: string
+              value:
+                type: string
+          example:
+            label.k8s.kuma.io/namespace: my-ns
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/MeshTrustList'
+      tags:
+        - MeshTrust
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshglobalratelimits/{name}':
     get:
-      x-speakeasy-entity-operation: MeshGlobalRateLimit#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshGlobalRateLimit#get
+        terraform-datasource: null
       operationId: getMeshGlobalRateLimit
       summary: Returns MeshGlobalRateLimit entity
       parameters:
@@ -4357,7 +4901,9 @@ paths:
       tags:
         - MeshGlobalRateLimit
     put:
-      x-speakeasy-entity-operation: 'MeshGlobalRateLimit#create,update'
+      x-speakeasy-entity-operation:
+        terraform-resource: 'MeshGlobalRateLimit#create,update'
+        terraform-datasource: null
       operationId: putMeshGlobalRateLimit
       summary: Creates or Updates MeshGlobalRateLimit entity
       parameters:
@@ -4396,7 +4942,9 @@ paths:
       tags:
         - MeshGlobalRateLimit
     delete:
-      x-speakeasy-entity-operation: MeshGlobalRateLimit#delete
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshGlobalRateLimit#delete
+        terraform-datasource: null
       operationId: deleteMeshGlobalRateLimit
       summary: Deletes MeshGlobalRateLimit entity
       parameters:
@@ -4427,7 +4975,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshglobalratelimits':
     get:
-      x-speakeasy-entity-operation: MeshGlobalRateLimitList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshGlobalRateLimitList#get
+        terraform-datasource: null
       operationId: getMeshGlobalRateLimitList
       summary: Returns a list of MeshGlobalRateLimit in the mesh.
       parameters:
@@ -4475,7 +5025,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshopas/{name}':
     get:
-      x-speakeasy-entity-operation: MeshOPA#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshOPA#get
+        terraform-datasource: null
       operationId: getMeshOPA
       summary: Returns MeshOPA entity
       parameters:
@@ -4499,7 +5051,9 @@ paths:
       tags:
         - MeshOPA
     put:
-      x-speakeasy-entity-operation: 'MeshOPA#create,update'
+      x-speakeasy-entity-operation:
+        terraform-resource: 'MeshOPA#create,update'
+        terraform-datasource: null
       operationId: putMeshOPA
       summary: Creates or Updates MeshOPA entity
       parameters:
@@ -4538,7 +5092,9 @@ paths:
       tags:
         - MeshOPA
     delete:
-      x-speakeasy-entity-operation: MeshOPA#delete
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshOPA#delete
+        terraform-datasource: null
       operationId: deleteMeshOPA
       summary: Deletes MeshOPA entity
       parameters:
@@ -4569,7 +5125,9 @@ paths:
       - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshopas':
     get:
-      x-speakeasy-entity-operation: MeshOPAList#get
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshOPAList#get
+        terraform-datasource: null
       operationId: getMeshOPAList
       summary: Returns a list of MeshOPA in the mesh.
       parameters:
@@ -5228,6 +5786,24 @@ components:
       required: true
       description: ID of the snippet.
       x-speakeasy-match: id
+    SortPortals:
+      name: sort
+      description: |
+        Sorts a collection of portals. Supported sort attributes are:
+          - name
+          - description
+          - authentication_enabled
+          - rbac_enabled
+          - auto_approve_applications
+          - auto_approve_developers
+          - default_domain
+          - canonical_domain
+          - created_at
+          - updated_at
+      in: query
+      required: false
+      schema:
+        type: string
     SpecId:
       schema:
         type: string
@@ -5333,11 +5909,13 @@ components:
           $ref: '#/components/schemas/PortalImageDataUri'
       example:
         data: 'data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
+      default: null
       additionalProperties: false
       nullable: true
       required:
         - data
       title: ReplacePortalImageAsset
+      x-speakeasy-param-computed: false
     PageSlug:
       description: |
         The slug of a page in a portal, used to compute its full URL path within the portal hierarchy. 
@@ -5356,7 +5934,9 @@ components:
       type: string
       format: uuid
       example: null
+      default: null
       nullable: true
+      x-speakeasy-param-computed: false
     PageTitle:
       description: The title of a page in a portal.
       type: string
@@ -5578,6 +6158,34 @@ components:
         - name
         - content
       title: CreatePortalSnippetRequest
+    PortalFilterParameters:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UuidFieldFilter'
+        name:
+          $ref: '#/components/schemas/StringFieldFilter'
+        description:
+          $ref: '#/components/schemas/StringFieldFilter'
+        authentication_enabled:
+          $ref: '#/components/schemas/BooleanFieldFilter'
+        rbac_enabled:
+          $ref: '#/components/schemas/BooleanFieldFilter'
+        default_api_visibility:
+          $ref: '#/components/schemas/StringFieldFilter'
+        default_page_visibility:
+          $ref: '#/components/schemas/StringFieldFilter'
+        default_application_auth_strategy_id:
+          $ref: '#/components/schemas/UuidFieldFilter'
+        auto_approve_developers:
+          $ref: '#/components/schemas/BooleanFieldFilter'
+        auto_approve_applications:
+          $ref: '#/components/schemas/BooleanFieldFilter'
+        default_domain:
+          $ref: '#/components/schemas/StringFieldFilter'
+        canonical_domain:
+          $ref: '#/components/schemas/StringFieldFilter'
+      title: PortalFilterParameters
     PortalCustomDomain:
       type: object
       properties:
@@ -5623,6 +6231,11 @@ components:
           format: date-time
           example: '2022-11-04T20:10:06.927Z'
           readOnly: true
+        skip_ca_check:
+          description: |
+            True when the provided certificate chain is served as-is without validation against a public trust store.
+          type: boolean
+          readOnly: true
       additionalProperties: false
       required:
         - domain_verification_method
@@ -5635,17 +6248,33 @@ components:
         expires_at:
           - x-unstable
           - x-internal
+        skip_ca_check:
+          - x-internal
     UpdatePortalCustomDomainSSL:
       type: object
       properties:
         custom_certificate:
           description: Custom certificate to be used for the SSL termination.
           type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         custom_private_key:
           description: Custom certificate private key to be used for the SSL termination.
           type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        skip_ca_check:
+          description: |
+            Advanced option. If true, the custom certificate is served exactly as provided, without attempting to bundle against a public trust store. Required for certificates issued by an internal/private CA.
+          type: boolean
+          default: false
       additionalProperties: false
       title: UpdatePortalCustomDomainSSL
+      x-property-annotations:
+        skip_ca_check:
+          - x-internal
     PortalCustomDomainVerificationMethod:
       type: string
       enum:
@@ -5693,6 +6322,9 @@ components:
       properties:
         enabled:
           type: boolean
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         ssl:
           $ref: '#/components/schemas/UpdatePortalCustomDomainSSL'
       additionalProperties: false
@@ -5708,12 +6340,15 @@ components:
         name:
           type: string
           example: name
+          default: name
         email:
           type: string
           example: email
+          default: email
         groups:
           type: string
           example: custom-group-claim
+          default: groups
       example:
         name: name
         email: email
@@ -5735,7 +6370,12 @@ components:
           type: array
           items:
             type: string
+            default: openid
           example:
+            - email
+            - openid
+            - profile
+          default:
             - email
             - openid
             - profile
@@ -5773,6 +6413,9 @@ components:
           description: The portal has SAML enabled or disabled.
           type: boolean
           example: false
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         oidc_team_mapping_enabled:
           description: IdP groups determine the Portal Teams a developer has.
           type: boolean
@@ -5781,6 +6424,9 @@ components:
           description: IdP groups determine the Portal Teams a developer has. This will soon replace oidc_team_mapping_enabled.
           type: boolean
           example: true
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         konnect_mapping_enabled:
           description: A Konnect Identity Admin assigns teams to a developer.
           type: boolean
@@ -5818,36 +6464,54 @@ components:
           description: The organization has basic auth enabled.
           type: boolean
           example: true
+          x-speakeasy-param-computed: true
         oidc_auth_enabled:
           description: The organization has OIDC disabled.
           type: boolean
           example: false
+          x-speakeasy-param-computed: true
         saml_auth_enabled:
           description: The portal has SAML enabled or disabled.
           type: boolean
           example: false
+          x-speakeasy-param-computed: true
         oidc_team_mapping_enabled:
           description: Whether IdP groups determine the Konnect Portal teams a developer has.
           type: boolean
           example: true
+          x-speakeasy-param-computed: true
         konnect_mapping_enabled:
           description: Whether a Konnect Identity Admin assigns teams to a developer.
           type: boolean
           example: false
+          x-speakeasy-param-computed: true
         idp_mapping_enabled:
           description: Whether IdP groups determine the Konnect Portal teams a developer has. This will soon replace oidc_team_mapping_enabled.
           type: boolean
           example: true
+          x-speakeasy-param-computed: true
         oidc_issuer:
           type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         oidc_client_id:
           type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         oidc_client_secret:
           type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         oidc_scopes:
           type: array
           items:
             type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         oidc_claim_mappings:
           $ref: '#/components/schemas/PortalClaimMappings'
       example:
@@ -5873,13 +6537,19 @@ components:
         name:
           type: string
           example: IDM - Developers
+          default: null
+          nullable: true
           pattern: '^[\w \W]+$'
           writeOnly: true
+          x-speakeasy-param-computed: false
         description:
           type: string
           example: The Identity Management (IDM) API team.
+          default: null
           maxLength: 250
+          nullable: true
           writeOnly: true
+          x-speakeasy-param-computed: false
       example:
         name: IDM - Developers
         description: The Identity Management (IDM) API team.
@@ -5897,8 +6567,11 @@ components:
         description:
           type: string
           example: The Identity Management (IDM) team.
+          default: null
           maxLength: 250
+          nullable: true
           writeOnly: true
+          x-speakeasy-param-computed: false
       example:
         name: IDM - Developers
         description: The Identity Management (IDM) team.
@@ -5917,12 +6590,18 @@ components:
         name:
           type: string
           example: IDM - Developers
+          default: null
           maxLength: 250
+          nullable: true
           pattern: '^[\w \W]+$'
+          x-speakeasy-param-computed: false
         description:
           type: string
           example: The developers for the IDM API.
+          default: null
           maxLength: 250
+          nullable: true
+          x-speakeasy-param-computed: false
         created_at:
           type: string
           format: date-time
@@ -5940,6 +6619,36 @@ components:
         created_at: '1992-02-07T17:46:57.52Z'
         updated_at: '2022-08-31T17:00:00.52Z'
       title: PortalTeamResponse
+    UuidFieldFilter:
+      description: Filters on the given string field value by exact match inequality.
+      type: object
+      properties:
+        eq:
+          type: string
+        oeq:
+          type: string
+        neq:
+          type: string
+      additionalProperties: false
+    StringFieldFilter:
+      description: Filters on the given string field value by exact match inequality.
+      type: object
+      properties:
+        eq:
+          type: string
+        contains:
+          type: string
+        ocontains:
+          type: string
+        oeq:
+          type: string
+        neq:
+          type: string
+      additionalProperties: false
+    BooleanFieldFilter:
+      description: Filter by a boolean value (true/false).
+      type: boolean
+      title: BooleanFieldFilter
     UUID:
       description: Contains a unique identifier used for this resource.
       type: string
@@ -6083,6 +6792,9 @@ components:
         source:
           type: string
           example: body
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         reason:
           type: string
           example: is a required field
@@ -6117,6 +6829,9 @@ components:
         source:
           type: string
           example: body
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         reason:
           type: string
           example: must have at least 8 characters
@@ -6149,6 +6864,9 @@ components:
         source:
           type: string
           example: body
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         reason:
           type: string
           example: must not have more than 8 characters
@@ -6187,6 +6905,9 @@ components:
         source:
           type: string
           example: body
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
       additionalProperties: false
       required:
         - field
@@ -6214,12 +6935,17 @@ components:
         dependents:
           type: array
           items: {}
+          default: null
           nullable: true
           readOnly: true
           uniqueItems: true
+          x-speakeasy-param-computed: false
         source:
           type: string
           example: body
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
       additionalProperties: false
       required:
         - field
@@ -6297,6 +7023,7 @@ components:
       maxProperties: 50
       nullable: true
       writeOnly: true
+      x-speakeasy-param-computed: true
     NotFoundError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -6377,6 +7104,7 @@ components:
         theme:
           type: object
           additionalProperties: false
+          nullable: false
           properties:
             name:
               type: string
@@ -6390,6 +7118,7 @@ components:
             colors:
               type: object
               additionalProperties: false
+              nullable: false
               properties:
                 primary:
                   type: string
@@ -6397,60 +7126,103 @@ components:
                   nullable: false
                   pattern: '^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$'
                   x-validation-message: must be a valid hex color value
+              x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: false
         layout:
           type: string
           nullable: false
+          x-speakeasy-param-computed: false
         css:
           type: string
+          default: null
           nullable: true
+          x-speakeasy-param-computed: false
         js:
           type: object
           additionalProperties: false
+          nullable: false
           properties:
             custom:
               type: string
+              default: null
               nullable: true
+              x-speakeasy-param-computed: false
             scripts:
               type: array
               items:
                 type: string
                 pattern: '^https://[^:.]+\..+$'
+              default: null
               maxItems: 20
+              nullable: true
+              x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: false
         menu:
           type: object
           additionalProperties: false
+          nullable: false
           properties:
             main:
               type: array
               items:
                 $ref: '#/components/schemas/PortalMenuItem'
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
             footer_sections:
               type: array
               items:
                 $ref: '#/components/schemas/PortalFooterMenuSection'
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
             footer_bottom:
               type: array
               items:
                 $ref: '#/components/schemas/PortalMenuItem'
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: false
         spec_renderer:
           type: object
           additionalProperties: false
+          nullable: false
           properties:
             try_it_ui:
+              description: Enable in-browser testing for your APIs. All linked gateways must have the CORS plugin configured.
               type: boolean
+              default: true
             try_it_insomnia:
+              description: Enables users to open the API spec in Insomnia to explore and send requests with the native client.
               type: boolean
+              default: true
             infinite_scroll:
+              description: 'Display the full spec on a single, scrollable page. If disabled, documentation, endpoints, and schemas appear on separate pages.'
               type: boolean
+              default: true
             show_schemas:
+              description: 'Control whether schemas are visible in your API specs. When enabled, schemas appear in the side navigation below the endpoints.'
               type: boolean
+              default: true
             hide_internal:
+              description: Manage visibility of internal endpoints and models.
               type: boolean
+              default: false
             hide_deprecated:
+              description: Manage visibility of deprecated endpoints and models.
               type: boolean
+              default: false
+            allow_custom_server_urls:
+              description: Let users define a custom server URL for endpoints. This will be used to generate code snippets and to test the API. The URL is client-side only and is not saved.
+              type: boolean
+              default: true
+          x-speakeasy-param-computed: false
         robots:
           type: string
+          default: null
           nullable: true
+          x-speakeasy-param-computed: false
       additionalProperties: false
       title: PortalCustomization
       x-property-annotations:
@@ -6476,13 +7248,16 @@ components:
         description:
           description: A description of your API. Will be visible on your live Portal.
           type: string
+          default: null
           nullable: true
+          x-speakeasy-param-computed: false
         version:
           description: An optional version for your API. Leave this empty if your API is unversioned.
           type: string
           maxLength: 255
           minLength: 1
           nullable: true
+          x-speakeasy-param-computed: true
         current_version_summary:
           $ref: '#/components/schemas/ApiVersionSummary'
         slug:
@@ -6494,6 +7269,7 @@ components:
           example: my-api-v1
           nullable: true
           pattern: '^[\w-]+$'
+          x-speakeasy-param-computed: true
         api_spec_ids:
           description: The list of API specification ids for the API.
           type: array
@@ -6626,8 +7402,10 @@ components:
       type: string
       format: uuid
       example: null
+      default: null
       nullable: true
       title: API Document Parent Document ID
+      x-speakeasy-param-computed: false
     ApiDocumentSlug:
       description: |
         The `slug` is used in generated URLs to provide human readable paths.
@@ -6671,15 +7449,23 @@ components:
           description: The version of the api.
           type: string
           example: 1.0.0
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         spec:
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             content:
+              default: null
               description: |
                 The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).
               example: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
+              nullable: true
               type: string
+              x-speakeasy-param-computed: false
             type:
               description: |
                 The type of specification being stored. This allows us to render the specification correctly.
@@ -6703,6 +7489,7 @@ components:
                   message:
                     type: string
               readOnly: true
+          x-speakeasy-param-computed: false
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -6721,12 +7508,18 @@ components:
         version:
           description: The version of this api spec.
           type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         spec:
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             type:
               $ref: '#/components/schemas/ApiSpecType'
+          x-speakeasy-param-computed: false
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -6735,6 +7528,7 @@ components:
       nullable: true
       readOnly: true
       title: API Version Summary
+      x-speakeasy-terraform-ignore: true
     ApiSpec:
       type: object
       properties:
@@ -6745,10 +7539,13 @@ components:
           example: 7710d5c4-d902-410b-992f-18b814155b53
           readOnly: true
         content:
+          default: null
           description: |
             The raw content of your API specification, in json or yaml format (OpenAPI or AsyncAPI).
           example: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
+          nullable: true
           type: string
+          x-speakeasy-param-computed: false
         validation_messages:
           description: The errors that occurred while parsing the API specification.
           type: array
@@ -6798,10 +7595,12 @@ components:
       items:
         type: string
         format: uuid
+      default: null
       maxItems: 1
       minItems: 1
       nullable: true
       title: API Publication Auth Strategy IDs
+      x-speakeasy-param-computed: false
     AutoApproveRegistrations:
       description: 'Whether the application registration auto approval on this portal for the api is enabled. If set to false, fallbacks on portal''s auto_approve_applications value.'
       type: boolean
@@ -10794,6 +11593,104 @@ components:
                       'targetRef'
                     type: object
                     properties:
+                      hashPolicies:
+                        description: |-
+                          HashPolicies specify a list of request/connection properties that are used to calculate a hash.
+                          These hash policies are executed in the specified order. If a hash policy has the “terminal” attribute
+                          set to true, and there is already a hash generated, the hash is returned immediately,
+                          ignoring the rest of the hash policy list.
+                        type: array
+                        items:
+                          properties:
+                            connection:
+                              type: object
+                              properties:
+                                sourceIP:
+                                  description: Hash on source IP address.
+                                  type: boolean
+                                  x-speakeasy-param-computed: false
+                              x-speakeasy-param-computed: false
+                            cookie:
+                              type: object
+                              properties:
+                                name:
+                                  description: The name of the cookie that will be used to obtain the hash key.
+                                  type: string
+                                  minLength: 1
+                                  x-speakeasy-param-computed: false
+                                path:
+                                  description: The name of the path for the cookie.
+                                  type: string
+                                  x-speakeasy-param-computed: false
+                                ttl:
+                                  description: 'If specified, a cookie with the TTL will be generated if the cookie is not present.'
+                                  type: string
+                                  x-speakeasy-param-computed: false
+                              required:
+                                - name
+                              x-speakeasy-param-computed: false
+                            filterState:
+                              type: object
+                              properties:
+                                key:
+                                  description: |-
+                                    The name of the Object in the per-request filterState, which is
+                                    an Envoy::Hashable object. If there is no data associated with the key,
+                                    or the stored object is not Envoy::Hashable, no hash will be produced.
+                                  type: string
+                                  minLength: 1
+                                  x-speakeasy-param-computed: false
+                              required:
+                                - key
+                              x-speakeasy-param-computed: false
+                            header:
+                              type: object
+                              properties:
+                                name:
+                                  description: The name of the request header that will be used to obtain the hash key.
+                                  type: string
+                                  minLength: 1
+                                  x-speakeasy-param-computed: false
+                              required:
+                                - name
+                              x-speakeasy-param-computed: false
+                            queryParameter:
+                              type: object
+                              properties:
+                                name:
+                                  description: |-
+                                    The name of the URL query parameter that will be used to obtain the hash key.
+                                    If the parameter is not present, no hash will be produced. Query parameter names
+                                    are case-sensitive.
+                                  type: string
+                                  minLength: 1
+                                  x-speakeasy-param-computed: false
+                              required:
+                                - name
+                              x-speakeasy-param-computed: false
+                            terminal:
+                              description: |-
+                                Terminal is a flag that short-circuits the hash computing. This field provides
+                                a ‘fallback’ style of configuration: “if a terminal policy doesn’t work, fallback
+                                to rest of the policy list”, it saves time when the terminal policy works.
+                                If true, and there is already a hash computed, ignore rest of the list of hash polices.
+                              type: boolean
+                              x-speakeasy-param-computed: false
+                            type:
+                              type: string
+                              enum:
+                                - Header
+                                - Cookie
+                                - Connection
+                                - SourceIP
+                                - QueryParameter
+                                - FilterState
+                              x-speakeasy-param-computed: false
+                          required:
+                            - type
+                          type: object
+                        x-speakeasy-param-computed: false
+                        x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       loadBalancer:
                         description: LoadBalancer allows to specify load balancing algorithm.
                         type: object
@@ -15433,6 +16330,103 @@ components:
                 type: object
               x-speakeasy-param-computed: false
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
+            rules:
+              description: Rules defines inbound permissions configuration
+              type: array
+              items:
+                properties:
+                  default:
+                    type: object
+                    properties:
+                      allow:
+                        description: Allow definees a list of matches for which access will be allowed
+                        type: array
+                        items:
+                          properties:
+                            spiffeID:
+                              description: SpiffeID defines a matcher configuration for SpiffeID matching
+                              type: object
+                              properties:
+                                type:
+                                  description: Type defines how to match incoming traffic by SpiffeID. `Exact` or `Prefix` are allowed.
+                                  type: string
+                                  enum:
+                                    - Exact
+                                    - Prefix
+                                  x-speakeasy-param-computed: false
+                                value:
+                                  description: Value is SpiffeId of a client that needs to match for the configuration to be applied
+                                  type: string
+                                  x-speakeasy-param-computed: false
+                              required:
+                                - type
+                                - value
+                              x-speakeasy-param-computed: false
+                          type: object
+                        x-speakeasy-param-computed: false
+                        x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                      allowWithShadowDeny:
+                        description: |-
+                          AllowWithShadowDeny defines a list of matches for which access will be allowed but emits logs as if
+                          requests are denied
+                        type: array
+                        items:
+                          properties:
+                            spiffeID:
+                              description: SpiffeID defines a matcher configuration for SpiffeID matching
+                              type: object
+                              properties:
+                                type:
+                                  description: Type defines how to match incoming traffic by SpiffeID. `Exact` or `Prefix` are allowed.
+                                  type: string
+                                  enum:
+                                    - Exact
+                                    - Prefix
+                                  x-speakeasy-param-computed: false
+                                value:
+                                  description: Value is SpiffeId of a client that needs to match for the configuration to be applied
+                                  type: string
+                                  x-speakeasy-param-computed: false
+                              required:
+                                - type
+                                - value
+                              x-speakeasy-param-computed: false
+                          type: object
+                        x-speakeasy-param-computed: false
+                        x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                      deny:
+                        description: Deny defines a list of matches for which access will be denied
+                        type: array
+                        items:
+                          properties:
+                            spiffeID:
+                              description: SpiffeID defines a matcher configuration for SpiffeID matching
+                              type: object
+                              properties:
+                                type:
+                                  description: Type defines how to match incoming traffic by SpiffeID. `Exact` or `Prefix` are allowed.
+                                  type: string
+                                  enum:
+                                    - Exact
+                                    - Prefix
+                                  x-speakeasy-param-computed: false
+                                value:
+                                  description: Value is SpiffeId of a client that needs to match for the configuration to be applied
+                                  type: string
+                                  x-speakeasy-param-computed: false
+                              required:
+                                - type
+                                - value
+                              x-speakeasy-param-computed: false
+                          type: object
+                        x-speakeasy-param-computed: false
+                        x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                    x-speakeasy-param-computed: false
+                required:
+                  - default
+                type: object
+              x-speakeasy-param-computed: false
+              x-speakeasy-plan-modifiers: SupressZeroNullModifier
             targetRef:
               description: |-
                 TargetRef is a reference to the resource the policy takes an effect on.
@@ -15612,6 +16606,7 @@ components:
                 x-speakeasy-param-computed: false
             type: object
             x-speakeasy-param-computed: false
+          default: []
           x-speakeasy-param-computed: false
         envoy:
           description: Configuration of Envoy's metrics.
@@ -15661,6 +16656,7 @@ components:
         tls:
           description: Configuration of TLS for prometheus listener.
           type: object
+          default: {}
           properties:
             mode:
               description: |-
@@ -16179,7 +17175,7 @@ components:
                           description: DataSource defines the source of bytes to use.
                           properties:
                             Type:
-                              description: "Types that are assignable to Type:\n\n\t*DataSource_Secret\n\t*DataSource_File\n\t*DataSource_Inline\n\t*DataSource_InlineString"
+                              description: "Types that are valid to be assigned to Type:\n\n\t*DataSource_Secret\n\t*DataSource_File\n\t*DataSource_Inline\n\t*DataSource_InlineString"
                               x-speakeasy-param-computed: false
                           required:
                             - Type
@@ -16308,7 +17304,10 @@ components:
               properties:
                 config:
                   description: Config freeform configuration for the extension.
+                  default: null
+                  nullable: true
                   x-kubernetes-preserve-unknown-fields: true
+                  x-speakeasy-param-computed: false
                 type:
                   description: Type of the extension.
                   type: string
@@ -16350,6 +17349,8 @@ components:
             template:
               type: string
               x-speakeasy-param-computed: false
+          required:
+            - template
           x-speakeasy-param-computed: false
         creationTime:
           description: Time at which the resource was created
@@ -16435,6 +17436,7 @@ components:
                   port:
                     description: Port of the endpoint
                     type: integer
+                    format: int32
                     maximum: 65535
                     minimum: 1
                     x-speakeasy-param-computed: false
@@ -16466,6 +17468,7 @@ components:
                 port:
                   description: Port defines a port to which a user does request.
                   type: integer
+                  format: int32
                   maximum: 65535
                   minimum: 1
                   x-speakeasy-param-computed: false
@@ -16770,6 +17773,340 @@ components:
     MeshExternalServiceDeleteSuccessResponse:
       type: object
       properties: {}
+    MeshIdentityItem:
+      type: object
+      properties:
+        type:
+          description: the type of the resource
+          type: string
+          enum:
+            - MeshIdentity
+          x-speakeasy-param-computed: false
+        mesh:
+          description: Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
+          type: string
+          default: default
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-force-new: true
+        name:
+          description: Name of the Kuma resource
+          type: string
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-force-new: true
+        labels:
+          description: The labels to help identity resources
+          type: object
+          additionalProperties:
+            type: string
+          x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaType: 'kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType: types.StringType}}'
+            valueType: kumalabels.KumaLabelsMapValue
+        spec:
+          description: Spec is the specification of the Kuma MeshIdentity resource.
+          type: object
+          properties:
+            provider:
+              type: object
+              properties:
+                bundled:
+                  description: |-
+                    Bundled provides information about certificates that are generated by the control plane,
+                    either autogenerated or provided by the user.
+                  type: object
+                  properties:
+                    autogenerate:
+                      description: Autogenerate configures the control plane to use self-signed certificates.
+                      type: object
+                      properties:
+                        enabled:
+                          type: boolean
+                          x-speakeasy-param-computed: false
+                      x-speakeasy-param-computed: false
+                    ca:
+                      description: CA has configuration related to the CA
+                      type: object
+                      properties:
+                        certificate:
+                          description: Certificate allows the user to specify a custom certificate.
+                          type: object
+                          properties:
+                            envVar:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                  x-speakeasy-param-computed: false
+                              required:
+                                - name
+                              x-speakeasy-param-computed: false
+                            file:
+                              type: object
+                              properties:
+                                path:
+                                  type: string
+                                  x-speakeasy-param-computed: false
+                              required:
+                                - path
+                              x-speakeasy-param-computed: false
+                            insecureInline:
+                              type: object
+                              properties:
+                                value:
+                                  type: string
+                                  x-speakeasy-param-computed: false
+                              required:
+                                - value
+                              x-speakeasy-param-computed: false
+                            secretRef:
+                              type: object
+                              properties:
+                                kind:
+                                  type: string
+                                  enum:
+                                    - Secret
+                                  x-speakeasy-param-computed: false
+                                name:
+                                  type: string
+                                  x-speakeasy-param-computed: false
+                              required:
+                                - kind
+                                - name
+                              x-speakeasy-param-computed: false
+                            type:
+                              type: string
+                              enum:
+                                - File
+                                - Secret
+                                - EnvVar
+                                - InsecureInline
+                              x-speakeasy-param-computed: false
+                          required:
+                            - type
+                          x-speakeasy-param-computed: false
+                        privateKey:
+                          description: PrivateKey allows the user to specify a custom private key.
+                          type: object
+                          properties:
+                            envVar:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                  x-speakeasy-param-computed: false
+                              required:
+                                - name
+                              x-speakeasy-param-computed: false
+                            file:
+                              type: object
+                              properties:
+                                path:
+                                  type: string
+                                  x-speakeasy-param-computed: false
+                              required:
+                                - path
+                              x-speakeasy-param-computed: false
+                            insecureInline:
+                              type: object
+                              properties:
+                                value:
+                                  type: string
+                                  x-speakeasy-param-computed: false
+                              required:
+                                - value
+                              x-speakeasy-param-computed: false
+                            secretRef:
+                              type: object
+                              properties:
+                                kind:
+                                  type: string
+                                  enum:
+                                    - Secret
+                                  x-speakeasy-param-computed: false
+                                name:
+                                  type: string
+                                  x-speakeasy-param-computed: false
+                              required:
+                                - kind
+                                - name
+                              x-speakeasy-param-computed: false
+                            type:
+                              type: string
+                              enum:
+                                - File
+                                - Secret
+                                - EnvVar
+                                - InsecureInline
+                              x-speakeasy-param-computed: false
+                          required:
+                            - type
+                          x-speakeasy-param-computed: false
+                      x-speakeasy-param-computed: false
+                    certificateParameters:
+                      description: CertificateParameters allows users to define certificate generation parameters.
+                      type: object
+                      properties:
+                        expiry:
+                          type: string
+                          x-speakeasy-param-computed: false
+                      x-speakeasy-param-computed: false
+                    insecureAllowSelfSigned:
+                      description: InsecureAllowSelfSigned allows users to enable the use of self-signed certificates.
+                      type: boolean
+                      x-speakeasy-param-computed: false
+                    meshTrustCreation:
+                      description: |-
+                        MeshTrustCreation defines whether a MeshTrust resource should be automatically created
+                        from an existing MeshIdentity. If not defined, the control plane automatically generates a MeshTrust.
+                      type: string
+                      enum:
+                        - Enabled
+                        - Disabled
+                      x-speakeasy-param-computed: false
+                  x-speakeasy-param-computed: false
+                spire:
+                  description: Spire indicates that SPIRE is used for certificate delivery.
+                  type: object
+                  properties:
+                    agent:
+                      description: Spire agent configuration
+                      type: object
+                      properties:
+                        timeout:
+                          description: |-
+                            Connection timeout to the socket exposed by Spire agent
+                            Default 1 second.
+                          type: string
+                          x-speakeasy-param-computed: false
+                      x-speakeasy-param-computed: false
+                  x-speakeasy-param-computed: false
+                type:
+                  description: Type specifies the type of certificate provider.
+                  type: string
+                  enum:
+                    - Bundled
+                    - Spire
+                  x-speakeasy-param-computed: false
+              required:
+                - type
+              x-speakeasy-param-computed: false
+            selector:
+              type: object
+              properties:
+                dataplane:
+                  type: object
+                  properties:
+                    matchLabels:
+                      type: object
+                      additionalProperties:
+                        type: string
+                      x-speakeasy-param-computed: false
+                  x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: false
+            spiffeID:
+              type: object
+              properties:
+                path:
+                  type: string
+                  x-speakeasy-param-computed: false
+                trustDomain:
+                  type: string
+                  x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: false
+          required:
+            - provider
+          x-speakeasy-param-computed: false
+        creationTime:
+          description: Time at which the resource was created
+          type: string
+          format: date-time
+          example: '0001-01-01T00:00:00Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        modificationTime:
+          description: Time at which the resource was updated
+          type: string
+          format: date-time
+          example: '0001-01-01T00:00:00Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        status:
+          description: Status is the current status of the Kuma MeshIdentity resource.
+          type: object
+          properties:
+            conditions:
+              description: Conditions is an array of hostname generator conditions.
+              type: array
+              items:
+                properties:
+                  message:
+                    description: |-
+                      message is a human readable message indicating details about the transition.
+                      This may be an empty string.
+                    type: string
+                    maxLength: 32768
+                    x-speakeasy-param-computed: false
+                  reason:
+                    description: |-
+                      reason contains a programmatic identifier indicating the reason for the condition's last transition.
+                      Producers of specific condition types may define expected values and meanings for this field,
+                      and whether the values are considered a guaranteed API.
+                      The value should be a CamelCase string.
+                      This field may not be empty.
+                    type: string
+                    maxLength: 1024
+                    minLength: 1
+                    pattern: '^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$'
+                    x-speakeasy-param-computed: false
+                  status:
+                    description: 'status of the condition, one of True, False, Unknown.'
+                    type: string
+                    enum:
+                      - 'True'
+                      - 'False'
+                      - Unknown
+                  type:
+                    description: type of condition in CamelCase or in foo.example.com/CamelCase.
+                    type: string
+                    maxLength: 316
+                    pattern: '^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$'
+                    x-speakeasy-param-computed: false
+                required:
+                  - message
+                  - reason
+                  - status
+                  - type
+                type: object
+              x-kubernetes-list-map-keys:
+                - type
+              x-kubernetes-list-type: map
+              x-speakeasy-param-computed: false
+              x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+      required:
+        - type
+        - name
+        - spec
+    MeshIdentityCreateOrUpdateSuccessResponse:
+      type: object
+      properties:
+        warnings:
+          description: |
+            warnings is a list of warning messages to return to the requesting Kuma API clients.
+            Warning messages describe a problem the client making the API request should correct or be aware of.
+          type: array
+          items:
+            type: string
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
+          x-speakeasy-plan-modifiers: SupressZeroNullModifier
+    MeshIdentityDeleteSuccessResponse:
+      type: object
+      properties: {}
     MeshMultiZoneServiceItem:
       type: object
       properties:
@@ -16837,13 +18174,10 @@ components:
                   type: object
                   properties:
                     matchLabels:
-                      description: MatchLabels matches multiple MeshServices by labels
                       type: object
                       additionalProperties:
                         type: string
                       x-speakeasy-param-computed: false
-                  required:
-                    - matchLabels
                   x-speakeasy-param-computed: false
               required:
                 - meshService
@@ -17063,6 +18397,7 @@ components:
                     type: string
                     enum:
                       - ServiceTag
+                      - SpiffeID
                     x-speakeasy-param-computed: false
                   value:
                     type: string
@@ -17296,6 +18631,124 @@ components:
     MeshServiceDeleteSuccessResponse:
       type: object
       properties: {}
+    MeshTrustItem:
+      type: object
+      properties:
+        type:
+          description: the type of the resource
+          type: string
+          enum:
+            - MeshTrust
+          x-speakeasy-param-computed: false
+        mesh:
+          description: Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
+          type: string
+          default: default
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-force-new: true
+        name:
+          description: Name of the Kuma resource
+          type: string
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-force-new: true
+        labels:
+          description: The labels to help identity resources
+          type: object
+          additionalProperties:
+            type: string
+          x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaType: 'kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType: types.StringType}}'
+            valueType: kumalabels.KumaLabelsMapValue
+        spec:
+          description: Spec is the specification of the Kuma MeshTrust resource.
+          type: object
+          properties:
+            caBundles:
+              description: |-
+                CABundles contains a list of CA bundles supported by this TrustDomain.
+                At least one CA bundle must be specified.
+              type: array
+              items:
+                properties:
+                  pem:
+                    description: Pem contains the PEM-encoded CA bundle if the Type is set to a PEM-based format.
+                    type: object
+                    properties:
+                      value:
+                        description: Value holds the PEM-encoded CA bundle as a string.
+                        type: string
+                        x-speakeasy-param-computed: false
+                    required:
+                      - value
+                    x-speakeasy-param-computed: false
+                  type:
+                    description: Type specifies the format or source type of the CA bundle.
+                    type: string
+                    enum:
+                      - Pem
+                    x-speakeasy-param-computed: false
+                required:
+                  - type
+                type: object
+              minItems: 1
+              x-speakeasy-param-computed: false
+              x-speakeasy-plan-modifiers: SupressZeroNullModifier
+            origin:
+              description: Origin specifies whether the resource was created from a MeshIdentity.
+              type: object
+              properties:
+                kri:
+                  description: Resource identifier
+                  type: string
+                  x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: false
+            trustDomain:
+              description: TrustDomain is the trust domain associated with this resource.
+              type: string
+              maxLength: 253
+              x-speakeasy-param-computed: false
+          required:
+            - caBundles
+            - trustDomain
+          x-speakeasy-param-computed: false
+        creationTime:
+          description: Time at which the resource was created
+          type: string
+          format: date-time
+          example: '0001-01-01T00:00:00Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        modificationTime:
+          description: Time at which the resource was updated
+          type: string
+          format: date-time
+          example: '0001-01-01T00:00:00Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+      required:
+        - type
+        - name
+        - spec
+    MeshTrustCreateOrUpdateSuccessResponse:
+      type: object
+      properties:
+        warnings:
+          description: |
+            warnings is a list of warning messages to return to the requesting Kuma API clients.
+            Warning messages describe a problem the client making the API request should correct or be aware of.
+          type: array
+          items:
+            type: string
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
+          x-speakeasy-plan-modifiers: SupressZeroNullModifier
+    MeshTrustDeleteSuccessResponse:
+      type: object
+      properties: {}
     VaultCertificateAuthorityConfig:
       type: object
       properties:
@@ -17356,6 +18809,7 @@ components:
           items:
             type: string
             x-speakeasy-param-computed: false
+          default: []
           x-speakeasy-param-computed: false
         issuerRef:
           type: object
@@ -18468,7 +19922,9 @@ components:
       description: The URI of the login page where the user is redirected to authenticate in interactive flows. The login page must be secure (HTTPS).
       type: string
       format: uri
+      default: null
       nullable: true
+      x-speakeasy-param-computed: false
     TokenDuration:
       description: 'The duration of the minted token is valid for, in seconds'
       type: integer
@@ -18529,6 +19985,13 @@ components:
     Issuer:
       description: The complete URL for the custom authorization server. This becomes the 'iss' claim in an access token.
       type: string
+    TokenEndpointAuthMethod:
+      description: Requested authentication method for OAuth 2.0 endpoints.
+      type: string
+      default: client_secret_post
+      enum:
+        - client_secret_post
+        - none
     AuthServer:
       type: object
       properties:
@@ -18723,6 +20186,8 @@ components:
           $ref: '#/components/schemas/Labels'
         response_types:
           $ref: '#/components/schemas/ResponseTypes'
+        token_endpoint_auth_method:
+          $ref: '#/components/schemas/TokenEndpointAuthMethod'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -18788,7 +20253,10 @@ components:
               - upstream_status_code_grouped
           example:
             - status_code_grouped
+          default: null
           maxItems: 2
+          nullable: true
+          x-speakeasy-param-computed: false
         filters:
           $ref: '#/components/schemas/AdvancedFilters'
         granularity:
@@ -18849,7 +20317,10 @@ components:
               - status_code
               - status_code_grouped
               - ai_plugin
+          default: null
           maxItems: 2
+          nullable: true
+          x-speakeasy-param-computed: false
         filters:
           $ref: '#/components/schemas/LLMFilters'
         granularity:
@@ -19003,6 +20474,7 @@ components:
               field: ai_request_model
               value:
                 - request_model1
+          nullable: false
       additionalProperties: false
       required:
         - tiles
@@ -19836,12 +21308,14 @@ components:
       properties:
         tz:
           type: string
+          default: Etc/UTC
         type:
           type: string
           enum:
             - relative
         time_range:
           type: string
+          default: 1h
           enum:
             - 15m
             - 1h
@@ -19864,6 +21338,7 @@ components:
       properties:
         tz:
           type: string
+          default: Etc/UTC
         type:
           type: string
           enum:
@@ -19871,9 +21346,15 @@ components:
         start:
           type: string
           format: date-time
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
         end:
           type: string
           format: date-time
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
       required:
         - type
       title: Absolute time range
@@ -20206,6 +21687,7 @@ components:
         chart_title:
           description: 'The title of the chart, which is displayed in the tile''s header.'
           type: string
+          nullable: false
         type:
           type: string
           enum:
@@ -20229,6 +21711,7 @@ components:
         chart_title:
           description: 'The title of the chart, which is displayed in the tile''s header.'
           type: string
+          nullable: false
         type:
           type: string
           enum:
@@ -20238,6 +21721,7 @@ components:
           description: |
             Whether to stack the bars or lines (implicitly adding them together to form a total), or leave them independent from each other.
           type: boolean
+          nullable: false
       additionalProperties: false
       required:
         - type
@@ -20251,6 +21735,7 @@ components:
         chart_title:
           description: 'The title of the chart, which is displayed in the tile''s header.'
           type: string
+          nullable: false
         type:
           type: string
           enum:
@@ -20260,6 +21745,7 @@ components:
           description: |
             Whether to stack the bars (implicitly adding them together to form a total), or leave them independent from each other.
           type: boolean
+          nullable: false
       additionalProperties: false
       required:
         - type
@@ -20271,6 +21757,7 @@ components:
         chart_title:
           description: 'The title of the chart, which is displayed in the tile''s header.'
           type: string
+          nullable: false
         type:
           type: string
           enum:
@@ -20278,6 +21765,9 @@ components:
         decimal_points:
           description: 'The number of figures to render after the decimal.  Most metrics only support up to 2 decimals, but some may support more.'
           type: number
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
       additionalProperties: false
       required:
         - type
@@ -20352,9 +21842,11 @@ components:
         custom_certificate:
           description: Custom certificate to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate"
           type: string
+          nullable: false
         custom_private_key:
           description: Custom certificate private key to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate"
           type: string
+          nullable: false
       additionalProperties: false
   requestBodies:
     CreatePortalCustomDomain:
@@ -20377,6 +21869,7 @@ components:
       content:
         application/json:
           schema:
+            x-speakeasy-entity: Portal
             type: object
             properties:
               id:
@@ -20395,17 +21888,22 @@ components:
                 type: string
                 maxLength: 255
                 minLength: 1
+                nullable: false
               description:
                 description: A description of the portal.
                 type: string
+                default: null
                 maxLength: 512
                 nullable: true
+                x-speakeasy-param-computed: false
               authentication_enabled:
                 description: 'Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications.'
                 type: boolean
+                default: true
               rbac_enabled:
                 description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.'
                 type: boolean
+                default: false
               default_api_visibility:
                 description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
                 type: string
@@ -20422,13 +21920,17 @@ components:
                 description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
                 type: string
                 format: uuid
+                default: null
                 nullable: true
+                x-speakeasy-param-computed: false
               auto_approve_developers:
                 description: 'Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.'
                 type: boolean
+                default: false
               auto_approve_applications:
                 description: 'Whether requests from applications to register for APIs will be automatically approved, or if they will be set to pending until approved by an admin.'
                 type: boolean
+                default: false
               default_domain:
                 description: The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a `custom_domain``.
                 type: string
@@ -20452,6 +21954,7 @@ components:
       content:
         application/json:
           schema:
+            x-speakeasy-entity: Portal
             type: object
             properties:
               id:
@@ -20463,24 +21966,32 @@ components:
               name:
                 description: 'The name of the portal, used to distinguish it from other portals. Name must be unique.'
                 type: string
+                default: null
                 maxLength: 255
                 minLength: 1
+                nullable: true
+                x-speakeasy-param-computed: false
               display_name:
                 description: The display name of the portal. This value will be the portal's `name` in Portal API.
                 type: string
                 maxLength: 255
                 minLength: 1
+                nullable: false
               description:
                 description: A description of the portal.
                 type: string
+                default: null
                 maxLength: 512
                 nullable: true
+                x-speakeasy-param-computed: false
               authentication_enabled:
                 description: 'Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications.'
                 type: boolean
+                default: true
               rbac_enabled:
                 description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.'
                 type: boolean
+                default: false
               default_api_visibility:
                 description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
                 type: string
@@ -20497,13 +22008,17 @@ components:
                 description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
                 type: string
                 format: uuid
+                default: null
                 nullable: true
+                x-speakeasy-param-computed: false
               auto_approve_developers:
                 description: 'Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.'
                 type: boolean
+                default: false
               auto_approve_applications:
                 description: 'Whether requests from applications to register for APIs will be automatically approved, or if they will be set to pending until approved by an admin.'
                 type: boolean
+                default: false
               default_domain:
                 description: The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a `custom_domain``.
                 type: string
@@ -20600,13 +22115,16 @@ components:
               description:
                 description: A description of your API. Will be visible on your live Portal.
                 type: string
+                default: null
                 nullable: true
+                x-speakeasy-param-computed: false
               version:
                 description: An optional version for your API. Leave this empty if your API is unversioned.
                 type: string
                 maxLength: 255
                 minLength: 1
                 nullable: true
+                x-speakeasy-param-computed: true
               current_version_summary:
                 $ref: '#/components/schemas/ApiVersionSummary'
               slug:
@@ -20618,6 +22136,7 @@ components:
                 example: my-api-v1
                 nullable: true
                 pattern: '^[\w-]+$'
+                x-speakeasy-param-computed: true
               api_spec_ids:
                 description: The list of API specification ids for the API.
                 type: array
@@ -20666,6 +22185,7 @@ components:
               spec_content:
                 description: 'The content of the API specification. This is the raw content of the API specification, in json or yaml. By including this field, you can add a API specification without having to make a separate call to update the API specification.'
                 type: string
+                nullable: false
                 writeOnly: true
             additionalProperties: false
             required:
@@ -20740,15 +22260,21 @@ components:
                 description: The version of the api.
                 type: string
                 example: 1.0.0
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
               spec:
                 type: object
                 additionalProperties: false
                 properties:
                   content:
+                    default: null
                     description: |
                       The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).
                     example: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
+                    nullable: true
                     type: string
+                    x-speakeasy-param-computed: false
                   type:
                     description: |
                       The type of specification being stored. This allows us to render the specification correctly.
@@ -20825,18 +22351,24 @@ components:
                   The name of your API. The `name + version` combination must be unique for each API you publish.
                 type: string
                 example: MyAPI
+                default: null
                 maxLength: 255
                 minLength: 1
+                nullable: true
+                x-speakeasy-param-computed: false
               description:
                 description: A description of your API. Will be visible on your live Portal.
                 type: string
+                default: null
                 nullable: true
+                x-speakeasy-param-computed: false
               version:
                 description: An optional version for your API. Leave this empty if your API is unversioned.
                 type: string
                 maxLength: 255
                 minLength: 1
                 nullable: true
+                x-speakeasy-param-computed: true
               current_version_summary:
                 $ref: '#/components/schemas/ApiVersionSummary'
               slug:
@@ -20848,6 +22380,7 @@ components:
                 example: my-api-v1
                 nullable: true
                 pattern: '^[\w-]+$'
+                x-speakeasy-param-computed: true
               api_spec_ids:
                 description: The list of API specification ids for the API.
                 type: array
@@ -21077,6 +22610,8 @@ components:
                 $ref: '#/components/schemas/ClientAllowScopes'
               labels:
                 $ref: '#/components/schemas/Labels'
+              token_endpoint_auth_method:
+                $ref: '#/components/schemas/TokenEndpointAuthMethod'
             required:
               - name
               - grant_types
@@ -21111,6 +22646,8 @@ components:
                 $ref: '#/components/schemas/ClientAllowAllScopes'
               allow_scopes:
                 $ref: '#/components/schemas/ClientAllowScopes'
+              token_endpoint_auth_method:
+                $ref: '#/components/schemas/TokenEndpointAuthMethod'
               labels:
                 $ref: '#/components/schemas/Labels'
             required:
@@ -21137,11 +22674,121 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalCustomDomain'
+    ListPortalsResponse:
+      description: A paginated list of portals in the current region of an organization.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  x-speakeasy-entity: Portal
+                  title: Portal
+                  type: object
+                  additionalProperties: false
+                  properties:
+                    id:
+                      $ref: '#/components/schemas/UUID'
+                    created_at:
+                      $ref: '#/components/schemas/CreatedAt'
+                    updated_at:
+                      $ref: '#/components/schemas/UpdatedAt'
+                    name:
+                      description: 'The name of the portal, used to distinguish it from other portals. Name must be unique.'
+                      type: string
+                      maxLength: 255
+                      minLength: 1
+                    display_name:
+                      description: The display name of the portal. This value will be the portal's `name` in Portal API.
+                      type: string
+                      maxLength: 255
+                      minLength: 1
+                      nullable: false
+                    description:
+                      description: A description of the portal.
+                      type: string
+                      default: null
+                      maxLength: 512
+                      nullable: true
+                      x-speakeasy-param-computed: false
+                    authentication_enabled:
+                      description: 'Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications.'
+                      type: boolean
+                      default: true
+                    rbac_enabled:
+                      description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.'
+                      type: boolean
+                      default: false
+                    default_api_visibility:
+                      description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
+                      type: string
+                      enum:
+                        - public
+                        - private
+                    default_page_visibility:
+                      description: 'The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.'
+                      type: string
+                      enum:
+                        - public
+                        - private
+                    default_application_auth_strategy_id:
+                      description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
+                      type: string
+                      format: uuid
+                      default: null
+                      nullable: true
+                      x-speakeasy-param-computed: false
+                    auto_approve_developers:
+                      description: 'Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.'
+                      type: boolean
+                      default: false
+                    auto_approve_applications:
+                      description: 'Whether requests from applications to register for APIs will be automatically approved, or if they will be set to pending until approved by an admin.'
+                      type: boolean
+                      default: false
+                    default_domain:
+                      description: The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a `custom_domain``.
+                      type: string
+                      format: hostname
+                      readOnly: true
+                    canonical_domain:
+                      description: The canonical domain of the developer portal
+                      type: string
+                      format: hostname
+                      nullable: false
+                      readOnly: true
+                    labels:
+                      $ref: '#/components/schemas/Labels'
+                  required:
+                    - id
+                    - name
+                    - display_name
+                    - description
+                    - authentication_enabled
+                    - rbac_enabled
+                    - default_api_visibility
+                    - default_page_visibility
+                    - default_application_auth_strategy_id
+                    - auto_approve_applications
+                    - auto_approve_developers
+                    - default_domain
+                    - canonical_domain
+                    - created_at
+                    - updated_at
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+            additionalProperties: false
+            required:
+              - data
+              - meta
     PortalResponse:
       description: Details about a portal.
       content:
         application/json:
           schema:
+            x-speakeasy-entity: Portal
             type: object
             properties:
               id:
@@ -21160,17 +22807,22 @@ components:
                 type: string
                 maxLength: 255
                 minLength: 1
+                nullable: false
               description:
                 description: A description of the portal.
                 type: string
+                default: null
                 maxLength: 512
                 nullable: true
+                x-speakeasy-param-computed: false
               authentication_enabled:
                 description: 'Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications.'
                 type: boolean
+                default: true
               rbac_enabled:
                 description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.'
                 type: boolean
+                default: false
               default_api_visibility:
                 description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
                 type: string
@@ -21187,13 +22839,17 @@ components:
                 description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
                 type: string
                 format: uuid
+                default: null
                 nullable: true
+                x-speakeasy-param-computed: false
               auto_approve_developers:
                 description: 'Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.'
                 type: boolean
+                default: false
               auto_approve_applications:
                 description: 'Whether requests from applications to register for APIs will be automatically approved, or if they will be set to pending until approved by an admin.'
                 type: boolean
+                default: false
               default_domain:
                 description: The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a `custom_domain``.
                 type: string
@@ -21298,6 +22954,9 @@ components:
                 type: string
               type:
                 type: string
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
               instance:
                 type: string
             required:
@@ -21312,6 +22971,12 @@ components:
             $ref: '#/components/schemas/ConflictError'
     ApiSpecHiddenConflict:
       description: Conflict - name attribute must be unique across specifications
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
+    ApiVersionPatchConflict:
+      description: Conflict - May occur when constraints are violated
       content:
         application/problem+json:
           schema:
@@ -21458,13 +23123,18 @@ components:
                 example: 1.0.0
               spec:
                 type: object
+                default: null
                 additionalProperties: false
+                nullable: true
                 properties:
                   content:
+                    default: null
                     description: |
                       The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).
                     example: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
+                    nullable: true
                     type: string
+                    x-speakeasy-param-computed: false
                   type:
                     description: |
                       The type of specification being stored. This allows us to render the specification correctly.
@@ -21488,6 +23158,7 @@ components:
                         message:
                           type: string
                     readOnly: true
+                x-speakeasy-param-computed: false
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
@@ -21975,12 +23646,21 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/HostnameGeneratorItem'
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
               total:
                 description: The total number of entities
                 type: number
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
               next:
                 description: URL to the next page
                 type: string
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
     MeshExternalServiceItem:
       description: Successful response
       content:
@@ -21998,6 +23678,29 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/MeshExternalServiceItem'
+              total:
+                description: The total number of entities
+                type: number
+              next:
+                description: URL to the next page
+                type: string
+    MeshIdentityItem:
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MeshIdentityItem'
+    MeshIdentityList:
+      description: List
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              items:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MeshIdentityItem'
               total:
                 description: The total number of entities
                 type: number
@@ -22044,6 +23747,29 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/MeshServiceItem'
+              total:
+                description: The total number of entities
+                type: number
+              next:
+                description: URL to the next page
+                type: string
+    MeshTrustItem:
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MeshTrustItem'
+    MeshTrustList:
+      description: List
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              items:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MeshTrustItem'
               total:
                 description: The total number of entities
                 type: number

@@ -60,7 +60,6 @@ func (r *APIPublicationResource) Schema(ctx context.Context, req resource.Schema
 				Description: `The UUID API identifier`,
 			},
 			"auth_strategy_ids": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				MarkdownDescription: `The auth strategy the API enforces for applications in the portal.` + "\n" +

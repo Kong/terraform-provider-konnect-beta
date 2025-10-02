@@ -212,6 +212,144 @@ func (r *MeshTrafficPermissionResource) Schema(ctx context.Context, req resource
 						},
 						Description: `From list makes a match between clients and corresponding configurations`,
 					},
+					"rules": schema.ListNestedAttribute{
+						Optional: true,
+						PlanModifiers: []planmodifier.List{
+							custom_listplanmodifier.SupressZeroNullModifier(),
+						},
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"default": schema.SingleNestedAttribute{
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"allow": schema.ListNestedAttribute{
+											Optional: true,
+											PlanModifiers: []planmodifier.List{
+												custom_listplanmodifier.SupressZeroNullModifier(),
+											},
+											NestedObject: schema.NestedAttributeObject{
+												Validators: []validator.Object{
+													speakeasy_objectvalidators.NotNull(),
+												},
+												Attributes: map[string]schema.Attribute{
+													"spiffe_id": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"type": schema.StringAttribute{
+																Optional:    true,
+																Description: `Type defines how to match incoming traffic by SpiffeID. ` + "`" + `Exact` + "`" + ` or ` + "`" + `Prefix` + "`" + ` are allowed. Not Null; must be one of ["Exact", "Prefix"]`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.OneOf(
+																		"Exact",
+																		"Prefix",
+																	),
+																},
+															},
+															"value": schema.StringAttribute{
+																Optional:    true,
+																Description: `Value is SpiffeId of a client that needs to match for the configuration to be applied. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+														Description: `SpiffeID defines a matcher configuration for SpiffeID matching`,
+													},
+												},
+											},
+											Description: `Allow definees a list of matches for which access will be allowed`,
+										},
+										"allow_with_shadow_deny": schema.ListNestedAttribute{
+											Optional: true,
+											PlanModifiers: []planmodifier.List{
+												custom_listplanmodifier.SupressZeroNullModifier(),
+											},
+											NestedObject: schema.NestedAttributeObject{
+												Validators: []validator.Object{
+													speakeasy_objectvalidators.NotNull(),
+												},
+												Attributes: map[string]schema.Attribute{
+													"spiffe_id": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"type": schema.StringAttribute{
+																Optional:    true,
+																Description: `Type defines how to match incoming traffic by SpiffeID. ` + "`" + `Exact` + "`" + ` or ` + "`" + `Prefix` + "`" + ` are allowed. Not Null; must be one of ["Exact", "Prefix"]`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.OneOf(
+																		"Exact",
+																		"Prefix",
+																	),
+																},
+															},
+															"value": schema.StringAttribute{
+																Optional:    true,
+																Description: `Value is SpiffeId of a client that needs to match for the configuration to be applied. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+														Description: `SpiffeID defines a matcher configuration for SpiffeID matching`,
+													},
+												},
+											},
+											MarkdownDescription: `AllowWithShadowDeny defines a list of matches for which access will be allowed but emits logs as if` + "\n" +
+												`requests are denied`,
+										},
+										"deny": schema.ListNestedAttribute{
+											Optional: true,
+											PlanModifiers: []planmodifier.List{
+												custom_listplanmodifier.SupressZeroNullModifier(),
+											},
+											NestedObject: schema.NestedAttributeObject{
+												Validators: []validator.Object{
+													speakeasy_objectvalidators.NotNull(),
+												},
+												Attributes: map[string]schema.Attribute{
+													"spiffe_id": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"type": schema.StringAttribute{
+																Optional:    true,
+																Description: `Type defines how to match incoming traffic by SpiffeID. ` + "`" + `Exact` + "`" + ` or ` + "`" + `Prefix` + "`" + ` are allowed. Not Null; must be one of ["Exact", "Prefix"]`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																	stringvalidator.OneOf(
+																		"Exact",
+																		"Prefix",
+																	),
+																},
+															},
+															"value": schema.StringAttribute{
+																Optional:    true,
+																Description: `Value is SpiffeId of a client that needs to match for the configuration to be applied. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
+															},
+														},
+														Description: `SpiffeID defines a matcher configuration for SpiffeID matching`,
+													},
+												},
+											},
+											Description: `Deny defines a list of matches for which access will be denied`,
+										},
+									},
+									Description: `Not Null`,
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
+								},
+							},
+						},
+						Description: `Rules defines inbound permissions configuration`,
+					},
 					"target_ref": schema.SingleNestedAttribute{
 						Optional: true,
 						Attributes: map[string]schema.Attribute{

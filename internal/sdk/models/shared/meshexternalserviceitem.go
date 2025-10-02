@@ -37,7 +37,7 @@ type Endpoints struct {
 	// Address defines an address to which a user want to send a request. Is possible to provide `domain`, `ip`.
 	Address string `json:"address"`
 	// Port of the endpoint
-	Port int64 `json:"port"`
+	Port int `json:"port"`
 }
 
 func (o *Endpoints) GetAddress() string {
@@ -47,7 +47,7 @@ func (o *Endpoints) GetAddress() string {
 	return o.Address
 }
 
-func (o *Endpoints) GetPort() int64 {
+func (o *Endpoints) GetPort() int {
 	if o == nil {
 		return 0
 	}
@@ -136,7 +136,7 @@ func (e *MeshExternalServiceItemSpecType) UnmarshalJSON(data []byte) error {
 // Match defines traffic that should be routed through the sidecar.
 type Match struct {
 	// Port defines a port to which a user does request.
-	Port int64 `json:"port"`
+	Port int `json:"port"`
 	// Protocol defines a protocol of the communication. Possible values: `tcp`, `grpc`, `http`, `http2`.
 	Protocol *MeshExternalServiceItemProtocol `default:"tcp" json:"protocol"`
 	// Type of the match, only `HostnameGenerator` is available at the moment.
@@ -154,7 +154,7 @@ func (m *Match) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *Match) GetPort() int64 {
+func (o *Match) GetPort() int {
 	if o == nil {
 		return 0
 	}
@@ -694,7 +694,7 @@ func (e *MeshExternalServiceItemStatus) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type Conditions struct {
+type MeshExternalServiceItemConditions struct {
 	// message is a human readable message indicating details about the transition.
 	// This may be an empty string.
 	Message string `json:"message"`
@@ -710,28 +710,28 @@ type Conditions struct {
 	Type string `json:"type"`
 }
 
-func (o *Conditions) GetMessage() string {
+func (o *MeshExternalServiceItemConditions) GetMessage() string {
 	if o == nil {
 		return ""
 	}
 	return o.Message
 }
 
-func (o *Conditions) GetReason() string {
+func (o *MeshExternalServiceItemConditions) GetReason() string {
 	if o == nil {
 		return ""
 	}
 	return o.Reason
 }
 
-func (o *Conditions) GetStatus() MeshExternalServiceItemStatus {
+func (o *MeshExternalServiceItemConditions) GetStatus() MeshExternalServiceItemStatus {
 	if o == nil {
 		return MeshExternalServiceItemStatus("")
 	}
 	return o.Status
 }
 
-func (o *Conditions) GetType() string {
+func (o *MeshExternalServiceItemConditions) GetType() string {
 	if o == nil {
 		return ""
 	}
@@ -751,11 +751,11 @@ func (o *MeshExternalServiceItemHostnameGeneratorRef) GetCoreName() string {
 
 type HostnameGenerators struct {
 	// Conditions is an array of hostname generator conditions.
-	Conditions           []Conditions                                `json:"conditions,omitempty"`
+	Conditions           []MeshExternalServiceItemConditions         `json:"conditions,omitempty"`
 	HostnameGeneratorRef MeshExternalServiceItemHostnameGeneratorRef `json:"hostnameGeneratorRef"`
 }
 
-func (o *HostnameGenerators) GetConditions() []Conditions {
+func (o *HostnameGenerators) GetConditions() []MeshExternalServiceItemConditions {
 	if o == nil {
 		return nil
 	}

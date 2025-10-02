@@ -2,11 +2,29 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
+)
+
 type UpdatePortalCustomDomainSSL struct {
 	// Custom certificate to be used for the SSL termination.
-	CustomCertificate *string `json:"custom_certificate,omitempty"`
+	CustomCertificate *string `default:"null" json:"custom_certificate"`
 	// Custom certificate private key to be used for the SSL termination.
-	CustomPrivateKey *string `json:"custom_private_key,omitempty"`
+	CustomPrivateKey *string `default:"null" json:"custom_private_key"`
+	// Advanced option. If true, the custom certificate is served exactly as provided, without attempting to bundle against a public trust store. Required for certificates issued by an internal/private CA.
+	//
+	SkipCaCheck *bool `default:"false" json:"skip_ca_check"`
+}
+
+func (u UpdatePortalCustomDomainSSL) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdatePortalCustomDomainSSL) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *UpdatePortalCustomDomainSSL) GetCustomCertificate() *string {
@@ -21,4 +39,11 @@ func (o *UpdatePortalCustomDomainSSL) GetCustomPrivateKey() *string {
 		return nil
 	}
 	return o.CustomPrivateKey
+}
+
+func (o *UpdatePortalCustomDomainSSL) GetSkipCaCheck() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SkipCaCheck
 }

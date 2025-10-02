@@ -2,12 +2,27 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
+)
+
 // APISlugConflict - Conflict - `slug` property must be unique
 type APISlugConflict struct {
 	Status   float64 `json:"status"`
 	Title    string  `json:"title"`
-	Type     *string `json:"type,omitempty"`
+	Type     *string `default:"null" json:"type"`
 	Instance string  `json:"instance"`
+}
+
+func (a APISlugConflict) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *APISlugConflict) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *APISlugConflict) GetStatus() float64 {

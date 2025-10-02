@@ -21,4 +21,5 @@ resource "konnect_auth_server_clients" "my_authserverclients" {
   response_types = [
     "none"
   ]
+  token_endpoint_auth_method = "client_secret_post"
 }

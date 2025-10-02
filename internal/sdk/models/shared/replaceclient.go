@@ -19,7 +19,7 @@ type ReplaceClient struct {
 	// The URIs that the client is allowed to redirect to after authentication in interactive flows. All redirect URIs must be absolute URIs, be secure (HTTPS), and must not include a fragment component.
 	RedirectUris []string `json:"redirect_uris,omitempty"`
 	// The URI of the login page where the user is redirected to authenticate in interactive flows. The login page must be secure (HTTPS).
-	LoginURI *string `json:"login_uri,omitempty"`
+	LoginURI *string `default:"null" json:"login_uri"`
 	// The duration of the minted token is valid for, in seconds
 	AccessTokenDuration *int64 `default:"300" json:"access_token_duration"`
 	// The duration of the minted token is valid for, in seconds
@@ -28,6 +28,8 @@ type ReplaceClient struct {
 	AllowAllScopes *bool `default:"false" json:"allow_all_scopes"`
 	// Specifies the scopes IDs that the client is allowed to request
 	AllowScopes []string `json:"allow_scopes,omitempty"`
+	// Requested authentication method for OAuth 2.0 endpoints.
+	TokenEndpointAuthMethod *TokenEndpointAuthMethod `default:"client_secret_post" json:"token_endpoint_auth_method"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -114,6 +116,13 @@ func (o *ReplaceClient) GetAllowScopes() []string {
 		return nil
 	}
 	return o.AllowScopes
+}
+
+func (o *ReplaceClient) GetTokenEndpointAuthMethod() *TokenEndpointAuthMethod {
+	if o == nil {
+		return nil
+	}
+	return o.TokenEndpointAuthMethod
 }
 
 func (o *ReplaceClient) GetLabels() map[string]*string {

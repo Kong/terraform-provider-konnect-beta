@@ -70,9 +70,11 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 				if tilesItem.ChartTile.Definition.Query.AdvancedQuery != nil {
 					tiles.Chart.Definition.Query.APIUsage = &tfTypes.AdvancedQuery{}
 					tiles.Chart.Definition.Query.APIUsage.Datasource = types.StringValue(string(tilesItem.ChartTile.Definition.Query.AdvancedQuery.Datasource))
-					tiles.Chart.Definition.Query.APIUsage.Dimensions = make([]types.String, 0, len(tilesItem.ChartTile.Definition.Query.AdvancedQuery.Dimensions))
-					for _, v := range tilesItem.ChartTile.Definition.Query.AdvancedQuery.Dimensions {
-						tiles.Chart.Definition.Query.APIUsage.Dimensions = append(tiles.Chart.Definition.Query.APIUsage.Dimensions, types.StringValue(string(v)))
+					if tilesItem.ChartTile.Definition.Query.AdvancedQuery.Dimensions != nil {
+						tiles.Chart.Definition.Query.APIUsage.Dimensions = make([]types.String, 0, len(tilesItem.ChartTile.Definition.Query.AdvancedQuery.Dimensions))
+						for _, v := range tilesItem.ChartTile.Definition.Query.AdvancedQuery.Dimensions {
+							tiles.Chart.Definition.Query.APIUsage.Dimensions = append(tiles.Chart.Definition.Query.APIUsage.Dimensions, types.StringValue(string(v)))
+						}
 					}
 					tiles.Chart.Definition.Query.APIUsage.Filters = []tfTypes.AllFilterItems{}
 
@@ -110,7 +112,11 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 						}
 						if tilesItem.ChartTile.Definition.Query.AdvancedQuery.TimeRange.MetricsRelativeTimeRangeDtoV2 != nil {
 							tiles.Chart.Definition.Query.APIUsage.TimeRange.Relative = &tfTypes.MetricsRelativeTimeRangeDtoV2{}
-							tiles.Chart.Definition.Query.APIUsage.TimeRange.Relative.TimeRange = types.StringValue(string(tilesItem.ChartTile.Definition.Query.AdvancedQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.TimeRange))
+							if tilesItem.ChartTile.Definition.Query.AdvancedQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.TimeRange != nil {
+								tiles.Chart.Definition.Query.APIUsage.TimeRange.Relative.TimeRange = types.StringValue(string(*tilesItem.ChartTile.Definition.Query.AdvancedQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.TimeRange))
+							} else {
+								tiles.Chart.Definition.Query.APIUsage.TimeRange.Relative.TimeRange = types.StringNull()
+							}
 							tiles.Chart.Definition.Query.APIUsage.TimeRange.Relative.Type = types.StringValue(string(tilesItem.ChartTile.Definition.Query.AdvancedQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.Type))
 							tiles.Chart.Definition.Query.APIUsage.TimeRange.Relative.Tz = types.StringPointerValue(tilesItem.ChartTile.Definition.Query.AdvancedQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.Tz)
 						}
@@ -119,9 +125,11 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 				if tilesItem.ChartTile.Definition.Query.LLMQuery != nil {
 					tiles.Chart.Definition.Query.LlmUsage = &tfTypes.AdvancedQuery{}
 					tiles.Chart.Definition.Query.LlmUsage.Datasource = types.StringValue(string(tilesItem.ChartTile.Definition.Query.LLMQuery.Datasource))
-					tiles.Chart.Definition.Query.LlmUsage.Dimensions = make([]types.String, 0, len(tilesItem.ChartTile.Definition.Query.LLMQuery.Dimensions))
-					for _, v := range tilesItem.ChartTile.Definition.Query.LLMQuery.Dimensions {
-						tiles.Chart.Definition.Query.LlmUsage.Dimensions = append(tiles.Chart.Definition.Query.LlmUsage.Dimensions, types.StringValue(string(v)))
+					if tilesItem.ChartTile.Definition.Query.LLMQuery.Dimensions != nil {
+						tiles.Chart.Definition.Query.LlmUsage.Dimensions = make([]types.String, 0, len(tilesItem.ChartTile.Definition.Query.LLMQuery.Dimensions))
+						for _, v := range tilesItem.ChartTile.Definition.Query.LLMQuery.Dimensions {
+							tiles.Chart.Definition.Query.LlmUsage.Dimensions = append(tiles.Chart.Definition.Query.LlmUsage.Dimensions, types.StringValue(string(v)))
+						}
 					}
 					tiles.Chart.Definition.Query.LlmUsage.Filters = []tfTypes.AllFilterItems{}
 
@@ -159,7 +167,11 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 						}
 						if tilesItem.ChartTile.Definition.Query.LLMQuery.TimeRange.MetricsRelativeTimeRangeDtoV2 != nil {
 							tiles.Chart.Definition.Query.LlmUsage.TimeRange.Relative = &tfTypes.MetricsRelativeTimeRangeDtoV2{}
-							tiles.Chart.Definition.Query.LlmUsage.TimeRange.Relative.TimeRange = types.StringValue(string(tilesItem.ChartTile.Definition.Query.LLMQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.TimeRange))
+							if tilesItem.ChartTile.Definition.Query.LLMQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.TimeRange != nil {
+								tiles.Chart.Definition.Query.LlmUsage.TimeRange.Relative.TimeRange = types.StringValue(string(*tilesItem.ChartTile.Definition.Query.LLMQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.TimeRange))
+							} else {
+								tiles.Chart.Definition.Query.LlmUsage.TimeRange.Relative.TimeRange = types.StringNull()
+							}
 							tiles.Chart.Definition.Query.LlmUsage.TimeRange.Relative.Type = types.StringValue(string(tilesItem.ChartTile.Definition.Query.LLMQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.Type))
 							tiles.Chart.Definition.Query.LlmUsage.TimeRange.Relative.Tz = types.StringPointerValue(tilesItem.ChartTile.Definition.Query.LLMQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.Tz)
 						}
@@ -277,9 +289,12 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 				for _, metricsItem := range tilesItem.Chart.Definition.Query.APIUsage.Metrics {
 					metrics = append(metrics, shared.AdvancedMetrics(metricsItem.ValueString()))
 				}
-				dimensions := make([]shared.Dimensions, 0, len(tilesItem.Chart.Definition.Query.APIUsage.Dimensions))
-				for _, dimensionsItem := range tilesItem.Chart.Definition.Query.APIUsage.Dimensions {
-					dimensions = append(dimensions, shared.Dimensions(dimensionsItem.ValueString()))
+				var dimensions []shared.Dimensions
+				if tilesItem.Chart.Definition.Query.APIUsage.Dimensions != nil {
+					dimensions = make([]shared.Dimensions, 0, len(tilesItem.Chart.Definition.Query.APIUsage.Dimensions))
+					for _, dimensionsItem := range tilesItem.Chart.Definition.Query.APIUsage.Dimensions {
+						dimensions = append(dimensions, shared.Dimensions(dimensionsItem.ValueString()))
+					}
 				}
 				filters := make([]shared.AdvancedFilters, 0, len(tilesItem.Chart.Definition.Query.APIUsage.Filters))
 				for _, filtersItem := range tilesItem.Chart.Definition.Query.APIUsage.Filters {
@@ -312,7 +327,12 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 							tz = nil
 						}
 						typeVar1 := shared.MetricsRelativeTimeRangeDtoV2Type(tilesItem.Chart.Definition.Query.APIUsage.TimeRange.Relative.Type.ValueString())
-						timeRange1 := shared.MetricsRelativeTimeRangeDtoV2TimeRange(tilesItem.Chart.Definition.Query.APIUsage.TimeRange.Relative.TimeRange.ValueString())
+						timeRange1 := new(shared.MetricsRelativeTimeRangeDtoV2TimeRange)
+						if !tilesItem.Chart.Definition.Query.APIUsage.TimeRange.Relative.TimeRange.IsUnknown() && !tilesItem.Chart.Definition.Query.APIUsage.TimeRange.Relative.TimeRange.IsNull() {
+							*timeRange1 = shared.MetricsRelativeTimeRangeDtoV2TimeRange(tilesItem.Chart.Definition.Query.APIUsage.TimeRange.Relative.TimeRange.ValueString())
+						} else {
+							timeRange1 = nil
+						}
 						metricsRelativeTimeRangeDtoV2 = &shared.MetricsRelativeTimeRangeDtoV2{
 							Tz:        tz,
 							Type:      typeVar1,
@@ -379,9 +399,12 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 				for _, metricsItem1 := range tilesItem.Chart.Definition.Query.LlmUsage.Metrics {
 					metrics1 = append(metrics1, shared.LLMMetrics(metricsItem1.ValueString()))
 				}
-				dimensions1 := make([]shared.LLMQueryDimensions, 0, len(tilesItem.Chart.Definition.Query.LlmUsage.Dimensions))
-				for _, dimensionsItem1 := range tilesItem.Chart.Definition.Query.LlmUsage.Dimensions {
-					dimensions1 = append(dimensions1, shared.LLMQueryDimensions(dimensionsItem1.ValueString()))
+				var dimensions1 []shared.LLMQueryDimensions
+				if tilesItem.Chart.Definition.Query.LlmUsage.Dimensions != nil {
+					dimensions1 = make([]shared.LLMQueryDimensions, 0, len(tilesItem.Chart.Definition.Query.LlmUsage.Dimensions))
+					for _, dimensionsItem1 := range tilesItem.Chart.Definition.Query.LlmUsage.Dimensions {
+						dimensions1 = append(dimensions1, shared.LLMQueryDimensions(dimensionsItem1.ValueString()))
+					}
 				}
 				filters1 := make([]shared.LLMFilters, 0, len(tilesItem.Chart.Definition.Query.LlmUsage.Filters))
 				for _, filtersItem1 := range tilesItem.Chart.Definition.Query.LlmUsage.Filters {
@@ -414,7 +437,12 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 							tz2 = nil
 						}
 						typeVar3 := shared.MetricsRelativeTimeRangeDtoV2Type(tilesItem.Chart.Definition.Query.LlmUsage.TimeRange.Relative.Type.ValueString())
-						timeRange3 := shared.MetricsRelativeTimeRangeDtoV2TimeRange(tilesItem.Chart.Definition.Query.LlmUsage.TimeRange.Relative.TimeRange.ValueString())
+						timeRange3 := new(shared.MetricsRelativeTimeRangeDtoV2TimeRange)
+						if !tilesItem.Chart.Definition.Query.LlmUsage.TimeRange.Relative.TimeRange.IsUnknown() && !tilesItem.Chart.Definition.Query.LlmUsage.TimeRange.Relative.TimeRange.IsNull() {
+							*timeRange3 = shared.MetricsRelativeTimeRangeDtoV2TimeRange(tilesItem.Chart.Definition.Query.LlmUsage.TimeRange.Relative.TimeRange.ValueString())
+						} else {
+							timeRange3 = nil
+						}
 						metricsRelativeTimeRangeDtoV21 = &shared.MetricsRelativeTimeRangeDtoV2{
 							Tz:        tz2,
 							Type:      typeVar3,

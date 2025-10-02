@@ -16,6 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -41,21 +42,22 @@ type AuthServerClientsResource struct {
 
 // AuthServerClientsResourceModel describes the resource data model.
 type AuthServerClientsResourceModel struct {
-	AccessTokenDuration types.Int64             `tfsdk:"access_token_duration"`
-	AllowAllScopes      types.Bool              `tfsdk:"allow_all_scopes"`
-	AllowScopes         []types.String          `tfsdk:"allow_scopes"`
-	AuthServerID        types.String            `tfsdk:"auth_server_id"`
-	ClientSecret        types.String            `tfsdk:"client_secret"`
-	CreatedAt           types.String            `tfsdk:"created_at"`
-	GrantTypes          []types.String          `tfsdk:"grant_types"`
-	ID                  types.String            `tfsdk:"id"`
-	IDTokenDuration     types.Int64             `tfsdk:"id_token_duration"`
-	Labels              map[string]types.String `tfsdk:"labels"`
-	LoginURI            types.String            `tfsdk:"login_uri"`
-	Name                types.String            `tfsdk:"name"`
-	RedirectUris        []types.String          `tfsdk:"redirect_uris"`
-	ResponseTypes       []types.String          `tfsdk:"response_types"`
-	UpdatedAt           types.String            `tfsdk:"updated_at"`
+	AccessTokenDuration     types.Int64             `tfsdk:"access_token_duration"`
+	AllowAllScopes          types.Bool              `tfsdk:"allow_all_scopes"`
+	AllowScopes             []types.String          `tfsdk:"allow_scopes"`
+	AuthServerID            types.String            `tfsdk:"auth_server_id"`
+	ClientSecret            types.String            `tfsdk:"client_secret"`
+	CreatedAt               types.String            `tfsdk:"created_at"`
+	GrantTypes              []types.String          `tfsdk:"grant_types"`
+	ID                      types.String            `tfsdk:"id"`
+	IDTokenDuration         types.Int64             `tfsdk:"id_token_duration"`
+	Labels                  map[string]types.String `tfsdk:"labels"`
+	LoginURI                types.String            `tfsdk:"login_uri"`
+	Name                    types.String            `tfsdk:"name"`
+	RedirectUris            []types.String          `tfsdk:"redirect_uris"`
+	ResponseTypes           []types.String          `tfsdk:"response_types"`
+	TokenEndpointAuthMethod types.String            `tfsdk:"token_endpoint_auth_method"`
+	UpdatedAt               types.String            `tfsdk:"updated_at"`
 }
 
 func (r *AuthServerClientsResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -142,7 +144,6 @@ func (r *AuthServerClientsResource) Schema(ctx context.Context, req resource.Sch
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
 			"login_uri": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `The URI of the login page where the user is redirected to authenticate in interactive flows. The login page must be secure (HTTPS).`,
 			},
@@ -163,6 +164,18 @@ func (r *AuthServerClientsResource) Schema(ctx context.Context, req resource.Sch
 				Required:    true,
 				ElementType: types.StringType,
 				Description: `List of OAuth 2.0 response types`,
+			},
+			"token_endpoint_auth_method": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Default:     stringdefault.StaticString(`client_secret_post`),
+				Description: `Requested authentication method for OAuth 2.0 endpoints. Default: "client_secret_post"; must be one of ["client_secret_post", "none"]`,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						"client_secret_post",
+						"none",
+					),
+				},
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

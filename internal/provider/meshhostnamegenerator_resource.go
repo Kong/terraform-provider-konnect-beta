@@ -102,7 +102,6 @@ func (r *MeshHostnameGeneratorResource) Schema(ctx context.Context, req resource
 						Attributes: map[string]schema.Attribute{
 							"config": schema.StringAttribute{
 								CustomType:  jsontypes.NormalizedType{},
-								Computed:    true,
 								Optional:    true,
 								Description: `Config freeform configuration for the extension. Parsed as JSON.`,
 							},
@@ -146,7 +145,7 @@ func (r *MeshHostnameGeneratorResource) Schema(ctx context.Context, req resource
 						},
 					},
 					"template": schema.StringAttribute{
-						Optional: true,
+						Required: true,
 					},
 				},
 				Description: `Spec is the specification of the Kuma HostnameGenerator resource.`,
