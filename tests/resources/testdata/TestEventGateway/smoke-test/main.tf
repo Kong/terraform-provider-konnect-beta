@@ -29,7 +29,7 @@ resource "konnect_event_gateway_backend_cluster" "my_eventgatewaybackendcluster"
     authentication = {
         sasl_scram = {
         algorithm = "sha256"
-        password = "passs"
+        password = "$${env['MY_SECRET']}"
         username = "user"
     }
     }
@@ -51,7 +51,7 @@ resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster"
             mediation = "passthrough"
             principals = [
               {
-                    password = "secret"
+                    password = "$${env['MY_SECRET']}"
                     username = "my_username"
               }
             ]
@@ -59,6 +59,7 @@ resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster"
       }
     ]
     description = "description"
+    acl_mode = "enforce_on_gateway"
     destination = {
       id = konnect_event_gateway_backend_cluster.my_eventgatewaybackendcluster.id
     }
@@ -85,7 +86,7 @@ resource "konnect_event_gateway_schema_registry" "my_eventgatewayschemaregistry"
     config = {
       authentication = {
         basic = {
-            password = "upass"
+            password = "$${env['MY_SECRET']}"
             username = "uname"
         }
       }
@@ -100,4 +101,105 @@ resource "konnect_event_gateway_schema_registry" "my_eventgatewayschemaregistry"
     name = "confname"
   }
   gateway_id = konnect_event_gateway.my_eventgateway.id
+}
+
+
+resource "konnect_event_gateway_listener_policy_forward_to_virtual_cluster" "my_eventgatewaylistenerpolicy" {
+  provider = konnect-beta
+  config = {
+    port_mapping = {
+      advertised_host = "host.example.com"
+      bootstrap_port = "none"
+      destination = {
+        virtual_cluster_reference_by_id = {
+            id = konnect_event_gateway_virtual_cluster.my_eventgatewayvirtualcluster.id
+        }
+      }
+      min_broker_id = 5
+      type = "port_mapping"
+    }
+  }
+  description = "mydesc"
+  enabled = true
+  labels = {
+      key = "value"
+  }
+  name = "listenerpolicyname"
+
+  event_gateway_listener_id = konnect_event_gateway_listener.my_eventgatewaylistener.id
+  gateway_id = konnect_event_gateway.my_eventgateway.id
+}
+
+resource "konnect_event_gateway_virtual_cluster_produce_policy_modify_headers" "my_eventgatewayvirtualclusterproducepolicy" {
+  provider = konnect-beta
+  virtual_cluster_id = konnect_event_gateway_virtual_cluster.my_eventgatewayvirtualcluster.id
+  gateway_id = konnect_event_gateway.my_eventgateway.id
+  condition = "context.topic.name.endsWith('my_suffix')"
+  config = {
+    actions = [
+      {
+        remove = {
+            key = "...my_key..."
+            op = "remove"
+        }
+      }
+    ]
+  }
+  description = "mydesc"
+  enabled = true
+  labels = {
+      key = "value"
+  }
+  name = "myproducename"
+}
+
+resource "konnect_event_gateway_virtual_cluster_consume_policy_modify_headers" "my_eventgatewayvirtualclusterconsumepolicy" {
+  provider = konnect-beta
+  virtual_cluster_id = konnect_event_gateway_virtual_cluster.my_eventgatewayvirtualcluster.id
+  gateway_id = konnect_event_gateway.my_eventgateway.id
+  condition = "context.topic.name.endsWith('my_suffix')"
+  config = {
+    actions = [
+      {
+        remove = {
+          key = "mykey"
+          op  = "remove"
+        }
+      }
+    ]
+  }
+  description = "mydescription"
+  enabled     = true
+  labels = {
+    key = "value"
+  }
+  name = "myconsumename"
+}
+
+resource "konnect_event_gateway_virtual_cluster_cluster_policy_acls" "my_eventgatewayvirtualclusterclusterpolicy" {
+  provider = konnect-beta
+  virtual_cluster_id = konnect_event_gateway_virtual_cluster.my_eventgatewayvirtualcluster.id
+  gateway_id = konnect_event_gateway.my_eventgateway.id
+  condition = "context.topic.name.endsWith('my_suffix')"
+  description = "mydesc"
+  enabled     = true
+  name = "mynamecluster"
+  config = {
+    rules = [
+      {
+        action = "deny"
+        operations = [
+          {
+            name = "read"
+          }
+        ]
+        resource_names = [
+          {
+            match = "my_match"
+          }
+        ]
+        resource_type = "topic"
+      }
+    ]
+  }
 }
