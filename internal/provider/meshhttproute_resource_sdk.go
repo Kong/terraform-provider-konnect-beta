@@ -254,10 +254,10 @@ func (r *MeshHTTPRouteResourceModel) RefreshFromSharedMeshHTTPRouteItem(ctx cont
 
 					rules.Default.Filters = append(rules.Default.Filters, filters)
 				}
-				rules.Matches = []tfTypes.Matches{}
+				rules.Matches = []tfTypes.MeshHTTPRouteItemMatches{}
 
 				for _, matchesItem := range rulesItem.Matches {
-					var matches tfTypes.Matches
+					var matches tfTypes.MeshHTTPRouteItemMatches
 
 					matches.Headers = []tfTypes.Headers{}
 
@@ -282,7 +282,7 @@ func (r *MeshHTTPRouteResourceModel) RefreshFromSharedMeshHTTPRouteItem(ctx cont
 					if matchesItem.Path == nil {
 						matches.Path = nil
 					} else {
-						matches.Path = &tfTypes.Path{}
+						matches.Path = &tfTypes.MeshFaultInjectionItemSpiffeID{}
 						matches.Path.Type = types.StringValue(string(matchesItem.Path.Type))
 						matches.Path.Value = types.StringValue(matchesItem.Path.Value)
 					}
@@ -842,7 +842,7 @@ func (r *MeshHTTPRouteResourceModel) ToSharedMeshHTTPRouteItemInput(ctx context.
 				BackendRefs: backendRefs,
 				Filters:     filters,
 			}
-			matches := make([]shared.Matches, 0, len(rulesItem.Matches))
+			matches := make([]shared.MeshHTTPRouteItemMatches, 0, len(rulesItem.Matches))
 			for _, matchesItem := range rulesItem.Matches {
 				headers := make([]shared.Headers, 0, len(matchesItem.Headers))
 				for _, headersItem := range matchesItem.Headers {
@@ -899,7 +899,7 @@ func (r *MeshHTTPRouteResourceModel) ToSharedMeshHTTPRouteItemInput(ctx context.
 						Value: value6,
 					})
 				}
-				matches = append(matches, shared.Matches{
+				matches = append(matches, shared.MeshHTTPRouteItemMatches{
 					Headers:     headers,
 					Method:      method,
 					Path:        path2,

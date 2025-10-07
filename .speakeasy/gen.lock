@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: 91b7e74fba3d843dc5cf258f9d879e31
+  docChecksum: 2471cee728d8691fc8f83e7328512a57
   docVersion: 2.0.0
   speakeasyVersion: 1.602.0
   generationVersion: 2.681.1
@@ -60,12 +60,34 @@ generatedFiles:
   - examples/resources/konnect-beta_event_gateway_data_plane_certificate/resource.tf
   - examples/resources/konnect-beta_event_gateway_listener/import.sh
   - examples/resources/konnect-beta_event_gateway_listener/resource.tf
+  - examples/resources/konnect-beta_event_gateway_listener_policy_forward_to_virtual_cluster/import.sh
+  - examples/resources/konnect-beta_event_gateway_listener_policy_forward_to_virtual_cluster/resource.tf
+  - examples/resources/konnect-beta_event_gateway_listener_policy_tls_server/import.sh
+  - examples/resources/konnect-beta_event_gateway_listener_policy_tls_server/resource.tf
   - examples/resources/konnect-beta_event_gateway_schema_registry/import.sh
   - examples/resources/konnect-beta_event_gateway_schema_registry/resource.tf
   - examples/resources/konnect-beta_event_gateway_vault/import.sh
   - examples/resources/konnect-beta_event_gateway_vault/resource.tf
   - examples/resources/konnect-beta_event_gateway_virtual_cluster/import.sh
   - examples/resources/konnect-beta_event_gateway_virtual_cluster/resource.tf
+  - examples/resources/konnect-beta_event_gateway_virtual_cluster_cluster_policy_acls/import.sh
+  - examples/resources/konnect-beta_event_gateway_virtual_cluster_cluster_policy_acls/resource.tf
+  - examples/resources/konnect-beta_event_gateway_virtual_cluster_consume_policy_decrypt/import.sh
+  - examples/resources/konnect-beta_event_gateway_virtual_cluster_consume_policy_decrypt/resource.tf
+  - examples/resources/konnect-beta_event_gateway_virtual_cluster_consume_policy_modify_headers/import.sh
+  - examples/resources/konnect-beta_event_gateway_virtual_cluster_consume_policy_modify_headers/resource.tf
+  - examples/resources/konnect-beta_event_gateway_virtual_cluster_consume_policy_schema_validation/import.sh
+  - examples/resources/konnect-beta_event_gateway_virtual_cluster_consume_policy_schema_validation/resource.tf
+  - examples/resources/konnect-beta_event_gateway_virtual_cluster_consume_policy_skip_record/import.sh
+  - examples/resources/konnect-beta_event_gateway_virtual_cluster_consume_policy_skip_record/resource.tf
+  - examples/resources/konnect-beta_event_gateway_virtual_cluster_produce_policy_encrypt/import.sh
+  - examples/resources/konnect-beta_event_gateway_virtual_cluster_produce_policy_encrypt/resource.tf
+  - examples/resources/konnect-beta_event_gateway_virtual_cluster_produce_policy_modify_headers/import.sh
+  - examples/resources/konnect-beta_event_gateway_virtual_cluster_produce_policy_modify_headers/resource.tf
+  - examples/resources/konnect-beta_event_gateway_virtual_cluster_produce_policy_schema_validation/import.sh
+  - examples/resources/konnect-beta_event_gateway_virtual_cluster_produce_policy_schema_validation/resource.tf
+  - examples/resources/konnect-beta_event_gateway_virtual_cluster_produce_policy_skip_record/import.sh
+  - examples/resources/konnect-beta_event_gateway_virtual_cluster_produce_policy_skip_record/resource.tf
   - examples/resources/konnect-beta_mesh/import.sh
   - examples/resources/konnect-beta_mesh/resource.tf
   - examples/resources/konnect-beta_mesh_access_log/import.sh
@@ -182,12 +204,34 @@ generatedFiles:
   - internal/provider/eventgatewaydataplanecertificate_resource_sdk.go
   - internal/provider/eventgatewaylistener_resource.go
   - internal/provider/eventgatewaylistener_resource_sdk.go
+  - internal/provider/eventgatewaylistenerpolicyforwardtovirtualcluster_resource.go
+  - internal/provider/eventgatewaylistenerpolicyforwardtovirtualcluster_resource_sdk.go
+  - internal/provider/eventgatewaylistenerpolicytlsserver_resource.go
+  - internal/provider/eventgatewaylistenerpolicytlsserver_resource_sdk.go
   - internal/provider/eventgatewayschemaregistry_resource.go
   - internal/provider/eventgatewayschemaregistry_resource_sdk.go
   - internal/provider/eventgatewayvault_resource.go
   - internal/provider/eventgatewayvault_resource_sdk.go
   - internal/provider/eventgatewayvirtualcluster_resource.go
   - internal/provider/eventgatewayvirtualcluster_resource_sdk.go
+  - internal/provider/eventgatewayvirtualclusterclusterpolicyacls_resource.go
+  - internal/provider/eventgatewayvirtualclusterclusterpolicyacls_resource_sdk.go
+  - internal/provider/eventgatewayvirtualclusterconsumepolicydecrypt_resource.go
+  - internal/provider/eventgatewayvirtualclusterconsumepolicydecrypt_resource_sdk.go
+  - internal/provider/eventgatewayvirtualclusterconsumepolicymodifyheaders_resource.go
+  - internal/provider/eventgatewayvirtualclusterconsumepolicymodifyheaders_resource_sdk.go
+  - internal/provider/eventgatewayvirtualclusterconsumepolicyschemavalidation_resource.go
+  - internal/provider/eventgatewayvirtualclusterconsumepolicyschemavalidation_resource_sdk.go
+  - internal/provider/eventgatewayvirtualclusterconsumepolicyskiprecord_resource.go
+  - internal/provider/eventgatewayvirtualclusterconsumepolicyskiprecord_resource_sdk.go
+  - internal/provider/eventgatewayvirtualclusterproducepolicyencrypt_resource.go
+  - internal/provider/eventgatewayvirtualclusterproducepolicyencrypt_resource_sdk.go
+  - internal/provider/eventgatewayvirtualclusterproducepolicymodifyheaders_resource.go
+  - internal/provider/eventgatewayvirtualclusterproducepolicymodifyheaders_resource_sdk.go
+  - internal/provider/eventgatewayvirtualclusterproducepolicyschemavalidation_resource.go
+  - internal/provider/eventgatewayvirtualclusterproducepolicyschemavalidation_resource_sdk.go
+  - internal/provider/eventgatewayvirtualclusterproducepolicyskiprecord_resource.go
+  - internal/provider/eventgatewayvirtualclusterproducepolicyskiprecord_resource_sdk.go
   - internal/provider/mesh_resource.go
   - internal/provider/mesh_resource_sdk.go
   - internal/provider/meshaccesslog_resource.go
@@ -291,7 +335,6 @@ generatedFiles:
   - internal/provider/types/agent.go
   - internal/provider/types/aggregate.go
   - internal/provider/types/all_filter_items.go
-  - internal/provider/types/allow.go
   - internal/provider/types/api_implementation_service.go
   - internal/provider/types/append_match.go
   - internal/provider/types/append_modifications.go
@@ -341,16 +384,33 @@ generatedFiles:
   - internal/provider/types/dataplane_proxies.go
   - internal/provider/types/dataplane_proxy.go
   - internal/provider/types/dataplane_ref.go
+  - internal/provider/types/decryption_record_selector.go
   - internal/provider/types/default.go
   - internal/provider/types/definition.go
   - internal/provider/types/delay.go
   - internal/provider/types/detectors.go
   - internal/provider/types/donut_chart.go
   - internal/provider/types/dp_cert.go
+  - internal/provider/types/encryption_record_selector.go
   - internal/provider/types/endpoints.go
   - internal/provider/types/envoy.go
+  - internal/provider/types/event_gateway_acl_policy_config.go
+  - internal/provider/types/event_gateway_acl_resource_name.go
+  - internal/provider/types/event_gateway_acl_rule.go
+  - internal/provider/types/event_gateway_consume_schema_validation_policy_config.go
+  - internal/provider/types/event_gateway_decrypt_policy_config.go
+  - internal/provider/types/event_gateway_encrypt_policy_config.go
   - internal/provider/types/event_gateway_env_vault.go
+  - internal/provider/types/event_gateway_key_source.go
   - internal/provider/types/event_gateway_konnect_vault.go
+  - internal/provider/types/event_gateway_modify_header_action.go
+  - internal/provider/types/event_gateway_modify_header_remove_action.go
+  - internal/provider/types/event_gateway_modify_header_set_action.go
+  - internal/provider/types/event_gateway_modify_headers_policy_config.go
+  - internal/provider/types/event_gateway_produce_schema_validation_policy_config.go
+  - internal/provider/types/event_gateway_produce_schema_validation_policy_json_config.go
+  - internal/provider/types/event_gateway_static_key_source.go
+  - internal/provider/types/event_gateway_tls_listener_policy_config.go
   - internal/provider/types/event_gateway_vault_event_gateway_env_vault.go
   - internal/provider/types/event_gateway_vault_event_gateway_konnect_vault.go
   - internal/provider/types/exact_list.go
@@ -361,9 +421,11 @@ generatedFiles:
   - internal/provider/types/failure_percentage.go
   - internal/provider/types/file.go
   - internal/provider/types/file_logging_backend_config.go
-  - internal/provider/types/filter_state.go
   - internal/provider/types/filters.go
   - internal/provider/types/format.go
+  - internal/provider/types/forward_to_cluster_by_port_mapping_config.go
+  - internal/provider/types/forward_to_cluster_by_sni_config.go
+  - internal/provider/types/forward_to_virtual_cluster_policy_config.go
   - internal/provider/types/from.go
   - internal/provider/types/gateway_failures.go
   - internal/provider/types/grpc.go
@@ -378,8 +440,8 @@ generatedFiles:
   - internal/provider/types/http_filter.go
   - internal/provider/types/issuer_ref.go
   - internal/provider/types/js.go
-  - internal/provider/types/json.go
   - internal/provider/types/json_patches.go
+  - internal/provider/types/keys.go
   - internal/provider/types/layout.go
   - internal/provider/types/least_request.go
   - internal/provider/types/limits.go
@@ -413,7 +475,9 @@ generatedFiles:
   - internal/provider/types/mesh_external_service_item_spec.go
   - internal/provider/types/mesh_fault_injection_item_default.go
   - internal/provider/types/mesh_fault_injection_item_from.go
+  - internal/provider/types/mesh_fault_injection_item_rules.go
   - internal/provider/types/mesh_fault_injection_item_spec.go
+  - internal/provider/types/mesh_fault_injection_item_spiffe_id.go
   - internal/provider/types/mesh_gateway_item_tls.go
   - internal/provider/types/mesh_global_rate_limit_item_add.go
   - internal/provider/types/mesh_global_rate_limit_item_default.go
@@ -427,6 +491,7 @@ generatedFiles:
   - internal/provider/types/mesh_health_check_item_spec.go
   - internal/provider/types/mesh_health_check_item_to.go
   - internal/provider/types/mesh_http_route_item_default.go
+  - internal/provider/types/mesh_http_route_item_matches.go
   - internal/provider/types/mesh_http_route_item_rules.go
   - internal/provider/types/mesh_http_route_item_spec.go
   - internal/provider/types/mesh_http_route_item_spec_path.go
@@ -519,7 +584,6 @@ generatedFiles:
   - internal/provider/types/outlier_detection.go
   - internal/provider/types/page_meta.go
   - internal/provider/types/paginated_meta.go
-  - internal/provider/types/path.go
   - internal/provider/types/portal_claim_mappings.go
   - internal/provider/types/portal_filter_parameters.go
   - internal/provider/types/portal_footer_menu_section.go
@@ -556,6 +620,7 @@ generatedFiles:
   - internal/provider/types/schema_registry_authentication_scheme.go
   - internal/provider/types/schema_registry_confluent.go
   - internal/provider/types/schema_registry_confluent_config.go
+  - internal/provider/types/schema_registry_reference.go
   - internal/provider/types/secret_ref.go
   - internal/provider/types/selector.go
   - internal/provider/types/selectors.go
@@ -577,15 +642,15 @@ generatedFiles:
   - internal/provider/types/tile.go
   - internal/provider/types/time_range.go
   - internal/provider/types/tls.go
+  - internal/provider/types/tls_certificate.go
+  - internal/provider/types/tls_version_range.go
   - internal/provider/types/tracing.go
   - internal/provider/types/url_rewrite.go
   - internal/provider/types/uuid_field_filter.go
   - internal/provider/types/validation_messages.go
   - internal/provider/types/vault_certificate_authority_config.go
   - internal/provider/types/verification.go
-  - internal/provider/types/version.go
   - internal/provider/types/vip.go
-  - internal/provider/types/virtual_cluster_authentication_audience.go
   - internal/provider/types/virtual_cluster_authentication_claims_mapping.go
   - internal/provider/types/virtual_cluster_authentication_jwks.go
   - internal/provider/types/virtual_cluster_authentication_oauth_bearer.go
@@ -602,6 +667,9 @@ generatedFiles:
   - internal/provider/types/virtual_cluster_namespace_topic_selector.go
   - internal/provider/types/virtual_cluster_namespace_topic_selector_exact_list.go
   - internal/provider/types/virtual_cluster_namespace_topic_selector_glob.go
+  - internal/provider/types/virtual_cluster_reference.go
+  - internal/provider/types/virtual_cluster_reference_by_id.go
+  - internal/provider/types/virtual_cluster_reference_by_name.go
   - internal/provider/types/virtual_host.go
   - internal/provider/types/zipkin.go
   - internal/provider/types/zipkin_tracing_backend_config.go
@@ -622,9 +690,13 @@ generatedFiles:
   - internal/sdk/docs/models/operations/option.md
   - internal/sdk/eventgatewaybackendclusters.go
   - internal/sdk/eventgatewaydataplanecertificates.go
+  - internal/sdk/eventgatewaylistenerpolicies.go
   - internal/sdk/eventgatewaylisteners.go
   - internal/sdk/eventgatewayschemaregistries.go
   - internal/sdk/eventgatewayvaults.go
+  - internal/sdk/eventgatewayvirtualclusterconsumepolicies.go
+  - internal/sdk/eventgatewayvirtualclusterpolicies.go
+  - internal/sdk/eventgatewayvirtualclusterproducepolicies.go
   - internal/sdk/eventgatewayvirtualclusters.go
   - internal/sdk/hostnamegenerator.go
   - internal/sdk/houdinieventgateways.go
@@ -682,9 +754,20 @@ generatedFiles:
   - internal/sdk/models/operations/createeventgatewaybackendcluster.go
   - internal/sdk/models/operations/createeventgatewaydataplanecertificate.go
   - internal/sdk/models/operations/createeventgatewaylistener.go
+  - internal/sdk/models/operations/createeventgatewaylistenerpolicyforwardtovirtualcluster.go
+  - internal/sdk/models/operations/createeventgatewaylistenerpolicytlsserver.go
   - internal/sdk/models/operations/createeventgatewayschemaregistry.go
   - internal/sdk/models/operations/createeventgatewayvault.go
   - internal/sdk/models/operations/createeventgatewayvirtualcluster.go
+  - internal/sdk/models/operations/createeventgatewayvirtualclusterclusterlevelpolicyacls.go
+  - internal/sdk/models/operations/createeventgatewayvirtualclusterconsumepolicydecrypt.go
+  - internal/sdk/models/operations/createeventgatewayvirtualclusterconsumepolicymodifyheaders.go
+  - internal/sdk/models/operations/createeventgatewayvirtualclusterconsumepolicyschemavalidation.go
+  - internal/sdk/models/operations/createeventgatewayvirtualclusterconsumepolicyskiprecord.go
+  - internal/sdk/models/operations/createeventgatewayvirtualclusterproducepolicyencrypt.go
+  - internal/sdk/models/operations/createeventgatewayvirtualclusterproducepolicymodifyheaders.go
+  - internal/sdk/models/operations/createeventgatewayvirtualclusterproducepolicyschemavalidation.go
+  - internal/sdk/models/operations/createeventgatewayvirtualclusterproducepolicyskiprecord.go
   - internal/sdk/models/operations/createportal.go
   - internal/sdk/models/operations/createportalcustomdomain.go
   - internal/sdk/models/operations/createportalpage.go
@@ -707,9 +790,20 @@ generatedFiles:
   - internal/sdk/models/operations/deleteeventgatewaybackendcluster.go
   - internal/sdk/models/operations/deleteeventgatewaydataplanecertificate.go
   - internal/sdk/models/operations/deleteeventgatewaylistener.go
+  - internal/sdk/models/operations/deleteeventgatewaylistenerpolicyforwardtovirtualcluster.go
+  - internal/sdk/models/operations/deleteeventgatewaylistenerpolicytlsserver.go
   - internal/sdk/models/operations/deleteeventgatewayschemaregistry.go
   - internal/sdk/models/operations/deleteeventgatewayvault.go
   - internal/sdk/models/operations/deleteeventgatewayvirtualcluster.go
+  - internal/sdk/models/operations/deleteeventgatewayvirtualclusterclusterlevelpolicyacls.go
+  - internal/sdk/models/operations/deleteeventgatewayvirtualclusterconsumepolicydecrypt.go
+  - internal/sdk/models/operations/deleteeventgatewayvirtualclusterconsumepolicymodifyheaders.go
+  - internal/sdk/models/operations/deleteeventgatewayvirtualclusterconsumepolicyschemavalidation.go
+  - internal/sdk/models/operations/deleteeventgatewayvirtualclusterconsumepolicyskiprecord.go
+  - internal/sdk/models/operations/deleteeventgatewayvirtualclusterproducepolicyencrypt.go
+  - internal/sdk/models/operations/deleteeventgatewayvirtualclusterproducepolicymodifyheaders.go
+  - internal/sdk/models/operations/deleteeventgatewayvirtualclusterproducepolicyschemavalidation.go
+  - internal/sdk/models/operations/deleteeventgatewayvirtualclusterproducepolicyskiprecord.go
   - internal/sdk/models/operations/deletehostnamegenerator.go
   - internal/sdk/models/operations/deletemesh.go
   - internal/sdk/models/operations/deletemeshaccesslog.go
@@ -757,9 +851,20 @@ generatedFiles:
   - internal/sdk/models/operations/geteventgatewaybackendcluster.go
   - internal/sdk/models/operations/geteventgatewaydataplanecertificate.go
   - internal/sdk/models/operations/geteventgatewaylistener.go
+  - internal/sdk/models/operations/geteventgatewaylistenerpolicyforwardtovirtualcluster.go
+  - internal/sdk/models/operations/geteventgatewaylistenerpolicytlsserver.go
   - internal/sdk/models/operations/geteventgatewayschemaregistry.go
   - internal/sdk/models/operations/geteventgatewayvault.go
   - internal/sdk/models/operations/geteventgatewayvirtualcluster.go
+  - internal/sdk/models/operations/geteventgatewayvirtualclusterclusterlevelpolicyacls.go
+  - internal/sdk/models/operations/geteventgatewayvirtualclusterconsumepolicydecrypt.go
+  - internal/sdk/models/operations/geteventgatewayvirtualclusterconsumepolicymodifyheaders.go
+  - internal/sdk/models/operations/geteventgatewayvirtualclusterconsumepolicyschemavalidation.go
+  - internal/sdk/models/operations/geteventgatewayvirtualclusterconsumepolicyskiprecord.go
+  - internal/sdk/models/operations/geteventgatewayvirtualclusterproducepolicyencrypt.go
+  - internal/sdk/models/operations/geteventgatewayvirtualclusterproducepolicymodifyheaders.go
+  - internal/sdk/models/operations/geteventgatewayvirtualclusterproducepolicyschemavalidation.go
+  - internal/sdk/models/operations/geteventgatewayvirtualclusterproducepolicyskiprecord.go
   - internal/sdk/models/operations/gethostnamegenerator.go
   - internal/sdk/models/operations/gethostnamegeneratorlist.go
   - internal/sdk/models/operations/getmesh.go
@@ -867,9 +972,20 @@ generatedFiles:
   - internal/sdk/models/operations/updateeventgatewaybackendcluster.go
   - internal/sdk/models/operations/updateeventgatewaydataplanecertificate.go
   - internal/sdk/models/operations/updateeventgatewaylistener.go
+  - internal/sdk/models/operations/updateeventgatewaylistenerpolicyforwardtovirtualcluster.go
+  - internal/sdk/models/operations/updateeventgatewaylistenerpolicytlsserver.go
   - internal/sdk/models/operations/updateeventgatewayschemaregistry.go
   - internal/sdk/models/operations/updateeventgatewayvault.go
   - internal/sdk/models/operations/updateeventgatewayvirtualcluster.go
+  - internal/sdk/models/operations/updateeventgatewayvirtualclusterclusterlevelpolicyacls.go
+  - internal/sdk/models/operations/updateeventgatewayvirtualclusterconsumepolicydecrypt.go
+  - internal/sdk/models/operations/updateeventgatewayvirtualclusterconsumepolicymodifyheaders.go
+  - internal/sdk/models/operations/updateeventgatewayvirtualclusterconsumepolicyschemavalidation.go
+  - internal/sdk/models/operations/updateeventgatewayvirtualclusterconsumepolicyskiprecord.go
+  - internal/sdk/models/operations/updateeventgatewayvirtualclusterproducepolicyencrypt.go
+  - internal/sdk/models/operations/updateeventgatewayvirtualclusterproducepolicymodifyheaders.go
+  - internal/sdk/models/operations/updateeventgatewayvirtualclusterproducepolicyschemavalidation.go
+  - internal/sdk/models/operations/updateeventgatewayvirtualclusterproducepolicyskiprecord.go
   - internal/sdk/models/operations/updatehoudinieventgateway.go
   - internal/sdk/models/operations/updateportal.go
   - internal/sdk/models/operations/updateportalauthenticationsettings.go
@@ -917,6 +1033,8 @@ generatedFiles:
   - internal/sdk/models/shared/claim.go
   - internal/sdk/models/shared/client.go
   - internal/sdk/models/shared/conflicterror.go
+  - internal/sdk/models/shared/consumekeyvalidationaction.go
+  - internal/sdk/models/shared/consumevaluevalidationaction.go
   - internal/sdk/models/shared/createapidocumentrequest.go
   - internal/sdk/models/shared/createapirequest.go
   - internal/sdk/models/shared/createapispecrequest.go
@@ -940,15 +1058,43 @@ generatedFiles:
   - internal/sdk/models/shared/dashboard.go
   - internal/sdk/models/shared/dashboardresponse.go
   - internal/sdk/models/shared/dashboardupdaterequest.go
+  - internal/sdk/models/shared/decryptionrecordselector.go
   - internal/sdk/models/shared/donutchart.go
+  - internal/sdk/models/shared/encryptionfailuremode.go
+  - internal/sdk/models/shared/encryptionrecordselector.go
+  - internal/sdk/models/shared/eventgatewayacloperation.go
+  - internal/sdk/models/shared/eventgatewayaclpolicyconfig.go
+  - internal/sdk/models/shared/eventgatewayaclresourcename.go
+  - internal/sdk/models/shared/eventgatewayaclrule.go
+  - internal/sdk/models/shared/eventgatewayaclspolicy.go
+  - internal/sdk/models/shared/eventgatewayawskeysource.go
+  - internal/sdk/models/shared/eventgatewayconsumeschemavalidationpolicy.go
   - internal/sdk/models/shared/eventgatewaydataplanecertificate.go
+  - internal/sdk/models/shared/eventgatewaydecryptpolicy.go
+  - internal/sdk/models/shared/eventgatewayencryptpolicy.go
   - internal/sdk/models/shared/eventgatewayenvvault.go
   - internal/sdk/models/shared/eventgatewayinfo.go
+  - internal/sdk/models/shared/eventgatewaykeysource.go
   - internal/sdk/models/shared/eventgatewaykonnectvault.go
   - internal/sdk/models/shared/eventgatewaylistener.go
+  - internal/sdk/models/shared/eventgatewaymodifyheaderaction.go
+  - internal/sdk/models/shared/eventgatewaymodifyheaderremoveaction.go
+  - internal/sdk/models/shared/eventgatewaymodifyheadersetaction.go
+  - internal/sdk/models/shared/eventgatewaymodifyheaderspolicy.go
   - internal/sdk/models/shared/eventgatewaymodifyvault.go
+  - internal/sdk/models/shared/eventgatewaypolicy.go
+  - internal/sdk/models/shared/eventgatewayproduceschemavalidationpolicy.go
+  - internal/sdk/models/shared/eventgatewayproduceschemavalidationpolicyconfig.go
+  - internal/sdk/models/shared/eventgatewayproduceschemavalidationpolicyjsonconfig.go
+  - internal/sdk/models/shared/eventgatewayproduceschemavalidationpolicyschemaregistryconfig.go
+  - internal/sdk/models/shared/eventgatewayskiprecordpolicy.go
+  - internal/sdk/models/shared/eventgatewaystatickeysource.go
+  - internal/sdk/models/shared/eventgatewaytlslistenerpolicy.go
   - internal/sdk/models/shared/eventgatewayvault.go
   - internal/sdk/models/shared/forbiddenerror.go
+  - internal/sdk/models/shared/forwardtoclusterbyportmappingconfig.go
+  - internal/sdk/models/shared/forwardtoclusterbysniconfig.go
+  - internal/sdk/models/shared/forwardtovirtualclusterpolicy.go
   - internal/sdk/models/shared/granttype.go
   - internal/sdk/models/shared/granularity.go
   - internal/sdk/models/shared/hostnamegeneratorcreateorupdatesuccessresponse.go
@@ -1099,6 +1245,8 @@ generatedFiles:
   - internal/sdk/models/shared/portalsnippetresponse.go
   - internal/sdk/models/shared/portalteamresponse.go
   - internal/sdk/models/shared/portalupdateteamrequest.go
+  - internal/sdk/models/shared/producekeyvalidationaction.go
+  - internal/sdk/models/shared/producevaluevalidationaction.go
   - internal/sdk/models/shared/publishedstatus.go
   - internal/sdk/models/shared/putmeshcontrolplanerequest.go
   - internal/sdk/models/shared/replaceclient.go
@@ -1108,6 +1256,10 @@ generatedFiles:
   - internal/sdk/models/shared/schemaregistryauthenticationbasic.go
   - internal/sdk/models/shared/schemaregistryauthenticationscheme.go
   - internal/sdk/models/shared/schemaregistryconfluent.go
+  - internal/sdk/models/shared/schemaregistryreference.go
+  - internal/sdk/models/shared/schemaregistryreferencebyid.go
+  - internal/sdk/models/shared/schemaregistryreferencebyname.go
+  - internal/sdk/models/shared/schemavalidationtype.go
   - internal/sdk/models/shared/scope.go
   - internal/sdk/models/shared/security.go
   - internal/sdk/models/shared/servicereference.go
@@ -1117,6 +1269,8 @@ generatedFiles:
   - internal/sdk/models/shared/tile.go
   - internal/sdk/models/shared/timerange.go
   - internal/sdk/models/shared/timeserieschart.go
+  - internal/sdk/models/shared/tlscertificate.go
+  - internal/sdk/models/shared/tlsversionrange.go
   - internal/sdk/models/shared/tokenendpointauthmethod.go
   - internal/sdk/models/shared/unauthorizederror.go
   - internal/sdk/models/shared/unsupportedmediatypeerror.go
@@ -1137,6 +1291,7 @@ generatedFiles:
   - internal/sdk/models/shared/updatevirtualclusterrequest.go
   - internal/sdk/models/shared/uuidfieldfilter.go
   - internal/sdk/models/shared/virtualcluster.go
+  - internal/sdk/models/shared/virtualclusteraclmode.go
   - internal/sdk/models/shared/virtualclusterauthenticationanonymous.go
   - internal/sdk/models/shared/virtualclusterauthenticationaudience.go
   - internal/sdk/models/shared/virtualclusterauthenticationclaimsmapping.go
@@ -1155,6 +1310,9 @@ generatedFiles:
   - internal/sdk/models/shared/virtualclusternamespacetopicselector.go
   - internal/sdk/models/shared/virtualclusternamespacetopicselectorexactlist.go
   - internal/sdk/models/shared/virtualclusternamespacetopicselectorglob.go
+  - internal/sdk/models/shared/virtualclusterreference.go
+  - internal/sdk/models/shared/virtualclusterreferencebyid.go
+  - internal/sdk/models/shared/virtualclusterreferencebyname.go
   - internal/sdk/models/shared/visibilitystatus.go
   - internal/sdk/pages.go
   - internal/sdk/portalauthsettings.go
@@ -5714,10 +5872,10 @@ examples:
         path:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"name": "<value>", "description": null, "destination": {}, "authentication": [{"type": "sasl_plain", "mediation": "passthrough", "principals": null}], "dns_label": "vcluster-1", "labels": {"env": "test"}}
+        application/json: {"name": "<value>", "description": null, "destination": {}, "authentication": [{"type": "sasl_plain", "mediation": "passthrough", "principals": null}], "acl_mode": "passthrough", "dns_label": "vcluster-1", "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"id": "5c660d55-84a0-4c53-836d-12542cf396cb", "description": null, "destination": {"id": "6ccb8ec8-6b0d-4ad9-bc7e-3fdd2ece7b69", "name": "<value>"}, "authentication": [{"type": "anonymous"}], "name": "<value>", "dns_label": "vcluster-1", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "5c660d55-84a0-4c53-836d-12542cf396cb", "description": null, "destination": {"id": "6ccb8ec8-6b0d-4ad9-bc7e-3fdd2ece7b69", "name": "<value>"}, "authentication": [{"type": "anonymous"}], "name": "<value>", "dns_label": "vcluster-1", "acl_mode": "enforce_on_gateway", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 621528, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -5732,7 +5890,7 @@ examples:
           virtualClusterId: "0b2723a8-8eff-4698-8224-0c823cd13fbf"
       responses:
         "200":
-          application/json: {"id": "f04439b9-62b9-475f-ba27-2ded26ed9d17", "description": null, "destination": {"id": "088ad9ca-e831-4eaf-bd1a-361abbf7526e", "name": "<value>"}, "authentication": [], "name": "<value>", "dns_label": "vcluster-1", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "f04439b9-62b9-475f-ba27-2ded26ed9d17", "description": null, "destination": {"id": "088ad9ca-e831-4eaf-bd1a-361abbf7526e", "name": "<value>"}, "authentication": [], "name": "<value>", "dns_label": "vcluster-1", "acl_mode": "enforce_on_gateway", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -5746,10 +5904,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "fe909fd6-277e-424b-b080-aba0bbb79170"
       requestBody:
-        application/json: {"name": "<value>", "description": null, "destination": {}, "authentication": [], "dns_label": "vcluster-1", "labels": {"env": "test"}}
+        application/json: {"name": "<value>", "description": null, "destination": {}, "authentication": [], "acl_mode": "enforce_on_gateway", "dns_label": "vcluster-1", "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"id": "f5486120-98cd-449b-821c-dc09b16296a1", "description": null, "destination": {"id": "22a0dfa3-6039-4df9-adc6-85311527aa39", "name": "<value>"}, "authentication": [], "name": "<value>", "dns_label": "vcluster-1", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "f5486120-98cd-449b-821c-dc09b16296a1", "description": null, "destination": {"id": "22a0dfa3-6039-4df9-adc6-85311527aa39", "name": "<value>"}, "authentication": [], "name": "<value>", "dns_label": "vcluster-1", "acl_mode": "passthrough", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 368051, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
@@ -6013,5 +6171,781 @@ examples:
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-event-gateway-vault-secret:
+    speakeasy-default-create-event-gateway-vault-secret:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          vaultId: "c876ab53-2444-4193-8992-ee0c953d9f36"
+      responses:
+        "201":
+          application/json: {"id": "481fed06-2306-4e23-9867-13d45f36e17b", "key": "<key>", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 364953, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  get-event-gateway-vault-secret:
+    speakeasy-default-get-event-gateway-vault-secret:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          vaultId: "b852d062-dcb3-4a34-a11a-470e61474be1"
+          secretId: "befd7f3f-a205-4bdf-9bd1-cab579290f4a"
+      responses:
+        "200":
+          application/json: {"id": "e88c3054-0bf6-4adb-9637-2f6b35ee4af6", "key": "<key>", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-event-gateway-vault-secret:
+    speakeasy-default-update-event-gateway-vault-secret:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          vaultId: "3642a0d8-3cdf-405c-b433-1e1bb6fcf682"
+          secretId: "1d1e0fac-b3fa-4fa8-a538-4c603684b279"
+      responses:
+        "200":
+          application/json: {"id": "42a6326e-b835-464c-8e4a-f5f52864a405", "key": "<key>", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 453371, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": null, "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  delete-event-gateway-vault-secret:
+    speakeasy-default-delete-event-gateway-vault-secret:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          vaultId: "32de71b8-7a56-413e-9aab-da5d3f25c9c1"
+          secretId: "b5d9e935-6cc3-4083-8a61-48f928fd176e"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  get-event-gateway-listener-policy-tls-server:
+    speakeasy-default-get-event-gateway-listener-policy-tls-server:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          eventGatewayListenerId: "b644d6cc-2113-4b25-b5cc-c70a21e80ccd"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "06a1da50-18ba-4734-a0a9-e00dd52dfc9b", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-event-gateway-listener-policy-tls-server:
+    speakeasy-default-update-event-gateway-listener-policy-tls-server:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          eventGatewayListenerId: "8150b381-175e-48cc-b79b-78d1d98707a8"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"type": "tls_server", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+      responses:
+        "200":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "3252186a-a8d6-45c3-ae43-7f70c4575b09", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 976208, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  delete-event-gateway-listener-policy-tls-server:
+    speakeasy-default-delete-event-gateway-listener-policy-tls-server:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          eventGatewayListenerId: "7656d78d-5706-4748-b212-c75bc92791f0"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  get-event-gateway-listener-policy-forward-to_virtual_cluster:
+    speakeasy-default-get-event-gateway-listener-policy-forward-to-virtual-cluster:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          eventGatewayListenerId: "d73653dc-a476-4ba0-9050-54d74cbaa6f9"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "f674c0bd-d6b4-488d-a8b4-ff7fdb36b038", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-event-gateway-listener-policy-forward-to_virtual_cluster:
+    speakeasy-default-update-event-gateway-listener-policy-forward-to-virtual-cluster:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          eventGatewayListenerId: "60c0a875-ed08-4959-a810-6710c2d37b44"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"type": "forward_to_virtual_cluster", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"type": "sni", "sni_suffix": ".example.com", "advertised_port": null}, "labels": {"env": "test"}}
+      responses:
+        "200":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "a964a42a-4b6e-438a-847c-79680f3800f7", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 258360, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_symbols", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  delete-event-gateway-listener-policy-forward-to_virtual_cluster:
+    speakeasy-default-delete-event-gateway-listener-policy-forward-to-virtual-cluster:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          eventGatewayListenerId: "d9f434ce-276c-4c51-b8ea-0a6df5a75237"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-event-gateway-listener-policy-tls-server:
+    speakeasy-default-create-event-gateway-listener-policy-tls-server:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          eventGatewayListenerId: "fbb26749-530c-4cd0-8d52-9db9d81c3f08"
+      requestBody:
+        application/json: {"type": "tls_server", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+      responses:
+        "201":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "009e4bb7-902f-439c-ba0f-6126abc8ab52", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 830414, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>"], "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  create-event-gateway-listener-policy-forward-to_virtual_cluster:
+    speakeasy-default-create-event-gateway-listener-policy-forward-to-virtual-cluster:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          eventGatewayListenerId: "cc1f804b-d05f-4c4b-ae7c-01ee08446fa7"
+      requestBody:
+        application/json: {"type": "forward_to_virtual_cluster", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"type": "sni", "sni_suffix": ".example.com", "advertised_port": null}, "labels": {"env": "test"}}
+      responses:
+        "201":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "55a6e644-871e-4251-8b96-3dbbcc3555cf", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 712567, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  get-event-gateway-virtual-cluster-consume-policy-modify-headers:
+    speakeasy-default-get-event-gateway-virtual-cluster-consume-policy-modify-headers:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "9a9751c7-977d-4e47-bfcd-981e22a15485"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "ef80a11c-170f-4544-9076-8efb8e319de7", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-event-gateway-virtual-cluster-consume-policy-modify-headers:
+    speakeasy-default-update-event-gateway-virtual-cluster-consume-policy-modify-headers:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "7c38d3f3-5c9a-49b5-9b67-2e4f8e1f2a25"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"type": "modify_headers", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"actions": null}, "labels": {"env": "test"}}
+      responses:
+        "200":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "507871d9-bb97-48d2-9a55-a4be33f78881", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 711740, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  delete-event-gateway-virtual-cluster-consume-policy-modify-headers:
+    speakeasy-default-delete-event-gateway-virtual-cluster-consume-policy-modify-headers:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "2de0dcc2-62ce-4f43-ba6b-2ee07f654738"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  get-event-gateway-virtual-cluster-consume-policy-schema-validation:
+    speakeasy-default-get-event-gateway-virtual-cluster-consume-policy-schema-validation:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "cffa2183-9b7e-44cf-800a-e97157954f05"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "34538704-755b-4b27-9f94-acccd39923d1", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-event-gateway-virtual-cluster-consume-policy-schema-validation:
+    speakeasy-default-update-event-gateway-virtual-cluster-consume-policy-schema-validation:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "4fb63c2c-47c0-451b-a606-7002570cfd42"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"type": "schema_validation", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+      responses:
+        "200":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "5b2191fd-223a-44f7-9d8b-d018a6e9ee5d", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 409111, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>"], "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  delete-event-gateway-virtual-cluster-consume-policy-schema-validation:
+    speakeasy-default-delete-event-gateway-virtual-cluster-consume-policy-schema-validation:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "40c999a6-a537-4185-8c66-8498113b2eb9"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  get-event-gateway-virtual-cluster-consume-policy-decrypt:
+    speakeasy-default-get-event-gateway-virtual-cluster-consume-policy-decrypt:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "38d7158b-a7dc-4960-b4b1-c1158af11fdd"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "f444cc2a-8835-42ed-b86d-e8d664dfdb3b", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-event-gateway-virtual-cluster-consume-policy-decrypt:
+    speakeasy-default-update-event-gateway-virtual-cluster-consume-policy-decrypt:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "eb84f991-ae6d-4ed9-a84f-dd27dd8493c1"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"type": "decrypt", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+      responses:
+        "200":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "b7a563ad-fad7-4c5f-b18a-ba17dd92a28a", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 180267, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max_length", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  delete-event-gateway-virtual-cluster-consume-policy-decrypt:
+    speakeasy-default-delete-event-gateway-virtual-cluster-consume-policy-decrypt:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "c9039db6-b703-4118-965e-bd0ebfbf5dc5"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  get-event-gateway-virtual-cluster-consume-policy-skip-record:
+    speakeasy-default-get-event-gateway-virtual-cluster-consume-policy-skip-record:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "9a5514fc-0ab8-4242-a38b-31db4afa69a4"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "617a6a0d-2e44-47c7-8782-f21636ed5b03", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-event-gateway-virtual-cluster-consume-policy-skip-record:
+    speakeasy-default-update-event-gateway-virtual-cluster-consume-policy-skip-record:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "b85a6bf7-2401-433a-b62d-05759913d341"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"type": "skip_record", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "labels": {"env": "test"}}
+      responses:
+        "200":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "d0435f74-88f6-4183-b808-33363bc99d2e", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 643328, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  delete-event-gateway-virtual-cluster-consume-policy-skip-record:
+    speakeasy-default-delete-event-gateway-virtual-cluster-consume-policy-skip-record:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "0760c4d9-a3c7-4a06-b1c5-6423b4678f7d"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-event-gateway-virtual-cluster-consume-policy-modify-headers:
+    speakeasy-default-create-event-gateway-virtual-cluster-consume-policy-modify-headers:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "87299e77-284a-47bd-9ab3-a097848681e1"
+      requestBody:
+        application/json: {"type": "modify_headers", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"actions": null}, "labels": {"env": "test"}}
+      responses:
+        "201":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "ea2b1fb4-aa48-439f-84c9-a592b6fd8d58", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 487642, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  create-event-gateway-virtual-cluster-consume-policy-schema-validation:
+    speakeasy-default-create-event-gateway-virtual-cluster-consume-policy-schema-validation:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "e26dd505-ebbf-4297-994b-16b07ec83735"
+      requestBody:
+        application/json: {"type": "schema_validation", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+      responses:
+        "201":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "e4117cbb-3be1-4097-80e4-cff0af8e4d75", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 885533, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": null, "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  create-event-gateway-virtual-cluster-consume-policy-decrypt:
+    speakeasy-default-create-event-gateway-virtual-cluster-consume-policy-decrypt:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "995bc147-2750-4c10-a0e2-ec9b901491eb"
+      requestBody:
+        application/json: {"type": "decrypt", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+      responses:
+        "201":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "627ce5c5-8fd9-43a2-8c83-eafe3d39fe8e", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 191667, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_uppercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  create-event-gateway-virtual-cluster-consume-policy-skip-record:
+    speakeasy-default-create-event-gateway-virtual-cluster-consume-policy-skip-record:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "a5e310a4-a4c6-4950-aa8f-3767751d9b74"
+      requestBody:
+        application/json: {"type": "skip_record", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "labels": {"env": "test"}}
+      responses:
+        "201":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "975cc614-a984-4c1a-831d-f45e0b1f071e", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 492591, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  get-event-gateway-virtual-cluster-produce-policy-modify-headers:
+    speakeasy-default-get-event-gateway-virtual-cluster-produce-policy-modify-headers:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "4d7cc8ec-c187-4dff-971b-a478d6eadd00"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "b391fbb8-2e27-47a6-a351-647b26be417b", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-event-gateway-virtual-cluster-produce-policy-modify-headers:
+    speakeasy-default-update-event-gateway-virtual-cluster-produce-policy-modify-headers:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "1ca6bca6-4a82-4d94-a3d7-098134851e5b"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"type": "modify_headers", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"actions": null}, "labels": {"env": "test"}}
+      responses:
+        "200":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "e203f9d4-2bec-4e8b-a4c8-7b6d178a38ca", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 474674, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  delete-event-gateway-virtual-cluster-produce-policy-modify-headers:
+    speakeasy-default-delete-event-gateway-virtual-cluster-produce-policy-modify-headers:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "fa8256aa-0d48-466e-bf03-e498739f476b"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  get-event-gateway-virtual-cluster-produce-policy-schema-validation:
+    speakeasy-default-get-event-gateway-virtual-cluster-produce-policy-schema-validation:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "659d17f9-cf09-4702-a4b4-b710e3d9f1b1"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "d0e0237c-69b1-426c-8e22-068ae5fad280", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-event-gateway-virtual-cluster-produce-policy-schema-validation:
+    speakeasy-default-update-event-gateway-virtual-cluster-produce-policy-schema-validation:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "584123c6-1da3-4626-b4e1-d74eaa2e89ac"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"type": "schema_validation", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"key_validation_action": "mark", "value_validation_action": "mark", "type": "confluent_schema_registry"}, "labels": {"env": "test"}}
+      responses:
+        "200":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "2ad3cdfd-1f2f-4d97-a2d3-c62063981d3d", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 504318, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_digits", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  delete-event-gateway-virtual-cluster-produce-policy-schema-validation:
+    speakeasy-default-delete-event-gateway-virtual-cluster-produce-policy-schema-validation:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "6a88d7e1-4b9f-42ca-99ab-ff279f158ae1"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  get-event-gateway-virtual-cluster-produce-policy-encrypt:
+    speakeasy-default-get-event-gateway-virtual-cluster-produce-policy-encrypt:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "c2a8a870-aab3-472f-89c4-4dce4d9267c0"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "b516476b-9fb4-4089-bf7a-a71dc943479d", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-event-gateway-virtual-cluster-produce-policy-encrypt:
+    speakeasy-default-update-event-gateway-virtual-cluster-produce-policy-encrypt:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "f5cf6665-58bb-47f4-be01-926b2c0b6612"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"type": "encrypt", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+      responses:
+        "200":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "f9bcd779-cf70-4a2f-949f-99f677043c70", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 790793, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": null, "reason": "is a required field", "dependents": null, "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  delete-event-gateway-virtual-cluster-produce-policy-encrypt:
+    speakeasy-default-delete-event-gateway-virtual-cluster-produce-policy-encrypt:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "f205d1aa-97ce-4e61-961d-c34766db002e"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  get-event-gateway-virtual-cluster-produce-policy-skip-record:
+    speakeasy-default-get-event-gateway-virtual-cluster-produce-policy-skip-record:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "e1402188-ec0c-405e-bf42-f610319c9a26"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "ad5b2d5c-3121-4530-8d04-16fd81747078", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-event-gateway-virtual-cluster-produce-policy-skip-record:
+    speakeasy-default-update-event-gateway-virtual-cluster-produce-policy-skip-record:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "c38b69e9-daf3-4e3f-a808-0f0ed7a792a4"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"type": "skip_record", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "labels": {"env": "test"}}
+      responses:
+        "200":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "968d9127-20b3-4725-aef9-622f43bc49dd", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 469093, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  delete-event-gateway-virtual-cluster-produce-policy-skip-record:
+    speakeasy-default-delete-event-gateway-virtual-cluster-produce-policy-skip-record:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "9d0bc050-88b8-4d60-9559-27853c51984a"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-event-gateway-virtual-cluster-produce-policy-modify-headers:
+    speakeasy-default-create-event-gateway-virtual-cluster-produce-policy-modify-headers:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "90d7fe42-a5e1-45c2-b20f-d8903a6badad"
+      requestBody:
+        application/json: {"type": "modify_headers", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"actions": null}, "labels": {"env": "test"}}
+      responses:
+        "201":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "c438b205-c91f-463b-a808-4442555c5c49", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 923814, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_uppercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  create-event-gateway-virtual-cluster-produce-policy-schema-validation:
+    speakeasy-default-create-event-gateway-virtual-cluster-produce-policy-schema-validation:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "4c1ea4c2-dca9-4107-85f5-586e47f34147"
+      requestBody:
+        application/json: {"type": "schema_validation", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"key_validation_action": "mark", "value_validation_action": "reject", "type": "json"}, "labels": {"env": "test"}}
+      responses:
+        "201":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "565102af-89d6-424b-87d2-8133b0fcb8b8", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 677192, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  create-event-gateway-virtual-cluster-produce-policy-encrypt:
+    speakeasy-default-create-event-gateway-virtual-cluster-produce-policy-encrypt:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "593ecd65-910f-4bd8-9c22-0dd3eaa403c3"
+      requestBody:
+        application/json: {"type": "encrypt", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+      responses:
+        "201":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "bd47b7ed-1b37-4332-8874-76c9a0e498b9", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 876417, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  create-event-gateway-virtual-cluster-produce-policy-skip-record:
+    speakeasy-default-create-event-gateway-virtual-cluster-produce-policy-skip-record:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "9be2bd7c-6fcb-465a-8e38-c9d96a479538"
+      requestBody:
+        application/json: {"type": "skip_record", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "labels": {"env": "test"}}
+      responses:
+        "201":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "412f598c-f1a0-4ea9-8360-6bcb94bf273e", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 3434, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  get-event-gateway-virtual-cluster-cluster-level-policy-acls:
+    speakeasy-default-get-event-gateway-virtual-cluster-cluster-level-policy-acls:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "452d8947-7a9c-46cf-8421-ab44f5e4de7a"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "64de57a6-a53e-4b74-82f3-bbfbace3f7e1", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-event-gateway-virtual-cluster-cluster-level-policy-acls:
+    speakeasy-default-update-event-gateway-virtual-cluster-cluster-level-policy-acls:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "ae29d4be-1b79-482c-881a-3476b4ebb7cf"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"type": "acls", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"rules": []}, "labels": {"env": "test"}}
+      responses:
+        "200":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "16ab9abb-c439-4776-9d1a-d0066e92ddcf", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 194157, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  delete-event-gateway-virtual-cluster-cluster-level-policy-acls:
+    speakeasy-default-delete-event-gateway-virtual-cluster-cluster-level-policy-acls:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "2c570a4d-24b0-425c-96f4-6e07ff415452"
+          policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-event-gateway-virtual-cluster-cluster-level-policy-acls:
+    speakeasy-default-create-event-gateway-virtual-cluster-cluster-level-policy-acls:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          virtualClusterId: "1706d38f-88a4-4e72-a02d-65cac443f53c"
+      requestBody:
+        application/json: {"type": "acls", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"rules": []}, "labels": {"env": "test"}}
+      responses:
+        "201":
+          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "323ea8c8-dae4-457b-abc2-abeec4051474", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 253786, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
 examplesVersion: 1.0.2
 generatedTests: {}

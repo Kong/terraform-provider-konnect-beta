@@ -30,6 +30,14 @@ type VirtualCluster struct {
 	// The DNS label used in the bootstrap server URL to identify the virtual cluster when using SNI routing.
 	// The format follows the RFC1035: 1-63 chars, lowercase alphanumeric or '-', must start with a letter and end with an alphanumeric character.
 	DNSLabel string `json:"dns_label"`
+	// Configures whether or not ACL policies are enforced on the gateway.
+	// - `enforce_on_gateway` means the gateway enforces its own ACL policies for this virtual cluster
+	//
+	//   and does not forward ACL-related commands to the backend cluster.
+	//   Note that if there are no ACL policies configured, all access is denied.
+	// - `passthrough` tells the gateway to forward all ACL-related commands.
+	//
+	ACLMode VirtualClusterACLMode `json:"acl_mode"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -99,6 +107,13 @@ func (o *VirtualCluster) GetDNSLabel() string {
 		return ""
 	}
 	return o.DNSLabel
+}
+
+func (o *VirtualCluster) GetACLMode() VirtualClusterACLMode {
+	if o == nil {
+		return VirtualClusterACLMode("")
+	}
+	return o.ACLMode
 }
 
 func (o *VirtualCluster) GetLabels() map[string]*string {

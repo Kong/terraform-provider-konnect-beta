@@ -39,10 +39,10 @@ func (r *MeshServiceResourceModel) RefreshFromSharedMeshServiceItem(ctx context.
 		r.Mesh = types.StringPointerValue(resp.Mesh)
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
-		r.Spec.Identities = []tfTypes.Path{}
+		r.Spec.Identities = []tfTypes.MeshFaultInjectionItemSpiffeID{}
 
 		for _, identitiesItem := range resp.Spec.Identities {
-			var identities tfTypes.Path
+			var identities tfTypes.MeshFaultInjectionItemSpiffeID
 
 			identities.Type = types.StringValue(string(identitiesItem.Type))
 			identities.Value = types.StringValue(identitiesItem.Value)

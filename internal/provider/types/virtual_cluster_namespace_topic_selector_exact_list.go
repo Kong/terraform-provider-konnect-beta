@@ -9,5 +9,4 @@ import (
 type VirtualClusterNamespaceTopicSelectorExactList struct {
 	Conflict  types.String                  `tfsdk:"conflict"`
 	ExactList []NamespaceExactAllowListItem `tfsdk:"exact_list"`
-	Type      types.String                  `tfsdk:"type"`
 }

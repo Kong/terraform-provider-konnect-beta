@@ -3,7 +3,7 @@
 package types
 
 type Profiles struct {
-	AppendProfiles []VirtualClusterAuthenticationAudience `tfsdk:"append_profiles"`
-	Exclude        []Exclude                              `tfsdk:"exclude"`
-	Include        []Exclude                              `tfsdk:"include"`
+	AppendProfiles []VirtualClusterReferenceByName `tfsdk:"append_profiles"`
+	Exclude        []Exclude                       `tfsdk:"exclude"`
+	Include        []Exclude                       `tfsdk:"include"`
 }

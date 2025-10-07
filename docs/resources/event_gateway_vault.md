@@ -32,7 +32,6 @@ resource "konnect_event_gateway_vault" "my_eventgatewayvault" {
       key = "value"
     }
     name = "...my_name..."
-    type = "konnect"
   }
 }
 ```
@@ -87,7 +86,6 @@ Required:
 Required:
 
 - `name` (String) The name of the vault.
-- `type` (String) must be "konnect"
 
 Optional:
 
@@ -133,7 +131,6 @@ Read-Only:
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `name` (String) The name of the vault.
-- `type` (String) must be "konnect"
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 ## Import

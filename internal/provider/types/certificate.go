@@ -7,9 +7,9 @@ import (
 )
 
 type Certificate struct {
-	EnvVar         *VirtualClusterAuthenticationAudience `tfsdk:"env_var"`
-	File           *MeshIdentityItemFile                 `tfsdk:"file"`
-	InsecureInline *ExactList                            `tfsdk:"insecure_inline"`
-	SecretRef      *SecretRef                            `tfsdk:"secret_ref"`
-	Type           types.String                          `tfsdk:"type"`
+	EnvVar         *VirtualClusterReferenceByName `tfsdk:"env_var"`
+	File           *MeshIdentityItemFile          `tfsdk:"file"`
+	InsecureInline *ExactList                     `tfsdk:"insecure_inline"`
+	SecretRef      *SecretRef                     `tfsdk:"secret_ref"`
+	Type           types.String                   `tfsdk:"type"`
 }

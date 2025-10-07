@@ -26,9 +26,6 @@ type VirtualClusterNamespaceTopicSelector struct {
 func CreateVirtualClusterNamespaceTopicSelectorGlob(glob VirtualClusterNamespaceTopicSelectorGlob) VirtualClusterNamespaceTopicSelector {
 	typ := VirtualClusterNamespaceTopicSelectorTypeGlob
 
-	typStr := VirtualClusterNamespaceTopicSelectorGlobType(typ)
-	glob.Type = typStr
-
 	return VirtualClusterNamespaceTopicSelector{
 		VirtualClusterNamespaceTopicSelectorGlob: &glob,
 		Type:                                     typ,
@@ -37,9 +34,6 @@ func CreateVirtualClusterNamespaceTopicSelectorGlob(glob VirtualClusterNamespace
 
 func CreateVirtualClusterNamespaceTopicSelectorExactList(exactList VirtualClusterNamespaceTopicSelectorExactList) VirtualClusterNamespaceTopicSelector {
 	typ := VirtualClusterNamespaceTopicSelectorTypeExactList
-
-	typStr := VirtualClusterNamespaceTopicSelectorExactListType(typ)
-	exactList.Type = typStr
 
 	return VirtualClusterNamespaceTopicSelector{
 		VirtualClusterNamespaceTopicSelectorExactList: &exactList,

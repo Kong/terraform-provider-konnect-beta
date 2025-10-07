@@ -59,10 +59,10 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(ctx cont
 						backends.File.Format = nil
 					} else {
 						backends.File.Format = &tfTypes.Format{}
-						backends.File.Format.JSON = []tfTypes.JSON{}
+						backends.File.Format.JSON = []tfTypes.EventGatewayModifyHeaderSetAction{}
 
 						for _, jsonVarItem := range backendsItem.File.Format.JSON {
-							var jsonVar tfTypes.JSON
+							var jsonVar tfTypes.EventGatewayModifyHeaderSetAction
 
 							jsonVar.Key = types.StringValue(jsonVarItem.Key)
 							jsonVar.Value = types.StringValue(jsonVarItem.Value)
@@ -79,10 +79,10 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(ctx cont
 					backends.OpenTelemetry = nil
 				} else {
 					backends.OpenTelemetry = &tfTypes.MeshAccessLogItemSpecFromOpenTelemetry{}
-					backends.OpenTelemetry.Attributes = []tfTypes.JSON{}
+					backends.OpenTelemetry.Attributes = []tfTypes.EventGatewayModifyHeaderSetAction{}
 
 					for _, attributesItem := range backendsItem.OpenTelemetry.Attributes {
-						var attributes tfTypes.JSON
+						var attributes tfTypes.EventGatewayModifyHeaderSetAction
 
 						attributes.Key = types.StringValue(attributesItem.Key)
 						attributes.Value = types.StringValue(attributesItem.Value)
@@ -106,10 +106,10 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(ctx cont
 						backends.TCP.Format = nil
 					} else {
 						backends.TCP.Format = &tfTypes.Format{}
-						backends.TCP.Format.JSON = []tfTypes.JSON{}
+						backends.TCP.Format.JSON = []tfTypes.EventGatewayModifyHeaderSetAction{}
 
 						for _, jsonVarItem1 := range backendsItem.TCP.Format.JSON {
-							var jsonVar1 tfTypes.JSON
+							var jsonVar1 tfTypes.EventGatewayModifyHeaderSetAction
 
 							jsonVar1.Key = types.StringValue(jsonVarItem1.Key)
 							jsonVar1.Value = types.StringValue(jsonVarItem1.Value)
@@ -167,10 +167,10 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(ctx cont
 						backends1.File.Format = nil
 					} else {
 						backends1.File.Format = &tfTypes.Format{}
-						backends1.File.Format.JSON = []tfTypes.JSON{}
+						backends1.File.Format.JSON = []tfTypes.EventGatewayModifyHeaderSetAction{}
 
 						for _, jsonVarItem2 := range backendsItem1.File.Format.JSON {
-							var jsonVar2 tfTypes.JSON
+							var jsonVar2 tfTypes.EventGatewayModifyHeaderSetAction
 
 							jsonVar2.Key = types.StringValue(jsonVarItem2.Key)
 							jsonVar2.Value = types.StringValue(jsonVarItem2.Value)
@@ -187,10 +187,10 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(ctx cont
 					backends1.OpenTelemetry = nil
 				} else {
 					backends1.OpenTelemetry = &tfTypes.MeshAccessLogItemSpecFromOpenTelemetry{}
-					backends1.OpenTelemetry.Attributes = []tfTypes.JSON{}
+					backends1.OpenTelemetry.Attributes = []tfTypes.EventGatewayModifyHeaderSetAction{}
 
 					for _, attributesItem1 := range backendsItem1.OpenTelemetry.Attributes {
-						var attributes1 tfTypes.JSON
+						var attributes1 tfTypes.EventGatewayModifyHeaderSetAction
 
 						attributes1.Key = types.StringValue(attributesItem1.Key)
 						attributes1.Value = types.StringValue(attributesItem1.Value)
@@ -214,10 +214,10 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(ctx cont
 						backends1.TCP.Format = nil
 					} else {
 						backends1.TCP.Format = &tfTypes.Format{}
-						backends1.TCP.Format.JSON = []tfTypes.JSON{}
+						backends1.TCP.Format.JSON = []tfTypes.EventGatewayModifyHeaderSetAction{}
 
 						for _, jsonVarItem3 := range backendsItem1.TCP.Format.JSON {
-							var jsonVar3 tfTypes.JSON
+							var jsonVar3 tfTypes.EventGatewayModifyHeaderSetAction
 
 							jsonVar3.Key = types.StringValue(jsonVarItem3.Key)
 							jsonVar3.Value = types.StringValue(jsonVarItem3.Value)
@@ -280,10 +280,10 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(ctx cont
 						backends2.File.Format = nil
 					} else {
 						backends2.File.Format = &tfTypes.Format{}
-						backends2.File.Format.JSON = []tfTypes.JSON{}
+						backends2.File.Format.JSON = []tfTypes.EventGatewayModifyHeaderSetAction{}
 
 						for _, jsonVarItem4 := range backendsItem2.File.Format.JSON {
-							var jsonVar4 tfTypes.JSON
+							var jsonVar4 tfTypes.EventGatewayModifyHeaderSetAction
 
 							jsonVar4.Key = types.StringValue(jsonVarItem4.Key)
 							jsonVar4.Value = types.StringValue(jsonVarItem4.Value)
@@ -300,10 +300,10 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(ctx cont
 					backends2.OpenTelemetry = nil
 				} else {
 					backends2.OpenTelemetry = &tfTypes.MeshAccessLogItemSpecFromOpenTelemetry{}
-					backends2.OpenTelemetry.Attributes = []tfTypes.JSON{}
+					backends2.OpenTelemetry.Attributes = []tfTypes.EventGatewayModifyHeaderSetAction{}
 
 					for _, attributesItem2 := range backendsItem2.OpenTelemetry.Attributes {
-						var attributes2 tfTypes.JSON
+						var attributes2 tfTypes.EventGatewayModifyHeaderSetAction
 
 						attributes2.Key = types.StringValue(attributesItem2.Key)
 						attributes2.Value = types.StringValue(attributesItem2.Value)
@@ -327,10 +327,10 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(ctx cont
 						backends2.TCP.Format = nil
 					} else {
 						backends2.TCP.Format = &tfTypes.Format{}
-						backends2.TCP.Format.JSON = []tfTypes.JSON{}
+						backends2.TCP.Format.JSON = []tfTypes.EventGatewayModifyHeaderSetAction{}
 
 						for _, jsonVarItem5 := range backendsItem2.TCP.Format.JSON {
-							var jsonVar5 tfTypes.JSON
+							var jsonVar5 tfTypes.EventGatewayModifyHeaderSetAction
 
 							jsonVar5.Key = types.StringValue(jsonVarItem5.Key)
 							jsonVar5.Value = types.StringValue(jsonVarItem5.Value)

@@ -16,6 +16,7 @@ func (r *EventGatewayVirtualClusterResourceModel) RefreshFromSharedVirtualCluste
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.ACLMode = types.StringValue(string(resp.ACLMode))
 		r.Authentication = []tfTypes.VirtualClusterAuthenticationScheme{}
 
 		for _, authenticationItem := range resp.Authentication {
@@ -47,10 +48,10 @@ func (r *EventGatewayVirtualClusterResourceModel) RefreshFromSharedVirtualCluste
 				} else {
 					authentication.OauthBearer.Validate = &tfTypes.VirtualClusterAuthenticationValidate{}
 					if authenticationItem.VirtualClusterAuthenticationOauthBearer.Validate.Audiences != nil {
-						authentication.OauthBearer.Validate.Audiences = []tfTypes.VirtualClusterAuthenticationAudience{}
+						authentication.OauthBearer.Validate.Audiences = []tfTypes.VirtualClusterReferenceByName{}
 
 						for _, audiencesItem := range authenticationItem.VirtualClusterAuthenticationOauthBearer.Validate.Audiences {
-							var audiences tfTypes.VirtualClusterAuthenticationAudience
+							var audiences tfTypes.VirtualClusterReferenceByName
 
 							audiences.Name = types.StringValue(audiencesItem.Name)
 
@@ -123,12 +124,10 @@ func (r *EventGatewayVirtualClusterResourceModel) RefreshFromSharedVirtualCluste
 									consumerGroups.ExactList.ExactList = append(consumerGroups.ExactList.ExactList, exactList)
 								}
 							}
-							consumerGroups.ExactList.Type = types.StringValue(string(consumerGroupsItem.VirtualClusterNamespaceIDSelectorExactList.Type))
 						}
 						if consumerGroupsItem.VirtualClusterNamespaceIDSelectorGlob != nil {
 							consumerGroups.Glob = &tfTypes.VirtualClusterNamespaceIDSelectorGlob{}
 							consumerGroups.Glob.Glob = types.StringValue(consumerGroupsItem.VirtualClusterNamespaceIDSelectorGlob.Glob)
-							consumerGroups.Glob.Type = types.StringValue(string(consumerGroupsItem.VirtualClusterNamespaceIDSelectorGlob.Type))
 						}
 
 						r.Namespace.Additional.ConsumerGroups = append(r.Namespace.Additional.ConsumerGroups, consumerGroups)
@@ -158,7 +157,6 @@ func (r *EventGatewayVirtualClusterResourceModel) RefreshFromSharedVirtualCluste
 									topics.ExactList.ExactList = append(topics.ExactList.ExactList, exactList1)
 								}
 							}
-							topics.ExactList.Type = types.StringValue(string(topicsItem.VirtualClusterNamespaceTopicSelectorExactList.Type))
 						}
 						if topicsItem.VirtualClusterNamespaceTopicSelectorGlob != nil {
 							topics.Glob = &tfTypes.VirtualClusterNamespaceTopicSelectorGlob{}
@@ -168,7 +166,6 @@ func (r *EventGatewayVirtualClusterResourceModel) RefreshFromSharedVirtualCluste
 								topics.Glob.Conflict = types.StringNull()
 							}
 							topics.Glob.Glob = types.StringValue(topicsItem.VirtualClusterNamespaceTopicSelectorGlob.Glob)
-							topics.Glob.Type = types.StringValue(string(topicsItem.VirtualClusterNamespaceTopicSelectorGlob.Type))
 						}
 
 						r.Namespace.Additional.Topics = append(r.Namespace.Additional.Topics, topics)
@@ -282,15 +279,8 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 	} else {
 		id = nil
 	}
-	name1 := new(string)
-	if !r.Destination.Name.IsUnknown() && !r.Destination.Name.IsNull() {
-		*name1 = r.Destination.Name.ValueString()
-	} else {
-		name1 = nil
-	}
 	destination := shared.BackendClusterReferenceModify{
-		ID:   id,
-		Name: name1,
+		ID: id,
 	}
 	authentication := make([]shared.VirtualClusterAuthenticationScheme, 0, len(r.Authentication))
 	for _, authenticationItem := range r.Authentication {
@@ -391,11 +381,11 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 				if authenticationItem.OauthBearer.Validate.Audiences != nil {
 					audiences = make([]shared.VirtualClusterAuthenticationAudience, 0, len(authenticationItem.OauthBearer.Validate.Audiences))
 					for _, audiencesItem := range authenticationItem.OauthBearer.Validate.Audiences {
-						var name2 string
-						name2 = audiencesItem.Name.ValueString()
+						var name1 string
+						name1 = audiencesItem.Name.ValueString()
 
 						audiences = append(audiences, shared.VirtualClusterAuthenticationAudience{
-							Name: name2,
+							Name: name1,
 						})
 					}
 				}
@@ -434,7 +424,6 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 				topics = make([]shared.VirtualClusterNamespaceTopicSelector, 0, len(r.Namespace.Additional.Topics))
 				for _, topicsItem := range r.Namespace.Additional.Topics {
 					if topicsItem.Glob != nil {
-						typeVar := shared.VirtualClusterNamespaceTopicSelectorGlobType(topicsItem.Glob.Type.ValueString())
 						var glob string
 						glob = topicsItem.Glob.Glob.ValueString()
 
@@ -445,7 +434,6 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 							conflict = nil
 						}
 						virtualClusterNamespaceTopicSelectorGlob := shared.VirtualClusterNamespaceTopicSelectorGlob{
-							Type:     typeVar,
 							Glob:     glob,
 							Conflict: conflict,
 						}
@@ -454,7 +442,6 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 						})
 					}
 					if topicsItem.ExactList != nil {
-						typeVar1 := shared.VirtualClusterNamespaceTopicSelectorExactListType(topicsItem.ExactList.Type.ValueString())
 						var exactList []shared.NamespaceExactAllowListItem
 						if topicsItem.ExactList.ExactList != nil {
 							exactList = make([]shared.NamespaceExactAllowListItem, 0, len(topicsItem.ExactList.ExactList))
@@ -474,7 +461,6 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 							conflict1 = nil
 						}
 						virtualClusterNamespaceTopicSelectorExactList := shared.VirtualClusterNamespaceTopicSelectorExactList{
-							Type:      typeVar1,
 							ExactList: exactList,
 							Conflict:  conflict1,
 						}
@@ -489,12 +475,10 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 				consumerGroups = make([]shared.VirtualClusterNamespaceIDSelector, 0, len(r.Namespace.Additional.ConsumerGroups))
 				for _, consumerGroupsItem := range r.Namespace.Additional.ConsumerGroups {
 					if consumerGroupsItem.Glob != nil {
-						typeVar2 := shared.VirtualClusterNamespaceIDSelectorGlobType(consumerGroupsItem.Glob.Type.ValueString())
 						var glob1 string
 						glob1 = consumerGroupsItem.Glob.Glob.ValueString()
 
 						virtualClusterNamespaceIDSelectorGlob := shared.VirtualClusterNamespaceIDSelectorGlob{
-							Type: typeVar2,
 							Glob: glob1,
 						}
 						consumerGroups = append(consumerGroups, shared.VirtualClusterNamespaceIDSelector{
@@ -502,7 +486,6 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 						})
 					}
 					if consumerGroupsItem.ExactList != nil {
-						typeVar3 := shared.VirtualClusterNamespaceIDSelectorExactListType(consumerGroupsItem.ExactList.Type.ValueString())
 						var exactList1 []shared.ExactList
 						if consumerGroupsItem.ExactList.ExactList != nil {
 							exactList1 = make([]shared.ExactList, 0, len(consumerGroupsItem.ExactList.ExactList))
@@ -516,7 +499,6 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 							}
 						}
 						virtualClusterNamespaceIDSelectorExactList := shared.VirtualClusterNamespaceIDSelectorExactList{
-							Type:      typeVar3,
 							ExactList: exactList1,
 						}
 						consumerGroups = append(consumerGroups, shared.VirtualClusterNamespaceIDSelector{
@@ -536,6 +518,7 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 			Additional: additional,
 		}
 	}
+	aclMode := shared.VirtualClusterACLMode(r.ACLMode.ValueString())
 	var dnsLabel string
 	dnsLabel = r.DNSLabel.ValueString()
 
@@ -555,6 +538,7 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 		Destination:    destination,
 		Authentication: authentication,
 		Namespace:      namespace,
+		ACLMode:        aclMode,
 		DNSLabel:       dnsLabel,
 		Labels:         labels,
 	}
@@ -580,15 +564,8 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 	} else {
 		id = nil
 	}
-	name1 := new(string)
-	if !r.Destination.Name.IsUnknown() && !r.Destination.Name.IsNull() {
-		*name1 = r.Destination.Name.ValueString()
-	} else {
-		name1 = nil
-	}
 	destination := shared.BackendClusterReferenceModify{
-		ID:   id,
-		Name: name1,
+		ID: id,
 	}
 	authentication := make([]shared.VirtualClusterAuthenticationScheme, 0, len(r.Authentication))
 	for _, authenticationItem := range r.Authentication {
@@ -689,11 +666,11 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 				if authenticationItem.OauthBearer.Validate.Audiences != nil {
 					audiences = make([]shared.VirtualClusterAuthenticationAudience, 0, len(authenticationItem.OauthBearer.Validate.Audiences))
 					for _, audiencesItem := range authenticationItem.OauthBearer.Validate.Audiences {
-						var name2 string
-						name2 = audiencesItem.Name.ValueString()
+						var name1 string
+						name1 = audiencesItem.Name.ValueString()
 
 						audiences = append(audiences, shared.VirtualClusterAuthenticationAudience{
-							Name: name2,
+							Name: name1,
 						})
 					}
 				}
@@ -732,7 +709,6 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 				topics = make([]shared.VirtualClusterNamespaceTopicSelector, 0, len(r.Namespace.Additional.Topics))
 				for _, topicsItem := range r.Namespace.Additional.Topics {
 					if topicsItem.Glob != nil {
-						typeVar := shared.VirtualClusterNamespaceTopicSelectorGlobType(topicsItem.Glob.Type.ValueString())
 						var glob string
 						glob = topicsItem.Glob.Glob.ValueString()
 
@@ -743,7 +719,6 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 							conflict = nil
 						}
 						virtualClusterNamespaceTopicSelectorGlob := shared.VirtualClusterNamespaceTopicSelectorGlob{
-							Type:     typeVar,
 							Glob:     glob,
 							Conflict: conflict,
 						}
@@ -752,7 +727,6 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 						})
 					}
 					if topicsItem.ExactList != nil {
-						typeVar1 := shared.VirtualClusterNamespaceTopicSelectorExactListType(topicsItem.ExactList.Type.ValueString())
 						var exactList []shared.NamespaceExactAllowListItem
 						if topicsItem.ExactList.ExactList != nil {
 							exactList = make([]shared.NamespaceExactAllowListItem, 0, len(topicsItem.ExactList.ExactList))
@@ -772,7 +746,6 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 							conflict1 = nil
 						}
 						virtualClusterNamespaceTopicSelectorExactList := shared.VirtualClusterNamespaceTopicSelectorExactList{
-							Type:      typeVar1,
 							ExactList: exactList,
 							Conflict:  conflict1,
 						}
@@ -787,12 +760,10 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 				consumerGroups = make([]shared.VirtualClusterNamespaceIDSelector, 0, len(r.Namespace.Additional.ConsumerGroups))
 				for _, consumerGroupsItem := range r.Namespace.Additional.ConsumerGroups {
 					if consumerGroupsItem.Glob != nil {
-						typeVar2 := shared.VirtualClusterNamespaceIDSelectorGlobType(consumerGroupsItem.Glob.Type.ValueString())
 						var glob1 string
 						glob1 = consumerGroupsItem.Glob.Glob.ValueString()
 
 						virtualClusterNamespaceIDSelectorGlob := shared.VirtualClusterNamespaceIDSelectorGlob{
-							Type: typeVar2,
 							Glob: glob1,
 						}
 						consumerGroups = append(consumerGroups, shared.VirtualClusterNamespaceIDSelector{
@@ -800,7 +771,6 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 						})
 					}
 					if consumerGroupsItem.ExactList != nil {
-						typeVar3 := shared.VirtualClusterNamespaceIDSelectorExactListType(consumerGroupsItem.ExactList.Type.ValueString())
 						var exactList1 []shared.ExactList
 						if consumerGroupsItem.ExactList.ExactList != nil {
 							exactList1 = make([]shared.ExactList, 0, len(consumerGroupsItem.ExactList.ExactList))
@@ -814,7 +784,6 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 							}
 						}
 						virtualClusterNamespaceIDSelectorExactList := shared.VirtualClusterNamespaceIDSelectorExactList{
-							Type:      typeVar3,
 							ExactList: exactList1,
 						}
 						consumerGroups = append(consumerGroups, shared.VirtualClusterNamespaceIDSelector{
@@ -834,6 +803,7 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 			Additional: additional,
 		}
 	}
+	aclMode := shared.VirtualClusterACLMode(r.ACLMode.ValueString())
 	var dnsLabel string
 	dnsLabel = r.DNSLabel.ValueString()
 
@@ -853,6 +823,7 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 		Destination:    destination,
 		Authentication: authentication,
 		Namespace:      namespace,
+		ACLMode:        aclMode,
 		DNSLabel:       dnsLabel,
 		Labels:         labels,
 	}

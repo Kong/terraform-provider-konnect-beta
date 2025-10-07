@@ -3,39 +3,14 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
-
-type EventGatewayKonnectVaultType string
-
-const (
-	EventGatewayKonnectVaultTypeKonnect EventGatewayKonnectVaultType = "konnect"
-)
-
-func (e EventGatewayKonnectVaultType) ToPointer() *EventGatewayKonnectVaultType {
-	return &e
-}
-func (e *EventGatewayKonnectVaultType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "konnect":
-		*e = EventGatewayKonnectVaultType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for EventGatewayKonnectVaultType: %v", v)
-	}
-}
 
 // EventGatewayKonnectVault - A konnect vault.
 type EventGatewayKonnectVault struct {
 	// The name of the vault.
-	Name string                       `json:"name"`
-	Type EventGatewayKonnectVaultType `json:"type"`
+	Name  string `json:"name"`
+	type_ string `const:"konnect" json:"type"`
 	// A human-readable description of the vault.
 	Description *string `default:"null" json:"description"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
@@ -63,11 +38,8 @@ func (o *EventGatewayKonnectVault) GetName() string {
 	return o.Name
 }
 
-func (o *EventGatewayKonnectVault) GetType() EventGatewayKonnectVaultType {
-	if o == nil {
-		return EventGatewayKonnectVaultType("")
-	}
-	return o.Type
+func (o *EventGatewayKonnectVault) GetType() string {
+	return "konnect"
 }
 
 func (o *EventGatewayKonnectVault) GetDescription() *string {

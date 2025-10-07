@@ -461,7 +461,13 @@ Optional:
 
 Required:
 
-- `type` (String) Parsed as JSON.
+- `type` (String) Types that are valid to be assigned to Type:
+
+	*DataSource_Secret
+	*DataSource_File
+	*DataSource_Inline
+	*DataSource_InlineString
+Parsed as JSON.
 
 
 <a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key_secret"></a>
@@ -469,7 +475,13 @@ Required:
 
 Required:
 
-- `type` (String) Parsed as JSON.
+- `type` (String) Types that are valid to be assigned to Type:
+
+	*DataSource_Secret
+	*DataSource_File
+	*DataSource_Inline
+	*DataSource_InlineString
+Parsed as JSON.
 
 
 
@@ -479,7 +491,13 @@ Required:
 
 Required:
 
-- `type` (String) Parsed as JSON.
+- `type` (String) Types that are valid to be assigned to Type:
+
+	*DataSource_Secret
+	*DataSource_File
+	*DataSource_Inline
+	*DataSource_InlineString
+Parsed as JSON.
 
 
 
@@ -515,7 +533,13 @@ Optional:
 
 Required:
 
-- `type` (String) Parsed as JSON.
+- `type` (String) Types that are valid to be assigned to Type:
+
+	*DataSource_Secret
+	*DataSource_File
+	*DataSource_Inline
+	*DataSource_InlineString
+Parsed as JSON.
 
 
 <a id="nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config--issuer_ref"></a>
@@ -542,7 +566,13 @@ Optional:
 
 Required:
 
-- `type` (String) Parsed as JSON.
+- `type` (String) Types that are valid to be assigned to Type:
+
+	*DataSource_Secret
+	*DataSource_File
+	*DataSource_Inline
+	*DataSource_InlineString
+Parsed as JSON.
 
 
 <a id="nestedatt--mtls--backends--conf--provided_certificate_authority_config--key"></a>
@@ -550,7 +580,13 @@ Required:
 
 Required:
 
-- `type` (String) Parsed as JSON.
+- `type` (String) Types that are valid to be assigned to Type:
+
+	*DataSource_Secret
+	*DataSource_File
+	*DataSource_Inline
+	*DataSource_InlineString
+Parsed as JSON.
 
 
 

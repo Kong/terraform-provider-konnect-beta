@@ -96,19 +96,19 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 					if hashPoliciesItem.FilterState == nil {
 						hashPolicies.FilterState = nil
 					} else {
-						hashPolicies.FilterState = &tfTypes.FilterState{}
+						hashPolicies.FilterState = &tfTypes.EventGatewayModifyHeaderRemoveAction{}
 						hashPolicies.FilterState.Key = types.StringValue(hashPoliciesItem.FilterState.Key)
 					}
 					if hashPoliciesItem.Header == nil {
 						hashPolicies.Header = nil
 					} else {
-						hashPolicies.Header = &tfTypes.VirtualClusterAuthenticationAudience{}
+						hashPolicies.Header = &tfTypes.VirtualClusterReferenceByName{}
 						hashPolicies.Header.Name = types.StringValue(hashPoliciesItem.Header.Name)
 					}
 					if hashPoliciesItem.QueryParameter == nil {
 						hashPolicies.QueryParameter = nil
 					} else {
-						hashPolicies.QueryParameter = &tfTypes.VirtualClusterAuthenticationAudience{}
+						hashPolicies.QueryParameter = &tfTypes.VirtualClusterReferenceByName{}
 						hashPolicies.QueryParameter.Name = types.StringValue(hashPoliciesItem.QueryParameter.Name)
 					}
 					hashPolicies.Terminal = types.BoolPointerValue(hashPoliciesItem.Terminal)
@@ -161,19 +161,19 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 							if hashPoliciesItem1.FilterState == nil {
 								hashPolicies1.FilterState = nil
 							} else {
-								hashPolicies1.FilterState = &tfTypes.FilterState{}
+								hashPolicies1.FilterState = &tfTypes.EventGatewayModifyHeaderRemoveAction{}
 								hashPolicies1.FilterState.Key = types.StringValue(hashPoliciesItem1.FilterState.Key)
 							}
 							if hashPoliciesItem1.Header == nil {
 								hashPolicies1.Header = nil
 							} else {
-								hashPolicies1.Header = &tfTypes.VirtualClusterAuthenticationAudience{}
+								hashPolicies1.Header = &tfTypes.VirtualClusterReferenceByName{}
 								hashPolicies1.Header.Name = types.StringValue(hashPoliciesItem1.Header.Name)
 							}
 							if hashPoliciesItem1.QueryParameter == nil {
 								hashPolicies1.QueryParameter = nil
 							} else {
-								hashPolicies1.QueryParameter = &tfTypes.VirtualClusterAuthenticationAudience{}
+								hashPolicies1.QueryParameter = &tfTypes.VirtualClusterReferenceByName{}
 								hashPolicies1.QueryParameter.Name = types.StringValue(hashPoliciesItem1.QueryParameter.Name)
 							}
 							hashPolicies1.Terminal = types.BoolPointerValue(hashPoliciesItem1.Terminal)
@@ -219,19 +219,19 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 							if hashPoliciesItem2.FilterState == nil {
 								hashPolicies2.FilterState = nil
 							} else {
-								hashPolicies2.FilterState = &tfTypes.FilterState{}
+								hashPolicies2.FilterState = &tfTypes.EventGatewayModifyHeaderRemoveAction{}
 								hashPolicies2.FilterState.Key = types.StringValue(hashPoliciesItem2.FilterState.Key)
 							}
 							if hashPoliciesItem2.Header == nil {
 								hashPolicies2.Header = nil
 							} else {
-								hashPolicies2.Header = &tfTypes.VirtualClusterAuthenticationAudience{}
+								hashPolicies2.Header = &tfTypes.VirtualClusterReferenceByName{}
 								hashPolicies2.Header.Name = types.StringValue(hashPoliciesItem2.Header.Name)
 							}
 							if hashPoliciesItem2.QueryParameter == nil {
 								hashPolicies2.QueryParameter = nil
 							} else {
-								hashPolicies2.QueryParameter = &tfTypes.VirtualClusterAuthenticationAudience{}
+								hashPolicies2.QueryParameter = &tfTypes.VirtualClusterReferenceByName{}
 								hashPolicies2.QueryParameter.Name = types.StringValue(hashPoliciesItem2.QueryParameter.Name)
 							}
 							hashPolicies2.Terminal = types.BoolPointerValue(hashPoliciesItem2.Terminal)

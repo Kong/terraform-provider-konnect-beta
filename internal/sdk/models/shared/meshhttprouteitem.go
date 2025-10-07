@@ -1397,7 +1397,7 @@ func (o *QueryParams) GetValue() string {
 	return o.Value
 }
 
-type Matches struct {
+type MeshHTTPRouteItemMatches struct {
 	Headers []Headers `json:"headers,omitempty"`
 	Method  *Method   `json:"method,omitempty"`
 	Path    *Path     `json:"path,omitempty"`
@@ -1406,28 +1406,28 @@ type Matches struct {
 	QueryParams []QueryParams `json:"queryParams,omitempty"`
 }
 
-func (o *Matches) GetHeaders() []Headers {
+func (o *MeshHTTPRouteItemMatches) GetHeaders() []Headers {
 	if o == nil {
 		return nil
 	}
 	return o.Headers
 }
 
-func (o *Matches) GetMethod() *Method {
+func (o *MeshHTTPRouteItemMatches) GetMethod() *Method {
 	if o == nil {
 		return nil
 	}
 	return o.Method
 }
 
-func (o *Matches) GetPath() *Path {
+func (o *MeshHTTPRouteItemMatches) GetPath() *Path {
 	if o == nil {
 		return nil
 	}
 	return o.Path
 }
 
-func (o *Matches) GetQueryParams() []QueryParams {
+func (o *MeshHTTPRouteItemMatches) GetQueryParams() []QueryParams {
 	if o == nil {
 		return nil
 	}
@@ -1440,7 +1440,7 @@ type MeshHTTPRouteItemRules struct {
 	Default MeshHTTPRouteItemDefault `json:"default"`
 	// Matches describes how to match HTTP requests this rule should be applied
 	// to.
-	Matches []Matches `json:"matches"`
+	Matches []MeshHTTPRouteItemMatches `json:"matches"`
 }
 
 func (o *MeshHTTPRouteItemRules) GetDefault() MeshHTTPRouteItemDefault {
@@ -1450,9 +1450,9 @@ func (o *MeshHTTPRouteItemRules) GetDefault() MeshHTTPRouteItemDefault {
 	return o.Default
 }
 
-func (o *MeshHTTPRouteItemRules) GetMatches() []Matches {
+func (o *MeshHTTPRouteItemRules) GetMatches() []MeshHTTPRouteItemMatches {
 	if o == nil {
-		return []Matches{}
+		return []MeshHTTPRouteItemMatches{}
 	}
 	return o.Matches
 }

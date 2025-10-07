@@ -7,8 +7,8 @@ import (
 )
 
 type Format struct {
-	JSON            []JSON       `tfsdk:"json"`
-	OmitEmptyValues types.Bool   `tfsdk:"omit_empty_values"`
-	Plain           types.String `tfsdk:"plain"`
-	Type            types.String `tfsdk:"type"`
+	JSON            []EventGatewayModifyHeaderSetAction `tfsdk:"json"`
+	OmitEmptyValues types.Bool                          `tfsdk:"omit_empty_values"`
+	Plain           types.String                        `tfsdk:"plain"`
+	Type            types.String                        `tfsdk:"type"`
 }
