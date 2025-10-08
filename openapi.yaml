@@ -6744,7 +6744,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterConsumePolicyModifyHeaders#get
+        terraform-resource: EventGatewayConsumePolicyModifyHeaders#get
         terraform-datasource: null
       operationId: get-event-gateway-virtual-cluster-consume-policy-modify-headers
       summary: Fetch Consume Policy for Virtual Cluster
@@ -6768,7 +6768,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterConsumePolicyModifyHeaders#update
+        terraform-resource: EventGatewayConsumePolicyModifyHeaders#update
         terraform-datasource: null
       operationId: update-event-gateway-virtual-cluster-consume-policy-modify-headers
       summary: Update Consume Policy for Virtual Cluster
@@ -6797,7 +6797,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterConsumePolicyModifyHeaders#delete
+        terraform-resource: EventGatewayConsumePolicyModifyHeaders#delete
         terraform-datasource: null
       operationId: delete-event-gateway-virtual-cluster-consume-policy-modify-headers
       summary: Delete Consume Policy for Virtual Cluster
@@ -6830,7 +6830,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterConsumePolicySchemaValidation#get
+        terraform-resource: EventGatewayConsumePolicySchemaValidation#get
         terraform-datasource: null
       operationId: get-event-gateway-virtual-cluster-consume-policy-schema-validation
       summary: Fetch Consume Policy for Virtual Cluster
@@ -6854,7 +6854,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterConsumePolicySchemaValidation#update
+        terraform-resource: EventGatewayConsumePolicySchemaValidation#update
         terraform-datasource: null
       operationId: update-event-gateway-virtual-cluster-consume-policy-schema-validation
       summary: Update Consume Policy for Virtual Cluster
@@ -6883,7 +6883,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterConsumePolicySchemaValidation#delete
+        terraform-resource: EventGatewayConsumePolicySchemaValidation#delete
         terraform-datasource: null
       operationId: delete-event-gateway-virtual-cluster-consume-policy-schema-validation
       summary: Delete Consume Policy for Virtual Cluster
@@ -6916,7 +6916,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterConsumePolicyDecrypt#get
+        terraform-resource: EventGatewayConsumePolicyDecrypt#get
         terraform-datasource: null
       operationId: get-event-gateway-virtual-cluster-consume-policy-decrypt
       summary: Fetch Consume Policy for Virtual Cluster
@@ -6940,7 +6940,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterConsumePolicyDecrypt#update
+        terraform-resource: EventGatewayConsumePolicyDecrypt#update
         terraform-datasource: null
       operationId: update-event-gateway-virtual-cluster-consume-policy-decrypt
       summary: Update Consume Policy for Virtual Cluster
@@ -6969,7 +6969,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterConsumePolicyDecrypt#delete
+        terraform-resource: EventGatewayConsumePolicyDecrypt#delete
         terraform-datasource: null
       operationId: delete-event-gateway-virtual-cluster-consume-policy-decrypt
       summary: Delete Consume Policy for Virtual Cluster
@@ -7002,7 +7002,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterConsumePolicySkipRecord#get
+        terraform-resource: EventGatewayConsumePolicySkipRecord#get
         terraform-datasource: null
       operationId: get-event-gateway-virtual-cluster-consume-policy-skip-record
       summary: Fetch Consume Policy for Virtual Cluster
@@ -7026,7 +7026,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterConsumePolicySkipRecord#update
+        terraform-resource: EventGatewayConsumePolicySkipRecord#update
         terraform-datasource: null
       operationId: update-event-gateway-virtual-cluster-consume-policy-skip-record
       summary: Update Consume Policy for Virtual Cluster
@@ -7055,7 +7055,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterConsumePolicySkipRecord#delete
+        terraform-resource: EventGatewayConsumePolicySkipRecord#delete
         terraform-datasource: null
       operationId: delete-event-gateway-virtual-cluster-consume-policy-skip-record
       summary: Delete Consume Policy for Virtual Cluster
@@ -7088,7 +7088,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterConsumePolicyModifyHeaders#create
+        terraform-resource: EventGatewayConsumePolicyModifyHeaders#create
         terraform-datasource: null
       operationId: create-event-gateway-virtual-cluster-consume-policy-modify-headers
       summary: Create Consume Policy for Virtual Cluster
@@ -7123,7 +7123,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterConsumePolicySchemaValidation#create
+        terraform-resource: EventGatewayConsumePolicySchemaValidation#create
         terraform-datasource: null
       operationId: create-event-gateway-virtual-cluster-consume-policy-schema-validation
       summary: Create Consume Policy for Virtual Cluster
@@ -7158,7 +7158,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterConsumePolicyDecrypt#create
+        terraform-resource: EventGatewayConsumePolicyDecrypt#create
         terraform-datasource: null
       operationId: create-event-gateway-virtual-cluster-consume-policy-decrypt
       summary: Create Consume Policy for Virtual Cluster
@@ -7193,7 +7193,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterConsumePolicySkipRecord#create
+        terraform-resource: EventGatewayConsumePolicySkipRecord#create
         terraform-datasource: null
       operationId: create-event-gateway-virtual-cluster-consume-policy-skip-record
       summary: Create Consume Policy for Virtual Cluster
@@ -7228,7 +7228,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterProducePolicyModifyHeaders#get
+        terraform-resource: EventGatewayProducePolicyModifyHeaders#get
         terraform-datasource: null
       operationId: get-event-gateway-virtual-cluster-produce-policy-modify-headers
       summary: Fetch Produce Policy for Virtual Cluster
@@ -7252,7 +7252,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterProducePolicyModifyHeaders#update
+        terraform-resource: EventGatewayProducePolicyModifyHeaders#update
         terraform-datasource: null
       operationId: update-event-gateway-virtual-cluster-produce-policy-modify-headers
       summary: Update Produce Policy for Virtual Cluster
@@ -7281,7 +7281,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterProducePolicyModifyHeaders#delete
+        terraform-resource: EventGatewayProducePolicyModifyHeaders#delete
         terraform-datasource: null
       operationId: delete-event-gateway-virtual-cluster-produce-policy-modify-headers
       summary: Delete Produce Policy for Virtual Cluster
@@ -7314,7 +7314,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterProducePolicySchemaValidation#get
+        terraform-resource: EventGatewayProducePolicySchemaValidation#get
         terraform-datasource: null
       operationId: get-event-gateway-virtual-cluster-produce-policy-schema-validation
       summary: Fetch Produce Policy for Virtual Cluster
@@ -7338,7 +7338,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterProducePolicySchemaValidation#update
+        terraform-resource: EventGatewayProducePolicySchemaValidation#update
         terraform-datasource: null
       operationId: update-event-gateway-virtual-cluster-produce-policy-schema-validation
       summary: Update Produce Policy for Virtual Cluster
@@ -7367,7 +7367,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterProducePolicySchemaValidation#delete
+        terraform-resource: EventGatewayProducePolicySchemaValidation#delete
         terraform-datasource: null
       operationId: delete-event-gateway-virtual-cluster-produce-policy-schema-validation
       summary: Delete Produce Policy for Virtual Cluster
@@ -7400,7 +7400,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterProducePolicyEncrypt#get
+        terraform-resource: EventGatewayProducePolicyEncrypt#get
         terraform-datasource: null
       operationId: get-event-gateway-virtual-cluster-produce-policy-encrypt
       summary: Fetch Produce Policy for Virtual Cluster
@@ -7424,7 +7424,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterProducePolicyEncrypt#update
+        terraform-resource: EventGatewayProducePolicyEncrypt#update
         terraform-datasource: null
       operationId: update-event-gateway-virtual-cluster-produce-policy-encrypt
       summary: Update Produce Policy for Virtual Cluster
@@ -7453,7 +7453,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterProducePolicyEncrypt#delete
+        terraform-resource: EventGatewayProducePolicyEncrypt#delete
         terraform-datasource: null
       operationId: delete-event-gateway-virtual-cluster-produce-policy-encrypt
       summary: Delete Produce Policy for Virtual Cluster
@@ -7486,7 +7486,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterProducePolicySkipRecord#get
+        terraform-resource: EventGatewayProducePolicySkipRecord#get
         terraform-datasource: null
       operationId: get-event-gateway-virtual-cluster-produce-policy-skip-record
       summary: Fetch Produce Policy for Virtual Cluster
@@ -7510,7 +7510,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterProducePolicySkipRecord#update
+        terraform-resource: EventGatewayProducePolicySkipRecord#update
         terraform-datasource: null
       operationId: update-event-gateway-virtual-cluster-produce-policy-skip-record
       summary: Update Produce Policy for Virtual Cluster
@@ -7539,7 +7539,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterProducePolicySkipRecord#delete
+        terraform-resource: EventGatewayProducePolicySkipRecord#delete
         terraform-datasource: null
       operationId: delete-event-gateway-virtual-cluster-produce-policy-skip-record
       summary: Delete Produce Policy for Virtual Cluster
@@ -7572,7 +7572,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterProducePolicyModifyHeaders#create
+        terraform-resource: EventGatewayProducePolicyModifyHeaders#create
         terraform-datasource: null
       operationId: create-event-gateway-virtual-cluster-produce-policy-modify-headers
       summary: Create Produce Policy for Virtual Cluster
@@ -7607,7 +7607,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterProducePolicySchemaValidation#create
+        terraform-resource: EventGatewayProducePolicySchemaValidation#create
         terraform-datasource: null
       operationId: create-event-gateway-virtual-cluster-produce-policy-schema-validation
       summary: Create Produce Policy for Virtual Cluster
@@ -7642,7 +7642,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterProducePolicyEncrypt#create
+        terraform-resource: EventGatewayProducePolicyEncrypt#create
         terraform-datasource: null
       operationId: create-event-gateway-virtual-cluster-produce-policy-encrypt
       summary: Create Produce Policy for Virtual Cluster
@@ -7677,7 +7677,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterProducePolicySkipRecord#create
+        terraform-resource: EventGatewayProducePolicySkipRecord#create
         terraform-datasource: null
       operationId: create-event-gateway-virtual-cluster-produce-policy-skip-record
       summary: Create Produce Policy for Virtual Cluster
@@ -7712,7 +7712,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterClusterPolicyAcls#get
+        terraform-resource: EventGatewayClusterPolicyAcls#get
         terraform-datasource: null
       operationId: get-event-gateway-virtual-cluster-cluster-level-policy-acls
       summary: Fetch Cluster Policy for Virtual Cluster
@@ -7736,7 +7736,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterClusterPolicyAcls#update
+        terraform-resource: EventGatewayClusterPolicyAcls#update
         terraform-datasource: null
       operationId: update-event-gateway-virtual-cluster-cluster-level-policy-acls
       summary: Update Cluster Policy for Virtual Cluster
@@ -7765,7 +7765,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterClusterPolicyAcls#delete
+        terraform-resource: EventGatewayClusterPolicyAcls#delete
         terraform-datasource: null
       operationId: delete-event-gateway-virtual-cluster-cluster-level-policy-acls
       summary: Delete Cluster Policy for Virtual Cluster
@@ -7798,7 +7798,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterClusterPolicyAcls#create
+        terraform-resource: EventGatewayClusterPolicyAcls#create
         terraform-datasource: null
       operationId: create-event-gateway-virtual-cluster-cluster-level-policy-acls
       summary: Create Cluster Policy for Virtual Cluster
