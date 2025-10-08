@@ -130,7 +130,7 @@ resource "konnect_event_gateway_listener_policy_forward_to_virtual_cluster" "my_
   gateway_id = konnect_event_gateway.my_eventgateway.id
 }
 
-resource "konnect_event_gateway_virtual_cluster_produce_policy_modify_headers" "my_eventgatewayvirtualclusterproducepolicy" {
+resource "konnect_event_gateway_produce_policy_modify_headers" "my_eventgatewayvirtualclusterproducepolicy" {
   provider = konnect-beta
   virtual_cluster_id = konnect_event_gateway_virtual_cluster.my_eventgatewayvirtualcluster.id
   gateway_id = konnect_event_gateway.my_eventgateway.id
@@ -153,7 +153,7 @@ resource "konnect_event_gateway_virtual_cluster_produce_policy_modify_headers" "
   name = "myproducename"
 }
 
-resource "konnect_event_gateway_virtual_cluster_consume_policy_modify_headers" "my_eventgatewayvirtualclusterconsumepolicy" {
+resource "konnect_event_gateway_consume_policy_modify_headers" "my_eventgatewayvirtualclusterconsumepolicy" {
   provider = konnect-beta
   virtual_cluster_id = konnect_event_gateway_virtual_cluster.my_eventgatewayvirtualcluster.id
   gateway_id = konnect_event_gateway.my_eventgateway.id
@@ -176,7 +176,7 @@ resource "konnect_event_gateway_virtual_cluster_consume_policy_modify_headers" "
   name = "myconsumename"
 }
 
-resource "konnect_event_gateway_virtual_cluster_cluster_policy_acls" "my_eventgatewayvirtualclusterclusterpolicy" {
+resource "konnect_event_gateway_cluster_policy_acls" "my_eventgatewayvirtualclusterclusterpolicy" {
   provider = konnect-beta
   virtual_cluster_id = konnect_event_gateway_virtual_cluster.my_eventgatewayvirtualcluster.id
   gateway_id = konnect_event_gateway.my_eventgateway.id
