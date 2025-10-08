@@ -98,10 +98,10 @@ func (r *MeshMetricResourceModel) RefreshFromSharedMeshMetricItem(ctx context.Co
 					r.Spec.Default.Sidecar.Profiles = nil
 				} else {
 					r.Spec.Default.Sidecar.Profiles = &tfTypes.Profiles{}
-					r.Spec.Default.Sidecar.Profiles.AppendProfiles = []tfTypes.VirtualClusterAuthenticationAudience{}
+					r.Spec.Default.Sidecar.Profiles.AppendProfiles = []tfTypes.EventGatewayACLOperation{}
 
 					for _, appendProfilesItem := range resp.Spec.Default.Sidecar.Profiles.AppendProfiles {
-						var appendProfiles tfTypes.VirtualClusterAuthenticationAudience
+						var appendProfiles tfTypes.EventGatewayACLOperation
 
 						appendProfiles.Name = types.StringValue(string(appendProfilesItem.Name))
 
@@ -358,7 +358,7 @@ func (r *MeshMetricResourceModel) ToSharedMeshMetricItemInput(ctx context.Contex
 			if r.Spec.Default.Sidecar.Profiles != nil {
 				appendProfiles := make([]shared.AppendProfiles, 0, len(r.Spec.Default.Sidecar.Profiles.AppendProfiles))
 				for _, appendProfilesItem := range r.Spec.Default.Sidecar.Profiles.AppendProfiles {
-					name2 := shared.Name(appendProfilesItem.Name.ValueString())
+					name2 := shared.MeshMetricItemName(appendProfilesItem.Name.ValueString())
 					appendProfiles = append(appendProfiles, shared.AppendProfiles{
 						Name: name2,
 					})

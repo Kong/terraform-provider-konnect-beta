@@ -8,7 +8,7 @@ import (
 )
 
 type MeshAccessLogItemSpecFromOpenTelemetry struct {
-	Attributes []JSON               `tfsdk:"attributes"`
-	Body       jsontypes.Normalized `tfsdk:"body"`
-	Endpoint   types.String         `tfsdk:"endpoint"`
+	Attributes []EventGatewayModifyHeaderSetAction `tfsdk:"attributes"`
+	Body       jsontypes.Normalized                `tfsdk:"body"`
+	Endpoint   types.String                        `tfsdk:"endpoint"`
 }

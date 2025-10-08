@@ -66,6 +66,42 @@ resource "konnect_mesh_fault_injection" "my_meshfaultinjection" {
         }
       }
     ]
+    rules = [
+      {
+        default = {
+          http = [
+            {
+              abort = {
+                http_status = 4
+                percentage = {
+                  integer = 5
+                }
+              }
+              delay = {
+                percentage = {
+                  integer = 7
+                }
+                value = "...my_value..."
+              }
+              response_bandwidth = {
+                limit = "...my_limit..."
+                percentage = {
+                  str = "...my_str..."
+                }
+              }
+            }
+          ]
+        }
+        matches = [
+          {
+            spiffe_id = {
+              type  = "Exact"
+              value = "...my_value..."
+            }
+          }
+        ]
+      }
+    ]
     target_ref = {
       kind = "Dataplane"
       labels = {
@@ -159,6 +195,7 @@ Warning messages describe a problem the client making the API request should cor
 Optional:
 
 - `from` (Attributes List) From list makes a match between clients and corresponding configurations (see [below for nested schema](#nestedatt--spec--from))
+- `rules` (Attributes List) Rules defines inbound fault injection configuration (see [below for nested schema](#nestedatt--spec--rules))
 - `target_ref` (Attributes) TargetRef is a reference to the resource the policy takes an effect on.
 The resource could be either a real store object or virtual resource
 defined inplace. (see [below for nested schema](#nestedatt--spec--target_ref))
@@ -277,6 +314,115 @@ all data plane types are targeted by the policy.
 For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.
 - `tags` (Map of String) Tags used to select a subset of proxies by tags. Can only be used with kinds
 `MeshSubset` and `MeshServiceSubset`
+
+
+
+<a id="nestedatt--spec--rules"></a>
+### Nested Schema for `spec.rules`
+
+Optional:
+
+- `default` (Attributes) Default defines fault configuration. Not Null (see [below for nested schema](#nestedatt--spec--rules--default))
+- `matches` (Attributes List) Matches defines list of matches for which fault injection will be applied (see [below for nested schema](#nestedatt--spec--rules--matches))
+
+<a id="nestedatt--spec--rules--default"></a>
+### Nested Schema for `spec.rules.default`
+
+Optional:
+
+- `http` (Attributes List) Http allows to define list of Http faults between dataplanes. (see [below for nested schema](#nestedatt--spec--rules--default--http))
+
+<a id="nestedatt--spec--rules--default--http"></a>
+### Nested Schema for `spec.rules.default.http`
+
+Optional:
+
+- `abort` (Attributes) Abort defines a configuration of not delivering requests to destination
+service and replacing the responses from destination dataplane by
+predefined status code (see [below for nested schema](#nestedatt--spec--rules--default--http--abort))
+- `delay` (Attributes) Delay defines configuration of delaying a response from a destination (see [below for nested schema](#nestedatt--spec--rules--default--http--delay))
+- `response_bandwidth` (Attributes) ResponseBandwidth defines a configuration to limit the speed of
+responding to the requests (see [below for nested schema](#nestedatt--spec--rules--default--http--response_bandwidth))
+
+<a id="nestedatt--spec--rules--default--http--abort"></a>
+### Nested Schema for `spec.rules.default.http.abort`
+
+Optional:
+
+- `http_status` (Number) HTTP status code which will be returned to source side. Not Null
+- `percentage` (Attributes) Percentage of requests on which abort will be injected, has to be
+either int or decimal represented as string.
+Not Null (see [below for nested schema](#nestedatt--spec--rules--default--http--abort--percentage))
+
+<a id="nestedatt--spec--rules--default--http--abort--percentage"></a>
+### Nested Schema for `spec.rules.default.http.abort.percentage`
+
+Optional:
+
+- `integer` (Number)
+- `str` (String)
+
+
+
+<a id="nestedatt--spec--rules--default--http--delay"></a>
+### Nested Schema for `spec.rules.default.http.delay`
+
+Optional:
+
+- `percentage` (Attributes) Percentage of requests on which delay will be injected, has to be
+either int or decimal represented as string.
+Not Null (see [below for nested schema](#nestedatt--spec--rules--default--http--delay--percentage))
+- `value` (String) The duration during which the response will be delayed. Not Null
+
+<a id="nestedatt--spec--rules--default--http--delay--percentage"></a>
+### Nested Schema for `spec.rules.default.http.delay.percentage`
+
+Optional:
+
+- `integer` (Number)
+- `str` (String)
+
+
+
+<a id="nestedatt--spec--rules--default--http--response_bandwidth"></a>
+### Nested Schema for `spec.rules.default.http.response_bandwidth`
+
+Optional:
+
+- `limit` (String) Limit is represented by value measure in Gbps, Mbps, kbps, e.g.
+10kbps
+Not Null
+- `percentage` (Attributes) Percentage of requests on which response bandwidth limit will be
+either int or decimal represented as string.
+Not Null (see [below for nested schema](#nestedatt--spec--rules--default--http--response_bandwidth--percentage))
+
+<a id="nestedatt--spec--rules--default--http--response_bandwidth--percentage"></a>
+### Nested Schema for `spec.rules.default.http.response_bandwidth.percentage`
+
+Optional:
+
+- `integer` (Number)
+- `str` (String)
+
+
+
+
+
+<a id="nestedatt--spec--rules--matches"></a>
+### Nested Schema for `spec.rules.matches`
+
+Optional:
+
+- `spiffe_id` (Attributes) SpiffeID defines a matcher configuration for SpiffeID matching (see [below for nested schema](#nestedatt--spec--rules--matches--spiffe_id))
+
+<a id="nestedatt--spec--rules--matches--spiffe_id"></a>
+### Nested Schema for `spec.rules.matches.spiffe_id`
+
+Optional:
+
+- `type` (String) Type defines how to match incoming traffic by SpiffeID. `Exact` or `Prefix` are allowed. Not Null; must be one of ["Exact", "Prefix"]
+- `value` (String) Value is SpiffeId of a client that needs to match for the configuration to be applied. Not Null
+
 
 
 

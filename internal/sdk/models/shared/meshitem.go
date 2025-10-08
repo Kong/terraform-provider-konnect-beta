@@ -631,6 +631,12 @@ func (o *Metrics) GetEnabledBackend() *string {
 }
 
 type CertManagerCertificateAuthorityConfigConfCaCert struct {
+	// Types that are valid to be assigned to Type:
+	//
+	// 	*DataSource_Secret
+	// 	*DataSource_File
+	// 	*DataSource_Inline
+	// 	*DataSource_InlineString
 	Type any `json:"Type"`
 }
 
@@ -704,6 +710,12 @@ func (o *CertManagerCertificateAuthorityConfig) GetIssuerRef() *IssuerRef {
 }
 
 type AccessKey struct {
+	// Types that are valid to be assigned to Type:
+	//
+	// 	*DataSource_Secret
+	// 	*DataSource_File
+	// 	*DataSource_Inline
+	// 	*DataSource_InlineString
 	Type any `json:"Type"`
 }
 
@@ -715,6 +727,12 @@ func (o *AccessKey) GetType() any {
 }
 
 type AccessKeySecret struct {
+	// Types that are valid to be assigned to Type:
+	//
+	// 	*DataSource_Secret
+	// 	*DataSource_File
+	// 	*DataSource_Inline
+	// 	*DataSource_InlineString
 	Type any `json:"Type"`
 }
 
@@ -756,6 +774,12 @@ func (o *Auth) GetAwsCredentials() *AwsCredentials {
 }
 
 type ConfCaCert struct {
+	// Types that are valid to be assigned to Type:
+	//
+	// 	*DataSource_Secret
+	// 	*DataSource_File
+	// 	*DataSource_Inline
+	// 	*DataSource_InlineString
 	Type any `json:"Type"`
 }
 
@@ -843,6 +867,12 @@ func (o *BuiltinCertificateAuthorityConfig) GetCaCert() *BuiltinCertificateAutho
 }
 
 type Cert struct {
+	// Types that are valid to be assigned to Type:
+	//
+	// 	*DataSource_Secret
+	// 	*DataSource_File
+	// 	*DataSource_Inline
+	// 	*DataSource_InlineString
 	Type any `json:"Type"`
 }
 
@@ -854,6 +884,12 @@ func (o *Cert) GetType() any {
 }
 
 type Key struct {
+	// Types that are valid to be assigned to Type:
+	//
+	// 	*DataSource_Secret
+	// 	*DataSource_File
+	// 	*DataSource_Inline
+	// 	*DataSource_InlineString
 	Type any `json:"Type"`
 }
 

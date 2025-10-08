@@ -8,5 +8,4 @@ import (
 
 type VirtualClusterNamespaceIDSelectorGlob struct {
 	Glob types.String `tfsdk:"glob"`
-	Type types.String `tfsdk:"type"`
 }

@@ -2,11 +2,6 @@
 
 package types
 
-import (
-	"github.com/hashicorp/terraform-plugin-framework/types"
-)
-
 type VirtualClusterNamespaceIDSelectorExactList struct {
-	ExactList []ExactList  `tfsdk:"exact_list"`
-	Type      types.String `tfsdk:"type"`
+	ExactList []ExactList `tfsdk:"exact_list"`
 }

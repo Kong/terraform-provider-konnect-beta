@@ -36,9 +36,6 @@ func CreateEventGatewayModifyVaultEnv(env EventGatewayEnvVault) EventGatewayModi
 func CreateEventGatewayModifyVaultKonnect(konnect EventGatewayKonnectVault) EventGatewayModifyVault {
 	typ := EventGatewayModifyVaultTypeKonnect
 
-	typStr := EventGatewayKonnectVaultType(typ)
-	konnect.Type = typStr
-
 	return EventGatewayModifyVault{
 		EventGatewayKonnectVault: &konnect,
 		Type:                     typ,

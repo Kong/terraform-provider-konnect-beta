@@ -9,5 +9,4 @@ import (
 type VirtualClusterNamespaceTopicSelectorGlob struct {
 	Conflict types.String `tfsdk:"conflict"`
 	Glob     types.String `tfsdk:"glob"`
-	Type     types.String `tfsdk:"type"`
 }

@@ -3,44 +3,28 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
-
-type VirtualClusterNamespaceIDSelectorGlobType string
-
-const (
-	VirtualClusterNamespaceIDSelectorGlobTypeGlob VirtualClusterNamespaceIDSelectorGlobType = "glob"
-)
-
-func (e VirtualClusterNamespaceIDSelectorGlobType) ToPointer() *VirtualClusterNamespaceIDSelectorGlobType {
-	return &e
-}
-func (e *VirtualClusterNamespaceIDSelectorGlobType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "glob":
-		*e = VirtualClusterNamespaceIDSelectorGlobType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for VirtualClusterNamespaceIDSelectorGlobType: %v", v)
-	}
-}
 
 type VirtualClusterNamespaceIDSelectorGlob struct {
-	Type VirtualClusterNamespaceIDSelectorGlobType `json:"type"`
+	type_ string `const:"glob" json:"type"`
 	// Expose any id that matches this glob pattern (e.g., `my_id_*`).
 	Glob string `json:"glob"`
 }
 
-func (o *VirtualClusterNamespaceIDSelectorGlob) GetType() VirtualClusterNamespaceIDSelectorGlobType {
-	if o == nil {
-		return VirtualClusterNamespaceIDSelectorGlobType("")
+func (v VirtualClusterNamespaceIDSelectorGlob) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *VirtualClusterNamespaceIDSelectorGlob) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
+		return err
 	}
-	return o.Type
+	return nil
+}
+
+func (o *VirtualClusterNamespaceIDSelectorGlob) GetType() string {
+	return "glob"
 }
 
 func (o *VirtualClusterNamespaceIDSelectorGlob) GetGlob() string {

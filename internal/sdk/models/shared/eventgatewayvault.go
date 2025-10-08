@@ -3,41 +3,17 @@
 package shared
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 	"time"
 )
 
-type EventGatewayKonnectVaultEventGatewayVaultType string
-
-const (
-	EventGatewayKonnectVaultEventGatewayVaultTypeKonnect EventGatewayKonnectVaultEventGatewayVaultType = "konnect"
-)
-
-func (e EventGatewayKonnectVaultEventGatewayVaultType) ToPointer() *EventGatewayKonnectVaultEventGatewayVaultType {
-	return &e
-}
-func (e *EventGatewayKonnectVaultEventGatewayVaultType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "konnect":
-		*e = EventGatewayKonnectVaultEventGatewayVaultType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for EventGatewayKonnectVaultEventGatewayVaultType: %v", v)
-	}
-}
-
 // EventGatewayVaultEventGatewayKonnectVault - A konnect vault.
 type EventGatewayVaultEventGatewayKonnectVault struct {
 	// The name of the vault.
-	Name string                                        `json:"name"`
-	Type EventGatewayKonnectVaultEventGatewayVaultType `json:"type"`
+	Name  string `json:"name"`
+	type_ string `const:"konnect" json:"type"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
@@ -71,11 +47,8 @@ func (o *EventGatewayVaultEventGatewayKonnectVault) GetName() string {
 	return o.Name
 }
 
-func (o *EventGatewayVaultEventGatewayKonnectVault) GetType() EventGatewayKonnectVaultEventGatewayVaultType {
-	if o == nil {
-		return EventGatewayKonnectVaultEventGatewayVaultType("")
-	}
-	return o.Type
+func (o *EventGatewayVaultEventGatewayKonnectVault) GetType() string {
+	return "konnect"
 }
 
 func (o *EventGatewayVaultEventGatewayKonnectVault) GetCreatedAt() time.Time {
