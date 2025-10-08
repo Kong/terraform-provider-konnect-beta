@@ -48,10 +48,10 @@ func (r *EventGatewayVirtualClusterResourceModel) RefreshFromSharedVirtualCluste
 				} else {
 					authentication.OauthBearer.Validate = &tfTypes.VirtualClusterAuthenticationValidate{}
 					if authenticationItem.VirtualClusterAuthenticationOauthBearer.Validate.Audiences != nil {
-						authentication.OauthBearer.Validate.Audiences = []tfTypes.VirtualClusterReferenceByName{}
+						authentication.OauthBearer.Validate.Audiences = []tfTypes.EventGatewayACLOperation{}
 
 						for _, audiencesItem := range authenticationItem.VirtualClusterAuthenticationOauthBearer.Validate.Audiences {
-							var audiences tfTypes.VirtualClusterReferenceByName
+							var audiences tfTypes.EventGatewayACLOperation
 
 							audiences.Name = types.StringValue(audiencesItem.Name)
 

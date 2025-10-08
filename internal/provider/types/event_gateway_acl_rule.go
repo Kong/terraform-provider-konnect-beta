@@ -7,8 +7,8 @@ import (
 )
 
 type EventGatewayACLRule struct {
-	Action        types.String                    `tfsdk:"action"`
-	Operations    []VirtualClusterReferenceByName `tfsdk:"operations"`
-	ResourceNames []EventGatewayACLResourceName   `tfsdk:"resource_names"`
-	ResourceType  types.String                    `tfsdk:"resource_type"`
+	Action        types.String                  `tfsdk:"action"`
+	Operations    []EventGatewayACLOperation    `tfsdk:"operations"`
+	ResourceNames []EventGatewayACLResourceName `tfsdk:"resource_names"`
+	ResourceType  types.String                  `tfsdk:"resource_type"`
 }

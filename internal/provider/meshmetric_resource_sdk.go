@@ -98,10 +98,10 @@ func (r *MeshMetricResourceModel) RefreshFromSharedMeshMetricItem(ctx context.Co
 					r.Spec.Default.Sidecar.Profiles = nil
 				} else {
 					r.Spec.Default.Sidecar.Profiles = &tfTypes.Profiles{}
-					r.Spec.Default.Sidecar.Profiles.AppendProfiles = []tfTypes.VirtualClusterReferenceByName{}
+					r.Spec.Default.Sidecar.Profiles.AppendProfiles = []tfTypes.EventGatewayACLOperation{}
 
 					for _, appendProfilesItem := range resp.Spec.Default.Sidecar.Profiles.AppendProfiles {
-						var appendProfiles tfTypes.VirtualClusterReferenceByName
+						var appendProfiles tfTypes.EventGatewayACLOperation
 
 						appendProfiles.Name = types.StringValue(string(appendProfilesItem.Name))
 

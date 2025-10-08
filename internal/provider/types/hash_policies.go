@@ -10,8 +10,8 @@ type HashPolicies struct {
 	Connection     *Connection                           `tfsdk:"connection"`
 	Cookie         *Cookie                               `tfsdk:"cookie"`
 	FilterState    *EventGatewayModifyHeaderRemoveAction `tfsdk:"filter_state"`
-	Header         *VirtualClusterReferenceByName        `tfsdk:"header"`
-	QueryParameter *VirtualClusterReferenceByName        `tfsdk:"query_parameter"`
+	Header         *EventGatewayACLOperation             `tfsdk:"header"`
+	QueryParameter *EventGatewayACLOperation             `tfsdk:"query_parameter"`
 	Terminal       types.Bool                            `tfsdk:"terminal"`
 	Type           types.String                          `tfsdk:"type"`
 }

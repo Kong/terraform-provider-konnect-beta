@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: 2471cee728d8691fc8f83e7328512a57
+  docChecksum: a815d597af8328e1aec8abe2d5a46ed0
   docVersion: 2.0.0
   speakeasyVersion: 1.602.0
   generationVersion: 2.681.1
@@ -56,6 +56,16 @@ generatedFiles:
   - examples/resources/konnect-beta_event_gateway/resource.tf
   - examples/resources/konnect-beta_event_gateway_backend_cluster/import.sh
   - examples/resources/konnect-beta_event_gateway_backend_cluster/resource.tf
+  - examples/resources/konnect-beta_event_gateway_cluster_policy_acls/import.sh
+  - examples/resources/konnect-beta_event_gateway_cluster_policy_acls/resource.tf
+  - examples/resources/konnect-beta_event_gateway_consume_policy_decrypt/import.sh
+  - examples/resources/konnect-beta_event_gateway_consume_policy_decrypt/resource.tf
+  - examples/resources/konnect-beta_event_gateway_consume_policy_modify_headers/import.sh
+  - examples/resources/konnect-beta_event_gateway_consume_policy_modify_headers/resource.tf
+  - examples/resources/konnect-beta_event_gateway_consume_policy_schema_validation/import.sh
+  - examples/resources/konnect-beta_event_gateway_consume_policy_schema_validation/resource.tf
+  - examples/resources/konnect-beta_event_gateway_consume_policy_skip_record/import.sh
+  - examples/resources/konnect-beta_event_gateway_consume_policy_skip_record/resource.tf
   - examples/resources/konnect-beta_event_gateway_data_plane_certificate/import.sh
   - examples/resources/konnect-beta_event_gateway_data_plane_certificate/resource.tf
   - examples/resources/konnect-beta_event_gateway_listener/import.sh
@@ -64,30 +74,20 @@ generatedFiles:
   - examples/resources/konnect-beta_event_gateway_listener_policy_forward_to_virtual_cluster/resource.tf
   - examples/resources/konnect-beta_event_gateway_listener_policy_tls_server/import.sh
   - examples/resources/konnect-beta_event_gateway_listener_policy_tls_server/resource.tf
+  - examples/resources/konnect-beta_event_gateway_produce_policy_encrypt/import.sh
+  - examples/resources/konnect-beta_event_gateway_produce_policy_encrypt/resource.tf
+  - examples/resources/konnect-beta_event_gateway_produce_policy_modify_headers/import.sh
+  - examples/resources/konnect-beta_event_gateway_produce_policy_modify_headers/resource.tf
+  - examples/resources/konnect-beta_event_gateway_produce_policy_schema_validation/import.sh
+  - examples/resources/konnect-beta_event_gateway_produce_policy_schema_validation/resource.tf
+  - examples/resources/konnect-beta_event_gateway_produce_policy_skip_record/import.sh
+  - examples/resources/konnect-beta_event_gateway_produce_policy_skip_record/resource.tf
   - examples/resources/konnect-beta_event_gateway_schema_registry/import.sh
   - examples/resources/konnect-beta_event_gateway_schema_registry/resource.tf
   - examples/resources/konnect-beta_event_gateway_vault/import.sh
   - examples/resources/konnect-beta_event_gateway_vault/resource.tf
   - examples/resources/konnect-beta_event_gateway_virtual_cluster/import.sh
   - examples/resources/konnect-beta_event_gateway_virtual_cluster/resource.tf
-  - examples/resources/konnect-beta_event_gateway_virtual_cluster_cluster_policy_acls/import.sh
-  - examples/resources/konnect-beta_event_gateway_virtual_cluster_cluster_policy_acls/resource.tf
-  - examples/resources/konnect-beta_event_gateway_virtual_cluster_consume_policy_decrypt/import.sh
-  - examples/resources/konnect-beta_event_gateway_virtual_cluster_consume_policy_decrypt/resource.tf
-  - examples/resources/konnect-beta_event_gateway_virtual_cluster_consume_policy_modify_headers/import.sh
-  - examples/resources/konnect-beta_event_gateway_virtual_cluster_consume_policy_modify_headers/resource.tf
-  - examples/resources/konnect-beta_event_gateway_virtual_cluster_consume_policy_schema_validation/import.sh
-  - examples/resources/konnect-beta_event_gateway_virtual_cluster_consume_policy_schema_validation/resource.tf
-  - examples/resources/konnect-beta_event_gateway_virtual_cluster_consume_policy_skip_record/import.sh
-  - examples/resources/konnect-beta_event_gateway_virtual_cluster_consume_policy_skip_record/resource.tf
-  - examples/resources/konnect-beta_event_gateway_virtual_cluster_produce_policy_encrypt/import.sh
-  - examples/resources/konnect-beta_event_gateway_virtual_cluster_produce_policy_encrypt/resource.tf
-  - examples/resources/konnect-beta_event_gateway_virtual_cluster_produce_policy_modify_headers/import.sh
-  - examples/resources/konnect-beta_event_gateway_virtual_cluster_produce_policy_modify_headers/resource.tf
-  - examples/resources/konnect-beta_event_gateway_virtual_cluster_produce_policy_schema_validation/import.sh
-  - examples/resources/konnect-beta_event_gateway_virtual_cluster_produce_policy_schema_validation/resource.tf
-  - examples/resources/konnect-beta_event_gateway_virtual_cluster_produce_policy_skip_record/import.sh
-  - examples/resources/konnect-beta_event_gateway_virtual_cluster_produce_policy_skip_record/resource.tf
   - examples/resources/konnect-beta_mesh/import.sh
   - examples/resources/konnect-beta_mesh/resource.tf
   - examples/resources/konnect-beta_mesh_access_log/import.sh
@@ -200,6 +200,16 @@ generatedFiles:
   - internal/provider/eventgateway_resource_sdk.go
   - internal/provider/eventgatewaybackendcluster_resource.go
   - internal/provider/eventgatewaybackendcluster_resource_sdk.go
+  - internal/provider/eventgatewayclusterpolicyacls_resource.go
+  - internal/provider/eventgatewayclusterpolicyacls_resource_sdk.go
+  - internal/provider/eventgatewayconsumepolicydecrypt_resource.go
+  - internal/provider/eventgatewayconsumepolicydecrypt_resource_sdk.go
+  - internal/provider/eventgatewayconsumepolicymodifyheaders_resource.go
+  - internal/provider/eventgatewayconsumepolicymodifyheaders_resource_sdk.go
+  - internal/provider/eventgatewayconsumepolicyschemavalidation_resource.go
+  - internal/provider/eventgatewayconsumepolicyschemavalidation_resource_sdk.go
+  - internal/provider/eventgatewayconsumepolicyskiprecord_resource.go
+  - internal/provider/eventgatewayconsumepolicyskiprecord_resource_sdk.go
   - internal/provider/eventgatewaydataplanecertificate_resource.go
   - internal/provider/eventgatewaydataplanecertificate_resource_sdk.go
   - internal/provider/eventgatewaylistener_resource.go
@@ -208,30 +218,20 @@ generatedFiles:
   - internal/provider/eventgatewaylistenerpolicyforwardtovirtualcluster_resource_sdk.go
   - internal/provider/eventgatewaylistenerpolicytlsserver_resource.go
   - internal/provider/eventgatewaylistenerpolicytlsserver_resource_sdk.go
+  - internal/provider/eventgatewayproducepolicyencrypt_resource.go
+  - internal/provider/eventgatewayproducepolicyencrypt_resource_sdk.go
+  - internal/provider/eventgatewayproducepolicymodifyheaders_resource.go
+  - internal/provider/eventgatewayproducepolicymodifyheaders_resource_sdk.go
+  - internal/provider/eventgatewayproducepolicyschemavalidation_resource.go
+  - internal/provider/eventgatewayproducepolicyschemavalidation_resource_sdk.go
+  - internal/provider/eventgatewayproducepolicyskiprecord_resource.go
+  - internal/provider/eventgatewayproducepolicyskiprecord_resource_sdk.go
   - internal/provider/eventgatewayschemaregistry_resource.go
   - internal/provider/eventgatewayschemaregistry_resource_sdk.go
   - internal/provider/eventgatewayvault_resource.go
   - internal/provider/eventgatewayvault_resource_sdk.go
   - internal/provider/eventgatewayvirtualcluster_resource.go
   - internal/provider/eventgatewayvirtualcluster_resource_sdk.go
-  - internal/provider/eventgatewayvirtualclusterclusterpolicyacls_resource.go
-  - internal/provider/eventgatewayvirtualclusterclusterpolicyacls_resource_sdk.go
-  - internal/provider/eventgatewayvirtualclusterconsumepolicydecrypt_resource.go
-  - internal/provider/eventgatewayvirtualclusterconsumepolicydecrypt_resource_sdk.go
-  - internal/provider/eventgatewayvirtualclusterconsumepolicymodifyheaders_resource.go
-  - internal/provider/eventgatewayvirtualclusterconsumepolicymodifyheaders_resource_sdk.go
-  - internal/provider/eventgatewayvirtualclusterconsumepolicyschemavalidation_resource.go
-  - internal/provider/eventgatewayvirtualclusterconsumepolicyschemavalidation_resource_sdk.go
-  - internal/provider/eventgatewayvirtualclusterconsumepolicyskiprecord_resource.go
-  - internal/provider/eventgatewayvirtualclusterconsumepolicyskiprecord_resource_sdk.go
-  - internal/provider/eventgatewayvirtualclusterproducepolicyencrypt_resource.go
-  - internal/provider/eventgatewayvirtualclusterproducepolicyencrypt_resource_sdk.go
-  - internal/provider/eventgatewayvirtualclusterproducepolicymodifyheaders_resource.go
-  - internal/provider/eventgatewayvirtualclusterproducepolicymodifyheaders_resource_sdk.go
-  - internal/provider/eventgatewayvirtualclusterproducepolicyschemavalidation_resource.go
-  - internal/provider/eventgatewayvirtualclusterproducepolicyschemavalidation_resource_sdk.go
-  - internal/provider/eventgatewayvirtualclusterproducepolicyskiprecord_resource.go
-  - internal/provider/eventgatewayvirtualclusterproducepolicyskiprecord_resource_sdk.go
   - internal/provider/mesh_resource.go
   - internal/provider/mesh_resource_sdk.go
   - internal/provider/meshaccesslog_resource.go
@@ -394,6 +394,7 @@ generatedFiles:
   - internal/provider/types/encryption_record_selector.go
   - internal/provider/types/endpoints.go
   - internal/provider/types/envoy.go
+  - internal/provider/types/event_gateway_acl_operation.go
   - internal/provider/types/event_gateway_acl_policy_config.go
   - internal/provider/types/event_gateway_acl_resource_name.go
   - internal/provider/types/event_gateway_acl_rule.go
@@ -621,6 +622,7 @@ generatedFiles:
   - internal/provider/types/schema_registry_confluent.go
   - internal/provider/types/schema_registry_confluent_config.go
   - internal/provider/types/schema_registry_reference.go
+  - internal/provider/types/schema_registry_reference_by_id.go
   - internal/provider/types/secret_ref.go
   - internal/provider/types/selector.go
   - internal/provider/types/selectors.go
@@ -668,8 +670,6 @@ generatedFiles:
   - internal/provider/types/virtual_cluster_namespace_topic_selector_exact_list.go
   - internal/provider/types/virtual_cluster_namespace_topic_selector_glob.go
   - internal/provider/types/virtual_cluster_reference.go
-  - internal/provider/types/virtual_cluster_reference_by_id.go
-  - internal/provider/types/virtual_cluster_reference_by_name.go
   - internal/provider/types/virtual_host.go
   - internal/provider/types/zipkin.go
   - internal/provider/types/zipkin_tracing_backend_config.go
