@@ -217,13 +217,6 @@ func (r *EventGatewayVaultResource) Schema(ctx context.Context, req resource.Sch
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[\p{L}\p{N}][\p{L}\p{N} _\-\.']*[\p{L}\p{N}]$`), "must match pattern "+regexp.MustCompile(`^[\p{L}\p{N}][\p{L}\p{N} _\-\.']*[\p{L}\p{N}]$`).String()),
 						},
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Description: `must be "konnect"`,
-						Validators: []validator.String{
-							stringvalidator.OneOf("konnect"),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -275,13 +268,6 @@ func (r *EventGatewayVaultResource) Schema(ctx context.Context, req resource.Sch
 						Validators: []validator.String{
 							stringvalidator.UTF8LengthBetween(1, 255),
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[\p{L}\p{N}][\p{L}\p{N} _\-\.']*[\p{L}\p{N}]$`), "must match pattern "+regexp.MustCompile(`^[\p{L}\p{N}][\p{L}\p{N} _\-\.']*[\p{L}\p{N}]$`).String()),
-						},
-					},
-					"type": schema.StringAttribute{
-						Required:    true,
-						Description: `must be "konnect"`,
-						Validators: []validator.String{
-							stringvalidator.OneOf("konnect"),
 						},
 					},
 				},

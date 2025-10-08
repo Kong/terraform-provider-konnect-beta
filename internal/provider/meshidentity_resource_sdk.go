@@ -60,7 +60,7 @@ func (r *MeshIdentityResourceModel) RefreshFromSharedMeshIdentityItem(ctx contex
 					if resp.Spec.Provider.Bundled.Ca.Certificate.EnvVar == nil {
 						r.Spec.Provider.Bundled.Ca.Certificate.EnvVar = nil
 					} else {
-						r.Spec.Provider.Bundled.Ca.Certificate.EnvVar = &tfTypes.VirtualClusterAuthenticationAudience{}
+						r.Spec.Provider.Bundled.Ca.Certificate.EnvVar = &tfTypes.EventGatewayACLOperation{}
 						r.Spec.Provider.Bundled.Ca.Certificate.EnvVar.Name = types.StringValue(resp.Spec.Provider.Bundled.Ca.Certificate.EnvVar.Name)
 					}
 					if resp.Spec.Provider.Bundled.Ca.Certificate.File == nil {
@@ -91,7 +91,7 @@ func (r *MeshIdentityResourceModel) RefreshFromSharedMeshIdentityItem(ctx contex
 					if resp.Spec.Provider.Bundled.Ca.PrivateKey.EnvVar == nil {
 						r.Spec.Provider.Bundled.Ca.PrivateKey.EnvVar = nil
 					} else {
-						r.Spec.Provider.Bundled.Ca.PrivateKey.EnvVar = &tfTypes.VirtualClusterAuthenticationAudience{}
+						r.Spec.Provider.Bundled.Ca.PrivateKey.EnvVar = &tfTypes.EventGatewayACLOperation{}
 						r.Spec.Provider.Bundled.Ca.PrivateKey.EnvVar.Name = types.StringValue(resp.Spec.Provider.Bundled.Ca.PrivateKey.EnvVar.Name)
 					}
 					if resp.Spec.Provider.Bundled.Ca.PrivateKey.File == nil {

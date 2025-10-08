@@ -15,6 +15,7 @@ EventGatewayVirtualCluster Resource
 ```terraform
 resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster" {
   provider = konnect-beta
+    acl_mode = "enforce_on_gateway"
     authentication = [
     {
     sasl_plain = {
@@ -31,7 +32,6 @@ resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster"
     description = "...my_description..."
     destination = {
             id = "759b5471-3de4-485c-b7d3-6e8cb8929d81"
-        name = "...my_name..."
     }
     dns_label = "vcluster-1"
     gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
@@ -45,7 +45,6 @@ resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster"
             {
             glob = {
     glob = "...my_glob..."
-    type = "glob"
 }
             }
             ]
@@ -58,7 +57,6 @@ resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster"
                 backend = "...my_backend..."
     }
     ]
-    type = "exact_list"
 }
             }
             ]
@@ -74,6 +72,13 @@ resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster"
 
 ### Required
 
+- `acl_mode` (String) Configures whether or not ACL policies are enforced on the gateway.
+- `enforce_on_gateway` means the gateway enforces its own ACL policies for this virtual cluster
+
+  and does not forward ACL-related commands to the backend cluster.
+  Note that if there are no ACL policies configured, all access is denied.
+- `passthrough` tells the gateway to forward all ACL-related commands.
+must be one of ["enforce_on_gateway", "passthrough"]
 - `authentication` (Attributes List) How to handle authentication from clients.
 
 It tries to authenticate with every rule sequentially one by one.
@@ -207,6 +212,9 @@ Optional:
 Optional:
 
 - `id` (String) The unique identifier of the backend cluster.
+
+Read-Only:
+
 - `name` (String) The unique name of the backend cluster.
 
 
@@ -252,7 +260,6 @@ Optional:
 Optional:
 
 - `exact_list` (Attributes List) (see [below for nested schema](#nestedatt--namespace--additional--consumer_groups--exact_list--exact_list))
-- `type` (String) Not Null; must be "exact_list"
 
 <a id="nestedatt--namespace--additional--consumer_groups--exact_list--exact_list"></a>
 ### Nested Schema for `namespace.additional.consumer_groups.exact_list.exact_list`
@@ -269,7 +276,6 @@ Optional:
 Optional:
 
 - `glob` (String) Expose any id that matches this glob pattern (e.g., `my_id_*`). Not Null
-- `type` (String) Not Null; must be "glob"
 
 
 
@@ -291,7 +297,6 @@ Optional:
 * ignore - do not do anything. It does not cause knep_namespace_topic_conflict metric to be set to 1.
 Default: "warn"; must be one of ["warn", "ignore"]
 - `exact_list` (Attributes List) Explicit allow-list of backend topic names. (see [below for nested schema](#nestedatt--namespace--additional--topics--exact_list--exact_list))
-- `type` (String) Not Null; must be "exact_list"
 
 <a id="nestedatt--namespace--additional--topics--exact_list--exact_list"></a>
 ### Nested Schema for `namespace.additional.topics.exact_list.exact_list`
@@ -312,7 +317,6 @@ Optional:
 * ignore - do not do anything. It does not cause knep_namespace_topic_conflict metric to be set to 1.
 Default: "warn"; must be one of ["warn", "ignore"]
 - `glob` (String) Expose any backend topic that matches this glob pattern (e.g., `operations_data_*`). Not Null
-- `type` (String) Not Null; must be "glob"
 
 ## Import
 

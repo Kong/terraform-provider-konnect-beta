@@ -3,7 +3,7 @@
 package types
 
 type MeshTrafficPermissionItemSpecDefault struct {
-	Allow               []Allow `tfsdk:"allow"`
-	AllowWithShadowDeny []Allow `tfsdk:"allow_with_shadow_deny"`
-	Deny                []Allow `tfsdk:"deny"`
+	Allow               []Matches `tfsdk:"allow"`
+	AllowWithShadowDeny []Matches `tfsdk:"allow_with_shadow_deny"`
+	Deny                []Matches `tfsdk:"deny"`
 }

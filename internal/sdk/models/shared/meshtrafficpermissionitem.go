@@ -33,19 +33,19 @@ func (e *MeshTrafficPermissionItemType) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// Action defines a behavior for the specified group of clients:
-type Action string
+// MeshTrafficPermissionItemAction - Action defines a behavior for the specified group of clients:
+type MeshTrafficPermissionItemAction string
 
 const (
-	ActionAllow               Action = "Allow"
-	ActionDeny                Action = "Deny"
-	ActionAllowWithShadowDeny Action = "AllowWithShadowDeny"
+	MeshTrafficPermissionItemActionAllow               MeshTrafficPermissionItemAction = "Allow"
+	MeshTrafficPermissionItemActionDeny                MeshTrafficPermissionItemAction = "Deny"
+	MeshTrafficPermissionItemActionAllowWithShadowDeny MeshTrafficPermissionItemAction = "AllowWithShadowDeny"
 )
 
-func (e Action) ToPointer() *Action {
+func (e MeshTrafficPermissionItemAction) ToPointer() *MeshTrafficPermissionItemAction {
 	return &e
 }
-func (e *Action) UnmarshalJSON(data []byte) error {
+func (e *MeshTrafficPermissionItemAction) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -56,10 +56,10 @@ func (e *Action) UnmarshalJSON(data []byte) error {
 	case "Deny":
 		fallthrough
 	case "AllowWithShadowDeny":
-		*e = Action(v)
+		*e = MeshTrafficPermissionItemAction(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Action: %v", v)
+		return fmt.Errorf("invalid value for MeshTrafficPermissionItemAction: %v", v)
 	}
 }
 
@@ -67,10 +67,10 @@ func (e *Action) UnmarshalJSON(data []byte) error {
 // 'targetRef'
 type MeshTrafficPermissionItemDefault struct {
 	// Action defines a behavior for the specified group of clients:
-	Action *Action `json:"action,omitempty"`
+	Action *MeshTrafficPermissionItemAction `json:"action,omitempty"`
 }
 
-func (o *MeshTrafficPermissionItemDefault) GetAction() *Action {
+func (o *MeshTrafficPermissionItemDefault) GetAction() *MeshTrafficPermissionItemAction {
 	if o == nil {
 		return nil
 	}
@@ -284,22 +284,22 @@ func (e *MeshTrafficPermissionItemSpecType) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// MeshTrafficPermissionItemSpecRulesSpiffeID - SpiffeID defines a matcher configuration for SpiffeID matching
-type MeshTrafficPermissionItemSpecRulesSpiffeID struct {
+// MeshTrafficPermissionItemSpiffeID - SpiffeID defines a matcher configuration for SpiffeID matching
+type MeshTrafficPermissionItemSpiffeID struct {
 	// Type defines how to match incoming traffic by SpiffeID. `Exact` or `Prefix` are allowed.
 	Type MeshTrafficPermissionItemSpecType `json:"type"`
 	// Value is SpiffeId of a client that needs to match for the configuration to be applied
 	Value string `json:"value"`
 }
 
-func (o *MeshTrafficPermissionItemSpecRulesSpiffeID) GetType() MeshTrafficPermissionItemSpecType {
+func (o *MeshTrafficPermissionItemSpiffeID) GetType() MeshTrafficPermissionItemSpecType {
 	if o == nil {
 		return MeshTrafficPermissionItemSpecType("")
 	}
 	return o.Type
 }
 
-func (o *MeshTrafficPermissionItemSpecRulesSpiffeID) GetValue() string {
+func (o *MeshTrafficPermissionItemSpiffeID) GetValue() string {
 	if o == nil {
 		return ""
 	}
@@ -308,10 +308,10 @@ func (o *MeshTrafficPermissionItemSpecRulesSpiffeID) GetValue() string {
 
 type Allow struct {
 	// SpiffeID defines a matcher configuration for SpiffeID matching
-	SpiffeID *MeshTrafficPermissionItemSpecRulesSpiffeID `json:"spiffeID,omitempty"`
+	SpiffeID *MeshTrafficPermissionItemSpiffeID `json:"spiffeID,omitempty"`
 }
 
-func (o *Allow) GetSpiffeID() *MeshTrafficPermissionItemSpecRulesSpiffeID {
+func (o *Allow) GetSpiffeID() *MeshTrafficPermissionItemSpiffeID {
 	if o == nil {
 		return nil
 	}
@@ -345,22 +345,22 @@ func (e *MeshTrafficPermissionItemSpecRulesType) UnmarshalJSON(data []byte) erro
 	}
 }
 
-// MeshTrafficPermissionItemSpiffeID - SpiffeID defines a matcher configuration for SpiffeID matching
-type MeshTrafficPermissionItemSpiffeID struct {
+// MeshTrafficPermissionItemSpecSpiffeID - SpiffeID defines a matcher configuration for SpiffeID matching
+type MeshTrafficPermissionItemSpecSpiffeID struct {
 	// Type defines how to match incoming traffic by SpiffeID. `Exact` or `Prefix` are allowed.
 	Type MeshTrafficPermissionItemSpecRulesType `json:"type"`
 	// Value is SpiffeId of a client that needs to match for the configuration to be applied
 	Value string `json:"value"`
 }
 
-func (o *MeshTrafficPermissionItemSpiffeID) GetType() MeshTrafficPermissionItemSpecRulesType {
+func (o *MeshTrafficPermissionItemSpecSpiffeID) GetType() MeshTrafficPermissionItemSpecRulesType {
 	if o == nil {
 		return MeshTrafficPermissionItemSpecRulesType("")
 	}
 	return o.Type
 }
 
-func (o *MeshTrafficPermissionItemSpiffeID) GetValue() string {
+func (o *MeshTrafficPermissionItemSpecSpiffeID) GetValue() string {
 	if o == nil {
 		return ""
 	}
@@ -369,10 +369,10 @@ func (o *MeshTrafficPermissionItemSpiffeID) GetValue() string {
 
 type AllowWithShadowDeny struct {
 	// SpiffeID defines a matcher configuration for SpiffeID matching
-	SpiffeID *MeshTrafficPermissionItemSpiffeID `json:"spiffeID,omitempty"`
+	SpiffeID *MeshTrafficPermissionItemSpecSpiffeID `json:"spiffeID,omitempty"`
 }
 
-func (o *AllowWithShadowDeny) GetSpiffeID() *MeshTrafficPermissionItemSpiffeID {
+func (o *AllowWithShadowDeny) GetSpiffeID() *MeshTrafficPermissionItemSpecSpiffeID {
 	if o == nil {
 		return nil
 	}
@@ -406,22 +406,22 @@ func (e *MeshTrafficPermissionItemSpecRulesDefaultType) UnmarshalJSON(data []byt
 	}
 }
 
-// MeshTrafficPermissionItemSpecSpiffeID - SpiffeID defines a matcher configuration for SpiffeID matching
-type MeshTrafficPermissionItemSpecSpiffeID struct {
+// MeshTrafficPermissionItemSpecRulesSpiffeID - SpiffeID defines a matcher configuration for SpiffeID matching
+type MeshTrafficPermissionItemSpecRulesSpiffeID struct {
 	// Type defines how to match incoming traffic by SpiffeID. `Exact` or `Prefix` are allowed.
 	Type MeshTrafficPermissionItemSpecRulesDefaultType `json:"type"`
 	// Value is SpiffeId of a client that needs to match for the configuration to be applied
 	Value string `json:"value"`
 }
 
-func (o *MeshTrafficPermissionItemSpecSpiffeID) GetType() MeshTrafficPermissionItemSpecRulesDefaultType {
+func (o *MeshTrafficPermissionItemSpecRulesSpiffeID) GetType() MeshTrafficPermissionItemSpecRulesDefaultType {
 	if o == nil {
 		return MeshTrafficPermissionItemSpecRulesDefaultType("")
 	}
 	return o.Type
 }
 
-func (o *MeshTrafficPermissionItemSpecSpiffeID) GetValue() string {
+func (o *MeshTrafficPermissionItemSpecRulesSpiffeID) GetValue() string {
 	if o == nil {
 		return ""
 	}
@@ -430,10 +430,10 @@ func (o *MeshTrafficPermissionItemSpecSpiffeID) GetValue() string {
 
 type Deny struct {
 	// SpiffeID defines a matcher configuration for SpiffeID matching
-	SpiffeID *MeshTrafficPermissionItemSpecSpiffeID `json:"spiffeID,omitempty"`
+	SpiffeID *MeshTrafficPermissionItemSpecRulesSpiffeID `json:"spiffeID,omitempty"`
 }
 
-func (o *Deny) GetSpiffeID() *MeshTrafficPermissionItemSpecSpiffeID {
+func (o *Deny) GetSpiffeID() *MeshTrafficPermissionItemSpecRulesSpiffeID {
 	if o == nil {
 		return nil
 	}

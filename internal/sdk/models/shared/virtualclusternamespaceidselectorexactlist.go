@@ -3,32 +3,8 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
-
-type VirtualClusterNamespaceIDSelectorExactListType string
-
-const (
-	VirtualClusterNamespaceIDSelectorExactListTypeExactList VirtualClusterNamespaceIDSelectorExactListType = "exact_list"
-)
-
-func (e VirtualClusterNamespaceIDSelectorExactListType) ToPointer() *VirtualClusterNamespaceIDSelectorExactListType {
-	return &e
-}
-func (e *VirtualClusterNamespaceIDSelectorExactListType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "exact_list":
-		*e = VirtualClusterNamespaceIDSelectorExactListType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for VirtualClusterNamespaceIDSelectorExactListType: %v", v)
-	}
-}
 
 type ExactList struct {
 	Value string `json:"value"`
@@ -42,15 +18,23 @@ func (o *ExactList) GetValue() string {
 }
 
 type VirtualClusterNamespaceIDSelectorExactList struct {
-	Type      VirtualClusterNamespaceIDSelectorExactListType `json:"type"`
-	ExactList []ExactList                                    `json:"exact_list"`
+	type_     string      `const:"exact_list" json:"type"`
+	ExactList []ExactList `json:"exact_list"`
 }
 
-func (o *VirtualClusterNamespaceIDSelectorExactList) GetType() VirtualClusterNamespaceIDSelectorExactListType {
-	if o == nil {
-		return VirtualClusterNamespaceIDSelectorExactListType("")
+func (v VirtualClusterNamespaceIDSelectorExactList) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *VirtualClusterNamespaceIDSelectorExactList) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
+		return err
 	}
-	return o.Type
+	return nil
+}
+
+func (o *VirtualClusterNamespaceIDSelectorExactList) GetType() string {
+	return "exact_list"
 }
 
 func (o *VirtualClusterNamespaceIDSelectorExactList) GetExactList() []ExactList {

@@ -10,5 +10,4 @@ type EventGatewayKonnectVault struct {
 	Description types.String            `tfsdk:"description"`
 	Labels      map[string]types.String `tfsdk:"labels"`
 	Name        types.String            `tfsdk:"name"`
-	Type        types.String            `tfsdk:"type"`
 }

@@ -28,6 +28,14 @@ type CreateVirtualClusterRequest struct {
 	// It allows to either hide or enforce a static prefix on resources (topics, consumer group IDs, transaction IDs).
 	//
 	Namespace *VirtualClusterNamespace `json:"namespace,omitempty"`
+	// Configures whether or not ACL policies are enforced on the gateway.
+	// - `enforce_on_gateway` means the gateway enforces its own ACL policies for this virtual cluster
+	//
+	//   and does not forward ACL-related commands to the backend cluster.
+	//   Note that if there are no ACL policies configured, all access is denied.
+	// - `passthrough` tells the gateway to forward all ACL-related commands.
+	//
+	ACLMode VirtualClusterACLMode `json:"acl_mode"`
 	// The DNS label used in the bootstrap server URL to identify the virtual cluster when using SNI routing.
 	// The format follows the RFC1035: 1-63 chars, lowercase alphanumeric or '-', must start with a letter and end with an alphanumeric character.
 	DNSLabel string `json:"dns_label"`
@@ -82,6 +90,13 @@ func (o *CreateVirtualClusterRequest) GetNamespace() *VirtualClusterNamespace {
 		return nil
 	}
 	return o.Namespace
+}
+
+func (o *CreateVirtualClusterRequest) GetACLMode() VirtualClusterACLMode {
+	if o == nil {
+		return VirtualClusterACLMode("")
+	}
+	return o.ACLMode
 }
 
 func (o *CreateVirtualClusterRequest) GetDNSLabel() string {

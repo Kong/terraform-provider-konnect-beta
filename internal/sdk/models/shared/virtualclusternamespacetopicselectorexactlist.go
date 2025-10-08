@@ -8,29 +8,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-type VirtualClusterNamespaceTopicSelectorExactListType string
-
-const (
-	VirtualClusterNamespaceTopicSelectorExactListTypeExactList VirtualClusterNamespaceTopicSelectorExactListType = "exact_list"
-)
-
-func (e VirtualClusterNamespaceTopicSelectorExactListType) ToPointer() *VirtualClusterNamespaceTopicSelectorExactListType {
-	return &e
-}
-func (e *VirtualClusterNamespaceTopicSelectorExactListType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "exact_list":
-		*e = VirtualClusterNamespaceTopicSelectorExactListType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for VirtualClusterNamespaceTopicSelectorExactListType: %v", v)
-	}
-}
-
 // VirtualClusterNamespaceTopicSelectorExactListConflict - How to inform the user about conflicts where multiple backend topics would map to the same virtual topic name.
 // * warn - log in the Event Gateway logs. Additionally, it sets knep_namespace_topic_conflict to 1.
 // * ignore - do not do anything. It does not cause knep_namespace_topic_conflict metric to be set to 1.
@@ -61,7 +38,7 @@ func (e *VirtualClusterNamespaceTopicSelectorExactListConflict) UnmarshalJSON(da
 }
 
 type VirtualClusterNamespaceTopicSelectorExactList struct {
-	Type VirtualClusterNamespaceTopicSelectorExactListType `json:"type"`
+	type_ string `const:"exact_list" json:"type"`
 	// Explicit allow-list of backend topic names.
 	ExactList []NamespaceExactAllowListItem `json:"exact_list"`
 	// How to inform the user about conflicts where multiple backend topics would map to the same virtual topic name.
@@ -82,11 +59,8 @@ func (v *VirtualClusterNamespaceTopicSelectorExactList) UnmarshalJSON(data []byt
 	return nil
 }
 
-func (o *VirtualClusterNamespaceTopicSelectorExactList) GetType() VirtualClusterNamespaceTopicSelectorExactListType {
-	if o == nil {
-		return VirtualClusterNamespaceTopicSelectorExactListType("")
-	}
-	return o.Type
+func (o *VirtualClusterNamespaceTopicSelectorExactList) GetType() string {
+	return "exact_list"
 }
 
 func (o *VirtualClusterNamespaceTopicSelectorExactList) GetExactList() []NamespaceExactAllowListItem {

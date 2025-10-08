@@ -386,9 +386,15 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 																	Optional: true,
 																	Attributes: map[string]schema.Attribute{
 																		"type": schema.StringAttribute{
-																			CustomType:  jsontypes.NormalizedType{},
-																			Required:    true,
-																			Description: `Parsed as JSON.`,
+																			CustomType: jsontypes.NormalizedType{},
+																			Required:   true,
+																			MarkdownDescription: `Types that are valid to be assigned to Type:` + "\n" +
+																				`` + "\n" +
+																				`	*DataSource_Secret` + "\n" +
+																				`	*DataSource_File` + "\n" +
+																				`	*DataSource_Inline` + "\n" +
+																				`	*DataSource_InlineString` + "\n" +
+																				`Parsed as JSON.`,
 																		},
 																	},
 																},
@@ -396,9 +402,15 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 																	Optional: true,
 																	Attributes: map[string]schema.Attribute{
 																		"type": schema.StringAttribute{
-																			CustomType:  jsontypes.NormalizedType{},
-																			Required:    true,
-																			Description: `Parsed as JSON.`,
+																			CustomType: jsontypes.NormalizedType{},
+																			Required:   true,
+																			MarkdownDescription: `Types that are valid to be assigned to Type:` + "\n" +
+																				`` + "\n" +
+																				`	*DataSource_Secret` + "\n" +
+																				`	*DataSource_File` + "\n" +
+																				`	*DataSource_Inline` + "\n" +
+																				`	*DataSource_InlineString` + "\n" +
+																				`Parsed as JSON.`,
 																		},
 																	},
 																},
@@ -410,9 +422,15 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"type": schema.StringAttribute{
-															CustomType:  jsontypes.NormalizedType{},
-															Required:    true,
-															Description: `Parsed as JSON.`,
+															CustomType: jsontypes.NormalizedType{},
+															Required:   true,
+															MarkdownDescription: `Types that are valid to be assigned to Type:` + "\n" +
+																`` + "\n" +
+																`	*DataSource_Secret` + "\n" +
+																`	*DataSource_File` + "\n" +
+																`	*DataSource_Inline` + "\n" +
+																`	*DataSource_InlineString` + "\n" +
+																`Parsed as JSON.`,
 														},
 													},
 												},
@@ -460,9 +478,15 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"type": schema.StringAttribute{
-															CustomType:  jsontypes.NormalizedType{},
-															Required:    true,
-															Description: `Parsed as JSON.`,
+															CustomType: jsontypes.NormalizedType{},
+															Required:   true,
+															MarkdownDescription: `Types that are valid to be assigned to Type:` + "\n" +
+																`` + "\n" +
+																`	*DataSource_Secret` + "\n" +
+																`	*DataSource_File` + "\n" +
+																`	*DataSource_Inline` + "\n" +
+																`	*DataSource_InlineString` + "\n" +
+																`Parsed as JSON.`,
 														},
 													},
 												},
@@ -506,9 +530,15 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"type": schema.StringAttribute{
-															CustomType:  jsontypes.NormalizedType{},
-															Required:    true,
-															Description: `Parsed as JSON.`,
+															CustomType: jsontypes.NormalizedType{},
+															Required:   true,
+															MarkdownDescription: `Types that are valid to be assigned to Type:` + "\n" +
+																`` + "\n" +
+																`	*DataSource_Secret` + "\n" +
+																`	*DataSource_File` + "\n" +
+																`	*DataSource_Inline` + "\n" +
+																`	*DataSource_InlineString` + "\n" +
+																`Parsed as JSON.`,
 														},
 													},
 												},
@@ -516,9 +546,15 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"type": schema.StringAttribute{
-															CustomType:  jsontypes.NormalizedType{},
-															Required:    true,
-															Description: `Parsed as JSON.`,
+															CustomType: jsontypes.NormalizedType{},
+															Required:   true,
+															MarkdownDescription: `Types that are valid to be assigned to Type:` + "\n" +
+																`` + "\n" +
+																`	*DataSource_Secret` + "\n" +
+																`	*DataSource_File` + "\n" +
+																`	*DataSource_Inline` + "\n" +
+																`	*DataSource_InlineString` + "\n" +
+																`Parsed as JSON.`,
 														},
 													},
 												},

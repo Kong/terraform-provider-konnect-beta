@@ -17,6 +17,5 @@ resource "konnect_event_gateway_vault" "my_eventgatewayvault" {
       key = "value"
     }
     name = "...my_name..."
-    type = "konnect"
   }
 }

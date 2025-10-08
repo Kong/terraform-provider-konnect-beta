@@ -1,5 +1,6 @@
 resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster" {
   provider = konnect-beta
+    acl_mode = "enforce_on_gateway"
     authentication = [
     {
     sasl_plain = {
@@ -16,7 +17,6 @@ resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster"
     description = "...my_description..."
     destination = {
             id = "759b5471-3de4-485c-b7d3-6e8cb8929d81"
-        name = "...my_name..."
     }
     dns_label = "vcluster-1"
     gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
@@ -30,7 +30,6 @@ resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster"
             {
             glob = {
     glob = "...my_glob..."
-    type = "glob"
 }
             }
             ]
@@ -43,7 +42,6 @@ resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster"
                 backend = "...my_backend..."
     }
     ]
-    type = "exact_list"
 }
             }
             ]

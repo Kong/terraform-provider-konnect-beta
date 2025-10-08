@@ -43,6 +43,7 @@ type EventGatewayVirtualClusterResource struct {
 
 // EventGatewayVirtualClusterResourceModel describes the resource data model.
 type EventGatewayVirtualClusterResourceModel struct {
+	ACLMode        types.String                                 `tfsdk:"acl_mode"`
 	Authentication []tfTypes.VirtualClusterAuthenticationScheme `tfsdk:"authentication"`
 	CreatedAt      types.String                                 `tfsdk:"created_at"`
 	Description    types.String                                 `tfsdk:"description"`
@@ -64,6 +65,22 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "EventGatewayVirtualCluster Resource",
 		Attributes: map[string]schema.Attribute{
+			"acl_mode": schema.StringAttribute{
+				Required: true,
+				MarkdownDescription: `Configures whether or not ACL policies are enforced on the gateway.` + "\n" +
+					`- ` + "`" + `enforce_on_gateway` + "`" + ` means the gateway enforces its own ACL policies for this virtual cluster` + "\n" +
+					`` + "\n" +
+					`  and does not forward ACL-related commands to the backend cluster.` + "\n" +
+					`  Note that if there are no ACL policies configured, all access is denied.` + "\n" +
+					`- ` + "`" + `passthrough` + "`" + ` tells the gateway to forward all ACL-related commands.` + "\n" +
+					`must be one of ["enforce_on_gateway", "passthrough"]`,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						"enforce_on_gateway",
+						"passthrough",
+					),
+				},
+			},
 			"authentication": schema.ListNestedAttribute{
 				Required: true,
 				NestedObject: schema.NestedAttributeObject{
@@ -316,7 +333,6 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
-						Optional:    true,
 						Description: `The unique name of the backend cluster.`,
 						Validators: []validator.String{
 							stringvalidator.UTF8LengthBetween(1, 255),
@@ -401,17 +417,6 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 														listvalidator.SizeAtLeast(1),
 													},
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "exact_list"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf(
-															"exact_list",
-														),
-													},
-												},
 											},
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
@@ -430,15 +435,6 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
 														stringvalidator.UTF8LengthAtLeast(1),
-													},
-												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "glob"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("glob"),
 													},
 												},
 											},
@@ -501,17 +497,6 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 														listvalidator.SizeAtLeast(1),
 													},
 												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "exact_list"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf(
-															"exact_list",
-														),
-													},
-												},
 											},
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
@@ -545,15 +530,6 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
 														stringvalidator.UTF8LengthAtLeast(1),
-													},
-												},
-												"type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `Not Null; must be "glob"`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf("glob"),
 													},
 												},
 											},

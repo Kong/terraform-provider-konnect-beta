@@ -9,8 +9,6 @@ package shared
 type BackendClusterReferenceModify struct {
 	// The unique identifier of the backend cluster.
 	ID *string `json:"id,omitempty"`
-	// The unique name of the backend cluster.
-	Name *string `json:"name,omitempty"`
 }
 
 func (o *BackendClusterReferenceModify) GetID() *string {
@@ -18,11 +16,4 @@ func (o *BackendClusterReferenceModify) GetID() *string {
 		return nil
 	}
 	return o.ID
-}
-
-func (o *BackendClusterReferenceModify) GetName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Name
 }

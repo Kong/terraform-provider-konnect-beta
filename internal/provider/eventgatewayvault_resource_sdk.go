@@ -49,7 +49,6 @@ func (r *EventGatewayVaultResourceModel) RefreshFromSharedEventGatewayVault(ctx 
 			}
 			r.EventGatewayKonnectVault.Name = types.StringValue(resp.EventGatewayVaultEventGatewayKonnectVault.Name)
 			r.Name = r.EventGatewayKonnectVault.Name
-			r.EventGatewayKonnectVault.Type = types.StringValue(string(resp.EventGatewayVaultEventGatewayKonnectVault.Type))
 			r.EventGatewayKonnectVault.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.EventGatewayVaultEventGatewayKonnectVault.UpdatedAt))
 		}
 	}
@@ -185,7 +184,6 @@ func (r *EventGatewayVaultResourceModel) ToSharedEventGatewayModifyVault(ctx con
 		var name1 string
 		name1 = r.Konnect.Name.ValueString()
 
-		typeVar := shared.EventGatewayKonnectVaultType(r.Konnect.Type.ValueString())
 		description1 := new(string)
 		if !r.Konnect.Description.IsUnknown() && !r.Konnect.Description.IsNull() {
 			*description1 = r.Konnect.Description.ValueString()
@@ -204,7 +202,6 @@ func (r *EventGatewayVaultResourceModel) ToSharedEventGatewayModifyVault(ctx con
 		}
 		eventGatewayKonnectVault = &shared.EventGatewayKonnectVault{
 			Name:        name1,
-			Type:        typeVar,
 			Description: description1,
 			Labels:      labels1,
 		}
