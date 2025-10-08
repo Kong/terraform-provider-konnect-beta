@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.0
+> Released on 2025/10/08
+
+### Features
+* Add support for inbound fault injection configuration in `konnect_mesh_fault_injection` resource
+
 ## 0.9.0
 > Released on 2025/10/02
 
