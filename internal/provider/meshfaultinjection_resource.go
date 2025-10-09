@@ -19,6 +19,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	custom_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
@@ -114,6 +115,7 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"from": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
 						PlanModifiers: []planmodifier.List{
 							custom_listplanmodifier.SupressZeroNullModifier(),
@@ -127,6 +129,7 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"http": schema.ListNestedAttribute{
+											Computed: true,
 											Optional: true,
 											PlanModifiers: []planmodifier.List{
 												custom_listplanmodifier.SupressZeroNullModifier(),
@@ -311,6 +314,7 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
+											Computed: true,
 											Optional: true,
 											PlanModifiers: []planmodifier.List{
 												custom_listplanmodifier.SupressZeroNullModifier(),
@@ -343,6 +347,7 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 						Description: `From list makes a match between clients and corresponding configurations`,
 					},
 					"rules": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
 						PlanModifiers: []planmodifier.List{
 							custom_listplanmodifier.SupressZeroNullModifier(),
@@ -356,6 +361,7 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"http": schema.ListNestedAttribute{
+											Computed: true,
 											Optional: true,
 											PlanModifiers: []planmodifier.List{
 												custom_listplanmodifier.SupressZeroNullModifier(),
@@ -501,6 +507,7 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 									},
 								},
 								"matches": schema.ListNestedAttribute{
+									Computed: true,
 									Optional: true,
 									PlanModifiers: []planmodifier.List{
 										custom_listplanmodifier.SupressZeroNullModifier(),
@@ -583,6 +590,7 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
+								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.List{
 									custom_listplanmodifier.SupressZeroNullModifier(),
@@ -608,6 +616,7 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 							`defined inplace.`,
 					},
 					"to": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
 						PlanModifiers: []planmodifier.List{
 							custom_listplanmodifier.SupressZeroNullModifier(),
@@ -621,6 +630,7 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"http": schema.ListNestedAttribute{
+											Computed: true,
 											Optional: true,
 											PlanModifiers: []planmodifier.List{
 												custom_listplanmodifier.SupressZeroNullModifier(),
@@ -805,6 +815,7 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
+											Computed: true,
 											Optional: true,
 											PlanModifiers: []planmodifier.List{
 												custom_listplanmodifier.SupressZeroNullModifier(),
@@ -852,6 +863,7 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 				Computed: true,
 				PlanModifiers: []planmodifier.List{
 					custom_listplanmodifier.SupressZeroNullModifier(),
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +

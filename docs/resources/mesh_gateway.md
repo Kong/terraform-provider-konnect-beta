@@ -33,7 +33,9 @@ resource "konnect_mesh_gateway" "my_meshgateway" {
         tls = {
           certificates = [
             {
-              type = "{ \"see\": \"documentation\" }"
+              data_source_file = {
+                file = "...my_file..."
+              }
             }
           ]
           mode = {
@@ -168,15 +170,45 @@ client certificates enforced, and so on. (see [below for nested schema](#nesteda
 <a id="nestedatt--conf--listeners--tls--certificates"></a>
 ### Nested Schema for `conf.listeners.tls.certificates`
 
-Required:
+Optional:
 
-- `type` (String) Types that are valid to be assigned to Type:
+- `data_source_file` (Attributes) (see [below for nested schema](#nestedatt--conf--listeners--tls--certificates--data_source_file))
+- `data_source_inline` (Attributes) (see [below for nested schema](#nestedatt--conf--listeners--tls--certificates--data_source_inline))
+- `data_source_inline_string` (Attributes) (see [below for nested schema](#nestedatt--conf--listeners--tls--certificates--data_source_inline_string))
+- `data_source_secret` (Attributes) (see [below for nested schema](#nestedatt--conf--listeners--tls--certificates--data_source_secret))
 
-	*DataSource_Secret
-	*DataSource_File
-	*DataSource_Inline
-	*DataSource_InlineString
-Parsed as JSON.
+<a id="nestedatt--conf--listeners--tls--certificates--data_source_file"></a>
+### Nested Schema for `conf.listeners.tls.certificates.data_source_file`
+
+Optional:
+
+- `file` (String) Data source is a path to a file.
+Deprecated, use other sources of a data.
+
+
+<a id="nestedatt--conf--listeners--tls--certificates--data_source_inline"></a>
+### Nested Schema for `conf.listeners.tls.certificates.data_source_inline`
+
+Optional:
+
+- `inline` (String) Data source is inline bytes.
+
+
+<a id="nestedatt--conf--listeners--tls--certificates--data_source_inline_string"></a>
+### Nested Schema for `conf.listeners.tls.certificates.data_source_inline_string`
+
+Optional:
+
+- `inline_string` (String) Data source is inline string
+
+
+<a id="nestedatt--conf--listeners--tls--certificates--data_source_secret"></a>
+### Nested Schema for `conf.listeners.tls.certificates.data_source_secret`
+
+Optional:
+
+- `secret` (String) Data source is a secret with given Secret key.
+
 
 
 <a id="nestedatt--conf--listeners--tls--mode"></a>

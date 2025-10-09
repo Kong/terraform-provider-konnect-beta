@@ -23,6 +23,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	custom_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
@@ -159,6 +160,7 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
+								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.List{
 									custom_listplanmodifier.SupressZeroNullModifier(),
@@ -184,6 +186,7 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 							`defined inplace.`,
 					},
 					"to": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
 						PlanModifiers: []planmodifier.List{
 							custom_listplanmodifier.SupressZeroNullModifier(),
@@ -194,6 +197,7 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 							},
 							Attributes: map[string]schema.Attribute{
 								"hostnames": schema.ListAttribute{
+									Computed: true,
 									Optional: true,
 									PlanModifiers: []planmodifier.List{
 										custom_listplanmodifier.SupressZeroNullModifier(),
@@ -205,6 +209,7 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 										`route attaches to.`,
 								},
 								"rules": schema.ListNestedAttribute{
+									Computed: true,
 									Optional: true,
 									PlanModifiers: []planmodifier.List{
 										custom_listplanmodifier.SupressZeroNullModifier(),
@@ -218,6 +223,7 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"backend_refs": schema.ListNestedAttribute{
+														Computed: true,
 														Optional: true,
 														PlanModifiers: []planmodifier.List{
 															custom_listplanmodifier.SupressZeroNullModifier(),
@@ -270,6 +276,7 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																	Description: `Port is only supported when this ref refers to a real MeshService object`,
 																},
 																"proxy_types": schema.ListAttribute{
+																	Computed: true,
 																	Optional: true,
 																	PlanModifiers: []planmodifier.List{
 																		custom_listplanmodifier.SupressZeroNullModifier(),
@@ -299,6 +306,7 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 														},
 													},
 													"filters": schema.ListNestedAttribute{
+														Computed: true,
 														Optional: true,
 														PlanModifiers: []planmodifier.List{
 															custom_listplanmodifier.SupressZeroNullModifier(),
@@ -312,6 +320,7 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																	Optional: true,
 																	Attributes: map[string]schema.Attribute{
 																		"add": schema.ListNestedAttribute{
+																			Computed: true,
 																			Optional: true,
 																			PlanModifiers: []planmodifier.List{
 																				custom_listplanmodifier.SupressZeroNullModifier(),
@@ -344,6 +353,7 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																			},
 																		},
 																		"remove": schema.ListAttribute{
+																			Computed: true,
 																			Optional: true,
 																			PlanModifiers: []planmodifier.List{
 																				custom_listplanmodifier.SupressZeroNullModifier(),
@@ -354,6 +364,7 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																			},
 																		},
 																		"set": schema.ListNestedAttribute{
+																			Computed: true,
 																			Optional: true,
 																			PlanModifiers: []planmodifier.List{
 																				custom_listplanmodifier.SupressZeroNullModifier(),
@@ -439,6 +450,7 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																					Description: `Port is only supported when this ref refers to a real MeshService object`,
 																				},
 																				"proxy_types": schema.ListAttribute{
+																					Computed: true,
 																					Optional: true,
 																					PlanModifiers: []planmodifier.List{
 																						custom_listplanmodifier.SupressZeroNullModifier(),
@@ -577,6 +589,7 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																	Optional: true,
 																	Attributes: map[string]schema.Attribute{
 																		"add": schema.ListNestedAttribute{
+																			Computed: true,
 																			Optional: true,
 																			PlanModifiers: []planmodifier.List{
 																				custom_listplanmodifier.SupressZeroNullModifier(),
@@ -609,6 +622,7 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																			},
 																		},
 																		"remove": schema.ListAttribute{
+																			Computed: true,
 																			Optional: true,
 																			PlanModifiers: []planmodifier.List{
 																				custom_listplanmodifier.SupressZeroNullModifier(),
@@ -619,6 +633,7 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																			},
 																		},
 																		"set": schema.ListNestedAttribute{
+																			Computed: true,
 																			Optional: true,
 																			PlanModifiers: []planmodifier.List{
 																				custom_listplanmodifier.SupressZeroNullModifier(),
@@ -722,6 +737,7 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 												},
 											},
 											"matches": schema.ListNestedAttribute{
+												Computed: true,
 												Optional: true,
 												PlanModifiers: []planmodifier.List{
 													custom_listplanmodifier.SupressZeroNullModifier(),
@@ -732,6 +748,7 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 													},
 													Attributes: map[string]schema.Attribute{
 														"headers": schema.ListNestedAttribute{
+															Computed: true,
 															Optional: true,
 															PlanModifiers: []planmodifier.List{
 																custom_listplanmodifier.SupressZeroNullModifier(),
@@ -819,6 +836,7 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 															},
 														},
 														"query_params": schema.ListNestedAttribute{
+															Computed: true,
 															Optional: true,
 															PlanModifiers: []planmodifier.List{
 																custom_listplanmodifier.SupressZeroNullModifier(),
@@ -920,6 +938,7 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
+											Computed: true,
 											Optional: true,
 											PlanModifiers: []planmodifier.List{
 												custom_listplanmodifier.SupressZeroNullModifier(),
@@ -967,6 +986,7 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 				Computed: true,
 				PlanModifiers: []planmodifier.List{
 					custom_listplanmodifier.SupressZeroNullModifier(),
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +

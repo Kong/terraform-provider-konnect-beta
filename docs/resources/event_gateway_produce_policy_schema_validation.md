@@ -85,7 +85,7 @@ Optional:
 <a id="nestedatt--config--confluent_schema_registry"></a>
 ### Nested Schema for `config.confluent_schema_registry`
 
-Required:
+Optional:
 
 - `key_validation_action` (String) Defines a behavior when record key is not valid.
 * reject - rejects a batch for topic partition. Only available for produce.
@@ -93,16 +93,13 @@ Required:
 
   to help to identify the clients violating schema.
 must be one of ["reject", "mark"]
+- `schema_registry` (Attributes) A reference to a schema Registry. (see [below for nested schema](#nestedatt--config--confluent_schema_registry--schema_registry))
 - `value_validation_action` (String) Defines a behavior when record value is not valid.
 * reject - rejects a batch for topic partition. Only available for produce.
 * mark - marks a record with kong/server header and client ID value
 
   to help to identify the clients violating schema.
 must be one of ["reject", "mark"]
-
-Optional:
-
-- `schema_registry` (Attributes) A reference to a schema Registry. (see [below for nested schema](#nestedatt--config--confluent_schema_registry--schema_registry))
 
 <a id="nestedatt--config--confluent_schema_registry--schema_registry"></a>
 ### Nested Schema for `config.confluent_schema_registry.schema_registry`
@@ -133,7 +130,7 @@ Required:
 <a id="nestedatt--config--json"></a>
 ### Nested Schema for `config.json`
 
-Required:
+Optional:
 
 - `key_validation_action` (String) Defines a behavior when record key is not valid.
 * reject - rejects a batch for topic partition. Only available for produce.
@@ -141,16 +138,13 @@ Required:
 
   to help to identify the clients violating schema.
 must be one of ["reject", "mark"]
+- `schema_registry` (Attributes) A reference to a schema Registry. (see [below for nested schema](#nestedatt--config--json--schema_registry))
 - `value_validation_action` (String) Defines a behavior when record value is not valid.
 * reject - rejects a batch for topic partition. Only available for produce.
 * mark - marks a record with kong/server header and client ID value
 
   to help to identify the clients violating schema.
 must be one of ["reject", "mark"]
-
-Optional:
-
-- `schema_registry` (Attributes) A reference to a schema Registry. (see [below for nested schema](#nestedatt--config--json--schema_registry))
 
 <a id="nestedatt--config--json--schema_registry"></a>
 ### Nested Schema for `config.json.schema_registry`
