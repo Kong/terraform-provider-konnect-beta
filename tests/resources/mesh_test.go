@@ -7,7 +7,9 @@ import (
 
 	"github.com/Kong/shared-speakeasy/tfbuilder"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
+	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
 	"github.com/hashicorp/terraform-plugin-testing/plancheck"
+	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
@@ -181,6 +183,23 @@ spec = {
 						PreApply: []plancheck.PlanCheck{
 							plancheck.ExpectResourceAction(builder.ResourceAddress(mtp.ResourceType, mtp.ResourceName), plancheck.ResourceActionCreate),
 						},
+						PostApplyPostRefresh: []plancheck.PlanCheck{
+							plancheck.ExpectKnownValue(builder.ResourceAddress(mtp.ResourceType, mtp.ResourceName),
+								tfjsonpath.New("spec").AtMapKey("rules").AtSliceIndex(0).AtMapKey("default"),
+								knownvalue.ObjectExact(map[string]knownvalue.Check{
+									"allow": knownvalue.ListExact([]knownvalue.Check{
+										knownvalue.ObjectExact(map[string]knownvalue.Check{
+											"spiffe_id": knownvalue.ObjectExact(map[string]knownvalue.Check{
+												"type":  knownvalue.StringExact("Exact"),
+												"value": knownvalue.StringExact("spiffe://hello/world"),
+											}),
+										}),
+									}),
+									"deny":                   knownvalue.ListExact([]knownvalue.Check{}),
+									"allow_with_shadow_deny": knownvalue.ListExact([]knownvalue.Check{}),
+								}),
+							),
+						},
 					},
 				},
 				tfbuilder.CheckReapplyPlanEmpty(builder),
@@ -205,6 +224,23 @@ spec = {
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
 							plancheck.ExpectResourceAction(builder.ResourceAddress(mtp.ResourceType, mtp.ResourceName), plancheck.ResourceActionUpdate),
+						},
+						PostApplyPostRefresh: []plancheck.PlanCheck{
+							plancheck.ExpectKnownValue(builder.ResourceAddress(mtp.ResourceType, mtp.ResourceName),
+								tfjsonpath.New("spec").AtMapKey("rules").AtSliceIndex(0).AtMapKey("default"),
+								knownvalue.ObjectExact(map[string]knownvalue.Check{
+									"deny": knownvalue.ListExact([]knownvalue.Check{
+										knownvalue.ObjectExact(map[string]knownvalue.Check{
+											"spiffe_id": knownvalue.ObjectExact(map[string]knownvalue.Check{
+												"type":  knownvalue.StringExact("Exact"),
+												"value": knownvalue.StringExact("spiffe://hello/world"),
+											}),
+										}),
+									}),
+									"allow_with_shadow_deny": knownvalue.ListExact([]knownvalue.Check{}),
+									"allow":                  knownvalue.ListExact([]knownvalue.Check{}),
+								}),
+							),
 						},
 					},
 				},
