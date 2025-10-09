@@ -16,15 +16,15 @@ type EventGatewayProduceSchemaValidationPolicyJSONConfig struct {
 	//
 	//   to help to identify the clients violating schema.
 	//
-	KeyValidationAction ProduceKeyValidationAction `json:"key_validation_action"`
+	KeyValidationAction *ProduceKeyValidationAction `json:"key_validation_action,omitempty"`
 	// Defines a behavior when record value is not valid.
 	// * reject - rejects a batch for topic partition. Only available for produce.
 	// * mark - marks a record with kong/server header and client ID value
 	//
 	//   to help to identify the clients violating schema.
 	//
-	ValueValidationAction ProduceValueValidationAction `json:"value_validation_action"`
-	type_                 string                       `const:"json" json:"type"`
+	ValueValidationAction *ProduceValueValidationAction `json:"value_validation_action,omitempty"`
+	type_                 string                        `const:"json" json:"type"`
 }
 
 func (e EventGatewayProduceSchemaValidationPolicyJSONConfig) MarshalJSON() ([]byte, error) {
@@ -45,16 +45,16 @@ func (o *EventGatewayProduceSchemaValidationPolicyJSONConfig) GetSchemaRegistry(
 	return o.SchemaRegistry
 }
 
-func (o *EventGatewayProduceSchemaValidationPolicyJSONConfig) GetKeyValidationAction() ProduceKeyValidationAction {
+func (o *EventGatewayProduceSchemaValidationPolicyJSONConfig) GetKeyValidationAction() *ProduceKeyValidationAction {
 	if o == nil {
-		return ProduceKeyValidationAction("")
+		return nil
 	}
 	return o.KeyValidationAction
 }
 
-func (o *EventGatewayProduceSchemaValidationPolicyJSONConfig) GetValueValidationAction() ProduceValueValidationAction {
+func (o *EventGatewayProduceSchemaValidationPolicyJSONConfig) GetValueValidationAction() *ProduceValueValidationAction {
 	if o == nil {
-		return ProduceValueValidationAction("")
+		return nil
 	}
 	return o.ValueValidationAction
 }

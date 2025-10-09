@@ -69,24 +69,24 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 
 Required:
 
+- `type` (String) How to validate the schema and parse the record.
+* confluent_schema_registry - validates against confluent schema registry.
+* json - simple JSON parsing without the schema.
+must be one of ["confluent_schema_registry", "json"]
+
+Optional:
+
 - `key_validation_action` (String) Defines a behavior when record key is not valid.
 * mark - marks a record with kong/server header and client ID value
   to help to identify the clients violating schema.
 * skip - skips delivering a record.
 must be one of ["mark", "skip"]
-- `type` (String) How to validate the schema and parse the record.
-* confluent_schema_registry - validates against confluent schema registry.
-* json - simple JSON parsing without the schema.
-must be one of ["confluent_schema_registry", "json"]
+- `schema_registry` (Attributes) A reference to a schema Registry. (see [below for nested schema](#nestedatt--config--schema_registry))
 - `value_validation_action` (String) Defines a behavior when record value is not valid.
 * mark - marks a record with kong/server header and client ID value
   to help to identify the clients violating schema.
 * skip - skips delivering a record.
 must be one of ["mark", "skip"]
-
-Optional:
-
-- `schema_registry` (Attributes) A reference to a schema Registry. (see [below for nested schema](#nestedatt--config--schema_registry))
 
 <a id="nestedatt--config--schema_registry"></a>
 ### Nested Schema for `config.schema_registry`

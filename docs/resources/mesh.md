@@ -99,7 +99,34 @@ resource "konnect_mesh" "my_mesh" {
       {
         conf = {
           vault_certificate_authority_config = {
-            mode = "{ \"see\": \"documentation\" }"
+            vault_certificate_authority_config_from_cp = {
+              from_cp = {
+                address       = "...my_address..."
+                agent_address = "...my_agent_address..."
+                auth = {
+                  vault_certificate_authority_config_from_cp_auth_token = {
+                    token = {
+                      data_source_secret = {
+                        secret = "...my_secret..."
+                      }
+                    }
+                  }
+                }
+                common_name = "...my_common_name..."
+                namespace   = "...my_namespace..."
+                pki         = "...my_pki..."
+                role        = "...my_role..."
+                tls = {
+                  ca_cert = {
+                    data_source_secret = {
+                      secret = "...my_secret..."
+                    }
+                  }
+                  server_name = "...my_server_name..."
+                  skip_verify = false
+                }
+              }
+            }
           }
         }
         dp_cert = {
@@ -267,8 +294,8 @@ TrafficLogging
 
 Optional:
 
-- `file_logging_backend_config` (Attributes) (see [below for nested schema](#nestedatt--logging--backends--conf--file_logging_backend_config))
-- `tcp_logging_backend_config` (Attributes) (see [below for nested schema](#nestedatt--logging--backends--conf--tcp_logging_backend_config))
+- `file_logging_backend_config` (Attributes) FileLoggingBackendConfig defines configuration for file based access logs (see [below for nested schema](#nestedatt--logging--backends--conf--file_logging_backend_config))
+- `tcp_logging_backend_config` (Attributes) TcpLoggingBackendConfig defines configuration for TCP based access logs (see [below for nested schema](#nestedatt--logging--backends--conf--tcp_logging_backend_config))
 
 <a id="nestedatt--logging--backends--conf--file_logging_backend_config"></a>
 ### Nested Schema for `logging.backends.conf.file_logging_backend_config`
@@ -328,7 +355,7 @@ Optional:
 
 Optional:
 
-- `prometheus_metrics_backend_config` (Attributes) (see [below for nested schema](#nestedatt--metrics--backends--conf--prometheus_metrics_backend_config))
+- `prometheus_metrics_backend_config` (Attributes) PrometheusMetricsBackendConfig defines configuration of Prometheus backend (see [below for nested schema](#nestedatt--metrics--backends--conf--prometheus_metrics_backend_config))
 
 <a id="nestedatt--metrics--backends--conf--prometheus_metrics_backend_config"></a>
 ### Nested Schema for `metrics.backends.conf.prometheus_metrics_backend_config`
@@ -459,29 +486,89 @@ Optional:
 <a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key"></a>
 ### Nested Schema for `mtls.backends.conf.acm_certificate_authority_config.auth.aws_credentials.access_key`
 
-Required:
+Optional:
 
-- `type` (String) Types that are valid to be assigned to Type:
+- `data_source_file` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key--data_source_file))
+- `data_source_inline` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key--data_source_inline))
+- `data_source_inline_string` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key--data_source_inline_string))
+- `data_source_secret` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key--data_source_secret))
 
-	*DataSource_Secret
-	*DataSource_File
-	*DataSource_Inline
-	*DataSource_InlineString
-Parsed as JSON.
+<a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key--data_source_file"></a>
+### Nested Schema for `mtls.backends.conf.acm_certificate_authority_config.auth.aws_credentials.access_key.data_source_file`
+
+Optional:
+
+- `file` (String) Data source is a path to a file.
+Deprecated, use other sources of a data.
+
+
+<a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key--data_source_inline"></a>
+### Nested Schema for `mtls.backends.conf.acm_certificate_authority_config.auth.aws_credentials.access_key.data_source_inline`
+
+Optional:
+
+- `inline` (String) Data source is inline bytes.
+
+
+<a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key--data_source_inline_string"></a>
+### Nested Schema for `mtls.backends.conf.acm_certificate_authority_config.auth.aws_credentials.access_key.data_source_inline_string`
+
+Optional:
+
+- `inline_string` (String) Data source is inline string
+
+
+<a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key--data_source_secret"></a>
+### Nested Schema for `mtls.backends.conf.acm_certificate_authority_config.auth.aws_credentials.access_key.data_source_secret`
+
+Optional:
+
+- `secret` (String) Data source is a secret with given Secret key.
+
 
 
 <a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key_secret"></a>
 ### Nested Schema for `mtls.backends.conf.acm_certificate_authority_config.auth.aws_credentials.access_key_secret`
 
-Required:
+Optional:
 
-- `type` (String) Types that are valid to be assigned to Type:
+- `data_source_file` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key_secret--data_source_file))
+- `data_source_inline` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key_secret--data_source_inline))
+- `data_source_inline_string` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key_secret--data_source_inline_string))
+- `data_source_secret` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key_secret--data_source_secret))
 
-	*DataSource_Secret
-	*DataSource_File
-	*DataSource_Inline
-	*DataSource_InlineString
-Parsed as JSON.
+<a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key_secret--data_source_file"></a>
+### Nested Schema for `mtls.backends.conf.acm_certificate_authority_config.auth.aws_credentials.access_key_secret.data_source_file`
+
+Optional:
+
+- `file` (String) Data source is a path to a file.
+Deprecated, use other sources of a data.
+
+
+<a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key_secret--data_source_inline"></a>
+### Nested Schema for `mtls.backends.conf.acm_certificate_authority_config.auth.aws_credentials.access_key_secret.data_source_inline`
+
+Optional:
+
+- `inline` (String) Data source is inline bytes.
+
+
+<a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key_secret--data_source_inline_string"></a>
+### Nested Schema for `mtls.backends.conf.acm_certificate_authority_config.auth.aws_credentials.access_key_secret.data_source_inline_string`
+
+Optional:
+
+- `inline_string` (String) Data source is inline string
+
+
+<a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key_secret--data_source_secret"></a>
+### Nested Schema for `mtls.backends.conf.acm_certificate_authority_config.auth.aws_credentials.access_key_secret.data_source_secret`
+
+Optional:
+
+- `secret` (String) Data source is a secret with given Secret key.
+
 
 
 
@@ -489,15 +576,45 @@ Parsed as JSON.
 <a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--ca_cert"></a>
 ### Nested Schema for `mtls.backends.conf.acm_certificate_authority_config.ca_cert`
 
-Required:
+Optional:
 
-- `type` (String) Types that are valid to be assigned to Type:
+- `data_source_file` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--acm_certificate_authority_config--ca_cert--data_source_file))
+- `data_source_inline` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--acm_certificate_authority_config--ca_cert--data_source_inline))
+- `data_source_inline_string` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--acm_certificate_authority_config--ca_cert--data_source_inline_string))
+- `data_source_secret` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--acm_certificate_authority_config--ca_cert--data_source_secret))
 
-	*DataSource_Secret
-	*DataSource_File
-	*DataSource_Inline
-	*DataSource_InlineString
-Parsed as JSON.
+<a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--ca_cert--data_source_file"></a>
+### Nested Schema for `mtls.backends.conf.acm_certificate_authority_config.ca_cert.data_source_file`
+
+Optional:
+
+- `file` (String) Data source is a path to a file.
+Deprecated, use other sources of a data.
+
+
+<a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--ca_cert--data_source_inline"></a>
+### Nested Schema for `mtls.backends.conf.acm_certificate_authority_config.ca_cert.data_source_inline`
+
+Optional:
+
+- `inline` (String) Data source is inline bytes.
+
+
+<a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--ca_cert--data_source_inline_string"></a>
+### Nested Schema for `mtls.backends.conf.acm_certificate_authority_config.ca_cert.data_source_inline_string`
+
+Optional:
+
+- `inline_string` (String) Data source is inline string
+
+
+<a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--ca_cert--data_source_secret"></a>
+### Nested Schema for `mtls.backends.conf.acm_certificate_authority_config.ca_cert.data_source_secret`
+
+Optional:
+
+- `secret` (String) Data source is a secret with given Secret key.
+
 
 
 
@@ -531,15 +648,45 @@ Optional:
 <a id="nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config--ca_cert"></a>
 ### Nested Schema for `mtls.backends.conf.cert_manager_certificate_authority_config.ca_cert`
 
-Required:
+Optional:
 
-- `type` (String) Types that are valid to be assigned to Type:
+- `data_source_file` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config--ca_cert--data_source_file))
+- `data_source_inline` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config--ca_cert--data_source_inline))
+- `data_source_inline_string` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config--ca_cert--data_source_inline_string))
+- `data_source_secret` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config--ca_cert--data_source_secret))
 
-	*DataSource_Secret
-	*DataSource_File
-	*DataSource_Inline
-	*DataSource_InlineString
-Parsed as JSON.
+<a id="nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config--ca_cert--data_source_file"></a>
+### Nested Schema for `mtls.backends.conf.cert_manager_certificate_authority_config.ca_cert.data_source_file`
+
+Optional:
+
+- `file` (String) Data source is a path to a file.
+Deprecated, use other sources of a data.
+
+
+<a id="nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config--ca_cert--data_source_inline"></a>
+### Nested Schema for `mtls.backends.conf.cert_manager_certificate_authority_config.ca_cert.data_source_inline`
+
+Optional:
+
+- `inline` (String) Data source is inline bytes.
+
+
+<a id="nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config--ca_cert--data_source_inline_string"></a>
+### Nested Schema for `mtls.backends.conf.cert_manager_certificate_authority_config.ca_cert.data_source_inline_string`
+
+Optional:
+
+- `inline_string` (String) Data source is inline string
+
+
+<a id="nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config--ca_cert--data_source_secret"></a>
+### Nested Schema for `mtls.backends.conf.cert_manager_certificate_authority_config.ca_cert.data_source_secret`
+
+Optional:
+
+- `secret` (String) Data source is a secret with given Secret key.
+
 
 
 <a id="nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config--issuer_ref"></a>
@@ -564,29 +711,89 @@ Optional:
 <a id="nestedatt--mtls--backends--conf--provided_certificate_authority_config--cert"></a>
 ### Nested Schema for `mtls.backends.conf.provided_certificate_authority_config.cert`
 
-Required:
+Optional:
 
-- `type` (String) Types that are valid to be assigned to Type:
+- `data_source_file` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--provided_certificate_authority_config--cert--data_source_file))
+- `data_source_inline` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--provided_certificate_authority_config--cert--data_source_inline))
+- `data_source_inline_string` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--provided_certificate_authority_config--cert--data_source_inline_string))
+- `data_source_secret` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--provided_certificate_authority_config--cert--data_source_secret))
 
-	*DataSource_Secret
-	*DataSource_File
-	*DataSource_Inline
-	*DataSource_InlineString
-Parsed as JSON.
+<a id="nestedatt--mtls--backends--conf--provided_certificate_authority_config--cert--data_source_file"></a>
+### Nested Schema for `mtls.backends.conf.provided_certificate_authority_config.cert.data_source_file`
+
+Optional:
+
+- `file` (String) Data source is a path to a file.
+Deprecated, use other sources of a data.
+
+
+<a id="nestedatt--mtls--backends--conf--provided_certificate_authority_config--cert--data_source_inline"></a>
+### Nested Schema for `mtls.backends.conf.provided_certificate_authority_config.cert.data_source_inline`
+
+Optional:
+
+- `inline` (String) Data source is inline bytes.
+
+
+<a id="nestedatt--mtls--backends--conf--provided_certificate_authority_config--cert--data_source_inline_string"></a>
+### Nested Schema for `mtls.backends.conf.provided_certificate_authority_config.cert.data_source_inline_string`
+
+Optional:
+
+- `inline_string` (String) Data source is inline string
+
+
+<a id="nestedatt--mtls--backends--conf--provided_certificate_authority_config--cert--data_source_secret"></a>
+### Nested Schema for `mtls.backends.conf.provided_certificate_authority_config.cert.data_source_secret`
+
+Optional:
+
+- `secret` (String) Data source is a secret with given Secret key.
+
 
 
 <a id="nestedatt--mtls--backends--conf--provided_certificate_authority_config--key"></a>
 ### Nested Schema for `mtls.backends.conf.provided_certificate_authority_config.key`
 
-Required:
+Optional:
 
-- `type` (String) Types that are valid to be assigned to Type:
+- `data_source_file` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--provided_certificate_authority_config--key--data_source_file))
+- `data_source_inline` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--provided_certificate_authority_config--key--data_source_inline))
+- `data_source_inline_string` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--provided_certificate_authority_config--key--data_source_inline_string))
+- `data_source_secret` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--provided_certificate_authority_config--key--data_source_secret))
 
-	*DataSource_Secret
-	*DataSource_File
-	*DataSource_Inline
-	*DataSource_InlineString
-Parsed as JSON.
+<a id="nestedatt--mtls--backends--conf--provided_certificate_authority_config--key--data_source_file"></a>
+### Nested Schema for `mtls.backends.conf.provided_certificate_authority_config.key.data_source_file`
+
+Optional:
+
+- `file` (String) Data source is a path to a file.
+Deprecated, use other sources of a data.
+
+
+<a id="nestedatt--mtls--backends--conf--provided_certificate_authority_config--key--data_source_inline"></a>
+### Nested Schema for `mtls.backends.conf.provided_certificate_authority_config.key.data_source_inline`
+
+Optional:
+
+- `inline` (String) Data source is inline bytes.
+
+
+<a id="nestedatt--mtls--backends--conf--provided_certificate_authority_config--key--data_source_inline_string"></a>
+### Nested Schema for `mtls.backends.conf.provided_certificate_authority_config.key.data_source_inline_string`
+
+Optional:
+
+- `inline_string` (String) Data source is inline string
+
+
+<a id="nestedatt--mtls--backends--conf--provided_certificate_authority_config--key--data_source_secret"></a>
+### Nested Schema for `mtls.backends.conf.provided_certificate_authority_config.key.data_source_secret`
+
+Optional:
+
+- `secret` (String) Data source is a secret with given Secret key.
+
 
 
 
@@ -595,7 +802,278 @@ Parsed as JSON.
 
 Optional:
 
-- `mode` (String) Parsed as JSON.
+- `vault_certificate_authority_config_from_cp` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp))
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp`
+
+Optional:
+
+- `from_cp` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp))
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp`
+
+Optional:
+
+- `address` (String)
+- `agent_address` (String)
+- `auth` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth))
+- `common_name` (String)
+- `namespace` (String)
+- `pki` (String)
+- `role` (String)
+- `tls` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--tls))
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.auth`
+
+Optional:
+
+- `vault_certificate_authority_config_from_cp_auth_aws` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_aws))
+- `vault_certificate_authority_config_from_cp_auth_tls` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls))
+- `vault_certificate_authority_config_from_cp_auth_token` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_token))
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_aws"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.auth.vault_certificate_authority_config_from_cp_auth_aws`
+
+Optional:
+
+- `aws` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_aws--aws))
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_aws--aws"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.auth.vault_certificate_authority_config_from_cp_auth_aws.aws`
+
+Optional:
+
+- `iam_server_id_header` (String)
+- `role` (String)
+- `type` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_aws--aws--type))
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_aws--aws--type"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.auth.vault_certificate_authority_config_from_cp_auth_aws.aws.type`
+
+Optional:
+
+- `integer` (Number)
+- `str` (String)
+
+
+
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.auth.vault_certificate_authority_config_from_cp_auth_tls`
+
+Optional:
+
+- `tls` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls))
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.auth.vault_certificate_authority_config_from_cp_auth_tls.tls`
+
+Optional:
+
+- `client_cert` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls--client_cert))
+- `client_key` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls--client_key))
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls--client_cert"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.auth.vault_certificate_authority_config_from_cp_auth_tls.tls.client_cert`
+
+Optional:
+
+- `data_source_file` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls--client_cert--data_source_file))
+- `data_source_inline` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls--client_cert--data_source_inline))
+- `data_source_inline_string` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls--client_cert--data_source_inline_string))
+- `data_source_secret` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls--client_cert--data_source_secret))
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls--client_cert--data_source_file"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.auth.vault_certificate_authority_config_from_cp_auth_tls.tls.client_cert.data_source_file`
+
+Optional:
+
+- `file` (String) Data source is a path to a file.
+Deprecated, use other sources of a data.
+
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls--client_cert--data_source_inline"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.auth.vault_certificate_authority_config_from_cp_auth_tls.tls.client_cert.data_source_inline`
+
+Optional:
+
+- `inline` (String) Data source is inline bytes.
+
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls--client_cert--data_source_inline_string"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.auth.vault_certificate_authority_config_from_cp_auth_tls.tls.client_cert.data_source_inline_string`
+
+Optional:
+
+- `inline_string` (String) Data source is inline string
+
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls--client_cert--data_source_secret"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.auth.vault_certificate_authority_config_from_cp_auth_tls.tls.client_cert.data_source_secret`
+
+Optional:
+
+- `secret` (String) Data source is a secret with given Secret key.
+
+
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls--client_key"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.auth.vault_certificate_authority_config_from_cp_auth_tls.tls.client_key`
+
+Optional:
+
+- `data_source_file` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls--client_key--data_source_file))
+- `data_source_inline` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls--client_key--data_source_inline))
+- `data_source_inline_string` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls--client_key--data_source_inline_string))
+- `data_source_secret` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls--client_key--data_source_secret))
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls--client_key--data_source_file"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.auth.vault_certificate_authority_config_from_cp_auth_tls.tls.client_key.data_source_file`
+
+Optional:
+
+- `file` (String) Data source is a path to a file.
+Deprecated, use other sources of a data.
+
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls--client_key--data_source_inline"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.auth.vault_certificate_authority_config_from_cp_auth_tls.tls.client_key.data_source_inline`
+
+Optional:
+
+- `inline` (String) Data source is inline bytes.
+
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls--client_key--data_source_inline_string"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.auth.vault_certificate_authority_config_from_cp_auth_tls.tls.client_key.data_source_inline_string`
+
+Optional:
+
+- `inline_string` (String) Data source is inline string
+
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls--client_key--data_source_secret"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.auth.vault_certificate_authority_config_from_cp_auth_tls.tls.client_key.data_source_secret`
+
+Optional:
+
+- `secret` (String) Data source is a secret with given Secret key.
+
+
+
+
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_token"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.auth.vault_certificate_authority_config_from_cp_auth_token`
+
+Optional:
+
+- `token` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_token--token))
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_token--token"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.auth.vault_certificate_authority_config_from_cp_auth_token.token`
+
+Optional:
+
+- `data_source_file` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_token--token--data_source_file))
+- `data_source_inline` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_token--token--data_source_inline))
+- `data_source_inline_string` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_token--token--data_source_inline_string))
+- `data_source_secret` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_token--token--data_source_secret))
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_token--token--data_source_file"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.auth.vault_certificate_authority_config_from_cp_auth_token.token.data_source_file`
+
+Optional:
+
+- `file` (String) Data source is a path to a file.
+Deprecated, use other sources of a data.
+
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_token--token--data_source_inline"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.auth.vault_certificate_authority_config_from_cp_auth_token.token.data_source_inline`
+
+Optional:
+
+- `inline` (String) Data source is inline bytes.
+
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_token--token--data_source_inline_string"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.auth.vault_certificate_authority_config_from_cp_auth_token.token.data_source_inline_string`
+
+Optional:
+
+- `inline_string` (String) Data source is inline string
+
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_token--token--data_source_secret"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.auth.vault_certificate_authority_config_from_cp_auth_token.token.data_source_secret`
+
+Optional:
+
+- `secret` (String) Data source is a secret with given Secret key.
+
+
+
+
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--tls"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.tls`
+
+Optional:
+
+- `ca_cert` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--tls--ca_cert))
+- `server_name` (String)
+- `skip_verify` (Boolean)
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--tls--ca_cert"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.tls.ca_cert`
+
+Optional:
+
+- `data_source_file` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--tls--ca_cert--data_source_file))
+- `data_source_inline` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--tls--ca_cert--data_source_inline))
+- `data_source_inline_string` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--tls--ca_cert--data_source_inline_string))
+- `data_source_secret` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--tls--ca_cert--data_source_secret))
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--tls--ca_cert--data_source_file"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.tls.ca_cert.data_source_file`
+
+Optional:
+
+- `file` (String) Data source is a path to a file.
+Deprecated, use other sources of a data.
+
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--tls--ca_cert--data_source_inline"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.tls.ca_cert.data_source_inline`
+
+Optional:
+
+- `inline` (String) Data source is inline bytes.
+
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--tls--ca_cert--data_source_inline_string"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.tls.ca_cert.data_source_inline_string`
+
+Optional:
+
+- `inline_string` (String) Data source is inline string
+
+
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--tls--ca_cert--data_source_secret"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp.tls.ca_cert.data_source_secret`
+
+Optional:
+
+- `secret` (String) Data source is a secret with given Secret key.
+
+
+
+
+
 
 
 

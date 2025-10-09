@@ -2,10 +2,9 @@
 
 package types
 
-import (
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
-)
-
 type AccessKey struct {
-	Type jsontypes.Normalized `tfsdk:"type"`
+	DataSourceFile         *AccessKeyDataSourceFile         `queryParam:"inline" tfsdk:"data_source_file" tfPlanOnly:"true"`
+	DataSourceInline       *AccessKeyDataSourceInline       `queryParam:"inline" tfsdk:"data_source_inline" tfPlanOnly:"true"`
+	DataSourceInlineString *AccessKeyDataSourceInlineString `queryParam:"inline" tfsdk:"data_source_inline_string" tfPlanOnly:"true"`
+	DataSourceSecret       *AccessKeyDataSourceSecret       `queryParam:"inline" tfsdk:"data_source_secret" tfPlanOnly:"true"`
 }

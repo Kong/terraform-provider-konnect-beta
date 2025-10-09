@@ -79,6 +79,7 @@ func (o *Constraints) GetDataplaneProxy() *DataplaneProxy {
 	return o.DataplaneProxy
 }
 
+// TCPLoggingBackendConfig - TcpLoggingBackendConfig defines configuration for TCP based access logs
 type TCPLoggingBackendConfig struct {
 	// Address to TCP service that will receive logs
 	Address *string `json:"address,omitempty"`
@@ -91,6 +92,7 @@ func (o *TCPLoggingBackendConfig) GetAddress() *string {
 	return o.Address
 }
 
+// FileLoggingBackendConfig defines configuration for file based access logs
 type FileLoggingBackendConfig struct {
 	// Path to a file that logs will be written to
 	Path *string `json:"path,omitempty"`
@@ -460,6 +462,7 @@ func (o *ConfTLS) GetMode() *ConfMode {
 	return o.Mode
 }
 
+// PrometheusMetricsBackendConfig defines configuration of Prometheus backend
 type PrometheusMetricsBackendConfig struct {
 	// Map with the configuration of applications which metrics are going to be
 	// scrapped by kuma-dp.
@@ -630,21 +633,160 @@ func (o *Metrics) GetEnabledBackend() *string {
 	return o.EnabledBackend
 }
 
-type CertManagerCertificateAuthorityConfigConfCaCert struct {
-	// Types that are valid to be assigned to Type:
-	//
-	// 	*DataSource_Secret
-	// 	*DataSource_File
-	// 	*DataSource_Inline
-	// 	*DataSource_InlineString
-	Type any `json:"Type"`
+type CertManagerCertificateAuthorityConfigCaCertDataSourceSecret struct {
+	// Data source is a secret with given Secret key.
+	Secret *string `json:"secret,omitempty"`
 }
 
-func (o *CertManagerCertificateAuthorityConfigConfCaCert) GetType() any {
+func (o *CertManagerCertificateAuthorityConfigCaCertDataSourceSecret) GetSecret() *string {
 	if o == nil {
 		return nil
 	}
-	return o.Type
+	return o.Secret
+}
+
+type CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString struct {
+	// Data source is inline string
+	InlineString *string `json:"inlineString,omitempty"`
+}
+
+func (o *CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString) GetInlineString() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InlineString
+}
+
+type CertManagerCertificateAuthorityConfigCaCertDataSourceInline struct {
+	// Data source is inline bytes.
+	Inline *string `json:"inline,omitempty"`
+}
+
+func (o *CertManagerCertificateAuthorityConfigCaCertDataSourceInline) GetInline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Inline
+}
+
+type CertManagerCertificateAuthorityConfigCaCertDataSourceFile struct {
+	// Data source is a path to a file.
+	// Deprecated, use other sources of a data.
+	File *string `json:"file,omitempty"`
+}
+
+func (o *CertManagerCertificateAuthorityConfigCaCertDataSourceFile) GetFile() *string {
+	if o == nil {
+		return nil
+	}
+	return o.File
+}
+
+type CertManagerCertificateAuthorityConfigConfCaCertType string
+
+const (
+	CertManagerCertificateAuthorityConfigConfCaCertTypeCertManagerCertificateAuthorityConfigCaCertDataSourceFile         CertManagerCertificateAuthorityConfigConfCaCertType = "CertManagerCertificateAuthorityConfig_caCert_DataSource_File"
+	CertManagerCertificateAuthorityConfigConfCaCertTypeCertManagerCertificateAuthorityConfigCaCertDataSourceInline       CertManagerCertificateAuthorityConfigConfCaCertType = "CertManagerCertificateAuthorityConfig_caCert_DataSource_Inline"
+	CertManagerCertificateAuthorityConfigConfCaCertTypeCertManagerCertificateAuthorityConfigCaCertDataSourceInlineString CertManagerCertificateAuthorityConfigConfCaCertType = "CertManagerCertificateAuthorityConfig_caCert_DataSource_InlineString"
+	CertManagerCertificateAuthorityConfigConfCaCertTypeCertManagerCertificateAuthorityConfigCaCertDataSourceSecret       CertManagerCertificateAuthorityConfigConfCaCertType = "CertManagerCertificateAuthorityConfig_caCert_DataSource_Secret"
+)
+
+type CertManagerCertificateAuthorityConfigConfCaCert struct {
+	CertManagerCertificateAuthorityConfigCaCertDataSourceFile         *CertManagerCertificateAuthorityConfigCaCertDataSourceFile         `queryParam:"inline"`
+	CertManagerCertificateAuthorityConfigCaCertDataSourceInline       *CertManagerCertificateAuthorityConfigCaCertDataSourceInline       `queryParam:"inline"`
+	CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString *CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString `queryParam:"inline"`
+	CertManagerCertificateAuthorityConfigCaCertDataSourceSecret       *CertManagerCertificateAuthorityConfigCaCertDataSourceSecret       `queryParam:"inline"`
+
+	Type CertManagerCertificateAuthorityConfigConfCaCertType
+}
+
+func CreateCertManagerCertificateAuthorityConfigConfCaCertCertManagerCertificateAuthorityConfigCaCertDataSourceFile(certManagerCertificateAuthorityConfigCaCertDataSourceFile CertManagerCertificateAuthorityConfigCaCertDataSourceFile) CertManagerCertificateAuthorityConfigConfCaCert {
+	typ := CertManagerCertificateAuthorityConfigConfCaCertTypeCertManagerCertificateAuthorityConfigCaCertDataSourceFile
+
+	return CertManagerCertificateAuthorityConfigConfCaCert{
+		CertManagerCertificateAuthorityConfigCaCertDataSourceFile: &certManagerCertificateAuthorityConfigCaCertDataSourceFile,
+		Type: typ,
+	}
+}
+
+func CreateCertManagerCertificateAuthorityConfigConfCaCertCertManagerCertificateAuthorityConfigCaCertDataSourceInline(certManagerCertificateAuthorityConfigCaCertDataSourceInline CertManagerCertificateAuthorityConfigCaCertDataSourceInline) CertManagerCertificateAuthorityConfigConfCaCert {
+	typ := CertManagerCertificateAuthorityConfigConfCaCertTypeCertManagerCertificateAuthorityConfigCaCertDataSourceInline
+
+	return CertManagerCertificateAuthorityConfigConfCaCert{
+		CertManagerCertificateAuthorityConfigCaCertDataSourceInline: &certManagerCertificateAuthorityConfigCaCertDataSourceInline,
+		Type: typ,
+	}
+}
+
+func CreateCertManagerCertificateAuthorityConfigConfCaCertCertManagerCertificateAuthorityConfigCaCertDataSourceInlineString(certManagerCertificateAuthorityConfigCaCertDataSourceInlineString CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString) CertManagerCertificateAuthorityConfigConfCaCert {
+	typ := CertManagerCertificateAuthorityConfigConfCaCertTypeCertManagerCertificateAuthorityConfigCaCertDataSourceInlineString
+
+	return CertManagerCertificateAuthorityConfigConfCaCert{
+		CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString: &certManagerCertificateAuthorityConfigCaCertDataSourceInlineString,
+		Type: typ,
+	}
+}
+
+func CreateCertManagerCertificateAuthorityConfigConfCaCertCertManagerCertificateAuthorityConfigCaCertDataSourceSecret(certManagerCertificateAuthorityConfigCaCertDataSourceSecret CertManagerCertificateAuthorityConfigCaCertDataSourceSecret) CertManagerCertificateAuthorityConfigConfCaCert {
+	typ := CertManagerCertificateAuthorityConfigConfCaCertTypeCertManagerCertificateAuthorityConfigCaCertDataSourceSecret
+
+	return CertManagerCertificateAuthorityConfigConfCaCert{
+		CertManagerCertificateAuthorityConfigCaCertDataSourceSecret: &certManagerCertificateAuthorityConfigCaCertDataSourceSecret,
+		Type: typ,
+	}
+}
+
+func (u *CertManagerCertificateAuthorityConfigConfCaCert) UnmarshalJSON(data []byte) error {
+
+	var certManagerCertificateAuthorityConfigCaCertDataSourceFile CertManagerCertificateAuthorityConfigCaCertDataSourceFile = CertManagerCertificateAuthorityConfigCaCertDataSourceFile{}
+	if err := utils.UnmarshalJSON(data, &certManagerCertificateAuthorityConfigCaCertDataSourceFile, "", true, true); err == nil {
+		u.CertManagerCertificateAuthorityConfigCaCertDataSourceFile = &certManagerCertificateAuthorityConfigCaCertDataSourceFile
+		u.Type = CertManagerCertificateAuthorityConfigConfCaCertTypeCertManagerCertificateAuthorityConfigCaCertDataSourceFile
+		return nil
+	}
+
+	var certManagerCertificateAuthorityConfigCaCertDataSourceInline CertManagerCertificateAuthorityConfigCaCertDataSourceInline = CertManagerCertificateAuthorityConfigCaCertDataSourceInline{}
+	if err := utils.UnmarshalJSON(data, &certManagerCertificateAuthorityConfigCaCertDataSourceInline, "", true, true); err == nil {
+		u.CertManagerCertificateAuthorityConfigCaCertDataSourceInline = &certManagerCertificateAuthorityConfigCaCertDataSourceInline
+		u.Type = CertManagerCertificateAuthorityConfigConfCaCertTypeCertManagerCertificateAuthorityConfigCaCertDataSourceInline
+		return nil
+	}
+
+	var certManagerCertificateAuthorityConfigCaCertDataSourceInlineString CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString = CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString{}
+	if err := utils.UnmarshalJSON(data, &certManagerCertificateAuthorityConfigCaCertDataSourceInlineString, "", true, true); err == nil {
+		u.CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString = &certManagerCertificateAuthorityConfigCaCertDataSourceInlineString
+		u.Type = CertManagerCertificateAuthorityConfigConfCaCertTypeCertManagerCertificateAuthorityConfigCaCertDataSourceInlineString
+		return nil
+	}
+
+	var certManagerCertificateAuthorityConfigCaCertDataSourceSecret CertManagerCertificateAuthorityConfigCaCertDataSourceSecret = CertManagerCertificateAuthorityConfigCaCertDataSourceSecret{}
+	if err := utils.UnmarshalJSON(data, &certManagerCertificateAuthorityConfigCaCertDataSourceSecret, "", true, true); err == nil {
+		u.CertManagerCertificateAuthorityConfigCaCertDataSourceSecret = &certManagerCertificateAuthorityConfigCaCertDataSourceSecret
+		u.Type = CertManagerCertificateAuthorityConfigConfCaCertTypeCertManagerCertificateAuthorityConfigCaCertDataSourceSecret
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for CertManagerCertificateAuthorityConfigConfCaCert", string(data))
+}
+
+func (u CertManagerCertificateAuthorityConfigConfCaCert) MarshalJSON() ([]byte, error) {
+	if u.CertManagerCertificateAuthorityConfigCaCertDataSourceFile != nil {
+		return utils.MarshalJSON(u.CertManagerCertificateAuthorityConfigCaCertDataSourceFile, "", true)
+	}
+
+	if u.CertManagerCertificateAuthorityConfigCaCertDataSourceInline != nil {
+		return utils.MarshalJSON(u.CertManagerCertificateAuthorityConfigCaCertDataSourceInline, "", true)
+	}
+
+	if u.CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString != nil {
+		return utils.MarshalJSON(u.CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString, "", true)
+	}
+
+	if u.CertManagerCertificateAuthorityConfigCaCertDataSourceSecret != nil {
+		return utils.MarshalJSON(u.CertManagerCertificateAuthorityConfigCaCertDataSourceSecret, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type CertManagerCertificateAuthorityConfigConfCaCert: all fields are null")
 }
 
 type IssuerRef struct {
@@ -709,38 +851,316 @@ func (o *CertManagerCertificateAuthorityConfig) GetIssuerRef() *IssuerRef {
 	return o.IssuerRef
 }
 
-type AccessKey struct {
-	// Types that are valid to be assigned to Type:
-	//
-	// 	*DataSource_Secret
-	// 	*DataSource_File
-	// 	*DataSource_Inline
-	// 	*DataSource_InlineString
-	Type any `json:"Type"`
+type AccessKeyDataSourceSecret struct {
+	// Data source is a secret with given Secret key.
+	Secret *string `json:"secret,omitempty"`
 }
 
-func (o *AccessKey) GetType() any {
+func (o *AccessKeyDataSourceSecret) GetSecret() *string {
 	if o == nil {
 		return nil
 	}
-	return o.Type
+	return o.Secret
 }
+
+type AccessKeyDataSourceInlineString struct {
+	// Data source is inline string
+	InlineString *string `json:"inlineString,omitempty"`
+}
+
+func (o *AccessKeyDataSourceInlineString) GetInlineString() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InlineString
+}
+
+type AccessKeyDataSourceInline struct {
+	// Data source is inline bytes.
+	Inline *string `json:"inline,omitempty"`
+}
+
+func (o *AccessKeyDataSourceInline) GetInline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Inline
+}
+
+type AccessKeyDataSourceFile struct {
+	// Data source is a path to a file.
+	// Deprecated, use other sources of a data.
+	File *string `json:"file,omitempty"`
+}
+
+func (o *AccessKeyDataSourceFile) GetFile() *string {
+	if o == nil {
+		return nil
+	}
+	return o.File
+}
+
+type AccessKeyType string
+
+const (
+	AccessKeyTypeAccessKeyDataSourceFile         AccessKeyType = "accessKey_DataSource_File"
+	AccessKeyTypeAccessKeyDataSourceInline       AccessKeyType = "accessKey_DataSource_Inline"
+	AccessKeyTypeAccessKeyDataSourceInlineString AccessKeyType = "accessKey_DataSource_InlineString"
+	AccessKeyTypeAccessKeyDataSourceSecret       AccessKeyType = "accessKey_DataSource_Secret"
+)
+
+type AccessKey struct {
+	AccessKeyDataSourceFile         *AccessKeyDataSourceFile         `queryParam:"inline"`
+	AccessKeyDataSourceInline       *AccessKeyDataSourceInline       `queryParam:"inline"`
+	AccessKeyDataSourceInlineString *AccessKeyDataSourceInlineString `queryParam:"inline"`
+	AccessKeyDataSourceSecret       *AccessKeyDataSourceSecret       `queryParam:"inline"`
+
+	Type AccessKeyType
+}
+
+func CreateAccessKeyAccessKeyDataSourceFile(accessKeyDataSourceFile AccessKeyDataSourceFile) AccessKey {
+	typ := AccessKeyTypeAccessKeyDataSourceFile
+
+	return AccessKey{
+		AccessKeyDataSourceFile: &accessKeyDataSourceFile,
+		Type:                    typ,
+	}
+}
+
+func CreateAccessKeyAccessKeyDataSourceInline(accessKeyDataSourceInline AccessKeyDataSourceInline) AccessKey {
+	typ := AccessKeyTypeAccessKeyDataSourceInline
+
+	return AccessKey{
+		AccessKeyDataSourceInline: &accessKeyDataSourceInline,
+		Type:                      typ,
+	}
+}
+
+func CreateAccessKeyAccessKeyDataSourceInlineString(accessKeyDataSourceInlineString AccessKeyDataSourceInlineString) AccessKey {
+	typ := AccessKeyTypeAccessKeyDataSourceInlineString
+
+	return AccessKey{
+		AccessKeyDataSourceInlineString: &accessKeyDataSourceInlineString,
+		Type:                            typ,
+	}
+}
+
+func CreateAccessKeyAccessKeyDataSourceSecret(accessKeyDataSourceSecret AccessKeyDataSourceSecret) AccessKey {
+	typ := AccessKeyTypeAccessKeyDataSourceSecret
+
+	return AccessKey{
+		AccessKeyDataSourceSecret: &accessKeyDataSourceSecret,
+		Type:                      typ,
+	}
+}
+
+func (u *AccessKey) UnmarshalJSON(data []byte) error {
+
+	var accessKeyDataSourceFile AccessKeyDataSourceFile = AccessKeyDataSourceFile{}
+	if err := utils.UnmarshalJSON(data, &accessKeyDataSourceFile, "", true, true); err == nil {
+		u.AccessKeyDataSourceFile = &accessKeyDataSourceFile
+		u.Type = AccessKeyTypeAccessKeyDataSourceFile
+		return nil
+	}
+
+	var accessKeyDataSourceInline AccessKeyDataSourceInline = AccessKeyDataSourceInline{}
+	if err := utils.UnmarshalJSON(data, &accessKeyDataSourceInline, "", true, true); err == nil {
+		u.AccessKeyDataSourceInline = &accessKeyDataSourceInline
+		u.Type = AccessKeyTypeAccessKeyDataSourceInline
+		return nil
+	}
+
+	var accessKeyDataSourceInlineString AccessKeyDataSourceInlineString = AccessKeyDataSourceInlineString{}
+	if err := utils.UnmarshalJSON(data, &accessKeyDataSourceInlineString, "", true, true); err == nil {
+		u.AccessKeyDataSourceInlineString = &accessKeyDataSourceInlineString
+		u.Type = AccessKeyTypeAccessKeyDataSourceInlineString
+		return nil
+	}
+
+	var accessKeyDataSourceSecret AccessKeyDataSourceSecret = AccessKeyDataSourceSecret{}
+	if err := utils.UnmarshalJSON(data, &accessKeyDataSourceSecret, "", true, true); err == nil {
+		u.AccessKeyDataSourceSecret = &accessKeyDataSourceSecret
+		u.Type = AccessKeyTypeAccessKeyDataSourceSecret
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for AccessKey", string(data))
+}
+
+func (u AccessKey) MarshalJSON() ([]byte, error) {
+	if u.AccessKeyDataSourceFile != nil {
+		return utils.MarshalJSON(u.AccessKeyDataSourceFile, "", true)
+	}
+
+	if u.AccessKeyDataSourceInline != nil {
+		return utils.MarshalJSON(u.AccessKeyDataSourceInline, "", true)
+	}
+
+	if u.AccessKeyDataSourceInlineString != nil {
+		return utils.MarshalJSON(u.AccessKeyDataSourceInlineString, "", true)
+	}
+
+	if u.AccessKeyDataSourceSecret != nil {
+		return utils.MarshalJSON(u.AccessKeyDataSourceSecret, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type AccessKey: all fields are null")
+}
+
+type AccessKeySecretDataSourceSecret struct {
+	// Data source is a secret with given Secret key.
+	Secret *string `json:"secret,omitempty"`
+}
+
+func (o *AccessKeySecretDataSourceSecret) GetSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Secret
+}
+
+type AccessKeySecretDataSourceInlineString struct {
+	// Data source is inline string
+	InlineString *string `json:"inlineString,omitempty"`
+}
+
+func (o *AccessKeySecretDataSourceInlineString) GetInlineString() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InlineString
+}
+
+type AccessKeySecretDataSourceInline struct {
+	// Data source is inline bytes.
+	Inline *string `json:"inline,omitempty"`
+}
+
+func (o *AccessKeySecretDataSourceInline) GetInline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Inline
+}
+
+type AccessKeySecretDataSourceFile struct {
+	// Data source is a path to a file.
+	// Deprecated, use other sources of a data.
+	File *string `json:"file,omitempty"`
+}
+
+func (o *AccessKeySecretDataSourceFile) GetFile() *string {
+	if o == nil {
+		return nil
+	}
+	return o.File
+}
+
+type AccessKeySecretType string
+
+const (
+	AccessKeySecretTypeAccessKeySecretDataSourceFile         AccessKeySecretType = "accessKeySecret_DataSource_File"
+	AccessKeySecretTypeAccessKeySecretDataSourceInline       AccessKeySecretType = "accessKeySecret_DataSource_Inline"
+	AccessKeySecretTypeAccessKeySecretDataSourceInlineString AccessKeySecretType = "accessKeySecret_DataSource_InlineString"
+	AccessKeySecretTypeAccessKeySecretDataSourceSecret       AccessKeySecretType = "accessKeySecret_DataSource_Secret"
+)
 
 type AccessKeySecret struct {
-	// Types that are valid to be assigned to Type:
-	//
-	// 	*DataSource_Secret
-	// 	*DataSource_File
-	// 	*DataSource_Inline
-	// 	*DataSource_InlineString
-	Type any `json:"Type"`
+	AccessKeySecretDataSourceFile         *AccessKeySecretDataSourceFile         `queryParam:"inline"`
+	AccessKeySecretDataSourceInline       *AccessKeySecretDataSourceInline       `queryParam:"inline"`
+	AccessKeySecretDataSourceInlineString *AccessKeySecretDataSourceInlineString `queryParam:"inline"`
+	AccessKeySecretDataSourceSecret       *AccessKeySecretDataSourceSecret       `queryParam:"inline"`
+
+	Type AccessKeySecretType
 }
 
-func (o *AccessKeySecret) GetType() any {
-	if o == nil {
+func CreateAccessKeySecretAccessKeySecretDataSourceFile(accessKeySecretDataSourceFile AccessKeySecretDataSourceFile) AccessKeySecret {
+	typ := AccessKeySecretTypeAccessKeySecretDataSourceFile
+
+	return AccessKeySecret{
+		AccessKeySecretDataSourceFile: &accessKeySecretDataSourceFile,
+		Type:                          typ,
+	}
+}
+
+func CreateAccessKeySecretAccessKeySecretDataSourceInline(accessKeySecretDataSourceInline AccessKeySecretDataSourceInline) AccessKeySecret {
+	typ := AccessKeySecretTypeAccessKeySecretDataSourceInline
+
+	return AccessKeySecret{
+		AccessKeySecretDataSourceInline: &accessKeySecretDataSourceInline,
+		Type:                            typ,
+	}
+}
+
+func CreateAccessKeySecretAccessKeySecretDataSourceInlineString(accessKeySecretDataSourceInlineString AccessKeySecretDataSourceInlineString) AccessKeySecret {
+	typ := AccessKeySecretTypeAccessKeySecretDataSourceInlineString
+
+	return AccessKeySecret{
+		AccessKeySecretDataSourceInlineString: &accessKeySecretDataSourceInlineString,
+		Type:                                  typ,
+	}
+}
+
+func CreateAccessKeySecretAccessKeySecretDataSourceSecret(accessKeySecretDataSourceSecret AccessKeySecretDataSourceSecret) AccessKeySecret {
+	typ := AccessKeySecretTypeAccessKeySecretDataSourceSecret
+
+	return AccessKeySecret{
+		AccessKeySecretDataSourceSecret: &accessKeySecretDataSourceSecret,
+		Type:                            typ,
+	}
+}
+
+func (u *AccessKeySecret) UnmarshalJSON(data []byte) error {
+
+	var accessKeySecretDataSourceFile AccessKeySecretDataSourceFile = AccessKeySecretDataSourceFile{}
+	if err := utils.UnmarshalJSON(data, &accessKeySecretDataSourceFile, "", true, true); err == nil {
+		u.AccessKeySecretDataSourceFile = &accessKeySecretDataSourceFile
+		u.Type = AccessKeySecretTypeAccessKeySecretDataSourceFile
 		return nil
 	}
-	return o.Type
+
+	var accessKeySecretDataSourceInline AccessKeySecretDataSourceInline = AccessKeySecretDataSourceInline{}
+	if err := utils.UnmarshalJSON(data, &accessKeySecretDataSourceInline, "", true, true); err == nil {
+		u.AccessKeySecretDataSourceInline = &accessKeySecretDataSourceInline
+		u.Type = AccessKeySecretTypeAccessKeySecretDataSourceInline
+		return nil
+	}
+
+	var accessKeySecretDataSourceInlineString AccessKeySecretDataSourceInlineString = AccessKeySecretDataSourceInlineString{}
+	if err := utils.UnmarshalJSON(data, &accessKeySecretDataSourceInlineString, "", true, true); err == nil {
+		u.AccessKeySecretDataSourceInlineString = &accessKeySecretDataSourceInlineString
+		u.Type = AccessKeySecretTypeAccessKeySecretDataSourceInlineString
+		return nil
+	}
+
+	var accessKeySecretDataSourceSecret AccessKeySecretDataSourceSecret = AccessKeySecretDataSourceSecret{}
+	if err := utils.UnmarshalJSON(data, &accessKeySecretDataSourceSecret, "", true, true); err == nil {
+		u.AccessKeySecretDataSourceSecret = &accessKeySecretDataSourceSecret
+		u.Type = AccessKeySecretTypeAccessKeySecretDataSourceSecret
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for AccessKeySecret", string(data))
+}
+
+func (u AccessKeySecret) MarshalJSON() ([]byte, error) {
+	if u.AccessKeySecretDataSourceFile != nil {
+		return utils.MarshalJSON(u.AccessKeySecretDataSourceFile, "", true)
+	}
+
+	if u.AccessKeySecretDataSourceInline != nil {
+		return utils.MarshalJSON(u.AccessKeySecretDataSourceInline, "", true)
+	}
+
+	if u.AccessKeySecretDataSourceInlineString != nil {
+		return utils.MarshalJSON(u.AccessKeySecretDataSourceInlineString, "", true)
+	}
+
+	if u.AccessKeySecretDataSourceSecret != nil {
+		return utils.MarshalJSON(u.AccessKeySecretDataSourceSecret, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type AccessKeySecret: all fields are null")
 }
 
 type AwsCredentials struct {
@@ -773,21 +1193,160 @@ func (o *Auth) GetAwsCredentials() *AwsCredentials {
 	return o.AwsCredentials
 }
 
-type ConfCaCert struct {
-	// Types that are valid to be assigned to Type:
-	//
-	// 	*DataSource_Secret
-	// 	*DataSource_File
-	// 	*DataSource_Inline
-	// 	*DataSource_InlineString
-	Type any `json:"Type"`
+type CaCertDataSourceSecret struct {
+	// Data source is a secret with given Secret key.
+	Secret *string `json:"secret,omitempty"`
 }
 
-func (o *ConfCaCert) GetType() any {
+func (o *CaCertDataSourceSecret) GetSecret() *string {
 	if o == nil {
 		return nil
 	}
-	return o.Type
+	return o.Secret
+}
+
+type CaCertDataSourceInlineString struct {
+	// Data source is inline string
+	InlineString *string `json:"inlineString,omitempty"`
+}
+
+func (o *CaCertDataSourceInlineString) GetInlineString() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InlineString
+}
+
+type CaCertDataSourceInline struct {
+	// Data source is inline bytes.
+	Inline *string `json:"inline,omitempty"`
+}
+
+func (o *CaCertDataSourceInline) GetInline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Inline
+}
+
+type CaCertDataSourceFile struct {
+	// Data source is a path to a file.
+	// Deprecated, use other sources of a data.
+	File *string `json:"file,omitempty"`
+}
+
+func (o *CaCertDataSourceFile) GetFile() *string {
+	if o == nil {
+		return nil
+	}
+	return o.File
+}
+
+type ConfCaCertType string
+
+const (
+	ConfCaCertTypeCaCertDataSourceFile         ConfCaCertType = "caCert_DataSource_File"
+	ConfCaCertTypeCaCertDataSourceInline       ConfCaCertType = "caCert_DataSource_Inline"
+	ConfCaCertTypeCaCertDataSourceInlineString ConfCaCertType = "caCert_DataSource_InlineString"
+	ConfCaCertTypeCaCertDataSourceSecret       ConfCaCertType = "caCert_DataSource_Secret"
+)
+
+type ConfCaCert struct {
+	CaCertDataSourceFile         *CaCertDataSourceFile         `queryParam:"inline"`
+	CaCertDataSourceInline       *CaCertDataSourceInline       `queryParam:"inline"`
+	CaCertDataSourceInlineString *CaCertDataSourceInlineString `queryParam:"inline"`
+	CaCertDataSourceSecret       *CaCertDataSourceSecret       `queryParam:"inline"`
+
+	Type ConfCaCertType
+}
+
+func CreateConfCaCertCaCertDataSourceFile(caCertDataSourceFile CaCertDataSourceFile) ConfCaCert {
+	typ := ConfCaCertTypeCaCertDataSourceFile
+
+	return ConfCaCert{
+		CaCertDataSourceFile: &caCertDataSourceFile,
+		Type:                 typ,
+	}
+}
+
+func CreateConfCaCertCaCertDataSourceInline(caCertDataSourceInline CaCertDataSourceInline) ConfCaCert {
+	typ := ConfCaCertTypeCaCertDataSourceInline
+
+	return ConfCaCert{
+		CaCertDataSourceInline: &caCertDataSourceInline,
+		Type:                   typ,
+	}
+}
+
+func CreateConfCaCertCaCertDataSourceInlineString(caCertDataSourceInlineString CaCertDataSourceInlineString) ConfCaCert {
+	typ := ConfCaCertTypeCaCertDataSourceInlineString
+
+	return ConfCaCert{
+		CaCertDataSourceInlineString: &caCertDataSourceInlineString,
+		Type:                         typ,
+	}
+}
+
+func CreateConfCaCertCaCertDataSourceSecret(caCertDataSourceSecret CaCertDataSourceSecret) ConfCaCert {
+	typ := ConfCaCertTypeCaCertDataSourceSecret
+
+	return ConfCaCert{
+		CaCertDataSourceSecret: &caCertDataSourceSecret,
+		Type:                   typ,
+	}
+}
+
+func (u *ConfCaCert) UnmarshalJSON(data []byte) error {
+
+	var caCertDataSourceFile CaCertDataSourceFile = CaCertDataSourceFile{}
+	if err := utils.UnmarshalJSON(data, &caCertDataSourceFile, "", true, true); err == nil {
+		u.CaCertDataSourceFile = &caCertDataSourceFile
+		u.Type = ConfCaCertTypeCaCertDataSourceFile
+		return nil
+	}
+
+	var caCertDataSourceInline CaCertDataSourceInline = CaCertDataSourceInline{}
+	if err := utils.UnmarshalJSON(data, &caCertDataSourceInline, "", true, true); err == nil {
+		u.CaCertDataSourceInline = &caCertDataSourceInline
+		u.Type = ConfCaCertTypeCaCertDataSourceInline
+		return nil
+	}
+
+	var caCertDataSourceInlineString CaCertDataSourceInlineString = CaCertDataSourceInlineString{}
+	if err := utils.UnmarshalJSON(data, &caCertDataSourceInlineString, "", true, true); err == nil {
+		u.CaCertDataSourceInlineString = &caCertDataSourceInlineString
+		u.Type = ConfCaCertTypeCaCertDataSourceInlineString
+		return nil
+	}
+
+	var caCertDataSourceSecret CaCertDataSourceSecret = CaCertDataSourceSecret{}
+	if err := utils.UnmarshalJSON(data, &caCertDataSourceSecret, "", true, true); err == nil {
+		u.CaCertDataSourceSecret = &caCertDataSourceSecret
+		u.Type = ConfCaCertTypeCaCertDataSourceSecret
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for ConfCaCert", string(data))
+}
+
+func (u ConfCaCert) MarshalJSON() ([]byte, error) {
+	if u.CaCertDataSourceFile != nil {
+		return utils.MarshalJSON(u.CaCertDataSourceFile, "", true)
+	}
+
+	if u.CaCertDataSourceInline != nil {
+		return utils.MarshalJSON(u.CaCertDataSourceInline, "", true)
+	}
+
+	if u.CaCertDataSourceInlineString != nil {
+		return utils.MarshalJSON(u.CaCertDataSourceInlineString, "", true)
+	}
+
+	if u.CaCertDataSourceSecret != nil {
+		return utils.MarshalJSON(u.CaCertDataSourceSecret, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type ConfCaCert: all fields are null")
 }
 
 type ACMCertificateAuthorityConfig struct {
@@ -825,15 +1384,1001 @@ func (o *ACMCertificateAuthorityConfig) GetCommonName() *string {
 	return o.CommonName
 }
 
-type VaultCertificateAuthorityConfig struct {
-	Mode any `json:"Mode,omitempty"`
+type TokenDataSourceSecret struct {
+	// Data source is a secret with given Secret key.
+	Secret *string `json:"secret,omitempty"`
 }
 
-func (o *VaultCertificateAuthorityConfig) GetMode() any {
+func (o *TokenDataSourceSecret) GetSecret() *string {
 	if o == nil {
 		return nil
 	}
-	return o.Mode
+	return o.Secret
+}
+
+type TokenDataSourceInlineString struct {
+	// Data source is inline string
+	InlineString *string `json:"inlineString,omitempty"`
+}
+
+func (o *TokenDataSourceInlineString) GetInlineString() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InlineString
+}
+
+type TokenDataSourceInline struct {
+	// Data source is inline bytes.
+	Inline *string `json:"inline,omitempty"`
+}
+
+func (o *TokenDataSourceInline) GetInline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Inline
+}
+
+type TokenDataSourceFile struct {
+	// Data source is a path to a file.
+	// Deprecated, use other sources of a data.
+	File *string `json:"file,omitempty"`
+}
+
+func (o *TokenDataSourceFile) GetFile() *string {
+	if o == nil {
+		return nil
+	}
+	return o.File
+}
+
+type TokenType string
+
+const (
+	TokenTypeTokenDataSourceFile         TokenType = "token_DataSource_File"
+	TokenTypeTokenDataSourceInline       TokenType = "token_DataSource_Inline"
+	TokenTypeTokenDataSourceInlineString TokenType = "token_DataSource_InlineString"
+	TokenTypeTokenDataSourceSecret       TokenType = "token_DataSource_Secret"
+)
+
+type Token struct {
+	TokenDataSourceFile         *TokenDataSourceFile         `queryParam:"inline"`
+	TokenDataSourceInline       *TokenDataSourceInline       `queryParam:"inline"`
+	TokenDataSourceInlineString *TokenDataSourceInlineString `queryParam:"inline"`
+	TokenDataSourceSecret       *TokenDataSourceSecret       `queryParam:"inline"`
+
+	Type TokenType
+}
+
+func CreateTokenTokenDataSourceFile(tokenDataSourceFile TokenDataSourceFile) Token {
+	typ := TokenTypeTokenDataSourceFile
+
+	return Token{
+		TokenDataSourceFile: &tokenDataSourceFile,
+		Type:                typ,
+	}
+}
+
+func CreateTokenTokenDataSourceInline(tokenDataSourceInline TokenDataSourceInline) Token {
+	typ := TokenTypeTokenDataSourceInline
+
+	return Token{
+		TokenDataSourceInline: &tokenDataSourceInline,
+		Type:                  typ,
+	}
+}
+
+func CreateTokenTokenDataSourceInlineString(tokenDataSourceInlineString TokenDataSourceInlineString) Token {
+	typ := TokenTypeTokenDataSourceInlineString
+
+	return Token{
+		TokenDataSourceInlineString: &tokenDataSourceInlineString,
+		Type:                        typ,
+	}
+}
+
+func CreateTokenTokenDataSourceSecret(tokenDataSourceSecret TokenDataSourceSecret) Token {
+	typ := TokenTypeTokenDataSourceSecret
+
+	return Token{
+		TokenDataSourceSecret: &tokenDataSourceSecret,
+		Type:                  typ,
+	}
+}
+
+func (u *Token) UnmarshalJSON(data []byte) error {
+
+	var tokenDataSourceFile TokenDataSourceFile = TokenDataSourceFile{}
+	if err := utils.UnmarshalJSON(data, &tokenDataSourceFile, "", true, true); err == nil {
+		u.TokenDataSourceFile = &tokenDataSourceFile
+		u.Type = TokenTypeTokenDataSourceFile
+		return nil
+	}
+
+	var tokenDataSourceInline TokenDataSourceInline = TokenDataSourceInline{}
+	if err := utils.UnmarshalJSON(data, &tokenDataSourceInline, "", true, true); err == nil {
+		u.TokenDataSourceInline = &tokenDataSourceInline
+		u.Type = TokenTypeTokenDataSourceInline
+		return nil
+	}
+
+	var tokenDataSourceInlineString TokenDataSourceInlineString = TokenDataSourceInlineString{}
+	if err := utils.UnmarshalJSON(data, &tokenDataSourceInlineString, "", true, true); err == nil {
+		u.TokenDataSourceInlineString = &tokenDataSourceInlineString
+		u.Type = TokenTypeTokenDataSourceInlineString
+		return nil
+	}
+
+	var tokenDataSourceSecret TokenDataSourceSecret = TokenDataSourceSecret{}
+	if err := utils.UnmarshalJSON(data, &tokenDataSourceSecret, "", true, true); err == nil {
+		u.TokenDataSourceSecret = &tokenDataSourceSecret
+		u.Type = TokenTypeTokenDataSourceSecret
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for Token", string(data))
+}
+
+func (u Token) MarshalJSON() ([]byte, error) {
+	if u.TokenDataSourceFile != nil {
+		return utils.MarshalJSON(u.TokenDataSourceFile, "", true)
+	}
+
+	if u.TokenDataSourceInline != nil {
+		return utils.MarshalJSON(u.TokenDataSourceInline, "", true)
+	}
+
+	if u.TokenDataSourceInlineString != nil {
+		return utils.MarshalJSON(u.TokenDataSourceInlineString, "", true)
+	}
+
+	if u.TokenDataSourceSecret != nil {
+		return utils.MarshalJSON(u.TokenDataSourceSecret, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type Token: all fields are null")
+}
+
+type VaultCertificateAuthorityConfigFromCpAuthToken struct {
+	Token *Token `json:"token,omitempty"`
+}
+
+func (o *VaultCertificateAuthorityConfigFromCpAuthToken) GetToken() *Token {
+	if o == nil {
+		return nil
+	}
+	return o.Token
+}
+
+type ClientCertDataSourceSecret struct {
+	// Data source is a secret with given Secret key.
+	Secret *string `json:"secret,omitempty"`
+}
+
+func (o *ClientCertDataSourceSecret) GetSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Secret
+}
+
+type ClientCertDataSourceInlineString struct {
+	// Data source is inline string
+	InlineString *string `json:"inlineString,omitempty"`
+}
+
+func (o *ClientCertDataSourceInlineString) GetInlineString() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InlineString
+}
+
+type ClientCertDataSourceInline struct {
+	// Data source is inline bytes.
+	Inline *string `json:"inline,omitempty"`
+}
+
+func (o *ClientCertDataSourceInline) GetInline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Inline
+}
+
+type ClientCertDataSourceFile struct {
+	// Data source is a path to a file.
+	// Deprecated, use other sources of a data.
+	File *string `json:"file,omitempty"`
+}
+
+func (o *ClientCertDataSourceFile) GetFile() *string {
+	if o == nil {
+		return nil
+	}
+	return o.File
+}
+
+type AuthClientCertType string
+
+const (
+	AuthClientCertTypeClientCertDataSourceFile         AuthClientCertType = "clientCert_DataSource_File"
+	AuthClientCertTypeClientCertDataSourceInline       AuthClientCertType = "clientCert_DataSource_Inline"
+	AuthClientCertTypeClientCertDataSourceInlineString AuthClientCertType = "clientCert_DataSource_InlineString"
+	AuthClientCertTypeClientCertDataSourceSecret       AuthClientCertType = "clientCert_DataSource_Secret"
+)
+
+type AuthClientCert struct {
+	ClientCertDataSourceFile         *ClientCertDataSourceFile         `queryParam:"inline"`
+	ClientCertDataSourceInline       *ClientCertDataSourceInline       `queryParam:"inline"`
+	ClientCertDataSourceInlineString *ClientCertDataSourceInlineString `queryParam:"inline"`
+	ClientCertDataSourceSecret       *ClientCertDataSourceSecret       `queryParam:"inline"`
+
+	Type AuthClientCertType
+}
+
+func CreateAuthClientCertClientCertDataSourceFile(clientCertDataSourceFile ClientCertDataSourceFile) AuthClientCert {
+	typ := AuthClientCertTypeClientCertDataSourceFile
+
+	return AuthClientCert{
+		ClientCertDataSourceFile: &clientCertDataSourceFile,
+		Type:                     typ,
+	}
+}
+
+func CreateAuthClientCertClientCertDataSourceInline(clientCertDataSourceInline ClientCertDataSourceInline) AuthClientCert {
+	typ := AuthClientCertTypeClientCertDataSourceInline
+
+	return AuthClientCert{
+		ClientCertDataSourceInline: &clientCertDataSourceInline,
+		Type:                       typ,
+	}
+}
+
+func CreateAuthClientCertClientCertDataSourceInlineString(clientCertDataSourceInlineString ClientCertDataSourceInlineString) AuthClientCert {
+	typ := AuthClientCertTypeClientCertDataSourceInlineString
+
+	return AuthClientCert{
+		ClientCertDataSourceInlineString: &clientCertDataSourceInlineString,
+		Type:                             typ,
+	}
+}
+
+func CreateAuthClientCertClientCertDataSourceSecret(clientCertDataSourceSecret ClientCertDataSourceSecret) AuthClientCert {
+	typ := AuthClientCertTypeClientCertDataSourceSecret
+
+	return AuthClientCert{
+		ClientCertDataSourceSecret: &clientCertDataSourceSecret,
+		Type:                       typ,
+	}
+}
+
+func (u *AuthClientCert) UnmarshalJSON(data []byte) error {
+
+	var clientCertDataSourceFile ClientCertDataSourceFile = ClientCertDataSourceFile{}
+	if err := utils.UnmarshalJSON(data, &clientCertDataSourceFile, "", true, true); err == nil {
+		u.ClientCertDataSourceFile = &clientCertDataSourceFile
+		u.Type = AuthClientCertTypeClientCertDataSourceFile
+		return nil
+	}
+
+	var clientCertDataSourceInline ClientCertDataSourceInline = ClientCertDataSourceInline{}
+	if err := utils.UnmarshalJSON(data, &clientCertDataSourceInline, "", true, true); err == nil {
+		u.ClientCertDataSourceInline = &clientCertDataSourceInline
+		u.Type = AuthClientCertTypeClientCertDataSourceInline
+		return nil
+	}
+
+	var clientCertDataSourceInlineString ClientCertDataSourceInlineString = ClientCertDataSourceInlineString{}
+	if err := utils.UnmarshalJSON(data, &clientCertDataSourceInlineString, "", true, true); err == nil {
+		u.ClientCertDataSourceInlineString = &clientCertDataSourceInlineString
+		u.Type = AuthClientCertTypeClientCertDataSourceInlineString
+		return nil
+	}
+
+	var clientCertDataSourceSecret ClientCertDataSourceSecret = ClientCertDataSourceSecret{}
+	if err := utils.UnmarshalJSON(data, &clientCertDataSourceSecret, "", true, true); err == nil {
+		u.ClientCertDataSourceSecret = &clientCertDataSourceSecret
+		u.Type = AuthClientCertTypeClientCertDataSourceSecret
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for AuthClientCert", string(data))
+}
+
+func (u AuthClientCert) MarshalJSON() ([]byte, error) {
+	if u.ClientCertDataSourceFile != nil {
+		return utils.MarshalJSON(u.ClientCertDataSourceFile, "", true)
+	}
+
+	if u.ClientCertDataSourceInline != nil {
+		return utils.MarshalJSON(u.ClientCertDataSourceInline, "", true)
+	}
+
+	if u.ClientCertDataSourceInlineString != nil {
+		return utils.MarshalJSON(u.ClientCertDataSourceInlineString, "", true)
+	}
+
+	if u.ClientCertDataSourceSecret != nil {
+		return utils.MarshalJSON(u.ClientCertDataSourceSecret, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type AuthClientCert: all fields are null")
+}
+
+type ClientKeyDataSourceSecret struct {
+	// Data source is a secret with given Secret key.
+	Secret *string `json:"secret,omitempty"`
+}
+
+func (o *ClientKeyDataSourceSecret) GetSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Secret
+}
+
+type ClientKeyDataSourceInlineString struct {
+	// Data source is inline string
+	InlineString *string `json:"inlineString,omitempty"`
+}
+
+func (o *ClientKeyDataSourceInlineString) GetInlineString() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InlineString
+}
+
+type ClientKeyDataSourceInline struct {
+	// Data source is inline bytes.
+	Inline *string `json:"inline,omitempty"`
+}
+
+func (o *ClientKeyDataSourceInline) GetInline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Inline
+}
+
+type ClientKeyDataSourceFile struct {
+	// Data source is a path to a file.
+	// Deprecated, use other sources of a data.
+	File *string `json:"file,omitempty"`
+}
+
+func (o *ClientKeyDataSourceFile) GetFile() *string {
+	if o == nil {
+		return nil
+	}
+	return o.File
+}
+
+type AuthClientKeyType string
+
+const (
+	AuthClientKeyTypeClientKeyDataSourceFile         AuthClientKeyType = "clientKey_DataSource_File"
+	AuthClientKeyTypeClientKeyDataSourceInline       AuthClientKeyType = "clientKey_DataSource_Inline"
+	AuthClientKeyTypeClientKeyDataSourceInlineString AuthClientKeyType = "clientKey_DataSource_InlineString"
+	AuthClientKeyTypeClientKeyDataSourceSecret       AuthClientKeyType = "clientKey_DataSource_Secret"
+)
+
+type AuthClientKey struct {
+	ClientKeyDataSourceFile         *ClientKeyDataSourceFile         `queryParam:"inline"`
+	ClientKeyDataSourceInline       *ClientKeyDataSourceInline       `queryParam:"inline"`
+	ClientKeyDataSourceInlineString *ClientKeyDataSourceInlineString `queryParam:"inline"`
+	ClientKeyDataSourceSecret       *ClientKeyDataSourceSecret       `queryParam:"inline"`
+
+	Type AuthClientKeyType
+}
+
+func CreateAuthClientKeyClientKeyDataSourceFile(clientKeyDataSourceFile ClientKeyDataSourceFile) AuthClientKey {
+	typ := AuthClientKeyTypeClientKeyDataSourceFile
+
+	return AuthClientKey{
+		ClientKeyDataSourceFile: &clientKeyDataSourceFile,
+		Type:                    typ,
+	}
+}
+
+func CreateAuthClientKeyClientKeyDataSourceInline(clientKeyDataSourceInline ClientKeyDataSourceInline) AuthClientKey {
+	typ := AuthClientKeyTypeClientKeyDataSourceInline
+
+	return AuthClientKey{
+		ClientKeyDataSourceInline: &clientKeyDataSourceInline,
+		Type:                      typ,
+	}
+}
+
+func CreateAuthClientKeyClientKeyDataSourceInlineString(clientKeyDataSourceInlineString ClientKeyDataSourceInlineString) AuthClientKey {
+	typ := AuthClientKeyTypeClientKeyDataSourceInlineString
+
+	return AuthClientKey{
+		ClientKeyDataSourceInlineString: &clientKeyDataSourceInlineString,
+		Type:                            typ,
+	}
+}
+
+func CreateAuthClientKeyClientKeyDataSourceSecret(clientKeyDataSourceSecret ClientKeyDataSourceSecret) AuthClientKey {
+	typ := AuthClientKeyTypeClientKeyDataSourceSecret
+
+	return AuthClientKey{
+		ClientKeyDataSourceSecret: &clientKeyDataSourceSecret,
+		Type:                      typ,
+	}
+}
+
+func (u *AuthClientKey) UnmarshalJSON(data []byte) error {
+
+	var clientKeyDataSourceFile ClientKeyDataSourceFile = ClientKeyDataSourceFile{}
+	if err := utils.UnmarshalJSON(data, &clientKeyDataSourceFile, "", true, true); err == nil {
+		u.ClientKeyDataSourceFile = &clientKeyDataSourceFile
+		u.Type = AuthClientKeyTypeClientKeyDataSourceFile
+		return nil
+	}
+
+	var clientKeyDataSourceInline ClientKeyDataSourceInline = ClientKeyDataSourceInline{}
+	if err := utils.UnmarshalJSON(data, &clientKeyDataSourceInline, "", true, true); err == nil {
+		u.ClientKeyDataSourceInline = &clientKeyDataSourceInline
+		u.Type = AuthClientKeyTypeClientKeyDataSourceInline
+		return nil
+	}
+
+	var clientKeyDataSourceInlineString ClientKeyDataSourceInlineString = ClientKeyDataSourceInlineString{}
+	if err := utils.UnmarshalJSON(data, &clientKeyDataSourceInlineString, "", true, true); err == nil {
+		u.ClientKeyDataSourceInlineString = &clientKeyDataSourceInlineString
+		u.Type = AuthClientKeyTypeClientKeyDataSourceInlineString
+		return nil
+	}
+
+	var clientKeyDataSourceSecret ClientKeyDataSourceSecret = ClientKeyDataSourceSecret{}
+	if err := utils.UnmarshalJSON(data, &clientKeyDataSourceSecret, "", true, true); err == nil {
+		u.ClientKeyDataSourceSecret = &clientKeyDataSourceSecret
+		u.Type = AuthClientKeyTypeClientKeyDataSourceSecret
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for AuthClientKey", string(data))
+}
+
+func (u AuthClientKey) MarshalJSON() ([]byte, error) {
+	if u.ClientKeyDataSourceFile != nil {
+		return utils.MarshalJSON(u.ClientKeyDataSourceFile, "", true)
+	}
+
+	if u.ClientKeyDataSourceInline != nil {
+		return utils.MarshalJSON(u.ClientKeyDataSourceInline, "", true)
+	}
+
+	if u.ClientKeyDataSourceInlineString != nil {
+		return utils.MarshalJSON(u.ClientKeyDataSourceInlineString, "", true)
+	}
+
+	if u.ClientKeyDataSourceSecret != nil {
+		return utils.MarshalJSON(u.ClientKeyDataSourceSecret, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type AuthClientKey: all fields are null")
+}
+
+type AuthTLS struct {
+	ClientCert *AuthClientCert `json:"clientCert,omitempty"`
+	ClientKey  *AuthClientKey  `json:"clientKey,omitempty"`
+}
+
+func (o *AuthTLS) GetClientCert() *AuthClientCert {
+	if o == nil {
+		return nil
+	}
+	return o.ClientCert
+}
+
+func (o *AuthTLS) GetClientKey() *AuthClientKey {
+	if o == nil {
+		return nil
+	}
+	return o.ClientKey
+}
+
+type VaultCertificateAuthorityConfigFromCpAuthTLS struct {
+	TLS *AuthTLS `json:"tls,omitempty"`
+}
+
+func (o *VaultCertificateAuthorityConfigFromCpAuthTLS) GetTLS() *AuthTLS {
+	if o == nil {
+		return nil
+	}
+	return o.TLS
+}
+
+type AuthTypeType string
+
+const (
+	AuthTypeTypeStr     AuthTypeType = "str"
+	AuthTypeTypeInteger AuthTypeType = "integer"
+)
+
+type AuthType struct {
+	Str     *string `queryParam:"inline"`
+	Integer *int64  `queryParam:"inline"`
+
+	Type AuthTypeType
+}
+
+func CreateAuthTypeStr(str string) AuthType {
+	typ := AuthTypeTypeStr
+
+	return AuthType{
+		Str:  &str,
+		Type: typ,
+	}
+}
+
+func CreateAuthTypeInteger(integer int64) AuthType {
+	typ := AuthTypeTypeInteger
+
+	return AuthType{
+		Integer: &integer,
+		Type:    typ,
+	}
+}
+
+func (u *AuthType) UnmarshalJSON(data []byte) error {
+
+	var str string = ""
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = AuthTypeTypeStr
+		return nil
+	}
+
+	var integer int64 = int64(0)
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = AuthTypeTypeInteger
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for AuthType", string(data))
+}
+
+func (u AuthType) MarshalJSON() ([]byte, error) {
+	if u.Str != nil {
+		return utils.MarshalJSON(u.Str, "", true)
+	}
+
+	if u.Integer != nil {
+		return utils.MarshalJSON(u.Integer, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type AuthType: all fields are null")
+}
+
+type Aws struct {
+	IamServerIDHeader *string   `json:"iamServerIdHeader,omitempty"`
+	Role              *string   `json:"role,omitempty"`
+	Type              *AuthType `json:"type,omitempty"`
+}
+
+func (o *Aws) GetIamServerIDHeader() *string {
+	if o == nil {
+		return nil
+	}
+	return o.IamServerIDHeader
+}
+
+func (o *Aws) GetRole() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Role
+}
+
+func (o *Aws) GetType() *AuthType {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+type VaultCertificateAuthorityConfigFromCpAuthAws struct {
+	Aws *Aws `json:"aws,omitempty"`
+}
+
+func (o *VaultCertificateAuthorityConfigFromCpAuthAws) GetAws() *Aws {
+	if o == nil {
+		return nil
+	}
+	return o.Aws
+}
+
+type VaultCertificateAuthorityConfigAuthType string
+
+const (
+	VaultCertificateAuthorityConfigAuthTypeVaultCertificateAuthorityConfigFromCpAuthAws   VaultCertificateAuthorityConfigAuthType = "VaultCertificateAuthorityConfig_FromCp_Auth_Aws"
+	VaultCertificateAuthorityConfigAuthTypeVaultCertificateAuthorityConfigFromCpAuthTLS   VaultCertificateAuthorityConfigAuthType = "VaultCertificateAuthorityConfig_FromCp_Auth_Tls"
+	VaultCertificateAuthorityConfigAuthTypeVaultCertificateAuthorityConfigFromCpAuthToken VaultCertificateAuthorityConfigAuthType = "VaultCertificateAuthorityConfig_FromCp_Auth_Token"
+)
+
+type VaultCertificateAuthorityConfigAuth struct {
+	VaultCertificateAuthorityConfigFromCpAuthAws   *VaultCertificateAuthorityConfigFromCpAuthAws   `queryParam:"inline"`
+	VaultCertificateAuthorityConfigFromCpAuthTLS   *VaultCertificateAuthorityConfigFromCpAuthTLS   `queryParam:"inline"`
+	VaultCertificateAuthorityConfigFromCpAuthToken *VaultCertificateAuthorityConfigFromCpAuthToken `queryParam:"inline"`
+
+	Type VaultCertificateAuthorityConfigAuthType
+}
+
+func CreateVaultCertificateAuthorityConfigAuthVaultCertificateAuthorityConfigFromCpAuthAws(vaultCertificateAuthorityConfigFromCpAuthAws VaultCertificateAuthorityConfigFromCpAuthAws) VaultCertificateAuthorityConfigAuth {
+	typ := VaultCertificateAuthorityConfigAuthTypeVaultCertificateAuthorityConfigFromCpAuthAws
+
+	return VaultCertificateAuthorityConfigAuth{
+		VaultCertificateAuthorityConfigFromCpAuthAws: &vaultCertificateAuthorityConfigFromCpAuthAws,
+		Type: typ,
+	}
+}
+
+func CreateVaultCertificateAuthorityConfigAuthVaultCertificateAuthorityConfigFromCpAuthTLS(vaultCertificateAuthorityConfigFromCpAuthTLS VaultCertificateAuthorityConfigFromCpAuthTLS) VaultCertificateAuthorityConfigAuth {
+	typ := VaultCertificateAuthorityConfigAuthTypeVaultCertificateAuthorityConfigFromCpAuthTLS
+
+	return VaultCertificateAuthorityConfigAuth{
+		VaultCertificateAuthorityConfigFromCpAuthTLS: &vaultCertificateAuthorityConfigFromCpAuthTLS,
+		Type: typ,
+	}
+}
+
+func CreateVaultCertificateAuthorityConfigAuthVaultCertificateAuthorityConfigFromCpAuthToken(vaultCertificateAuthorityConfigFromCpAuthToken VaultCertificateAuthorityConfigFromCpAuthToken) VaultCertificateAuthorityConfigAuth {
+	typ := VaultCertificateAuthorityConfigAuthTypeVaultCertificateAuthorityConfigFromCpAuthToken
+
+	return VaultCertificateAuthorityConfigAuth{
+		VaultCertificateAuthorityConfigFromCpAuthToken: &vaultCertificateAuthorityConfigFromCpAuthToken,
+		Type: typ,
+	}
+}
+
+func (u *VaultCertificateAuthorityConfigAuth) UnmarshalJSON(data []byte) error {
+
+	var vaultCertificateAuthorityConfigFromCpAuthAws VaultCertificateAuthorityConfigFromCpAuthAws = VaultCertificateAuthorityConfigFromCpAuthAws{}
+	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfigFromCpAuthAws, "", true, true); err == nil {
+		u.VaultCertificateAuthorityConfigFromCpAuthAws = &vaultCertificateAuthorityConfigFromCpAuthAws
+		u.Type = VaultCertificateAuthorityConfigAuthTypeVaultCertificateAuthorityConfigFromCpAuthAws
+		return nil
+	}
+
+	var vaultCertificateAuthorityConfigFromCpAuthTLS VaultCertificateAuthorityConfigFromCpAuthTLS = VaultCertificateAuthorityConfigFromCpAuthTLS{}
+	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfigFromCpAuthTLS, "", true, true); err == nil {
+		u.VaultCertificateAuthorityConfigFromCpAuthTLS = &vaultCertificateAuthorityConfigFromCpAuthTLS
+		u.Type = VaultCertificateAuthorityConfigAuthTypeVaultCertificateAuthorityConfigFromCpAuthTLS
+		return nil
+	}
+
+	var vaultCertificateAuthorityConfigFromCpAuthToken VaultCertificateAuthorityConfigFromCpAuthToken = VaultCertificateAuthorityConfigFromCpAuthToken{}
+	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfigFromCpAuthToken, "", true, true); err == nil {
+		u.VaultCertificateAuthorityConfigFromCpAuthToken = &vaultCertificateAuthorityConfigFromCpAuthToken
+		u.Type = VaultCertificateAuthorityConfigAuthTypeVaultCertificateAuthorityConfigFromCpAuthToken
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for VaultCertificateAuthorityConfigAuth", string(data))
+}
+
+func (u VaultCertificateAuthorityConfigAuth) MarshalJSON() ([]byte, error) {
+	if u.VaultCertificateAuthorityConfigFromCpAuthAws != nil {
+		return utils.MarshalJSON(u.VaultCertificateAuthorityConfigFromCpAuthAws, "", true)
+	}
+
+	if u.VaultCertificateAuthorityConfigFromCpAuthTLS != nil {
+		return utils.MarshalJSON(u.VaultCertificateAuthorityConfigFromCpAuthTLS, "", true)
+	}
+
+	if u.VaultCertificateAuthorityConfigFromCpAuthToken != nil {
+		return utils.MarshalJSON(u.VaultCertificateAuthorityConfigFromCpAuthToken, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type VaultCertificateAuthorityConfigAuth: all fields are null")
+}
+
+type VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret struct {
+	// Data source is a secret with given Secret key.
+	Secret *string `json:"secret,omitempty"`
+}
+
+func (o *VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret) GetSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Secret
+}
+
+type VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString struct {
+	// Data source is inline string
+	InlineString *string `json:"inlineString,omitempty"`
+}
+
+func (o *VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString) GetInlineString() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InlineString
+}
+
+type VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline struct {
+	// Data source is inline bytes.
+	Inline *string `json:"inline,omitempty"`
+}
+
+func (o *VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline) GetInline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Inline
+}
+
+type VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile struct {
+	// Data source is a path to a file.
+	// Deprecated, use other sources of a data.
+	File *string `json:"file,omitempty"`
+}
+
+func (o *VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile) GetFile() *string {
+	if o == nil {
+		return nil
+	}
+	return o.File
+}
+
+type VaultCertificateAuthorityConfigCaCertType string
+
+const (
+	VaultCertificateAuthorityConfigCaCertTypeVaultCertificateAuthorityConfigFromCpCaCertDataSourceFile         VaultCertificateAuthorityConfigCaCertType = "VaultCertificateAuthorityConfig_FromCp__caCert_DataSource_File"
+	VaultCertificateAuthorityConfigCaCertTypeVaultCertificateAuthorityConfigFromCpCaCertDataSourceInline       VaultCertificateAuthorityConfigCaCertType = "VaultCertificateAuthorityConfig_FromCp__caCert_DataSource_Inline"
+	VaultCertificateAuthorityConfigCaCertTypeVaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString VaultCertificateAuthorityConfigCaCertType = "VaultCertificateAuthorityConfig_FromCp__caCert_DataSource_InlineString"
+	VaultCertificateAuthorityConfigCaCertTypeVaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret       VaultCertificateAuthorityConfigCaCertType = "VaultCertificateAuthorityConfig_FromCp__caCert_DataSource_Secret"
+)
+
+type VaultCertificateAuthorityConfigCaCert struct {
+	VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile         *VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile         `queryParam:"inline"`
+	VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline       *VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline       `queryParam:"inline"`
+	VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString *VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString `queryParam:"inline"`
+	VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret       *VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret       `queryParam:"inline"`
+
+	Type VaultCertificateAuthorityConfigCaCertType
+}
+
+func CreateVaultCertificateAuthorityConfigCaCertVaultCertificateAuthorityConfigFromCpCaCertDataSourceFile(vaultCertificateAuthorityConfigFromCpCaCertDataSourceFile VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile) VaultCertificateAuthorityConfigCaCert {
+	typ := VaultCertificateAuthorityConfigCaCertTypeVaultCertificateAuthorityConfigFromCpCaCertDataSourceFile
+
+	return VaultCertificateAuthorityConfigCaCert{
+		VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile: &vaultCertificateAuthorityConfigFromCpCaCertDataSourceFile,
+		Type: typ,
+	}
+}
+
+func CreateVaultCertificateAuthorityConfigCaCertVaultCertificateAuthorityConfigFromCpCaCertDataSourceInline(vaultCertificateAuthorityConfigFromCpCaCertDataSourceInline VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline) VaultCertificateAuthorityConfigCaCert {
+	typ := VaultCertificateAuthorityConfigCaCertTypeVaultCertificateAuthorityConfigFromCpCaCertDataSourceInline
+
+	return VaultCertificateAuthorityConfigCaCert{
+		VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline: &vaultCertificateAuthorityConfigFromCpCaCertDataSourceInline,
+		Type: typ,
+	}
+}
+
+func CreateVaultCertificateAuthorityConfigCaCertVaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString(vaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString) VaultCertificateAuthorityConfigCaCert {
+	typ := VaultCertificateAuthorityConfigCaCertTypeVaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString
+
+	return VaultCertificateAuthorityConfigCaCert{
+		VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString: &vaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString,
+		Type: typ,
+	}
+}
+
+func CreateVaultCertificateAuthorityConfigCaCertVaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret(vaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret) VaultCertificateAuthorityConfigCaCert {
+	typ := VaultCertificateAuthorityConfigCaCertTypeVaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret
+
+	return VaultCertificateAuthorityConfigCaCert{
+		VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret: &vaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret,
+		Type: typ,
+	}
+}
+
+func (u *VaultCertificateAuthorityConfigCaCert) UnmarshalJSON(data []byte) error {
+
+	var vaultCertificateAuthorityConfigFromCpCaCertDataSourceFile VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile = VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile{}
+	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfigFromCpCaCertDataSourceFile, "", true, true); err == nil {
+		u.VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile = &vaultCertificateAuthorityConfigFromCpCaCertDataSourceFile
+		u.Type = VaultCertificateAuthorityConfigCaCertTypeVaultCertificateAuthorityConfigFromCpCaCertDataSourceFile
+		return nil
+	}
+
+	var vaultCertificateAuthorityConfigFromCpCaCertDataSourceInline VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline = VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline{}
+	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfigFromCpCaCertDataSourceInline, "", true, true); err == nil {
+		u.VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline = &vaultCertificateAuthorityConfigFromCpCaCertDataSourceInline
+		u.Type = VaultCertificateAuthorityConfigCaCertTypeVaultCertificateAuthorityConfigFromCpCaCertDataSourceInline
+		return nil
+	}
+
+	var vaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString = VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString{}
+	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString, "", true, true); err == nil {
+		u.VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString = &vaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString
+		u.Type = VaultCertificateAuthorityConfigCaCertTypeVaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString
+		return nil
+	}
+
+	var vaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret = VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret{}
+	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret, "", true, true); err == nil {
+		u.VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret = &vaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret
+		u.Type = VaultCertificateAuthorityConfigCaCertTypeVaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for VaultCertificateAuthorityConfigCaCert", string(data))
+}
+
+func (u VaultCertificateAuthorityConfigCaCert) MarshalJSON() ([]byte, error) {
+	if u.VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile != nil {
+		return utils.MarshalJSON(u.VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile, "", true)
+	}
+
+	if u.VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline != nil {
+		return utils.MarshalJSON(u.VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline, "", true)
+	}
+
+	if u.VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString != nil {
+		return utils.MarshalJSON(u.VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString, "", true)
+	}
+
+	if u.VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret != nil {
+		return utils.MarshalJSON(u.VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type VaultCertificateAuthorityConfigCaCert: all fields are null")
+}
+
+type VaultCertificateAuthorityConfigTLS struct {
+	CaCert     *VaultCertificateAuthorityConfigCaCert `json:"caCert,omitempty"`
+	ServerName *string                                `json:"serverName,omitempty"`
+	SkipVerify *bool                                  `json:"skipVerify,omitempty"`
+}
+
+func (o *VaultCertificateAuthorityConfigTLS) GetCaCert() *VaultCertificateAuthorityConfigCaCert {
+	if o == nil {
+		return nil
+	}
+	return o.CaCert
+}
+
+func (o *VaultCertificateAuthorityConfigTLS) GetServerName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ServerName
+}
+
+func (o *VaultCertificateAuthorityConfigTLS) GetSkipVerify() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SkipVerify
+}
+
+type FromCp struct {
+	Address      *string                              `json:"address,omitempty"`
+	AgentAddress *string                              `json:"agentAddress,omitempty"`
+	Auth         *VaultCertificateAuthorityConfigAuth `json:"auth,omitempty"`
+	CommonName   *string                              `json:"commonName,omitempty"`
+	Namespace    *string                              `json:"namespace,omitempty"`
+	Pki          *string                              `json:"pki,omitempty"`
+	Role         *string                              `json:"role,omitempty"`
+	TLS          *VaultCertificateAuthorityConfigTLS  `json:"tls,omitempty"`
+}
+
+func (o *FromCp) GetAddress() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Address
+}
+
+func (o *FromCp) GetAgentAddress() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AgentAddress
+}
+
+func (o *FromCp) GetAuth() *VaultCertificateAuthorityConfigAuth {
+	if o == nil {
+		return nil
+	}
+	return o.Auth
+}
+
+func (o *FromCp) GetCommonName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CommonName
+}
+
+func (o *FromCp) GetNamespace() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Namespace
+}
+
+func (o *FromCp) GetPki() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Pki
+}
+
+func (o *FromCp) GetRole() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Role
+}
+
+func (o *FromCp) GetTLS() *VaultCertificateAuthorityConfigTLS {
+	if o == nil {
+		return nil
+	}
+	return o.TLS
+}
+
+type VaultCertificateAuthorityConfigFromCp struct {
+	FromCp *FromCp `json:"fromCp,omitempty"`
+}
+
+func (o *VaultCertificateAuthorityConfigFromCp) GetFromCp() *FromCp {
+	if o == nil {
+		return nil
+	}
+	return o.FromCp
+}
+
+type VaultCertificateAuthorityConfigType string
+
+const (
+	VaultCertificateAuthorityConfigTypeVaultCertificateAuthorityConfigFromCp VaultCertificateAuthorityConfigType = "VaultCertificateAuthorityConfig_FromCp_"
+)
+
+type VaultCertificateAuthorityConfig struct {
+	VaultCertificateAuthorityConfigFromCp *VaultCertificateAuthorityConfigFromCp `queryParam:"inline"`
+
+	Type VaultCertificateAuthorityConfigType
+}
+
+func CreateVaultCertificateAuthorityConfigVaultCertificateAuthorityConfigFromCp(vaultCertificateAuthorityConfigFromCp VaultCertificateAuthorityConfigFromCp) VaultCertificateAuthorityConfig {
+	typ := VaultCertificateAuthorityConfigTypeVaultCertificateAuthorityConfigFromCp
+
+	return VaultCertificateAuthorityConfig{
+		VaultCertificateAuthorityConfigFromCp: &vaultCertificateAuthorityConfigFromCp,
+		Type:                                  typ,
+	}
+}
+
+func (u *VaultCertificateAuthorityConfig) UnmarshalJSON(data []byte) error {
+
+	var vaultCertificateAuthorityConfigFromCp VaultCertificateAuthorityConfigFromCp = VaultCertificateAuthorityConfigFromCp{}
+	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfigFromCp, "", true, true); err == nil {
+		u.VaultCertificateAuthorityConfigFromCp = &vaultCertificateAuthorityConfigFromCp
+		u.Type = VaultCertificateAuthorityConfigTypeVaultCertificateAuthorityConfigFromCp
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for VaultCertificateAuthorityConfig", string(data))
+}
+
+func (u VaultCertificateAuthorityConfig) MarshalJSON() ([]byte, error) {
+	if u.VaultCertificateAuthorityConfigFromCp != nil {
+		return utils.MarshalJSON(u.VaultCertificateAuthorityConfigFromCp, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type VaultCertificateAuthorityConfig: all fields are null")
 }
 
 type BuiltinCertificateAuthorityConfigConfCaCert struct {
@@ -866,38 +2411,316 @@ func (o *BuiltinCertificateAuthorityConfig) GetCaCert() *BuiltinCertificateAutho
 	return o.CaCert
 }
 
-type Cert struct {
-	// Types that are valid to be assigned to Type:
-	//
-	// 	*DataSource_Secret
-	// 	*DataSource_File
-	// 	*DataSource_Inline
-	// 	*DataSource_InlineString
-	Type any `json:"Type"`
+type CertDataSourceSecret struct {
+	// Data source is a secret with given Secret key.
+	Secret *string `json:"secret,omitempty"`
 }
 
-func (o *Cert) GetType() any {
+func (o *CertDataSourceSecret) GetSecret() *string {
 	if o == nil {
 		return nil
 	}
-	return o.Type
+	return o.Secret
 }
+
+type CertDataSourceInlineString struct {
+	// Data source is inline string
+	InlineString *string `json:"inlineString,omitempty"`
+}
+
+func (o *CertDataSourceInlineString) GetInlineString() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InlineString
+}
+
+type CertDataSourceInline struct {
+	// Data source is inline bytes.
+	Inline *string `json:"inline,omitempty"`
+}
+
+func (o *CertDataSourceInline) GetInline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Inline
+}
+
+type CertDataSourceFile struct {
+	// Data source is a path to a file.
+	// Deprecated, use other sources of a data.
+	File *string `json:"file,omitempty"`
+}
+
+func (o *CertDataSourceFile) GetFile() *string {
+	if o == nil {
+		return nil
+	}
+	return o.File
+}
+
+type CertType string
+
+const (
+	CertTypeCertDataSourceFile         CertType = "cert_DataSource_File"
+	CertTypeCertDataSourceInline       CertType = "cert_DataSource_Inline"
+	CertTypeCertDataSourceInlineString CertType = "cert_DataSource_InlineString"
+	CertTypeCertDataSourceSecret       CertType = "cert_DataSource_Secret"
+)
+
+type Cert struct {
+	CertDataSourceFile         *CertDataSourceFile         `queryParam:"inline"`
+	CertDataSourceInline       *CertDataSourceInline       `queryParam:"inline"`
+	CertDataSourceInlineString *CertDataSourceInlineString `queryParam:"inline"`
+	CertDataSourceSecret       *CertDataSourceSecret       `queryParam:"inline"`
+
+	Type CertType
+}
+
+func CreateCertCertDataSourceFile(certDataSourceFile CertDataSourceFile) Cert {
+	typ := CertTypeCertDataSourceFile
+
+	return Cert{
+		CertDataSourceFile: &certDataSourceFile,
+		Type:               typ,
+	}
+}
+
+func CreateCertCertDataSourceInline(certDataSourceInline CertDataSourceInline) Cert {
+	typ := CertTypeCertDataSourceInline
+
+	return Cert{
+		CertDataSourceInline: &certDataSourceInline,
+		Type:                 typ,
+	}
+}
+
+func CreateCertCertDataSourceInlineString(certDataSourceInlineString CertDataSourceInlineString) Cert {
+	typ := CertTypeCertDataSourceInlineString
+
+	return Cert{
+		CertDataSourceInlineString: &certDataSourceInlineString,
+		Type:                       typ,
+	}
+}
+
+func CreateCertCertDataSourceSecret(certDataSourceSecret CertDataSourceSecret) Cert {
+	typ := CertTypeCertDataSourceSecret
+
+	return Cert{
+		CertDataSourceSecret: &certDataSourceSecret,
+		Type:                 typ,
+	}
+}
+
+func (u *Cert) UnmarshalJSON(data []byte) error {
+
+	var certDataSourceFile CertDataSourceFile = CertDataSourceFile{}
+	if err := utils.UnmarshalJSON(data, &certDataSourceFile, "", true, true); err == nil {
+		u.CertDataSourceFile = &certDataSourceFile
+		u.Type = CertTypeCertDataSourceFile
+		return nil
+	}
+
+	var certDataSourceInline CertDataSourceInline = CertDataSourceInline{}
+	if err := utils.UnmarshalJSON(data, &certDataSourceInline, "", true, true); err == nil {
+		u.CertDataSourceInline = &certDataSourceInline
+		u.Type = CertTypeCertDataSourceInline
+		return nil
+	}
+
+	var certDataSourceInlineString CertDataSourceInlineString = CertDataSourceInlineString{}
+	if err := utils.UnmarshalJSON(data, &certDataSourceInlineString, "", true, true); err == nil {
+		u.CertDataSourceInlineString = &certDataSourceInlineString
+		u.Type = CertTypeCertDataSourceInlineString
+		return nil
+	}
+
+	var certDataSourceSecret CertDataSourceSecret = CertDataSourceSecret{}
+	if err := utils.UnmarshalJSON(data, &certDataSourceSecret, "", true, true); err == nil {
+		u.CertDataSourceSecret = &certDataSourceSecret
+		u.Type = CertTypeCertDataSourceSecret
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for Cert", string(data))
+}
+
+func (u Cert) MarshalJSON() ([]byte, error) {
+	if u.CertDataSourceFile != nil {
+		return utils.MarshalJSON(u.CertDataSourceFile, "", true)
+	}
+
+	if u.CertDataSourceInline != nil {
+		return utils.MarshalJSON(u.CertDataSourceInline, "", true)
+	}
+
+	if u.CertDataSourceInlineString != nil {
+		return utils.MarshalJSON(u.CertDataSourceInlineString, "", true)
+	}
+
+	if u.CertDataSourceSecret != nil {
+		return utils.MarshalJSON(u.CertDataSourceSecret, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type Cert: all fields are null")
+}
+
+type KeyDataSourceSecret struct {
+	// Data source is a secret with given Secret key.
+	Secret *string `json:"secret,omitempty"`
+}
+
+func (o *KeyDataSourceSecret) GetSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Secret
+}
+
+type KeyDataSourceInlineString struct {
+	// Data source is inline string
+	InlineString *string `json:"inlineString,omitempty"`
+}
+
+func (o *KeyDataSourceInlineString) GetInlineString() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InlineString
+}
+
+type KeyDataSourceInline struct {
+	// Data source is inline bytes.
+	Inline *string `json:"inline,omitempty"`
+}
+
+func (o *KeyDataSourceInline) GetInline() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Inline
+}
+
+type KeyDataSourceFile struct {
+	// Data source is a path to a file.
+	// Deprecated, use other sources of a data.
+	File *string `json:"file,omitempty"`
+}
+
+func (o *KeyDataSourceFile) GetFile() *string {
+	if o == nil {
+		return nil
+	}
+	return o.File
+}
+
+type KeyType string
+
+const (
+	KeyTypeKeyDataSourceFile         KeyType = "key_DataSource_File"
+	KeyTypeKeyDataSourceInline       KeyType = "key_DataSource_Inline"
+	KeyTypeKeyDataSourceInlineString KeyType = "key_DataSource_InlineString"
+	KeyTypeKeyDataSourceSecret       KeyType = "key_DataSource_Secret"
+)
 
 type Key struct {
-	// Types that are valid to be assigned to Type:
-	//
-	// 	*DataSource_Secret
-	// 	*DataSource_File
-	// 	*DataSource_Inline
-	// 	*DataSource_InlineString
-	Type any `json:"Type"`
+	KeyDataSourceFile         *KeyDataSourceFile         `queryParam:"inline"`
+	KeyDataSourceInline       *KeyDataSourceInline       `queryParam:"inline"`
+	KeyDataSourceInlineString *KeyDataSourceInlineString `queryParam:"inline"`
+	KeyDataSourceSecret       *KeyDataSourceSecret       `queryParam:"inline"`
+
+	Type KeyType
 }
 
-func (o *Key) GetType() any {
-	if o == nil {
+func CreateKeyKeyDataSourceFile(keyDataSourceFile KeyDataSourceFile) Key {
+	typ := KeyTypeKeyDataSourceFile
+
+	return Key{
+		KeyDataSourceFile: &keyDataSourceFile,
+		Type:              typ,
+	}
+}
+
+func CreateKeyKeyDataSourceInline(keyDataSourceInline KeyDataSourceInline) Key {
+	typ := KeyTypeKeyDataSourceInline
+
+	return Key{
+		KeyDataSourceInline: &keyDataSourceInline,
+		Type:                typ,
+	}
+}
+
+func CreateKeyKeyDataSourceInlineString(keyDataSourceInlineString KeyDataSourceInlineString) Key {
+	typ := KeyTypeKeyDataSourceInlineString
+
+	return Key{
+		KeyDataSourceInlineString: &keyDataSourceInlineString,
+		Type:                      typ,
+	}
+}
+
+func CreateKeyKeyDataSourceSecret(keyDataSourceSecret KeyDataSourceSecret) Key {
+	typ := KeyTypeKeyDataSourceSecret
+
+	return Key{
+		KeyDataSourceSecret: &keyDataSourceSecret,
+		Type:                typ,
+	}
+}
+
+func (u *Key) UnmarshalJSON(data []byte) error {
+
+	var keyDataSourceFile KeyDataSourceFile = KeyDataSourceFile{}
+	if err := utils.UnmarshalJSON(data, &keyDataSourceFile, "", true, true); err == nil {
+		u.KeyDataSourceFile = &keyDataSourceFile
+		u.Type = KeyTypeKeyDataSourceFile
 		return nil
 	}
-	return o.Type
+
+	var keyDataSourceInline KeyDataSourceInline = KeyDataSourceInline{}
+	if err := utils.UnmarshalJSON(data, &keyDataSourceInline, "", true, true); err == nil {
+		u.KeyDataSourceInline = &keyDataSourceInline
+		u.Type = KeyTypeKeyDataSourceInline
+		return nil
+	}
+
+	var keyDataSourceInlineString KeyDataSourceInlineString = KeyDataSourceInlineString{}
+	if err := utils.UnmarshalJSON(data, &keyDataSourceInlineString, "", true, true); err == nil {
+		u.KeyDataSourceInlineString = &keyDataSourceInlineString
+		u.Type = KeyTypeKeyDataSourceInlineString
+		return nil
+	}
+
+	var keyDataSourceSecret KeyDataSourceSecret = KeyDataSourceSecret{}
+	if err := utils.UnmarshalJSON(data, &keyDataSourceSecret, "", true, true); err == nil {
+		u.KeyDataSourceSecret = &keyDataSourceSecret
+		u.Type = KeyTypeKeyDataSourceSecret
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for Key", string(data))
+}
+
+func (u Key) MarshalJSON() ([]byte, error) {
+	if u.KeyDataSourceFile != nil {
+		return utils.MarshalJSON(u.KeyDataSourceFile, "", true)
+	}
+
+	if u.KeyDataSourceInline != nil {
+		return utils.MarshalJSON(u.KeyDataSourceInline, "", true)
+	}
+
+	if u.KeyDataSourceInlineString != nil {
+		return utils.MarshalJSON(u.KeyDataSourceInlineString, "", true)
+	}
+
+	if u.KeyDataSourceSecret != nil {
+		return utils.MarshalJSON(u.KeyDataSourceSecret, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type Key: all fields are null")
 }
 
 type ProvidedCertificateAuthorityConfig struct {
@@ -993,13 +2816,6 @@ func (u *MeshItemMtlsConf) UnmarshalJSON(data []byte) error {
 		return nil
 	}
 
-	var vaultCertificateAuthorityConfig VaultCertificateAuthorityConfig = VaultCertificateAuthorityConfig{}
-	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfig, "", true, true); err == nil {
-		u.VaultCertificateAuthorityConfig = &vaultCertificateAuthorityConfig
-		u.Type = MeshItemMtlsConfTypeVaultCertificateAuthorityConfig
-		return nil
-	}
-
 	var providedCertificateAuthorityConfig ProvidedCertificateAuthorityConfig = ProvidedCertificateAuthorityConfig{}
 	if err := utils.UnmarshalJSON(data, &providedCertificateAuthorityConfig, "", true, true); err == nil {
 		u.ProvidedCertificateAuthorityConfig = &providedCertificateAuthorityConfig
@@ -1018,6 +2834,13 @@ func (u *MeshItemMtlsConf) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &certManagerCertificateAuthorityConfig, "", true, true); err == nil {
 		u.CertManagerCertificateAuthorityConfig = &certManagerCertificateAuthorityConfig
 		u.Type = MeshItemMtlsConfTypeCertManagerCertificateAuthorityConfig
+		return nil
+	}
+
+	var vaultCertificateAuthorityConfig VaultCertificateAuthorityConfig = VaultCertificateAuthorityConfig{}
+	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfig, "", true, true); err == nil {
+		u.VaultCertificateAuthorityConfig = &vaultCertificateAuthorityConfig
+		u.Type = MeshItemMtlsConfTypeVaultCertificateAuthorityConfig
 		return nil
 	}
 
