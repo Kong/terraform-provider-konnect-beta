@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.11.0
+> Released on 2025/10/09
+
+### Features
+* Add support for `oneOf` types in mesh-related resource
+
 ## 0.10.0
 > Released on 2025/10/08
 
