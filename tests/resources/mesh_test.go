@@ -7,7 +7,9 @@ import (
 
 	"github.com/Kong/shared-speakeasy/tfbuilder"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
+	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
 	"github.com/hashicorp/terraform-plugin-testing/plancheck"
+	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
@@ -60,7 +62,6 @@ func TestMesh(t *testing.T) {
 	})
 
 	t.Run("create a policy and modify fields on it", func(t *testing.T) {
-		t.Skip("Leading to inconsistent plan in some cases, needs investigation.")
 		builder := tfbuilder.NewBuilder(tfbuilder.Konnect, serverScheme, serverHost, serverPort).WithProviderProperty(tfbuilder.KonnectBeta)
 		cp := tfbuilder.NewControlPlane("e2e-test", "e2e-test", "e2e test cp")
 		builder.AddControlPlane(cp)
@@ -75,6 +76,177 @@ func TestMesh(t *testing.T) {
 		builder.AddMesh(mesh)
 
 		resource.ParallelTest(t, tfbuilder.CreatePolicyAndModifyFieldsOnIt(providerFactory, builder, mtp))
+	})
+
+	t.Run("create mesh with oneOf", func(t *testing.T) {
+		builder := tfbuilder.NewBuilder(tfbuilder.Konnect, serverScheme, serverHost, serverPort).WithProviderProperty(tfbuilder.KonnectBeta)
+		cp := tfbuilder.NewControlPlane("e2e-test", "e2e-test", "e2e test cp")
+		mesh := tfbuilder.NewMeshBuilder("m1", "m1").
+			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
+			WithDependsOn(builder.ResourceAddress("mesh_control_plane", cp.ResourceName)).
+			WithSpec(`
+skip_creating_initial_policies = [ "*" ]
+mtls = {
+  backends = [
+    {
+      name = "mesh-a-acmpca"
+      type = "acmpca"
+      dp_cert = {
+        rotation = {
+          expiration = "24h"
+        }
+      }
+      conf = {
+        acm_certificate_authority_config = {
+          arn = "arn:hello:world"
+          ca_cert = {
+            data_source_file = {
+              file = "my-file"
+            }
+          }
+          auth = {
+            aws_credentials = {
+              access_key = {
+                data_source_inline_string = {
+                  inline_string = "TestTestTest"
+                }
+              }
+              access_key_secret = {
+                data_source_inline_string = {
+                  inline_string = "TestTestTest"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+  enabledBackend  = "mesh-a-acmpca"
+}
+`)
+
+		builder.AddControlPlane(cp)
+
+		resource.ParallelTest(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					Config: builder.AddMesh(mesh).Build(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectResourceAction(builder.ResourceAddress("mesh", mesh.ResourceName), plancheck.ResourceActionCreate),
+						},
+					},
+				},
+				tfbuilder.CheckReapplyPlanEmpty(builder),
+			},
+		})
+	})
+
+	t.Run("create a policy and remove arrays on it", func(t *testing.T) {
+		builder := tfbuilder.NewBuilder(tfbuilder.Konnect, serverScheme, serverHost, serverPort).WithProviderProperty(tfbuilder.KonnectBeta)
+		cp := tfbuilder.NewControlPlane("e2e-test", "e2e-test", "e2e test cp")
+		builder.AddControlPlane(cp)
+		mesh := tfbuilder.NewMeshBuilder("default", "terraform-provider-kong-mesh").
+			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
+			WithDependsOn(builder.ResourceAddress("mesh_control_plane", cp.ResourceName)).
+			WithSpec(`skip_creating_initial_policies = [ "*" ]`)
+		mtp := tfbuilder.NewPolicyBuilder("mesh_traffic_permission", "allow_all", "allow-all", "MeshTrafficPermission").
+			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
+			WithMeshRef(builder.ResourceAddress("mesh", mesh.ResourceName) + ".name").
+			WithDependsOn(builder.ResourceAddress("mesh", mesh.ResourceName))
+		builder.AddMesh(mesh)
+
+		resource.ParallelTest(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					Config: builder.AddPolicy(mtp.WithSpec(`
+spec = {
+  rules = [
+    {
+      default = {
+        allow = [
+          {
+            spiffe_id = {
+              type  = "Exact"
+              value = "spiffe://hello/world"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}`)).Build(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectResourceAction(builder.ResourceAddress(mtp.ResourceType, mtp.ResourceName), plancheck.ResourceActionCreate),
+						},
+						PostApplyPostRefresh: []plancheck.PlanCheck{
+							plancheck.ExpectKnownValue(builder.ResourceAddress(mtp.ResourceType, mtp.ResourceName),
+								tfjsonpath.New("spec").AtMapKey("rules").AtSliceIndex(0).AtMapKey("default"),
+								knownvalue.ObjectExact(map[string]knownvalue.Check{
+									"allow": knownvalue.ListExact([]knownvalue.Check{
+										knownvalue.ObjectExact(map[string]knownvalue.Check{
+											"spiffe_id": knownvalue.ObjectExact(map[string]knownvalue.Check{
+												"type":  knownvalue.StringExact("Exact"),
+												"value": knownvalue.StringExact("spiffe://hello/world"),
+											}),
+										}),
+									}),
+									"deny":                   knownvalue.ListExact([]knownvalue.Check{}),
+									"allow_with_shadow_deny": knownvalue.ListExact([]knownvalue.Check{}),
+								}),
+							),
+						},
+					},
+				},
+				tfbuilder.CheckReapplyPlanEmpty(builder),
+				{
+					Config: builder.AddPolicy(mtp.WithSpec(`
+spec = {
+  rules = [
+    {
+      default = {
+        deny = [
+          {
+            spiffe_id = {
+              type  = "Exact"
+              value = "spiffe://hello/world"
+            }
+          }
+		]
+      }
+    }
+  ]
+}`)).Build(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectResourceAction(builder.ResourceAddress(mtp.ResourceType, mtp.ResourceName), plancheck.ResourceActionUpdate),
+						},
+						PostApplyPostRefresh: []plancheck.PlanCheck{
+							plancheck.ExpectKnownValue(builder.ResourceAddress(mtp.ResourceType, mtp.ResourceName),
+								tfjsonpath.New("spec").AtMapKey("rules").AtSliceIndex(0).AtMapKey("default"),
+								knownvalue.ObjectExact(map[string]knownvalue.Check{
+									"deny": knownvalue.ListExact([]knownvalue.Check{
+										knownvalue.ObjectExact(map[string]knownvalue.Check{
+											"spiffe_id": knownvalue.ObjectExact(map[string]knownvalue.Check{
+												"type":  knownvalue.StringExact("Exact"),
+												"value": knownvalue.StringExact("spiffe://hello/world"),
+											}),
+										}),
+									}),
+									"allow_with_shadow_deny": knownvalue.ListExact([]knownvalue.Check{}),
+									"allow":                  knownvalue.ListExact([]knownvalue.Check{}),
+								}),
+							),
+						},
+					},
+				},
+				tfbuilder.CheckReapplyPlanEmpty(builder),
+			},
+		})
 	})
 
 	t.Run("not imported resource should error out with meaningful message", func(t *testing.T) {

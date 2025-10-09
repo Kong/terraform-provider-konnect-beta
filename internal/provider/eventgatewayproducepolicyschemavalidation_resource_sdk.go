@@ -198,8 +198,18 @@ func (r *EventGatewayProducePolicySchemaValidationResourceModel) ToSharedEventGa
 				}
 			}
 		}
-		keyValidationAction := shared.ProduceKeyValidationAction(r.Config.ConfluentSchemaRegistry.KeyValidationAction.ValueString())
-		valueValidationAction := shared.ProduceValueValidationAction(r.Config.ConfluentSchemaRegistry.ValueValidationAction.ValueString())
+		keyValidationAction := new(shared.ProduceKeyValidationAction)
+		if !r.Config.ConfluentSchemaRegistry.KeyValidationAction.IsUnknown() && !r.Config.ConfluentSchemaRegistry.KeyValidationAction.IsNull() {
+			*keyValidationAction = shared.ProduceKeyValidationAction(r.Config.ConfluentSchemaRegistry.KeyValidationAction.ValueString())
+		} else {
+			keyValidationAction = nil
+		}
+		valueValidationAction := new(shared.ProduceValueValidationAction)
+		if !r.Config.ConfluentSchemaRegistry.ValueValidationAction.IsUnknown() && !r.Config.ConfluentSchemaRegistry.ValueValidationAction.IsNull() {
+			*valueValidationAction = shared.ProduceValueValidationAction(r.Config.ConfluentSchemaRegistry.ValueValidationAction.ValueString())
+		} else {
+			valueValidationAction = nil
+		}
 		eventGatewayProduceSchemaValidationPolicySchemaRegistryConfig = &shared.EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig{
 			SchemaRegistry:        schemaRegistry,
 			KeyValidationAction:   keyValidationAction,
@@ -244,8 +254,18 @@ func (r *EventGatewayProducePolicySchemaValidationResourceModel) ToSharedEventGa
 				}
 			}
 		}
-		keyValidationAction1 := shared.ProduceKeyValidationAction(r.Config.JSON.KeyValidationAction.ValueString())
-		valueValidationAction1 := shared.ProduceValueValidationAction(r.Config.JSON.ValueValidationAction.ValueString())
+		keyValidationAction1 := new(shared.ProduceKeyValidationAction)
+		if !r.Config.JSON.KeyValidationAction.IsUnknown() && !r.Config.JSON.KeyValidationAction.IsNull() {
+			*keyValidationAction1 = shared.ProduceKeyValidationAction(r.Config.JSON.KeyValidationAction.ValueString())
+		} else {
+			keyValidationAction1 = nil
+		}
+		valueValidationAction1 := new(shared.ProduceValueValidationAction)
+		if !r.Config.JSON.ValueValidationAction.IsUnknown() && !r.Config.JSON.ValueValidationAction.IsNull() {
+			*valueValidationAction1 = shared.ProduceValueValidationAction(r.Config.JSON.ValueValidationAction.ValueString())
+		} else {
+			valueValidationAction1 = nil
+		}
 		eventGatewayProduceSchemaValidationPolicyJSONConfig = &shared.EventGatewayProduceSchemaValidationPolicyJSONConfig{
 			SchemaRegistry:        schemaRegistry1,
 			KeyValidationAction:   keyValidationAction1,

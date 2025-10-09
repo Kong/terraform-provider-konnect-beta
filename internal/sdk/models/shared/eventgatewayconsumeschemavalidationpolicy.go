@@ -20,13 +20,13 @@ type EventGatewayConsumeSchemaValidationPolicyConfig struct {
 	//   to help to identify the clients violating schema.
 	// * skip - skips delivering a record.
 	//
-	KeyValidationAction ConsumeKeyValidationAction `json:"key_validation_action"`
+	KeyValidationAction *ConsumeKeyValidationAction `json:"key_validation_action,omitempty"`
 	// Defines a behavior when record value is not valid.
 	// * mark - marks a record with kong/server header and client ID value
 	//   to help to identify the clients violating schema.
 	// * skip - skips delivering a record.
 	//
-	ValueValidationAction ConsumeValueValidationAction `json:"value_validation_action"`
+	ValueValidationAction *ConsumeValueValidationAction `json:"value_validation_action,omitempty"`
 }
 
 func (o *EventGatewayConsumeSchemaValidationPolicyConfig) GetType() SchemaValidationType {
@@ -43,16 +43,16 @@ func (o *EventGatewayConsumeSchemaValidationPolicyConfig) GetSchemaRegistry() *S
 	return o.SchemaRegistry
 }
 
-func (o *EventGatewayConsumeSchemaValidationPolicyConfig) GetKeyValidationAction() ConsumeKeyValidationAction {
+func (o *EventGatewayConsumeSchemaValidationPolicyConfig) GetKeyValidationAction() *ConsumeKeyValidationAction {
 	if o == nil {
-		return ConsumeKeyValidationAction("")
+		return nil
 	}
 	return o.KeyValidationAction
 }
 
-func (o *EventGatewayConsumeSchemaValidationPolicyConfig) GetValueValidationAction() ConsumeValueValidationAction {
+func (o *EventGatewayConsumeSchemaValidationPolicyConfig) GetValueValidationAction() *ConsumeValueValidationAction {
 	if o == nil {
-		return ConsumeValueValidationAction("")
+		return nil
 	}
 	return o.ValueValidationAction
 }

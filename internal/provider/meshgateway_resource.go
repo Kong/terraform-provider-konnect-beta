@@ -8,8 +8,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Kong/shared-speakeasy/customtypes/kumalabels"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -20,8 +20,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	custom_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -63,8 +65,12 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"listeners": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
 							Attributes: map[string]schema.Attribute{
 								"cross_mesh": schema.BoolAttribute{
 									Optional: true,
@@ -129,19 +135,77 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"certificates": schema.ListNestedAttribute{
+											Computed: true,
 											Optional: true,
 											NestedObject: schema.NestedAttributeObject{
+												Validators: []validator.Object{
+													speakeasy_objectvalidators.NotNull(),
+												},
 												Attributes: map[string]schema.Attribute{
-													"type": schema.StringAttribute{
-														CustomType: jsontypes.NormalizedType{},
-														Required:   true,
-														MarkdownDescription: `Types that are valid to be assigned to Type:` + "\n" +
-															`` + "\n" +
-															`	*DataSource_Secret` + "\n" +
-															`	*DataSource_File` + "\n" +
-															`	*DataSource_Inline` + "\n" +
-															`	*DataSource_InlineString` + "\n" +
-															`Parsed as JSON.`,
+													"data_source_file": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"file": schema.StringAttribute{
+																Optional: true,
+																MarkdownDescription: `Data source is a path to a file.` + "\n" +
+																	`Deprecated, use other sources of a data.`,
+															},
+														},
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("data_source_inline"),
+																path.MatchRelative().AtParent().AtName("data_source_inline_string"),
+																path.MatchRelative().AtParent().AtName("data_source_secret"),
+															}...),
+														},
+													},
+													"data_source_inline": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"inline": schema.StringAttribute{
+																Optional:    true,
+																Description: `Data source is inline bytes.`,
+															},
+														},
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("data_source_file"),
+																path.MatchRelative().AtParent().AtName("data_source_inline_string"),
+																path.MatchRelative().AtParent().AtName("data_source_secret"),
+															}...),
+														},
+													},
+													"data_source_inline_string": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"inline_string": schema.StringAttribute{
+																Optional:    true,
+																Description: `Data source is inline string`,
+															},
+														},
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("data_source_file"),
+																path.MatchRelative().AtParent().AtName("data_source_inline"),
+																path.MatchRelative().AtParent().AtName("data_source_secret"),
+															}...),
+														},
+													},
+													"data_source_secret": schema.SingleNestedAttribute{
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"secret": schema.StringAttribute{
+																Optional:    true,
+																Description: `Data source is a secret with given Secret key.`,
+															},
+														},
+														Validators: []validator.Object{
+															objectvalidator.ConflictsWith(path.Expressions{
+																path.MatchRelative().AtParent().AtName("data_source_file"),
+																path.MatchRelative().AtParent().AtName("data_source_inline"),
+																path.MatchRelative().AtParent().AtName("data_source_inline_string"),
+															}...),
+														},
 													},
 												},
 											},
@@ -226,8 +290,12 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 				Description: `name of the MeshGateway. Requires replacement if changed.`,
 			},
 			"selectors": schema.ListNestedAttribute{
+				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
+					Validators: []validator.Object{
+						speakeasy_objectvalidators.NotNull(),
+					},
 					Attributes: map[string]schema.Attribute{
 						"match": schema.MapAttribute{
 							Optional:    true,
@@ -254,6 +322,7 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 				Computed: true,
 				PlanModifiers: []planmodifier.List{
 					custom_listplanmodifier.SupressZeroNullModifier(),
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +

@@ -8,6 +8,53 @@ resource "konnect_mesh_control_plane" "my_meshcontrolplane" {
   }
 }
 
+
+resource "konnect_mesh" "mesh_with_oneof" {
+  provider = konnect-beta
+  type  = "Mesh"
+  cp_id = konnect_mesh_control_plane.my_meshcontrolplane.id
+  name  = "mesh-with-oneof"
+
+  mtls = {
+    backends = [
+      {
+        name = "mesh-a-acmpca"
+        type = "acmpca"
+        dp_cert = {
+          rotation = {
+            expiration = "24h"
+          }
+        }
+        conf = {
+          acm_certificate_authority_config = {
+            arn = "arn:hello:world"
+            ca_cert = {
+              data_source_file = {
+                file = "my-file"
+              }
+            }
+            auth = {
+              aws_credentials = {
+                access_key = {
+                  data_source_inline_string = {
+                    inline_string = "TestTestTest"
+                  }
+                }
+                access_key_secret = {
+                  data_source_inline_string = {
+                    inline_string = "TestTestTest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+    enabledBackend  = "mesh-a-acmpca"
+  }
+}
+
 resource "konnect_mesh" "default" {
   provider = konnect-beta
   type  = "Mesh"

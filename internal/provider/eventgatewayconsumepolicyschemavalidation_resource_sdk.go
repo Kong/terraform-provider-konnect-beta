@@ -216,8 +216,18 @@ func (r *EventGatewayConsumePolicySchemaValidationResourceModel) ToSharedEventGa
 				}
 			}
 		}
-		keyValidationAction := shared.ConsumeKeyValidationAction(r.Config.KeyValidationAction.ValueString())
-		valueValidationAction := shared.ConsumeValueValidationAction(r.Config.ValueValidationAction.ValueString())
+		keyValidationAction := new(shared.ConsumeKeyValidationAction)
+		if !r.Config.KeyValidationAction.IsUnknown() && !r.Config.KeyValidationAction.IsNull() {
+			*keyValidationAction = shared.ConsumeKeyValidationAction(r.Config.KeyValidationAction.ValueString())
+		} else {
+			keyValidationAction = nil
+		}
+		valueValidationAction := new(shared.ConsumeValueValidationAction)
+		if !r.Config.ValueValidationAction.IsUnknown() && !r.Config.ValueValidationAction.IsNull() {
+			*valueValidationAction = shared.ConsumeValueValidationAction(r.Config.ValueValidationAction.ValueString())
+		} else {
+			valueValidationAction = nil
+		}
 		config = &shared.EventGatewayConsumeSchemaValidationPolicyConfig{
 			Type:                  typeVar,
 			SchemaRegistry:        schemaRegistry,

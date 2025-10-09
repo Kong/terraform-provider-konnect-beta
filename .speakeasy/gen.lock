@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: a815d597af8328e1aec8abe2d5a46ed0
+  docChecksum: 926fef1a969b0cd720f6d482e43b0ba4
   docVersion: 2.0.0
   speakeasyVersion: 1.602.0
   generationVersion: 2.681.1
@@ -328,6 +328,10 @@ generatedFiles:
   - internal/provider/typeconvert/int.go
   - internal/provider/types/abort.go
   - internal/provider/types/access_key.go
+  - internal/provider/types/access_key_data_source_file.go
+  - internal/provider/types/access_key_data_source_inline.go
+  - internal/provider/types/access_key_data_source_inline_string.go
+  - internal/provider/types/access_key_data_source_secret.go
   - internal/provider/types/acm_certificate_authority_config.go
   - internal/provider/types/addresses.go
   - internal/provider/types/advanced_query.go
@@ -342,7 +346,9 @@ generatedFiles:
   - internal/provider/types/applications.go
   - internal/provider/types/auth.go
   - internal/provider/types/auth_config.go
+  - internal/provider/types/auth_tls.go
   - internal/provider/types/autogenerate.go
+  - internal/provider/types/aws.go
   - internal/provider/types/aws_credentials.go
   - internal/provider/types/back_off.go
   - internal/provider/types/backend.go
@@ -428,6 +434,7 @@ generatedFiles:
   - internal/provider/types/forward_to_cluster_by_sni_config.go
   - internal/provider/types/forward_to_virtual_cluster_policy_config.go
   - internal/provider/types/from.go
+  - internal/provider/types/from_cp.go
   - internal/provider/types/gateway_failures.go
   - internal/provider/types/grpc.go
   - internal/provider/types/hash_policies.go
@@ -651,6 +658,12 @@ generatedFiles:
   - internal/provider/types/uuid_field_filter.go
   - internal/provider/types/validation_messages.go
   - internal/provider/types/vault_certificate_authority_config.go
+  - internal/provider/types/vault_certificate_authority_config_auth.go
+  - internal/provider/types/vault_certificate_authority_config_from_cp.go
+  - internal/provider/types/vault_certificate_authority_config_from_cp_auth_aws.go
+  - internal/provider/types/vault_certificate_authority_config_from_cp_auth_tls.go
+  - internal/provider/types/vault_certificate_authority_config_from_cp_auth_token.go
+  - internal/provider/types/vault_certificate_authority_config_tls.go
   - internal/provider/types/verification.go
   - internal/provider/types/vip.go
   - internal/provider/types/virtual_cluster_authentication_claims_mapping.go

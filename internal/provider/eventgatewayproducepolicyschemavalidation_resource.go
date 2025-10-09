@@ -77,7 +77,7 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"key_validation_action": schema.StringAttribute{
-								Required: true,
+								Optional: true,
 								MarkdownDescription: `Defines a behavior when record key is not valid.` + "\n" +
 									`* reject - rejects a batch for topic partition. Only available for produce.` + "\n" +
 									`* mark - marks a record with kong/server header and client ID value` + "\n" +
@@ -130,7 +130,7 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 								Description: `A reference to a schema Registry.`,
 							},
 							"value_validation_action": schema.StringAttribute{
-								Required: true,
+								Optional: true,
 								MarkdownDescription: `Defines a behavior when record value is not valid.` + "\n" +
 									`* reject - rejects a batch for topic partition. Only available for produce.` + "\n" +
 									`* mark - marks a record with kong/server header and client ID value` + "\n" +
@@ -156,7 +156,7 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"key_validation_action": schema.StringAttribute{
-								Required: true,
+								Optional: true,
 								MarkdownDescription: `Defines a behavior when record key is not valid.` + "\n" +
 									`* reject - rejects a batch for topic partition. Only available for produce.` + "\n" +
 									`* mark - marks a record with kong/server header and client ID value` + "\n" +
@@ -209,7 +209,7 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 								Description: `A reference to a schema Registry.`,
 							},
 							"value_validation_action": schema.StringAttribute{
-								Required: true,
+								Optional: true,
 								MarkdownDescription: `Defines a behavior when record value is not valid.` + "\n" +
 									`* reject - rejects a batch for topic partition. Only available for produce.` + "\n" +
 									`* mark - marks a record with kong/server header and client ID value` + "\n" +

@@ -96,7 +96,7 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 				})),
 				Attributes: map[string]schema.Attribute{
 					"key_validation_action": schema.StringAttribute{
-						Required: true,
+						Optional: true,
 						MarkdownDescription: `Defines a behavior when record key is not valid.` + "\n" +
 							`* mark - marks a record with kong/server header and client ID value` + "\n" +
 							`  to help to identify the clients violating schema.` + "\n" +
@@ -161,7 +161,7 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 						},
 					},
 					"value_validation_action": schema.StringAttribute{
-						Required: true,
+						Optional: true,
 						MarkdownDescription: `Defines a behavior when record value is not valid.` + "\n" +
 							`* mark - marks a record with kong/server header and client ID value` + "\n" +
 							`  to help to identify the clients violating schema.` + "\n" +
