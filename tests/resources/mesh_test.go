@@ -75,6 +75,7 @@ func TestMesh(t *testing.T) {
 
 		resource.ParallelTest(t, tfbuilder.CreatePolicyAndModifyFieldsOnIt(providerFactory, builder, mtp))
 	})
+
 	t.Run("create a mesh and modify fields on it", func(t *testing.T) {
 		builder := tfbuilder.NewBuilder(tfbuilder.Konnect, serverScheme, serverHost, serverPort).WithProviderProperty(tfbuilder.KonnectBeta)
 		cp := tfbuilder.NewControlPlane("e2e-test", "e2e-test", "e2e test cp")
@@ -86,6 +87,72 @@ func TestMesh(t *testing.T) {
 		builder.AddControlPlane(cp)
 
 		resource.ParallelTest(t, tfbuilder.CreateMeshAndModifyFieldsOnIt(providerFactory, builder, mesh))
+	})
+
+	t.Run("create mesh with oneOf", func(t *testing.T) {
+		builder := tfbuilder.NewBuilder(tfbuilder.Konnect, serverScheme, serverHost, serverPort).WithProviderProperty(tfbuilder.KonnectBeta)
+		cp := tfbuilder.NewControlPlane("e2e-test", "e2e-test", "e2e test cp")
+		mesh := tfbuilder.NewMeshBuilder("m1", "m1").
+			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
+			WithDependsOn(builder.ResourceAddress("mesh_control_plane", cp.ResourceName)).
+			WithSpec(`
+skip_creating_initial_policies = [ "*" ]
+mtls = {
+  backends = [
+    {
+      name = "mesh-a-acmpca"
+      type = "acmpca"
+      dp_cert = {
+        rotation = {
+          expiration = "24h"
+        }
+      }
+      conf = {
+        acm_certificate_authority_config = {
+          arn = "arn:hello:world"
+          ca_cert = {
+            data_source_file = {
+              file = "my-file"
+            }
+          }
+          auth = {
+            aws_credentials = {
+              access_key = {
+                data_source_inline_string = {
+                  inline_string = "TestTestTest"
+                }
+              }
+              access_key_secret = {
+                data_source_inline_string = {
+                  inline_string = "TestTestTest"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+  enabledBackend  = "mesh-a-acmpca"
+}
+`)
+
+		builder.AddControlPlane(cp)
+
+		resource.ParallelTest(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					Config: builder.AddMesh(mesh).Build(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectResourceAction(builder.ResourceAddress("mesh", mesh.ResourceName), plancheck.ResourceActionCreate),
+						},
+					},
+				},
+				tfbuilder.CheckReapplyPlanEmpty(builder),
+			},
+		})
 	})
 
 	t.Run("create a policy and modify fields on it", func(t *testing.T) {
