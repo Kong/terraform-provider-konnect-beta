@@ -46,16 +46,12 @@ func (r *EventGatewayBackendClusterResourceModel) RefreshFromSharedBackendCluste
 		}
 		r.MetadataUpdateIntervalSeconds = types.Int64PointerValue(resp.MetadataUpdateIntervalSeconds)
 		r.Name = types.StringValue(resp.Name)
-		if resp.TLS == nil {
-			r.TLS = nil
-		} else {
-			r.TLS = &tfTypes.BackendClusterTLS{}
-			r.TLS.CaBundle = types.StringPointerValue(resp.TLS.CaBundle)
-			r.TLS.InsecureSkipVerify = types.BoolPointerValue(resp.TLS.InsecureSkipVerify)
-			r.TLS.TLSVersions = make([]types.String, 0, len(resp.TLS.TLSVersions))
-			for _, v := range resp.TLS.TLSVersions {
-				r.TLS.TLSVersions = append(r.TLS.TLSVersions, types.StringValue(string(v)))
-			}
+		r.TLS.CaBundle = types.StringPointerValue(resp.TLS.CaBundle)
+		r.TLS.Enabled = types.BoolValue(resp.TLS.Enabled)
+		r.TLS.InsecureSkipVerify = types.BoolPointerValue(resp.TLS.InsecureSkipVerify)
+		r.TLS.TLSVersions = make([]types.String, 0, len(resp.TLS.TLSVersions))
+		for _, v := range resp.TLS.TLSVersions {
+			r.TLS.TLSVersions = append(r.TLS.TLSVersions, types.StringValue(string(v)))
 		}
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
@@ -213,29 +209,30 @@ func (r *EventGatewayBackendClusterResourceModel) ToSharedCreateBackendClusterRe
 	for _, bootstrapServersItem := range r.BootstrapServers {
 		bootstrapServers = append(bootstrapServers, bootstrapServersItem.ValueString())
 	}
-	var tls *shared.BackendClusterTLS
-	if r.TLS != nil {
-		insecureSkipVerify := new(bool)
-		if !r.TLS.InsecureSkipVerify.IsUnknown() && !r.TLS.InsecureSkipVerify.IsNull() {
-			*insecureSkipVerify = r.TLS.InsecureSkipVerify.ValueBool()
-		} else {
-			insecureSkipVerify = nil
-		}
-		caBundle := new(string)
-		if !r.TLS.CaBundle.IsUnknown() && !r.TLS.CaBundle.IsNull() {
-			*caBundle = r.TLS.CaBundle.ValueString()
-		} else {
-			caBundle = nil
-		}
-		tlsVersions := make([]shared.TLSVersions, 0, len(r.TLS.TLSVersions))
-		for _, tlsVersionsItem := range r.TLS.TLSVersions {
-			tlsVersions = append(tlsVersions, shared.TLSVersions(tlsVersionsItem.ValueString()))
-		}
-		tls = &shared.BackendClusterTLS{
-			InsecureSkipVerify: insecureSkipVerify,
-			CaBundle:           caBundle,
-			TLSVersions:        tlsVersions,
-		}
+	var enabled bool
+	enabled = r.TLS.Enabled.ValueBool()
+
+	insecureSkipVerify := new(bool)
+	if !r.TLS.InsecureSkipVerify.IsUnknown() && !r.TLS.InsecureSkipVerify.IsNull() {
+		*insecureSkipVerify = r.TLS.InsecureSkipVerify.ValueBool()
+	} else {
+		insecureSkipVerify = nil
+	}
+	caBundle := new(string)
+	if !r.TLS.CaBundle.IsUnknown() && !r.TLS.CaBundle.IsNull() {
+		*caBundle = r.TLS.CaBundle.ValueString()
+	} else {
+		caBundle = nil
+	}
+	tlsVersions := make([]shared.TLSVersions, 0, len(r.TLS.TLSVersions))
+	for _, tlsVersionsItem := range r.TLS.TLSVersions {
+		tlsVersions = append(tlsVersions, shared.TLSVersions(tlsVersionsItem.ValueString()))
+	}
+	tls := shared.BackendClusterTLS{
+		Enabled:            enabled,
+		InsecureSkipVerify: insecureSkipVerify,
+		CaBundle:           caBundle,
+		TLSVersions:        tlsVersions,
 	}
 	metadataUpdateIntervalSeconds := new(int64)
 	if !r.MetadataUpdateIntervalSeconds.IsUnknown() && !r.MetadataUpdateIntervalSeconds.IsNull() {
@@ -337,29 +334,30 @@ func (r *EventGatewayBackendClusterResourceModel) ToSharedUpdateBackendClusterRe
 	for _, bootstrapServersItem := range r.BootstrapServers {
 		bootstrapServers = append(bootstrapServers, bootstrapServersItem.ValueString())
 	}
-	var tls *shared.BackendClusterTLS
-	if r.TLS != nil {
-		insecureSkipVerify := new(bool)
-		if !r.TLS.InsecureSkipVerify.IsUnknown() && !r.TLS.InsecureSkipVerify.IsNull() {
-			*insecureSkipVerify = r.TLS.InsecureSkipVerify.ValueBool()
-		} else {
-			insecureSkipVerify = nil
-		}
-		caBundle := new(string)
-		if !r.TLS.CaBundle.IsUnknown() && !r.TLS.CaBundle.IsNull() {
-			*caBundle = r.TLS.CaBundle.ValueString()
-		} else {
-			caBundle = nil
-		}
-		tlsVersions := make([]shared.TLSVersions, 0, len(r.TLS.TLSVersions))
-		for _, tlsVersionsItem := range r.TLS.TLSVersions {
-			tlsVersions = append(tlsVersions, shared.TLSVersions(tlsVersionsItem.ValueString()))
-		}
-		tls = &shared.BackendClusterTLS{
-			InsecureSkipVerify: insecureSkipVerify,
-			CaBundle:           caBundle,
-			TLSVersions:        tlsVersions,
-		}
+	var enabled bool
+	enabled = r.TLS.Enabled.ValueBool()
+
+	insecureSkipVerify := new(bool)
+	if !r.TLS.InsecureSkipVerify.IsUnknown() && !r.TLS.InsecureSkipVerify.IsNull() {
+		*insecureSkipVerify = r.TLS.InsecureSkipVerify.ValueBool()
+	} else {
+		insecureSkipVerify = nil
+	}
+	caBundle := new(string)
+	if !r.TLS.CaBundle.IsUnknown() && !r.TLS.CaBundle.IsNull() {
+		*caBundle = r.TLS.CaBundle.ValueString()
+	} else {
+		caBundle = nil
+	}
+	tlsVersions := make([]shared.TLSVersions, 0, len(r.TLS.TLSVersions))
+	for _, tlsVersionsItem := range r.TLS.TLSVersions {
+		tlsVersions = append(tlsVersions, shared.TLSVersions(tlsVersionsItem.ValueString()))
+	}
+	tls := shared.BackendClusterTLS{
+		Enabled:            enabled,
+		InsecureSkipVerify: insecureSkipVerify,
+		CaBundle:           caBundle,
+		TLSVersions:        tlsVersions,
 	}
 	metadataUpdateIntervalSeconds := new(int64)
 	if !r.MetadataUpdateIntervalSeconds.IsUnknown() && !r.MetadataUpdateIntervalSeconds.IsNull() {
