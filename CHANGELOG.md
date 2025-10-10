@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.11.1
+> Released on 2025/10/10
+
+### Features
+* Add support for `tls` in `konnect_event_gateway_backend_cluster`
+
 ## 0.11.0
 > Released on 2025/10/09
 

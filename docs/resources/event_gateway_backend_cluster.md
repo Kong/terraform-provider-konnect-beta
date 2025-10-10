@@ -35,6 +35,7 @@ resource "konnect_event_gateway_backend_cluster" "my_eventgatewaybackendcluster"
     name = "...my_name..."
     tls = {
             ca_bundle = "...my_ca_bundle..."
+        enabled = false
         insecure_skip_verify = false
         tls_versions = [
             "tls12"
@@ -52,6 +53,7 @@ resource "konnect_event_gateway_backend_cluster" "my_eventgatewaybackendcluster"
 - `bootstrap_servers` (List of String) A list of cluster bootstrap servers in the format address:port.
 - `gateway_id` (String) The UUID of your Gateway.
 - `name` (String) The unique name of the backend cluster.
+- `tls` (Attributes) (see [below for nested schema](#nestedatt--tls))
 
 ### Optional
 
@@ -63,7 +65,6 @@ Default: false
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `metadata_update_interval_seconds` (Number) The interval at which metadata is updated in seconds. Default: 60
-- `tls` (Attributes) (see [below for nested schema](#nestedatt--tls))
 
 ### Read-Only
 
@@ -106,6 +107,10 @@ Optional:
 
 <a id="nestedatt--tls"></a>
 ### Nested Schema for `tls`
+
+Required:
+
+- `enabled` (Boolean) If true, TLS is enabled for connections to this backend cluster. If false, TLS is explicitly disabled.
 
 Optional:
 
