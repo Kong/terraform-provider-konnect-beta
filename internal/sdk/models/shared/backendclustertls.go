@@ -35,6 +35,8 @@ func (e *TLSVersions) UnmarshalJSON(data []byte) error {
 }
 
 type BackendClusterTLS struct {
+	// If true, TLS is enabled for connections to this backend cluster. If false, TLS is explicitly disabled.
+	Enabled bool `json:"enabled"`
 	// If true, skip certificate verification. It's not secure to use for production.
 	InsecureSkipVerify *bool `default:"false" json:"insecure_skip_verify"`
 	// A template string expression containing a reference to a secret or a literal value
@@ -52,6 +54,13 @@ func (b *BackendClusterTLS) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (o *BackendClusterTLS) GetEnabled() bool {
+	if o == nil {
+		return false
+	}
+	return o.Enabled
 }
 
 func (o *BackendClusterTLS) GetInsecureSkipVerify() *bool {

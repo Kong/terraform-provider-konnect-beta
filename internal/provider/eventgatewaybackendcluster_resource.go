@@ -53,7 +53,7 @@ type EventGatewayBackendClusterResourceModel struct {
 	Labels                                   map[string]types.String                    `tfsdk:"labels"`
 	MetadataUpdateIntervalSeconds            types.Int64                                `tfsdk:"metadata_update_interval_seconds"`
 	Name                                     types.String                               `tfsdk:"name"`
-	TLS                                      *tfTypes.BackendClusterTLS                 `tfsdk:"tls"`
+	TLS                                      tfTypes.BackendClusterTLS                  `tfsdk:"tls"`
 	UpdatedAt                                types.String                               `tfsdk:"updated_at"`
 }
 
@@ -217,13 +217,16 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 				},
 			},
 			"tls": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"ca_bundle": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `A template string expression containing a reference to a secret or a literal value`,
+					},
+					"enabled": schema.BoolAttribute{
+						Required:    true,
+						Description: `If true, TLS is enabled for connections to this backend cluster. If false, TLS is explicitly disabled.`,
 					},
 					"insecure_skip_verify": schema.BoolAttribute{
 						Computed:    true,

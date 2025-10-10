@@ -21,8 +21,8 @@ type BackendCluster struct {
 	//
 	InsecureAllowAnonymousVirtualClusterAuth *bool `default:"false" json:"insecure_allow_anonymous_virtual_cluster_auth"`
 	// A list of cluster bootstrap servers in the format address:port.
-	BootstrapServers []string           `json:"bootstrap_servers"`
-	TLS              *BackendClusterTLS `json:"tls,omitempty"`
+	BootstrapServers []string          `json:"bootstrap_servers"`
+	TLS              BackendClusterTLS `json:"tls"`
 	// The interval at which metadata is updated in seconds.
 	MetadataUpdateIntervalSeconds *int64 `default:"60" json:"metadata_update_interval_seconds"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
@@ -101,9 +101,9 @@ func (o *BackendCluster) GetBootstrapServers() []string {
 	return o.BootstrapServers
 }
 
-func (o *BackendCluster) GetTLS() *BackendClusterTLS {
+func (o *BackendCluster) GetTLS() BackendClusterTLS {
 	if o == nil {
-		return nil
+		return BackendClusterTLS{}
 	}
 	return o.TLS
 }

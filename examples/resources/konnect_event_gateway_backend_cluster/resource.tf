@@ -20,6 +20,7 @@ resource "konnect_event_gateway_backend_cluster" "my_eventgatewaybackendcluster"
     name = "...my_name..."
     tls = {
             ca_bundle = "...my_ca_bundle..."
+        enabled = false
         insecure_skip_verify = false
         tls_versions = [
             "tls12"

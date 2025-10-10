@@ -7886,7 +7886,7 @@ components:
       allowEmptyValue: true
       schema:
         type: integer
-        example: 10
+        example: 100
     PortalId:
       schema:
         type: string
@@ -24437,6 +24437,7 @@ components:
         - name
         - authentication
         - bootstrap_servers
+        - tls
         - created_at
         - updated_at
     BackendClusterName:
@@ -24482,6 +24483,9 @@ components:
     BackendClusterTLS:
       type: object
       properties:
+        enabled:
+          description: 'If true, TLS is enabled for connections to this backend cluster. If false, TLS is explicitly disabled.'
+          type: boolean
         insecure_skip_verify:
           description: 'If true, skip certificate verification. It''s not secure to use for production.'
           type: boolean
@@ -24499,6 +24503,8 @@ components:
           default:
             - tls12
             - tls13
+      required:
+        - enabled
     BackendMetadataUpdateIntervalSeconds:
       description: The interval at which metadata is updated in seconds.
       type: integer
@@ -26960,6 +26966,7 @@ components:
               - name
               - authentication
               - bootstrap_servers
+              - tls
     UpdateBackendClusterRequest:
       description: The request schema for updating a backend cluster.
       content:
@@ -26997,6 +27004,7 @@ components:
               - name
               - authentication
               - bootstrap_servers
+              - tls
     CreateEventGatewayVaultRequest:
       description: The request schema for creating a vault.
       content:
