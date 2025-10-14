@@ -55,9 +55,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Run Speakeasy
+      - name: Run Generators
         working-directory: repo
-        run: make speakeasy
+        run: make generate
 
       - name: Commit & push changes (if any)
         working-directory: repo
