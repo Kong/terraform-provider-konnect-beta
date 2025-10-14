@@ -24471,6 +24471,25 @@ components:
           description: The unique identifier of the backend cluster.
           type: string
           format: uuid
+      anyOf:
+        - $ref: '#/components/schemas/BackendClusterReferenceById'
+        - $ref: '#/components/schemas/BackendClusterReferenceByName'
+    BackendClusterReferenceById:
+      type: object
+      properties:
+        id:
+          description: The unique identifier of the backend cluster.
+          type: string
+          format: uuid
+      required:
+        - id
+    BackendClusterReferenceByName:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/BackendClusterName'
+      required:
+        - name
     BootstrapServers:
       description: 'A list of cluster bootstrap servers in the format address:port.'
       type: array
