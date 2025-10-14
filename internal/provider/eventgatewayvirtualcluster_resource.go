@@ -326,9 +326,43 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 			"destination": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
+					"backend_cluster_reference_by_id": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"id": schema.StringAttribute{
+								Required:    true,
+								Description: `The unique identifier of the backend cluster.`,
+							},
+						},
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("backend_cluster_reference_by_name"),
+							}...),
+						},
+					},
+					"backend_cluster_reference_by_name": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"id": schema.StringAttribute{
+								Optional:    true,
+								Description: `The unique identifier of the backend cluster.`,
+							},
+							"name": schema.StringAttribute{
+								Required:    true,
+								Description: `The unique name of the backend cluster.`,
+								Validators: []validator.String{
+									stringvalidator.UTF8LengthBetween(1, 255),
+								},
+							},
+						},
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("backend_cluster_reference_by_id"),
+							}...),
+						},
+					},
 					"id": schema.StringAttribute{
 						Computed:    true,
-						Optional:    true,
 						Description: `The unique identifier of the backend cluster.`,
 					},
 					"name": schema.StringAttribute{
