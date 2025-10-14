@@ -144,6 +144,71 @@ mtls = {
 		})
 	})
 
+	t.Run("create resource with status", func(t *testing.T) {
+		builder := tfbuilder.NewBuilder(tfbuilder.Konnect, serverScheme, serverHost, serverPort).WithProviderProperty(tfbuilder.KonnectBeta)
+		cp := tfbuilder.NewControlPlane("e2e-test", "e2e-test", "e2e test cp")
+		builder.AddControlPlane(cp)
+		mesh := tfbuilder.NewMeshBuilder("default", "terraform-provider-kong-mesh").
+			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
+			WithDependsOn(builder.ResourceAddress("mesh_control_plane", cp.ResourceName)).
+			WithSpec(`skip_creating_initial_policies = [ "*" ]`)
+		builder.AddMesh(mesh)
+
+		mes := tfbuilder.NewPolicyBuilder("mesh_external_service", "mes_1", "mes-1", "MeshExternalService").
+			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
+			WithMeshRef(builder.ResourceAddress("mesh", mesh.ResourceName) + ".name").
+			WithDependsOn(builder.ResourceAddress("mesh", mesh.ResourceName)).WithSpec(`
+spec = {
+  endpoints = [
+    {
+      address = "example.com"
+      port    = 9478
+    }
+  ]
+  match = {
+    port     = 1444
+    protocol = "tcp"
+    type     = "HostnameGenerator"
+  }
+  tls = {
+    allow_renegotiation = false
+    enabled             = true
+    verification = {
+      ca_cert = {
+        inline_string = "-----BEGIN CERTIFICATE-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A...\n-----END CERTIFICATE-----"
+      }
+      client_cert = {
+        inline_string = "-----BEGIN CERTIFICATE-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8B...\n-----END CERTIFICATE-----"
+      }
+      client_key = {
+        inline_string = "-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEAt...\n-----END RSA PRIVATE KEY-----"
+      }
+      mode        = "SkipAll"
+      server_name = "my.server.name"
+      subject_alt_names = [
+        {
+          type  = "Exact"
+          value = "my.example.com"
+        }
+      ]
+    }
+    version = {
+      max = "TLS12"
+      min = "TLS10"
+    }
+  }
+}
+`)
+		resource.ParallelTest(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					Config: builder.AddPolicy(mes).Build(),
+				},
+			},
+		})
+	})
+
 	t.Run("create a policy and remove arrays on it", func(t *testing.T) {
 		builder := tfbuilder.NewBuilder(tfbuilder.Konnect, serverScheme, serverHost, serverPort).WithProviderProperty(tfbuilder.KonnectBeta)
 		cp := tfbuilder.NewControlPlane("e2e-test", "e2e-test", "e2e test cp")
