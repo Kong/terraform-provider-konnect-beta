@@ -56,5 +56,5 @@ generate-plan-modifiers:
 	| sed 's/Resource$$//' \
 	| grep -v "MeshControlPlane" \
 	| xargs -n1 -I{} sh -c '\
-		go run github.com/Kong/shared-speakeasy/generators/resource_plan_modifier@v0.0.7 \
+		go run github.com/Kong/shared-speakeasy/generators/resource_plan_modifier@v0.0.8 \
 		internal/provider/$$(echo {} | tr A-Z a-z)_resource_plan_modify.go {} terraform-provider-konnect-beta'

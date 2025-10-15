@@ -145,7 +145,6 @@ mtls = {
 	})
 
 	t.Run("create resource with status", func(t *testing.T) {
-		t.Skip("requires https://github.com/Kong/shared-speakeasy/pull/44 to pass")
 		builder := tfbuilder.NewBuilder(tfbuilder.Konnect, serverScheme, serverHost, serverPort).WithProviderProperty(tfbuilder.KonnectBeta)
 		cp := tfbuilder.NewControlPlane("e2e-test", "e2e-test", "e2e test cp")
 		builder.AddControlPlane(cp)
