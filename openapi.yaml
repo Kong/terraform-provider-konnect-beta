@@ -24168,7 +24168,7 @@ components:
       x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
     VirtualClusterReference:
       description: A reference to a virtual cluster.
-      oneOf:
+      anyOf:
         - $ref: '#/components/schemas/VirtualClusterReferenceById'
         - $ref: '#/components/schemas/VirtualClusterReferenceByName'
     VirtualClusterReferenceById:
@@ -24179,7 +24179,6 @@ components:
           description: The unique identifier of the virtual cluster.
           type: string
           format: uuid
-      additionalProperties: false
       required:
         - id
     VirtualClusterReferenceByName:
@@ -24188,7 +24187,6 @@ components:
       properties:
         name:
           $ref: '#/components/schemas/VirtualClusterName'
-      additionalProperties: false
       required:
         - name
     VirtualClusterAuthenticationSchemes:
@@ -25446,6 +25444,7 @@ components:
         name:
           type: string
           enum:
+            - all
             - alter
             - alter_configs
             - create
