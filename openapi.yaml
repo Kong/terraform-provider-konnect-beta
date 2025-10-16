@@ -24056,6 +24056,7 @@ components:
           description: The unique identifier of the listener.
           type: string
           format: uuid
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: The unique name of the listener.
           type: string
@@ -24065,9 +24066,7 @@ components:
         description:
           description: A human-readable description of the listener.
           type: string
-          default: null
           maxLength: 512
-          nullable: true
           x-speakeasy-param-computed: false
         addresses:
           $ref: '#/components/schemas/EventGatewayListenerAddresses'
@@ -24125,12 +24124,11 @@ components:
           description: The unique identifier of the virtual cluster.
           type: string
           format: uuid
+          x-speakeasy-param-suppress-computed-diff: true
         description:
           description: A human-readable description of the virtual cluster.
           type: string
-          default: null
           maxLength: 512
-          nullable: true
           x-speakeasy-param-computed: false
         destination:
           $ref: '#/components/schemas/BackendClusterReference'
@@ -24402,14 +24400,13 @@ components:
           type: string
           format: uuid
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           $ref: '#/components/schemas/BackendClusterName'
         description:
           description: A human-readable description of the backend cluster.
           type: string
-          default: null
           maxLength: 512
-          nullable: true
           x-speakeasy-param-computed: false
         authentication:
           $ref: '#/components/schemas/BackendClusterAuthenticationScheme'
@@ -24611,9 +24608,7 @@ components:
         description:
           description: A human-readable description of the vault.
           type: string
-          default: null
           maxLength: 512
-          nullable: true
           x-speakeasy-param-computed: false
         labels:
           $ref: '#/components/schemas/Labels'
@@ -24678,9 +24673,7 @@ components:
         description:
           description: A human-readable description of the virtual cluster.
           type: string
-          default: null
           maxLength: 512
-          nullable: true
           x-speakeasy-param-computed: false
         type:
           description: The type of the schema registry.
@@ -24838,9 +24831,7 @@ components:
         description:
           description: A human-readable description of the policy.
           type: string
-          default: null
           maxLength: 512
-          nullable: true
           x-speakeasy-param-computed: false
         enabled:
           description: Whether the policy is enabled.
@@ -24852,13 +24843,13 @@ components:
           example: context.topic.name.endsWith('my_suffix')
           maxLength: 1000
           minLength: 1
-          nullable: false
           x-expression:
             type: boolean
             fields:
               - context.topic.name
               - context.auth.principal.name
               - context.auth.type
+          x-speakeasy-param-computed: false
         config:
           description: The configuration of the policy.
           type: object
@@ -25162,10 +25153,8 @@ components:
                 `record.value` fields.
               type: string
               example: context.topic.name.endsWith('my_suffix')
-              default: null
               maxLength: 1000
               minLength: 1
-              nullable: true
               x-expression:
                 type: boolean
                 fields:
@@ -25208,9 +25197,7 @@ components:
         description:
           description: A human-readable description of the policy.
           type: string
-          default: null
           maxLength: 512
-          nullable: true
           x-speakeasy-param-computed: false
         enabled:
           description: Whether the policy is enabled.
@@ -25224,10 +25211,8 @@ components:
             `record.value` fields.
           type: string
           example: context.topic.name.endsWith('my_suffix')
-          default: null
           maxLength: 1000
           minLength: 1
-          nullable: true
           x-expression:
             type: boolean
             fields:
@@ -25742,6 +25727,7 @@ components:
       required:
         - mode
         - prefix
+      x-speakeasy-param-computed: false
     VirtualClusterNamespaceAdditionalProperties:
       type: object
       properties:
@@ -25753,18 +25739,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/VirtualClusterNamespaceTopicSelector'
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
         consumer_groups:
           description: |
             Consumer group IDs to expose even if they don't start with the namespace prefix.
           type: array
           items:
             $ref: '#/components/schemas/VirtualClusterNamespaceIdSelector'
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
+      x-speakeasy-param-computed: false
     VirtualClusterNamespaceTopicSelector:
       type: object
       discriminator:
@@ -26814,9 +26797,7 @@ components:
               description:
                 description: A human-readable description of the virtual cluster.
                 type: string
-                default: null
                 maxLength: 512
-                nullable: true
                 x-speakeasy-param-computed: false
               addresses:
                 $ref: '#/components/schemas/EventGatewayListenerAddresses'
@@ -26844,9 +26825,7 @@ components:
               description:
                 description: A human-readable description of the virtual cluster.
                 type: string
-                default: null
                 maxLength: 512
-                nullable: true
                 x-speakeasy-param-computed: false
               addresses:
                 $ref: '#/components/schemas/EventGatewayListenerAddresses'
@@ -26871,9 +26850,7 @@ components:
               description:
                 description: A human-readable description of the virtual cluster.
                 type: string
-                default: null
                 maxLength: 512
-                nullable: true
                 x-speakeasy-param-computed: false
               destination:
                 $ref: '#/components/schemas/BackendClusterReferenceModify'
@@ -26906,9 +26883,7 @@ components:
               description:
                 description: A human-readable description of the virtual cluster.
                 type: string
-                default: null
                 maxLength: 512
-                nullable: true
                 x-speakeasy-param-computed: false
               destination:
                 $ref: '#/components/schemas/BackendClusterReferenceModify'
@@ -26941,9 +26916,7 @@ components:
               description:
                 description: A human-readable description of the virtual cluster.
                 type: string
-                default: null
                 maxLength: 512
-                nullable: true
                 x-speakeasy-param-computed: false
               authentication:
                 $ref: '#/components/schemas/BackendClusterAuthenticationScheme'
@@ -26979,9 +26952,7 @@ components:
               description:
                 description: A human-readable description of the virtual cluster.
                 type: string
-                default: null
                 maxLength: 512
-                nullable: true
                 x-speakeasy-param-computed: false
               authentication:
                 $ref: '#/components/schemas/BackendClusterAuthenticationScheme'
@@ -27047,8 +27018,6 @@ components:
               description:
                 description: A description of the certificate.
                 type: string
-                default: null
-                nullable: true
                 x-speakeasy-param-computed: false
             required:
               - certificate
@@ -27072,8 +27041,6 @@ components:
               description:
                 description: A description of the certificate.
                 type: string
-                default: null
-                nullable: true
                 x-speakeasy-param-computed: false
             required:
               - certificate
