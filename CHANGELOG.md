@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.11.2
+> Released on 2025/10/?
+
+### Bug fixes
+* Allow removing `namespace` in `konnect_event_gateway_virtual_cluster`
+
 ## 0.11.1
 > Released on 2025/10/10
 
