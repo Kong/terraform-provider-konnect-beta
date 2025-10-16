@@ -86,8 +86,6 @@ func (r *EventGatewayVirtualClusterResourceModel) RefreshFromSharedVirtualCluste
 		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
-		r.Destination.ID = types.StringValue(resp.Destination.ID)
-		r.Destination.Name = types.StringValue(resp.Destination.Name)
 		r.DNSLabel = types.StringValue(resp.DNSLabel)
 		r.ID = types.StringValue(resp.ID)
 		if len(resp.Labels) > 0 {
@@ -273,14 +271,41 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 	} else {
 		description = nil
 	}
-	id := new(string)
-	if !r.Destination.ID.IsUnknown() && !r.Destination.ID.IsNull() {
-		*id = r.Destination.ID.ValueString()
-	} else {
-		id = nil
+	var destination shared.BackendClusterReferenceModify
+	var backendClusterReferenceByID *shared.BackendClusterReferenceByID
+	if r.Destination.BackendClusterReferenceByID != nil {
+		var id string
+		id = r.Destination.BackendClusterReferenceByID.ID.ValueString()
+
+		backendClusterReferenceByID = &shared.BackendClusterReferenceByID{
+			ID: id,
+		}
 	}
-	destination := shared.BackendClusterReferenceModify{
-		ID: id,
+	if backendClusterReferenceByID != nil {
+		destination = shared.BackendClusterReferenceModify{
+			BackendClusterReferenceByID: backendClusterReferenceByID,
+		}
+	}
+	var backendClusterReferenceByName *shared.BackendClusterReferenceByName
+	if r.Destination.BackendClusterReferenceByName != nil {
+		var name1 string
+		name1 = r.Destination.BackendClusterReferenceByName.Name.ValueString()
+
+		id1 := new(string)
+		if !r.Destination.BackendClusterReferenceByName.ID.IsUnknown() && !r.Destination.BackendClusterReferenceByName.ID.IsNull() {
+			*id1 = r.Destination.BackendClusterReferenceByName.ID.ValueString()
+		} else {
+			id1 = nil
+		}
+		backendClusterReferenceByName = &shared.BackendClusterReferenceByName{
+			Name: name1,
+			ID:   id1,
+		}
+	}
+	if backendClusterReferenceByName != nil {
+		destination = shared.BackendClusterReferenceModify{
+			BackendClusterReferenceByName: backendClusterReferenceByName,
+		}
 	}
 	authentication := make([]shared.VirtualClusterAuthenticationScheme, 0, len(r.Authentication))
 	for _, authenticationItem := range r.Authentication {
@@ -381,11 +406,11 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 				if authenticationItem.OauthBearer.Validate.Audiences != nil {
 					audiences = make([]shared.VirtualClusterAuthenticationAudience, 0, len(authenticationItem.OauthBearer.Validate.Audiences))
 					for _, audiencesItem := range authenticationItem.OauthBearer.Validate.Audiences {
-						var name1 string
-						name1 = audiencesItem.Name.ValueString()
+						var name2 string
+						name2 = audiencesItem.Name.ValueString()
 
 						audiences = append(audiences, shared.VirtualClusterAuthenticationAudience{
-							Name: name1,
+							Name: name2,
 						})
 					}
 				}
@@ -558,14 +583,41 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 	} else {
 		description = nil
 	}
-	id := new(string)
-	if !r.Destination.ID.IsUnknown() && !r.Destination.ID.IsNull() {
-		*id = r.Destination.ID.ValueString()
-	} else {
-		id = nil
+	var destination shared.BackendClusterReferenceModify
+	var backendClusterReferenceByID *shared.BackendClusterReferenceByID
+	if r.Destination.BackendClusterReferenceByID != nil {
+		var id string
+		id = r.Destination.BackendClusterReferenceByID.ID.ValueString()
+
+		backendClusterReferenceByID = &shared.BackendClusterReferenceByID{
+			ID: id,
+		}
 	}
-	destination := shared.BackendClusterReferenceModify{
-		ID: id,
+	if backendClusterReferenceByID != nil {
+		destination = shared.BackendClusterReferenceModify{
+			BackendClusterReferenceByID: backendClusterReferenceByID,
+		}
+	}
+	var backendClusterReferenceByName *shared.BackendClusterReferenceByName
+	if r.Destination.BackendClusterReferenceByName != nil {
+		var name1 string
+		name1 = r.Destination.BackendClusterReferenceByName.Name.ValueString()
+
+		id1 := new(string)
+		if !r.Destination.BackendClusterReferenceByName.ID.IsUnknown() && !r.Destination.BackendClusterReferenceByName.ID.IsNull() {
+			*id1 = r.Destination.BackendClusterReferenceByName.ID.ValueString()
+		} else {
+			id1 = nil
+		}
+		backendClusterReferenceByName = &shared.BackendClusterReferenceByName{
+			Name: name1,
+			ID:   id1,
+		}
+	}
+	if backendClusterReferenceByName != nil {
+		destination = shared.BackendClusterReferenceModify{
+			BackendClusterReferenceByName: backendClusterReferenceByName,
+		}
 	}
 	authentication := make([]shared.VirtualClusterAuthenticationScheme, 0, len(r.Authentication))
 	for _, authenticationItem := range r.Authentication {
@@ -666,11 +718,11 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 				if authenticationItem.OauthBearer.Validate.Audiences != nil {
 					audiences = make([]shared.VirtualClusterAuthenticationAudience, 0, len(authenticationItem.OauthBearer.Validate.Audiences))
 					for _, audiencesItem := range authenticationItem.OauthBearer.Validate.Audiences {
-						var name1 string
-						name1 = audiencesItem.Name.ValueString()
+						var name2 string
+						name2 = audiencesItem.Name.ValueString()
 
 						audiences = append(audiences, shared.VirtualClusterAuthenticationAudience{
-							Name: name1,
+							Name: name2,
 						})
 					}
 				}

@@ -16,7 +16,9 @@ resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster"
     ]
     description = "...my_description..."
     destination = {
-            id = "759b5471-3de4-485c-b7d3-6e8cb8929d81"
+    backend_cluster_reference_by_id = {
+    id = "80206173-845d-4ab3-9e6a-f454c3cd4baf"
+}
     }
     dns_label = "vcluster-1"
     gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
