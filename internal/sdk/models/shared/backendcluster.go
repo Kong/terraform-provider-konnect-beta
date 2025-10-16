@@ -14,7 +14,7 @@ type BackendCluster struct {
 	// The unique name of the backend cluster.
 	Name string `json:"name"`
 	// A human-readable description of the backend cluster.
-	Description    *string                            `default:"null" json:"description"`
+	Description    *string                            `json:"description,omitempty"`
 	Authentication BackendClusterAuthenticationScheme `json:"authentication"`
 	// If true, virtual clusters can have allow anonymous authentication and use this backend cluster.
 	// This setting is not recommended for production use as it may create privilege escalation vulnerabilities.

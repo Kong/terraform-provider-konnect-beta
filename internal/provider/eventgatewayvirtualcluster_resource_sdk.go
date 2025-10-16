@@ -105,71 +105,67 @@ func (r *EventGatewayVirtualClusterResourceModel) RefreshFromSharedVirtualCluste
 				r.Namespace.Additional = nil
 			} else {
 				r.Namespace.Additional = &tfTypes.VirtualClusterNamespaceAdditionalProperties{}
-				if resp.Namespace.Additional.ConsumerGroups != nil {
-					r.Namespace.Additional.ConsumerGroups = []tfTypes.VirtualClusterNamespaceIDSelector{}
+				r.Namespace.Additional.ConsumerGroups = []tfTypes.VirtualClusterNamespaceIDSelector{}
 
-					for _, consumerGroupsItem := range resp.Namespace.Additional.ConsumerGroups {
-						var consumerGroups tfTypes.VirtualClusterNamespaceIDSelector
+				for _, consumerGroupsItem := range resp.Namespace.Additional.ConsumerGroups {
+					var consumerGroups tfTypes.VirtualClusterNamespaceIDSelector
 
-						if consumerGroupsItem.VirtualClusterNamespaceIDSelectorExactList != nil {
-							consumerGroups.ExactList = &tfTypes.VirtualClusterNamespaceIDSelectorExactList{}
-							if consumerGroupsItem.VirtualClusterNamespaceIDSelectorExactList.ExactList != nil {
-								consumerGroups.ExactList.ExactList = []tfTypes.ExactList{}
+					if consumerGroupsItem.VirtualClusterNamespaceIDSelectorExactList != nil {
+						consumerGroups.ExactList = &tfTypes.VirtualClusterNamespaceIDSelectorExactList{}
+						if consumerGroupsItem.VirtualClusterNamespaceIDSelectorExactList.ExactList != nil {
+							consumerGroups.ExactList.ExactList = []tfTypes.ExactList{}
 
-								for _, exactListItem := range consumerGroupsItem.VirtualClusterNamespaceIDSelectorExactList.ExactList {
-									var exactList tfTypes.ExactList
+							for _, exactListItem := range consumerGroupsItem.VirtualClusterNamespaceIDSelectorExactList.ExactList {
+								var exactList tfTypes.ExactList
 
-									exactList.Value = types.StringValue(exactListItem.Value)
+								exactList.Value = types.StringValue(exactListItem.Value)
 
-									consumerGroups.ExactList.ExactList = append(consumerGroups.ExactList.ExactList, exactList)
-								}
+								consumerGroups.ExactList.ExactList = append(consumerGroups.ExactList.ExactList, exactList)
 							}
 						}
-						if consumerGroupsItem.VirtualClusterNamespaceIDSelectorGlob != nil {
-							consumerGroups.Glob = &tfTypes.VirtualClusterNamespaceIDSelectorGlob{}
-							consumerGroups.Glob.Glob = types.StringValue(consumerGroupsItem.VirtualClusterNamespaceIDSelectorGlob.Glob)
-						}
-
-						r.Namespace.Additional.ConsumerGroups = append(r.Namespace.Additional.ConsumerGroups, consumerGroups)
 					}
+					if consumerGroupsItem.VirtualClusterNamespaceIDSelectorGlob != nil {
+						consumerGroups.Glob = &tfTypes.VirtualClusterNamespaceIDSelectorGlob{}
+						consumerGroups.Glob.Glob = types.StringValue(consumerGroupsItem.VirtualClusterNamespaceIDSelectorGlob.Glob)
+					}
+
+					r.Namespace.Additional.ConsumerGroups = append(r.Namespace.Additional.ConsumerGroups, consumerGroups)
 				}
-				if resp.Namespace.Additional.Topics != nil {
-					r.Namespace.Additional.Topics = []tfTypes.VirtualClusterNamespaceTopicSelector{}
+				r.Namespace.Additional.Topics = []tfTypes.VirtualClusterNamespaceTopicSelector{}
 
-					for _, topicsItem := range resp.Namespace.Additional.Topics {
-						var topics tfTypes.VirtualClusterNamespaceTopicSelector
+				for _, topicsItem := range resp.Namespace.Additional.Topics {
+					var topics tfTypes.VirtualClusterNamespaceTopicSelector
 
-						if topicsItem.VirtualClusterNamespaceTopicSelectorExactList != nil {
-							topics.ExactList = &tfTypes.VirtualClusterNamespaceTopicSelectorExactList{}
-							if topicsItem.VirtualClusterNamespaceTopicSelectorExactList.Conflict != nil {
-								topics.ExactList.Conflict = types.StringValue(string(*topicsItem.VirtualClusterNamespaceTopicSelectorExactList.Conflict))
-							} else {
-								topics.ExactList.Conflict = types.StringNull()
-							}
-							if topicsItem.VirtualClusterNamespaceTopicSelectorExactList.ExactList != nil {
-								topics.ExactList.ExactList = []tfTypes.NamespaceExactAllowListItem{}
+					if topicsItem.VirtualClusterNamespaceTopicSelectorExactList != nil {
+						topics.ExactList = &tfTypes.VirtualClusterNamespaceTopicSelectorExactList{}
+						if topicsItem.VirtualClusterNamespaceTopicSelectorExactList.Conflict != nil {
+							topics.ExactList.Conflict = types.StringValue(string(*topicsItem.VirtualClusterNamespaceTopicSelectorExactList.Conflict))
+						} else {
+							topics.ExactList.Conflict = types.StringNull()
+						}
+						if topicsItem.VirtualClusterNamespaceTopicSelectorExactList.ExactList != nil {
+							topics.ExactList.ExactList = []tfTypes.NamespaceExactAllowListItem{}
 
-								for _, exactListItem1 := range topicsItem.VirtualClusterNamespaceTopicSelectorExactList.ExactList {
-									var exactList1 tfTypes.NamespaceExactAllowListItem
+							for _, exactListItem1 := range topicsItem.VirtualClusterNamespaceTopicSelectorExactList.ExactList {
+								var exactList1 tfTypes.NamespaceExactAllowListItem
 
-									exactList1.Backend = types.StringValue(exactListItem1.Backend)
+								exactList1.Backend = types.StringValue(exactListItem1.Backend)
 
-									topics.ExactList.ExactList = append(topics.ExactList.ExactList, exactList1)
-								}
+								topics.ExactList.ExactList = append(topics.ExactList.ExactList, exactList1)
 							}
 						}
-						if topicsItem.VirtualClusterNamespaceTopicSelectorGlob != nil {
-							topics.Glob = &tfTypes.VirtualClusterNamespaceTopicSelectorGlob{}
-							if topicsItem.VirtualClusterNamespaceTopicSelectorGlob.Conflict != nil {
-								topics.Glob.Conflict = types.StringValue(string(*topicsItem.VirtualClusterNamespaceTopicSelectorGlob.Conflict))
-							} else {
-								topics.Glob.Conflict = types.StringNull()
-							}
-							topics.Glob.Glob = types.StringValue(topicsItem.VirtualClusterNamespaceTopicSelectorGlob.Glob)
-						}
-
-						r.Namespace.Additional.Topics = append(r.Namespace.Additional.Topics, topics)
 					}
+					if topicsItem.VirtualClusterNamespaceTopicSelectorGlob != nil {
+						topics.Glob = &tfTypes.VirtualClusterNamespaceTopicSelectorGlob{}
+						if topicsItem.VirtualClusterNamespaceTopicSelectorGlob.Conflict != nil {
+							topics.Glob.Conflict = types.StringValue(string(*topicsItem.VirtualClusterNamespaceTopicSelectorGlob.Conflict))
+						} else {
+							topics.Glob.Conflict = types.StringNull()
+						}
+						topics.Glob.Glob = types.StringValue(topicsItem.VirtualClusterNamespaceTopicSelectorGlob.Glob)
+					}
+
+					r.Namespace.Additional.Topics = append(r.Namespace.Additional.Topics, topics)
 				}
 			}
 			r.Namespace.Mode = types.StringValue(string(resp.Namespace.Mode))
@@ -419,92 +415,86 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 
 		var additional *shared.VirtualClusterNamespaceAdditionalProperties
 		if r.Namespace.Additional != nil {
-			var topics []shared.VirtualClusterNamespaceTopicSelector
-			if r.Namespace.Additional.Topics != nil {
-				topics = make([]shared.VirtualClusterNamespaceTopicSelector, 0, len(r.Namespace.Additional.Topics))
-				for _, topicsItem := range r.Namespace.Additional.Topics {
-					if topicsItem.Glob != nil {
-						var glob string
-						glob = topicsItem.Glob.Glob.ValueString()
+			topics := make([]shared.VirtualClusterNamespaceTopicSelector, 0, len(r.Namespace.Additional.Topics))
+			for _, topicsItem := range r.Namespace.Additional.Topics {
+				if topicsItem.Glob != nil {
+					var glob string
+					glob = topicsItem.Glob.Glob.ValueString()
 
-						conflict := new(shared.Conflict)
-						if !topicsItem.Glob.Conflict.IsUnknown() && !topicsItem.Glob.Conflict.IsNull() {
-							*conflict = shared.Conflict(topicsItem.Glob.Conflict.ValueString())
-						} else {
-							conflict = nil
-						}
-						virtualClusterNamespaceTopicSelectorGlob := shared.VirtualClusterNamespaceTopicSelectorGlob{
-							Glob:     glob,
-							Conflict: conflict,
-						}
-						topics = append(topics, shared.VirtualClusterNamespaceTopicSelector{
-							VirtualClusterNamespaceTopicSelectorGlob: &virtualClusterNamespaceTopicSelectorGlob,
-						})
+					conflict := new(shared.Conflict)
+					if !topicsItem.Glob.Conflict.IsUnknown() && !topicsItem.Glob.Conflict.IsNull() {
+						*conflict = shared.Conflict(topicsItem.Glob.Conflict.ValueString())
+					} else {
+						conflict = nil
 					}
-					if topicsItem.ExactList != nil {
-						var exactList []shared.NamespaceExactAllowListItem
-						if topicsItem.ExactList.ExactList != nil {
-							exactList = make([]shared.NamespaceExactAllowListItem, 0, len(topicsItem.ExactList.ExactList))
-							for _, exactListItem := range topicsItem.ExactList.ExactList {
-								var backend string
-								backend = exactListItem.Backend.ValueString()
+					virtualClusterNamespaceTopicSelectorGlob := shared.VirtualClusterNamespaceTopicSelectorGlob{
+						Glob:     glob,
+						Conflict: conflict,
+					}
+					topics = append(topics, shared.VirtualClusterNamespaceTopicSelector{
+						VirtualClusterNamespaceTopicSelectorGlob: &virtualClusterNamespaceTopicSelectorGlob,
+					})
+				}
+				if topicsItem.ExactList != nil {
+					var exactList []shared.NamespaceExactAllowListItem
+					if topicsItem.ExactList.ExactList != nil {
+						exactList = make([]shared.NamespaceExactAllowListItem, 0, len(topicsItem.ExactList.ExactList))
+						for _, exactListItem := range topicsItem.ExactList.ExactList {
+							var backend string
+							backend = exactListItem.Backend.ValueString()
 
-								exactList = append(exactList, shared.NamespaceExactAllowListItem{
-									Backend: backend,
-								})
-							}
+							exactList = append(exactList, shared.NamespaceExactAllowListItem{
+								Backend: backend,
+							})
 						}
-						conflict1 := new(shared.VirtualClusterNamespaceTopicSelectorExactListConflict)
-						if !topicsItem.ExactList.Conflict.IsUnknown() && !topicsItem.ExactList.Conflict.IsNull() {
-							*conflict1 = shared.VirtualClusterNamespaceTopicSelectorExactListConflict(topicsItem.ExactList.Conflict.ValueString())
-						} else {
-							conflict1 = nil
-						}
-						virtualClusterNamespaceTopicSelectorExactList := shared.VirtualClusterNamespaceTopicSelectorExactList{
-							ExactList: exactList,
-							Conflict:  conflict1,
-						}
-						topics = append(topics, shared.VirtualClusterNamespaceTopicSelector{
-							VirtualClusterNamespaceTopicSelectorExactList: &virtualClusterNamespaceTopicSelectorExactList,
-						})
 					}
+					conflict1 := new(shared.VirtualClusterNamespaceTopicSelectorExactListConflict)
+					if !topicsItem.ExactList.Conflict.IsUnknown() && !topicsItem.ExactList.Conflict.IsNull() {
+						*conflict1 = shared.VirtualClusterNamespaceTopicSelectorExactListConflict(topicsItem.ExactList.Conflict.ValueString())
+					} else {
+						conflict1 = nil
+					}
+					virtualClusterNamespaceTopicSelectorExactList := shared.VirtualClusterNamespaceTopicSelectorExactList{
+						ExactList: exactList,
+						Conflict:  conflict1,
+					}
+					topics = append(topics, shared.VirtualClusterNamespaceTopicSelector{
+						VirtualClusterNamespaceTopicSelectorExactList: &virtualClusterNamespaceTopicSelectorExactList,
+					})
 				}
 			}
-			var consumerGroups []shared.VirtualClusterNamespaceIDSelector
-			if r.Namespace.Additional.ConsumerGroups != nil {
-				consumerGroups = make([]shared.VirtualClusterNamespaceIDSelector, 0, len(r.Namespace.Additional.ConsumerGroups))
-				for _, consumerGroupsItem := range r.Namespace.Additional.ConsumerGroups {
-					if consumerGroupsItem.Glob != nil {
-						var glob1 string
-						glob1 = consumerGroupsItem.Glob.Glob.ValueString()
+			consumerGroups := make([]shared.VirtualClusterNamespaceIDSelector, 0, len(r.Namespace.Additional.ConsumerGroups))
+			for _, consumerGroupsItem := range r.Namespace.Additional.ConsumerGroups {
+				if consumerGroupsItem.Glob != nil {
+					var glob1 string
+					glob1 = consumerGroupsItem.Glob.Glob.ValueString()
 
-						virtualClusterNamespaceIDSelectorGlob := shared.VirtualClusterNamespaceIDSelectorGlob{
-							Glob: glob1,
-						}
-						consumerGroups = append(consumerGroups, shared.VirtualClusterNamespaceIDSelector{
-							VirtualClusterNamespaceIDSelectorGlob: &virtualClusterNamespaceIDSelectorGlob,
-						})
+					virtualClusterNamespaceIDSelectorGlob := shared.VirtualClusterNamespaceIDSelectorGlob{
+						Glob: glob1,
 					}
-					if consumerGroupsItem.ExactList != nil {
-						var exactList1 []shared.ExactList
-						if consumerGroupsItem.ExactList.ExactList != nil {
-							exactList1 = make([]shared.ExactList, 0, len(consumerGroupsItem.ExactList.ExactList))
-							for _, exactListItem1 := range consumerGroupsItem.ExactList.ExactList {
-								var value string
-								value = exactListItem1.Value.ValueString()
+					consumerGroups = append(consumerGroups, shared.VirtualClusterNamespaceIDSelector{
+						VirtualClusterNamespaceIDSelectorGlob: &virtualClusterNamespaceIDSelectorGlob,
+					})
+				}
+				if consumerGroupsItem.ExactList != nil {
+					var exactList1 []shared.ExactList
+					if consumerGroupsItem.ExactList.ExactList != nil {
+						exactList1 = make([]shared.ExactList, 0, len(consumerGroupsItem.ExactList.ExactList))
+						for _, exactListItem1 := range consumerGroupsItem.ExactList.ExactList {
+							var value string
+							value = exactListItem1.Value.ValueString()
 
-								exactList1 = append(exactList1, shared.ExactList{
-									Value: value,
-								})
-							}
+							exactList1 = append(exactList1, shared.ExactList{
+								Value: value,
+							})
 						}
-						virtualClusterNamespaceIDSelectorExactList := shared.VirtualClusterNamespaceIDSelectorExactList{
-							ExactList: exactList1,
-						}
-						consumerGroups = append(consumerGroups, shared.VirtualClusterNamespaceIDSelector{
-							VirtualClusterNamespaceIDSelectorExactList: &virtualClusterNamespaceIDSelectorExactList,
-						})
 					}
+					virtualClusterNamespaceIDSelectorExactList := shared.VirtualClusterNamespaceIDSelectorExactList{
+						ExactList: exactList1,
+					}
+					consumerGroups = append(consumerGroups, shared.VirtualClusterNamespaceIDSelector{
+						VirtualClusterNamespaceIDSelectorExactList: &virtualClusterNamespaceIDSelectorExactList,
+					})
 				}
 			}
 			additional = &shared.VirtualClusterNamespaceAdditionalProperties{
@@ -704,92 +694,86 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 
 		var additional *shared.VirtualClusterNamespaceAdditionalProperties
 		if r.Namespace.Additional != nil {
-			var topics []shared.VirtualClusterNamespaceTopicSelector
-			if r.Namespace.Additional.Topics != nil {
-				topics = make([]shared.VirtualClusterNamespaceTopicSelector, 0, len(r.Namespace.Additional.Topics))
-				for _, topicsItem := range r.Namespace.Additional.Topics {
-					if topicsItem.Glob != nil {
-						var glob string
-						glob = topicsItem.Glob.Glob.ValueString()
+			topics := make([]shared.VirtualClusterNamespaceTopicSelector, 0, len(r.Namespace.Additional.Topics))
+			for _, topicsItem := range r.Namespace.Additional.Topics {
+				if topicsItem.Glob != nil {
+					var glob string
+					glob = topicsItem.Glob.Glob.ValueString()
 
-						conflict := new(shared.Conflict)
-						if !topicsItem.Glob.Conflict.IsUnknown() && !topicsItem.Glob.Conflict.IsNull() {
-							*conflict = shared.Conflict(topicsItem.Glob.Conflict.ValueString())
-						} else {
-							conflict = nil
-						}
-						virtualClusterNamespaceTopicSelectorGlob := shared.VirtualClusterNamespaceTopicSelectorGlob{
-							Glob:     glob,
-							Conflict: conflict,
-						}
-						topics = append(topics, shared.VirtualClusterNamespaceTopicSelector{
-							VirtualClusterNamespaceTopicSelectorGlob: &virtualClusterNamespaceTopicSelectorGlob,
-						})
+					conflict := new(shared.Conflict)
+					if !topicsItem.Glob.Conflict.IsUnknown() && !topicsItem.Glob.Conflict.IsNull() {
+						*conflict = shared.Conflict(topicsItem.Glob.Conflict.ValueString())
+					} else {
+						conflict = nil
 					}
-					if topicsItem.ExactList != nil {
-						var exactList []shared.NamespaceExactAllowListItem
-						if topicsItem.ExactList.ExactList != nil {
-							exactList = make([]shared.NamespaceExactAllowListItem, 0, len(topicsItem.ExactList.ExactList))
-							for _, exactListItem := range topicsItem.ExactList.ExactList {
-								var backend string
-								backend = exactListItem.Backend.ValueString()
+					virtualClusterNamespaceTopicSelectorGlob := shared.VirtualClusterNamespaceTopicSelectorGlob{
+						Glob:     glob,
+						Conflict: conflict,
+					}
+					topics = append(topics, shared.VirtualClusterNamespaceTopicSelector{
+						VirtualClusterNamespaceTopicSelectorGlob: &virtualClusterNamespaceTopicSelectorGlob,
+					})
+				}
+				if topicsItem.ExactList != nil {
+					var exactList []shared.NamespaceExactAllowListItem
+					if topicsItem.ExactList.ExactList != nil {
+						exactList = make([]shared.NamespaceExactAllowListItem, 0, len(topicsItem.ExactList.ExactList))
+						for _, exactListItem := range topicsItem.ExactList.ExactList {
+							var backend string
+							backend = exactListItem.Backend.ValueString()
 
-								exactList = append(exactList, shared.NamespaceExactAllowListItem{
-									Backend: backend,
-								})
-							}
+							exactList = append(exactList, shared.NamespaceExactAllowListItem{
+								Backend: backend,
+							})
 						}
-						conflict1 := new(shared.VirtualClusterNamespaceTopicSelectorExactListConflict)
-						if !topicsItem.ExactList.Conflict.IsUnknown() && !topicsItem.ExactList.Conflict.IsNull() {
-							*conflict1 = shared.VirtualClusterNamespaceTopicSelectorExactListConflict(topicsItem.ExactList.Conflict.ValueString())
-						} else {
-							conflict1 = nil
-						}
-						virtualClusterNamespaceTopicSelectorExactList := shared.VirtualClusterNamespaceTopicSelectorExactList{
-							ExactList: exactList,
-							Conflict:  conflict1,
-						}
-						topics = append(topics, shared.VirtualClusterNamespaceTopicSelector{
-							VirtualClusterNamespaceTopicSelectorExactList: &virtualClusterNamespaceTopicSelectorExactList,
-						})
 					}
+					conflict1 := new(shared.VirtualClusterNamespaceTopicSelectorExactListConflict)
+					if !topicsItem.ExactList.Conflict.IsUnknown() && !topicsItem.ExactList.Conflict.IsNull() {
+						*conflict1 = shared.VirtualClusterNamespaceTopicSelectorExactListConflict(topicsItem.ExactList.Conflict.ValueString())
+					} else {
+						conflict1 = nil
+					}
+					virtualClusterNamespaceTopicSelectorExactList := shared.VirtualClusterNamespaceTopicSelectorExactList{
+						ExactList: exactList,
+						Conflict:  conflict1,
+					}
+					topics = append(topics, shared.VirtualClusterNamespaceTopicSelector{
+						VirtualClusterNamespaceTopicSelectorExactList: &virtualClusterNamespaceTopicSelectorExactList,
+					})
 				}
 			}
-			var consumerGroups []shared.VirtualClusterNamespaceIDSelector
-			if r.Namespace.Additional.ConsumerGroups != nil {
-				consumerGroups = make([]shared.VirtualClusterNamespaceIDSelector, 0, len(r.Namespace.Additional.ConsumerGroups))
-				for _, consumerGroupsItem := range r.Namespace.Additional.ConsumerGroups {
-					if consumerGroupsItem.Glob != nil {
-						var glob1 string
-						glob1 = consumerGroupsItem.Glob.Glob.ValueString()
+			consumerGroups := make([]shared.VirtualClusterNamespaceIDSelector, 0, len(r.Namespace.Additional.ConsumerGroups))
+			for _, consumerGroupsItem := range r.Namespace.Additional.ConsumerGroups {
+				if consumerGroupsItem.Glob != nil {
+					var glob1 string
+					glob1 = consumerGroupsItem.Glob.Glob.ValueString()
 
-						virtualClusterNamespaceIDSelectorGlob := shared.VirtualClusterNamespaceIDSelectorGlob{
-							Glob: glob1,
-						}
-						consumerGroups = append(consumerGroups, shared.VirtualClusterNamespaceIDSelector{
-							VirtualClusterNamespaceIDSelectorGlob: &virtualClusterNamespaceIDSelectorGlob,
-						})
+					virtualClusterNamespaceIDSelectorGlob := shared.VirtualClusterNamespaceIDSelectorGlob{
+						Glob: glob1,
 					}
-					if consumerGroupsItem.ExactList != nil {
-						var exactList1 []shared.ExactList
-						if consumerGroupsItem.ExactList.ExactList != nil {
-							exactList1 = make([]shared.ExactList, 0, len(consumerGroupsItem.ExactList.ExactList))
-							for _, exactListItem1 := range consumerGroupsItem.ExactList.ExactList {
-								var value string
-								value = exactListItem1.Value.ValueString()
+					consumerGroups = append(consumerGroups, shared.VirtualClusterNamespaceIDSelector{
+						VirtualClusterNamespaceIDSelectorGlob: &virtualClusterNamespaceIDSelectorGlob,
+					})
+				}
+				if consumerGroupsItem.ExactList != nil {
+					var exactList1 []shared.ExactList
+					if consumerGroupsItem.ExactList.ExactList != nil {
+						exactList1 = make([]shared.ExactList, 0, len(consumerGroupsItem.ExactList.ExactList))
+						for _, exactListItem1 := range consumerGroupsItem.ExactList.ExactList {
+							var value string
+							value = exactListItem1.Value.ValueString()
 
-								exactList1 = append(exactList1, shared.ExactList{
-									Value: value,
-								})
-							}
+							exactList1 = append(exactList1, shared.ExactList{
+								Value: value,
+							})
 						}
-						virtualClusterNamespaceIDSelectorExactList := shared.VirtualClusterNamespaceIDSelectorExactList{
-							ExactList: exactList1,
-						}
-						consumerGroups = append(consumerGroups, shared.VirtualClusterNamespaceIDSelector{
-							VirtualClusterNamespaceIDSelectorExactList: &virtualClusterNamespaceIDSelectorExactList,
-						})
 					}
+					virtualClusterNamespaceIDSelectorExactList := shared.VirtualClusterNamespaceIDSelectorExactList{
+						ExactList: exactList1,
+					}
+					consumerGroups = append(consumerGroups, shared.VirtualClusterNamespaceIDSelector{
+						VirtualClusterNamespaceIDSelectorExactList: &virtualClusterNamespaceIDSelectorExactList,
+					})
 				}
 			}
 			additional = &shared.VirtualClusterNamespaceAdditionalProperties{
