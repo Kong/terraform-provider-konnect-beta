@@ -7,10 +7,10 @@ type VirtualClusterNamespaceAdditionalProperties struct {
 	// The topics are not affected by the hide/enforce prefix mode.
 	// If the client tries to create a topic that matches this list, the request is rejected.
 	//
-	Topics []VirtualClusterNamespaceTopicSelector `json:"topics"`
+	Topics []VirtualClusterNamespaceTopicSelector `json:"topics,omitempty"`
 	// Consumer group IDs to expose even if they don't start with the namespace prefix.
 	//
-	ConsumerGroups []VirtualClusterNamespaceIDSelector `json:"consumer_groups"`
+	ConsumerGroups []VirtualClusterNamespaceIDSelector `json:"consumer_groups,omitempty"`
 }
 
 func (o *VirtualClusterNamespaceAdditionalProperties) GetTopics() []VirtualClusterNamespaceTopicSelector {

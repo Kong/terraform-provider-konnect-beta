@@ -12,7 +12,7 @@ type EventGatewayProduceSchemaValidationPolicy struct {
 	// A unique user-defined name of the policy.
 	Name *string `default:"null" json:"name"`
 	// A human-readable description of the policy.
-	Description *string `default:"null" json:"description"`
+	Description *string `json:"description,omitempty"`
 	// Whether the policy is enabled.
 	Enabled *bool `default:"true" json:"enabled"`
 	// A string containing the boolean expression that determines whether the policy is applied.

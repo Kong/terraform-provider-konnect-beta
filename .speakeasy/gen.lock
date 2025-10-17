@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: 6feeae5c230f7c9270ea910c1a72991c
+  docChecksum: ce6a564e5a4bb2f1d3b8649dc7c8fdeb
   docVersion: 2.0.0
   speakeasyVersion: 1.602.0
   generationVersion: 2.681.1
-  releaseVersion: 0.11.1
-  configChecksum: f4bb002e34a3c9bc9fdeca3131642895
+  releaseVersion: 0.11.2
+  configChecksum: 4c7161662d491bd3df8e38404dd4c6d5
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -5824,10 +5824,10 @@ examples:
         path:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"name": "<value>", "description": null, "addresses": ["<value 1>"], "ports": [], "labels": {"env": "test"}}
+        application/json: {"name": "<value>", "addresses": ["<value 1>"], "ports": [], "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"id": "4da08053-2b38-4cc6-9a16-78b571cad686", "name": "<value>", "description": null, "addresses": ["<value 1>", "<value 2>"], "ports": ["<value 1>"], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "4da08053-2b38-4cc6-9a16-78b571cad686", "name": "<value>", "addresses": ["<value 1>", "<value 2>"], "ports": ["<value 1>"], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 347576, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_length", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
@@ -5842,7 +5842,7 @@ examples:
           eventGatewayListenerId: "31f35308-f007-42b7-9c56-aadf0a2e6fee"
       responses:
         "200":
-          application/json: {"id": "27a842c9-237c-490d-8a27-8a0f8874ea93", "name": "<value>", "description": null, "addresses": ["<value 1>", "<value 2>", "<value 3>"], "ports": ["<value 1>", "<value 2>", "<value 3>"], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "27a842c9-237c-490d-8a27-8a0f8874ea93", "name": "<value>", "addresses": ["<value 1>", "<value 2>", "<value 3>"], "ports": ["<value 1>", "<value 2>", "<value 3>"], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -5856,10 +5856,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           eventGatewayListenerId: "927df604-cc92-426a-b160-a94aa6e5de7d"
       requestBody:
-        application/json: {"name": "<value>", "description": null, "addresses": ["<value 1>", "<value 2>"], "ports": [], "labels": {"env": "test"}}
+        application/json: {"name": "<value>", "addresses": ["<value 1>", "<value 2>"], "ports": [], "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"id": "4d10ef63-a3e3-4e39-affa-253ee12dd0ea", "name": "<value>", "description": null, "addresses": ["<value 1>"], "ports": ["<value 1>", "<value 2>", "<value 3>"], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "4d10ef63-a3e3-4e39-affa-253ee12dd0ea", "name": "<value>", "addresses": ["<value 1>"], "ports": ["<value 1>", "<value 2>", "<value 3>"], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 359512, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -5885,10 +5885,10 @@ examples:
         path:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"name": "<value>", "description": null, "destination": {}, "authentication": [{"type": "sasl_plain", "mediation": "passthrough", "principals": null}], "acl_mode": "passthrough", "dns_label": "vcluster-1", "labels": {"env": "test"}}
+        application/json: {"name": "<value>", "destination": {}, "authentication": [{"type": "sasl_plain", "mediation": "passthrough", "principals": null}], "acl_mode": "passthrough", "dns_label": "vcluster-1", "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"id": "5c660d55-84a0-4c53-836d-12542cf396cb", "description": null, "destination": {"id": "6ccb8ec8-6b0d-4ad9-bc7e-3fdd2ece7b69", "name": "<value>"}, "authentication": [{"type": "anonymous"}], "name": "<value>", "dns_label": "vcluster-1", "acl_mode": "enforce_on_gateway", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "5c660d55-84a0-4c53-836d-12542cf396cb", "destination": {"id": "6ccb8ec8-6b0d-4ad9-bc7e-3fdd2ece7b69", "name": "<value>"}, "authentication": [{"type": "anonymous"}], "name": "<value>", "dns_label": "vcluster-1", "acl_mode": "enforce_on_gateway", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 621528, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -5903,7 +5903,7 @@ examples:
           virtualClusterId: "0b2723a8-8eff-4698-8224-0c823cd13fbf"
       responses:
         "200":
-          application/json: {"id": "f04439b9-62b9-475f-ba27-2ded26ed9d17", "description": null, "destination": {"id": "088ad9ca-e831-4eaf-bd1a-361abbf7526e", "name": "<value>"}, "authentication": [], "name": "<value>", "dns_label": "vcluster-1", "acl_mode": "enforce_on_gateway", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "f04439b9-62b9-475f-ba27-2ded26ed9d17", "destination": {"id": "088ad9ca-e831-4eaf-bd1a-361abbf7526e", "name": "<value>"}, "authentication": [], "name": "<value>", "dns_label": "vcluster-1", "acl_mode": "enforce_on_gateway", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -5917,10 +5917,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "fe909fd6-277e-424b-b080-aba0bbb79170"
       requestBody:
-        application/json: {"name": "<value>", "description": null, "destination": {}, "authentication": [], "acl_mode": "enforce_on_gateway", "dns_label": "vcluster-1", "labels": {"env": "test"}}
+        application/json: {"name": "<value>", "destination": {}, "authentication": [], "acl_mode": "enforce_on_gateway", "dns_label": "vcluster-1", "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"id": "f5486120-98cd-449b-821c-dc09b16296a1", "description": null, "destination": {"id": "22a0dfa3-6039-4df9-adc6-85311527aa39", "name": "<value>"}, "authentication": [], "name": "<value>", "dns_label": "vcluster-1", "acl_mode": "passthrough", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "f5486120-98cd-449b-821c-dc09b16296a1", "destination": {"id": "22a0dfa3-6039-4df9-adc6-85311527aa39", "name": "<value>"}, "authentication": [], "name": "<value>", "dns_label": "vcluster-1", "acl_mode": "passthrough", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 368051, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
@@ -5946,10 +5946,10 @@ examples:
         path:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"name": "<value>", "description": null, "authentication": {"type": "anonymous"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>", "<value 2>"], "tls": {"enabled": true, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"]}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}}
+        application/json: {"name": "<value>", "authentication": {"type": "anonymous"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>", "<value 2>"], "tls": {"enabled": true, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"]}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"id": "d81f0780-2250-4cde-94d5-cacf7e7ba8b3", "name": "<value>", "description": null, "authentication": {"type": "anonymous"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>"], "tls": {"enabled": true, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"]}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "d81f0780-2250-4cde-94d5-cacf7e7ba8b3", "name": "<value>", "authentication": {"type": "anonymous"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>"], "tls": {"enabled": true, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"]}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 994884, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
@@ -5964,7 +5964,7 @@ examples:
           backendClusterId: "5ef7f382-5bc5-4c2e-a215-300f045de3da"
       responses:
         "200":
-          application/json: {"id": "5d418534-2831-4847-af7c-28c816066b03", "name": "<value>", "description": null, "authentication": {"type": "sasl_plain", "username": "Kenna_Crooks88", "password": "${env['MY_SECRET']}"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>", "<value 2>", "<value 3>"], "tls": {"enabled": true, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"]}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "5d418534-2831-4847-af7c-28c816066b03", "name": "<value>", "authentication": {"type": "sasl_plain", "username": "Kenna_Crooks88", "password": "${env['MY_SECRET']}"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>", "<value 2>", "<value 3>"], "tls": {"enabled": true, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"]}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -5978,10 +5978,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           backendClusterId: "ddaa3274-bd11-4dc5-b580-21603cfec6a6"
       requestBody:
-        application/json: {"name": "<value>", "description": null, "authentication": {"type": "sasl_plain", "username": "Yasmin66", "password": "${env['MY_SECRET']}"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>", "<value 2>", "<value 3>"], "tls": {"enabled": false, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"]}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}}
+        application/json: {"name": "<value>", "authentication": {"type": "sasl_plain", "username": "Yasmin66", "password": "${env['MY_SECRET']}"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>", "<value 2>", "<value 3>"], "tls": {"enabled": false, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"]}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"id": "ac884d5a-f703-4de9-a51c-860245e22330", "name": "<value>", "description": null, "authentication": {"type": "anonymous"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>"], "tls": {"enabled": false, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"]}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "ac884d5a-f703-4de9-a51c-860245e22330", "name": "<value>", "authentication": {"type": "anonymous"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>"], "tls": {"enabled": false, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"]}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 524449, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -6007,10 +6007,10 @@ examples:
         path:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"name": "<value>", "type": "konnect", "description": null}
+        application/json: {"name": "<value>", "type": "konnect", "description": "responsible absent per whenever expert in yowza that scholarship essence"}
       responses:
         "201":
-          application/json: {"name": "<value>", "type": "konnect", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "description": null, "labels": {"env": "test"}, "id": "45e89a13-9f17-4048-ad93-db24242ac984"}
+          application/json: {"name": "<value>", "type": "env", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "labels": {"env": "test"}, "config": {"prefix": "KONG_"}, "id": "45e89a13-9f17-4048-ad93-db24242ac984"}
         "400":
           application/problem+json: {"status": 819761, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_length", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
@@ -6025,7 +6025,7 @@ examples:
           vaultId: "85a372b5-93ec-4ff9-9525-81c91606ab6a"
       responses:
         "200":
-          application/json: {"name": "<value>", "type": "konnect", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "description": null, "labels": {"env": "test"}, "id": "9e333bbb-c1ef-4c74-ba0c-d3d3b493aed5"}
+          application/json: {"name": "<value>", "type": "konnect", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "labels": {"env": "test"}, "id": "9e333bbb-c1ef-4c74-ba0c-d3d3b493aed5"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -6039,10 +6039,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           vaultId: "eb40b7d3-8efe-42d8-b0e5-e6cbba0c19a7"
       requestBody:
-        application/json: {"name": "<value>", "type": "konnect", "description": null}
+        application/json: {"name": "<value>", "type": "konnect", "description": "times squirm sell poorly unfit till cheerfully"}
       responses:
         "200":
-          application/json: {"name": "<value>", "type": "konnect", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "description": null, "labels": {"env": "test"}, "id": "99e044c2-da86-40af-a710-3b45381a76d9"}
+          application/json: {"name": "<value>", "type": "env", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "labels": {"env": "test"}, "config": {"prefix": "KONG_"}, "id": "99e044c2-da86-40af-a710-3b45381a76d9"}
         "400":
           application/problem+json: {"status": 871258, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -6068,10 +6068,10 @@ examples:
         path:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"name": "<value>", "description": null, "type": "confluent", "config": {"schema_type": "avro", "endpoint": "https://broken-tuber.net/", "timeout_seconds": 10, "authentication": {"type": "basic", "username": "Stanley71", "password": "${env['MY_SECRET']}"}}}
+        application/json: {"name": "<value>", "description": "but before awesome unlucky", "type": "confluent", "config": {"schema_type": "avro", "endpoint": "https://broken-tuber.net/", "timeout_seconds": 10, "authentication": {"type": "basic", "username": "Stanley71", "password": "${env['MY_SECRET']}"}}}
       responses:
         "201":
-          application/json: {"name": "<value>", "description": null, "type": "<value>", "labels": {"env": "test"}, "id": "f491e878-8b03-4447-8bbe-b909087ff980", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"name": "<value>", "type": "<value>", "labels": {"env": "test"}, "id": "f491e878-8b03-4447-8bbe-b909087ff980", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 794688, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_lowercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
@@ -6086,7 +6086,7 @@ examples:
           schemaRegistryId: "cde6a4b4-3ebf-407e-8879-4fb69cbecb40"
       responses:
         "200":
-          application/json: {"name": "<value>", "description": null, "type": "<value>", "labels": {"env": "test"}, "id": "687c61a4-9b57-4f81-9438-36ad47eab90a", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"name": "<value>", "type": "<value>", "labels": {"env": "test"}, "id": "687c61a4-9b57-4f81-9438-36ad47eab90a", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -6100,10 +6100,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           schemaRegistryId: "703ba762-1708-4a8e-b805-03811b6dbf55"
       requestBody:
-        application/json: {"name": "<value>", "description": null, "type": "confluent", "config": {"schema_type": "avro", "endpoint": "https://polished-caption.info/", "timeout_seconds": 10, "authentication": {"type": "basic", "username": "Kelton_Lind-Spencer42", "password": "${env['MY_SECRET']}"}}}
+        application/json: {"name": "<value>", "description": "lyre custody given analyse pulse sell", "type": "confluent", "config": {"schema_type": "avro", "endpoint": "https://polished-caption.info/", "timeout_seconds": 10, "authentication": {"type": "basic", "username": "Kelton_Lind-Spencer42", "password": "${env['MY_SECRET']}"}}}
       responses:
         "200":
-          application/json: {"name": "<value>", "description": null, "type": "<value>", "labels": {"env": "test"}, "id": "96c20a96-d322-42ea-900d-42e84320a8ab", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"name": "<value>", "type": "<value>", "labels": {"env": "test"}, "id": "96c20a96-d322-42ea-900d-42e84320a8ab", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 811142, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max_items", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
         "401":
@@ -6254,7 +6254,7 @@ examples:
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "06a1da50-18ba-4734-a0a9-e00dd52dfc9b", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "06a1da50-18ba-4734-a0a9-e00dd52dfc9b", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -6269,10 +6269,10 @@ examples:
           eventGatewayListenerId: "8150b381-175e-48cc-b79b-78d1d98707a8"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "tls_server", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+        application/json: {"type": "tls_server", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "3252186a-a8d6-45c3-ae43-7f70c4575b09", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "3252186a-a8d6-45c3-ae43-7f70c4575b09", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 976208, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -6302,7 +6302,7 @@ examples:
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "f674c0bd-d6b4-488d-a8b4-ff7fdb36b038", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "f674c0bd-d6b4-488d-a8b4-ff7fdb36b038", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -6317,10 +6317,10 @@ examples:
           eventGatewayListenerId: "60c0a875-ed08-4959-a810-6710c2d37b44"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "forward_to_virtual_cluster", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"type": "sni", "sni_suffix": ".example.com", "advertised_port": null}, "labels": {"env": "test"}}
+        application/json: {"type": "forward_to_virtual_cluster", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"type": "sni", "sni_suffix": ".example.com", "advertised_port": null}, "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "a964a42a-4b6e-438a-847c-79680f3800f7", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "a964a42a-4b6e-438a-847c-79680f3800f7", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 258360, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_symbols", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
@@ -6348,10 +6348,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           eventGatewayListenerId: "fbb26749-530c-4cd0-8d52-9db9d81c3f08"
       requestBody:
-        application/json: {"type": "tls_server", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+        application/json: {"type": "tls_server", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "009e4bb7-902f-439c-ba0f-6126abc8ab52", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "009e4bb7-902f-439c-ba0f-6126abc8ab52", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 830414, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>"], "source": "body"}]}
         "401":
@@ -6365,10 +6365,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           eventGatewayListenerId: "cc1f804b-d05f-4c4b-ae7c-01ee08446fa7"
       requestBody:
-        application/json: {"type": "forward_to_virtual_cluster", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"type": "sni", "sni_suffix": ".example.com", "advertised_port": null}, "labels": {"env": "test"}}
+        application/json: {"type": "forward_to_virtual_cluster", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"type": "sni", "sni_suffix": ".example.com", "advertised_port": null}, "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "55a6e644-871e-4251-8b96-3dbbcc3555cf", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "55a6e644-871e-4251-8b96-3dbbcc3555cf", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 712567, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -6384,7 +6384,7 @@ examples:
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "ef80a11c-170f-4544-9076-8efb8e319de7", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "ef80a11c-170f-4544-9076-8efb8e319de7", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -6399,10 +6399,10 @@ examples:
           virtualClusterId: "7c38d3f3-5c9a-49b5-9b67-2e4f8e1f2a25"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "modify_headers", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"actions": null}, "labels": {"env": "test"}}
+        application/json: {"type": "modify_headers", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"actions": null}, "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "507871d9-bb97-48d2-9a55-a4be33f78881", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "507871d9-bb97-48d2-9a55-a4be33f78881", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 711740, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
@@ -6432,7 +6432,7 @@ examples:
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "34538704-755b-4b27-9f94-acccd39923d1", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "34538704-755b-4b27-9f94-acccd39923d1", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -6447,10 +6447,10 @@ examples:
           virtualClusterId: "4fb63c2c-47c0-451b-a606-7002570cfd42"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "schema_validation", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+        application/json: {"type": "schema_validation", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "5b2191fd-223a-44f7-9d8b-d018a6e9ee5d", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "5b2191fd-223a-44f7-9d8b-d018a6e9ee5d", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 409111, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>"], "source": "body"}]}
         "401":
@@ -6480,7 +6480,7 @@ examples:
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "f444cc2a-8835-42ed-b86d-e8d664dfdb3b", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "f444cc2a-8835-42ed-b86d-e8d664dfdb3b", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -6495,10 +6495,10 @@ examples:
           virtualClusterId: "eb84f991-ae6d-4ed9-a84f-dd27dd8493c1"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "decrypt", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+        application/json: {"type": "decrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "b7a563ad-fad7-4c5f-b18a-ba17dd92a28a", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "b7a563ad-fad7-4c5f-b18a-ba17dd92a28a", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 180267, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max_length", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
         "401":
@@ -6528,7 +6528,7 @@ examples:
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "617a6a0d-2e44-47c7-8782-f21636ed5b03", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "617a6a0d-2e44-47c7-8782-f21636ed5b03", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -6543,10 +6543,10 @@ examples:
           virtualClusterId: "b85a6bf7-2401-433a-b62d-05759913d341"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "skip_record", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "labels": {"env": "test"}}
+        application/json: {"type": "skip_record", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "d0435f74-88f6-4183-b808-33363bc99d2e", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "d0435f74-88f6-4183-b808-33363bc99d2e", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 643328, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
@@ -6574,10 +6574,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "87299e77-284a-47bd-9ab3-a097848681e1"
       requestBody:
-        application/json: {"type": "modify_headers", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"actions": null}, "labels": {"env": "test"}}
+        application/json: {"type": "modify_headers", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"actions": null}, "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "ea2b1fb4-aa48-439f-84c9-a592b6fd8d58", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "ea2b1fb4-aa48-439f-84c9-a592b6fd8d58", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 487642, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
@@ -6591,10 +6591,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "e26dd505-ebbf-4297-994b-16b07ec83735"
       requestBody:
-        application/json: {"type": "schema_validation", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+        application/json: {"type": "schema_validation", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "e4117cbb-3be1-4097-80e4-cff0af8e4d75", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "e4117cbb-3be1-4097-80e4-cff0af8e4d75", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 885533, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": null, "source": "body"}]}
         "401":
@@ -6608,10 +6608,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "995bc147-2750-4c10-a0e2-ec9b901491eb"
       requestBody:
-        application/json: {"type": "decrypt", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+        application/json: {"type": "decrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "627ce5c5-8fd9-43a2-8c83-eafe3d39fe8e", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "627ce5c5-8fd9-43a2-8c83-eafe3d39fe8e", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 191667, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_uppercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
@@ -6625,10 +6625,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "a5e310a4-a4c6-4950-aa8f-3767751d9b74"
       requestBody:
-        application/json: {"type": "skip_record", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "labels": {"env": "test"}}
+        application/json: {"type": "skip_record", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "975cc614-a984-4c1a-831d-f45e0b1f071e", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "975cc614-a984-4c1a-831d-f45e0b1f071e", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 492591, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -6644,7 +6644,7 @@ examples:
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "b391fbb8-2e27-47a6-a351-647b26be417b", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "b391fbb8-2e27-47a6-a351-647b26be417b", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -6659,10 +6659,10 @@ examples:
           virtualClusterId: "1ca6bca6-4a82-4d94-a3d7-098134851e5b"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "modify_headers", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"actions": null}, "labels": {"env": "test"}}
+        application/json: {"type": "modify_headers", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"actions": null}, "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "e203f9d4-2bec-4e8b-a4c8-7b6d178a38ca", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "e203f9d4-2bec-4e8b-a4c8-7b6d178a38ca", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 474674, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
@@ -6692,7 +6692,7 @@ examples:
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "d0e0237c-69b1-426c-8e22-068ae5fad280", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "d0e0237c-69b1-426c-8e22-068ae5fad280", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -6707,10 +6707,10 @@ examples:
           virtualClusterId: "584123c6-1da3-4626-b4e1-d74eaa2e89ac"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "schema_validation", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"key_validation_action": "mark", "value_validation_action": "mark", "type": "confluent_schema_registry"}, "labels": {"env": "test"}}
+        application/json: {"type": "schema_validation", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"key_validation_action": "mark", "value_validation_action": "mark", "type": "confluent_schema_registry"}, "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "2ad3cdfd-1f2f-4d97-a2d3-c62063981d3d", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "2ad3cdfd-1f2f-4d97-a2d3-c62063981d3d", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 504318, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_digits", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
@@ -6740,7 +6740,7 @@ examples:
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "b516476b-9fb4-4089-bf7a-a71dc943479d", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "b516476b-9fb4-4089-bf7a-a71dc943479d", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -6755,10 +6755,10 @@ examples:
           virtualClusterId: "f5cf6665-58bb-47f4-be01-926b2c0b6612"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "encrypt", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+        application/json: {"type": "encrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "f9bcd779-cf70-4a2f-949f-99f677043c70", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "f9bcd779-cf70-4a2f-949f-99f677043c70", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 790793, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": null, "reason": "is a required field", "dependents": null, "source": "body"}]}
         "401":
@@ -6788,7 +6788,7 @@ examples:
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "ad5b2d5c-3121-4530-8d04-16fd81747078", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "ad5b2d5c-3121-4530-8d04-16fd81747078", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -6803,10 +6803,10 @@ examples:
           virtualClusterId: "c38b69e9-daf3-4e3f-a808-0f0ed7a792a4"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "skip_record", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "labels": {"env": "test"}}
+        application/json: {"type": "skip_record", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "968d9127-20b3-4725-aef9-622f43bc49dd", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "968d9127-20b3-4725-aef9-622f43bc49dd", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 469093, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -6834,10 +6834,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "90d7fe42-a5e1-45c2-b20f-d8903a6badad"
       requestBody:
-        application/json: {"type": "modify_headers", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"actions": null}, "labels": {"env": "test"}}
+        application/json: {"type": "modify_headers", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"actions": null}, "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "c438b205-c91f-463b-a808-4442555c5c49", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "c438b205-c91f-463b-a808-4442555c5c49", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 923814, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_uppercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
@@ -6851,10 +6851,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "4c1ea4c2-dca9-4107-85f5-586e47f34147"
       requestBody:
-        application/json: {"type": "schema_validation", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"key_validation_action": "mark", "value_validation_action": "reject", "type": "json"}, "labels": {"env": "test"}}
+        application/json: {"type": "schema_validation", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"key_validation_action": "mark", "value_validation_action": "reject", "type": "json"}, "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "565102af-89d6-424b-87d2-8133b0fcb8b8", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "565102af-89d6-424b-87d2-8133b0fcb8b8", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 677192, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -6868,10 +6868,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "593ecd65-910f-4bd8-9c22-0dd3eaa403c3"
       requestBody:
-        application/json: {"type": "encrypt", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+        application/json: {"type": "encrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "bd47b7ed-1b37-4332-8874-76c9a0e498b9", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "bd47b7ed-1b37-4332-8874-76c9a0e498b9", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 876417, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -6885,10 +6885,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "9be2bd7c-6fcb-465a-8e38-c9d96a479538"
       requestBody:
-        application/json: {"type": "skip_record", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "labels": {"env": "test"}}
+        application/json: {"type": "skip_record", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "412f598c-f1a0-4ea9-8360-6bcb94bf273e", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "412f598c-f1a0-4ea9-8360-6bcb94bf273e", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 3434, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -6904,7 +6904,7 @@ examples:
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "64de57a6-a53e-4b74-82f3-bbfbace3f7e1", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "64de57a6-a53e-4b74-82f3-bbfbace3f7e1", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -6919,10 +6919,10 @@ examples:
           virtualClusterId: "ae29d4be-1b79-482c-881a-3476b4ebb7cf"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "acls", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"rules": []}, "labels": {"env": "test"}}
+        application/json: {"type": "acls", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"rules": []}, "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "16ab9abb-c439-4776-9d1a-d0066e92ddcf", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "16ab9abb-c439-4776-9d1a-d0066e92ddcf", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 194157, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -6950,10 +6950,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "1706d38f-88a4-4e72-a02d-65cac443f53c"
       requestBody:
-        application/json: {"type": "acls", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"rules": []}, "labels": {"env": "test"}}
+        application/json: {"type": "acls", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"rules": []}, "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"type": "<value>", "name": null, "description": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "323ea8c8-dae4-457b-abc2-abeec4051474", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "323ea8c8-dae4-457b-abc2-abeec4051474", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 253786, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":

@@ -13,7 +13,7 @@ type UpdateEventGatewayDataPlaneCertificateRequest struct {
 	// The name to identify of the certificate.
 	Name *string `default:"null" json:"name"`
 	// A description of the certificate.
-	Description *string `default:"null" json:"description"`
+	Description *string `json:"description,omitempty"`
 }
 
 func (u UpdateEventGatewayDataPlaneCertificateRequest) MarshalJSON() ([]byte, error) {
