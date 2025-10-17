@@ -181,7 +181,10 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 				Description: `The UUID of your Gateway.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `The unique identifier of the backend cluster.`,
 			},
 			"insecure_allow_anonymous_virtual_cluster_auth": schema.BoolAttribute{

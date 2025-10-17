@@ -2,16 +2,12 @@
 
 package shared
 
-import (
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
-)
-
 // CreateVirtualClusterRequest - The request schema for creating a virtual cluster.
 type CreateVirtualClusterRequest struct {
 	// The name of the virtual cluster.
 	Name string `json:"name"`
 	// A human-readable description of the virtual cluster.
-	Description *string `default:"null" json:"description"`
+	Description *string `json:"description,omitempty"`
 	// The backend cluster associated with the virtual cluster.
 	//
 	// Either `id` or `name` must be provided. Following changes to the backend cluster name won't affect the
@@ -44,17 +40,6 @@ type CreateVirtualClusterRequest struct {
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
-}
-
-func (c CreateVirtualClusterRequest) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CreateVirtualClusterRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
-		return err
-	}
-	return nil
 }
 
 func (o *CreateVirtualClusterRequest) GetName() string {

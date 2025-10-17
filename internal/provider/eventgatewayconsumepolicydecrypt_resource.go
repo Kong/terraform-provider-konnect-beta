@@ -66,7 +66,6 @@ func (r *EventGatewayConsumePolicyDecryptResource) Schema(ctx context.Context, r
 		MarkdownDescription: "EventGatewayConsumePolicyDecrypt Resource",
 		Attributes: map[string]schema.Attribute{
 			"condition": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A string containing the boolean expression that determines whether the policy is applied.`,
 				Validators: []validator.String{
