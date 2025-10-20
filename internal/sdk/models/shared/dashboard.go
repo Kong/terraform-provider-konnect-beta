@@ -17,16 +17,16 @@ type Dashboard struct {
 	PresetFilters []AllFilterItems `json:"preset_filters,omitempty"`
 }
 
-func (o *Dashboard) GetTiles() []Tile {
-	if o == nil {
+func (d *Dashboard) GetTiles() []Tile {
+	if d == nil {
 		return []Tile{}
 	}
-	return o.Tiles
+	return d.Tiles
 }
 
-func (o *Dashboard) GetPresetFilters() []AllFilterItems {
-	if o == nil {
+func (d *Dashboard) GetPresetFilters() []AllFilterItems {
+	if d == nil {
 		return nil
 	}
-	return o.PresetFilters
+	return d.PresetFilters
 }

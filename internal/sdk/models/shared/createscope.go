@@ -25,43 +25,43 @@ func (c CreateScope) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateScope) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CreateScope) GetName() string {
-	if o == nil {
+func (c *CreateScope) GetName() string {
+	if c == nil {
 		return ""
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *CreateScope) GetDescription() *string {
-	if o == nil {
+func (c *CreateScope) GetDescription() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Description
+	return c.Description
 }
 
-func (o *CreateScope) GetDefault() *bool {
-	if o == nil {
+func (c *CreateScope) GetDefault() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.Default
+	return c.Default
 }
 
-func (o *CreateScope) GetIncludeInMetadata() *bool {
-	if o == nil {
+func (c *CreateScope) GetIncludeInMetadata() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.IncludeInMetadata
+	return c.IncludeInMetadata
 }
 
-func (o *CreateScope) GetEnabled() *bool {
-	if o == nil {
+func (c *CreateScope) GetEnabled() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.Enabled
+	return c.Enabled
 }

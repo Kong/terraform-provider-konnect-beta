@@ -17,8 +17,8 @@ const (
 
 // VirtualClusterReference - A reference to a virtual cluster.
 type VirtualClusterReference struct {
-	VirtualClusterReferenceByID   *VirtualClusterReferenceByID   `queryParam:"inline"`
-	VirtualClusterReferenceByName *VirtualClusterReferenceByName `queryParam:"inline"`
+	VirtualClusterReferenceByID   *VirtualClusterReferenceByID   `queryParam:"inline,name=VirtualClusterReference"`
+	VirtualClusterReferenceByName *VirtualClusterReferenceByName `queryParam:"inline,name=VirtualClusterReference"`
 
 	Type VirtualClusterReferenceType
 }
@@ -44,14 +44,14 @@ func CreateVirtualClusterReferenceVirtualClusterReferenceByName(virtualClusterRe
 func (u *VirtualClusterReference) UnmarshalJSON(data []byte) error {
 
 	var virtualClusterReferenceByID VirtualClusterReferenceByID = VirtualClusterReferenceByID{}
-	if err := utils.UnmarshalJSON(data, &virtualClusterReferenceByID, "", true, true); err == nil {
+	if err := utils.UnmarshalJSON(data, &virtualClusterReferenceByID, "", true, nil); err == nil {
 		u.VirtualClusterReferenceByID = &virtualClusterReferenceByID
 		u.Type = VirtualClusterReferenceTypeVirtualClusterReferenceByID
 		return nil
 	}
 
 	var virtualClusterReferenceByName VirtualClusterReferenceByName = VirtualClusterReferenceByName{}
-	if err := utils.UnmarshalJSON(data, &virtualClusterReferenceByName, "", true, true); err == nil {
+	if err := utils.UnmarshalJSON(data, &virtualClusterReferenceByName, "", true, nil); err == nil {
 		u.VirtualClusterReferenceByName = &virtualClusterReferenceByName
 		u.Type = VirtualClusterReferenceTypeVirtualClusterReferenceByName
 		return nil

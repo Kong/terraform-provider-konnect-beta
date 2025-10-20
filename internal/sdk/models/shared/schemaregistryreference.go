@@ -17,8 +17,8 @@ const (
 
 // SchemaRegistryReference - A reference to a schema Registry.
 type SchemaRegistryReference struct {
-	SchemaRegistryReferenceByID   *SchemaRegistryReferenceByID   `queryParam:"inline"`
-	SchemaRegistryReferenceByName *SchemaRegistryReferenceByName `queryParam:"inline"`
+	SchemaRegistryReferenceByID   *SchemaRegistryReferenceByID   `queryParam:"inline,name=SchemaRegistryReference"`
+	SchemaRegistryReferenceByName *SchemaRegistryReferenceByName `queryParam:"inline,name=SchemaRegistryReference"`
 
 	Type SchemaRegistryReferenceType
 }
@@ -44,14 +44,14 @@ func CreateSchemaRegistryReferenceSchemaRegistryReferenceByName(schemaRegistryRe
 func (u *SchemaRegistryReference) UnmarshalJSON(data []byte) error {
 
 	var schemaRegistryReferenceByID SchemaRegistryReferenceByID = SchemaRegistryReferenceByID{}
-	if err := utils.UnmarshalJSON(data, &schemaRegistryReferenceByID, "", true, true); err == nil {
+	if err := utils.UnmarshalJSON(data, &schemaRegistryReferenceByID, "", true, nil); err == nil {
 		u.SchemaRegistryReferenceByID = &schemaRegistryReferenceByID
 		u.Type = SchemaRegistryReferenceTypeSchemaRegistryReferenceByID
 		return nil
 	}
 
 	var schemaRegistryReferenceByName SchemaRegistryReferenceByName = SchemaRegistryReferenceByName{}
-	if err := utils.UnmarshalJSON(data, &schemaRegistryReferenceByName, "", true, true); err == nil {
+	if err := utils.UnmarshalJSON(data, &schemaRegistryReferenceByName, "", true, nil); err == nil {
 		u.SchemaRegistryReferenceByName = &schemaRegistryReferenceByName
 		u.Type = SchemaRegistryReferenceTypeSchemaRegistryReferenceByName
 		return nil

@@ -14,18 +14,18 @@ type GetAuthServerClientRequest struct {
 	ClientID string `pathParam:"style=simple,explode=false,name=clientId"`
 }
 
-func (o *GetAuthServerClientRequest) GetAuthServerID() string {
-	if o == nil {
+func (g *GetAuthServerClientRequest) GetAuthServerID() string {
+	if g == nil {
 		return ""
 	}
-	return o.AuthServerID
+	return g.AuthServerID
 }
 
-func (o *GetAuthServerClientRequest) GetClientID() string {
-	if o == nil {
+func (g *GetAuthServerClientRequest) GetClientID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ClientID
+	return g.ClientID
 }
 
 type GetAuthServerClientResponse struct {
@@ -41,37 +41,37 @@ type GetAuthServerClientResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *GetAuthServerClientResponse) GetContentType() string {
-	if o == nil {
+func (g *GetAuthServerClientResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetAuthServerClientResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetAuthServerClientResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetAuthServerClientResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetAuthServerClientResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetAuthServerClientResponse) GetClient() *shared.Client {
-	if o == nil {
+func (g *GetAuthServerClientResponse) GetClient() *shared.Client {
+	if g == nil {
 		return nil
 	}
-	return o.Client
+	return g.Client
 }
 
-func (o *GetAuthServerClientResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (g *GetAuthServerClientResponse) GetNotFoundError() *shared.NotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return g.NotFoundError
 }

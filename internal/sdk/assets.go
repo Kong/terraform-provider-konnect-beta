@@ -64,7 +64,7 @@ func (s *Assets) GetPortalAssetLogo(ctx context.Context, request operations.GetP
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-portal-asset-logo",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -317,7 +317,7 @@ func (s *Assets) ReplacePortalAssetLogo(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "replace-portal-asset-logo",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, true, false, "ReplacePortalImageAsset", "json", `request:"mediaType=application/json"`)
@@ -598,7 +598,7 @@ func (s *Assets) GetPortalAssetFavicon(ctx context.Context, request operations.G
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-portal-asset-favicon",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -851,7 +851,7 @@ func (s *Assets) ReplacePortalAssetFavicon(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "replace-portal-asset-favicon",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, true, false, "ReplacePortalImageAsset", "json", `request:"mediaType=application/json"`)

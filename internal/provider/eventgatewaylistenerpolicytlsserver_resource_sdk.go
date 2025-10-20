@@ -23,11 +23,7 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) RefreshFromSharedEven
 
 			if configPriorData != nil {
 				r.Config.AllowPlaintext = configPriorData.AllowPlaintext
-			}
-			if configPriorData != nil {
 				r.Config.Certificates = configPriorData.Certificates
-			}
-			if configPriorData != nil {
 				r.Config.Versions = configPriorData.Versions
 			}
 		}

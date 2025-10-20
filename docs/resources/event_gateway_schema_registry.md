@@ -15,25 +15,25 @@ EventGatewaySchemaRegistry Resource
 ```terraform
 resource "konnect_event_gateway_schema_registry" "my_eventgatewayschemaregistry" {
   provider = konnect-beta
-confluent = {
-    config = {
-            authentication = {
-        basic = {
-    password = "${env['MY_SECRET']}"
-    username = "...my_username..."
+gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+schema_registry_confluent = {
+config = {
+authentication = {
+basic = {
+password = "${env['MY_SECRET']}"
+username = "...my_username..."
 }
-        }
-        endpoint = "https://key-hovercraft.com"
-        schema_type = "avro"
-        timeout_seconds = 8
-    }
-    description = "...my_description..."
-    labels = {
-        key = "value"
-    }
-    name = "...my_name..."
 }
-    gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+endpoint = "https://upright-plumber.info"
+schema_type = "json"
+timeout_seconds = 3
+}
+description = "...my_description..."
+labels = {
+    key = "value"
+}
+name = "...my_name..."
+}
 }
 ```
 
@@ -46,7 +46,7 @@ confluent = {
 
 ### Optional
 
-- `confluent` (Attributes) A Confluent schema registry. (see [below for nested schema](#nestedatt--confluent))
+- `schema_registry_confluent` (Attributes) A Confluent schema registry. (see [below for nested schema](#nestedatt--schema_registry_confluent))
 
 ### Read-Only
 
@@ -61,12 +61,12 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `type` (String) The type of the schema registry.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
-<a id="nestedatt--confluent"></a>
-### Nested Schema for `confluent`
+<a id="nestedatt--schema_registry_confluent"></a>
+### Nested Schema for `schema_registry_confluent`
 
 Required:
 
-- `config` (Attributes) The configuration of [Confluent Schema Registry](https://github.com/confluentinc/schema-registry) (see [below for nested schema](#nestedatt--confluent--config))
+- `config` (Attributes) The configuration of [Confluent Schema Registry](https://github.com/confluentinc/schema-registry) (see [below for nested schema](#nestedatt--schema_registry_confluent--config))
 - `name` (String) The unique name of the schema registry.
 
 Optional:
@@ -76,8 +76,8 @@ Optional:
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 
-<a id="nestedatt--confluent--config"></a>
-### Nested Schema for `confluent.config`
+<a id="nestedatt--schema_registry_confluent--config"></a>
+### Nested Schema for `schema_registry_confluent.config`
 
 Required:
 
@@ -86,18 +86,18 @@ Required:
 
 Optional:
 
-- `authentication` (Attributes) The authentication configuration for the schema registry. (see [below for nested schema](#nestedatt--confluent--config--authentication))
+- `authentication` (Attributes) The authentication configuration for the schema registry. (see [below for nested schema](#nestedatt--schema_registry_confluent--config--authentication))
 - `timeout_seconds` (Number) Total time in seconds from establishing connection to receive a response from schema registry. Default: 10
 
-<a id="nestedatt--confluent--config--authentication"></a>
-### Nested Schema for `confluent.config.authentication`
+<a id="nestedatt--schema_registry_confluent--config--authentication"></a>
+### Nested Schema for `schema_registry_confluent.config.authentication`
 
 Optional:
 
-- `basic` (Attributes) (see [below for nested schema](#nestedatt--confluent--config--authentication--basic))
+- `basic` (Attributes) (see [below for nested schema](#nestedatt--schema_registry_confluent--config--authentication--basic))
 
-<a id="nestedatt--confluent--config--authentication--basic"></a>
-### Nested Schema for `confluent.config.authentication.basic`
+<a id="nestedatt--schema_registry_confluent--config--authentication--basic"></a>
+### Nested Schema for `schema_registry_confluent.config.authentication.basic`
 
 Required:
 
@@ -115,6 +115,20 @@ Required:
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_event_gateway_schema_registry.my_konnect_event_gateway_schema_registry
+  id = jsonencode({
+    gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id = "..."
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
-terraform import konnect_event_gateway_schema_registry.my_konnect_event_gateway_schema_registry '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": ""}'
+terraform import konnect_event_gateway_schema_registry.my_konnect_event_gateway_schema_registry '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "..."}'
 ```

@@ -15,55 +15,55 @@ EventGatewayVirtualCluster Resource
 ```terraform
 resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster" {
   provider = konnect-beta
-    acl_mode = "enforce_on_gateway"
-    authentication = [
-    {
-    sasl_plain = {
-    mediation = "passthrough"
-    principals = [
-    {
-                password = "${env['MY_SECRET']}"
-            username = "...my_username..."
-    }
-    ]
+acl_mode = "enforce_on_gateway"
+authentication = [
+{
+sasl_plain = {
+mediation = "passthrough"
+principals = [
+{
+password = "${env['MY_SECRET']}"
+username = "...my_username..."
 }
-    }
-    ]
-    description = "...my_description..."
-    destination = {
-            id = "759b5471-3de4-485c-b7d3-6e8cb8929d81"
-    }
-    dns_label = "vcluster-1"
-    gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    labels = {
-        key = "value"
-    }
-    name = "...my_name..."
-    namespace = {
-            additional = {
-                    consumer_groups = [
-            {
-            glob = {
-    glob = "...my_glob..."
+]
 }
-            }
-            ]
-            topics = [
-            {
-            exact_list = {
-    conflict = "warn"
-    exact_list = [
-    {
-                backend = "...my_backend..."
-    }
-    ]
 }
-            }
-            ]
-        }
-        mode = "hide_prefix"
-        prefix = "...my_prefix..."
-    }
+]
+description = "...my_description..."
+destination = {
+id = "759b5471-3de4-485c-b7d3-6e8cb8929d81"
+}
+dns_label = "vcluster-1"
+gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+labels = {
+    key = "value"
+}
+name = "...my_name..."
+namespace = {
+additional = {
+consumer_groups = [
+{
+glob = {
+glob = "...my_glob..."
+}
+}
+]
+topics = [
+{
+exact_list = {
+conflict = "warn"
+exact_list = [
+{
+backend = "...my_backend..."
+}
+]
+}
+}
+]
+}
+mode = "hide_prefix"
+prefix = "...my_prefix..."
+}
 }
 ```
 
@@ -324,6 +324,20 @@ Default: "warn"; must be one of ["warn", "ignore"]
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_event_gateway_virtual_cluster.my_konnect_event_gateway_virtual_cluster
+  id = jsonencode({
+    gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id = "..."
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
-terraform import konnect_event_gateway_virtual_cluster.my_konnect_event_gateway_virtual_cluster '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": ""}'
+terraform import konnect_event_gateway_virtual_cluster.my_konnect_event_gateway_virtual_cluster '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "..."}'
 ```

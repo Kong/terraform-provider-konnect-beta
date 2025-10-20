@@ -31,62 +31,62 @@ func (e EventGatewayProduceSchemaValidationPolicy) MarshalJSON() ([]byte, error)
 }
 
 func (e *EventGatewayProduceSchemaValidationPolicy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *EventGatewayProduceSchemaValidationPolicy) GetType() string {
+func (e *EventGatewayProduceSchemaValidationPolicy) GetType() string {
 	return "schema_validation"
 }
 
-func (o *EventGatewayProduceSchemaValidationPolicy) GetName() *string {
-	if o == nil {
+func (e *EventGatewayProduceSchemaValidationPolicy) GetName() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Name
+	return e.Name
 }
 
-func (o *EventGatewayProduceSchemaValidationPolicy) GetDescription() *string {
-	if o == nil {
+func (e *EventGatewayProduceSchemaValidationPolicy) GetDescription() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Description
+	return e.Description
 }
 
-func (o *EventGatewayProduceSchemaValidationPolicy) GetEnabled() *bool {
-	if o == nil {
+func (e *EventGatewayProduceSchemaValidationPolicy) GetEnabled() *bool {
+	if e == nil {
 		return nil
 	}
-	return o.Enabled
+	return e.Enabled
 }
 
-func (o *EventGatewayProduceSchemaValidationPolicy) GetCondition() *string {
-	if o == nil {
+func (e *EventGatewayProduceSchemaValidationPolicy) GetCondition() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Condition
+	return e.Condition
 }
 
-func (o *EventGatewayProduceSchemaValidationPolicy) GetConfig() EventGatewayProduceSchemaValidationPolicyConfig {
-	if o == nil {
+func (e *EventGatewayProduceSchemaValidationPolicy) GetConfig() EventGatewayProduceSchemaValidationPolicyConfig {
+	if e == nil {
 		return EventGatewayProduceSchemaValidationPolicyConfig{}
 	}
-	return o.Config
+	return e.Config
 }
 
-func (o *EventGatewayProduceSchemaValidationPolicy) GetConfigConfluentSchemaRegistry() *EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig {
-	return o.GetConfig().EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig
+func (e *EventGatewayProduceSchemaValidationPolicy) GetConfigConfluentSchemaRegistry() *EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig {
+	return e.GetConfig().EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig
 }
 
-func (o *EventGatewayProduceSchemaValidationPolicy) GetConfigJSON() *EventGatewayProduceSchemaValidationPolicyJSONConfig {
-	return o.GetConfig().EventGatewayProduceSchemaValidationPolicyJSONConfig
+func (e *EventGatewayProduceSchemaValidationPolicy) GetConfigJSON() *EventGatewayProduceSchemaValidationPolicyJSONConfig {
+	return e.GetConfig().EventGatewayProduceSchemaValidationPolicyJSONConfig
 }
 
-func (o *EventGatewayProduceSchemaValidationPolicy) GetLabels() map[string]*string {
-	if o == nil {
+func (e *EventGatewayProduceSchemaValidationPolicy) GetLabels() map[string]*string {
+	if e == nil {
 		return nil
 	}
-	return o.Labels
+	return e.Labels
 }

@@ -39,16 +39,16 @@ type EventGatewaySchemaRegistryResource struct {
 
 // EventGatewaySchemaRegistryResourceModel describes the resource data model.
 type EventGatewaySchemaRegistryResourceModel struct {
-	Config      *tfTypes.BackendClusterAuthenticationAnonymous `tfsdk:"config"`
-	Confluent   *tfTypes.SchemaRegistryConfluent               `queryParam:"inline" tfsdk:"confluent" tfPlanOnly:"true"`
-	CreatedAt   types.String                                   `tfsdk:"created_at"`
-	Description types.String                                   `tfsdk:"description"`
-	GatewayID   types.String                                   `tfsdk:"gateway_id"`
-	ID          types.String                                   `tfsdk:"id"`
-	Labels      map[string]types.String                        `tfsdk:"labels"`
-	Name        types.String                                   `tfsdk:"name"`
-	Type        types.String                                   `tfsdk:"type"`
-	UpdatedAt   types.String                                   `tfsdk:"updated_at"`
+	Config                  *tfTypes.BackendClusterAuthenticationAnonymous `tfsdk:"config"`
+	CreatedAt               types.String                                   `tfsdk:"created_at"`
+	Description             types.String                                   `tfsdk:"description"`
+	GatewayID               types.String                                   `tfsdk:"gateway_id"`
+	ID                      types.String                                   `tfsdk:"id"`
+	Labels                  map[string]types.String                        `tfsdk:"labels"`
+	Name                    types.String                                   `tfsdk:"name"`
+	SchemaRegistryConfluent *tfTypes.SchemaRegistryConfluent               `queryParam:"inline" tfsdk:"schema_registry_confluent" tfPlanOnly:"true"`
+	Type                    types.String                                   `tfsdk:"type"`
+	UpdatedAt               types.String                                   `tfsdk:"updated_at"`
 }
 
 func (r *EventGatewaySchemaRegistryResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -63,7 +63,46 @@ func (r *EventGatewaySchemaRegistryResource) Schema(ctx context.Context, req res
 				Computed:    true,
 				Description: `The configuration of the schema registry.`,
 			},
-			"confluent": schema.SingleNestedAttribute{
+			"created_at": schema.StringAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				Description: `An ISO-8601 timestamp representation of entity creation date.`,
+				Validators: []validator.String{
+					validators.IsRFC3339(),
+				},
+			},
+			"description": schema.StringAttribute{
+				Computed:    true,
+				Description: `A human-readable description of the virtual cluster.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(512),
+				},
+			},
+			"gateway_id": schema.StringAttribute{
+				Required:    true,
+				Description: `The UUID of your Gateway.`,
+			},
+			"id": schema.StringAttribute{
+				Computed:    true,
+				Description: `The unique identifier of the schema registry.`,
+			},
+			"labels": schema.MapAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
+					`` + "\n" +
+					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
+			},
+			"name": schema.StringAttribute{
+				Computed:    true,
+				Description: `The unique name of the schema registry.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthBetween(1, 255),
+				},
+			},
+			"schema_registry_confluent": schema.SingleNestedAttribute{
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"config": schema.SingleNestedAttribute{
@@ -140,45 +179,6 @@ func (r *EventGatewaySchemaRegistryResource) Schema(ctx context.Context, req res
 					},
 				},
 				Description: `A Confluent schema registry.`,
-			},
-			"created_at": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
-				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
-			},
-			"description": schema.StringAttribute{
-				Computed:    true,
-				Description: `A human-readable description of the virtual cluster.`,
-				Validators: []validator.String{
-					stringvalidator.UTF8LengthAtMost(512),
-				},
-			},
-			"gateway_id": schema.StringAttribute{
-				Required:    true,
-				Description: `The UUID of your Gateway.`,
-			},
-			"id": schema.StringAttribute{
-				Computed:    true,
-				Description: `The unique identifier of the schema registry.`,
-			},
-			"labels": schema.MapAttribute{
-				Computed:    true,
-				ElementType: types.StringType,
-				MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
-					`` + "\n" +
-					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
-			},
-			"name": schema.StringAttribute{
-				Computed:    true,
-				Description: `The unique name of the schema registry.`,
-				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 255),
-				},
 			},
 			"type": schema.StringAttribute{
 				Computed:    true,
@@ -444,7 +444,7 @@ func (r *EventGatewaySchemaRegistryResource) ImportState(ctx context.Context, re
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "..."}': `+err.Error())
 		return
 	}
 

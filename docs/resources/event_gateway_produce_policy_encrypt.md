@@ -15,37 +15,37 @@ EventGatewayProducePolicyEncrypt Resource
 ```terraform
 resource "konnect_event_gateway_produce_policy_encrypt" "my_eventgatewayproducepolicyencrypt" {
   provider = konnect-beta
-    condition = "context.topic.name.endsWith('my_suffix')"
-    config = {
-            encrypt = [
-        {
-                        key_id = "static://static-key-named-in-source"
-                part_of_record = "value"
-        }
-        ]
-        failure_mode = "error"
-        key_sources = [
-        {
-        static = {
-    keys = [
-    {
-                id = "...my_id..."
-            key = "${env['MY_SECRET']}"
-    }
-    ]
+condition = "context.topic.name.endsWith('my_suffix')"
+config = {
+encrypt = [
+{
+key_id = "static://static-key-named-in-source"
+part_of_record = "value"
 }
-        }
-        ]
-    }
-    description = "...my_description..."
-    enabled = true
-    gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    labels = {
-        key = "value"
-    }
-    name = "...my_name..."
-    parent_policy_id = "d360a229-0d2f-4566-9b8e-dad95ffde3d0"
-    virtual_cluster_id = "6ea3798e-38ca-4c28-a68e-1a577e478f2c"
+]
+failure_mode = "error"
+key_sources = [
+{
+static = {
+keys = [
+{
+id = "...my_id..."
+key = "${env['MY_SECRET']}"
+}
+]
+}
+}
+]
+}
+description = "...my_description..."
+enabled = true
+gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+labels = {
+    key = "value"
+}
+name = "...my_name..."
+parent_policy_id = "d360a229-0d2f-4566-9b8e-dad95ffde3d0"
+virtual_cluster_id = "6ea3798e-38ca-4c28-a68e-1a577e478f2c"
 }
 ```
 
@@ -136,6 +136,21 @@ Required:
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_event_gateway_produce_policy_encrypt.my_konnect_event_gateway_produce_policy_encrypt
+  id = jsonencode({
+    gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    virtual_cluster_id = "..."
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
-terraform import konnect_event_gateway_produce_policy_encrypt.my_konnect_event_gateway_produce_policy_encrypt '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "virtual_cluster_id": ""}'
+terraform import konnect_event_gateway_produce_policy_encrypt.my_konnect_event_gateway_produce_policy_encrypt '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "virtual_cluster_id": "..."}'
 ```

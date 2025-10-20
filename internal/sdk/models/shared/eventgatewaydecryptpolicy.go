@@ -20,25 +20,25 @@ type EventGatewayDecryptPolicyConfig struct {
 	Decrypt []DecryptionRecordSelector `json:"decrypt"`
 }
 
-func (o *EventGatewayDecryptPolicyConfig) GetFailureMode() EncryptionFailureMode {
-	if o == nil {
+func (e *EventGatewayDecryptPolicyConfig) GetFailureMode() EncryptionFailureMode {
+	if e == nil {
 		return EncryptionFailureMode("")
 	}
-	return o.FailureMode
+	return e.FailureMode
 }
 
-func (o *EventGatewayDecryptPolicyConfig) GetKeySources() []EventGatewayKeySource {
-	if o == nil {
+func (e *EventGatewayDecryptPolicyConfig) GetKeySources() []EventGatewayKeySource {
+	if e == nil {
 		return []EventGatewayKeySource{}
 	}
-	return o.KeySources
+	return e.KeySources
 }
 
-func (o *EventGatewayDecryptPolicyConfig) GetDecrypt() []DecryptionRecordSelector {
-	if o == nil {
+func (e *EventGatewayDecryptPolicyConfig) GetDecrypt() []DecryptionRecordSelector {
+	if e == nil {
 		return []DecryptionRecordSelector{}
 	}
-	return o.Decrypt
+	return e.Decrypt
 }
 
 // EventGatewayDecryptPolicy - Decrypts portions of Kafka records using AES_128_GCM. Keys are therefore 128 bits long.
@@ -66,54 +66,54 @@ func (e EventGatewayDecryptPolicy) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayDecryptPolicy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *EventGatewayDecryptPolicy) GetType() string {
+func (e *EventGatewayDecryptPolicy) GetType() string {
 	return "decrypt"
 }
 
-func (o *EventGatewayDecryptPolicy) GetName() *string {
-	if o == nil {
+func (e *EventGatewayDecryptPolicy) GetName() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Name
+	return e.Name
 }
 
-func (o *EventGatewayDecryptPolicy) GetDescription() *string {
-	if o == nil {
+func (e *EventGatewayDecryptPolicy) GetDescription() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Description
+	return e.Description
 }
 
-func (o *EventGatewayDecryptPolicy) GetEnabled() *bool {
-	if o == nil {
+func (e *EventGatewayDecryptPolicy) GetEnabled() *bool {
+	if e == nil {
 		return nil
 	}
-	return o.Enabled
+	return e.Enabled
 }
 
-func (o *EventGatewayDecryptPolicy) GetCondition() *string {
-	if o == nil {
+func (e *EventGatewayDecryptPolicy) GetCondition() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Condition
+	return e.Condition
 }
 
-func (o *EventGatewayDecryptPolicy) GetConfig() *EventGatewayDecryptPolicyConfig {
-	if o == nil {
+func (e *EventGatewayDecryptPolicy) GetConfig() *EventGatewayDecryptPolicyConfig {
+	if e == nil {
 		return nil
 	}
-	return o.Config
+	return e.Config
 }
 
-func (o *EventGatewayDecryptPolicy) GetLabels() map[string]*string {
-	if o == nil {
+func (e *EventGatewayDecryptPolicy) GetLabels() map[string]*string {
+	if e == nil {
 		return nil
 	}
-	return o.Labels
+	return e.Labels
 }

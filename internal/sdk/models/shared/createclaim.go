@@ -27,50 +27,50 @@ func (c CreateClaim) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateClaim) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "value"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CreateClaim) GetName() string {
-	if o == nil {
+func (c *CreateClaim) GetName() string {
+	if c == nil {
 		return ""
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *CreateClaim) GetValue() string {
-	if o == nil {
+func (c *CreateClaim) GetValue() string {
+	if c == nil {
 		return ""
 	}
-	return o.Value
+	return c.Value
 }
 
-func (o *CreateClaim) GetIncludeInToken() *bool {
-	if o == nil {
+func (c *CreateClaim) GetIncludeInToken() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.IncludeInToken
+	return c.IncludeInToken
 }
 
-func (o *CreateClaim) GetIncludeInAllScopes() *bool {
-	if o == nil {
+func (c *CreateClaim) GetIncludeInAllScopes() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.IncludeInAllScopes
+	return c.IncludeInAllScopes
 }
 
-func (o *CreateClaim) GetIncludeInScopes() []string {
-	if o == nil {
+func (c *CreateClaim) GetIncludeInScopes() []string {
+	if c == nil {
 		return nil
 	}
-	return o.IncludeInScopes
+	return c.IncludeInScopes
 }
 
-func (o *CreateClaim) GetEnabled() *bool {
-	if o == nil {
+func (c *CreateClaim) GetEnabled() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.Enabled
+	return c.Enabled
 }

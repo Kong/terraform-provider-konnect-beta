@@ -28,43 +28,43 @@ func (c CreateAuthServer) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateAuthServer) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "audience"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CreateAuthServer) GetName() string {
-	if o == nil {
+func (c *CreateAuthServer) GetName() string {
+	if c == nil {
 		return ""
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *CreateAuthServer) GetDescription() *string {
-	if o == nil {
+func (c *CreateAuthServer) GetDescription() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Description
+	return c.Description
 }
 
-func (o *CreateAuthServer) GetAudience() string {
-	if o == nil {
+func (c *CreateAuthServer) GetAudience() string {
+	if c == nil {
 		return ""
 	}
-	return o.Audience
+	return c.Audience
 }
 
-func (o *CreateAuthServer) GetSigningAlgorithm() *Algorithm {
-	if o == nil {
+func (c *CreateAuthServer) GetSigningAlgorithm() *Algorithm {
+	if c == nil {
 		return nil
 	}
-	return o.SigningAlgorithm
+	return c.SigningAlgorithm
 }
 
-func (o *CreateAuthServer) GetLabels() map[string]*string {
-	if o == nil {
+func (c *CreateAuthServer) GetLabels() map[string]*string {
+	if c == nil {
 		return nil
 	}
-	return o.Labels
+	return c.Labels
 }

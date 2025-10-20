@@ -43,10 +43,17 @@ func (p *KonnectBetaProvider) Schema(ctx context.Context, req provider.SchemaReq
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"konnect_access_token": schema.StringAttribute{
+				MarkdownDescription: `The Konnect access token is meant to be used by the Konnect dashboard and the decK CLI authenticate with.` + "\n" +
+					`.`,
 				Optional:  true,
 				Sensitive: true,
 			},
 			"personal_access_token": schema.StringAttribute{
+				MarkdownDescription: `The personal access token is meant to be used as an alternative to basic-auth when accessing Konnect via APIs.` + "\n" +
+					`You can generate a Personal Access Token (PAT) from the [personal access token page](https://cloud.konghq.com/global/account/tokens/) in the Konnect dashboard.` + "\n" +
+					`The PAT token must be passed in the header of a request, for example:` + "\n" +
+					`` + "`" + `curl -X GET 'https://global.api.konghq.com/v2/users/' --header 'Authorization: Bearer kpat_xgfT...'` + "`" + `` + "\n" +
+					`. Configurable via environment variable ` + "`" + `KONNECT_TOKEN` + "`" + `.`,
 				Optional:  true,
 				Sensitive: true,
 			},
@@ -55,6 +62,11 @@ func (p *KonnectBetaProvider) Schema(ctx context.Context, req provider.SchemaReq
 				Optional:    true,
 			},
 			"system_account_access_token": schema.StringAttribute{
+				MarkdownDescription: `The system account access token is meant for automations and integrations that are not directly associated with a human identity.` + "\n" +
+					`You can generate a system account Access Token by creating a system account and then obtaining a system account access token for that account.` + "\n" +
+					`The access token must be passed in the header of a request, for example:` + "\n" +
+					`` + "`" + `curl -X GET 'https://global.api.konghq.com/v2/users/' --header 'Authorization: Bearer spat_i2Ej...'` + "`" + `` + "\n" +
+					`. Configurable via environment variable ` + "`" + `KONNECT_SPAT` + "`" + `.`,
 				Optional:  true,
 				Sensitive: true,
 			},

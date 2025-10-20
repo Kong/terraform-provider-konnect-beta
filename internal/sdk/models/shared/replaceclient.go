@@ -42,92 +42,92 @@ func (r ReplaceClient) MarshalJSON() ([]byte, error) {
 }
 
 func (r *ReplaceClient) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"name", "client_secret", "grant_types", "response_types"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ReplaceClient) GetName() string {
-	if o == nil {
+func (r *ReplaceClient) GetName() string {
+	if r == nil {
 		return ""
 	}
-	return o.Name
+	return r.Name
 }
 
-func (o *ReplaceClient) GetClientSecret() string {
-	if o == nil {
+func (r *ReplaceClient) GetClientSecret() string {
+	if r == nil {
 		return ""
 	}
-	return o.ClientSecret
+	return r.ClientSecret
 }
 
-func (o *ReplaceClient) GetGrantTypes() []GrantType {
-	if o == nil {
+func (r *ReplaceClient) GetGrantTypes() []GrantType {
+	if r == nil {
 		return []GrantType{}
 	}
-	return o.GrantTypes
+	return r.GrantTypes
 }
 
-func (o *ReplaceClient) GetResponseTypes() []ResponseType {
-	if o == nil {
+func (r *ReplaceClient) GetResponseTypes() []ResponseType {
+	if r == nil {
 		return []ResponseType{}
 	}
-	return o.ResponseTypes
+	return r.ResponseTypes
 }
 
-func (o *ReplaceClient) GetRedirectUris() []string {
-	if o == nil {
+func (r *ReplaceClient) GetRedirectUris() []string {
+	if r == nil {
 		return nil
 	}
-	return o.RedirectUris
+	return r.RedirectUris
 }
 
-func (o *ReplaceClient) GetLoginURI() *string {
-	if o == nil {
+func (r *ReplaceClient) GetLoginURI() *string {
+	if r == nil {
 		return nil
 	}
-	return o.LoginURI
+	return r.LoginURI
 }
 
-func (o *ReplaceClient) GetAccessTokenDuration() *int64 {
-	if o == nil {
+func (r *ReplaceClient) GetAccessTokenDuration() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.AccessTokenDuration
+	return r.AccessTokenDuration
 }
 
-func (o *ReplaceClient) GetIDTokenDuration() *int64 {
-	if o == nil {
+func (r *ReplaceClient) GetIDTokenDuration() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.IDTokenDuration
+	return r.IDTokenDuration
 }
 
-func (o *ReplaceClient) GetAllowAllScopes() *bool {
-	if o == nil {
+func (r *ReplaceClient) GetAllowAllScopes() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.AllowAllScopes
+	return r.AllowAllScopes
 }
 
-func (o *ReplaceClient) GetAllowScopes() []string {
-	if o == nil {
+func (r *ReplaceClient) GetAllowScopes() []string {
+	if r == nil {
 		return nil
 	}
-	return o.AllowScopes
+	return r.AllowScopes
 }
 
-func (o *ReplaceClient) GetTokenEndpointAuthMethod() *TokenEndpointAuthMethod {
-	if o == nil {
+func (r *ReplaceClient) GetTokenEndpointAuthMethod() *TokenEndpointAuthMethod {
+	if r == nil {
 		return nil
 	}
-	return o.TokenEndpointAuthMethod
+	return r.TokenEndpointAuthMethod
 }
 
-func (o *ReplaceClient) GetLabels() map[string]*string {
-	if o == nil {
+func (r *ReplaceClient) GetLabels() map[string]*string {
+	if r == nil {
 		return nil
 	}
-	return o.Labels
+	return r.Labels
 }

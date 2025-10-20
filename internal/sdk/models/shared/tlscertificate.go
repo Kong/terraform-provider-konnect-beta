@@ -9,16 +9,16 @@ type TLSCertificate struct {
 	Key string `json:"key"`
 }
 
-func (o *TLSCertificate) GetCertificate() string {
-	if o == nil {
+func (t *TLSCertificate) GetCertificate() string {
+	if t == nil {
 		return ""
 	}
-	return o.Certificate
+	return t.Certificate
 }
 
-func (o *TLSCertificate) GetKey() string {
-	if o == nil {
+func (t *TLSCertificate) GetKey() string {
+	if t == nil {
 		return ""
 	}
-	return o.Key
+	return t.Key
 }
