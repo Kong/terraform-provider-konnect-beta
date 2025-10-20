@@ -46,6 +46,9 @@ dev/use-local-shared-speakeasy:
 acceptance:
 	@TF_ACC=1 go test -count=1 -v ./tests/resources
 
+# renovate: datasource=go depName=Kong/shared-speakeasy/resource_plan_modifier packageName=github.com/Kong/shared-speakeasy/generators/resource_plan_modifier
+RESOURCE_PLAN_MODIFIER_VERSION := v0.0.8
+
 .PHONY: generate-plan-modifiers
 generate-plan-modifiers:
 	# MeshControlPlane is identfied by uuid so we can skip it
@@ -56,5 +59,5 @@ generate-plan-modifiers:
 	| sed 's/Resource$$//' \
 	| grep -v "MeshControlPlane" \
 	| xargs -n1 -I{} sh -c '\
-		go run github.com/Kong/shared-speakeasy/generators/resource_plan_modifier@v0.0.8 \
+		go run github.com/Kong/shared-speakeasy/generators/resource_plan_modifier@$(RESOURCE_PLAN_MODIFIER_VERSION) \
 		internal/provider/$$(echo {} | tr A-Z a-z)_resource_plan_modify.go {} terraform-provider-konnect-beta'
