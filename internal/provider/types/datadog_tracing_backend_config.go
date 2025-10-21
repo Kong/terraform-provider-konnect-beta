@@ -3,11 +3,13 @@
 package types
 
 import (
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type DatadogTracingBackendConfig struct {
-	Address      types.String `tfsdk:"address"`
-	Port         types.Int64  `tfsdk:"port"`
-	SplitService types.Bool   `tfsdk:"split_service"`
+	Address      types.String         `tfsdk:"address"`
+	Port         types.Int64          `tfsdk:"port"`
+	Required     jsontypes.Normalized `tfsdk:"required"`
+	SplitService types.Bool           `tfsdk:"split_service"`
 }

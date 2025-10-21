@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -26,6 +27,7 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -169,6 +171,12 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 												"address": schema.StringAttribute{
 													Optional:    true,
 													Description: `Address to TCP service that will receive logs`,
+												},
+												"required": schema.StringAttribute{
+													CustomType:  jsontypes.NormalizedType{},
+													Computed:    true,
+													Optional:    true,
+													Description: `Parsed as JSON.`,
 												},
 											},
 											Description: `TcpLoggingBackendConfig defines configuration for TCP based access logs`,
@@ -402,7 +410,11 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"arn": schema.StringAttribute{
-													Optional: true,
+													Optional:    true,
+													Description: `Not Null`,
+													Validators: []validator.String{
+														speakeasy_stringvalidators.NotNull(),
+													},
 												},
 												"auth": schema.SingleNestedAttribute{
 													Optional: true,
@@ -757,6 +769,10 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 															Optional: true,
 														},
 													},
+													Description: `Not Null`,
+													Validators: []validator.Object{
+														speakeasy_objectvalidators.NotNull(),
+													},
 												},
 											},
 											Validators: []validator.Object{
@@ -840,6 +856,10 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 															},
 														},
 													},
+													Description: `Not Null`,
+													Validators: []validator.Object{
+														speakeasy_objectvalidators.NotNull(),
+													},
 												},
 												"key": schema.SingleNestedAttribute{
 													Optional: true,
@@ -909,6 +929,10 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 																}...),
 															},
 														},
+													},
+													Description: `Not Null`,
+													Validators: []validator.Object{
+														speakeasy_objectvalidators.NotNull(),
 													},
 												},
 											},
@@ -1315,6 +1339,10 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 																	},
 																},
 															},
+															Description: `Not Null`,
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
 														},
 													},
 												},
@@ -1502,6 +1530,12 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 													Optional:    true,
 													Description: `Port of datadog collector`,
 												},
+												"required": schema.StringAttribute{
+													CustomType:  jsontypes.NormalizedType{},
+													Computed:    true,
+													Optional:    true,
+													Description: `Parsed as JSON.`,
+												},
 												"split_service": schema.BoolAttribute{
 													Optional: true,
 													MarkdownDescription: `Determines if datadog service name should be split based on traffic` + "\n" +
@@ -1538,7 +1572,10 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 												},
 												"url": schema.StringAttribute{
 													Optional:    true,
-													Description: `Address of Zipkin collector.`,
+													Description: `Address of Zipkin collector. Not Null`,
+													Validators: []validator.String{
+														speakeasy_stringvalidators.NotNull(),
+													},
 												},
 											},
 											Validators: []validator.Object{

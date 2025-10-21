@@ -54,7 +54,7 @@ name = "...my_name..."
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `description` (String) A human-readable description of the virtual cluster.
 - `id` (String) The unique identifier of the schema registry.
-- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
+- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `name` (String) The unique name of the schema registry.
@@ -72,7 +72,7 @@ Required:
 Optional:
 
 - `description` (String) A human-readable description of the virtual cluster.
-- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
+- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 

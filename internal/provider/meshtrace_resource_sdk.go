@@ -65,7 +65,7 @@ func (r *MeshTraceResourceModel) RefreshFromSharedMeshTraceItem(ctx context.Cont
 				if backendsItem.Zipkin == nil {
 					backends.Zipkin = nil
 				} else {
-					backends.Zipkin = &tfTypes.Zipkin{}
+					backends.Zipkin = &tfTypes.ZipkinTracingBackendConfig{}
 					if backendsItem.Zipkin.APIVersion != nil {
 						backends.Zipkin.APIVersion = types.StringValue(string(*backendsItem.Zipkin.APIVersion))
 					} else {

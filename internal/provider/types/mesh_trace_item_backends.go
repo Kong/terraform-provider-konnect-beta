@@ -10,5 +10,5 @@ type MeshTraceItemBackends struct {
 	Datadog       *Datadog                    `tfsdk:"datadog"`
 	OpenTelemetry *MeshTraceItemOpenTelemetry `tfsdk:"open_telemetry"`
 	Type          types.String                `tfsdk:"type"`
-	Zipkin        *Zipkin                     `tfsdk:"zipkin"`
+	Zipkin        *ZipkinTracingBackendConfig `tfsdk:"zipkin"`
 }

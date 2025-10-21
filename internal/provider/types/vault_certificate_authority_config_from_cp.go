@@ -3,5 +3,5 @@
 package types
 
 type VaultCertificateAuthorityConfigFromCp struct {
-	FromCp *FromCp `tfsdk:"from_cp"`
+	FromCp FromCp `tfsdk:"from_cp"`
 }

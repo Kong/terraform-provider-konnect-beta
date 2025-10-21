@@ -61,7 +61,7 @@ tls_versions = [
 - `insecure_allow_anonymous_virtual_cluster_auth` (Boolean) If true, virtual clusters can have allow anonymous authentication and use this backend cluster.
 This setting is not recommended for production use as it may create privilege escalation vulnerabilities.
 Default: false
-- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
+- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `metadata_update_interval_seconds` (Number) The interval at which metadata is updated in seconds. Default: 60

@@ -82,7 +82,8 @@ func (c *Constraints) GetDataplaneProxy() *DataplaneProxy {
 // TCPLoggingBackendConfig - TcpLoggingBackendConfig defines configuration for TCP based access logs
 type TCPLoggingBackendConfig struct {
 	// Address to TCP service that will receive logs
-	Address *string `json:"address,omitempty"`
+	Address  *string `json:"address,omitempty"`
+	Required any     `json:"required,omitempty"`
 }
 
 func (t TCPLoggingBackendConfig) MarshalJSON() ([]byte, error) {
@@ -101,6 +102,13 @@ func (t *TCPLoggingBackendConfig) GetAddress() *string {
 		return nil
 	}
 	return t.Address
+}
+
+func (t *TCPLoggingBackendConfig) GetRequired() any {
+	if t == nil {
+		return nil
+	}
+	return t.Required
 }
 
 // FileLoggingBackendConfig defines configuration for file based access logs
@@ -941,7 +949,7 @@ type CertManagerCertificateAuthorityConfig struct {
 	CaCert     *CertManagerCertificateAuthorityConfigConfCaCert `json:"caCert,omitempty"`
 	CommonName *string                                          `json:"commonName,omitempty"`
 	DNSNames   []string                                         `json:"dnsNames,omitempty"`
-	IssuerRef  *IssuerRef                                       `json:"issuerRef,omitempty"`
+	IssuerRef  IssuerRef                                        `json:"issuerRef"`
 }
 
 func (c CertManagerCertificateAuthorityConfig) MarshalJSON() ([]byte, error) {
@@ -949,7 +957,7 @@ func (c CertManagerCertificateAuthorityConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CertManagerCertificateAuthorityConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"issuerRef"}); err != nil {
 		return err
 	}
 	return nil
@@ -976,9 +984,9 @@ func (c *CertManagerCertificateAuthorityConfig) GetDNSNames() []string {
 	return c.DNSNames
 }
 
-func (c *CertManagerCertificateAuthorityConfig) GetIssuerRef() *IssuerRef {
+func (c *CertManagerCertificateAuthorityConfig) GetIssuerRef() IssuerRef {
 	if c == nil {
-		return nil
+		return IssuerRef{}
 	}
 	return c.IssuerRef
 }
@@ -1636,7 +1644,7 @@ func (u ConfCaCert) MarshalJSON() ([]byte, error) {
 }
 
 type ACMCertificateAuthorityConfig struct {
-	Arn        *string     `json:"arn,omitempty"`
+	Arn        string      `json:"arn"`
 	Auth       *Auth       `json:"auth,omitempty"`
 	CaCert     *ConfCaCert `json:"caCert,omitempty"`
 	CommonName *string     `json:"commonName,omitempty"`
@@ -1647,15 +1655,15 @@ func (a ACMCertificateAuthorityConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *ACMCertificateAuthorityConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"arn"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *ACMCertificateAuthorityConfig) GetArn() *string {
+func (a *ACMCertificateAuthorityConfig) GetArn() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.Arn
 }
@@ -2880,7 +2888,7 @@ func (f *FromCp) GetTLS() *VaultCertificateAuthorityConfigTLS {
 }
 
 type VaultCertificateAuthorityConfigFromCp struct {
-	FromCp *FromCp `json:"fromCp,omitempty"`
+	FromCp FromCp `json:"fromCp"`
 }
 
 func (v VaultCertificateAuthorityConfigFromCp) MarshalJSON() ([]byte, error) {
@@ -2888,15 +2896,15 @@ func (v VaultCertificateAuthorityConfigFromCp) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VaultCertificateAuthorityConfigFromCp) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"fromCp"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (v *VaultCertificateAuthorityConfigFromCp) GetFromCp() *FromCp {
+func (v *VaultCertificateAuthorityConfigFromCp) GetFromCp() FromCp {
 	if v == nil {
-		return nil
+		return FromCp{}
 	}
 	return v.FromCp
 }
@@ -3395,8 +3403,8 @@ func (u Key) MarshalJSON() ([]byte, error) {
 }
 
 type ProvidedCertificateAuthorityConfig struct {
-	Cert *Cert `json:"cert,omitempty"`
-	Key  *Key  `json:"key,omitempty"`
+	Cert Cert `json:"cert"`
+	Key  Key  `json:"key"`
 }
 
 func (p ProvidedCertificateAuthorityConfig) MarshalJSON() ([]byte, error) {
@@ -3404,22 +3412,22 @@ func (p ProvidedCertificateAuthorityConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (p *ProvidedCertificateAuthorityConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"cert", "key"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *ProvidedCertificateAuthorityConfig) GetCert() *Cert {
+func (p *ProvidedCertificateAuthorityConfig) GetCert() Cert {
 	if p == nil {
-		return nil
+		return Cert{}
 	}
 	return p.Cert
 }
 
-func (p *ProvidedCertificateAuthorityConfig) GetKey() *Key {
+func (p *ProvidedCertificateAuthorityConfig) GetKey() Key {
 	if p == nil {
-		return nil
+		return Key{}
 	}
 	return p.Key
 }
@@ -3498,20 +3506,6 @@ func (u *MeshItemMtlsConf) UnmarshalJSON(data []byte) error {
 		return nil
 	}
 
-	var builtinCertificateAuthorityConfig BuiltinCertificateAuthorityConfig = BuiltinCertificateAuthorityConfig{}
-	if err := utils.UnmarshalJSON(data, &builtinCertificateAuthorityConfig, "", true, nil); err == nil {
-		u.BuiltinCertificateAuthorityConfig = &builtinCertificateAuthorityConfig
-		u.Type = MeshItemMtlsConfTypeBuiltinCertificateAuthorityConfig
-		return nil
-	}
-
-	var vaultCertificateAuthorityConfig VaultCertificateAuthorityConfig = VaultCertificateAuthorityConfig{}
-	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfig, "", true, nil); err == nil {
-		u.VaultCertificateAuthorityConfig = &vaultCertificateAuthorityConfig
-		u.Type = MeshItemMtlsConfTypeVaultCertificateAuthorityConfig
-		return nil
-	}
-
 	var acmCertificateAuthorityConfig ACMCertificateAuthorityConfig = ACMCertificateAuthorityConfig{}
 	if err := utils.UnmarshalJSON(data, &acmCertificateAuthorityConfig, "", true, nil); err == nil {
 		u.ACMCertificateAuthorityConfig = &acmCertificateAuthorityConfig
@@ -3523,6 +3517,20 @@ func (u *MeshItemMtlsConf) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &certManagerCertificateAuthorityConfig, "", true, nil); err == nil {
 		u.CertManagerCertificateAuthorityConfig = &certManagerCertificateAuthorityConfig
 		u.Type = MeshItemMtlsConfTypeCertManagerCertificateAuthorityConfig
+		return nil
+	}
+
+	var builtinCertificateAuthorityConfig BuiltinCertificateAuthorityConfig = BuiltinCertificateAuthorityConfig{}
+	if err := utils.UnmarshalJSON(data, &builtinCertificateAuthorityConfig, "", true, nil); err == nil {
+		u.BuiltinCertificateAuthorityConfig = &builtinCertificateAuthorityConfig
+		u.Type = MeshItemMtlsConfTypeBuiltinCertificateAuthorityConfig
+		return nil
+	}
+
+	var vaultCertificateAuthorityConfig VaultCertificateAuthorityConfig = VaultCertificateAuthorityConfig{}
+	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfig, "", true, nil); err == nil {
+		u.VaultCertificateAuthorityConfig = &vaultCertificateAuthorityConfig
+		u.Type = MeshItemMtlsConfTypeVaultCertificateAuthorityConfig
 		return nil
 	}
 
@@ -3868,7 +3876,7 @@ type ZipkinTracingBackendConfig struct {
 	// Generate 128bit traces. Default: false
 	TraceId128bit *bool `json:"traceId128bit,omitempty"`
 	// Address of Zipkin collector.
-	URL *string `json:"url,omitempty"`
+	URL string `json:"url"`
 }
 
 func (z ZipkinTracingBackendConfig) MarshalJSON() ([]byte, error) {
@@ -3876,7 +3884,7 @@ func (z ZipkinTracingBackendConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (z *ZipkinTracingBackendConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &z, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &z, "", false, []string{"url"}); err != nil {
 		return err
 	}
 	return nil
@@ -3903,9 +3911,9 @@ func (z *ZipkinTracingBackendConfig) GetTraceId128bit() *bool {
 	return z.TraceId128bit
 }
 
-func (z *ZipkinTracingBackendConfig) GetURL() *string {
+func (z *ZipkinTracingBackendConfig) GetURL() string {
 	if z == nil {
-		return nil
+		return ""
 	}
 	return z.URL
 }
@@ -3921,6 +3929,7 @@ type DatadogTracingBackendConfig struct {
 	// get service names like `backend_INBOUND`, `backend_OUTBOUND_db1`, and
 	// `backend_OUTBOUND_db2` in Datadog. Default: false
 	SplitService *bool `json:"splitService,omitempty"`
+	Required     any   `json:"required,omitempty"`
 }
 
 func (d DatadogTracingBackendConfig) MarshalJSON() ([]byte, error) {
@@ -3953,6 +3962,13 @@ func (d *DatadogTracingBackendConfig) GetSplitService() *bool {
 		return nil
 	}
 	return d.SplitService
+}
+
+func (d *DatadogTracingBackendConfig) GetRequired() any {
+	if d == nil {
+		return nil
+	}
+	return d.Required
 }
 
 type MeshItemTracingConfType string
@@ -3989,17 +4005,17 @@ func CreateMeshItemTracingConfZipkinTracingBackendConfig(zipkinTracingBackendCon
 
 func (u *MeshItemTracingConf) UnmarshalJSON(data []byte) error {
 
-	var datadogTracingBackendConfig DatadogTracingBackendConfig = DatadogTracingBackendConfig{}
-	if err := utils.UnmarshalJSON(data, &datadogTracingBackendConfig, "", true, nil); err == nil {
-		u.DatadogTracingBackendConfig = &datadogTracingBackendConfig
-		u.Type = MeshItemTracingConfTypeDatadogTracingBackendConfig
-		return nil
-	}
-
 	var zipkinTracingBackendConfig ZipkinTracingBackendConfig = ZipkinTracingBackendConfig{}
 	if err := utils.UnmarshalJSON(data, &zipkinTracingBackendConfig, "", true, nil); err == nil {
 		u.ZipkinTracingBackendConfig = &zipkinTracingBackendConfig
 		u.Type = MeshItemTracingConfTypeZipkinTracingBackendConfig
+		return nil
+	}
+
+	var datadogTracingBackendConfig DatadogTracingBackendConfig = DatadogTracingBackendConfig{}
+	if err := utils.UnmarshalJSON(data, &datadogTracingBackendConfig, "", true, nil); err == nil {
+		u.DatadogTracingBackendConfig = &datadogTracingBackendConfig
+		u.Type = MeshItemTracingConfTypeDatadogTracingBackendConfig
 		return nil
 	}
 

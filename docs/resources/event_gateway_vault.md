@@ -61,7 +61,7 @@ Optional:
 
 - `config` (Attributes) The configuration of the environment vault. Not Null (see [below for nested schema](#nestedatt--event_gateway_env_vault--config))
 - `description` (String) A human-readable description of the vault.
-- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
+- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `name` (String) The name of the vault. Not Null
@@ -87,7 +87,7 @@ Optional:
 Optional:
 
 - `description` (String) A human-readable description of the vault.
-- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
+- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `name` (String) The name of the vault. Not Null

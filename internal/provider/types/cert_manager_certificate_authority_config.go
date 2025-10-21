@@ -10,5 +10,5 @@ type CertManagerCertificateAuthorityConfig struct {
 	CaCert     *AccessKey     `tfsdk:"ca_cert"`
 	CommonName types.String   `tfsdk:"common_name"`
 	DNSNames   []types.String `tfsdk:"dns_names"`
-	IssuerRef  *IssuerRef     `tfsdk:"issuer_ref"`
+	IssuerRef  IssuerRef      `tfsdk:"issuer_ref"`
 }

@@ -47,7 +47,7 @@ resource "konnect_event_gateway_listener_policy_forward_to_virtual_cluster" "my_
 - `condition` (String) A string containing the boolean expression that determines whether the policy is applied.
 - `description` (String) A human-readable description of the policy.
 - `enabled` (Boolean) Whether the policy is enabled. Default: true
-- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
+- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `name` (String) A unique user-defined name of the policy.

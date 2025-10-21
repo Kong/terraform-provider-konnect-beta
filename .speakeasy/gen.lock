@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: ce6a564e5a4bb2f1d3b8649dc7c8fdeb
+  docChecksum: 21e632eec48fd5e17cb266f542237f5e
   docVersion: 2.0.0
   speakeasyVersion: 1.637.0
   generationVersion: 2.727.4
@@ -746,7 +746,6 @@ generatedFiles:
   - internal/provider/types/virtual_cluster_namespace_topic_selector_glob.go
   - internal/provider/types/virtual_cluster_reference.go
   - internal/provider/types/virtual_host.go
-  - internal/provider/types/zipkin.go
   - internal/provider/types/zipkin_tracing_backend_config.go
   - internal/provider/utils.go
   - internal/sdk/.gitattributes

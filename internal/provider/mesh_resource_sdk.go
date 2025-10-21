@@ -4,6 +4,8 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
@@ -90,6 +92,12 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(ctx context.Context, resp 
 					if backendsItem.Conf.TCPLoggingBackendConfig != nil {
 						backends.Conf.TCPLoggingBackendConfig = &tfTypes.TCPLoggingBackendConfig{}
 						backends.Conf.TCPLoggingBackendConfig.Address = types.StringPointerValue(backendsItem.Conf.TCPLoggingBackendConfig.Address)
+						if backendsItem.Conf.TCPLoggingBackendConfig.Required == nil {
+							backends.Conf.TCPLoggingBackendConfig.Required = jsontypes.NewNormalizedNull()
+						} else {
+							requiredResult, _ := json.Marshal(backendsItem.Conf.TCPLoggingBackendConfig.Required)
+							backends.Conf.TCPLoggingBackendConfig.Required = jsontypes.NewNormalizedValue(string(requiredResult))
+						}
 					}
 				}
 				backends.Format = types.StringPointerValue(backendsItem.Format)
@@ -192,7 +200,7 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(ctx context.Context, resp 
 					backends2.Conf = &tfTypes.MeshItemMtlsConf{}
 					if backendsItem2.Conf.ACMCertificateAuthorityConfig != nil {
 						backends2.Conf.ACMCertificateAuthorityConfig = &tfTypes.ACMCertificateAuthorityConfig{}
-						backends2.Conf.ACMCertificateAuthorityConfig.Arn = types.StringPointerValue(backendsItem2.Conf.ACMCertificateAuthorityConfig.Arn)
+						backends2.Conf.ACMCertificateAuthorityConfig.Arn = types.StringValue(backendsItem2.Conf.ACMCertificateAuthorityConfig.Arn)
 						if backendsItem2.Conf.ACMCertificateAuthorityConfig.Auth == nil {
 							backends2.Conf.ACMCertificateAuthorityConfig.Auth = nil
 						} else {
@@ -298,186 +306,170 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(ctx context.Context, resp 
 						for _, v := range backendsItem2.Conf.CertManagerCertificateAuthorityConfig.DNSNames {
 							backends2.Conf.CertManagerCertificateAuthorityConfig.DNSNames = append(backends2.Conf.CertManagerCertificateAuthorityConfig.DNSNames, types.StringValue(v))
 						}
-						if backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef == nil {
-							backends2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef = nil
-						} else {
-							backends2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef = &tfTypes.IssuerRef{}
-							backends2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Group = types.StringPointerValue(backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Group)
-							backends2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Kind = types.StringPointerValue(backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Kind)
-							backends2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Name = types.StringPointerValue(backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Name)
-						}
+						backends2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Group = types.StringPointerValue(backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Group)
+						backends2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Kind = types.StringPointerValue(backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Kind)
+						backends2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Name = types.StringPointerValue(backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Name)
 					}
 					if backendsItem2.Conf.ProvidedCertificateAuthorityConfig != nil {
 						backends2.Conf.ProvidedCertificateAuthorityConfig = &tfTypes.ProvidedCertificateAuthorityConfig{}
-						if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert != nil {
-							backends2.Conf.ProvidedCertificateAuthorityConfig.Cert = &tfTypes.AccessKey{}
-							if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.CertDataSourceFile != nil {
-								backends2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceFile = &tfTypes.AccessKeyDataSourceFile{}
-								backends2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceFile.File = types.StringPointerValue(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.CertDataSourceFile.File)
-							}
-							if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.CertDataSourceInline != nil {
-								backends2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceInline = &tfTypes.AccessKeyDataSourceInline{}
-								backends2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceInline.Inline = types.StringPointerValue(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.CertDataSourceInline.Inline)
-							}
-							if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.CertDataSourceInlineString != nil {
-								backends2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceInlineString = &tfTypes.AccessKeyDataSourceInlineString{}
-								backends2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceInlineString.InlineString = types.StringPointerValue(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.CertDataSourceInlineString.InlineString)
-							}
-							if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.CertDataSourceSecret != nil {
-								backends2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceSecret = &tfTypes.AccessKeyDataSourceSecret{}
-								backends2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceSecret.Secret = types.StringPointerValue(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.CertDataSourceSecret.Secret)
-							}
+						if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.CertDataSourceFile != nil {
+							backends2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceFile = &tfTypes.AccessKeyDataSourceFile{}
+							backends2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceFile.File = types.StringPointerValue(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.CertDataSourceFile.File)
 						}
-						if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key != nil {
-							backends2.Conf.ProvidedCertificateAuthorityConfig.Key = &tfTypes.AccessKey{}
-							if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.KeyDataSourceFile != nil {
-								backends2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceFile = &tfTypes.AccessKeyDataSourceFile{}
-								backends2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceFile.File = types.StringPointerValue(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.KeyDataSourceFile.File)
-							}
-							if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.KeyDataSourceInline != nil {
-								backends2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceInline = &tfTypes.AccessKeyDataSourceInline{}
-								backends2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceInline.Inline = types.StringPointerValue(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.KeyDataSourceInline.Inline)
-							}
-							if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.KeyDataSourceInlineString != nil {
-								backends2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceInlineString = &tfTypes.AccessKeyDataSourceInlineString{}
-								backends2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceInlineString.InlineString = types.StringPointerValue(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.KeyDataSourceInlineString.InlineString)
-							}
-							if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.KeyDataSourceSecret != nil {
-								backends2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceSecret = &tfTypes.AccessKeyDataSourceSecret{}
-								backends2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceSecret.Secret = types.StringPointerValue(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.KeyDataSourceSecret.Secret)
-							}
+						if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.CertDataSourceInline != nil {
+							backends2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceInline = &tfTypes.AccessKeyDataSourceInline{}
+							backends2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceInline.Inline = types.StringPointerValue(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.CertDataSourceInline.Inline)
+						}
+						if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.CertDataSourceInlineString != nil {
+							backends2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceInlineString = &tfTypes.AccessKeyDataSourceInlineString{}
+							backends2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceInlineString.InlineString = types.StringPointerValue(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.CertDataSourceInlineString.InlineString)
+						}
+						if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.CertDataSourceSecret != nil {
+							backends2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceSecret = &tfTypes.AccessKeyDataSourceSecret{}
+							backends2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceSecret.Secret = types.StringPointerValue(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.CertDataSourceSecret.Secret)
+						}
+						if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.KeyDataSourceFile != nil {
+							backends2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceFile = &tfTypes.AccessKeyDataSourceFile{}
+							backends2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceFile.File = types.StringPointerValue(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.KeyDataSourceFile.File)
+						}
+						if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.KeyDataSourceInline != nil {
+							backends2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceInline = &tfTypes.AccessKeyDataSourceInline{}
+							backends2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceInline.Inline = types.StringPointerValue(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.KeyDataSourceInline.Inline)
+						}
+						if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.KeyDataSourceInlineString != nil {
+							backends2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceInlineString = &tfTypes.AccessKeyDataSourceInlineString{}
+							backends2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceInlineString.InlineString = types.StringPointerValue(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.KeyDataSourceInlineString.InlineString)
+						}
+						if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.KeyDataSourceSecret != nil {
+							backends2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceSecret = &tfTypes.AccessKeyDataSourceSecret{}
+							backends2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceSecret.Secret = types.StringPointerValue(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.KeyDataSourceSecret.Secret)
 						}
 					}
 					if backendsItem2.Conf.VaultCertificateAuthorityConfig != nil {
 						backends2.Conf.VaultCertificateAuthorityConfig = &tfTypes.VaultCertificateAuthorityConfig{}
 						if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp != nil {
 							backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp = &tfTypes.VaultCertificateAuthorityConfigFromCp{}
-							if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp == nil {
-								backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp = nil
+							backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Address = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Address)
+							backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.AgentAddress = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.AgentAddress)
+							if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth != nil {
+								backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth = &tfTypes.VaultCertificateAuthorityConfigAuth{}
+								if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws != nil {
+									backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws = &tfTypes.VaultCertificateAuthorityConfigFromCpAuthAws{}
+									if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws == nil {
+										backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws = nil
+									} else {
+										backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws = &tfTypes.Aws{}
+										backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.IamServerIDHeader = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.IamServerIDHeader)
+										backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Role = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Role)
+										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type != nil {
+											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type = &tfTypes.MeshItemMode{}
+											if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type.Str != nil {
+												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type.Str = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type.Str)
+											}
+											if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type.Integer != nil {
+												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type.Integer = types.Int64PointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type.Integer)
+											}
+										}
+									}
+								}
+								if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS != nil {
+									backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS = &tfTypes.VaultCertificateAuthorityConfigFromCpAuthTLS{}
+									if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS == nil {
+										backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS = nil
+									} else {
+										backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS = &tfTypes.AuthTLS{}
+										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert != nil {
+											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert = &tfTypes.AccessKey{}
+											if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.ClientCertDataSourceFile != nil {
+												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceFile = &tfTypes.AccessKeyDataSourceFile{}
+												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceFile.File = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.ClientCertDataSourceFile.File)
+											}
+											if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.ClientCertDataSourceInline != nil {
+												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceInline = &tfTypes.AccessKeyDataSourceInline{}
+												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceInline.Inline = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.ClientCertDataSourceInline.Inline)
+											}
+											if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.ClientCertDataSourceInlineString != nil {
+												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceInlineString = &tfTypes.AccessKeyDataSourceInlineString{}
+												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceInlineString.InlineString = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.ClientCertDataSourceInlineString.InlineString)
+											}
+											if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.ClientCertDataSourceSecret != nil {
+												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceSecret = &tfTypes.AccessKeyDataSourceSecret{}
+												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceSecret.Secret = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.ClientCertDataSourceSecret.Secret)
+											}
+										}
+										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey != nil {
+											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey = &tfTypes.AccessKey{}
+											if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.ClientKeyDataSourceFile != nil {
+												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceFile = &tfTypes.AccessKeyDataSourceFile{}
+												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceFile.File = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.ClientKeyDataSourceFile.File)
+											}
+											if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.ClientKeyDataSourceInline != nil {
+												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceInline = &tfTypes.AccessKeyDataSourceInline{}
+												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceInline.Inline = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.ClientKeyDataSourceInline.Inline)
+											}
+											if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.ClientKeyDataSourceInlineString != nil {
+												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceInlineString = &tfTypes.AccessKeyDataSourceInlineString{}
+												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceInlineString.InlineString = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.ClientKeyDataSourceInlineString.InlineString)
+											}
+											if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.ClientKeyDataSourceSecret != nil {
+												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceSecret = &tfTypes.AccessKeyDataSourceSecret{}
+												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceSecret.Secret = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.ClientKeyDataSourceSecret.Secret)
+											}
+										}
+									}
+								}
+								if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken != nil {
+									backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken = &tfTypes.VaultCertificateAuthorityConfigFromCpAuthToken{}
+									if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token != nil {
+										backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token = &tfTypes.AccessKey{}
+										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.TokenDataSourceFile != nil {
+											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceFile = &tfTypes.AccessKeyDataSourceFile{}
+											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceFile.File = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.TokenDataSourceFile.File)
+										}
+										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.TokenDataSourceInline != nil {
+											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceInline = &tfTypes.AccessKeyDataSourceInline{}
+											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceInline.Inline = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.TokenDataSourceInline.Inline)
+										}
+										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.TokenDataSourceInlineString != nil {
+											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceInlineString = &tfTypes.AccessKeyDataSourceInlineString{}
+											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceInlineString.InlineString = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.TokenDataSourceInlineString.InlineString)
+										}
+										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.TokenDataSourceSecret != nil {
+											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceSecret = &tfTypes.AccessKeyDataSourceSecret{}
+											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceSecret.Secret = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.TokenDataSourceSecret.Secret)
+										}
+									}
+								}
+							}
+							backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.CommonName = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.CommonName)
+							backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Namespace = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Namespace)
+							backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Pki = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Pki)
+							backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Role = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Role)
+							if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS == nil {
+								backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS = nil
 							} else {
-								backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp = &tfTypes.FromCp{}
-								backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Address = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Address)
-								backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.AgentAddress = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.AgentAddress)
-								if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth != nil {
-									backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth = &tfTypes.VaultCertificateAuthorityConfigAuth{}
-									if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws != nil {
-										backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws = &tfTypes.VaultCertificateAuthorityConfigFromCpAuthAws{}
-										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws == nil {
-											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws = nil
-										} else {
-											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws = &tfTypes.Aws{}
-											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.IamServerIDHeader = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.IamServerIDHeader)
-											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Role = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Role)
-											if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type != nil {
-												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type = &tfTypes.MeshItemMode{}
-												if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type.Str != nil {
-													backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type.Str = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type.Str)
-												}
-												if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type.Integer != nil {
-													backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type.Integer = types.Int64PointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type.Integer)
-												}
-											}
-										}
+								backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS = &tfTypes.VaultCertificateAuthorityConfigTLS{}
+								if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert != nil {
+									backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert = &tfTypes.AccessKey{}
+									if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile != nil {
+										backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceFile = &tfTypes.AccessKeyDataSourceFile{}
+										backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceFile.File = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile.File)
 									}
-									if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS != nil {
-										backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS = &tfTypes.VaultCertificateAuthorityConfigFromCpAuthTLS{}
-										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS == nil {
-											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS = nil
-										} else {
-											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS = &tfTypes.AuthTLS{}
-											if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert != nil {
-												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert = &tfTypes.AccessKey{}
-												if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.ClientCertDataSourceFile != nil {
-													backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceFile = &tfTypes.AccessKeyDataSourceFile{}
-													backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceFile.File = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.ClientCertDataSourceFile.File)
-												}
-												if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.ClientCertDataSourceInline != nil {
-													backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceInline = &tfTypes.AccessKeyDataSourceInline{}
-													backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceInline.Inline = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.ClientCertDataSourceInline.Inline)
-												}
-												if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.ClientCertDataSourceInlineString != nil {
-													backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceInlineString = &tfTypes.AccessKeyDataSourceInlineString{}
-													backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceInlineString.InlineString = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.ClientCertDataSourceInlineString.InlineString)
-												}
-												if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.ClientCertDataSourceSecret != nil {
-													backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceSecret = &tfTypes.AccessKeyDataSourceSecret{}
-													backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceSecret.Secret = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.ClientCertDataSourceSecret.Secret)
-												}
-											}
-											if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey != nil {
-												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey = &tfTypes.AccessKey{}
-												if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.ClientKeyDataSourceFile != nil {
-													backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceFile = &tfTypes.AccessKeyDataSourceFile{}
-													backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceFile.File = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.ClientKeyDataSourceFile.File)
-												}
-												if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.ClientKeyDataSourceInline != nil {
-													backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceInline = &tfTypes.AccessKeyDataSourceInline{}
-													backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceInline.Inline = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.ClientKeyDataSourceInline.Inline)
-												}
-												if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.ClientKeyDataSourceInlineString != nil {
-													backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceInlineString = &tfTypes.AccessKeyDataSourceInlineString{}
-													backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceInlineString.InlineString = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.ClientKeyDataSourceInlineString.InlineString)
-												}
-												if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.ClientKeyDataSourceSecret != nil {
-													backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceSecret = &tfTypes.AccessKeyDataSourceSecret{}
-													backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceSecret.Secret = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.ClientKeyDataSourceSecret.Secret)
-												}
-											}
-										}
+									if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline != nil {
+										backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceInline = &tfTypes.AccessKeyDataSourceInline{}
+										backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceInline.Inline = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline.Inline)
 									}
-									if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken != nil {
-										backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken = &tfTypes.VaultCertificateAuthorityConfigFromCpAuthToken{}
-										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token != nil {
-											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token = &tfTypes.AccessKey{}
-											if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.TokenDataSourceFile != nil {
-												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceFile = &tfTypes.AccessKeyDataSourceFile{}
-												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceFile.File = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.TokenDataSourceFile.File)
-											}
-											if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.TokenDataSourceInline != nil {
-												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceInline = &tfTypes.AccessKeyDataSourceInline{}
-												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceInline.Inline = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.TokenDataSourceInline.Inline)
-											}
-											if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.TokenDataSourceInlineString != nil {
-												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceInlineString = &tfTypes.AccessKeyDataSourceInlineString{}
-												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceInlineString.InlineString = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.TokenDataSourceInlineString.InlineString)
-											}
-											if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.TokenDataSourceSecret != nil {
-												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceSecret = &tfTypes.AccessKeyDataSourceSecret{}
-												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceSecret.Secret = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.TokenDataSourceSecret.Secret)
-											}
-										}
+									if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString != nil {
+										backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceInlineString = &tfTypes.AccessKeyDataSourceInlineString{}
+										backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceInlineString.InlineString = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString.InlineString)
+									}
+									if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret != nil {
+										backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceSecret = &tfTypes.AccessKeyDataSourceSecret{}
+										backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceSecret.Secret = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret.Secret)
 									}
 								}
-								backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.CommonName = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.CommonName)
-								backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Namespace = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Namespace)
-								backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Pki = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Pki)
-								backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Role = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Role)
-								if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS == nil {
-									backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS = nil
-								} else {
-									backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS = &tfTypes.VaultCertificateAuthorityConfigTLS{}
-									if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert != nil {
-										backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert = &tfTypes.AccessKey{}
-										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile != nil {
-											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceFile = &tfTypes.AccessKeyDataSourceFile{}
-											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceFile.File = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile.File)
-										}
-										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline != nil {
-											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceInline = &tfTypes.AccessKeyDataSourceInline{}
-											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceInline.Inline = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline.Inline)
-										}
-										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString != nil {
-											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceInlineString = &tfTypes.AccessKeyDataSourceInlineString{}
-											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceInlineString.InlineString = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString.InlineString)
-										}
-										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret != nil {
-											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceSecret = &tfTypes.AccessKeyDataSourceSecret{}
-											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceSecret.Secret = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret.Secret)
-										}
-									}
-									backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.ServerName = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.ServerName)
-									backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.SkipVerify = types.BoolPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.SkipVerify)
-								}
+								backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.ServerName = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.ServerName)
+								backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.SkipVerify = types.BoolPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.SkipVerify)
 							}
 						}
 					}
@@ -568,6 +560,12 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(ctx context.Context, resp 
 						backends3.Conf.DatadogTracingBackendConfig = &tfTypes.DatadogTracingBackendConfig{}
 						backends3.Conf.DatadogTracingBackendConfig.Address = types.StringPointerValue(backendsItem3.Conf.DatadogTracingBackendConfig.Address)
 						backends3.Conf.DatadogTracingBackendConfig.Port = types.Int64PointerValue(backendsItem3.Conf.DatadogTracingBackendConfig.Port)
+						if backendsItem3.Conf.DatadogTracingBackendConfig.Required == nil {
+							backends3.Conf.DatadogTracingBackendConfig.Required = jsontypes.NewNormalizedNull()
+						} else {
+							requiredResult1, _ := json.Marshal(backendsItem3.Conf.DatadogTracingBackendConfig.Required)
+							backends3.Conf.DatadogTracingBackendConfig.Required = jsontypes.NewNormalizedValue(string(requiredResult1))
+						}
 						backends3.Conf.DatadogTracingBackendConfig.SplitService = types.BoolPointerValue(backendsItem3.Conf.DatadogTracingBackendConfig.SplitService)
 					}
 					if backendsItem3.Conf.ZipkinTracingBackendConfig != nil {
@@ -575,7 +573,7 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(ctx context.Context, resp 
 						backends3.Conf.ZipkinTracingBackendConfig.APIVersion = types.StringPointerValue(backendsItem3.Conf.ZipkinTracingBackendConfig.APIVersion)
 						backends3.Conf.ZipkinTracingBackendConfig.SharedSpanContext = types.BoolPointerValue(backendsItem3.Conf.ZipkinTracingBackendConfig.SharedSpanContext)
 						backends3.Conf.ZipkinTracingBackendConfig.TraceId128bit = types.BoolPointerValue(backendsItem3.Conf.ZipkinTracingBackendConfig.TraceId128bit)
-						backends3.Conf.ZipkinTracingBackendConfig.URL = types.StringPointerValue(backendsItem3.Conf.ZipkinTracingBackendConfig.URL)
+						backends3.Conf.ZipkinTracingBackendConfig.URL = types.StringValue(backendsItem3.Conf.ZipkinTracingBackendConfig.URL)
 					}
 				}
 				backends3.Name = types.StringPointerValue(backendsItem3.Name)
@@ -731,8 +729,13 @@ func (r *MeshResourceModel) ToSharedMeshItem(ctx context.Context) (*shared.MeshI
 					} else {
 						address = nil
 					}
+					var required interface{}
+					if !backendsItem.Conf.TCPLoggingBackendConfig.Required.IsUnknown() && !backendsItem.Conf.TCPLoggingBackendConfig.Required.IsNull() {
+						_ = json.Unmarshal([]byte(backendsItem.Conf.TCPLoggingBackendConfig.Required.ValueString()), &required)
+					}
 					tcpLoggingBackendConfig = &shared.TCPLoggingBackendConfig{
-						Address: address,
+						Address:  address,
+						Required: required,
 					}
 				}
 				if tcpLoggingBackendConfig != nil {
@@ -984,146 +987,142 @@ func (r *MeshResourceModel) ToSharedMeshItem(ctx context.Context) (*shared.MeshI
 			if backendsItem2.Conf != nil {
 				var providedCertificateAuthorityConfig *shared.ProvidedCertificateAuthorityConfig
 				if backendsItem2.Conf.ProvidedCertificateAuthorityConfig != nil {
-					var cert *shared.Cert
-					if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert != nil {
-						var certDataSourceFile *shared.CertDataSourceFile
-						if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceFile != nil {
-							file := new(string)
-							if !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceFile.File.IsUnknown() && !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceFile.File.IsNull() {
-								*file = backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceFile.File.ValueString()
-							} else {
-								file = nil
-							}
-							certDataSourceFile = &shared.CertDataSourceFile{
-								File: file,
-							}
+					var cert shared.Cert
+					var certDataSourceFile *shared.CertDataSourceFile
+					if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceFile != nil {
+						file := new(string)
+						if !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceFile.File.IsUnknown() && !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceFile.File.IsNull() {
+							*file = backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceFile.File.ValueString()
+						} else {
+							file = nil
 						}
-						if certDataSourceFile != nil {
-							cert = &shared.Cert{
-								CertDataSourceFile: certDataSourceFile,
-							}
-						}
-						var certDataSourceInline *shared.CertDataSourceInline
-						if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceInline != nil {
-							inline := new(string)
-							if !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceInline.Inline.IsUnknown() && !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceInline.Inline.IsNull() {
-								*inline = backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceInline.Inline.ValueString()
-							} else {
-								inline = nil
-							}
-							certDataSourceInline = &shared.CertDataSourceInline{
-								Inline: inline,
-							}
-						}
-						if certDataSourceInline != nil {
-							cert = &shared.Cert{
-								CertDataSourceInline: certDataSourceInline,
-							}
-						}
-						var certDataSourceInlineString *shared.CertDataSourceInlineString
-						if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceInlineString != nil {
-							inlineString := new(string)
-							if !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceInlineString.InlineString.IsUnknown() && !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceInlineString.InlineString.IsNull() {
-								*inlineString = backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceInlineString.InlineString.ValueString()
-							} else {
-								inlineString = nil
-							}
-							certDataSourceInlineString = &shared.CertDataSourceInlineString{
-								InlineString: inlineString,
-							}
-						}
-						if certDataSourceInlineString != nil {
-							cert = &shared.Cert{
-								CertDataSourceInlineString: certDataSourceInlineString,
-							}
-						}
-						var certDataSourceSecret *shared.CertDataSourceSecret
-						if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceSecret != nil {
-							secret := new(string)
-							if !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceSecret.Secret.IsUnknown() && !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceSecret.Secret.IsNull() {
-								*secret = backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceSecret.Secret.ValueString()
-							} else {
-								secret = nil
-							}
-							certDataSourceSecret = &shared.CertDataSourceSecret{
-								Secret: secret,
-							}
-						}
-						if certDataSourceSecret != nil {
-							cert = &shared.Cert{
-								CertDataSourceSecret: certDataSourceSecret,
-							}
+						certDataSourceFile = &shared.CertDataSourceFile{
+							File: file,
 						}
 					}
-					var key *shared.Key
-					if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key != nil {
-						var keyDataSourceFile *shared.KeyDataSourceFile
-						if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceFile != nil {
-							file1 := new(string)
-							if !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceFile.File.IsUnknown() && !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceFile.File.IsNull() {
-								*file1 = backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceFile.File.ValueString()
-							} else {
-								file1 = nil
-							}
-							keyDataSourceFile = &shared.KeyDataSourceFile{
-								File: file1,
-							}
+					if certDataSourceFile != nil {
+						cert = shared.Cert{
+							CertDataSourceFile: certDataSourceFile,
 						}
-						if keyDataSourceFile != nil {
-							key = &shared.Key{
-								KeyDataSourceFile: keyDataSourceFile,
-							}
+					}
+					var certDataSourceInline *shared.CertDataSourceInline
+					if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceInline != nil {
+						inline := new(string)
+						if !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceInline.Inline.IsUnknown() && !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceInline.Inline.IsNull() {
+							*inline = backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceInline.Inline.ValueString()
+						} else {
+							inline = nil
 						}
-						var keyDataSourceInline *shared.KeyDataSourceInline
-						if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceInline != nil {
-							inline1 := new(string)
-							if !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceInline.Inline.IsUnknown() && !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceInline.Inline.IsNull() {
-								*inline1 = backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceInline.Inline.ValueString()
-							} else {
-								inline1 = nil
-							}
-							keyDataSourceInline = &shared.KeyDataSourceInline{
-								Inline: inline1,
-							}
+						certDataSourceInline = &shared.CertDataSourceInline{
+							Inline: inline,
 						}
-						if keyDataSourceInline != nil {
-							key = &shared.Key{
-								KeyDataSourceInline: keyDataSourceInline,
-							}
+					}
+					if certDataSourceInline != nil {
+						cert = shared.Cert{
+							CertDataSourceInline: certDataSourceInline,
 						}
-						var keyDataSourceInlineString *shared.KeyDataSourceInlineString
-						if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceInlineString != nil {
-							inlineString1 := new(string)
-							if !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceInlineString.InlineString.IsUnknown() && !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceInlineString.InlineString.IsNull() {
-								*inlineString1 = backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceInlineString.InlineString.ValueString()
-							} else {
-								inlineString1 = nil
-							}
-							keyDataSourceInlineString = &shared.KeyDataSourceInlineString{
-								InlineString: inlineString1,
-							}
+					}
+					var certDataSourceInlineString *shared.CertDataSourceInlineString
+					if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceInlineString != nil {
+						inlineString := new(string)
+						if !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceInlineString.InlineString.IsUnknown() && !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceInlineString.InlineString.IsNull() {
+							*inlineString = backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceInlineString.InlineString.ValueString()
+						} else {
+							inlineString = nil
 						}
-						if keyDataSourceInlineString != nil {
-							key = &shared.Key{
-								KeyDataSourceInlineString: keyDataSourceInlineString,
-							}
+						certDataSourceInlineString = &shared.CertDataSourceInlineString{
+							InlineString: inlineString,
 						}
-						var keyDataSourceSecret *shared.KeyDataSourceSecret
-						if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceSecret != nil {
-							secret1 := new(string)
-							if !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceSecret.Secret.IsUnknown() && !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceSecret.Secret.IsNull() {
-								*secret1 = backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceSecret.Secret.ValueString()
-							} else {
-								secret1 = nil
-							}
-							keyDataSourceSecret = &shared.KeyDataSourceSecret{
-								Secret: secret1,
-							}
+					}
+					if certDataSourceInlineString != nil {
+						cert = shared.Cert{
+							CertDataSourceInlineString: certDataSourceInlineString,
 						}
-						if keyDataSourceSecret != nil {
-							key = &shared.Key{
-								KeyDataSourceSecret: keyDataSourceSecret,
-							}
+					}
+					var certDataSourceSecret *shared.CertDataSourceSecret
+					if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceSecret != nil {
+						secret := new(string)
+						if !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceSecret.Secret.IsUnknown() && !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceSecret.Secret.IsNull() {
+							*secret = backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.DataSourceSecret.Secret.ValueString()
+						} else {
+							secret = nil
+						}
+						certDataSourceSecret = &shared.CertDataSourceSecret{
+							Secret: secret,
+						}
+					}
+					if certDataSourceSecret != nil {
+						cert = shared.Cert{
+							CertDataSourceSecret: certDataSourceSecret,
+						}
+					}
+					var key shared.Key
+					var keyDataSourceFile *shared.KeyDataSourceFile
+					if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceFile != nil {
+						file1 := new(string)
+						if !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceFile.File.IsUnknown() && !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceFile.File.IsNull() {
+							*file1 = backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceFile.File.ValueString()
+						} else {
+							file1 = nil
+						}
+						keyDataSourceFile = &shared.KeyDataSourceFile{
+							File: file1,
+						}
+					}
+					if keyDataSourceFile != nil {
+						key = shared.Key{
+							KeyDataSourceFile: keyDataSourceFile,
+						}
+					}
+					var keyDataSourceInline *shared.KeyDataSourceInline
+					if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceInline != nil {
+						inline1 := new(string)
+						if !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceInline.Inline.IsUnknown() && !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceInline.Inline.IsNull() {
+							*inline1 = backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceInline.Inline.ValueString()
+						} else {
+							inline1 = nil
+						}
+						keyDataSourceInline = &shared.KeyDataSourceInline{
+							Inline: inline1,
+						}
+					}
+					if keyDataSourceInline != nil {
+						key = shared.Key{
+							KeyDataSourceInline: keyDataSourceInline,
+						}
+					}
+					var keyDataSourceInlineString *shared.KeyDataSourceInlineString
+					if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceInlineString != nil {
+						inlineString1 := new(string)
+						if !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceInlineString.InlineString.IsUnknown() && !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceInlineString.InlineString.IsNull() {
+							*inlineString1 = backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceInlineString.InlineString.ValueString()
+						} else {
+							inlineString1 = nil
+						}
+						keyDataSourceInlineString = &shared.KeyDataSourceInlineString{
+							InlineString: inlineString1,
+						}
+					}
+					if keyDataSourceInlineString != nil {
+						key = shared.Key{
+							KeyDataSourceInlineString: keyDataSourceInlineString,
+						}
+					}
+					var keyDataSourceSecret *shared.KeyDataSourceSecret
+					if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceSecret != nil {
+						secret1 := new(string)
+						if !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceSecret.Secret.IsUnknown() && !backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceSecret.Secret.IsNull() {
+							*secret1 = backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.DataSourceSecret.Secret.ValueString()
+						} else {
+							secret1 = nil
+						}
+						keyDataSourceSecret = &shared.KeyDataSourceSecret{
+							Secret: secret1,
+						}
+					}
+					if keyDataSourceSecret != nil {
+						key = shared.Key{
+							KeyDataSourceSecret: keyDataSourceSecret,
 						}
 					}
 					providedCertificateAuthorityConfig = &shared.ProvidedCertificateAuthorityConfig{
@@ -1170,446 +1169,443 @@ func (r *MeshResourceModel) ToSharedMeshItem(ctx context.Context) (*shared.MeshI
 				if backendsItem2.Conf.VaultCertificateAuthorityConfig != nil {
 					var vaultCertificateAuthorityConfigFromCp *shared.VaultCertificateAuthorityConfigFromCp
 					if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp != nil {
-						var fromCp *shared.FromCp
-						if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp != nil {
-							address2 := new(string)
-							if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Address.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Address.IsNull() {
-								*address2 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Address.ValueString()
-							} else {
-								address2 = nil
-							}
-							agentAddress := new(string)
-							if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.AgentAddress.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.AgentAddress.IsNull() {
-								*agentAddress = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.AgentAddress.ValueString()
-							} else {
-								agentAddress = nil
-							}
-							var auth *shared.VaultCertificateAuthorityConfigAuth
-							if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth != nil {
-								var vaultCertificateAuthorityConfigFromCpAuthAws *shared.VaultCertificateAuthorityConfigFromCpAuthAws
-								if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws != nil {
-									var aws *shared.Aws
-									if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws != nil {
-										iamServerIDHeader := new(string)
-										if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.IamServerIDHeader.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.IamServerIDHeader.IsNull() {
-											*iamServerIDHeader = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.IamServerIDHeader.ValueString()
+						address2 := new(string)
+						if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Address.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Address.IsNull() {
+							*address2 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Address.ValueString()
+						} else {
+							address2 = nil
+						}
+						agentAddress := new(string)
+						if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.AgentAddress.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.AgentAddress.IsNull() {
+							*agentAddress = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.AgentAddress.ValueString()
+						} else {
+							agentAddress = nil
+						}
+						var auth *shared.VaultCertificateAuthorityConfigAuth
+						if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth != nil {
+							var vaultCertificateAuthorityConfigFromCpAuthAws *shared.VaultCertificateAuthorityConfigFromCpAuthAws
+							if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws != nil {
+								var aws *shared.Aws
+								if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws != nil {
+									iamServerIDHeader := new(string)
+									if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.IamServerIDHeader.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.IamServerIDHeader.IsNull() {
+										*iamServerIDHeader = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.IamServerIDHeader.ValueString()
+									} else {
+										iamServerIDHeader = nil
+									}
+									role := new(string)
+									if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Role.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Role.IsNull() {
+										*role = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Role.ValueString()
+									} else {
+										role = nil
+									}
+									var typeVar1 *shared.AuthType
+									if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type != nil {
+										str2 := new(string)
+										if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type.Str.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type.Str.IsNull() {
+											*str2 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type.Str.ValueString()
 										} else {
-											iamServerIDHeader = nil
+											str2 = nil
 										}
-										role := new(string)
-										if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Role.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Role.IsNull() {
-											*role = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Role.ValueString()
+										if str2 != nil {
+											typeVar1 = &shared.AuthType{
+												Str: str2,
+											}
+										}
+										integer2 := new(int64)
+										if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type.Integer.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type.Integer.IsNull() {
+											*integer2 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type.Integer.ValueInt64()
 										} else {
-											role = nil
+											integer2 = nil
 										}
-										var typeVar1 *shared.AuthType
-										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type != nil {
-											str2 := new(string)
-											if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type.Str.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type.Str.IsNull() {
-												*str2 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type.Str.ValueString()
-											} else {
-												str2 = nil
+										if integer2 != nil {
+											typeVar1 = &shared.AuthType{
+												Integer: integer2,
 											}
-											if str2 != nil {
-												typeVar1 = &shared.AuthType{
-													Str: str2,
-												}
-											}
-											integer2 := new(int64)
-											if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type.Integer.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type.Integer.IsNull() {
-												*integer2 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type.Integer.ValueInt64()
-											} else {
-												integer2 = nil
-											}
-											if integer2 != nil {
-												typeVar1 = &shared.AuthType{
-													Integer: integer2,
-												}
-											}
-										}
-										aws = &shared.Aws{
-											IamServerIDHeader: iamServerIDHeader,
-											Role:              role,
-											Type:              typeVar1,
 										}
 									}
-									vaultCertificateAuthorityConfigFromCpAuthAws = &shared.VaultCertificateAuthorityConfigFromCpAuthAws{
-										Aws: aws,
+									aws = &shared.Aws{
+										IamServerIDHeader: iamServerIDHeader,
+										Role:              role,
+										Type:              typeVar1,
 									}
 								}
-								if vaultCertificateAuthorityConfigFromCpAuthAws != nil {
-									auth = &shared.VaultCertificateAuthorityConfigAuth{
-										VaultCertificateAuthorityConfigFromCpAuthAws: vaultCertificateAuthorityConfigFromCpAuthAws,
+								vaultCertificateAuthorityConfigFromCpAuthAws = &shared.VaultCertificateAuthorityConfigFromCpAuthAws{
+									Aws: aws,
+								}
+							}
+							if vaultCertificateAuthorityConfigFromCpAuthAws != nil {
+								auth = &shared.VaultCertificateAuthorityConfigAuth{
+									VaultCertificateAuthorityConfigFromCpAuthAws: vaultCertificateAuthorityConfigFromCpAuthAws,
+								}
+							}
+							var vaultCertificateAuthorityConfigFromCpAuthTLS *shared.VaultCertificateAuthorityConfigFromCpAuthTLS
+							if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS != nil {
+								var tls1 *shared.AuthTLS
+								if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS != nil {
+									var clientCert *shared.AuthClientCert
+									if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert != nil {
+										var clientCertDataSourceFile *shared.ClientCertDataSourceFile
+										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceFile != nil {
+											file2 := new(string)
+											if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceFile.File.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceFile.File.IsNull() {
+												*file2 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceFile.File.ValueString()
+											} else {
+												file2 = nil
+											}
+											clientCertDataSourceFile = &shared.ClientCertDataSourceFile{
+												File: file2,
+											}
+										}
+										if clientCertDataSourceFile != nil {
+											clientCert = &shared.AuthClientCert{
+												ClientCertDataSourceFile: clientCertDataSourceFile,
+											}
+										}
+										var clientCertDataSourceInline *shared.ClientCertDataSourceInline
+										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceInline != nil {
+											inline2 := new(string)
+											if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceInline.Inline.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceInline.Inline.IsNull() {
+												*inline2 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceInline.Inline.ValueString()
+											} else {
+												inline2 = nil
+											}
+											clientCertDataSourceInline = &shared.ClientCertDataSourceInline{
+												Inline: inline2,
+											}
+										}
+										if clientCertDataSourceInline != nil {
+											clientCert = &shared.AuthClientCert{
+												ClientCertDataSourceInline: clientCertDataSourceInline,
+											}
+										}
+										var clientCertDataSourceInlineString *shared.ClientCertDataSourceInlineString
+										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceInlineString != nil {
+											inlineString2 := new(string)
+											if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceInlineString.InlineString.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceInlineString.InlineString.IsNull() {
+												*inlineString2 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceInlineString.InlineString.ValueString()
+											} else {
+												inlineString2 = nil
+											}
+											clientCertDataSourceInlineString = &shared.ClientCertDataSourceInlineString{
+												InlineString: inlineString2,
+											}
+										}
+										if clientCertDataSourceInlineString != nil {
+											clientCert = &shared.AuthClientCert{
+												ClientCertDataSourceInlineString: clientCertDataSourceInlineString,
+											}
+										}
+										var clientCertDataSourceSecret *shared.ClientCertDataSourceSecret
+										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceSecret != nil {
+											secret2 := new(string)
+											if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceSecret.Secret.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceSecret.Secret.IsNull() {
+												*secret2 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceSecret.Secret.ValueString()
+											} else {
+												secret2 = nil
+											}
+											clientCertDataSourceSecret = &shared.ClientCertDataSourceSecret{
+												Secret: secret2,
+											}
+										}
+										if clientCertDataSourceSecret != nil {
+											clientCert = &shared.AuthClientCert{
+												ClientCertDataSourceSecret: clientCertDataSourceSecret,
+											}
+										}
+									}
+									var clientKey *shared.AuthClientKey
+									if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey != nil {
+										var clientKeyDataSourceFile *shared.ClientKeyDataSourceFile
+										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceFile != nil {
+											file3 := new(string)
+											if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceFile.File.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceFile.File.IsNull() {
+												*file3 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceFile.File.ValueString()
+											} else {
+												file3 = nil
+											}
+											clientKeyDataSourceFile = &shared.ClientKeyDataSourceFile{
+												File: file3,
+											}
+										}
+										if clientKeyDataSourceFile != nil {
+											clientKey = &shared.AuthClientKey{
+												ClientKeyDataSourceFile: clientKeyDataSourceFile,
+											}
+										}
+										var clientKeyDataSourceInline *shared.ClientKeyDataSourceInline
+										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceInline != nil {
+											inline3 := new(string)
+											if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceInline.Inline.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceInline.Inline.IsNull() {
+												*inline3 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceInline.Inline.ValueString()
+											} else {
+												inline3 = nil
+											}
+											clientKeyDataSourceInline = &shared.ClientKeyDataSourceInline{
+												Inline: inline3,
+											}
+										}
+										if clientKeyDataSourceInline != nil {
+											clientKey = &shared.AuthClientKey{
+												ClientKeyDataSourceInline: clientKeyDataSourceInline,
+											}
+										}
+										var clientKeyDataSourceInlineString *shared.ClientKeyDataSourceInlineString
+										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceInlineString != nil {
+											inlineString3 := new(string)
+											if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceInlineString.InlineString.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceInlineString.InlineString.IsNull() {
+												*inlineString3 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceInlineString.InlineString.ValueString()
+											} else {
+												inlineString3 = nil
+											}
+											clientKeyDataSourceInlineString = &shared.ClientKeyDataSourceInlineString{
+												InlineString: inlineString3,
+											}
+										}
+										if clientKeyDataSourceInlineString != nil {
+											clientKey = &shared.AuthClientKey{
+												ClientKeyDataSourceInlineString: clientKeyDataSourceInlineString,
+											}
+										}
+										var clientKeyDataSourceSecret *shared.ClientKeyDataSourceSecret
+										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceSecret != nil {
+											secret3 := new(string)
+											if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceSecret.Secret.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceSecret.Secret.IsNull() {
+												*secret3 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceSecret.Secret.ValueString()
+											} else {
+												secret3 = nil
+											}
+											clientKeyDataSourceSecret = &shared.ClientKeyDataSourceSecret{
+												Secret: secret3,
+											}
+										}
+										if clientKeyDataSourceSecret != nil {
+											clientKey = &shared.AuthClientKey{
+												ClientKeyDataSourceSecret: clientKeyDataSourceSecret,
+											}
+										}
+									}
+									tls1 = &shared.AuthTLS{
+										ClientCert: clientCert,
+										ClientKey:  clientKey,
 									}
 								}
-								var vaultCertificateAuthorityConfigFromCpAuthTLS *shared.VaultCertificateAuthorityConfigFromCpAuthTLS
-								if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS != nil {
-									var tls1 *shared.AuthTLS
-									if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS != nil {
-										var clientCert *shared.AuthClientCert
-										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert != nil {
-											var clientCertDataSourceFile *shared.ClientCertDataSourceFile
-											if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceFile != nil {
-												file2 := new(string)
-												if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceFile.File.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceFile.File.IsNull() {
-													*file2 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceFile.File.ValueString()
-												} else {
-													file2 = nil
-												}
-												clientCertDataSourceFile = &shared.ClientCertDataSourceFile{
-													File: file2,
-												}
-											}
-											if clientCertDataSourceFile != nil {
-												clientCert = &shared.AuthClientCert{
-													ClientCertDataSourceFile: clientCertDataSourceFile,
-												}
-											}
-											var clientCertDataSourceInline *shared.ClientCertDataSourceInline
-											if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceInline != nil {
-												inline2 := new(string)
-												if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceInline.Inline.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceInline.Inline.IsNull() {
-													*inline2 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceInline.Inline.ValueString()
-												} else {
-													inline2 = nil
-												}
-												clientCertDataSourceInline = &shared.ClientCertDataSourceInline{
-													Inline: inline2,
-												}
-											}
-											if clientCertDataSourceInline != nil {
-												clientCert = &shared.AuthClientCert{
-													ClientCertDataSourceInline: clientCertDataSourceInline,
-												}
-											}
-											var clientCertDataSourceInlineString *shared.ClientCertDataSourceInlineString
-											if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceInlineString != nil {
-												inlineString2 := new(string)
-												if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceInlineString.InlineString.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceInlineString.InlineString.IsNull() {
-													*inlineString2 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceInlineString.InlineString.ValueString()
-												} else {
-													inlineString2 = nil
-												}
-												clientCertDataSourceInlineString = &shared.ClientCertDataSourceInlineString{
-													InlineString: inlineString2,
-												}
-											}
-											if clientCertDataSourceInlineString != nil {
-												clientCert = &shared.AuthClientCert{
-													ClientCertDataSourceInlineString: clientCertDataSourceInlineString,
-												}
-											}
-											var clientCertDataSourceSecret *shared.ClientCertDataSourceSecret
-											if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceSecret != nil {
-												secret2 := new(string)
-												if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceSecret.Secret.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceSecret.Secret.IsNull() {
-													*secret2 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientCert.DataSourceSecret.Secret.ValueString()
-												} else {
-													secret2 = nil
-												}
-												clientCertDataSourceSecret = &shared.ClientCertDataSourceSecret{
-													Secret: secret2,
-												}
-											}
-											if clientCertDataSourceSecret != nil {
-												clientCert = &shared.AuthClientCert{
-													ClientCertDataSourceSecret: clientCertDataSourceSecret,
-												}
-											}
+								vaultCertificateAuthorityConfigFromCpAuthTLS = &shared.VaultCertificateAuthorityConfigFromCpAuthTLS{
+									TLS: tls1,
+								}
+							}
+							if vaultCertificateAuthorityConfigFromCpAuthTLS != nil {
+								auth = &shared.VaultCertificateAuthorityConfigAuth{
+									VaultCertificateAuthorityConfigFromCpAuthTLS: vaultCertificateAuthorityConfigFromCpAuthTLS,
+								}
+							}
+							var vaultCertificateAuthorityConfigFromCpAuthToken *shared.VaultCertificateAuthorityConfigFromCpAuthToken
+							if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken != nil {
+								var token *shared.Token
+								if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token != nil {
+									var tokenDataSourceFile *shared.TokenDataSourceFile
+									if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceFile != nil {
+										file4 := new(string)
+										if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceFile.File.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceFile.File.IsNull() {
+											*file4 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceFile.File.ValueString()
+										} else {
+											file4 = nil
 										}
-										var clientKey *shared.AuthClientKey
-										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey != nil {
-											var clientKeyDataSourceFile *shared.ClientKeyDataSourceFile
-											if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceFile != nil {
-												file3 := new(string)
-												if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceFile.File.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceFile.File.IsNull() {
-													*file3 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceFile.File.ValueString()
-												} else {
-													file3 = nil
-												}
-												clientKeyDataSourceFile = &shared.ClientKeyDataSourceFile{
-													File: file3,
-												}
-											}
-											if clientKeyDataSourceFile != nil {
-												clientKey = &shared.AuthClientKey{
-													ClientKeyDataSourceFile: clientKeyDataSourceFile,
-												}
-											}
-											var clientKeyDataSourceInline *shared.ClientKeyDataSourceInline
-											if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceInline != nil {
-												inline3 := new(string)
-												if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceInline.Inline.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceInline.Inline.IsNull() {
-													*inline3 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceInline.Inline.ValueString()
-												} else {
-													inline3 = nil
-												}
-												clientKeyDataSourceInline = &shared.ClientKeyDataSourceInline{
-													Inline: inline3,
-												}
-											}
-											if clientKeyDataSourceInline != nil {
-												clientKey = &shared.AuthClientKey{
-													ClientKeyDataSourceInline: clientKeyDataSourceInline,
-												}
-											}
-											var clientKeyDataSourceInlineString *shared.ClientKeyDataSourceInlineString
-											if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceInlineString != nil {
-												inlineString3 := new(string)
-												if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceInlineString.InlineString.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceInlineString.InlineString.IsNull() {
-													*inlineString3 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceInlineString.InlineString.ValueString()
-												} else {
-													inlineString3 = nil
-												}
-												clientKeyDataSourceInlineString = &shared.ClientKeyDataSourceInlineString{
-													InlineString: inlineString3,
-												}
-											}
-											if clientKeyDataSourceInlineString != nil {
-												clientKey = &shared.AuthClientKey{
-													ClientKeyDataSourceInlineString: clientKeyDataSourceInlineString,
-												}
-											}
-											var clientKeyDataSourceSecret *shared.ClientKeyDataSourceSecret
-											if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceSecret != nil {
-												secret3 := new(string)
-												if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceSecret.Secret.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceSecret.Secret.IsNull() {
-													*secret3 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthTLS.TLS.ClientKey.DataSourceSecret.Secret.ValueString()
-												} else {
-													secret3 = nil
-												}
-												clientKeyDataSourceSecret = &shared.ClientKeyDataSourceSecret{
-													Secret: secret3,
-												}
-											}
-											if clientKeyDataSourceSecret != nil {
-												clientKey = &shared.AuthClientKey{
-													ClientKeyDataSourceSecret: clientKeyDataSourceSecret,
-												}
-											}
-										}
-										tls1 = &shared.AuthTLS{
-											ClientCert: clientCert,
-											ClientKey:  clientKey,
+										tokenDataSourceFile = &shared.TokenDataSourceFile{
+											File: file4,
 										}
 									}
-									vaultCertificateAuthorityConfigFromCpAuthTLS = &shared.VaultCertificateAuthorityConfigFromCpAuthTLS{
-										TLS: tls1,
+									if tokenDataSourceFile != nil {
+										token = &shared.Token{
+											TokenDataSourceFile: tokenDataSourceFile,
+										}
+									}
+									var tokenDataSourceInline *shared.TokenDataSourceInline
+									if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceInline != nil {
+										inline4 := new(string)
+										if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceInline.Inline.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceInline.Inline.IsNull() {
+											*inline4 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceInline.Inline.ValueString()
+										} else {
+											inline4 = nil
+										}
+										tokenDataSourceInline = &shared.TokenDataSourceInline{
+											Inline: inline4,
+										}
+									}
+									if tokenDataSourceInline != nil {
+										token = &shared.Token{
+											TokenDataSourceInline: tokenDataSourceInline,
+										}
+									}
+									var tokenDataSourceInlineString *shared.TokenDataSourceInlineString
+									if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceInlineString != nil {
+										inlineString4 := new(string)
+										if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceInlineString.InlineString.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceInlineString.InlineString.IsNull() {
+											*inlineString4 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceInlineString.InlineString.ValueString()
+										} else {
+											inlineString4 = nil
+										}
+										tokenDataSourceInlineString = &shared.TokenDataSourceInlineString{
+											InlineString: inlineString4,
+										}
+									}
+									if tokenDataSourceInlineString != nil {
+										token = &shared.Token{
+											TokenDataSourceInlineString: tokenDataSourceInlineString,
+										}
+									}
+									var tokenDataSourceSecret *shared.TokenDataSourceSecret
+									if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceSecret != nil {
+										secret4 := new(string)
+										if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceSecret.Secret.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceSecret.Secret.IsNull() {
+											*secret4 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceSecret.Secret.ValueString()
+										} else {
+											secret4 = nil
+										}
+										tokenDataSourceSecret = &shared.TokenDataSourceSecret{
+											Secret: secret4,
+										}
+									}
+									if tokenDataSourceSecret != nil {
+										token = &shared.Token{
+											TokenDataSourceSecret: tokenDataSourceSecret,
+										}
 									}
 								}
-								if vaultCertificateAuthorityConfigFromCpAuthTLS != nil {
-									auth = &shared.VaultCertificateAuthorityConfigAuth{
-										VaultCertificateAuthorityConfigFromCpAuthTLS: vaultCertificateAuthorityConfigFromCpAuthTLS,
+								vaultCertificateAuthorityConfigFromCpAuthToken = &shared.VaultCertificateAuthorityConfigFromCpAuthToken{
+									Token: token,
+								}
+							}
+							if vaultCertificateAuthorityConfigFromCpAuthToken != nil {
+								auth = &shared.VaultCertificateAuthorityConfigAuth{
+									VaultCertificateAuthorityConfigFromCpAuthToken: vaultCertificateAuthorityConfigFromCpAuthToken,
+								}
+							}
+						}
+						commonName := new(string)
+						if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.CommonName.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.CommonName.IsNull() {
+							*commonName = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.CommonName.ValueString()
+						} else {
+							commonName = nil
+						}
+						namespace := new(string)
+						if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Namespace.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Namespace.IsNull() {
+							*namespace = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Namespace.ValueString()
+						} else {
+							namespace = nil
+						}
+						pki := new(string)
+						if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Pki.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Pki.IsNull() {
+							*pki = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Pki.ValueString()
+						} else {
+							pki = nil
+						}
+						role1 := new(string)
+						if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Role.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Role.IsNull() {
+							*role1 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Role.ValueString()
+						} else {
+							role1 = nil
+						}
+						var tls2 *shared.VaultCertificateAuthorityConfigTLS
+						if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS != nil {
+							var caCert1 *shared.VaultCertificateAuthorityConfigCaCert
+							if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert != nil {
+								var vaultCertificateAuthorityConfigFromCpCaCertDataSourceFile *shared.VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile
+								if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceFile != nil {
+									file5 := new(string)
+									if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceFile.File.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceFile.File.IsNull() {
+										*file5 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceFile.File.ValueString()
+									} else {
+										file5 = nil
+									}
+									vaultCertificateAuthorityConfigFromCpCaCertDataSourceFile = &shared.VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile{
+										File: file5,
 									}
 								}
-								var vaultCertificateAuthorityConfigFromCpAuthToken *shared.VaultCertificateAuthorityConfigFromCpAuthToken
-								if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken != nil {
-									var token *shared.Token
-									if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token != nil {
-										var tokenDataSourceFile *shared.TokenDataSourceFile
-										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceFile != nil {
-											file4 := new(string)
-											if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceFile.File.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceFile.File.IsNull() {
-												*file4 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceFile.File.ValueString()
-											} else {
-												file4 = nil
-											}
-											tokenDataSourceFile = &shared.TokenDataSourceFile{
-												File: file4,
-											}
-										}
-										if tokenDataSourceFile != nil {
-											token = &shared.Token{
-												TokenDataSourceFile: tokenDataSourceFile,
-											}
-										}
-										var tokenDataSourceInline *shared.TokenDataSourceInline
-										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceInline != nil {
-											inline4 := new(string)
-											if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceInline.Inline.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceInline.Inline.IsNull() {
-												*inline4 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceInline.Inline.ValueString()
-											} else {
-												inline4 = nil
-											}
-											tokenDataSourceInline = &shared.TokenDataSourceInline{
-												Inline: inline4,
-											}
-										}
-										if tokenDataSourceInline != nil {
-											token = &shared.Token{
-												TokenDataSourceInline: tokenDataSourceInline,
-											}
-										}
-										var tokenDataSourceInlineString *shared.TokenDataSourceInlineString
-										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceInlineString != nil {
-											inlineString4 := new(string)
-											if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceInlineString.InlineString.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceInlineString.InlineString.IsNull() {
-												*inlineString4 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceInlineString.InlineString.ValueString()
-											} else {
-												inlineString4 = nil
-											}
-											tokenDataSourceInlineString = &shared.TokenDataSourceInlineString{
-												InlineString: inlineString4,
-											}
-										}
-										if tokenDataSourceInlineString != nil {
-											token = &shared.Token{
-												TokenDataSourceInlineString: tokenDataSourceInlineString,
-											}
-										}
-										var tokenDataSourceSecret *shared.TokenDataSourceSecret
-										if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceSecret != nil {
-											secret4 := new(string)
-											if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceSecret.Secret.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceSecret.Secret.IsNull() {
-												*secret4 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthToken.Token.DataSourceSecret.Secret.ValueString()
-											} else {
-												secret4 = nil
-											}
-											tokenDataSourceSecret = &shared.TokenDataSourceSecret{
-												Secret: secret4,
-											}
-										}
-										if tokenDataSourceSecret != nil {
-											token = &shared.Token{
-												TokenDataSourceSecret: tokenDataSourceSecret,
-											}
-										}
-									}
-									vaultCertificateAuthorityConfigFromCpAuthToken = &shared.VaultCertificateAuthorityConfigFromCpAuthToken{
-										Token: token,
+								if vaultCertificateAuthorityConfigFromCpCaCertDataSourceFile != nil {
+									caCert1 = &shared.VaultCertificateAuthorityConfigCaCert{
+										VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile: vaultCertificateAuthorityConfigFromCpCaCertDataSourceFile,
 									}
 								}
-								if vaultCertificateAuthorityConfigFromCpAuthToken != nil {
-									auth = &shared.VaultCertificateAuthorityConfigAuth{
-										VaultCertificateAuthorityConfigFromCpAuthToken: vaultCertificateAuthorityConfigFromCpAuthToken,
+								var vaultCertificateAuthorityConfigFromCpCaCertDataSourceInline *shared.VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline
+								if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceInline != nil {
+									inline5 := new(string)
+									if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceInline.Inline.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceInline.Inline.IsNull() {
+										*inline5 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceInline.Inline.ValueString()
+									} else {
+										inline5 = nil
+									}
+									vaultCertificateAuthorityConfigFromCpCaCertDataSourceInline = &shared.VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline{
+										Inline: inline5,
+									}
+								}
+								if vaultCertificateAuthorityConfigFromCpCaCertDataSourceInline != nil {
+									caCert1 = &shared.VaultCertificateAuthorityConfigCaCert{
+										VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline: vaultCertificateAuthorityConfigFromCpCaCertDataSourceInline,
+									}
+								}
+								var vaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString *shared.VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString
+								if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceInlineString != nil {
+									inlineString5 := new(string)
+									if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceInlineString.InlineString.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceInlineString.InlineString.IsNull() {
+										*inlineString5 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceInlineString.InlineString.ValueString()
+									} else {
+										inlineString5 = nil
+									}
+									vaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString = &shared.VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString{
+										InlineString: inlineString5,
+									}
+								}
+								if vaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString != nil {
+									caCert1 = &shared.VaultCertificateAuthorityConfigCaCert{
+										VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString: vaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString,
+									}
+								}
+								var vaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret *shared.VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret
+								if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceSecret != nil {
+									secret5 := new(string)
+									if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceSecret.Secret.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceSecret.Secret.IsNull() {
+										*secret5 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceSecret.Secret.ValueString()
+									} else {
+										secret5 = nil
+									}
+									vaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret = &shared.VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret{
+										Secret: secret5,
+									}
+								}
+								if vaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret != nil {
+									caCert1 = &shared.VaultCertificateAuthorityConfigCaCert{
+										VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret: vaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret,
 									}
 								}
 							}
-							commonName := new(string)
-							if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.CommonName.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.CommonName.IsNull() {
-								*commonName = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.CommonName.ValueString()
+							serverName := new(string)
+							if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.ServerName.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.ServerName.IsNull() {
+								*serverName = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.ServerName.ValueString()
 							} else {
-								commonName = nil
+								serverName = nil
 							}
-							namespace := new(string)
-							if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Namespace.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Namespace.IsNull() {
-								*namespace = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Namespace.ValueString()
+							skipVerify := new(bool)
+							if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.SkipVerify.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.SkipVerify.IsNull() {
+								*skipVerify = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.SkipVerify.ValueBool()
 							} else {
-								namespace = nil
+								skipVerify = nil
 							}
-							pki := new(string)
-							if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Pki.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Pki.IsNull() {
-								*pki = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Pki.ValueString()
-							} else {
-								pki = nil
+							tls2 = &shared.VaultCertificateAuthorityConfigTLS{
+								CaCert:     caCert1,
+								ServerName: serverName,
+								SkipVerify: skipVerify,
 							}
-							role1 := new(string)
-							if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Role.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Role.IsNull() {
-								*role1 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Role.ValueString()
-							} else {
-								role1 = nil
-							}
-							var tls2 *shared.VaultCertificateAuthorityConfigTLS
-							if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS != nil {
-								var caCert1 *shared.VaultCertificateAuthorityConfigCaCert
-								if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert != nil {
-									var vaultCertificateAuthorityConfigFromCpCaCertDataSourceFile *shared.VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile
-									if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceFile != nil {
-										file5 := new(string)
-										if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceFile.File.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceFile.File.IsNull() {
-											*file5 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceFile.File.ValueString()
-										} else {
-											file5 = nil
-										}
-										vaultCertificateAuthorityConfigFromCpCaCertDataSourceFile = &shared.VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile{
-											File: file5,
-										}
-									}
-									if vaultCertificateAuthorityConfigFromCpCaCertDataSourceFile != nil {
-										caCert1 = &shared.VaultCertificateAuthorityConfigCaCert{
-											VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile: vaultCertificateAuthorityConfigFromCpCaCertDataSourceFile,
-										}
-									}
-									var vaultCertificateAuthorityConfigFromCpCaCertDataSourceInline *shared.VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline
-									if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceInline != nil {
-										inline5 := new(string)
-										if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceInline.Inline.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceInline.Inline.IsNull() {
-											*inline5 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceInline.Inline.ValueString()
-										} else {
-											inline5 = nil
-										}
-										vaultCertificateAuthorityConfigFromCpCaCertDataSourceInline = &shared.VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline{
-											Inline: inline5,
-										}
-									}
-									if vaultCertificateAuthorityConfigFromCpCaCertDataSourceInline != nil {
-										caCert1 = &shared.VaultCertificateAuthorityConfigCaCert{
-											VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline: vaultCertificateAuthorityConfigFromCpCaCertDataSourceInline,
-										}
-									}
-									var vaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString *shared.VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString
-									if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceInlineString != nil {
-										inlineString5 := new(string)
-										if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceInlineString.InlineString.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceInlineString.InlineString.IsNull() {
-											*inlineString5 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceInlineString.InlineString.ValueString()
-										} else {
-											inlineString5 = nil
-										}
-										vaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString = &shared.VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString{
-											InlineString: inlineString5,
-										}
-									}
-									if vaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString != nil {
-										caCert1 = &shared.VaultCertificateAuthorityConfigCaCert{
-											VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString: vaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString,
-										}
-									}
-									var vaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret *shared.VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret
-									if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceSecret != nil {
-										secret5 := new(string)
-										if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceSecret.Secret.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceSecret.Secret.IsNull() {
-											*secret5 = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.CaCert.DataSourceSecret.Secret.ValueString()
-										} else {
-											secret5 = nil
-										}
-										vaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret = &shared.VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret{
-											Secret: secret5,
-										}
-									}
-									if vaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret != nil {
-										caCert1 = &shared.VaultCertificateAuthorityConfigCaCert{
-											VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret: vaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret,
-										}
-									}
-								}
-								serverName := new(string)
-								if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.ServerName.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.ServerName.IsNull() {
-									*serverName = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.ServerName.ValueString()
-								} else {
-									serverName = nil
-								}
-								skipVerify := new(bool)
-								if !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.SkipVerify.IsUnknown() && !backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.SkipVerify.IsNull() {
-									*skipVerify = backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.TLS.SkipVerify.ValueBool()
-								} else {
-									skipVerify = nil
-								}
-								tls2 = &shared.VaultCertificateAuthorityConfigTLS{
-									CaCert:     caCert1,
-									ServerName: serverName,
-									SkipVerify: skipVerify,
-								}
-							}
-							fromCp = &shared.FromCp{
-								Address:      address2,
-								AgentAddress: agentAddress,
-								Auth:         auth,
-								CommonName:   commonName,
-								Namespace:    namespace,
-								Pki:          pki,
-								Role:         role1,
-								TLS:          tls2,
-							}
+						}
+						fromCp := shared.FromCp{
+							Address:      address2,
+							AgentAddress: agentAddress,
+							Auth:         auth,
+							CommonName:   commonName,
+							Namespace:    namespace,
+							Pki:          pki,
+							Role:         role1,
+							TLS:          tls2,
 						}
 						vaultCertificateAuthorityConfigFromCp = &shared.VaultCertificateAuthorityConfigFromCp{
 							FromCp: fromCp,
@@ -1628,12 +1624,9 @@ func (r *MeshResourceModel) ToSharedMeshItem(ctx context.Context) (*shared.MeshI
 				}
 				var acmCertificateAuthorityConfig *shared.ACMCertificateAuthorityConfig
 				if backendsItem2.Conf.ACMCertificateAuthorityConfig != nil {
-					arn := new(string)
-					if !backendsItem2.Conf.ACMCertificateAuthorityConfig.Arn.IsUnknown() && !backendsItem2.Conf.ACMCertificateAuthorityConfig.Arn.IsNull() {
-						*arn = backendsItem2.Conf.ACMCertificateAuthorityConfig.Arn.ValueString()
-					} else {
-						arn = nil
-					}
+					var arn string
+					arn = backendsItem2.Conf.ACMCertificateAuthorityConfig.Arn.ValueString()
+
 					var auth1 *shared.Auth
 					if backendsItem2.Conf.ACMCertificateAuthorityConfig.Auth != nil {
 						var awsCredentials *shared.AwsCredentials
@@ -1961,31 +1954,28 @@ func (r *MeshResourceModel) ToSharedMeshItem(ctx context.Context) (*shared.MeshI
 					for _, dnsNamesItem := range backendsItem2.Conf.CertManagerCertificateAuthorityConfig.DNSNames {
 						dnsNames = append(dnsNames, dnsNamesItem.ValueString())
 					}
-					var issuerRef *shared.IssuerRef
-					if backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef != nil {
-						group := new(string)
-						if !backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Group.IsUnknown() && !backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Group.IsNull() {
-							*group = backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Group.ValueString()
-						} else {
-							group = nil
-						}
-						kind := new(string)
-						if !backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Kind.IsUnknown() && !backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Kind.IsNull() {
-							*kind = backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Kind.ValueString()
-						} else {
-							kind = nil
-						}
-						name3 := new(string)
-						if !backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Name.IsUnknown() && !backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Name.IsNull() {
-							*name3 = backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Name.ValueString()
-						} else {
-							name3 = nil
-						}
-						issuerRef = &shared.IssuerRef{
-							Group: group,
-							Kind:  kind,
-							Name:  name3,
-						}
+					group := new(string)
+					if !backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Group.IsUnknown() && !backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Group.IsNull() {
+						*group = backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Group.ValueString()
+					} else {
+						group = nil
+					}
+					kind := new(string)
+					if !backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Kind.IsUnknown() && !backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Kind.IsNull() {
+						*kind = backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Kind.ValueString()
+					} else {
+						kind = nil
+					}
+					name3 := new(string)
+					if !backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Name.IsUnknown() && !backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Name.IsNull() {
+						*name3 = backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Name.ValueString()
+					} else {
+						name3 = nil
+					}
+					issuerRef := shared.IssuerRef{
+						Group: group,
+						Kind:  kind,
+						Name:  name3,
 					}
 					certManagerCertificateAuthorityConfig = &shared.CertManagerCertificateAuthorityConfig{
 						CaCert:     caCert3,
@@ -2204,10 +2194,15 @@ func (r *MeshResourceModel) ToSharedMeshItem(ctx context.Context) (*shared.MeshI
 					} else {
 						splitService = nil
 					}
+					var required1 interface{}
+					if !backendsItem3.Conf.DatadogTracingBackendConfig.Required.IsUnknown() && !backendsItem3.Conf.DatadogTracingBackendConfig.Required.IsNull() {
+						_ = json.Unmarshal([]byte(backendsItem3.Conf.DatadogTracingBackendConfig.Required.ValueString()), &required1)
+					}
 					datadogTracingBackendConfig = &shared.DatadogTracingBackendConfig{
 						Address:      address3,
 						Port:         port2,
 						SplitService: splitService,
+						Required:     required1,
 					}
 				}
 				if datadogTracingBackendConfig != nil {
@@ -2235,12 +2230,9 @@ func (r *MeshResourceModel) ToSharedMeshItem(ctx context.Context) (*shared.MeshI
 					} else {
 						traceId128bit = nil
 					}
-					url := new(string)
-					if !backendsItem3.Conf.ZipkinTracingBackendConfig.URL.IsUnknown() && !backendsItem3.Conf.ZipkinTracingBackendConfig.URL.IsNull() {
-						*url = backendsItem3.Conf.ZipkinTracingBackendConfig.URL.ValueString()
-					} else {
-						url = nil
-					}
+					var url string
+					url = backendsItem3.Conf.ZipkinTracingBackendConfig.URL.ValueString()
+
 					zipkinTracingBackendConfig = &shared.ZipkinTracingBackendConfig{
 						APIVersion:        apiVersion,
 						SharedSpanContext: sharedSpanContext,

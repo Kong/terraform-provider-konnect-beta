@@ -312,6 +312,7 @@ Optional:
 Optional:
 
 - `address` (String) Address to TCP service that will receive logs
+- `required` (String) Parsed as JSON.
 
 
 
@@ -464,7 +465,7 @@ Optional:
 
 Optional:
 
-- `arn` (String)
+- `arn` (String) Not Null
 - `auth` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth))
 - `ca_cert` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--acm_certificate_authority_config--ca_cert))
 - `common_name` (String)
@@ -644,7 +645,7 @@ Optional:
 - `ca_cert` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config--ca_cert))
 - `common_name` (String)
 - `dns_names` (List of String) Default: []
-- `issuer_ref` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config--issuer_ref))
+- `issuer_ref` (Attributes) Not Null (see [below for nested schema](#nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config--issuer_ref))
 
 <a id="nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config--ca_cert"></a>
 ### Nested Schema for `mtls.backends.conf.cert_manager_certificate_authority_config.ca_cert`
@@ -706,8 +707,8 @@ Optional:
 
 Optional:
 
-- `cert` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--provided_certificate_authority_config--cert))
-- `key` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--provided_certificate_authority_config--key))
+- `cert` (Attributes) Not Null (see [below for nested schema](#nestedatt--mtls--backends--conf--provided_certificate_authority_config--cert))
+- `key` (Attributes) Not Null (see [below for nested schema](#nestedatt--mtls--backends--conf--provided_certificate_authority_config--key))
 
 <a id="nestedatt--mtls--backends--conf--provided_certificate_authority_config--cert"></a>
 ### Nested Schema for `mtls.backends.conf.provided_certificate_authority_config.cert`
@@ -810,7 +811,7 @@ Optional:
 
 Optional:
 
-- `from_cp` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp))
+- `from_cp` (Attributes) Not Null (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp))
 
 <a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp"></a>
 ### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config.vault_certificate_authority_config_from_cp.from_cp`
@@ -1196,6 +1197,7 @@ Optional:
 
 - `address` (String) Address of datadog collector.
 - `port` (Number) Port of datadog collector
+- `required` (String) Parsed as JSON.
 - `split_service` (Boolean) Determines if datadog service name should be split based on traffic
 direction and destination. For example, with `splitService: true` and a
 `backend` service that communicates with a couple of databases, you would
@@ -1215,7 +1217,7 @@ https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/trace.proto#e
 context. Default: true.
 https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/zipkin.proto#config-trace-v3-zipkinconfig
 - `trace_id128bit` (Boolean) Generate 128bit traces. Default: false
-- `url` (String) Address of Zipkin collector.
+- `url` (String) Address of Zipkin collector. Not Null
 
 ## Import
 

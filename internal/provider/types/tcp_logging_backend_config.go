@@ -3,9 +3,11 @@
 package types
 
 import (
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type TCPLoggingBackendConfig struct {
-	Address types.String `tfsdk:"address"`
+	Address  types.String         `tfsdk:"address"`
+	Required jsontypes.Normalized `tfsdk:"required"`
 }

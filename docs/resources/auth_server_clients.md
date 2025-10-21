@@ -56,7 +56,7 @@ resource "konnect_auth_server_clients" "my_authserverclients" {
 - `allow_all_scopes` (Boolean) Specifies whether the client is allowed to request all scopes. Default: false
 - `allow_scopes` (List of String) Specifies the scopes IDs that the client is allowed to request
 - `id_token_duration` (Number) The duration of the minted token is valid for, in seconds. Default: 300
-- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
+- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `login_uri` (String) The URI of the login page where the user is redirected to authenticate in interactive flows. The login page must be secure (HTTPS).

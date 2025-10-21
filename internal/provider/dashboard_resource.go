@@ -299,7 +299,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																`This type of chart can support:` + "\n" +
 																`` + "\n" +
 																`- One or more metrics: ` + "`" + `{ metrics: ["response_latency_p99", "response_latency_p95"], dimensions: ["time"] }` + "`" + `` + "\n" +
-																`- One metric plus one non-time dimension: ` + "`" + `{ metrics: ["request_count"], dimensions: ["time", "gateway_service"] }` + "`" + ` ` + "\n" +
+																`- One metric plus one non-time dimension: ` + "`" + `{ metrics: ["request_count"], dimensions: ["time", "gateway_service"] }` + "`" + `` + "\n" +
 																`` + "\n" +
 																`Either way, ensure that ` + "`" + `time` + "`" + ` is in the list of query dimensions.`,
 															Validators: []validator.Object{
@@ -901,7 +901,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
-				MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
+				MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.` + "\n" +
 					`` + "\n" +
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},

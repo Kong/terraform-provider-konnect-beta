@@ -110,7 +110,7 @@ func (r *EventGatewayProducePolicySkipRecordResource) Schema(ctx context.Context
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
-				MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
+				MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.` + "\n" +
 					`` + "\n" +
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},

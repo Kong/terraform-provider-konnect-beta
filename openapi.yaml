@@ -8070,9 +8070,9 @@ components:
       x-speakeasy-param-computed: false
     PageSlug:
       description: |
-        The slug of a page in a portal, used to compute its full URL path within the portal hierarchy. 
-        When a page has a `parent_page_id`, its full path is built by joining the parent’s slug with its own. 
-        For example, if a parent page has the slug `slug1` and this page’s slug is `slug2`, the resulting path will be `/slug1/slug2`. 
+        The slug of a page in a portal, used to compute its full URL path within the portal hierarchy.
+        When a page has a `parent_page_id`, its full path is built by joining the parent’s slug with its own.
+        For example, if a parent page has the slug `slug1` and this page’s slug is `slug2`, the resulting path will be `/slug1/slug2`.
         This enables nested page structures like `/slug1/slug2/slug3`.
       type: string
       example: /my-page
@@ -8823,7 +8823,7 @@ components:
       x-speakeasy-param-suppress-computed-diff: true
     Labels:
       description: |
-        Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
+        Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 
         Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
       type: object
@@ -9158,7 +9158,7 @@ components:
               example: Forbidden
     LabelsUpdate:
       description: |
-        Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
+        Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 
         Labels are intended to store **INTERNAL** metadata.
 
@@ -18695,6 +18695,9 @@ components:
             `backend_OUTBOUND_db2` in Datadog. Default: false
           type: boolean
           x-speakeasy-param-computed: false
+        required:
+          - address
+          - port
     PrometheusMetricsBackendConfig:
       description: PrometheusMetricsBackendConfig defines configuration of Prometheus backend
       type: object
@@ -19196,6 +19199,8 @@ components:
           description: Address to TCP service that will receive logs
           type: string
           x-speakeasy-param-computed: false
+        required:
+          - address
     ProvidedCertificateAuthorityConfig:
       type: object
       properties:
@@ -19213,6 +19218,9 @@ components:
             - $ref: '#/components/schemas/DataSource_InlineString'
             - $ref: '#/components/schemas/DataSource_Secret'
           x-speakeasy-param-computed: false
+      required:
+        - cert
+        - key
     ZipkinTracingBackendConfig:
       type: object
       properties:
@@ -19238,6 +19246,8 @@ components:
           description: Address of Zipkin collector.
           type: string
           x-speakeasy-param-computed: false
+      required:
+        - url
     MeshGatewayItem:
       type: object
       properties:
@@ -20963,6 +20973,8 @@ components:
                   x-speakeasy-param-computed: false
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
+      required:
+        - fromCp
     VaultCertificateAuthorityConfig:
       type: object
       oneOf:
@@ -21005,6 +21017,8 @@ components:
         commonName:
           type: string
           x-speakeasy-param-computed: false
+      required:
+        - arn
     CertManagerCertificateAuthorityConfig:
       type: object
       properties:
@@ -21037,6 +21051,8 @@ components:
               type: string
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
+      required:
+        - issuerRef
     MeshControlPlaneFeatures:
       type: array
       items:
@@ -23899,7 +23915,7 @@ components:
         This type of chart can support:
 
         - One or more metrics: `{ metrics: ["response_latency_p99", "response_latency_p95"], dimensions: ["time"] }`
-        - One metric plus one non-time dimension: `{ metrics: ["request_count"], dimensions: ["time", "gateway_service"] }` 
+        - One metric plus one non-time dimension: `{ metrics: ["request_count"], dimensions: ["time", "gateway_service"] }`
 
         Either way, ensure that `time` is in the list of query dimensions.
       type: object
