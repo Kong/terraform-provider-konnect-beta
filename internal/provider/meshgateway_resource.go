@@ -24,6 +24,7 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -148,7 +149,11 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 															"file": schema.StringAttribute{
 																Optional: true,
 																MarkdownDescription: `Data source is a path to a file.` + "\n" +
-																	`Deprecated, use other sources of a data.`,
+																	`Deprecated, use other sources of a data.` + "\n" +
+																	`Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
 															},
 														},
 														Validators: []validator.Object{
@@ -164,7 +169,10 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 														Attributes: map[string]schema.Attribute{
 															"inline": schema.StringAttribute{
 																Optional:    true,
-																Description: `Data source is inline bytes.`,
+																Description: `Data source is inline bytes. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
 															},
 														},
 														Validators: []validator.Object{
@@ -180,7 +188,10 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 														Attributes: map[string]schema.Attribute{
 															"inline_string": schema.StringAttribute{
 																Optional:    true,
-																Description: `Data source is inline string`,
+																Description: `Data source is inline string. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
 															},
 														},
 														Validators: []validator.Object{
@@ -196,7 +207,10 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 														Attributes: map[string]schema.Attribute{
 															"secret": schema.StringAttribute{
 																Optional:    true,
-																Description: `Data source is a secret with given Secret key.`,
+																Description: `Data source is a secret with given Secret key. Not Null`,
+																Validators: []validator.String{
+																	speakeasy_stringvalidators.NotNull(),
+																},
 															},
 														},
 														Validators: []validator.Object{

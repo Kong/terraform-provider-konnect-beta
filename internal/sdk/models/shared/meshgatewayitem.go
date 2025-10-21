@@ -86,7 +86,7 @@ func (r *Resources) GetConnectionLimit() *int64 {
 
 type DataSourceSecret struct {
 	// Data source is a secret with given Secret key.
-	Secret *string `json:"secret,omitempty"`
+	Secret string `json:"secret"`
 }
 
 func (d DataSourceSecret) MarshalJSON() ([]byte, error) {
@@ -94,22 +94,22 @@ func (d DataSourceSecret) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DataSourceSecret) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"secret"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (d *DataSourceSecret) GetSecret() *string {
+func (d *DataSourceSecret) GetSecret() string {
 	if d == nil {
-		return nil
+		return ""
 	}
 	return d.Secret
 }
 
 type DataSourceInlineString struct {
 	// Data source is inline string
-	InlineString *string `json:"inlineString,omitempty"`
+	InlineString string `json:"inlineString"`
 }
 
 func (d DataSourceInlineString) MarshalJSON() ([]byte, error) {
@@ -117,22 +117,22 @@ func (d DataSourceInlineString) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DataSourceInlineString) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"inlineString"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (d *DataSourceInlineString) GetInlineString() *string {
+func (d *DataSourceInlineString) GetInlineString() string {
 	if d == nil {
-		return nil
+		return ""
 	}
 	return d.InlineString
 }
 
 type DataSourceInline struct {
 	// Data source is inline bytes.
-	Inline *string `json:"inline,omitempty"`
+	Inline string `json:"inline"`
 }
 
 func (d DataSourceInline) MarshalJSON() ([]byte, error) {
@@ -140,15 +140,15 @@ func (d DataSourceInline) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DataSourceInline) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"inline"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (d *DataSourceInline) GetInline() *string {
+func (d *DataSourceInline) GetInline() string {
 	if d == nil {
-		return nil
+		return ""
 	}
 	return d.Inline
 }
@@ -156,7 +156,7 @@ func (d *DataSourceInline) GetInline() *string {
 type DataSourceFile struct {
 	// Data source is a path to a file.
 	// Deprecated, use other sources of a data.
-	File *string `json:"file,omitempty"`
+	File string `json:"file"`
 }
 
 func (d DataSourceFile) MarshalJSON() ([]byte, error) {
@@ -164,15 +164,15 @@ func (d DataSourceFile) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DataSourceFile) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"file"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (d *DataSourceFile) GetFile() *string {
+func (d *DataSourceFile) GetFile() string {
 	if d == nil {
-		return nil
+		return ""
 	}
 	return d.File
 }

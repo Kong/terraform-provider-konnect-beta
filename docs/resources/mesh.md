@@ -502,6 +502,7 @@ Optional:
 
 - `file` (String) Data source is a path to a file.
 Deprecated, use other sources of a data.
+Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key--data_source_inline"></a>
@@ -509,7 +510,7 @@ Deprecated, use other sources of a data.
 
 Optional:
 
-- `inline` (String) Data source is inline bytes.
+- `inline` (String) Data source is inline bytes. Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key--data_source_inline_string"></a>
@@ -517,7 +518,7 @@ Optional:
 
 Optional:
 
-- `inline_string` (String) Data source is inline string
+- `inline_string` (String) Data source is inline string. Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key--data_source_secret"></a>
@@ -525,7 +526,7 @@ Optional:
 
 Optional:
 
-- `secret` (String) Data source is a secret with given Secret key.
+- `secret` (String) Data source is a secret with given Secret key. Not Null
 
 
 
@@ -546,6 +547,7 @@ Optional:
 
 - `file` (String) Data source is a path to a file.
 Deprecated, use other sources of a data.
+Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key_secret--data_source_inline"></a>
@@ -553,7 +555,7 @@ Deprecated, use other sources of a data.
 
 Optional:
 
-- `inline` (String) Data source is inline bytes.
+- `inline` (String) Data source is inline bytes. Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key_secret--data_source_inline_string"></a>
@@ -561,7 +563,7 @@ Optional:
 
 Optional:
 
-- `inline_string` (String) Data source is inline string
+- `inline_string` (String) Data source is inline string. Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key_secret--data_source_secret"></a>
@@ -569,7 +571,7 @@ Optional:
 
 Optional:
 
-- `secret` (String) Data source is a secret with given Secret key.
+- `secret` (String) Data source is a secret with given Secret key. Not Null
 
 
 
@@ -592,6 +594,7 @@ Optional:
 
 - `file` (String) Data source is a path to a file.
 Deprecated, use other sources of a data.
+Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--ca_cert--data_source_inline"></a>
@@ -599,7 +602,7 @@ Deprecated, use other sources of a data.
 
 Optional:
 
-- `inline` (String) Data source is inline bytes.
+- `inline` (String) Data source is inline bytes. Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--ca_cert--data_source_inline_string"></a>
@@ -607,7 +610,7 @@ Optional:
 
 Optional:
 
-- `inline_string` (String) Data source is inline string
+- `inline_string` (String) Data source is inline string. Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--ca_cert--data_source_secret"></a>
@@ -615,7 +618,7 @@ Optional:
 
 Optional:
 
-- `secret` (String) Data source is a secret with given Secret key.
+- `secret` (String) Data source is a secret with given Secret key. Not Null
 
 
 
@@ -664,6 +667,7 @@ Optional:
 
 - `file` (String) Data source is a path to a file.
 Deprecated, use other sources of a data.
+Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config--ca_cert--data_source_inline"></a>
@@ -671,7 +675,7 @@ Deprecated, use other sources of a data.
 
 Optional:
 
-- `inline` (String) Data source is inline bytes.
+- `inline` (String) Data source is inline bytes. Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config--ca_cert--data_source_inline_string"></a>
@@ -679,7 +683,7 @@ Optional:
 
 Optional:
 
-- `inline_string` (String) Data source is inline string
+- `inline_string` (String) Data source is inline string. Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config--ca_cert--data_source_secret"></a>
@@ -687,7 +691,7 @@ Optional:
 
 Optional:
 
-- `secret` (String) Data source is a secret with given Secret key.
+- `secret` (String) Data source is a secret with given Secret key. Not Null
 
 
 
@@ -727,6 +731,7 @@ Optional:
 
 - `file` (String) Data source is a path to a file.
 Deprecated, use other sources of a data.
+Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--provided_certificate_authority_config--cert--data_source_inline"></a>
@@ -734,7 +739,7 @@ Deprecated, use other sources of a data.
 
 Optional:
 
-- `inline` (String) Data source is inline bytes.
+- `inline` (String) Data source is inline bytes. Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--provided_certificate_authority_config--cert--data_source_inline_string"></a>
@@ -742,7 +747,7 @@ Optional:
 
 Optional:
 
-- `inline_string` (String) Data source is inline string
+- `inline_string` (String) Data source is inline string. Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--provided_certificate_authority_config--cert--data_source_secret"></a>
@@ -750,7 +755,7 @@ Optional:
 
 Optional:
 
-- `secret` (String) Data source is a secret with given Secret key.
+- `secret` (String) Data source is a secret with given Secret key. Not Null
 
 
 
@@ -771,6 +776,7 @@ Optional:
 
 - `file` (String) Data source is a path to a file.
 Deprecated, use other sources of a data.
+Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--provided_certificate_authority_config--key--data_source_inline"></a>
@@ -778,7 +784,7 @@ Deprecated, use other sources of a data.
 
 Optional:
 
-- `inline` (String) Data source is inline bytes.
+- `inline` (String) Data source is inline bytes. Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--provided_certificate_authority_config--key--data_source_inline_string"></a>
@@ -786,7 +792,7 @@ Optional:
 
 Optional:
 
-- `inline_string` (String) Data source is inline string
+- `inline_string` (String) Data source is inline string. Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--provided_certificate_authority_config--key--data_source_secret"></a>
@@ -794,7 +800,7 @@ Optional:
 
 Optional:
 
-- `secret` (String) Data source is a secret with given Secret key.
+- `secret` (String) Data source is a secret with given Secret key. Not Null
 
 
 
@@ -895,6 +901,7 @@ Optional:
 
 - `file` (String) Data source is a path to a file.
 Deprecated, use other sources of a data.
+Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls--client_cert--data_source_inline"></a>
@@ -902,7 +909,7 @@ Deprecated, use other sources of a data.
 
 Optional:
 
-- `inline` (String) Data source is inline bytes.
+- `inline` (String) Data source is inline bytes. Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls--client_cert--data_source_inline_string"></a>
@@ -910,7 +917,7 @@ Optional:
 
 Optional:
 
-- `inline_string` (String) Data source is inline string
+- `inline_string` (String) Data source is inline string. Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls--client_cert--data_source_secret"></a>
@@ -918,7 +925,7 @@ Optional:
 
 Optional:
 
-- `secret` (String) Data source is a secret with given Secret key.
+- `secret` (String) Data source is a secret with given Secret key. Not Null
 
 
 
@@ -939,6 +946,7 @@ Optional:
 
 - `file` (String) Data source is a path to a file.
 Deprecated, use other sources of a data.
+Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls--client_key--data_source_inline"></a>
@@ -946,7 +954,7 @@ Deprecated, use other sources of a data.
 
 Optional:
 
-- `inline` (String) Data source is inline bytes.
+- `inline` (String) Data source is inline bytes. Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls--client_key--data_source_inline_string"></a>
@@ -954,7 +962,7 @@ Optional:
 
 Optional:
 
-- `inline_string` (String) Data source is inline string
+- `inline_string` (String) Data source is inline string. Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_tls--tls--client_key--data_source_secret"></a>
@@ -962,7 +970,7 @@ Optional:
 
 Optional:
 
-- `secret` (String) Data source is a secret with given Secret key.
+- `secret` (String) Data source is a secret with given Secret key. Not Null
 
 
 
@@ -992,6 +1000,7 @@ Optional:
 
 - `file` (String) Data source is a path to a file.
 Deprecated, use other sources of a data.
+Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_token--token--data_source_inline"></a>
@@ -999,7 +1008,7 @@ Deprecated, use other sources of a data.
 
 Optional:
 
-- `inline` (String) Data source is inline bytes.
+- `inline` (String) Data source is inline bytes. Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_token--token--data_source_inline_string"></a>
@@ -1007,7 +1016,7 @@ Optional:
 
 Optional:
 
-- `inline_string` (String) Data source is inline string
+- `inline_string` (String) Data source is inline string. Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--auth--vault_certificate_authority_config_from_cp_auth_token--token--data_source_secret"></a>
@@ -1015,7 +1024,7 @@ Optional:
 
 Optional:
 
-- `secret` (String) Data source is a secret with given Secret key.
+- `secret` (String) Data source is a secret with given Secret key. Not Null
 
 
 
@@ -1047,6 +1056,7 @@ Optional:
 
 - `file` (String) Data source is a path to a file.
 Deprecated, use other sources of a data.
+Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--tls--ca_cert--data_source_inline"></a>
@@ -1054,7 +1064,7 @@ Deprecated, use other sources of a data.
 
 Optional:
 
-- `inline` (String) Data source is inline bytes.
+- `inline` (String) Data source is inline bytes. Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--tls--ca_cert--data_source_inline_string"></a>
@@ -1062,7 +1072,7 @@ Optional:
 
 Optional:
 
-- `inline_string` (String) Data source is inline string
+- `inline_string` (String) Data source is inline string. Not Null
 
 
 <a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config--vault_certificate_authority_config_from_cp--from_cp--tls--ca_cert--data_source_secret"></a>
@@ -1070,7 +1080,7 @@ Optional:
 
 Optional:
 
-- `secret` (String) Data source is a secret with given Secret key.
+- `secret` (String) Data source is a secret with given Secret key. Not Null
 
 
 

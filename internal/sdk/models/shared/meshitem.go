@@ -709,7 +709,7 @@ func (m *Metrics) GetEnabledBackend() *string {
 
 type CertManagerCertificateAuthorityConfigCaCertDataSourceSecret struct {
 	// Data source is a secret with given Secret key.
-	Secret *string `json:"secret,omitempty"`
+	Secret string `json:"secret"`
 }
 
 func (c CertManagerCertificateAuthorityConfigCaCertDataSourceSecret) MarshalJSON() ([]byte, error) {
@@ -717,22 +717,22 @@ func (c CertManagerCertificateAuthorityConfigCaCertDataSourceSecret) MarshalJSON
 }
 
 func (c *CertManagerCertificateAuthorityConfigCaCertDataSourceSecret) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"secret"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *CertManagerCertificateAuthorityConfigCaCertDataSourceSecret) GetSecret() *string {
+func (c *CertManagerCertificateAuthorityConfigCaCertDataSourceSecret) GetSecret() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.Secret
 }
 
 type CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString struct {
 	// Data source is inline string
-	InlineString *string `json:"inlineString,omitempty"`
+	InlineString string `json:"inlineString"`
 }
 
 func (c CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString) MarshalJSON() ([]byte, error) {
@@ -740,22 +740,22 @@ func (c CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString) Marsh
 }
 
 func (c *CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"inlineString"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString) GetInlineString() *string {
+func (c *CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString) GetInlineString() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.InlineString
 }
 
 type CertManagerCertificateAuthorityConfigCaCertDataSourceInline struct {
 	// Data source is inline bytes.
-	Inline *string `json:"inline,omitempty"`
+	Inline string `json:"inline"`
 }
 
 func (c CertManagerCertificateAuthorityConfigCaCertDataSourceInline) MarshalJSON() ([]byte, error) {
@@ -763,15 +763,15 @@ func (c CertManagerCertificateAuthorityConfigCaCertDataSourceInline) MarshalJSON
 }
 
 func (c *CertManagerCertificateAuthorityConfigCaCertDataSourceInline) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"inline"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *CertManagerCertificateAuthorityConfigCaCertDataSourceInline) GetInline() *string {
+func (c *CertManagerCertificateAuthorityConfigCaCertDataSourceInline) GetInline() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.Inline
 }
@@ -779,7 +779,7 @@ func (c *CertManagerCertificateAuthorityConfigCaCertDataSourceInline) GetInline(
 type CertManagerCertificateAuthorityConfigCaCertDataSourceFile struct {
 	// Data source is a path to a file.
 	// Deprecated, use other sources of a data.
-	File *string `json:"file,omitempty"`
+	File string `json:"file"`
 }
 
 func (c CertManagerCertificateAuthorityConfigCaCertDataSourceFile) MarshalJSON() ([]byte, error) {
@@ -787,15 +787,15 @@ func (c CertManagerCertificateAuthorityConfigCaCertDataSourceFile) MarshalJSON()
 }
 
 func (c *CertManagerCertificateAuthorityConfigCaCertDataSourceFile) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"file"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *CertManagerCertificateAuthorityConfigCaCertDataSourceFile) GetFile() *string {
+func (c *CertManagerCertificateAuthorityConfigCaCertDataSourceFile) GetFile() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.File
 }
@@ -993,7 +993,7 @@ func (c *CertManagerCertificateAuthorityConfig) GetIssuerRef() IssuerRef {
 
 type AccessKeyDataSourceSecret struct {
 	// Data source is a secret with given Secret key.
-	Secret *string `json:"secret,omitempty"`
+	Secret string `json:"secret"`
 }
 
 func (a AccessKeyDataSourceSecret) MarshalJSON() ([]byte, error) {
@@ -1001,22 +1001,22 @@ func (a AccessKeyDataSourceSecret) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AccessKeyDataSourceSecret) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"secret"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AccessKeyDataSourceSecret) GetSecret() *string {
+func (a *AccessKeyDataSourceSecret) GetSecret() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.Secret
 }
 
 type AccessKeyDataSourceInlineString struct {
 	// Data source is inline string
-	InlineString *string `json:"inlineString,omitempty"`
+	InlineString string `json:"inlineString"`
 }
 
 func (a AccessKeyDataSourceInlineString) MarshalJSON() ([]byte, error) {
@@ -1024,22 +1024,22 @@ func (a AccessKeyDataSourceInlineString) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AccessKeyDataSourceInlineString) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"inlineString"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AccessKeyDataSourceInlineString) GetInlineString() *string {
+func (a *AccessKeyDataSourceInlineString) GetInlineString() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.InlineString
 }
 
 type AccessKeyDataSourceInline struct {
 	// Data source is inline bytes.
-	Inline *string `json:"inline,omitempty"`
+	Inline string `json:"inline"`
 }
 
 func (a AccessKeyDataSourceInline) MarshalJSON() ([]byte, error) {
@@ -1047,15 +1047,15 @@ func (a AccessKeyDataSourceInline) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AccessKeyDataSourceInline) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"inline"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AccessKeyDataSourceInline) GetInline() *string {
+func (a *AccessKeyDataSourceInline) GetInline() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.Inline
 }
@@ -1063,7 +1063,7 @@ func (a *AccessKeyDataSourceInline) GetInline() *string {
 type AccessKeyDataSourceFile struct {
 	// Data source is a path to a file.
 	// Deprecated, use other sources of a data.
-	File *string `json:"file,omitempty"`
+	File string `json:"file"`
 }
 
 func (a AccessKeyDataSourceFile) MarshalJSON() ([]byte, error) {
@@ -1071,15 +1071,15 @@ func (a AccessKeyDataSourceFile) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AccessKeyDataSourceFile) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"file"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AccessKeyDataSourceFile) GetFile() *string {
+func (a *AccessKeyDataSourceFile) GetFile() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.File
 }
@@ -1193,7 +1193,7 @@ func (u AccessKey) MarshalJSON() ([]byte, error) {
 
 type AccessKeySecretDataSourceSecret struct {
 	// Data source is a secret with given Secret key.
-	Secret *string `json:"secret,omitempty"`
+	Secret string `json:"secret"`
 }
 
 func (a AccessKeySecretDataSourceSecret) MarshalJSON() ([]byte, error) {
@@ -1201,22 +1201,22 @@ func (a AccessKeySecretDataSourceSecret) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AccessKeySecretDataSourceSecret) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"secret"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AccessKeySecretDataSourceSecret) GetSecret() *string {
+func (a *AccessKeySecretDataSourceSecret) GetSecret() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.Secret
 }
 
 type AccessKeySecretDataSourceInlineString struct {
 	// Data source is inline string
-	InlineString *string `json:"inlineString,omitempty"`
+	InlineString string `json:"inlineString"`
 }
 
 func (a AccessKeySecretDataSourceInlineString) MarshalJSON() ([]byte, error) {
@@ -1224,22 +1224,22 @@ func (a AccessKeySecretDataSourceInlineString) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AccessKeySecretDataSourceInlineString) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"inlineString"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AccessKeySecretDataSourceInlineString) GetInlineString() *string {
+func (a *AccessKeySecretDataSourceInlineString) GetInlineString() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.InlineString
 }
 
 type AccessKeySecretDataSourceInline struct {
 	// Data source is inline bytes.
-	Inline *string `json:"inline,omitempty"`
+	Inline string `json:"inline"`
 }
 
 func (a AccessKeySecretDataSourceInline) MarshalJSON() ([]byte, error) {
@@ -1247,15 +1247,15 @@ func (a AccessKeySecretDataSourceInline) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AccessKeySecretDataSourceInline) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"inline"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AccessKeySecretDataSourceInline) GetInline() *string {
+func (a *AccessKeySecretDataSourceInline) GetInline() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.Inline
 }
@@ -1263,7 +1263,7 @@ func (a *AccessKeySecretDataSourceInline) GetInline() *string {
 type AccessKeySecretDataSourceFile struct {
 	// Data source is a path to a file.
 	// Deprecated, use other sources of a data.
-	File *string `json:"file,omitempty"`
+	File string `json:"file"`
 }
 
 func (a AccessKeySecretDataSourceFile) MarshalJSON() ([]byte, error) {
@@ -1271,15 +1271,15 @@ func (a AccessKeySecretDataSourceFile) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AccessKeySecretDataSourceFile) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"file"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AccessKeySecretDataSourceFile) GetFile() *string {
+func (a *AccessKeySecretDataSourceFile) GetFile() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.File
 }
@@ -1445,7 +1445,7 @@ func (a *Auth) GetAwsCredentials() *AwsCredentials {
 
 type CaCertDataSourceSecret struct {
 	// Data source is a secret with given Secret key.
-	Secret *string `json:"secret,omitempty"`
+	Secret string `json:"secret"`
 }
 
 func (c CaCertDataSourceSecret) MarshalJSON() ([]byte, error) {
@@ -1453,22 +1453,22 @@ func (c CaCertDataSourceSecret) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CaCertDataSourceSecret) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"secret"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *CaCertDataSourceSecret) GetSecret() *string {
+func (c *CaCertDataSourceSecret) GetSecret() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.Secret
 }
 
 type CaCertDataSourceInlineString struct {
 	// Data source is inline string
-	InlineString *string `json:"inlineString,omitempty"`
+	InlineString string `json:"inlineString"`
 }
 
 func (c CaCertDataSourceInlineString) MarshalJSON() ([]byte, error) {
@@ -1476,22 +1476,22 @@ func (c CaCertDataSourceInlineString) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CaCertDataSourceInlineString) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"inlineString"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *CaCertDataSourceInlineString) GetInlineString() *string {
+func (c *CaCertDataSourceInlineString) GetInlineString() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.InlineString
 }
 
 type CaCertDataSourceInline struct {
 	// Data source is inline bytes.
-	Inline *string `json:"inline,omitempty"`
+	Inline string `json:"inline"`
 }
 
 func (c CaCertDataSourceInline) MarshalJSON() ([]byte, error) {
@@ -1499,15 +1499,15 @@ func (c CaCertDataSourceInline) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CaCertDataSourceInline) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"inline"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *CaCertDataSourceInline) GetInline() *string {
+func (c *CaCertDataSourceInline) GetInline() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.Inline
 }
@@ -1515,7 +1515,7 @@ func (c *CaCertDataSourceInline) GetInline() *string {
 type CaCertDataSourceFile struct {
 	// Data source is a path to a file.
 	// Deprecated, use other sources of a data.
-	File *string `json:"file,omitempty"`
+	File string `json:"file"`
 }
 
 func (c CaCertDataSourceFile) MarshalJSON() ([]byte, error) {
@@ -1523,15 +1523,15 @@ func (c CaCertDataSourceFile) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CaCertDataSourceFile) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"file"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *CaCertDataSourceFile) GetFile() *string {
+func (c *CaCertDataSourceFile) GetFile() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.File
 }
@@ -1691,7 +1691,7 @@ func (a *ACMCertificateAuthorityConfig) GetCommonName() *string {
 
 type TokenDataSourceSecret struct {
 	// Data source is a secret with given Secret key.
-	Secret *string `json:"secret,omitempty"`
+	Secret string `json:"secret"`
 }
 
 func (t TokenDataSourceSecret) MarshalJSON() ([]byte, error) {
@@ -1699,22 +1699,22 @@ func (t TokenDataSourceSecret) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TokenDataSourceSecret) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"secret"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (t *TokenDataSourceSecret) GetSecret() *string {
+func (t *TokenDataSourceSecret) GetSecret() string {
 	if t == nil {
-		return nil
+		return ""
 	}
 	return t.Secret
 }
 
 type TokenDataSourceInlineString struct {
 	// Data source is inline string
-	InlineString *string `json:"inlineString,omitempty"`
+	InlineString string `json:"inlineString"`
 }
 
 func (t TokenDataSourceInlineString) MarshalJSON() ([]byte, error) {
@@ -1722,22 +1722,22 @@ func (t TokenDataSourceInlineString) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TokenDataSourceInlineString) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"inlineString"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (t *TokenDataSourceInlineString) GetInlineString() *string {
+func (t *TokenDataSourceInlineString) GetInlineString() string {
 	if t == nil {
-		return nil
+		return ""
 	}
 	return t.InlineString
 }
 
 type TokenDataSourceInline struct {
 	// Data source is inline bytes.
-	Inline *string `json:"inline,omitempty"`
+	Inline string `json:"inline"`
 }
 
 func (t TokenDataSourceInline) MarshalJSON() ([]byte, error) {
@@ -1745,15 +1745,15 @@ func (t TokenDataSourceInline) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TokenDataSourceInline) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"inline"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (t *TokenDataSourceInline) GetInline() *string {
+func (t *TokenDataSourceInline) GetInline() string {
 	if t == nil {
-		return nil
+		return ""
 	}
 	return t.Inline
 }
@@ -1761,7 +1761,7 @@ func (t *TokenDataSourceInline) GetInline() *string {
 type TokenDataSourceFile struct {
 	// Data source is a path to a file.
 	// Deprecated, use other sources of a data.
-	File *string `json:"file,omitempty"`
+	File string `json:"file"`
 }
 
 func (t TokenDataSourceFile) MarshalJSON() ([]byte, error) {
@@ -1769,15 +1769,15 @@ func (t TokenDataSourceFile) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TokenDataSourceFile) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"file"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (t *TokenDataSourceFile) GetFile() *string {
+func (t *TokenDataSourceFile) GetFile() string {
 	if t == nil {
-		return nil
+		return ""
 	}
 	return t.File
 }
@@ -1913,7 +1913,7 @@ func (v *VaultCertificateAuthorityConfigFromCpAuthToken) GetToken() *Token {
 
 type ClientCertDataSourceSecret struct {
 	// Data source is a secret with given Secret key.
-	Secret *string `json:"secret,omitempty"`
+	Secret string `json:"secret"`
 }
 
 func (c ClientCertDataSourceSecret) MarshalJSON() ([]byte, error) {
@@ -1921,22 +1921,22 @@ func (c ClientCertDataSourceSecret) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ClientCertDataSourceSecret) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"secret"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *ClientCertDataSourceSecret) GetSecret() *string {
+func (c *ClientCertDataSourceSecret) GetSecret() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.Secret
 }
 
 type ClientCertDataSourceInlineString struct {
 	// Data source is inline string
-	InlineString *string `json:"inlineString,omitempty"`
+	InlineString string `json:"inlineString"`
 }
 
 func (c ClientCertDataSourceInlineString) MarshalJSON() ([]byte, error) {
@@ -1944,22 +1944,22 @@ func (c ClientCertDataSourceInlineString) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ClientCertDataSourceInlineString) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"inlineString"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *ClientCertDataSourceInlineString) GetInlineString() *string {
+func (c *ClientCertDataSourceInlineString) GetInlineString() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.InlineString
 }
 
 type ClientCertDataSourceInline struct {
 	// Data source is inline bytes.
-	Inline *string `json:"inline,omitempty"`
+	Inline string `json:"inline"`
 }
 
 func (c ClientCertDataSourceInline) MarshalJSON() ([]byte, error) {
@@ -1967,15 +1967,15 @@ func (c ClientCertDataSourceInline) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ClientCertDataSourceInline) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"inline"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *ClientCertDataSourceInline) GetInline() *string {
+func (c *ClientCertDataSourceInline) GetInline() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.Inline
 }
@@ -1983,7 +1983,7 @@ func (c *ClientCertDataSourceInline) GetInline() *string {
 type ClientCertDataSourceFile struct {
 	// Data source is a path to a file.
 	// Deprecated, use other sources of a data.
-	File *string `json:"file,omitempty"`
+	File string `json:"file"`
 }
 
 func (c ClientCertDataSourceFile) MarshalJSON() ([]byte, error) {
@@ -1991,15 +1991,15 @@ func (c ClientCertDataSourceFile) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ClientCertDataSourceFile) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"file"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *ClientCertDataSourceFile) GetFile() *string {
+func (c *ClientCertDataSourceFile) GetFile() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.File
 }
@@ -2113,7 +2113,7 @@ func (u AuthClientCert) MarshalJSON() ([]byte, error) {
 
 type ClientKeyDataSourceSecret struct {
 	// Data source is a secret with given Secret key.
-	Secret *string `json:"secret,omitempty"`
+	Secret string `json:"secret"`
 }
 
 func (c ClientKeyDataSourceSecret) MarshalJSON() ([]byte, error) {
@@ -2121,22 +2121,22 @@ func (c ClientKeyDataSourceSecret) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ClientKeyDataSourceSecret) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"secret"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *ClientKeyDataSourceSecret) GetSecret() *string {
+func (c *ClientKeyDataSourceSecret) GetSecret() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.Secret
 }
 
 type ClientKeyDataSourceInlineString struct {
 	// Data source is inline string
-	InlineString *string `json:"inlineString,omitempty"`
+	InlineString string `json:"inlineString"`
 }
 
 func (c ClientKeyDataSourceInlineString) MarshalJSON() ([]byte, error) {
@@ -2144,22 +2144,22 @@ func (c ClientKeyDataSourceInlineString) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ClientKeyDataSourceInlineString) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"inlineString"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *ClientKeyDataSourceInlineString) GetInlineString() *string {
+func (c *ClientKeyDataSourceInlineString) GetInlineString() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.InlineString
 }
 
 type ClientKeyDataSourceInline struct {
 	// Data source is inline bytes.
-	Inline *string `json:"inline,omitempty"`
+	Inline string `json:"inline"`
 }
 
 func (c ClientKeyDataSourceInline) MarshalJSON() ([]byte, error) {
@@ -2167,15 +2167,15 @@ func (c ClientKeyDataSourceInline) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ClientKeyDataSourceInline) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"inline"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *ClientKeyDataSourceInline) GetInline() *string {
+func (c *ClientKeyDataSourceInline) GetInline() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.Inline
 }
@@ -2183,7 +2183,7 @@ func (c *ClientKeyDataSourceInline) GetInline() *string {
 type ClientKeyDataSourceFile struct {
 	// Data source is a path to a file.
 	// Deprecated, use other sources of a data.
-	File *string `json:"file,omitempty"`
+	File string `json:"file"`
 }
 
 func (c ClientKeyDataSourceFile) MarshalJSON() ([]byte, error) {
@@ -2191,15 +2191,15 @@ func (c ClientKeyDataSourceFile) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ClientKeyDataSourceFile) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"file"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *ClientKeyDataSourceFile) GetFile() *string {
+func (c *ClientKeyDataSourceFile) GetFile() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.File
 }
@@ -2573,7 +2573,7 @@ func (u VaultCertificateAuthorityConfigAuth) MarshalJSON() ([]byte, error) {
 
 type VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret struct {
 	// Data source is a secret with given Secret key.
-	Secret *string `json:"secret,omitempty"`
+	Secret string `json:"secret"`
 }
 
 func (v VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret) MarshalJSON() ([]byte, error) {
@@ -2581,22 +2581,22 @@ func (v VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret) MarshalJSON
 }
 
 func (v *VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"secret"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (v *VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret) GetSecret() *string {
+func (v *VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret) GetSecret() string {
 	if v == nil {
-		return nil
+		return ""
 	}
 	return v.Secret
 }
 
 type VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString struct {
 	// Data source is inline string
-	InlineString *string `json:"inlineString,omitempty"`
+	InlineString string `json:"inlineString"`
 }
 
 func (v VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString) MarshalJSON() ([]byte, error) {
@@ -2604,22 +2604,22 @@ func (v VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString) Marsh
 }
 
 func (v *VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"inlineString"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (v *VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString) GetInlineString() *string {
+func (v *VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString) GetInlineString() string {
 	if v == nil {
-		return nil
+		return ""
 	}
 	return v.InlineString
 }
 
 type VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline struct {
 	// Data source is inline bytes.
-	Inline *string `json:"inline,omitempty"`
+	Inline string `json:"inline"`
 }
 
 func (v VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline) MarshalJSON() ([]byte, error) {
@@ -2627,15 +2627,15 @@ func (v VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline) MarshalJSON
 }
 
 func (v *VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"inline"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (v *VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline) GetInline() *string {
+func (v *VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline) GetInline() string {
 	if v == nil {
-		return nil
+		return ""
 	}
 	return v.Inline
 }
@@ -2643,7 +2643,7 @@ func (v *VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline) GetInline(
 type VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile struct {
 	// Data source is a path to a file.
 	// Deprecated, use other sources of a data.
-	File *string `json:"file,omitempty"`
+	File string `json:"file"`
 }
 
 func (v VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile) MarshalJSON() ([]byte, error) {
@@ -2651,15 +2651,15 @@ func (v VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile) MarshalJSON()
 }
 
 func (v *VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"file"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (v *VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile) GetFile() *string {
+func (v *VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile) GetFile() string {
 	if v == nil {
-		return nil
+		return ""
 	}
 	return v.File
 }
@@ -3004,7 +3004,7 @@ func (b *BuiltinCertificateAuthorityConfig) GetCaCert() *BuiltinCertificateAutho
 
 type CertDataSourceSecret struct {
 	// Data source is a secret with given Secret key.
-	Secret *string `json:"secret,omitempty"`
+	Secret string `json:"secret"`
 }
 
 func (c CertDataSourceSecret) MarshalJSON() ([]byte, error) {
@@ -3012,22 +3012,22 @@ func (c CertDataSourceSecret) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CertDataSourceSecret) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"secret"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *CertDataSourceSecret) GetSecret() *string {
+func (c *CertDataSourceSecret) GetSecret() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.Secret
 }
 
 type CertDataSourceInlineString struct {
 	// Data source is inline string
-	InlineString *string `json:"inlineString,omitempty"`
+	InlineString string `json:"inlineString"`
 }
 
 func (c CertDataSourceInlineString) MarshalJSON() ([]byte, error) {
@@ -3035,22 +3035,22 @@ func (c CertDataSourceInlineString) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CertDataSourceInlineString) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"inlineString"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *CertDataSourceInlineString) GetInlineString() *string {
+func (c *CertDataSourceInlineString) GetInlineString() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.InlineString
 }
 
 type CertDataSourceInline struct {
 	// Data source is inline bytes.
-	Inline *string `json:"inline,omitempty"`
+	Inline string `json:"inline"`
 }
 
 func (c CertDataSourceInline) MarshalJSON() ([]byte, error) {
@@ -3058,15 +3058,15 @@ func (c CertDataSourceInline) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CertDataSourceInline) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"inline"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *CertDataSourceInline) GetInline() *string {
+func (c *CertDataSourceInline) GetInline() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.Inline
 }
@@ -3074,7 +3074,7 @@ func (c *CertDataSourceInline) GetInline() *string {
 type CertDataSourceFile struct {
 	// Data source is a path to a file.
 	// Deprecated, use other sources of a data.
-	File *string `json:"file,omitempty"`
+	File string `json:"file"`
 }
 
 func (c CertDataSourceFile) MarshalJSON() ([]byte, error) {
@@ -3082,15 +3082,15 @@ func (c CertDataSourceFile) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CertDataSourceFile) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"file"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *CertDataSourceFile) GetFile() *string {
+func (c *CertDataSourceFile) GetFile() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.File
 }
@@ -3204,7 +3204,7 @@ func (u Cert) MarshalJSON() ([]byte, error) {
 
 type KeyDataSourceSecret struct {
 	// Data source is a secret with given Secret key.
-	Secret *string `json:"secret,omitempty"`
+	Secret string `json:"secret"`
 }
 
 func (k KeyDataSourceSecret) MarshalJSON() ([]byte, error) {
@@ -3212,22 +3212,22 @@ func (k KeyDataSourceSecret) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KeyDataSourceSecret) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"secret"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (k *KeyDataSourceSecret) GetSecret() *string {
+func (k *KeyDataSourceSecret) GetSecret() string {
 	if k == nil {
-		return nil
+		return ""
 	}
 	return k.Secret
 }
 
 type KeyDataSourceInlineString struct {
 	// Data source is inline string
-	InlineString *string `json:"inlineString,omitempty"`
+	InlineString string `json:"inlineString"`
 }
 
 func (k KeyDataSourceInlineString) MarshalJSON() ([]byte, error) {
@@ -3235,22 +3235,22 @@ func (k KeyDataSourceInlineString) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KeyDataSourceInlineString) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"inlineString"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (k *KeyDataSourceInlineString) GetInlineString() *string {
+func (k *KeyDataSourceInlineString) GetInlineString() string {
 	if k == nil {
-		return nil
+		return ""
 	}
 	return k.InlineString
 }
 
 type KeyDataSourceInline struct {
 	// Data source is inline bytes.
-	Inline *string `json:"inline,omitempty"`
+	Inline string `json:"inline"`
 }
 
 func (k KeyDataSourceInline) MarshalJSON() ([]byte, error) {
@@ -3258,15 +3258,15 @@ func (k KeyDataSourceInline) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KeyDataSourceInline) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"inline"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (k *KeyDataSourceInline) GetInline() *string {
+func (k *KeyDataSourceInline) GetInline() string {
 	if k == nil {
-		return nil
+		return ""
 	}
 	return k.Inline
 }
@@ -3274,7 +3274,7 @@ func (k *KeyDataSourceInline) GetInline() *string {
 type KeyDataSourceFile struct {
 	// Data source is a path to a file.
 	// Deprecated, use other sources of a data.
-	File *string `json:"file,omitempty"`
+	File string `json:"file"`
 }
 
 func (k KeyDataSourceFile) MarshalJSON() ([]byte, error) {
@@ -3282,15 +3282,15 @@ func (k KeyDataSourceFile) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KeyDataSourceFile) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"file"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (k *KeyDataSourceFile) GetFile() *string {
+func (k *KeyDataSourceFile) GetFile() string {
 	if k == nil {
-		return nil
+		return ""
 	}
 	return k.File
 }

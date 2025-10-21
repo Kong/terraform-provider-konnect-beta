@@ -184,6 +184,7 @@ Optional:
 
 - `file` (String) Data source is a path to a file.
 Deprecated, use other sources of a data.
+Not Null
 
 
 <a id="nestedatt--conf--listeners--tls--certificates--data_source_inline"></a>
@@ -191,7 +192,7 @@ Deprecated, use other sources of a data.
 
 Optional:
 
-- `inline` (String) Data source is inline bytes.
+- `inline` (String) Data source is inline bytes. Not Null
 
 
 <a id="nestedatt--conf--listeners--tls--certificates--data_source_inline_string"></a>
@@ -199,7 +200,7 @@ Optional:
 
 Optional:
 
-- `inline_string` (String) Data source is inline string
+- `inline_string` (String) Data source is inline string. Not Null
 
 
 <a id="nestedatt--conf--listeners--tls--certificates--data_source_secret"></a>
@@ -207,7 +208,7 @@ Optional:
 
 Optional:
 
-- `secret` (String) Data source is a secret with given Secret key.
+- `secret` (String) Data source is a secret with given Secret key. Not Null
 
 
 

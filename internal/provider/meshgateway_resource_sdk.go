@@ -73,19 +73,19 @@ func (r *MeshGatewayResourceModel) RefreshFromSharedMeshGatewayItem(ctx context.
 
 						if certificatesItem.DataSourceFile != nil {
 							certificates.DataSourceFile = &tfTypes.AccessKeyDataSourceFile{}
-							certificates.DataSourceFile.File = types.StringPointerValue(certificatesItem.DataSourceFile.File)
+							certificates.DataSourceFile.File = types.StringValue(certificatesItem.DataSourceFile.File)
 						}
 						if certificatesItem.DataSourceInline != nil {
 							certificates.DataSourceInline = &tfTypes.AccessKeyDataSourceInline{}
-							certificates.DataSourceInline.Inline = types.StringPointerValue(certificatesItem.DataSourceInline.Inline)
+							certificates.DataSourceInline.Inline = types.StringValue(certificatesItem.DataSourceInline.Inline)
 						}
 						if certificatesItem.DataSourceInlineString != nil {
 							certificates.DataSourceInlineString = &tfTypes.AccessKeyDataSourceInlineString{}
-							certificates.DataSourceInlineString.InlineString = types.StringPointerValue(certificatesItem.DataSourceInlineString.InlineString)
+							certificates.DataSourceInlineString.InlineString = types.StringValue(certificatesItem.DataSourceInlineString.InlineString)
 						}
 						if certificatesItem.DataSourceSecret != nil {
 							certificates.DataSourceSecret = &tfTypes.AccessKeyDataSourceSecret{}
-							certificates.DataSourceSecret.Secret = types.StringPointerValue(certificatesItem.DataSourceSecret.Secret)
+							certificates.DataSourceSecret.Secret = types.StringValue(certificatesItem.DataSourceSecret.Secret)
 						}
 
 						listeners.TLS.Certificates = append(listeners.TLS.Certificates, certificates)
@@ -287,12 +287,9 @@ func (r *MeshGatewayResourceModel) ToSharedMeshGatewayItem(ctx context.Context) 
 				certificates := make([]shared.Certificates, 0, len(listenersItem.TLS.Certificates))
 				for _, certificatesItem := range listenersItem.TLS.Certificates {
 					if certificatesItem.DataSourceFile != nil {
-						file := new(string)
-						if !certificatesItem.DataSourceFile.File.IsUnknown() && !certificatesItem.DataSourceFile.File.IsNull() {
-							*file = certificatesItem.DataSourceFile.File.ValueString()
-						} else {
-							file = nil
-						}
+						var file string
+						file = certificatesItem.DataSourceFile.File.ValueString()
+
 						dataSourceFile := shared.DataSourceFile{
 							File: file,
 						}
@@ -301,12 +298,9 @@ func (r *MeshGatewayResourceModel) ToSharedMeshGatewayItem(ctx context.Context) 
 						})
 					}
 					if certificatesItem.DataSourceInline != nil {
-						inline := new(string)
-						if !certificatesItem.DataSourceInline.Inline.IsUnknown() && !certificatesItem.DataSourceInline.Inline.IsNull() {
-							*inline = certificatesItem.DataSourceInline.Inline.ValueString()
-						} else {
-							inline = nil
-						}
+						var inline string
+						inline = certificatesItem.DataSourceInline.Inline.ValueString()
+
 						dataSourceInline := shared.DataSourceInline{
 							Inline: inline,
 						}
@@ -315,12 +309,9 @@ func (r *MeshGatewayResourceModel) ToSharedMeshGatewayItem(ctx context.Context) 
 						})
 					}
 					if certificatesItem.DataSourceInlineString != nil {
-						inlineString := new(string)
-						if !certificatesItem.DataSourceInlineString.InlineString.IsUnknown() && !certificatesItem.DataSourceInlineString.InlineString.IsNull() {
-							*inlineString = certificatesItem.DataSourceInlineString.InlineString.ValueString()
-						} else {
-							inlineString = nil
-						}
+						var inlineString string
+						inlineString = certificatesItem.DataSourceInlineString.InlineString.ValueString()
+
 						dataSourceInlineString := shared.DataSourceInlineString{
 							InlineString: inlineString,
 						}
@@ -329,12 +320,9 @@ func (r *MeshGatewayResourceModel) ToSharedMeshGatewayItem(ctx context.Context) 
 						})
 					}
 					if certificatesItem.DataSourceSecret != nil {
-						secret := new(string)
-						if !certificatesItem.DataSourceSecret.Secret.IsUnknown() && !certificatesItem.DataSourceSecret.Secret.IsNull() {
-							*secret = certificatesItem.DataSourceSecret.Secret.ValueString()
-						} else {
-							secret = nil
-						}
+						var secret string
+						secret = certificatesItem.DataSourceSecret.Secret.ValueString()
+
 						dataSourceSecret := shared.DataSourceSecret{
 							Secret: secret,
 						}

@@ -18798,6 +18798,8 @@ components:
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
     DataSource_File:
       type: object
+      required:
+        - file
       properties:
         file:
           description: |-
@@ -18807,6 +18809,8 @@ components:
           x-speakeasy-param-computed: false
     DataSource_Inline:
       type: object
+      required:
+        - inline
       properties:
         inline:
           description: Data source is inline bytes.
@@ -18815,6 +18819,8 @@ components:
           x-speakeasy-param-computed: false
     DataSource_InlineString:
       type: object
+      required:
+        - inlineString
       properties:
         inlineString:
           description: Data source is inline string
@@ -18822,6 +18828,8 @@ components:
           x-speakeasy-param-computed: false
     DataSource_Secret:
       type: object
+      required:
+        - secret
       properties:
         secret:
           description: Data source is a secret with given Secret key.
