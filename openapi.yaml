@@ -3781,6 +3781,144 @@ paths:
         - MeshGateway
     parameters:
       - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/secrets/{name}':
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: Secret#get
+        terraform-datasource: null
+      operationId: getSecret
+      summary: Returns Secret entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the Secret
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/SecretItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Secret
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: 'Secret#create,update'
+        terraform-datasource: null
+      operationId: putSecret
+      summary: Creates or Updates Secret entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the Secret
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SecretItem'
+      responses:
+        '200':
+          $ref: '#/components/responses/SecretCreateOrUpdateSuccessResponse'
+        '201':
+          $ref: '#/components/responses/SecretCreateOrUpdateSuccessResponse'
+      tags:
+        - Secret
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: Secret#delete
+        terraform-datasource: null
+      operationId: deleteSecret
+      summary: Deletes Secret entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the Secret
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/SecretDeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Secret
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/secrets':
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: SecretList#get
+        terraform-datasource: null
+      operationId: getSecretList
+      summary: Returns a list of Secret in the mesh.
+      parameters:
+        - name: offset
+          in: query
+          description: offset in the list of entities
+          required: false
+          schema:
+            type: integer
+          example: 0
+        - name: size
+          in: query
+          description: the number of items per page
+          required: false
+          schema:
+            type: integer
+            default: 100
+            maximum: 1000
+            minimum: 1
+        - name: filter
+          in: query
+          description: 'filter by labels when multiple filters are present, they are ANDed'
+          required: false
+          schema:
+            type: object
+            properties:
+              key:
+                type: string
+              value:
+                type: string
+          example:
+            label.k8s.kuma.io/namespace: my-ns
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/SecretList'
+      tags:
+        - Secret
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/zoneegresses/{name}':
     get:
       x-speakeasy-entity-operation:
@@ -8966,6 +9104,13 @@ components:
           default: default
           x-speakeasy-param-computed: false
           x-speakeasy-param-force-new: true
+        kri:
+          description: A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
+          type: string
+          example: kri_mal_default_zone-east_kuma-demo_mypolicy1_
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: Name of the Kuma resource
           type: string
@@ -9816,6 +9961,13 @@ components:
           default: default
           x-speakeasy-param-computed: false
           x-speakeasy-param-force-new: true
+        kri:
+          description: A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
+          type: string
+          example: kri_mcb_default_zone-east_kuma-demo_mypolicy1_
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: Name of the Kuma resource
           type: string
@@ -10944,6 +11096,13 @@ components:
           default: default
           x-speakeasy-param-computed: false
           x-speakeasy-param-force-new: true
+        kri:
+          description: A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
+          type: string
+          example: kri_mfi_default_zone-east_kuma-demo_mypolicy1_
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: Name of the Kuma resource
           type: string
@@ -11529,6 +11688,13 @@ components:
           default: default
           x-speakeasy-param-computed: false
           x-speakeasy-param-force-new: true
+        kri:
+          description: A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
+          type: string
+          example: kri_mhc_default_zone-east_kuma-demo_mypolicy1_
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: Name of the Kuma resource
           type: string
@@ -11968,6 +12134,13 @@ components:
           default: default
           x-speakeasy-param-computed: false
           x-speakeasy-param-force-new: true
+        kri:
+          description: A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
+          type: string
+          example: kri_mhttpr_default_zone-east_kuma-demo_mypolicy1_
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: Name of the Kuma resource
           type: string
@@ -12729,6 +12902,13 @@ components:
           default: default
           x-speakeasy-param-computed: false
           x-speakeasy-param-force-new: true
+        kri:
+          description: A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
+          type: string
+          example: kri_mlbs_default_zone-east_kuma-demo_mypolicy1_
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: Name of the Kuma resource
           type: string
@@ -13462,6 +13642,13 @@ components:
           default: default
           x-speakeasy-param-computed: false
           x-speakeasy-param-force-new: true
+        kri:
+          description: A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
+          type: string
+          example: kri_mm_default_zone-east_kuma-demo_mypolicy1_
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: Name of the Kuma resource
           type: string
@@ -13776,6 +13963,13 @@ components:
           default: default
           x-speakeasy-param-computed: false
           x-speakeasy-param-force-new: true
+        kri:
+          description: A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
+          type: string
+          example: kri_mp_default_zone-east_kuma-demo_mypolicy1_
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: Name of the Kuma resource
           type: string
@@ -13963,6 +14157,13 @@ components:
           default: default
           x-speakeasy-param-computed: false
           x-speakeasy-param-force-new: true
+        kri:
+          description: A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
+          type: string
+          example: kri_mpp_default_zone-east_kuma-demo_mypolicy1_
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: Name of the Kuma resource
           type: string
@@ -14557,6 +14758,13 @@ components:
           default: default
           x-speakeasy-param-computed: false
           x-speakeasy-param-force-new: true
+        kri:
+          description: A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
+          type: string
+          example: kri_mrl_default_zone-east_kuma-demo_mypolicy1_
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: Name of the Kuma resource
           type: string
@@ -15254,6 +15462,13 @@ components:
           default: default
           x-speakeasy-param-computed: false
           x-speakeasy-param-force-new: true
+        kri:
+          description: A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
+          type: string
+          example: kri_mr_default_zone-east_kuma-demo_mypolicy1_
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: Name of the Kuma resource
           type: string
@@ -15818,6 +16033,13 @@ components:
           default: default
           x-speakeasy-param-computed: false
           x-speakeasy-param-force-new: true
+        kri:
+          description: A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
+          type: string
+          example: kri_mtcpr_default_zone-east_kuma-demo_mypolicy1_
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: Name of the Kuma resource
           type: string
@@ -16136,6 +16358,13 @@ components:
           default: default
           x-speakeasy-param-computed: false
           x-speakeasy-param-force-new: true
+        kri:
+          description: A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
+          type: string
+          example: kri_mt_default_zone-east_kuma-demo_mypolicy1_
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: Name of the Kuma resource
           type: string
@@ -16617,6 +16846,13 @@ components:
           default: default
           x-speakeasy-param-computed: false
           x-speakeasy-param-force-new: true
+        kri:
+          description: A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
+          type: string
+          example: kri_mtls_default_zone-east_kuma-demo_mypolicy1_
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: Name of the Kuma resource
           type: string
@@ -16945,6 +17181,13 @@ components:
           default: default
           x-speakeasy-param-computed: false
           x-speakeasy-param-force-new: true
+        kri:
+          description: A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
+          type: string
+          example: kri_mtr_default_zone-east_kuma-demo_mypolicy1_
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: Name of the Kuma resource
           type: string
@@ -17265,6 +17508,13 @@ components:
           default: default
           x-speakeasy-param-computed: false
           x-speakeasy-param-force-new: true
+        kri:
+          description: A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
+          type: string
+          example: kri_mtp_default_zone-east_kuma-demo_mypolicy1_
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: Name of the Kuma resource
           type: string
@@ -18304,6 +18554,32 @@ components:
         - type
         - name
         - mesh
+    SecretItem:
+      type: object
+      properties:
+        data:
+          description: Value of the secret
+          type: string
+          format: byte
+          x-speakeasy-param-computed: false
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          x-speakeasy-param-computed: false
+        mesh:
+          type: string
+          x-speakeasy-param-computed: false
+        name:
+          type: string
+          x-speakeasy-param-computed: false
+        type:
+          type: string
+          x-speakeasy-param-computed: false
+      required:
+        - type
+        - name
+        - mesh
     ZoneEgressItem:
       description: Successful response
       type: object
@@ -18457,6 +18733,13 @@ components:
           enum:
             - HostnameGenerator
           x-speakeasy-param-computed: false
+        kri:
+          description: A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
+          type: string
+          example: kri_hg___kuma-system_myresource1_
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: Name of the Kuma resource
           type: string
@@ -18558,6 +18841,13 @@ components:
           default: default
           x-speakeasy-param-computed: false
           x-speakeasy-param-force-new: true
+        kri:
+          description: A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
+          type: string
+          example: kri_extsvc_default_zone-east_kuma-system_myresource1_
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: Name of the Kuma resource
           type: string
@@ -18922,6 +19212,13 @@ components:
           default: default
           x-speakeasy-param-computed: false
           x-speakeasy-param-force-new: true
+        kri:
+          description: A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
+          type: string
+          example: kri_mid_default_zone-east_kuma-system_myresource1_
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: Name of the Kuma resource
           type: string
@@ -19238,6 +19535,13 @@ components:
           default: default
           x-speakeasy-param-computed: false
           x-speakeasy-param-force-new: true
+        kri:
+          description: A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
+          type: string
+          example: kri_mzsvc_default_zone-east_kuma-demo_myresource1_
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: Name of the Kuma resource
           type: string
@@ -19462,6 +19766,13 @@ components:
           default: default
           x-speakeasy-param-computed: false
           x-speakeasy-param-force-new: true
+        kri:
+          description: A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
+          type: string
+          example: kri_msvc_default_zone-east_kuma-demo_myresource1_
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: Name of the Kuma resource
           type: string
@@ -19716,6 +20027,13 @@ components:
           default: default
           x-speakeasy-param-computed: false
           x-speakeasy-param-force-new: true
+        kri:
+          description: A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
+          type: string
+          example: kri_mtrust_default_zone-east_kuma-system_myresource1_
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: Name of the Kuma resource
           type: string
@@ -20020,6 +20338,13 @@ components:
           default: default
           x-speakeasy-param-computed: false
           x-speakeasy-param-force-new: true
+        kri:
+          description: A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
+          type: string
+          example: kri_mgrl_default_zone-east_kuma-demo_mypolicy1_
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: Name of the Kuma resource
           type: string
@@ -20674,6 +20999,13 @@ components:
           default: default
           x-speakeasy-param-computed: false
           x-speakeasy-param-force-new: true
+        kri:
+          description: A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
+          type: string
+          example: kri_mopa_default_zone-east_kuma-demo_mypolicy1_
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: Name of the Kuma resource
           type: string
@@ -27779,6 +28111,59 @@ components:
                   type: string
                 readOnly: true
     MeshGatewayDeleteSuccessResponse:
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            type: object
+    SecretItem:
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SecretItem'
+    SecretList:
+      description: List
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              items:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SecretItem'
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+              total:
+                description: The total number of entities
+                type: number
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+              next:
+                description: URL to the next page
+                type: string
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+    SecretCreateOrUpdateSuccessResponse:
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              warnings:
+                description: |
+                  warnings is a list of warning messages to return to the requesting Kuma API clients.
+                  Warning messages describe a problem the client making the API request should correct or be aware of.
+                type: array
+                items:
+                  type: string
+                readOnly: true
+    SecretDeleteSuccessResponse:
       description: Successful response
       content:
         application/json:
