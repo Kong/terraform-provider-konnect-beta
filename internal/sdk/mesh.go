@@ -216,7 +216,7 @@ func (s *Mesh) GetMesh(ctx context.Context, request operations.GetMeshRequest, o
 				return nil, err
 			}
 
-			var out shared.MeshItem
+			var out shared.MeshItemOutput
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}

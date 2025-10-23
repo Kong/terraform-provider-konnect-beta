@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: 9eb08bb0b7f4e94fe0fab5f75235ddd3
+  docChecksum: 0f910fb1b6dc8c1b5fe80a3c2bbae2ed
   docVersion: 2.0.0
   speakeasyVersion: 1.637.0
   generationVersion: 2.727.4
@@ -1229,7 +1229,7 @@ generatedFiles:
   - internal/sdk/models/shared/meshidentitydeletesuccessresponse.go
   - internal/sdk/models/shared/meshidentityitem.go
   - internal/sdk/models/shared/meshidentitylist.go
-  - internal/sdk/models/shared/meshitem.go
+  - internal/sdk/models/shared/meshitemoutput.go
   - internal/sdk/models/shared/meshlist.go
   - internal/sdk/models/shared/meshloadbalancingstrategycreateorupdatesuccessresponse.go
   - internal/sdk/models/shared/meshloadbalancingstrategydeletesuccessresponse.go

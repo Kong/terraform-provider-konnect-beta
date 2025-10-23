@@ -36,7 +36,7 @@ type GetMeshResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Successful response
-	MeshItem *shared.MeshItem
+	MeshItem *shared.MeshItemOutput
 	// Not Found
 	NotFoundError *shared.NotFoundError
 }
@@ -62,7 +62,7 @@ func (g *GetMeshResponse) GetRawResponse() *http.Response {
 	return g.RawResponse
 }
 
-func (g *GetMeshResponse) GetMeshItem() *shared.MeshItem {
+func (g *GetMeshResponse) GetMeshItem() *shared.MeshItemOutput {
 	if g == nil {
 		return nil
 	}

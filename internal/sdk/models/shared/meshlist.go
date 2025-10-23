@@ -4,14 +4,14 @@ package shared
 
 // MeshList - List
 type MeshList struct {
-	Items []MeshItem `json:"items,omitempty"`
+	Items []MeshItemOutput `json:"items,omitempty"`
 	// The total number of entities
 	Total *float64 `json:"total,omitempty"`
 	// URL to the next page
 	Next *string `json:"next,omitempty"`
 }
 
-func (m *MeshList) GetItems() []MeshItem {
+func (m *MeshList) GetItems() []MeshItemOutput {
 	if m == nil {
 		return nil
 	}

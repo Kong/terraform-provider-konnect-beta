@@ -18915,6 +18915,7 @@ components:
                 properties:
                   conf:
                     type: object
+                    writeOnly: true
                     oneOf:
                       - $ref: '#/components/schemas/FileLoggingBackendConfig'
                       - $ref: '#/components/schemas/TcpLoggingBackendConfig'
@@ -18970,6 +18971,7 @@ components:
                 properties:
                   conf:
                     type: object
+                    writeOnly: true
                     oneOf:
                       - $ref: '#/components/schemas/PrometheusMetricsBackendConfig'
                     x-speakeasy-param-computed: false
@@ -19003,6 +19005,7 @@ components:
                 properties:
                   conf:
                     type: object
+                    writeOnly: true
                     oneOf:
                       - $ref: '#/components/schemas/ProvidedCertificateAuthorityConfig'
                       - $ref: '#/components/schemas/BuiltinCertificateAuthorityConfig'
@@ -19145,6 +19148,7 @@ components:
                 properties:
                   conf:
                     type: object
+                    writeOnly: true
                     oneOf:
                       - $ref: '#/components/schemas/DatadogTracingBackendConfig'
                       - $ref: '#/components/schemas/ZipkinTracingBackendConfig'
@@ -19335,6 +19339,7 @@ components:
                           ECDSA key and certificate.
                         type: array
                         items:
+                          writeOnly: true
                           oneOf:
                             - $ref: '#/components/schemas/DataSource_File'
                             - $ref: '#/components/schemas/DataSource_Inline'

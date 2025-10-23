@@ -79,6 +79,654 @@ func (c *Constraints) GetDataplaneProxy() *DataplaneProxy {
 	return c.DataplaneProxy
 }
 
+// MeshItemLoggingBackendsOutput - LoggingBackend defines logging backend available to mesh.
+type MeshItemLoggingBackendsOutput struct {
+	// Format of access logs. Placeholders available on
+	// https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log
+	Format *string `json:"format,omitempty"`
+	// Name of the backend, can be then used in Mesh.logging.defaultBackend or in
+	// TrafficLogging
+	Name *string `json:"name,omitempty"`
+	// Type of the backend (Kuma ships with 'tcp' and 'file')
+	Type *string `json:"type,omitempty"`
+}
+
+func (m *MeshItemLoggingBackendsOutput) GetFormat() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Format
+}
+
+func (m *MeshItemLoggingBackendsOutput) GetName() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Name
+}
+
+func (m *MeshItemLoggingBackendsOutput) GetType() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Type
+}
+
+// MeshItemLogging - Logging settings.
+// +optional
+type MeshItemLogging struct {
+	// List of available logging backends
+	Backends []MeshItemLoggingBackendsOutput `json:"backends,omitempty"`
+	// Name of the default backend
+	DefaultBackend *string `json:"defaultBackend,omitempty"`
+}
+
+func (m *MeshItemLogging) GetBackends() []MeshItemLoggingBackendsOutput {
+	if m == nil {
+		return nil
+	}
+	return m.Backends
+}
+
+func (m *MeshItemLogging) GetDefaultBackend() *string {
+	if m == nil {
+		return nil
+	}
+	return m.DefaultBackend
+}
+
+type MeshItemModeType string
+
+const (
+	MeshItemModeTypeStr     MeshItemModeType = "str"
+	MeshItemModeTypeInteger MeshItemModeType = "integer"
+)
+
+type MeshItemMode struct {
+	Str     *string `queryParam:"inline,name=mode"`
+	Integer *int64  `queryParam:"inline,name=mode"`
+
+	Type MeshItemModeType
+}
+
+func CreateMeshItemModeStr(str string) MeshItemMode {
+	typ := MeshItemModeTypeStr
+
+	return MeshItemMode{
+		Str:  &str,
+		Type: typ,
+	}
+}
+
+func CreateMeshItemModeInteger(integer int64) MeshItemMode {
+	typ := MeshItemModeTypeInteger
+
+	return MeshItemMode{
+		Integer: &integer,
+		Type:    typ,
+	}
+}
+
+func (u *MeshItemMode) UnmarshalJSON(data []byte) error {
+
+	var str string = ""
+	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
+		u.Str = &str
+		u.Type = MeshItemModeTypeStr
+		return nil
+	}
+
+	var integer int64 = int64(0)
+	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
+		u.Integer = &integer
+		u.Type = MeshItemModeTypeInteger
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshItemMode", string(data))
+}
+
+func (u MeshItemMode) MarshalJSON() ([]byte, error) {
+	if u.Str != nil {
+		return utils.MarshalJSON(u.Str, "", true)
+	}
+
+	if u.Integer != nil {
+		return utils.MarshalJSON(u.Integer, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type MeshItemMode: all fields are null")
+}
+
+type MeshServices struct {
+	Mode *MeshItemMode `json:"mode,omitempty"`
+}
+
+func (m *MeshServices) GetMode() *MeshItemMode {
+	if m == nil {
+		return nil
+	}
+	return m.Mode
+}
+
+// MeshItemBackendsOutput - MetricsBackend defines metric backends
+type MeshItemBackendsOutput struct {
+	// Name of the backend, can be then used in Mesh.metrics.enabledBackend
+	Name *string `json:"name,omitempty"`
+	// Type of the backend (Kuma ships with 'prometheus')
+	Type *string `json:"type,omitempty"`
+}
+
+func (m *MeshItemBackendsOutput) GetName() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Name
+}
+
+func (m *MeshItemBackendsOutput) GetType() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Type
+}
+
+// MeshItemMetrics - Configuration for metrics collected and exposed by dataplanes.
+//
+// Settings defined here become defaults for every dataplane in a given Mesh.
+// Additionally, it is also possible to further customize this configuration
+// for each dataplane individually using Dataplane resource.
+// +optional
+type MeshItemMetrics struct {
+	// List of available Metrics backends
+	Backends []MeshItemBackendsOutput `json:"backends,omitempty"`
+	// Name of the enabled backend
+	EnabledBackend *string `json:"enabledBackend,omitempty"`
+}
+
+func (m *MeshItemMetrics) GetBackends() []MeshItemBackendsOutput {
+	if m == nil {
+		return nil
+	}
+	return m.Backends
+}
+
+func (m *MeshItemMetrics) GetEnabledBackend() *string {
+	if m == nil {
+		return nil
+	}
+	return m.EnabledBackend
+}
+
+// RequestTimeout - Timeout on request to CA for DP certificate generation and retrieval
+type RequestTimeout struct {
+	Nanos   *int64 `json:"nanos,omitempty"`
+	Seconds *int64 `json:"seconds,omitempty"`
+}
+
+func (r *RequestTimeout) GetNanos() *int64 {
+	if r == nil {
+		return nil
+	}
+	return r.Nanos
+}
+
+func (r *RequestTimeout) GetSeconds() *int64 {
+	if r == nil {
+		return nil
+	}
+	return r.Seconds
+}
+
+// Rotation settings
+type Rotation struct {
+	// Time after which generated certificate for Dataplane will expire
+	Expiration *string `json:"expiration,omitempty"`
+}
+
+func (r *Rotation) GetExpiration() *string {
+	if r == nil {
+		return nil
+	}
+	return r.Expiration
+}
+
+// DpCert - Dataplane certificate settings
+type DpCert struct {
+	// Timeout on request to CA for DP certificate generation and retrieval
+	RequestTimeout *RequestTimeout `json:"requestTimeout,omitempty"`
+	// Rotation settings
+	Rotation *Rotation `json:"rotation,omitempty"`
+}
+
+func (d *DpCert) GetRequestTimeout() *RequestTimeout {
+	if d == nil {
+		return nil
+	}
+	return d.RequestTimeout
+}
+
+func (d *DpCert) GetRotation() *Rotation {
+	if d == nil {
+		return nil
+	}
+	return d.Rotation
+}
+
+type MeshItemMtlsModeType string
+
+const (
+	MeshItemMtlsModeTypeStr     MeshItemMtlsModeType = "str"
+	MeshItemMtlsModeTypeInteger MeshItemMtlsModeType = "integer"
+)
+
+// MeshItemMtlsMode - Mode defines the behaviour of inbound listeners with regard to traffic
+// encryption
+type MeshItemMtlsMode struct {
+	Str     *string `queryParam:"inline,name=mode"`
+	Integer *int64  `queryParam:"inline,name=mode"`
+
+	Type MeshItemMtlsModeType
+}
+
+func CreateMeshItemMtlsModeStr(str string) MeshItemMtlsMode {
+	typ := MeshItemMtlsModeTypeStr
+
+	return MeshItemMtlsMode{
+		Str:  &str,
+		Type: typ,
+	}
+}
+
+func CreateMeshItemMtlsModeInteger(integer int64) MeshItemMtlsMode {
+	typ := MeshItemMtlsModeTypeInteger
+
+	return MeshItemMtlsMode{
+		Integer: &integer,
+		Type:    typ,
+	}
+}
+
+func (u *MeshItemMtlsMode) UnmarshalJSON(data []byte) error {
+
+	var str string = ""
+	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
+		u.Str = &str
+		u.Type = MeshItemMtlsModeTypeStr
+		return nil
+	}
+
+	var integer int64 = int64(0)
+	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
+		u.Integer = &integer
+		u.Type = MeshItemMtlsModeTypeInteger
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshItemMtlsMode", string(data))
+}
+
+func (u MeshItemMtlsMode) MarshalJSON() ([]byte, error) {
+	if u.Str != nil {
+		return utils.MarshalJSON(u.Str, "", true)
+	}
+
+	if u.Integer != nil {
+		return utils.MarshalJSON(u.Integer, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type MeshItemMtlsMode: all fields are null")
+}
+
+// MeshItemRequestTimeout - Timeout on request for to CA for root certificate chain.
+// If not specified, defaults to 10s.
+type MeshItemRequestTimeout struct {
+	Nanos   *int64 `json:"nanos,omitempty"`
+	Seconds *int64 `json:"seconds,omitempty"`
+}
+
+func (m *MeshItemRequestTimeout) GetNanos() *int64 {
+	if m == nil {
+		return nil
+	}
+	return m.Nanos
+}
+
+func (m *MeshItemRequestTimeout) GetSeconds() *int64 {
+	if m == nil {
+		return nil
+	}
+	return m.Seconds
+}
+
+type RootChain struct {
+	// Timeout on request for to CA for root certificate chain.
+	// If not specified, defaults to 10s.
+	RequestTimeout *MeshItemRequestTimeout `json:"requestTimeout,omitempty"`
+}
+
+func (r *RootChain) GetRequestTimeout() *MeshItemRequestTimeout {
+	if r == nil {
+		return nil
+	}
+	return r.RequestTimeout
+}
+
+// MeshItemMtlsBackendsOutput - CertificateAuthorityBackend defines Certificate Authority backend
+type MeshItemMtlsBackendsOutput struct {
+	// Dataplane certificate settings
+	DpCert *DpCert `json:"dpCert,omitempty"`
+	// Mode defines the behaviour of inbound listeners with regard to traffic
+	// encryption
+	Mode *MeshItemMtlsMode `json:"mode,omitempty"`
+	// Name of the backend
+	Name      *string    `json:"name,omitempty"`
+	RootChain *RootChain `json:"rootChain,omitempty"`
+	// Type of the backend. Has to be one of the loaded plugins (Kuma ships with
+	// builtin and provided)
+	Type *string `json:"type,omitempty"`
+}
+
+func (m *MeshItemMtlsBackendsOutput) GetDpCert() *DpCert {
+	if m == nil {
+		return nil
+	}
+	return m.DpCert
+}
+
+func (m *MeshItemMtlsBackendsOutput) GetMode() *MeshItemMtlsMode {
+	if m == nil {
+		return nil
+	}
+	return m.Mode
+}
+
+func (m *MeshItemMtlsBackendsOutput) GetName() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Name
+}
+
+func (m *MeshItemMtlsBackendsOutput) GetRootChain() *RootChain {
+	if m == nil {
+		return nil
+	}
+	return m.RootChain
+}
+
+func (m *MeshItemMtlsBackendsOutput) GetType() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Type
+}
+
+// MeshItemMtls - mTLS settings.
+// +optional
+type MeshItemMtls struct {
+	// List of available Certificate Authority backends
+	Backends []MeshItemMtlsBackendsOutput `json:"backends,omitempty"`
+	// Name of the enabled backend
+	EnabledBackend *string `json:"enabledBackend,omitempty"`
+	// If enabled, skips CA validation.
+	SkipValidation *bool `json:"skipValidation,omitempty"`
+}
+
+func (m *MeshItemMtls) GetBackends() []MeshItemMtlsBackendsOutput {
+	if m == nil {
+		return nil
+	}
+	return m.Backends
+}
+
+func (m *MeshItemMtls) GetEnabledBackend() *string {
+	if m == nil {
+		return nil
+	}
+	return m.EnabledBackend
+}
+
+func (m *MeshItemMtls) GetSkipValidation() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.SkipValidation
+}
+
+// Outbound settings
+type Outbound struct {
+	// Control the passthrough cluster
+	Passthrough *bool `json:"passthrough,omitempty"`
+}
+
+func (o *Outbound) GetPassthrough() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Passthrough
+}
+
+// Networking settings of the mesh
+type Networking struct {
+	// Outbound settings
+	Outbound *Outbound `json:"outbound,omitempty"`
+}
+
+func (n *Networking) GetOutbound() *Outbound {
+	if n == nil {
+		return nil
+	}
+	return n.Outbound
+}
+
+// Routing settings of the mesh
+type Routing struct {
+	// If true, blocks traffic to MeshExternalServices.
+	// Default: false
+	DefaultForbidMeshExternalServiceAccess *bool `json:"defaultForbidMeshExternalServiceAccess,omitempty"`
+	// Enable the Locality Aware Load Balancing
+	LocalityAwareLoadBalancing *bool `json:"localityAwareLoadBalancing,omitempty"`
+	// Enable routing traffic to services in other zone or external services
+	// through ZoneEgress. Default: false
+	ZoneEgress *bool `json:"zoneEgress,omitempty"`
+}
+
+func (r *Routing) GetDefaultForbidMeshExternalServiceAccess() *bool {
+	if r == nil {
+		return nil
+	}
+	return r.DefaultForbidMeshExternalServiceAccess
+}
+
+func (r *Routing) GetLocalityAwareLoadBalancing() *bool {
+	if r == nil {
+		return nil
+	}
+	return r.LocalityAwareLoadBalancing
+}
+
+func (r *Routing) GetZoneEgress() *bool {
+	if r == nil {
+		return nil
+	}
+	return r.ZoneEgress
+}
+
+// MeshItemTracingBackendsOutput - TracingBackend defines tracing backend available to mesh.
+type MeshItemTracingBackendsOutput struct {
+	// Name of the backend, can be then used in Mesh.tracing.defaultBackend or in
+	// TrafficTrace
+	Name *string `json:"name,omitempty"`
+	// Percentage of traces that will be sent to the backend (range 0.0 - 100.0).
+	// Empty value defaults to 100.0%
+	Sampling *float64 `json:"sampling,omitempty"`
+	// Type of the backend (Kuma ships with 'zipkin')
+	Type *string `json:"type,omitempty"`
+}
+
+func (m *MeshItemTracingBackendsOutput) GetName() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Name
+}
+
+func (m *MeshItemTracingBackendsOutput) GetSampling() *float64 {
+	if m == nil {
+		return nil
+	}
+	return m.Sampling
+}
+
+func (m *MeshItemTracingBackendsOutput) GetType() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Type
+}
+
+// MeshItemTracing - Tracing settings.
+// +optional
+type MeshItemTracing struct {
+	// List of available tracing backends
+	Backends []MeshItemTracingBackendsOutput `json:"backends,omitempty"`
+	// Name of the default backend
+	DefaultBackend *string `json:"defaultBackend,omitempty"`
+}
+
+func (m *MeshItemTracing) GetBackends() []MeshItemTracingBackendsOutput {
+	if m == nil {
+		return nil
+	}
+	return m.Backends
+}
+
+func (m *MeshItemTracing) GetDefaultBackend() *string {
+	if m == nil {
+		return nil
+	}
+	return m.DefaultBackend
+}
+
+// MeshItemOutput - Successful response
+type MeshItemOutput struct {
+	// Constraints that applies to the mesh and its entities
+	Constraints *Constraints      `json:"constraints,omitempty"`
+	Labels      map[string]string `json:"labels,omitempty"`
+	// Logging settings.
+	// +optional
+	Logging      *MeshItemLogging `json:"logging,omitempty"`
+	MeshServices *MeshServices    `json:"meshServices,omitempty"`
+	// Configuration for metrics collected and exposed by dataplanes.
+	//
+	// Settings defined here become defaults for every dataplane in a given Mesh.
+	// Additionally, it is also possible to further customize this configuration
+	// for each dataplane individually using Dataplane resource.
+	// +optional
+	Metrics *MeshItemMetrics `json:"metrics,omitempty"`
+	// mTLS settings.
+	// +optional
+	Mtls *MeshItemMtls `json:"mtls,omitempty"`
+	Name string        `json:"name"`
+	// Networking settings of the mesh
+	Networking *Networking `json:"networking,omitempty"`
+	// Routing settings of the mesh
+	Routing *Routing `json:"routing,omitempty"`
+	// List of policies to skip creating by default when the mesh is created.
+	// e.g. TrafficPermission, MeshRetry, etc. An '*' can be used to skip all
+	// policies.
+	SkipCreatingInitialPolicies []string `json:"skipCreatingInitialPolicies,omitempty"`
+	// Tracing settings.
+	// +optional
+	Tracing *MeshItemTracing `json:"tracing,omitempty"`
+	Type    string           `json:"type"`
+}
+
+func (m *MeshItemOutput) GetConstraints() *Constraints {
+	if m == nil {
+		return nil
+	}
+	return m.Constraints
+}
+
+func (m *MeshItemOutput) GetLabels() map[string]string {
+	if m == nil {
+		return nil
+	}
+	return m.Labels
+}
+
+func (m *MeshItemOutput) GetLogging() *MeshItemLogging {
+	if m == nil {
+		return nil
+	}
+	return m.Logging
+}
+
+func (m *MeshItemOutput) GetMeshServices() *MeshServices {
+	if m == nil {
+		return nil
+	}
+	return m.MeshServices
+}
+
+func (m *MeshItemOutput) GetMetrics() *MeshItemMetrics {
+	if m == nil {
+		return nil
+	}
+	return m.Metrics
+}
+
+func (m *MeshItemOutput) GetMtls() *MeshItemMtls {
+	if m == nil {
+		return nil
+	}
+	return m.Mtls
+}
+
+func (m *MeshItemOutput) GetName() string {
+	if m == nil {
+		return ""
+	}
+	return m.Name
+}
+
+func (m *MeshItemOutput) GetNetworking() *Networking {
+	if m == nil {
+		return nil
+	}
+	return m.Networking
+}
+
+func (m *MeshItemOutput) GetRouting() *Routing {
+	if m == nil {
+		return nil
+	}
+	return m.Routing
+}
+
+func (m *MeshItemOutput) GetSkipCreatingInitialPolicies() []string {
+	if m == nil {
+		return nil
+	}
+	return m.SkipCreatingInitialPolicies
+}
+
+func (m *MeshItemOutput) GetTracing() *MeshItemTracing {
+	if m == nil {
+		return nil
+	}
+	return m.Tracing
+}
+
+func (m *MeshItemOutput) GetType() string {
+	if m == nil {
+		return ""
+	}
+	return m.Type
+}
+
 // TCPLoggingBackendConfig - TcpLoggingBackendConfig defines configuration for TCP based access logs
 type TCPLoggingBackendConfig struct {
 	// Address to TCP service that will receive logs
@@ -260,80 +908,6 @@ func (l *Logging) GetDefaultBackend() *string {
 		return nil
 	}
 	return l.DefaultBackend
-}
-
-type MeshItemModeType string
-
-const (
-	MeshItemModeTypeStr     MeshItemModeType = "str"
-	MeshItemModeTypeInteger MeshItemModeType = "integer"
-)
-
-type MeshItemMode struct {
-	Str     *string `queryParam:"inline,name=mode"`
-	Integer *int64  `queryParam:"inline,name=mode"`
-
-	Type MeshItemModeType
-}
-
-func CreateMeshItemModeStr(str string) MeshItemMode {
-	typ := MeshItemModeTypeStr
-
-	return MeshItemMode{
-		Str:  &str,
-		Type: typ,
-	}
-}
-
-func CreateMeshItemModeInteger(integer int64) MeshItemMode {
-	typ := MeshItemModeTypeInteger
-
-	return MeshItemMode{
-		Integer: &integer,
-		Type:    typ,
-	}
-}
-
-func (u *MeshItemMode) UnmarshalJSON(data []byte) error {
-
-	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		u.Str = &str
-		u.Type = MeshItemModeTypeStr
-		return nil
-	}
-
-	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		u.Integer = &integer
-		u.Type = MeshItemModeTypeInteger
-		return nil
-	}
-
-	return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshItemMode", string(data))
-}
-
-func (u MeshItemMode) MarshalJSON() ([]byte, error) {
-	if u.Str != nil {
-		return utils.MarshalJSON(u.Str, "", true)
-	}
-
-	if u.Integer != nil {
-		return utils.MarshalJSON(u.Integer, "", true)
-	}
-
-	return nil, errors.New("could not marshal union type MeshItemMode: all fields are null")
-}
-
-type MeshServices struct {
-	Mode *MeshItemMode `json:"mode,omitempty"`
-}
-
-func (m *MeshServices) GetMode() *MeshItemMode {
-	if m == nil {
-		return nil
-	}
-	return m.Mode
 }
 
 // Aggregate - PrometheusAggregateMetricsConfig defines endpoints that should be scrapped by kuma-dp for prometheus metrics.
@@ -3561,160 +4135,6 @@ func (u MeshItemMtlsConf) MarshalJSON() ([]byte, error) {
 	return nil, errors.New("could not marshal union type MeshItemMtlsConf: all fields are null")
 }
 
-// RequestTimeout - Timeout on request to CA for DP certificate generation and retrieval
-type RequestTimeout struct {
-	Nanos   *int64 `json:"nanos,omitempty"`
-	Seconds *int64 `json:"seconds,omitempty"`
-}
-
-func (r *RequestTimeout) GetNanos() *int64 {
-	if r == nil {
-		return nil
-	}
-	return r.Nanos
-}
-
-func (r *RequestTimeout) GetSeconds() *int64 {
-	if r == nil {
-		return nil
-	}
-	return r.Seconds
-}
-
-// Rotation settings
-type Rotation struct {
-	// Time after which generated certificate for Dataplane will expire
-	Expiration *string `json:"expiration,omitempty"`
-}
-
-func (r *Rotation) GetExpiration() *string {
-	if r == nil {
-		return nil
-	}
-	return r.Expiration
-}
-
-// DpCert - Dataplane certificate settings
-type DpCert struct {
-	// Timeout on request to CA for DP certificate generation and retrieval
-	RequestTimeout *RequestTimeout `json:"requestTimeout,omitempty"`
-	// Rotation settings
-	Rotation *Rotation `json:"rotation,omitempty"`
-}
-
-func (d *DpCert) GetRequestTimeout() *RequestTimeout {
-	if d == nil {
-		return nil
-	}
-	return d.RequestTimeout
-}
-
-func (d *DpCert) GetRotation() *Rotation {
-	if d == nil {
-		return nil
-	}
-	return d.Rotation
-}
-
-type MeshItemMtlsModeType string
-
-const (
-	MeshItemMtlsModeTypeStr     MeshItemMtlsModeType = "str"
-	MeshItemMtlsModeTypeInteger MeshItemMtlsModeType = "integer"
-)
-
-// MeshItemMtlsMode - Mode defines the behaviour of inbound listeners with regard to traffic
-// encryption
-type MeshItemMtlsMode struct {
-	Str     *string `queryParam:"inline,name=mode"`
-	Integer *int64  `queryParam:"inline,name=mode"`
-
-	Type MeshItemMtlsModeType
-}
-
-func CreateMeshItemMtlsModeStr(str string) MeshItemMtlsMode {
-	typ := MeshItemMtlsModeTypeStr
-
-	return MeshItemMtlsMode{
-		Str:  &str,
-		Type: typ,
-	}
-}
-
-func CreateMeshItemMtlsModeInteger(integer int64) MeshItemMtlsMode {
-	typ := MeshItemMtlsModeTypeInteger
-
-	return MeshItemMtlsMode{
-		Integer: &integer,
-		Type:    typ,
-	}
-}
-
-func (u *MeshItemMtlsMode) UnmarshalJSON(data []byte) error {
-
-	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		u.Str = &str
-		u.Type = MeshItemMtlsModeTypeStr
-		return nil
-	}
-
-	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		u.Integer = &integer
-		u.Type = MeshItemMtlsModeTypeInteger
-		return nil
-	}
-
-	return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshItemMtlsMode", string(data))
-}
-
-func (u MeshItemMtlsMode) MarshalJSON() ([]byte, error) {
-	if u.Str != nil {
-		return utils.MarshalJSON(u.Str, "", true)
-	}
-
-	if u.Integer != nil {
-		return utils.MarshalJSON(u.Integer, "", true)
-	}
-
-	return nil, errors.New("could not marshal union type MeshItemMtlsMode: all fields are null")
-}
-
-// MeshItemRequestTimeout - Timeout on request for to CA for root certificate chain.
-// If not specified, defaults to 10s.
-type MeshItemRequestTimeout struct {
-	Nanos   *int64 `json:"nanos,omitempty"`
-	Seconds *int64 `json:"seconds,omitempty"`
-}
-
-func (m *MeshItemRequestTimeout) GetNanos() *int64 {
-	if m == nil {
-		return nil
-	}
-	return m.Nanos
-}
-
-func (m *MeshItemRequestTimeout) GetSeconds() *int64 {
-	if m == nil {
-		return nil
-	}
-	return m.Seconds
-}
-
-type RootChain struct {
-	// Timeout on request for to CA for root certificate chain.
-	// If not specified, defaults to 10s.
-	RequestTimeout *MeshItemRequestTimeout `json:"requestTimeout,omitempty"`
-}
-
-func (r *RootChain) GetRequestTimeout() *MeshItemRequestTimeout {
-	if r == nil {
-		return nil
-	}
-	return r.RequestTimeout
-}
-
 // MeshItemMtlsBackends - CertificateAuthorityBackend defines Certificate Authority backend
 type MeshItemMtlsBackends struct {
 	Conf *MeshItemMtlsConf `json:"conf,omitempty"`
@@ -3803,65 +4223,6 @@ func (m *Mtls) GetSkipValidation() *bool {
 		return nil
 	}
 	return m.SkipValidation
-}
-
-// Outbound settings
-type Outbound struct {
-	// Control the passthrough cluster
-	Passthrough *bool `json:"passthrough,omitempty"`
-}
-
-func (o *Outbound) GetPassthrough() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.Passthrough
-}
-
-// Networking settings of the mesh
-type Networking struct {
-	// Outbound settings
-	Outbound *Outbound `json:"outbound,omitempty"`
-}
-
-func (n *Networking) GetOutbound() *Outbound {
-	if n == nil {
-		return nil
-	}
-	return n.Outbound
-}
-
-// Routing settings of the mesh
-type Routing struct {
-	// If true, blocks traffic to MeshExternalServices.
-	// Default: false
-	DefaultForbidMeshExternalServiceAccess *bool `json:"defaultForbidMeshExternalServiceAccess,omitempty"`
-	// Enable the Locality Aware Load Balancing
-	LocalityAwareLoadBalancing *bool `json:"localityAwareLoadBalancing,omitempty"`
-	// Enable routing traffic to services in other zone or external services
-	// through ZoneEgress. Default: false
-	ZoneEgress *bool `json:"zoneEgress,omitempty"`
-}
-
-func (r *Routing) GetDefaultForbidMeshExternalServiceAccess() *bool {
-	if r == nil {
-		return nil
-	}
-	return r.DefaultForbidMeshExternalServiceAccess
-}
-
-func (r *Routing) GetLocalityAwareLoadBalancing() *bool {
-	if r == nil {
-		return nil
-	}
-	return r.LocalityAwareLoadBalancing
-}
-
-func (r *Routing) GetZoneEgress() *bool {
-	if r == nil {
-		return nil
-	}
-	return r.ZoneEgress
 }
 
 type ZipkinTracingBackendConfig struct {
@@ -4098,7 +4459,6 @@ func (t *Tracing) GetDefaultBackend() *string {
 	return t.DefaultBackend
 }
 
-// MeshItem - Successful response
 type MeshItem struct {
 	// Constraints that applies to the mesh and its entities
 	Constraints *Constraints      `json:"constraints,omitempty"`

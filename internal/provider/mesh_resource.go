@@ -1733,7 +1733,7 @@ func (r *MeshResource) Create(ctx context.Context, req resource.CreateRequest, r
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedMeshItem(ctx, res1.MeshItem)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshItemOutput(ctx, res1.MeshItem)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -1797,7 +1797,7 @@ func (r *MeshResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedMeshItem(ctx, res.MeshItem)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshItemOutput(ctx, res.MeshItem)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -1887,7 +1887,7 @@ func (r *MeshResource) Update(ctx context.Context, req resource.UpdateRequest, r
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedMeshItem(ctx, res1.MeshItem)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshItemOutput(ctx, res1.MeshItem)...)
 
 	if resp.Diagnostics.HasError() {
 		return
