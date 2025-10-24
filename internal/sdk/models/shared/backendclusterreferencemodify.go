@@ -2,108 +2,18 @@
 
 package shared
 
-import (
-	"errors"
-	"fmt"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
-)
-
-type BackendClusterReferenceByName struct {
-	// The unique name of the backend cluster.
-	Name string `json:"name"`
-	// The unique identifier of the backend cluster.
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *BackendClusterReferenceByName) GetName() string {
-	if o == nil {
-		return ""
-	}
-	return o.Name
-}
-
-func (o *BackendClusterReferenceByName) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type BackendClusterReferenceByID struct {
-	// The unique identifier of the backend cluster.
-	ID string `json:"id"`
-}
-
-func (o *BackendClusterReferenceByID) GetID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ID
-}
-
-type BackendClusterReferenceModifyType string
-
-const (
-	BackendClusterReferenceModifyTypeBackendClusterReferenceByID   BackendClusterReferenceModifyType = "BackendClusterReferenceById"
-	BackendClusterReferenceModifyTypeBackendClusterReferenceByName BackendClusterReferenceModifyType = "BackendClusterReferenceByName"
-)
-
 // BackendClusterReferenceModify - The backend cluster associated with the virtual cluster.
 //
 // Either `id` or `name` must be provided. Following changes to the backend cluster name won't affect the
 // reference, as the system will create the entities relationship by `id`.
 type BackendClusterReferenceModify struct {
-	BackendClusterReferenceByID   *BackendClusterReferenceByID   `queryParam:"inline"`
-	BackendClusterReferenceByName *BackendClusterReferenceByName `queryParam:"inline"`
-
-	Type BackendClusterReferenceModifyType
+	// The unique identifier of the backend cluster.
+	ID *string `json:"id,omitempty"`
 }
 
-func CreateBackendClusterReferenceModifyBackendClusterReferenceByID(backendClusterReferenceByID BackendClusterReferenceByID) BackendClusterReferenceModify {
-	typ := BackendClusterReferenceModifyTypeBackendClusterReferenceByID
-
-	return BackendClusterReferenceModify{
-		BackendClusterReferenceByID: &backendClusterReferenceByID,
-		Type:                        typ,
-	}
-}
-
-func CreateBackendClusterReferenceModifyBackendClusterReferenceByName(backendClusterReferenceByName BackendClusterReferenceByName) BackendClusterReferenceModify {
-	typ := BackendClusterReferenceModifyTypeBackendClusterReferenceByName
-
-	return BackendClusterReferenceModify{
-		BackendClusterReferenceByName: &backendClusterReferenceByName,
-		Type:                          typ,
-	}
-}
-
-func (u *BackendClusterReferenceModify) UnmarshalJSON(data []byte) error {
-
-	var backendClusterReferenceByID BackendClusterReferenceByID = BackendClusterReferenceByID{}
-	if err := utils.UnmarshalJSON(data, &backendClusterReferenceByID, "", true, true); err == nil {
-		u.BackendClusterReferenceByID = &backendClusterReferenceByID
-		u.Type = BackendClusterReferenceModifyTypeBackendClusterReferenceByID
+func (o *BackendClusterReferenceModify) GetID() *string {
+	if o == nil {
 		return nil
 	}
-
-	var backendClusterReferenceByName BackendClusterReferenceByName = BackendClusterReferenceByName{}
-	if err := utils.UnmarshalJSON(data, &backendClusterReferenceByName, "", true, true); err == nil {
-		u.BackendClusterReferenceByName = &backendClusterReferenceByName
-		u.Type = BackendClusterReferenceModifyTypeBackendClusterReferenceByName
-		return nil
-	}
-
-	return fmt.Errorf("could not unmarshal `%s` into any supported union types for BackendClusterReferenceModify", string(data))
-}
-
-func (u BackendClusterReferenceModify) MarshalJSON() ([]byte, error) {
-	if u.BackendClusterReferenceByID != nil {
-		return utils.MarshalJSON(u.BackendClusterReferenceByID, "", true)
-	}
-
-	if u.BackendClusterReferenceByName != nil {
-		return utils.MarshalJSON(u.BackendClusterReferenceByName, "", true)
-	}
-
-	return nil, errors.New("could not marshal union type BackendClusterReferenceModify: all fields are null")
+	return o.ID
 }

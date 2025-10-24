@@ -2,7 +2,11 @@
 
 package types
 
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
+
 type BackendClusterReferenceModify struct {
-	BackendClusterReferenceByID   *SchemaRegistryReferenceByID   `queryParam:"inline" tfsdk:"backend_cluster_reference_by_id" tfPlanOnly:"true"`
-	BackendClusterReferenceByName *BackendClusterReferenceByName `queryParam:"inline" tfsdk:"backend_cluster_reference_by_name" tfPlanOnly:"true"`
+	ID   types.String `tfsdk:"id"`
+	Name types.String `tfsdk:"name"`
 }

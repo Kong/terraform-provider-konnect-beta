@@ -84,23 +84,28 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"password": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `A template string expression containing a reference to a secret. Not Null`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `A sensitive value containing the secret or a reference to a secret as a template string expression.` + "\n" +
+									`If the value is provided as plain text, it is encrypted at rest and omitted from API responses.` + "\n" +
+									`If provided as an expression, the expression itself is stored and returned by the API.` + "\n" +
+									`Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
 								},
 							},
 							"username": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `A template string expression containing a reference to a secret or a literal value. Not Null`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `A literal value or a reference to an existing secret as a template string expression.` + "\n" +
+									`The value is stored and returned by the API as-is, not treated as sensitive information.` + "\n" +
+									`Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
 								},
 							},
 						},
-						Description: `SASL/PLAIN authentication scheme for the backend cluster.`,
+						Description: `SASL/PLAIN authentication scheme for the backend cluster without requiring sensitive password data.`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
 								path.MatchRelative().AtParent().AtName("anonymous"),
@@ -125,23 +130,28 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 								},
 							},
 							"password": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `A template string expression containing a reference to a secret. Not Null`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `A sensitive value containing the secret or a reference to a secret as a template string expression.` + "\n" +
+									`If the value is provided as plain text, it is encrypted at rest and omitted from API responses.` + "\n" +
+									`If provided as an expression, the expression itself is stored and returned by the API.` + "\n" +
+									`Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
 								},
 							},
 							"username": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `A template string expression containing a reference to a secret or a literal value. Not Null`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `A literal value or a reference to an existing secret as a template string expression.` + "\n" +
+									`The value is stored and returned by the API as-is, not treated as sensitive information.` + "\n" +
+									`Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
 								},
 							},
 						},
-						Description: `SASL/SCRAM-SHA-256 authentication scheme for the backend cluster.`,
+						Description: `SASL/SCRAM authentication scheme for the backend cluster without requiring sensitive password data.`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
 								path.MatchRelative().AtParent().AtName("anonymous"),
@@ -223,9 +233,10 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"ca_bundle": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `A template string expression containing a reference to a secret or a literal value`,
+						Computed: true,
+						Optional: true,
+						MarkdownDescription: `A literal value or a reference to an existing secret as a template string expression.` + "\n" +
+							`The value is stored and returned by the API as-is, not treated as sensitive information.`,
 					},
 					"enabled": schema.BoolAttribute{
 						Required:    true,

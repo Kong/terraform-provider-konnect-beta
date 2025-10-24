@@ -19,7 +19,7 @@ confluent = {
     config = {
             authentication = {
         basic = {
-    password = "${env['MY_SECRET']}"
+    password = "${vault.env['MY_ENV_VAR']}"
     username = "...my_username..."
 }
         }
@@ -94,15 +94,18 @@ Optional:
 
 Optional:
 
-- `basic` (Attributes) (see [below for nested schema](#nestedatt--confluent--config--authentication--basic))
+- `basic` (Attributes) Basic authentication scheme for the schema registry with username and password. (see [below for nested schema](#nestedatt--confluent--config--authentication--basic))
 
 <a id="nestedatt--confluent--config--authentication--basic"></a>
 ### Nested Schema for `confluent.config.authentication.basic`
 
 Required:
 
-- `password` (String) A template string expression containing a reference to a secret
-- `username` (String) A template string expression containing a reference to a secret or a literal value
+- `password` (String) A sensitive value containing the secret or a reference to a secret as a template string expression.
+If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
+If provided as an expression, the expression itself is stored and returned by the API.
+- `username` (String) A literal value or a reference to an existing secret as a template string expression.
+The value is stored and returned by the API as-is, not treated as sensitive information.
 
 
 

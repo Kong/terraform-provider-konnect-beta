@@ -39,7 +39,9 @@ type BackendClusterTLS struct {
 	Enabled bool `json:"enabled"`
 	// If true, skip certificate verification. It's not secure to use for production.
 	InsecureSkipVerify *bool `default:"false" json:"insecure_skip_verify"`
-	// A template string expression containing a reference to a secret or a literal value
+	// A literal value or a reference to an existing secret as a template string expression.
+	// The value is stored and returned by the API as-is, not treated as sensitive information.
+	//
 	CaBundle *string `json:"ca_bundle,omitempty"`
 	// List of supported TLS versions.
 	TLSVersions []TLSVersions `json:"tls_versions,omitempty"`

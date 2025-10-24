@@ -3,7 +3,7 @@ resource "konnect_event_gateway_backend_cluster" "my_eventgatewaybackendcluster"
     authentication = {
     sasl_scram = {
     algorithm = "sha256"
-    password = "${env['MY_SECRET']}"
+    password = "${vault.env['MY_ENV_VAR']}"
     username = "...my_username..."
 }
     }

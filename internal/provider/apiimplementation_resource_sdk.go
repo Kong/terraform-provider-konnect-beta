@@ -16,10 +16,23 @@ func (r *APIImplementationResourceModel) RefreshFromSharedAPIImplementationRespo
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		if resp.ControlPlaneReference != nil {
+			r.ControlPlaneReference = &tfTypes.ControlPlaneReference{}
+			if resp.ControlPlaneReference.ControlPlane == nil {
+				r.ControlPlaneReference.ControlPlane = nil
+			} else {
+				r.ControlPlaneReference.ControlPlane = &tfTypes.APIImplementationControlPlane{}
+				r.ControlPlaneReference.ControlPlane.AccessControlEnforcementEnabled = types.BoolPointerValue(resp.ControlPlaneReference.ControlPlane.AccessControlEnforcementEnabled)
+				r.ControlPlaneReference.ControlPlane.ControlPlaneID = types.StringValue(resp.ControlPlaneReference.ControlPlane.ControlPlaneID)
+			}
+			r.ControlPlaneReference.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.ControlPlaneReference.CreatedAt))
+			r.ControlPlaneReference.ID = types.StringValue(resp.ControlPlaneReference.ID)
+			r.ID = r.ControlPlaneReference.ID
+			r.ControlPlaneReference.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.ControlPlaneReference.UpdatedAt))
+		}
 		if resp.APIImplementationResponseServiceReference != nil {
 			r.ServiceReference = &tfTypes.ServiceReference{}
 			r.ServiceReference.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.APIImplementationResponseServiceReference.CreatedAt))
-			r.CreatedAt = r.ServiceReference.CreatedAt
 			r.ServiceReference.ID = types.StringValue(resp.APIImplementationResponseServiceReference.ID)
 			r.ID = r.ServiceReference.ID
 			if resp.APIImplementationResponseServiceReference.Service == nil {
@@ -30,7 +43,6 @@ func (r *APIImplementationResourceModel) RefreshFromSharedAPIImplementationRespo
 				r.ServiceReference.Service.ID = types.StringValue(resp.APIImplementationResponseServiceReference.Service.ID)
 			}
 			r.ServiceReference.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.APIImplementationResponseServiceReference.UpdatedAt))
-			r.UpdatedAt = r.ServiceReference.UpdatedAt
 		}
 	}
 

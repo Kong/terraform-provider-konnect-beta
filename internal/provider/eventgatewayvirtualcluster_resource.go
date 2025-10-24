@@ -247,18 +247,32 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 										},
 										Attributes: map[string]schema.Attribute{
 											"password": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `A template string expression containing a reference to a secret`,
+												Computed: true,
+												Optional: true,
+												MarkdownDescription: `A sensitive value containing the secret or a reference to a secret as a template string expression.` + "\n" +
+													`If the value is provided as plain text, it is encrypted at rest and omitted from API responses.` + "\n" +
+													`If provided as an expression, the expression itself is stored and returned by the API.` + "\n" +
+													`Not Null`,
+												Validators: []validator.String{
+													speakeasy_stringvalidators.NotNull(),
+												},
 											},
 											"username": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `A template string expression containing a reference to a secret or a literal value`,
+												Computed: true,
+												Optional: true,
+												MarkdownDescription: `A literal value or a reference to an existing secret as a template string expression.` + "\n" +
+													`The value is stored and returned by the API as-is, not treated as sensitive information.` + "\n" +
+													`Not Null`,
+												Validators: []validator.String{
+													speakeasy_stringvalidators.NotNull(),
+												},
 											},
 										},
 									},
 									Description: `List of principals to be able to authenticate with, used with ` + "`" + `terminate` + "`" + ` mediation.`,
+									Validators: []validator.List{
+										listvalidator.SizeAtLeast(1),
+									},
 								},
 							},
 							Description: `SASL/PLAIN authentication scheme for the virtual cluster.`,
@@ -326,43 +340,9 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 			"destination": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
-					"backend_cluster_reference_by_id": schema.SingleNestedAttribute{
-						Optional: true,
-						Attributes: map[string]schema.Attribute{
-							"id": schema.StringAttribute{
-								Required:    true,
-								Description: `The unique identifier of the backend cluster.`,
-							},
-						},
-						Validators: []validator.Object{
-							objectvalidator.ConflictsWith(path.Expressions{
-								path.MatchRelative().AtParent().AtName("backend_cluster_reference_by_name"),
-							}...),
-						},
-					},
-					"backend_cluster_reference_by_name": schema.SingleNestedAttribute{
-						Optional: true,
-						Attributes: map[string]schema.Attribute{
-							"id": schema.StringAttribute{
-								Optional:    true,
-								Description: `The unique identifier of the backend cluster.`,
-							},
-							"name": schema.StringAttribute{
-								Required:    true,
-								Description: `The unique name of the backend cluster.`,
-								Validators: []validator.String{
-									stringvalidator.UTF8LengthBetween(1, 255),
-								},
-							},
-						},
-						Validators: []validator.Object{
-							objectvalidator.ConflictsWith(path.Expressions{
-								path.MatchRelative().AtParent().AtName("backend_cluster_reference_by_id"),
-							}...),
-						},
-					},
 					"id": schema.StringAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The unique identifier of the backend cluster.`,
 					},
 					"name": schema.StringAttribute{

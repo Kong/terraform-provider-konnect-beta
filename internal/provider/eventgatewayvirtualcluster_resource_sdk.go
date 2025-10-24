@@ -61,17 +61,17 @@ func (r *EventGatewayVirtualClusterResourceModel) RefreshFromSharedVirtualCluste
 					authentication.OauthBearer.Validate.Issuer = types.StringPointerValue(authenticationItem.VirtualClusterAuthenticationOauthBearer.Validate.Issuer)
 				}
 			}
-			if authenticationItem.VirtualClusterAuthenticationSaslPlain != nil {
+			if authenticationItem.VirtualClusterAuthenticationSaslPlainSensitiveDataAware != nil {
 				authentication.SaslPlain = &tfTypes.VirtualClusterAuthenticationSaslPlain{}
-				authentication.SaslPlain.Mediation = types.StringValue(string(authenticationItem.VirtualClusterAuthenticationSaslPlain.Mediation))
-				if authenticationItem.VirtualClusterAuthenticationSaslPlain.Principals != nil {
-					authentication.SaslPlain.Principals = []tfTypes.VirtualClusterAuthenticationPrincipal{}
+				authentication.SaslPlain.Mediation = types.StringValue(string(authenticationItem.VirtualClusterAuthenticationSaslPlainSensitiveDataAware.Mediation))
+				if authenticationItem.VirtualClusterAuthenticationSaslPlainSensitiveDataAware.Principals != nil {
+					authentication.SaslPlain.Principals = []tfTypes.BackendClusterAuthenticationSaslPlain{}
 
-					for _, principalsItem := range authenticationItem.VirtualClusterAuthenticationSaslPlain.Principals {
-						var principals tfTypes.VirtualClusterAuthenticationPrincipal
+					for _, principalsItem := range authenticationItem.VirtualClusterAuthenticationSaslPlainSensitiveDataAware.Principals {
+						var principals tfTypes.BackendClusterAuthenticationSaslPlain
 
 						principals.Password = types.StringPointerValue(principalsItem.Password)
-						principals.Username = types.StringPointerValue(principalsItem.Username)
+						principals.Username = types.StringValue(principalsItem.Username)
 
 						authentication.SaslPlain.Principals = append(authentication.SaslPlain.Principals, principals)
 					}
@@ -86,6 +86,8 @@ func (r *EventGatewayVirtualClusterResourceModel) RefreshFromSharedVirtualCluste
 		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
+		r.Destination.ID = types.StringValue(resp.Destination.ID)
+		r.Destination.Name = types.StringValue(resp.Destination.Name)
 		r.DNSLabel = types.StringValue(resp.DNSLabel)
 		r.ID = types.StringValue(resp.ID)
 		if len(resp.Labels) > 0 {
@@ -267,41 +269,14 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 	} else {
 		description = nil
 	}
-	var destination shared.BackendClusterReferenceModify
-	var backendClusterReferenceByID *shared.BackendClusterReferenceByID
-	if r.Destination.BackendClusterReferenceByID != nil {
-		var id string
-		id = r.Destination.BackendClusterReferenceByID.ID.ValueString()
-
-		backendClusterReferenceByID = &shared.BackendClusterReferenceByID{
-			ID: id,
-		}
+	id := new(string)
+	if !r.Destination.ID.IsUnknown() && !r.Destination.ID.IsNull() {
+		*id = r.Destination.ID.ValueString()
+	} else {
+		id = nil
 	}
-	if backendClusterReferenceByID != nil {
-		destination = shared.BackendClusterReferenceModify{
-			BackendClusterReferenceByID: backendClusterReferenceByID,
-		}
-	}
-	var backendClusterReferenceByName *shared.BackendClusterReferenceByName
-	if r.Destination.BackendClusterReferenceByName != nil {
-		var name1 string
-		name1 = r.Destination.BackendClusterReferenceByName.Name.ValueString()
-
-		id1 := new(string)
-		if !r.Destination.BackendClusterReferenceByName.ID.IsUnknown() && !r.Destination.BackendClusterReferenceByName.ID.IsNull() {
-			*id1 = r.Destination.BackendClusterReferenceByName.ID.ValueString()
-		} else {
-			id1 = nil
-		}
-		backendClusterReferenceByName = &shared.BackendClusterReferenceByName{
-			Name: name1,
-			ID:   id1,
-		}
-	}
-	if backendClusterReferenceByName != nil {
-		destination = shared.BackendClusterReferenceModify{
-			BackendClusterReferenceByName: backendClusterReferenceByName,
-		}
+	destination := shared.BackendClusterReferenceModify{
+		ID: id,
 	}
 	authentication := make([]shared.VirtualClusterAuthenticationScheme, 0, len(r.Authentication))
 	for _, authenticationItem := range r.Authentication {
@@ -317,18 +292,12 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 			if authenticationItem.SaslPlain.Principals != nil {
 				principals = make([]shared.VirtualClusterAuthenticationPrincipal, 0, len(authenticationItem.SaslPlain.Principals))
 				for _, principalsItem := range authenticationItem.SaslPlain.Principals {
-					username := new(string)
-					if !principalsItem.Username.IsUnknown() && !principalsItem.Username.IsNull() {
-						*username = principalsItem.Username.ValueString()
-					} else {
-						username = nil
-					}
-					password := new(string)
-					if !principalsItem.Password.IsUnknown() && !principalsItem.Password.IsNull() {
-						*password = principalsItem.Password.ValueString()
-					} else {
-						password = nil
-					}
+					var username string
+					username = principalsItem.Username.ValueString()
+
+					var password string
+					password = principalsItem.Password.ValueString()
+
 					principals = append(principals, shared.VirtualClusterAuthenticationPrincipal{
 						Username: username,
 						Password: password,
@@ -402,11 +371,11 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 				if authenticationItem.OauthBearer.Validate.Audiences != nil {
 					audiences = make([]shared.VirtualClusterAuthenticationAudience, 0, len(authenticationItem.OauthBearer.Validate.Audiences))
 					for _, audiencesItem := range authenticationItem.OauthBearer.Validate.Audiences {
-						var name2 string
-						name2 = audiencesItem.Name.ValueString()
+						var name1 string
+						name1 = audiencesItem.Name.ValueString()
 
 						audiences = append(audiences, shared.VirtualClusterAuthenticationAudience{
-							Name: name2,
+							Name: name1,
 						})
 					}
 				}
@@ -573,80 +542,50 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 	} else {
 		description = nil
 	}
-	var destination shared.BackendClusterReferenceModify
-	var backendClusterReferenceByID *shared.BackendClusterReferenceByID
-	if r.Destination.BackendClusterReferenceByID != nil {
-		var id string
-		id = r.Destination.BackendClusterReferenceByID.ID.ValueString()
-
-		backendClusterReferenceByID = &shared.BackendClusterReferenceByID{
-			ID: id,
-		}
+	id := new(string)
+	if !r.Destination.ID.IsUnknown() && !r.Destination.ID.IsNull() {
+		*id = r.Destination.ID.ValueString()
+	} else {
+		id = nil
 	}
-	if backendClusterReferenceByID != nil {
-		destination = shared.BackendClusterReferenceModify{
-			BackendClusterReferenceByID: backendClusterReferenceByID,
-		}
+	destination := shared.BackendClusterReferenceModify{
+		ID: id,
 	}
-	var backendClusterReferenceByName *shared.BackendClusterReferenceByName
-	if r.Destination.BackendClusterReferenceByName != nil {
-		var name1 string
-		name1 = r.Destination.BackendClusterReferenceByName.Name.ValueString()
-
-		id1 := new(string)
-		if !r.Destination.BackendClusterReferenceByName.ID.IsUnknown() && !r.Destination.BackendClusterReferenceByName.ID.IsNull() {
-			*id1 = r.Destination.BackendClusterReferenceByName.ID.ValueString()
-		} else {
-			id1 = nil
-		}
-		backendClusterReferenceByName = &shared.BackendClusterReferenceByName{
-			Name: name1,
-			ID:   id1,
-		}
-	}
-	if backendClusterReferenceByName != nil {
-		destination = shared.BackendClusterReferenceModify{
-			BackendClusterReferenceByName: backendClusterReferenceByName,
-		}
-	}
-	authentication := make([]shared.VirtualClusterAuthenticationScheme, 0, len(r.Authentication))
+	authentication := make([]shared.VirtualClusterAuthenticationSensitiveDataAwareScheme, 0, len(r.Authentication))
 	for _, authenticationItem := range r.Authentication {
 		if authenticationItem.Anonymous != nil {
 			virtualClusterAuthenticationAnonymous := shared.VirtualClusterAuthenticationAnonymous{}
-			authentication = append(authentication, shared.VirtualClusterAuthenticationScheme{
+			authentication = append(authentication, shared.VirtualClusterAuthenticationSensitiveDataAwareScheme{
 				VirtualClusterAuthenticationAnonymous: &virtualClusterAuthenticationAnonymous,
 			})
 		}
 		if authenticationItem.SaslPlain != nil {
-			mediation := shared.Mediation(authenticationItem.SaslPlain.Mediation.ValueString())
-			var principals []shared.VirtualClusterAuthenticationPrincipal
+			mediation := shared.VirtualClusterAuthenticationSaslPlainSensitiveDataAwareMediation(authenticationItem.SaslPlain.Mediation.ValueString())
+			var principals []shared.VirtualClusterAuthenticationPrincipalSensitiveDataAware
 			if authenticationItem.SaslPlain.Principals != nil {
-				principals = make([]shared.VirtualClusterAuthenticationPrincipal, 0, len(authenticationItem.SaslPlain.Principals))
+				principals = make([]shared.VirtualClusterAuthenticationPrincipalSensitiveDataAware, 0, len(authenticationItem.SaslPlain.Principals))
 				for _, principalsItem := range authenticationItem.SaslPlain.Principals {
-					username := new(string)
-					if !principalsItem.Username.IsUnknown() && !principalsItem.Username.IsNull() {
-						*username = principalsItem.Username.ValueString()
-					} else {
-						username = nil
-					}
+					var username string
+					username = principalsItem.Username.ValueString()
+
 					password := new(string)
 					if !principalsItem.Password.IsUnknown() && !principalsItem.Password.IsNull() {
 						*password = principalsItem.Password.ValueString()
 					} else {
 						password = nil
 					}
-					principals = append(principals, shared.VirtualClusterAuthenticationPrincipal{
+					principals = append(principals, shared.VirtualClusterAuthenticationPrincipalSensitiveDataAware{
 						Username: username,
 						Password: password,
 					})
 				}
 			}
-			virtualClusterAuthenticationSaslPlain := shared.VirtualClusterAuthenticationSaslPlain{
+			virtualClusterAuthenticationSaslPlainSensitiveDataAware := shared.VirtualClusterAuthenticationSaslPlainSensitiveDataAware{
 				Mediation:  mediation,
 				Principals: principals,
 			}
-			authentication = append(authentication, shared.VirtualClusterAuthenticationScheme{
-				VirtualClusterAuthenticationSaslPlain: &virtualClusterAuthenticationSaslPlain,
+			authentication = append(authentication, shared.VirtualClusterAuthenticationSensitiveDataAwareScheme{
+				VirtualClusterAuthenticationSaslPlainSensitiveDataAware: &virtualClusterAuthenticationSaslPlainSensitiveDataAware,
 			})
 		}
 		if authenticationItem.SaslScram != nil {
@@ -654,7 +593,7 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 			virtualClusterAuthenticationSaslScram := shared.VirtualClusterAuthenticationSaslScram{
 				Algorithm: algorithm,
 			}
-			authentication = append(authentication, shared.VirtualClusterAuthenticationScheme{
+			authentication = append(authentication, shared.VirtualClusterAuthenticationSensitiveDataAwareScheme{
 				VirtualClusterAuthenticationSaslScram: &virtualClusterAuthenticationSaslScram,
 			})
 		}
@@ -708,11 +647,11 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 				if authenticationItem.OauthBearer.Validate.Audiences != nil {
 					audiences = make([]shared.VirtualClusterAuthenticationAudience, 0, len(authenticationItem.OauthBearer.Validate.Audiences))
 					for _, audiencesItem := range authenticationItem.OauthBearer.Validate.Audiences {
-						var name2 string
-						name2 = audiencesItem.Name.ValueString()
+						var name1 string
+						name1 = audiencesItem.Name.ValueString()
 
 						audiences = append(audiences, shared.VirtualClusterAuthenticationAudience{
-							Name: name2,
+							Name: name1,
 						})
 					}
 				}
@@ -733,7 +672,7 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 				Jwks:          jwks,
 				Validate:      validate,
 			}
-			authentication = append(authentication, shared.VirtualClusterAuthenticationScheme{
+			authentication = append(authentication, shared.VirtualClusterAuthenticationSensitiveDataAwareScheme{
 				VirtualClusterAuthenticationOauthBearer: &virtualClusterAuthenticationOauthBearer,
 			})
 		}

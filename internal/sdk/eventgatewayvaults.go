@@ -311,7 +311,7 @@ func (s *EventGatewayVaults) CreateEventGatewayVault(ctx context.Context, reques
 
 }
 
-// GetEventGatewayVault - Fetch Vault
+// GetEventGatewayVault - Get a Vault
 // Returns information about a specific vault associated with the Event Gateway.
 func (s *EventGatewayVaults) GetEventGatewayVault(ctx context.Context, request operations.GetEventGatewayVaultRequest, opts ...operations.Option) (*operations.GetEventGatewayVaultResponse, error) {
 	o := operations.Options{}

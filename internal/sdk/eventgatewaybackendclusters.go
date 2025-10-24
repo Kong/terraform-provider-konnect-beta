@@ -311,7 +311,7 @@ func (s *EventGatewayBackendClusters) CreateEventGatewayBackendCluster(ctx conte
 
 }
 
-// GetEventGatewayBackendCluster - Fetch Backend Cluster
+// GetEventGatewayBackendCluster - Get a Backend Cluster
 // Returns information about a specific backend cluster.
 func (s *EventGatewayBackendClusters) GetEventGatewayBackendCluster(ctx context.Context, request operations.GetEventGatewayBackendClusterRequest, opts ...operations.Option) (*operations.GetEventGatewayBackendClusterResponse, error) {
 	o := operations.Options{}
