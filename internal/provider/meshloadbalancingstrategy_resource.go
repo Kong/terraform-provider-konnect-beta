@@ -20,7 +20,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	custom_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
-	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
@@ -48,6 +47,7 @@ type MeshLoadBalancingStrategyResource struct {
 type MeshLoadBalancingStrategyResourceModel struct {
 	CpID             types.String                              `tfsdk:"cp_id"`
 	CreationTime     types.String                              `tfsdk:"creation_time"`
+	Kri              types.String                              `tfsdk:"kri"`
 	Labels           kumalabels.KumaLabelsMapValue             `tfsdk:"labels"`
 	Mesh             types.String                              `tfsdk:"mesh"`
 	ModificationTime types.String                              `tfsdk:"modification_time"`
@@ -81,6 +81,10 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 				Validators: []validator.String{
 					validators.IsRFC3339(),
 				},
+			},
+			"kri": schema.StringAttribute{
+				Computed:    true,
+				Description: `A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing`,
 			},
 			"labels": schema.MapAttribute{
 				CustomType:  kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType: types.StringType}},
@@ -915,11 +919,7 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 				},
 			},
 			"warnings": schema.ListAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.List{
-					custom_listplanmodifier.SupressZeroNullModifier(),
-					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +
 					`Warning messages describe a problem the client making the API request should correct or be aware of.`,

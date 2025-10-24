@@ -11,8 +11,8 @@ type UpdateBackendClusterRequest struct {
 	// The unique name of the backend cluster.
 	Name string `json:"name"`
 	// A human-readable description of the virtual cluster.
-	Description    *string                            `json:"description,omitempty"`
-	Authentication BackendClusterAuthenticationScheme `json:"authentication"`
+	Description    *string                                              `json:"description,omitempty"`
+	Authentication BackendClusterAuthenticationSensitiveDataAwareScheme `json:"authentication"`
 	// If true, virtual clusters can have allow anonymous authentication and use this backend cluster.
 	// This setting is not recommended for production use as it may create privilege escalation vulnerabilities.
 	//
@@ -54,9 +54,9 @@ func (o *UpdateBackendClusterRequest) GetDescription() *string {
 	return o.Description
 }
 
-func (o *UpdateBackendClusterRequest) GetAuthentication() BackendClusterAuthenticationScheme {
+func (o *UpdateBackendClusterRequest) GetAuthentication() BackendClusterAuthenticationSensitiveDataAwareScheme {
 	if o == nil {
-		return BackendClusterAuthenticationScheme{}
+		return BackendClusterAuthenticationSensitiveDataAwareScheme{}
 	}
 	return o.Authentication
 }
@@ -65,12 +65,12 @@ func (o *UpdateBackendClusterRequest) GetAuthenticationAnonymous() *BackendClust
 	return o.GetAuthentication().BackendClusterAuthenticationAnonymous
 }
 
-func (o *UpdateBackendClusterRequest) GetAuthenticationSaslPlain() *BackendClusterAuthenticationSaslPlain {
-	return o.GetAuthentication().BackendClusterAuthenticationSaslPlain
+func (o *UpdateBackendClusterRequest) GetAuthenticationSaslPlain() *BackendClusterAuthenticationSaslPlainSensitiveDataAware {
+	return o.GetAuthentication().BackendClusterAuthenticationSaslPlainSensitiveDataAware
 }
 
-func (o *UpdateBackendClusterRequest) GetAuthenticationSaslScram() *BackendClusterAuthenticationSaslScram {
-	return o.GetAuthentication().BackendClusterAuthenticationSaslScram
+func (o *UpdateBackendClusterRequest) GetAuthenticationSaslScram() *BackendClusterAuthenticationSaslScramSensitiveDataAware {
+	return o.GetAuthentication().BackendClusterAuthenticationSaslScramSensitiveDataAware
 }
 
 func (o *UpdateBackendClusterRequest) GetInsecureAllowAnonymousVirtualClusterAuth() *bool {

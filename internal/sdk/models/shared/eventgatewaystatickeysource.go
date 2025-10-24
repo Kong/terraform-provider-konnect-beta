@@ -9,7 +9,10 @@ import (
 type Keys struct {
 	// The unique identifier of the key.
 	ID string `json:"id"`
-	// A template string expression containing a reference to a secret
+	// A sensitive value containing the secret or a reference to a secret as a template string expression.
+	// If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
+	// If provided as an expression, the expression itself is stored and returned by the API.
+	//
 	Key string `json:"key"`
 }
 

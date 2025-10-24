@@ -247,18 +247,32 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 										},
 										Attributes: map[string]schema.Attribute{
 											"password": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `A template string expression containing a reference to a secret`,
+												Computed: true,
+												Optional: true,
+												MarkdownDescription: `A sensitive value containing the secret or a reference to a secret as a template string expression.` + "\n" +
+													`If the value is provided as plain text, it is encrypted at rest and omitted from API responses.` + "\n" +
+													`If provided as an expression, the expression itself is stored and returned by the API.` + "\n" +
+													`Not Null`,
+												Validators: []validator.String{
+													speakeasy_stringvalidators.NotNull(),
+												},
 											},
 											"username": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `A template string expression containing a reference to a secret or a literal value`,
+												Computed: true,
+												Optional: true,
+												MarkdownDescription: `A literal value or a reference to an existing secret as a template string expression.` + "\n" +
+													`The value is stored and returned by the API as-is, not treated as sensitive information.` + "\n" +
+													`Not Null`,
+												Validators: []validator.String{
+													speakeasy_stringvalidators.NotNull(),
+												},
 											},
 										},
 									},
 									Description: `List of principals to be able to authenticate with, used with ` + "`" + `terminate` + "`" + ` mediation.`,
+									Validators: []validator.List{
+										listvalidator.SizeAtLeast(1),
+									},
 								},
 							},
 							Description: `SASL/PLAIN authentication scheme for the virtual cluster.`,

@@ -93,6 +93,7 @@ resource "konnect_mesh_external_service" "my_meshexternalservice" {
 ### Read-Only
 
 - `creation_time` (String) Time at which the resource was created
+- `kri` (String) A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
 - `modification_time` (String) Time at which the resource was updated
 - `status` (Attributes) Status is the current status of the Kuma MeshExternalService resource. (see [below for nested schema](#nestedatt--status))
 - `warnings` (List of String) warnings is a list of warning messages to return to the requesting Kuma API clients.

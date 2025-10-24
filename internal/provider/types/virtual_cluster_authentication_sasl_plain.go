@@ -8,5 +8,5 @@ import (
 
 type VirtualClusterAuthenticationSaslPlain struct {
 	Mediation  types.String                            `tfsdk:"mediation"`
-	Principals []VirtualClusterAuthenticationPrincipal `tfsdk:"principals"`
+	Principals []BackendClusterAuthenticationSaslPlain `tfsdk:"principals"`
 }

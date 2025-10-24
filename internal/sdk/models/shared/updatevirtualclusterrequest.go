@@ -19,7 +19,7 @@ type UpdateVirtualClusterRequest struct {
 	// It tries to authenticate with every rule sequentially one by one.
 	// It succeeds on the first match, and fails if no rule matches.
 	//
-	Authentication []VirtualClusterAuthenticationScheme `json:"authentication"`
+	Authentication []VirtualClusterAuthenticationSensitiveDataAwareScheme `json:"authentication"`
 	// Namespace allows to implement multitenancy using a single backend cluster.
 	// It allows to either hide or enforce a static prefix on resources (topics, consumer group IDs, transaction IDs).
 	//
@@ -63,9 +63,9 @@ func (o *UpdateVirtualClusterRequest) GetDestination() BackendClusterReferenceMo
 	return o.Destination
 }
 
-func (o *UpdateVirtualClusterRequest) GetAuthentication() []VirtualClusterAuthenticationScheme {
+func (o *UpdateVirtualClusterRequest) GetAuthentication() []VirtualClusterAuthenticationSensitiveDataAwareScheme {
 	if o == nil {
-		return []VirtualClusterAuthenticationScheme{}
+		return []VirtualClusterAuthenticationSensitiveDataAwareScheme{}
 	}
 	return o.Authentication
 }

@@ -1570,6 +1570,8 @@ type MeshLoadBalancingStrategyItem struct {
 	Type MeshLoadBalancingStrategyItemType `json:"type"`
 	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
 	Mesh *string `default:"default" json:"mesh"`
+	// A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
+	Kri *string `json:"kri,omitempty"`
 	// Name of the Kuma resource
 	Name string `json:"name"`
 	// The labels to help identity resources
@@ -1607,6 +1609,13 @@ func (o *MeshLoadBalancingStrategyItem) GetMesh() *string {
 	return o.Mesh
 }
 
+func (o *MeshLoadBalancingStrategyItem) GetKri() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Kri
+}
+
 func (o *MeshLoadBalancingStrategyItem) GetName() string {
 	if o == nil {
 		return ""
@@ -1642,6 +1651,7 @@ func (o *MeshLoadBalancingStrategyItem) GetModificationTime() *time.Time {
 	return o.ModificationTime
 }
 
+// MeshLoadBalancingStrategyItemInput - Successful response
 type MeshLoadBalancingStrategyItemInput struct {
 	// the type of the resource
 	Type MeshLoadBalancingStrategyItemType `json:"type"`

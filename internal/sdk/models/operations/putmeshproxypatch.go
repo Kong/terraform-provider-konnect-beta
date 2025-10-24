@@ -53,7 +53,7 @@ type PutMeshProxyPatchResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Updated
+	// Successful response
 	MeshProxyPatchCreateOrUpdateSuccessResponse *shared.MeshProxyPatchCreateOrUpdateSuccessResponse
 }
 

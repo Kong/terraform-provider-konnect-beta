@@ -6,41 +6,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// EventGatewayEncryptPolicyConfig - The configuration of the encrypt policy.
-type EventGatewayEncryptPolicyConfig struct {
-	// Describes how to handle failing encryption or decryption.
-	// Use `error` if the record should be rejected if encryption or decryption fails.
-	// Use `passthrough` to ignore encryption or decryption failure and continue proxying the record.
-	//
-	FailureMode EncryptionFailureMode `json:"failure_mode"`
-	// Describes how to find a symmetric key for encryption.
-	//
-	KeySources []EventGatewayKeySource `json:"key_sources"`
-	// Describes what parts of a record to encrypt.
-	Encrypt []EncryptionRecordSelector `json:"encrypt"`
-}
-
-func (o *EventGatewayEncryptPolicyConfig) GetFailureMode() EncryptionFailureMode {
-	if o == nil {
-		return EncryptionFailureMode("")
-	}
-	return o.FailureMode
-}
-
-func (o *EventGatewayEncryptPolicyConfig) GetKeySources() []EventGatewayKeySource {
-	if o == nil {
-		return []EventGatewayKeySource{}
-	}
-	return o.KeySources
-}
-
-func (o *EventGatewayEncryptPolicyConfig) GetEncrypt() []EncryptionRecordSelector {
-	if o == nil {
-		return []EncryptionRecordSelector{}
-	}
-	return o.Encrypt
-}
-
 // EventGatewayEncryptPolicy - Encrypts portions of Kafka records using AES_128_GCM. Keys are therefore 128 bits long.
 type EventGatewayEncryptPolicy struct {
 	type_ string `const:"encrypt" json:"type"`
@@ -53,7 +18,7 @@ type EventGatewayEncryptPolicy struct {
 	// A string containing the boolean expression that determines whether the policy is applied.
 	Condition *string `json:"condition,omitempty"`
 	// The configuration of the encrypt policy.
-	Config *EventGatewayEncryptPolicyConfig `json:"config"`
+	Config EventGatewayEncryptConfig `json:"config"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -104,9 +69,9 @@ func (o *EventGatewayEncryptPolicy) GetCondition() *string {
 	return o.Condition
 }
 
-func (o *EventGatewayEncryptPolicy) GetConfig() *EventGatewayEncryptPolicyConfig {
+func (o *EventGatewayEncryptPolicy) GetConfig() EventGatewayEncryptConfig {
 	if o == nil {
-		return nil
+		return EventGatewayEncryptConfig{}
 	}
 	return o.Config
 }

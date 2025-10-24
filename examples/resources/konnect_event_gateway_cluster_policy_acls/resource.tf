@@ -7,7 +7,7 @@ resource "konnect_event_gateway_cluster_policy_acls" "my_eventgatewayclusterpoli
         action = "deny"
         operations = [
           {
-            name = "idempotent_write"
+            name = "describe_configs"
           }
         ]
         resource_names = [

@@ -311,7 +311,7 @@ func (s *EventGatewayVirtualClusters) CreateEventGatewayVirtualCluster(ctx conte
 
 }
 
-// GetEventGatewayVirtualCluster - Fetch Virtual Cluster
+// GetEventGatewayVirtualCluster - Get a Virtual Cluster
 // Returns information about a specific virtual cluster associated with the Event Gateway.
 func (s *EventGatewayVirtualClusters) GetEventGatewayVirtualCluster(ctx context.Context, request operations.GetEventGatewayVirtualClusterRequest, opts ...operations.Option) (*operations.GetEventGatewayVirtualClusterResponse, error) {
 	o := operations.Options{}

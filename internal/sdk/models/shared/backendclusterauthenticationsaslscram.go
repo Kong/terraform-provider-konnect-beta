@@ -35,14 +35,19 @@ func (e *BackendClusterAuthenticationSaslScramAlgorithm) UnmarshalJSON(data []by
 	}
 }
 
-// BackendClusterAuthenticationSaslScram - SASL/SCRAM-SHA-256 authentication scheme for the backend cluster.
+// BackendClusterAuthenticationSaslScram - SASL/SCRAM authentication scheme for the backend cluster.
 type BackendClusterAuthenticationSaslScram struct {
 	type_ string `const:"sasl_scram" json:"type"`
 	// The algorithm used for SASL/SCRAM authentication.
 	Algorithm BackendClusterAuthenticationSaslScramAlgorithm `json:"algorithm"`
-	// A template string expression containing a reference to a secret or a literal value
+	// A literal value or a reference to an existing secret as a template string expression.
+	// The value is stored and returned by the API as-is, not treated as sensitive information.
+	//
 	Username string `json:"username"`
-	// A template string expression containing a reference to a secret
+	// A sensitive value containing the secret or a reference to a secret as a template string expression.
+	// If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
+	// If provided as an expression, the expression itself is stored and returned by the API.
+	//
 	Password string `json:"password"`
 }
 

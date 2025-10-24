@@ -4,7 +4,7 @@ confluent = {
     config = {
             authentication = {
         basic = {
-    password = "${env['MY_SECRET']}"
+    password = "${vault.env['MY_ENV_VAR']}"
     username = "...my_username..."
 }
         }

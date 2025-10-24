@@ -53,7 +53,7 @@ type PutMeshMetricResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Updated
+	// Successful response
 	MeshMetricCreateOrUpdateSuccessResponse *shared.MeshMetricCreateOrUpdateSuccessResponse
 }
 

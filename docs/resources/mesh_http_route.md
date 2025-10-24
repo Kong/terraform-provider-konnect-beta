@@ -215,6 +215,7 @@ resource "konnect_mesh_http_route" "my_meshhttproute" {
 ### Read-Only
 
 - `creation_time` (String) Time at which the resource was created
+- `kri` (String) A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
 - `modification_time` (String) Time at which the resource was updated
 - `warnings` (List of String) warnings is a list of warning messages to return to the requesting Kuma API clients.
 Warning messages describe a problem the client making the API request should correct or be aware of.

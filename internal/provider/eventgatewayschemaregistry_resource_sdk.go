@@ -44,8 +44,8 @@ func (r *EventGatewaySchemaRegistryResourceModel) ToOperationsCreateEventGateway
 	var gatewayID string
 	gatewayID = r.GatewayID.ValueString()
 
-	modifySchemaRegistry, modifySchemaRegistryDiags := r.ToSharedModifySchemaRegistry(ctx)
-	diags.Append(modifySchemaRegistryDiags...)
+	schemaRegistryCreate, schemaRegistryCreateDiags := r.ToSharedSchemaRegistryCreate(ctx)
+	diags.Append(schemaRegistryCreateDiags...)
 
 	if diags.HasError() {
 		return nil, diags
@@ -53,7 +53,7 @@ func (r *EventGatewaySchemaRegistryResourceModel) ToOperationsCreateEventGateway
 
 	out := operations.CreateEventGatewaySchemaRegistryRequest{
 		GatewayID:            gatewayID,
-		ModifySchemaRegistry: modifySchemaRegistry,
+		SchemaRegistryCreate: schemaRegistryCreate,
 	}
 
 	return &out, diags
@@ -102,8 +102,8 @@ func (r *EventGatewaySchemaRegistryResourceModel) ToOperationsUpdateEventGateway
 	var schemaRegistryID string
 	schemaRegistryID = r.ID.ValueString()
 
-	modifySchemaRegistry, modifySchemaRegistryDiags := r.ToSharedModifySchemaRegistry(ctx)
-	diags.Append(modifySchemaRegistryDiags...)
+	schemaRegistryUpdate, schemaRegistryUpdateDiags := r.ToSharedSchemaRegistryUpdate(ctx)
+	diags.Append(schemaRegistryUpdateDiags...)
 
 	if diags.HasError() {
 		return nil, diags
@@ -112,16 +112,16 @@ func (r *EventGatewaySchemaRegistryResourceModel) ToOperationsUpdateEventGateway
 	out := operations.UpdateEventGatewaySchemaRegistryRequest{
 		GatewayID:            gatewayID,
 		SchemaRegistryID:     schemaRegistryID,
-		ModifySchemaRegistry: modifySchemaRegistry,
+		SchemaRegistryUpdate: schemaRegistryUpdate,
 	}
 
 	return &out, diags
 }
 
-func (r *EventGatewaySchemaRegistryResourceModel) ToSharedModifySchemaRegistry(ctx context.Context) (*shared.ModifySchemaRegistry, diag.Diagnostics) {
+func (r *EventGatewaySchemaRegistryResourceModel) ToSharedSchemaRegistryCreate(ctx context.Context) (*shared.SchemaRegistryCreate, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var out shared.ModifySchemaRegistry
+	var out shared.SchemaRegistryCreate
 	var schemaRegistryConfluent *shared.SchemaRegistryConfluent
 	if r.Confluent != nil {
 		var name string
@@ -188,8 +188,89 @@ func (r *EventGatewaySchemaRegistryResourceModel) ToSharedModifySchemaRegistry(c
 		}
 	}
 	if schemaRegistryConfluent != nil {
-		out = shared.ModifySchemaRegistry{
+		out = shared.SchemaRegistryCreate{
 			SchemaRegistryConfluent: schemaRegistryConfluent,
+		}
+	}
+
+	return &out, diags
+}
+
+func (r *EventGatewaySchemaRegistryResourceModel) ToSharedSchemaRegistryUpdate(ctx context.Context) (*shared.SchemaRegistryUpdate, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var out shared.SchemaRegistryUpdate
+	var schemaRegistryConfluentSensitiveDataAware *shared.SchemaRegistryConfluentSensitiveDataAware
+	if r.Confluent != nil {
+		var name string
+		name = r.Confluent.Name.ValueString()
+
+		description := new(string)
+		if !r.Confluent.Description.IsUnknown() && !r.Confluent.Description.IsNull() {
+			*description = r.Confluent.Description.ValueString()
+		} else {
+			description = nil
+		}
+		schemaType := shared.SchemaRegistryConfluentConfigSensitiveDataAwareSchemaType(r.Confluent.Config.SchemaType.ValueString())
+		var endpoint string
+		endpoint = r.Confluent.Config.Endpoint.ValueString()
+
+		timeoutSeconds := new(int64)
+		if !r.Confluent.Config.TimeoutSeconds.IsUnknown() && !r.Confluent.Config.TimeoutSeconds.IsNull() {
+			*timeoutSeconds = r.Confluent.Config.TimeoutSeconds.ValueInt64()
+		} else {
+			timeoutSeconds = nil
+		}
+		var authentication *shared.SchemaRegistryAuthenticationSensitiveDataAwareScheme
+		if r.Confluent.Config.Authentication != nil {
+			var schemaRegistryAuthenticationBasicSensitiveDataAware *shared.SchemaRegistryAuthenticationBasicSensitiveDataAware
+			if r.Confluent.Config.Authentication.Basic != nil {
+				var username string
+				username = r.Confluent.Config.Authentication.Basic.Username.ValueString()
+
+				password := new(string)
+				if !r.Confluent.Config.Authentication.Basic.Password.IsUnknown() && !r.Confluent.Config.Authentication.Basic.Password.IsNull() {
+					*password = r.Confluent.Config.Authentication.Basic.Password.ValueString()
+				} else {
+					password = nil
+				}
+				schemaRegistryAuthenticationBasicSensitiveDataAware = &shared.SchemaRegistryAuthenticationBasicSensitiveDataAware{
+					Username: username,
+					Password: password,
+				}
+			}
+			if schemaRegistryAuthenticationBasicSensitiveDataAware != nil {
+				authentication = &shared.SchemaRegistryAuthenticationSensitiveDataAwareScheme{
+					SchemaRegistryAuthenticationBasicSensitiveDataAware: schemaRegistryAuthenticationBasicSensitiveDataAware,
+				}
+			}
+		}
+		config := shared.SchemaRegistryConfluentConfigSensitiveDataAware{
+			SchemaType:     schemaType,
+			Endpoint:       endpoint,
+			TimeoutSeconds: timeoutSeconds,
+			Authentication: authentication,
+		}
+		labels := make(map[string]*string)
+		for labelsKey, labelsValue := range r.Confluent.Labels {
+			labelsInst := new(string)
+			if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
+				*labelsInst = labelsValue.ValueString()
+			} else {
+				labelsInst = nil
+			}
+			labels[labelsKey] = labelsInst
+		}
+		schemaRegistryConfluentSensitiveDataAware = &shared.SchemaRegistryConfluentSensitiveDataAware{
+			Name:        name,
+			Description: description,
+			Config:      config,
+			Labels:      labels,
+		}
+	}
+	if schemaRegistryConfluentSensitiveDataAware != nil {
+		out = shared.SchemaRegistryUpdate{
+			SchemaRegistryConfluentSensitiveDataAware: schemaRegistryConfluentSensitiveDataAware,
 		}
 	}
 

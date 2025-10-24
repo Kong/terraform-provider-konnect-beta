@@ -38,10 +38,8 @@ resource "konnect_api_implementation" "my_apiimplementation" {
 
 ### Read-Only
 
-- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
+- `control_plane_reference` (Attributes) A control plane that implements an API (see [below for nested schema](#nestedatt--control_plane_reference))
 - `id` (String) Contains a unique identifier used for this resource.
-- `service` (Attributes) A Gateway service that implements an API (see [below for nested schema](#nestedatt--service))
-- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--service_reference"></a>
 ### Nested Schema for `service_reference`
@@ -66,13 +64,23 @@ Optional:
 
 
 
-<a id="nestedatt--service"></a>
-### Nested Schema for `service`
+<a id="nestedatt--control_plane_reference"></a>
+### Nested Schema for `control_plane_reference`
 
 Read-Only:
 
+- `control_plane` (Attributes) A Control plane that implements an API (see [below for nested schema](#nestedatt--control_plane_reference--control_plane))
+- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
+- `id` (String) Contains a unique identifier used for this resource.
+- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
+
+<a id="nestedatt--control_plane_reference--control_plane"></a>
+### Nested Schema for `control_plane_reference.control_plane`
+
+Read-Only:
+
+- `access_control_enforcement_enabled` (Boolean) Indicates if the access control enforcement plugin is installed globally in the target control plane
 - `control_plane_id` (String)
-- `id` (String)
 
 ## Import
 
