@@ -392,7 +392,10 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 				Description: `The UUID of your Gateway.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `The unique identifier of the virtual cluster.`,
 			},
 			"labels": schema.MapAttribute{
@@ -411,14 +414,13 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 				},
 			},
 			"namespace": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"additional": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"consumer_groups": schema.ListNestedAttribute{
+								Computed: true,
 								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
@@ -483,6 +485,7 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 								Description: `Consumer group IDs to expose even if they don't start with the namespace prefix.`,
 							},
 							"topics": schema.ListNestedAttribute{
+								Computed: true,
 								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
@@ -582,17 +585,15 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 						},
 					},
 					"mode": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
+						Required: true,
 						MarkdownDescription: `* hide_prefix - the configured prefix is hidden from clients for topics and IDs when reading.` + "\n" +
 							`` + "\n" +
 							`  Created resources are written with the prefix on the backend cluster.` + "\n" +
 							`* enforce_prefix - the configured prefix remains visible to clients.` + "\n" +
 							`` + "\n" +
 							`  Created resources must include the prefix or the request will fail.` + "\n" +
-							`Not Null; must be one of ["hide_prefix", "enforce_prefix"]`,
+							`must be one of ["hide_prefix", "enforce_prefix"]`,
 						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.OneOf(
 								"hide_prefix",
 								"enforce_prefix",
@@ -600,14 +601,11 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 						},
 					},
 					"prefix": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
+						Required: true,
 						MarkdownDescription: `The namespace is differentiated by this chosen prefix.` + "\n" +
 							`For example, if the prefix is set to "analytics_" the topic named "analytics_user_clicks" is available to the clients` + "\n" +
-							`of the virtual cluster. Topics without the prefix will be ignored unless added via ` + "`" + `additional.topics` + "`" + `.` + "\n" +
-							`Not Null`,
+							`of the virtual cluster. Topics without the prefix will be ignored unless added via ` + "`" + `additional.topics` + "`" + `.`,
 						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthAtLeast(1),
 						},
 					},

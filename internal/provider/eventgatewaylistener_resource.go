@@ -93,7 +93,10 @@ func (r *EventGatewayListenerResource) Schema(ctx context.Context, req resource.
 				Description: `The UUID of your Gateway.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `The unique identifier of the listener.`,
 			},
 			"labels": schema.MapAttribute{

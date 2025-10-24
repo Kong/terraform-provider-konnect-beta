@@ -6,7 +6,7 @@ This is a **BETA** provider, managed by the Kong team. You're probably looking f
 
 This provider is generated from `openapi.yaml` using Speakeasy. To test a new version, use the following steps:
 
-- Run `make speakeasy`
+- Run `make generate`
 - Run `go mod tidy` to download all dependencies
 - If you use the `KONNECT_TOKEN` env var to authenticate, run `export KONNECT_TOKEN` before running the provider
 - Run `go run main.go -debug`
@@ -20,7 +20,7 @@ Assuming that your changes are working, raise a PR to `platform-api` for review 
 - Create a new release branch (if needed) named `release/x.y.z`, where `x.y.z` is the new version
 - Update the `terraform.version` key in the `gen.yaml` file to `x.y.z` and `git add gen.yaml`
 - Run `./tools/gen_beta_terraform.sh` on the `main` branch of `platform-api` to update the `openapi.yaml` file in this repo
-- Run `make speakeasy` to generate the provider (see [local generation](#local-generation))
+- Run `make generate` to generate the provider (see [local generation](#local-generation))
 - Test your changes to ensure the provider still works
 - `git add openapi.yaml` and commit the changes as a single commit
 - `git add` and commit the provider's `.go` files, plus the `.speakeasy` and `docs` directory

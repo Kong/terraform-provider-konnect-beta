@@ -12,7 +12,7 @@ type EventGatewaySkipRecordPolicy struct {
 	// A unique user-defined name of the policy.
 	Name *string `default:"null" json:"name"`
 	// A human-readable description of the policy.
-	Description *string `default:"null" json:"description"`
+	Description *string `json:"description,omitempty"`
 	// Whether the policy is enabled.
 	Enabled *bool `default:"true" json:"enabled"`
 	// A string containing the boolean expression that determines whether the policy is applied.
@@ -20,7 +20,7 @@ type EventGatewaySkipRecordPolicy struct {
 	// When the policy is applied as a child policy of schema_validation, the expression can also reference
 	// `record.value` fields.
 	//
-	Condition *string `default:"null" json:"condition"`
+	Condition *string `json:"condition,omitempty"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".

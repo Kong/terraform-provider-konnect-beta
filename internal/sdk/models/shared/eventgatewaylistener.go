@@ -14,7 +14,7 @@ type EventGatewayListener struct {
 	// The unique name of the listener.
 	Name string `json:"name"`
 	// A human-readable description of the listener.
-	Description *string `default:"null" json:"description"`
+	Description *string `json:"description,omitempty"`
 	// Which address or addresses to listen on.
 	// `0.0.0.0` means all addresses on the host.
 	// `::` means all addresses on the host in IPv6.

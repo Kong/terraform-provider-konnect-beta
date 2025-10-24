@@ -245,20 +245,22 @@ Optional:
 <a id="nestedatt--namespace"></a>
 ### Nested Schema for `namespace`
 
-Optional:
+Required:
 
-- `additional` (Attributes) (see [below for nested schema](#nestedatt--namespace--additional))
 - `mode` (String) * hide_prefix - the configured prefix is hidden from clients for topics and IDs when reading.
 
   Created resources are written with the prefix on the backend cluster.
 * enforce_prefix - the configured prefix remains visible to clients.
 
   Created resources must include the prefix or the request will fail.
-Not Null; must be one of ["hide_prefix", "enforce_prefix"]
+must be one of ["hide_prefix", "enforce_prefix"]
 - `prefix` (String) The namespace is differentiated by this chosen prefix.
 For example, if the prefix is set to "analytics_" the topic named "analytics_user_clicks" is available to the clients
 of the virtual cluster. Topics without the prefix will be ignored unless added via `additional.topics`.
-Not Null
+
+Optional:
+
+- `additional` (Attributes) (see [below for nested schema](#nestedatt--namespace--additional))
 
 <a id="nestedatt--namespace--additional"></a>
 ### Nested Schema for `namespace.additional`

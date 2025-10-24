@@ -63,7 +63,6 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 		MarkdownDescription: "EventGatewayProducePolicySchemaValidation Resource",
 		Attributes: map[string]schema.Attribute{
 			"condition": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A string containing the boolean expression that determines whether the policy is applied.`,
 				Validators: []validator.String{
