@@ -36,6 +36,10 @@ resource "konnect_event_gateway_backend_cluster" "my_eventgatewaybackendcluster"
     bootstrap_servers = [
         "10.0.0.1:8080"
     ]
+    tls = {
+        enabled = false
+        insecure_skip_verify = true
+    }
     description = "description"
     gateway_id = konnect_event_gateway.my_eventgateway.id
     insecure_allow_anonymous_virtual_cluster_auth = false
@@ -58,6 +62,10 @@ resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster"
         }
       }
     ]
+    namespace = {
+      mode = "hide_prefix"
+      prefix = "my_prefix"
+    }
     description = "description"
     acl_mode = "enforce_on_gateway"
     destination = {
@@ -116,7 +124,6 @@ resource "konnect_event_gateway_listener_policy_forward_to_virtual_cluster" "my_
         }
       }
       min_broker_id = 5
-      type = "port_mapping"
     }
   }
   description = "mydesc"
@@ -140,7 +147,6 @@ resource "konnect_event_gateway_produce_policy_modify_headers" "my_eventgatewayv
       {
         remove = {
             key = "...my_key..."
-            op = "remove"
         }
       }
     ]
@@ -163,7 +169,6 @@ resource "konnect_event_gateway_consume_policy_modify_headers" "my_eventgatewayv
       {
         remove = {
           key = "mykey"
-          op  = "remove"
         }
       }
     ]
