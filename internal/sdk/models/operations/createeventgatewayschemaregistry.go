@@ -11,7 +11,7 @@ type CreateEventGatewaySchemaRegistryRequest struct {
 	// The UUID of your Gateway.
 	GatewayID string `pathParam:"style=simple,explode=false,name=gatewayId"`
 	// The request schema for creating a schema registry.
-	ModifySchemaRegistry *shared.ModifySchemaRegistry `request:"mediaType=application/json"`
+	SchemaRegistryCreate *shared.SchemaRegistryCreate `request:"mediaType=application/json"`
 }
 
 func (o *CreateEventGatewaySchemaRegistryRequest) GetGatewayID() string {
@@ -21,15 +21,15 @@ func (o *CreateEventGatewaySchemaRegistryRequest) GetGatewayID() string {
 	return o.GatewayID
 }
 
-func (o *CreateEventGatewaySchemaRegistryRequest) GetModifySchemaRegistry() *shared.ModifySchemaRegistry {
+func (o *CreateEventGatewaySchemaRegistryRequest) GetSchemaRegistryCreate() *shared.SchemaRegistryCreate {
 	if o == nil {
 		return nil
 	}
-	return o.ModifySchemaRegistry
+	return o.SchemaRegistryCreate
 }
 
-func (o *CreateEventGatewaySchemaRegistryRequest) GetModifySchemaRegistryConfluent() *shared.SchemaRegistryConfluent {
-	if v := o.GetModifySchemaRegistry(); v != nil {
+func (o *CreateEventGatewaySchemaRegistryRequest) GetSchemaRegistryCreateConfluent() *shared.SchemaRegistryConfluent {
+	if v := o.GetSchemaRegistryCreate(); v != nil {
 		return v.SchemaRegistryConfluent
 	}
 	return nil

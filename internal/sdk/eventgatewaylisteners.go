@@ -311,7 +311,7 @@ func (s *EventGatewayListeners) CreateEventGatewayListener(ctx context.Context, 
 
 }
 
-// GetEventGatewayListener - Fetch Event Gateway Listener
+// GetEventGatewayListener - Get an Event Gateway Listener
 // Returns information about a specific listener associated with the Event Gateway.
 func (s *EventGatewayListeners) GetEventGatewayListener(ctx context.Context, request operations.GetEventGatewayListenerRequest, opts ...operations.Option) (*operations.GetEventGatewayListenerResponse, error) {
 	o := operations.Options{}

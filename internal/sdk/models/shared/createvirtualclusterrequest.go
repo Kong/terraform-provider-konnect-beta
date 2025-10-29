@@ -33,7 +33,7 @@ type CreateVirtualClusterRequest struct {
 	//
 	ACLMode VirtualClusterACLMode `json:"acl_mode"`
 	// The DNS label used in the bootstrap server URL to identify the virtual cluster when using SNI routing.
-	// The format follows the RFC1035: 1-63 chars, lowercase alphanumeric or '-', must start with a letter and end with an alphanumeric character.
+	// The format follows the RFC1035: 1-63 chars, lowercase alphanumeric or '-', must start and end with an alphanumeric character.
 	DNSLabel string `json:"dns_label"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//

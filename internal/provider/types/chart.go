@@ -3,8 +3,9 @@
 package types
 
 type Chart struct {
-	HorizontalBar  *BarChart         `queryParam:"inline" tfsdk:"horizontal_bar" tfPlanOnly:"true"`
-	Donut          *DonutChart       `queryParam:"inline" tfsdk:"donut" tfPlanOnly:"true"`
-	SingleValue    *SingleValueChart `queryParam:"inline" tfsdk:"single_value" tfPlanOnly:"true"`
-	TimeseriesLine *BarChart         `queryParam:"inline" tfsdk:"timeseries_line" tfPlanOnly:"true"`
+	HorizontalBar  *BarChart           `queryParam:"inline" tfsdk:"horizontal_bar" tfPlanOnly:"true"`
+	ChoroplethMap  *ChoroplethMapChart `queryParam:"inline" tfsdk:"choropleth_map" tfPlanOnly:"true"`
+	Donut          *ChoroplethMapChart `queryParam:"inline" tfsdk:"donut" tfPlanOnly:"true"`
+	SingleValue    *SingleValueChart   `queryParam:"inline" tfsdk:"single_value" tfPlanOnly:"true"`
+	TimeseriesLine *BarChart           `queryParam:"inline" tfsdk:"timeseries_line" tfPlanOnly:"true"`
 }

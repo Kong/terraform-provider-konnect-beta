@@ -15,7 +15,7 @@ resource "konnect_event_gateway_produce_policy_encrypt" "my_eventgatewayproducep
     keys = [
     {
                 id = "...my_id..."
-            key = "${env['MY_SECRET']}"
+            key = "${vault.env['MY_ENV_VAR']}"
     }
     ]
 }

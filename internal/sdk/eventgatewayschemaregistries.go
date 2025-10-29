@@ -66,7 +66,7 @@ func (s *EventGatewaySchemaRegistries) CreateEventGatewaySchemaRegistry(ctx cont
 		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "ModifySchemaRegistry", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "SchemaRegistryCreate", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -311,7 +311,7 @@ func (s *EventGatewaySchemaRegistries) CreateEventGatewaySchemaRegistry(ctx cont
 
 }
 
-// GetEventGatewaySchemaRegistry - Fetch Schema Registry
+// GetEventGatewaySchemaRegistry - Get a Schema Registry
 // Returns information about a specific schema registry associated with the Event Gateway.
 func (s *EventGatewaySchemaRegistries) GetEventGatewaySchemaRegistry(ctx context.Context, request operations.GetEventGatewaySchemaRegistryRequest, opts ...operations.Option) (*operations.GetEventGatewaySchemaRegistryResponse, error) {
 	o := operations.Options{}
@@ -621,7 +621,7 @@ func (s *EventGatewaySchemaRegistries) UpdateEventGatewaySchemaRegistry(ctx cont
 		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "ModifySchemaRegistry", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "SchemaRegistryUpdate", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}

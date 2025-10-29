@@ -24,6 +24,7 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
+	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -190,7 +191,13 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Schema(ctx c
 									`If "dns.label" label is absent on the virtual cluster, the traffic won't be routed there.` + "\n" +
 									`` + "\n" +
 									`The bootstrap host is ` + "`" + `bootstrap.my-cluster.example.com` + "`" + ` and then each broker is addressable at ` + "`" + `broker-0.my-cluster.example.com` + "`" + `, ` + "`" + `broker-1.my-cluster.example.com` + "`" + `, etc.` + "\n" +
-									`This means that your deployment needs to have a wildcard certificate for the domain and a DNS resolver that routes ` + "`" + `*.my-cluster.example.com` + "`" + ` to the proxy.`,
+									`This means that your deployment needs to have a wildcard certificate for the domain and a DNS resolver that routes ` + "`" + `*.my-cluster.example.com` + "`" + ` to the proxy.` + "\n" +
+									`` + "\n" +
+									`The accepted format is a DNS subdomain starting with either ` + "`" + `.` + "`" + ` or ` + "`" + `-` + "`" + `. For example, ` + "`" + `-keg.example.com` + "`" + `, ` + "`" + `.keg.example.com` + "`" + `, ` + "`" + `.namespace.svc.cluster.local` + "`" + `, and ` + "`" + `.localhost` + "`" + ` are all valid,` + "\n" +
+									`while ` + "`" + `keg.example.com` + "`" + ` is not.`,
+								Validators: []validator.String{
+									stringvalidator.RegexMatches(regexp.MustCompile(`^[\.-]([a-z0-9]([a-z0-9-]*[a-z0-9])?\.)*([a-z0-9-]*[a-z0-9])$`), "must match pattern "+regexp.MustCompile(`^[\.-]([a-z0-9]([a-z0-9-]*[a-z0-9])?\.)*([a-z0-9-]*[a-z0-9])$`).String()),
+								},
 							},
 						},
 						Description: `The configuration to forward requests to virtual clusters configured with SNI routing.`,
