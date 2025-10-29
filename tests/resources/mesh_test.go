@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
 	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
+	resourcesshared "github.com/kong/terraform-provider-kong-mesh/tests/resources/shared"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
@@ -333,6 +334,26 @@ spec = {
 		builder.AddMesh(mesh)
 
 		resource.ParallelTest(t, tfbuilder.NotImportedResourceShouldErrorOutWithMeaningfulMessage(providerFactory, builder, mtp, func() { createAnMTP(t, cpName, meshName, mtpName) }))
+	})
+
+	t.Run("should be able to store secrets", func(t *testing.T) {
+		meshName := "m4"
+		secretName := "mysecret"
+		cpName := fmt.Sprintf("e2e-test-%d", acctest.RandInt())
+
+		builder := tfbuilder.NewBuilder(tfbuilder.Konnect, serverScheme, serverHost, serverPort).WithProviderProperty(tfbuilder.KonnectBeta)
+		cp := tfbuilder.NewControlPlane("e2e-test", cpName, "e2e test cp")
+		builder.AddControlPlane(cp)
+		mesh := tfbuilder.NewMeshBuilder("default", meshName).
+			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
+			WithSpec(`skip_creating_initial_policies = [ "*" ]`).
+			WithDependsOn(builder.ResourceAddress("mesh_control_plane", cp.ResourceName))
+		secret := tfbuilder.NewPolicyBuilder("secret", "mysecret", secretName, "Secret").
+			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
+			WithMeshRef(builder.ResourceAddress("mesh", mesh.ResourceName) + ".name").
+			WithDependsOn(builder.ResourceAddress("mesh", mesh.ResourceName))
+		builder.AddMesh(mesh)
+		resource.ParallelTest(t, resourcesshared.ShouldBeAbleToStoreSecrets(providerFactory, builder, secret, mesh))
 	})
 }
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.12.0
+> Released on 2025/XX/XX
+
+### Features
+* Add support for secrets endpoints in Mesh resources
+
 ## 0.11.2
 > Released on 2025/10/17
 
