@@ -16,6 +16,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
+	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
@@ -39,19 +41,18 @@ type APIResource struct {
 
 // APIResourceModel describes the resource data model.
 type APIResourceModel struct {
-	APISpecIds         []types.String          `tfsdk:"api_spec_ids"`
-	Attributes         jsontypes.Normalized    `tfsdk:"attributes"`
-	CreatedAt          types.String            `tfsdk:"created_at"`
-	Description        types.String            `tfsdk:"description"`
-	ID                 types.String            `tfsdk:"id"`
-	ImplementationMode types.String            `tfsdk:"implementation_mode"`
-	Labels             map[string]types.String `tfsdk:"labels"`
-	Name               types.String            `tfsdk:"name"`
-	Portals            []tfTypes.Portals       `tfsdk:"portals"`
-	Slug               types.String            `tfsdk:"slug"`
-	SpecContent        types.String            `tfsdk:"spec_content"`
-	UpdatedAt          types.String            `tfsdk:"updated_at"`
-	Version            types.String            `tfsdk:"version"`
+	APISpecIds  []types.String          `tfsdk:"api_spec_ids"`
+	Attributes  jsontypes.Normalized    `tfsdk:"attributes"`
+	CreatedAt   types.String            `tfsdk:"created_at"`
+	Description types.String            `tfsdk:"description"`
+	ID          types.String            `tfsdk:"id"`
+	Labels      map[string]types.String `tfsdk:"labels"`
+	Name        types.String            `tfsdk:"name"`
+	Portals     []tfTypes.Portals       `tfsdk:"portals"`
+	Slug        types.String            `tfsdk:"slug"`
+	SpecContent types.String            `tfsdk:"spec_content"`
+	UpdatedAt   types.String            `tfsdk:"updated_at"`
+	Version     types.String            `tfsdk:"version"`
 }
 
 func (r *APIResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -63,7 +64,10 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 		MarkdownDescription: "API Resource",
 		Attributes: map[string]schema.Attribute{
 			"api_spec_ids": schema.ListAttribute{
-				Computed:           true,
+				Computed: true,
+				PlanModifiers: []planmodifier.List{
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+				},
 				ElementType:        types.StringType,
 				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
 				Description:        `The list of API specification ids for the API.`,
@@ -89,12 +93,11 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Description: `A description of your API. Will be visible on your live Portal.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `The API identifier.`,
-			},
-			"implementation_mode": schema.StringAttribute{
-				Computed:    true,
-				Description: `the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement`,
 			},
 			"labels": schema.MapAttribute{
 				Computed:    true,
@@ -113,18 +116,33 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			},
 			"portals": schema.ListNestedAttribute{
 				Computed: true,
+				PlanModifiers: []planmodifier.List{
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+				},
 				NestedObject: schema.NestedAttributeObject{
+					PlanModifiers: []planmodifier.Object{
+						speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+					},
 					Attributes: map[string]schema.Attribute{
 						"display_name": schema.StringAttribute{
-							Computed:    true,
+							Computed: true,
+							PlanModifiers: []planmodifier.String{
+								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+							},
 							Description: `The display name of the portal. This value will be the portal's ` + "`" + `name` + "`" + ` in Portal API.`,
 						},
 						"id": schema.StringAttribute{
-							Computed:    true,
+							Computed: true,
+							PlanModifiers: []planmodifier.String{
+								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+							},
 							Description: `The portal identifier.`,
 						},
 						"name": schema.StringAttribute{
-							Computed:    true,
+							Computed: true,
+							PlanModifiers: []planmodifier.String{
+								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+							},
 							Description: `The name of the portal, used to distinguish it from other portals.`,
 						},
 					},

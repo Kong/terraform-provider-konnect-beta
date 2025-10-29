@@ -3,6 +3,6 @@
 package types
 
 type SchemaRegistryReference struct {
-	SchemaRegistryReferenceByID   *VirtualClusterReferenceByID `queryParam:"inline" tfsdk:"schema_registry_reference_by_id" tfPlanOnly:"true"`
+	SchemaRegistryReferenceByID   *SchemaRegistryReferenceByID `queryParam:"inline" tfsdk:"schema_registry_reference_by_id" tfPlanOnly:"true"`
 	SchemaRegistryReferenceByName *EventGatewayACLOperation    `queryParam:"inline" tfsdk:"schema_registry_reference_by_name" tfPlanOnly:"true"`
 }

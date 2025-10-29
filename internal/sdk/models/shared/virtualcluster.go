@@ -28,7 +28,7 @@ type VirtualCluster struct {
 	// The name of the virtual cluster.
 	Name string `json:"name"`
 	// The DNS label used in the bootstrap server URL to identify the virtual cluster when using SNI routing.
-	// The format follows the RFC1035: 1-63 chars, lowercase alphanumeric or '-', must start with a letter and end with an alphanumeric character.
+	// The format follows the RFC1035: 1-63 chars, lowercase alphanumeric or '-', must start and end with an alphanumeric character.
 	DNSLabel string `json:"dns_label"`
 	// Configures whether or not ACL policies are enforced on the gateway.
 	// - `enforce_on_gateway` means the gateway enforces its own ACL policies for this virtual cluster

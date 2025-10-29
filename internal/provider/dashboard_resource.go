@@ -71,7 +71,10 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 				},
 			},
 			"created_by": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Contains a unique identifier used for this resource.`,
 			},
 			"definition": schema.SingleNestedAttribute{
@@ -88,7 +91,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 								"field": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `Not Null; must be one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "data_plane_node", "data_plane_node_version", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]`,
+									Description: `Not Null; must be one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
 										stringvalidator.OneOf(
@@ -103,6 +106,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 											"consumer",
 											"control_plane",
 											"control_plane_group",
+											"country_code",
 											"data_plane_node",
 											"data_plane_node_version",
 											"gateway_service",
@@ -165,6 +169,39 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
+														"choropleth_map": schema.SingleNestedAttribute{
+															Computed: true,
+															Optional: true,
+															Attributes: map[string]schema.Attribute{
+																"chart_title": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Description: `The title of the chart, which is displayed in the tile's header.`,
+																},
+																"type": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Description: `Not Null; must be "choropleth_map"`,
+																	Validators: []validator.String{
+																		speakeasy_stringvalidators.NotNull(),
+																		stringvalidator.OneOf(
+																			"choropleth_map",
+																		),
+																	},
+																},
+															},
+															MarkdownDescription: `A chart that displays data on a world map. Each region on the map is colored based on the metric value.` + "\n" +
+																`This chart works only with the ` + "`" + `api_usage` + "`" + ` datasource and requires a single metric and a single dimension of ` + "`" + `country_code` + "`" + `.` + "\n" +
+																`No additional dimensions are supported.`,
+															Validators: []validator.Object{
+																objectvalidator.ConflictsWith(path.Expressions{
+																	path.MatchRelative().AtParent().AtName("horizontal_bar"),
+																	path.MatchRelative().AtParent().AtName("donut"),
+																	path.MatchRelative().AtParent().AtName("single_value"),
+																	path.MatchRelative().AtParent().AtName("timeseries_line"),
+																}...),
+															},
+														},
 														"donut": schema.SingleNestedAttribute{
 															Computed: true,
 															Optional: true,
@@ -189,6 +226,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 															Validators: []validator.Object{
 																objectvalidator.ConflictsWith(path.Expressions{
 																	path.MatchRelative().AtParent().AtName("horizontal_bar"),
+																	path.MatchRelative().AtParent().AtName("choropleth_map"),
 																	path.MatchRelative().AtParent().AtName("single_value"),
 																	path.MatchRelative().AtParent().AtName("timeseries_line"),
 																}...),
@@ -225,6 +263,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																`To render a bar chart of timeseries data, use a ` + "`" + `timeseries_bar` + "`" + ` chart instead.`,
 															Validators: []validator.Object{
 																objectvalidator.ConflictsWith(path.Expressions{
+																	path.MatchRelative().AtParent().AtName("choropleth_map"),
 																	path.MatchRelative().AtParent().AtName("donut"),
 																	path.MatchRelative().AtParent().AtName("single_value"),
 																	path.MatchRelative().AtParent().AtName("timeseries_line"),
@@ -260,6 +299,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 															Validators: []validator.Object{
 																objectvalidator.ConflictsWith(path.Expressions{
 																	path.MatchRelative().AtParent().AtName("horizontal_bar"),
+																	path.MatchRelative().AtParent().AtName("choropleth_map"),
 																	path.MatchRelative().AtParent().AtName("donut"),
 																	path.MatchRelative().AtParent().AtName("timeseries_line"),
 																}...),
@@ -303,6 +343,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 															Validators: []validator.Object{
 																objectvalidator.ConflictsWith(path.Expressions{
 																	path.MatchRelative().AtParent().AtName("horizontal_bar"),
+																	path.MatchRelative().AtParent().AtName("choropleth_map"),
 																	path.MatchRelative().AtParent().AtName("donut"),
 																	path.MatchRelative().AtParent().AtName("single_value"),
 																}...),
@@ -352,7 +393,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																			"field": schema.StringAttribute{
 																				Computed:    true,
 																				Optional:    true,
-																				Description: `Not Null; must be one of ["api", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]`,
+																				Description: `Not Null; must be one of ["api", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]`,
 																				Validators: []validator.String{
 																					speakeasy_stringvalidators.NotNull(),
 																					stringvalidator.OneOf(
@@ -363,6 +404,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																						"consumer",
 																						"control_plane",
 																						"control_plane_group",
+																						"country_code",
 																						"data_plane_node",
 																						"data_plane_node_version",
 																						"gateway_service",
@@ -890,7 +932,10 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 					`Dashboards have 6 columns and as many rows as necessary to display their tiles.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Contains a unique identifier used for this resource.`,
 			},
 			"labels": schema.MapAttribute{

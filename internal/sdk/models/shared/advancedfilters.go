@@ -17,6 +17,7 @@ const (
 	FieldConsumer                  Field = "consumer"
 	FieldControlPlane              Field = "control_plane"
 	FieldControlPlaneGroup         Field = "control_plane_group"
+	FieldCountryCode               Field = "country_code"
 	FieldDataPlaneNode             Field = "data_plane_node"
 	FieldDataPlaneNodeVersion      Field = "data_plane_node_version"
 	FieldGatewayService            Field = "gateway_service"
@@ -52,6 +53,8 @@ func (e *Field) UnmarshalJSON(data []byte) error {
 	case "control_plane":
 		fallthrough
 	case "control_plane_group":
+		fallthrough
+	case "country_code":
 		fallthrough
 	case "data_plane_node":
 		fallthrough

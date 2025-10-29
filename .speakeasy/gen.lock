@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: a8a8d8490e22e551f1cd21f2b101d2c8
+  docChecksum: 6da6a3e97002d014002a14a0fd94dd36
   docVersion: 2.0.0
   speakeasyVersion: 1.602.0
   generationVersion: 2.681.1
@@ -58,22 +58,36 @@ generatedFiles:
   - examples/resources/konnect-beta_event_gateway_backend_cluster/resource.tf
   - examples/resources/konnect-beta_event_gateway_cluster_policy_acls/import.sh
   - examples/resources/konnect-beta_event_gateway_cluster_policy_acls/resource.tf
+  - examples/resources/konnect-beta_event_gateway_consume_policy_decrypt/import.sh
+  - examples/resources/konnect-beta_event_gateway_consume_policy_decrypt/resource.tf
+  - examples/resources/konnect-beta_event_gateway_consume_policy_modify_headers/import.sh
+  - examples/resources/konnect-beta_event_gateway_consume_policy_modify_headers/resource.tf
+  - examples/resources/konnect-beta_event_gateway_consume_policy_schema_validation/import.sh
+  - examples/resources/konnect-beta_event_gateway_consume_policy_schema_validation/resource.tf
+  - examples/resources/konnect-beta_event_gateway_consume_policy_skip_record/import.sh
+  - examples/resources/konnect-beta_event_gateway_consume_policy_skip_record/resource.tf
   - examples/resources/konnect-beta_event_gateway_data_plane_certificate/import.sh
   - examples/resources/konnect-beta_event_gateway_data_plane_certificate/resource.tf
   - examples/resources/konnect-beta_event_gateway_listener/import.sh
   - examples/resources/konnect-beta_event_gateway_listener/resource.tf
-  - examples/resources/konnect-beta_event_gateway_listener_policy/import.sh
-  - examples/resources/konnect-beta_event_gateway_listener_policy/resource.tf
+  - examples/resources/konnect-beta_event_gateway_listener_policy_forward_to_virtual_cluster/import.sh
+  - examples/resources/konnect-beta_event_gateway_listener_policy_forward_to_virtual_cluster/resource.tf
+  - examples/resources/konnect-beta_event_gateway_listener_policy_tls_server/import.sh
+  - examples/resources/konnect-beta_event_gateway_listener_policy_tls_server/resource.tf
+  - examples/resources/konnect-beta_event_gateway_produce_policy_encrypt/import.sh
+  - examples/resources/konnect-beta_event_gateway_produce_policy_encrypt/resource.tf
+  - examples/resources/konnect-beta_event_gateway_produce_policy_modify_headers/import.sh
+  - examples/resources/konnect-beta_event_gateway_produce_policy_modify_headers/resource.tf
+  - examples/resources/konnect-beta_event_gateway_produce_policy_schema_validation/import.sh
+  - examples/resources/konnect-beta_event_gateway_produce_policy_schema_validation/resource.tf
+  - examples/resources/konnect-beta_event_gateway_produce_policy_skip_record/import.sh
+  - examples/resources/konnect-beta_event_gateway_produce_policy_skip_record/resource.tf
   - examples/resources/konnect-beta_event_gateway_schema_registry/import.sh
   - examples/resources/konnect-beta_event_gateway_schema_registry/resource.tf
   - examples/resources/konnect-beta_event_gateway_vault/import.sh
   - examples/resources/konnect-beta_event_gateway_vault/resource.tf
   - examples/resources/konnect-beta_event_gateway_virtual_cluster/import.sh
   - examples/resources/konnect-beta_event_gateway_virtual_cluster/resource.tf
-  - examples/resources/konnect-beta_event_gateway_virtual_cluster_consume_policy/import.sh
-  - examples/resources/konnect-beta_event_gateway_virtual_cluster_consume_policy/resource.tf
-  - examples/resources/konnect-beta_event_gateway_virtual_cluster_produce_policy/import.sh
-  - examples/resources/konnect-beta_event_gateway_virtual_cluster_produce_policy/resource.tf
   - examples/resources/konnect-beta_mesh/import.sh
   - examples/resources/konnect-beta_mesh/resource.tf
   - examples/resources/konnect-beta_mesh_access_log/import.sh
@@ -194,22 +208,36 @@ generatedFiles:
   - internal/provider/eventgatewaybackendcluster_resource_sdk.go
   - internal/provider/eventgatewayclusterpolicyacls_resource.go
   - internal/provider/eventgatewayclusterpolicyacls_resource_sdk.go
+  - internal/provider/eventgatewayconsumepolicydecrypt_resource.go
+  - internal/provider/eventgatewayconsumepolicydecrypt_resource_sdk.go
+  - internal/provider/eventgatewayconsumepolicymodifyheaders_resource.go
+  - internal/provider/eventgatewayconsumepolicymodifyheaders_resource_sdk.go
+  - internal/provider/eventgatewayconsumepolicyschemavalidation_resource.go
+  - internal/provider/eventgatewayconsumepolicyschemavalidation_resource_sdk.go
+  - internal/provider/eventgatewayconsumepolicyskiprecord_resource.go
+  - internal/provider/eventgatewayconsumepolicyskiprecord_resource_sdk.go
   - internal/provider/eventgatewaydataplanecertificate_resource.go
   - internal/provider/eventgatewaydataplanecertificate_resource_sdk.go
   - internal/provider/eventgatewaylistener_resource.go
   - internal/provider/eventgatewaylistener_resource_sdk.go
-  - internal/provider/eventgatewaylistenerpolicy_resource.go
-  - internal/provider/eventgatewaylistenerpolicy_resource_sdk.go
+  - internal/provider/eventgatewaylistenerpolicyforwardtovirtualcluster_resource.go
+  - internal/provider/eventgatewaylistenerpolicyforwardtovirtualcluster_resource_sdk.go
+  - internal/provider/eventgatewaylistenerpolicytlsserver_resource.go
+  - internal/provider/eventgatewaylistenerpolicytlsserver_resource_sdk.go
+  - internal/provider/eventgatewayproducepolicyencrypt_resource.go
+  - internal/provider/eventgatewayproducepolicyencrypt_resource_sdk.go
+  - internal/provider/eventgatewayproducepolicymodifyheaders_resource.go
+  - internal/provider/eventgatewayproducepolicymodifyheaders_resource_sdk.go
+  - internal/provider/eventgatewayproducepolicyschemavalidation_resource.go
+  - internal/provider/eventgatewayproducepolicyschemavalidation_resource_sdk.go
+  - internal/provider/eventgatewayproducepolicyskiprecord_resource.go
+  - internal/provider/eventgatewayproducepolicyskiprecord_resource_sdk.go
   - internal/provider/eventgatewayschemaregistry_resource.go
   - internal/provider/eventgatewayschemaregistry_resource_sdk.go
   - internal/provider/eventgatewayvault_resource.go
   - internal/provider/eventgatewayvault_resource_sdk.go
   - internal/provider/eventgatewayvirtualcluster_resource.go
   - internal/provider/eventgatewayvirtualcluster_resource_sdk.go
-  - internal/provider/eventgatewayvirtualclusterconsumepolicy_resource.go
-  - internal/provider/eventgatewayvirtualclusterconsumepolicy_resource_sdk.go
-  - internal/provider/eventgatewayvirtualclusterproducepolicy_resource.go
-  - internal/provider/eventgatewayvirtualclusterproducepolicy_resource_sdk.go
   - internal/provider/mesh_resource.go
   - internal/provider/mesh_resource_sdk.go
   - internal/provider/meshaccesslog_resource.go
@@ -320,7 +348,6 @@ generatedFiles:
   - internal/provider/types/agent.go
   - internal/provider/types/aggregate.go
   - internal/provider/types/all_filter_items.go
-  - internal/provider/types/api_implementation_control_plane.go
   - internal/provider/types/api_implementation_service.go
   - internal/provider/types/append_match.go
   - internal/provider/types/append_modifications.go
@@ -356,6 +383,7 @@ generatedFiles:
   - internal/provider/types/certificate_parameters.go
   - internal/provider/types/chart.go
   - internal/provider/types/chart_tile.go
+  - internal/provider/types/choropleth_map_chart.go
   - internal/provider/types/cluster.go
   - internal/provider/types/colors.go
   - internal/provider/types/conf.go
@@ -363,7 +391,6 @@ generatedFiles:
   - internal/provider/types/connection.go
   - internal/provider/types/connection_limits.go
   - internal/provider/types/constraints.go
-  - internal/provider/types/control_plane_reference.go
   - internal/provider/types/cookie.go
   - internal/provider/types/create_api_version_request_spec.go
   - internal/provider/types/create_portal_custom_domain_ssl.go
@@ -379,7 +406,6 @@ generatedFiles:
   - internal/provider/types/definition.go
   - internal/provider/types/delay.go
   - internal/provider/types/detectors.go
-  - internal/provider/types/donut_chart.go
   - internal/provider/types/dp_cert.go
   - internal/provider/types/encryption_record_selector.go
   - internal/provider/types/endpoints.go
@@ -388,12 +414,9 @@ generatedFiles:
   - internal/provider/types/event_gateway_acl_policy_config.go
   - internal/provider/types/event_gateway_acl_resource_name.go
   - internal/provider/types/event_gateway_acl_rule.go
-  - internal/provider/types/event_gateway_consume_schema_validation_policy.go
   - internal/provider/types/event_gateway_consume_schema_validation_policy_config.go
-  - internal/provider/types/event_gateway_decrypt_policy.go
   - internal/provider/types/event_gateway_decrypt_policy_config.go
   - internal/provider/types/event_gateway_encrypt_config.go
-  - internal/provider/types/event_gateway_encrypt_policy.go
   - internal/provider/types/event_gateway_env_vault.go
   - internal/provider/types/event_gateway_key_source.go
   - internal/provider/types/event_gateway_key_source1.go
@@ -401,15 +424,11 @@ generatedFiles:
   - internal/provider/types/event_gateway_modify_header_action.go
   - internal/provider/types/event_gateway_modify_header_remove_action.go
   - internal/provider/types/event_gateway_modify_header_set_action.go
-  - internal/provider/types/event_gateway_modify_headers_policy.go
   - internal/provider/types/event_gateway_modify_headers_policy_config.go
-  - internal/provider/types/event_gateway_produce_schema_validation_policy.go
   - internal/provider/types/event_gateway_produce_schema_validation_policy_config.go
   - internal/provider/types/event_gateway_produce_schema_validation_policy_json_config.go
-  - internal/provider/types/event_gateway_skip_record_policy.go
   - internal/provider/types/event_gateway_static_key_source.go
   - internal/provider/types/event_gateway_static_key_source1.go
-  - internal/provider/types/event_gateway_tls_listener_policy.go
   - internal/provider/types/event_gateway_tls_listener_policy_config.go
   - internal/provider/types/event_gateway_vault_event_gateway_env_vault.go
   - internal/provider/types/event_gateway_vault_event_gateway_konnect_vault.go
@@ -425,7 +444,6 @@ generatedFiles:
   - internal/provider/types/format.go
   - internal/provider/types/forward_to_cluster_by_port_mapping_config.go
   - internal/provider/types/forward_to_cluster_by_sni_config.go
-  - internal/provider/types/forward_to_virtual_cluster_policy.go
   - internal/provider/types/forward_to_virtual_cluster_policy_config.go
   - internal/provider/types/from.go
   - internal/provider/types/from_cp.go
@@ -624,6 +642,7 @@ generatedFiles:
   - internal/provider/types/schema_registry_confluent.go
   - internal/provider/types/schema_registry_confluent_config.go
   - internal/provider/types/schema_registry_reference.go
+  - internal/provider/types/schema_registry_reference_by_id.go
   - internal/provider/types/secret_ref.go
   - internal/provider/types/selector.go
   - internal/provider/types/selectors.go
@@ -676,7 +695,6 @@ generatedFiles:
   - internal/provider/types/virtual_cluster_namespace_topic_selector_exact_list.go
   - internal/provider/types/virtual_cluster_namespace_topic_selector_glob.go
   - internal/provider/types/virtual_cluster_reference.go
-  - internal/provider/types/virtual_cluster_reference_by_id.go
   - internal/provider/types/virtual_host.go
   - internal/provider/types/zipkin.go
   - internal/provider/types/zipkin_tracing_backend_config.go
@@ -767,13 +785,20 @@ generatedFiles:
   - internal/sdk/models/operations/createeventgatewaybackendcluster.go
   - internal/sdk/models/operations/createeventgatewaydataplanecertificate.go
   - internal/sdk/models/operations/createeventgatewaylistener.go
-  - internal/sdk/models/operations/createeventgatewaylistenerpolicy.go
+  - internal/sdk/models/operations/createeventgatewaylistenerpolicyforwardtovirtualcluster.go
+  - internal/sdk/models/operations/createeventgatewaylistenerpolicytlsserver.go
   - internal/sdk/models/operations/createeventgatewayschemaregistry.go
   - internal/sdk/models/operations/createeventgatewayvault.go
   - internal/sdk/models/operations/createeventgatewayvirtualcluster.go
   - internal/sdk/models/operations/createeventgatewayvirtualclusterclusterlevelpolicyacls.go
-  - internal/sdk/models/operations/createeventgatewayvirtualclusterconsumepolicy.go
-  - internal/sdk/models/operations/createeventgatewayvirtualclusterproducepolicy.go
+  - internal/sdk/models/operations/createeventgatewayvirtualclusterconsumepolicydecrypt.go
+  - internal/sdk/models/operations/createeventgatewayvirtualclusterconsumepolicymodifyheaders.go
+  - internal/sdk/models/operations/createeventgatewayvirtualclusterconsumepolicyschemavalidation.go
+  - internal/sdk/models/operations/createeventgatewayvirtualclusterconsumepolicyskiprecord.go
+  - internal/sdk/models/operations/createeventgatewayvirtualclusterproducepolicyencrypt.go
+  - internal/sdk/models/operations/createeventgatewayvirtualclusterproducepolicymodifyheaders.go
+  - internal/sdk/models/operations/createeventgatewayvirtualclusterproducepolicyschemavalidation.go
+  - internal/sdk/models/operations/createeventgatewayvirtualclusterproducepolicyskiprecord.go
   - internal/sdk/models/operations/createportal.go
   - internal/sdk/models/operations/createportalcustomdomain.go
   - internal/sdk/models/operations/createportalpage.go
@@ -796,13 +821,20 @@ generatedFiles:
   - internal/sdk/models/operations/deleteeventgatewaybackendcluster.go
   - internal/sdk/models/operations/deleteeventgatewaydataplanecertificate.go
   - internal/sdk/models/operations/deleteeventgatewaylistener.go
-  - internal/sdk/models/operations/deleteeventgatewaylistenerpolicy.go
+  - internal/sdk/models/operations/deleteeventgatewaylistenerpolicyforwardtovirtualcluster.go
+  - internal/sdk/models/operations/deleteeventgatewaylistenerpolicytlsserver.go
   - internal/sdk/models/operations/deleteeventgatewayschemaregistry.go
   - internal/sdk/models/operations/deleteeventgatewayvault.go
   - internal/sdk/models/operations/deleteeventgatewayvirtualcluster.go
   - internal/sdk/models/operations/deleteeventgatewayvirtualclusterclusterlevelpolicyacls.go
-  - internal/sdk/models/operations/deleteeventgatewayvirtualclusterconsumepolicy.go
-  - internal/sdk/models/operations/deleteeventgatewayvirtualclusterproducepolicy.go
+  - internal/sdk/models/operations/deleteeventgatewayvirtualclusterconsumepolicydecrypt.go
+  - internal/sdk/models/operations/deleteeventgatewayvirtualclusterconsumepolicymodifyheaders.go
+  - internal/sdk/models/operations/deleteeventgatewayvirtualclusterconsumepolicyschemavalidation.go
+  - internal/sdk/models/operations/deleteeventgatewayvirtualclusterconsumepolicyskiprecord.go
+  - internal/sdk/models/operations/deleteeventgatewayvirtualclusterproducepolicyencrypt.go
+  - internal/sdk/models/operations/deleteeventgatewayvirtualclusterproducepolicymodifyheaders.go
+  - internal/sdk/models/operations/deleteeventgatewayvirtualclusterproducepolicyschemavalidation.go
+  - internal/sdk/models/operations/deleteeventgatewayvirtualclusterproducepolicyskiprecord.go
   - internal/sdk/models/operations/deletehostnamegenerator.go
   - internal/sdk/models/operations/deletemesh.go
   - internal/sdk/models/operations/deletemeshaccesslog.go
@@ -853,13 +885,20 @@ generatedFiles:
   - internal/sdk/models/operations/geteventgatewaybackendcluster.go
   - internal/sdk/models/operations/geteventgatewaydataplanecertificate.go
   - internal/sdk/models/operations/geteventgatewaylistener.go
-  - internal/sdk/models/operations/geteventgatewaylistenerpolicy.go
+  - internal/sdk/models/operations/geteventgatewaylistenerpolicyforwardtovirtualcluster.go
+  - internal/sdk/models/operations/geteventgatewaylistenerpolicytlsserver.go
   - internal/sdk/models/operations/geteventgatewayschemaregistry.go
   - internal/sdk/models/operations/geteventgatewayvault.go
   - internal/sdk/models/operations/geteventgatewayvirtualcluster.go
   - internal/sdk/models/operations/geteventgatewayvirtualclusterclusterlevelpolicyacls.go
-  - internal/sdk/models/operations/geteventgatewayvirtualclusterconsumepolicy.go
-  - internal/sdk/models/operations/geteventgatewayvirtualclusterproducepolicy.go
+  - internal/sdk/models/operations/geteventgatewayvirtualclusterconsumepolicydecrypt.go
+  - internal/sdk/models/operations/geteventgatewayvirtualclusterconsumepolicymodifyheaders.go
+  - internal/sdk/models/operations/geteventgatewayvirtualclusterconsumepolicyschemavalidation.go
+  - internal/sdk/models/operations/geteventgatewayvirtualclusterconsumepolicyskiprecord.go
+  - internal/sdk/models/operations/geteventgatewayvirtualclusterproducepolicyencrypt.go
+  - internal/sdk/models/operations/geteventgatewayvirtualclusterproducepolicymodifyheaders.go
+  - internal/sdk/models/operations/geteventgatewayvirtualclusterproducepolicyschemavalidation.go
+  - internal/sdk/models/operations/geteventgatewayvirtualclusterproducepolicyskiprecord.go
   - internal/sdk/models/operations/gethostnamegenerator.go
   - internal/sdk/models/operations/gethostnamegeneratorlist.go
   - internal/sdk/models/operations/getmesh.go
@@ -976,13 +1015,20 @@ generatedFiles:
   - internal/sdk/models/operations/updateeventgatewaybackendcluster.go
   - internal/sdk/models/operations/updateeventgatewaydataplanecertificate.go
   - internal/sdk/models/operations/updateeventgatewaylistener.go
-  - internal/sdk/models/operations/updateeventgatewaylistenerpolicy.go
+  - internal/sdk/models/operations/updateeventgatewaylistenerpolicyforwardtovirtualcluster.go
+  - internal/sdk/models/operations/updateeventgatewaylistenerpolicytlsserver.go
   - internal/sdk/models/operations/updateeventgatewayschemaregistry.go
   - internal/sdk/models/operations/updateeventgatewayvault.go
   - internal/sdk/models/operations/updateeventgatewayvirtualcluster.go
   - internal/sdk/models/operations/updateeventgatewayvirtualclusterclusterlevelpolicyacls.go
-  - internal/sdk/models/operations/updateeventgatewayvirtualclusterconsumepolicy.go
-  - internal/sdk/models/operations/updateeventgatewayvirtualclusterproducepolicy.go
+  - internal/sdk/models/operations/updateeventgatewayvirtualclusterconsumepolicydecrypt.go
+  - internal/sdk/models/operations/updateeventgatewayvirtualclusterconsumepolicymodifyheaders.go
+  - internal/sdk/models/operations/updateeventgatewayvirtualclusterconsumepolicyschemavalidation.go
+  - internal/sdk/models/operations/updateeventgatewayvirtualclusterconsumepolicyskiprecord.go
+  - internal/sdk/models/operations/updateeventgatewayvirtualclusterproducepolicyencrypt.go
+  - internal/sdk/models/operations/updateeventgatewayvirtualclusterproducepolicymodifyheaders.go
+  - internal/sdk/models/operations/updateeventgatewayvirtualclusterproducepolicyschemavalidation.go
+  - internal/sdk/models/operations/updateeventgatewayvirtualclusterproducepolicyskiprecord.go
   - internal/sdk/models/operations/updatehoudinieventgateway.go
   - internal/sdk/models/operations/updateportal.go
   - internal/sdk/models/operations/updateportalauthenticationsettings.go
@@ -999,7 +1045,6 @@ generatedFiles:
   - internal/sdk/models/shared/apidocumentresponse.go
   - internal/sdk/models/shared/apidocumentstatus.go
   - internal/sdk/models/shared/apiimplementation.go
-  - internal/sdk/models/shared/apiimplementationcontrolplane.go
   - internal/sdk/models/shared/apiimplementationresponse.go
   - internal/sdk/models/shared/apiimplementationservice.go
   - internal/sdk/models/shared/apipublication.go
@@ -1031,6 +1076,7 @@ generatedFiles:
   - internal/sdk/models/shared/certificatemetadata.go
   - internal/sdk/models/shared/chart.go
   - internal/sdk/models/shared/charttile.go
+  - internal/sdk/models/shared/choroplethmapchart.go
   - internal/sdk/models/shared/claim.go
   - internal/sdk/models/shared/client.go
   - internal/sdk/models/shared/conflicterror.go
@@ -1069,8 +1115,6 @@ generatedFiles:
   - internal/sdk/models/shared/eventgatewayaclrule.go
   - internal/sdk/models/shared/eventgatewayaclspolicy.go
   - internal/sdk/models/shared/eventgatewayawskeysource.go
-  - internal/sdk/models/shared/eventgatewayconsumepolicycreate.go
-  - internal/sdk/models/shared/eventgatewayconsumepolicyupdate.go
   - internal/sdk/models/shared/eventgatewayconsumeschemavalidationpolicy.go
   - internal/sdk/models/shared/eventgatewaydataplanecertificate.go
   - internal/sdk/models/shared/eventgatewaydecryptpolicy.go
@@ -1087,16 +1131,12 @@ generatedFiles:
   - internal/sdk/models/shared/eventgatewaykeysourcesensitivedataaware.go
   - internal/sdk/models/shared/eventgatewaykonnectvault.go
   - internal/sdk/models/shared/eventgatewaylistener.go
-  - internal/sdk/models/shared/eventgatewaylistenerpolicycreate.go
-  - internal/sdk/models/shared/eventgatewaylistenerpolicyupdate.go
   - internal/sdk/models/shared/eventgatewaymodifyheaderaction.go
   - internal/sdk/models/shared/eventgatewaymodifyheaderremoveaction.go
   - internal/sdk/models/shared/eventgatewaymodifyheadersetaction.go
   - internal/sdk/models/shared/eventgatewaymodifyheaderspolicy.go
   - internal/sdk/models/shared/eventgatewaymodifyvault.go
   - internal/sdk/models/shared/eventgatewaypolicy.go
-  - internal/sdk/models/shared/eventgatewayproducepolicycreate.go
-  - internal/sdk/models/shared/eventgatewayproducepolicyupdate.go
   - internal/sdk/models/shared/eventgatewayproduceschemavalidationpolicy.go
   - internal/sdk/models/shared/eventgatewayproduceschemavalidationpolicyconfig.go
   - internal/sdk/models/shared/eventgatewayproduceschemavalidationpolicyjsonconfig.go
@@ -1392,7 +1432,7 @@ examples:
   create-portal:
     speakeasy-default-create-portal:
       requestBody:
-        application/json: {"name": "<value>", "display_name": null, "description": null, "authentication_enabled": true, "rbac_enabled": false, "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "labels": {"env": "test"}}
+        application/json: {"name": "<value>", "description": null, "authentication_enabled": true, "rbac_enabled": false, "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "labels": {"env": "test"}}
       responses:
         "201":
           application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "<value>", "display_name": "Ahmed41", "description": null, "authentication_enabled": true, "rbac_enabled": false, "default_api_visibility": "private", "default_page_visibility": "private", "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "default_domain": "tattered-verve.info", "canonical_domain": "crafty-jury.com", "labels": {"env": "test"}}
@@ -1422,7 +1462,7 @@ examples:
         path:
           portalId: "efe853b6-a55c-4929-9b80-c39a22b01c7a"
       requestBody:
-        application/json: {"name": null, "display_name": null, "description": null, "authentication_enabled": true, "rbac_enabled": false, "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "labels": {"env": "test"}}
+        application/json: {"name": null, "description": null, "authentication_enabled": true, "rbac_enabled": false, "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "labels": {"env": "test"}}
       responses:
         "200":
           application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "<value>", "display_name": "Adaline.Nolan", "description": null, "authentication_enabled": true, "rbac_enabled": false, "default_api_visibility": "public", "default_page_visibility": "private", "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "default_domain": "animated-bathrobe.name", "canonical_domain": "inferior-offset.name", "labels": {"env": "test"}}
@@ -1763,7 +1803,7 @@ examples:
         application/json: {"name": "MyAPI", "description": null, "slug": "my-api-v1", "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "description": null, "version": null, "current_version_summary": null, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "implementation_mode": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "description": null, "version": null, "current_version_summary": null, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 497005, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -1781,7 +1821,7 @@ examples:
           apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
       responses:
         "200":
-          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "description": null, "version": "<value>", "current_version_summary": {"id": "7710d5c4-d902-410b-992f-18b814155b53", "version": null, "spec": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "implementation_mode": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "description": null, "version": "<value>", "current_version_summary": {"id": "7710d5c4-d902-410b-992f-18b814155b53", "version": null, "spec": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -1799,7 +1839,7 @@ examples:
         application/json: {"name": "MyAPI", "description": null, "slug": "my-api-v1", "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "description": null, "version": null, "current_version_summary": null, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [], "labels": {"env": "test"}, "implementation_mode": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "description": null, "version": null, "current_version_summary": null, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 683837, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
@@ -6299,7 +6339,7 @@ examples:
           eventGatewayListenerId: "8150b381-175e-48cc-b79b-78d1d98707a8"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "tls_server", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+        application/json: {"type": "tls_server", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"certificates": [{"certificate": "<value>", "key": "${vault.env['MY_ENV_VAR']}"}], "versions": {"min": "TLSv1.2", "max": "TLSv1.3"}, "allow_plaintext": false}, "labels": {"env": "test"}}
       responses:
         "200":
           application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "3252186a-a8d6-45c3-ae43-7f70c4575b09", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -6347,7 +6387,7 @@ examples:
           eventGatewayListenerId: "60c0a875-ed08-4959-a810-6710c2d37b44"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "forward_to_virtual_cluster", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"type": "sni", "sni_suffix": ".example.com", "advertised_port": null}, "labels": {"env": "test"}}
+        application/json: {"type": "forward_to_virtual_cluster", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"type": "sni", "sni_suffix": ".example.com", "advertised_port": 985890}, "labels": {"env": "test"}}
       responses:
         "200":
           application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "a964a42a-4b6e-438a-847c-79680f3800f7", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -6378,7 +6418,7 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           eventGatewayListenerId: "fbb26749-530c-4cd0-8d52-9db9d81c3f08"
       requestBody:
-        application/json: {"type": "tls_server", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+        application/json: {"type": "tls_server", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"certificates": [{"certificate": "<value>", "key": "${vault.env['MY_ENV_VAR']}"}], "versions": {"min": "TLSv1.2", "max": "TLSv1.3"}, "allow_plaintext": false}, "labels": {"env": "test"}}
       responses:
         "201":
           application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "009e4bb7-902f-439c-ba0f-6126abc8ab52", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -6395,7 +6435,7 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           eventGatewayListenerId: "cc1f804b-d05f-4c4b-ae7c-01ee08446fa7"
       requestBody:
-        application/json: {"type": "forward_to_virtual_cluster", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"type": "sni", "sni_suffix": ".example.com", "advertised_port": null}, "labels": {"env": "test"}}
+        application/json: {"type": "forward_to_virtual_cluster", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"type": "sni", "sni_suffix": ".example.com", "advertised_port": 971355}, "labels": {"env": "test"}}
       responses:
         "201":
           application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "55a6e644-871e-4251-8b96-3dbbcc3555cf", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -6525,7 +6565,7 @@ examples:
           virtualClusterId: "eb84f991-ae6d-4ed9-a84f-dd27dd8493c1"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "decrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+        application/json: {"type": "decrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"failure_mode": "passthrough", "key_sources": [{"type": "static", "keys": []}], "decrypt": [{"part_of_record": "value"}]}, "labels": {"env": "test"}}
       responses:
         "200":
           application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "b7a563ad-fad7-4c5f-b18a-ba17dd92a28a", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -6638,7 +6678,7 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "995bc147-2750-4c10-a0e2-ec9b901491eb"
       requestBody:
-        application/json: {"type": "decrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+        application/json: {"type": "decrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"failure_mode": "passthrough", "key_sources": [{"type": "aws"}], "decrypt": [{"part_of_record": "value"}]}, "labels": {"env": "test"}}
       responses:
         "201":
           application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "627ce5c5-8fd9-43a2-8c83-eafe3d39fe8e", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -6785,7 +6825,7 @@ examples:
           virtualClusterId: "f5cf6665-58bb-47f4-be01-926b2c0b6612"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "encrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+        application/json: {"type": "encrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"failure_mode": "passthrough", "key_sources": [], "encrypt": [{"part_of_record": "value", "key_id": "static://static-key-named-in-source"}]}, "labels": {"env": "test"}}
       responses:
         "200":
           application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "f9bcd779-cf70-4a2f-949f-99f677043c70", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -6898,7 +6938,7 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "593ecd65-910f-4bd8-9c22-0dd3eaa403c3"
       requestBody:
-        application/json: {"type": "encrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+        application/json: {"type": "encrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"failure_mode": "error", "key_sources": [{"type": "aws"}], "encrypt": [{"part_of_record": "value", "key_id": "static://static-key-named-in-source"}]}, "labels": {"env": "test"}}
       responses:
         "201":
           application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "bd47b7ed-1b37-4332-8874-76c9a0e498b9", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}

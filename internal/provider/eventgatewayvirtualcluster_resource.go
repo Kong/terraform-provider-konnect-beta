@@ -361,10 +361,10 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 			"dns_label": schema.StringAttribute{
 				Required: true,
 				MarkdownDescription: `The DNS label used in the bootstrap server URL to identify the virtual cluster when using SNI routing.` + "\n" +
-					`The format follows the RFC1035: 1-63 chars, lowercase alphanumeric or '-', must start with a letter and end with an alphanumeric character.`,
+					`The format follows the RFC1035: 1-63 chars, lowercase alphanumeric or '-', must start and end with an alphanumeric character.`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthBetween(1, 63),
-					stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z]([-a-z0-9]*[a-z0-9])?$`), "must match pattern "+regexp.MustCompile(`^[a-z]([-a-z0-9]*[a-z0-9])?$`).String()),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z0-9]([-a-z0-9]*[a-z0-9])?$`), "must match pattern "+regexp.MustCompile(`^[a-z0-9]([-a-z0-9]*[a-z0-9])?$`).String()),
 				},
 			},
 			"gateway_id": schema.StringAttribute{
@@ -451,6 +451,7 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
 														stringvalidator.UTF8LengthAtLeast(1),
+														stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._?*-]+$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._?*-]+$`).String()),
 													},
 												},
 											},
@@ -547,6 +548,7 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
 														stringvalidator.UTF8LengthAtLeast(1),
+														stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._?*-]+$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._?*-]+$`).String()),
 													},
 												},
 											},

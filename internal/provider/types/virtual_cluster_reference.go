@@ -3,6 +3,6 @@
 package types
 
 type VirtualClusterReference struct {
-	VirtualClusterReferenceByID   *VirtualClusterReferenceByID `queryParam:"inline" tfsdk:"virtual_cluster_reference_by_id" tfPlanOnly:"true"`
+	VirtualClusterReferenceByID   *SchemaRegistryReferenceByID `queryParam:"inline" tfsdk:"virtual_cluster_reference_by_id" tfPlanOnly:"true"`
 	VirtualClusterReferenceByName *EventGatewayACLOperation    `queryParam:"inline" tfsdk:"virtual_cluster_reference_by_name" tfPlanOnly:"true"`
 }

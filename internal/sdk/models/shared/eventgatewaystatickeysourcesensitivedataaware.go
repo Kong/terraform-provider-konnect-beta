@@ -6,7 +6,7 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-type EventGatewayStaticKeySourceSensitiveDataAwareKeys struct {
+type Keys struct {
 	// The unique identifier of the key.
 	ID string `json:"id"`
 	// A sensitive value containing the secret or a reference to a secret as a template string expression.
@@ -16,14 +16,14 @@ type EventGatewayStaticKeySourceSensitiveDataAwareKeys struct {
 	Key *string `json:"key,omitempty"`
 }
 
-func (o *EventGatewayStaticKeySourceSensitiveDataAwareKeys) GetID() string {
+func (o *Keys) GetID() string {
 	if o == nil {
 		return ""
 	}
 	return o.ID
 }
 
-func (o *EventGatewayStaticKeySourceSensitiveDataAwareKeys) GetKey() *string {
+func (o *Keys) GetKey() *string {
 	if o == nil {
 		return nil
 	}
@@ -34,7 +34,7 @@ func (o *EventGatewayStaticKeySourceSensitiveDataAwareKeys) GetKey() *string {
 type EventGatewayStaticKeySourceSensitiveDataAware struct {
 	type_ string `const:"static" json:"type"`
 	// A list of static, user-provided keys. Each one must be 128 bits long.
-	Keys []EventGatewayStaticKeySourceSensitiveDataAwareKeys `json:"keys"`
+	Keys []Keys `json:"keys"`
 }
 
 func (e EventGatewayStaticKeySourceSensitiveDataAware) MarshalJSON() ([]byte, error) {
@@ -52,9 +52,9 @@ func (o *EventGatewayStaticKeySourceSensitiveDataAware) GetType() string {
 	return "static"
 }
 
-func (o *EventGatewayStaticKeySourceSensitiveDataAware) GetKeys() []EventGatewayStaticKeySourceSensitiveDataAwareKeys {
+func (o *EventGatewayStaticKeySourceSensitiveDataAware) GetKeys() []Keys {
 	if o == nil {
-		return []EventGatewayStaticKeySourceSensitiveDataAwareKeys{}
+		return []Keys{}
 	}
 	return o.Keys
 }

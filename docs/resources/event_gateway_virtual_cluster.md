@@ -88,7 +88,7 @@ It succeeds on the first match, and fails if no rule matches. (see [below for ne
 Either `id` or `name` must be provided. Following changes to the backend cluster name won't affect the
 reference, as the system will create the entities relationship by `id`. (see [below for nested schema](#nestedatt--destination))
 - `dns_label` (String) The DNS label used in the bootstrap server URL to identify the virtual cluster when using SNI routing.
-The format follows the RFC1035: 1-63 chars, lowercase alphanumeric or '-', must start with a letter and end with an alphanumeric character.
+The format follows the RFC1035: 1-63 chars, lowercase alphanumeric or '-', must start and end with an alphanumeric character.
 - `gateway_id` (String) The UUID of your Gateway.
 - `name` (String) The name of the virtual cluster.
 

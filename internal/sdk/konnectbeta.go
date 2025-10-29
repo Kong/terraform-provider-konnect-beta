@@ -121,10 +121,10 @@ type KonnectBeta struct {
 	EventGatewayBackendClusters               *EventGatewayBackendClusters
 	EventGatewayVaults                        *EventGatewayVaults
 	EventGatewaySchemaRegistries              *EventGatewaySchemaRegistries
+	EventGatewayDataPlaneCertificates         *EventGatewayDataPlaneCertificates
 	EventGatewayListenerPolicies              *EventGatewayListenerPolicies
 	EventGatewayVirtualClusterConsumePolicies *EventGatewayVirtualClusterConsumePolicies
 	EventGatewayVirtualClusterProducePolicies *EventGatewayVirtualClusterProducePolicies
-	EventGatewayDataPlaneCertificates         *EventGatewayDataPlaneCertificates
 	EventGatewayVirtualClusterPolicies        *EventGatewayVirtualClusterPolicies
 
 	sdkConfiguration config.SDKConfiguration
@@ -278,10 +278,10 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.EventGatewayBackendClusters = newEventGatewayBackendClusters(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayVaults = newEventGatewayVaults(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewaySchemaRegistries = newEventGatewaySchemaRegistries(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.EventGatewayDataPlaneCertificates = newEventGatewayDataPlaneCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayListenerPolicies = newEventGatewayListenerPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayVirtualClusterConsumePolicies = newEventGatewayVirtualClusterConsumePolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayVirtualClusterProducePolicies = newEventGatewayVirtualClusterProducePolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.EventGatewayDataPlaneCertificates = newEventGatewayDataPlaneCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayVirtualClusterPolicies = newEventGatewayVirtualClusterPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
 
 	return sdk
