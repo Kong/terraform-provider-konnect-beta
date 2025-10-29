@@ -6443,349 +6443,6 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Event Gateway Schema Registries
-  '/v1/event-gateways/{gatewayId}/listeners/{eventGatewayListenerId}/policies':
-    parameters:
-      - $ref: '#/components/parameters/gatewayId'
-      - $ref: '#/components/parameters/eventGatewayListenerId'
-    post:
-      x-unstable: true
-      x-internal: true
-      x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayListenerPolicy#create
-        terraform-datasource: null
-      operationId: create-event-gateway-listener-policy
-      summary: Create Policy for Listener
-      description: Creates a new policy associated with the specified Event Gateway listener.
-      requestBody:
-        $ref: '#/components/requestBodies/CreateEventGatewayListenerPolicyRequest'
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-      tags:
-        - Event Gateway Listener Policies
-  '/v1/event-gateways/{gatewayId}/listeners/{eventGatewayListenerId}/policies/{policyId}':
-    parameters:
-      - $ref: '#/components/parameters/gatewayId'
-      - $ref: '#/components/parameters/eventGatewayListenerId'
-      - name: policyId
-        in: path
-        description: The UUID of the policy.
-        required: true
-        schema:
-          type: string
-          format: uuid
-          example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
-        x-speakeasy-match: id
-    get:
-      x-unstable: true
-      x-internal: true
-      x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayListenerPolicy#read
-        terraform-datasource: null
-      operationId: get-event-gateway-listener-policy
-      summary: Get a Policy for Listener
-      description: Returns information about a specific policy associated with the Event Gateway listener.
-      responses:
-        '200':
-          description: A single policy object.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Event Gateway Listener Policies
-    put:
-      x-unstable: true
-      x-internal: true
-      x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayListenerPolicy#update
-        terraform-datasource: null
-      operationId: update-event-gateway-listener-policy
-      summary: Update Policy for Listener
-      description: Updates an existing policy associated with the specified Event Gateway listener.
-      requestBody:
-        $ref: '#/components/requestBodies/UpdateEventGatewayListenerPolicyRequest'
-      responses:
-        '200':
-          description: Updated policy object.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-      tags:
-        - Event Gateway Listener Policies
-    delete:
-      x-unstable: true
-      x-internal: true
-      x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayListenerPolicy#delete
-        terraform-datasource: null
-      operationId: delete-event-gateway-listener-policy
-      summary: Delete Policy for Listener
-      description: Deletes a specific policy associated with the Event Gateway listener.
-      responses:
-        '204':
-          description: No Content
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Event Gateway Listener Policies
-  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies':
-    parameters:
-      - $ref: '#/components/parameters/gatewayId'
-      - $ref: '#/components/parameters/virtualClusterId'
-    post:
-      x-unstable: true
-      x-internal: true
-      x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterConsumePolicy#create
-        terraform-datasource: null
-      operationId: create-event-gateway-virtual-cluster-consume-policy
-      summary: Create Consume Policy for Virtual Cluster
-      description: Creates a new consume policy associated with the specified Event Gateway virtual cluster.
-      parameters:
-        - $ref: '#/components/parameters/parentPolicyId'
-      requestBody:
-        $ref: '#/components/requestBodies/CreateEventGatewayConsumePolicyRequest'
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-      tags:
-        - Event Gateway Virtual Cluster Consume Policies
-  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies/{policyId}':
-    parameters:
-      - $ref: '#/components/parameters/gatewayId'
-      - $ref: '#/components/parameters/virtualClusterId'
-      - name: policyId
-        in: path
-        description: The UUID of the policy.
-        required: true
-        schema:
-          type: string
-          format: uuid
-          example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
-        x-speakeasy-match: id
-    get:
-      x-unstable: true
-      x-internal: true
-      x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterConsumePolicy#read
-        terraform-datasource: null
-      operationId: get-event-gateway-virtual-cluster-consume-policy
-      summary: Get a Consume Policy for Virtual Cluster
-      description: Returns information about a specific consume policy associated with the Event Gateway virtual cluster.
-      responses:
-        '200':
-          description: A single consume policy object.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Event Gateway Virtual Cluster Consume Policies
-    put:
-      x-unstable: true
-      x-internal: true
-      x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterConsumePolicy#update
-        terraform-datasource: null
-      operationId: update-event-gateway-virtual-cluster-consume-policy
-      summary: Update Consume Policy for Virtual Cluster
-      description: Updates an existing consume policy associated with the specified Event Gateway virtual cluster.
-      requestBody:
-        $ref: '#/components/requestBodies/UpdateEventGatewayConsumePolicyRequest'
-      responses:
-        '200':
-          description: Updated consume policy object.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-      tags:
-        - Event Gateway Virtual Cluster Consume Policies
-    delete:
-      x-unstable: true
-      x-internal: true
-      x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterConsumePolicy#delete
-        terraform-datasource: null
-      operationId: delete-event-gateway-virtual-cluster-consume-policy
-      summary: Delete Consume Policy for Virtual Cluster
-      description: Deletes a specific consume policy associated with the Event Gateway virtual cluster.
-      responses:
-        '204':
-          description: No Content
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Event Gateway Virtual Cluster Consume Policies
-  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies':
-    parameters:
-      - $ref: '#/components/parameters/gatewayId'
-      - $ref: '#/components/parameters/virtualClusterId'
-    post:
-      x-unstable: true
-      x-internal: true
-      x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterProducePolicy#create
-        terraform-datasource: null
-      operationId: create-event-gateway-virtual-cluster-produce-policy
-      summary: Create Produce Policy for Virtual Cluster
-      description: Creates a new produce policy associated with the specified Event Gateway virtual cluster.
-      parameters:
-        - $ref: '#/components/parameters/parentPolicyId'
-      requestBody:
-        $ref: '#/components/requestBodies/CreateEventGatewayProducePolicyRequest'
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-      tags:
-        - Event Gateway Virtual Cluster Produce Policies
-  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies/{policyId}':
-    parameters:
-      - $ref: '#/components/parameters/gatewayId'
-      - $ref: '#/components/parameters/virtualClusterId'
-      - name: policyId
-        in: path
-        description: The UUID of the policy.
-        required: true
-        schema:
-          type: string
-          format: uuid
-          example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
-        x-speakeasy-match: id
-    get:
-      x-unstable: true
-      x-internal: true
-      x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterProducePolicy#read
-        terraform-datasource: null
-      operationId: get-event-gateway-virtual-cluster-produce-policy
-      summary: Get a Produce Policy for Virtual Cluster
-      description: Returns information about a specific produce policy associated with the Event Gateway virtual cluster.
-      responses:
-        '200':
-          description: A single produce policy object.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Event Gateway Virtual Cluster Produce Policies
-    put:
-      x-unstable: true
-      x-internal: true
-      x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterProducePolicy#update
-        terraform-datasource: null
-      operationId: update-event-gateway-virtual-cluster-produce-policy
-      summary: Update Produce Policy for Virtual Cluster
-      description: Updates an existing produce policy associated with the specified Event Gateway virtual cluster.
-      requestBody:
-        $ref: '#/components/requestBodies/UpdateEventGatewayProducePolicyRequest'
-      responses:
-        '200':
-          description: Updated produce policy object.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-      tags:
-        - Event Gateway Virtual Cluster Produce Policies
-    delete:
-      x-unstable: true
-      x-internal: true
-      x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterProducePolicy#delete
-        terraform-datasource: null
-      operationId: delete-event-gateway-virtual-cluster-produce-policy
-      summary: Delete Produce Policy for Virtual Cluster
-      description: Deletes a specific produce policy associated with the Event Gateway virtual cluster.
-      responses:
-        '204':
-          description: No Content
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Event Gateway Virtual Cluster Produce Policies
   '/v1/event-gateways/{gatewayId}/data-plane-certificates':
     parameters:
       - $ref: '#/components/parameters/gatewayId'
@@ -6898,6 +6555,1212 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Event Gateway DataPlane Certificates
+  '/v1/event-gateways/{gatewayId}/listeners/{eventGatewayListenerId}/policies/{policyId}#TlsServer':
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayListenerPolicyTlsServer#get
+        terraform-datasource: null
+      operationId: get-event-gateway-listener-policy-tls-server
+      summary: Get a Policy for Listener
+      description: Returns information about a specific policy associated with the Event Gateway listener.
+      responses:
+        '200':
+          description: A single policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Listener Policies
+    put:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayListenerPolicyTlsServer#update
+        terraform-datasource: null
+      operationId: update-event-gateway-listener-policy-tls-server
+      summary: Update Policy for Listener
+      description: Updates an existing policy associated with the specified Event Gateway listener.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventGatewayTLSListenerSensitiveDataAwarePolicy'
+      responses:
+        '200':
+          description: Updated policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Listener Policies
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayListenerPolicyTlsServer#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-listener-policy-tls-server
+      summary: Delete Policy for Listener
+      description: Deletes a specific policy associated with the Event Gateway listener.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Listener Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/eventGatewayListenerId'
+      - name: policyId
+        in: path
+        description: The UUID of the policy.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
+        x-speakeasy-match: id
+  '/v1/event-gateways/{gatewayId}/listeners/{eventGatewayListenerId}/policies/{policyId}#ForwardToVirtualCluster':
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayListenerPolicyForwardToVirtualCluster#get
+        terraform-datasource: null
+      operationId: get-event-gateway-listener-policy-forward-to_virtual_cluster
+      summary: Get a Policy for Listener
+      description: Returns information about a specific policy associated with the Event Gateway listener.
+      responses:
+        '200':
+          description: A single policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Listener Policies
+    put:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayListenerPolicyForwardToVirtualCluster#update
+        terraform-datasource: null
+      operationId: update-event-gateway-listener-policy-forward-to_virtual_cluster
+      summary: Update Policy for Listener
+      description: Updates an existing policy associated with the specified Event Gateway listener.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForwardToVirtualClusterPolicy'
+      responses:
+        '200':
+          description: Updated policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Listener Policies
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayListenerPolicyForwardToVirtualCluster#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-listener-policy-forward-to_virtual_cluster
+      summary: Delete Policy for Listener
+      description: Deletes a specific policy associated with the Event Gateway listener.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Listener Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/eventGatewayListenerId'
+      - name: policyId
+        in: path
+        description: The UUID of the policy.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
+        x-speakeasy-match: id
+  '/v1/event-gateways/{gatewayId}/listeners/{eventGatewayListenerId}/policies#TlsServer':
+    post:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayListenerPolicyTlsServer#create
+        terraform-datasource: null
+      operationId: create-event-gateway-listener-policy-tls-server
+      summary: Create Policy for Listener
+      description: Creates a new policy associated with the specified Event Gateway listener.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventGatewayTLSListenerPolicy'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Listener Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/eventGatewayListenerId'
+  '/v1/event-gateways/{gatewayId}/listeners/{eventGatewayListenerId}/policies#ForwardToVirtualCluster':
+    post:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayListenerPolicyForwardToVirtualCluster#create
+        terraform-datasource: null
+      operationId: create-event-gateway-listener-policy-forward-to_virtual_cluster
+      summary: Create Policy for Listener
+      description: Creates a new policy associated with the specified Event Gateway listener.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForwardToVirtualClusterPolicy'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Listener Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/eventGatewayListenerId'
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies/{policyId}#ModifyHeaders':
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayConsumePolicyModifyHeaders#get
+        terraform-datasource: null
+      operationId: get-event-gateway-virtual-cluster-consume-policy-modify-headers
+      summary: Get a Consume Policy for Virtual Cluster
+      description: Returns information about a specific consume policy associated with the Event Gateway virtual cluster.
+      responses:
+        '200':
+          description: A single consume policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+    put:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayConsumePolicyModifyHeaders#update
+        terraform-datasource: null
+      operationId: update-event-gateway-virtual-cluster-consume-policy-modify-headers
+      summary: Update Consume Policy for Virtual Cluster
+      description: Updates an existing consume policy associated with the specified Event Gateway virtual cluster.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventGatewayModifyHeadersPolicy'
+      responses:
+        '200':
+          description: Updated consume policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayConsumePolicyModifyHeaders#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-virtual-cluster-consume-policy-modify-headers
+      summary: Delete Consume Policy for Virtual Cluster
+      description: Deletes a specific consume policy associated with the Event Gateway virtual cluster.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
+      - name: policyId
+        in: path
+        description: The UUID of the policy.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
+        x-speakeasy-match: id
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies/{policyId}#SchemaValidation':
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayConsumePolicySchemaValidation#get
+        terraform-datasource: null
+      operationId: get-event-gateway-virtual-cluster-consume-policy-schema-validation
+      summary: Get a Consume Policy for Virtual Cluster
+      description: Returns information about a specific consume policy associated with the Event Gateway virtual cluster.
+      responses:
+        '200':
+          description: A single consume policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+    put:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayConsumePolicySchemaValidation#update
+        terraform-datasource: null
+      operationId: update-event-gateway-virtual-cluster-consume-policy-schema-validation
+      summary: Update Consume Policy for Virtual Cluster
+      description: Updates an existing consume policy associated with the specified Event Gateway virtual cluster.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicy'
+      responses:
+        '200':
+          description: Updated consume policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayConsumePolicySchemaValidation#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-virtual-cluster-consume-policy-schema-validation
+      summary: Delete Consume Policy for Virtual Cluster
+      description: Deletes a specific consume policy associated with the Event Gateway virtual cluster.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
+      - name: policyId
+        in: path
+        description: The UUID of the policy.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
+        x-speakeasy-match: id
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies/{policyId}#Decrypt':
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayConsumePolicyDecrypt#get
+        terraform-datasource: null
+      operationId: get-event-gateway-virtual-cluster-consume-policy-decrypt
+      summary: Get a Consume Policy for Virtual Cluster
+      description: Returns information about a specific consume policy associated with the Event Gateway virtual cluster.
+      responses:
+        '200':
+          description: A single consume policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+    put:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayConsumePolicyDecrypt#update
+        terraform-datasource: null
+      operationId: update-event-gateway-virtual-cluster-consume-policy-decrypt
+      summary: Update Consume Policy for Virtual Cluster
+      description: Updates an existing consume policy associated with the specified Event Gateway virtual cluster.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventGatewayDecryptSensitiveDataAwarePolicy'
+      responses:
+        '200':
+          description: Updated consume policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayConsumePolicyDecrypt#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-virtual-cluster-consume-policy-decrypt
+      summary: Delete Consume Policy for Virtual Cluster
+      description: Deletes a specific consume policy associated with the Event Gateway virtual cluster.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
+      - name: policyId
+        in: path
+        description: The UUID of the policy.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
+        x-speakeasy-match: id
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies/{policyId}#SkipRecord':
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayConsumePolicySkipRecord#get
+        terraform-datasource: null
+      operationId: get-event-gateway-virtual-cluster-consume-policy-skip-record
+      summary: Get a Consume Policy for Virtual Cluster
+      description: Returns information about a specific consume policy associated with the Event Gateway virtual cluster.
+      responses:
+        '200':
+          description: A single consume policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+    put:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayConsumePolicySkipRecord#update
+        terraform-datasource: null
+      operationId: update-event-gateway-virtual-cluster-consume-policy-skip-record
+      summary: Update Consume Policy for Virtual Cluster
+      description: Updates an existing consume policy associated with the specified Event Gateway virtual cluster.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventGatewaySkipRecordPolicy'
+      responses:
+        '200':
+          description: Updated consume policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayConsumePolicySkipRecord#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-virtual-cluster-consume-policy-skip-record
+      summary: Delete Consume Policy for Virtual Cluster
+      description: Deletes a specific consume policy associated with the Event Gateway virtual cluster.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
+      - name: policyId
+        in: path
+        description: The UUID of the policy.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
+        x-speakeasy-match: id
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies#ModifyHeaders':
+    post:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayConsumePolicyModifyHeaders#create
+        terraform-datasource: null
+      operationId: create-event-gateway-virtual-cluster-consume-policy-modify-headers
+      summary: Create Consume Policy for Virtual Cluster
+      description: Creates a new consume policy associated with the specified Event Gateway virtual cluster.
+      parameters:
+        - $ref: '#/components/parameters/parentPolicyId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventGatewayModifyHeadersPolicy'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies#SchemaValidation':
+    post:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayConsumePolicySchemaValidation#create
+        terraform-datasource: null
+      operationId: create-event-gateway-virtual-cluster-consume-policy-schema-validation
+      summary: Create Consume Policy for Virtual Cluster
+      description: Creates a new consume policy associated with the specified Event Gateway virtual cluster.
+      parameters:
+        - $ref: '#/components/parameters/parentPolicyId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicy'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies#Decrypt':
+    post:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayConsumePolicyDecrypt#create
+        terraform-datasource: null
+      operationId: create-event-gateway-virtual-cluster-consume-policy-decrypt
+      summary: Create Consume Policy for Virtual Cluster
+      description: Creates a new consume policy associated with the specified Event Gateway virtual cluster.
+      parameters:
+        - $ref: '#/components/parameters/parentPolicyId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventGatewayDecryptPolicy'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies#SkipRecord':
+    post:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayConsumePolicySkipRecord#create
+        terraform-datasource: null
+      operationId: create-event-gateway-virtual-cluster-consume-policy-skip-record
+      summary: Create Consume Policy for Virtual Cluster
+      description: Creates a new consume policy associated with the specified Event Gateway virtual cluster.
+      parameters:
+        - $ref: '#/components/parameters/parentPolicyId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventGatewaySkipRecordPolicy'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Consume Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies/{policyId}#ModifyHeaders':
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayProducePolicyModifyHeaders#get
+        terraform-datasource: null
+      operationId: get-event-gateway-virtual-cluster-produce-policy-modify-headers
+      summary: Get a Produce Policy for Virtual Cluster
+      description: Returns information about a specific produce policy associated with the Event Gateway virtual cluster.
+      responses:
+        '200':
+          description: A single produce policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+    put:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayProducePolicyModifyHeaders#update
+        terraform-datasource: null
+      operationId: update-event-gateway-virtual-cluster-produce-policy-modify-headers
+      summary: Update Produce Policy for Virtual Cluster
+      description: Updates an existing produce policy associated with the specified Event Gateway virtual cluster.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventGatewayModifyHeadersPolicy'
+      responses:
+        '200':
+          description: Updated produce policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayProducePolicyModifyHeaders#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-virtual-cluster-produce-policy-modify-headers
+      summary: Delete Produce Policy for Virtual Cluster
+      description: Deletes a specific produce policy associated with the Event Gateway virtual cluster.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
+      - name: policyId
+        in: path
+        description: The UUID of the policy.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
+        x-speakeasy-match: id
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies/{policyId}#SchemaValidation':
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayProducePolicySchemaValidation#get
+        terraform-datasource: null
+      operationId: get-event-gateway-virtual-cluster-produce-policy-schema-validation
+      summary: Get a Produce Policy for Virtual Cluster
+      description: Returns information about a specific produce policy associated with the Event Gateway virtual cluster.
+      responses:
+        '200':
+          description: A single produce policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+    put:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayProducePolicySchemaValidation#update
+        terraform-datasource: null
+      operationId: update-event-gateway-virtual-cluster-produce-policy-schema-validation
+      summary: Update Produce Policy for Virtual Cluster
+      description: Updates an existing produce policy associated with the specified Event Gateway virtual cluster.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventGatewayProduceSchemaValidationPolicy'
+      responses:
+        '200':
+          description: Updated produce policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayProducePolicySchemaValidation#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-virtual-cluster-produce-policy-schema-validation
+      summary: Delete Produce Policy for Virtual Cluster
+      description: Deletes a specific produce policy associated with the Event Gateway virtual cluster.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
+      - name: policyId
+        in: path
+        description: The UUID of the policy.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
+        x-speakeasy-match: id
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies/{policyId}#Encrypt':
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayProducePolicyEncrypt#get
+        terraform-datasource: null
+      operationId: get-event-gateway-virtual-cluster-produce-policy-encrypt
+      summary: Get a Produce Policy for Virtual Cluster
+      description: Returns information about a specific produce policy associated with the Event Gateway virtual cluster.
+      responses:
+        '200':
+          description: A single produce policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+    put:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayProducePolicyEncrypt#update
+        terraform-datasource: null
+      operationId: update-event-gateway-virtual-cluster-produce-policy-encrypt
+      summary: Update Produce Policy for Virtual Cluster
+      description: Updates an existing produce policy associated with the specified Event Gateway virtual cluster.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventGatewayEncryptSensitiveDataAwarePolicy'
+      responses:
+        '200':
+          description: Updated produce policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayProducePolicyEncrypt#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-virtual-cluster-produce-policy-encrypt
+      summary: Delete Produce Policy for Virtual Cluster
+      description: Deletes a specific produce policy associated with the Event Gateway virtual cluster.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
+      - name: policyId
+        in: path
+        description: The UUID of the policy.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
+        x-speakeasy-match: id
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies/{policyId}#SkipRecord':
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayProducePolicySkipRecord#get
+        terraform-datasource: null
+      operationId: get-event-gateway-virtual-cluster-produce-policy-skip-record
+      summary: Get a Produce Policy for Virtual Cluster
+      description: Returns information about a specific produce policy associated with the Event Gateway virtual cluster.
+      responses:
+        '200':
+          description: A single produce policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+    put:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayProducePolicySkipRecord#update
+        terraform-datasource: null
+      operationId: update-event-gateway-virtual-cluster-produce-policy-skip-record
+      summary: Update Produce Policy for Virtual Cluster
+      description: Updates an existing produce policy associated with the specified Event Gateway virtual cluster.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventGatewaySkipRecordPolicy'
+      responses:
+        '200':
+          description: Updated produce policy object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayProducePolicySkipRecord#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-virtual-cluster-produce-policy-skip-record
+      summary: Delete Produce Policy for Virtual Cluster
+      description: Deletes a specific produce policy associated with the Event Gateway virtual cluster.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
+      - name: policyId
+        in: path
+        description: The UUID of the policy.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
+        x-speakeasy-match: id
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies#ModifyHeaders':
+    post:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayProducePolicyModifyHeaders#create
+        terraform-datasource: null
+      operationId: create-event-gateway-virtual-cluster-produce-policy-modify-headers
+      summary: Create Produce Policy for Virtual Cluster
+      description: Creates a new produce policy associated with the specified Event Gateway virtual cluster.
+      parameters:
+        - $ref: '#/components/parameters/parentPolicyId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventGatewayModifyHeadersPolicy'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies#SchemaValidation':
+    post:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayProducePolicySchemaValidation#create
+        terraform-datasource: null
+      operationId: create-event-gateway-virtual-cluster-produce-policy-schema-validation
+      summary: Create Produce Policy for Virtual Cluster
+      description: Creates a new produce policy associated with the specified Event Gateway virtual cluster.
+      parameters:
+        - $ref: '#/components/parameters/parentPolicyId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventGatewayProduceSchemaValidationPolicy'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies#Encrypt':
+    post:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayProducePolicyEncrypt#create
+        terraform-datasource: null
+      operationId: create-event-gateway-virtual-cluster-produce-policy-encrypt
+      summary: Create Produce Policy for Virtual Cluster
+      description: Creates a new produce policy associated with the specified Event Gateway virtual cluster.
+      parameters:
+        - $ref: '#/components/parameters/parentPolicyId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventGatewayEncryptPolicy'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
+  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies#SkipRecord':
+    post:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayProducePolicySkipRecord#create
+        terraform-datasource: null
+      operationId: create-event-gateway-virtual-cluster-produce-policy-skip-record
+      summary: Create Produce Policy for Virtual Cluster
+      description: Creates a new produce policy associated with the specified Event Gateway virtual cluster.
+      parameters:
+        - $ref: '#/components/parameters/parentPolicyId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventGatewaySkipRecordPolicy'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayPolicy'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway Virtual Cluster Produce Policies
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - $ref: '#/components/parameters/virtualClusterId'
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/cluster-policies/{policyId}#Acls':
     get:
       x-unstable: true
@@ -7318,6 +8181,7 @@ components:
         - public
         - private
       title: VisibilityStatus
+      x-speakeasy-unknown-values: allow
     PublishedStatus:
       description: Whether the resource is visible on a given portal. Defaults to unpublished.
       type: string
@@ -7326,6 +8190,7 @@ components:
         - published
         - unpublished
       title: PublishedStatus
+      x-speakeasy-unknown-values: allow
     Description:
       type: string
       example: A custom page about developer portals
@@ -7341,6 +8206,7 @@ components:
         - public
         - private
       title: PageVisibilityStatus
+      x-speakeasy-unknown-values: allow
     SnippetVisibilityStatus:
       description: |
         Whether a snippet is publicly accessible to non-authenticated users.
@@ -7351,6 +8217,7 @@ components:
         - public
         - private
       title: PageVisibilityStatus
+      x-speakeasy-unknown-values: allow
     UpdatePortalPageRequest:
       description: Update a page in a portal.
       type: object
@@ -7568,17 +8435,20 @@ components:
           format: date-time
           example: '2022-11-04T20:10:06.927Z'
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         expires_at:
           description: An ISO-8601 timestamp representation of the ssl certificate expiration date.
           type: string
           format: date-time
           example: '2022-11-04T20:10:06.927Z'
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         skip_ca_check:
           description: |
             True when the provided certificate chain is served as-is without validation against a public trust store.
           type: boolean
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
       additionalProperties: false
       required:
         - domain_verification_method
@@ -7612,6 +8482,7 @@ components:
         - http
         - custom_certificate
       title: PortalCustomDomainVerificationMethod
+      x-speakeasy-unknown-values: allow
     PortalCustomDomainVerificationStatus:
       type: string
       enum:
@@ -7620,6 +8491,8 @@ components:
         - error
       readOnly: true
       title: PortalCustomDomainVerificationStatus
+      x-speakeasy-param-suppress-computed-diff: true
+      x-speakeasy-unknown-values: allow
     PortalCustomDomainCnameStatus:
       type: string
       enum:
@@ -7627,12 +8500,15 @@ components:
         - pending
       readOnly: true
       title: PortalCustomDomainCnameStatus
+      x-speakeasy-param-suppress-computed-diff: true
+      x-speakeasy-unknown-values: allow
     PortalCustomDomainValidationErrors:
       type: array
       items:
         type: string
       readOnly: true
       title: PortalCustomDomainValidationErrors
+      x-speakeasy-param-suppress-computed-diff: true
     CreatePortalCustomDomainRequest:
       type: object
       properties:
@@ -7918,6 +8794,7 @@ components:
           format: uuid
           example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           type: string
           example: IDM - Developers
@@ -7938,11 +8815,13 @@ components:
           format: date-time
           example: '1992-02-07T17:46:57.52Z'
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         updated_at:
           type: string
           format: date-time
           example: '2022-02-07T17:00:00.52Z'
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
       example:
         id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
         name: IDM - Developers
@@ -7986,6 +8865,7 @@ components:
       format: uuid
       example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
       readOnly: true
+      x-speakeasy-param-suppress-computed-diff: true
     CreatedAt:
       description: An ISO-8601 timestamp representation of entity creation date.
       type: string
@@ -8052,6 +8932,7 @@ components:
             body to child properties in a frontend UI. Must be returned as an integer.
           type: integer
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         title:
           description: |
             A short, human-readable summary of the problem. It should not
@@ -8059,10 +8940,12 @@ components:
             Should be provided as "Sentence case" for direct use in the UI.
           type: string
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         type:
           description: The error type.
           type: string
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         instance:
           description: |
             Used to return the correlation ID back to the user, in the format
@@ -8070,6 +8953,7 @@ components:
             when a customer reports an issue.
           type: string
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         detail:
           description: |
             A human readable explanation specific to this occurence of the problem.
@@ -8078,6 +8962,7 @@ components:
             provided as "Sentence case" for direct use in the UI.
           type: string
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
       required:
         - status
         - title
@@ -8109,8 +8994,11 @@ components:
         - is_supported_network_availability_zone_list
         - is_supported_network_cidr_block
         - is_supported_provider_region
+        - type
       nullable: true
       readOnly: true
+      x-speakeasy-param-suppress-computed-diff: true
+      x-speakeasy-unknown-values: allow
     InvalidParameterStandard:
       type: object
       properties:
@@ -8118,6 +9006,7 @@ components:
           type: string
           example: name
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         rule:
           $ref: '#/components/schemas/InvalidRules'
         source:
@@ -8130,6 +9019,7 @@ components:
           type: string
           example: is a required field
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
       additionalProperties: false
       required:
         - field
@@ -8141,6 +9031,7 @@ components:
           type: string
           example: name
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         rule:
           description: invalid parameters rules
           type: string
@@ -8154,6 +9045,8 @@ components:
             - min
           nullable: false
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+          x-speakeasy-unknown-values: allow
         minimum:
           type: integer
           example: 8
@@ -8167,6 +9060,7 @@ components:
           type: string
           example: must have at least 8 characters
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
       additionalProperties: false
       required:
         - field
@@ -8180,6 +9074,7 @@ components:
           type: string
           example: name
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         rule:
           description: invalid parameters rules
           type: string
@@ -8189,6 +9084,8 @@ components:
             - max
           nullable: false
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+          x-speakeasy-unknown-values: allow
         maximum:
           type: integer
           example: 8
@@ -8202,6 +9099,7 @@ components:
           type: string
           example: must not have more than 8 characters
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
       additionalProperties: false
       required:
         - field
@@ -8215,6 +9113,7 @@ components:
           type: string
           example: name
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         rule:
           description: invalid parameters rules
           type: string
@@ -8222,10 +9121,12 @@ components:
             - enum
           nullable: false
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         reason:
           type: string
           example: is a required field
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         choices:
           type: array
           items: {}
@@ -8233,6 +9134,7 @@ components:
           nullable: false
           readOnly: true
           uniqueItems: true
+          x-speakeasy-param-suppress-computed-diff: true
         source:
           type: string
           example: body
@@ -8252,6 +9154,7 @@ components:
           type: string
           example: name
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         rule:
           description: invalid parameters rules
           type: string
@@ -8259,10 +9162,12 @@ components:
             - dependent_fields
           nullable: true
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         reason:
           type: string
           example: is a required field
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         dependents:
           type: array
           items: {}
@@ -8271,6 +9176,7 @@ components:
           readOnly: true
           uniqueItems: true
           x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         source:
           type: string
           example: body
@@ -8404,6 +9310,7 @@ components:
           enum:
             - public
             - private
+          x-speakeasy-unknown-values: allow
         external:
           description: 'When clicked, open the link in a new window'
           type: boolean
@@ -8446,6 +9353,7 @@ components:
                 - light
                 - dark
                 - system
+              x-speakeasy-unknown-values: allow
             colors:
               type: object
               additionalProperties: false
@@ -8569,6 +9477,7 @@ components:
           format: uuid
           example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: |
             The name of your API. The `name + version` combination must be unique for each API you publish.
@@ -8611,6 +9520,7 @@ components:
             example: 123e4567-e89b-12d3-a456-426614174000
           deprecated: true
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         portals:
           description: The list of portals which this API is published to.
           type: array
@@ -8638,17 +9548,9 @@ components:
           nullable: false
           readOnly: true
           uniqueItems: true
+          x-speakeasy-param-suppress-computed-diff: true
         labels:
           $ref: '#/components/schemas/Labels'
-        implementation_mode:
-          description: the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement
-          type: string
-          default: null
-          nullable: true
-          readOnly: true
-          x-internal: true
-          x-speakeasy-param-computed: false
-          x-unstable: true
         attributes:
           $ref: '#/components/schemas/ApiAttributes'
         created_at:
@@ -8686,6 +9588,7 @@ components:
             - control_plane_error_plugin_conflict
             - control_plane_error_data_constraint_error
             - control_plane_error_implementation_not_found
+          x-speakeasy-unknown-values: allow
         message:
           type: string
         info:
@@ -8718,6 +9621,7 @@ components:
       example: de5c9818-be5c-42e6-b514-e3d4bc30ddeb
       readOnly: true
       title: API Document ID
+      x-speakeasy-param-suppress-computed-diff: true
     ApiDocumentContent:
       description: Raw markdown content to display in your Portal
       type: string
@@ -8734,6 +9638,7 @@ components:
       enum:
         - published
         - unpublished
+      x-speakeasy-unknown-values: allow
     ApiDocumentParentDocumentId:
       description: |
         API Documents may be rendered as a tree of files.
@@ -8785,6 +9690,7 @@ components:
           format: uuid
           example: 7710d5c4-d902-410b-992f-18b814155b53
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         version:
           description: The version of the api.
           type: string
@@ -8817,6 +9723,8 @@ components:
                 - asyncapi
               readOnly: true
               title: API Spec Type
+              x-speakeasy-param-suppress-computed-diff: true
+              x-speakeasy-unknown-values: allow
             validation_messages:
               description: The errors that occurred while parsing the API version spec.
               type: array
@@ -8829,6 +9737,7 @@ components:
                   message:
                     type: string
               readOnly: true
+              x-speakeasy-param-suppress-computed-diff: true
           x-speakeasy-param-computed: false
         created_at:
           $ref: '#/components/schemas/CreatedAt'
@@ -8845,6 +9754,7 @@ components:
           format: uuid
           example: 7710d5c4-d902-410b-992f-18b814155b53
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         version:
           description: The version of this api spec.
           type: string
@@ -8868,6 +9778,7 @@ components:
       nullable: true
       readOnly: true
       title: API Version Summary
+      x-speakeasy-param-suppress-computed-diff: true
       x-speakeasy-terraform-ignore: true
     ApiSpec:
       type: object
@@ -8878,6 +9789,7 @@ components:
           format: uuid
           example: 7710d5c4-d902-410b-992f-18b814155b53
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         content:
           default: null
           description: |
@@ -8898,6 +9810,7 @@ components:
               message:
                 type: string
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         type:
           description: |
             The type of specification being stored. This allows us to render the specification correctly.
@@ -8908,6 +9821,7 @@ components:
             - oas3
             - asyncapi
           title: API Spec Type
+          x-speakeasy-unknown-values: allow
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -8925,6 +9839,7 @@ components:
         - public
         - private
       title: API Publication Visibility
+      x-speakeasy-unknown-values: allow
     ApiPublicationAuthStrategyIds:
       description: |
         The auth strategy the API enforces for applications in the portal.
@@ -8978,29 +9893,12 @@ components:
             - $ref: '#/components/schemas/AuthStrategyApiSyncError'
           readOnly: true
           x-speakeasy-ignore: true
+          x-speakeasy-param-suppress-computed-diff: true
       additionalProperties: false
       required:
         - control_plane_id
         - id
       title: API Implementation Service
-    ApiImplementationControlPlane:
-      description: A Control plane that implements an API
-      type: object
-      properties:
-        access_control_enforcement_enabled:
-          description: Indicates if the access control enforcement plugin is installed globally in the target control plane
-          type: boolean
-          readOnly: true
-        control_plane_id:
-          type: string
-          format: uuid
-          example: 7710d5c4-d902-410b-992f-18b814155b53
-      additionalProperties: false
-      required:
-        - control_plane_id
-      title: API Implementation Control Plane
-      x-internal: true
-      x-unstable: true
     ApiImplementation:
       description: An entity that implements an API
       type: object
@@ -9022,23 +9920,6 @@ components:
       additionalProperties: false
       title: ApiImplementationGatewayServiceEntity
       x-speakeasy-name-override: Service Reference
-    ApiImplementationControlPlaneEntity:
-      description: A control plane that implements an API
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-        control_plane:
-          $ref: '#/components/schemas/ApiImplementationControlPlane'
-      additionalProperties: false
-      title: ApiImplementationControlPlaneEntity
-      x-internal: true
-      x-speakeasy-name-override: Control Plane Reference
-      x-unstable: true
     ApiAttributes:
       description: A set of attributes that describe the API
       type: object
@@ -9073,6 +9954,7 @@ components:
         - oas3
         - asyncapi
       title: API Spec Type
+      x-speakeasy-unknown-values: allow
     UnsupportedMediaTypeError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -9190,6 +10072,7 @@ components:
                                         - Plain
                                         - Json
                                       x-speakeasy-param-computed: false
+                                      x-speakeasy-unknown-values: allow
                                   required:
                                     - type
                                   x-speakeasy-param-computed: false
@@ -9300,6 +10183,7 @@ components:
                                         - Plain
                                         - Json
                                       x-speakeasy-param-computed: false
+                                      x-speakeasy-unknown-values: allow
                                   required:
                                     - type
                                   x-speakeasy-param-computed: false
@@ -9313,6 +10197,7 @@ components:
                                 - File
                                 - OpenTelemetry
                               x-speakeasy-param-computed: false
+                              x-speakeasy-unknown-values: allow
                           required:
                             - type
                           type: object
@@ -9338,6 +10223,7 @@ components:
                           - MeshHTTPRoute
                           - Dataplane
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                       labels:
                         description: |-
                           Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -9372,6 +10258,7 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
+                          x-speakeasy-unknown-values: allow
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -9454,6 +10341,7 @@ components:
                                         - Plain
                                         - Json
                                       x-speakeasy-param-computed: false
+                                      x-speakeasy-unknown-values: allow
                                   required:
                                     - type
                                   x-speakeasy-param-computed: false
@@ -9563,6 +10451,7 @@ components:
                                         - Plain
                                         - Json
                                       x-speakeasy-param-computed: false
+                                      x-speakeasy-unknown-values: allow
                                   required:
                                     - type
                                   x-speakeasy-param-computed: false
@@ -9576,6 +10465,7 @@ components:
                                 - File
                                 - OpenTelemetry
                               x-speakeasy-param-computed: false
+                              x-speakeasy-unknown-values: allow
                           required:
                             - type
                           type: object
@@ -9606,6 +10496,7 @@ components:
                     - MeshHTTPRoute
                     - Dataplane
                   x-speakeasy-param-computed: false
+                  x-speakeasy-unknown-values: allow
                 labels:
                   description: |-
                     Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -9640,6 +10531,7 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
+                    x-speakeasy-unknown-values: allow
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -9717,6 +10609,7 @@ components:
                                         - Plain
                                         - Json
                                       x-speakeasy-param-computed: false
+                                      x-speakeasy-unknown-values: allow
                                   required:
                                     - type
                                   x-speakeasy-param-computed: false
@@ -9827,6 +10720,7 @@ components:
                                         - Plain
                                         - Json
                                       x-speakeasy-param-computed: false
+                                      x-speakeasy-unknown-values: allow
                                   required:
                                     - type
                                   x-speakeasy-param-computed: false
@@ -9840,6 +10734,7 @@ components:
                                 - File
                                 - OpenTelemetry
                               x-speakeasy-param-computed: false
+                              x-speakeasy-unknown-values: allow
                           required:
                             - type
                           type: object
@@ -9865,6 +10760,7 @@ components:
                           - MeshHTTPRoute
                           - Dataplane
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                       labels:
                         description: |-
                           Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -9899,6 +10795,7 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
+                          x-speakeasy-unknown-values: allow
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -10288,6 +11185,7 @@ components:
                           - MeshHTTPRoute
                           - Dataplane
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                       labels:
                         description: |-
                           Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -10322,6 +11220,7 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
+                          x-speakeasy-unknown-values: allow
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -10647,6 +11546,7 @@ components:
                     - MeshHTTPRoute
                     - Dataplane
                   x-speakeasy-param-computed: false
+                  x-speakeasy-unknown-values: allow
                 labels:
                   description: |-
                     Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -10681,6 +11581,7 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
+                    x-speakeasy-unknown-values: allow
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -11001,6 +11902,7 @@ components:
                           - MeshHTTPRoute
                           - Dataplane
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                       labels:
                         description: |-
                           Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -11035,6 +11937,7 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
+                          x-speakeasy-unknown-values: allow
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -11234,6 +12137,7 @@ components:
                           - MeshHTTPRoute
                           - Dataplane
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                       labels:
                         description: |-
                           Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -11268,6 +12172,7 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
+                          x-speakeasy-unknown-values: allow
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -11395,6 +12300,7 @@ components:
                                 - Exact
                                 - Prefix
                               x-speakeasy-param-computed: false
+                              x-speakeasy-unknown-values: allow
                             value:
                               description: Value is SpiffeId of a client that needs to match for the configuration to be applied
                               type: string
@@ -11430,6 +12336,7 @@ components:
                     - MeshHTTPRoute
                     - Dataplane
                   x-speakeasy-param-computed: false
+                  x-speakeasy-unknown-values: allow
                 labels:
                   description: |-
                     Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -11464,6 +12371,7 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
+                    x-speakeasy-unknown-values: allow
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -11593,6 +12501,7 @@ components:
                           - MeshHTTPRoute
                           - Dataplane
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                       labels:
                         description: |-
                           Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -11627,6 +12536,7 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
+                          x-speakeasy-unknown-values: allow
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -11736,6 +12646,7 @@ components:
                     - MeshHTTPRoute
                     - Dataplane
                   x-speakeasy-param-computed: false
+                  x-speakeasy-unknown-values: allow
                 labels:
                   description: |-
                     Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -11770,6 +12681,7 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
+                    x-speakeasy-unknown-values: allow
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -12039,6 +12951,7 @@ components:
                           - MeshHTTPRoute
                           - Dataplane
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                       labels:
                         description: |-
                           Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -12073,6 +12986,7 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
+                          x-speakeasy-unknown-values: allow
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -12182,6 +13096,7 @@ components:
                     - MeshHTTPRoute
                     - Dataplane
                   x-speakeasy-param-computed: false
+                  x-speakeasy-unknown-values: allow
                 labels:
                   description: |-
                     Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -12216,6 +13131,7 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
+                    x-speakeasy-unknown-values: allow
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -12281,6 +13197,7 @@ components:
                                       - MeshHTTPRoute
                                       - Dataplane
                                     x-speakeasy-param-computed: false
+                                    x-speakeasy-unknown-values: allow
                                   labels:
                                     description: |-
                                       Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -12320,6 +13237,7 @@ components:
                                         - Sidecar
                                         - Gateway
                                       type: string
+                                      x-speakeasy-unknown-values: allow
                                     x-speakeasy-plan-modifiers: SupressZeroNullModifier
                                   sectionName:
                                     description: |-
@@ -12427,6 +13345,7 @@ components:
                                               - MeshHTTPRoute
                                               - Dataplane
                                             x-speakeasy-param-computed: false
+                                            x-speakeasy-unknown-values: allow
                                           labels:
                                             description: |-
                                               Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -12466,6 +13385,7 @@ components:
                                                 - Sidecar
                                                 - Gateway
                                               type: string
+                                              x-speakeasy-unknown-values: allow
                                             x-speakeasy-plan-modifiers: SupressZeroNullModifier
                                           sectionName:
                                             description: |-
@@ -12537,6 +13457,7 @@ components:
                                               - ReplaceFullPath
                                               - ReplacePrefixMatch
                                             x-speakeasy-param-computed: false
+                                            x-speakeasy-unknown-values: allow
                                         required:
                                           - type
                                         x-speakeasy-param-computed: false
@@ -12556,6 +13477,7 @@ components:
                                           - http
                                           - https
                                         x-speakeasy-param-computed: false
+                                        x-speakeasy-unknown-values: allow
                                       statusCode:
                                         description: StatusCode is the HTTP status code to be used in response.
                                         type: integer
@@ -12567,6 +13489,7 @@ components:
                                           - 307
                                           - 308
                                         x-speakeasy-param-computed: false
+                                        x-speakeasy-unknown-values: allow
                                     x-speakeasy-param-computed: false
                                   responseHeaderModifier:
                                     description: |-
@@ -12635,6 +13558,7 @@ components:
                                       - URLRewrite
                                       - RequestMirror
                                     x-speakeasy-param-computed: false
+                                    x-speakeasy-unknown-values: allow
                                   urlRewrite:
                                     type: object
                                     properties:
@@ -12667,6 +13591,7 @@ components:
                                               - ReplaceFullPath
                                               - ReplacePrefixMatch
                                             x-speakeasy-param-computed: false
+                                            x-speakeasy-unknown-values: allow
                                         required:
                                           - type
                                         x-speakeasy-param-computed: false
@@ -12710,6 +13635,7 @@ components:
                                         - Absent
                                         - Prefix
                                       x-speakeasy-param-computed: false
+                                      x-speakeasy-unknown-values: allow
                                     value:
                                       description: Value is the value of HTTP Header to be matched.
                                       type: string
@@ -12731,6 +13657,7 @@ components:
                                   - PUT
                                   - TRACE
                                 x-speakeasy-param-computed: false
+                                x-speakeasy-unknown-values: allow
                               path:
                                 type: object
                                 properties:
@@ -12741,6 +13668,7 @@ components:
                                       - PathPrefix
                                       - RegularExpression
                                     x-speakeasy-param-computed: false
+                                    x-speakeasy-unknown-values: allow
                                   value:
                                     description: |-
                                       Exact or prefix matches must be an absolute path. A prefix matches only
@@ -12769,6 +13697,7 @@ components:
                                         - Exact
                                         - RegularExpression
                                       x-speakeasy-param-computed: false
+                                      x-speakeasy-unknown-values: allow
                                     value:
                                       type: string
                                       x-speakeasy-param-computed: false
@@ -12806,6 +13735,7 @@ components:
                           - MeshHTTPRoute
                           - Dataplane
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                       labels:
                         description: |-
                           Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -12840,6 +13770,7 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
+                          x-speakeasy-unknown-values: allow
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -12950,6 +13881,7 @@ components:
                     - MeshHTTPRoute
                     - Dataplane
                   x-speakeasy-param-computed: false
+                  x-speakeasy-unknown-values: allow
                 labels:
                   description: |-
                     Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -12984,6 +13916,7 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
+                    x-speakeasy-unknown-values: allow
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -13106,6 +14039,7 @@ components:
                                 - QueryParameter
                                 - FilterState
                               x-speakeasy-param-computed: false
+                              x-speakeasy-unknown-values: allow
                           required:
                             - type
                           type: object
@@ -13242,6 +14176,7 @@ components:
                                         - QueryParameter
                                         - FilterState
                                       x-speakeasy-param-computed: false
+                                      x-speakeasy-unknown-values: allow
                                   required:
                                     - type
                                   type: object
@@ -13284,6 +14219,7 @@ components:
                                   - XXHash
                                   - MurmurHash2
                                 x-speakeasy-param-computed: false
+                                x-speakeasy-unknown-values: allow
                               hashPolicies:
                                 description: |-
                                   HashPolicies specify a list of request/connection properties that are used to calculate a hash.
@@ -13377,6 +14313,7 @@ components:
                                         - QueryParameter
                                         - FilterState
                                       x-speakeasy-param-computed: false
+                                      x-speakeasy-unknown-values: allow
                                   required:
                                     - type
                                   type: object
@@ -13416,6 +14353,7 @@ components:
                               - Random
                               - Maglev
                             x-speakeasy-param-computed: false
+                            x-speakeasy-unknown-values: allow
                         required:
                           - type
                         x-speakeasy-param-computed: false
@@ -13459,6 +14397,7 @@ components:
                                             - Any
                                             - AnyExcept
                                           x-speakeasy-param-computed: false
+                                          x-speakeasy-unknown-values: allow
                                         zones:
                                           type: array
                                           items:
@@ -13547,6 +14486,7 @@ components:
                           - MeshHTTPRoute
                           - Dataplane
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                       labels:
                         description: |-
                           Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -13581,6 +14521,7 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
+                          x-speakeasy-unknown-values: allow
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -13752,6 +14693,7 @@ components:
                                   - ProvidedTLS
                                   - ActiveMTLSBackend
                                 x-speakeasy-param-computed: false
+                                x-speakeasy-unknown-values: allow
                             x-speakeasy-param-computed: false
                         x-speakeasy-param-computed: false
                       type:
@@ -13761,6 +14703,7 @@ components:
                           - Prometheus
                           - OpenTelemetry
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                     required:
                       - type
                     type: object
@@ -13794,6 +14737,7 @@ components:
                                   - Basic
                                   - None
                                 x-speakeasy-param-computed: false
+                                x-speakeasy-unknown-values: allow
                             required:
                               - name
                             type: object
@@ -13818,6 +14762,7 @@ components:
                                   - Exact
                                   - Contains
                                 x-speakeasy-param-computed: false
+                                x-speakeasy-unknown-values: allow
                             required:
                               - match
                               - type
@@ -13843,6 +14788,7 @@ components:
                                   - Exact
                                   - Contains
                                 x-speakeasy-param-computed: false
+                                x-speakeasy-unknown-values: allow
                             required:
                               - match
                               - type
@@ -13872,6 +14818,7 @@ components:
                     - MeshHTTPRoute
                     - Dataplane
                   x-speakeasy-param-computed: false
+                  x-speakeasy-unknown-values: allow
                 labels:
                   description: |-
                     Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -13906,6 +14853,7 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
+                    x-speakeasy-unknown-values: allow
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -14016,6 +14964,7 @@ components:
                           - http2
                           - mysql
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                       type:
                         description: 'Type of the match, one of `Domain`, `IP` or `CIDR` is available.'
                         type: string
@@ -14024,6 +14973,7 @@ components:
                           - IP
                           - CIDR
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                       value:
                         description: Value for the specified Type.
                         type: string
@@ -14044,6 +14994,7 @@ components:
                     - Matched
                     - None
                   x-speakeasy-param-computed: false
+                  x-speakeasy-unknown-values: allow
               x-speakeasy-param-computed: false
             targetRef:
               description: |-
@@ -14066,6 +15017,7 @@ components:
                     - MeshHTTPRoute
                     - Dataplane
                   x-speakeasy-param-computed: false
+                  x-speakeasy-unknown-values: allow
                 labels:
                   description: |-
                     Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -14100,6 +15052,7 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
+                    x-speakeasy-unknown-values: allow
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -14221,6 +15174,7 @@ components:
                                     - move
                                     - copy
                                   x-speakeasy-param-computed: false
+                                  x-speakeasy-unknown-values: allow
                                 path:
                                   description: Path is a jsonpatch path string.
                                   type: string
@@ -14269,6 +15223,7 @@ components:
                               - Remove
                               - Patch
                             x-speakeasy-param-computed: false
+                            x-speakeasy-unknown-values: allow
                           value:
                             description: Value of xDS resource in YAML format to add or patch.
                             type: string
@@ -14304,6 +15259,7 @@ components:
                                     - move
                                     - copy
                                   x-speakeasy-param-computed: false
+                                  x-speakeasy-unknown-values: allow
                                 path:
                                   description: Path is a jsonpatch path string.
                                   type: string
@@ -14365,6 +15321,7 @@ components:
                               - AddAfter
                               - AddLast
                             x-speakeasy-param-computed: false
+                            x-speakeasy-unknown-values: allow
                           value:
                             description: Value of xDS resource in YAML format to add or patch.
                             type: string
@@ -14398,6 +15355,7 @@ components:
                                     - move
                                     - copy
                                   x-speakeasy-param-computed: false
+                                  x-speakeasy-unknown-values: allow
                                 path:
                                   description: Path is a jsonpatch path string.
                                   type: string
@@ -14452,6 +15410,7 @@ components:
                               - Remove
                               - Patch
                             x-speakeasy-param-computed: false
+                            x-speakeasy-unknown-values: allow
                           value:
                             description: Value of xDS resource in YAML format to add or patch.
                             type: string
@@ -14485,6 +15444,7 @@ components:
                                     - move
                                     - copy
                                   x-speakeasy-param-computed: false
+                                  x-speakeasy-unknown-values: allow
                                 path:
                                   description: Path is a jsonpatch path string.
                                   type: string
@@ -14546,6 +15506,7 @@ components:
                               - AddAfter
                               - AddLast
                             x-speakeasy-param-computed: false
+                            x-speakeasy-unknown-values: allow
                           value:
                             description: Value of xDS resource in YAML format to add or patch.
                             type: string
@@ -14581,6 +15542,7 @@ components:
                                     - move
                                     - copy
                                   x-speakeasy-param-computed: false
+                                  x-speakeasy-unknown-values: allow
                                 path:
                                   description: Path is a jsonpatch path string.
                                   type: string
@@ -14633,6 +15595,7 @@ components:
                               - Remove
                               - Patch
                             x-speakeasy-param-computed: false
+                            x-speakeasy-unknown-values: allow
                           value:
                             description: Value of xDS resource in YAML format to add or patch.
                             type: string
@@ -14665,6 +15628,7 @@ components:
                     - MeshHTTPRoute
                     - Dataplane
                   x-speakeasy-param-computed: false
+                  x-speakeasy-unknown-values: allow
                 labels:
                   description: |-
                     Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -14699,6 +15663,7 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
+                    x-speakeasy-unknown-values: allow
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -14942,6 +15907,7 @@ components:
                           - MeshHTTPRoute
                           - Dataplane
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                       labels:
                         description: |-
                           Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -14976,6 +15942,7 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
+                          x-speakeasy-unknown-values: allow
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -15158,6 +16125,7 @@ components:
                     - MeshHTTPRoute
                     - Dataplane
                   x-speakeasy-param-computed: false
+                  x-speakeasy-unknown-values: allow
                 labels:
                   description: |-
                     Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -15192,6 +16160,7 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
+                    x-speakeasy-unknown-values: allow
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -15367,6 +16336,7 @@ components:
                           - MeshHTTPRoute
                           - Dataplane
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                       labels:
                         description: |-
                           Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -15401,6 +16371,7 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
+                          x-speakeasy-unknown-values: allow
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -15510,6 +16481,7 @@ components:
                     - MeshHTTPRoute
                     - Dataplane
                   x-speakeasy-param-computed: false
+                  x-speakeasy-unknown-values: allow
                 labels:
                   description: |-
                     Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -15544,6 +16516,7 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
+                    x-speakeasy-unknown-values: allow
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -15639,6 +16612,7 @@ components:
                                         - Seconds
                                         - UnixTimestamp
                                       x-speakeasy-param-computed: false
+                                      x-speakeasy-unknown-values: allow
                                     name:
                                       description: The Name of the reset header.
                                       type: string
@@ -15663,6 +16637,7 @@ components:
                                 - ResourceExhausted
                                 - Unavailable
                               type: string
+                              x-speakeasy-unknown-values: allow
                             example:
                               - Canceled
                               - DeadlineExceeded
@@ -15710,6 +16685,7 @@ components:
                                     - OmitHostsWithTags
                                     - OmitPreviousPriorities
                                   x-speakeasy-param-computed: false
+                                  x-speakeasy-unknown-values: allow
                                 tags:
                                   description: |-
                                     Tags is a map of metadata to match against for selecting the omitted hosts. Required if Type is
@@ -15782,6 +16758,7 @@ components:
                                         - Seconds
                                         - UnixTimestamp
                                       x-speakeasy-param-computed: false
+                                      x-speakeasy-unknown-values: allow
                                     name:
                                       description: The Name of the reset header.
                                       type: string
@@ -15825,6 +16802,7 @@ components:
                                     - Absent
                                     - Prefix
                                   x-speakeasy-param-computed: false
+                                  x-speakeasy-unknown-values: allow
                                 value:
                                   description: Value is the value of HTTP Header to be matched.
                                   type: string
@@ -15864,6 +16842,7 @@ components:
                                     - Absent
                                     - Prefix
                                   x-speakeasy-param-computed: false
+                                  x-speakeasy-unknown-values: allow
                                 value:
                                   description: Value is the value of HTTP Header to be matched.
                                   type: string
@@ -15938,6 +16917,7 @@ components:
                           - MeshHTTPRoute
                           - Dataplane
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                       labels:
                         description: |-
                           Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -15972,6 +16952,7 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
+                          x-speakeasy-unknown-values: allow
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -16081,6 +17062,7 @@ components:
                     - MeshHTTPRoute
                     - Dataplane
                   x-speakeasy-param-computed: false
+                  x-speakeasy-unknown-values: allow
                 labels:
                   description: |-
                     Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -16115,6 +17097,7 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
+                    x-speakeasy-unknown-values: allow
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -16172,6 +17155,7 @@ components:
                                       - MeshHTTPRoute
                                       - Dataplane
                                     x-speakeasy-param-computed: false
+                                    x-speakeasy-unknown-values: allow
                                   labels:
                                     description: |-
                                       Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -16211,6 +17195,7 @@ components:
                                         - Sidecar
                                         - Gateway
                                       type: string
+                                      x-speakeasy-unknown-values: allow
                                     x-speakeasy-plan-modifiers: SupressZeroNullModifier
                                   sectionName:
                                     description: |-
@@ -16261,6 +17246,7 @@ components:
                           - MeshHTTPRoute
                           - Dataplane
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                       labels:
                         description: |-
                           Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -16295,6 +17281,7 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
+                          x-speakeasy-unknown-values: allow
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -16470,6 +17457,7 @@ components:
                           - MeshHTTPRoute
                           - Dataplane
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                       labels:
                         description: |-
                           Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -16504,6 +17492,7 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
+                          x-speakeasy-unknown-values: allow
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -16614,6 +17603,7 @@ components:
                     - MeshHTTPRoute
                     - Dataplane
                   x-speakeasy-param-computed: false
+                  x-speakeasy-unknown-values: allow
                 labels:
                   description: |-
                     Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -16648,6 +17638,7 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
+                    x-speakeasy-unknown-values: allow
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -16751,6 +17742,7 @@ components:
                           - MeshHTTPRoute
                           - Dataplane
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                       labels:
                         description: |-
                           Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -16785,6 +17777,7 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
+                          x-speakeasy-unknown-values: allow
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -16891,6 +17884,7 @@ components:
                           - Permissive
                           - Strict
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                       tlsCiphers:
                         description: TlsCiphers section for providing ciphers specification.
                         type: array
@@ -16903,6 +17897,7 @@ components:
                             - ECDHE-RSA-AES256-GCM-SHA384
                             - ECDHE-RSA-CHACHA20-POLY1305
                           type: string
+                          x-speakeasy-unknown-values: allow
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       tlsVersion:
                         description: Version section for providing version specification.
@@ -16919,6 +17914,7 @@ components:
                               - TLS12
                               - TLS13
                             x-speakeasy-param-computed: false
+                            x-speakeasy-unknown-values: allow
                           min:
                             description: 'Min defines minimum supported version. One of `TLSAuto`, `TLS10`, `TLS11`, `TLS12`, `TLS13`.'
                             type: string
@@ -16930,6 +17926,7 @@ components:
                               - TLS12
                               - TLS13
                             x-speakeasy-param-computed: false
+                            x-speakeasy-unknown-values: allow
                         x-speakeasy-param-computed: false
                     x-speakeasy-param-computed: false
                   targetRef:
@@ -16952,6 +17949,7 @@ components:
                           - MeshHTTPRoute
                           - Dataplane
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                       labels:
                         description: |-
                           Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -16986,6 +17984,7 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
+                          x-speakeasy-unknown-values: allow
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -17026,6 +18025,7 @@ components:
                           - Permissive
                           - Strict
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                       tlsCiphers:
                         description: TlsCiphers section for providing ciphers specification.
                         type: array
@@ -17038,6 +18038,7 @@ components:
                             - ECDHE-RSA-AES256-GCM-SHA384
                             - ECDHE-RSA-CHACHA20-POLY1305
                           type: string
+                          x-speakeasy-unknown-values: allow
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       tlsVersion:
                         description: Version section for providing version specification.
@@ -17054,6 +18055,7 @@ components:
                               - TLS12
                               - TLS13
                             x-speakeasy-param-computed: false
+                            x-speakeasy-unknown-values: allow
                           min:
                             description: 'Min defines minimum supported version. One of `TLSAuto`, `TLS10`, `TLS11`, `TLS12`, `TLS13`.'
                             type: string
@@ -17065,6 +18067,7 @@ components:
                               - TLS12
                               - TLS13
                             x-speakeasy-param-computed: false
+                            x-speakeasy-unknown-values: allow
                         x-speakeasy-param-computed: false
                     x-speakeasy-param-computed: false
                 type: object
@@ -17090,6 +18093,7 @@ components:
                     - MeshHTTPRoute
                     - Dataplane
                   x-speakeasy-param-computed: false
+                  x-speakeasy-unknown-values: allow
                 labels:
                   description: |-
                     Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -17124,6 +18128,7 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
+                    x-speakeasy-unknown-values: allow
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -17266,6 +18271,7 @@ components:
                           - Datadog
                           - OpenTelemetry
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                       zipkin:
                         description: Zipkin backend configuration.
                         type: object
@@ -17280,6 +18286,7 @@ components:
                               - httpJson
                               - httpProto
                             x-speakeasy-param-computed: false
+                            x-speakeasy-unknown-values: allow
                           sharedSpanContext:
                             description: |-
                               Determines whether client and server spans will share the same span
@@ -17417,6 +18424,7 @@ components:
                     - MeshHTTPRoute
                     - Dataplane
                   x-speakeasy-param-computed: false
+                  x-speakeasy-unknown-values: allow
                 labels:
                   description: |-
                     Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -17451,6 +18459,7 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
+                    x-speakeasy-unknown-values: allow
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -17554,6 +18563,7 @@ components:
                           - Deny
                           - AllowWithShadowDeny
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                     x-speakeasy-param-computed: false
                   targetRef:
                     description: |-
@@ -17575,6 +18585,7 @@ components:
                           - MeshHTTPRoute
                           - Dataplane
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                       labels:
                         description: |-
                           Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -17609,6 +18620,7 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
+                          x-speakeasy-unknown-values: allow
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -17655,6 +18667,7 @@ components:
                                     - Exact
                                     - Prefix
                                   x-speakeasy-param-computed: false
+                                  x-speakeasy-unknown-values: allow
                                 value:
                                   description: Value is SpiffeId of a client that needs to match for the configuration to be applied
                                   type: string
@@ -17683,6 +18696,7 @@ components:
                                     - Exact
                                     - Prefix
                                   x-speakeasy-param-computed: false
+                                  x-speakeasy-unknown-values: allow
                                 value:
                                   description: Value is SpiffeId of a client that needs to match for the configuration to be applied
                                   type: string
@@ -17709,6 +18723,7 @@ components:
                                     - Exact
                                     - Prefix
                                   x-speakeasy-param-computed: false
+                                  x-speakeasy-unknown-values: allow
                                 value:
                                   description: Value is SpiffeId of a client that needs to match for the configuration to be applied
                                   type: string
@@ -17745,6 +18760,7 @@ components:
                     - MeshHTTPRoute
                     - Dataplane
                   x-speakeasy-param-computed: false
+                  x-speakeasy-unknown-values: allow
                 labels:
                   description: |-
                     Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -17779,6 +18795,7 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
+                    x-speakeasy-unknown-values: allow
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -18932,6 +19949,7 @@ components:
                     - http
                     - http2
                   x-speakeasy-param-computed: false
+                  x-speakeasy-unknown-values: allow
                 type:
                   description: 'Type of the match, only `HostnameGenerator` is available at the moment.'
                   type: string
@@ -19026,6 +20044,7 @@ components:
                         - Secured
                         - SkipAll
                       x-speakeasy-param-computed: false
+                      x-speakeasy-unknown-values: allow
                     serverName:
                       description: ServerName overrides the default Server Name Indicator set by Kuma.
                       type: string
@@ -19043,6 +20062,7 @@ components:
                               - Exact
                               - Prefix
                             x-speakeasy-param-computed: false
+                            x-speakeasy-unknown-values: allow
                           value:
                             description: Value to match.
                             type: string
@@ -19067,6 +20087,7 @@ components:
                         - TLS12
                         - TLS13
                       x-speakeasy-param-computed: false
+                      x-speakeasy-unknown-values: allow
                     min:
                       description: 'Min defines minimum supported version. One of `TLSAuto`, `TLS10`, `TLS11`, `TLS12`, `TLS13`.'
                       type: string
@@ -19078,6 +20099,7 @@ components:
                         - TLS12
                         - TLS13
                       x-speakeasy-param-computed: false
+                      x-speakeasy-unknown-values: allow
                   x-speakeasy-param-computed: false
               x-speakeasy-param-computed: false
           required:
@@ -19158,6 +20180,7 @@ components:
                             - 'True'
                             - 'False'
                             - Unknown
+                          x-speakeasy-unknown-values: allow
                         type:
                           description: type of condition in CamelCase or in foo.example.com/CamelCase.
                           type: string
@@ -19319,6 +20342,7 @@ components:
                                 - EnvVar
                                 - InsecureInline
                               x-speakeasy-param-computed: false
+                              x-speakeasy-unknown-values: allow
                           required:
                             - type
                           x-speakeasy-param-computed: false
@@ -19376,6 +20400,7 @@ components:
                                 - EnvVar
                                 - InsecureInline
                               x-speakeasy-param-computed: false
+                              x-speakeasy-unknown-values: allow
                           required:
                             - type
                           x-speakeasy-param-computed: false
@@ -19401,6 +20426,7 @@ components:
                         - Enabled
                         - Disabled
                       x-speakeasy-param-computed: false
+                      x-speakeasy-unknown-values: allow
                   x-speakeasy-param-computed: false
                 spire:
                   description: Spire indicates that SPIRE is used for certificate delivery.
@@ -19425,6 +20451,7 @@ components:
                     - Bundled
                     - Spire
                   x-speakeasy-param-computed: false
+                  x-speakeasy-unknown-values: allow
               required:
                 - type
               x-speakeasy-param-computed: false
@@ -19503,6 +20530,7 @@ components:
                       - 'True'
                       - 'False'
                       - Unknown
+                    x-speakeasy-unknown-values: allow
                   type:
                     description: type of condition in CamelCase or in foo.example.com/CamelCase.
                     type: string
@@ -19686,6 +20714,7 @@ components:
                             - 'True'
                             - 'False'
                             - Unknown
+                          x-speakeasy-unknown-values: allow
                         type:
                           description: type of condition in CamelCase or in foo.example.com/CamelCase.
                           type: string
@@ -19808,6 +20837,7 @@ components:
                       - ServiceTag
                       - SpiffeID
                     x-speakeasy-param-computed: false
+                    x-speakeasy-unknown-values: allow
                   value:
                     type: string
                     x-speakeasy-param-computed: false
@@ -19872,6 +20902,7 @@ components:
                 - Available
                 - Unavailable
               x-speakeasy-param-computed: false
+              x-speakeasy-unknown-values: allow
           x-speakeasy-param-computed: false
         creationTime:
           description: Time at which the resource was created
@@ -19964,6 +20995,7 @@ components:
                             - 'True'
                             - 'False'
                             - Unknown
+                          x-speakeasy-unknown-values: allow
                         type:
                           description: type of condition in CamelCase or in foo.example.com/CamelCase.
                           type: string
@@ -20001,6 +21033,7 @@ components:
                   enum:
                     - Ready
                     - NotReady
+                  x-speakeasy-unknown-values: allow
               x-speakeasy-param-computed: false
             vips:
               type: array
@@ -20321,6 +21354,7 @@ components:
           enum:
             - MeshCreation
             - HostnameGeneratorCreation
+          x-speakeasy-unknown-values: allow
         hostnameGeneratorCreation:
           $ref: '#/components/schemas/MeshControlPlaneFeatureHostnameGenerationCreation'
         meshCreation:
@@ -20551,6 +21585,7 @@ components:
                           - Limit
                           - Shadow
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                     required:
                       - backend
                       - http
@@ -20575,6 +21610,7 @@ components:
                           - MeshHTTPRoute
                           - Dataplane
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                       labels:
                         description: |-
                           Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -20609,6 +21645,7 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
+                          x-speakeasy-unknown-values: allow
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -20652,6 +21689,7 @@ components:
                     - MeshHTTPRoute
                     - Dataplane
                   x-speakeasy-param-computed: false
+                  x-speakeasy-unknown-values: allow
                 labels:
                   description: |-
                     Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -20686,6 +21724,7 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
+                    x-speakeasy-unknown-values: allow
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -20885,6 +21924,7 @@ components:
                           - Limit
                           - Shadow
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                     required:
                       - backend
                       - http
@@ -20909,6 +21949,7 @@ components:
                           - MeshHTTPRoute
                           - Dataplane
                         x-speakeasy-param-computed: false
+                        x-speakeasy-unknown-values: allow
                       labels:
                         description: |-
                           Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -20943,6 +21984,7 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
+                          x-speakeasy-unknown-values: allow
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -21096,6 +22138,7 @@ components:
                         - Allow
                         - Deny
                       x-speakeasy-param-computed: false
+                      x-speakeasy-unknown-values: allow
                     requestBody:
                       description: |-
                         RequestBody configuration to apply on the request body sent to the
@@ -21150,6 +22193,7 @@ components:
                     - MeshHTTPRoute
                     - Dataplane
                   x-speakeasy-param-computed: false
+                  x-speakeasy-unknown-values: allow
                 labels:
                   description: |-
                     Labels are used to select group of MeshServices that match labels. Either Labels or
@@ -21184,6 +22228,7 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
+                    x-speakeasy-unknown-values: allow
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -21337,6 +22382,7 @@ components:
         - token
         - code
         - id_token
+      x-speakeasy-unknown-values: allow
     ResponseTypes:
       description: List of OAuth 2.0 response types
       type: array
@@ -21350,6 +22396,7 @@ components:
         - authorization_code
         - implicit
         - client_credentials
+      x-speakeasy-unknown-values: allow
     GrantTypes:
       description: List of OAuth 2.0 grant types
       type: array
@@ -21388,6 +22435,7 @@ components:
         type: string
         format: uuid
       nullable: false
+      uniqueItems: true
     ClientId:
       description: The OAuth 2.0 client ID
       type: string
@@ -21396,6 +22444,7 @@ components:
       minLength: 1
       pattern: '[-_\w]+'
       readOnly: true
+      x-speakeasy-param-suppress-computed-diff: true
     AuthServerName:
       description: The name of the auth server
       type: string
@@ -21417,6 +22466,7 @@ components:
         - PS256
         - PS384
         - PS512
+      x-speakeasy-unknown-values: allow
     Algorithm:
       description: Algorithm used in the key signing process
       type: string
@@ -21428,6 +22478,7 @@ components:
         - PS256
         - PS384
         - PS512
+      x-speakeasy-unknown-values: allow
     Issuer:
       description: The complete URL for the custom authorization server. This becomes the 'iss' claim in an access token.
       type: string
@@ -21438,6 +22489,7 @@ components:
       enum:
         - client_secret_post
         - none
+      x-speakeasy-unknown-values: allow
     AuthServer:
       type: object
       properties:
@@ -21686,6 +22738,7 @@ components:
               - consumer
               - control_plane
               - control_plane_group
+              - country_code
               - data_plane_node
               - data_plane_node_version
               - gateway_service
@@ -21697,6 +22750,7 @@ components:
               - time
               - upstream_status_code
               - upstream_status_code_grouped
+            x-speakeasy-unknown-values: allow
           example:
             - status_code_grouped
           default: null
@@ -21763,6 +22817,7 @@ components:
               - status_code
               - status_code_grouped
               - ai_plugin
+            x-speakeasy-unknown-values: allow
           default: null
           maxItems: 2
           nullable: true
@@ -21998,6 +23053,7 @@ components:
           - upstream_latency_p50
           - upstream_latency_p95
           - upstream_latency_p99
+        x-speakeasy-unknown-values: allow
       default:
         - request_count
     RequestsFilterType:
@@ -22006,6 +23062,7 @@ components:
       enum:
         - in
         - not_in
+      x-speakeasy-unknown-values: allow
     UnscopedUuid:
       type: string
       pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
@@ -22015,6 +23072,7 @@ components:
       enum:
         - empty
         - not_empty
+      x-speakeasy-unknown-values: allow
     MetricsApiFilterByField:
       oneOf:
         - title: Multiselect filters
@@ -22270,6 +23328,42 @@ components:
             - operator
             - field
       title: Filter by control_plane_group
+    MetricsCountryCodeFilterByField:
+      oneOf:
+        - title: Multiselect filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The values to include in the results.
+              type: array
+              items:
+                type: string
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - country_code
+          required:
+            - operator
+            - value
+            - field
+        - title: Empty filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - country_code
+          required:
+            - operator
+            - field
+      title: Filter by country_code
     MetricsDataPlaneNodeFilterByField:
       oneOf:
         - title: Multiselect filters
@@ -22688,6 +23782,7 @@ components:
               - consumer
               - control_plane
               - control_plane_group
+              - country_code
               - data_plane_node
               - data_plane_node_version
               - gateway_service
@@ -22699,6 +23794,7 @@ components:
               - status_code_grouped
               - upstream_status_code
               - upstream_status_code_grouped
+            x-speakeasy-unknown-values: allow
           operator:
             type: string
             enum:
@@ -22706,6 +23802,7 @@ components:
               - not_in
               - empty
               - not_empty
+            x-speakeasy-unknown-values: allow
           value:
             x-speakeasy-type-override: any
         required:
@@ -22748,6 +23845,7 @@ components:
         - twelveHourly
         - daily
         - weekly
+      x-speakeasy-unknown-values: allow
     MetricsRelativeTimeRangeDtoV2:
       description: 'A duration representing a relative-to-now span of time. Generally the start time is floored to the requested granularity. Eg 7d from now, with 1day granularity initiated at 2024-01-08T17:11:00+05:00 will query for the time range from 2024-01-01T00:00:00+05:00 to 2024-01-08T17:11:00+05:00. The exact start and end timestamps are returned in the result query in the meta.start and meta.end fields. If the granularity for the previous query was 1hour, it would query a time range from 2024-01-01T17:00:00+05:00 to 2024-01-08T17:11:00+05:00.'
       type: object
@@ -22774,6 +23872,7 @@ components:
             - current_month
             - previous_week
             - previous_month
+          x-speakeasy-unknown-values: allow
       required:
         - type
         - time_range
@@ -22833,6 +23932,7 @@ components:
           - llm_latency_average
           - llm_embeddings_tokens
           - llm_embeddings_cost
+        x-speakeasy-unknown-values: allow
       default:
         - ai_request_count
     MetricsAiPluginFilterByField:
@@ -23112,6 +24212,7 @@ components:
               - route
               - status_code
               - status_code_grouped
+            x-speakeasy-unknown-values: allow
           operator:
             type: string
             enum:
@@ -23119,6 +24220,7 @@ components:
               - not_in
               - empty
               - not_empty
+            x-speakeasy-unknown-values: allow
           value:
             x-speakeasy-type-override: any
         required:
@@ -23163,6 +24265,7 @@ components:
           enum:
             - timeseries_line
             - timeseries_bar
+          x-speakeasy-unknown-values: allow
         stacked:
           description: |
             Whether to stack the bars or lines (implicitly adding them together to form a total), or leave them independent from each other.
@@ -23187,6 +24290,7 @@ components:
           enum:
             - horizontal_bar
             - vertical_bar
+          x-speakeasy-unknown-values: allow
         stacked:
           description: |
             Whether to stack the bars (implicitly adding them together to form a total), or leave them independent from each other.
@@ -23218,6 +24322,25 @@ components:
       required:
         - type
       title: Single value chart
+    ChoroplethMapChart:
+      description: |
+        A chart that displays data on a world map. Each region on the map is colored based on the metric value.
+        This chart works only with the `api_usage` datasource and requires a single metric and a single dimension of `country_code`.
+        No additional dimensions are supported.
+      type: object
+      properties:
+        chart_title:
+          description: 'The title of the chart, which is displayed in the tile''s header.'
+          type: string
+          nullable: false
+        type:
+          type: string
+          enum:
+            - choropleth_map
+      additionalProperties: false
+      required:
+        - type
+      title: Choropleth map chart
     Chart:
       description: The type of chart to render.
       discriminator:
@@ -23229,11 +24352,13 @@ components:
           horizontal_bar: '#/components/schemas/BarChart'
           vertical_bar: '#/components/schemas/BarChart'
           single_value: '#/components/schemas/SingleValueChart'
+          choropleth_map: '#/components/schemas/ChoroplethMapChart'
       oneOf:
         - $ref: '#/components/schemas/DonutChart'
         - $ref: '#/components/schemas/TimeseriesChart'
         - $ref: '#/components/schemas/BarChart'
         - $ref: '#/components/schemas/SingleValueChart'
+        - $ref: '#/components/schemas/ChoroplethMapChart'
     AllFilterItems:
       type: object
       properties:
@@ -23251,6 +24376,7 @@ components:
             - consumer
             - control_plane
             - control_plane_group
+            - country_code
             - data_plane_node
             - data_plane_node_version
             - gateway_service
@@ -23265,6 +24391,7 @@ components:
             - status_code_grouped
             - upstream_status_code
             - upstream_status_code_grouped
+          x-speakeasy-unknown-values: allow
         operator:
           type: string
           enum:
@@ -23272,6 +24399,7 @@ components:
             - not_in
             - empty
             - not_empty
+          x-speakeasy-unknown-values: allow
         value:
           x-speakeasy-type-override: any
       required:
@@ -23504,6 +24632,7 @@ components:
           enum:
             - passthrough
             - terminate
+          x-speakeasy-unknown-values: allow
         principals:
           description: 'List of principals to be able to authenticate with, used with `terminate` mediation.'
           type: array
@@ -23530,6 +24659,7 @@ components:
           enum:
             - passthrough
             - terminate
+          x-speakeasy-unknown-values: allow
         principals:
           description: 'List of principals to be able to authenticate with, used with `terminate` mediation.'
           type: array
@@ -23614,6 +24744,7 @@ components:
           enum:
             - sha256
             - sha512
+          x-speakeasy-unknown-values: allow
       additionalProperties: false
       required:
         - type
@@ -23643,6 +24774,7 @@ components:
             - passthrough
             - validate_forward
             - terminate
+          x-speakeasy-unknown-values: allow
         claims_mapping:
           $ref: '#/components/schemas/VirtualClusterAuthenticationClaimsMapping'
         jwks:
@@ -23684,12 +24816,12 @@ components:
     VirtualClusterDNSLabel:
       description: |-
         The DNS label used in the bootstrap server URL to identify the virtual cluster when using SNI routing.
-        The format follows the RFC1035: 1-63 chars, lowercase alphanumeric or '-', must start with a letter and end with an alphanumeric character.
+        The format follows the RFC1035: 1-63 chars, lowercase alphanumeric or '-', must start and end with an alphanumeric character.
       type: string
       example: vcluster-1
       maxLength: 63
       minLength: 1
-      pattern: '^[a-z]([-a-z0-9]*[a-z0-9])?$'
+      pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
     VirtualClusterACLMode:
       description: |
         Configures whether or not ACL policies are enforced on the gateway.
@@ -23702,6 +24834,7 @@ components:
       enum:
         - enforce_on_gateway
         - passthrough
+      x-speakeasy-unknown-values: allow
     BackendCluster:
       description: The Kafka cluster.
       type: object
@@ -23808,6 +24941,7 @@ components:
             enum:
               - tls12
               - tls13
+            x-speakeasy-unknown-values: allow
           default:
             - tls12
             - tls13
@@ -23898,6 +25032,7 @@ components:
           enum:
             - sha256
             - sha512
+          x-speakeasy-unknown-values: allow
         username:
           $ref: '#/components/schemas/GatewaySecretReferenceOrLiteral'
         password:
@@ -23920,6 +25055,7 @@ components:
           enum:
             - sha256
             - sha512
+          x-speakeasy-unknown-values: allow
         username:
           $ref: '#/components/schemas/GatewaySecretReferenceOrLiteral'
         password:
@@ -23936,6 +25072,7 @@ components:
       enum:
         - env
         - konnect
+      x-speakeasy-unknown-values: allow
     EventGatewayVault:
       allOf:
         - type: object
@@ -24107,6 +25244,7 @@ components:
           enum:
             - avro
             - json
+          x-speakeasy-unknown-values: allow
         endpoint:
           description: The endpoint of the Confluent schema registry.
           type: string
@@ -24134,6 +25272,7 @@ components:
           enum:
             - avro
             - json
+          x-speakeasy-unknown-values: allow
         endpoint:
           description: The endpoint of the Confluent schema registry.
           type: string
@@ -24228,6 +25367,7 @@ components:
       enum:
         - confluent_schema_registry
         - json
+      x-speakeasy-unknown-values: allow
     SchemaRegistryCreate:
       description: The typed schema of the schema registry to create it.
       discriminator:
@@ -24351,6 +25491,8 @@ components:
               const: tls_server
             config:
               $ref: '#/components/schemas/EventGatewayTLSListenerPolicyConfigSensitiveDataAware'
+      required:
+        - config
     EventGatewayTLSListenerPolicyConfigSensitiveDataAware:
       type: object
       properties:
@@ -24408,26 +25550,6 @@ components:
       required:
         - certificate
         - key
-    EventGatewayListenerPolicyCreate:
-      description: The typed schema of the policy to modify it.
-      discriminator:
-        propertyName: type
-        mapping:
-          tls_server: '#/components/schemas/EventGatewayTLSListenerPolicy'
-          forward_to_virtual_cluster: '#/components/schemas/ForwardToVirtualClusterPolicy'
-      oneOf:
-        - $ref: '#/components/schemas/EventGatewayTLSListenerPolicy'
-        - $ref: '#/components/schemas/ForwardToVirtualClusterPolicy'
-    EventGatewayListenerPolicyUpdate:
-      description: The typed schema of the policy to modify it.
-      discriminator:
-        propertyName: type
-        mapping:
-          tls_server: '#/components/schemas/EventGatewayTLSListenerSensitiveDataAwarePolicy'
-          forward_to_virtual_cluster: '#/components/schemas/ForwardToVirtualClusterPolicy'
-      oneOf:
-        - $ref: '#/components/schemas/EventGatewayTLSListenerSensitiveDataAwarePolicy'
-        - $ref: '#/components/schemas/ForwardToVirtualClusterPolicy'
     TLSVersionRange:
       description: A range of TLS versions.
       type: object
@@ -24439,6 +25561,7 @@ components:
           enum:
             - TLSv1.2
             - TLSv1.3
+          x-speakeasy-unknown-values: allow
         max:
           description: Maximum TLS version to use.
           type: string
@@ -24446,6 +25569,7 @@ components:
           enum:
             - TLSv1.2
             - TLSv1.3
+          x-speakeasy-unknown-values: allow
       default:
         min: TLSv1.2
         max: TLSv1.3
@@ -24517,6 +25641,7 @@ components:
           enum:
             - none
             - at_start
+          x-speakeasy-unknown-values: allow
         min_broker_id:
           description: The lowest broker node ID in the cluster.
           type: integer
@@ -24546,80 +25671,24 @@ components:
 
             The bootstrap host is `bootstrap.my-cluster.example.com` and then each broker is addressable at `broker-0.my-cluster.example.com`, `broker-1.my-cluster.example.com`, etc.
             This means that your deployment needs to have a wildcard certificate for the domain and a DNS resolver that routes `*.my-cluster.example.com` to the proxy.
+
+            The accepted format is a DNS subdomain starting with either `.` or `-`. For example, `-keg.example.com`, `.keg.example.com`, `.namespace.svc.cluster.local`, and `.localhost` are all valid,
+            while `keg.example.com` is not.
           type: string
           example: .example.com
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
+          pattern: '^[\.-]([a-z0-9]([a-z0-9-]*[a-z0-9])?\.)*([a-z0-9-]*[a-z0-9])$'
         advertised_port:
           description: |
             Virtual brokers are advertised to clients with this port instead of listen_port. Useful when proxy is
             behind loadbalancer listening on different port.
           type: integer
-          default: null
           maximum: 65535
           minimum: 1
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
       additionalProperties: false
       required:
         - type
-    EventGatewayConsumePolicyCreate:
-      description: The typed schema of the consume policy to modify it.
-      discriminator:
-        propertyName: type
-        mapping:
-          modify_headers: '#/components/schemas/EventGatewayModifyHeadersPolicy'
-          schema_validation: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicy'
-          decrypt: '#/components/schemas/EventGatewayDecryptPolicy'
-          skip_record: '#/components/schemas/EventGatewaySkipRecordPolicy'
-      oneOf:
-        - $ref: '#/components/schemas/EventGatewayModifyHeadersPolicy'
-        - $ref: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicy'
-        - $ref: '#/components/schemas/EventGatewayDecryptPolicy'
-        - $ref: '#/components/schemas/EventGatewaySkipRecordPolicy'
-    EventGatewayConsumePolicyUpdate:
-      description: The typed schema of the consume policy to modify it.
-      discriminator:
-        propertyName: type
-        mapping:
-          modify_headers: '#/components/schemas/EventGatewayModifyHeadersPolicy'
-          schema_validation: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicy'
-          decrypt: '#/components/schemas/EventGatewayDecryptSensitiveDataAwarePolicy'
-          skip_record: '#/components/schemas/EventGatewaySkipRecordPolicy'
-      oneOf:
-        - $ref: '#/components/schemas/EventGatewayModifyHeadersPolicy'
-        - $ref: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicy'
-        - $ref: '#/components/schemas/EventGatewayDecryptSensitiveDataAwarePolicy'
-        - $ref: '#/components/schemas/EventGatewaySkipRecordPolicy'
-    EventGatewayProducePolicyCreate:
-      description: The typed schema of the produce policy to modify it.
-      discriminator:
-        propertyName: type
-        mapping:
-          modify_headers: '#/components/schemas/EventGatewayModifyHeadersPolicy'
-          schema_validation: '#/components/schemas/EventGatewayProduceSchemaValidationPolicy'
-          encrypt: '#/components/schemas/EventGatewayEncryptPolicy'
-          skip_record: '#/components/schemas/EventGatewaySkipRecordPolicy'
-      oneOf:
-        - $ref: '#/components/schemas/EventGatewayModifyHeadersPolicy'
-        - $ref: '#/components/schemas/EventGatewayProduceSchemaValidationPolicy'
-        - $ref: '#/components/schemas/EventGatewayEncryptPolicy'
-        - $ref: '#/components/schemas/EventGatewaySkipRecordPolicy'
-    EventGatewayProducePolicyUpdate:
-      description: The typed schema of the produce policy to modify it.
-      discriminator:
-        propertyName: type
-        mapping:
-          modify_headers: '#/components/schemas/EventGatewayModifyHeadersPolicy'
-          schema_validation: '#/components/schemas/EventGatewayProduceSchemaValidationPolicy'
-          encrypt: '#/components/schemas/EventGatewayEncryptSensitiveDataAwarePolicy'
-          skip_record: '#/components/schemas/EventGatewaySkipRecordPolicy'
-      oneOf:
-        - $ref: '#/components/schemas/EventGatewayModifyHeadersPolicy'
-        - $ref: '#/components/schemas/EventGatewayProduceSchemaValidationPolicy'
-        - $ref: '#/components/schemas/EventGatewayEncryptSensitiveDataAwarePolicy'
-        - $ref: '#/components/schemas/EventGatewaySkipRecordPolicy'
     EventGatewayEncryptSensitiveDataAwarePolicy:
       allOf:
         - $ref: '#/components/schemas/BaseEventGatewayPolicy'
@@ -25005,12 +26074,14 @@ components:
             - topic
             - group
             - transactional_id
+          x-speakeasy-unknown-values: allow
         action:
           description: How to handle the request if the rule matches
           type: string
           enum:
             - allow
             - deny
+          x-speakeasy-unknown-values: allow
         operations:
           description: Types of Kafka operations to match against. Note that not every operation can apply to every resource type.
           type: array
@@ -25043,6 +26114,7 @@ components:
             - idempotent_write
             - read
             - write
+          x-speakeasy-unknown-values: allow
       required:
         - name
     EventGatewayACLResourceName:
@@ -25161,6 +26233,7 @@ components:
       enum:
         - error
         - passthrough
+      x-speakeasy-unknown-values: allow
     EncryptionRecordSelector:
       description: Defines how to select part of a record for encryption as well as what key to encrypt it with.
       type: object
@@ -25173,6 +26246,7 @@ components:
           enum:
             - key
             - value
+          x-speakeasy-unknown-values: allow
         key_id:
           $ref: '#/components/schemas/EncryptionKeyId'
       required:
@@ -25190,6 +26264,7 @@ components:
           enum:
             - key
             - value
+          x-speakeasy-unknown-values: allow
       required:
         - part_of_record
     EncryptionKeyId:
@@ -25212,6 +26287,7 @@ components:
       enum:
         - mark
         - skip
+      x-speakeasy-unknown-values: allow
     ConsumeValueValidationAction:
       description: |
         Defines a behavior when record value is not valid.
@@ -25222,6 +26298,7 @@ components:
       enum:
         - mark
         - skip
+      x-speakeasy-unknown-values: allow
     ProduceKeyValidationAction:
       description: |
         Defines a behavior when record key is not valid.
@@ -25233,6 +26310,7 @@ components:
       enum:
         - reject
         - mark
+      x-speakeasy-unknown-values: allow
     ProduceValueValidationAction:
       description: |
         Defines a behavior when record value is not valid.
@@ -25244,6 +26322,7 @@ components:
       enum:
         - reject
         - mark
+      x-speakeasy-unknown-values: allow
     EventGatewayDataPlaneCertificate:
       description: A dataplane certificate.
       type: object
@@ -25377,6 +26456,7 @@ components:
           enum:
             - hide_prefix
             - enforce_prefix
+          x-speakeasy-unknown-values: allow
         prefix:
           description: |
             The namespace is differentiated by this chosen prefix.
@@ -25433,6 +26513,7 @@ components:
           type: string
           format: glob
           minLength: 1
+          pattern: '^[A-Za-z0-9._?*-]+$'
         conflict:
           description: |
             How to inform the user about conflicts where multiple backend topics would map to the same virtual topic name.
@@ -25443,6 +26524,7 @@ components:
           enum:
             - warn
             - ignore
+          x-speakeasy-unknown-values: allow
       required:
         - type
         - glob
@@ -25471,6 +26553,7 @@ components:
           enum:
             - warn
             - ignore
+          x-speakeasy-unknown-values: allow
       required:
         - type
     NamespaceExactAllowListItem:
@@ -25504,6 +26587,7 @@ components:
           type: string
           format: glob
           minLength: 1
+          pattern: '^[A-Za-z0-9._?*-]+$'
       required:
         - type
         - glob
@@ -25563,6 +26647,7 @@ components:
           format: date-time
           example: '2022-11-04T20:10:06.927Z'
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
           x-speakeasy-terraform-ignore: true
         updated_at:
           description: An ISO-8604 timestamp representation of gateway update date.
@@ -25570,6 +26655,7 @@ components:
           format: date-time
           example: '2022-11-04T20:10:06.927Z'
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
           x-speakeasy-terraform-ignore: true
       additionalProperties: false
       required:
@@ -25632,6 +26718,7 @@ components:
           enum:
             - custom_certificate
             - http
+          x-speakeasy-unknown-values: allow
         custom_certificate:
           description: Custom certificate to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate"
           type: string
@@ -25679,11 +26766,9 @@ components:
               display_name:
                 description: The display name of the portal. This value will be the portal's `name` in Portal API.
                 type: string
-                default: null
                 maxLength: 255
                 minLength: 1
-                nullable: true
-                x-speakeasy-param-computed: false
+                nullable: false
               description:
                 description: A description of the portal.
                 type: string
@@ -25705,12 +26790,14 @@ components:
                 enum:
                   - public
                   - private
+                x-speakeasy-unknown-values: allow
               default_page_visibility:
                 description: 'The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.'
                 type: string
                 enum:
                   - public
                   - private
+                x-speakeasy-unknown-values: allow
               default_application_auth_strategy_id:
                 description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
                 type: string
@@ -25731,12 +26818,14 @@ components:
                 type: string
                 format: hostname
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
               canonical_domain:
                 description: The canonical domain of the developer portal
                 type: string
                 format: hostname
                 nullable: false
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
               labels:
                 $ref: '#/components/schemas/LabelsUpdate'
             additionalProperties: false
@@ -25769,11 +26858,9 @@ components:
               display_name:
                 description: The display name of the portal. This value will be the portal's `name` in Portal API.
                 type: string
-                default: null
                 maxLength: 255
                 minLength: 1
-                nullable: true
-                x-speakeasy-param-computed: false
+                nullable: false
               description:
                 description: A description of the portal.
                 type: string
@@ -25795,12 +26882,14 @@ components:
                 enum:
                   - public
                   - private
+                x-speakeasy-unknown-values: allow
               default_page_visibility:
                 description: 'The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.'
                 type: string
                 enum:
                   - public
                   - private
+                x-speakeasy-unknown-values: allow
               default_application_auth_strategy_id:
                 description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
                 type: string
@@ -25821,12 +26910,14 @@ components:
                 type: string
                 format: hostname
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
               canonical_domain:
                 description: The canonical domain of the developer portal
                 type: string
                 format: hostname
                 nullable: false
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
               labels:
                 $ref: '#/components/schemas/LabelsUpdate'
             additionalProperties: false
@@ -25902,6 +26993,7 @@ components:
                 format: uuid
                 example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
               name:
                 description: |
                   The name of your API. The `name + version` combination must be unique for each API you publish.
@@ -25944,6 +27036,7 @@ components:
                   example: 123e4567-e89b-12d3-a456-426614174000
                 deprecated: true
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
               portals:
                 description: The list of portals which this API is published to.
                 type: array
@@ -25971,17 +27064,9 @@ components:
                 nullable: false
                 readOnly: true
                 uniqueItems: true
+                x-speakeasy-param-suppress-computed-diff: true
               labels:
                 $ref: '#/components/schemas/Labels'
-              implementation_mode:
-                description: the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement
-                type: string
-                default: null
-                nullable: true
-                readOnly: true
-                x-internal: true
-                x-speakeasy-param-computed: false
-                x-unstable: true
               attributes:
                 $ref: '#/components/schemas/ApiAttributes'
               created_at:
@@ -26014,6 +27099,7 @@ components:
                 format: uuid
                 example: 7710d5c4-d902-410b-992f-18b814155b53
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
               content:
                 description: |
                   The raw content of your API specification, in json or yaml format (OpenAPI or AsyncAPI).
@@ -26031,6 +27117,7 @@ components:
                     message:
                       type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
               type:
                 description: |
                   The type of specification being stored. This allows us to render the specification correctly.
@@ -26041,6 +27128,7 @@ components:
                   - oas3
                   - asyncapi
                 title: API Spec Type
+                x-speakeasy-unknown-values: allow
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
@@ -26062,6 +27150,7 @@ components:
                 format: uuid
                 example: 7710d5c4-d902-410b-992f-18b814155b53
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
               version:
                 description: The version of the api.
                 type: string
@@ -26092,6 +27181,8 @@ components:
                       - asyncapi
                     readOnly: true
                     title: API Spec Type
+                    x-speakeasy-param-suppress-computed-diff: true
+                    x-speakeasy-unknown-values: allow
                   validation_messages:
                     description: The errors that occurred while parsing the API version spec.
                     type: array
@@ -26104,6 +27195,7 @@ components:
                         message:
                           type: string
                     readOnly: true
+                    x-speakeasy-param-suppress-computed-diff: true
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
@@ -26152,6 +27244,7 @@ components:
                 format: uuid
                 example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
               name:
                 description: |
                   The name of your API. The `name + version` combination must be unique for each API you publish.
@@ -26197,6 +27290,7 @@ components:
                   example: 123e4567-e89b-12d3-a456-426614174000
                 deprecated: true
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
               portals:
                 description: The list of portals which this API is published to.
                 type: array
@@ -26224,17 +27318,9 @@ components:
                 nullable: false
                 readOnly: true
                 uniqueItems: true
+                x-speakeasy-param-suppress-computed-diff: true
               labels:
                 $ref: '#/components/schemas/LabelsUpdate'
-              implementation_mode:
-                description: the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement
-                type: string
-                default: null
-                nullable: true
-                readOnly: true
-                x-internal: true
-                x-speakeasy-param-computed: false
-                x-unstable: true
               attributes:
                 $ref: '#/components/schemas/ApiAttributes'
               created_at:
@@ -26688,44 +27774,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/SchemaRegistryUpdate'
-    CreateEventGatewayListenerPolicyRequest:
-      description: The request schema for creating a policy.
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EventGatewayListenerPolicyCreate'
-    UpdateEventGatewayListenerPolicyRequest:
-      description: The request schema for updating a policy.
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EventGatewayListenerPolicyUpdate'
-    CreateEventGatewayConsumePolicyRequest:
-      description: The request schema for creating a consume policy.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EventGatewayConsumePolicyCreate'
-    UpdateEventGatewayConsumePolicyRequest:
-      description: The request schema for updating a consume policy.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EventGatewayConsumePolicyUpdate'
-    CreateEventGatewayProducePolicyRequest:
-      description: The request schema for creating a produce policy.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EventGatewayProducePolicyCreate'
-    UpdateEventGatewayProducePolicyRequest:
-      description: The request schema for updating a produce policy.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EventGatewayProducePolicyUpdate'
     CreateEventGatewayDataPlaneCertificateRequest:
       content:
         application/json:
@@ -26820,6 +27868,7 @@ components:
                       type: string
                       maxLength: 255
                       minLength: 1
+                      nullable: false
                     description:
                       description: A description of the portal.
                       type: string
@@ -26841,12 +27890,14 @@ components:
                       enum:
                         - public
                         - private
+                      x-speakeasy-unknown-values: allow
                     default_page_visibility:
                       description: 'The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.'
                       type: string
                       enum:
                         - public
                         - private
+                      x-speakeasy-unknown-values: allow
                     default_application_auth_strategy_id:
                       description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
                       type: string
@@ -26867,12 +27918,14 @@ components:
                       type: string
                       format: hostname
                       readOnly: true
+                      x-speakeasy-param-suppress-computed-diff: true
                     canonical_domain:
                       description: The canonical domain of the developer portal
                       type: string
                       format: hostname
                       nullable: false
                       readOnly: true
+                      x-speakeasy-param-suppress-computed-diff: true
                     labels:
                       $ref: '#/components/schemas/Labels'
                   required:
@@ -26921,6 +27974,7 @@ components:
                 type: string
                 maxLength: 255
                 minLength: 1
+                nullable: false
               description:
                 description: A description of the portal.
                 type: string
@@ -26942,12 +27996,14 @@ components:
                 enum:
                   - public
                   - private
+                x-speakeasy-unknown-values: allow
               default_page_visibility:
                 description: 'The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.'
                 type: string
                 enum:
                   - public
                   - private
+                x-speakeasy-unknown-values: allow
               default_application_auth_strategy_id:
                 description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
                 type: string
@@ -26968,12 +28024,14 @@ components:
                 type: string
                 format: hostname
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
               canonical_domain:
                 description: The canonical domain of the developer portal
                 type: string
                 format: hostname
                 nullable: false
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
               labels:
                 $ref: '#/components/schemas/Labels'
             additionalProperties: false
@@ -27177,6 +28235,7 @@ components:
                 format: uuid
                 example: 7710d5c4-d902-410b-992f-18b814155b53
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
               content:
                 description: |
                   The raw content of your API specification, in json or yaml format (OpenAPI or AsyncAPI).
@@ -27194,6 +28253,7 @@ components:
                     message:
                       type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
               type:
                 description: |
                   The type of specification being stored. This allows us to render the specification correctly.
@@ -27204,6 +28264,7 @@ components:
                   - oas3
                   - asyncapi
                 title: API Spec Type
+                x-speakeasy-unknown-values: allow
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
@@ -27230,6 +28291,7 @@ components:
                 format: uuid
                 example: 7710d5c4-d902-410b-992f-18b814155b53
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
               version:
                 description: The version of the api.
                 type: string
@@ -27259,6 +28321,8 @@ components:
                       - asyncapi
                     readOnly: true
                     title: API Spec Type
+                    x-speakeasy-param-suppress-computed-diff: true
+                    x-speakeasy-unknown-values: allow
                   validation_messages:
                     description: The errors that occurred while parsing the API version spec.
                     type: array
@@ -27271,6 +28335,7 @@ components:
                         message:
                           type: string
                     readOnly: true
+                    x-speakeasy-param-suppress-computed-diff: true
                 x-speakeasy-param-computed: false
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
@@ -27317,7 +28382,6 @@ components:
             type: object
             oneOf:
               - $ref: '#/components/schemas/ApiImplementationGatewayServiceEntity'
-              - $ref: '#/components/schemas/ApiImplementationControlPlaneEntity'
             required:
               - id
               - created_at
@@ -27367,6 +28431,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     MeshAccessLogDeleteSuccessResponse:
       description: Successful response
       content:
@@ -27411,6 +28476,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     MeshCircuitBreakerDeleteSuccessResponse:
       description: Successful response
       content:
@@ -27455,6 +28521,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     MeshFaultInjectionDeleteSuccessResponse:
       description: Successful response
       content:
@@ -27499,6 +28566,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     MeshHealthCheckDeleteSuccessResponse:
       description: Successful response
       content:
@@ -27543,6 +28611,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     MeshHTTPRouteDeleteSuccessResponse:
       description: Successful response
       content:
@@ -27587,6 +28656,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     MeshLoadBalancingStrategyDeleteSuccessResponse:
       description: Successful response
       content:
@@ -27631,6 +28701,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     MeshMetricDeleteSuccessResponse:
       description: Successful response
       content:
@@ -27675,6 +28746,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     MeshPassthroughDeleteSuccessResponse:
       description: Successful response
       content:
@@ -27719,6 +28791,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     MeshProxyPatchDeleteSuccessResponse:
       description: Successful response
       content:
@@ -27763,6 +28836,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     MeshRateLimitDeleteSuccessResponse:
       description: Successful response
       content:
@@ -27807,6 +28881,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     MeshRetryDeleteSuccessResponse:
       description: Successful response
       content:
@@ -27851,6 +28926,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     MeshTCPRouteDeleteSuccessResponse:
       description: Successful response
       content:
@@ -27895,6 +28971,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     MeshTimeoutDeleteSuccessResponse:
       description: Successful response
       content:
@@ -27939,6 +29016,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     MeshTLSDeleteSuccessResponse:
       description: Successful response
       content:
@@ -27983,6 +29061,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     MeshTraceDeleteSuccessResponse:
       description: Successful response
       content:
@@ -28027,6 +29106,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     MeshTrafficPermissionDeleteSuccessResponse:
       description: Successful response
       content:
@@ -28071,6 +29151,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     MeshDeleteSuccessResponse:
       description: Successful response
       content:
@@ -28115,6 +29196,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     MeshGatewayDeleteSuccessResponse:
       description: Successful response
       content:
@@ -28168,6 +29250,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     SecretDeleteSuccessResponse:
       description: Successful response
       content:
@@ -28221,6 +29304,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     ZoneEgressDeleteSuccessResponse:
       description: Successful response
       content:
@@ -28274,6 +29358,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     ZoneIngressDeleteSuccessResponse:
       description: Successful response
       content:
@@ -28327,6 +29412,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     HostnameGeneratorDeleteSuccessResponse:
       description: Successful response
       content:
@@ -28371,6 +29457,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     MeshExternalServiceDeleteSuccessResponse:
       description: Successful response
       content:
@@ -28415,6 +29502,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     MeshIdentityDeleteSuccessResponse:
       description: Successful response
       content:
@@ -28459,6 +29547,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     MeshMultiZoneServiceDeleteSuccessResponse:
       description: Successful response
       content:
@@ -28503,6 +29592,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     MeshServiceDeleteSuccessResponse:
       description: Successful response
       content:
@@ -28547,6 +29637,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     MeshTrustDeleteSuccessResponse:
       description: Successful response
       content:
@@ -28591,6 +29682,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     MeshGlobalRateLimitDeleteSuccessResponse:
       description: Successful response
       content:
@@ -28635,6 +29727,7 @@ components:
                 items:
                   type: string
                 readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
     MeshOPADeleteSuccessResponse:
       description: Successful response
       content:
