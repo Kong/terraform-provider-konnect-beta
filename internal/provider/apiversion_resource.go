@@ -48,7 +48,7 @@ type APIVersionResourceModel struct {
 }
 
 func (r *APIVersionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_api_version"
+	resp.TypeName = req.ProviderTypeName + "_api_version"
 }
 
 func (r *APIVersionResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

@@ -59,7 +59,7 @@ type MeshAccessLogResourceModel struct {
 }
 
 func (r *MeshAccessLogResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_mesh_access_log"
+	resp.TypeName = req.ProviderTypeName + "_mesh_access_log"
 }
 
 func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

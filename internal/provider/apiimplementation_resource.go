@@ -49,7 +49,7 @@ type APIImplementationResourceModel struct {
 }
 
 func (r *APIImplementationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_api_implementation"
+	resp.TypeName = req.ProviderTypeName + "_api_implementation"
 }
 
 func (r *APIImplementationResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

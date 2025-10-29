@@ -37,7 +37,7 @@ type PortalFaviconResourceModel struct {
 }
 
 func (r *PortalFaviconResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_portal_favicon"
+	resp.TypeName = req.ProviderTypeName + "_portal_favicon"
 }
 
 func (r *PortalFaviconResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

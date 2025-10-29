@@ -57,7 +57,7 @@ type MeshCircuitBreakerResourceModel struct {
 }
 
 func (r *MeshCircuitBreakerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_mesh_circuit_breaker"
+	resp.TypeName = req.ProviderTypeName + "_mesh_circuit_breaker"
 }
 
 func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

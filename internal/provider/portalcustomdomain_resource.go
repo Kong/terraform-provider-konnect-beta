@@ -48,7 +48,7 @@ type PortalCustomDomainResourceModel struct {
 }
 
 func (r *PortalCustomDomainResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_portal_custom_domain"
+	resp.TypeName = req.ProviderTypeName + "_portal_custom_domain"
 }
 
 func (r *PortalCustomDomainResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

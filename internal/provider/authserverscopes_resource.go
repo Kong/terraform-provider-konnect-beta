@@ -49,7 +49,7 @@ type AuthServerScopesResourceModel struct {
 }
 
 func (r *AuthServerScopesResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_auth_server_scopes"
+	resp.TypeName = req.ProviderTypeName + "_auth_server_scopes"
 }
 
 func (r *AuthServerScopesResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

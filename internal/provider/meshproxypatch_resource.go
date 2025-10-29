@@ -57,7 +57,7 @@ type MeshProxyPatchResourceModel struct {
 }
 
 func (r *MeshProxyPatchResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_mesh_proxy_patch"
+	resp.TypeName = req.ProviderTypeName + "_mesh_proxy_patch"
 }
 
 func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

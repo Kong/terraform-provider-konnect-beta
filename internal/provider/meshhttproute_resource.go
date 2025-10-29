@@ -63,7 +63,7 @@ type MeshHTTPRouteResourceModel struct {
 }
 
 func (r *MeshHTTPRouteResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_mesh_http_route"
+	resp.TypeName = req.ProviderTypeName + "_mesh_http_route"
 }
 
 func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

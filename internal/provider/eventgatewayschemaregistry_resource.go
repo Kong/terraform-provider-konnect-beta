@@ -52,7 +52,7 @@ type EventGatewaySchemaRegistryResourceModel struct {
 }
 
 func (r *EventGatewaySchemaRegistryResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_event_gateway_schema_registry"
+	resp.TypeName = req.ProviderTypeName + "_event_gateway_schema_registry"
 }
 
 func (r *EventGatewaySchemaRegistryResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

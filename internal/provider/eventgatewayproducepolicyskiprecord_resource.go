@@ -54,7 +54,7 @@ type EventGatewayProducePolicySkipRecordResourceModel struct {
 }
 
 func (r *EventGatewayProducePolicySkipRecordResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_event_gateway_produce_policy_skip_record"
+	resp.TypeName = req.ProviderTypeName + "_event_gateway_produce_policy_skip_record"
 }
 
 func (r *EventGatewayProducePolicySkipRecordResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

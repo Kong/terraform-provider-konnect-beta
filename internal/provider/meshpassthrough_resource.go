@@ -57,7 +57,7 @@ type MeshPassthroughResourceModel struct {
 }
 
 func (r *MeshPassthroughResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_mesh_passthrough"
+	resp.TypeName = req.ProviderTypeName + "_mesh_passthrough"
 }
 
 func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

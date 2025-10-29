@@ -50,7 +50,7 @@ type PortalCustomizationResourceModel struct {
 }
 
 func (r *PortalCustomizationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_portal_customization"
+	resp.TypeName = req.ProviderTypeName + "_portal_customization"
 }
 
 func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

@@ -53,7 +53,7 @@ type DashboardResourceModel struct {
 }
 
 func (r *DashboardResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_dashboard"
+	resp.TypeName = req.ProviderTypeName + "_dashboard"
 }
 
 func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

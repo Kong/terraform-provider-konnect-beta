@@ -59,7 +59,7 @@ type MeshRetryResourceModel struct {
 }
 
 func (r *MeshRetryResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_mesh_retry"
+	resp.TypeName = req.ProviderTypeName + "_mesh_retry"
 }
 
 func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

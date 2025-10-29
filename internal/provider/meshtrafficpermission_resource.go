@@ -56,7 +56,7 @@ type MeshTrafficPermissionResourceModel struct {
 }
 
 func (r *MeshTrafficPermissionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_mesh_traffic_permission"
+	resp.TypeName = req.ProviderTypeName + "_mesh_traffic_permission"
 }
 
 func (r *MeshTrafficPermissionResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

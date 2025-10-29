@@ -59,7 +59,7 @@ type MeshTCPRouteResourceModel struct {
 }
 
 func (r *MeshTCPRouteResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_mesh_tcp_route"
+	resp.TypeName = req.ProviderTypeName + "_mesh_tcp_route"
 }
 
 func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

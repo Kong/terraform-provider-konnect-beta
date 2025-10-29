@@ -45,7 +45,7 @@ type SecretResourceModel struct {
 }
 
 func (r *SecretResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_secret"
+	resp.TypeName = req.ProviderTypeName + "_secret"
 }
 
 func (r *SecretResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

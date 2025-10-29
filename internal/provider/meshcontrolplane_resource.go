@@ -56,7 +56,7 @@ type MeshControlPlaneResourceModel struct {
 }
 
 func (r *MeshControlPlaneResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_mesh_control_plane"
+	resp.TypeName = req.ProviderTypeName + "_mesh_control_plane"
 }
 
 func (r *MeshControlPlaneResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

@@ -48,7 +48,7 @@ type EventGatewayDataPlaneCertificateResourceModel struct {
 }
 
 func (r *EventGatewayDataPlaneCertificateResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_event_gateway_data_plane_certificate"
+	resp.TypeName = req.ProviderTypeName + "_event_gateway_data_plane_certificate"
 }
 
 func (r *EventGatewayDataPlaneCertificateResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

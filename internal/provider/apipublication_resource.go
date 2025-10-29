@@ -48,7 +48,7 @@ type APIPublicationResourceModel struct {
 }
 
 func (r *APIPublicationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_api_publication"
+	resp.TypeName = req.ProviderTypeName + "_api_publication"
 }
 
 func (r *APIPublicationResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

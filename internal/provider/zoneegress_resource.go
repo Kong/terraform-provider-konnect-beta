@@ -45,7 +45,7 @@ type ZoneEgressResourceModel struct {
 }
 
 func (r *ZoneEgressResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_zone_egress"
+	resp.TypeName = req.ProviderTypeName + "_zone_egress"
 }
 
 func (r *ZoneEgressResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

@@ -37,7 +37,7 @@ type PortalLogoResourceModel struct {
 }
 
 func (r *PortalLogoResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_portal_logo"
+	resp.TypeName = req.ProviderTypeName + "_portal_logo"
 }
 
 func (r *PortalLogoResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

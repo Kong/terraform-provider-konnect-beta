@@ -56,7 +56,7 @@ type MeshTimeoutResourceModel struct {
 }
 
 func (r *MeshTimeoutResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_mesh_timeout"
+	resp.TypeName = req.ProviderTypeName + "_mesh_timeout"
 }
 
 func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

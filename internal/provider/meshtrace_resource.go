@@ -60,7 +60,7 @@ type MeshTraceResourceModel struct {
 }
 
 func (r *MeshTraceResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_mesh_trace"
+	resp.TypeName = req.ProviderTypeName + "_mesh_trace"
 }
 
 func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

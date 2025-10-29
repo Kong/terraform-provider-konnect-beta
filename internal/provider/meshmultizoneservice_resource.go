@@ -61,7 +61,7 @@ type MeshMultiZoneServiceResourceModel struct {
 }
 
 func (r *MeshMultiZoneServiceResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_mesh_multi_zone_service"
+	resp.TypeName = req.ProviderTypeName + "_mesh_multi_zone_service"
 }
 
 func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

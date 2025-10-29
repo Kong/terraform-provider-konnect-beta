@@ -338,7 +338,6 @@ spec = {
 
 	t.Run("should be able to store secrets", func(t *testing.T) {
 		meshName := "m4"
-		secretName := "mysecret"
 		cpName := fmt.Sprintf("e2e-test-%d", acctest.RandInt())
 
 		builder := tfbuilder.NewBuilder(tfbuilder.Konnect, serverScheme, serverHost, serverPort).WithProviderProperty(tfbuilder.KonnectBeta)
@@ -348,12 +347,16 @@ spec = {
 			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
 			WithSpec(`skip_creating_initial_policies = [ "*" ]`).
 			WithDependsOn(builder.ResourceAddress("mesh_control_plane", cp.ResourceName))
-		secret := tfbuilder.NewPolicyBuilder("secret", "mysecret", secretName, "Secret").
+		skey := tfbuilder.NewPolicyBuilder("secret", "skey", "skey", "Secret").
+			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
+			WithMeshRef(builder.ResourceAddress("mesh", mesh.ResourceName) + ".name").
+			WithDependsOn(builder.ResourceAddress("mesh", mesh.ResourceName))
+		scert := tfbuilder.NewPolicyBuilder("secret", "scert", "scert", "Secret").
 			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
 			WithMeshRef(builder.ResourceAddress("mesh", mesh.ResourceName) + ".name").
 			WithDependsOn(builder.ResourceAddress("mesh", mesh.ResourceName))
 		builder.AddMesh(mesh)
-		resource.ParallelTest(t, resourcesshared.ShouldBeAbleToStoreSecrets(providerFactory, builder, secret, mesh))
+		resource.ParallelTest(t, resourcesshared.ShouldBeAbleToStoreSecrets(providerFactory, builder, scert, skey, mesh))
 	})
 }
 
