@@ -16,37 +16,37 @@ type UpdateScope struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
-func (o *UpdateScope) GetName() *string {
-	if o == nil {
+func (u *UpdateScope) GetName() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Name
+	return u.Name
 }
 
-func (o *UpdateScope) GetDescription() *string {
-	if o == nil {
+func (u *UpdateScope) GetDescription() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Description
+	return u.Description
 }
 
-func (o *UpdateScope) GetDefault() *bool {
-	if o == nil {
+func (u *UpdateScope) GetDefault() *bool {
+	if u == nil {
 		return nil
 	}
-	return o.Default
+	return u.Default
 }
 
-func (o *UpdateScope) GetIncludeInMetadata() *bool {
-	if o == nil {
+func (u *UpdateScope) GetIncludeInMetadata() *bool {
+	if u == nil {
 		return nil
 	}
-	return o.IncludeInMetadata
+	return u.IncludeInMetadata
 }
 
-func (o *UpdateScope) GetEnabled() *bool {
-	if o == nil {
+func (u *UpdateScope) GetEnabled() *bool {
+	if u == nil {
 		return nil
 	}
-	return o.Enabled
+	return u.Enabled
 }

@@ -53,26 +53,26 @@ func (v VirtualClusterNamespaceTopicSelectorGlob) MarshalJSON() ([]byte, error) 
 }
 
 func (v *VirtualClusterNamespaceTopicSelectorGlob) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"type", "glob"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *VirtualClusterNamespaceTopicSelectorGlob) GetType() string {
+func (v *VirtualClusterNamespaceTopicSelectorGlob) GetType() string {
 	return "glob"
 }
 
-func (o *VirtualClusterNamespaceTopicSelectorGlob) GetGlob() string {
-	if o == nil {
+func (v *VirtualClusterNamespaceTopicSelectorGlob) GetGlob() string {
+	if v == nil {
 		return ""
 	}
-	return o.Glob
+	return v.Glob
 }
 
-func (o *VirtualClusterNamespaceTopicSelectorGlob) GetConflict() *Conflict {
-	if o == nil {
+func (v *VirtualClusterNamespaceTopicSelectorGlob) GetConflict() *Conflict {
+	if v == nil {
 		return nil
 	}
-	return o.Conflict
+	return v.Conflict
 }

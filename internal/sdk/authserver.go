@@ -65,7 +65,7 @@ func (s *AuthServer) CreateAuthServer(ctx context.Context, request shared.Create
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "createAuthServer",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)
@@ -325,7 +325,7 @@ func (s *AuthServer) GetAuthServer(ctx context.Context, request operations.GetAu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "getAuthServer",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -557,7 +557,7 @@ func (s *AuthServer) UpdateAuthServer(ctx context.Context, request operations.Up
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "updateAuthServer",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateAuthServer", "json", `request:"mediaType=application/json"`)
@@ -837,7 +837,7 @@ func (s *AuthServer) DeleteAuthServer(ctx context.Context, request operations.De
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "deleteAuthServer",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

@@ -40,85 +40,85 @@ func (c CreateClient) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateClient) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "grant_types", "response_types"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CreateClient) GetName() string {
-	if o == nil {
+func (c *CreateClient) GetName() string {
+	if c == nil {
 		return ""
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *CreateClient) GetGrantTypes() []GrantType {
-	if o == nil {
+func (c *CreateClient) GetGrantTypes() []GrantType {
+	if c == nil {
 		return []GrantType{}
 	}
-	return o.GrantTypes
+	return c.GrantTypes
 }
 
-func (o *CreateClient) GetResponseTypes() []ResponseType {
-	if o == nil {
+func (c *CreateClient) GetResponseTypes() []ResponseType {
+	if c == nil {
 		return []ResponseType{}
 	}
-	return o.ResponseTypes
+	return c.ResponseTypes
 }
 
-func (o *CreateClient) GetRedirectUris() []string {
-	if o == nil {
+func (c *CreateClient) GetRedirectUris() []string {
+	if c == nil {
 		return nil
 	}
-	return o.RedirectUris
+	return c.RedirectUris
 }
 
-func (o *CreateClient) GetLoginURI() *string {
-	if o == nil {
+func (c *CreateClient) GetLoginURI() *string {
+	if c == nil {
 		return nil
 	}
-	return o.LoginURI
+	return c.LoginURI
 }
 
-func (o *CreateClient) GetAccessTokenDuration() *int64 {
-	if o == nil {
+func (c *CreateClient) GetAccessTokenDuration() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.AccessTokenDuration
+	return c.AccessTokenDuration
 }
 
-func (o *CreateClient) GetIDTokenDuration() *int64 {
-	if o == nil {
+func (c *CreateClient) GetIDTokenDuration() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.IDTokenDuration
+	return c.IDTokenDuration
 }
 
-func (o *CreateClient) GetAllowAllScopes() *bool {
-	if o == nil {
+func (c *CreateClient) GetAllowAllScopes() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.AllowAllScopes
+	return c.AllowAllScopes
 }
 
-func (o *CreateClient) GetAllowScopes() []string {
-	if o == nil {
+func (c *CreateClient) GetAllowScopes() []string {
+	if c == nil {
 		return nil
 	}
-	return o.AllowScopes
+	return c.AllowScopes
 }
 
-func (o *CreateClient) GetLabels() map[string]*string {
-	if o == nil {
+func (c *CreateClient) GetLabels() map[string]*string {
+	if c == nil {
 		return nil
 	}
-	return o.Labels
+	return c.Labels
 }
 
-func (o *CreateClient) GetTokenEndpointAuthMethod() *TokenEndpointAuthMethod {
-	if o == nil {
+func (c *CreateClient) GetTokenEndpointAuthMethod() *TokenEndpointAuthMethod {
+	if c == nil {
 		return nil
 	}
-	return o.TokenEndpointAuthMethod
+	return c.TokenEndpointAuthMethod
 }

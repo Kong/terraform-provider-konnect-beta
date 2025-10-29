@@ -16,23 +16,23 @@ type EventGatewayEncryptConfigSensitiveDataAware struct {
 	Encrypt []EncryptionRecordSelector `json:"encrypt"`
 }
 
-func (o *EventGatewayEncryptConfigSensitiveDataAware) GetFailureMode() EncryptionFailureMode {
-	if o == nil {
+func (e *EventGatewayEncryptConfigSensitiveDataAware) GetFailureMode() EncryptionFailureMode {
+	if e == nil {
 		return EncryptionFailureMode("")
 	}
-	return o.FailureMode
+	return e.FailureMode
 }
 
-func (o *EventGatewayEncryptConfigSensitiveDataAware) GetKeySources() []EventGatewayKeySource {
-	if o == nil {
+func (e *EventGatewayEncryptConfigSensitiveDataAware) GetKeySources() []EventGatewayKeySource {
+	if e == nil {
 		return []EventGatewayKeySource{}
 	}
-	return o.KeySources
+	return e.KeySources
 }
 
-func (o *EventGatewayEncryptConfigSensitiveDataAware) GetEncrypt() []EncryptionRecordSelector {
-	if o == nil {
+func (e *EventGatewayEncryptConfigSensitiveDataAware) GetEncrypt() []EncryptionRecordSelector {
+	if e == nil {
 		return []EncryptionRecordSelector{}
 	}
-	return o.Encrypt
+	return e.Encrypt
 }

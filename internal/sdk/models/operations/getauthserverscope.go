@@ -14,18 +14,18 @@ type GetAuthServerScopeRequest struct {
 	ScopeID string `pathParam:"style=simple,explode=false,name=scopeId"`
 }
 
-func (o *GetAuthServerScopeRequest) GetAuthServerID() string {
-	if o == nil {
+func (g *GetAuthServerScopeRequest) GetAuthServerID() string {
+	if g == nil {
 		return ""
 	}
-	return o.AuthServerID
+	return g.AuthServerID
 }
 
-func (o *GetAuthServerScopeRequest) GetScopeID() string {
-	if o == nil {
+func (g *GetAuthServerScopeRequest) GetScopeID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ScopeID
+	return g.ScopeID
 }
 
 type GetAuthServerScopeResponse struct {
@@ -41,37 +41,37 @@ type GetAuthServerScopeResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *GetAuthServerScopeResponse) GetContentType() string {
-	if o == nil {
+func (g *GetAuthServerScopeResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetAuthServerScopeResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetAuthServerScopeResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetAuthServerScopeResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetAuthServerScopeResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetAuthServerScopeResponse) GetScope() *shared.Scope {
-	if o == nil {
+func (g *GetAuthServerScopeResponse) GetScope() *shared.Scope {
+	if g == nil {
 		return nil
 	}
-	return o.Scope
+	return g.Scope
 }
 
-func (o *GetAuthServerScopeResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (g *GetAuthServerScopeResponse) GetNotFoundError() *shared.NotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return g.NotFoundError
 }

@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
+)
+
 // VirtualClusterAuthenticationPrincipalSensitiveDataAware - A principal for authentication.
 type VirtualClusterAuthenticationPrincipalSensitiveDataAware struct {
 	// A literal value or a reference to an existing secret as a template string expression.
@@ -15,16 +19,27 @@ type VirtualClusterAuthenticationPrincipalSensitiveDataAware struct {
 	Password *string `json:"password,omitempty"`
 }
 
-func (o *VirtualClusterAuthenticationPrincipalSensitiveDataAware) GetUsername() string {
-	if o == nil {
-		return ""
-	}
-	return o.Username
+func (v VirtualClusterAuthenticationPrincipalSensitiveDataAware) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
 }
 
-func (o *VirtualClusterAuthenticationPrincipalSensitiveDataAware) GetPassword() *string {
-	if o == nil {
+func (v *VirtualClusterAuthenticationPrincipalSensitiveDataAware) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"username"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (v *VirtualClusterAuthenticationPrincipalSensitiveDataAware) GetUsername() string {
+	if v == nil {
+		return ""
+	}
+	return v.Username
+}
+
+func (v *VirtualClusterAuthenticationPrincipalSensitiveDataAware) GetPassword() *string {
+	if v == nil {
 		return nil
 	}
-	return o.Password
+	return v.Password
 }

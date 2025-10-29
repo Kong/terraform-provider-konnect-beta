@@ -14,18 +14,18 @@ type GetSecretListQueryParamFilter struct {
 	Value *string `queryParam:"name=value"`
 }
 
-func (o *GetSecretListQueryParamFilter) GetKey() *string {
-	if o == nil {
+func (g *GetSecretListQueryParamFilter) GetKey() *string {
+	if g == nil {
 		return nil
 	}
-	return o.Key
+	return g.Key
 }
 
-func (o *GetSecretListQueryParamFilter) GetValue() *string {
-	if o == nil {
+func (g *GetSecretListQueryParamFilter) GetValue() *string {
+	if g == nil {
 		return nil
 	}
-	return o.Value
+	return g.Value
 }
 
 type GetSecretListRequest struct {
@@ -46,45 +46,45 @@ func (g GetSecretListRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetSecretListRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"cpId", "mesh"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *GetSecretListRequest) GetCpID() string {
-	if o == nil {
+func (g *GetSecretListRequest) GetCpID() string {
+	if g == nil {
 		return ""
 	}
-	return o.CpID
+	return g.CpID
 }
 
-func (o *GetSecretListRequest) GetOffset() *int64 {
-	if o == nil {
+func (g *GetSecretListRequest) GetOffset() *int64 {
+	if g == nil {
 		return nil
 	}
-	return o.Offset
+	return g.Offset
 }
 
-func (o *GetSecretListRequest) GetSize() *int64 {
-	if o == nil {
+func (g *GetSecretListRequest) GetSize() *int64 {
+	if g == nil {
 		return nil
 	}
-	return o.Size
+	return g.Size
 }
 
-func (o *GetSecretListRequest) GetFilter() *GetSecretListQueryParamFilter {
-	if o == nil {
+func (g *GetSecretListRequest) GetFilter() *GetSecretListQueryParamFilter {
+	if g == nil {
 		return nil
 	}
-	return o.Filter
+	return g.Filter
 }
 
-func (o *GetSecretListRequest) GetMesh() string {
-	if o == nil {
+func (g *GetSecretListRequest) GetMesh() string {
+	if g == nil {
 		return ""
 	}
-	return o.Mesh
+	return g.Mesh
 }
 
 type GetSecretListResponse struct {
@@ -98,30 +98,30 @@ type GetSecretListResponse struct {
 	SecretList *shared.SecretList
 }
 
-func (o *GetSecretListResponse) GetContentType() string {
-	if o == nil {
+func (g *GetSecretListResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetSecretListResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetSecretListResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetSecretListResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetSecretListResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetSecretListResponse) GetSecretList() *shared.SecretList {
-	if o == nil {
+func (g *GetSecretListResponse) GetSecretList() *shared.SecretList {
+	if g == nil {
 		return nil
 	}
-	return o.SecretList
+	return g.SecretList
 }

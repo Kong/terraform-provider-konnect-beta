@@ -2,15 +2,30 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
+)
+
 // VirtualClusterReferenceByID - Reference a virtual cluster by its unique identifier.
 type VirtualClusterReferenceByID struct {
 	// The unique identifier of the virtual cluster.
 	ID string `json:"id"`
 }
 
-func (o *VirtualClusterReferenceByID) GetID() string {
-	if o == nil {
+func (v VirtualClusterReferenceByID) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *VirtualClusterReferenceByID) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"id"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (v *VirtualClusterReferenceByID) GetID() string {
+	if v == nil {
 		return ""
 	}
-	return o.ID
+	return v.ID
 }

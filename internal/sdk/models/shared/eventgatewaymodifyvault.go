@@ -18,8 +18,8 @@ const (
 
 // EventGatewayModifyVault - The typed schema of the vault to modify it.
 type EventGatewayModifyVault struct {
-	EventGatewayEnvVault     *EventGatewayEnvVault     `queryParam:"inline"`
-	EventGatewayKonnectVault *EventGatewayKonnectVault `queryParam:"inline"`
+	EventGatewayEnvVault     *EventGatewayEnvVault     `queryParam:"inline,name=EventGatewayModifyVault"`
+	EventGatewayKonnectVault *EventGatewayKonnectVault `queryParam:"inline,name=EventGatewayModifyVault"`
 
 	Type EventGatewayModifyVaultType
 }
@@ -56,7 +56,7 @@ func (u *EventGatewayModifyVault) UnmarshalJSON(data []byte) error {
 	switch dis.Type {
 	case "env":
 		eventGatewayEnvVault := new(EventGatewayEnvVault)
-		if err := utils.UnmarshalJSON(data, &eventGatewayEnvVault, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &eventGatewayEnvVault, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == env) type EventGatewayEnvVault within EventGatewayModifyVault: %w", string(data), err)
 		}
 
@@ -65,7 +65,7 @@ func (u *EventGatewayModifyVault) UnmarshalJSON(data []byte) error {
 		return nil
 	case "konnect":
 		eventGatewayKonnectVault := new(EventGatewayKonnectVault)
-		if err := utils.UnmarshalJSON(data, &eventGatewayKonnectVault, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &eventGatewayKonnectVault, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == konnect) type EventGatewayKonnectVault within EventGatewayModifyVault: %w", string(data), err)
 		}
 

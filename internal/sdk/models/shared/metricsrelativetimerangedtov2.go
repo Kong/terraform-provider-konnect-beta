@@ -96,29 +96,29 @@ func (m MetricsRelativeTimeRangeDtoV2) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MetricsRelativeTimeRangeDtoV2) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *MetricsRelativeTimeRangeDtoV2) GetTz() *string {
-	if o == nil {
+func (m *MetricsRelativeTimeRangeDtoV2) GetTz() *string {
+	if m == nil {
 		return nil
 	}
-	return o.Tz
+	return m.Tz
 }
 
-func (o *MetricsRelativeTimeRangeDtoV2) GetType() MetricsRelativeTimeRangeDtoV2Type {
-	if o == nil {
+func (m *MetricsRelativeTimeRangeDtoV2) GetType() MetricsRelativeTimeRangeDtoV2Type {
+	if m == nil {
 		return MetricsRelativeTimeRangeDtoV2Type("")
 	}
-	return o.Type
+	return m.Type
 }
 
-func (o *MetricsRelativeTimeRangeDtoV2) GetTimeRange() *MetricsRelativeTimeRangeDtoV2TimeRange {
-	if o == nil {
+func (m *MetricsRelativeTimeRangeDtoV2) GetTimeRange() *MetricsRelativeTimeRangeDtoV2TimeRange {
+	if m == nil {
 		return nil
 	}
-	return o.TimeRange
+	return m.TimeRange
 }

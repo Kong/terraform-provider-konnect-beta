@@ -64,7 +64,7 @@ func (s *AuthServerClaims) CreateAuthServerClaim(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "createAuthServerClaim",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CreateClaim", "json", `request:"mediaType=application/json"`)
@@ -324,7 +324,7 @@ func (s *AuthServerClaims) GetAuthServerClaim(ctx context.Context, request opera
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "getAuthServerClaim",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -556,7 +556,7 @@ func (s *AuthServerClaims) UpdateAuthServerClaim(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "updateAuthServerClaim",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateClaim", "json", `request:"mediaType=application/json"`)
@@ -815,7 +815,7 @@ func (s *AuthServerClaims) DeleteAuthServerClaim(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "deleteAuthServerClaim",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

@@ -41,7 +41,7 @@ resource "konnect_dashboard" "my_dashboard" {
               api_usage = {
                 datasource = "api_usage"
                 dimensions = [
-                  "api_product"
+                  "status_code_grouped",
                 ]
                 filters = [
                   {
@@ -291,7 +291,7 @@ For special time ranges:
 
 For absolute time ranges, daily will be used.
 must be one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]
-- `metrics` (List of String) List of aggregated metrics to collect across the requested time span. If no metrics are specified, request_count will be computed by default.
+- `metrics` (List of String) List of aggregated metrics to collect across the requested time span. If no metrics are specified, request_count will be computed by default. Default: ["request_count"]
 - `time_range` (Attributes) The time range to query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--api_usage--time_range))
 
 <a id="nestedatt--definition--tiles--chart--definition--query--api_usage--filters"></a>
@@ -366,7 +366,7 @@ For special time ranges:
 
 For absolute time ranges, daily will be used.
 must be one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]
-- `metrics` (List of String) List of aggregated metrics to collect across the requested time span.
+- `metrics` (List of String) List of aggregated metrics to collect across the requested time span. Default: ["ai_request_count"]
 - `time_range` (Attributes) The time range to query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--llm_usage--time_range))
 
 <a id="nestedatt--definition--tiles--chart--definition--query--llm_usage--filters"></a>
@@ -453,6 +453,17 @@ Optional:
 ## Import
 
 Import is supported using the following syntax:
+
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_dashboard.my_konnect_dashboard
+  id = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import konnect_dashboard.my_konnect_dashboard "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"

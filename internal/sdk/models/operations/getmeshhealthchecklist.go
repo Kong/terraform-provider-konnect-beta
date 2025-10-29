@@ -14,18 +14,18 @@ type GetMeshHealthCheckListQueryParamFilter struct {
 	Value *string `queryParam:"name=value"`
 }
 
-func (o *GetMeshHealthCheckListQueryParamFilter) GetKey() *string {
-	if o == nil {
+func (g *GetMeshHealthCheckListQueryParamFilter) GetKey() *string {
+	if g == nil {
 		return nil
 	}
-	return o.Key
+	return g.Key
 }
 
-func (o *GetMeshHealthCheckListQueryParamFilter) GetValue() *string {
-	if o == nil {
+func (g *GetMeshHealthCheckListQueryParamFilter) GetValue() *string {
+	if g == nil {
 		return nil
 	}
-	return o.Value
+	return g.Value
 }
 
 type GetMeshHealthCheckListRequest struct {
@@ -46,45 +46,45 @@ func (g GetMeshHealthCheckListRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetMeshHealthCheckListRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"cpId", "mesh"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *GetMeshHealthCheckListRequest) GetCpID() string {
-	if o == nil {
+func (g *GetMeshHealthCheckListRequest) GetCpID() string {
+	if g == nil {
 		return ""
 	}
-	return o.CpID
+	return g.CpID
 }
 
-func (o *GetMeshHealthCheckListRequest) GetOffset() *int64 {
-	if o == nil {
+func (g *GetMeshHealthCheckListRequest) GetOffset() *int64 {
+	if g == nil {
 		return nil
 	}
-	return o.Offset
+	return g.Offset
 }
 
-func (o *GetMeshHealthCheckListRequest) GetSize() *int64 {
-	if o == nil {
+func (g *GetMeshHealthCheckListRequest) GetSize() *int64 {
+	if g == nil {
 		return nil
 	}
-	return o.Size
+	return g.Size
 }
 
-func (o *GetMeshHealthCheckListRequest) GetFilter() *GetMeshHealthCheckListQueryParamFilter {
-	if o == nil {
+func (g *GetMeshHealthCheckListRequest) GetFilter() *GetMeshHealthCheckListQueryParamFilter {
+	if g == nil {
 		return nil
 	}
-	return o.Filter
+	return g.Filter
 }
 
-func (o *GetMeshHealthCheckListRequest) GetMesh() string {
-	if o == nil {
+func (g *GetMeshHealthCheckListRequest) GetMesh() string {
+	if g == nil {
 		return ""
 	}
-	return o.Mesh
+	return g.Mesh
 }
 
 type GetMeshHealthCheckListResponse struct {
@@ -98,30 +98,30 @@ type GetMeshHealthCheckListResponse struct {
 	MeshHealthCheckList *shared.MeshHealthCheckList
 }
 
-func (o *GetMeshHealthCheckListResponse) GetContentType() string {
-	if o == nil {
+func (g *GetMeshHealthCheckListResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetMeshHealthCheckListResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetMeshHealthCheckListResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetMeshHealthCheckListResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetMeshHealthCheckListResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetMeshHealthCheckListResponse) GetMeshHealthCheckList() *shared.MeshHealthCheckList {
-	if o == nil {
+func (g *GetMeshHealthCheckListResponse) GetMeshHealthCheckList() *shared.MeshHealthCheckList {
+	if g == nil {
 		return nil
 	}
-	return o.MeshHealthCheckList
+	return g.MeshHealthCheckList
 }

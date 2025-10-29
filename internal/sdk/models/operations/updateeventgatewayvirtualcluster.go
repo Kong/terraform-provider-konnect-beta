@@ -16,25 +16,25 @@ type UpdateEventGatewayVirtualClusterRequest struct {
 	UpdateVirtualClusterRequest *shared.UpdateVirtualClusterRequest `request:"mediaType=application/json"`
 }
 
-func (o *UpdateEventGatewayVirtualClusterRequest) GetGatewayID() string {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterRequest) GetGatewayID() string {
+	if u == nil {
 		return ""
 	}
-	return o.GatewayID
+	return u.GatewayID
 }
 
-func (o *UpdateEventGatewayVirtualClusterRequest) GetVirtualClusterID() string {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterRequest) GetVirtualClusterID() string {
+	if u == nil {
 		return ""
 	}
-	return o.VirtualClusterID
+	return u.VirtualClusterID
 }
 
-func (o *UpdateEventGatewayVirtualClusterRequest) GetUpdateVirtualClusterRequest() *shared.UpdateVirtualClusterRequest {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterRequest) GetUpdateVirtualClusterRequest() *shared.UpdateVirtualClusterRequest {
+	if u == nil {
 		return nil
 	}
-	return o.UpdateVirtualClusterRequest
+	return u.UpdateVirtualClusterRequest
 }
 
 type UpdateEventGatewayVirtualClusterResponse struct {
@@ -54,51 +54,51 @@ type UpdateEventGatewayVirtualClusterResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *UpdateEventGatewayVirtualClusterResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateEventGatewayVirtualClusterResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateEventGatewayVirtualClusterResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateEventGatewayVirtualClusterResponse) GetVirtualCluster() *shared.VirtualCluster {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterResponse) GetVirtualCluster() *shared.VirtualCluster {
+	if u == nil {
 		return nil
 	}
-	return o.VirtualCluster
+	return u.VirtualCluster
 }
 
-func (o *UpdateEventGatewayVirtualClusterResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterResponse) GetBadRequestError() *shared.BadRequestError {
+	if u == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return u.BadRequestError
 }
 
-func (o *UpdateEventGatewayVirtualClusterResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return u.UnauthorizedError
 }
 
-func (o *UpdateEventGatewayVirtualClusterResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterResponse) GetForbiddenError() *shared.ForbiddenError {
+	if u == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return u.ForbiddenError
 }

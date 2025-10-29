@@ -10,11 +10,22 @@ type ExactList struct {
 	Value string `json:"value"`
 }
 
-func (o *ExactList) GetValue() string {
-	if o == nil {
+func (e ExactList) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *ExactList) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"value"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (e *ExactList) GetValue() string {
+	if e == nil {
 		return ""
 	}
-	return o.Value
+	return e.Value
 }
 
 type VirtualClusterNamespaceIDSelectorExactList struct {
@@ -27,19 +38,19 @@ func (v VirtualClusterNamespaceIDSelectorExactList) MarshalJSON() ([]byte, error
 }
 
 func (v *VirtualClusterNamespaceIDSelectorExactList) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"type"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *VirtualClusterNamespaceIDSelectorExactList) GetType() string {
+func (v *VirtualClusterNamespaceIDSelectorExactList) GetType() string {
 	return "exact_list"
 }
 
-func (o *VirtualClusterNamespaceIDSelectorExactList) GetExactList() []ExactList {
-	if o == nil {
+func (v *VirtualClusterNamespaceIDSelectorExactList) GetExactList() []ExactList {
+	if v == nil {
 		return nil
 	}
-	return o.ExactList
+	return v.ExactList
 }

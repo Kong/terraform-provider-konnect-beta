@@ -13,18 +13,18 @@ type UpdateHoudiniEventGatewayRequest struct {
 	UpdateGatewayRequest shared.UpdateGatewayRequest `request:"mediaType=application/json"`
 }
 
-func (o *UpdateHoudiniEventGatewayRequest) GetGatewayID() string {
-	if o == nil {
+func (u *UpdateHoudiniEventGatewayRequest) GetGatewayID() string {
+	if u == nil {
 		return ""
 	}
-	return o.GatewayID
+	return u.GatewayID
 }
 
-func (o *UpdateHoudiniEventGatewayRequest) GetUpdateGatewayRequest() shared.UpdateGatewayRequest {
-	if o == nil {
+func (u *UpdateHoudiniEventGatewayRequest) GetUpdateGatewayRequest() shared.UpdateGatewayRequest {
+	if u == nil {
 		return shared.UpdateGatewayRequest{}
 	}
-	return o.UpdateGatewayRequest
+	return u.UpdateGatewayRequest
 }
 
 type UpdateHoudiniEventGatewayResponse struct {
@@ -48,65 +48,65 @@ type UpdateHoudiniEventGatewayResponse struct {
 	BaseError *shared.BaseError
 }
 
-func (o *UpdateHoudiniEventGatewayResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateHoudiniEventGatewayResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateHoudiniEventGatewayResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateHoudiniEventGatewayResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateHoudiniEventGatewayResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateHoudiniEventGatewayResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateHoudiniEventGatewayResponse) GetEventGatewayInfo() *shared.EventGatewayInfo {
-	if o == nil {
+func (u *UpdateHoudiniEventGatewayResponse) GetEventGatewayInfo() *shared.EventGatewayInfo {
+	if u == nil {
 		return nil
 	}
-	return o.EventGatewayInfo
+	return u.EventGatewayInfo
 }
 
-func (o *UpdateHoudiniEventGatewayResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (u *UpdateHoudiniEventGatewayResponse) GetBadRequestError() *shared.BadRequestError {
+	if u == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return u.BadRequestError
 }
 
-func (o *UpdateHoudiniEventGatewayResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (u *UpdateHoudiniEventGatewayResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return u.UnauthorizedError
 }
 
-func (o *UpdateHoudiniEventGatewayResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (u *UpdateHoudiniEventGatewayResponse) GetForbiddenError() *shared.ForbiddenError {
+	if u == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return u.ForbiddenError
 }
 
-func (o *UpdateHoudiniEventGatewayResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (u *UpdateHoudiniEventGatewayResponse) GetNotFoundError() *shared.NotFoundError {
+	if u == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return u.NotFoundError
 }
 
-func (o *UpdateHoudiniEventGatewayResponse) GetBaseError() *shared.BaseError {
-	if o == nil {
+func (u *UpdateHoudiniEventGatewayResponse) GetBaseError() *shared.BaseError {
+	if u == nil {
 		return nil
 	}
-	return o.BaseError
+	return u.BaseError
 }

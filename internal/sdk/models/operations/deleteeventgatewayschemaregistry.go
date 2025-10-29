@@ -14,18 +14,18 @@ type DeleteEventGatewaySchemaRegistryRequest struct {
 	SchemaRegistryID string `pathParam:"style=simple,explode=false,name=schemaRegistryId"`
 }
 
-func (o *DeleteEventGatewaySchemaRegistryRequest) GetGatewayID() string {
-	if o == nil {
+func (d *DeleteEventGatewaySchemaRegistryRequest) GetGatewayID() string {
+	if d == nil {
 		return ""
 	}
-	return o.GatewayID
+	return d.GatewayID
 }
 
-func (o *DeleteEventGatewaySchemaRegistryRequest) GetSchemaRegistryID() string {
-	if o == nil {
+func (d *DeleteEventGatewaySchemaRegistryRequest) GetSchemaRegistryID() string {
+	if d == nil {
 		return ""
 	}
-	return o.SchemaRegistryID
+	return d.SchemaRegistryID
 }
 
 type DeleteEventGatewaySchemaRegistryResponse struct {
@@ -45,51 +45,51 @@ type DeleteEventGatewaySchemaRegistryResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *DeleteEventGatewaySchemaRegistryResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteEventGatewaySchemaRegistryResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteEventGatewaySchemaRegistryResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteEventGatewaySchemaRegistryResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteEventGatewaySchemaRegistryResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteEventGatewaySchemaRegistryResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteEventGatewaySchemaRegistryResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (d *DeleteEventGatewaySchemaRegistryResponse) GetBadRequestError() *shared.BadRequestError {
+	if d == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return d.BadRequestError
 }
 
-func (o *DeleteEventGatewaySchemaRegistryResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (d *DeleteEventGatewaySchemaRegistryResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return d.UnauthorizedError
 }
 
-func (o *DeleteEventGatewaySchemaRegistryResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (d *DeleteEventGatewaySchemaRegistryResponse) GetForbiddenError() *shared.ForbiddenError {
+	if d == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return d.ForbiddenError
 }
 
-func (o *DeleteEventGatewaySchemaRegistryResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (d *DeleteEventGatewaySchemaRegistryResponse) GetNotFoundError() *shared.NotFoundError {
+	if d == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return d.NotFoundError
 }

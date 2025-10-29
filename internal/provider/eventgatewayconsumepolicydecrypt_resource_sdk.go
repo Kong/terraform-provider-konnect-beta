@@ -269,30 +269,6 @@ func (r *EventGatewayConsumePolicyDecryptResourceModel) ToSharedEventGatewayDecr
 				EventGatewayAWSKeySource: &eventGatewayAWSKeySource,
 			})
 		}
-		if keySourcesItem.Static != nil {
-			keys := make([]shared.Keys, 0, len(keySourcesItem.Static.Keys))
-			for _, keysItem := range keySourcesItem.Static.Keys {
-				var id string
-				id = keysItem.ID.ValueString()
-
-				key := new(string)
-				if !keysItem.Key.IsUnknown() && !keysItem.Key.IsNull() {
-					*key = keysItem.Key.ValueString()
-				} else {
-					key = nil
-				}
-				keys = append(keys, shared.Keys{
-					ID:  id,
-					Key: key,
-				})
-			}
-			eventGatewayStaticKeySourceSensitiveDataAware := shared.EventGatewayStaticKeySourceSensitiveDataAware{
-				Keys: keys,
-			}
-			keySources = append(keySources, shared.EventGatewayKeySourceSensitiveDataAware{
-				EventGatewayStaticKeySourceSensitiveDataAware: &eventGatewayStaticKeySourceSensitiveDataAware,
-			})
-		}
 	}
 	decrypt := make([]shared.DecryptionRecordSelector, 0, len(r.Config.Decrypt))
 	for _, decryptItem := range r.Config.Decrypt {

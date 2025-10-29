@@ -45,85 +45,85 @@ func (e EventGatewayPolicy) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayPolicy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type", "config", "id", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *EventGatewayPolicy) GetType() string {
-	if o == nil {
+func (e *EventGatewayPolicy) GetType() string {
+	if e == nil {
 		return ""
 	}
-	return o.Type
+	return e.Type
 }
 
-func (o *EventGatewayPolicy) GetName() *string {
-	if o == nil {
+func (e *EventGatewayPolicy) GetName() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Name
+	return e.Name
 }
 
-func (o *EventGatewayPolicy) GetDescription() *string {
-	if o == nil {
+func (e *EventGatewayPolicy) GetDescription() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Description
+	return e.Description
 }
 
-func (o *EventGatewayPolicy) GetEnabled() *bool {
-	if o == nil {
+func (e *EventGatewayPolicy) GetEnabled() *bool {
+	if e == nil {
 		return nil
 	}
-	return o.Enabled
+	return e.Enabled
 }
 
-func (o *EventGatewayPolicy) GetCondition() *string {
-	if o == nil {
+func (e *EventGatewayPolicy) GetCondition() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Condition
+	return e.Condition
 }
 
-func (o *EventGatewayPolicy) GetConfig() EventGatewayPolicyConfig {
-	if o == nil {
+func (e *EventGatewayPolicy) GetConfig() EventGatewayPolicyConfig {
+	if e == nil {
 		return EventGatewayPolicyConfig{}
 	}
-	return o.Config
+	return e.Config
 }
 
-func (o *EventGatewayPolicy) GetLabels() map[string]*string {
-	if o == nil {
+func (e *EventGatewayPolicy) GetLabels() map[string]*string {
+	if e == nil {
 		return nil
 	}
-	return o.Labels
+	return e.Labels
 }
 
-func (o *EventGatewayPolicy) GetID() string {
-	if o == nil {
+func (e *EventGatewayPolicy) GetID() string {
+	if e == nil {
 		return ""
 	}
-	return o.ID
+	return e.ID
 }
 
-func (o *EventGatewayPolicy) GetCreatedAt() time.Time {
-	if o == nil {
+func (e *EventGatewayPolicy) GetCreatedAt() time.Time {
+	if e == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return e.CreatedAt
 }
 
-func (o *EventGatewayPolicy) GetParentPolicyID() *string {
-	if o == nil {
+func (e *EventGatewayPolicy) GetParentPolicyID() *string {
+	if e == nil {
 		return nil
 	}
-	return o.ParentPolicyID
+	return e.ParentPolicyID
 }
 
-func (o *EventGatewayPolicy) GetUpdatedAt() time.Time {
-	if o == nil {
+func (e *EventGatewayPolicy) GetUpdatedAt() time.Time {
+	if e == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return e.UpdatedAt
 }

@@ -14,18 +14,18 @@ type DeleteAuthServerClaimRequest struct {
 	ClaimID string `pathParam:"style=simple,explode=false,name=claimId"`
 }
 
-func (o *DeleteAuthServerClaimRequest) GetAuthServerID() string {
-	if o == nil {
+func (d *DeleteAuthServerClaimRequest) GetAuthServerID() string {
+	if d == nil {
 		return ""
 	}
-	return o.AuthServerID
+	return d.AuthServerID
 }
 
-func (o *DeleteAuthServerClaimRequest) GetClaimID() string {
-	if o == nil {
+func (d *DeleteAuthServerClaimRequest) GetClaimID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ClaimID
+	return d.ClaimID
 }
 
 type DeleteAuthServerClaimResponse struct {
@@ -39,30 +39,30 @@ type DeleteAuthServerClaimResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *DeleteAuthServerClaimResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteAuthServerClaimResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteAuthServerClaimResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteAuthServerClaimResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteAuthServerClaimResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteAuthServerClaimResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteAuthServerClaimResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (d *DeleteAuthServerClaimResponse) GetNotFoundError() *shared.NotFoundError {
+	if d == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return d.NotFoundError
 }

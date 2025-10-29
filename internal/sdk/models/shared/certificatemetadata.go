@@ -35,78 +35,78 @@ func (c CertificateMetadata) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CertificateMetadata) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CertificateMetadata) GetIssuer() *string {
-	if o == nil {
+func (c *CertificateMetadata) GetIssuer() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Issuer
+	return c.Issuer
 }
 
-func (o *CertificateMetadata) GetSubject() *string {
-	if o == nil {
+func (c *CertificateMetadata) GetSubject() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Subject
+	return c.Subject
 }
 
-func (o *CertificateMetadata) GetKeyUsages() []string {
-	if o == nil {
+func (c *CertificateMetadata) GetKeyUsages() []string {
+	if c == nil {
 		return nil
 	}
-	return o.KeyUsages
+	return c.KeyUsages
 }
 
-func (o *CertificateMetadata) GetExpiry() *int64 {
-	if o == nil {
+func (c *CertificateMetadata) GetExpiry() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.Expiry
+	return c.Expiry
 }
 
-func (o *CertificateMetadata) GetSanNames() []string {
-	if o == nil {
+func (c *CertificateMetadata) GetSanNames() []string {
+	if c == nil {
 		return nil
 	}
-	return o.SanNames
+	return c.SanNames
 }
 
-func (o *CertificateMetadata) GetDNSNames() []string {
-	if o == nil {
+func (c *CertificateMetadata) GetDNSNames() []string {
+	if c == nil {
 		return nil
 	}
-	return o.DNSNames
+	return c.DNSNames
 }
 
-func (o *CertificateMetadata) GetEmailAddresses() []string {
-	if o == nil {
+func (c *CertificateMetadata) GetEmailAddresses() []string {
+	if c == nil {
 		return nil
 	}
-	return o.EmailAddresses
+	return c.EmailAddresses
 }
 
-func (o *CertificateMetadata) GetIPAddresses() []string {
-	if o == nil {
+func (c *CertificateMetadata) GetIPAddresses() []string {
+	if c == nil {
 		return nil
 	}
-	return o.IPAddresses
+	return c.IPAddresses
 }
 
-func (o *CertificateMetadata) GetUris() []string {
-	if o == nil {
+func (c *CertificateMetadata) GetUris() []string {
+	if c == nil {
 		return nil
 	}
-	return o.Uris
+	return c.Uris
 }
 
-func (o *CertificateMetadata) GetSha256Fingerprint() *string {
-	if o == nil {
+func (c *CertificateMetadata) GetSha256Fingerprint() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Sha256Fingerprint
+	return c.Sha256Fingerprint
 }

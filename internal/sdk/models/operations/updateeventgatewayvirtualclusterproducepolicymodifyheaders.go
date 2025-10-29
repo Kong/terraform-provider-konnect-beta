@@ -17,32 +17,32 @@ type UpdateEventGatewayVirtualClusterProducePolicyModifyHeadersRequest struct {
 	EventGatewayModifyHeadersPolicy *shared.EventGatewayModifyHeadersPolicy `request:"mediaType=application/json"`
 }
 
-func (o *UpdateEventGatewayVirtualClusterProducePolicyModifyHeadersRequest) GetGatewayID() string {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterProducePolicyModifyHeadersRequest) GetGatewayID() string {
+	if u == nil {
 		return ""
 	}
-	return o.GatewayID
+	return u.GatewayID
 }
 
-func (o *UpdateEventGatewayVirtualClusterProducePolicyModifyHeadersRequest) GetVirtualClusterID() string {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterProducePolicyModifyHeadersRequest) GetVirtualClusterID() string {
+	if u == nil {
 		return ""
 	}
-	return o.VirtualClusterID
+	return u.VirtualClusterID
 }
 
-func (o *UpdateEventGatewayVirtualClusterProducePolicyModifyHeadersRequest) GetPolicyID() string {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterProducePolicyModifyHeadersRequest) GetPolicyID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PolicyID
+	return u.PolicyID
 }
 
-func (o *UpdateEventGatewayVirtualClusterProducePolicyModifyHeadersRequest) GetEventGatewayModifyHeadersPolicy() *shared.EventGatewayModifyHeadersPolicy {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterProducePolicyModifyHeadersRequest) GetEventGatewayModifyHeadersPolicy() *shared.EventGatewayModifyHeadersPolicy {
+	if u == nil {
 		return nil
 	}
-	return o.EventGatewayModifyHeadersPolicy
+	return u.EventGatewayModifyHeadersPolicy
 }
 
 type UpdateEventGatewayVirtualClusterProducePolicyModifyHeadersResponse struct {
@@ -62,51 +62,51 @@ type UpdateEventGatewayVirtualClusterProducePolicyModifyHeadersResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *UpdateEventGatewayVirtualClusterProducePolicyModifyHeadersResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterProducePolicyModifyHeadersResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateEventGatewayVirtualClusterProducePolicyModifyHeadersResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterProducePolicyModifyHeadersResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateEventGatewayVirtualClusterProducePolicyModifyHeadersResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterProducePolicyModifyHeadersResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateEventGatewayVirtualClusterProducePolicyModifyHeadersResponse) GetEventGatewayPolicy() *shared.EventGatewayPolicy {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterProducePolicyModifyHeadersResponse) GetEventGatewayPolicy() *shared.EventGatewayPolicy {
+	if u == nil {
 		return nil
 	}
-	return o.EventGatewayPolicy
+	return u.EventGatewayPolicy
 }
 
-func (o *UpdateEventGatewayVirtualClusterProducePolicyModifyHeadersResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterProducePolicyModifyHeadersResponse) GetBadRequestError() *shared.BadRequestError {
+	if u == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return u.BadRequestError
 }
 
-func (o *UpdateEventGatewayVirtualClusterProducePolicyModifyHeadersResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterProducePolicyModifyHeadersResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return u.UnauthorizedError
 }
 
-func (o *UpdateEventGatewayVirtualClusterProducePolicyModifyHeadersResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterProducePolicyModifyHeadersResponse) GetForbiddenError() *shared.ForbiddenError {
+	if u == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return u.ForbiddenError
 }

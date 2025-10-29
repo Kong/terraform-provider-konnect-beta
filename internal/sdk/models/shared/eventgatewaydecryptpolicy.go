@@ -31,54 +31,54 @@ func (e EventGatewayDecryptPolicy) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayDecryptPolicy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *EventGatewayDecryptPolicy) GetType() string {
+func (e *EventGatewayDecryptPolicy) GetType() string {
 	return "decrypt"
 }
 
-func (o *EventGatewayDecryptPolicy) GetName() *string {
-	if o == nil {
+func (e *EventGatewayDecryptPolicy) GetName() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Name
+	return e.Name
 }
 
-func (o *EventGatewayDecryptPolicy) GetDescription() *string {
-	if o == nil {
+func (e *EventGatewayDecryptPolicy) GetDescription() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Description
+	return e.Description
 }
 
-func (o *EventGatewayDecryptPolicy) GetEnabled() *bool {
-	if o == nil {
+func (e *EventGatewayDecryptPolicy) GetEnabled() *bool {
+	if e == nil {
 		return nil
 	}
-	return o.Enabled
+	return e.Enabled
 }
 
-func (o *EventGatewayDecryptPolicy) GetCondition() *string {
-	if o == nil {
+func (e *EventGatewayDecryptPolicy) GetCondition() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Condition
+	return e.Condition
 }
 
-func (o *EventGatewayDecryptPolicy) GetConfig() EventGatewayDecryptPolicyConfig {
-	if o == nil {
+func (e *EventGatewayDecryptPolicy) GetConfig() EventGatewayDecryptPolicyConfig {
+	if e == nil {
 		return EventGatewayDecryptPolicyConfig{}
 	}
-	return o.Config
+	return e.Config
 }
 
-func (o *EventGatewayDecryptPolicy) GetLabels() map[string]*string {
-	if o == nil {
+func (e *EventGatewayDecryptPolicy) GetLabels() map[string]*string {
+	if e == nil {
 		return nil
 	}
-	return o.Labels
+	return e.Labels
 }

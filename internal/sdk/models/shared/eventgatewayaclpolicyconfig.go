@@ -8,9 +8,9 @@ type EventGatewayACLPolicyConfig struct {
 	Rules []EventGatewayACLRule `json:"rules"`
 }
 
-func (o *EventGatewayACLPolicyConfig) GetRules() []EventGatewayACLRule {
-	if o == nil {
+func (e *EventGatewayACLPolicyConfig) GetRules() []EventGatewayACLRule {
+	if e == nil {
 		return []EventGatewayACLRule{}
 	}
-	return o.Rules
+	return e.Rules
 }

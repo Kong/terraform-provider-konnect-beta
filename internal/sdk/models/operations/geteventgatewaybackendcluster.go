@@ -14,18 +14,18 @@ type GetEventGatewayBackendClusterRequest struct {
 	BackendClusterID string `pathParam:"style=simple,explode=false,name=backendClusterId"`
 }
 
-func (o *GetEventGatewayBackendClusterRequest) GetGatewayID() string {
-	if o == nil {
+func (g *GetEventGatewayBackendClusterRequest) GetGatewayID() string {
+	if g == nil {
 		return ""
 	}
-	return o.GatewayID
+	return g.GatewayID
 }
 
-func (o *GetEventGatewayBackendClusterRequest) GetBackendClusterID() string {
-	if o == nil {
+func (g *GetEventGatewayBackendClusterRequest) GetBackendClusterID() string {
+	if g == nil {
 		return ""
 	}
-	return o.BackendClusterID
+	return g.BackendClusterID
 }
 
 type GetEventGatewayBackendClusterResponse struct {
@@ -45,51 +45,51 @@ type GetEventGatewayBackendClusterResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *GetEventGatewayBackendClusterResponse) GetContentType() string {
-	if o == nil {
+func (g *GetEventGatewayBackendClusterResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetEventGatewayBackendClusterResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetEventGatewayBackendClusterResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetEventGatewayBackendClusterResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetEventGatewayBackendClusterResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetEventGatewayBackendClusterResponse) GetBackendCluster() *shared.BackendCluster {
-	if o == nil {
+func (g *GetEventGatewayBackendClusterResponse) GetBackendCluster() *shared.BackendCluster {
+	if g == nil {
 		return nil
 	}
-	return o.BackendCluster
+	return g.BackendCluster
 }
 
-func (o *GetEventGatewayBackendClusterResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (g *GetEventGatewayBackendClusterResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return g.UnauthorizedError
 }
 
-func (o *GetEventGatewayBackendClusterResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (g *GetEventGatewayBackendClusterResponse) GetForbiddenError() *shared.ForbiddenError {
+	if g == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return g.ForbiddenError
 }
 
-func (o *GetEventGatewayBackendClusterResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (g *GetEventGatewayBackendClusterResponse) GetNotFoundError() *shared.NotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return g.NotFoundError
 }

@@ -18,44 +18,44 @@ type UpdateClaim struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
-func (o *UpdateClaim) GetName() *string {
-	if o == nil {
+func (u *UpdateClaim) GetName() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Name
+	return u.Name
 }
 
-func (o *UpdateClaim) GetValue() *string {
-	if o == nil {
+func (u *UpdateClaim) GetValue() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Value
+	return u.Value
 }
 
-func (o *UpdateClaim) GetIncludeInToken() *bool {
-	if o == nil {
+func (u *UpdateClaim) GetIncludeInToken() *bool {
+	if u == nil {
 		return nil
 	}
-	return o.IncludeInToken
+	return u.IncludeInToken
 }
 
-func (o *UpdateClaim) GetIncludeInAllScopes() *bool {
-	if o == nil {
+func (u *UpdateClaim) GetIncludeInAllScopes() *bool {
+	if u == nil {
 		return nil
 	}
-	return o.IncludeInAllScopes
+	return u.IncludeInAllScopes
 }
 
-func (o *UpdateClaim) GetIncludeInScopes() []string {
-	if o == nil {
+func (u *UpdateClaim) GetIncludeInScopes() []string {
+	if u == nil {
 		return nil
 	}
-	return o.IncludeInScopes
+	return u.IncludeInScopes
 }
 
-func (o *UpdateClaim) GetEnabled() *bool {
-	if o == nil {
+func (u *UpdateClaim) GetEnabled() *bool {
+	if u == nil {
 		return nil
 	}
-	return o.Enabled
+	return u.Enabled
 }

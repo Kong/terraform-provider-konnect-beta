@@ -31,54 +31,54 @@ func (e EventGatewayACLsPolicy) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayACLsPolicy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *EventGatewayACLsPolicy) GetType() string {
+func (e *EventGatewayACLsPolicy) GetType() string {
 	return "acls"
 }
 
-func (o *EventGatewayACLsPolicy) GetName() *string {
-	if o == nil {
+func (e *EventGatewayACLsPolicy) GetName() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Name
+	return e.Name
 }
 
-func (o *EventGatewayACLsPolicy) GetDescription() *string {
-	if o == nil {
+func (e *EventGatewayACLsPolicy) GetDescription() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Description
+	return e.Description
 }
 
-func (o *EventGatewayACLsPolicy) GetEnabled() *bool {
-	if o == nil {
+func (e *EventGatewayACLsPolicy) GetEnabled() *bool {
+	if e == nil {
 		return nil
 	}
-	return o.Enabled
+	return e.Enabled
 }
 
-func (o *EventGatewayACLsPolicy) GetCondition() *string {
-	if o == nil {
+func (e *EventGatewayACLsPolicy) GetCondition() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Condition
+	return e.Condition
 }
 
-func (o *EventGatewayACLsPolicy) GetConfig() EventGatewayACLPolicyConfig {
-	if o == nil {
+func (e *EventGatewayACLsPolicy) GetConfig() EventGatewayACLPolicyConfig {
+	if e == nil {
 		return EventGatewayACLPolicyConfig{}
 	}
-	return o.Config
+	return e.Config
 }
 
-func (o *EventGatewayACLsPolicy) GetLabels() map[string]*string {
-	if o == nil {
+func (e *EventGatewayACLsPolicy) GetLabels() map[string]*string {
+	if e == nil {
 		return nil
 	}
-	return o.Labels
+	return e.Labels
 }

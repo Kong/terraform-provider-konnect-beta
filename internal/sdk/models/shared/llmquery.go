@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
 type LLMQueryDatasource string
@@ -138,57 +139,68 @@ type LLMQuery struct {
 	TimeRange *TimeRange `json:"time_range,omitempty"`
 }
 
-func (o *LLMQuery) GetDatasource() LLMQueryDatasource {
-	if o == nil {
+func (l LLMQuery) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *LLMQuery) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"datasource"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (l *LLMQuery) GetDatasource() LLMQueryDatasource {
+	if l == nil {
 		return LLMQueryDatasource("")
 	}
-	return o.Datasource
+	return l.Datasource
 }
 
-func (o *LLMQuery) GetMetrics() []LLMMetrics {
-	if o == nil {
+func (l *LLMQuery) GetMetrics() []LLMMetrics {
+	if l == nil {
 		return nil
 	}
-	return o.Metrics
+	return l.Metrics
 }
 
-func (o *LLMQuery) GetDimensions() []LLMQueryDimensions {
-	if o == nil {
+func (l *LLMQuery) GetDimensions() []LLMQueryDimensions {
+	if l == nil {
 		return nil
 	}
-	return o.Dimensions
+	return l.Dimensions
 }
 
-func (o *LLMQuery) GetFilters() []LLMFilters {
-	if o == nil {
+func (l *LLMQuery) GetFilters() []LLMFilters {
+	if l == nil {
 		return nil
 	}
-	return o.Filters
+	return l.Filters
 }
 
-func (o *LLMQuery) GetGranularity() *Granularity {
-	if o == nil {
+func (l *LLMQuery) GetGranularity() *Granularity {
+	if l == nil {
 		return nil
 	}
-	return o.Granularity
+	return l.Granularity
 }
 
-func (o *LLMQuery) GetTimeRange() *TimeRange {
-	if o == nil {
+func (l *LLMQuery) GetTimeRange() *TimeRange {
+	if l == nil {
 		return nil
 	}
-	return o.TimeRange
+	return l.TimeRange
 }
 
-func (o *LLMQuery) GetTimeRangeRelative() *MetricsRelativeTimeRangeDtoV2 {
-	if v := o.GetTimeRange(); v != nil {
+func (l *LLMQuery) GetTimeRangeRelative() *MetricsRelativeTimeRangeDtoV2 {
+	if v := l.GetTimeRange(); v != nil {
 		return v.MetricsRelativeTimeRangeDtoV2
 	}
 	return nil
 }
 
-func (o *LLMQuery) GetTimeRangeAbsolute() *MetricsAbsoluteTimeRangeDtoV2 {
-	if v := o.GetTimeRange(); v != nil {
+func (l *LLMQuery) GetTimeRangeAbsolute() *MetricsAbsoluteTimeRangeDtoV2 {
+	if v := l.GetTimeRange(); v != nil {
 		return v.MetricsAbsoluteTimeRangeDtoV2
 	}
 	return nil

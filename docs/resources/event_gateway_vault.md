@@ -19,19 +19,25 @@ resource "konnect_event_gateway_vault" "my_eventgatewayvault" {
     config = {
       prefix = "KONG_"
     }
+    created_at  = "2022-11-04T20:10:06.927Z"
     description = "...my_description..."
+    id          = "0e53c9e9-18d0-4412-b441-d5f3f499a4d3"
     labels = {
       key = "value"
     }
-    name = "...my_name..."
+    name       = "...my_name..."
+    updated_at = "2022-11-04T20:10:06.927Z"
   }
   gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   konnect = {
+    created_at  = "2022-11-04T20:10:06.927Z"
     description = "...my_description..."
+    id          = "95dbb34a-94a6-4f3c-aede-d5eedd4cadaf"
     labels = {
       key = "value"
     }
-    name = "...my_name..."
+    name       = "...my_name..."
+    updated_at = "2022-11-04T20:10:06.927Z"
   }
 }
 ```
@@ -51,8 +57,6 @@ resource "konnect_event_gateway_vault" "my_eventgatewayvault" {
 ### Read-Only
 
 - `description` (String) A human-readable description of the vault.
-- `event_gateway_env_vault` (Attributes) An environment vault. (see [below for nested schema](#nestedatt--event_gateway_env_vault))
-- `event_gateway_konnect_vault` (Attributes) A konnect vault. (see [below for nested schema](#nestedatt--event_gateway_konnect_vault))
 - `id` (String) The unique identifier of the vault.
 - `name` (String) The name of the vault.
 
@@ -62,7 +66,10 @@ resource "konnect_event_gateway_vault" "my_eventgatewayvault" {
 Required:
 
 - `config` (Attributes) The configuration of the environment vault. (see [below for nested schema](#nestedatt--env--config))
+- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
+- `id` (String) The unique identifier of the vault.
 - `name` (String) The name of the vault.
+- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 Optional:
 
@@ -85,7 +92,10 @@ Required:
 
 Required:
 
+- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
+- `id` (String) The unique identifier of the vault.
 - `name` (String) The name of the vault.
+- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 Optional:
 
@@ -94,49 +104,24 @@ Optional:
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 
-
-<a id="nestedatt--event_gateway_env_vault"></a>
-### Nested Schema for `event_gateway_env_vault`
-
-Read-Only:
-
-- `config` (Attributes) The configuration of the environment vault. (see [below for nested schema](#nestedatt--event_gateway_env_vault--config))
-- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `description` (String) A human-readable description of the vault.
-- `id` (String) The unique identifier of the vault.
-- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
-
-Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
-- `name` (String) The name of the vault.
-- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
-
-<a id="nestedatt--event_gateway_env_vault--config"></a>
-### Nested Schema for `event_gateway_env_vault.config`
-
-Read-Only:
-
-- `prefix` (String) The optional prefix for environment variables.
-
-
-
-<a id="nestedatt--event_gateway_konnect_vault"></a>
-### Nested Schema for `event_gateway_konnect_vault`
-
-Read-Only:
-
-- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `description` (String) A human-readable description of the vault.
-- `id` (String) The unique identifier of the vault.
-- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
-
-Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
-- `name` (String) The name of the vault.
-- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
-
 ## Import
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_event_gateway_vault.my_konnect_event_gateway_vault
+  id = jsonencode({
+    gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id = "..."
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
-terraform import konnect_event_gateway_vault.my_konnect_event_gateway_vault '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": ""}'
+terraform import konnect_event_gateway_vault.my_konnect_event_gateway_vault '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "..."}'
 ```

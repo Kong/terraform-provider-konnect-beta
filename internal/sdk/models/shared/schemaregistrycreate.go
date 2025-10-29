@@ -17,7 +17,7 @@ const (
 
 // SchemaRegistryCreate - The typed schema of the schema registry to create it.
 type SchemaRegistryCreate struct {
-	SchemaRegistryConfluent *SchemaRegistryConfluent `queryParam:"inline"`
+	SchemaRegistryConfluent *SchemaRegistryConfluent `queryParam:"inline,name=SchemaRegistryCreate"`
 
 	Type SchemaRegistryCreateType
 }
@@ -45,7 +45,7 @@ func (u *SchemaRegistryCreate) UnmarshalJSON(data []byte) error {
 	switch dis.Type {
 	case "confluent":
 		schemaRegistryConfluent := new(SchemaRegistryConfluent)
-		if err := utils.UnmarshalJSON(data, &schemaRegistryConfluent, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &schemaRegistryConfluent, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == confluent) type SchemaRegistryConfluent within SchemaRegistryCreate: %w", string(data), err)
 		}
 

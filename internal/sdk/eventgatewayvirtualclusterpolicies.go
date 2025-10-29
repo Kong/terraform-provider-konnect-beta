@@ -63,7 +63,7 @@ func (s *EventGatewayVirtualClusterPolicies) GetEventGatewayVirtualClusterCluste
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-event-gateway-virtual-cluster-cluster-level-policy-acls",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -337,7 +337,7 @@ func (s *EventGatewayVirtualClusterPolicies) UpdateEventGatewayVirtualClusterClu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-event-gateway-virtual-cluster-cluster-level-policy-acls",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayACLsPolicy", "json", `request:"mediaType=application/json"`)
@@ -617,7 +617,7 @@ func (s *EventGatewayVirtualClusterPolicies) DeleteEventGatewayVirtualClusterClu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-event-gateway-virtual-cluster-cluster-level-policy-acls",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -866,7 +866,7 @@ func (s *EventGatewayVirtualClusterPolicies) CreateEventGatewayVirtualClusterClu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-event-gateway-virtual-cluster-cluster-level-policy-acls",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayACLsPolicy", "json", `request:"mediaType=application/json"`)

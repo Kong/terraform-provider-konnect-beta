@@ -14,29 +14,29 @@ type CreateEventGatewayVaultRequest struct {
 	EventGatewayModifyVault *shared.EventGatewayModifyVault `request:"mediaType=application/json"`
 }
 
-func (o *CreateEventGatewayVaultRequest) GetGatewayID() string {
-	if o == nil {
+func (c *CreateEventGatewayVaultRequest) GetGatewayID() string {
+	if c == nil {
 		return ""
 	}
-	return o.GatewayID
+	return c.GatewayID
 }
 
-func (o *CreateEventGatewayVaultRequest) GetEventGatewayModifyVault() *shared.EventGatewayModifyVault {
-	if o == nil {
+func (c *CreateEventGatewayVaultRequest) GetEventGatewayModifyVault() *shared.EventGatewayModifyVault {
+	if c == nil {
 		return nil
 	}
-	return o.EventGatewayModifyVault
+	return c.EventGatewayModifyVault
 }
 
-func (o *CreateEventGatewayVaultRequest) GetEventGatewayModifyVaultEnv() *shared.EventGatewayEnvVault {
-	if v := o.GetEventGatewayModifyVault(); v != nil {
+func (c *CreateEventGatewayVaultRequest) GetEventGatewayModifyVaultEnv() *shared.EventGatewayEnvVault {
+	if v := c.GetEventGatewayModifyVault(); v != nil {
 		return v.EventGatewayEnvVault
 	}
 	return nil
 }
 
-func (o *CreateEventGatewayVaultRequest) GetEventGatewayModifyVaultKonnect() *shared.EventGatewayKonnectVault {
-	if v := o.GetEventGatewayModifyVault(); v != nil {
+func (c *CreateEventGatewayVaultRequest) GetEventGatewayModifyVaultKonnect() *shared.EventGatewayKonnectVault {
+	if v := c.GetEventGatewayModifyVault(); v != nil {
 		return v.EventGatewayKonnectVault
 	}
 	return nil
@@ -59,51 +59,51 @@ type CreateEventGatewayVaultResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *CreateEventGatewayVaultResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateEventGatewayVaultResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateEventGatewayVaultResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateEventGatewayVaultResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateEventGatewayVaultResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateEventGatewayVaultResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateEventGatewayVaultResponse) GetEventGatewayVault() *shared.EventGatewayVault {
-	if o == nil {
+func (c *CreateEventGatewayVaultResponse) GetEventGatewayVault() *shared.EventGatewayVault {
+	if c == nil {
 		return nil
 	}
-	return o.EventGatewayVault
+	return c.EventGatewayVault
 }
 
-func (o *CreateEventGatewayVaultResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (c *CreateEventGatewayVaultResponse) GetBadRequestError() *shared.BadRequestError {
+	if c == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return c.BadRequestError
 }
 
-func (o *CreateEventGatewayVaultResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (c *CreateEventGatewayVaultResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return c.UnauthorizedError
 }
 
-func (o *CreateEventGatewayVaultResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (c *CreateEventGatewayVaultResponse) GetForbiddenError() *shared.ForbiddenError {
+	if c == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return c.ForbiddenError
 }

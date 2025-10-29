@@ -45,29 +45,29 @@ func (s SingleValueChart) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SingleValueChart) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"type"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *SingleValueChart) GetChartTitle() *string {
-	if o == nil {
+func (s *SingleValueChart) GetChartTitle() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ChartTitle
+	return s.ChartTitle
 }
 
-func (o *SingleValueChart) GetType() SingleValueChartType {
-	if o == nil {
+func (s *SingleValueChart) GetType() SingleValueChartType {
+	if s == nil {
 		return SingleValueChartType("")
 	}
-	return o.Type
+	return s.Type
 }
 
-func (o *SingleValueChart) GetDecimalPoints() *float64 {
-	if o == nil {
+func (s *SingleValueChart) GetDecimalPoints() *float64 {
+	if s == nil {
 		return nil
 	}
-	return o.DecimalPoints
+	return s.DecimalPoints
 }

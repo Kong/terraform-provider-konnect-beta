@@ -16,25 +16,25 @@ type ReplaceAuthServerClientRequest struct {
 	ReplaceClient shared.ReplaceClient `request:"mediaType=application/json"`
 }
 
-func (o *ReplaceAuthServerClientRequest) GetAuthServerID() string {
-	if o == nil {
+func (r *ReplaceAuthServerClientRequest) GetAuthServerID() string {
+	if r == nil {
 		return ""
 	}
-	return o.AuthServerID
+	return r.AuthServerID
 }
 
-func (o *ReplaceAuthServerClientRequest) GetClientID() string {
-	if o == nil {
+func (r *ReplaceAuthServerClientRequest) GetClientID() string {
+	if r == nil {
 		return ""
 	}
-	return o.ClientID
+	return r.ClientID
 }
 
-func (o *ReplaceAuthServerClientRequest) GetReplaceClient() shared.ReplaceClient {
-	if o == nil {
+func (r *ReplaceAuthServerClientRequest) GetReplaceClient() shared.ReplaceClient {
+	if r == nil {
 		return shared.ReplaceClient{}
 	}
-	return o.ReplaceClient
+	return r.ReplaceClient
 }
 
 type ReplaceAuthServerClientResponse struct {
@@ -54,51 +54,51 @@ type ReplaceAuthServerClientResponse struct {
 	ConflictError *shared.ConflictError
 }
 
-func (o *ReplaceAuthServerClientResponse) GetContentType() string {
-	if o == nil {
+func (r *ReplaceAuthServerClientResponse) GetContentType() string {
+	if r == nil {
 		return ""
 	}
-	return o.ContentType
+	return r.ContentType
 }
 
-func (o *ReplaceAuthServerClientResponse) GetStatusCode() int {
-	if o == nil {
+func (r *ReplaceAuthServerClientResponse) GetStatusCode() int {
+	if r == nil {
 		return 0
 	}
-	return o.StatusCode
+	return r.StatusCode
 }
 
-func (o *ReplaceAuthServerClientResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (r *ReplaceAuthServerClientResponse) GetRawResponse() *http.Response {
+	if r == nil {
 		return nil
 	}
-	return o.RawResponse
+	return r.RawResponse
 }
 
-func (o *ReplaceAuthServerClientResponse) GetClient() *shared.Client {
-	if o == nil {
+func (r *ReplaceAuthServerClientResponse) GetClient() *shared.Client {
+	if r == nil {
 		return nil
 	}
-	return o.Client
+	return r.Client
 }
 
-func (o *ReplaceAuthServerClientResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (r *ReplaceAuthServerClientResponse) GetBadRequestError() *shared.BadRequestError {
+	if r == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return r.BadRequestError
 }
 
-func (o *ReplaceAuthServerClientResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (r *ReplaceAuthServerClientResponse) GetNotFoundError() *shared.NotFoundError {
+	if r == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return r.NotFoundError
 }
 
-func (o *ReplaceAuthServerClientResponse) GetConflictError() *shared.ConflictError {
-	if o == nil {
+func (r *ReplaceAuthServerClientResponse) GetConflictError() *shared.ConflictError {
+	if r == nil {
 		return nil
 	}
-	return o.ConflictError
+	return r.ConflictError
 }

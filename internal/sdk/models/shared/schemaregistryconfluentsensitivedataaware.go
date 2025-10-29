@@ -28,40 +28,40 @@ func (s SchemaRegistryConfluentSensitiveDataAware) MarshalJSON() ([]byte, error)
 }
 
 func (s *SchemaRegistryConfluentSensitiveDataAware) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"name", "type", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *SchemaRegistryConfluentSensitiveDataAware) GetName() string {
-	if o == nil {
+func (s *SchemaRegistryConfluentSensitiveDataAware) GetName() string {
+	if s == nil {
 		return ""
 	}
-	return o.Name
+	return s.Name
 }
 
-func (o *SchemaRegistryConfluentSensitiveDataAware) GetDescription() *string {
-	if o == nil {
+func (s *SchemaRegistryConfluentSensitiveDataAware) GetDescription() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Description
+	return s.Description
 }
 
-func (o *SchemaRegistryConfluentSensitiveDataAware) GetType() string {
+func (s *SchemaRegistryConfluentSensitiveDataAware) GetType() string {
 	return "confluent"
 }
 
-func (o *SchemaRegistryConfluentSensitiveDataAware) GetConfig() SchemaRegistryConfluentConfigSensitiveDataAware {
-	if o == nil {
+func (s *SchemaRegistryConfluentSensitiveDataAware) GetConfig() SchemaRegistryConfluentConfigSensitiveDataAware {
+	if s == nil {
 		return SchemaRegistryConfluentConfigSensitiveDataAware{}
 	}
-	return o.Config
+	return s.Config
 }
 
-func (o *SchemaRegistryConfluentSensitiveDataAware) GetLabels() map[string]*string {
-	if o == nil {
+func (s *SchemaRegistryConfluentSensitiveDataAware) GetLabels() map[string]*string {
+	if s == nil {
 		return nil
 	}
-	return o.Labels
+	return s.Labels
 }

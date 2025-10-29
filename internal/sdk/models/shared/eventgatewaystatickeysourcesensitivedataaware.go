@@ -16,18 +16,29 @@ type Keys struct {
 	Key *string `json:"key,omitempty"`
 }
 
-func (o *Keys) GetID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ID
+func (k Keys) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
 }
 
-func (o *Keys) GetKey() *string {
-	if o == nil {
+func (k *Keys) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"id"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (k *Keys) GetID() string {
+	if k == nil {
+		return ""
+	}
+	return k.ID
+}
+
+func (k *Keys) GetKey() *string {
+	if k == nil {
 		return nil
 	}
-	return o.Key
+	return k.Key
 }
 
 // EventGatewayStaticKeySourceSensitiveDataAware - A key source that uses a static symmetric key. The key is provided as a base64-encoded string.
@@ -42,19 +53,19 @@ func (e EventGatewayStaticKeySourceSensitiveDataAware) MarshalJSON() ([]byte, er
 }
 
 func (e *EventGatewayStaticKeySourceSensitiveDataAware) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type", "keys"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *EventGatewayStaticKeySourceSensitiveDataAware) GetType() string {
+func (e *EventGatewayStaticKeySourceSensitiveDataAware) GetType() string {
 	return "static"
 }
 
-func (o *EventGatewayStaticKeySourceSensitiveDataAware) GetKeys() []Keys {
-	if o == nil {
+func (e *EventGatewayStaticKeySourceSensitiveDataAware) GetKeys() []Keys {
+	if e == nil {
 		return []Keys{}
 	}
-	return o.Keys
+	return e.Keys
 }

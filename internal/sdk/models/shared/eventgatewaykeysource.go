@@ -20,8 +20,8 @@ const (
 // It can be an AWS KMS key source that uses a KMS to find a symmetric key,
 // or a static key source that uses a static symmetric key provided as secrets.
 type EventGatewayKeySource struct {
-	EventGatewayAWSKeySource    *EventGatewayAWSKeySource    `queryParam:"inline"`
-	EventGatewayStaticKeySource *EventGatewayStaticKeySource `queryParam:"inline"`
+	EventGatewayAWSKeySource    *EventGatewayAWSKeySource    `queryParam:"inline,name=EventGatewayKeySource"`
+	EventGatewayStaticKeySource *EventGatewayStaticKeySource `queryParam:"inline,name=EventGatewayKeySource"`
 
 	Type EventGatewayKeySourceType
 }
@@ -58,7 +58,7 @@ func (u *EventGatewayKeySource) UnmarshalJSON(data []byte) error {
 	switch dis.Type {
 	case "aws":
 		eventGatewayAWSKeySource := new(EventGatewayAWSKeySource)
-		if err := utils.UnmarshalJSON(data, &eventGatewayAWSKeySource, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &eventGatewayAWSKeySource, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == aws) type EventGatewayAWSKeySource within EventGatewayKeySource: %w", string(data), err)
 		}
 
@@ -67,7 +67,7 @@ func (u *EventGatewayKeySource) UnmarshalJSON(data []byte) error {
 		return nil
 	case "static":
 		eventGatewayStaticKeySource := new(EventGatewayStaticKeySource)
-		if err := utils.UnmarshalJSON(data, &eventGatewayStaticKeySource, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &eventGatewayStaticKeySource, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == static) type EventGatewayStaticKeySource within EventGatewayKeySource: %w", string(data), err)
 		}
 

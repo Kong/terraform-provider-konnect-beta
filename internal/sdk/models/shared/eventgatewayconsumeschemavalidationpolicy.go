@@ -29,32 +29,32 @@ type EventGatewayConsumeSchemaValidationPolicyConfig struct {
 	ValueValidationAction *ConsumeValueValidationAction `json:"value_validation_action,omitempty"`
 }
 
-func (o *EventGatewayConsumeSchemaValidationPolicyConfig) GetType() SchemaValidationType {
-	if o == nil {
+func (e *EventGatewayConsumeSchemaValidationPolicyConfig) GetType() SchemaValidationType {
+	if e == nil {
 		return SchemaValidationType("")
 	}
-	return o.Type
+	return e.Type
 }
 
-func (o *EventGatewayConsumeSchemaValidationPolicyConfig) GetSchemaRegistry() *SchemaRegistryReference {
-	if o == nil {
+func (e *EventGatewayConsumeSchemaValidationPolicyConfig) GetSchemaRegistry() *SchemaRegistryReference {
+	if e == nil {
 		return nil
 	}
-	return o.SchemaRegistry
+	return e.SchemaRegistry
 }
 
-func (o *EventGatewayConsumeSchemaValidationPolicyConfig) GetKeyValidationAction() *ConsumeKeyValidationAction {
-	if o == nil {
+func (e *EventGatewayConsumeSchemaValidationPolicyConfig) GetKeyValidationAction() *ConsumeKeyValidationAction {
+	if e == nil {
 		return nil
 	}
-	return o.KeyValidationAction
+	return e.KeyValidationAction
 }
 
-func (o *EventGatewayConsumeSchemaValidationPolicyConfig) GetValueValidationAction() *ConsumeValueValidationAction {
-	if o == nil {
+func (e *EventGatewayConsumeSchemaValidationPolicyConfig) GetValueValidationAction() *ConsumeValueValidationAction {
+	if e == nil {
 		return nil
 	}
-	return o.ValueValidationAction
+	return e.ValueValidationAction
 }
 
 // EventGatewayConsumeSchemaValidationPolicy - A policy that validates consume messages against a schema registry.
@@ -82,54 +82,54 @@ func (e EventGatewayConsumeSchemaValidationPolicy) MarshalJSON() ([]byte, error)
 }
 
 func (e *EventGatewayConsumeSchemaValidationPolicy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *EventGatewayConsumeSchemaValidationPolicy) GetType() string {
+func (e *EventGatewayConsumeSchemaValidationPolicy) GetType() string {
 	return "schema_validation"
 }
 
-func (o *EventGatewayConsumeSchemaValidationPolicy) GetName() *string {
-	if o == nil {
+func (e *EventGatewayConsumeSchemaValidationPolicy) GetName() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Name
+	return e.Name
 }
 
-func (o *EventGatewayConsumeSchemaValidationPolicy) GetDescription() *string {
-	if o == nil {
+func (e *EventGatewayConsumeSchemaValidationPolicy) GetDescription() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Description
+	return e.Description
 }
 
-func (o *EventGatewayConsumeSchemaValidationPolicy) GetEnabled() *bool {
-	if o == nil {
+func (e *EventGatewayConsumeSchemaValidationPolicy) GetEnabled() *bool {
+	if e == nil {
 		return nil
 	}
-	return o.Enabled
+	return e.Enabled
 }
 
-func (o *EventGatewayConsumeSchemaValidationPolicy) GetCondition() *string {
-	if o == nil {
+func (e *EventGatewayConsumeSchemaValidationPolicy) GetCondition() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Condition
+	return e.Condition
 }
 
-func (o *EventGatewayConsumeSchemaValidationPolicy) GetConfig() *EventGatewayConsumeSchemaValidationPolicyConfig {
-	if o == nil {
+func (e *EventGatewayConsumeSchemaValidationPolicy) GetConfig() *EventGatewayConsumeSchemaValidationPolicyConfig {
+	if e == nil {
 		return nil
 	}
-	return o.Config
+	return e.Config
 }
 
-func (o *EventGatewayConsumeSchemaValidationPolicy) GetLabels() map[string]*string {
-	if o == nil {
+func (e *EventGatewayConsumeSchemaValidationPolicy) GetLabels() map[string]*string {
+	if e == nil {
 		return nil
 	}
-	return o.Labels
+	return e.Labels
 }

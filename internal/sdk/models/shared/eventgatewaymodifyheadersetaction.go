@@ -20,26 +20,26 @@ func (e EventGatewayModifyHeaderSetAction) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayModifyHeaderSetAction) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"op", "key", "value"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *EventGatewayModifyHeaderSetAction) GetOp() string {
+func (e *EventGatewayModifyHeaderSetAction) GetOp() string {
 	return "set"
 }
 
-func (o *EventGatewayModifyHeaderSetAction) GetKey() string {
-	if o == nil {
+func (e *EventGatewayModifyHeaderSetAction) GetKey() string {
+	if e == nil {
 		return ""
 	}
-	return o.Key
+	return e.Key
 }
 
-func (o *EventGatewayModifyHeaderSetAction) GetValue() string {
-	if o == nil {
+func (e *EventGatewayModifyHeaderSetAction) GetValue() string {
+	if e == nil {
 		return ""
 	}
-	return o.Value
+	return e.Value
 }

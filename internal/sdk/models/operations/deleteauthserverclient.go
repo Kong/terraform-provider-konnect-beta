@@ -14,18 +14,18 @@ type DeleteAuthServerClientRequest struct {
 	ClientID string `pathParam:"style=simple,explode=false,name=clientId"`
 }
 
-func (o *DeleteAuthServerClientRequest) GetAuthServerID() string {
-	if o == nil {
+func (d *DeleteAuthServerClientRequest) GetAuthServerID() string {
+	if d == nil {
 		return ""
 	}
-	return o.AuthServerID
+	return d.AuthServerID
 }
 
-func (o *DeleteAuthServerClientRequest) GetClientID() string {
-	if o == nil {
+func (d *DeleteAuthServerClientRequest) GetClientID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ClientID
+	return d.ClientID
 }
 
 type DeleteAuthServerClientResponse struct {
@@ -39,30 +39,30 @@ type DeleteAuthServerClientResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *DeleteAuthServerClientResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteAuthServerClientResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteAuthServerClientResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteAuthServerClientResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteAuthServerClientResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteAuthServerClientResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteAuthServerClientResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (d *DeleteAuthServerClientResponse) GetNotFoundError() *shared.NotFoundError {
+	if d == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return d.NotFoundError
 }

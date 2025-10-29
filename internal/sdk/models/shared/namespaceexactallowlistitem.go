@@ -2,13 +2,28 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
+)
+
 type NamespaceExactAllowListItem struct {
 	Backend string `json:"backend"`
 }
 
-func (o *NamespaceExactAllowListItem) GetBackend() string {
-	if o == nil {
+func (n NamespaceExactAllowListItem) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(n, "", false)
+}
+
+func (n *NamespaceExactAllowListItem) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &n, "", false, []string{"backend"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (n *NamespaceExactAllowListItem) GetBackend() string {
+	if n == nil {
 		return ""
 	}
-	return o.Backend
+	return n.Backend
 }

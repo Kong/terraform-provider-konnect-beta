@@ -26,38 +26,38 @@ func (a APIImplementationResponseServiceReference) MarshalJSON() ([]byte, error)
 }
 
 func (a *APIImplementationResponseServiceReference) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, true); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *APIImplementationResponseServiceReference) GetID() string {
-	if o == nil {
+func (a *APIImplementationResponseServiceReference) GetID() string {
+	if a == nil {
 		return ""
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *APIImplementationResponseServiceReference) GetCreatedAt() time.Time {
-	if o == nil {
+func (a *APIImplementationResponseServiceReference) GetCreatedAt() time.Time {
+	if a == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *APIImplementationResponseServiceReference) GetUpdatedAt() time.Time {
-	if o == nil {
+func (a *APIImplementationResponseServiceReference) GetUpdatedAt() time.Time {
+	if a == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }
 
-func (o *APIImplementationResponseServiceReference) GetService() *APIImplementationService {
-	if o == nil {
+func (a *APIImplementationResponseServiceReference) GetService() *APIImplementationService {
+	if a == nil {
 		return nil
 	}
-	return o.Service
+	return a.Service
 }
 
 type APIImplementationResponseType string
@@ -68,7 +68,7 @@ const (
 
 // APIImplementationResponse - An entity that implements an API
 type APIImplementationResponse struct {
-	APIImplementationResponseServiceReference *APIImplementationResponseServiceReference `queryParam:"inline"`
+	APIImplementationResponseServiceReference *APIImplementationResponseServiceReference `queryParam:"inline,name=ApiImplementationResponse"`
 
 	Type APIImplementationResponseType
 }
@@ -84,10 +84,32 @@ func CreateAPIImplementationResponseAPIImplementationResponseServiceReference(ap
 
 func (u *APIImplementationResponse) UnmarshalJSON(data []byte) error {
 
+	var candidates []utils.UnionCandidate
+
+	// Collect all valid candidates
 	var apiImplementationResponseServiceReference APIImplementationResponseServiceReference = APIImplementationResponseServiceReference{}
-	if err := utils.UnmarshalJSON(data, &apiImplementationResponseServiceReference, "", true, true); err == nil {
-		u.APIImplementationResponseServiceReference = &apiImplementationResponseServiceReference
-		u.Type = APIImplementationResponseTypeAPIImplementationResponseServiceReference
+	if err := utils.UnmarshalJSON(data, &apiImplementationResponseServiceReference, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  APIImplementationResponseTypeAPIImplementationResponseServiceReference,
+			Value: &apiImplementationResponseServiceReference,
+		})
+	}
+
+	if len(candidates) == 0 {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for APIImplementationResponse", string(data))
+	}
+
+	// Pick the best candidate using multi-stage filtering
+	best := utils.PickBestCandidate(candidates)
+	if best == nil {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for APIImplementationResponse", string(data))
+	}
+
+	// Set the union type and value based on the best candidate
+	u.Type = best.Type.(APIImplementationResponseType)
+	switch best.Type {
+	case APIImplementationResponseTypeAPIImplementationResponseServiceReference:
+		u.APIImplementationResponseServiceReference = best.Value.(*APIImplementationResponseServiceReference)
 		return nil
 	}
 

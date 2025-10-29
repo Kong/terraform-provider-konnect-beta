@@ -15,23 +15,23 @@ type EventGatewayDecryptPolicyConfig struct {
 	Decrypt []DecryptionRecordSelector `json:"decrypt"`
 }
 
-func (o *EventGatewayDecryptPolicyConfig) GetFailureMode() EncryptionFailureMode {
-	if o == nil {
+func (e *EventGatewayDecryptPolicyConfig) GetFailureMode() EncryptionFailureMode {
+	if e == nil {
 		return EncryptionFailureMode("")
 	}
-	return o.FailureMode
+	return e.FailureMode
 }
 
-func (o *EventGatewayDecryptPolicyConfig) GetKeySources() []EventGatewayKeySource {
-	if o == nil {
+func (e *EventGatewayDecryptPolicyConfig) GetKeySources() []EventGatewayKeySource {
+	if e == nil {
 		return []EventGatewayKeySource{}
 	}
-	return o.KeySources
+	return e.KeySources
 }
 
-func (o *EventGatewayDecryptPolicyConfig) GetDecrypt() []DecryptionRecordSelector {
-	if o == nil {
+func (e *EventGatewayDecryptPolicyConfig) GetDecrypt() []DecryptionRecordSelector {
+	if e == nil {
 		return []DecryptionRecordSelector{}
 	}
-	return o.Decrypt
+	return e.Decrypt
 }

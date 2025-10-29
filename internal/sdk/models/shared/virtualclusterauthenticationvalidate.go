@@ -19,22 +19,22 @@ func (v VirtualClusterAuthenticationValidate) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VirtualClusterAuthenticationValidate) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *VirtualClusterAuthenticationValidate) GetAudiences() []VirtualClusterAuthenticationAudience {
-	if o == nil {
+func (v *VirtualClusterAuthenticationValidate) GetAudiences() []VirtualClusterAuthenticationAudience {
+	if v == nil {
 		return nil
 	}
-	return o.Audiences
+	return v.Audiences
 }
 
-func (o *VirtualClusterAuthenticationValidate) GetIssuer() *string {
-	if o == nil {
+func (v *VirtualClusterAuthenticationValidate) GetIssuer() *string {
+	if v == nil {
 		return nil
 	}
-	return o.Issuer
+	return v.Issuer
 }

@@ -64,6 +64,21 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_event_gateway_produce_policy_skip_record.my_konnect_event_gateway_produce_policy_skip_record
+  id = jsonencode({
+    gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    virtual_cluster_id = "..."
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
-terraform import konnect_event_gateway_produce_policy_skip_record.my_konnect_event_gateway_produce_policy_skip_record '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "virtual_cluster_id": ""}'
+terraform import konnect_event_gateway_produce_policy_skip_record.my_konnect_event_gateway_produce_policy_skip_record '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "virtual_cluster_id": "..."}'
 ```

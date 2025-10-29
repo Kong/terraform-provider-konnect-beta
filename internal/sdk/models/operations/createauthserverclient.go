@@ -14,18 +14,18 @@ type CreateAuthServerClientRequest struct {
 	CreateClient shared.CreateClient `request:"mediaType=application/json"`
 }
 
-func (o *CreateAuthServerClientRequest) GetAuthServerID() string {
-	if o == nil {
+func (c *CreateAuthServerClientRequest) GetAuthServerID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AuthServerID
+	return c.AuthServerID
 }
 
-func (o *CreateAuthServerClientRequest) GetCreateClient() shared.CreateClient {
-	if o == nil {
+func (c *CreateAuthServerClientRequest) GetCreateClient() shared.CreateClient {
+	if c == nil {
 		return shared.CreateClient{}
 	}
-	return o.CreateClient
+	return c.CreateClient
 }
 
 type CreateAuthServerClientResponse struct {
@@ -45,51 +45,51 @@ type CreateAuthServerClientResponse struct {
 	ConflictError *shared.ConflictError
 }
 
-func (o *CreateAuthServerClientResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateAuthServerClientResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateAuthServerClientResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateAuthServerClientResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateAuthServerClientResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateAuthServerClientResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateAuthServerClientResponse) GetCreatedClient() *shared.CreatedClient {
-	if o == nil {
+func (c *CreateAuthServerClientResponse) GetCreatedClient() *shared.CreatedClient {
+	if c == nil {
 		return nil
 	}
-	return o.CreatedClient
+	return c.CreatedClient
 }
 
-func (o *CreateAuthServerClientResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (c *CreateAuthServerClientResponse) GetBadRequestError() *shared.BadRequestError {
+	if c == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return c.BadRequestError
 }
 
-func (o *CreateAuthServerClientResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (c *CreateAuthServerClientResponse) GetNotFoundError() *shared.NotFoundError {
+	if c == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return c.NotFoundError
 }
 
-func (o *CreateAuthServerClientResponse) GetConflictError() *shared.ConflictError {
-	if o == nil {
+func (c *CreateAuthServerClientResponse) GetConflictError() *shared.ConflictError {
+	if c == nil {
 		return nil
 	}
-	return o.ConflictError
+	return c.ConflictError
 }

@@ -64,7 +64,7 @@ func (s *Dashboards) DashboardsCreate(ctx context.Context, request shared.Dashbo
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "dashboards-create",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)
@@ -325,7 +325,7 @@ func (s *Dashboards) DashboardsGet(ctx context.Context, request operations.Dashb
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "dashboards-get",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -599,7 +599,7 @@ func (s *Dashboards) DashboardsUpdate(ctx context.Context, request operations.Da
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "dashboards-update",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "DashboardUpdateRequest", "json", `request:"mediaType=application/json"`)
@@ -880,7 +880,7 @@ func (s *Dashboards) DashboardsDelete(ctx context.Context, request operations.Da
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "dashboards-delete",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

@@ -21,23 +21,23 @@ type DashboardUpdateRequest struct {
 	Labels map[string]*string `json:"labels,omitempty"`
 }
 
-func (o *DashboardUpdateRequest) GetName() string {
-	if o == nil {
+func (d *DashboardUpdateRequest) GetName() string {
+	if d == nil {
 		return ""
 	}
-	return o.Name
+	return d.Name
 }
 
-func (o *DashboardUpdateRequest) GetDefinition() Dashboard {
-	if o == nil {
+func (d *DashboardUpdateRequest) GetDefinition() Dashboard {
+	if d == nil {
 		return Dashboard{}
 	}
-	return o.Definition
+	return d.Definition
 }
 
-func (o *DashboardUpdateRequest) GetLabels() map[string]*string {
-	if o == nil {
+func (d *DashboardUpdateRequest) GetLabels() map[string]*string {
+	if d == nil {
 		return nil
 	}
-	return o.Labels
+	return d.Labels
 }

@@ -39,64 +39,64 @@ func (s SchemaRegistry) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SchemaRegistry) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"name", "type", "id", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *SchemaRegistry) GetName() string {
-	if o == nil {
+func (s *SchemaRegistry) GetName() string {
+	if s == nil {
 		return ""
 	}
-	return o.Name
+	return s.Name
 }
 
-func (o *SchemaRegistry) GetDescription() *string {
-	if o == nil {
+func (s *SchemaRegistry) GetDescription() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Description
+	return s.Description
 }
 
-func (o *SchemaRegistry) GetType() string {
-	if o == nil {
+func (s *SchemaRegistry) GetType() string {
+	if s == nil {
 		return ""
 	}
-	return o.Type
+	return s.Type
 }
 
-func (o *SchemaRegistry) GetConfig() *SchemaRegistryConfig {
-	if o == nil {
+func (s *SchemaRegistry) GetConfig() *SchemaRegistryConfig {
+	if s == nil {
 		return nil
 	}
-	return o.Config
+	return s.Config
 }
 
-func (o *SchemaRegistry) GetLabels() map[string]*string {
-	if o == nil {
+func (s *SchemaRegistry) GetLabels() map[string]*string {
+	if s == nil {
 		return nil
 	}
-	return o.Labels
+	return s.Labels
 }
 
-func (o *SchemaRegistry) GetID() string {
-	if o == nil {
+func (s *SchemaRegistry) GetID() string {
+	if s == nil {
 		return ""
 	}
-	return o.ID
+	return s.ID
 }
 
-func (o *SchemaRegistry) GetCreatedAt() time.Time {
-	if o == nil {
+func (s *SchemaRegistry) GetCreatedAt() time.Time {
+	if s == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return s.CreatedAt
 }
 
-func (o *SchemaRegistry) GetUpdatedAt() time.Time {
-	if o == nil {
+func (s *SchemaRegistry) GetUpdatedAt() time.Time {
+	if s == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return s.UpdatedAt
 }

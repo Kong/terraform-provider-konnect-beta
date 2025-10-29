@@ -21,37 +21,37 @@ type UpdateAuthServer struct {
 	Labels map[string]*string `json:"labels,omitempty"`
 }
 
-func (o *UpdateAuthServer) GetName() *string {
-	if o == nil {
+func (u *UpdateAuthServer) GetName() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Name
+	return u.Name
 }
 
-func (o *UpdateAuthServer) GetDescription() *string {
-	if o == nil {
+func (u *UpdateAuthServer) GetDescription() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Description
+	return u.Description
 }
 
-func (o *UpdateAuthServer) GetAudience() *string {
-	if o == nil {
+func (u *UpdateAuthServer) GetAudience() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Audience
+	return u.Audience
 }
 
-func (o *UpdateAuthServer) GetSigningAlgorithm() *UpdateAlgorithm {
-	if o == nil {
+func (u *UpdateAuthServer) GetSigningAlgorithm() *UpdateAlgorithm {
+	if u == nil {
 		return nil
 	}
-	return o.SigningAlgorithm
+	return u.SigningAlgorithm
 }
 
-func (o *UpdateAuthServer) GetLabels() map[string]*string {
-	if o == nil {
+func (u *UpdateAuthServer) GetLabels() map[string]*string {
+	if u == nil {
 		return nil
 	}
-	return o.Labels
+	return u.Labels
 }

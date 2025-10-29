@@ -20,8 +20,8 @@ const (
 // It can be an AWS KMS key source that uses a KMS to find a symmetric key,
 // or a static key source that uses a static symmetric key provided as secrets.
 type EventGatewayKeySourceSensitiveDataAware struct {
-	EventGatewayAWSKeySource                      *EventGatewayAWSKeySource                      `queryParam:"inline"`
-	EventGatewayStaticKeySourceSensitiveDataAware *EventGatewayStaticKeySourceSensitiveDataAware `queryParam:"inline"`
+	EventGatewayAWSKeySource                      *EventGatewayAWSKeySource                      `queryParam:"inline,name=EventGatewayKeySourceSensitiveDataAware"`
+	EventGatewayStaticKeySourceSensitiveDataAware *EventGatewayStaticKeySourceSensitiveDataAware `queryParam:"inline,name=EventGatewayKeySourceSensitiveDataAware"`
 
 	Type EventGatewayKeySourceSensitiveDataAwareType
 }
@@ -58,7 +58,7 @@ func (u *EventGatewayKeySourceSensitiveDataAware) UnmarshalJSON(data []byte) err
 	switch dis.Type {
 	case "aws":
 		eventGatewayAWSKeySource := new(EventGatewayAWSKeySource)
-		if err := utils.UnmarshalJSON(data, &eventGatewayAWSKeySource, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &eventGatewayAWSKeySource, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == aws) type EventGatewayAWSKeySource within EventGatewayKeySourceSensitiveDataAware: %w", string(data), err)
 		}
 
@@ -67,7 +67,7 @@ func (u *EventGatewayKeySourceSensitiveDataAware) UnmarshalJSON(data []byte) err
 		return nil
 	case "static":
 		eventGatewayStaticKeySourceSensitiveDataAware := new(EventGatewayStaticKeySourceSensitiveDataAware)
-		if err := utils.UnmarshalJSON(data, &eventGatewayStaticKeySourceSensitiveDataAware, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &eventGatewayStaticKeySourceSensitiveDataAware, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == static) type EventGatewayStaticKeySourceSensitiveDataAware within EventGatewayKeySourceSensitiveDataAware: %w", string(data), err)
 		}
 

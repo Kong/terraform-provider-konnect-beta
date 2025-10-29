@@ -13,18 +13,18 @@ type DashboardsUpdateRequest struct {
 	DashboardUpdateRequest shared.DashboardUpdateRequest `request:"mediaType=application/json"`
 }
 
-func (o *DashboardsUpdateRequest) GetDashboardID() string {
-	if o == nil {
+func (d *DashboardsUpdateRequest) GetDashboardID() string {
+	if d == nil {
 		return ""
 	}
-	return o.DashboardID
+	return d.DashboardID
 }
 
-func (o *DashboardsUpdateRequest) GetDashboardUpdateRequest() shared.DashboardUpdateRequest {
-	if o == nil {
+func (d *DashboardsUpdateRequest) GetDashboardUpdateRequest() shared.DashboardUpdateRequest {
+	if d == nil {
 		return shared.DashboardUpdateRequest{}
 	}
-	return o.DashboardUpdateRequest
+	return d.DashboardUpdateRequest
 }
 
 type DashboardsUpdateResponse struct {
@@ -44,51 +44,51 @@ type DashboardsUpdateResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *DashboardsUpdateResponse) GetContentType() string {
-	if o == nil {
+func (d *DashboardsUpdateResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DashboardsUpdateResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DashboardsUpdateResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DashboardsUpdateResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DashboardsUpdateResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DashboardsUpdateResponse) GetDashboardResponse() *shared.DashboardResponse {
-	if o == nil {
+func (d *DashboardsUpdateResponse) GetDashboardResponse() *shared.DashboardResponse {
+	if d == nil {
 		return nil
 	}
-	return o.DashboardResponse
+	return d.DashboardResponse
 }
 
-func (o *DashboardsUpdateResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (d *DashboardsUpdateResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return d.UnauthorizedError
 }
 
-func (o *DashboardsUpdateResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (d *DashboardsUpdateResponse) GetForbiddenError() *shared.ForbiddenError {
+	if d == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return d.ForbiddenError
 }
 
-func (o *DashboardsUpdateResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (d *DashboardsUpdateResponse) GetNotFoundError() *shared.NotFoundError {
+	if d == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return d.NotFoundError
 }

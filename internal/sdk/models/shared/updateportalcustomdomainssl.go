@@ -21,29 +21,29 @@ func (u UpdatePortalCustomDomainSSL) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdatePortalCustomDomainSSL) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *UpdatePortalCustomDomainSSL) GetCustomCertificate() *string {
-	if o == nil {
+func (u *UpdatePortalCustomDomainSSL) GetCustomCertificate() *string {
+	if u == nil {
 		return nil
 	}
-	return o.CustomCertificate
+	return u.CustomCertificate
 }
 
-func (o *UpdatePortalCustomDomainSSL) GetCustomPrivateKey() *string {
-	if o == nil {
+func (u *UpdatePortalCustomDomainSSL) GetCustomPrivateKey() *string {
+	if u == nil {
 		return nil
 	}
-	return o.CustomPrivateKey
+	return u.CustomPrivateKey
 }
 
-func (o *UpdatePortalCustomDomainSSL) GetSkipCaCheck() *bool {
-	if o == nil {
+func (u *UpdatePortalCustomDomainSSL) GetSkipCaCheck() *bool {
+	if u == nil {
 		return nil
 	}
-	return o.SkipCaCheck
+	return u.SkipCaCheck
 }

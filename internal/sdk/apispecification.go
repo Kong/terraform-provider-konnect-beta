@@ -66,7 +66,7 @@ func (s *APISpecification) CreateAPISpec(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-api-spec",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CreateAPISpecRequest", "json", `request:"mediaType=application/json"`)
@@ -413,7 +413,7 @@ func (s *APISpecification) FetchAPISpec(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "fetch-api-spec",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -690,7 +690,7 @@ func (s *APISpecification) UpdateAPISpec(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-api-spec",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "APISpec", "json", `request:"mediaType=application/json"`)
@@ -1036,7 +1036,7 @@ func (s *APISpecification) DeleteAPISpec(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-api-spec",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

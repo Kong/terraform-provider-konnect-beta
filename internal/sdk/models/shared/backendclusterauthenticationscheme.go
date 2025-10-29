@@ -18,9 +18,9 @@ const (
 )
 
 type BackendClusterAuthenticationScheme struct {
-	BackendClusterAuthenticationAnonymous *BackendClusterAuthenticationAnonymous `queryParam:"inline"`
-	BackendClusterAuthenticationSaslPlain *BackendClusterAuthenticationSaslPlain `queryParam:"inline"`
-	BackendClusterAuthenticationSaslScram *BackendClusterAuthenticationSaslScram `queryParam:"inline"`
+	BackendClusterAuthenticationAnonymous *BackendClusterAuthenticationAnonymous `queryParam:"inline,name=BackendClusterAuthenticationScheme"`
+	BackendClusterAuthenticationSaslPlain *BackendClusterAuthenticationSaslPlain `queryParam:"inline,name=BackendClusterAuthenticationScheme"`
+	BackendClusterAuthenticationSaslScram *BackendClusterAuthenticationSaslScram `queryParam:"inline,name=BackendClusterAuthenticationScheme"`
 
 	Type BackendClusterAuthenticationSchemeType
 }
@@ -66,7 +66,7 @@ func (u *BackendClusterAuthenticationScheme) UnmarshalJSON(data []byte) error {
 	switch dis.Type {
 	case "anonymous":
 		backendClusterAuthenticationAnonymous := new(BackendClusterAuthenticationAnonymous)
-		if err := utils.UnmarshalJSON(data, &backendClusterAuthenticationAnonymous, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &backendClusterAuthenticationAnonymous, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == anonymous) type BackendClusterAuthenticationAnonymous within BackendClusterAuthenticationScheme: %w", string(data), err)
 		}
 
@@ -75,7 +75,7 @@ func (u *BackendClusterAuthenticationScheme) UnmarshalJSON(data []byte) error {
 		return nil
 	case "sasl_plain":
 		backendClusterAuthenticationSaslPlain := new(BackendClusterAuthenticationSaslPlain)
-		if err := utils.UnmarshalJSON(data, &backendClusterAuthenticationSaslPlain, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &backendClusterAuthenticationSaslPlain, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == sasl_plain) type BackendClusterAuthenticationSaslPlain within BackendClusterAuthenticationScheme: %w", string(data), err)
 		}
 
@@ -84,7 +84,7 @@ func (u *BackendClusterAuthenticationScheme) UnmarshalJSON(data []byte) error {
 		return nil
 	case "sasl_scram":
 		backendClusterAuthenticationSaslScram := new(BackendClusterAuthenticationSaslScram)
-		if err := utils.UnmarshalJSON(data, &backendClusterAuthenticationSaslScram, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &backendClusterAuthenticationSaslScram, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == sasl_scram) type BackendClusterAuthenticationSaslScram within BackendClusterAuthenticationScheme: %w", string(data), err)
 		}
 

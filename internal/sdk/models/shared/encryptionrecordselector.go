@@ -50,16 +50,16 @@ type EncryptionRecordSelector struct {
 	KeyID string `json:"key_id"`
 }
 
-func (o *EncryptionRecordSelector) GetPartOfRecord() EncryptionRecordSelectorPartOfRecord {
-	if o == nil {
+func (e *EncryptionRecordSelector) GetPartOfRecord() EncryptionRecordSelectorPartOfRecord {
+	if e == nil {
 		return EncryptionRecordSelectorPartOfRecord("")
 	}
-	return o.PartOfRecord
+	return e.PartOfRecord
 }
 
-func (o *EncryptionRecordSelector) GetKeyID() string {
-	if o == nil {
+func (e *EncryptionRecordSelector) GetKeyID() string {
+	if e == nil {
 		return ""
 	}
-	return o.KeyID
+	return e.KeyID
 }
