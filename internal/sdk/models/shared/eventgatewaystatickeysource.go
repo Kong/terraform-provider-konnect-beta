@@ -13,18 +13,29 @@ type Keys struct {
 	Key string `json:"key"`
 }
 
-func (o *Keys) GetID() string {
-	if o == nil {
-		return ""
-	}
-	return o.ID
+func (k Keys) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
 }
 
-func (o *Keys) GetKey() string {
-	if o == nil {
+func (k *Keys) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"id", "key"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (k *Keys) GetID() string {
+	if k == nil {
 		return ""
 	}
-	return o.Key
+	return k.ID
+}
+
+func (k *Keys) GetKey() string {
+	if k == nil {
+		return ""
+	}
+	return k.Key
 }
 
 // EventGatewayStaticKeySource - A key source that uses a static symmetric key. The key is provided as a base64-encoded string.
@@ -39,19 +50,19 @@ func (e EventGatewayStaticKeySource) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayStaticKeySource) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type", "keys"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *EventGatewayStaticKeySource) GetType() string {
+func (e *EventGatewayStaticKeySource) GetType() string {
 	return "static"
 }
 
-func (o *EventGatewayStaticKeySource) GetKeys() []Keys {
-	if o == nil {
+func (e *EventGatewayStaticKeySource) GetKeys() []Keys {
+	if e == nil {
 		return []Keys{}
 	}
-	return o.Keys
+	return e.Keys
 }

@@ -17,32 +17,32 @@ type CreateEventGatewayVirtualClusterProducePolicySkipRecordRequest struct {
 	EventGatewaySkipRecordPolicy *shared.EventGatewaySkipRecordPolicy `request:"mediaType=application/json"`
 }
 
-func (o *CreateEventGatewayVirtualClusterProducePolicySkipRecordRequest) GetGatewayID() string {
-	if o == nil {
+func (c *CreateEventGatewayVirtualClusterProducePolicySkipRecordRequest) GetGatewayID() string {
+	if c == nil {
 		return ""
 	}
-	return o.GatewayID
+	return c.GatewayID
 }
 
-func (o *CreateEventGatewayVirtualClusterProducePolicySkipRecordRequest) GetVirtualClusterID() string {
-	if o == nil {
+func (c *CreateEventGatewayVirtualClusterProducePolicySkipRecordRequest) GetVirtualClusterID() string {
+	if c == nil {
 		return ""
 	}
-	return o.VirtualClusterID
+	return c.VirtualClusterID
 }
 
-func (o *CreateEventGatewayVirtualClusterProducePolicySkipRecordRequest) GetParentPolicyID() *string {
-	if o == nil {
+func (c *CreateEventGatewayVirtualClusterProducePolicySkipRecordRequest) GetParentPolicyID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ParentPolicyID
+	return c.ParentPolicyID
 }
 
-func (o *CreateEventGatewayVirtualClusterProducePolicySkipRecordRequest) GetEventGatewaySkipRecordPolicy() *shared.EventGatewaySkipRecordPolicy {
-	if o == nil {
+func (c *CreateEventGatewayVirtualClusterProducePolicySkipRecordRequest) GetEventGatewaySkipRecordPolicy() *shared.EventGatewaySkipRecordPolicy {
+	if c == nil {
 		return nil
 	}
-	return o.EventGatewaySkipRecordPolicy
+	return c.EventGatewaySkipRecordPolicy
 }
 
 type CreateEventGatewayVirtualClusterProducePolicySkipRecordResponse struct {
@@ -62,51 +62,51 @@ type CreateEventGatewayVirtualClusterProducePolicySkipRecordResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *CreateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetEventGatewayPolicy() *shared.EventGatewayPolicy {
-	if o == nil {
+func (c *CreateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetEventGatewayPolicy() *shared.EventGatewayPolicy {
+	if c == nil {
 		return nil
 	}
-	return o.EventGatewayPolicy
+	return c.EventGatewayPolicy
 }
 
-func (o *CreateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (c *CreateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetBadRequestError() *shared.BadRequestError {
+	if c == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return c.BadRequestError
 }
 
-func (o *CreateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (c *CreateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return c.UnauthorizedError
 }
 
-func (o *CreateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (c *CreateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetForbiddenError() *shared.ForbiddenError {
+	if c == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return c.ForbiddenError
 }

@@ -17,7 +17,7 @@ func (r *EventGatewayVaultResourceModel) RefreshFromSharedEventGatewayVault(ctx 
 
 	if resp != nil {
 		if resp.EventGatewayVaultEventGatewayEnvVault != nil {
-			r.EventGatewayEnvVault = &tfTypes.EventGatewayVaultEventGatewayEnvVault{}
+			r.EventGatewayEnvVault = &tfTypes.EventGatewayEnvVault{}
 			r.EventGatewayEnvVault.Config.Prefix = types.StringValue(resp.EventGatewayVaultEventGatewayEnvVault.Config.Prefix)
 			r.EventGatewayEnvVault.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.EventGatewayVaultEventGatewayEnvVault.CreatedAt))
 			r.EventGatewayEnvVault.Description = types.StringPointerValue(resp.EventGatewayVaultEventGatewayEnvVault.Description)
@@ -35,7 +35,7 @@ func (r *EventGatewayVaultResourceModel) RefreshFromSharedEventGatewayVault(ctx 
 			r.EventGatewayEnvVault.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.EventGatewayVaultEventGatewayEnvVault.UpdatedAt))
 		}
 		if resp.EventGatewayVaultEventGatewayKonnectVault != nil {
-			r.EventGatewayKonnectVault = &tfTypes.EventGatewayVaultEventGatewayKonnectVault{}
+			r.EventGatewayKonnectVault = &tfTypes.EventGatewayKonnectVault{}
 			r.EventGatewayKonnectVault.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.EventGatewayVaultEventGatewayKonnectVault.CreatedAt))
 			r.EventGatewayKonnectVault.Description = types.StringPointerValue(resp.EventGatewayVaultEventGatewayKonnectVault.Description)
 			r.Description = r.EventGatewayKonnectVault.Description
@@ -140,77 +140,6 @@ func (r *EventGatewayVaultResourceModel) ToSharedEventGatewayModifyVault(ctx con
 	var diags diag.Diagnostics
 
 	var out shared.EventGatewayModifyVault
-	var eventGatewayEnvVault *shared.EventGatewayEnvVault
-	if r.Env != nil {
-		var name string
-		name = r.Env.Name.ValueString()
-
-		description := new(string)
-		if !r.Env.Description.IsUnknown() && !r.Env.Description.IsNull() {
-			*description = r.Env.Description.ValueString()
-		} else {
-			description = nil
-		}
-		labels := make(map[string]*string)
-		for labelsKey, labelsValue := range r.Env.Labels {
-			labelsInst := new(string)
-			if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-				*labelsInst = labelsValue.ValueString()
-			} else {
-				labelsInst = nil
-			}
-			labels[labelsKey] = labelsInst
-		}
-		var prefix string
-		prefix = r.Env.Config.Prefix.ValueString()
-
-		config := shared.Config{
-			Prefix: prefix,
-		}
-		eventGatewayEnvVault = &shared.EventGatewayEnvVault{
-			Name:        name,
-			Description: description,
-			Labels:      labels,
-			Config:      config,
-		}
-	}
-	if eventGatewayEnvVault != nil {
-		out = shared.EventGatewayModifyVault{
-			EventGatewayEnvVault: eventGatewayEnvVault,
-		}
-	}
-	var eventGatewayKonnectVault *shared.EventGatewayKonnectVault
-	if r.Konnect != nil {
-		var name1 string
-		name1 = r.Konnect.Name.ValueString()
-
-		description1 := new(string)
-		if !r.Konnect.Description.IsUnknown() && !r.Konnect.Description.IsNull() {
-			*description1 = r.Konnect.Description.ValueString()
-		} else {
-			description1 = nil
-		}
-		labels1 := make(map[string]*string)
-		for labelsKey1, labelsValue1 := range r.Konnect.Labels {
-			labelsInst1 := new(string)
-			if !labelsValue1.IsUnknown() && !labelsValue1.IsNull() {
-				*labelsInst1 = labelsValue1.ValueString()
-			} else {
-				labelsInst1 = nil
-			}
-			labels1[labelsKey1] = labelsInst1
-		}
-		eventGatewayKonnectVault = &shared.EventGatewayKonnectVault{
-			Name:        name1,
-			Description: description1,
-			Labels:      labels1,
-		}
-	}
-	if eventGatewayKonnectVault != nil {
-		out = shared.EventGatewayModifyVault{
-			EventGatewayKonnectVault: eventGatewayKonnectVault,
-		}
-	}
 
 	return &out, diags
 }

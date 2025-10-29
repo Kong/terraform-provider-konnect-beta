@@ -17,32 +17,32 @@ type UpdateEventGatewayVirtualClusterConsumePolicyDecryptRequest struct {
 	EventGatewayDecryptPolicy *shared.EventGatewayDecryptPolicy `request:"mediaType=application/json"`
 }
 
-func (o *UpdateEventGatewayVirtualClusterConsumePolicyDecryptRequest) GetGatewayID() string {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterConsumePolicyDecryptRequest) GetGatewayID() string {
+	if u == nil {
 		return ""
 	}
-	return o.GatewayID
+	return u.GatewayID
 }
 
-func (o *UpdateEventGatewayVirtualClusterConsumePolicyDecryptRequest) GetVirtualClusterID() string {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterConsumePolicyDecryptRequest) GetVirtualClusterID() string {
+	if u == nil {
 		return ""
 	}
-	return o.VirtualClusterID
+	return u.VirtualClusterID
 }
 
-func (o *UpdateEventGatewayVirtualClusterConsumePolicyDecryptRequest) GetPolicyID() string {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterConsumePolicyDecryptRequest) GetPolicyID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PolicyID
+	return u.PolicyID
 }
 
-func (o *UpdateEventGatewayVirtualClusterConsumePolicyDecryptRequest) GetEventGatewayDecryptPolicy() *shared.EventGatewayDecryptPolicy {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterConsumePolicyDecryptRequest) GetEventGatewayDecryptPolicy() *shared.EventGatewayDecryptPolicy {
+	if u == nil {
 		return nil
 	}
-	return o.EventGatewayDecryptPolicy
+	return u.EventGatewayDecryptPolicy
 }
 
 type UpdateEventGatewayVirtualClusterConsumePolicyDecryptResponse struct {
@@ -62,51 +62,51 @@ type UpdateEventGatewayVirtualClusterConsumePolicyDecryptResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *UpdateEventGatewayVirtualClusterConsumePolicyDecryptResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterConsumePolicyDecryptResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateEventGatewayVirtualClusterConsumePolicyDecryptResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterConsumePolicyDecryptResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateEventGatewayVirtualClusterConsumePolicyDecryptResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterConsumePolicyDecryptResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateEventGatewayVirtualClusterConsumePolicyDecryptResponse) GetEventGatewayPolicy() *shared.EventGatewayPolicy {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterConsumePolicyDecryptResponse) GetEventGatewayPolicy() *shared.EventGatewayPolicy {
+	if u == nil {
 		return nil
 	}
-	return o.EventGatewayPolicy
+	return u.EventGatewayPolicy
 }
 
-func (o *UpdateEventGatewayVirtualClusterConsumePolicyDecryptResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterConsumePolicyDecryptResponse) GetBadRequestError() *shared.BadRequestError {
+	if u == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return u.BadRequestError
 }
 
-func (o *UpdateEventGatewayVirtualClusterConsumePolicyDecryptResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterConsumePolicyDecryptResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return u.UnauthorizedError
 }
 
-func (o *UpdateEventGatewayVirtualClusterConsumePolicyDecryptResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterConsumePolicyDecryptResponse) GetForbiddenError() *shared.ForbiddenError {
+	if u == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return u.ForbiddenError
 }

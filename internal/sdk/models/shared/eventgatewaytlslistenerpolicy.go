@@ -20,31 +20,31 @@ func (e EventGatewayTLSListenerPolicyConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayTLSListenerPolicyConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"certificates"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *EventGatewayTLSListenerPolicyConfig) GetCertificates() []TLSCertificate {
-	if o == nil {
+func (e *EventGatewayTLSListenerPolicyConfig) GetCertificates() []TLSCertificate {
+	if e == nil {
 		return []TLSCertificate{}
 	}
-	return o.Certificates
+	return e.Certificates
 }
 
-func (o *EventGatewayTLSListenerPolicyConfig) GetVersions() *TLSVersionRange {
-	if o == nil {
+func (e *EventGatewayTLSListenerPolicyConfig) GetVersions() *TLSVersionRange {
+	if e == nil {
 		return nil
 	}
-	return o.Versions
+	return e.Versions
 }
 
-func (o *EventGatewayTLSListenerPolicyConfig) GetAllowPlaintext() *bool {
-	if o == nil {
+func (e *EventGatewayTLSListenerPolicyConfig) GetAllowPlaintext() *bool {
+	if e == nil {
 		return nil
 	}
-	return o.AllowPlaintext
+	return e.AllowPlaintext
 }
 
 // EventGatewayTLSListenerPolicy - The TLS Server policy defines the certificates and keys used by the gateway server when the client connects
@@ -74,54 +74,54 @@ func (e EventGatewayTLSListenerPolicy) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayTLSListenerPolicy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *EventGatewayTLSListenerPolicy) GetType() string {
+func (e *EventGatewayTLSListenerPolicy) GetType() string {
 	return "tls_server"
 }
 
-func (o *EventGatewayTLSListenerPolicy) GetName() *string {
-	if o == nil {
+func (e *EventGatewayTLSListenerPolicy) GetName() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Name
+	return e.Name
 }
 
-func (o *EventGatewayTLSListenerPolicy) GetDescription() *string {
-	if o == nil {
+func (e *EventGatewayTLSListenerPolicy) GetDescription() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Description
+	return e.Description
 }
 
-func (o *EventGatewayTLSListenerPolicy) GetEnabled() *bool {
-	if o == nil {
+func (e *EventGatewayTLSListenerPolicy) GetEnabled() *bool {
+	if e == nil {
 		return nil
 	}
-	return o.Enabled
+	return e.Enabled
 }
 
-func (o *EventGatewayTLSListenerPolicy) GetCondition() *string {
-	if o == nil {
+func (e *EventGatewayTLSListenerPolicy) GetCondition() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Condition
+	return e.Condition
 }
 
-func (o *EventGatewayTLSListenerPolicy) GetConfig() *EventGatewayTLSListenerPolicyConfig {
-	if o == nil {
+func (e *EventGatewayTLSListenerPolicy) GetConfig() *EventGatewayTLSListenerPolicyConfig {
+	if e == nil {
 		return nil
 	}
-	return o.Config
+	return e.Config
 }
 
-func (o *EventGatewayTLSListenerPolicy) GetLabels() map[string]*string {
-	if o == nil {
+func (e *EventGatewayTLSListenerPolicy) GetLabels() map[string]*string {
+	if e == nil {
 		return nil
 	}
-	return o.Labels
+	return e.Labels
 }

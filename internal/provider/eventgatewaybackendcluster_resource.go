@@ -11,11 +11,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -238,10 +240,14 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 						Description: `If true, skip certificate verification. It's not secure to use for production. Default: false`,
 					},
 					"tls_versions": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Computed: true,
+						Optional: true,
+						Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+							types.StringValue("tls12"),
+							types.StringValue("tls13"),
+						})),
 						ElementType: types.StringType,
-						Description: `List of supported TLS versions.`,
+						Description: `List of supported TLS versions. Default: ["tls12","tls13"]`,
 					},
 				},
 			},
@@ -505,7 +511,7 @@ func (r *EventGatewayBackendClusterResource) ImportState(ctx context.Context, re
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "..."}': `+err.Error())
 		return
 	}
 

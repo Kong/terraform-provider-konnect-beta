@@ -15,18 +15,29 @@ type Position struct {
 	Row int64 `json:"row"`
 }
 
-func (o *Position) GetCol() int64 {
-	if o == nil {
-		return 0
-	}
-	return o.Col
+func (p Position) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
 }
 
-func (o *Position) GetRow() int64 {
-	if o == nil {
+func (p *Position) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"col", "row"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *Position) GetCol() int64 {
+	if p == nil {
 		return 0
 	}
-	return o.Row
+	return p.Col
+}
+
+func (p *Position) GetRow() int64 {
+	if p == nil {
+		return 0
+	}
+	return p.Row
 }
 
 // Size - Number of columns and rows the tile occupies.  A dashboard always has 6 columns, but has as many rows as needed to accommodate the given tiles.
@@ -35,18 +46,29 @@ type Size struct {
 	Rows int64 `json:"rows"`
 }
 
-func (o *Size) GetCols() int64 {
-	if o == nil {
-		return 0
-	}
-	return o.Cols
+func (s Size) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
 }
 
-func (o *Size) GetRows() int64 {
-	if o == nil {
+func (s *Size) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"cols", "rows"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *Size) GetCols() int64 {
+	if s == nil {
 		return 0
 	}
-	return o.Rows
+	return s.Cols
+}
+
+func (s *Size) GetRows() int64 {
+	if s == nil {
+		return 0
+	}
+	return s.Rows
 }
 
 // Layout - Information about how the tile is placed on the dashboard.
@@ -63,18 +85,29 @@ type Layout struct {
 	Size Size `json:"size"`
 }
 
-func (o *Layout) GetPosition() Position {
-	if o == nil {
-		return Position{}
-	}
-	return o.Position
+func (l Layout) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
 }
 
-func (o *Layout) GetSize() Size {
-	if o == nil {
+func (l *Layout) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"position", "size"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (l *Layout) GetPosition() Position {
+	if l == nil {
+		return Position{}
+	}
+	return l.Position
+}
+
+func (l *Layout) GetSize() Size {
+	if l == nil {
 		return Size{}
 	}
-	return o.Size
+	return l.Size
 }
 
 // ChartTileType - The type of tile.  Chart tiles must have type 'chart'.
@@ -109,8 +142,8 @@ const (
 )
 
 type Query struct {
-	AdvancedQuery *AdvancedQuery `queryParam:"inline"`
-	LLMQuery      *LLMQuery      `queryParam:"inline"`
+	AdvancedQuery *AdvancedQuery `queryParam:"inline,name=query"`
+	LLMQuery      *LLMQuery      `queryParam:"inline,name=query"`
 
 	Type QueryType
 }
@@ -153,7 +186,7 @@ func (u *Query) UnmarshalJSON(data []byte) error {
 	switch dis.Datasource {
 	case "api_usage":
 		advancedQuery := new(AdvancedQuery)
-		if err := utils.UnmarshalJSON(data, &advancedQuery, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &advancedQuery, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Datasource == api_usage) type AdvancedQuery within Query: %w", string(data), err)
 		}
 
@@ -162,7 +195,7 @@ func (u *Query) UnmarshalJSON(data []byte) error {
 		return nil
 	case "llm_usage":
 		llmQuery := new(LLMQuery)
-		if err := utils.UnmarshalJSON(data, &llmQuery, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &llmQuery, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Datasource == llm_usage) type LLMQuery within Query: %w", string(data), err)
 		}
 
@@ -194,50 +227,61 @@ type Definition struct {
 	Chart Chart `json:"chart"`
 }
 
-func (o *Definition) GetQuery() Query {
-	if o == nil {
+func (d Definition) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *Definition) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"query", "chart"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (d *Definition) GetQuery() Query {
+	if d == nil {
 		return Query{}
 	}
-	return o.Query
+	return d.Query
 }
 
-func (o *Definition) GetQueryAPIUsage() *AdvancedQuery {
-	return o.GetQuery().AdvancedQuery
+func (d *Definition) GetQueryAPIUsage() *AdvancedQuery {
+	return d.GetQuery().AdvancedQuery
 }
 
-func (o *Definition) GetQueryLlmUsage() *LLMQuery {
-	return o.GetQuery().LLMQuery
+func (d *Definition) GetQueryLlmUsage() *LLMQuery {
+	return d.GetQuery().LLMQuery
 }
 
-func (o *Definition) GetChart() Chart {
-	if o == nil {
+func (d *Definition) GetChart() Chart {
+	if d == nil {
 		return Chart{}
 	}
-	return o.Chart
+	return d.Chart
 }
 
-func (o *Definition) GetChartDonut() *DonutChart {
-	return o.GetChart().DonutChart
+func (d *Definition) GetChartDonut() *DonutChart {
+	return d.GetChart().DonutChart
 }
 
-func (o *Definition) GetChartTimeseriesLine() *TimeseriesChart {
-	return o.GetChart().TimeseriesChart
+func (d *Definition) GetChartTimeseriesLine() *TimeseriesChart {
+	return d.GetChart().TimeseriesChart
 }
 
-func (o *Definition) GetChartTimeseriesBar() *TimeseriesChart {
-	return o.GetChart().TimeseriesChart
+func (d *Definition) GetChartTimeseriesBar() *TimeseriesChart {
+	return d.GetChart().TimeseriesChart
 }
 
-func (o *Definition) GetChartHorizontalBar() *BarChart {
-	return o.GetChart().BarChart
+func (d *Definition) GetChartHorizontalBar() *BarChart {
+	return d.GetChart().BarChart
 }
 
-func (o *Definition) GetChartVerticalBar() *BarChart {
-	return o.GetChart().BarChart
+func (d *Definition) GetChartVerticalBar() *BarChart {
+	return d.GetChart().BarChart
 }
 
-func (o *Definition) GetChartSingleValue() *SingleValueChart {
-	return o.GetChart().SingleValueChart
+func (d *Definition) GetChartSingleValue() *SingleValueChart {
+	return d.GetChart().SingleValueChart
 }
 
 // ChartTile - A tile that queries data and renders a chart.
@@ -257,23 +301,34 @@ type ChartTile struct {
 	Definition Definition `json:"definition"`
 }
 
-func (o *ChartTile) GetLayout() Layout {
-	if o == nil {
+func (c ChartTile) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ChartTile) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"layout", "type", "definition"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *ChartTile) GetLayout() Layout {
+	if c == nil {
 		return Layout{}
 	}
-	return o.Layout
+	return c.Layout
 }
 
-func (o *ChartTile) GetType() ChartTileType {
-	if o == nil {
+func (c *ChartTile) GetType() ChartTileType {
+	if c == nil {
 		return ChartTileType("")
 	}
-	return o.Type
+	return c.Type
 }
 
-func (o *ChartTile) GetDefinition() Definition {
-	if o == nil {
+func (c *ChartTile) GetDefinition() Definition {
+	if c == nil {
 		return Definition{}
 	}
-	return o.Definition
+	return c.Definition
 }

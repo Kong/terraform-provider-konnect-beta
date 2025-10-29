@@ -23,11 +23,7 @@ func (r *EventGatewayConsumePolicyDecryptResourceModel) RefreshFromSharedEventGa
 
 			if configPriorData != nil {
 				r.Config.Decrypt = configPriorData.Decrypt
-			}
-			if configPriorData != nil {
 				r.Config.FailureMode = configPriorData.FailureMode
-			}
-			if configPriorData != nil {
 				r.Config.KeySources = configPriorData.KeySources
 			}
 		}

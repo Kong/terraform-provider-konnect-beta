@@ -150,6 +150,21 @@ This means that your deployment needs to have a wildcard certificate for the dom
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_event_gateway_listener_policy_forward_to_virtual_cluster.my_konnect_event_gateway_listener_policy_forward_to_virtual_cluster
+  id = jsonencode({
+    event_gateway_listener_id = "..."
+    gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
-terraform import konnect_event_gateway_listener_policy_forward_to_virtual_cluster.my_konnect_event_gateway_listener_policy_forward_to_virtual_cluster '{"event_gateway_listener_id": "", "gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}'
+terraform import konnect_event_gateway_listener_policy_forward_to_virtual_cluster.my_konnect_event_gateway_listener_policy_forward_to_virtual_cluster '{"event_gateway_listener_id": "...", "gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}'
 ```

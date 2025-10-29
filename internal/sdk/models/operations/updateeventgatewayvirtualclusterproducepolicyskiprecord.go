@@ -17,32 +17,32 @@ type UpdateEventGatewayVirtualClusterProducePolicySkipRecordRequest struct {
 	EventGatewaySkipRecordPolicy *shared.EventGatewaySkipRecordPolicy `request:"mediaType=application/json"`
 }
 
-func (o *UpdateEventGatewayVirtualClusterProducePolicySkipRecordRequest) GetGatewayID() string {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterProducePolicySkipRecordRequest) GetGatewayID() string {
+	if u == nil {
 		return ""
 	}
-	return o.GatewayID
+	return u.GatewayID
 }
 
-func (o *UpdateEventGatewayVirtualClusterProducePolicySkipRecordRequest) GetVirtualClusterID() string {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterProducePolicySkipRecordRequest) GetVirtualClusterID() string {
+	if u == nil {
 		return ""
 	}
-	return o.VirtualClusterID
+	return u.VirtualClusterID
 }
 
-func (o *UpdateEventGatewayVirtualClusterProducePolicySkipRecordRequest) GetPolicyID() string {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterProducePolicySkipRecordRequest) GetPolicyID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PolicyID
+	return u.PolicyID
 }
 
-func (o *UpdateEventGatewayVirtualClusterProducePolicySkipRecordRequest) GetEventGatewaySkipRecordPolicy() *shared.EventGatewaySkipRecordPolicy {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterProducePolicySkipRecordRequest) GetEventGatewaySkipRecordPolicy() *shared.EventGatewaySkipRecordPolicy {
+	if u == nil {
 		return nil
 	}
-	return o.EventGatewaySkipRecordPolicy
+	return u.EventGatewaySkipRecordPolicy
 }
 
 type UpdateEventGatewayVirtualClusterProducePolicySkipRecordResponse struct {
@@ -62,51 +62,51 @@ type UpdateEventGatewayVirtualClusterProducePolicySkipRecordResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *UpdateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetEventGatewayPolicy() *shared.EventGatewayPolicy {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetEventGatewayPolicy() *shared.EventGatewayPolicy {
+	if u == nil {
 		return nil
 	}
-	return o.EventGatewayPolicy
+	return u.EventGatewayPolicy
 }
 
-func (o *UpdateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetBadRequestError() *shared.BadRequestError {
+	if u == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return u.BadRequestError
 }
 
-func (o *UpdateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return u.UnauthorizedError
 }
 
-func (o *UpdateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (u *UpdateEventGatewayVirtualClusterProducePolicySkipRecordResponse) GetForbiddenError() *shared.ForbiddenError {
+	if u == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return u.ForbiddenError
 }

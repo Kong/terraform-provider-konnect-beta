@@ -39,78 +39,78 @@ func (a AuthServer) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AuthServer) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "name", "description", "audience", "issuer", "metadata_uri", "labels", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AuthServer) GetID() string {
-	if o == nil {
+func (a *AuthServer) GetID() string {
+	if a == nil {
 		return ""
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AuthServer) GetName() string {
-	if o == nil {
+func (a *AuthServer) GetName() string {
+	if a == nil {
 		return ""
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AuthServer) GetDescription() string {
-	if o == nil {
+func (a *AuthServer) GetDescription() string {
+	if a == nil {
 		return ""
 	}
-	return o.Description
+	return a.Description
 }
 
-func (o *AuthServer) GetAudience() string {
-	if o == nil {
+func (a *AuthServer) GetAudience() string {
+	if a == nil {
 		return ""
 	}
-	return o.Audience
+	return a.Audience
 }
 
-func (o *AuthServer) GetSigningAlgorithm() *Algorithm {
-	if o == nil {
+func (a *AuthServer) GetSigningAlgorithm() *Algorithm {
+	if a == nil {
 		return nil
 	}
-	return o.SigningAlgorithm
+	return a.SigningAlgorithm
 }
 
-func (o *AuthServer) GetIssuer() string {
-	if o == nil {
+func (a *AuthServer) GetIssuer() string {
+	if a == nil {
 		return ""
 	}
-	return o.Issuer
+	return a.Issuer
 }
 
-func (o *AuthServer) GetMetadataURI() string {
-	if o == nil {
+func (a *AuthServer) GetMetadataURI() string {
+	if a == nil {
 		return ""
 	}
-	return o.MetadataURI
+	return a.MetadataURI
 }
 
-func (o *AuthServer) GetLabels() map[string]*string {
-	if o == nil {
+func (a *AuthServer) GetLabels() map[string]*string {
+	if a == nil {
 		return map[string]*string{}
 	}
-	return o.Labels
+	return a.Labels
 }
 
-func (o *AuthServer) GetCreatedAt() time.Time {
-	if o == nil {
+func (a *AuthServer) GetCreatedAt() time.Time {
+	if a == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AuthServer) GetUpdatedAt() time.Time {
-	if o == nil {
+func (a *AuthServer) GetUpdatedAt() time.Time {
+	if a == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }

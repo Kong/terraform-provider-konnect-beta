@@ -19,26 +19,26 @@ func (s SchemaRegistryAuthenticationBasic) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SchemaRegistryAuthenticationBasic) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"type", "username", "password"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *SchemaRegistryAuthenticationBasic) GetType() string {
+func (s *SchemaRegistryAuthenticationBasic) GetType() string {
 	return "basic"
 }
 
-func (o *SchemaRegistryAuthenticationBasic) GetUsername() string {
-	if o == nil {
+func (s *SchemaRegistryAuthenticationBasic) GetUsername() string {
+	if s == nil {
 		return ""
 	}
-	return o.Username
+	return s.Username
 }
 
-func (o *SchemaRegistryAuthenticationBasic) GetPassword() string {
-	if o == nil {
+func (s *SchemaRegistryAuthenticationBasic) GetPassword() string {
+	if s == nil {
 		return ""
 	}
-	return o.Password
+	return s.Password
 }
