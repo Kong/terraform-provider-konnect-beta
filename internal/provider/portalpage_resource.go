@@ -50,7 +50,7 @@ type PortalPageResourceModel struct {
 }
 
 func (r *PortalPageResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_portal_page"
+	resp.TypeName = "konnect_portal_page"
 }
 
 func (r *PortalPageResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

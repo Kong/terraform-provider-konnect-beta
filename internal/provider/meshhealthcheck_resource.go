@@ -59,7 +59,7 @@ type MeshHealthCheckResourceModel struct {
 }
 
 func (r *MeshHealthCheckResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_mesh_health_check"
+	resp.TypeName = "konnect_mesh_health_check"
 }
 
 func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

@@ -56,7 +56,7 @@ type EventGatewayConsumePolicyModifyHeadersResourceModel struct {
 }
 
 func (r *EventGatewayConsumePolicyModifyHeadersResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_event_gateway_consume_policy_modify_headers"
+	resp.TypeName = "konnect_event_gateway_consume_policy_modify_headers"
 }
 
 func (r *EventGatewayConsumePolicyModifyHeadersResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

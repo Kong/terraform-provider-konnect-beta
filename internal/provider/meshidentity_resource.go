@@ -57,7 +57,7 @@ type MeshIdentityResourceModel struct {
 }
 
 func (r *MeshIdentityResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_mesh_identity"
+	resp.TypeName = "konnect_mesh_identity"
 }
 
 func (r *MeshIdentityResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

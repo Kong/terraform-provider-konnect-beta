@@ -55,7 +55,7 @@ type MeshOPAResourceModel struct {
 }
 
 func (r *MeshOPAResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_mesh_opa"
+	resp.TypeName = "konnect_mesh_opa"
 }
 
 func (r *MeshOPAResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

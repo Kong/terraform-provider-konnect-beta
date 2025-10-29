@@ -50,7 +50,7 @@ type AuthServerClaimsResourceModel struct {
 }
 
 func (r *AuthServerClaimsResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_auth_server_claims"
+	resp.TypeName = "konnect_auth_server_claims"
 }
 
 func (r *AuthServerClaimsResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

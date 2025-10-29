@@ -52,7 +52,7 @@ type MeshHostnameGeneratorResourceModel struct {
 }
 
 func (r *MeshHostnameGeneratorResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_mesh_hostname_generator"
+	resp.TypeName = "konnect_mesh_hostname_generator"
 }
 
 func (r *MeshHostnameGeneratorResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

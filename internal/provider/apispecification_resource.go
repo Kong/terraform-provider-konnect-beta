@@ -49,7 +49,7 @@ type APISpecificationResourceModel struct {
 }
 
 func (r *APISpecificationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_api_specification"
+	resp.TypeName = "konnect_api_specification"
 }
 
 func (r *APISpecificationResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

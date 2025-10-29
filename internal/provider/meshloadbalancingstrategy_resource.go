@@ -59,7 +59,7 @@ type MeshLoadBalancingStrategyResourceModel struct {
 }
 
 func (r *MeshLoadBalancingStrategyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_mesh_load_balancing_strategy"
+	resp.TypeName = "konnect_mesh_load_balancing_strategy"
 }
 
 func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

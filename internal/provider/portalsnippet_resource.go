@@ -49,7 +49,7 @@ type PortalSnippetResourceModel struct {
 }
 
 func (r *PortalSnippetResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_portal_snippet"
+	resp.TypeName = "konnect_portal_snippet"
 }
 
 func (r *PortalSnippetResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

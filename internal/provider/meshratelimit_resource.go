@@ -59,7 +59,7 @@ type MeshRateLimitResourceModel struct {
 }
 
 func (r *MeshRateLimitResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_mesh_rate_limit"
+	resp.TypeName = "konnect_mesh_rate_limit"
 }
 
 func (r *MeshRateLimitResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

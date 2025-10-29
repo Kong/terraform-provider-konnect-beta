@@ -61,7 +61,7 @@ type AuthServerClientsResourceModel struct {
 }
 
 func (r *AuthServerClientsResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_auth_server_clients"
+	resp.TypeName = "konnect_auth_server_clients"
 }
 
 func (r *AuthServerClientsResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

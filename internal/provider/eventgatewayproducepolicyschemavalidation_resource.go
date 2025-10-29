@@ -55,7 +55,7 @@ type EventGatewayProducePolicySchemaValidationResourceModel struct {
 }
 
 func (r *EventGatewayProducePolicySchemaValidationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_event_gateway_produce_policy_schema_validation"
+	resp.TypeName = "konnect_event_gateway_produce_policy_schema_validation"
 }
 
 func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

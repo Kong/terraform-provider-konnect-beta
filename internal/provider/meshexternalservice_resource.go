@@ -65,7 +65,7 @@ type MeshExternalServiceResourceModel struct {
 }
 
 func (r *MeshExternalServiceResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_mesh_external_service"
+	resp.TypeName = "konnect_mesh_external_service"
 }
 
 func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

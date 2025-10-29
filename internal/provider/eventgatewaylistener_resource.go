@@ -49,7 +49,7 @@ type EventGatewayListenerResourceModel struct {
 }
 
 func (r *EventGatewayListenerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_event_gateway_listener"
+	resp.TypeName = "konnect_event_gateway_listener"
 }
 
 func (r *EventGatewayListenerResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

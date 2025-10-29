@@ -57,7 +57,7 @@ type MeshTrustResourceModel struct {
 }
 
 func (r *MeshTrustResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_mesh_trust"
+	resp.TypeName = "konnect_mesh_trust"
 }
 
 func (r *MeshTrustResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

@@ -55,7 +55,7 @@ type EventGatewayListenerPolicyTLSServerResourceModel struct {
 }
 
 func (r *EventGatewayListenerPolicyTLSServerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_event_gateway_listener_policy_tls_server"
+	resp.TypeName = "konnect_event_gateway_listener_policy_tls_server"
 }
 
 func (r *EventGatewayListenerPolicyTLSServerResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

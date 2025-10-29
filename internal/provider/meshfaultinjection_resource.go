@@ -58,7 +58,7 @@ type MeshFaultInjectionResourceModel struct {
 }
 
 func (r *MeshFaultInjectionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_mesh_fault_injection"
+	resp.TypeName = "konnect_mesh_fault_injection"
 }
 
 func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

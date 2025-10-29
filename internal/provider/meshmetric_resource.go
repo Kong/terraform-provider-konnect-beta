@@ -59,7 +59,7 @@ type MeshMetricResourceModel struct {
 }
 
 func (r *MeshMetricResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_mesh_metric"
+	resp.TypeName = "konnect_mesh_metric"
 }
 
 func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
