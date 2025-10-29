@@ -64,7 +64,7 @@ func (s *EventGateways) CreateEventGateway(ctx context.Context, request shared.C
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-event-gateway",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)
@@ -410,7 +410,7 @@ func (s *EventGateways) GetEventGateway(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-event-gateway",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -728,7 +728,7 @@ func (s *EventGateways) UpdateHoudiniEventGateway(ctx context.Context, request o
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-houdini-event-gateway",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateGatewayRequest", "json", `request:"mediaType=application/json"`)
@@ -1052,7 +1052,7 @@ func (s *EventGateways) DeleteEventGateway(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-event-gateway",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
 type DonutChartType string
@@ -38,16 +39,27 @@ type DonutChart struct {
 	Type       DonutChartType `json:"type"`
 }
 
-func (o *DonutChart) GetChartTitle() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ChartTitle
+func (d DonutChart) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
 }
 
-func (o *DonutChart) GetType() DonutChartType {
-	if o == nil {
+func (d *DonutChart) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"type"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (d *DonutChart) GetChartTitle() *string {
+	if d == nil {
+		return nil
+	}
+	return d.ChartTitle
+}
+
+func (d *DonutChart) GetType() DonutChartType {
+	if d == nil {
 		return DonutChartType("")
 	}
-	return o.Type
+	return d.Type
 }

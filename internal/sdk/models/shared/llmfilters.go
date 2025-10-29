@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
 type LLMFiltersField string
@@ -113,23 +114,34 @@ type LLMFilters struct {
 	Value    any                `json:"value,omitempty"`
 }
 
-func (o *LLMFilters) GetField() LLMFiltersField {
-	if o == nil {
+func (l LLMFilters) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *LLMFilters) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"field", "operator"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (l *LLMFilters) GetField() LLMFiltersField {
+	if l == nil {
 		return LLMFiltersField("")
 	}
-	return o.Field
+	return l.Field
 }
 
-func (o *LLMFilters) GetOperator() LLMFiltersOperator {
-	if o == nil {
+func (l *LLMFilters) GetOperator() LLMFiltersOperator {
+	if l == nil {
 		return LLMFiltersOperator("")
 	}
-	return o.Operator
+	return l.Operator
 }
 
-func (o *LLMFilters) GetValue() any {
-	if o == nil {
+func (l *LLMFilters) GetValue() any {
+	if l == nil {
 		return nil
 	}
-	return o.Value
+	return l.Value
 }

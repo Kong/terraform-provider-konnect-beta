@@ -15,32 +15,32 @@ EventGatewayBackendCluster Resource
 ```terraform
 resource "konnect_event_gateway_backend_cluster" "my_eventgatewaybackendcluster" {
   provider = konnect-beta
-    authentication = {
-    sasl_scram = {
-    algorithm = "sha256"
-    password = "${vault.env['MY_ENV_VAR']}"
-    username = "...my_username..."
+authentication = {
+sasl_scram = {
+algorithm = "sha256"
+password = "${vault.env['MY_ENV_VAR']}"
+username = "...my_username..."
 }
-    }
-    bootstrap_servers = [
-        "..."
-    ]
-    description = "...my_description..."
-    gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    insecure_allow_anonymous_virtual_cluster_auth = false
-    labels = {
-        key = "value"
-    }
-    metadata_update_interval_seconds = 22808
-    name = "...my_name..."
-    tls = {
-            ca_bundle = "...my_ca_bundle..."
-        enabled = false
-        insecure_skip_verify = false
-        tls_versions = [
-            "tls12"
-        ]
-    }
+}
+bootstrap_servers = [
+    "..."
+]
+description = "...my_description..."
+gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+insecure_allow_anonymous_virtual_cluster_auth = false
+labels = {
+    key = "value"
+}
+metadata_update_interval_seconds = 22808
+name = "...my_name..."
+tls = {
+ca_bundle = "...my_ca_bundle..."
+enabled = false
+insecure_skip_verify = false
+tls_versions = [
+    "tls12"
+]
+}
 }
 ```
 
@@ -127,12 +127,26 @@ Optional:
 - `ca_bundle` (String) A literal value or a reference to an existing secret as a template string expression.
 The value is stored and returned by the API as-is, not treated as sensitive information.
 - `insecure_skip_verify` (Boolean) If true, skip certificate verification. It's not secure to use for production. Default: false
-- `tls_versions` (List of String) List of supported TLS versions.
+- `tls_versions` (List of String) List of supported TLS versions. Default: ["tls12","tls13"]
 
 ## Import
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_event_gateway_backend_cluster.my_konnect_event_gateway_backend_cluster
+  id = jsonencode({
+    gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id = "..."
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
-terraform import konnect_event_gateway_backend_cluster.my_konnect_event_gateway_backend_cluster '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": ""}'
+terraform import konnect_event_gateway_backend_cluster.my_konnect_event_gateway_backend_cluster '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "..."}'
 ```

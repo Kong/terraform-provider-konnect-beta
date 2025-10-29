@@ -17,12 +17,12 @@ func (b BackendClusterAuthenticationAnonymous) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BackendClusterAuthenticationAnonymous) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"type"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *BackendClusterAuthenticationAnonymous) GetType() string {
+func (b *BackendClusterAuthenticationAnonymous) GetType() string {
 	return "anonymous"
 }

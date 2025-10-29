@@ -58,7 +58,11 @@ resource "konnect_mesh_retry" "my_meshretry" {
               ]
             }
             retry_on = [
-              "DeadlineExceeded"
+              "Canceled",
+              "DeadlineExceeded",
+              "Internal",
+              "ResourceExhausted",
+              "Unavailable",
             ]
           }
           http = {
@@ -102,7 +106,25 @@ resource "konnect_mesh_retry" "my_meshretry" {
               }
             ]
             retry_on = [
-              "..."
+              "5XX",
+              "GatewayError",
+              "Reset",
+              "Retriable4xx",
+              "ConnectFailure",
+              "EnvoyRatelimited",
+              "RefusedStream",
+              "Http3PostConnectFailure",
+              "HttpMethodConnect",
+              "HttpMethodDelete",
+              "HttpMethodGet",
+              "HttpMethodHead",
+              "HttpMethodOptions",
+              "HttpMethodPatch",
+              "HttpMethodPost",
+              "HttpMethodPut",
+              "HttpMethodTrace",
+              "500",
+              "503",
             ]
           }
           tcp = {
@@ -399,6 +421,21 @@ For example, you can target port from MeshService.ports[] by its name. Only traf
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_mesh_retry.my_konnect_mesh_retry
+  id = jsonencode({
+    cp_id = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+    mesh = "..."
+    name = "..."
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
-terraform import konnect_mesh_retry.my_konnect_mesh_retry '{"cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b", "mesh": "", "name": ""}'
+terraform import konnect_mesh_retry.my_konnect_mesh_retry '{"cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b", "mesh": "...", "name": "..."}'
 ```

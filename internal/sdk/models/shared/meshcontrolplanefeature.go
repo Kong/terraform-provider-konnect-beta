@@ -40,23 +40,23 @@ type MeshControlPlaneFeature struct {
 	MeshCreation              *MeshControlPlaneFeatureMeshCreation               `json:"meshCreation,omitempty"`
 }
 
-func (o *MeshControlPlaneFeature) GetType() MeshControlPlaneFeatureType {
-	if o == nil {
+func (m *MeshControlPlaneFeature) GetType() MeshControlPlaneFeatureType {
+	if m == nil {
 		return MeshControlPlaneFeatureType("")
 	}
-	return o.Type
+	return m.Type
 }
 
-func (o *MeshControlPlaneFeature) GetHostnameGeneratorCreation() *MeshControlPlaneFeatureHostnameGenerationCreation {
-	if o == nil {
+func (m *MeshControlPlaneFeature) GetHostnameGeneratorCreation() *MeshControlPlaneFeatureHostnameGenerationCreation {
+	if m == nil {
 		return nil
 	}
-	return o.HostnameGeneratorCreation
+	return m.HostnameGeneratorCreation
 }
 
-func (o *MeshControlPlaneFeature) GetMeshCreation() *MeshControlPlaneFeatureMeshCreation {
-	if o == nil {
+func (m *MeshControlPlaneFeature) GetMeshCreation() *MeshControlPlaneFeatureMeshCreation {
+	if m == nil {
 		return nil
 	}
-	return o.MeshCreation
+	return m.MeshCreation
 }

@@ -5,9 +5,6 @@ package provider
 import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
-	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
-	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
@@ -16,41 +13,6 @@ func (r *EventGatewayVaultResourceModel) RefreshFromSharedEventGatewayVault(ctx 
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.EventGatewayVaultEventGatewayEnvVault != nil {
-			r.EventGatewayEnvVault = &tfTypes.EventGatewayVaultEventGatewayEnvVault{}
-			r.EventGatewayEnvVault.Config.Prefix = types.StringValue(resp.EventGatewayVaultEventGatewayEnvVault.Config.Prefix)
-			r.EventGatewayEnvVault.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.EventGatewayVaultEventGatewayEnvVault.CreatedAt))
-			r.EventGatewayEnvVault.Description = types.StringPointerValue(resp.EventGatewayVaultEventGatewayEnvVault.Description)
-			r.Description = r.EventGatewayEnvVault.Description
-			r.EventGatewayEnvVault.ID = types.StringValue(resp.EventGatewayVaultEventGatewayEnvVault.ID)
-			r.ID = r.EventGatewayEnvVault.ID
-			if len(resp.EventGatewayVaultEventGatewayEnvVault.Labels) > 0 {
-				r.EventGatewayEnvVault.Labels = make(map[string]types.String, len(resp.EventGatewayVaultEventGatewayEnvVault.Labels))
-				for key, value := range resp.EventGatewayVaultEventGatewayEnvVault.Labels {
-					r.EventGatewayEnvVault.Labels[key] = types.StringPointerValue(value)
-				}
-			}
-			r.EventGatewayEnvVault.Name = types.StringValue(resp.EventGatewayVaultEventGatewayEnvVault.Name)
-			r.Name = r.EventGatewayEnvVault.Name
-			r.EventGatewayEnvVault.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.EventGatewayVaultEventGatewayEnvVault.UpdatedAt))
-		}
-		if resp.EventGatewayVaultEventGatewayKonnectVault != nil {
-			r.EventGatewayKonnectVault = &tfTypes.EventGatewayVaultEventGatewayKonnectVault{}
-			r.EventGatewayKonnectVault.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.EventGatewayVaultEventGatewayKonnectVault.CreatedAt))
-			r.EventGatewayKonnectVault.Description = types.StringPointerValue(resp.EventGatewayVaultEventGatewayKonnectVault.Description)
-			r.Description = r.EventGatewayKonnectVault.Description
-			r.EventGatewayKonnectVault.ID = types.StringValue(resp.EventGatewayVaultEventGatewayKonnectVault.ID)
-			r.ID = r.EventGatewayKonnectVault.ID
-			if len(resp.EventGatewayVaultEventGatewayKonnectVault.Labels) > 0 {
-				r.EventGatewayKonnectVault.Labels = make(map[string]types.String, len(resp.EventGatewayVaultEventGatewayKonnectVault.Labels))
-				for key1, value1 := range resp.EventGatewayVaultEventGatewayKonnectVault.Labels {
-					r.EventGatewayKonnectVault.Labels[key1] = types.StringPointerValue(value1)
-				}
-			}
-			r.EventGatewayKonnectVault.Name = types.StringValue(resp.EventGatewayVaultEventGatewayKonnectVault.Name)
-			r.Name = r.EventGatewayKonnectVault.Name
-			r.EventGatewayKonnectVault.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.EventGatewayVaultEventGatewayKonnectVault.UpdatedAt))
-		}
 	}
 
 	return diags

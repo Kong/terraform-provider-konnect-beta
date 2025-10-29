@@ -49,64 +49,64 @@ func (e EventGatewayListener) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayListener) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"id", "name", "addresses", "ports", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *EventGatewayListener) GetID() string {
-	if o == nil {
+func (e *EventGatewayListener) GetID() string {
+	if e == nil {
 		return ""
 	}
-	return o.ID
+	return e.ID
 }
 
-func (o *EventGatewayListener) GetName() string {
-	if o == nil {
+func (e *EventGatewayListener) GetName() string {
+	if e == nil {
 		return ""
 	}
-	return o.Name
+	return e.Name
 }
 
-func (o *EventGatewayListener) GetDescription() *string {
-	if o == nil {
+func (e *EventGatewayListener) GetDescription() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Description
+	return e.Description
 }
 
-func (o *EventGatewayListener) GetAddresses() []string {
-	if o == nil {
+func (e *EventGatewayListener) GetAddresses() []string {
+	if e == nil {
 		return []string{}
 	}
-	return o.Addresses
+	return e.Addresses
 }
 
-func (o *EventGatewayListener) GetPorts() []string {
-	if o == nil {
+func (e *EventGatewayListener) GetPorts() []string {
+	if e == nil {
 		return []string{}
 	}
-	return o.Ports
+	return e.Ports
 }
 
-func (o *EventGatewayListener) GetLabels() map[string]*string {
-	if o == nil {
+func (e *EventGatewayListener) GetLabels() map[string]*string {
+	if e == nil {
 		return nil
 	}
-	return o.Labels
+	return e.Labels
 }
 
-func (o *EventGatewayListener) GetCreatedAt() time.Time {
-	if o == nil {
+func (e *EventGatewayListener) GetCreatedAt() time.Time {
+	if e == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return e.CreatedAt
 }
 
-func (o *EventGatewayListener) GetUpdatedAt() time.Time {
-	if o == nil {
+func (e *EventGatewayListener) GetUpdatedAt() time.Time {
+	if e == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return e.UpdatedAt
 }

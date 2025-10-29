@@ -25,26 +25,26 @@ func (b BackendClusterAuthenticationSaslPlainSensitiveDataAware) MarshalJSON() (
 }
 
 func (b *BackendClusterAuthenticationSaslPlainSensitiveDataAware) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"type", "username"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *BackendClusterAuthenticationSaslPlainSensitiveDataAware) GetType() string {
+func (b *BackendClusterAuthenticationSaslPlainSensitiveDataAware) GetType() string {
 	return "sasl_plain"
 }
 
-func (o *BackendClusterAuthenticationSaslPlainSensitiveDataAware) GetUsername() string {
-	if o == nil {
+func (b *BackendClusterAuthenticationSaslPlainSensitiveDataAware) GetUsername() string {
+	if b == nil {
 		return ""
 	}
-	return o.Username
+	return b.Username
 }
 
-func (o *BackendClusterAuthenticationSaslPlainSensitiveDataAware) GetPassword() *string {
-	if o == nil {
+func (b *BackendClusterAuthenticationSaslPlainSensitiveDataAware) GetPassword() *string {
+	if b == nil {
 		return nil
 	}
-	return o.Password
+	return b.Password
 }

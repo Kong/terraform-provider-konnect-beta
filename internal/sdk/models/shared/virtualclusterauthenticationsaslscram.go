@@ -47,19 +47,19 @@ func (v VirtualClusterAuthenticationSaslScram) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VirtualClusterAuthenticationSaslScram) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"type", "algorithm"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *VirtualClusterAuthenticationSaslScram) GetType() string {
+func (v *VirtualClusterAuthenticationSaslScram) GetType() string {
 	return "sasl_scram"
 }
 
-func (o *VirtualClusterAuthenticationSaslScram) GetAlgorithm() VirtualClusterAuthenticationSaslScramAlgorithm {
-	if o == nil {
+func (v *VirtualClusterAuthenticationSaslScram) GetAlgorithm() VirtualClusterAuthenticationSaslScramAlgorithm {
+	if v == nil {
 		return VirtualClusterAuthenticationSaslScramAlgorithm("")
 	}
-	return o.Algorithm
+	return v.Algorithm
 }

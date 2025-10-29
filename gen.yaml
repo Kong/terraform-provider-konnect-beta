@@ -16,6 +16,9 @@ generation:
   auth:
     oAuth2ClientCredentialsEnabled: false
     oAuth2PasswordEnabled: false
+    hoistGlobalSecurity: true
+  schemas:
+    allOfMergeStrategy: shallowMerge
   tests:
     generateTests: true
     generateNewTests: false
@@ -58,3 +61,4 @@ terraform:
       shared: shared
       webhooks: webhooks
   packageName: konnect-beta
+  unionDeserializationStrategy: populated-fields

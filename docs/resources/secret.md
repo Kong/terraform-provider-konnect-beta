@@ -50,6 +50,21 @@ Warning messages describe a problem the client making the API request should cor
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_secret.my_konnect_secret
+  id = jsonencode({
+    cp_id = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+    mesh = "..."
+    name = "..."
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
-terraform import konnect_secret.my_konnect_secret '{"cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b", "mesh": "", "name": ""}'
+terraform import konnect_secret.my_konnect_secret '{"cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b", "mesh": "...", "name": "..."}'
 ```
