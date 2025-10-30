@@ -130,6 +130,8 @@ Optional:
 
 Import is supported using the following syntax:
 
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
 terraform import konnect_mesh_hostname_generator.my_konnect_mesh_hostname_generator '{"cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b", "name": ""}'
 ```

@@ -72,6 +72,8 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 
 Import is supported using the following syntax:
 
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
 terraform import konnect_portal.my_konnect_portal "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
 ```

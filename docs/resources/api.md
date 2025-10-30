@@ -68,6 +68,8 @@ Read-Only:
 
 Import is supported using the following syntax:
 
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
 terraform import konnect_api.my_konnect_api "9f5061ce-78f6-4452-9108-ad7c02821fd5"
 ```

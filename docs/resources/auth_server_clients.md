@@ -74,6 +74,8 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 
 Import is supported using the following syntax:
 
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
 terraform import konnect_auth_server_clients.my_konnect_auth_server_clients '{"auth_server_id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "id": "kYa9iQFU5xPDSIUH9z1z"}'
 ```
