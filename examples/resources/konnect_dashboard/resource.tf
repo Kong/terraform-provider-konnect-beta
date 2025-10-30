@@ -13,6 +13,10 @@ resource "konnect_dashboard" "my_dashboard" {
         chart = {
           definition = {
             chart = {
+              choropleth_map = {
+                chart_title = "...my_chart_title..."
+                type        = "choropleth_map"
+              }
               donut = {
                 chart_title = "...my_chart_title..."
                 type        = "donut"

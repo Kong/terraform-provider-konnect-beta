@@ -146,6 +146,9 @@ If "dns.label" label is absent on the virtual cluster, the traffic won't be rout
 The bootstrap host is `bootstrap.my-cluster.example.com` and then each broker is addressable at `broker-0.my-cluster.example.com`, `broker-1.my-cluster.example.com`, etc.
 This means that your deployment needs to have a wildcard certificate for the domain and a DNS resolver that routes `*.my-cluster.example.com` to the proxy.
 
+The accepted format is a DNS subdomain starting with either `.` or `-`. For example, `-keg.example.com`, `.keg.example.com`, `.namespace.svc.cluster.local`, and `.localhost` are all valid,
+while `keg.example.com` is not.
+
 ## Import
 
 Import is supported using the following syntax:

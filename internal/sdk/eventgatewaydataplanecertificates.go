@@ -332,7 +332,7 @@ func (s *EventGatewayDataPlaneCertificates) CreateEventGatewayDataPlaneCertifica
 
 }
 
-// GetEventGatewayDataPlaneCertificate - Fetch a DataPlane Certificate
+// GetEventGatewayDataPlaneCertificate - Get a DataPlane Certificate
 // Returns information about an individual dataplane certificate.
 func (s *EventGatewayDataPlaneCertificates) GetEventGatewayDataPlaneCertificate(ctx context.Context, request operations.GetEventGatewayDataPlaneCertificateRequest, opts ...operations.Option) (*operations.GetEventGatewayDataPlaneCertificateResponse, error) {
 	o := operations.Options{}

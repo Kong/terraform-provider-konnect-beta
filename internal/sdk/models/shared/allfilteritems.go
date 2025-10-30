@@ -21,6 +21,7 @@ const (
 	AllFilterItemsFieldConsumer                  AllFilterItemsField = "consumer"
 	AllFilterItemsFieldControlPlane              AllFilterItemsField = "control_plane"
 	AllFilterItemsFieldControlPlaneGroup         AllFilterItemsField = "control_plane_group"
+	AllFilterItemsFieldCountryCode               AllFilterItemsField = "country_code"
 	AllFilterItemsFieldDataPlaneNode             AllFilterItemsField = "data_plane_node"
 	AllFilterItemsFieldDataPlaneNodeVersion      AllFilterItemsField = "data_plane_node_version"
 	AllFilterItemsFieldGatewayService            AllFilterItemsField = "gateway_service"
@@ -67,6 +68,8 @@ func (e *AllFilterItemsField) UnmarshalJSON(data []byte) error {
 	case "control_plane":
 		fallthrough
 	case "control_plane_group":
+		fallthrough
+	case "country_code":
 		fallthrough
 	case "data_plane_node":
 		fallthrough

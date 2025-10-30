@@ -247,18 +247,32 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 										},
 										Attributes: map[string]schema.Attribute{
 											"password": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `A template string expression containing a reference to a secret`,
+												Computed: true,
+												Optional: true,
+												MarkdownDescription: `A sensitive value containing the secret or a reference to a secret as a template string expression.` + "\n" +
+													`If the value is provided as plain text, it is encrypted at rest and omitted from API responses.` + "\n" +
+													`If provided as an expression, the expression itself is stored and returned by the API.` + "\n" +
+													`Not Null`,
+												Validators: []validator.String{
+													speakeasy_stringvalidators.NotNull(),
+												},
 											},
 											"username": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `A template string expression containing a reference to a secret or a literal value`,
+												Computed: true,
+												Optional: true,
+												MarkdownDescription: `A literal value or a reference to an existing secret as a template string expression.` + "\n" +
+													`The value is stored and returned by the API as-is, not treated as sensitive information.` + "\n" +
+													`Not Null`,
+												Validators: []validator.String{
+													speakeasy_stringvalidators.NotNull(),
+												},
 											},
 										},
 									},
 									Description: `List of principals to be able to authenticate with, used with ` + "`" + `terminate` + "`" + ` mediation.`,
+									Validators: []validator.List{
+										listvalidator.SizeAtLeast(1),
+									},
 								},
 							},
 							Description: `SASL/PLAIN authentication scheme for the virtual cluster.`,
@@ -347,10 +361,10 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 			"dns_label": schema.StringAttribute{
 				Required: true,
 				MarkdownDescription: `The DNS label used in the bootstrap server URL to identify the virtual cluster when using SNI routing.` + "\n" +
-					`The format follows the RFC1035: 1-63 chars, lowercase alphanumeric or '-', must start with a letter and end with an alphanumeric character.`,
+					`The format follows the RFC1035: 1-63 chars, lowercase alphanumeric or '-', must start and end with an alphanumeric character.`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthBetween(1, 63),
-					stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z]([-a-z0-9]*[a-z0-9])?$`), "must match pattern "+regexp.MustCompile(`^[a-z]([-a-z0-9]*[a-z0-9])?$`).String()),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z0-9]([-a-z0-9]*[a-z0-9])?$`), "must match pattern "+regexp.MustCompile(`^[a-z0-9]([-a-z0-9]*[a-z0-9])?$`).String()),
 				},
 			},
 			"gateway_id": schema.StringAttribute{
@@ -437,6 +451,7 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
 														stringvalidator.UTF8LengthAtLeast(1),
+														stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._?*-]+$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._?*-]+$`).String()),
 													},
 												},
 											},
@@ -533,6 +548,7 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
 														stringvalidator.UTF8LengthAtLeast(1),
+														stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._?*-]+$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._?*-]+$`).String()),
 													},
 												},
 											},

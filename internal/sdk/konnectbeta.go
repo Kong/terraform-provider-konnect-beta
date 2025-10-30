@@ -95,6 +95,9 @@ type KonnectBeta struct {
 	MeshTrafficPermission     *MeshTrafficPermission
 	Mesh                      *Mesh
 	MeshGateway               *MeshGateway
+	Secret                    *Secret
+	ZoneEgress                *ZoneEgress
+	ZoneIngress               *ZoneIngress
 	HostnameGenerator         *HostnameGenerator
 	MeshExternalService       *MeshExternalService
 	MeshIdentity              *MeshIdentity
@@ -112,7 +115,7 @@ type KonnectBeta struct {
 	// Clients represent the identity of machines, such as microservices, mobile apps, or scripts entity. The management API will give you the ability to create, configure and manage multiple Clients per Auth Server.
 	AuthServerClients                         *AuthServerClients
 	Dashboards                                *Dashboards
-	HoudiniEventGateways                      *HoudiniEventGateways
+	EventGateways                             *EventGateways
 	EventGatewayListeners                     *EventGatewayListeners
 	EventGatewayVirtualClusters               *EventGatewayVirtualClusters
 	EventGatewayBackendClusters               *EventGatewayBackendClusters
@@ -253,6 +256,9 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.MeshTrafficPermission = newMeshTrafficPermission(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Mesh = newMesh(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshGateway = newMeshGateway(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Secret = newSecret(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.ZoneEgress = newZoneEgress(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.ZoneIngress = newZoneIngress(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.HostnameGenerator = newHostnameGenerator(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshExternalService = newMeshExternalService(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshIdentity = newMeshIdentity(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -266,7 +272,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.AuthServerScopes = newAuthServerScopes(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthServerClients = newAuthServerClients(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Dashboards = newDashboards(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.HoudiniEventGateways = newHoudiniEventGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.EventGateways = newEventGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayListeners = newEventGatewayListeners(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayVirtualClusters = newEventGatewayVirtualClusters(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayBackendClusters = newEventGatewayBackendClusters(sdk, sdk.sdkConfiguration, sdk.hooks)

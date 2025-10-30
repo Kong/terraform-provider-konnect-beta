@@ -30,7 +30,7 @@ resource "konnect_event_gateway_produce_policy_encrypt" "my_eventgatewayproducep
     keys = [
     {
                 id = "...my_id..."
-            key = "${env['MY_SECRET']}"
+            key = "${vault.env['MY_ENV_VAR']}"
     }
     ]
 }
@@ -54,13 +54,13 @@ resource "konnect_event_gateway_produce_policy_encrypt" "my_eventgatewayproducep
 
 ### Required
 
+- `config` (Attributes) The configuration of the encrypt policy. (see [below for nested schema](#nestedatt--config))
 - `gateway_id` (String) The UUID of your Gateway.
 - `virtual_cluster_id` (String) The ID of the Virtual Cluster.
 
 ### Optional
 
 - `condition` (String) A string containing the boolean expression that determines whether the policy is applied.
-- `config` (Attributes) The configuration of the encrypt policy. (see [below for nested schema](#nestedatt--config))
 - `description` (String) A human-readable description of the policy.
 - `enabled` (Boolean) Whether the policy is enabled. Default: true
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
@@ -130,7 +130,12 @@ Required:
 Required:
 
 - `id` (String) The unique identifier of the key.
-- `key` (String) A template string expression containing a reference to a secret
+
+Optional:
+
+- `key` (String) A sensitive value containing the secret or a reference to a secret as a template string expression.
+If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
+If provided as an expression, the expression itself is stored and returned by the API.
 
 ## Import
 

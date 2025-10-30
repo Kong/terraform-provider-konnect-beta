@@ -6,8 +6,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type EventGatewayEncryptPolicyConfig struct {
+type EventGatewayEncryptConfig struct {
 	Encrypt     []EncryptionRecordSelector `tfsdk:"encrypt"`
 	FailureMode types.String               `tfsdk:"failure_mode"`
-	KeySources  []EventGatewayKeySource    `tfsdk:"key_sources"`
+	KeySources  []EventGatewayKeySource1   `tfsdk:"key_sources"`
 }

@@ -19,16 +19,16 @@ func (r *EventGatewayBackendClusterResourceModel) RefreshFromSharedBackendCluste
 		if resp.Authentication.BackendClusterAuthenticationAnonymous != nil {
 			r.Authentication.Anonymous = &tfTypes.BackendClusterAuthenticationAnonymous{}
 		}
-		if resp.Authentication.BackendClusterAuthenticationSaslPlain != nil {
+		if resp.Authentication.BackendClusterAuthenticationSaslPlainSensitiveDataAware != nil {
 			r.Authentication.SaslPlain = &tfTypes.BackendClusterAuthenticationSaslPlain{}
-			r.Authentication.SaslPlain.Password = types.StringValue(resp.Authentication.BackendClusterAuthenticationSaslPlain.Password)
-			r.Authentication.SaslPlain.Username = types.StringValue(resp.Authentication.BackendClusterAuthenticationSaslPlain.Username)
+			r.Authentication.SaslPlain.Password = types.StringPointerValue(resp.Authentication.BackendClusterAuthenticationSaslPlainSensitiveDataAware.Password)
+			r.Authentication.SaslPlain.Username = types.StringValue(resp.Authentication.BackendClusterAuthenticationSaslPlainSensitiveDataAware.Username)
 		}
-		if resp.Authentication.BackendClusterAuthenticationSaslScram != nil {
+		if resp.Authentication.BackendClusterAuthenticationSaslScramSensitiveDataAware != nil {
 			r.Authentication.SaslScram = &tfTypes.BackendClusterAuthenticationSaslScram{}
-			r.Authentication.SaslScram.Algorithm = types.StringValue(string(resp.Authentication.BackendClusterAuthenticationSaslScram.Algorithm))
-			r.Authentication.SaslScram.Password = types.StringValue(resp.Authentication.BackendClusterAuthenticationSaslScram.Password)
-			r.Authentication.SaslScram.Username = types.StringValue(resp.Authentication.BackendClusterAuthenticationSaslScram.Username)
+			r.Authentication.SaslScram.Algorithm = types.StringValue(string(resp.Authentication.BackendClusterAuthenticationSaslScramSensitiveDataAware.Algorithm))
+			r.Authentication.SaslScram.Password = types.StringPointerValue(resp.Authentication.BackendClusterAuthenticationSaslScramSensitiveDataAware.Password)
+			r.Authentication.SaslScram.Username = types.StringValue(resp.Authentication.BackendClusterAuthenticationSaslScramSensitiveDataAware.Username)
 		}
 		r.BootstrapServers = make([]types.String, 0, len(resp.BootstrapServers))
 		for _, v := range resp.BootstrapServers {
@@ -276,52 +276,58 @@ func (r *EventGatewayBackendClusterResourceModel) ToSharedUpdateBackendClusterRe
 	} else {
 		description = nil
 	}
-	var authentication shared.BackendClusterAuthenticationScheme
+	var authentication shared.BackendClusterAuthenticationSensitiveDataAwareScheme
 	var backendClusterAuthenticationAnonymous *shared.BackendClusterAuthenticationAnonymous
 	if r.Authentication.Anonymous != nil {
 		backendClusterAuthenticationAnonymous = &shared.BackendClusterAuthenticationAnonymous{}
 	}
 	if backendClusterAuthenticationAnonymous != nil {
-		authentication = shared.BackendClusterAuthenticationScheme{
+		authentication = shared.BackendClusterAuthenticationSensitiveDataAwareScheme{
 			BackendClusterAuthenticationAnonymous: backendClusterAuthenticationAnonymous,
 		}
 	}
-	var backendClusterAuthenticationSaslPlain *shared.BackendClusterAuthenticationSaslPlain
+	var backendClusterAuthenticationSaslPlainSensitiveDataAware *shared.BackendClusterAuthenticationSaslPlainSensitiveDataAware
 	if r.Authentication.SaslPlain != nil {
 		var username string
 		username = r.Authentication.SaslPlain.Username.ValueString()
 
-		var password string
-		password = r.Authentication.SaslPlain.Password.ValueString()
-
-		backendClusterAuthenticationSaslPlain = &shared.BackendClusterAuthenticationSaslPlain{
+		password := new(string)
+		if !r.Authentication.SaslPlain.Password.IsUnknown() && !r.Authentication.SaslPlain.Password.IsNull() {
+			*password = r.Authentication.SaslPlain.Password.ValueString()
+		} else {
+			password = nil
+		}
+		backendClusterAuthenticationSaslPlainSensitiveDataAware = &shared.BackendClusterAuthenticationSaslPlainSensitiveDataAware{
 			Username: username,
 			Password: password,
 		}
 	}
-	if backendClusterAuthenticationSaslPlain != nil {
-		authentication = shared.BackendClusterAuthenticationScheme{
-			BackendClusterAuthenticationSaslPlain: backendClusterAuthenticationSaslPlain,
+	if backendClusterAuthenticationSaslPlainSensitiveDataAware != nil {
+		authentication = shared.BackendClusterAuthenticationSensitiveDataAwareScheme{
+			BackendClusterAuthenticationSaslPlainSensitiveDataAware: backendClusterAuthenticationSaslPlainSensitiveDataAware,
 		}
 	}
-	var backendClusterAuthenticationSaslScram *shared.BackendClusterAuthenticationSaslScram
+	var backendClusterAuthenticationSaslScramSensitiveDataAware *shared.BackendClusterAuthenticationSaslScramSensitiveDataAware
 	if r.Authentication.SaslScram != nil {
-		algorithm := shared.BackendClusterAuthenticationSaslScramAlgorithm(r.Authentication.SaslScram.Algorithm.ValueString())
+		algorithm := shared.BackendClusterAuthenticationSaslScramSensitiveDataAwareAlgorithm(r.Authentication.SaslScram.Algorithm.ValueString())
 		var username1 string
 		username1 = r.Authentication.SaslScram.Username.ValueString()
 
-		var password1 string
-		password1 = r.Authentication.SaslScram.Password.ValueString()
-
-		backendClusterAuthenticationSaslScram = &shared.BackendClusterAuthenticationSaslScram{
+		password1 := new(string)
+		if !r.Authentication.SaslScram.Password.IsUnknown() && !r.Authentication.SaslScram.Password.IsNull() {
+			*password1 = r.Authentication.SaslScram.Password.ValueString()
+		} else {
+			password1 = nil
+		}
+		backendClusterAuthenticationSaslScramSensitiveDataAware = &shared.BackendClusterAuthenticationSaslScramSensitiveDataAware{
 			Algorithm: algorithm,
 			Username:  username1,
 			Password:  password1,
 		}
 	}
-	if backendClusterAuthenticationSaslScram != nil {
-		authentication = shared.BackendClusterAuthenticationScheme{
-			BackendClusterAuthenticationSaslScram: backendClusterAuthenticationSaslScram,
+	if backendClusterAuthenticationSaslScramSensitiveDataAware != nil {
+		authentication = shared.BackendClusterAuthenticationSensitiveDataAwareScheme{
+			BackendClusterAuthenticationSaslScramSensitiveDataAware: backendClusterAuthenticationSaslScramSensitiveDataAware,
 		}
 	}
 	insecureAllowAnonymousVirtualClusterAuth := new(bool)

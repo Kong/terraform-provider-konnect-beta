@@ -13,7 +13,7 @@ type UpdateEventGatewaySchemaRegistryRequest struct {
 	// The ID of the Schema Registry.
 	SchemaRegistryID string `pathParam:"style=simple,explode=false,name=schemaRegistryId"`
 	// The request schema for updating a schema registry.
-	ModifySchemaRegistry *shared.ModifySchemaRegistry `request:"mediaType=application/json"`
+	SchemaRegistryUpdate *shared.SchemaRegistryUpdate `request:"mediaType=application/json"`
 }
 
 func (o *UpdateEventGatewaySchemaRegistryRequest) GetGatewayID() string {
@@ -30,16 +30,16 @@ func (o *UpdateEventGatewaySchemaRegistryRequest) GetSchemaRegistryID() string {
 	return o.SchemaRegistryID
 }
 
-func (o *UpdateEventGatewaySchemaRegistryRequest) GetModifySchemaRegistry() *shared.ModifySchemaRegistry {
+func (o *UpdateEventGatewaySchemaRegistryRequest) GetSchemaRegistryUpdate() *shared.SchemaRegistryUpdate {
 	if o == nil {
 		return nil
 	}
-	return o.ModifySchemaRegistry
+	return o.SchemaRegistryUpdate
 }
 
-func (o *UpdateEventGatewaySchemaRegistryRequest) GetModifySchemaRegistryConfluent() *shared.SchemaRegistryConfluent {
-	if v := o.GetModifySchemaRegistry(); v != nil {
-		return v.SchemaRegistryConfluent
+func (o *UpdateEventGatewaySchemaRegistryRequest) GetSchemaRegistryUpdateConfluent() *shared.SchemaRegistryConfluentSensitiveDataAware {
+	if v := o.GetSchemaRegistryUpdate(); v != nil {
+		return v.SchemaRegistryConfluentSensitiveDataAware
 	}
 	return nil
 }

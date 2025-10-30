@@ -40,6 +40,7 @@ const (
 	DimensionsConsumer                  Dimensions = "consumer"
 	DimensionsControlPlane              Dimensions = "control_plane"
 	DimensionsControlPlaneGroup         Dimensions = "control_plane_group"
+	DimensionsCountryCode               Dimensions = "country_code"
 	DimensionsDataPlaneNode             Dimensions = "data_plane_node"
 	DimensionsDataPlaneNodeVersion      Dimensions = "data_plane_node_version"
 	DimensionsGatewayService            Dimensions = "gateway_service"
@@ -75,6 +76,8 @@ func (e *Dimensions) UnmarshalJSON(data []byte) error {
 	case "control_plane":
 		fallthrough
 	case "control_plane_group":
+		fallthrough
+	case "country_code":
 		fallthrough
 	case "data_plane_node":
 		fallthrough

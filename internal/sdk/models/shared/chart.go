@@ -18,14 +18,16 @@ const (
 	ChartTypeHorizontalBar  ChartType = "horizontal_bar"
 	ChartTypeVerticalBar    ChartType = "vertical_bar"
 	ChartTypeSingleValue    ChartType = "single_value"
+	ChartTypeChoroplethMap  ChartType = "choropleth_map"
 )
 
 // Chart - The type of chart to render.
 type Chart struct {
-	DonutChart       *DonutChart       `queryParam:"inline"`
-	TimeseriesChart  *TimeseriesChart  `queryParam:"inline"`
-	BarChart         *BarChart         `queryParam:"inline"`
-	SingleValueChart *SingleValueChart `queryParam:"inline"`
+	DonutChart         *DonutChart         `queryParam:"inline"`
+	TimeseriesChart    *TimeseriesChart    `queryParam:"inline"`
+	BarChart           *BarChart           `queryParam:"inline"`
+	SingleValueChart   *SingleValueChart   `queryParam:"inline"`
+	ChoroplethMapChart *ChoroplethMapChart `queryParam:"inline"`
 
 	Type ChartType
 }
@@ -102,6 +104,18 @@ func CreateChartSingleValue(singleValue SingleValueChart) Chart {
 	}
 }
 
+func CreateChartChoroplethMap(choroplethMap ChoroplethMapChart) Chart {
+	typ := ChartTypeChoroplethMap
+
+	typStr := ChoroplethMapChartType(typ)
+	choroplethMap.Type = typStr
+
+	return Chart{
+		ChoroplethMapChart: &choroplethMap,
+		Type:               typ,
+	}
+}
+
 func (u *Chart) UnmarshalJSON(data []byte) error {
 
 	type discriminator struct {
@@ -168,6 +182,15 @@ func (u *Chart) UnmarshalJSON(data []byte) error {
 		u.SingleValueChart = singleValueChart
 		u.Type = ChartTypeSingleValue
 		return nil
+	case "choropleth_map":
+		choroplethMapChart := new(ChoroplethMapChart)
+		if err := utils.UnmarshalJSON(data, &choroplethMapChart, "", true, false); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == choropleth_map) type ChoroplethMapChart within Chart: %w", string(data), err)
+		}
+
+		u.ChoroplethMapChart = choroplethMapChart
+		u.Type = ChartTypeChoroplethMap
+		return nil
 	}
 
 	return fmt.Errorf("could not unmarshal `%s` into any supported union types for Chart", string(data))
@@ -188,6 +211,10 @@ func (u Chart) MarshalJSON() ([]byte, error) {
 
 	if u.SingleValueChart != nil {
 		return utils.MarshalJSON(u.SingleValueChart, "", true)
+	}
+
+	if u.ChoroplethMapChart != nil {
+		return utils.MarshalJSON(u.ChoroplethMapChart, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type Chart: all fields are null")

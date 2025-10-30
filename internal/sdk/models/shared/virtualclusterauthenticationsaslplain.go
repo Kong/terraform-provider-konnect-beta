@@ -35,7 +35,7 @@ func (e *Mediation) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// VirtualClusterAuthenticationSaslPlain - SASL/PLAIN authentication scheme for the virtual cluster.
+// VirtualClusterAuthenticationSaslPlain - SASL/PLAIN authentication scheme for the virtual cluster containing principals with username and password.
 type VirtualClusterAuthenticationSaslPlain struct {
 	type_ string `const:"sasl_plain" json:"type"`
 	// The mediation type for SASL/PLAIN authentication.

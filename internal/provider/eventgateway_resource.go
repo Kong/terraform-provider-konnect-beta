@@ -132,7 +132,7 @@ func (r *EventGatewayResource) Create(ctx context.Context, req resource.CreateRe
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.HoudiniEventGateways.CreateEventGateway(ctx, *request)
+	res, err := r.client.EventGateways.CreateEventGateway(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -192,7 +192,7 @@ func (r *EventGatewayResource) Read(ctx context.Context, req resource.ReadReques
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.HoudiniEventGateways.GetEventGateway(ctx, *request)
+	res, err := r.client.EventGateways.GetEventGateway(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -246,7 +246,7 @@ func (r *EventGatewayResource) Update(ctx context.Context, req resource.UpdateRe
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.HoudiniEventGateways.UpdateHoudiniEventGateway(ctx, *request)
+	res, err := r.client.EventGateways.UpdateHoudiniEventGateway(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -306,7 +306,7 @@ func (r *EventGatewayResource) Delete(ctx context.Context, req resource.DeleteRe
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.HoudiniEventGateways.DeleteEventGateway(ctx, *request)
+	res, err := r.client.EventGateways.DeleteEventGateway(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

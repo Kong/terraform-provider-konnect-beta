@@ -30,7 +30,7 @@ func newEventGatewayVirtualClusterProducePolicies(rootSDK *KonnectBeta, sdkConfi
 	}
 }
 
-// GetEventGatewayVirtualClusterProducePolicyModifyHeaders - Fetch Produce Policy for Virtual Cluster
+// GetEventGatewayVirtualClusterProducePolicyModifyHeaders - Get a Produce Policy for Virtual Cluster
 // Returns information about a specific produce policy associated with the Event Gateway virtual cluster.
 func (s *EventGatewayVirtualClusterProducePolicies) GetEventGatewayVirtualClusterProducePolicyModifyHeaders(ctx context.Context, request operations.GetEventGatewayVirtualClusterProducePolicyModifyHeadersRequest, opts ...operations.Option) (*operations.GetEventGatewayVirtualClusterProducePolicyModifyHeadersResponse, error) {
 	o := operations.Options{}
@@ -833,7 +833,7 @@ func (s *EventGatewayVirtualClusterProducePolicies) DeleteEventGatewayVirtualClu
 
 }
 
-// GetEventGatewayVirtualClusterProducePolicySchemaValidation - Fetch Produce Policy for Virtual Cluster
+// GetEventGatewayVirtualClusterProducePolicySchemaValidation - Get a Produce Policy for Virtual Cluster
 // Returns information about a specific produce policy associated with the Event Gateway virtual cluster.
 func (s *EventGatewayVirtualClusterProducePolicies) GetEventGatewayVirtualClusterProducePolicySchemaValidation(ctx context.Context, request operations.GetEventGatewayVirtualClusterProducePolicySchemaValidationRequest, opts ...operations.Option) (*operations.GetEventGatewayVirtualClusterProducePolicySchemaValidationResponse, error) {
 	o := operations.Options{}
@@ -1636,7 +1636,7 @@ func (s *EventGatewayVirtualClusterProducePolicies) DeleteEventGatewayVirtualClu
 
 }
 
-// GetEventGatewayVirtualClusterProducePolicyEncrypt - Fetch Produce Policy for Virtual Cluster
+// GetEventGatewayVirtualClusterProducePolicyEncrypt - Get a Produce Policy for Virtual Cluster
 // Returns information about a specific produce policy associated with the Event Gateway virtual cluster.
 func (s *EventGatewayVirtualClusterProducePolicies) GetEventGatewayVirtualClusterProducePolicyEncrypt(ctx context.Context, request operations.GetEventGatewayVirtualClusterProducePolicyEncryptRequest, opts ...operations.Option) (*operations.GetEventGatewayVirtualClusterProducePolicyEncryptResponse, error) {
 	o := operations.Options{}
@@ -1946,7 +1946,7 @@ func (s *EventGatewayVirtualClusterProducePolicies) UpdateEventGatewayVirtualClu
 		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayEncryptPolicy", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayEncryptSensitiveDataAwarePolicy", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -2439,7 +2439,7 @@ func (s *EventGatewayVirtualClusterProducePolicies) DeleteEventGatewayVirtualClu
 
 }
 
-// GetEventGatewayVirtualClusterProducePolicySkipRecord - Fetch Produce Policy for Virtual Cluster
+// GetEventGatewayVirtualClusterProducePolicySkipRecord - Get a Produce Policy for Virtual Cluster
 // Returns information about a specific produce policy associated with the Event Gateway virtual cluster.
 func (s *EventGatewayVirtualClusterProducePolicies) GetEventGatewayVirtualClusterProducePolicySkipRecord(ctx context.Context, request operations.GetEventGatewayVirtualClusterProducePolicySkipRecordRequest, opts ...operations.Option) (*operations.GetEventGatewayVirtualClusterProducePolicySkipRecordResponse, error) {
 	o := operations.Options{}

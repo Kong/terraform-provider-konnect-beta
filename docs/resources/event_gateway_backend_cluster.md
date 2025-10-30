@@ -18,7 +18,7 @@ resource "konnect_event_gateway_backend_cluster" "my_eventgatewaybackendcluster"
     authentication = {
     sasl_scram = {
     algorithm = "sha256"
-    password = "${env['MY_SECRET']}"
+    password = "${vault.env['MY_ENV_VAR']}"
     username = "...my_username..."
 }
     }
@@ -78,8 +78,8 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 Optional:
 
 - `anonymous` (Attributes) Anonymous authentication scheme for the backend cluster. (see [below for nested schema](#nestedatt--authentication--anonymous))
-- `sasl_plain` (Attributes) SASL/PLAIN authentication scheme for the backend cluster. (see [below for nested schema](#nestedatt--authentication--sasl_plain))
-- `sasl_scram` (Attributes) SASL/SCRAM-SHA-256 authentication scheme for the backend cluster. (see [below for nested schema](#nestedatt--authentication--sasl_scram))
+- `sasl_plain` (Attributes) SASL/PLAIN authentication scheme for the backend cluster without requiring sensitive password data. (see [below for nested schema](#nestedatt--authentication--sasl_plain))
+- `sasl_scram` (Attributes) SASL/SCRAM authentication scheme for the backend cluster without requiring sensitive password data. (see [below for nested schema](#nestedatt--authentication--sasl_scram))
 
 <a id="nestedatt--authentication--anonymous"></a>
 ### Nested Schema for `authentication.anonymous`
@@ -90,8 +90,13 @@ Optional:
 
 Optional:
 
-- `password` (String) A template string expression containing a reference to a secret. Not Null
-- `username` (String) A template string expression containing a reference to a secret or a literal value. Not Null
+- `password` (String) A sensitive value containing the secret or a reference to a secret as a template string expression.
+If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
+If provided as an expression, the expression itself is stored and returned by the API.
+Not Null
+- `username` (String) A literal value or a reference to an existing secret as a template string expression.
+The value is stored and returned by the API as-is, not treated as sensitive information.
+Not Null
 
 
 <a id="nestedatt--authentication--sasl_scram"></a>
@@ -100,8 +105,13 @@ Optional:
 Optional:
 
 - `algorithm` (String) The algorithm used for SASL/SCRAM authentication. Not Null; must be one of ["sha256", "sha512"]
-- `password` (String) A template string expression containing a reference to a secret. Not Null
-- `username` (String) A template string expression containing a reference to a secret or a literal value. Not Null
+- `password` (String) A sensitive value containing the secret or a reference to a secret as a template string expression.
+If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
+If provided as an expression, the expression itself is stored and returned by the API.
+Not Null
+- `username` (String) A literal value or a reference to an existing secret as a template string expression.
+The value is stored and returned by the API as-is, not treated as sensitive information.
+Not Null
 
 
 
@@ -114,7 +124,8 @@ Required:
 
 Optional:
 
-- `ca_bundle` (String) A template string expression containing a reference to a secret or a literal value
+- `ca_bundle` (String) A literal value or a reference to an existing secret as a template string expression.
+The value is stored and returned by the API as-is, not treated as sensitive information.
 - `insecure_skip_verify` (Boolean) If true, skip certificate verification. It's not secure to use for production. Default: false
 - `tls_versions` (List of String) List of supported TLS versions.
 

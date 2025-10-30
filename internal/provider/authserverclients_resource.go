@@ -88,6 +88,9 @@ func (r *AuthServerClientsResource) Schema(ctx context.Context, req resource.Sch
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `Specifies the scopes IDs that the client is allowed to request`,
+				Validators: []validator.List{
+					listvalidator.UniqueValues(),
+				},
 			},
 			"auth_server_id": schema.StringAttribute{
 				Required:    true,
@@ -119,7 +122,10 @@ func (r *AuthServerClientsResource) Schema(ctx context.Context, req resource.Sch
 				},
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `The OAuth 2.0 client ID`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthBetween(1, 36),

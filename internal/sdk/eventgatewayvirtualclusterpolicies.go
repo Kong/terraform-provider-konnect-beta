@@ -30,7 +30,7 @@ func newEventGatewayVirtualClusterPolicies(rootSDK *KonnectBeta, sdkConfig confi
 	}
 }
 
-// GetEventGatewayVirtualClusterClusterLevelPolicyAcls - Fetch Cluster Policy for Virtual Cluster
+// GetEventGatewayVirtualClusterClusterLevelPolicyAcls - Get a Cluster Policy for Virtual Cluster
 // Returns information about a specific cluster-level policy associated with the Event Gateway virtual cluster.
 func (s *EventGatewayVirtualClusterPolicies) GetEventGatewayVirtualClusterClusterLevelPolicyAcls(ctx context.Context, request operations.GetEventGatewayVirtualClusterClusterLevelPolicyAclsRequest, opts ...operations.Option) (*operations.GetEventGatewayVirtualClusterClusterLevelPolicyAclsResponse, error) {
 	o := operations.Options{}

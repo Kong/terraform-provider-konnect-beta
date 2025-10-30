@@ -53,7 +53,7 @@ type PutMeshTrustResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Updated
+	// Successful response
 	MeshTrustCreateOrUpdateSuccessResponse *shared.MeshTrustCreateOrUpdateSuccessResponse
 }
 

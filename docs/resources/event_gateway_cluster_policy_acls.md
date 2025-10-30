@@ -22,7 +22,7 @@ resource "konnect_event_gateway_cluster_policy_acls" "my_eventgatewayclusterpoli
         action = "deny"
         operations = [
           {
-            name = "idempotent_write"
+            name = "describe_configs"
           }
         ]
         resource_names = [
@@ -94,7 +94,7 @@ Required:
 
 Required:
 
-- `name` (String) must be one of ["alter", "alter_configs", "create", "delete", "describe", "describe_configs", "idempotent_write", "read", "write"]
+- `name` (String) must be one of ["all", "alter", "alter_configs", "create", "delete", "describe", "describe_configs", "idempotent_write", "read", "write"]
 
 
 <a id="nestedatt--config--rules--resource_names"></a>

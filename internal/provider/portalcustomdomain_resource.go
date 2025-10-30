@@ -14,6 +14,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/boolplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
@@ -54,7 +56,10 @@ func (r *PortalCustomDomainResource) Schema(ctx context.Context, req resource.Sc
 		MarkdownDescription: "PortalCustomDomain Resource",
 		Attributes: map[string]schema.Attribute{
 			"cname_status": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `must be one of ["verified", "pending"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
@@ -115,29 +120,44 @@ func (r *PortalCustomDomainResource) Schema(ctx context.Context, req resource.Sc
 						},
 					},
 					"expires_at": schema.StringAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						Description: `An ISO-8601 timestamp representation of the ssl certificate expiration date.`,
 						Validators: []validator.String{
 							validators.IsRFC3339(),
 						},
 					},
 					"skip_ca_check": schema.BoolAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.Bool{
+							speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
+						},
 						Description: `True when the provided certificate chain is served as-is without validation against a public trust store.`,
 					},
 					"uploaded_at": schema.StringAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						Description: `An ISO-8601 timestamp representation of the ssl certificate upload date.`,
 						Validators: []validator.String{
 							validators.IsRFC3339(),
 						},
 					},
 					"validation_errors": schema.ListAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.List{
+							speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+						},
 						ElementType: types.StringType,
 					},
 					"verification_status": schema.StringAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						Description: `must be one of ["verified", "pending", "error"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(

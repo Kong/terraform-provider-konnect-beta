@@ -240,6 +240,10 @@ func (o *Definition) GetChartSingleValue() *SingleValueChart {
 	return o.GetChart().SingleValueChart
 }
 
+func (o *Definition) GetChartChoroplethMap() *ChoroplethMapChart {
+	return o.GetChart().ChoroplethMapChart
+}
+
 // ChartTile - A tile that queries data and renders a chart.
 type ChartTile struct {
 	// Information about how the tile is placed on the dashboard.

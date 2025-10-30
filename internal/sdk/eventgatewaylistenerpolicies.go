@@ -30,7 +30,7 @@ func newEventGatewayListenerPolicies(rootSDK *KonnectBeta, sdkConfig config.SDKC
 	}
 }
 
-// GetEventGatewayListenerPolicyTLSServer - Fetch Policy for Listener
+// GetEventGatewayListenerPolicyTLSServer - Get a Policy for Listener
 // Returns information about a specific policy associated with the Event Gateway listener.
 func (s *EventGatewayListenerPolicies) GetEventGatewayListenerPolicyTLSServer(ctx context.Context, request operations.GetEventGatewayListenerPolicyTLSServerRequest, opts ...operations.Option) (*operations.GetEventGatewayListenerPolicyTLSServerResponse, error) {
 	o := operations.Options{}
@@ -340,7 +340,7 @@ func (s *EventGatewayListenerPolicies) UpdateEventGatewayListenerPolicyTLSServer
 		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayTLSListenerPolicy", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayTLSListenerSensitiveDataAwarePolicy", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -833,7 +833,7 @@ func (s *EventGatewayListenerPolicies) DeleteEventGatewayListenerPolicyTLSServer
 
 }
 
-// GetEventGatewayListenerPolicyForwardToVirtualCluster - Fetch Policy for Listener
+// GetEventGatewayListenerPolicyForwardToVirtualCluster - Get a Policy for Listener
 // Returns information about a specific policy associated with the Event Gateway listener.
 func (s *EventGatewayListenerPolicies) GetEventGatewayListenerPolicyForwardToVirtualCluster(ctx context.Context, request operations.GetEventGatewayListenerPolicyForwardToVirtualClusterRequest, opts ...operations.Option) (*operations.GetEventGatewayListenerPolicyForwardToVirtualClusterResponse, error) {
 	o := operations.Options{}
