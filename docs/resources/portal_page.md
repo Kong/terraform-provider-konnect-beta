@@ -60,8 +60,6 @@ must be one of ["public", "private"]
 
 Import is supported using the following syntax:
 
-The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
-
 ```shell
 terraform import konnect_portal_page.my_konnect_portal_page '{"id": "ebbac5b0-ac89-45c3-9d2e-c4542c657e79", "portal_id": "f32d905a-ed33-46a3-a093-d8f536af9a8a"}'
 ```

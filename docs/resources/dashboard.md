@@ -454,8 +454,6 @@ Optional:
 
 Import is supported using the following syntax:
 
-The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
-
 ```shell
 terraform import konnect_dashboard.my_konnect_dashboard "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
 ```

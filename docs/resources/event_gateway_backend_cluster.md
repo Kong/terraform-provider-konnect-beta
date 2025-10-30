@@ -133,8 +133,6 @@ The value is stored and returned by the API as-is, not treated as sensitive info
 
 Import is supported using the following syntax:
 
-The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
-
 ```shell
 terraform import konnect_event_gateway_backend_cluster.my_konnect_event_gateway_backend_cluster '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": ""}'
 ```

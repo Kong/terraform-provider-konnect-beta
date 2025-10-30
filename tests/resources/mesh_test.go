@@ -10,7 +10,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
 	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
-	resourcesshared "github.com/kong/terraform-provider-kong-mesh/tests/resources/shared"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
@@ -356,7 +355,7 @@ spec = {
 			WithMeshRef(builder.ResourceAddress("mesh", mesh.ResourceName) + ".name").
 			WithDependsOn(builder.ResourceAddress("mesh", mesh.ResourceName))
 		builder.AddMesh(mesh)
-		resource.ParallelTest(t, resourcesshared.ShouldBeAbleToStoreSecrets(providerFactory, builder, scert, skey, mesh))
+		resource.ParallelTest(t, tfbuilder.ShouldBeAbleToStoreSecrets(providerFactory, builder, scert, skey, mesh))
 	})
 }
 
