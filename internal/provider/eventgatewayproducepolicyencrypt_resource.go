@@ -23,6 +23,7 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
+	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -84,6 +85,10 @@ func (r *EventGatewayProducePolicyEncryptResource) Schema(ctx context.Context, r
 										`An ID is a URI where the scheme refers to the type of key source and the rest is source-specific:` + "\n" +
 										`- static: the id defined in the list of static keys` + "\n" +
 										`- aws: a KMS key ARN`,
+									Validators: []validator.String{
+										stringvalidator.UTF8LengthBetween(5, 65535),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^.+:\/\/.+$`), "must match pattern "+regexp.MustCompile(`^.+:\/\/.+$`).String()),
+									},
 								},
 								"part_of_record": schema.StringAttribute{
 									Required: true,
@@ -143,6 +148,10 @@ func (r *EventGatewayProducePolicyEncryptResource) Schema(ctx context.Context, r
 													"id": schema.StringAttribute{
 														Required:    true,
 														Description: `The unique identifier of the key.`,
+														Validators: []validator.String{
+															stringvalidator.UTF8LengthBetween(10, 65535),
+															stringvalidator.RegexMatches(regexp.MustCompile(`^static:\/\/.+$`), "must match pattern "+regexp.MustCompile(`^static:\/\/.+$`).String()),
+														},
 													},
 													"key": schema.StringAttribute{
 														Optional: true,

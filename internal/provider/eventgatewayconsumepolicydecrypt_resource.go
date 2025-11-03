@@ -23,6 +23,7 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
+	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -133,8 +134,13 @@ func (r *EventGatewayConsumePolicyDecryptResource) Schema(ctx context.Context, r
 											NestedObject: schema.NestedAttributeObject{
 												Attributes: map[string]schema.Attribute{
 													"id": schema.StringAttribute{
-														Required:    true,
-														Description: `The unique identifier of the key.`,
+														Required: true,
+														MarkdownDescription: `The identifier of the key. To decrypt using this key, the same id must be used in the decrypt policy.` + "\n" +
+															`It must have the prefix static://`,
+														Validators: []validator.String{
+															stringvalidator.UTF8LengthBetween(10, 65535),
+															stringvalidator.RegexMatches(regexp.MustCompile(`^static:\/\/.+$`), "must match pattern "+regexp.MustCompile(`^static:\/\/.+$`).String()),
+														},
 													},
 													"key": schema.StringAttribute{
 														Required: true,
