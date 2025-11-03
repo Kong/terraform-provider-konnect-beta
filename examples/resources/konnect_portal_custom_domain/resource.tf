@@ -7,5 +7,6 @@ resource "konnect_portal_custom_domain" "my_portalcustomdomain" {
     custom_certificate         = "...my_custom_certificate..."
     custom_private_key         = "...my_custom_private_key..."
     domain_verification_method = "custom_certificate"
+    skip_ca_check              = true
   }
 }
