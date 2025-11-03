@@ -4,6 +4,7 @@
 > Released on 2025/XX/XX
 ### Features
 * Add support for secrets endpoints in Mesh resources
+* Add support for `skip_ca_check` in `konnect_portal_custom_domain` resource
 
 ## 0.11.2
 > Released on 2025/10/17
