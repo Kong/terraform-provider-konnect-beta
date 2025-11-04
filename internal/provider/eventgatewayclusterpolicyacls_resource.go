@@ -91,9 +91,10 @@ func (r *EventGatewayClusterPolicyAclsResource) Schema(ctx context.Context, req 
 										Attributes: map[string]schema.Attribute{
 											"name": schema.StringAttribute{
 												Required:    true,
-												Description: `must be one of ["alter", "alter_configs", "create", "delete", "describe", "describe_configs", "idempotent_write", "read", "write"]`,
+												Description: `must be one of ["all", "alter", "alter_configs", "create", "delete", "describe", "describe_configs", "idempotent_write", "read", "write"]`,
 												Validators: []validator.String{
 													stringvalidator.OneOf(
+														"all",
 														"alter",
 														"alter_configs",
 														"create",

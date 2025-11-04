@@ -44,7 +44,7 @@ type CreateEventGatewayListenerPolicyTLSServerResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Created
-	EventGatewayPolicy *shared.EventGatewayPolicy
+	EventGatewayListenerPolicy *shared.EventGatewayListenerPolicy
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Unauthorized
@@ -74,11 +74,11 @@ func (o *CreateEventGatewayListenerPolicyTLSServerResponse) GetRawResponse() *ht
 	return o.RawResponse
 }
 
-func (o *CreateEventGatewayListenerPolicyTLSServerResponse) GetEventGatewayPolicy() *shared.EventGatewayPolicy {
+func (o *CreateEventGatewayListenerPolicyTLSServerResponse) GetEventGatewayListenerPolicy() *shared.EventGatewayListenerPolicy {
 	if o == nil {
 		return nil
 	}
-	return o.EventGatewayPolicy
+	return o.EventGatewayListenerPolicy
 }
 
 func (o *CreateEventGatewayListenerPolicyTLSServerResponse) GetBadRequestError() *shared.BadRequestError {

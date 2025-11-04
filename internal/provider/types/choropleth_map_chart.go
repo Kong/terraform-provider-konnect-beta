@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type VirtualClusterAuthenticationPrincipal struct {
-	Password types.String `tfsdk:"password"`
-	Username types.String `tfsdk:"username"`
+type ChoroplethMapChart struct {
+	ChartTitle types.String `tfsdk:"chart_title"`
+	Type       types.String `tfsdk:"type"`
 }

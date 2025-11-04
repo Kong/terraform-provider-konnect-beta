@@ -1,6 +1,5 @@
 resource "konnect_event_gateway_listener_policy_forward_to_virtual_cluster" "my_eventgatewaylistenerpolicyforwardtovirtualcluster" {
   provider = konnect-beta
-  condition = "context.topic.name.endsWith('my_suffix')"
   config = {
     sni = {
       advertised_port = 61579

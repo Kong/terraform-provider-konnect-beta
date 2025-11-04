@@ -7,30 +7,18 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
-	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *EventGatewayListenerPolicyTLSServerResourceModel) RefreshFromSharedEventGatewayPolicy(ctx context.Context, resp *shared.EventGatewayPolicy) diag.Diagnostics {
+func (r *EventGatewayListenerPolicyTLSServerResourceModel) RefreshFromSharedEventGatewayListenerPolicy(ctx context.Context, resp *shared.EventGatewayListenerPolicy) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		r.Condition = types.StringPointerValue(resp.Condition)
-		if r.Config == nil {
-			configPriorData := r.Config
-			r.Config = &tfTypes.EventGatewayTLSListenerPolicyConfig{}
-
-			if configPriorData != nil {
-				r.Config.AllowPlaintext = configPriorData.AllowPlaintext
-			}
-			if configPriorData != nil {
-				r.Config.Certificates = configPriorData.Certificates
-			}
-			if configPriorData != nil {
-				r.Config.Versions = configPriorData.Versions
-			}
-		}
+		configPriorData := r.Config
+		r.Config.AllowPlaintext = configPriorData.AllowPlaintext
+		r.Config.Certificates = configPriorData.Certificates
+		r.Config.Versions = configPriorData.Versions
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -128,18 +116,18 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToOperationsUpdateEve
 	var policyID string
 	policyID = r.ID.ValueString()
 
-	eventGatewayTLSListenerPolicy, eventGatewayTLSListenerPolicyDiags := r.ToSharedEventGatewayTLSListenerPolicy(ctx)
-	diags.Append(eventGatewayTLSListenerPolicyDiags...)
+	eventGatewayTLSListenerSensitiveDataAwarePolicy, eventGatewayTLSListenerSensitiveDataAwarePolicyDiags := r.ToSharedEventGatewayTLSListenerSensitiveDataAwarePolicy(ctx)
+	diags.Append(eventGatewayTLSListenerSensitiveDataAwarePolicyDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	out := operations.UpdateEventGatewayListenerPolicyTLSServerRequest{
-		GatewayID:                     gatewayID,
-		EventGatewayListenerID:        eventGatewayListenerID,
-		PolicyID:                      policyID,
-		EventGatewayTLSListenerPolicy: eventGatewayTLSListenerPolicy,
+		GatewayID:              gatewayID,
+		EventGatewayListenerID: eventGatewayListenerID,
+		PolicyID:               policyID,
+		EventGatewayTLSListenerSensitiveDataAwarePolicy: eventGatewayTLSListenerSensitiveDataAwarePolicy,
 	}
 
 	return &out, diags
@@ -166,57 +154,48 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToSharedEventGatewayT
 	} else {
 		enabled = nil
 	}
-	condition := new(string)
-	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
-		*condition = r.Condition.ValueString()
-	} else {
-		condition = nil
+	certificates := make([]shared.TLSCertificate, 0, len(r.Config.Certificates))
+	for _, certificatesItem := range r.Config.Certificates {
+		var certificate string
+		certificate = certificatesItem.Certificate.ValueString()
+
+		var key string
+		key = certificatesItem.Key.ValueString()
+
+		certificates = append(certificates, shared.TLSCertificate{
+			Certificate: certificate,
+			Key:         key,
+		})
 	}
-	var config *shared.EventGatewayTLSListenerPolicyConfig
-	if r.Config != nil {
-		certificates := make([]shared.TLSCertificate, 0, len(r.Config.Certificates))
-		for _, certificatesItem := range r.Config.Certificates {
-			var certificate string
-			certificate = certificatesItem.Certificate.ValueString()
-
-			var key string
-			key = certificatesItem.Key.ValueString()
-
-			certificates = append(certificates, shared.TLSCertificate{
-				Certificate: certificate,
-				Key:         key,
-			})
-		}
-		var versions *shared.TLSVersionRange
-		if r.Config.Versions != nil {
-			min := new(shared.Min)
-			if !r.Config.Versions.Min.IsUnknown() && !r.Config.Versions.Min.IsNull() {
-				*min = shared.Min(r.Config.Versions.Min.ValueString())
-			} else {
-				min = nil
-			}
-			max := new(shared.Max)
-			if !r.Config.Versions.Max.IsUnknown() && !r.Config.Versions.Max.IsNull() {
-				*max = shared.Max(r.Config.Versions.Max.ValueString())
-			} else {
-				max = nil
-			}
-			versions = &shared.TLSVersionRange{
-				Min: min,
-				Max: max,
-			}
-		}
-		allowPlaintext := new(bool)
-		if !r.Config.AllowPlaintext.IsUnknown() && !r.Config.AllowPlaintext.IsNull() {
-			*allowPlaintext = r.Config.AllowPlaintext.ValueBool()
+	var versions *shared.TLSVersionRange
+	if r.Config.Versions != nil {
+		min := new(shared.Min)
+		if !r.Config.Versions.Min.IsUnknown() && !r.Config.Versions.Min.IsNull() {
+			*min = shared.Min(r.Config.Versions.Min.ValueString())
 		} else {
-			allowPlaintext = nil
+			min = nil
 		}
-		config = &shared.EventGatewayTLSListenerPolicyConfig{
-			Certificates:   certificates,
-			Versions:       versions,
-			AllowPlaintext: allowPlaintext,
+		max := new(shared.Max)
+		if !r.Config.Versions.Max.IsUnknown() && !r.Config.Versions.Max.IsNull() {
+			*max = shared.Max(r.Config.Versions.Max.ValueString())
+		} else {
+			max = nil
 		}
+		versions = &shared.TLSVersionRange{
+			Min: min,
+			Max: max,
+		}
+	}
+	allowPlaintext := new(bool)
+	if !r.Config.AllowPlaintext.IsUnknown() && !r.Config.AllowPlaintext.IsNull() {
+		*allowPlaintext = r.Config.AllowPlaintext.ValueBool()
+	} else {
+		allowPlaintext = nil
+	}
+	config := shared.EventGatewayTLSListenerPolicyConfig{
+		Certificates:   certificates,
+		Versions:       versions,
+		AllowPlaintext: allowPlaintext,
 	}
 	labels := make(map[string]*string)
 	for labelsKey, labelsValue := range r.Labels {
@@ -232,7 +211,94 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToSharedEventGatewayT
 		Name:        name,
 		Description: description,
 		Enabled:     enabled,
-		Condition:   condition,
+		Config:      config,
+		Labels:      labels,
+	}
+
+	return &out, diags
+}
+
+func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToSharedEventGatewayTLSListenerSensitiveDataAwarePolicy(ctx context.Context) (*shared.EventGatewayTLSListenerSensitiveDataAwarePolicy, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	name := new(string)
+	if !r.Name.IsUnknown() && !r.Name.IsNull() {
+		*name = r.Name.ValueString()
+	} else {
+		name = nil
+	}
+	description := new(string)
+	if !r.Description.IsUnknown() && !r.Description.IsNull() {
+		*description = r.Description.ValueString()
+	} else {
+		description = nil
+	}
+	enabled := new(bool)
+	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
+		*enabled = r.Enabled.ValueBool()
+	} else {
+		enabled = nil
+	}
+	certificates := make([]shared.TLSCertificateSensitiveDataAware, 0, len(r.Config.Certificates))
+	for _, certificatesItem := range r.Config.Certificates {
+		var certificate string
+		certificate = certificatesItem.Certificate.ValueString()
+
+		key := new(string)
+		if !certificatesItem.Key.IsUnknown() && !certificatesItem.Key.IsNull() {
+			*key = certificatesItem.Key.ValueString()
+		} else {
+			key = nil
+		}
+		certificates = append(certificates, shared.TLSCertificateSensitiveDataAware{
+			Certificate: certificate,
+			Key:         key,
+		})
+	}
+	var versions *shared.TLSVersionRange
+	if r.Config.Versions != nil {
+		min := new(shared.Min)
+		if !r.Config.Versions.Min.IsUnknown() && !r.Config.Versions.Min.IsNull() {
+			*min = shared.Min(r.Config.Versions.Min.ValueString())
+		} else {
+			min = nil
+		}
+		max := new(shared.Max)
+		if !r.Config.Versions.Max.IsUnknown() && !r.Config.Versions.Max.IsNull() {
+			*max = shared.Max(r.Config.Versions.Max.ValueString())
+		} else {
+			max = nil
+		}
+		versions = &shared.TLSVersionRange{
+			Min: min,
+			Max: max,
+		}
+	}
+	allowPlaintext := new(bool)
+	if !r.Config.AllowPlaintext.IsUnknown() && !r.Config.AllowPlaintext.IsNull() {
+		*allowPlaintext = r.Config.AllowPlaintext.ValueBool()
+	} else {
+		allowPlaintext = nil
+	}
+	config := shared.EventGatewayTLSListenerPolicyConfigSensitiveDataAware{
+		Certificates:   certificates,
+		Versions:       versions,
+		AllowPlaintext: allowPlaintext,
+	}
+	labels := make(map[string]*string)
+	for labelsKey, labelsValue := range r.Labels {
+		labelsInst := new(string)
+		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
+			*labelsInst = labelsValue.ValueString()
+		} else {
+			labelsInst = nil
+		}
+		labels[labelsKey] = labelsInst
+	}
+	out := shared.EventGatewayTLSListenerSensitiveDataAwarePolicy{
+		Name:        name,
+		Description: description,
+		Enabled:     enabled,
 		Config:      config,
 		Labels:      labels,
 	}

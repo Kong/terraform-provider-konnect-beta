@@ -10,12 +10,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -25,6 +23,7 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
+	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -43,18 +42,18 @@ type EventGatewayProducePolicyEncryptResource struct {
 
 // EventGatewayProducePolicyEncryptResourceModel describes the resource data model.
 type EventGatewayProducePolicyEncryptResourceModel struct {
-	Condition        types.String                             `tfsdk:"condition"`
-	Config           *tfTypes.EventGatewayEncryptPolicyConfig `tfsdk:"config"`
-	CreatedAt        types.String                             `tfsdk:"created_at"`
-	Description      types.String                             `tfsdk:"description"`
-	Enabled          types.Bool                               `tfsdk:"enabled"`
-	GatewayID        types.String                             `tfsdk:"gateway_id"`
-	ID               types.String                             `tfsdk:"id"`
-	Labels           map[string]types.String                  `tfsdk:"labels"`
-	Name             types.String                             `tfsdk:"name"`
-	ParentPolicyID   types.String                             `queryParam:"style=form,explode=true,name=parent_policy_id" tfsdk:"parent_policy_id"`
-	UpdatedAt        types.String                             `tfsdk:"updated_at"`
-	VirtualClusterID types.String                             `tfsdk:"virtual_cluster_id"`
+	Condition        types.String                      `tfsdk:"condition"`
+	Config           tfTypes.EventGatewayEncryptConfig `tfsdk:"config"`
+	CreatedAt        types.String                      `tfsdk:"created_at"`
+	Description      types.String                      `tfsdk:"description"`
+	Enabled          types.Bool                        `tfsdk:"enabled"`
+	GatewayID        types.String                      `tfsdk:"gateway_id"`
+	ID               types.String                      `tfsdk:"id"`
+	Labels           map[string]types.String           `tfsdk:"labels"`
+	Name             types.String                      `tfsdk:"name"`
+	ParentPolicyID   types.String                      `queryParam:"style=form,explode=true,name=parent_policy_id" tfsdk:"parent_policy_id"`
+	UpdatedAt        types.String                      `tfsdk:"updated_at"`
+	VirtualClusterID types.String                      `tfsdk:"virtual_cluster_id"`
 }
 
 func (r *EventGatewayProducePolicyEncryptResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -73,40 +72,7 @@ func (r *EventGatewayProducePolicyEncryptResource) Schema(ctx context.Context, r
 				},
 			},
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"encrypt": types.ListType{
-						ElemType: types.ObjectType{
-							AttrTypes: map[string]attr.Type{
-								`key_id`:         types.StringType,
-								`part_of_record`: types.StringType,
-							},
-						},
-					},
-					"failure_mode": types.StringType,
-					"key_sources": types.ListType{
-						ElemType: types.ObjectType{
-							AttrTypes: map[string]attr.Type{
-								`aws`: types.ObjectType{
-									AttrTypes: map[string]attr.Type{},
-								},
-								`static`: types.ObjectType{
-									AttrTypes: map[string]attr.Type{
-										`keys`: types.ListType{
-											ElemType: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`id`:  types.StringType,
-													`key`: types.StringType,
-												},
-											},
-										},
-									},
-								},
-							},
-						},
-					},
-				})),
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"encrypt": schema.ListNestedAttribute{
 						Required: true,
@@ -119,6 +85,10 @@ func (r *EventGatewayProducePolicyEncryptResource) Schema(ctx context.Context, r
 										`An ID is a URI where the scheme refers to the type of key source and the rest is source-specific:` + "\n" +
 										`- static: the id defined in the list of static keys` + "\n" +
 										`- aws: a KMS key ARN`,
+									Validators: []validator.String{
+										stringvalidator.UTF8LengthBetween(5, 65535),
+										stringvalidator.RegexMatches(regexp.MustCompile(`^.+:\/\/.+$`), "must match pattern "+regexp.MustCompile(`^.+:\/\/.+$`).String()),
+									},
 								},
 								"part_of_record": schema.StringAttribute{
 									Required: true,
@@ -178,10 +148,16 @@ func (r *EventGatewayProducePolicyEncryptResource) Schema(ctx context.Context, r
 													"id": schema.StringAttribute{
 														Required:    true,
 														Description: `The unique identifier of the key.`,
+														Validators: []validator.String{
+															stringvalidator.UTF8LengthBetween(10, 65535),
+															stringvalidator.RegexMatches(regexp.MustCompile(`^static:\/\/.+$`), "must match pattern "+regexp.MustCompile(`^static:\/\/.+$`).String()),
+														},
 													},
 													"key": schema.StringAttribute{
-														Required:    true,
-														Description: `A template string expression containing a reference to a secret`,
+														Optional: true,
+														MarkdownDescription: `A sensitive value containing the secret or a reference to a secret as a template string expression.` + "\n" +
+															`If the value is provided as plain text, it is encrypted at rest and omitted from API responses.` + "\n" +
+															`If provided as an expression, the expression itself is stored and returned by the API.`,
 													},
 												},
 											},

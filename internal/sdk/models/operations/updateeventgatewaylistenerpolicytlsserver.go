@@ -13,8 +13,8 @@ type UpdateEventGatewayListenerPolicyTLSServerRequest struct {
 	// The ID of the Event Gateway Listener.
 	EventGatewayListenerID string `pathParam:"style=simple,explode=false,name=eventGatewayListenerId"`
 	// The UUID of the policy.
-	PolicyID                      string                                `pathParam:"style=simple,explode=false,name=policyId"`
-	EventGatewayTLSListenerPolicy *shared.EventGatewayTLSListenerPolicy `request:"mediaType=application/json"`
+	PolicyID                                        string                                                  `pathParam:"style=simple,explode=false,name=policyId"`
+	EventGatewayTLSListenerSensitiveDataAwarePolicy *shared.EventGatewayTLSListenerSensitiveDataAwarePolicy `request:"mediaType=application/json"`
 }
 
 func (o *UpdateEventGatewayListenerPolicyTLSServerRequest) GetGatewayID() string {
@@ -38,11 +38,11 @@ func (o *UpdateEventGatewayListenerPolicyTLSServerRequest) GetPolicyID() string 
 	return o.PolicyID
 }
 
-func (o *UpdateEventGatewayListenerPolicyTLSServerRequest) GetEventGatewayTLSListenerPolicy() *shared.EventGatewayTLSListenerPolicy {
+func (o *UpdateEventGatewayListenerPolicyTLSServerRequest) GetEventGatewayTLSListenerSensitiveDataAwarePolicy() *shared.EventGatewayTLSListenerSensitiveDataAwarePolicy {
 	if o == nil {
 		return nil
 	}
-	return o.EventGatewayTLSListenerPolicy
+	return o.EventGatewayTLSListenerSensitiveDataAwarePolicy
 }
 
 type UpdateEventGatewayListenerPolicyTLSServerResponse struct {
@@ -53,7 +53,7 @@ type UpdateEventGatewayListenerPolicyTLSServerResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Updated policy object.
-	EventGatewayPolicy *shared.EventGatewayPolicy
+	EventGatewayListenerPolicy *shared.EventGatewayListenerPolicy
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Unauthorized
@@ -83,11 +83,11 @@ func (o *UpdateEventGatewayListenerPolicyTLSServerResponse) GetRawResponse() *ht
 	return o.RawResponse
 }
 
-func (o *UpdateEventGatewayListenerPolicyTLSServerResponse) GetEventGatewayPolicy() *shared.EventGatewayPolicy {
+func (o *UpdateEventGatewayListenerPolicyTLSServerResponse) GetEventGatewayListenerPolicy() *shared.EventGatewayListenerPolicy {
 	if o == nil {
 		return nil
 	}
-	return o.EventGatewayPolicy
+	return o.EventGatewayListenerPolicy
 }
 
 func (o *UpdateEventGatewayListenerPolicyTLSServerResponse) GetBadRequestError() *shared.BadRequestError {

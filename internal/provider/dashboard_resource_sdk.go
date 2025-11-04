@@ -50,8 +50,13 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 					tiles.Chart.Definition.Chart.HorizontalBar.Stacked = types.BoolPointerValue(tilesItem.ChartTile.Definition.Chart.BarChart.Stacked)
 					tiles.Chart.Definition.Chart.HorizontalBar.Type = types.StringValue(string(tilesItem.ChartTile.Definition.Chart.BarChart.Type))
 				}
+				if tilesItem.ChartTile.Definition.Chart.ChoroplethMapChart != nil {
+					tiles.Chart.Definition.Chart.ChoroplethMap = &tfTypes.ChoroplethMapChart{}
+					tiles.Chart.Definition.Chart.ChoroplethMap.ChartTitle = types.StringPointerValue(tilesItem.ChartTile.Definition.Chart.ChoroplethMapChart.ChartTitle)
+					tiles.Chart.Definition.Chart.ChoroplethMap.Type = types.StringValue(string(tilesItem.ChartTile.Definition.Chart.ChoroplethMapChart.Type))
+				}
 				if tilesItem.ChartTile.Definition.Chart.DonutChart != nil {
-					tiles.Chart.Definition.Chart.Donut = &tfTypes.DonutChart{}
+					tiles.Chart.Definition.Chart.Donut = &tfTypes.ChoroplethMapChart{}
 					tiles.Chart.Definition.Chart.Donut.ChartTitle = types.StringPointerValue(tilesItem.ChartTile.Definition.Chart.DonutChart.ChartTitle)
 					tiles.Chart.Definition.Chart.Donut.Type = types.StringValue(string(tilesItem.ChartTile.Definition.Chart.DonutChart.Type))
 				}
@@ -598,6 +603,25 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 			if singleValueChart != nil {
 				chart = shared.Chart{
 					SingleValueChart: singleValueChart,
+				}
+			}
+			var choroplethMapChart *shared.ChoroplethMapChart
+			if tilesItem.Chart.Definition.Chart.ChoroplethMap != nil {
+				chartTitle4 := new(string)
+				if !tilesItem.Chart.Definition.Chart.ChoroplethMap.ChartTitle.IsUnknown() && !tilesItem.Chart.Definition.Chart.ChoroplethMap.ChartTitle.IsNull() {
+					*chartTitle4 = tilesItem.Chart.Definition.Chart.ChoroplethMap.ChartTitle.ValueString()
+				} else {
+					chartTitle4 = nil
+				}
+				typeVar9 := shared.ChoroplethMapChartType(tilesItem.Chart.Definition.Chart.ChoroplethMap.Type.ValueString())
+				choroplethMapChart = &shared.ChoroplethMapChart{
+					ChartTitle: chartTitle4,
+					Type:       typeVar9,
+				}
+			}
+			if choroplethMapChart != nil {
+				chart = shared.Chart{
+					ChoroplethMapChart: choroplethMapChart,
 				}
 			}
 			definition1 := shared.Definition{

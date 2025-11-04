@@ -103,10 +103,8 @@ type ForwardToVirtualClusterPolicy struct {
 	// A human-readable description of the policy.
 	Description *string `json:"description,omitempty"`
 	// Whether the policy is enabled.
-	Enabled *bool `default:"true" json:"enabled"`
-	// A string containing the boolean expression that determines whether the policy is applied.
-	Condition *string                             `json:"condition,omitempty"`
-	Config    ForwardToVirtualClusterPolicyConfig `json:"config"`
+	Enabled *bool                               `default:"true" json:"enabled"`
+	Config  ForwardToVirtualClusterPolicyConfig `json:"config"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -148,13 +146,6 @@ func (o *ForwardToVirtualClusterPolicy) GetEnabled() *bool {
 		return nil
 	}
 	return o.Enabled
-}
-
-func (o *ForwardToVirtualClusterPolicy) GetCondition() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Condition
 }
 
 func (o *ForwardToVirtualClusterPolicy) GetConfig() ForwardToVirtualClusterPolicyConfig {

@@ -6,7 +6,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type DonutChart struct {
-	ChartTitle types.String `tfsdk:"chart_title"`
-	Type       types.String `tfsdk:"type"`
+type Admin struct {
+	Port types.Int64 `tfsdk:"port"`
 }

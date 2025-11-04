@@ -30,7 +30,7 @@ func newEventGatewayVirtualClusterConsumePolicies(rootSDK *KonnectBeta, sdkConfi
 	}
 }
 
-// GetEventGatewayVirtualClusterConsumePolicyModifyHeaders - Fetch Consume Policy for Virtual Cluster
+// GetEventGatewayVirtualClusterConsumePolicyModifyHeaders - Get a Consume Policy for Virtual Cluster
 // Returns information about a specific consume policy associated with the Event Gateway virtual cluster.
 func (s *EventGatewayVirtualClusterConsumePolicies) GetEventGatewayVirtualClusterConsumePolicyModifyHeaders(ctx context.Context, request operations.GetEventGatewayVirtualClusterConsumePolicyModifyHeadersRequest, opts ...operations.Option) (*operations.GetEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse, error) {
 	o := operations.Options{}
@@ -833,7 +833,7 @@ func (s *EventGatewayVirtualClusterConsumePolicies) DeleteEventGatewayVirtualClu
 
 }
 
-// GetEventGatewayVirtualClusterConsumePolicySchemaValidation - Fetch Consume Policy for Virtual Cluster
+// GetEventGatewayVirtualClusterConsumePolicySchemaValidation - Get a Consume Policy for Virtual Cluster
 // Returns information about a specific consume policy associated with the Event Gateway virtual cluster.
 func (s *EventGatewayVirtualClusterConsumePolicies) GetEventGatewayVirtualClusterConsumePolicySchemaValidation(ctx context.Context, request operations.GetEventGatewayVirtualClusterConsumePolicySchemaValidationRequest, opts ...operations.Option) (*operations.GetEventGatewayVirtualClusterConsumePolicySchemaValidationResponse, error) {
 	o := operations.Options{}
@@ -1636,7 +1636,7 @@ func (s *EventGatewayVirtualClusterConsumePolicies) DeleteEventGatewayVirtualClu
 
 }
 
-// GetEventGatewayVirtualClusterConsumePolicyDecrypt - Fetch Consume Policy for Virtual Cluster
+// GetEventGatewayVirtualClusterConsumePolicyDecrypt - Get a Consume Policy for Virtual Cluster
 // Returns information about a specific consume policy associated with the Event Gateway virtual cluster.
 func (s *EventGatewayVirtualClusterConsumePolicies) GetEventGatewayVirtualClusterConsumePolicyDecrypt(ctx context.Context, request operations.GetEventGatewayVirtualClusterConsumePolicyDecryptRequest, opts ...operations.Option) (*operations.GetEventGatewayVirtualClusterConsumePolicyDecryptResponse, error) {
 	o := operations.Options{}
@@ -1946,7 +1946,7 @@ func (s *EventGatewayVirtualClusterConsumePolicies) UpdateEventGatewayVirtualClu
 		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayDecryptPolicy", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayDecryptSensitiveDataAwarePolicy", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -2439,7 +2439,7 @@ func (s *EventGatewayVirtualClusterConsumePolicies) DeleteEventGatewayVirtualClu
 
 }
 
-// GetEventGatewayVirtualClusterConsumePolicySkipRecord - Fetch Consume Policy for Virtual Cluster
+// GetEventGatewayVirtualClusterConsumePolicySkipRecord - Get a Consume Policy for Virtual Cluster
 // Returns information about a specific consume policy associated with the Event Gateway virtual cluster.
 func (s *EventGatewayVirtualClusterConsumePolicies) GetEventGatewayVirtualClusterConsumePolicySkipRecord(ctx context.Context, request operations.GetEventGatewayVirtualClusterConsumePolicySkipRecordRequest, opts ...operations.Option) (*operations.GetEventGatewayVirtualClusterConsumePolicySkipRecordResponse, error) {
 	o := operations.Options{}

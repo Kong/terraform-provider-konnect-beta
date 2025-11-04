@@ -53,7 +53,7 @@ type UpdateEventGatewayListenerPolicyForwardToVirtualClusterResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Updated policy object.
-	EventGatewayPolicy *shared.EventGatewayPolicy
+	EventGatewayListenerPolicy *shared.EventGatewayListenerPolicy
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Unauthorized
@@ -83,11 +83,11 @@ func (o *UpdateEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetRaw
 	return o.RawResponse
 }
 
-func (o *UpdateEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetEventGatewayPolicy() *shared.EventGatewayPolicy {
+func (o *UpdateEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetEventGatewayListenerPolicy() *shared.EventGatewayListenerPolicy {
 	if o == nil {
 		return nil
 	}
-	return o.EventGatewayPolicy
+	return o.EventGatewayListenerPolicy
 }
 
 func (o *UpdateEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetBadRequestError() *shared.BadRequestError {

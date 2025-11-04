@@ -6,47 +6,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-type EventGatewayTLSListenerPolicyConfig struct {
-	Certificates []TLSCertificate `json:"certificates"`
-	// A range of TLS versions.
-	Versions *TLSVersionRange `json:"versions,omitempty"`
-	// If false, only TLS connections are allowed. If true, both TLS and plaintext connections are allowed.
-	//
-	AllowPlaintext *bool `default:"false" json:"allow_plaintext"`
-}
-
-func (e EventGatewayTLSListenerPolicyConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(e, "", false)
-}
-
-func (e *EventGatewayTLSListenerPolicyConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (o *EventGatewayTLSListenerPolicyConfig) GetCertificates() []TLSCertificate {
-	if o == nil {
-		return []TLSCertificate{}
-	}
-	return o.Certificates
-}
-
-func (o *EventGatewayTLSListenerPolicyConfig) GetVersions() *TLSVersionRange {
-	if o == nil {
-		return nil
-	}
-	return o.Versions
-}
-
-func (o *EventGatewayTLSListenerPolicyConfig) GetAllowPlaintext() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.AllowPlaintext
-}
-
 // EventGatewayTLSListenerPolicy - The TLS Server policy defines the certificates and keys used by the gateway server when the client connects
 // to the gateway over TLS.
 //
@@ -58,10 +17,8 @@ type EventGatewayTLSListenerPolicy struct {
 	// A human-readable description of the policy.
 	Description *string `json:"description,omitempty"`
 	// Whether the policy is enabled.
-	Enabled *bool `default:"true" json:"enabled"`
-	// A string containing the boolean expression that determines whether the policy is applied.
-	Condition *string                              `json:"condition,omitempty"`
-	Config    *EventGatewayTLSListenerPolicyConfig `json:"config"`
+	Enabled *bool                               `default:"true" json:"enabled"`
+	Config  EventGatewayTLSListenerPolicyConfig `json:"config"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -105,16 +62,9 @@ func (o *EventGatewayTLSListenerPolicy) GetEnabled() *bool {
 	return o.Enabled
 }
 
-func (o *EventGatewayTLSListenerPolicy) GetCondition() *string {
+func (o *EventGatewayTLSListenerPolicy) GetConfig() EventGatewayTLSListenerPolicyConfig {
 	if o == nil {
-		return nil
-	}
-	return o.Condition
-}
-
-func (o *EventGatewayTLSListenerPolicy) GetConfig() *EventGatewayTLSListenerPolicyConfig {
-	if o == nil {
-		return nil
+		return EventGatewayTLSListenerPolicyConfig{}
 	}
 	return o.Config
 }

@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: ce6a564e5a4bb2f1d3b8649dc7c8fdeb
+  docChecksum: 5e9e402fae8cfd2c34e4aa463fa6edd8
   docVersion: 2.0.0
   speakeasyVersion: 1.602.0
   generationVersion: 2.681.1
@@ -128,6 +128,8 @@ generatedFiles:
   - examples/resources/konnect-beta_mesh_rate_limit/resource.tf
   - examples/resources/konnect-beta_mesh_retry/import.sh
   - examples/resources/konnect-beta_mesh_retry/resource.tf
+  - examples/resources/konnect-beta_mesh_secret/import.sh
+  - examples/resources/konnect-beta_mesh_secret/resource.tf
   - examples/resources/konnect-beta_mesh_service/import.sh
   - examples/resources/konnect-beta_mesh_service/resource.tf
   - examples/resources/konnect-beta_mesh_tcp_route/import.sh
@@ -160,6 +162,10 @@ generatedFiles:
   - examples/resources/konnect-beta_portal_snippet/resource.tf
   - examples/resources/konnect-beta_portal_team/import.sh
   - examples/resources/konnect-beta_portal_team/resource.tf
+  - examples/resources/konnect-beta_zone_egress/import.sh
+  - examples/resources/konnect-beta_zone_egress/resource.tf
+  - examples/resources/konnect-beta_zone_ingress/import.sh
+  - examples/resources/konnect-beta_zone_ingress/resource.tf
   - go.mod
   - go.sum
   - internal/planmodifiers/boolplanmodifier/suppress_diff.go
@@ -274,6 +280,8 @@ generatedFiles:
   - internal/provider/meshratelimit_resource_sdk.go
   - internal/provider/meshretry_resource.go
   - internal/provider/meshretry_resource_sdk.go
+  - internal/provider/meshsecret_resource.go
+  - internal/provider/meshsecret_resource_sdk.go
   - internal/provider/meshservice_resource.go
   - internal/provider/meshservice_resource_sdk.go
   - internal/provider/meshtcproute_resource.go
@@ -334,6 +342,7 @@ generatedFiles:
   - internal/provider/types/access_key_data_source_secret.go
   - internal/provider/types/acm_certificate_authority_config.go
   - internal/provider/types/addresses.go
+  - internal/provider/types/admin.go
   - internal/provider/types/advanced_query.go
   - internal/provider/types/affinity_tags.go
   - internal/provider/types/agent.go
@@ -348,6 +357,7 @@ generatedFiles:
   - internal/provider/types/auth_config.go
   - internal/provider/types/auth_tls.go
   - internal/provider/types/autogenerate.go
+  - internal/provider/types/available_services.go
   - internal/provider/types/aws.go
   - internal/provider/types/aws_credentials.go
   - internal/provider/types/back_off.go
@@ -373,6 +383,7 @@ generatedFiles:
   - internal/provider/types/certificate_parameters.go
   - internal/provider/types/chart.go
   - internal/provider/types/chart_tile.go
+  - internal/provider/types/choropleth_map_chart.go
   - internal/provider/types/cluster.go
   - internal/provider/types/colors.go
   - internal/provider/types/conf.go
@@ -395,7 +406,6 @@ generatedFiles:
   - internal/provider/types/definition.go
   - internal/provider/types/delay.go
   - internal/provider/types/detectors.go
-  - internal/provider/types/donut_chart.go
   - internal/provider/types/dp_cert.go
   - internal/provider/types/encryption_record_selector.go
   - internal/provider/types/endpoints.go
@@ -406,9 +416,10 @@ generatedFiles:
   - internal/provider/types/event_gateway_acl_rule.go
   - internal/provider/types/event_gateway_consume_schema_validation_policy_config.go
   - internal/provider/types/event_gateway_decrypt_policy_config.go
-  - internal/provider/types/event_gateway_encrypt_policy_config.go
+  - internal/provider/types/event_gateway_encrypt_config.go
   - internal/provider/types/event_gateway_env_vault.go
   - internal/provider/types/event_gateway_key_source.go
+  - internal/provider/types/event_gateway_key_source1.go
   - internal/provider/types/event_gateway_konnect_vault.go
   - internal/provider/types/event_gateway_modify_header_action.go
   - internal/provider/types/event_gateway_modify_header_remove_action.go
@@ -417,6 +428,7 @@ generatedFiles:
   - internal/provider/types/event_gateway_produce_schema_validation_policy_config.go
   - internal/provider/types/event_gateway_produce_schema_validation_policy_json_config.go
   - internal/provider/types/event_gateway_static_key_source.go
+  - internal/provider/types/event_gateway_static_key_source1.go
   - internal/provider/types/event_gateway_tls_listener_policy_config.go
   - internal/provider/types/event_gateway_vault_event_gateway_env_vault.go
   - internal/provider/types/event_gateway_vault_event_gateway_konnect_vault.go
@@ -450,6 +462,7 @@ generatedFiles:
   - internal/provider/types/js.go
   - internal/provider/types/json_patches.go
   - internal/provider/types/keys.go
+  - internal/provider/types/keys1.go
   - internal/provider/types/layout.go
   - internal/provider/types/least_request.go
   - internal/provider/types/limits.go
@@ -669,7 +682,6 @@ generatedFiles:
   - internal/provider/types/virtual_cluster_authentication_claims_mapping.go
   - internal/provider/types/virtual_cluster_authentication_jwks.go
   - internal/provider/types/virtual_cluster_authentication_oauth_bearer.go
-  - internal/provider/types/virtual_cluster_authentication_principal.go
   - internal/provider/types/virtual_cluster_authentication_sasl_plain.go
   - internal/provider/types/virtual_cluster_authentication_sasl_scram.go
   - internal/provider/types/virtual_cluster_authentication_scheme.go
@@ -686,7 +698,13 @@ generatedFiles:
   - internal/provider/types/virtual_host.go
   - internal/provider/types/zipkin.go
   - internal/provider/types/zipkin_tracing_backend_config.go
+  - internal/provider/types/zone_egress_item_networking.go
+  - internal/provider/types/zone_ingress_item_networking.go
   - internal/provider/utils.go
+  - internal/provider/zoneegress_resource.go
+  - internal/provider/zoneegress_resource_sdk.go
+  - internal/provider/zoneingress_resource.go
+  - internal/provider/zoneingress_resource_sdk.go
   - internal/sdk/.gitattributes
   - internal/sdk/api.go
   - internal/sdk/apidocumentation.go
@@ -705,6 +723,7 @@ generatedFiles:
   - internal/sdk/eventgatewaydataplanecertificates.go
   - internal/sdk/eventgatewaylistenerpolicies.go
   - internal/sdk/eventgatewaylisteners.go
+  - internal/sdk/eventgateways.go
   - internal/sdk/eventgatewayschemaregistries.go
   - internal/sdk/eventgatewayvaults.go
   - internal/sdk/eventgatewayvirtualclusterconsumepolicies.go
@@ -712,7 +731,6 @@ generatedFiles:
   - internal/sdk/eventgatewayvirtualclusterproducepolicies.go
   - internal/sdk/eventgatewayvirtualclusters.go
   - internal/sdk/hostnamegenerator.go
-  - internal/sdk/houdinieventgateways.go
   - internal/sdk/internal/config/sdkconfiguration.go
   - internal/sdk/internal/hooks/hooks.go
   - internal/sdk/internal/utils/contenttype.go
@@ -850,6 +868,9 @@ generatedFiles:
   - internal/sdk/models/operations/deleteportalsnippet.go
   - internal/sdk/models/operations/deleteportalteam.go
   - internal/sdk/models/operations/deletepublication.go
+  - internal/sdk/models/operations/deletesecret.go
+  - internal/sdk/models/operations/deletezoneegress.go
+  - internal/sdk/models/operations/deletezoneingress.go
   - internal/sdk/models/operations/fetchapi.go
   - internal/sdk/models/operations/fetchapidocument.go
   - internal/sdk/models/operations/fetchapiimplementation.go
@@ -940,6 +961,12 @@ generatedFiles:
   - internal/sdk/models/operations/getportalpage.go
   - internal/sdk/models/operations/getportalsnippet.go
   - internal/sdk/models/operations/getportalteam.go
+  - internal/sdk/models/operations/getsecret.go
+  - internal/sdk/models/operations/getsecretlist.go
+  - internal/sdk/models/operations/getzoneegress.go
+  - internal/sdk/models/operations/getzoneegresslist.go
+  - internal/sdk/models/operations/getzoneingress.go
+  - internal/sdk/models/operations/getzoneingresslist.go
   - internal/sdk/models/operations/listmeshcontrolplanes.go
   - internal/sdk/models/operations/listportals.go
   - internal/sdk/models/operations/options.go
@@ -970,6 +997,9 @@ generatedFiles:
   - internal/sdk/models/operations/putmeshtrace.go
   - internal/sdk/models/operations/putmeshtrafficpermission.go
   - internal/sdk/models/operations/putmeshtrust.go
+  - internal/sdk/models/operations/putsecret.go
+  - internal/sdk/models/operations/putzoneegress.go
+  - internal/sdk/models/operations/putzoneingress.go
   - internal/sdk/models/operations/replaceauthserverclient.go
   - internal/sdk/models/operations/replaceportalassetfavicon.go
   - internal/sdk/models/operations/replaceportalassetlogo.go
@@ -1032,8 +1062,11 @@ generatedFiles:
   - internal/sdk/models/shared/backendcluster.go
   - internal/sdk/models/shared/backendclusterauthenticationanonymous.go
   - internal/sdk/models/shared/backendclusterauthenticationsaslplain.go
+  - internal/sdk/models/shared/backendclusterauthenticationsaslplainsensitivedataaware.go
   - internal/sdk/models/shared/backendclusterauthenticationsaslscram.go
+  - internal/sdk/models/shared/backendclusterauthenticationsaslscramsensitivedataaware.go
   - internal/sdk/models/shared/backendclusterauthenticationscheme.go
+  - internal/sdk/models/shared/backendclusterauthenticationsensitivedataawarescheme.go
   - internal/sdk/models/shared/backendclusterreference.go
   - internal/sdk/models/shared/backendclusterreferencemodify.go
   - internal/sdk/models/shared/backendclustertls.go
@@ -1043,6 +1076,7 @@ generatedFiles:
   - internal/sdk/models/shared/certificatemetadata.go
   - internal/sdk/models/shared/chart.go
   - internal/sdk/models/shared/charttile.go
+  - internal/sdk/models/shared/choroplethmapchart.go
   - internal/sdk/models/shared/claim.go
   - internal/sdk/models/shared/client.go
   - internal/sdk/models/shared/conflicterror.go
@@ -1084,12 +1118,20 @@ generatedFiles:
   - internal/sdk/models/shared/eventgatewayconsumeschemavalidationpolicy.go
   - internal/sdk/models/shared/eventgatewaydataplanecertificate.go
   - internal/sdk/models/shared/eventgatewaydecryptpolicy.go
+  - internal/sdk/models/shared/eventgatewaydecryptpolicyconfig.go
+  - internal/sdk/models/shared/eventgatewaydecryptpolicyconfigsensitivedataaware.go
+  - internal/sdk/models/shared/eventgatewaydecryptsensitivedataawarepolicy.go
+  - internal/sdk/models/shared/eventgatewayencryptconfig.go
+  - internal/sdk/models/shared/eventgatewayencryptconfigsensitivedataaware.go
   - internal/sdk/models/shared/eventgatewayencryptpolicy.go
+  - internal/sdk/models/shared/eventgatewayencryptsensitivedataawarepolicy.go
   - internal/sdk/models/shared/eventgatewayenvvault.go
   - internal/sdk/models/shared/eventgatewayinfo.go
   - internal/sdk/models/shared/eventgatewaykeysource.go
+  - internal/sdk/models/shared/eventgatewaykeysourcesensitivedataaware.go
   - internal/sdk/models/shared/eventgatewaykonnectvault.go
   - internal/sdk/models/shared/eventgatewaylistener.go
+  - internal/sdk/models/shared/eventgatewaylistenerpolicy.go
   - internal/sdk/models/shared/eventgatewaymodifyheaderaction.go
   - internal/sdk/models/shared/eventgatewaymodifyheaderremoveaction.go
   - internal/sdk/models/shared/eventgatewaymodifyheadersetaction.go
@@ -1102,7 +1144,11 @@ generatedFiles:
   - internal/sdk/models/shared/eventgatewayproduceschemavalidationpolicyschemaregistryconfig.go
   - internal/sdk/models/shared/eventgatewayskiprecordpolicy.go
   - internal/sdk/models/shared/eventgatewaystatickeysource.go
+  - internal/sdk/models/shared/eventgatewaystatickeysourcesensitivedataaware.go
   - internal/sdk/models/shared/eventgatewaytlslistenerpolicy.go
+  - internal/sdk/models/shared/eventgatewaytlslistenerpolicyconfig.go
+  - internal/sdk/models/shared/eventgatewaytlslistenerpolicyconfigsensitivedataaware.go
+  - internal/sdk/models/shared/eventgatewaytlslistenersensitivedataawarepolicy.go
   - internal/sdk/models/shared/eventgatewayvault.go
   - internal/sdk/models/shared/forbiddenerror.go
   - internal/sdk/models/shared/forwardtoclusterbyportmappingconfig.go
@@ -1232,7 +1278,6 @@ generatedFiles:
   - internal/sdk/models/shared/meshtrustlist.go
   - internal/sdk/models/shared/metricsabsolutetimerangedtov2.go
   - internal/sdk/models/shared/metricsrelativetimerangedtov2.go
-  - internal/sdk/models/shared/modifyschemaregistry.go
   - internal/sdk/models/shared/namespaceexactallowlistitem.go
   - internal/sdk/models/shared/notfounderror.go
   - internal/sdk/models/shared/pagemeta.go
@@ -1267,13 +1312,24 @@ generatedFiles:
   - internal/sdk/models/shared/responsetype.go
   - internal/sdk/models/shared/schemaregistry.go
   - internal/sdk/models/shared/schemaregistryauthenticationbasic.go
+  - internal/sdk/models/shared/schemaregistryauthenticationbasicsensitivedataaware.go
   - internal/sdk/models/shared/schemaregistryauthenticationscheme.go
+  - internal/sdk/models/shared/schemaregistryauthenticationsensitivedataawarescheme.go
   - internal/sdk/models/shared/schemaregistryconfluent.go
+  - internal/sdk/models/shared/schemaregistryconfluentconfig.go
+  - internal/sdk/models/shared/schemaregistryconfluentconfigsensitivedataaware.go
+  - internal/sdk/models/shared/schemaregistryconfluentsensitivedataaware.go
+  - internal/sdk/models/shared/schemaregistrycreate.go
   - internal/sdk/models/shared/schemaregistryreference.go
   - internal/sdk/models/shared/schemaregistryreferencebyid.go
   - internal/sdk/models/shared/schemaregistryreferencebyname.go
+  - internal/sdk/models/shared/schemaregistryupdate.go
   - internal/sdk/models/shared/schemavalidationtype.go
   - internal/sdk/models/shared/scope.go
+  - internal/sdk/models/shared/secretcreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/secretdeletesuccessresponse.go
+  - internal/sdk/models/shared/secretitem.go
+  - internal/sdk/models/shared/secretlist.go
   - internal/sdk/models/shared/security.go
   - internal/sdk/models/shared/servicereference.go
   - internal/sdk/models/shared/singlevaluechart.go
@@ -1283,6 +1339,7 @@ generatedFiles:
   - internal/sdk/models/shared/timerange.go
   - internal/sdk/models/shared/timeserieschart.go
   - internal/sdk/models/shared/tlscertificate.go
+  - internal/sdk/models/shared/tlscertificatesensitivedataaware.go
   - internal/sdk/models/shared/tlsversionrange.go
   - internal/sdk/models/shared/tokenendpointauthmethod.go
   - internal/sdk/models/shared/unauthorizederror.go
@@ -1311,9 +1368,12 @@ generatedFiles:
   - internal/sdk/models/shared/virtualclusterauthenticationjwks.go
   - internal/sdk/models/shared/virtualclusterauthenticationoauthbearer.go
   - internal/sdk/models/shared/virtualclusterauthenticationprincipal.go
+  - internal/sdk/models/shared/virtualclusterauthenticationprincipalsensitivedataaware.go
   - internal/sdk/models/shared/virtualclusterauthenticationsaslplain.go
+  - internal/sdk/models/shared/virtualclusterauthenticationsaslplainsensitivedataaware.go
   - internal/sdk/models/shared/virtualclusterauthenticationsaslscram.go
   - internal/sdk/models/shared/virtualclusterauthenticationscheme.go
+  - internal/sdk/models/shared/virtualclusterauthenticationsensitivedataawarescheme.go
   - internal/sdk/models/shared/virtualclusterauthenticationvalidate.go
   - internal/sdk/models/shared/virtualclusternamespace.go
   - internal/sdk/models/shared/virtualclusternamespaceadditionalproperties.go
@@ -1327,6 +1387,14 @@ generatedFiles:
   - internal/sdk/models/shared/virtualclusterreferencebyid.go
   - internal/sdk/models/shared/virtualclusterreferencebyname.go
   - internal/sdk/models/shared/visibilitystatus.go
+  - internal/sdk/models/shared/zoneegresscreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/zoneegressdeletesuccessresponse.go
+  - internal/sdk/models/shared/zoneegressitem.go
+  - internal/sdk/models/shared/zoneegresslist.go
+  - internal/sdk/models/shared/zoneingresscreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/zoneingressdeletesuccessresponse.go
+  - internal/sdk/models/shared/zoneingressitem.go
+  - internal/sdk/models/shared/zoneingresslist.go
   - internal/sdk/pages.go
   - internal/sdk/portalauthsettings.go
   - internal/sdk/portalcustomdomains.go
@@ -1334,12 +1402,15 @@ generatedFiles:
   - internal/sdk/portals.go
   - internal/sdk/portalteams.go
   - internal/sdk/retry/config.go
+  - internal/sdk/secret.go
   - internal/sdk/snippets.go
   - internal/sdk/types/bigint.go
   - internal/sdk/types/date.go
   - internal/sdk/types/datetime.go
   - internal/sdk/types/decimal.go
   - internal/sdk/types/pointers.go
+  - internal/sdk/zoneegress.go
+  - internal/sdk/zoneingress.go
   - internal/validators/DateValidator.go
   - internal/validators/ExactlyOneChild.go
   - internal/validators/JSONParseValidator.go
@@ -2055,7 +2126,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"type": "MeshAccessLog", "mesh": "default", "name": "<value>", "spec": {"from": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}}, "type": "OpenTelemetry"}]}, "targetRef": {"kind": "MeshGateway"}}], "rules": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}}, "type": "OpenTelemetry"}]}}], "to": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}]}, "targetRef": {"kind": "MeshExternalService"}}]}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+          application/json: {"type": "MeshAccessLog", "mesh": "default", "kri": "kri_mal_default_zone-east_kuma-demo_mypolicy1_", "name": "<value>", "spec": {"from": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}}, "type": "OpenTelemetry"}]}, "targetRef": {"kind": "MeshGateway"}}], "rules": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}}, "type": "OpenTelemetry"}]}}], "to": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "omitEmptyValues": false, "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}]}, "targetRef": {"kind": "MeshExternalService"}}]}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshAccessLog:
@@ -2172,7 +2243,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"type": "MeshCircuitBreaker", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+          application/json: {"type": "MeshCircuitBreaker", "mesh": "default", "kri": "kri_mcb_default_zone-east_kuma-demo_mypolicy1_", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshCircuitBreaker:
@@ -2289,7 +2360,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"type": "MeshFaultInjection", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+          application/json: {"type": "MeshFaultInjection", "mesh": "default", "kri": "kri_mfi_default_zone-east_kuma-demo_mypolicy1_", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshFaultInjection:
@@ -2406,7 +2477,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"type": "MeshHealthCheck", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+          application/json: {"type": "MeshHealthCheck", "mesh": "default", "kri": "kri_mhc_default_zone-east_kuma-demo_mypolicy1_", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshHealthCheck:
@@ -2523,7 +2594,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"type": "MeshHTTPRoute", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+          application/json: {"type": "MeshHTTPRoute", "mesh": "default", "kri": "kri_mhttpr_default_zone-east_kuma-demo_mypolicy1_", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshHTTPRoute:
@@ -2640,7 +2711,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"type": "MeshLoadBalancingStrategy", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+          application/json: {"type": "MeshLoadBalancingStrategy", "mesh": "default", "kri": "kri_mlbs_default_zone-east_kuma-demo_mypolicy1_", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshLoadBalancingStrategy:
@@ -2757,7 +2828,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"type": "MeshMetric", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+          application/json: {"type": "MeshMetric", "mesh": "default", "kri": "kri_mm_default_zone-east_kuma-demo_mypolicy1_", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshMetric:
@@ -2874,7 +2945,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"type": "MeshPassthrough", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+          application/json: {"type": "MeshPassthrough", "mesh": "default", "kri": "kri_mp_default_zone-east_kuma-demo_mypolicy1_", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshPassthrough:
@@ -2991,7 +3062,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"type": "MeshProxyPatch", "mesh": "default", "name": "<value>", "spec": {"default": {}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+          application/json: {"type": "MeshProxyPatch", "mesh": "default", "kri": "kri_mpp_default_zone-east_kuma-demo_mypolicy1_", "name": "<value>", "spec": {"default": {}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshProxyPatch:
@@ -3108,7 +3179,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"type": "MeshRateLimit", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+          application/json: {"type": "MeshRateLimit", "mesh": "default", "kri": "kri_mrl_default_zone-east_kuma-demo_mypolicy1_", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshRateLimit:
@@ -3225,7 +3296,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"type": "MeshRetry", "mesh": "default", "name": "<value>", "spec": {"to": [{"default": {"grpc": {"retryOn": ["Canceled", "DeadlineExceeded", "Internal", "ResourceExhausted", "Unavailable"]}, "http": {"retryOn": ["5XX", "GatewayError", "Reset", "Retriable4xx", "ConnectFailure", "EnvoyRatelimited", "RefusedStream", "Http3PostConnectFailure", "HttpMethodConnect", "HttpMethodDelete", "HttpMethodGet", "HttpMethodHead", "HttpMethodOptions", "HttpMethodPatch", "HttpMethodPost", "HttpMethodPut", "HttpMethodTrace", "500", "503"]}}, "targetRef": {"kind": "MeshSubset"}}]}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+          application/json: {"type": "MeshRetry", "mesh": "default", "kri": "kri_mr_default_zone-east_kuma-demo_mypolicy1_", "name": "<value>", "spec": {"to": [{"default": {"grpc": {"retryOn": ["Canceled", "DeadlineExceeded", "Internal", "ResourceExhausted", "Unavailable"]}, "http": {"retryOn": ["5XX", "GatewayError", "Reset", "Retriable4xx", "ConnectFailure", "EnvoyRatelimited", "RefusedStream", "Http3PostConnectFailure", "HttpMethodConnect", "HttpMethodDelete", "HttpMethodGet", "HttpMethodHead", "HttpMethodOptions", "HttpMethodPatch", "HttpMethodPost", "HttpMethodPut", "HttpMethodTrace", "500", "503"]}}, "targetRef": {"kind": "MeshSubset"}}]}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshRetry:
@@ -3342,7 +3413,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"type": "MeshTCPRoute", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+          application/json: {"type": "MeshTCPRoute", "mesh": "default", "kri": "kri_mtcpr_default_zone-east_kuma-demo_mypolicy1_", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshTCPRoute:
@@ -3459,7 +3530,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"type": "MeshTimeout", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+          application/json: {"type": "MeshTimeout", "mesh": "default", "kri": "kri_mt_default_zone-east_kuma-demo_mypolicy1_", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshTimeout:
@@ -3576,7 +3647,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"type": "MeshTLS", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+          application/json: {"type": "MeshTLS", "mesh": "default", "kri": "kri_mtls_default_zone-east_kuma-demo_mypolicy1_", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshTLS:
@@ -3693,7 +3764,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"type": "MeshTrace", "mesh": "default", "name": "<value>", "spec": {"default": {"backends": [{"openTelemetry": {"endpoint": "otel-collector:4317"}, "type": "OpenTelemetry"}]}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+          application/json: {"type": "MeshTrace", "mesh": "default", "kri": "kri_mtr_default_zone-east_kuma-demo_mypolicy1_", "name": "<value>", "spec": {"default": {"backends": [{"openTelemetry": {"endpoint": "otel-collector:4317"}, "type": "OpenTelemetry"}]}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshTrace:
@@ -3810,7 +3881,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"type": "MeshTrafficPermission", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+          application/json: {"type": "MeshTrafficPermission", "mesh": "default", "kri": "kri_mtp_default_zone-east_kuma-demo_mypolicy1_", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshTrafficPermission:
@@ -4243,7 +4314,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"type": "HostnameGenerator", "name": "<value>", "spec": {"template": "<value>"}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+          application/json: {"type": "HostnameGenerator", "kri": "kri_hg___kuma-system_myresource1_", "name": "<value>", "spec": {"template": "<value>"}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteHostnameGenerator:
@@ -4352,7 +4423,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"type": "MeshExternalService", "mesh": "default", "name": "<value>", "spec": {"endpoints": [{"address": "example.com", "port": 525825}], "match": {"port": 882453, "protocol": "tcp", "type": "HostnameGenerator"}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+          application/json: {"type": "MeshExternalService", "mesh": "default", "kri": "kri_extsvc_default_zone-east_kuma-system_myresource1_", "name": "<value>", "spec": {"endpoints": [{"address": "example.com", "port": 525825}], "match": {"port": 882453, "protocol": "tcp", "type": "HostnameGenerator"}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshExternalService:
@@ -4469,7 +4540,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"type": "MeshMultiZoneService", "mesh": "default", "name": "<value>", "spec": {"ports": [{"appProtocol": "tcp", "port": 585793}], "selector": {"meshService": {}}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+          application/json: {"type": "MeshMultiZoneService", "mesh": "default", "kri": "kri_mzsvc_default_zone-east_kuma-demo_myresource1_", "name": "<value>", "spec": {"ports": [{"appProtocol": "tcp", "port": 585793}], "selector": {"meshService": {}}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshMultiZoneService:
@@ -4586,7 +4657,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"type": "MeshService", "mesh": "default", "name": "<value>", "spec": {"state": "Unavailable"}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+          application/json: {"type": "MeshService", "mesh": "default", "kri": "kri_msvc_default_zone-east_kuma-demo_myresource1_", "name": "<value>", "spec": {"state": "Unavailable"}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshService:
@@ -4703,7 +4774,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"type": "MeshGlobalRateLimit", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+          application/json: {"type": "MeshGlobalRateLimit", "mesh": "default", "kri": "kri_mgrl_default_zone-east_kuma-demo_mypolicy1_", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshGlobalRateLimit:
@@ -4820,7 +4891,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"type": "MeshOPA", "mesh": "default", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+          application/json: {"type": "MeshOPA", "mesh": "default", "kri": "kri_mopa_default_zone-east_kuma-demo_mypolicy1_", "name": "<value>", "spec": {}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   deleteMeshOPA:
@@ -5660,7 +5731,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"type": "MeshIdentity", "mesh": "default", "name": "<value>", "spec": {"provider": {"type": "Spire"}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+          application/json: {"type": "MeshIdentity", "mesh": "default", "kri": "kri_mid_default_zone-east_kuma-system_myresource1_", "name": "<value>", "spec": {"provider": {"type": "Spire"}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   putMeshIdentity:
@@ -5709,7 +5780,7 @@ examples:
           name: "<value>"
       responses:
         "200":
-          application/json: {"type": "MeshTrust", "mesh": "default", "name": "<value>", "spec": {"caBundles": [], "trustDomain": "<value>"}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+          application/json: {"type": "MeshTrust", "mesh": "default", "kri": "kri_mtrust_default_zone-east_kuma-system_myresource1_", "name": "<value>", "spec": {"caBundles": [], "trustDomain": "<value>"}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   putMeshTrust:
@@ -6254,7 +6325,7 @@ examples:
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "06a1da50-18ba-4734-a0a9-e00dd52dfc9b", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "config": {}, "labels": {"env": "test"}, "id": "06a1da50-18ba-4734-a0a9-e00dd52dfc9b", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -6269,10 +6340,10 @@ examples:
           eventGatewayListenerId: "8150b381-175e-48cc-b79b-78d1d98707a8"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "tls_server", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+        application/json: {"type": "tls_server", "name": null, "enabled": true, "config": {"certificates": [{"certificate": "<value>", "key": "${vault.env['MY_ENV_VAR']}"}], "versions": {"min": "TLSv1.2", "max": "TLSv1.3"}, "allow_plaintext": false}, "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "3252186a-a8d6-45c3-ae43-7f70c4575b09", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "config": {}, "labels": {"env": "test"}, "id": "3252186a-a8d6-45c3-ae43-7f70c4575b09", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 976208, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -6302,7 +6373,7 @@ examples:
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "f674c0bd-d6b4-488d-a8b4-ff7fdb36b038", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "config": {}, "labels": {"env": "test"}, "id": "f674c0bd-d6b4-488d-a8b4-ff7fdb36b038", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -6317,10 +6388,10 @@ examples:
           eventGatewayListenerId: "60c0a875-ed08-4959-a810-6710c2d37b44"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "forward_to_virtual_cluster", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"type": "sni", "sni_suffix": ".example.com", "advertised_port": null}, "labels": {"env": "test"}}
+        application/json: {"type": "forward_to_virtual_cluster", "name": null, "enabled": true, "config": {"type": "sni", "sni_suffix": ".example.com", "advertised_port": 985890}, "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "a964a42a-4b6e-438a-847c-79680f3800f7", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "config": {}, "labels": {"env": "test"}, "id": "a964a42a-4b6e-438a-847c-79680f3800f7", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 258360, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_symbols", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
@@ -6348,10 +6419,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           eventGatewayListenerId: "fbb26749-530c-4cd0-8d52-9db9d81c3f08"
       requestBody:
-        application/json: {"type": "tls_server", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+        application/json: {"type": "tls_server", "name": null, "enabled": true, "config": {"certificates": [{"certificate": "<value>", "key": "${vault.env['MY_ENV_VAR']}"}], "versions": {"min": "TLSv1.2", "max": "TLSv1.3"}, "allow_plaintext": false}, "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "009e4bb7-902f-439c-ba0f-6126abc8ab52", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "config": {}, "labels": {"env": "test"}, "id": "009e4bb7-902f-439c-ba0f-6126abc8ab52", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 830414, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>"], "source": "body"}]}
         "401":
@@ -6365,10 +6436,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           eventGatewayListenerId: "cc1f804b-d05f-4c4b-ae7c-01ee08446fa7"
       requestBody:
-        application/json: {"type": "forward_to_virtual_cluster", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"type": "sni", "sni_suffix": ".example.com", "advertised_port": null}, "labels": {"env": "test"}}
+        application/json: {"type": "forward_to_virtual_cluster", "name": null, "enabled": true, "config": {"type": "sni", "sni_suffix": ".example.com", "advertised_port": 971355}, "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "55a6e644-871e-4251-8b96-3dbbcc3555cf", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "enabled": true, "config": {}, "labels": {"env": "test"}, "id": "55a6e644-871e-4251-8b96-3dbbcc3555cf", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 712567, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -6495,7 +6566,7 @@ examples:
           virtualClusterId: "eb84f991-ae6d-4ed9-a84f-dd27dd8493c1"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "decrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+        application/json: {"type": "decrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"failure_mode": "passthrough", "key_sources": [{"type": "static", "keys": []}], "decrypt": [{"part_of_record": "value"}]}, "labels": {"env": "test"}}
       responses:
         "200":
           application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "b7a563ad-fad7-4c5f-b18a-ba17dd92a28a", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -6608,7 +6679,7 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "995bc147-2750-4c10-a0e2-ec9b901491eb"
       requestBody:
-        application/json: {"type": "decrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+        application/json: {"type": "decrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"failure_mode": "passthrough", "key_sources": [{"type": "aws"}], "decrypt": [{"part_of_record": "value"}]}, "labels": {"env": "test"}}
       responses:
         "201":
           application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "627ce5c5-8fd9-43a2-8c83-eafe3d39fe8e", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -6755,7 +6826,7 @@ examples:
           virtualClusterId: "f5cf6665-58bb-47f4-be01-926b2c0b6612"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "encrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+        application/json: {"type": "encrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"failure_mode": "passthrough", "key_sources": [], "encrypt": [{"part_of_record": "value", "key_id": "static://static-key-named-in-source"}]}, "labels": {"env": "test"}}
       responses:
         "200":
           application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "f9bcd779-cf70-4a2f-949f-99f677043c70", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -6868,7 +6939,7 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "593ecd65-910f-4bd8-9c22-0dd3eaa403c3"
       requestBody:
-        application/json: {"type": "encrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": null, "labels": {"env": "test"}}
+        application/json: {"type": "encrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"failure_mode": "error", "key_sources": [{"type": "aws"}], "encrypt": [{"part_of_record": "value", "key_id": "static://static-key-named-in-source"}]}, "labels": {"env": "test"}}
       responses:
         "201":
           application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "bd47b7ed-1b37-4332-8874-76c9a0e498b9", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -6960,5 +7031,144 @@ examples:
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  getSecret:
+    speakeasy-default-get-secret:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"mesh": "<value>", "name": "<value>", "type": "<value>"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  putSecret:
+    speakeasy-default-put-secret:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      requestBody:
+        application/json: {"mesh": "<value>", "name": "<value>", "type": "<value>"}
+      responses:
+        "200":
+          application/json: {}
+  deleteSecret:
+    speakeasy-default-delete-secret:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  getSecretList:
+    speakeasy-default-get-secret-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          mesh: "<value>"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {"items": null, "total": null, "next": null}
+  getZoneEgress:
+    speakeasy-default-get-zone-egress:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"name": "<value>", "type": "<value>"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  putZoneEgress:
+    speakeasy-default-put-zone-egress:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          name: "<value>"
+      requestBody:
+        application/json: {"name": "<value>", "type": "<value>"}
+      responses:
+        "200":
+          application/json: {}
+  deleteZoneEgress:
+    speakeasy-default-delete-zone-egress:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  getZoneEgressList:
+    speakeasy-default-get-zone-egress-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {"items": null, "total": null, "next": null}
+  getZoneIngress:
+    speakeasy-default-get-zone-ingress:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {"availableServices": null, "name": "<value>", "type": "<value>"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  putZoneIngress:
+    speakeasy-default-put-zone-ingress:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          name: "<value>"
+      requestBody:
+        application/json: {"availableServices": null, "name": "<value>", "type": "<value>"}
+      responses:
+        "200":
+          application/json: {}
+  deleteZoneIngress:
+    speakeasy-default-delete-zone-ingress:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          name: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  getZoneIngressList:
+    speakeasy-default-get-zone-ingress-list:
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+        query:
+          offset: 0
+          size: 100
+          filter: {}
+      responses:
+        "200":
+          application/json: {"items": null, "total": null, "next": null}
 examplesVersion: 1.0.2
 generatedTests: {}

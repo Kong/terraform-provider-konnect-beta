@@ -175,6 +175,7 @@ func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.R
 		NewMeshProxyPatchResource,
 		NewMeshRateLimitResource,
 		NewMeshRetryResource,
+		NewMeshSecretResource,
 		NewMeshServiceResource,
 		NewMeshTCPRouteResource,
 		NewMeshTimeoutResource,
@@ -191,6 +192,8 @@ func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.R
 		NewPortalPageResource,
 		NewPortalSnippetResource,
 		NewPortalTeamResource,
+		NewZoneEgressResource,
+		NewZoneIngressResource,
 	}
 }
 

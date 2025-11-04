@@ -10,6 +10,7 @@ import (
 type Name string
 
 const (
+	NameAll             Name = "all"
 	NameAlter           Name = "alter"
 	NameAlterConfigs    Name = "alter_configs"
 	NameCreate          Name = "create"
@@ -30,6 +31,8 @@ func (e *Name) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "all":
+		fallthrough
 	case "alter":
 		fallthrough
 	case "alter_configs":

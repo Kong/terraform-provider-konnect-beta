@@ -6,21 +6,26 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-type Keys struct {
-	// The unique identifier of the key.
+type EventGatewayStaticKeySourceKeys struct {
+	// The identifier of the key. To decrypt using this key, the same id must be used in the decrypt policy.
+	// It must have the prefix static://
+	//
 	ID string `json:"id"`
-	// A template string expression containing a reference to a secret
+	// A sensitive value containing the secret or a reference to a secret as a template string expression.
+	// If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
+	// If provided as an expression, the expression itself is stored and returned by the API.
+	//
 	Key string `json:"key"`
 }
 
-func (o *Keys) GetID() string {
+func (o *EventGatewayStaticKeySourceKeys) GetID() string {
 	if o == nil {
 		return ""
 	}
 	return o.ID
 }
 
-func (o *Keys) GetKey() string {
+func (o *EventGatewayStaticKeySourceKeys) GetKey() string {
 	if o == nil {
 		return ""
 	}
@@ -31,7 +36,7 @@ func (o *Keys) GetKey() string {
 type EventGatewayStaticKeySource struct {
 	type_ string `const:"static" json:"type"`
 	// A list of static, user-provided keys. Each one must be 128 bits long.
-	Keys []Keys `json:"keys"`
+	Keys []EventGatewayStaticKeySourceKeys `json:"keys"`
 }
 
 func (e EventGatewayStaticKeySource) MarshalJSON() ([]byte, error) {
@@ -49,9 +54,9 @@ func (o *EventGatewayStaticKeySource) GetType() string {
 	return "static"
 }
 
-func (o *EventGatewayStaticKeySource) GetKeys() []Keys {
+func (o *EventGatewayStaticKeySource) GetKeys() []EventGatewayStaticKeySourceKeys {
 	if o == nil {
-		return []Keys{}
+		return []EventGatewayStaticKeySourceKeys{}
 	}
 	return o.Keys
 }

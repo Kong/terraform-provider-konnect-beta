@@ -20,7 +20,7 @@ type VirtualCluster struct {
 	// It tries to authenticate with every rule sequentially one by one.
 	// It succeeds on the first match, and fails if no rule matches.
 	//
-	Authentication []VirtualClusterAuthenticationScheme `json:"authentication"`
+	Authentication []VirtualClusterAuthenticationSensitiveDataAwareScheme `json:"authentication"`
 	// Namespace allows to implement multitenancy using a single backend cluster.
 	// It allows to either hide or enforce a static prefix on resources (topics, consumer group IDs, transaction IDs).
 	//
@@ -28,7 +28,7 @@ type VirtualCluster struct {
 	// The name of the virtual cluster.
 	Name string `json:"name"`
 	// The DNS label used in the bootstrap server URL to identify the virtual cluster when using SNI routing.
-	// The format follows the RFC1035: 1-63 chars, lowercase alphanumeric or '-', must start with a letter and end with an alphanumeric character.
+	// The format follows the RFC1035: 1-63 chars, lowercase alphanumeric or '-', must start and end with an alphanumeric character.
 	DNSLabel string `json:"dns_label"`
 	// Configures whether or not ACL policies are enforced on the gateway.
 	// - `enforce_on_gateway` means the gateway enforces its own ACL policies for this virtual cluster
@@ -81,9 +81,9 @@ func (o *VirtualCluster) GetDestination() BackendClusterReference {
 	return o.Destination
 }
 
-func (o *VirtualCluster) GetAuthentication() []VirtualClusterAuthenticationScheme {
+func (o *VirtualCluster) GetAuthentication() []VirtualClusterAuthenticationSensitiveDataAwareScheme {
 	if o == nil {
-		return []VirtualClusterAuthenticationScheme{}
+		return []VirtualClusterAuthenticationSensitiveDataAwareScheme{}
 	}
 	return o.Authentication
 }
