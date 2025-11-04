@@ -3784,7 +3784,7 @@ paths:
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/secrets/{name}':
     get:
       x-speakeasy-entity-operation:
-        terraform-resource: Secret#get
+        terraform-resource: MeshSecret#get
         terraform-datasource: null
       operationId: getSecret
       summary: Returns Secret entity
@@ -3810,7 +3810,7 @@ paths:
         - Secret
     put:
       x-speakeasy-entity-operation:
-        terraform-resource: 'Secret#create,update'
+        terraform-resource: 'MeshSecret#create,update'
         terraform-datasource: null
       operationId: putSecret
       summary: Creates or Updates Secret entity
@@ -3843,7 +3843,7 @@ paths:
         - Secret
     delete:
       x-speakeasy-entity-operation:
-        terraform-resource: Secret#delete
+        terraform-resource: MeshSecret#delete
         terraform-datasource: null
       operationId: deleteSecret
       summary: Deletes Secret entity
@@ -6571,7 +6571,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
+                $ref: '#/components/schemas/EventGatewayListenerPolicy'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -6600,7 +6600,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
+                $ref: '#/components/schemas/EventGatewayListenerPolicy'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -6657,7 +6657,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
+                $ref: '#/components/schemas/EventGatewayListenerPolicy'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -6686,7 +6686,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
+                $ref: '#/components/schemas/EventGatewayListenerPolicy'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -6748,7 +6748,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
+                $ref: '#/components/schemas/EventGatewayListenerPolicy'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -6781,7 +6781,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
+                $ref: '#/components/schemas/EventGatewayListenerPolicy'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -25086,6 +25086,11 @@ components:
         - oneOf:
             - $ref: '#/components/schemas/EventGatewayEnvVault'
             - $ref: '#/components/schemas/EventGatewayKonnectVault'
+        - discriminator:
+            propertyName: type
+            mapping:
+              env: '#/components/schemas/EventGatewayEnvVault'
+              konnect: '#/components/schemas/EventGatewayKonnectVault'
     EventGatewayBaseVault:
       description: Base properties of a vault.
       type: object
@@ -25432,6 +25437,41 @@ components:
       required:
         - type
         - config
+    BaseEventGatewayListenerPolicy:
+      description: The base schema for listener policies.
+      type: object
+      properties:
+        type:
+          description: The type name of the policy.
+          type: string
+          maxLength: 255
+          minLength: 1
+        name:
+          description: A unique user-defined name of the policy.
+          type: string
+          default: null
+          maxLength: 255
+          minLength: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the policy.
+          type: string
+          maxLength: 512
+          x-speakeasy-param-computed: false
+        enabled:
+          description: Whether the policy is enabled.
+          type: boolean
+          default: true
+        config:
+          description: The configuration of the policy.
+          type: object
+        labels:
+          $ref: '#/components/schemas/Labels'
+      required:
+        - type
+        - config
     EventGatewayPolicy:
       allOf:
         - $ref: '#/components/schemas/BaseEventGatewayPolicy'
@@ -25457,9 +25497,34 @@ components:
               x-speakeasy-param-computed: false
             updated_at:
               $ref: '#/components/schemas/UpdatedAt'
+    EventGatewayListenerPolicy:
+      allOf:
+        - $ref: '#/components/schemas/BaseEventGatewayListenerPolicy'
+        - type: object
+          description: A listener policy associated with an Event Gateway.
+          required:
+            - id
+            - created_at
+            - updated_at
+          properties:
+            id:
+              description: The unique identifier of the policy.
+              type: string
+              format: uuid
+            created_at:
+              $ref: '#/components/schemas/CreatedAt'
+            parent_policy_id:
+              description: 'The unique identifier of the parent policy, if any.'
+              type: string
+              format: uuid
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            updated_at:
+              $ref: '#/components/schemas/UpdatedAt'
     EventGatewayTLSListenerSensitiveDataAwarePolicy:
       allOf:
-        - $ref: '#/components/schemas/BaseEventGatewayPolicy'
+        - $ref: '#/components/schemas/BaseEventGatewayListenerPolicy'
         - type: object
           description: |
             The TLS Server policy defines the certificates and keys used by the gateway server when the client connects
@@ -25478,7 +25543,7 @@ components:
         config:
           $ref: '#/components/schemas/EventGatewayTLSListenerPolicyConfig'
       allOf:
-        - $ref: '#/components/schemas/BaseEventGatewayPolicy'
+        - $ref: '#/components/schemas/BaseEventGatewayListenerPolicy'
         - type: object
           description: |
             The TLS Server policy defines the certificates and keys used by the gateway server when the client connects
@@ -25575,7 +25640,7 @@ components:
         max: TLSv1.3
     ForwardToVirtualClusterPolicy:
       allOf:
-        - $ref: '#/components/schemas/BaseEventGatewayPolicy'
+        - $ref: '#/components/schemas/BaseEventGatewayListenerPolicy'
         - type: object
           description: |
             Forwards requests to virtual clusters configured with port routing or SNI routing.
