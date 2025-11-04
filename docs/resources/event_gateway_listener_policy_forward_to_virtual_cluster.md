@@ -15,7 +15,6 @@ EventGatewayListenerPolicyForwardToVirtualCluster Resource
 ```terraform
 resource "konnect_event_gateway_listener_policy_forward_to_virtual_cluster" "my_eventgatewaylistenerpolicyforwardtovirtualcluster" {
   provider = konnect-beta
-  condition = "context.topic.name.endsWith('my_suffix')"
   config = {
     sni = {
       advertised_port = 61579
@@ -44,7 +43,6 @@ resource "konnect_event_gateway_listener_policy_forward_to_virtual_cluster" "my_
 
 ### Optional
 
-- `condition` (String) A string containing the boolean expression that determines whether the policy is applied.
 - `description` (String) A human-readable description of the policy.
 - `enabled` (Boolean) Whether the policy is enabled. Default: true
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
@@ -153,6 +151,21 @@ while `keg.example.com` is not.
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_event_gateway_listener_policy_forward_to_virtual_cluster.my_konnect_event_gateway_listener_policy_forward_to_virtual_cluster
+  id = jsonencode({
+    event_gateway_listener_id = "..."
+    gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
-terraform import konnect_event_gateway_listener_policy_forward_to_virtual_cluster.my_konnect_event_gateway_listener_policy_forward_to_virtual_cluster '{"event_gateway_listener_id": "", "gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}'
+terraform import konnect_event_gateway_listener_policy_forward_to_virtual_cluster.my_konnect_event_gateway_listener_policy_forward_to_virtual_cluster '{"event_gateway_listener_id": "...", "gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}'
 ```

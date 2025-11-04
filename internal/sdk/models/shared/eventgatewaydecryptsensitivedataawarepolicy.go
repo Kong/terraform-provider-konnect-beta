@@ -31,54 +31,54 @@ func (e EventGatewayDecryptSensitiveDataAwarePolicy) MarshalJSON() ([]byte, erro
 }
 
 func (e *EventGatewayDecryptSensitiveDataAwarePolicy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *EventGatewayDecryptSensitiveDataAwarePolicy) GetType() string {
+func (e *EventGatewayDecryptSensitiveDataAwarePolicy) GetType() string {
 	return "decrypt"
 }
 
-func (o *EventGatewayDecryptSensitiveDataAwarePolicy) GetName() *string {
-	if o == nil {
+func (e *EventGatewayDecryptSensitiveDataAwarePolicy) GetName() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Name
+	return e.Name
 }
 
-func (o *EventGatewayDecryptSensitiveDataAwarePolicy) GetDescription() *string {
-	if o == nil {
+func (e *EventGatewayDecryptSensitiveDataAwarePolicy) GetDescription() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Description
+	return e.Description
 }
 
-func (o *EventGatewayDecryptSensitiveDataAwarePolicy) GetEnabled() *bool {
-	if o == nil {
+func (e *EventGatewayDecryptSensitiveDataAwarePolicy) GetEnabled() *bool {
+	if e == nil {
 		return nil
 	}
-	return o.Enabled
+	return e.Enabled
 }
 
-func (o *EventGatewayDecryptSensitiveDataAwarePolicy) GetCondition() *string {
-	if o == nil {
+func (e *EventGatewayDecryptSensitiveDataAwarePolicy) GetCondition() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Condition
+	return e.Condition
 }
 
-func (o *EventGatewayDecryptSensitiveDataAwarePolicy) GetConfig() EventGatewayDecryptPolicyConfigSensitiveDataAware {
-	if o == nil {
+func (e *EventGatewayDecryptSensitiveDataAwarePolicy) GetConfig() EventGatewayDecryptPolicyConfigSensitiveDataAware {
+	if e == nil {
 		return EventGatewayDecryptPolicyConfigSensitiveDataAware{}
 	}
-	return o.Config
+	return e.Config
 }
 
-func (o *EventGatewayDecryptSensitiveDataAwarePolicy) GetLabels() map[string]*string {
-	if o == nil {
+func (e *EventGatewayDecryptSensitiveDataAwarePolicy) GetLabels() map[string]*string {
+	if e == nil {
 		return nil
 	}
-	return o.Labels
+	return e.Labels
 }

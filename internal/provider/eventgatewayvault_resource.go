@@ -20,6 +20,8 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
 	"regexp"
 )
 
@@ -39,14 +41,12 @@ type EventGatewayVaultResource struct {
 
 // EventGatewayVaultResourceModel describes the resource data model.
 type EventGatewayVaultResourceModel struct {
-	Description              types.String                                       `tfsdk:"description"`
-	Env                      *tfTypes.EventGatewayEnvVault                      `queryParam:"inline" tfsdk:"env" tfPlanOnly:"true"`
-	EventGatewayEnvVault     *tfTypes.EventGatewayVaultEventGatewayEnvVault     `queryParam:"inline" tfsdk:"event_gateway_env_vault" tfPlanOnly:"true"`
-	EventGatewayKonnectVault *tfTypes.EventGatewayVaultEventGatewayKonnectVault `queryParam:"inline" tfsdk:"event_gateway_konnect_vault" tfPlanOnly:"true"`
-	GatewayID                types.String                                       `tfsdk:"gateway_id"`
-	ID                       types.String                                       `tfsdk:"id"`
-	Konnect                  *tfTypes.EventGatewayKonnectVault                  `queryParam:"inline" tfsdk:"konnect" tfPlanOnly:"true"`
-	Name                     types.String                                       `tfsdk:"name"`
+	Description types.String                      `tfsdk:"description"`
+	Env         *tfTypes.EventGatewayEnvVault     `queryParam:"inline" tfsdk:"env" tfPlanOnly:"true"`
+	GatewayID   types.String                      `tfsdk:"gateway_id"`
+	ID          types.String                      `tfsdk:"id"`
+	Konnect     *tfTypes.EventGatewayKonnectVault `queryParam:"inline" tfsdk:"konnect" tfPlanOnly:"true"`
+	Name        types.String                      `tfsdk:"name"`
 }
 
 func (r *EventGatewayVaultResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -65,62 +65,26 @@ func (r *EventGatewayVaultResource) Schema(ctx context.Context, req resource.Sch
 				},
 			},
 			"env": schema.SingleNestedAttribute{
+				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"config": schema.SingleNestedAttribute{
-						Required: true,
-						Attributes: map[string]schema.Attribute{
-							"prefix": schema.StringAttribute{
-								Required:    true,
-								Description: `The optional prefix for environment variables.`,
-							},
-						},
-						Description: `The configuration of the environment vault.`,
-					},
-					"description": schema.StringAttribute{
-						Optional:    true,
-						Description: `A human-readable description of the vault.`,
-						Validators: []validator.String{
-							stringvalidator.UTF8LengthAtMost(512),
-						},
-					},
-					"labels": schema.MapAttribute{
-						Optional:    true,
-						ElementType: types.StringType,
-						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
-							`` + "\n" +
-							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
-					},
-					"name": schema.StringAttribute{
-						Required:    true,
-						Description: `The name of the vault.`,
-						Validators: []validator.String{
-							stringvalidator.UTF8LengthBetween(1, 255),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[\p{L}\p{N}][\p{L}\p{N} _\-\.']*[\p{L}\p{N}]$`), "must match pattern "+regexp.MustCompile(`^[\p{L}\p{N}][\p{L}\p{N} _\-\.']*[\p{L}\p{N}]$`).String()),
-						},
-					},
-				},
-				Description: `An environment vault.`,
-				Validators: []validator.Object{
-					objectvalidator.ConflictsWith(path.Expressions{
-						path.MatchRelative().AtParent().AtName("event_gateway_env_vault"),
-						path.MatchRelative().AtParent().AtName("konnect"),
-						path.MatchRelative().AtParent().AtName("event_gateway_konnect_vault"),
-					}...),
-				},
-			},
-			"event_gateway_env_vault": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"config": schema.SingleNestedAttribute{
 						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"prefix": schema.StringAttribute{
 								Computed:    true,
-								Description: `The optional prefix for environment variables.`,
+								Optional:    true,
+								Description: `The optional prefix for environment variables. Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
 							},
 						},
-						Description: `The configuration of the environment vault.`,
+						Description: `The configuration of the environment vault. Not Null`,
+						Validators: []validator.Object{
+							speakeasy_objectvalidators.NotNull(),
+						},
 					},
 					"created_at": schema.StringAttribute{
 						Computed: true,
@@ -133,7 +97,7 @@ func (r *EventGatewayVaultResource) Schema(ctx context.Context, req resource.Sch
 						},
 					},
 					"description": schema.StringAttribute{
-						Computed:    true,
+						Optional:    true,
 						Description: `A human-readable description of the vault.`,
 						Validators: []validator.String{
 							stringvalidator.UTF8LengthAtMost(512),
@@ -145,6 +109,7 @@ func (r *EventGatewayVaultResource) Schema(ctx context.Context, req resource.Sch
 					},
 					"labels": schema.MapAttribute{
 						Computed:    true,
+						Optional:    true,
 						ElementType: types.StringType,
 						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
 							`` + "\n" +
@@ -152,8 +117,10 @@ func (r *EventGatewayVaultResource) Schema(ctx context.Context, req resource.Sch
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
-						Description: `The name of the vault.`,
+						Optional:    true,
+						Description: `The name of the vault. Not Null`,
 						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 255),
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[\p{L}\p{N}][\p{L}\p{N} _\-\.']*[\p{L}\p{N}]$`), "must match pattern "+regexp.MustCompile(`^[\p{L}\p{N}][\p{L}\p{N} _\-\.']*[\p{L}\p{N}]$`).String()),
 						},
@@ -172,67 +139,6 @@ func (r *EventGatewayVaultResource) Schema(ctx context.Context, req resource.Sch
 				Description: `An environment vault.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
-						path.MatchRelative().AtParent().AtName("env"),
-						path.MatchRelative().AtParent().AtName("konnect"),
-						path.MatchRelative().AtParent().AtName("event_gateway_konnect_vault"),
-					}...),
-				},
-			},
-			"event_gateway_konnect_vault": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"created_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `An ISO-8601 timestamp representation of entity creation date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
-					},
-					"description": schema.StringAttribute{
-						Computed:    true,
-						Description: `A human-readable description of the vault.`,
-						Validators: []validator.String{
-							stringvalidator.UTF8LengthAtMost(512),
-						},
-					},
-					"id": schema.StringAttribute{
-						Computed:    true,
-						Description: `The unique identifier of the vault.`,
-					},
-					"labels": schema.MapAttribute{
-						Computed:    true,
-						ElementType: types.StringType,
-						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
-							`` + "\n" +
-							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
-					},
-					"name": schema.StringAttribute{
-						Computed:    true,
-						Description: `The name of the vault.`,
-						Validators: []validator.String{
-							stringvalidator.UTF8LengthBetween(1, 255),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[\p{L}\p{N}][\p{L}\p{N} _\-\.']*[\p{L}\p{N}]$`), "must match pattern "+regexp.MustCompile(`^[\p{L}\p{N}][\p{L}\p{N} _\-\.']*[\p{L}\p{N}]$`).String()),
-						},
-					},
-					"updated_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `An ISO-8601 timestamp representation of entity update date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
-					},
-				},
-				Description: `A konnect vault.`,
-				Validators: []validator.Object{
-					objectvalidator.ConflictsWith(path.Expressions{
-						path.MatchRelative().AtParent().AtName("env"),
-						path.MatchRelative().AtParent().AtName("event_gateway_env_vault"),
 						path.MatchRelative().AtParent().AtName("konnect"),
 					}...),
 				},
@@ -246,8 +152,19 @@ func (r *EventGatewayVaultResource) Schema(ctx context.Context, req resource.Sch
 				Description: `The unique identifier of the vault.`,
 			},
 			"konnect": schema.SingleNestedAttribute{
+				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
+					"created_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An ISO-8601 timestamp representation of entity creation date.`,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
+					},
 					"description": schema.StringAttribute{
 						Optional:    true,
 						Description: `A human-readable description of the vault.`,
@@ -255,7 +172,12 @@ func (r *EventGatewayVaultResource) Schema(ctx context.Context, req resource.Sch
 							stringvalidator.UTF8LengthAtMost(512),
 						},
 					},
+					"id": schema.StringAttribute{
+						Computed:    true,
+						Description: `The unique identifier of the vault.`,
+					},
 					"labels": schema.MapAttribute{
+						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
@@ -263,11 +185,23 @@ func (r *EventGatewayVaultResource) Schema(ctx context.Context, req resource.Sch
 							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 					},
 					"name": schema.StringAttribute{
-						Required:    true,
-						Description: `The name of the vault.`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The name of the vault. Not Null`,
 						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 255),
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[\p{L}\p{N}][\p{L}\p{N} _\-\.']*[\p{L}\p{N}]$`), "must match pattern "+regexp.MustCompile(`^[\p{L}\p{N}][\p{L}\p{N} _\-\.']*[\p{L}\p{N}]$`).String()),
+						},
+					},
+					"updated_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An ISO-8601 timestamp representation of entity update date.`,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
 						},
 					},
 				},
@@ -275,8 +209,6 @@ func (r *EventGatewayVaultResource) Schema(ctx context.Context, req resource.Sch
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("env"),
-						path.MatchRelative().AtParent().AtName("event_gateway_env_vault"),
-						path.MatchRelative().AtParent().AtName("event_gateway_konnect_vault"),
 					}...),
 				},
 			},
@@ -538,7 +470,7 @@ func (r *EventGatewayVaultResource) ImportState(ctx context.Context, req resourc
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "..."}': `+err.Error())
 		return
 	}
 

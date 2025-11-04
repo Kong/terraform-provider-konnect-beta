@@ -34,76 +34,76 @@ func (u UpdateBackendClusterRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateBackendClusterRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"name", "authentication", "bootstrap_servers", "tls"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *UpdateBackendClusterRequest) GetName() string {
-	if o == nil {
+func (u *UpdateBackendClusterRequest) GetName() string {
+	if u == nil {
 		return ""
 	}
-	return o.Name
+	return u.Name
 }
 
-func (o *UpdateBackendClusterRequest) GetDescription() *string {
-	if o == nil {
+func (u *UpdateBackendClusterRequest) GetDescription() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Description
+	return u.Description
 }
 
-func (o *UpdateBackendClusterRequest) GetAuthentication() BackendClusterAuthenticationSensitiveDataAwareScheme {
-	if o == nil {
+func (u *UpdateBackendClusterRequest) GetAuthentication() BackendClusterAuthenticationSensitiveDataAwareScheme {
+	if u == nil {
 		return BackendClusterAuthenticationSensitiveDataAwareScheme{}
 	}
-	return o.Authentication
+	return u.Authentication
 }
 
-func (o *UpdateBackendClusterRequest) GetAuthenticationAnonymous() *BackendClusterAuthenticationAnonymous {
-	return o.GetAuthentication().BackendClusterAuthenticationAnonymous
+func (u *UpdateBackendClusterRequest) GetAuthenticationAnonymous() *BackendClusterAuthenticationAnonymous {
+	return u.GetAuthentication().BackendClusterAuthenticationAnonymous
 }
 
-func (o *UpdateBackendClusterRequest) GetAuthenticationSaslPlain() *BackendClusterAuthenticationSaslPlainSensitiveDataAware {
-	return o.GetAuthentication().BackendClusterAuthenticationSaslPlainSensitiveDataAware
+func (u *UpdateBackendClusterRequest) GetAuthenticationSaslPlain() *BackendClusterAuthenticationSaslPlainSensitiveDataAware {
+	return u.GetAuthentication().BackendClusterAuthenticationSaslPlainSensitiveDataAware
 }
 
-func (o *UpdateBackendClusterRequest) GetAuthenticationSaslScram() *BackendClusterAuthenticationSaslScramSensitiveDataAware {
-	return o.GetAuthentication().BackendClusterAuthenticationSaslScramSensitiveDataAware
+func (u *UpdateBackendClusterRequest) GetAuthenticationSaslScram() *BackendClusterAuthenticationSaslScramSensitiveDataAware {
+	return u.GetAuthentication().BackendClusterAuthenticationSaslScramSensitiveDataAware
 }
 
-func (o *UpdateBackendClusterRequest) GetInsecureAllowAnonymousVirtualClusterAuth() *bool {
-	if o == nil {
+func (u *UpdateBackendClusterRequest) GetInsecureAllowAnonymousVirtualClusterAuth() *bool {
+	if u == nil {
 		return nil
 	}
-	return o.InsecureAllowAnonymousVirtualClusterAuth
+	return u.InsecureAllowAnonymousVirtualClusterAuth
 }
 
-func (o *UpdateBackendClusterRequest) GetBootstrapServers() []string {
-	if o == nil {
+func (u *UpdateBackendClusterRequest) GetBootstrapServers() []string {
+	if u == nil {
 		return []string{}
 	}
-	return o.BootstrapServers
+	return u.BootstrapServers
 }
 
-func (o *UpdateBackendClusterRequest) GetTLS() BackendClusterTLS {
-	if o == nil {
+func (u *UpdateBackendClusterRequest) GetTLS() BackendClusterTLS {
+	if u == nil {
 		return BackendClusterTLS{}
 	}
-	return o.TLS
+	return u.TLS
 }
 
-func (o *UpdateBackendClusterRequest) GetMetadataUpdateIntervalSeconds() *int64 {
-	if o == nil {
+func (u *UpdateBackendClusterRequest) GetMetadataUpdateIntervalSeconds() *int64 {
+	if u == nil {
 		return nil
 	}
-	return o.MetadataUpdateIntervalSeconds
+	return u.MetadataUpdateIntervalSeconds
 }
 
-func (o *UpdateBackendClusterRequest) GetLabels() map[string]*string {
-	if o == nil {
+func (u *UpdateBackendClusterRequest) GetLabels() map[string]*string {
+	if u == nil {
 		return nil
 	}
-	return o.Labels
+	return u.Labels
 }

@@ -17,39 +17,39 @@ func (r *EventGatewayVaultResourceModel) RefreshFromSharedEventGatewayVault(ctx 
 
 	if resp != nil {
 		if resp.EventGatewayVaultEventGatewayEnvVault != nil {
-			r.EventGatewayEnvVault = &tfTypes.EventGatewayVaultEventGatewayEnvVault{}
-			r.EventGatewayEnvVault.Config.Prefix = types.StringValue(resp.EventGatewayVaultEventGatewayEnvVault.Config.Prefix)
-			r.EventGatewayEnvVault.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.EventGatewayVaultEventGatewayEnvVault.CreatedAt))
-			r.EventGatewayEnvVault.Description = types.StringPointerValue(resp.EventGatewayVaultEventGatewayEnvVault.Description)
-			r.Description = r.EventGatewayEnvVault.Description
-			r.EventGatewayEnvVault.ID = types.StringValue(resp.EventGatewayVaultEventGatewayEnvVault.ID)
-			r.ID = r.EventGatewayEnvVault.ID
+			r.Env = &tfTypes.EventGatewayEnvVault{}
+			r.Env.Config.Prefix = types.StringValue(resp.EventGatewayVaultEventGatewayEnvVault.Config.Prefix)
+			r.Env.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.EventGatewayVaultEventGatewayEnvVault.CreatedAt))
+			r.Env.Description = types.StringPointerValue(resp.EventGatewayVaultEventGatewayEnvVault.Description)
+			r.Description = r.Env.Description
+			r.Env.ID = types.StringValue(resp.EventGatewayVaultEventGatewayEnvVault.ID)
+			r.ID = r.Env.ID
 			if len(resp.EventGatewayVaultEventGatewayEnvVault.Labels) > 0 {
-				r.EventGatewayEnvVault.Labels = make(map[string]types.String, len(resp.EventGatewayVaultEventGatewayEnvVault.Labels))
+				r.Env.Labels = make(map[string]types.String, len(resp.EventGatewayVaultEventGatewayEnvVault.Labels))
 				for key, value := range resp.EventGatewayVaultEventGatewayEnvVault.Labels {
-					r.EventGatewayEnvVault.Labels[key] = types.StringPointerValue(value)
+					r.Env.Labels[key] = types.StringPointerValue(value)
 				}
 			}
-			r.EventGatewayEnvVault.Name = types.StringValue(resp.EventGatewayVaultEventGatewayEnvVault.Name)
-			r.Name = r.EventGatewayEnvVault.Name
-			r.EventGatewayEnvVault.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.EventGatewayVaultEventGatewayEnvVault.UpdatedAt))
+			r.Env.Name = types.StringValue(resp.EventGatewayVaultEventGatewayEnvVault.Name)
+			r.Name = r.Env.Name
+			r.Env.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.EventGatewayVaultEventGatewayEnvVault.UpdatedAt))
 		}
 		if resp.EventGatewayVaultEventGatewayKonnectVault != nil {
-			r.EventGatewayKonnectVault = &tfTypes.EventGatewayVaultEventGatewayKonnectVault{}
-			r.EventGatewayKonnectVault.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.EventGatewayVaultEventGatewayKonnectVault.CreatedAt))
-			r.EventGatewayKonnectVault.Description = types.StringPointerValue(resp.EventGatewayVaultEventGatewayKonnectVault.Description)
-			r.Description = r.EventGatewayKonnectVault.Description
-			r.EventGatewayKonnectVault.ID = types.StringValue(resp.EventGatewayVaultEventGatewayKonnectVault.ID)
-			r.ID = r.EventGatewayKonnectVault.ID
+			r.Konnect = &tfTypes.EventGatewayKonnectVault{}
+			r.Konnect.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.EventGatewayVaultEventGatewayKonnectVault.CreatedAt))
+			r.Konnect.Description = types.StringPointerValue(resp.EventGatewayVaultEventGatewayKonnectVault.Description)
+			r.Description = r.Konnect.Description
+			r.Konnect.ID = types.StringValue(resp.EventGatewayVaultEventGatewayKonnectVault.ID)
+			r.ID = r.Konnect.ID
 			if len(resp.EventGatewayVaultEventGatewayKonnectVault.Labels) > 0 {
-				r.EventGatewayKonnectVault.Labels = make(map[string]types.String, len(resp.EventGatewayVaultEventGatewayKonnectVault.Labels))
+				r.Konnect.Labels = make(map[string]types.String, len(resp.EventGatewayVaultEventGatewayKonnectVault.Labels))
 				for key1, value1 := range resp.EventGatewayVaultEventGatewayKonnectVault.Labels {
-					r.EventGatewayKonnectVault.Labels[key1] = types.StringPointerValue(value1)
+					r.Konnect.Labels[key1] = types.StringPointerValue(value1)
 				}
 			}
-			r.EventGatewayKonnectVault.Name = types.StringValue(resp.EventGatewayVaultEventGatewayKonnectVault.Name)
-			r.Name = r.EventGatewayKonnectVault.Name
-			r.EventGatewayKonnectVault.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.EventGatewayVaultEventGatewayKonnectVault.UpdatedAt))
+			r.Konnect.Name = types.StringValue(resp.EventGatewayVaultEventGatewayKonnectVault.Name)
+			r.Name = r.Konnect.Name
+			r.Konnect.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.EventGatewayVaultEventGatewayKonnectVault.UpdatedAt))
 		}
 	}
 

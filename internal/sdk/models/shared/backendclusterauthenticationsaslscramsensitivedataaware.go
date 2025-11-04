@@ -56,33 +56,33 @@ func (b BackendClusterAuthenticationSaslScramSensitiveDataAware) MarshalJSON() (
 }
 
 func (b *BackendClusterAuthenticationSaslScramSensitiveDataAware) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"type", "algorithm", "username"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *BackendClusterAuthenticationSaslScramSensitiveDataAware) GetType() string {
+func (b *BackendClusterAuthenticationSaslScramSensitiveDataAware) GetType() string {
 	return "sasl_scram"
 }
 
-func (o *BackendClusterAuthenticationSaslScramSensitiveDataAware) GetAlgorithm() BackendClusterAuthenticationSaslScramSensitiveDataAwareAlgorithm {
-	if o == nil {
+func (b *BackendClusterAuthenticationSaslScramSensitiveDataAware) GetAlgorithm() BackendClusterAuthenticationSaslScramSensitiveDataAwareAlgorithm {
+	if b == nil {
 		return BackendClusterAuthenticationSaslScramSensitiveDataAwareAlgorithm("")
 	}
-	return o.Algorithm
+	return b.Algorithm
 }
 
-func (o *BackendClusterAuthenticationSaslScramSensitiveDataAware) GetUsername() string {
-	if o == nil {
+func (b *BackendClusterAuthenticationSaslScramSensitiveDataAware) GetUsername() string {
+	if b == nil {
 		return ""
 	}
-	return o.Username
+	return b.Username
 }
 
-func (o *BackendClusterAuthenticationSaslScramSensitiveDataAware) GetPassword() *string {
-	if o == nil {
+func (b *BackendClusterAuthenticationSaslScramSensitiveDataAware) GetPassword() *string {
+	if b == nil {
 		return nil
 	}
-	return o.Password
+	return b.Password
 }

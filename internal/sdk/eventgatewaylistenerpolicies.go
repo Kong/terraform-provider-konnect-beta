@@ -63,7 +63,7 @@ func (s *EventGatewayListenerPolicies) GetEventGatewayListenerPolicyTLSServer(ct
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-event-gateway-listener-policy-tls-server",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -216,12 +216,12 @@ func (s *EventGatewayListenerPolicies) GetEventGatewayListenerPolicyTLSServer(ct
 				return nil, err
 			}
 
-			var out shared.EventGatewayPolicy
+			var out shared.EventGatewayListenerPolicy
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.EventGatewayPolicy = &out
+			res.EventGatewayListenerPolicy = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -337,7 +337,7 @@ func (s *EventGatewayListenerPolicies) UpdateEventGatewayListenerPolicyTLSServer
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-event-gateway-listener-policy-tls-server",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayTLSListenerSensitiveDataAwarePolicy", "json", `request:"mediaType=application/json"`)
@@ -497,12 +497,12 @@ func (s *EventGatewayListenerPolicies) UpdateEventGatewayListenerPolicyTLSServer
 				return nil, err
 			}
 
-			var out shared.EventGatewayPolicy
+			var out shared.EventGatewayListenerPolicy
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.EventGatewayPolicy = &out
+			res.EventGatewayListenerPolicy = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -617,7 +617,7 @@ func (s *EventGatewayListenerPolicies) DeleteEventGatewayListenerPolicyTLSServer
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-event-gateway-listener-policy-tls-server",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -866,7 +866,7 @@ func (s *EventGatewayListenerPolicies) GetEventGatewayListenerPolicyForwardToVir
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-event-gateway-listener-policy-forward-to_virtual_cluster",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -1019,12 +1019,12 @@ func (s *EventGatewayListenerPolicies) GetEventGatewayListenerPolicyForwardToVir
 				return nil, err
 			}
 
-			var out shared.EventGatewayPolicy
+			var out shared.EventGatewayListenerPolicy
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.EventGatewayPolicy = &out
+			res.EventGatewayListenerPolicy = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -1140,7 +1140,7 @@ func (s *EventGatewayListenerPolicies) UpdateEventGatewayListenerPolicyForwardTo
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-event-gateway-listener-policy-forward-to_virtual_cluster",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "ForwardToVirtualClusterPolicy", "json", `request:"mediaType=application/json"`)
@@ -1300,12 +1300,12 @@ func (s *EventGatewayListenerPolicies) UpdateEventGatewayListenerPolicyForwardTo
 				return nil, err
 			}
 
-			var out shared.EventGatewayPolicy
+			var out shared.EventGatewayListenerPolicy
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.EventGatewayPolicy = &out
+			res.EventGatewayListenerPolicy = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -1420,7 +1420,7 @@ func (s *EventGatewayListenerPolicies) DeleteEventGatewayListenerPolicyForwardTo
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-event-gateway-listener-policy-forward-to_virtual_cluster",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -1669,7 +1669,7 @@ func (s *EventGatewayListenerPolicies) CreateEventGatewayListenerPolicyTLSServer
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-event-gateway-listener-policy-tls-server",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayTLSListenerPolicy", "json", `request:"mediaType=application/json"`)
@@ -1829,12 +1829,12 @@ func (s *EventGatewayListenerPolicies) CreateEventGatewayListenerPolicyTLSServer
 				return nil, err
 			}
 
-			var out shared.EventGatewayPolicy
+			var out shared.EventGatewayListenerPolicy
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.EventGatewayPolicy = &out
+			res.EventGatewayListenerPolicy = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -1950,7 +1950,7 @@ func (s *EventGatewayListenerPolicies) CreateEventGatewayListenerPolicyForwardTo
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-event-gateway-listener-policy-forward-to_virtual_cluster",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "ForwardToVirtualClusterPolicy", "json", `request:"mediaType=application/json"`)
@@ -2110,12 +2110,12 @@ func (s *EventGatewayListenerPolicies) CreateEventGatewayListenerPolicyForwardTo
 				return nil, err
 			}
 
-			var out shared.EventGatewayPolicy
+			var out shared.EventGatewayListenerPolicy
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.EventGatewayPolicy = &out
+			res.EventGatewayListenerPolicy = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

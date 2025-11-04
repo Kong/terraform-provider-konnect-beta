@@ -16,6 +16,9 @@ generation:
   auth:
     oAuth2ClientCredentialsEnabled: false
     oAuth2PasswordEnabled: false
+    hoistGlobalSecurity: true
+  schemas:
+    allOfMergeStrategy: shallowMerge
   tests:
     generateTests: true
     generateNewTests: false
@@ -41,6 +44,7 @@ terraform:
   author: kong
   baseErrorName: KonnectBetaError
   defaultErrorName: SDKError
+  enableOperationServers: false
   enableTypeDeduplication: true
   environmentVariables:
     - env: KONNECT_TOKEN
@@ -57,4 +61,6 @@ terraform:
       operations: operations
       shared: shared
       webhooks: webhooks
+  includeEmptyObjects: false
   packageName: konnect-beta
+  unionDeserializationStrategy: populated-fields

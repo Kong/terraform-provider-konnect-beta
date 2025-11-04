@@ -12,11 +12,11 @@ type DashboardsDeleteRequest struct {
 	DashboardID string `pathParam:"style=simple,explode=false,name=dashboardId"`
 }
 
-func (o *DashboardsDeleteRequest) GetDashboardID() string {
-	if o == nil {
+func (d *DashboardsDeleteRequest) GetDashboardID() string {
+	if d == nil {
 		return ""
 	}
-	return o.DashboardID
+	return d.DashboardID
 }
 
 type DashboardsDeleteResponse struct {
@@ -34,44 +34,44 @@ type DashboardsDeleteResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *DashboardsDeleteResponse) GetContentType() string {
-	if o == nil {
+func (d *DashboardsDeleteResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DashboardsDeleteResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DashboardsDeleteResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DashboardsDeleteResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DashboardsDeleteResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DashboardsDeleteResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (d *DashboardsDeleteResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return d.UnauthorizedError
 }
 
-func (o *DashboardsDeleteResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (d *DashboardsDeleteResponse) GetForbiddenError() *shared.ForbiddenError {
+	if d == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return d.ForbiddenError
 }
 
-func (o *DashboardsDeleteResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (d *DashboardsDeleteResponse) GetNotFoundError() *shared.NotFoundError {
+	if d == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return d.NotFoundError
 }

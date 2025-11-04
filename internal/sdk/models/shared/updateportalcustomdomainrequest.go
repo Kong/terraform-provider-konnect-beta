@@ -17,22 +17,22 @@ func (u UpdatePortalCustomDomainRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdatePortalCustomDomainRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *UpdatePortalCustomDomainRequest) GetEnabled() *bool {
-	if o == nil {
+func (u *UpdatePortalCustomDomainRequest) GetEnabled() *bool {
+	if u == nil {
 		return nil
 	}
-	return o.Enabled
+	return u.Enabled
 }
 
-func (o *UpdatePortalCustomDomainRequest) GetSsl() *UpdatePortalCustomDomainSSL {
-	if o == nil {
+func (u *UpdatePortalCustomDomainRequest) GetSsl() *UpdatePortalCustomDomainSSL {
+	if u == nil {
 		return nil
 	}
-	return o.Ssl
+	return u.Ssl
 }

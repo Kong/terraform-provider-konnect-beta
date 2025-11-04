@@ -26,7 +26,7 @@ resource "konnect_dashboard" "my_dashboard" {
               api_usage = {
                 datasource = "api_usage"
                 dimensions = [
-                  "api_product"
+                  "status_code_grouped",
                 ]
                 filters = [
                   {

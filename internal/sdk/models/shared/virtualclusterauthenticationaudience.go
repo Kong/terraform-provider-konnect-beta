@@ -2,13 +2,28 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
+)
+
 type VirtualClusterAuthenticationAudience struct {
 	Name string `json:"name"`
 }
 
-func (o *VirtualClusterAuthenticationAudience) GetName() string {
-	if o == nil {
+func (v VirtualClusterAuthenticationAudience) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *VirtualClusterAuthenticationAudience) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"name"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (v *VirtualClusterAuthenticationAudience) GetName() string {
+	if v == nil {
 		return ""
 	}
-	return o.Name
+	return v.Name
 }

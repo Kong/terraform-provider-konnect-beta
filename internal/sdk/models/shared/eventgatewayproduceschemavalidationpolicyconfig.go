@@ -18,8 +18,8 @@ const (
 
 // EventGatewayProduceSchemaValidationPolicyConfig - The configuration of the produce schema validation policy.
 type EventGatewayProduceSchemaValidationPolicyConfig struct {
-	EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig *EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig `queryParam:"inline"`
-	EventGatewayProduceSchemaValidationPolicyJSONConfig           *EventGatewayProduceSchemaValidationPolicyJSONConfig           `queryParam:"inline"`
+	EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig *EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig `queryParam:"inline,name=EventGatewayProduceSchemaValidationPolicyConfig"`
+	EventGatewayProduceSchemaValidationPolicyJSONConfig           *EventGatewayProduceSchemaValidationPolicyJSONConfig           `queryParam:"inline,name=EventGatewayProduceSchemaValidationPolicyConfig"`
 
 	Type EventGatewayProduceSchemaValidationPolicyConfigType
 }
@@ -56,7 +56,7 @@ func (u *EventGatewayProduceSchemaValidationPolicyConfig) UnmarshalJSON(data []b
 	switch dis.Type {
 	case "confluent_schema_registry":
 		eventGatewayProduceSchemaValidationPolicySchemaRegistryConfig := new(EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig)
-		if err := utils.UnmarshalJSON(data, &eventGatewayProduceSchemaValidationPolicySchemaRegistryConfig, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &eventGatewayProduceSchemaValidationPolicySchemaRegistryConfig, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == confluent_schema_registry) type EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig within EventGatewayProduceSchemaValidationPolicyConfig: %w", string(data), err)
 		}
 
@@ -65,7 +65,7 @@ func (u *EventGatewayProduceSchemaValidationPolicyConfig) UnmarshalJSON(data []b
 		return nil
 	case "json":
 		eventGatewayProduceSchemaValidationPolicyJSONConfig := new(EventGatewayProduceSchemaValidationPolicyJSONConfig)
-		if err := utils.UnmarshalJSON(data, &eventGatewayProduceSchemaValidationPolicyJSONConfig, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &eventGatewayProduceSchemaValidationPolicyJSONConfig, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == json) type EventGatewayProduceSchemaValidationPolicyJSONConfig within EventGatewayProduceSchemaValidationPolicyConfig: %w", string(data), err)
 		}
 

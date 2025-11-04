@@ -11,11 +11,10 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *EventGatewayListenerPolicyTLSServerResourceModel) RefreshFromSharedEventGatewayPolicy(ctx context.Context, resp *shared.EventGatewayPolicy) diag.Diagnostics {
+func (r *EventGatewayListenerPolicyTLSServerResourceModel) RefreshFromSharedEventGatewayListenerPolicy(ctx context.Context, resp *shared.EventGatewayListenerPolicy) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		r.Condition = types.StringPointerValue(resp.Condition)
 		configPriorData := r.Config
 		r.Config.AllowPlaintext = configPriorData.AllowPlaintext
 		r.Config.Certificates = configPriorData.Certificates
@@ -155,12 +154,6 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToSharedEventGatewayT
 	} else {
 		enabled = nil
 	}
-	condition := new(string)
-	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
-		*condition = r.Condition.ValueString()
-	} else {
-		condition = nil
-	}
 	certificates := make([]shared.TLSCertificate, 0, len(r.Config.Certificates))
 	for _, certificatesItem := range r.Config.Certificates {
 		var certificate string
@@ -218,7 +211,6 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToSharedEventGatewayT
 		Name:        name,
 		Description: description,
 		Enabled:     enabled,
-		Condition:   condition,
 		Config:      config,
 		Labels:      labels,
 	}
@@ -246,12 +238,6 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToSharedEventGatewayT
 		*enabled = r.Enabled.ValueBool()
 	} else {
 		enabled = nil
-	}
-	condition := new(string)
-	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
-		*condition = r.Condition.ValueString()
-	} else {
-		condition = nil
 	}
 	certificates := make([]shared.TLSCertificateSensitiveDataAware, 0, len(r.Config.Certificates))
 	for _, certificatesItem := range r.Config.Certificates {
@@ -313,7 +299,6 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToSharedEventGatewayT
 		Name:        name,
 		Description: description,
 		Enabled:     enabled,
-		Condition:   condition,
 		Config:      config,
 		Labels:      labels,
 	}

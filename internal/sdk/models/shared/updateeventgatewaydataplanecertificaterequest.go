@@ -21,29 +21,29 @@ func (u UpdateEventGatewayDataPlaneCertificateRequest) MarshalJSON() ([]byte, er
 }
 
 func (u *UpdateEventGatewayDataPlaneCertificateRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"certificate"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *UpdateEventGatewayDataPlaneCertificateRequest) GetCertificate() string {
-	if o == nil {
+func (u *UpdateEventGatewayDataPlaneCertificateRequest) GetCertificate() string {
+	if u == nil {
 		return ""
 	}
-	return o.Certificate
+	return u.Certificate
 }
 
-func (o *UpdateEventGatewayDataPlaneCertificateRequest) GetName() *string {
-	if o == nil {
+func (u *UpdateEventGatewayDataPlaneCertificateRequest) GetName() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Name
+	return u.Name
 }
 
-func (o *UpdateEventGatewayDataPlaneCertificateRequest) GetDescription() *string {
-	if o == nil {
+func (u *UpdateEventGatewayDataPlaneCertificateRequest) GetDescription() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Description
+	return u.Description
 }

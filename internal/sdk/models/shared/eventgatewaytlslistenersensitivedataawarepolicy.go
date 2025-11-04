@@ -17,10 +17,8 @@ type EventGatewayTLSListenerSensitiveDataAwarePolicy struct {
 	// A human-readable description of the policy.
 	Description *string `json:"description,omitempty"`
 	// Whether the policy is enabled.
-	Enabled *bool `default:"true" json:"enabled"`
-	// A string containing the boolean expression that determines whether the policy is applied.
-	Condition *string                                               `json:"condition,omitempty"`
-	Config    EventGatewayTLSListenerPolicyConfigSensitiveDataAware `json:"config"`
+	Enabled *bool                                                 `default:"true" json:"enabled"`
+	Config  EventGatewayTLSListenerPolicyConfigSensitiveDataAware `json:"config"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -33,54 +31,47 @@ func (e EventGatewayTLSListenerSensitiveDataAwarePolicy) MarshalJSON() ([]byte, 
 }
 
 func (e *EventGatewayTLSListenerSensitiveDataAwarePolicy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *EventGatewayTLSListenerSensitiveDataAwarePolicy) GetType() string {
+func (e *EventGatewayTLSListenerSensitiveDataAwarePolicy) GetType() string {
 	return "tls_server"
 }
 
-func (o *EventGatewayTLSListenerSensitiveDataAwarePolicy) GetName() *string {
-	if o == nil {
+func (e *EventGatewayTLSListenerSensitiveDataAwarePolicy) GetName() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Name
+	return e.Name
 }
 
-func (o *EventGatewayTLSListenerSensitiveDataAwarePolicy) GetDescription() *string {
-	if o == nil {
+func (e *EventGatewayTLSListenerSensitiveDataAwarePolicy) GetDescription() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Description
+	return e.Description
 }
 
-func (o *EventGatewayTLSListenerSensitiveDataAwarePolicy) GetEnabled() *bool {
-	if o == nil {
+func (e *EventGatewayTLSListenerSensitiveDataAwarePolicy) GetEnabled() *bool {
+	if e == nil {
 		return nil
 	}
-	return o.Enabled
+	return e.Enabled
 }
 
-func (o *EventGatewayTLSListenerSensitiveDataAwarePolicy) GetCondition() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Condition
-}
-
-func (o *EventGatewayTLSListenerSensitiveDataAwarePolicy) GetConfig() EventGatewayTLSListenerPolicyConfigSensitiveDataAware {
-	if o == nil {
+func (e *EventGatewayTLSListenerSensitiveDataAwarePolicy) GetConfig() EventGatewayTLSListenerPolicyConfigSensitiveDataAware {
+	if e == nil {
 		return EventGatewayTLSListenerPolicyConfigSensitiveDataAware{}
 	}
-	return o.Config
+	return e.Config
 }
 
-func (o *EventGatewayTLSListenerSensitiveDataAwarePolicy) GetLabels() map[string]*string {
-	if o == nil {
+func (e *EventGatewayTLSListenerSensitiveDataAwarePolicy) GetLabels() map[string]*string {
+	if e == nil {
 		return nil
 	}
-	return o.Labels
+	return e.Labels
 }

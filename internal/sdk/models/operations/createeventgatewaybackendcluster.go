@@ -14,18 +14,18 @@ type CreateEventGatewayBackendClusterRequest struct {
 	CreateBackendClusterRequest *shared.CreateBackendClusterRequest `request:"mediaType=application/json"`
 }
 
-func (o *CreateEventGatewayBackendClusterRequest) GetGatewayID() string {
-	if o == nil {
+func (c *CreateEventGatewayBackendClusterRequest) GetGatewayID() string {
+	if c == nil {
 		return ""
 	}
-	return o.GatewayID
+	return c.GatewayID
 }
 
-func (o *CreateEventGatewayBackendClusterRequest) GetCreateBackendClusterRequest() *shared.CreateBackendClusterRequest {
-	if o == nil {
+func (c *CreateEventGatewayBackendClusterRequest) GetCreateBackendClusterRequest() *shared.CreateBackendClusterRequest {
+	if c == nil {
 		return nil
 	}
-	return o.CreateBackendClusterRequest
+	return c.CreateBackendClusterRequest
 }
 
 type CreateEventGatewayBackendClusterResponse struct {
@@ -45,51 +45,51 @@ type CreateEventGatewayBackendClusterResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *CreateEventGatewayBackendClusterResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateEventGatewayBackendClusterResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateEventGatewayBackendClusterResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateEventGatewayBackendClusterResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateEventGatewayBackendClusterResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateEventGatewayBackendClusterResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateEventGatewayBackendClusterResponse) GetBackendCluster() *shared.BackendCluster {
-	if o == nil {
+func (c *CreateEventGatewayBackendClusterResponse) GetBackendCluster() *shared.BackendCluster {
+	if c == nil {
 		return nil
 	}
-	return o.BackendCluster
+	return c.BackendCluster
 }
 
-func (o *CreateEventGatewayBackendClusterResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (c *CreateEventGatewayBackendClusterResponse) GetBadRequestError() *shared.BadRequestError {
+	if c == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return c.BadRequestError
 }
 
-func (o *CreateEventGatewayBackendClusterResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (c *CreateEventGatewayBackendClusterResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return c.UnauthorizedError
 }
 
-func (o *CreateEventGatewayBackendClusterResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (c *CreateEventGatewayBackendClusterResponse) GetForbiddenError() *shared.ForbiddenError {
+	if c == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return c.ForbiddenError
 }
