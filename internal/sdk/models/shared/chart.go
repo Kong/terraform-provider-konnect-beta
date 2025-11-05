@@ -23,11 +23,11 @@ const (
 
 // Chart - The type of chart to render.
 type Chart struct {
-	DonutChart         *DonutChart         `queryParam:"inline"`
-	TimeseriesChart    *TimeseriesChart    `queryParam:"inline"`
-	BarChart           *BarChart           `queryParam:"inline"`
-	SingleValueChart   *SingleValueChart   `queryParam:"inline"`
-	ChoroplethMapChart *ChoroplethMapChart `queryParam:"inline"`
+	DonutChart         *DonutChart         `queryParam:"inline,name=Chart"`
+	TimeseriesChart    *TimeseriesChart    `queryParam:"inline,name=Chart"`
+	BarChart           *BarChart           `queryParam:"inline,name=Chart"`
+	SingleValueChart   *SingleValueChart   `queryParam:"inline,name=Chart"`
+	ChoroplethMapChart *ChoroplethMapChart `queryParam:"inline,name=Chart"`
 
 	Type ChartType
 }
@@ -130,7 +130,7 @@ func (u *Chart) UnmarshalJSON(data []byte) error {
 	switch dis.Type {
 	case "donut":
 		donutChart := new(DonutChart)
-		if err := utils.UnmarshalJSON(data, &donutChart, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &donutChart, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == donut) type DonutChart within Chart: %w", string(data), err)
 		}
 
@@ -139,7 +139,7 @@ func (u *Chart) UnmarshalJSON(data []byte) error {
 		return nil
 	case "timeseries_line":
 		timeseriesChart := new(TimeseriesChart)
-		if err := utils.UnmarshalJSON(data, &timeseriesChart, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &timeseriesChart, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == timeseries_line) type TimeseriesChart within Chart: %w", string(data), err)
 		}
 
@@ -148,7 +148,7 @@ func (u *Chart) UnmarshalJSON(data []byte) error {
 		return nil
 	case "timeseries_bar":
 		timeseriesChart := new(TimeseriesChart)
-		if err := utils.UnmarshalJSON(data, &timeseriesChart, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &timeseriesChart, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == timeseries_bar) type TimeseriesChart within Chart: %w", string(data), err)
 		}
 
@@ -157,7 +157,7 @@ func (u *Chart) UnmarshalJSON(data []byte) error {
 		return nil
 	case "horizontal_bar":
 		barChart := new(BarChart)
-		if err := utils.UnmarshalJSON(data, &barChart, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &barChart, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == horizontal_bar) type BarChart within Chart: %w", string(data), err)
 		}
 
@@ -166,7 +166,7 @@ func (u *Chart) UnmarshalJSON(data []byte) error {
 		return nil
 	case "vertical_bar":
 		barChart := new(BarChart)
-		if err := utils.UnmarshalJSON(data, &barChart, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &barChart, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == vertical_bar) type BarChart within Chart: %w", string(data), err)
 		}
 
@@ -175,7 +175,7 @@ func (u *Chart) UnmarshalJSON(data []byte) error {
 		return nil
 	case "single_value":
 		singleValueChart := new(SingleValueChart)
-		if err := utils.UnmarshalJSON(data, &singleValueChart, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &singleValueChart, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == single_value) type SingleValueChart within Chart: %w", string(data), err)
 		}
 
@@ -184,7 +184,7 @@ func (u *Chart) UnmarshalJSON(data []byte) error {
 		return nil
 	case "choropleth_map":
 		choroplethMapChart := new(ChoroplethMapChart)
-		if err := utils.UnmarshalJSON(data, &choroplethMapChart, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &choroplethMapChart, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == choropleth_map) type ChoroplethMapChart within Chart: %w", string(data), err)
 		}
 

@@ -43,7 +43,6 @@ type EventGatewayListenerPolicyForwardToVirtualClusterResource struct {
 
 // EventGatewayListenerPolicyForwardToVirtualClusterResourceModel describes the resource data model.
 type EventGatewayListenerPolicyForwardToVirtualClusterResourceModel struct {
-	Condition              types.String                                `tfsdk:"condition"`
 	Config                 tfTypes.ForwardToVirtualClusterPolicyConfig `tfsdk:"config"`
 	CreatedAt              types.String                                `tfsdk:"created_at"`
 	Description            types.String                                `tfsdk:"description"`
@@ -65,13 +64,6 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Schema(ctx c
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "EventGatewayListenerPolicyForwardToVirtualCluster Resource",
 		Attributes: map[string]schema.Attribute{
-			"condition": schema.StringAttribute{
-				Optional:    true,
-				Description: `A string containing the boolean expression that determines whether the policy is applied.`,
-				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 1000),
-				},
-			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -338,11 +330,11 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Create(ctx c
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.EventGatewayPolicy != nil) {
+	if !(res.EventGatewayListenerPolicy != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayListenerPolicy(ctx, res.EventGatewayListenerPolicy)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -402,11 +394,11 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Read(ctx con
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.EventGatewayPolicy != nil) {
+	if !(res.EventGatewayListenerPolicy != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayListenerPolicy(ctx, res.EventGatewayListenerPolicy)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -452,11 +444,11 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Update(ctx c
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.EventGatewayPolicy != nil) {
+	if !(res.EventGatewayListenerPolicy != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayListenerPolicy(ctx, res.EventGatewayListenerPolicy)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -525,7 +517,7 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) ImportState(
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"event_gateway_listener_id": "", "gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"event_gateway_listener_id": "...", "gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}': `+err.Error())
 		return
 	}
 

@@ -17,7 +17,7 @@ const (
 
 // SchemaRegistryAuthenticationScheme - The authentication configuration for the schema registry.
 type SchemaRegistryAuthenticationScheme struct {
-	SchemaRegistryAuthenticationBasic *SchemaRegistryAuthenticationBasic `queryParam:"inline"`
+	SchemaRegistryAuthenticationBasic *SchemaRegistryAuthenticationBasic `queryParam:"inline,name=SchemaRegistryAuthenticationScheme"`
 
 	Type SchemaRegistryAuthenticationSchemeType
 }
@@ -45,7 +45,7 @@ func (u *SchemaRegistryAuthenticationScheme) UnmarshalJSON(data []byte) error {
 	switch dis.Type {
 	case "basic":
 		schemaRegistryAuthenticationBasic := new(SchemaRegistryAuthenticationBasic)
-		if err := utils.UnmarshalJSON(data, &schemaRegistryAuthenticationBasic, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &schemaRegistryAuthenticationBasic, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == basic) type SchemaRegistryAuthenticationBasic within SchemaRegistryAuthenticationScheme: %w", string(data), err)
 		}
 

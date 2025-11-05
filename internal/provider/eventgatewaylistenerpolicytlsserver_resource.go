@@ -40,7 +40,6 @@ type EventGatewayListenerPolicyTLSServerResource struct {
 
 // EventGatewayListenerPolicyTLSServerResourceModel describes the resource data model.
 type EventGatewayListenerPolicyTLSServerResourceModel struct {
-	Condition              types.String                                `tfsdk:"condition"`
 	Config                 tfTypes.EventGatewayTLSListenerPolicyConfig `tfsdk:"config"`
 	CreatedAt              types.String                                `tfsdk:"created_at"`
 	Description            types.String                                `tfsdk:"description"`
@@ -62,13 +61,6 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Schema(ctx context.Context
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "EventGatewayListenerPolicyTLSServer Resource",
 		Attributes: map[string]schema.Attribute{
-			"condition": schema.StringAttribute{
-				Optional:    true,
-				Description: `A string containing the boolean expression that determines whether the policy is applied.`,
-				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 1000),
-				},
-			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -261,11 +253,11 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Create(ctx context.Context
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.EventGatewayPolicy != nil) {
+	if !(res.EventGatewayListenerPolicy != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayListenerPolicy(ctx, res.EventGatewayListenerPolicy)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -298,11 +290,11 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Create(ctx context.Context
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if !(res1.EventGatewayPolicy != nil) {
+	if !(res1.EventGatewayListenerPolicy != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res1.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayListenerPolicy(ctx, res1.EventGatewayListenerPolicy)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -362,11 +354,11 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Read(ctx context.Context, 
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.EventGatewayPolicy != nil) {
+	if !(res.EventGatewayListenerPolicy != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayListenerPolicy(ctx, res.EventGatewayListenerPolicy)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -412,11 +404,11 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Update(ctx context.Context
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.EventGatewayPolicy != nil) {
+	if !(res.EventGatewayListenerPolicy != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayListenerPolicy(ctx, res.EventGatewayListenerPolicy)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -449,11 +441,11 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Update(ctx context.Context
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if !(res1.EventGatewayPolicy != nil) {
+	if !(res1.EventGatewayListenerPolicy != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res1.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayListenerPolicy(ctx, res1.EventGatewayListenerPolicy)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -522,7 +514,7 @@ func (r *EventGatewayListenerPolicyTLSServerResource) ImportState(ctx context.Co
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"event_gateway_listener_id": "", "gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"event_gateway_listener_id": "...", "gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}': `+err.Error())
 		return
 	}
 

@@ -16,24 +16,24 @@ EventGatewaySchemaRegistry Resource
 resource "konnect_event_gateway_schema_registry" "my_eventgatewayschemaregistry" {
   provider = konnect-beta
 confluent = {
-    config = {
-            authentication = {
-        basic = {
-    password = "${vault.env['MY_ENV_VAR']}"
-    username = "...my_username..."
+config = {
+authentication = {
+basic = {
+password = "${vault.env['MY_ENV_VAR']}"
+username = "...my_username..."
 }
-        }
-        endpoint = "https://key-hovercraft.com"
-        schema_type = "avro"
-        timeout_seconds = 8
-    }
-    description = "...my_description..."
-    labels = {
-        key = "value"
-    }
-    name = "...my_name..."
 }
-    gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+endpoint = "https://key-hovercraft.com"
+schema_type = "avro"
+timeout_seconds = 8
+}
+description = "...my_description..."
+labels = {
+    key = "value"
+}
+name = "...my_name..."
+}
+gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
 }
 ```
 
@@ -118,6 +118,20 @@ The value is stored and returned by the API as-is, not treated as sensitive info
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_event_gateway_schema_registry.my_konnect_event_gateway_schema_registry
+  id = jsonencode({
+    gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id = "..."
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
-terraform import konnect_event_gateway_schema_registry.my_konnect_event_gateway_schema_registry '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": ""}'
+terraform import konnect_event_gateway_schema_registry.my_konnect_event_gateway_schema_registry '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "..."}'
 ```

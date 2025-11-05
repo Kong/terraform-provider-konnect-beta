@@ -17,7 +17,7 @@ const (
 
 // SchemaRegistryUpdate - The typed schema of the schema registry to modify it.
 type SchemaRegistryUpdate struct {
-	SchemaRegistryConfluentSensitiveDataAware *SchemaRegistryConfluentSensitiveDataAware `queryParam:"inline"`
+	SchemaRegistryConfluentSensitiveDataAware *SchemaRegistryConfluentSensitiveDataAware `queryParam:"inline,name=SchemaRegistryUpdate"`
 
 	Type SchemaRegistryUpdateType
 }
@@ -45,7 +45,7 @@ func (u *SchemaRegistryUpdate) UnmarshalJSON(data []byte) error {
 	switch dis.Type {
 	case "confluent":
 		schemaRegistryConfluentSensitiveDataAware := new(SchemaRegistryConfluentSensitiveDataAware)
-		if err := utils.UnmarshalJSON(data, &schemaRegistryConfluentSensitiveDataAware, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &schemaRegistryConfluentSensitiveDataAware, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == confluent) type SchemaRegistryConfluentSensitiveDataAware within SchemaRegistryUpdate: %w", string(data), err)
 		}
 

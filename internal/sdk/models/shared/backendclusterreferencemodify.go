@@ -11,9 +11,9 @@ type BackendClusterReferenceModify struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *BackendClusterReferenceModify) GetID() *string {
-	if o == nil {
+func (b *BackendClusterReferenceModify) GetID() *string {
+	if b == nil {
 		return nil
 	}
-	return o.ID
+	return b.ID
 }

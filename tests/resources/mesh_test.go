@@ -346,11 +346,11 @@ spec = {
 			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
 			WithSpec(`skip_creating_initial_policies = [ "*" ]`).
 			WithDependsOn(builder.ResourceAddress("mesh_control_plane", cp.ResourceName))
-		skey := tfbuilder.NewPolicyBuilder("secret", "skey", "skey", "Secret").
+		skey := tfbuilder.NewPolicyBuilder("mesh_secret", "skey", "skey", "Secret").
 			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
 			WithMeshRef(builder.ResourceAddress("mesh", mesh.ResourceName) + ".name").
 			WithDependsOn(builder.ResourceAddress("mesh", mesh.ResourceName))
-		scert := tfbuilder.NewPolicyBuilder("secret", "scert", "scert", "Secret").
+		scert := tfbuilder.NewPolicyBuilder("mesh_secret", "scert", "scert", "Secret").
 			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
 			WithMeshRef(builder.ResourceAddress("mesh", mesh.ResourceName) + ".name").
 			WithDependsOn(builder.ResourceAddress("mesh", mesh.ResourceName))

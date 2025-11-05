@@ -43,9 +43,9 @@ type DecryptionRecordSelector struct {
 	PartOfRecord PartOfRecord `json:"part_of_record"`
 }
 
-func (o *DecryptionRecordSelector) GetPartOfRecord() PartOfRecord {
-	if o == nil {
+func (d *DecryptionRecordSelector) GetPartOfRecord() PartOfRecord {
+	if d == nil {
 		return PartOfRecord("")
 	}
-	return o.PartOfRecord
+	return d.PartOfRecord
 }

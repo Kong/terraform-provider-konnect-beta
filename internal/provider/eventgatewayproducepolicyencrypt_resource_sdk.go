@@ -276,27 +276,6 @@ func (r *EventGatewayProducePolicyEncryptResourceModel) ToSharedEventGatewayEncr
 				EventGatewayAWSKeySource: &eventGatewayAWSKeySource,
 			})
 		}
-		if keySourcesItem.Static != nil {
-			keys := make([]shared.EventGatewayStaticKeySourceKeys, 0, len(keySourcesItem.Static.Keys))
-			for _, keysItem := range keySourcesItem.Static.Keys {
-				var id string
-				id = keysItem.ID.ValueString()
-
-				var key string
-				key = keysItem.Key.ValueString()
-
-				keys = append(keys, shared.EventGatewayStaticKeySourceKeys{
-					ID:  id,
-					Key: key,
-				})
-			}
-			eventGatewayStaticKeySource := shared.EventGatewayStaticKeySource{
-				Keys: keys,
-			}
-			keySources = append(keySources, shared.EventGatewayKeySource{
-				EventGatewayStaticKeySource: &eventGatewayStaticKeySource,
-			})
-		}
 	}
 	encrypt := make([]shared.EncryptionRecordSelector, 0, len(r.Config.Encrypt))
 	for _, encryptItem := range r.Config.Encrypt {

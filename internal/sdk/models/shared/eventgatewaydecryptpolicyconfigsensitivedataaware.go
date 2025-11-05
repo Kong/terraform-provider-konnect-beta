@@ -15,23 +15,23 @@ type EventGatewayDecryptPolicyConfigSensitiveDataAware struct {
 	Decrypt []DecryptionRecordSelector `json:"decrypt"`
 }
 
-func (o *EventGatewayDecryptPolicyConfigSensitiveDataAware) GetFailureMode() EncryptionFailureMode {
-	if o == nil {
+func (e *EventGatewayDecryptPolicyConfigSensitiveDataAware) GetFailureMode() EncryptionFailureMode {
+	if e == nil {
 		return EncryptionFailureMode("")
 	}
-	return o.FailureMode
+	return e.FailureMode
 }
 
-func (o *EventGatewayDecryptPolicyConfigSensitiveDataAware) GetKeySources() []EventGatewayKeySourceSensitiveDataAware {
-	if o == nil {
+func (e *EventGatewayDecryptPolicyConfigSensitiveDataAware) GetKeySources() []EventGatewayKeySourceSensitiveDataAware {
+	if e == nil {
 		return []EventGatewayKeySourceSensitiveDataAware{}
 	}
-	return o.KeySources
+	return e.KeySources
 }
 
-func (o *EventGatewayDecryptPolicyConfigSensitiveDataAware) GetDecrypt() []DecryptionRecordSelector {
-	if o == nil {
+func (e *EventGatewayDecryptPolicyConfigSensitiveDataAware) GetDecrypt() []DecryptionRecordSelector {
+	if e == nil {
 		return []DecryptionRecordSelector{}
 	}
-	return o.Decrypt
+	return e.Decrypt
 }

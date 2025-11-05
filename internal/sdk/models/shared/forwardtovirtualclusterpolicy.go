@@ -17,8 +17,8 @@ const (
 )
 
 type ForwardToVirtualClusterPolicyConfig struct {
-	ForwardToClusterBySNIConfig         *ForwardToClusterBySNIConfig         `queryParam:"inline"`
-	ForwardToClusterByPortMappingConfig *ForwardToClusterByPortMappingConfig `queryParam:"inline"`
+	ForwardToClusterBySNIConfig         *ForwardToClusterBySNIConfig         `queryParam:"inline,name=config"`
+	ForwardToClusterByPortMappingConfig *ForwardToClusterByPortMappingConfig `queryParam:"inline,name=config"`
 
 	Type ForwardToVirtualClusterPolicyConfigType
 }
@@ -55,7 +55,7 @@ func (u *ForwardToVirtualClusterPolicyConfig) UnmarshalJSON(data []byte) error {
 	switch dis.Type {
 	case "port_mapping":
 		forwardToClusterByPortMappingConfig := new(ForwardToClusterByPortMappingConfig)
-		if err := utils.UnmarshalJSON(data, &forwardToClusterByPortMappingConfig, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &forwardToClusterByPortMappingConfig, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == port_mapping) type ForwardToClusterByPortMappingConfig within ForwardToVirtualClusterPolicyConfig: %w", string(data), err)
 		}
 
@@ -64,7 +64,7 @@ func (u *ForwardToVirtualClusterPolicyConfig) UnmarshalJSON(data []byte) error {
 		return nil
 	case "sni":
 		forwardToClusterBySNIConfig := new(ForwardToClusterBySNIConfig)
-		if err := utils.UnmarshalJSON(data, &forwardToClusterBySNIConfig, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &forwardToClusterBySNIConfig, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == sni) type ForwardToClusterBySNIConfig within ForwardToVirtualClusterPolicyConfig: %w", string(data), err)
 		}
 
@@ -103,10 +103,8 @@ type ForwardToVirtualClusterPolicy struct {
 	// A human-readable description of the policy.
 	Description *string `json:"description,omitempty"`
 	// Whether the policy is enabled.
-	Enabled *bool `default:"true" json:"enabled"`
-	// A string containing the boolean expression that determines whether the policy is applied.
-	Condition *string                             `json:"condition,omitempty"`
-	Config    ForwardToVirtualClusterPolicyConfig `json:"config"`
+	Enabled *bool                               `default:"true" json:"enabled"`
+	Config  ForwardToVirtualClusterPolicyConfig `json:"config"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -119,62 +117,55 @@ func (f ForwardToVirtualClusterPolicy) MarshalJSON() ([]byte, error) {
 }
 
 func (f *ForwardToVirtualClusterPolicy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &f, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"type", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ForwardToVirtualClusterPolicy) GetType() string {
+func (f *ForwardToVirtualClusterPolicy) GetType() string {
 	return "forward_to_virtual_cluster"
 }
 
-func (o *ForwardToVirtualClusterPolicy) GetName() *string {
-	if o == nil {
+func (f *ForwardToVirtualClusterPolicy) GetName() *string {
+	if f == nil {
 		return nil
 	}
-	return o.Name
+	return f.Name
 }
 
-func (o *ForwardToVirtualClusterPolicy) GetDescription() *string {
-	if o == nil {
+func (f *ForwardToVirtualClusterPolicy) GetDescription() *string {
+	if f == nil {
 		return nil
 	}
-	return o.Description
+	return f.Description
 }
 
-func (o *ForwardToVirtualClusterPolicy) GetEnabled() *bool {
-	if o == nil {
+func (f *ForwardToVirtualClusterPolicy) GetEnabled() *bool {
+	if f == nil {
 		return nil
 	}
-	return o.Enabled
+	return f.Enabled
 }
 
-func (o *ForwardToVirtualClusterPolicy) GetCondition() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Condition
-}
-
-func (o *ForwardToVirtualClusterPolicy) GetConfig() ForwardToVirtualClusterPolicyConfig {
-	if o == nil {
+func (f *ForwardToVirtualClusterPolicy) GetConfig() ForwardToVirtualClusterPolicyConfig {
+	if f == nil {
 		return ForwardToVirtualClusterPolicyConfig{}
 	}
-	return o.Config
+	return f.Config
 }
 
-func (o *ForwardToVirtualClusterPolicy) GetConfigPortMapping() *ForwardToClusterByPortMappingConfig {
-	return o.GetConfig().ForwardToClusterByPortMappingConfig
+func (f *ForwardToVirtualClusterPolicy) GetConfigPortMapping() *ForwardToClusterByPortMappingConfig {
+	return f.GetConfig().ForwardToClusterByPortMappingConfig
 }
 
-func (o *ForwardToVirtualClusterPolicy) GetConfigSni() *ForwardToClusterBySNIConfig {
-	return o.GetConfig().ForwardToClusterBySNIConfig
+func (f *ForwardToVirtualClusterPolicy) GetConfigSni() *ForwardToClusterBySNIConfig {
+	return f.GetConfig().ForwardToClusterBySNIConfig
 }
 
-func (o *ForwardToVirtualClusterPolicy) GetLabels() map[string]*string {
-	if o == nil {
+func (f *ForwardToVirtualClusterPolicy) GetLabels() map[string]*string {
+	if f == nil {
 		return nil
 	}
-	return o.Labels
+	return f.Labels
 }

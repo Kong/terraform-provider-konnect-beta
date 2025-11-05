@@ -63,7 +63,7 @@ func (s *EventGatewayDataPlaneCertificates) CreateEventGatewayDataPlaneCertifica
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-event-gateway-data-plane-certificate",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateEventGatewayDataPlaneCertificateRequest", "json", `request:"mediaType=application/json"`)
@@ -365,7 +365,7 @@ func (s *EventGatewayDataPlaneCertificates) GetEventGatewayDataPlaneCertificate(
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-event-gateway-data-plane-certificate",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -639,7 +639,7 @@ func (s *EventGatewayDataPlaneCertificates) UpdateEventGatewayDataPlaneCertifica
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-event-gateway-data-plane-certificate",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "UpdateEventGatewayDataPlaneCertificateRequest", "json", `request:"mediaType=application/json"`)
@@ -919,7 +919,7 @@ func (s *EventGatewayDataPlaneCertificates) DeleteEventGatewayDataPlaneCertifica
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-event-gateway-data-plane-certificate",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
+)
+
 // VirtualClusterAuthenticationPrincipal - A principal for authentication containing username and password.
 type VirtualClusterAuthenticationPrincipal struct {
 	// A literal value or a reference to an existing secret as a template string expression.
@@ -15,16 +19,27 @@ type VirtualClusterAuthenticationPrincipal struct {
 	Password string `json:"password"`
 }
 
-func (o *VirtualClusterAuthenticationPrincipal) GetUsername() string {
-	if o == nil {
-		return ""
-	}
-	return o.Username
+func (v VirtualClusterAuthenticationPrincipal) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
 }
 
-func (o *VirtualClusterAuthenticationPrincipal) GetPassword() string {
-	if o == nil {
+func (v *VirtualClusterAuthenticationPrincipal) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"username", "password"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (v *VirtualClusterAuthenticationPrincipal) GetUsername() string {
+	if v == nil {
 		return ""
 	}
-	return o.Password
+	return v.Username
+}
+
+func (v *VirtualClusterAuthenticationPrincipal) GetPassword() string {
+	if v == nil {
+		return ""
+	}
+	return v.Password
 }

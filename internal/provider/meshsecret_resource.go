@@ -20,21 +20,21 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &SecretResource{}
-var _ resource.ResourceWithImportState = &SecretResource{}
+var _ resource.Resource = &MeshSecretResource{}
+var _ resource.ResourceWithImportState = &MeshSecretResource{}
 
-func NewSecretResource() resource.Resource {
-	return &SecretResource{}
+func NewMeshSecretResource() resource.Resource {
+	return &MeshSecretResource{}
 }
 
-// SecretResource defines the resource implementation.
-type SecretResource struct {
+// MeshSecretResource defines the resource implementation.
+type MeshSecretResource struct {
 	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
-// SecretResourceModel describes the resource data model.
-type SecretResourceModel struct {
+// MeshSecretResourceModel describes the resource data model.
+type MeshSecretResourceModel struct {
 	CpID     types.String                  `tfsdk:"cp_id"`
 	Data     types.String                  `tfsdk:"data"`
 	Labels   kumalabels.KumaLabelsMapValue `tfsdk:"labels"`
@@ -44,13 +44,13 @@ type SecretResourceModel struct {
 	Warnings []types.String                `tfsdk:"warnings"`
 }
 
-func (r *SecretResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_secret"
+func (r *MeshSecretResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = "konnect_mesh_secret"
 }
 
-func (r *SecretResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *MeshSecretResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Secret Resource",
+		MarkdownDescription: "MeshSecret Resource",
 		Attributes: map[string]schema.Attribute{
 			"cp_id": schema.StringAttribute{
 				Required: true,
@@ -92,7 +92,7 @@ func (r *SecretResource) Schema(ctx context.Context, req resource.SchemaRequest,
 	}
 }
 
-func (r *SecretResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *MeshSecretResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -112,8 +112,8 @@ func (r *SecretResource) Configure(ctx context.Context, req resource.ConfigureRe
 	r.client = client
 }
 
-func (r *SecretResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *SecretResourceModel
+func (r *MeshSecretResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *MeshSecretResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -212,8 +212,8 @@ func (r *SecretResource) Create(ctx context.Context, req resource.CreateRequest,
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *SecretResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *SecretResourceModel
+func (r *MeshSecretResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *MeshSecretResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -270,8 +270,8 @@ func (r *SecretResource) Read(ctx context.Context, req resource.ReadRequest, res
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *SecretResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *SecretResourceModel
+func (r *MeshSecretResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *MeshSecretResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -366,8 +366,8 @@ func (r *SecretResource) Update(ctx context.Context, req resource.UpdateRequest,
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *SecretResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *SecretResourceModel
+func (r *MeshSecretResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *MeshSecretResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -409,7 +409,7 @@ func (r *SecretResource) Delete(ctx context.Context, req resource.DeleteRequest,
 
 }
 
-func (r *SecretResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *MeshSecretResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
@@ -419,7 +419,7 @@ func (r *SecretResource) ImportState(ctx context.Context, req resource.ImportSta
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b", "mesh": "", "name": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b", "mesh": "...", "name": "..."}': `+err.Error())
 		return
 	}
 

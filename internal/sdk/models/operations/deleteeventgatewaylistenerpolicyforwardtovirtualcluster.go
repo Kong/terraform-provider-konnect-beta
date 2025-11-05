@@ -16,25 +16,25 @@ type DeleteEventGatewayListenerPolicyForwardToVirtualClusterRequest struct {
 	PolicyID string `pathParam:"style=simple,explode=false,name=policyId"`
 }
 
-func (o *DeleteEventGatewayListenerPolicyForwardToVirtualClusterRequest) GetGatewayID() string {
-	if o == nil {
+func (d *DeleteEventGatewayListenerPolicyForwardToVirtualClusterRequest) GetGatewayID() string {
+	if d == nil {
 		return ""
 	}
-	return o.GatewayID
+	return d.GatewayID
 }
 
-func (o *DeleteEventGatewayListenerPolicyForwardToVirtualClusterRequest) GetEventGatewayListenerID() string {
-	if o == nil {
+func (d *DeleteEventGatewayListenerPolicyForwardToVirtualClusterRequest) GetEventGatewayListenerID() string {
+	if d == nil {
 		return ""
 	}
-	return o.EventGatewayListenerID
+	return d.EventGatewayListenerID
 }
 
-func (o *DeleteEventGatewayListenerPolicyForwardToVirtualClusterRequest) GetPolicyID() string {
-	if o == nil {
+func (d *DeleteEventGatewayListenerPolicyForwardToVirtualClusterRequest) GetPolicyID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PolicyID
+	return d.PolicyID
 }
 
 type DeleteEventGatewayListenerPolicyForwardToVirtualClusterResponse struct {
@@ -52,44 +52,44 @@ type DeleteEventGatewayListenerPolicyForwardToVirtualClusterResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *DeleteEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (d *DeleteEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return d.UnauthorizedError
 }
 
-func (o *DeleteEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (d *DeleteEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetForbiddenError() *shared.ForbiddenError {
+	if d == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return d.ForbiddenError
 }
 
-func (o *DeleteEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (d *DeleteEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetNotFoundError() *shared.NotFoundError {
+	if d == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return d.NotFoundError
 }

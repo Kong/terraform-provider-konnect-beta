@@ -2,15 +2,30 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
+)
+
 // SchemaRegistryReferenceByName - Reference a schema registry by its unique name.
 type SchemaRegistryReferenceByName struct {
 	// The unique name of the schema registry.
 	Name string `json:"name"`
 }
 
-func (o *SchemaRegistryReferenceByName) GetName() string {
-	if o == nil {
+func (s SchemaRegistryReferenceByName) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SchemaRegistryReferenceByName) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"name"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *SchemaRegistryReferenceByName) GetName() string {
+	if s == nil {
 		return ""
 	}
-	return o.Name
+	return s.Name
 }

@@ -19,11 +19,11 @@ const (
 )
 
 type InvalidParameters struct {
-	InvalidParameterStandard      *InvalidParameterStandard      `queryParam:"inline"`
-	InvalidParameterMinimumLength *InvalidParameterMinimumLength `queryParam:"inline"`
-	InvalidParameterMaximumLength *InvalidParameterMaximumLength `queryParam:"inline"`
-	InvalidParameterChoiceItem    *InvalidParameterChoiceItem    `queryParam:"inline"`
-	InvalidParameterDependentItem *InvalidParameterDependentItem `queryParam:"inline"`
+	InvalidParameterStandard      *InvalidParameterStandard      `queryParam:"inline,name=InvalidParameters"`
+	InvalidParameterMinimumLength *InvalidParameterMinimumLength `queryParam:"inline,name=InvalidParameters"`
+	InvalidParameterMaximumLength *InvalidParameterMaximumLength `queryParam:"inline,name=InvalidParameters"`
+	InvalidParameterChoiceItem    *InvalidParameterChoiceItem    `queryParam:"inline,name=InvalidParameters"`
+	InvalidParameterDependentItem *InvalidParameterDependentItem `queryParam:"inline,name=InvalidParameters"`
 
 	Type InvalidParametersType
 }
@@ -75,38 +75,76 @@ func CreateInvalidParametersInvalidParameterDependentItem(invalidParameterDepend
 
 func (u *InvalidParameters) UnmarshalJSON(data []byte) error {
 
-	var invalidParameterStandard InvalidParameterStandard = InvalidParameterStandard{}
-	if err := utils.UnmarshalJSON(data, &invalidParameterStandard, "", true, true); err == nil {
-		u.InvalidParameterStandard = &invalidParameterStandard
-		u.Type = InvalidParametersTypeInvalidParameterStandard
-		return nil
-	}
+	var candidates []utils.UnionCandidate
 
+	// Collect all valid candidates
 	var invalidParameterMinimumLength InvalidParameterMinimumLength = InvalidParameterMinimumLength{}
-	if err := utils.UnmarshalJSON(data, &invalidParameterMinimumLength, "", true, true); err == nil {
-		u.InvalidParameterMinimumLength = &invalidParameterMinimumLength
-		u.Type = InvalidParametersTypeInvalidParameterMinimumLength
-		return nil
+	if err := utils.UnmarshalJSON(data, &invalidParameterMinimumLength, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  InvalidParametersTypeInvalidParameterMinimumLength,
+			Value: &invalidParameterMinimumLength,
+		})
 	}
 
 	var invalidParameterMaximumLength InvalidParameterMaximumLength = InvalidParameterMaximumLength{}
-	if err := utils.UnmarshalJSON(data, &invalidParameterMaximumLength, "", true, true); err == nil {
-		u.InvalidParameterMaximumLength = &invalidParameterMaximumLength
-		u.Type = InvalidParametersTypeInvalidParameterMaximumLength
-		return nil
+	if err := utils.UnmarshalJSON(data, &invalidParameterMaximumLength, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  InvalidParametersTypeInvalidParameterMaximumLength,
+			Value: &invalidParameterMaximumLength,
+		})
 	}
 
 	var invalidParameterChoiceItem InvalidParameterChoiceItem = InvalidParameterChoiceItem{}
-	if err := utils.UnmarshalJSON(data, &invalidParameterChoiceItem, "", true, true); err == nil {
-		u.InvalidParameterChoiceItem = &invalidParameterChoiceItem
-		u.Type = InvalidParametersTypeInvalidParameterChoiceItem
-		return nil
+	if err := utils.UnmarshalJSON(data, &invalidParameterChoiceItem, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  InvalidParametersTypeInvalidParameterChoiceItem,
+			Value: &invalidParameterChoiceItem,
+		})
 	}
 
 	var invalidParameterDependentItem InvalidParameterDependentItem = InvalidParameterDependentItem{}
-	if err := utils.UnmarshalJSON(data, &invalidParameterDependentItem, "", true, true); err == nil {
-		u.InvalidParameterDependentItem = &invalidParameterDependentItem
-		u.Type = InvalidParametersTypeInvalidParameterDependentItem
+	if err := utils.UnmarshalJSON(data, &invalidParameterDependentItem, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  InvalidParametersTypeInvalidParameterDependentItem,
+			Value: &invalidParameterDependentItem,
+		})
+	}
+
+	var invalidParameterStandard InvalidParameterStandard = InvalidParameterStandard{}
+	if err := utils.UnmarshalJSON(data, &invalidParameterStandard, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  InvalidParametersTypeInvalidParameterStandard,
+			Value: &invalidParameterStandard,
+		})
+	}
+
+	if len(candidates) == 0 {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for InvalidParameters", string(data))
+	}
+
+	// Pick the best candidate using multi-stage filtering
+	best := utils.PickBestCandidate(candidates)
+	if best == nil {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for InvalidParameters", string(data))
+	}
+
+	// Set the union type and value based on the best candidate
+	u.Type = best.Type.(InvalidParametersType)
+	switch best.Type {
+	case InvalidParametersTypeInvalidParameterMinimumLength:
+		u.InvalidParameterMinimumLength = best.Value.(*InvalidParameterMinimumLength)
+		return nil
+	case InvalidParametersTypeInvalidParameterMaximumLength:
+		u.InvalidParameterMaximumLength = best.Value.(*InvalidParameterMaximumLength)
+		return nil
+	case InvalidParametersTypeInvalidParameterChoiceItem:
+		u.InvalidParameterChoiceItem = best.Value.(*InvalidParameterChoiceItem)
+		return nil
+	case InvalidParametersTypeInvalidParameterDependentItem:
+		u.InvalidParameterDependentItem = best.Value.(*InvalidParameterDependentItem)
+		return nil
+	case InvalidParametersTypeInvalidParameterStandard:
+		u.InvalidParameterStandard = best.Value.(*InvalidParameterStandard)
 		return nil
 	}
 

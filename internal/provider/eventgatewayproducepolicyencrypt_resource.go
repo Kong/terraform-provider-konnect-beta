@@ -149,7 +149,6 @@ func (r *EventGatewayProducePolicyEncryptResource) Schema(ctx context.Context, r
 														Required:    true,
 														Description: `The unique identifier of the key.`,
 														Validators: []validator.String{
-															stringvalidator.UTF8LengthBetween(10, 65535),
 															stringvalidator.RegexMatches(regexp.MustCompile(`^static:\/\/.+$`), "must match pattern "+regexp.MustCompile(`^static:\/\/.+$`).String()),
 														},
 													},
@@ -576,7 +575,7 @@ func (r *EventGatewayProducePolicyEncryptResource) ImportState(ctx context.Conte
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "virtual_cluster_id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "virtual_cluster_id": "..."}': `+err.Error())
 		return
 	}
 

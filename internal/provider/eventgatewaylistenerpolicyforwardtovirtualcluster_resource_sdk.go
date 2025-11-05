@@ -11,11 +11,10 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *EventGatewayListenerPolicyForwardToVirtualClusterResourceModel) RefreshFromSharedEventGatewayPolicy(ctx context.Context, resp *shared.EventGatewayPolicy) diag.Diagnostics {
+func (r *EventGatewayListenerPolicyForwardToVirtualClusterResourceModel) RefreshFromSharedEventGatewayListenerPolicy(ctx context.Context, resp *shared.EventGatewayListenerPolicy) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		r.Condition = types.StringPointerValue(resp.Condition)
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -151,12 +150,6 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResourceModel) ToShare
 	} else {
 		enabled = nil
 	}
-	condition := new(string)
-	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
-		*condition = r.Condition.ValueString()
-	} else {
-		condition = nil
-	}
 	var config shared.ForwardToVirtualClusterPolicyConfig
 	var forwardToClusterBySNIConfig *shared.ForwardToClusterBySNIConfig
 	if r.Config.Sni != nil {
@@ -254,7 +247,6 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResourceModel) ToShare
 		Name:        name,
 		Description: description,
 		Enabled:     enabled,
-		Condition:   condition,
 		Config:      config,
 		Labels:      labels,
 	}

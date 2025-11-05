@@ -22,44 +22,44 @@ type DashboardsCreateResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *DashboardsCreateResponse) GetContentType() string {
-	if o == nil {
+func (d *DashboardsCreateResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DashboardsCreateResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DashboardsCreateResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DashboardsCreateResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DashboardsCreateResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DashboardsCreateResponse) GetDashboardResponse() *shared.DashboardResponse {
-	if o == nil {
+func (d *DashboardsCreateResponse) GetDashboardResponse() *shared.DashboardResponse {
+	if d == nil {
 		return nil
 	}
-	return o.DashboardResponse
+	return d.DashboardResponse
 }
 
-func (o *DashboardsCreateResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (d *DashboardsCreateResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return d.UnauthorizedError
 }
 
-func (o *DashboardsCreateResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (d *DashboardsCreateResponse) GetForbiddenError() *shared.ForbiddenError {
+	if d == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return d.ForbiddenError
 }

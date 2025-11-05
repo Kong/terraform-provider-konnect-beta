@@ -17,10 +17,8 @@ type EventGatewayTLSListenerPolicy struct {
 	// A human-readable description of the policy.
 	Description *string `json:"description,omitempty"`
 	// Whether the policy is enabled.
-	Enabled *bool `default:"true" json:"enabled"`
-	// A string containing the boolean expression that determines whether the policy is applied.
-	Condition *string                             `json:"condition,omitempty"`
-	Config    EventGatewayTLSListenerPolicyConfig `json:"config"`
+	Enabled *bool                               `default:"true" json:"enabled"`
+	Config  EventGatewayTLSListenerPolicyConfig `json:"config"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -33,54 +31,47 @@ func (e EventGatewayTLSListenerPolicy) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayTLSListenerPolicy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *EventGatewayTLSListenerPolicy) GetType() string {
+func (e *EventGatewayTLSListenerPolicy) GetType() string {
 	return "tls_server"
 }
 
-func (o *EventGatewayTLSListenerPolicy) GetName() *string {
-	if o == nil {
+func (e *EventGatewayTLSListenerPolicy) GetName() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Name
+	return e.Name
 }
 
-func (o *EventGatewayTLSListenerPolicy) GetDescription() *string {
-	if o == nil {
+func (e *EventGatewayTLSListenerPolicy) GetDescription() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Description
+	return e.Description
 }
 
-func (o *EventGatewayTLSListenerPolicy) GetEnabled() *bool {
-	if o == nil {
+func (e *EventGatewayTLSListenerPolicy) GetEnabled() *bool {
+	if e == nil {
 		return nil
 	}
-	return o.Enabled
+	return e.Enabled
 }
 
-func (o *EventGatewayTLSListenerPolicy) GetCondition() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Condition
-}
-
-func (o *EventGatewayTLSListenerPolicy) GetConfig() EventGatewayTLSListenerPolicyConfig {
-	if o == nil {
+func (e *EventGatewayTLSListenerPolicy) GetConfig() EventGatewayTLSListenerPolicyConfig {
+	if e == nil {
 		return EventGatewayTLSListenerPolicyConfig{}
 	}
-	return o.Config
+	return e.Config
 }
 
-func (o *EventGatewayTLSListenerPolicy) GetLabels() map[string]*string {
-	if o == nil {
+func (e *EventGatewayTLSListenerPolicy) GetLabels() map[string]*string {
+	if e == nil {
 		return nil
 	}
-	return o.Labels
+	return e.Labels
 }

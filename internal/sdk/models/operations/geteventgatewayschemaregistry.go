@@ -14,18 +14,18 @@ type GetEventGatewaySchemaRegistryRequest struct {
 	SchemaRegistryID string `pathParam:"style=simple,explode=false,name=schemaRegistryId"`
 }
 
-func (o *GetEventGatewaySchemaRegistryRequest) GetGatewayID() string {
-	if o == nil {
+func (g *GetEventGatewaySchemaRegistryRequest) GetGatewayID() string {
+	if g == nil {
 		return ""
 	}
-	return o.GatewayID
+	return g.GatewayID
 }
 
-func (o *GetEventGatewaySchemaRegistryRequest) GetSchemaRegistryID() string {
-	if o == nil {
+func (g *GetEventGatewaySchemaRegistryRequest) GetSchemaRegistryID() string {
+	if g == nil {
 		return ""
 	}
-	return o.SchemaRegistryID
+	return g.SchemaRegistryID
 }
 
 type GetEventGatewaySchemaRegistryResponse struct {
@@ -45,51 +45,51 @@ type GetEventGatewaySchemaRegistryResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *GetEventGatewaySchemaRegistryResponse) GetContentType() string {
-	if o == nil {
+func (g *GetEventGatewaySchemaRegistryResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetEventGatewaySchemaRegistryResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetEventGatewaySchemaRegistryResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetEventGatewaySchemaRegistryResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetEventGatewaySchemaRegistryResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetEventGatewaySchemaRegistryResponse) GetSchemaRegistry() *shared.SchemaRegistry {
-	if o == nil {
+func (g *GetEventGatewaySchemaRegistryResponse) GetSchemaRegistry() *shared.SchemaRegistry {
+	if g == nil {
 		return nil
 	}
-	return o.SchemaRegistry
+	return g.SchemaRegistry
 }
 
-func (o *GetEventGatewaySchemaRegistryResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (g *GetEventGatewaySchemaRegistryResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return g.UnauthorizedError
 }
 
-func (o *GetEventGatewaySchemaRegistryResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (g *GetEventGatewaySchemaRegistryResponse) GetForbiddenError() *shared.ForbiddenError {
+	if g == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return g.ForbiddenError
 }
 
-func (o *GetEventGatewaySchemaRegistryResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (g *GetEventGatewaySchemaRegistryResponse) GetNotFoundError() *shared.NotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return g.NotFoundError
 }
