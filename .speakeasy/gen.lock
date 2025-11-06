@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: aa9f01905d4ecb3caefd35f00070266b
+  docChecksum: 0e25c36053ea26b820ca120b8c26cc81
   docVersion: 2.0.0
   speakeasyVersion: 1.648.0
   generationVersion: 2.737.0
@@ -200,6 +200,12 @@ generatedFiles:
   - examples/resources/konnect-beta_mesh_trust/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_trust/import.sh
   - examples/resources/konnect-beta_mesh_trust/resource.tf
+  - examples/resources/konnect-beta_mesh_zone_egress/import-by-string-id.tf
+  - examples/resources/konnect-beta_mesh_zone_egress/import.sh
+  - examples/resources/konnect-beta_mesh_zone_egress/resource.tf
+  - examples/resources/konnect-beta_mesh_zone_ingress/import-by-string-id.tf
+  - examples/resources/konnect-beta_mesh_zone_ingress/import.sh
+  - examples/resources/konnect-beta_mesh_zone_ingress/resource.tf
   - examples/resources/konnect-beta_portal/import-by-string-id.tf
   - examples/resources/konnect-beta_portal/import.sh
   - examples/resources/konnect-beta_portal/resource.tf
@@ -227,12 +233,6 @@ generatedFiles:
   - examples/resources/konnect-beta_portal_team/import-by-string-id.tf
   - examples/resources/konnect-beta_portal_team/import.sh
   - examples/resources/konnect-beta_portal_team/resource.tf
-  - examples/resources/konnect-beta_zone_egress/import-by-string-id.tf
-  - examples/resources/konnect-beta_zone_egress/import.sh
-  - examples/resources/konnect-beta_zone_egress/resource.tf
-  - examples/resources/konnect-beta_zone_ingress/import-by-string-id.tf
-  - examples/resources/konnect-beta_zone_ingress/import.sh
-  - examples/resources/konnect-beta_zone_ingress/resource.tf
   - go.mod
   - go.sum
   - internal/planmodifiers/boolplanmodifier/suppress_diff.go
@@ -363,6 +363,10 @@ generatedFiles:
   - internal/provider/meshtrafficpermission_resource_sdk.go
   - internal/provider/meshtrust_resource.go
   - internal/provider/meshtrust_resource_sdk.go
+  - internal/provider/meshzoneegress_resource.go
+  - internal/provider/meshzoneegress_resource_sdk.go
+  - internal/provider/meshzoneingress_resource.go
+  - internal/provider/meshzoneingress_resource_sdk.go
   - internal/provider/portal_data_source.go
   - internal/provider/portal_data_source_sdk.go
   - internal/provider/portal_resource.go
@@ -763,10 +767,6 @@ generatedFiles:
   - internal/provider/types/zone_egress_item_networking.go
   - internal/provider/types/zone_ingress_item_networking.go
   - internal/provider/utils.go
-  - internal/provider/zoneegress_resource.go
-  - internal/provider/zoneegress_resource_sdk.go
-  - internal/provider/zoneingress_resource.go
-  - internal/provider/zoneingress_resource_sdk.go
   - internal/sdk/.gitattributes
   - internal/sdk/api.go
   - internal/sdk/apidocumentation.go

@@ -23,6 +23,5 @@ resource "konnect_event_gateway_produce_policy_encrypt" "my_eventgatewayproducep
     key = "value"
   }
   name               = "...my_name..."
-  parent_policy_id   = "d360a229-0d2f-4566-9b8e-dad95ffde3d0"
   virtual_cluster_id = "6ea3798e-38ca-4c28-a68e-1a577e478f2c"
 }

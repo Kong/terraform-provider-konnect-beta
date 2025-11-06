@@ -43,12 +43,6 @@ func (r *EventGatewayConsumePolicySkipRecordResourceModel) ToOperationsCreateEve
 	var virtualClusterID string
 	virtualClusterID = r.VirtualClusterID.ValueString()
 
-	parentPolicyID := new(string)
-	if !r.ParentPolicyID.IsUnknown() && !r.ParentPolicyID.IsNull() {
-		*parentPolicyID = r.ParentPolicyID.ValueString()
-	} else {
-		parentPolicyID = nil
-	}
 	eventGatewaySkipRecordPolicyCreate, eventGatewaySkipRecordPolicyCreateDiags := r.ToSharedEventGatewaySkipRecordPolicyCreate(ctx)
 	diags.Append(eventGatewaySkipRecordPolicyCreateDiags...)
 
@@ -59,7 +53,6 @@ func (r *EventGatewayConsumePolicySkipRecordResourceModel) ToOperationsCreateEve
 	out := operations.CreateEventGatewayVirtualClusterConsumePolicySkipRecordRequest{
 		GatewayID:                          gatewayID,
 		VirtualClusterID:                   virtualClusterID,
-		ParentPolicyID:                     parentPolicyID,
 		EventGatewaySkipRecordPolicyCreate: eventGatewaySkipRecordPolicyCreate,
 	}
 

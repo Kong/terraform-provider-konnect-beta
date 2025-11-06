@@ -20,21 +20,21 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &ZoneEgressResource{}
-var _ resource.ResourceWithImportState = &ZoneEgressResource{}
+var _ resource.Resource = &MeshZoneEgressResource{}
+var _ resource.ResourceWithImportState = &MeshZoneEgressResource{}
 
-func NewZoneEgressResource() resource.Resource {
-	return &ZoneEgressResource{}
+func NewMeshZoneEgressResource() resource.Resource {
+	return &MeshZoneEgressResource{}
 }
 
-// ZoneEgressResource defines the resource implementation.
-type ZoneEgressResource struct {
+// MeshZoneEgressResource defines the resource implementation.
+type MeshZoneEgressResource struct {
 	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
-// ZoneEgressResourceModel describes the resource data model.
-type ZoneEgressResourceModel struct {
+// MeshZoneEgressResourceModel describes the resource data model.
+type MeshZoneEgressResourceModel struct {
 	CpID       types.String                      `tfsdk:"cp_id"`
 	Labels     map[string]types.String           `tfsdk:"labels"`
 	Name       types.String                      `tfsdk:"name"`
@@ -44,13 +44,13 @@ type ZoneEgressResourceModel struct {
 	Zone       types.String                      `tfsdk:"zone"`
 }
 
-func (r *ZoneEgressResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_zone_egress"
+func (r *MeshZoneEgressResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = "konnect_mesh_zone_egress"
 }
 
-func (r *ZoneEgressResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *MeshZoneEgressResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "ZoneEgress Resource",
+		MarkdownDescription: "MeshZoneEgress Resource",
 		Attributes: map[string]schema.Attribute{
 			"cp_id": schema.StringAttribute{
 				Required: true,
@@ -112,7 +112,7 @@ func (r *ZoneEgressResource) Schema(ctx context.Context, req resource.SchemaRequ
 	}
 }
 
-func (r *ZoneEgressResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *MeshZoneEgressResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -132,8 +132,8 @@ func (r *ZoneEgressResource) Configure(ctx context.Context, req resource.Configu
 	r.client = client
 }
 
-func (r *ZoneEgressResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *ZoneEgressResourceModel
+func (r *MeshZoneEgressResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *MeshZoneEgressResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -232,8 +232,8 @@ func (r *ZoneEgressResource) Create(ctx context.Context, req resource.CreateRequ
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *ZoneEgressResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *ZoneEgressResourceModel
+func (r *MeshZoneEgressResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *MeshZoneEgressResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -290,8 +290,8 @@ func (r *ZoneEgressResource) Read(ctx context.Context, req resource.ReadRequest,
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *ZoneEgressResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *ZoneEgressResourceModel
+func (r *MeshZoneEgressResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *MeshZoneEgressResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -386,8 +386,8 @@ func (r *ZoneEgressResource) Update(ctx context.Context, req resource.UpdateRequ
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *ZoneEgressResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *ZoneEgressResourceModel
+func (r *MeshZoneEgressResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *MeshZoneEgressResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -429,7 +429,7 @@ func (r *ZoneEgressResource) Delete(ctx context.Context, req resource.DeleteRequ
 
 }
 
-func (r *ZoneEgressResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *MeshZoneEgressResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {

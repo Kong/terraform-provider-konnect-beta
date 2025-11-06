@@ -45,12 +45,6 @@ func (r *EventGatewayProducePolicyModifyHeadersResourceModel) ToOperationsCreate
 	var virtualClusterID string
 	virtualClusterID = r.VirtualClusterID.ValueString()
 
-	parentPolicyID := new(string)
-	if !r.ParentPolicyID.IsUnknown() && !r.ParentPolicyID.IsNull() {
-		*parentPolicyID = r.ParentPolicyID.ValueString()
-	} else {
-		parentPolicyID = nil
-	}
 	eventGatewayModifyHeadersPolicyCreate, eventGatewayModifyHeadersPolicyCreateDiags := r.ToSharedEventGatewayModifyHeadersPolicyCreate(ctx)
 	diags.Append(eventGatewayModifyHeadersPolicyCreateDiags...)
 
@@ -61,7 +55,6 @@ func (r *EventGatewayProducePolicyModifyHeadersResourceModel) ToOperationsCreate
 	out := operations.CreateEventGatewayVirtualClusterProducePolicyModifyHeadersRequest{
 		GatewayID:                             gatewayID,
 		VirtualClusterID:                      virtualClusterID,
-		ParentPolicyID:                        parentPolicyID,
 		EventGatewayModifyHeadersPolicyCreate: eventGatewayModifyHeadersPolicyCreate,
 	}
 

@@ -47,12 +47,6 @@ func (r *EventGatewayConsumePolicyDecryptResourceModel) ToOperationsCreateEventG
 	var virtualClusterID string
 	virtualClusterID = r.VirtualClusterID.ValueString()
 
-	parentPolicyID := new(string)
-	if !r.ParentPolicyID.IsUnknown() && !r.ParentPolicyID.IsNull() {
-		*parentPolicyID = r.ParentPolicyID.ValueString()
-	} else {
-		parentPolicyID = nil
-	}
 	eventGatewayDecryptPolicy, eventGatewayDecryptPolicyDiags := r.ToSharedEventGatewayDecryptPolicy(ctx)
 	diags.Append(eventGatewayDecryptPolicyDiags...)
 
@@ -63,7 +57,6 @@ func (r *EventGatewayConsumePolicyDecryptResourceModel) ToOperationsCreateEventG
 	out := operations.CreateEventGatewayVirtualClusterConsumePolicyDecryptRequest{
 		GatewayID:                 gatewayID,
 		VirtualClusterID:          virtualClusterID,
-		ParentPolicyID:            parentPolicyID,
 		EventGatewayDecryptPolicy: eventGatewayDecryptPolicy,
 	}
 

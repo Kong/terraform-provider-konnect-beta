@@ -11,9 +11,7 @@ type CreateEventGatewayVirtualClusterConsumePolicySchemaValidationRequest struct
 	// The UUID of your Gateway.
 	GatewayID string `pathParam:"style=simple,explode=false,name=gatewayId"`
 	// The ID of the Virtual Cluster.
-	VirtualClusterID string `pathParam:"style=simple,explode=false,name=virtualClusterId"`
-	// When specified, it sets the ID of the parent policy.
-	ParentPolicyID                            *string                                           `queryParam:"style=form,explode=true,name=parent_policy_id"`
+	VirtualClusterID                          string                                            `pathParam:"style=simple,explode=false,name=virtualClusterId"`
 	EventGatewayConsumeSchemaValidationPolicy *shared.EventGatewayConsumeSchemaValidationPolicy `request:"mediaType=application/json"`
 }
 
@@ -29,13 +27,6 @@ func (c *CreateEventGatewayVirtualClusterConsumePolicySchemaValidationRequest) G
 		return ""
 	}
 	return c.VirtualClusterID
-}
-
-func (c *CreateEventGatewayVirtualClusterConsumePolicySchemaValidationRequest) GetParentPolicyID() *string {
-	if c == nil {
-		return nil
-	}
-	return c.ParentPolicyID
 }
 
 func (c *CreateEventGatewayVirtualClusterConsumePolicySchemaValidationRequest) GetEventGatewayConsumeSchemaValidationPolicy() *shared.EventGatewayConsumeSchemaValidationPolicy {

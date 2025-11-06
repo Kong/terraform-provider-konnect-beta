@@ -23,21 +23,21 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &ZoneIngressResource{}
-var _ resource.ResourceWithImportState = &ZoneIngressResource{}
+var _ resource.Resource = &MeshZoneIngressResource{}
+var _ resource.ResourceWithImportState = &MeshZoneIngressResource{}
 
-func NewZoneIngressResource() resource.Resource {
-	return &ZoneIngressResource{}
+func NewMeshZoneIngressResource() resource.Resource {
+	return &MeshZoneIngressResource{}
 }
 
-// ZoneIngressResource defines the resource implementation.
-type ZoneIngressResource struct {
+// MeshZoneIngressResource defines the resource implementation.
+type MeshZoneIngressResource struct {
 	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
-// ZoneIngressResourceModel describes the resource data model.
-type ZoneIngressResourceModel struct {
+// MeshZoneIngressResourceModel describes the resource data model.
+type MeshZoneIngressResourceModel struct {
 	AvailableServices []tfTypes.AvailableServices        `tfsdk:"available_services"`
 	CpID              types.String                       `tfsdk:"cp_id"`
 	Labels            map[string]types.String            `tfsdk:"labels"`
@@ -48,13 +48,13 @@ type ZoneIngressResourceModel struct {
 	Zone              types.String                       `tfsdk:"zone"`
 }
 
-func (r *ZoneIngressResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_zone_ingress"
+func (r *MeshZoneIngressResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = "konnect_mesh_zone_ingress"
 }
 
-func (r *ZoneIngressResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *MeshZoneIngressResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "ZoneIngress Resource",
+		MarkdownDescription: "MeshZoneIngress Resource",
 		Attributes: map[string]schema.Attribute{
 			"available_services": schema.ListNestedAttribute{
 				Optional: true,
@@ -159,7 +159,7 @@ func (r *ZoneIngressResource) Schema(ctx context.Context, req resource.SchemaReq
 	}
 }
 
-func (r *ZoneIngressResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *MeshZoneIngressResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -179,8 +179,8 @@ func (r *ZoneIngressResource) Configure(ctx context.Context, req resource.Config
 	r.client = client
 }
 
-func (r *ZoneIngressResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *ZoneIngressResourceModel
+func (r *MeshZoneIngressResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *MeshZoneIngressResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -279,8 +279,8 @@ func (r *ZoneIngressResource) Create(ctx context.Context, req resource.CreateReq
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *ZoneIngressResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *ZoneIngressResourceModel
+func (r *MeshZoneIngressResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *MeshZoneIngressResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -337,8 +337,8 @@ func (r *ZoneIngressResource) Read(ctx context.Context, req resource.ReadRequest
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *ZoneIngressResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *ZoneIngressResourceModel
+func (r *MeshZoneIngressResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *MeshZoneIngressResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -433,8 +433,8 @@ func (r *ZoneIngressResource) Update(ctx context.Context, req resource.UpdateReq
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *ZoneIngressResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *ZoneIngressResourceModel
+func (r *MeshZoneIngressResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *MeshZoneIngressResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -476,7 +476,7 @@ func (r *ZoneIngressResource) Delete(ctx context.Context, req resource.DeleteReq
 
 }
 
-func (r *ZoneIngressResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *MeshZoneIngressResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {

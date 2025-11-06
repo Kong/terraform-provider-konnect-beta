@@ -38,7 +38,6 @@ resource "konnect_event_gateway_produce_policy_encrypt" "my_eventgatewayproducep
     key = "value"
   }
   name               = "...my_name..."
-  parent_policy_id   = "d360a229-0d2f-4566-9b8e-dad95ffde3d0"
   virtual_cluster_id = "6ea3798e-38ca-4c28-a68e-1a577e478f2c"
 }
 ```
@@ -61,12 +60,12 @@ resource "konnect_event_gateway_produce_policy_encrypt" "my_eventgatewayproducep
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `name` (String) A unique user-defined name of the policy.
-- `parent_policy_id` (String) When specified, it sets the ID of the parent policy. Requires replacement if changed.
 
 ### Read-Only
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) The unique identifier of the policy.
+- `parent_policy_id` (String) The unique identifier of the parent policy, if any.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--config"></a>

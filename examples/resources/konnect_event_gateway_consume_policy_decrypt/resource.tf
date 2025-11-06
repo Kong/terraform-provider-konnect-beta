@@ -24,6 +24,5 @@ resource "konnect_event_gateway_consume_policy_decrypt" "my_eventgatewayconsumep
     key = "value"
   }
   name               = "...my_name..."
-  parent_policy_id   = "969447b3-1e41-42d8-a020-1ebc4e88a916"
   virtual_cluster_id = "05c6c607-3c42-45e9-a9e8-3e6338120724"
 }

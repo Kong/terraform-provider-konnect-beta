@@ -15,7 +15,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -51,7 +50,7 @@ type EventGatewayProducePolicyEncryptResourceModel struct {
 	ID               types.String                      `tfsdk:"id"`
 	Labels           map[string]types.String           `tfsdk:"labels"`
 	Name             types.String                      `tfsdk:"name"`
-	ParentPolicyID   types.String                      `queryParam:"style=form,explode=true,name=parent_policy_id" tfsdk:"parent_policy_id"`
+	ParentPolicyID   types.String                      `tfsdk:"parent_policy_id"`
 	UpdatedAt        types.String                      `tfsdk:"updated_at"`
 	VirtualClusterID types.String                      `tfsdk:"virtual_cluster_id"`
 }
@@ -220,11 +219,8 @@ func (r *EventGatewayProducePolicyEncryptResource) Schema(ctx context.Context, r
 				},
 			},
 			"parent_policy_id": schema.StringAttribute{
-				Optional: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				Description: `When specified, it sets the ID of the parent policy. Requires replacement if changed.`,
+				Computed:    true,
+				Description: `The unique identifier of the parent policy, if any.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
