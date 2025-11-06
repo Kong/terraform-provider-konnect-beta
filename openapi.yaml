@@ -26238,6 +26238,7 @@ components:
           format: uuid
       required:
         - id
+      x-speakeasy-name-override: ReferenceByID
     EncryptionKeyStaticReferenceByName:
       description: A static encryption key reference by name.
       type: object
@@ -26249,6 +26250,7 @@ components:
           minLength: 1
       required:
         - name
+      x-speakeasy-name-override: ReferenceByName
     ConsumeKeyValidationAction:
       description: |
         Defines a behavior when record key is not valid.
