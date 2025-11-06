@@ -14,7 +14,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -49,7 +48,7 @@ type EventGatewayProducePolicySchemaValidationResourceModel struct {
 	ID               types.String                                            `tfsdk:"id"`
 	Labels           map[string]types.String                                 `tfsdk:"labels"`
 	Name             types.String                                            `tfsdk:"name"`
-	ParentPolicyID   types.String                                            `queryParam:"style=form,explode=true,name=parent_policy_id" tfsdk:"parent_policy_id"`
+	ParentPolicyID   types.String                                            `tfsdk:"parent_policy_id"`
 	UpdatedAt        types.String                                            `tfsdk:"updated_at"`
 	VirtualClusterID types.String                                            `tfsdk:"virtual_cluster_id"`
 }
@@ -280,11 +279,8 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 				},
 			},
 			"parent_policy_id": schema.StringAttribute{
-				Optional: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				Description: `When specified, it sets the ID of the parent policy. Requires replacement if changed.`,
+				Computed:    true,
+				Description: `The unique identifier of the parent policy, if any.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -551,7 +547,7 @@ func (r *EventGatewayProducePolicySchemaValidationResource) ImportState(ctx cont
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "virtual_cluster_id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "virtual_cluster_id": "..."}': `+err.Error())
 		return
 	}
 

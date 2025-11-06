@@ -54,6 +54,20 @@ func TestEventGateway(t *testing.T) {
 						resource.TestCheckResourceAttr("konnect_event_gateway_consume_policy_modify_headers.my_eventgatewayvirtualclusterconsumepolicy", "condition", "context.topic.name.endsWith('my_suffix')"),
 						resource.TestCheckResourceAttr("konnect_event_gateway_consume_policy_modify_headers.my_eventgatewayvirtualclusterconsumepolicy", "config.actions.0.remove.key", "mykey"),
 
+						// Event Gateway Static Key
+						resource.TestCheckResourceAttr("konnect_event_gateway_static_key.my_eventgatewaystatickey", "name", "mytftestkey"),
+						resource.TestCheckResourceAttr("konnect_event_gateway_static_key.my_eventgatewaystatickey", "value", "${vault.env['MY_ENV_VAR']}"),
+
+						// Event Gateway Produce Policy Encrypt
+						resource.TestCheckResourceAttr("konnect_event_gateway_produce_policy_encrypt.my_eventgatewayproducepolicyencrypt", "name", "mytftestencryptpolicy"),
+						resource.TestCheckResourceAttr("konnect_event_gateway_produce_policy_encrypt.my_eventgatewayproducepolicyencrypt", "enabled", "true"),
+						resource.TestCheckResourceAttr("konnect_event_gateway_produce_policy_encrypt.my_eventgatewayproducepolicyencrypt", "condition", "context.topic.name.endsWith('my_suffix')"),
+
+						// Event Gateway Consume Policy Decrypt
+						resource.TestCheckResourceAttr("konnect_event_gateway_consume_policy_decrypt.my_eventgatewayconsumepolicydecrypt", "name", "mytftestconsumedrcryptpolicy"),
+						resource.TestCheckResourceAttr("konnect_event_gateway_consume_policy_decrypt.my_eventgatewayconsumepolicydecrypt", "enabled", "true"),
+						resource.TestCheckResourceAttr("konnect_event_gateway_consume_policy_decrypt.my_eventgatewayconsumepolicydecrypt", "condition", "context.topic.name.endsWith('my_suffix')"),
+
 						// Event Gateway Cluster Policy ACLs
 						resource.TestCheckResourceAttr("konnect_event_gateway_cluster_policy_acls.my_eventgatewayvirtualclusterclusterpolicy", "name", "mynamecluster"),
 						resource.TestCheckResourceAttr("konnect_event_gateway_cluster_policy_acls.my_eventgatewayvirtualclusterclusterpolicy", "enabled", "true"),

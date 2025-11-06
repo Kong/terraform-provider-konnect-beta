@@ -9,12 +9,10 @@ import (
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -42,18 +40,17 @@ type EventGatewayListenerPolicyTLSServerResource struct {
 
 // EventGatewayListenerPolicyTLSServerResourceModel describes the resource data model.
 type EventGatewayListenerPolicyTLSServerResourceModel struct {
-	Condition              types.String                                 `tfsdk:"condition"`
-	Config                 *tfTypes.EventGatewayTLSListenerPolicyConfig `tfsdk:"config"`
-	CreatedAt              types.String                                 `tfsdk:"created_at"`
-	Description            types.String                                 `tfsdk:"description"`
-	Enabled                types.Bool                                   `tfsdk:"enabled"`
-	EventGatewayListenerID types.String                                 `tfsdk:"event_gateway_listener_id"`
-	GatewayID              types.String                                 `tfsdk:"gateway_id"`
-	ID                     types.String                                 `tfsdk:"id"`
-	Labels                 map[string]types.String                      `tfsdk:"labels"`
-	Name                   types.String                                 `tfsdk:"name"`
-	ParentPolicyID         types.String                                 `tfsdk:"parent_policy_id"`
-	UpdatedAt              types.String                                 `tfsdk:"updated_at"`
+	Config                 tfTypes.EventGatewayTLSListenerPolicyConfig `tfsdk:"config"`
+	CreatedAt              types.String                                `tfsdk:"created_at"`
+	Description            types.String                                `tfsdk:"description"`
+	Enabled                types.Bool                                  `tfsdk:"enabled"`
+	EventGatewayListenerID types.String                                `tfsdk:"event_gateway_listener_id"`
+	GatewayID              types.String                                `tfsdk:"gateway_id"`
+	ID                     types.String                                `tfsdk:"id"`
+	Labels                 map[string]types.String                     `tfsdk:"labels"`
+	Name                   types.String                                `tfsdk:"name"`
+	ParentPolicyID         types.String                                `tfsdk:"parent_policy_id"`
+	UpdatedAt              types.String                                `tfsdk:"updated_at"`
 }
 
 func (r *EventGatewayListenerPolicyTLSServerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -64,33 +61,8 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Schema(ctx context.Context
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "EventGatewayListenerPolicyTLSServer Resource",
 		Attributes: map[string]schema.Attribute{
-			"condition": schema.StringAttribute{
-				Optional:    true,
-				Description: `A string containing the boolean expression that determines whether the policy is applied.`,
-				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 1000),
-				},
-			},
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"allow_plaintext": types.BoolType,
-					"certificates": types.ListType{
-						ElemType: types.ObjectType{
-							AttrTypes: map[string]attr.Type{
-								`certificate`: types.StringType,
-								`key`:         types.StringType,
-							},
-						},
-					},
-					"versions": types.ObjectType{
-						AttrTypes: map[string]attr.Type{
-							`max`: types.StringType,
-							`min`: types.StringType,
-						},
-					},
-				})),
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"allow_plaintext": schema.BoolAttribute{
 						Computed:    true,
@@ -103,12 +75,15 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Schema(ctx context.Context
 						NestedObject: schema.NestedAttributeObject{
 							Attributes: map[string]schema.Attribute{
 								"certificate": schema.StringAttribute{
-									Required:    true,
-									Description: `A template string expression containing a reference to a secret or a literal value`,
+									Required: true,
+									MarkdownDescription: `A literal value or a reference to an existing secret as a template string expression.` + "\n" +
+										`The value is stored and returned by the API as-is, not treated as sensitive information.`,
 								},
 								"key": schema.StringAttribute{
-									Required:    true,
-									Description: `A template string expression containing a reference to a secret`,
+									Required: true,
+									MarkdownDescription: `A sensitive value containing the secret or a reference to a secret as a template string expression.` + "\n" +
+										`If the value is provided as plain text, it is encrypted at rest and omitted from API responses.` + "\n" +
+										`If provided as an expression, the expression itself is stored and returned by the API.`,
 								},
 							},
 						},
@@ -278,11 +253,11 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Create(ctx context.Context
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.EventGatewayPolicy != nil) {
+	if !(res.EventGatewayListenerPolicy != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayListenerPolicy(ctx, res.EventGatewayListenerPolicy)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -315,11 +290,11 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Create(ctx context.Context
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if !(res1.EventGatewayPolicy != nil) {
+	if !(res1.EventGatewayListenerPolicy != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res1.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayListenerPolicy(ctx, res1.EventGatewayListenerPolicy)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -379,11 +354,11 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Read(ctx context.Context, 
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.EventGatewayPolicy != nil) {
+	if !(res.EventGatewayListenerPolicy != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayListenerPolicy(ctx, res.EventGatewayListenerPolicy)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -429,11 +404,11 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Update(ctx context.Context
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.EventGatewayPolicy != nil) {
+	if !(res.EventGatewayListenerPolicy != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayListenerPolicy(ctx, res.EventGatewayListenerPolicy)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -466,11 +441,11 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Update(ctx context.Context
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if !(res1.EventGatewayPolicy != nil) {
+	if !(res1.EventGatewayListenerPolicy != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res1.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayListenerPolicy(ctx, res1.EventGatewayListenerPolicy)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -539,7 +514,7 @@ func (r *EventGatewayListenerPolicyTLSServerResource) ImportState(ctx context.Co
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"event_gateway_listener_id": "", "gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"event_gateway_listener_id": "...", "gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}': `+err.Error())
 		return
 	}
 

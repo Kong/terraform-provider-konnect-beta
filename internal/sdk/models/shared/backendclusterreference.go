@@ -10,16 +10,16 @@ type BackendClusterReference struct {
 	Name string `json:"name"`
 }
 
-func (o *BackendClusterReference) GetID() string {
-	if o == nil {
+func (b *BackendClusterReference) GetID() string {
+	if b == nil {
 		return ""
 	}
-	return o.ID
+	return b.ID
 }
 
-func (o *BackendClusterReference) GetName() string {
-	if o == nil {
+func (b *BackendClusterReference) GetName() string {
+	if b == nil {
 		return ""
 	}
-	return o.Name
+	return b.Name
 }

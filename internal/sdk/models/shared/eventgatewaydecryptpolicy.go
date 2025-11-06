@@ -6,41 +6,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// EventGatewayDecryptPolicyConfig - The configuration of the decrypt policy.
-type EventGatewayDecryptPolicyConfig struct {
-	// Describes how to handle failing encryption or decryption.
-	// Use `error` if the record should be rejected if encryption or decryption fails.
-	// Use `passthrough` to ignore encryption or decryption failure and continue proxying the record.
-	//
-	FailureMode EncryptionFailureMode `json:"failure_mode"`
-	// Describes how to find a symmetric key for decryption.
-	//
-	KeySources []EventGatewayKeySource `json:"key_sources"`
-	// Describes what parts of a record to decrypt.
-	Decrypt []DecryptionRecordSelector `json:"decrypt"`
-}
-
-func (o *EventGatewayDecryptPolicyConfig) GetFailureMode() EncryptionFailureMode {
-	if o == nil {
-		return EncryptionFailureMode("")
-	}
-	return o.FailureMode
-}
-
-func (o *EventGatewayDecryptPolicyConfig) GetKeySources() []EventGatewayKeySource {
-	if o == nil {
-		return []EventGatewayKeySource{}
-	}
-	return o.KeySources
-}
-
-func (o *EventGatewayDecryptPolicyConfig) GetDecrypt() []DecryptionRecordSelector {
-	if o == nil {
-		return []DecryptionRecordSelector{}
-	}
-	return o.Decrypt
-}
-
 // EventGatewayDecryptPolicy - Decrypts portions of Kafka records using AES_128_GCM. Keys are therefore 128 bits long.
 type EventGatewayDecryptPolicy struct {
 	type_ string `const:"decrypt" json:"type"`
@@ -53,7 +18,7 @@ type EventGatewayDecryptPolicy struct {
 	// A string containing the boolean expression that determines whether the policy is applied.
 	Condition *string `json:"condition,omitempty"`
 	// The configuration of the decrypt policy.
-	Config *EventGatewayDecryptPolicyConfig `json:"config"`
+	Config EventGatewayDecryptPolicyConfig `json:"config"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -66,54 +31,54 @@ func (e EventGatewayDecryptPolicy) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayDecryptPolicy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *EventGatewayDecryptPolicy) GetType() string {
+func (e *EventGatewayDecryptPolicy) GetType() string {
 	return "decrypt"
 }
 
-func (o *EventGatewayDecryptPolicy) GetName() *string {
-	if o == nil {
+func (e *EventGatewayDecryptPolicy) GetName() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Name
+	return e.Name
 }
 
-func (o *EventGatewayDecryptPolicy) GetDescription() *string {
-	if o == nil {
+func (e *EventGatewayDecryptPolicy) GetDescription() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Description
+	return e.Description
 }
 
-func (o *EventGatewayDecryptPolicy) GetEnabled() *bool {
-	if o == nil {
+func (e *EventGatewayDecryptPolicy) GetEnabled() *bool {
+	if e == nil {
 		return nil
 	}
-	return o.Enabled
+	return e.Enabled
 }
 
-func (o *EventGatewayDecryptPolicy) GetCondition() *string {
-	if o == nil {
+func (e *EventGatewayDecryptPolicy) GetCondition() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Condition
+	return e.Condition
 }
 
-func (o *EventGatewayDecryptPolicy) GetConfig() *EventGatewayDecryptPolicyConfig {
-	if o == nil {
-		return nil
+func (e *EventGatewayDecryptPolicy) GetConfig() EventGatewayDecryptPolicyConfig {
+	if e == nil {
+		return EventGatewayDecryptPolicyConfig{}
 	}
-	return o.Config
+	return e.Config
 }
 
-func (o *EventGatewayDecryptPolicy) GetLabels() map[string]*string {
-	if o == nil {
+func (e *EventGatewayDecryptPolicy) GetLabels() map[string]*string {
+	if e == nil {
 		return nil
 	}
-	return o.Labels
+	return e.Labels
 }

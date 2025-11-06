@@ -11,11 +11,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -84,23 +86,28 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"password": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `A template string expression containing a reference to a secret. Not Null`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `A sensitive value containing the secret or a reference to a secret as a template string expression.` + "\n" +
+									`If the value is provided as plain text, it is encrypted at rest and omitted from API responses.` + "\n" +
+									`If provided as an expression, the expression itself is stored and returned by the API.` + "\n" +
+									`Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
 								},
 							},
 							"username": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `A template string expression containing a reference to a secret or a literal value. Not Null`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `A literal value or a reference to an existing secret as a template string expression.` + "\n" +
+									`The value is stored and returned by the API as-is, not treated as sensitive information.` + "\n" +
+									`Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
 								},
 							},
 						},
-						Description: `SASL/PLAIN authentication scheme for the backend cluster.`,
+						Description: `SASL/PLAIN authentication scheme for the backend cluster without requiring sensitive password data.`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
 								path.MatchRelative().AtParent().AtName("anonymous"),
@@ -125,23 +132,28 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 								},
 							},
 							"password": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `A template string expression containing a reference to a secret. Not Null`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `A sensitive value containing the secret or a reference to a secret as a template string expression.` + "\n" +
+									`If the value is provided as plain text, it is encrypted at rest and omitted from API responses.` + "\n" +
+									`If provided as an expression, the expression itself is stored and returned by the API.` + "\n" +
+									`Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
 								},
 							},
 							"username": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `A template string expression containing a reference to a secret or a literal value. Not Null`,
+								Computed: true,
+								Optional: true,
+								MarkdownDescription: `A literal value or a reference to an existing secret as a template string expression.` + "\n" +
+									`The value is stored and returned by the API as-is, not treated as sensitive information.` + "\n" +
+									`Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
 								},
 							},
 						},
-						Description: `SASL/SCRAM-SHA-256 authentication scheme for the backend cluster.`,
+						Description: `SASL/SCRAM authentication scheme for the backend cluster without requiring sensitive password data.`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
 								path.MatchRelative().AtParent().AtName("anonymous"),
@@ -223,9 +235,10 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"ca_bundle": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `A template string expression containing a reference to a secret or a literal value`,
+						Computed: true,
+						Optional: true,
+						MarkdownDescription: `A literal value or a reference to an existing secret as a template string expression.` + "\n" +
+							`The value is stored and returned by the API as-is, not treated as sensitive information.`,
 					},
 					"enabled": schema.BoolAttribute{
 						Required:    true,
@@ -238,10 +251,14 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 						Description: `If true, skip certificate verification. It's not secure to use for production. Default: false`,
 					},
 					"tls_versions": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Computed: true,
+						Optional: true,
+						Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+							types.StringValue("tls12"),
+							types.StringValue("tls13"),
+						})),
 						ElementType: types.StringType,
-						Description: `List of supported TLS versions.`,
+						Description: `List of supported TLS versions. Default: ["tls12","tls13"]`,
 					},
 				},
 			},
@@ -505,7 +522,7 @@ func (r *EventGatewayBackendClusterResource) ImportState(ctx context.Context, re
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "..."}': `+err.Error())
 		return
 	}
 

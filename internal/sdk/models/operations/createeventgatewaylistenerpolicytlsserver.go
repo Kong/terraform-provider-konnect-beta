@@ -15,25 +15,25 @@ type CreateEventGatewayListenerPolicyTLSServerRequest struct {
 	EventGatewayTLSListenerPolicy *shared.EventGatewayTLSListenerPolicy `request:"mediaType=application/json"`
 }
 
-func (o *CreateEventGatewayListenerPolicyTLSServerRequest) GetGatewayID() string {
-	if o == nil {
+func (c *CreateEventGatewayListenerPolicyTLSServerRequest) GetGatewayID() string {
+	if c == nil {
 		return ""
 	}
-	return o.GatewayID
+	return c.GatewayID
 }
 
-func (o *CreateEventGatewayListenerPolicyTLSServerRequest) GetEventGatewayListenerID() string {
-	if o == nil {
+func (c *CreateEventGatewayListenerPolicyTLSServerRequest) GetEventGatewayListenerID() string {
+	if c == nil {
 		return ""
 	}
-	return o.EventGatewayListenerID
+	return c.EventGatewayListenerID
 }
 
-func (o *CreateEventGatewayListenerPolicyTLSServerRequest) GetEventGatewayTLSListenerPolicy() *shared.EventGatewayTLSListenerPolicy {
-	if o == nil {
+func (c *CreateEventGatewayListenerPolicyTLSServerRequest) GetEventGatewayTLSListenerPolicy() *shared.EventGatewayTLSListenerPolicy {
+	if c == nil {
 		return nil
 	}
-	return o.EventGatewayTLSListenerPolicy
+	return c.EventGatewayTLSListenerPolicy
 }
 
 type CreateEventGatewayListenerPolicyTLSServerResponse struct {
@@ -44,7 +44,7 @@ type CreateEventGatewayListenerPolicyTLSServerResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Created
-	EventGatewayPolicy *shared.EventGatewayPolicy
+	EventGatewayListenerPolicy *shared.EventGatewayListenerPolicy
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Unauthorized
@@ -53,51 +53,51 @@ type CreateEventGatewayListenerPolicyTLSServerResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *CreateEventGatewayListenerPolicyTLSServerResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateEventGatewayListenerPolicyTLSServerResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateEventGatewayListenerPolicyTLSServerResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateEventGatewayListenerPolicyTLSServerResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateEventGatewayListenerPolicyTLSServerResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateEventGatewayListenerPolicyTLSServerResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateEventGatewayListenerPolicyTLSServerResponse) GetEventGatewayPolicy() *shared.EventGatewayPolicy {
-	if o == nil {
+func (c *CreateEventGatewayListenerPolicyTLSServerResponse) GetEventGatewayListenerPolicy() *shared.EventGatewayListenerPolicy {
+	if c == nil {
 		return nil
 	}
-	return o.EventGatewayPolicy
+	return c.EventGatewayListenerPolicy
 }
 
-func (o *CreateEventGatewayListenerPolicyTLSServerResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (c *CreateEventGatewayListenerPolicyTLSServerResponse) GetBadRequestError() *shared.BadRequestError {
+	if c == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return c.BadRequestError
 }
 
-func (o *CreateEventGatewayListenerPolicyTLSServerResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (c *CreateEventGatewayListenerPolicyTLSServerResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return c.UnauthorizedError
 }
 
-func (o *CreateEventGatewayListenerPolicyTLSServerResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (c *CreateEventGatewayListenerPolicyTLSServerResponse) GetForbiddenError() *shared.ForbiddenError {
+	if c == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return c.ForbiddenError
 }

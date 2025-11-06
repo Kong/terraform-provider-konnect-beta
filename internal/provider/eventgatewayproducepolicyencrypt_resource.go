@@ -10,14 +10,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -25,6 +22,7 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
+	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -43,18 +41,18 @@ type EventGatewayProducePolicyEncryptResource struct {
 
 // EventGatewayProducePolicyEncryptResourceModel describes the resource data model.
 type EventGatewayProducePolicyEncryptResourceModel struct {
-	Condition        types.String                             `tfsdk:"condition"`
-	Config           *tfTypes.EventGatewayEncryptPolicyConfig `tfsdk:"config"`
-	CreatedAt        types.String                             `tfsdk:"created_at"`
-	Description      types.String                             `tfsdk:"description"`
-	Enabled          types.Bool                               `tfsdk:"enabled"`
-	GatewayID        types.String                             `tfsdk:"gateway_id"`
-	ID               types.String                             `tfsdk:"id"`
-	Labels           map[string]types.String                  `tfsdk:"labels"`
-	Name             types.String                             `tfsdk:"name"`
-	ParentPolicyID   types.String                             `queryParam:"style=form,explode=true,name=parent_policy_id" tfsdk:"parent_policy_id"`
-	UpdatedAt        types.String                             `tfsdk:"updated_at"`
-	VirtualClusterID types.String                             `tfsdk:"virtual_cluster_id"`
+	Condition        types.String                      `tfsdk:"condition"`
+	Config           tfTypes.EventGatewayEncryptConfig `tfsdk:"config"`
+	CreatedAt        types.String                      `tfsdk:"created_at"`
+	Description      types.String                      `tfsdk:"description"`
+	Enabled          types.Bool                        `tfsdk:"enabled"`
+	GatewayID        types.String                      `tfsdk:"gateway_id"`
+	ID               types.String                      `tfsdk:"id"`
+	Labels           map[string]types.String           `tfsdk:"labels"`
+	Name             types.String                      `tfsdk:"name"`
+	ParentPolicyID   types.String                      `tfsdk:"parent_policy_id"`
+	UpdatedAt        types.String                      `tfsdk:"updated_at"`
+	VirtualClusterID types.String                      `tfsdk:"virtual_cluster_id"`
 }
 
 func (r *EventGatewayProducePolicyEncryptResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -73,71 +71,82 @@ func (r *EventGatewayProducePolicyEncryptResource) Schema(ctx context.Context, r
 				},
 			},
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"encrypt": types.ListType{
-						ElemType: types.ObjectType{
-							AttrTypes: map[string]attr.Type{
-								`key_id`:         types.StringType,
-								`part_of_record`: types.StringType,
-							},
-						},
-					},
-					"failure_mode": types.StringType,
-					"key_sources": types.ListType{
-						ElemType: types.ObjectType{
-							AttrTypes: map[string]attr.Type{
-								`aws`: types.ObjectType{
-									AttrTypes: map[string]attr.Type{},
-								},
-								`static`: types.ObjectType{
-									AttrTypes: map[string]attr.Type{
-										`keys`: types.ListType{
-											ElemType: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`id`:  types.StringType,
-													`key`: types.StringType,
-												},
-											},
+				Required: true,
+				Attributes: map[string]schema.Attribute{
+					"encryption_key": schema.SingleNestedAttribute{
+						Required: true,
+						Attributes: map[string]schema.Attribute{
+							"aws": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"arn": schema.StringAttribute{
+										Required:    true,
+										Description: `The AWS KMS key ARN.`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthBetween(10, 2048),
+											stringvalidator.RegexMatches(regexp.MustCompile(`^arn:aws:kms:.+`), "must match pattern "+regexp.MustCompile(`^arn:aws:kms:.+`).String()),
 										},
 									},
 								},
-							},
-						},
-					},
-				})),
-				Attributes: map[string]schema.Attribute{
-					"encrypt": schema.ListNestedAttribute{
-						Required: true,
-						NestedObject: schema.NestedAttributeObject{
-							Attributes: map[string]schema.Attribute{
-								"key_id": schema.StringAttribute{
-									Required: true,
-									MarkdownDescription: `The id of the key to use for encryption. It must match one of the keys defined in the policy's key_sources.` + "\n" +
-										`` + "\n" +
-										`An ID is a URI where the scheme refers to the type of key source and the rest is source-specific:` + "\n" +
-										`- static: the id defined in the list of static keys` + "\n" +
-										`- aws: a KMS key ARN`,
+								Description: `The AWS KMS key to use for encryption.`,
+								Validators: []validator.Object{
+									objectvalidator.ConflictsWith(path.Expressions{
+										path.MatchRelative().AtParent().AtName("static"),
+									}...),
 								},
-								"part_of_record": schema.StringAttribute{
-									Required: true,
-									MarkdownDescription: `* key - encrypt the record key` + "\n" +
-										`* value - encrypt the record value` + "\n" +
-										`must be one of ["key", "value"]`,
-									Validators: []validator.String{
-										stringvalidator.OneOf(
-											"key",
-											"value",
-										),
+							},
+							"static": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"key": schema.SingleNestedAttribute{
+										Required: true,
+										Attributes: map[string]schema.Attribute{
+											"reference_by_id": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"id": schema.StringAttribute{
+														Required:    true,
+														Description: `The ID of the static key defined in the key source.`,
+													},
+												},
+												Description: `A static encryption key reference by ID.`,
+												Validators: []validator.Object{
+													objectvalidator.ConflictsWith(path.Expressions{
+														path.MatchRelative().AtParent().AtName("reference_by_name"),
+													}...),
+												},
+											},
+											"reference_by_name": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"name": schema.StringAttribute{
+														Required:    true,
+														Description: `The name of the static key defined in the key source.`,
+														Validators: []validator.String{
+															stringvalidator.UTF8LengthBetween(1, 255),
+														},
+													},
+												},
+												Description: `A static encryption key reference by name.`,
+												Validators: []validator.Object{
+													objectvalidator.ConflictsWith(path.Expressions{
+														path.MatchRelative().AtParent().AtName("reference_by_id"),
+													}...),
+												},
+											},
+										},
+										Description: `A static encryption key reference, either by ID or by value.`,
 									},
 								},
+								Description: `A static encryption key.`,
+								Validators: []validator.Object{
+									objectvalidator.ConflictsWith(path.Expressions{
+										path.MatchRelative().AtParent().AtName("aws"),
+									}...),
+								},
 							},
 						},
-						Description: `Describes what parts of a record to encrypt.`,
-						Validators: []validator.List{
-							listvalidator.SizeAtLeast(1),
-						},
+						Description: `The key to use for encryption.`,
 					},
 					"failure_mode": schema.StringAttribute{
 						Required: true,
@@ -152,55 +161,10 @@ func (r *EventGatewayProducePolicyEncryptResource) Schema(ctx context.Context, r
 							),
 						},
 					},
-					"key_sources": schema.ListNestedAttribute{
-						Required: true,
-						NestedObject: schema.NestedAttributeObject{
-							Attributes: map[string]schema.Attribute{
-								"aws": schema.SingleNestedAttribute{
-									Optional: true,
-									MarkdownDescription: `A key source that uses an AWS KMS to find a symmetric key. Load KMS credentials from the environment.` + "\n" +
-										`` + "\n" +
-										`See [aws docs](https://docs.aws.amazon.com/sdk-for-rust/latest/dg/credproviders.html#credproviders-default-credentials-provider-chain)` + "\n" +
-										`for more information about how credential retrieval.`,
-									Validators: []validator.Object{
-										objectvalidator.ConflictsWith(path.Expressions{
-											path.MatchRelative().AtParent().AtName("static"),
-										}...),
-									},
-								},
-								"static": schema.SingleNestedAttribute{
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"keys": schema.ListNestedAttribute{
-											Required: true,
-											NestedObject: schema.NestedAttributeObject{
-												Attributes: map[string]schema.Attribute{
-													"id": schema.StringAttribute{
-														Required:    true,
-														Description: `The unique identifier of the key.`,
-													},
-													"key": schema.StringAttribute{
-														Required:    true,
-														Description: `A template string expression containing a reference to a secret`,
-													},
-												},
-											},
-											Description: `A list of static, user-provided keys. Each one must be 128 bits long.`,
-											Validators: []validator.List{
-												listvalidator.SizeAtLeast(1),
-											},
-										},
-									},
-									Description: `A key source that uses a static symmetric key. The key is provided as a base64-encoded string.`,
-									Validators: []validator.Object{
-										objectvalidator.ConflictsWith(path.Expressions{
-											path.MatchRelative().AtParent().AtName("aws"),
-										}...),
-									},
-								},
-							},
-						},
-						Description: `Describes how to find a symmetric key for encryption.`,
+					"part_of_record": schema.ListAttribute{
+						Required:    true,
+						ElementType: types.StringType,
+						Description: `Describes the parts of a record to encrypt.`,
 						Validators: []validator.List{
 							listvalidator.SizeAtLeast(1),
 						},
@@ -255,11 +219,8 @@ func (r *EventGatewayProducePolicyEncryptResource) Schema(ctx context.Context, r
 				},
 			},
 			"parent_policy_id": schema.StringAttribute{
-				Optional: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				Description: `When specified, it sets the ID of the parent policy. Requires replacement if changed.`,
+				Computed:    true,
+				Description: `The unique identifier of the parent policy, if any.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -600,7 +561,7 @@ func (r *EventGatewayProducePolicyEncryptResource) ImportState(ctx context.Conte
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "virtual_cluster_id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "virtual_cluster_id": "..."}': `+err.Error())
 		return
 	}
 

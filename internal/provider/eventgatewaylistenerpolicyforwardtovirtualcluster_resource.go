@@ -24,6 +24,7 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
+	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -42,7 +43,6 @@ type EventGatewayListenerPolicyForwardToVirtualClusterResource struct {
 
 // EventGatewayListenerPolicyForwardToVirtualClusterResourceModel describes the resource data model.
 type EventGatewayListenerPolicyForwardToVirtualClusterResourceModel struct {
-	Condition              types.String                                `tfsdk:"condition"`
 	Config                 tfTypes.ForwardToVirtualClusterPolicyConfig `tfsdk:"config"`
 	CreatedAt              types.String                                `tfsdk:"created_at"`
 	Description            types.String                                `tfsdk:"description"`
@@ -64,13 +64,6 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Schema(ctx c
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "EventGatewayListenerPolicyForwardToVirtualCluster Resource",
 		Attributes: map[string]schema.Attribute{
-			"condition": schema.StringAttribute{
-				Optional:    true,
-				Description: `A string containing the boolean expression that determines whether the policy is applied.`,
-				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 1000),
-				},
-			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -190,7 +183,13 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Schema(ctx c
 									`If "dns.label" label is absent on the virtual cluster, the traffic won't be routed there.` + "\n" +
 									`` + "\n" +
 									`The bootstrap host is ` + "`" + `bootstrap.my-cluster.example.com` + "`" + ` and then each broker is addressable at ` + "`" + `broker-0.my-cluster.example.com` + "`" + `, ` + "`" + `broker-1.my-cluster.example.com` + "`" + `, etc.` + "\n" +
-									`This means that your deployment needs to have a wildcard certificate for the domain and a DNS resolver that routes ` + "`" + `*.my-cluster.example.com` + "`" + ` to the proxy.`,
+									`This means that your deployment needs to have a wildcard certificate for the domain and a DNS resolver that routes ` + "`" + `*.my-cluster.example.com` + "`" + ` to the proxy.` + "\n" +
+									`` + "\n" +
+									`The accepted format is a DNS subdomain starting with either ` + "`" + `.` + "`" + ` or ` + "`" + `-` + "`" + `. For example, ` + "`" + `-keg.example.com` + "`" + `, ` + "`" + `.keg.example.com` + "`" + `, ` + "`" + `.namespace.svc.cluster.local` + "`" + `, and ` + "`" + `.localhost` + "`" + ` are all valid,` + "\n" +
+									`while ` + "`" + `keg.example.com` + "`" + ` is not.`,
+								Validators: []validator.String{
+									stringvalidator.RegexMatches(regexp.MustCompile(`^[\.-]([a-z0-9]([a-z0-9-]*[a-z0-9])?\.)*([a-z0-9-]*[a-z0-9])$`), "must match pattern "+regexp.MustCompile(`^[\.-]([a-z0-9]([a-z0-9-]*[a-z0-9])?\.)*([a-z0-9-]*[a-z0-9])$`).String()),
+								},
 							},
 						},
 						Description: `The configuration to forward requests to virtual clusters configured with SNI routing.`,
@@ -331,11 +330,11 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Create(ctx c
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.EventGatewayPolicy != nil) {
+	if !(res.EventGatewayListenerPolicy != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayListenerPolicy(ctx, res.EventGatewayListenerPolicy)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -395,11 +394,11 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Read(ctx con
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.EventGatewayPolicy != nil) {
+	if !(res.EventGatewayListenerPolicy != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayListenerPolicy(ctx, res.EventGatewayListenerPolicy)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -445,11 +444,11 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Update(ctx c
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.EventGatewayPolicy != nil) {
+	if !(res.EventGatewayListenerPolicy != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res.EventGatewayPolicy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayListenerPolicy(ctx, res.EventGatewayListenerPolicy)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -518,7 +517,7 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) ImportState(
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"event_gateway_listener_id": "", "gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"event_gateway_listener_id": "...", "gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}': `+err.Error())
 		return
 	}
 

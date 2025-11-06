@@ -63,7 +63,7 @@ func (s *EventGatewayListeners) CreateEventGatewayListener(ctx context.Context, 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-event-gateway-listener",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateEventGatewayListenerRequest", "json", `request:"mediaType=application/json"`)
@@ -311,7 +311,7 @@ func (s *EventGatewayListeners) CreateEventGatewayListener(ctx context.Context, 
 
 }
 
-// GetEventGatewayListener - Fetch Event Gateway Listener
+// GetEventGatewayListener - Get an Event Gateway Listener
 // Returns information about a specific listener associated with the Event Gateway.
 func (s *EventGatewayListeners) GetEventGatewayListener(ctx context.Context, request operations.GetEventGatewayListenerRequest, opts ...operations.Option) (*operations.GetEventGatewayListenerResponse, error) {
 	o := operations.Options{}
@@ -344,7 +344,7 @@ func (s *EventGatewayListeners) GetEventGatewayListener(ctx context.Context, req
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-event-gateway-listener",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -618,7 +618,7 @@ func (s *EventGatewayListeners) UpdateEventGatewayListener(ctx context.Context, 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-event-gateway-listener",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "UpdateEventGatewayListenerRequest", "json", `request:"mediaType=application/json"`)
@@ -898,7 +898,7 @@ func (s *EventGatewayListeners) DeleteEventGatewayListener(ctx context.Context, 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-event-gateway-listener",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

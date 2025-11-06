@@ -23,14 +23,8 @@ func (r *EventGatewayConsumePolicySchemaValidationResourceModel) RefreshFromShar
 
 			if configPriorData != nil {
 				r.Config.KeyValidationAction = configPriorData.KeyValidationAction
-			}
-			if configPriorData != nil {
 				r.Config.SchemaRegistry = configPriorData.SchemaRegistry
-			}
-			if configPriorData != nil {
 				r.Config.Type = configPriorData.Type
-			}
-			if configPriorData != nil {
 				r.Config.ValueValidationAction = configPriorData.ValueValidationAction
 			}
 		}
@@ -61,12 +55,6 @@ func (r *EventGatewayConsumePolicySchemaValidationResourceModel) ToOperationsCre
 	var virtualClusterID string
 	virtualClusterID = r.VirtualClusterID.ValueString()
 
-	parentPolicyID := new(string)
-	if !r.ParentPolicyID.IsUnknown() && !r.ParentPolicyID.IsNull() {
-		*parentPolicyID = r.ParentPolicyID.ValueString()
-	} else {
-		parentPolicyID = nil
-	}
 	eventGatewayConsumeSchemaValidationPolicy, eventGatewayConsumeSchemaValidationPolicyDiags := r.ToSharedEventGatewayConsumeSchemaValidationPolicy(ctx)
 	diags.Append(eventGatewayConsumeSchemaValidationPolicyDiags...)
 
@@ -77,7 +65,6 @@ func (r *EventGatewayConsumePolicySchemaValidationResourceModel) ToOperationsCre
 	out := operations.CreateEventGatewayVirtualClusterConsumePolicySchemaValidationRequest{
 		GatewayID:        gatewayID,
 		VirtualClusterID: virtualClusterID,
-		ParentPolicyID:   parentPolicyID,
 		EventGatewayConsumeSchemaValidationPolicy: eventGatewayConsumeSchemaValidationPolicy,
 	}
 

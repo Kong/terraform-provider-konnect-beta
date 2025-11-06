@@ -2,24 +2,44 @@
 
 package shared
 
-// VirtualClusterAuthenticationPrincipal - A principal for authentication.
+import (
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
+)
+
+// VirtualClusterAuthenticationPrincipal - A principal for authentication containing username and password.
 type VirtualClusterAuthenticationPrincipal struct {
-	// A template string expression containing a reference to a secret or a literal value
-	Username *string `json:"username,omitempty"`
-	// A template string expression containing a reference to a secret
-	Password *string `json:"password,omitempty"`
+	// A literal value or a reference to an existing secret as a template string expression.
+	// The value is stored and returned by the API as-is, not treated as sensitive information.
+	//
+	Username string `json:"username"`
+	// A sensitive value containing the secret or a reference to a secret as a template string expression.
+	// If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
+	// If provided as an expression, the expression itself is stored and returned by the API.
+	//
+	Password string `json:"password"`
 }
 
-func (o *VirtualClusterAuthenticationPrincipal) GetUsername() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Username
+func (v VirtualClusterAuthenticationPrincipal) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
 }
 
-func (o *VirtualClusterAuthenticationPrincipal) GetPassword() *string {
-	if o == nil {
-		return nil
+func (v *VirtualClusterAuthenticationPrincipal) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"username", "password"}); err != nil {
+		return err
 	}
-	return o.Password
+	return nil
+}
+
+func (v *VirtualClusterAuthenticationPrincipal) GetUsername() string {
+	if v == nil {
+		return ""
+	}
+	return v.Username
+}
+
+func (v *VirtualClusterAuthenticationPrincipal) GetPassword() string {
+	if v == nil {
+		return ""
+	}
+	return v.Password
 }

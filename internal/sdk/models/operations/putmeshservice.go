@@ -18,32 +18,32 @@ type PutMeshServiceRequest struct {
 	MeshServiceItem shared.MeshServiceItemInput `request:"mediaType=application/json"`
 }
 
-func (o *PutMeshServiceRequest) GetCpID() string {
-	if o == nil {
+func (p *PutMeshServiceRequest) GetCpID() string {
+	if p == nil {
 		return ""
 	}
-	return o.CpID
+	return p.CpID
 }
 
-func (o *PutMeshServiceRequest) GetMesh() string {
-	if o == nil {
+func (p *PutMeshServiceRequest) GetMesh() string {
+	if p == nil {
 		return ""
 	}
-	return o.Mesh
+	return p.Mesh
 }
 
-func (o *PutMeshServiceRequest) GetName() string {
-	if o == nil {
+func (p *PutMeshServiceRequest) GetName() string {
+	if p == nil {
 		return ""
 	}
-	return o.Name
+	return p.Name
 }
 
-func (o *PutMeshServiceRequest) GetMeshServiceItem() shared.MeshServiceItemInput {
-	if o == nil {
+func (p *PutMeshServiceRequest) GetMeshServiceItem() shared.MeshServiceItemInput {
+	if p == nil {
 		return shared.MeshServiceItemInput{}
 	}
-	return o.MeshServiceItem
+	return p.MeshServiceItem
 }
 
 type PutMeshServiceResponse struct {
@@ -53,34 +53,34 @@ type PutMeshServiceResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Updated
+	// Successful response
 	MeshServiceCreateOrUpdateSuccessResponse *shared.MeshServiceCreateOrUpdateSuccessResponse
 }
 
-func (o *PutMeshServiceResponse) GetContentType() string {
-	if o == nil {
+func (p *PutMeshServiceResponse) GetContentType() string {
+	if p == nil {
 		return ""
 	}
-	return o.ContentType
+	return p.ContentType
 }
 
-func (o *PutMeshServiceResponse) GetStatusCode() int {
-	if o == nil {
+func (p *PutMeshServiceResponse) GetStatusCode() int {
+	if p == nil {
 		return 0
 	}
-	return o.StatusCode
+	return p.StatusCode
 }
 
-func (o *PutMeshServiceResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (p *PutMeshServiceResponse) GetRawResponse() *http.Response {
+	if p == nil {
 		return nil
 	}
-	return o.RawResponse
+	return p.RawResponse
 }
 
-func (o *PutMeshServiceResponse) GetMeshServiceCreateOrUpdateSuccessResponse() *shared.MeshServiceCreateOrUpdateSuccessResponse {
-	if o == nil {
+func (p *PutMeshServiceResponse) GetMeshServiceCreateOrUpdateSuccessResponse() *shared.MeshServiceCreateOrUpdateSuccessResponse {
+	if p == nil {
 		return nil
 	}
-	return o.MeshServiceCreateOrUpdateSuccessResponse
+	return p.MeshServiceCreateOrUpdateSuccessResponse
 }

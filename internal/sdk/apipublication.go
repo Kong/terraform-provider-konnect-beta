@@ -63,7 +63,7 @@ func (s *APIPublication) PublishAPIToPortal(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "publish-api-to-portal",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "APIPublication", "json", `request:"mediaType=application/json"`)
@@ -332,7 +332,7 @@ func (s *APIPublication) PublishAPIToPortal(ctx context.Context, request operati
 
 }
 
-// FetchPublication - Fetch Publication
+// FetchPublication - Get a Publication
 // Retrieve an API's publication in a portal.
 // If the API is not published to the portal, a 404 response is returned.
 func (s *APIPublication) FetchPublication(ctx context.Context, request operations.FetchPublicationRequest, opts ...operations.Option) (*operations.FetchPublicationResponse, error) {
@@ -366,7 +366,7 @@ func (s *APIPublication) FetchPublication(ctx context.Context, request operation
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "fetch-publication",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -639,7 +639,7 @@ func (s *APIPublication) DeletePublication(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-publication",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

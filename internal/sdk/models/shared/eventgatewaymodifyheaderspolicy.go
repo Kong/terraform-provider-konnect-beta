@@ -12,11 +12,11 @@ type EventGatewayModifyHeadersPolicyConfig struct {
 	Actions []EventGatewayModifyHeaderAction `json:"actions"`
 }
 
-func (o *EventGatewayModifyHeadersPolicyConfig) GetActions() []EventGatewayModifyHeaderAction {
-	if o == nil {
+func (e *EventGatewayModifyHeadersPolicyConfig) GetActions() []EventGatewayModifyHeaderAction {
+	if e == nil {
 		return nil
 	}
-	return o.Actions
+	return e.Actions
 }
 
 // EventGatewayModifyHeadersPolicy - A policy that modifies headers for requests.
@@ -48,54 +48,54 @@ func (e EventGatewayModifyHeadersPolicy) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayModifyHeadersPolicy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *EventGatewayModifyHeadersPolicy) GetType() string {
+func (e *EventGatewayModifyHeadersPolicy) GetType() string {
 	return "modify_headers"
 }
 
-func (o *EventGatewayModifyHeadersPolicy) GetName() *string {
-	if o == nil {
+func (e *EventGatewayModifyHeadersPolicy) GetName() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Name
+	return e.Name
 }
 
-func (o *EventGatewayModifyHeadersPolicy) GetDescription() *string {
-	if o == nil {
+func (e *EventGatewayModifyHeadersPolicy) GetDescription() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Description
+	return e.Description
 }
 
-func (o *EventGatewayModifyHeadersPolicy) GetEnabled() *bool {
-	if o == nil {
+func (e *EventGatewayModifyHeadersPolicy) GetEnabled() *bool {
+	if e == nil {
 		return nil
 	}
-	return o.Enabled
+	return e.Enabled
 }
 
-func (o *EventGatewayModifyHeadersPolicy) GetCondition() *string {
-	if o == nil {
+func (e *EventGatewayModifyHeadersPolicy) GetCondition() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Condition
+	return e.Condition
 }
 
-func (o *EventGatewayModifyHeadersPolicy) GetConfig() EventGatewayModifyHeadersPolicyConfig {
-	if o == nil {
+func (e *EventGatewayModifyHeadersPolicy) GetConfig() EventGatewayModifyHeadersPolicyConfig {
+	if e == nil {
 		return EventGatewayModifyHeadersPolicyConfig{}
 	}
-	return o.Config
+	return e.Config
 }
 
-func (o *EventGatewayModifyHeadersPolicy) GetLabels() map[string]*string {
-	if o == nil {
+func (e *EventGatewayModifyHeadersPolicy) GetLabels() map[string]*string {
+	if e == nil {
 		return nil
 	}
-	return o.Labels
+	return e.Labels
 }

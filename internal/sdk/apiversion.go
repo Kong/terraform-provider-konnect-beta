@@ -63,7 +63,7 @@ func (s *APIVersion) CreateAPIVersion(ctx context.Context, request operations.Cr
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-api-version",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CreateAPIVersionRequest", "json", `request:"mediaType=application/json"`)
@@ -374,7 +374,7 @@ func (s *APIVersion) CreateAPIVersion(ctx context.Context, request operations.Cr
 
 }
 
-// FetchAPIVersion - Fetch API Version
+// FetchAPIVersion - Get an API Version
 // Fetches the version (OpenAPI or AsyncAPI) of an API.
 func (s *APIVersion) FetchAPIVersion(ctx context.Context, request operations.FetchAPIVersionRequest, opts ...operations.Option) (*operations.FetchAPIVersionResponse, error) {
 	o := operations.Options{}
@@ -407,7 +407,7 @@ func (s *APIVersion) FetchAPIVersion(ctx context.Context, request operations.Fet
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "fetch-api-version",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -681,7 +681,7 @@ func (s *APIVersion) UpdateAPIVersion(ctx context.Context, request operations.Up
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-api-version",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "APIVersion", "json", `request:"mediaType=application/json"`)
@@ -1028,7 +1028,7 @@ func (s *APIVersion) DeleteAPIVersion(ctx context.Context, request operations.De
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-api-version",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

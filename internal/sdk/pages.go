@@ -64,7 +64,7 @@ func (s *Pages) CreatePortalPage(ctx context.Context, request operations.CreateP
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-portal-page",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CreatePortalPageRequest", "json", `request:"mediaType=application/json"`)
@@ -333,7 +333,7 @@ func (s *Pages) CreatePortalPage(ctx context.Context, request operations.CreateP
 
 }
 
-// GetPortalPage - Fetch Page
+// GetPortalPage - Get a Page
 // Returns the configuration of a single custom page for this portal. Custom pages can be used to display static content, documentation, or other information to developers.
 func (s *Pages) GetPortalPage(ctx context.Context, request operations.GetPortalPageRequest, opts ...operations.Option) (*operations.GetPortalPageResponse, error) {
 	o := operations.Options{}
@@ -366,7 +366,7 @@ func (s *Pages) GetPortalPage(ctx context.Context, request operations.GetPortalP
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-portal-page",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -619,7 +619,7 @@ func (s *Pages) UpdatePortalPage(ctx context.Context, request operations.UpdateP
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-portal-page",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdatePortalPageRequest", "json", `request:"mediaType=application/json"`)
@@ -920,7 +920,7 @@ func (s *Pages) DeletePortalPage(ctx context.Context, request operations.DeleteP
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-portal-page",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

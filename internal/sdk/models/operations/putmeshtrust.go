@@ -18,32 +18,32 @@ type PutMeshTrustRequest struct {
 	MeshTrustItem shared.MeshTrustItemInput `request:"mediaType=application/json"`
 }
 
-func (o *PutMeshTrustRequest) GetCpID() string {
-	if o == nil {
+func (p *PutMeshTrustRequest) GetCpID() string {
+	if p == nil {
 		return ""
 	}
-	return o.CpID
+	return p.CpID
 }
 
-func (o *PutMeshTrustRequest) GetMesh() string {
-	if o == nil {
+func (p *PutMeshTrustRequest) GetMesh() string {
+	if p == nil {
 		return ""
 	}
-	return o.Mesh
+	return p.Mesh
 }
 
-func (o *PutMeshTrustRequest) GetName() string {
-	if o == nil {
+func (p *PutMeshTrustRequest) GetName() string {
+	if p == nil {
 		return ""
 	}
-	return o.Name
+	return p.Name
 }
 
-func (o *PutMeshTrustRequest) GetMeshTrustItem() shared.MeshTrustItemInput {
-	if o == nil {
+func (p *PutMeshTrustRequest) GetMeshTrustItem() shared.MeshTrustItemInput {
+	if p == nil {
 		return shared.MeshTrustItemInput{}
 	}
-	return o.MeshTrustItem
+	return p.MeshTrustItem
 }
 
 type PutMeshTrustResponse struct {
@@ -53,34 +53,34 @@ type PutMeshTrustResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Updated
+	// Successful response
 	MeshTrustCreateOrUpdateSuccessResponse *shared.MeshTrustCreateOrUpdateSuccessResponse
 }
 
-func (o *PutMeshTrustResponse) GetContentType() string {
-	if o == nil {
+func (p *PutMeshTrustResponse) GetContentType() string {
+	if p == nil {
 		return ""
 	}
-	return o.ContentType
+	return p.ContentType
 }
 
-func (o *PutMeshTrustResponse) GetStatusCode() int {
-	if o == nil {
+func (p *PutMeshTrustResponse) GetStatusCode() int {
+	if p == nil {
 		return 0
 	}
-	return o.StatusCode
+	return p.StatusCode
 }
 
-func (o *PutMeshTrustResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (p *PutMeshTrustResponse) GetRawResponse() *http.Response {
+	if p == nil {
 		return nil
 	}
-	return o.RawResponse
+	return p.RawResponse
 }
 
-func (o *PutMeshTrustResponse) GetMeshTrustCreateOrUpdateSuccessResponse() *shared.MeshTrustCreateOrUpdateSuccessResponse {
-	if o == nil {
+func (p *PutMeshTrustResponse) GetMeshTrustCreateOrUpdateSuccessResponse() *shared.MeshTrustCreateOrUpdateSuccessResponse {
+	if p == nil {
 		return nil
 	}
-	return o.MeshTrustCreateOrUpdateSuccessResponse
+	return p.MeshTrustCreateOrUpdateSuccessResponse
 }

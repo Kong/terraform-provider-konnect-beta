@@ -2,6 +2,7 @@
 
 package shared
 
+// MeshRetryCreateOrUpdateSuccessResponse - Successful response
 type MeshRetryCreateOrUpdateSuccessResponse struct {
 	// warnings is a list of warning messages to return to the requesting Kuma API clients.
 	// Warning messages describe a problem the client making the API request should correct or be aware of.
@@ -9,9 +10,9 @@ type MeshRetryCreateOrUpdateSuccessResponse struct {
 	Warnings []string `json:"warnings,omitempty"`
 }
 
-func (o *MeshRetryCreateOrUpdateSuccessResponse) GetWarnings() []string {
-	if o == nil {
+func (m *MeshRetryCreateOrUpdateSuccessResponse) GetWarnings() []string {
+	if m == nil {
 		return nil
 	}
-	return o.Warnings
+	return m.Warnings
 }

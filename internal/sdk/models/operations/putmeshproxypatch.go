@@ -18,32 +18,32 @@ type PutMeshProxyPatchRequest struct {
 	MeshProxyPatchItem shared.MeshProxyPatchItemInput `request:"mediaType=application/json"`
 }
 
-func (o *PutMeshProxyPatchRequest) GetCpID() string {
-	if o == nil {
+func (p *PutMeshProxyPatchRequest) GetCpID() string {
+	if p == nil {
 		return ""
 	}
-	return o.CpID
+	return p.CpID
 }
 
-func (o *PutMeshProxyPatchRequest) GetMesh() string {
-	if o == nil {
+func (p *PutMeshProxyPatchRequest) GetMesh() string {
+	if p == nil {
 		return ""
 	}
-	return o.Mesh
+	return p.Mesh
 }
 
-func (o *PutMeshProxyPatchRequest) GetName() string {
-	if o == nil {
+func (p *PutMeshProxyPatchRequest) GetName() string {
+	if p == nil {
 		return ""
 	}
-	return o.Name
+	return p.Name
 }
 
-func (o *PutMeshProxyPatchRequest) GetMeshProxyPatchItem() shared.MeshProxyPatchItemInput {
-	if o == nil {
+func (p *PutMeshProxyPatchRequest) GetMeshProxyPatchItem() shared.MeshProxyPatchItemInput {
+	if p == nil {
 		return shared.MeshProxyPatchItemInput{}
 	}
-	return o.MeshProxyPatchItem
+	return p.MeshProxyPatchItem
 }
 
 type PutMeshProxyPatchResponse struct {
@@ -53,34 +53,34 @@ type PutMeshProxyPatchResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Updated
+	// Successful response
 	MeshProxyPatchCreateOrUpdateSuccessResponse *shared.MeshProxyPatchCreateOrUpdateSuccessResponse
 }
 
-func (o *PutMeshProxyPatchResponse) GetContentType() string {
-	if o == nil {
+func (p *PutMeshProxyPatchResponse) GetContentType() string {
+	if p == nil {
 		return ""
 	}
-	return o.ContentType
+	return p.ContentType
 }
 
-func (o *PutMeshProxyPatchResponse) GetStatusCode() int {
-	if o == nil {
+func (p *PutMeshProxyPatchResponse) GetStatusCode() int {
+	if p == nil {
 		return 0
 	}
-	return o.StatusCode
+	return p.StatusCode
 }
 
-func (o *PutMeshProxyPatchResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (p *PutMeshProxyPatchResponse) GetRawResponse() *http.Response {
+	if p == nil {
 		return nil
 	}
-	return o.RawResponse
+	return p.RawResponse
 }
 
-func (o *PutMeshProxyPatchResponse) GetMeshProxyPatchCreateOrUpdateSuccessResponse() *shared.MeshProxyPatchCreateOrUpdateSuccessResponse {
-	if o == nil {
+func (p *PutMeshProxyPatchResponse) GetMeshProxyPatchCreateOrUpdateSuccessResponse() *shared.MeshProxyPatchCreateOrUpdateSuccessResponse {
+	if p == nil {
 		return nil
 	}
-	return o.MeshProxyPatchCreateOrUpdateSuccessResponse
+	return p.MeshProxyPatchCreateOrUpdateSuccessResponse
 }

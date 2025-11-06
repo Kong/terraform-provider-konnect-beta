@@ -10,14 +10,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -43,18 +40,18 @@ type EventGatewayConsumePolicyDecryptResource struct {
 
 // EventGatewayConsumePolicyDecryptResourceModel describes the resource data model.
 type EventGatewayConsumePolicyDecryptResourceModel struct {
-	Condition        types.String                             `tfsdk:"condition"`
-	Config           *tfTypes.EventGatewayDecryptPolicyConfig `tfsdk:"config"`
-	CreatedAt        types.String                             `tfsdk:"created_at"`
-	Description      types.String                             `tfsdk:"description"`
-	Enabled          types.Bool                               `tfsdk:"enabled"`
-	GatewayID        types.String                             `tfsdk:"gateway_id"`
-	ID               types.String                             `tfsdk:"id"`
-	Labels           map[string]types.String                  `tfsdk:"labels"`
-	Name             types.String                             `tfsdk:"name"`
-	ParentPolicyID   types.String                             `queryParam:"style=form,explode=true,name=parent_policy_id" tfsdk:"parent_policy_id"`
-	UpdatedAt        types.String                             `tfsdk:"updated_at"`
-	VirtualClusterID types.String                             `tfsdk:"virtual_cluster_id"`
+	Condition        types.String                            `tfsdk:"condition"`
+	Config           tfTypes.EventGatewayDecryptPolicyConfig `tfsdk:"config"`
+	CreatedAt        types.String                            `tfsdk:"created_at"`
+	Description      types.String                            `tfsdk:"description"`
+	Enabled          types.Bool                              `tfsdk:"enabled"`
+	GatewayID        types.String                            `tfsdk:"gateway_id"`
+	ID               types.String                            `tfsdk:"id"`
+	Labels           map[string]types.String                 `tfsdk:"labels"`
+	Name             types.String                            `tfsdk:"name"`
+	ParentPolicyID   types.String                            `tfsdk:"parent_policy_id"`
+	UpdatedAt        types.String                            `tfsdk:"updated_at"`
+	VirtualClusterID types.String                            `tfsdk:"virtual_cluster_id"`
 }
 
 func (r *EventGatewayConsumePolicyDecryptResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -73,63 +70,8 @@ func (r *EventGatewayConsumePolicyDecryptResource) Schema(ctx context.Context, r
 				},
 			},
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"decrypt": types.ListType{
-						ElemType: types.ObjectType{
-							AttrTypes: map[string]attr.Type{
-								`part_of_record`: types.StringType,
-							},
-						},
-					},
-					"failure_mode": types.StringType,
-					"key_sources": types.ListType{
-						ElemType: types.ObjectType{
-							AttrTypes: map[string]attr.Type{
-								`aws`: types.ObjectType{
-									AttrTypes: map[string]attr.Type{},
-								},
-								`static`: types.ObjectType{
-									AttrTypes: map[string]attr.Type{
-										`keys`: types.ListType{
-											ElemType: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`id`:  types.StringType,
-													`key`: types.StringType,
-												},
-											},
-										},
-									},
-								},
-							},
-						},
-					},
-				})),
+				Required: true,
 				Attributes: map[string]schema.Attribute{
-					"decrypt": schema.ListNestedAttribute{
-						Required: true,
-						NestedObject: schema.NestedAttributeObject{
-							Attributes: map[string]schema.Attribute{
-								"part_of_record": schema.StringAttribute{
-									Required: true,
-									MarkdownDescription: `* key - decrypt the record key` + "\n" +
-										`* value - decrypt the record value` + "\n" +
-										`must be one of ["key", "value"]`,
-									Validators: []validator.String{
-										stringvalidator.OneOf(
-											"key",
-											"value",
-										),
-									},
-								},
-							},
-						},
-						Description: `Describes what parts of a record to decrypt.`,
-						Validators: []validator.List{
-							listvalidator.SizeAtLeast(1),
-						},
-					},
 					"failure_mode": schema.StringAttribute{
 						Required: true,
 						MarkdownDescription: `Describes how to handle failing encryption or decryption.` + "\n" +
@@ -160,29 +102,8 @@ func (r *EventGatewayConsumePolicyDecryptResource) Schema(ctx context.Context, r
 									},
 								},
 								"static": schema.SingleNestedAttribute{
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"keys": schema.ListNestedAttribute{
-											Required: true,
-											NestedObject: schema.NestedAttributeObject{
-												Attributes: map[string]schema.Attribute{
-													"id": schema.StringAttribute{
-														Required:    true,
-														Description: `The unique identifier of the key.`,
-													},
-													"key": schema.StringAttribute{
-														Required:    true,
-														Description: `A template string expression containing a reference to a secret`,
-													},
-												},
-											},
-											Description: `A list of static, user-provided keys. Each one must be 128 bits long.`,
-											Validators: []validator.List{
-												listvalidator.SizeAtLeast(1),
-											},
-										},
-									},
-									Description: `A key source that uses a static symmetric key. The key is provided as a base64-encoded string.`,
+									Optional:    true,
+									Description: `A key source that uses static symmetric keys.`,
 									Validators: []validator.Object{
 										objectvalidator.ConflictsWith(path.Expressions{
 											path.MatchRelative().AtParent().AtName("aws"),
@@ -192,6 +113,14 @@ func (r *EventGatewayConsumePolicyDecryptResource) Schema(ctx context.Context, r
 							},
 						},
 						Description: `Describes how to find a symmetric key for decryption.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+						},
+					},
+					"part_of_record": schema.ListAttribute{
+						Required:    true,
+						ElementType: types.StringType,
+						Description: `Describes the parts of a record to decrypt.`,
 						Validators: []validator.List{
 							listvalidator.SizeAtLeast(1),
 						},
@@ -246,11 +175,8 @@ func (r *EventGatewayConsumePolicyDecryptResource) Schema(ctx context.Context, r
 				},
 			},
 			"parent_policy_id": schema.StringAttribute{
-				Optional: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				Description: `When specified, it sets the ID of the parent policy. Requires replacement if changed.`,
+				Computed:    true,
+				Description: `The unique identifier of the parent policy, if any.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -591,7 +517,7 @@ func (r *EventGatewayConsumePolicyDecryptResource) ImportState(ctx context.Conte
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "virtual_cluster_id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "virtual_cluster_id": "..."}': `+err.Error())
 		return
 	}
 

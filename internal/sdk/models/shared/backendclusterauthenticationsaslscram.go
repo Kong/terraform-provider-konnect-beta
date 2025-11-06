@@ -35,14 +35,19 @@ func (e *BackendClusterAuthenticationSaslScramAlgorithm) UnmarshalJSON(data []by
 	}
 }
 
-// BackendClusterAuthenticationSaslScram - SASL/SCRAM-SHA-256 authentication scheme for the backend cluster.
+// BackendClusterAuthenticationSaslScram - SASL/SCRAM authentication scheme for the backend cluster.
 type BackendClusterAuthenticationSaslScram struct {
 	type_ string `const:"sasl_scram" json:"type"`
 	// The algorithm used for SASL/SCRAM authentication.
 	Algorithm BackendClusterAuthenticationSaslScramAlgorithm `json:"algorithm"`
-	// A template string expression containing a reference to a secret or a literal value
+	// A literal value or a reference to an existing secret as a template string expression.
+	// The value is stored and returned by the API as-is, not treated as sensitive information.
+	//
 	Username string `json:"username"`
-	// A template string expression containing a reference to a secret
+	// A sensitive value containing the secret or a reference to a secret as a template string expression.
+	// If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
+	// If provided as an expression, the expression itself is stored and returned by the API.
+	//
 	Password string `json:"password"`
 }
 
@@ -51,33 +56,33 @@ func (b BackendClusterAuthenticationSaslScram) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BackendClusterAuthenticationSaslScram) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"type", "algorithm", "username", "password"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *BackendClusterAuthenticationSaslScram) GetType() string {
+func (b *BackendClusterAuthenticationSaslScram) GetType() string {
 	return "sasl_scram"
 }
 
-func (o *BackendClusterAuthenticationSaslScram) GetAlgorithm() BackendClusterAuthenticationSaslScramAlgorithm {
-	if o == nil {
+func (b *BackendClusterAuthenticationSaslScram) GetAlgorithm() BackendClusterAuthenticationSaslScramAlgorithm {
+	if b == nil {
 		return BackendClusterAuthenticationSaslScramAlgorithm("")
 	}
-	return o.Algorithm
+	return b.Algorithm
 }
 
-func (o *BackendClusterAuthenticationSaslScram) GetUsername() string {
-	if o == nil {
+func (b *BackendClusterAuthenticationSaslScram) GetUsername() string {
+	if b == nil {
 		return ""
 	}
-	return o.Username
+	return b.Username
 }
 
-func (o *BackendClusterAuthenticationSaslScram) GetPassword() string {
-	if o == nil {
+func (b *BackendClusterAuthenticationSaslScram) GetPassword() string {
+	if b == nil {
 		return ""
 	}
-	return o.Password
+	return b.Password
 }

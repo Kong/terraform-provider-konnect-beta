@@ -15,7 +15,6 @@ EventGatewayListenerPolicyForwardToVirtualCluster Resource
 ```terraform
 resource "konnect_event_gateway_listener_policy_forward_to_virtual_cluster" "my_eventgatewaylistenerpolicyforwardtovirtualcluster" {
   provider = konnect-beta
-  condition = "context.topic.name.endsWith('my_suffix')"
   config = {
     sni = {
       advertised_port = 61579
@@ -44,7 +43,6 @@ resource "konnect_event_gateway_listener_policy_forward_to_virtual_cluster" "my_
 
 ### Optional
 
-- `condition` (String) A string containing the boolean expression that determines whether the policy is applied.
 - `description` (String) A human-readable description of the policy.
 - `enabled` (Boolean) Whether the policy is enabled. Default: true
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
@@ -146,10 +144,28 @@ If "dns.label" label is absent on the virtual cluster, the traffic won't be rout
 The bootstrap host is `bootstrap.my-cluster.example.com` and then each broker is addressable at `broker-0.my-cluster.example.com`, `broker-1.my-cluster.example.com`, etc.
 This means that your deployment needs to have a wildcard certificate for the domain and a DNS resolver that routes `*.my-cluster.example.com` to the proxy.
 
+The accepted format is a DNS subdomain starting with either `.` or `-`. For example, `-keg.example.com`, `.keg.example.com`, `.namespace.svc.cluster.local`, and `.localhost` are all valid,
+while `keg.example.com` is not.
+
 ## Import
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_event_gateway_listener_policy_forward_to_virtual_cluster.my_konnect_event_gateway_listener_policy_forward_to_virtual_cluster
+  id = jsonencode({
+    event_gateway_listener_id = "..."
+    gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
-terraform import konnect_event_gateway_listener_policy_forward_to_virtual_cluster.my_konnect_event_gateway_listener_policy_forward_to_virtual_cluster '{"event_gateway_listener_id": "", "gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}'
+terraform import konnect_event_gateway_listener_policy_forward_to_virtual_cluster.my_konnect_event_gateway_listener_policy_forward_to_virtual_cluster '{"event_gateway_listener_id": "...", "gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}'
 ```

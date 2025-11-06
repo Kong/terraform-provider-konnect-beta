@@ -48,6 +48,7 @@ type MeshMetricResource struct {
 type MeshMetricResourceModel struct {
 	CpID             types.String                  `tfsdk:"cp_id"`
 	CreationTime     types.String                  `tfsdk:"creation_time"`
+	Kri              types.String                  `tfsdk:"kri"`
 	Labels           kumalabels.KumaLabelsMapValue `tfsdk:"labels"`
 	Mesh             types.String                  `tfsdk:"mesh"`
 	ModificationTime types.String                  `tfsdk:"modification_time"`
@@ -81,6 +82,10 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Validators: []validator.String{
 					validators.IsRFC3339(),
 				},
+			},
+			"kri": schema.StringAttribute{
+				Computed:    true,
+				Description: `A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing`,
 			},
 			"labels": schema.MapAttribute{
 				CustomType:  kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType: types.StringType}},
@@ -440,7 +445,6 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 			"warnings": schema.ListAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.List{
-					custom_listplanmodifier.SupressZeroNullModifier(),
 					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 				},
 				ElementType: types.StringType,
@@ -778,7 +782,7 @@ func (r *MeshMetricResource) ImportState(ctx context.Context, req resource.Impor
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b", "mesh": "", "name": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b", "mesh": "...", "name": "..."}': `+err.Error())
 		return
 	}
 

@@ -45,12 +45,6 @@ func (r *EventGatewayClusterPolicyAclsResourceModel) ToOperationsCreateEventGate
 	var virtualClusterID string
 	virtualClusterID = r.VirtualClusterID.ValueString()
 
-	parentPolicyID := new(string)
-	if !r.ParentPolicyID.IsUnknown() && !r.ParentPolicyID.IsNull() {
-		*parentPolicyID = r.ParentPolicyID.ValueString()
-	} else {
-		parentPolicyID = nil
-	}
 	eventGatewayACLsPolicy, eventGatewayACLsPolicyDiags := r.ToSharedEventGatewayACLsPolicy(ctx)
 	diags.Append(eventGatewayACLsPolicyDiags...)
 
@@ -61,7 +55,6 @@ func (r *EventGatewayClusterPolicyAclsResourceModel) ToOperationsCreateEventGate
 	out := operations.CreateEventGatewayVirtualClusterClusterLevelPolicyAclsRequest{
 		GatewayID:              gatewayID,
 		VirtualClusterID:       virtualClusterID,
-		ParentPolicyID:         parentPolicyID,
 		EventGatewayACLsPolicy: eventGatewayACLsPolicy,
 	}
 

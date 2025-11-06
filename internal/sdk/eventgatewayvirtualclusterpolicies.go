@@ -30,7 +30,7 @@ func newEventGatewayVirtualClusterPolicies(rootSDK *KonnectBeta, sdkConfig confi
 	}
 }
 
-// GetEventGatewayVirtualClusterClusterLevelPolicyAcls - Fetch Cluster Policy for Virtual Cluster
+// GetEventGatewayVirtualClusterClusterLevelPolicyAcls - Get a Cluster Policy for Virtual Cluster
 // Returns information about a specific cluster-level policy associated with the Event Gateway virtual cluster.
 func (s *EventGatewayVirtualClusterPolicies) GetEventGatewayVirtualClusterClusterLevelPolicyAcls(ctx context.Context, request operations.GetEventGatewayVirtualClusterClusterLevelPolicyAclsRequest, opts ...operations.Option) (*operations.GetEventGatewayVirtualClusterClusterLevelPolicyAclsResponse, error) {
 	o := operations.Options{}
@@ -63,7 +63,7 @@ func (s *EventGatewayVirtualClusterPolicies) GetEventGatewayVirtualClusterCluste
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-event-gateway-virtual-cluster-cluster-level-policy-acls",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -337,7 +337,7 @@ func (s *EventGatewayVirtualClusterPolicies) UpdateEventGatewayVirtualClusterClu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-event-gateway-virtual-cluster-cluster-level-policy-acls",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayACLsPolicy", "json", `request:"mediaType=application/json"`)
@@ -617,7 +617,7 @@ func (s *EventGatewayVirtualClusterPolicies) DeleteEventGatewayVirtualClusterClu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-event-gateway-virtual-cluster-cluster-level-policy-acls",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -866,7 +866,7 @@ func (s *EventGatewayVirtualClusterPolicies) CreateEventGatewayVirtualClusterClu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-event-gateway-virtual-cluster-cluster-level-policy-acls",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayACLsPolicy", "json", `request:"mediaType=application/json"`)
@@ -898,10 +898,6 @@ func (s *EventGatewayVirtualClusterPolicies) CreateEventGatewayVirtualClusterClu
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 	if reqContentType != "" {
 		req.Header.Set("Content-Type", reqContentType)
-	}
-
-	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
-		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
 	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {

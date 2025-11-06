@@ -76,14 +76,18 @@ func (r *EventGatewaySchemaRegistryResource) Schema(ctx context.Context, req res
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"password": schema.StringAttribute{
-												Required:    true,
-												Description: `A template string expression containing a reference to a secret`,
+												Required: true,
+												MarkdownDescription: `A sensitive value containing the secret or a reference to a secret as a template string expression.` + "\n" +
+													`If the value is provided as plain text, it is encrypted at rest and omitted from API responses.` + "\n" +
+													`If provided as an expression, the expression itself is stored and returned by the API.`,
 											},
 											"username": schema.StringAttribute{
-												Required:    true,
-												Description: `A template string expression containing a reference to a secret or a literal value`,
+												Required: true,
+												MarkdownDescription: `A literal value or a reference to an existing secret as a template string expression.` + "\n" +
+													`The value is stored and returned by the API as-is, not treated as sensitive information.`,
 											},
 										},
+										Description: `Basic authentication scheme for the schema registry with username and password.`,
 									},
 								},
 								Description: `The authentication configuration for the schema registry.`,
@@ -444,7 +448,7 @@ func (r *EventGatewaySchemaRegistryResource) ImportState(ctx context.Context, re
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "..."}': `+err.Error())
 		return
 	}
 

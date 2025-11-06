@@ -2,6 +2,7 @@
 
 package shared
 
+// HostnameGeneratorCreateOrUpdateSuccessResponse - Successful response
 type HostnameGeneratorCreateOrUpdateSuccessResponse struct {
 	// warnings is a list of warning messages to return to the requesting Kuma API clients.
 	// Warning messages describe a problem the client making the API request should correct or be aware of.
@@ -9,9 +10,9 @@ type HostnameGeneratorCreateOrUpdateSuccessResponse struct {
 	Warnings []string `json:"warnings,omitempty"`
 }
 
-func (o *HostnameGeneratorCreateOrUpdateSuccessResponse) GetWarnings() []string {
-	if o == nil {
+func (h *HostnameGeneratorCreateOrUpdateSuccessResponse) GetWarnings() []string {
+	if h == nil {
 		return nil
 	}
-	return o.Warnings
+	return h.Warnings
 }

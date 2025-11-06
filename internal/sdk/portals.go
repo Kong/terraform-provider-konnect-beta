@@ -65,7 +65,7 @@ func (s *Portals) ListPortals(ctx context.Context, request operations.ListPortal
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "list-portals",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -343,7 +343,7 @@ func (s *Portals) CreatePortal(ctx context.Context, request shared.CreatePortal,
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-portal",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)
@@ -591,7 +591,7 @@ func (s *Portals) CreatePortal(ctx context.Context, request shared.CreatePortal,
 
 }
 
-// GetPortal - Fetch Portal
+// GetPortal - Get a Portal
 // Returns the configuration for a single developer portal, including the current visibility, access, and domain settings.
 func (s *Portals) GetPortal(ctx context.Context, request operations.GetPortalRequest, opts ...operations.Option) (*operations.GetPortalResponse, error) {
 	o := operations.Options{}
@@ -624,7 +624,7 @@ func (s *Portals) GetPortal(ctx context.Context, request operations.GetPortalReq
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-portal",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -898,7 +898,7 @@ func (s *Portals) UpdatePortal(ctx context.Context, request operations.UpdatePor
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-portal",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdatePortal", "json", `request:"mediaType=application/json"`)
@@ -1220,7 +1220,7 @@ func (s *Portals) DeletePortal(ctx context.Context, request operations.DeletePor
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-portal",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

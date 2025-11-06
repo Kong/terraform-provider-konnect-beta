@@ -21,6 +21,7 @@ const (
 	AllFilterItemsFieldConsumer                  AllFilterItemsField = "consumer"
 	AllFilterItemsFieldControlPlane              AllFilterItemsField = "control_plane"
 	AllFilterItemsFieldControlPlaneGroup         AllFilterItemsField = "control_plane_group"
+	AllFilterItemsFieldCountryCode               AllFilterItemsField = "country_code"
 	AllFilterItemsFieldDataPlaneNode             AllFilterItemsField = "data_plane_node"
 	AllFilterItemsFieldDataPlaneNodeVersion      AllFilterItemsField = "data_plane_node_version"
 	AllFilterItemsFieldGatewayService            AllFilterItemsField = "gateway_service"
@@ -67,6 +68,8 @@ func (e *AllFilterItemsField) UnmarshalJSON(data []byte) error {
 	case "control_plane":
 		fallthrough
 	case "control_plane_group":
+		fallthrough
+	case "country_code":
 		fallthrough
 	case "data_plane_node":
 		fallthrough
@@ -140,23 +143,23 @@ type AllFilterItems struct {
 	Value    any                    `json:"value,omitempty"`
 }
 
-func (o *AllFilterItems) GetField() AllFilterItemsField {
-	if o == nil {
+func (a *AllFilterItems) GetField() AllFilterItemsField {
+	if a == nil {
 		return AllFilterItemsField("")
 	}
-	return o.Field
+	return a.Field
 }
 
-func (o *AllFilterItems) GetOperator() AllFilterItemsOperator {
-	if o == nil {
+func (a *AllFilterItems) GetOperator() AllFilterItemsOperator {
+	if a == nil {
 		return AllFilterItemsOperator("")
 	}
-	return o.Operator
+	return a.Operator
 }
 
-func (o *AllFilterItems) GetValue() any {
-	if o == nil {
+func (a *AllFilterItems) GetValue() any {
+	if a == nil {
 		return nil
 	}
-	return o.Value
+	return a.Value
 }

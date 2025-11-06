@@ -16,36 +16,36 @@ type UpdateEventGatewayVaultRequest struct {
 	EventGatewayModifyVault *shared.EventGatewayModifyVault `request:"mediaType=application/json"`
 }
 
-func (o *UpdateEventGatewayVaultRequest) GetGatewayID() string {
-	if o == nil {
+func (u *UpdateEventGatewayVaultRequest) GetGatewayID() string {
+	if u == nil {
 		return ""
 	}
-	return o.GatewayID
+	return u.GatewayID
 }
 
-func (o *UpdateEventGatewayVaultRequest) GetVaultID() string {
-	if o == nil {
+func (u *UpdateEventGatewayVaultRequest) GetVaultID() string {
+	if u == nil {
 		return ""
 	}
-	return o.VaultID
+	return u.VaultID
 }
 
-func (o *UpdateEventGatewayVaultRequest) GetEventGatewayModifyVault() *shared.EventGatewayModifyVault {
-	if o == nil {
+func (u *UpdateEventGatewayVaultRequest) GetEventGatewayModifyVault() *shared.EventGatewayModifyVault {
+	if u == nil {
 		return nil
 	}
-	return o.EventGatewayModifyVault
+	return u.EventGatewayModifyVault
 }
 
-func (o *UpdateEventGatewayVaultRequest) GetEventGatewayModifyVaultEnv() *shared.EventGatewayEnvVault {
-	if v := o.GetEventGatewayModifyVault(); v != nil {
+func (u *UpdateEventGatewayVaultRequest) GetEventGatewayModifyVaultEnv() *shared.EventGatewayEnvVault {
+	if v := u.GetEventGatewayModifyVault(); v != nil {
 		return v.EventGatewayEnvVault
 	}
 	return nil
 }
 
-func (o *UpdateEventGatewayVaultRequest) GetEventGatewayModifyVaultKonnect() *shared.EventGatewayKonnectVault {
-	if v := o.GetEventGatewayModifyVault(); v != nil {
+func (u *UpdateEventGatewayVaultRequest) GetEventGatewayModifyVaultKonnect() *shared.EventGatewayKonnectVault {
+	if v := u.GetEventGatewayModifyVault(); v != nil {
 		return v.EventGatewayKonnectVault
 	}
 	return nil
@@ -68,51 +68,65 @@ type UpdateEventGatewayVaultResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *UpdateEventGatewayVaultResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateEventGatewayVaultResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateEventGatewayVaultResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateEventGatewayVaultResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateEventGatewayVaultResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateEventGatewayVaultResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateEventGatewayVaultResponse) GetEventGatewayVault() *shared.EventGatewayVault {
-	if o == nil {
+func (u *UpdateEventGatewayVaultResponse) GetEventGatewayVault() *shared.EventGatewayVault {
+	if u == nil {
 		return nil
 	}
-	return o.EventGatewayVault
+	return u.EventGatewayVault
 }
 
-func (o *UpdateEventGatewayVaultResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
-		return nil
+func (u *UpdateEventGatewayVaultResponse) GetEventGatewayVaultEnv() *shared.EventGatewayVaultEventGatewayEnvVault {
+	if v := u.GetEventGatewayVault(); v != nil {
+		return v.EventGatewayVaultEventGatewayEnvVault
 	}
-	return o.BadRequestError
+	return nil
 }
 
-func (o *UpdateEventGatewayVaultResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
-		return nil
+func (u *UpdateEventGatewayVaultResponse) GetEventGatewayVaultKonnect() *shared.EventGatewayVaultEventGatewayKonnectVault {
+	if v := u.GetEventGatewayVault(); v != nil {
+		return v.EventGatewayVaultEventGatewayKonnectVault
 	}
-	return o.UnauthorizedError
+	return nil
 }
 
-func (o *UpdateEventGatewayVaultResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (u *UpdateEventGatewayVaultResponse) GetBadRequestError() *shared.BadRequestError {
+	if u == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return u.BadRequestError
+}
+
+func (u *UpdateEventGatewayVaultResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if u == nil {
+		return nil
+	}
+	return u.UnauthorizedError
+}
+
+func (u *UpdateEventGatewayVaultResponse) GetForbiddenError() *shared.ForbiddenError {
+	if u == nil {
+		return nil
+	}
+	return u.ForbiddenError
 }

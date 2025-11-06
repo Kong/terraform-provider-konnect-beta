@@ -334,6 +334,29 @@ spec = {
 
 		resource.ParallelTest(t, tfbuilder.NotImportedResourceShouldErrorOutWithMeaningfulMessage(providerFactory, builder, mtp, func() { createAnMTP(t, cpName, meshName, mtpName) }))
 	})
+
+	t.Run("should be able to store secrets", func(t *testing.T) {
+		meshName := "m4"
+		cpName := fmt.Sprintf("e2e-test-%d", acctest.RandInt())
+
+		builder := tfbuilder.NewBuilder(tfbuilder.Konnect, serverScheme, serverHost, serverPort).WithProviderProperty(tfbuilder.KonnectBeta)
+		cp := tfbuilder.NewControlPlane("e2e-test", cpName, "e2e test cp")
+		builder.AddControlPlane(cp)
+		mesh := tfbuilder.NewMeshBuilder("default", meshName).
+			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
+			WithSpec(`skip_creating_initial_policies = [ "*" ]`).
+			WithDependsOn(builder.ResourceAddress("mesh_control_plane", cp.ResourceName))
+		skey := tfbuilder.NewPolicyBuilder("mesh_secret", "skey", "skey", "Secret").
+			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
+			WithMeshRef(builder.ResourceAddress("mesh", mesh.ResourceName) + ".name").
+			WithDependsOn(builder.ResourceAddress("mesh", mesh.ResourceName))
+		scert := tfbuilder.NewPolicyBuilder("mesh_secret", "scert", "scert", "Secret").
+			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
+			WithMeshRef(builder.ResourceAddress("mesh", mesh.ResourceName) + ".name").
+			WithDependsOn(builder.ResourceAddress("mesh", mesh.ResourceName))
+		builder.AddMesh(mesh)
+		resource.ParallelTest(t, tfbuilder.ShouldBeAbleToStoreSecrets(providerFactory, builder, scert, skey, mesh))
+	})
 }
 
 func createAnMTP(t *testing.T, cpName, meshName, mtpName string) {

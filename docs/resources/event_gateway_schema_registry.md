@@ -16,24 +16,24 @@ EventGatewaySchemaRegistry Resource
 resource "konnect_event_gateway_schema_registry" "my_eventgatewayschemaregistry" {
   provider = konnect-beta
 confluent = {
-    config = {
-            authentication = {
-        basic = {
-    password = "${env['MY_SECRET']}"
-    username = "...my_username..."
+config = {
+authentication = {
+basic = {
+password = "${vault.env['MY_ENV_VAR']}"
+username = "...my_username..."
 }
-        }
-        endpoint = "https://key-hovercraft.com"
-        schema_type = "avro"
-        timeout_seconds = 8
-    }
-    description = "...my_description..."
-    labels = {
-        key = "value"
-    }
-    name = "...my_name..."
 }
-    gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+endpoint = "https://key-hovercraft.com"
+schema_type = "avro"
+timeout_seconds = 8
+}
+description = "...my_description..."
+labels = {
+    key = "value"
+}
+name = "...my_name..."
+}
+gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
 }
 ```
 
@@ -94,15 +94,18 @@ Optional:
 
 Optional:
 
-- `basic` (Attributes) (see [below for nested schema](#nestedatt--confluent--config--authentication--basic))
+- `basic` (Attributes) Basic authentication scheme for the schema registry with username and password. (see [below for nested schema](#nestedatt--confluent--config--authentication--basic))
 
 <a id="nestedatt--confluent--config--authentication--basic"></a>
 ### Nested Schema for `confluent.config.authentication.basic`
 
 Required:
 
-- `password` (String) A template string expression containing a reference to a secret
-- `username` (String) A template string expression containing a reference to a secret or a literal value
+- `password` (String) A sensitive value containing the secret or a reference to a secret as a template string expression.
+If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
+If provided as an expression, the expression itself is stored and returned by the API.
+- `username` (String) A literal value or a reference to an existing secret as a template string expression.
+The value is stored and returned by the API as-is, not treated as sensitive information.
 
 
 
@@ -115,6 +118,20 @@ Required:
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_event_gateway_schema_registry.my_konnect_event_gateway_schema_registry
+  id = jsonencode({
+    gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id = "..."
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
-terraform import konnect_event_gateway_schema_registry.my_konnect_event_gateway_schema_registry '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": ""}'
+terraform import konnect_event_gateway_schema_registry.my_konnect_event_gateway_schema_registry '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "..."}'
 ```

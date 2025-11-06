@@ -16,25 +16,25 @@ type UpdateAuthServerClaimRequest struct {
 	UpdateClaim shared.UpdateClaim `request:"mediaType=application/json"`
 }
 
-func (o *UpdateAuthServerClaimRequest) GetAuthServerID() string {
-	if o == nil {
+func (u *UpdateAuthServerClaimRequest) GetAuthServerID() string {
+	if u == nil {
 		return ""
 	}
-	return o.AuthServerID
+	return u.AuthServerID
 }
 
-func (o *UpdateAuthServerClaimRequest) GetClaimID() string {
-	if o == nil {
+func (u *UpdateAuthServerClaimRequest) GetClaimID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ClaimID
+	return u.ClaimID
 }
 
-func (o *UpdateAuthServerClaimRequest) GetUpdateClaim() shared.UpdateClaim {
-	if o == nil {
+func (u *UpdateAuthServerClaimRequest) GetUpdateClaim() shared.UpdateClaim {
+	if u == nil {
 		return shared.UpdateClaim{}
 	}
-	return o.UpdateClaim
+	return u.UpdateClaim
 }
 
 type UpdateAuthServerClaimResponse struct {
@@ -52,44 +52,44 @@ type UpdateAuthServerClaimResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *UpdateAuthServerClaimResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateAuthServerClaimResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateAuthServerClaimResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateAuthServerClaimResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateAuthServerClaimResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateAuthServerClaimResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateAuthServerClaimResponse) GetClaim() *shared.Claim {
-	if o == nil {
+func (u *UpdateAuthServerClaimResponse) GetClaim() *shared.Claim {
+	if u == nil {
 		return nil
 	}
-	return o.Claim
+	return u.Claim
 }
 
-func (o *UpdateAuthServerClaimResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (u *UpdateAuthServerClaimResponse) GetBadRequestError() *shared.BadRequestError {
+	if u == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return u.BadRequestError
 }
 
-func (o *UpdateAuthServerClaimResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (u *UpdateAuthServerClaimResponse) GetNotFoundError() *shared.NotFoundError {
+	if u == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return u.NotFoundError
 }

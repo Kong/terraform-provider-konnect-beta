@@ -64,7 +64,7 @@ func (s *API) CreateAPI(ctx context.Context, request shared.CreateAPIRequest, op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-api",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)
@@ -354,8 +354,8 @@ func (s *API) CreateAPI(ctx context.Context, request shared.CreateAPIRequest, op
 
 }
 
-// FetchAPI - Fetch API
-// Fetches an API.
+// FetchAPI - Get an API
+// Get an API.
 func (s *API) FetchAPI(ctx context.Context, request operations.FetchAPIRequest, opts ...operations.Option) (*operations.FetchAPIResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -387,7 +387,7 @@ func (s *API) FetchAPI(ctx context.Context, request operations.FetchAPIRequest, 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "fetch-api",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -661,7 +661,7 @@ func (s *API) UpdateAPI(ctx context.Context, request operations.UpdateAPIRequest
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-api",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateAPIRequest", "json", `request:"mediaType=application/json"`)
@@ -1008,7 +1008,7 @@ func (s *API) DeleteAPI(ctx context.Context, request operations.DeleteAPIRequest
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-api",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

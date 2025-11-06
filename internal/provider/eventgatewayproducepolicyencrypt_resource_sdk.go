@@ -7,7 +7,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
-	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
@@ -17,20 +16,10 @@ func (r *EventGatewayProducePolicyEncryptResourceModel) RefreshFromSharedEventGa
 
 	if resp != nil {
 		r.Condition = types.StringPointerValue(resp.Condition)
-		if r.Config == nil {
-			configPriorData := r.Config
-			r.Config = &tfTypes.EventGatewayEncryptPolicyConfig{}
-
-			if configPriorData != nil {
-				r.Config.Encrypt = configPriorData.Encrypt
-			}
-			if configPriorData != nil {
-				r.Config.FailureMode = configPriorData.FailureMode
-			}
-			if configPriorData != nil {
-				r.Config.KeySources = configPriorData.KeySources
-			}
-		}
+		configPriorData := r.Config
+		r.Config.EncryptionKey = configPriorData.EncryptionKey
+		r.Config.FailureMode = configPriorData.FailureMode
+		r.Config.PartOfRecord = configPriorData.PartOfRecord
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -58,12 +47,6 @@ func (r *EventGatewayProducePolicyEncryptResourceModel) ToOperationsCreateEventG
 	var virtualClusterID string
 	virtualClusterID = r.VirtualClusterID.ValueString()
 
-	parentPolicyID := new(string)
-	if !r.ParentPolicyID.IsUnknown() && !r.ParentPolicyID.IsNull() {
-		*parentPolicyID = r.ParentPolicyID.ValueString()
-	} else {
-		parentPolicyID = nil
-	}
 	eventGatewayEncryptPolicy, eventGatewayEncryptPolicyDiags := r.ToSharedEventGatewayEncryptPolicy(ctx)
 	diags.Append(eventGatewayEncryptPolicyDiags...)
 
@@ -74,7 +57,6 @@ func (r *EventGatewayProducePolicyEncryptResourceModel) ToOperationsCreateEventG
 	out := operations.CreateEventGatewayVirtualClusterProducePolicyEncryptRequest{
 		GatewayID:                 gatewayID,
 		VirtualClusterID:          virtualClusterID,
-		ParentPolicyID:            parentPolicyID,
 		EventGatewayEncryptPolicy: eventGatewayEncryptPolicy,
 	}
 
@@ -179,55 +161,70 @@ func (r *EventGatewayProducePolicyEncryptResourceModel) ToSharedEventGatewayEncr
 	} else {
 		condition = nil
 	}
-	var config *shared.EventGatewayEncryptPolicyConfig
-	if r.Config != nil {
-		failureMode := shared.EncryptionFailureMode(r.Config.FailureMode.ValueString())
-		keySources := make([]shared.EventGatewayKeySource, 0, len(r.Config.KeySources))
-		for _, keySourcesItem := range r.Config.KeySources {
-			if keySourcesItem.Aws != nil {
-				eventGatewayAWSKeySource := shared.EventGatewayAWSKeySource{}
-				keySources = append(keySources, shared.EventGatewayKeySource{
-					EventGatewayAWSKeySource: &eventGatewayAWSKeySource,
-				})
+	failureMode := shared.EncryptionFailureMode(r.Config.FailureMode.ValueString())
+	partOfRecord := make([]shared.EncryptionRecordPart, 0, len(r.Config.PartOfRecord))
+	for _, partOfRecordItem := range r.Config.PartOfRecord {
+		partOfRecord = append(partOfRecord, shared.EncryptionRecordPart(partOfRecordItem.ValueString()))
+	}
+	var encryptionKey shared.EncryptionKey
+	var encryptionKeyAWS *shared.EncryptionKeyAWS
+	if r.Config.EncryptionKey.Aws != nil {
+		var arn string
+		arn = r.Config.EncryptionKey.Aws.Arn.ValueString()
+
+		encryptionKeyAWS = &shared.EncryptionKeyAWS{
+			Arn: arn,
+		}
+	}
+	if encryptionKeyAWS != nil {
+		encryptionKey = shared.EncryptionKey{
+			EncryptionKeyAWS: encryptionKeyAWS,
+		}
+	}
+	var encryptionKeyStatic *shared.EncryptionKeyStatic
+	if r.Config.EncryptionKey.Static != nil {
+		var key shared.EncryptionKeyStaticReference
+		var referenceByID *shared.ReferenceByID
+		if r.Config.EncryptionKey.Static.Key.ReferenceByID != nil {
+			var id string
+			id = r.Config.EncryptionKey.Static.Key.ReferenceByID.ID.ValueString()
+
+			referenceByID = &shared.ReferenceByID{
+				ID: id,
 			}
-			if keySourcesItem.Static != nil {
-				keys := make([]shared.Keys, 0, len(keySourcesItem.Static.Keys))
-				for _, keysItem := range keySourcesItem.Static.Keys {
-					var id string
-					id = keysItem.ID.ValueString()
-
-					var key string
-					key = keysItem.Key.ValueString()
-
-					keys = append(keys, shared.Keys{
-						ID:  id,
-						Key: key,
-					})
-				}
-				eventGatewayStaticKeySource := shared.EventGatewayStaticKeySource{
-					Keys: keys,
-				}
-				keySources = append(keySources, shared.EventGatewayKeySource{
-					EventGatewayStaticKeySource: &eventGatewayStaticKeySource,
-				})
+		}
+		if referenceByID != nil {
+			key = shared.EncryptionKeyStaticReference{
+				ReferenceByID: referenceByID,
 			}
 		}
-		encrypt := make([]shared.EncryptionRecordSelector, 0, len(r.Config.Encrypt))
-		for _, encryptItem := range r.Config.Encrypt {
-			partOfRecord := shared.EncryptionRecordSelectorPartOfRecord(encryptItem.PartOfRecord.ValueString())
-			var keyID string
-			keyID = encryptItem.KeyID.ValueString()
+		var referenceByName *shared.ReferenceByName
+		if r.Config.EncryptionKey.Static.Key.ReferenceByName != nil {
+			var name1 string
+			name1 = r.Config.EncryptionKey.Static.Key.ReferenceByName.Name.ValueString()
 
-			encrypt = append(encrypt, shared.EncryptionRecordSelector{
-				PartOfRecord: partOfRecord,
-				KeyID:        keyID,
-			})
+			referenceByName = &shared.ReferenceByName{
+				Name: name1,
+			}
 		}
-		config = &shared.EventGatewayEncryptPolicyConfig{
-			FailureMode: failureMode,
-			KeySources:  keySources,
-			Encrypt:     encrypt,
+		if referenceByName != nil {
+			key = shared.EncryptionKeyStaticReference{
+				ReferenceByName: referenceByName,
+			}
 		}
+		encryptionKeyStatic = &shared.EncryptionKeyStatic{
+			Key: key,
+		}
+	}
+	if encryptionKeyStatic != nil {
+		encryptionKey = shared.EncryptionKey{
+			EncryptionKeyStatic: encryptionKeyStatic,
+		}
+	}
+	config := shared.EventGatewayEncryptConfig{
+		FailureMode:   failureMode,
+		PartOfRecord:  partOfRecord,
+		EncryptionKey: encryptionKey,
 	}
 	labels := make(map[string]*string)
 	for labelsKey, labelsValue := range r.Labels {

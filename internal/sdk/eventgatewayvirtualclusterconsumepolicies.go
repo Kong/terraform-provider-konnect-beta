@@ -30,7 +30,7 @@ func newEventGatewayVirtualClusterConsumePolicies(rootSDK *KonnectBeta, sdkConfi
 	}
 }
 
-// GetEventGatewayVirtualClusterConsumePolicyModifyHeaders - Fetch Consume Policy for Virtual Cluster
+// GetEventGatewayVirtualClusterConsumePolicyModifyHeaders - Get a Consume Policy for Virtual Cluster
 // Returns information about a specific consume policy associated with the Event Gateway virtual cluster.
 func (s *EventGatewayVirtualClusterConsumePolicies) GetEventGatewayVirtualClusterConsumePolicyModifyHeaders(ctx context.Context, request operations.GetEventGatewayVirtualClusterConsumePolicyModifyHeadersRequest, opts ...operations.Option) (*operations.GetEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse, error) {
 	o := operations.Options{}
@@ -63,7 +63,7 @@ func (s *EventGatewayVirtualClusterConsumePolicies) GetEventGatewayVirtualCluste
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-event-gateway-virtual-cluster-consume-policy-modify-headers",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -337,7 +337,7 @@ func (s *EventGatewayVirtualClusterConsumePolicies) UpdateEventGatewayVirtualClu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-event-gateway-virtual-cluster-consume-policy-modify-headers",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayModifyHeadersPolicy", "json", `request:"mediaType=application/json"`)
@@ -617,7 +617,7 @@ func (s *EventGatewayVirtualClusterConsumePolicies) DeleteEventGatewayVirtualClu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-event-gateway-virtual-cluster-consume-policy-modify-headers",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -833,7 +833,7 @@ func (s *EventGatewayVirtualClusterConsumePolicies) DeleteEventGatewayVirtualClu
 
 }
 
-// GetEventGatewayVirtualClusterConsumePolicySchemaValidation - Fetch Consume Policy for Virtual Cluster
+// GetEventGatewayVirtualClusterConsumePolicySchemaValidation - Get a Consume Policy for Virtual Cluster
 // Returns information about a specific consume policy associated with the Event Gateway virtual cluster.
 func (s *EventGatewayVirtualClusterConsumePolicies) GetEventGatewayVirtualClusterConsumePolicySchemaValidation(ctx context.Context, request operations.GetEventGatewayVirtualClusterConsumePolicySchemaValidationRequest, opts ...operations.Option) (*operations.GetEventGatewayVirtualClusterConsumePolicySchemaValidationResponse, error) {
 	o := operations.Options{}
@@ -866,7 +866,7 @@ func (s *EventGatewayVirtualClusterConsumePolicies) GetEventGatewayVirtualCluste
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-event-gateway-virtual-cluster-consume-policy-schema-validation",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -1140,7 +1140,7 @@ func (s *EventGatewayVirtualClusterConsumePolicies) UpdateEventGatewayVirtualClu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-event-gateway-virtual-cluster-consume-policy-schema-validation",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayConsumeSchemaValidationPolicy", "json", `request:"mediaType=application/json"`)
@@ -1420,7 +1420,7 @@ func (s *EventGatewayVirtualClusterConsumePolicies) DeleteEventGatewayVirtualClu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-event-gateway-virtual-cluster-consume-policy-schema-validation",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -1636,7 +1636,7 @@ func (s *EventGatewayVirtualClusterConsumePolicies) DeleteEventGatewayVirtualClu
 
 }
 
-// GetEventGatewayVirtualClusterConsumePolicyDecrypt - Fetch Consume Policy for Virtual Cluster
+// GetEventGatewayVirtualClusterConsumePolicyDecrypt - Get a Consume Policy for Virtual Cluster
 // Returns information about a specific consume policy associated with the Event Gateway virtual cluster.
 func (s *EventGatewayVirtualClusterConsumePolicies) GetEventGatewayVirtualClusterConsumePolicyDecrypt(ctx context.Context, request operations.GetEventGatewayVirtualClusterConsumePolicyDecryptRequest, opts ...operations.Option) (*operations.GetEventGatewayVirtualClusterConsumePolicyDecryptResponse, error) {
 	o := operations.Options{}
@@ -1669,7 +1669,7 @@ func (s *EventGatewayVirtualClusterConsumePolicies) GetEventGatewayVirtualCluste
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-event-gateway-virtual-cluster-consume-policy-decrypt",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -1943,7 +1943,7 @@ func (s *EventGatewayVirtualClusterConsumePolicies) UpdateEventGatewayVirtualClu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-event-gateway-virtual-cluster-consume-policy-decrypt",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayDecryptPolicy", "json", `request:"mediaType=application/json"`)
@@ -2223,7 +2223,7 @@ func (s *EventGatewayVirtualClusterConsumePolicies) DeleteEventGatewayVirtualClu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-event-gateway-virtual-cluster-consume-policy-decrypt",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -2439,7 +2439,7 @@ func (s *EventGatewayVirtualClusterConsumePolicies) DeleteEventGatewayVirtualClu
 
 }
 
-// GetEventGatewayVirtualClusterConsumePolicySkipRecord - Fetch Consume Policy for Virtual Cluster
+// GetEventGatewayVirtualClusterConsumePolicySkipRecord - Get a Consume Policy for Virtual Cluster
 // Returns information about a specific consume policy associated with the Event Gateway virtual cluster.
 func (s *EventGatewayVirtualClusterConsumePolicies) GetEventGatewayVirtualClusterConsumePolicySkipRecord(ctx context.Context, request operations.GetEventGatewayVirtualClusterConsumePolicySkipRecordRequest, opts ...operations.Option) (*operations.GetEventGatewayVirtualClusterConsumePolicySkipRecordResponse, error) {
 	o := operations.Options{}
@@ -2472,7 +2472,7 @@ func (s *EventGatewayVirtualClusterConsumePolicies) GetEventGatewayVirtualCluste
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-event-gateway-virtual-cluster-consume-policy-skip-record",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -2746,7 +2746,7 @@ func (s *EventGatewayVirtualClusterConsumePolicies) UpdateEventGatewayVirtualClu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-event-gateway-virtual-cluster-consume-policy-skip-record",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewaySkipRecordPolicy", "json", `request:"mediaType=application/json"`)
@@ -3026,7 +3026,7 @@ func (s *EventGatewayVirtualClusterConsumePolicies) DeleteEventGatewayVirtualClu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-event-gateway-virtual-cluster-consume-policy-skip-record",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -3275,10 +3275,10 @@ func (s *EventGatewayVirtualClusterConsumePolicies) CreateEventGatewayVirtualClu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-event-gateway-virtual-cluster-consume-policy-modify-headers",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayModifyHeadersPolicy", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayModifyHeadersPolicyCreate", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -3307,10 +3307,6 @@ func (s *EventGatewayVirtualClusterConsumePolicies) CreateEventGatewayVirtualClu
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 	if reqContentType != "" {
 		req.Header.Set("Content-Type", reqContentType)
-	}
-
-	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
-		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
 	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
@@ -3560,7 +3556,7 @@ func (s *EventGatewayVirtualClusterConsumePolicies) CreateEventGatewayVirtualClu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-event-gateway-virtual-cluster-consume-policy-schema-validation",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayConsumeSchemaValidationPolicy", "json", `request:"mediaType=application/json"`)
@@ -3592,10 +3588,6 @@ func (s *EventGatewayVirtualClusterConsumePolicies) CreateEventGatewayVirtualClu
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 	if reqContentType != "" {
 		req.Header.Set("Content-Type", reqContentType)
-	}
-
-	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
-		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
 	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
@@ -3845,7 +3837,7 @@ func (s *EventGatewayVirtualClusterConsumePolicies) CreateEventGatewayVirtualClu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-event-gateway-virtual-cluster-consume-policy-decrypt",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayDecryptPolicy", "json", `request:"mediaType=application/json"`)
@@ -3877,10 +3869,6 @@ func (s *EventGatewayVirtualClusterConsumePolicies) CreateEventGatewayVirtualClu
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 	if reqContentType != "" {
 		req.Header.Set("Content-Type", reqContentType)
-	}
-
-	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
-		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
 	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
@@ -4130,10 +4118,10 @@ func (s *EventGatewayVirtualClusterConsumePolicies) CreateEventGatewayVirtualClu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-event-gateway-virtual-cluster-consume-policy-skip-record",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewaySkipRecordPolicy", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewaySkipRecordPolicyCreate", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -4162,10 +4150,6 @@ func (s *EventGatewayVirtualClusterConsumePolicies) CreateEventGatewayVirtualClu
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 	if reqContentType != "" {
 		req.Header.Set("Content-Type", reqContentType)
-	}
-
-	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
-		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
 	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {

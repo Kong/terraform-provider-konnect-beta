@@ -39,7 +39,9 @@ type BackendClusterTLS struct {
 	Enabled bool `json:"enabled"`
 	// If true, skip certificate verification. It's not secure to use for production.
 	InsecureSkipVerify *bool `default:"false" json:"insecure_skip_verify"`
-	// A template string expression containing a reference to a secret or a literal value
+	// A literal value or a reference to an existing secret as a template string expression.
+	// The value is stored and returned by the API as-is, not treated as sensitive information.
+	//
 	CaBundle *string `json:"ca_bundle,omitempty"`
 	// List of supported TLS versions.
 	TLSVersions []TLSVersions `json:"tls_versions,omitempty"`
@@ -50,36 +52,36 @@ func (b BackendClusterTLS) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BackendClusterTLS) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"enabled"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *BackendClusterTLS) GetEnabled() bool {
-	if o == nil {
+func (b *BackendClusterTLS) GetEnabled() bool {
+	if b == nil {
 		return false
 	}
-	return o.Enabled
+	return b.Enabled
 }
 
-func (o *BackendClusterTLS) GetInsecureSkipVerify() *bool {
-	if o == nil {
+func (b *BackendClusterTLS) GetInsecureSkipVerify() *bool {
+	if b == nil {
 		return nil
 	}
-	return o.InsecureSkipVerify
+	return b.InsecureSkipVerify
 }
 
-func (o *BackendClusterTLS) GetCaBundle() *string {
-	if o == nil {
+func (b *BackendClusterTLS) GetCaBundle() *string {
+	if b == nil {
 		return nil
 	}
-	return o.CaBundle
+	return b.CaBundle
 }
 
-func (o *BackendClusterTLS) GetTLSVersions() []TLSVersions {
-	if o == nil {
+func (b *BackendClusterTLS) GetTLSVersions() []TLSVersions {
+	if b == nil {
 		return nil
 	}
-	return o.TLSVersions
+	return b.TLSVersions
 }

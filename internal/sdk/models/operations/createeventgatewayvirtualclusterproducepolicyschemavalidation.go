@@ -11,38 +11,29 @@ type CreateEventGatewayVirtualClusterProducePolicySchemaValidationRequest struct
 	// The UUID of your Gateway.
 	GatewayID string `pathParam:"style=simple,explode=false,name=gatewayId"`
 	// The ID of the Virtual Cluster.
-	VirtualClusterID string `pathParam:"style=simple,explode=false,name=virtualClusterId"`
-	// When specified, it sets the ID of the parent policy.
-	ParentPolicyID                            *string                                           `queryParam:"style=form,explode=true,name=parent_policy_id"`
+	VirtualClusterID                          string                                            `pathParam:"style=simple,explode=false,name=virtualClusterId"`
 	EventGatewayProduceSchemaValidationPolicy *shared.EventGatewayProduceSchemaValidationPolicy `request:"mediaType=application/json"`
 }
 
-func (o *CreateEventGatewayVirtualClusterProducePolicySchemaValidationRequest) GetGatewayID() string {
-	if o == nil {
+func (c *CreateEventGatewayVirtualClusterProducePolicySchemaValidationRequest) GetGatewayID() string {
+	if c == nil {
 		return ""
 	}
-	return o.GatewayID
+	return c.GatewayID
 }
 
-func (o *CreateEventGatewayVirtualClusterProducePolicySchemaValidationRequest) GetVirtualClusterID() string {
-	if o == nil {
+func (c *CreateEventGatewayVirtualClusterProducePolicySchemaValidationRequest) GetVirtualClusterID() string {
+	if c == nil {
 		return ""
 	}
-	return o.VirtualClusterID
+	return c.VirtualClusterID
 }
 
-func (o *CreateEventGatewayVirtualClusterProducePolicySchemaValidationRequest) GetParentPolicyID() *string {
-	if o == nil {
+func (c *CreateEventGatewayVirtualClusterProducePolicySchemaValidationRequest) GetEventGatewayProduceSchemaValidationPolicy() *shared.EventGatewayProduceSchemaValidationPolicy {
+	if c == nil {
 		return nil
 	}
-	return o.ParentPolicyID
-}
-
-func (o *CreateEventGatewayVirtualClusterProducePolicySchemaValidationRequest) GetEventGatewayProduceSchemaValidationPolicy() *shared.EventGatewayProduceSchemaValidationPolicy {
-	if o == nil {
-		return nil
-	}
-	return o.EventGatewayProduceSchemaValidationPolicy
+	return c.EventGatewayProduceSchemaValidationPolicy
 }
 
 type CreateEventGatewayVirtualClusterProducePolicySchemaValidationResponse struct {
@@ -62,51 +53,51 @@ type CreateEventGatewayVirtualClusterProducePolicySchemaValidationResponse struc
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *CreateEventGatewayVirtualClusterProducePolicySchemaValidationResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateEventGatewayVirtualClusterProducePolicySchemaValidationResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateEventGatewayVirtualClusterProducePolicySchemaValidationResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateEventGatewayVirtualClusterProducePolicySchemaValidationResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateEventGatewayVirtualClusterProducePolicySchemaValidationResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateEventGatewayVirtualClusterProducePolicySchemaValidationResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateEventGatewayVirtualClusterProducePolicySchemaValidationResponse) GetEventGatewayPolicy() *shared.EventGatewayPolicy {
-	if o == nil {
+func (c *CreateEventGatewayVirtualClusterProducePolicySchemaValidationResponse) GetEventGatewayPolicy() *shared.EventGatewayPolicy {
+	if c == nil {
 		return nil
 	}
-	return o.EventGatewayPolicy
+	return c.EventGatewayPolicy
 }
 
-func (o *CreateEventGatewayVirtualClusterProducePolicySchemaValidationResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (c *CreateEventGatewayVirtualClusterProducePolicySchemaValidationResponse) GetBadRequestError() *shared.BadRequestError {
+	if c == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return c.BadRequestError
 }
 
-func (o *CreateEventGatewayVirtualClusterProducePolicySchemaValidationResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (c *CreateEventGatewayVirtualClusterProducePolicySchemaValidationResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return c.UnauthorizedError
 }
 
-func (o *CreateEventGatewayVirtualClusterProducePolicySchemaValidationResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (c *CreateEventGatewayVirtualClusterProducePolicySchemaValidationResponse) GetForbiddenError() *shared.ForbiddenError {
+	if c == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return c.ForbiddenError
 }

@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.12.0
+> Released on 2025/11/06
+
+### BREAKING CHANGES
+* `config.decrypt` is removed from `konnect_event_gateway_consume_policy_decrypt`. Now, `part_of_record` is a child of `config`
+* `config.encrypt` and `config.key_sources` are removed from `konnect_event_gateway_produce_policy_encrypt` resource.
+
+### Features
+* Add support for secrets, Zone Ingress, and Zone Egress endpoints in Mesh resources
+* Add support for `skip_ca_check` in `konnect_portal_custom_domain` resource
+* Add support for `konnect_event_gateway_static_key` resource
+
 ## 0.11.2
 > Released on 2025/10/17
 

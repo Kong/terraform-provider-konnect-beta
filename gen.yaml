@@ -16,6 +16,9 @@ generation:
   auth:
     oAuth2ClientCredentialsEnabled: false
     oAuth2PasswordEnabled: false
+    hoistGlobalSecurity: true
+  schemas:
+    allOfMergeStrategy: shallowMerge
   tests:
     generateTests: true
     generateNewTests: false
@@ -24,14 +27,14 @@ generation:
 go:
   version: 1.24.1
 terraform:
-  version: 0.11.2
+  version: 0.12.0
   additionalDataSources: []
   additionalDependencies:
     github.com/Kong/shared-speakeasy/customtypes: v0.2.3
     github.com/Kong/shared-speakeasy/hooks/mesh_defaults: v0.0.4
     github.com/Kong/shared-speakeasy/planmodifiers/arbitrary_json: v0.0.1
     github.com/Kong/shared-speakeasy/planmodifiers/suppress_zero_null: v0.0.1
-    github.com/Kong/shared-speakeasy/tfbuilder: v0.0.4
+    github.com/Kong/shared-speakeasy/tfbuilder: v0.0.5
     github.com/hashicorp/terraform-plugin-testing: v1.13.1
   additionalEphemeralResources: []
   additionalProviderAttributes:
@@ -41,6 +44,7 @@ terraform:
   author: kong
   baseErrorName: KonnectBetaError
   defaultErrorName: SDKError
+  enableOperationServers: false
   enableTypeDeduplication: true
   environmentVariables:
     - env: KONNECT_TOKEN
@@ -57,4 +61,6 @@ terraform:
       operations: operations
       shared: shared
       webhooks: webhooks
+  includeEmptyObjects: false
   packageName: konnect-beta
+  unionDeserializationStrategy: populated-fields

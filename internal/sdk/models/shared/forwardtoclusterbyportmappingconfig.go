@@ -81,40 +81,40 @@ func (f ForwardToClusterByPortMappingConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (f *ForwardToClusterByPortMappingConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &f, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"type", "destination", "advertised_host"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ForwardToClusterByPortMappingConfig) GetType() string {
+func (f *ForwardToClusterByPortMappingConfig) GetType() string {
 	return "port_mapping"
 }
 
-func (o *ForwardToClusterByPortMappingConfig) GetDestination() VirtualClusterReference {
-	if o == nil {
+func (f *ForwardToClusterByPortMappingConfig) GetDestination() VirtualClusterReference {
+	if f == nil {
 		return VirtualClusterReference{}
 	}
-	return o.Destination
+	return f.Destination
 }
 
-func (o *ForwardToClusterByPortMappingConfig) GetAdvertisedHost() string {
-	if o == nil {
+func (f *ForwardToClusterByPortMappingConfig) GetAdvertisedHost() string {
+	if f == nil {
 		return ""
 	}
-	return o.AdvertisedHost
+	return f.AdvertisedHost
 }
 
-func (o *ForwardToClusterByPortMappingConfig) GetBootstrapPort() *BootstrapPort {
-	if o == nil {
+func (f *ForwardToClusterByPortMappingConfig) GetBootstrapPort() *BootstrapPort {
+	if f == nil {
 		return nil
 	}
-	return o.BootstrapPort
+	return f.BootstrapPort
 }
 
-func (o *ForwardToClusterByPortMappingConfig) GetMinBrokerID() *int64 {
-	if o == nil {
+func (f *ForwardToClusterByPortMappingConfig) GetMinBrokerID() *int64 {
+	if f == nil {
 		return nil
 	}
-	return o.MinBrokerID
+	return f.MinBrokerID
 }

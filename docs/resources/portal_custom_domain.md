@@ -22,6 +22,7 @@ resource "konnect_portal_custom_domain" "my_portalcustomdomain" {
     custom_certificate         = "...my_custom_certificate..."
     custom_private_key         = "...my_custom_private_key..."
     domain_verification_method = "custom_certificate"
+    skip_ca_check              = true
   }
 }
 ```
@@ -50,11 +51,11 @@ Optional:
 - `custom_certificate` (String) Custom certificate to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate"
 - `custom_private_key` (String) Custom certificate private key to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate"
 - `domain_verification_method` (String) must be one of ["custom_certificate", "http"]; Requires replacement if changed.
+- `skip_ca_check` (Boolean) Advanced option. If true, the custom certificate is served exactly as provided, without attempting to bundle against a public trust store. Required for certificates issued by an internal/private CA.
 
 Read-Only:
 
 - `expires_at` (String) An ISO-8601 timestamp representation of the ssl certificate expiration date.
-- `skip_ca_check` (Boolean) True when the provided certificate chain is served as-is without validation against a public trust store.
 - `uploaded_at` (String) An ISO-8601 timestamp representation of the ssl certificate upload date.
 - `validation_errors` (List of String)
 - `verification_status` (String) must be one of ["verified", "pending", "error"]
@@ -62,6 +63,17 @@ Read-Only:
 ## Import
 
 Import is supported using the following syntax:
+
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_portal_custom_domain.my_konnect_portal_custom_domain
+  id = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import konnect_portal_custom_domain.my_konnect_portal_custom_domain "f32d905a-ed33-46a3-a093-d8f536af9a8a"

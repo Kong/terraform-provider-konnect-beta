@@ -18,32 +18,32 @@ type PutMeshMultiZoneServiceRequest struct {
 	MeshMultiZoneServiceItem shared.MeshMultiZoneServiceItemInput `request:"mediaType=application/json"`
 }
 
-func (o *PutMeshMultiZoneServiceRequest) GetCpID() string {
-	if o == nil {
+func (p *PutMeshMultiZoneServiceRequest) GetCpID() string {
+	if p == nil {
 		return ""
 	}
-	return o.CpID
+	return p.CpID
 }
 
-func (o *PutMeshMultiZoneServiceRequest) GetMesh() string {
-	if o == nil {
+func (p *PutMeshMultiZoneServiceRequest) GetMesh() string {
+	if p == nil {
 		return ""
 	}
-	return o.Mesh
+	return p.Mesh
 }
 
-func (o *PutMeshMultiZoneServiceRequest) GetName() string {
-	if o == nil {
+func (p *PutMeshMultiZoneServiceRequest) GetName() string {
+	if p == nil {
 		return ""
 	}
-	return o.Name
+	return p.Name
 }
 
-func (o *PutMeshMultiZoneServiceRequest) GetMeshMultiZoneServiceItem() shared.MeshMultiZoneServiceItemInput {
-	if o == nil {
+func (p *PutMeshMultiZoneServiceRequest) GetMeshMultiZoneServiceItem() shared.MeshMultiZoneServiceItemInput {
+	if p == nil {
 		return shared.MeshMultiZoneServiceItemInput{}
 	}
-	return o.MeshMultiZoneServiceItem
+	return p.MeshMultiZoneServiceItem
 }
 
 type PutMeshMultiZoneServiceResponse struct {
@@ -53,34 +53,34 @@ type PutMeshMultiZoneServiceResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Updated
+	// Successful response
 	MeshMultiZoneServiceCreateOrUpdateSuccessResponse *shared.MeshMultiZoneServiceCreateOrUpdateSuccessResponse
 }
 
-func (o *PutMeshMultiZoneServiceResponse) GetContentType() string {
-	if o == nil {
+func (p *PutMeshMultiZoneServiceResponse) GetContentType() string {
+	if p == nil {
 		return ""
 	}
-	return o.ContentType
+	return p.ContentType
 }
 
-func (o *PutMeshMultiZoneServiceResponse) GetStatusCode() int {
-	if o == nil {
+func (p *PutMeshMultiZoneServiceResponse) GetStatusCode() int {
+	if p == nil {
 		return 0
 	}
-	return o.StatusCode
+	return p.StatusCode
 }
 
-func (o *PutMeshMultiZoneServiceResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (p *PutMeshMultiZoneServiceResponse) GetRawResponse() *http.Response {
+	if p == nil {
 		return nil
 	}
-	return o.RawResponse
+	return p.RawResponse
 }
 
-func (o *PutMeshMultiZoneServiceResponse) GetMeshMultiZoneServiceCreateOrUpdateSuccessResponse() *shared.MeshMultiZoneServiceCreateOrUpdateSuccessResponse {
-	if o == nil {
+func (p *PutMeshMultiZoneServiceResponse) GetMeshMultiZoneServiceCreateOrUpdateSuccessResponse() *shared.MeshMultiZoneServiceCreateOrUpdateSuccessResponse {
+	if p == nil {
 		return nil
 	}
-	return o.MeshMultiZoneServiceCreateOrUpdateSuccessResponse
+	return p.MeshMultiZoneServiceCreateOrUpdateSuccessResponse
 }

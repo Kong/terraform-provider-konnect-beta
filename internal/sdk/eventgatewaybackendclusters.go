@@ -63,7 +63,7 @@ func (s *EventGatewayBackendClusters) CreateEventGatewayBackendCluster(ctx conte
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-event-gateway-backend-cluster",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateBackendClusterRequest", "json", `request:"mediaType=application/json"`)
@@ -311,7 +311,7 @@ func (s *EventGatewayBackendClusters) CreateEventGatewayBackendCluster(ctx conte
 
 }
 
-// GetEventGatewayBackendCluster - Fetch Backend Cluster
+// GetEventGatewayBackendCluster - Get a Backend Cluster
 // Returns information about a specific backend cluster.
 func (s *EventGatewayBackendClusters) GetEventGatewayBackendCluster(ctx context.Context, request operations.GetEventGatewayBackendClusterRequest, opts ...operations.Option) (*operations.GetEventGatewayBackendClusterResponse, error) {
 	o := operations.Options{}
@@ -344,7 +344,7 @@ func (s *EventGatewayBackendClusters) GetEventGatewayBackendCluster(ctx context.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-event-gateway-backend-cluster",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -618,7 +618,7 @@ func (s *EventGatewayBackendClusters) UpdateEventGatewayBackendCluster(ctx conte
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-event-gateway-backend-cluster",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "UpdateBackendClusterRequest", "json", `request:"mediaType=application/json"`)
@@ -898,7 +898,7 @@ func (s *EventGatewayBackendClusters) DeleteEventGatewayBackendCluster(ctx conte
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-event-gateway-backend-cluster",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

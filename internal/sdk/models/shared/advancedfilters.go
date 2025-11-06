@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
 type Field string
@@ -17,6 +18,7 @@ const (
 	FieldConsumer                  Field = "consumer"
 	FieldControlPlane              Field = "control_plane"
 	FieldControlPlaneGroup         Field = "control_plane_group"
+	FieldCountryCode               Field = "country_code"
 	FieldDataPlaneNode             Field = "data_plane_node"
 	FieldDataPlaneNodeVersion      Field = "data_plane_node_version"
 	FieldGatewayService            Field = "gateway_service"
@@ -52,6 +54,8 @@ func (e *Field) UnmarshalJSON(data []byte) error {
 	case "control_plane":
 		fallthrough
 	case "control_plane_group":
+		fallthrough
+	case "country_code":
 		fallthrough
 	case "data_plane_node":
 		fallthrough
@@ -119,23 +123,34 @@ type AdvancedFilters struct {
 	Value    any      `json:"value,omitempty"`
 }
 
-func (o *AdvancedFilters) GetField() Field {
-	if o == nil {
+func (a AdvancedFilters) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AdvancedFilters) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"field", "operator"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AdvancedFilters) GetField() Field {
+	if a == nil {
 		return Field("")
 	}
-	return o.Field
+	return a.Field
 }
 
-func (o *AdvancedFilters) GetOperator() Operator {
-	if o == nil {
+func (a *AdvancedFilters) GetOperator() Operator {
+	if a == nil {
 		return Operator("")
 	}
-	return o.Operator
+	return a.Operator
 }
 
-func (o *AdvancedFilters) GetValue() any {
-	if o == nil {
+func (a *AdvancedFilters) GetValue() any {
+	if a == nil {
 		return nil
 	}
-	return o.Value
+	return a.Value
 }

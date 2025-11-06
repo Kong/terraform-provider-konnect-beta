@@ -79,40 +79,40 @@ func (v VirtualClusterAuthenticationOauthBearer) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VirtualClusterAuthenticationOauthBearer) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"type", "mediation"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *VirtualClusterAuthenticationOauthBearer) GetType() string {
+func (v *VirtualClusterAuthenticationOauthBearer) GetType() string {
 	return "oauth_bearer"
 }
 
-func (o *VirtualClusterAuthenticationOauthBearer) GetMediation() VirtualClusterAuthenticationOauthBearerMediation {
-	if o == nil {
+func (v *VirtualClusterAuthenticationOauthBearer) GetMediation() VirtualClusterAuthenticationOauthBearerMediation {
+	if v == nil {
 		return VirtualClusterAuthenticationOauthBearerMediation("")
 	}
-	return o.Mediation
+	return v.Mediation
 }
 
-func (o *VirtualClusterAuthenticationOauthBearer) GetClaimsMapping() *VirtualClusterAuthenticationClaimsMapping {
-	if o == nil {
+func (v *VirtualClusterAuthenticationOauthBearer) GetClaimsMapping() *VirtualClusterAuthenticationClaimsMapping {
+	if v == nil {
 		return nil
 	}
-	return o.ClaimsMapping
+	return v.ClaimsMapping
 }
 
-func (o *VirtualClusterAuthenticationOauthBearer) GetJwks() *VirtualClusterAuthenticationJWKS {
-	if o == nil {
+func (v *VirtualClusterAuthenticationOauthBearer) GetJwks() *VirtualClusterAuthenticationJWKS {
+	if v == nil {
 		return nil
 	}
-	return o.Jwks
+	return v.Jwks
 }
 
-func (o *VirtualClusterAuthenticationOauthBearer) GetValidate() *VirtualClusterAuthenticationValidate {
-	if o == nil {
+func (v *VirtualClusterAuthenticationOauthBearer) GetValidate() *VirtualClusterAuthenticationValidate {
+	if v == nil {
 		return nil
 	}
-	return o.Validate
+	return v.Validate
 }

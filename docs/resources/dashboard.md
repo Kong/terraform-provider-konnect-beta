@@ -28,6 +28,10 @@ resource "konnect_dashboard" "my_dashboard" {
         chart = {
           definition = {
             chart = {
+              choropleth_map = {
+                chart_title = "...my_chart_title..."
+                type        = "choropleth_map"
+              }
               donut = {
                 chart_title = "...my_chart_title..."
                 type        = "donut"
@@ -37,7 +41,7 @@ resource "konnect_dashboard" "my_dashboard" {
               api_usage = {
                 datasource = "api_usage"
                 dimensions = [
-                  "api_product"
+                  "status_code_grouped",
                 ]
                 filters = [
                   {
@@ -182,6 +186,9 @@ Optional:
 
 Optional:
 
+- `choropleth_map` (Attributes) A chart that displays data on a world map. Each region on the map is colored based on the metric value.
+This chart works only with the `api_usage` datasource and requires a single metric and a single dimension of `country_code`.
+No additional dimensions are supported. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart--choropleth_map))
 - `donut` (Attributes) A chart that can display one-dimensional data in a hollow, segmented circle.  To use this chart, ensure that
 the query includes only one dimension (not `time`). (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart--donut))
 - `horizontal_bar` (Attributes) A chart that can display non-timeseries data as bars.  This type of chart supports up to 2 dimensions (not `time`).
@@ -195,6 +202,15 @@ This type of chart can support:
 - One metric plus one non-time dimension: `{ metrics: ["request_count"], dimensions: ["time", "gateway_service"] }` 
 
 Either way, ensure that `time` is in the list of query dimensions. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--chart--timeseries_line))
+
+<a id="nestedatt--definition--tiles--chart--definition--chart--choropleth_map"></a>
+### Nested Schema for `definition.tiles.chart.definition.chart.choropleth_map`
+
+Optional:
+
+- `chart_title` (String) The title of the chart, which is displayed in the tile's header.
+- `type` (String) Not Null; must be "choropleth_map"
+
 
 <a id="nestedatt--definition--tiles--chart--definition--chart--donut"></a>
 ### Nested Schema for `definition.tiles.chart.definition.chart.donut`
@@ -275,7 +291,7 @@ For special time ranges:
 
 For absolute time ranges, daily will be used.
 must be one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]
-- `metrics` (List of String) List of aggregated metrics to collect across the requested time span. If no metrics are specified, request_count will be computed by default.
+- `metrics` (List of String) List of aggregated metrics to collect across the requested time span. If no metrics are specified, request_count will be computed by default. Default: ["request_count"]
 - `time_range` (Attributes) The time range to query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--api_usage--time_range))
 
 <a id="nestedatt--definition--tiles--chart--definition--query--api_usage--filters"></a>
@@ -283,7 +299,7 @@ must be one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "te
 
 Optional:
 
-- `field` (String) Not Null; must be one of ["api", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]
+- `field` (String) Not Null; must be one of ["api", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]
 - `operator` (String) Not Null; must be one of ["in", "not_in", "empty", "not_empty"]
 - `value` (String) Parsed as JSON.
 
@@ -350,7 +366,7 @@ For special time ranges:
 
 For absolute time ranges, daily will be used.
 must be one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]
-- `metrics` (List of String) List of aggregated metrics to collect across the requested time span.
+- `metrics` (List of String) List of aggregated metrics to collect across the requested time span. Default: ["ai_request_count"]
 - `time_range` (Attributes) The time range to query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--llm_usage--time_range))
 
 <a id="nestedatt--definition--tiles--chart--definition--query--llm_usage--filters"></a>
@@ -430,13 +446,24 @@ Optional:
 
 Optional:
 
-- `field` (String) Not Null; must be one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "data_plane_node", "data_plane_node_version", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]
+- `field` (String) Not Null; must be one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]
 - `operator` (String) Not Null; must be one of ["in", "not_in", "empty", "not_empty"]
 - `value` (String) Parsed as JSON.
 
 ## Import
 
 Import is supported using the following syntax:
+
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_dashboard.my_konnect_dashboard
+  id = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import konnect_dashboard.my_konnect_dashboard "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"

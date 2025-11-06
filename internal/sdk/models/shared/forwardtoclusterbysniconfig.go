@@ -20,11 +20,14 @@ type ForwardToClusterBySNIConfig struct {
 	// The bootstrap host is `bootstrap.my-cluster.example.com` and then each broker is addressable at `broker-0.my-cluster.example.com`, `broker-1.my-cluster.example.com`, etc.
 	// This means that your deployment needs to have a wildcard certificate for the domain and a DNS resolver that routes `*.my-cluster.example.com` to the proxy.
 	//
-	SniSuffix *string `default:"null" json:"sni_suffix"`
+	// The accepted format is a DNS subdomain starting with either `.` or `-`. For example, `-keg.example.com`, `.keg.example.com`, `.namespace.svc.cluster.local`, and `.localhost` are all valid,
+	// while `keg.example.com` is not.
+	//
+	SniSuffix *string `json:"sni_suffix,omitempty"`
 	// Virtual brokers are advertised to clients with this port instead of listen_port. Useful when proxy is
 	// behind loadbalancer listening on different port.
 	//
-	AdvertisedPort *int64 `default:"null" json:"advertised_port"`
+	AdvertisedPort *int64 `json:"advertised_port,omitempty"`
 }
 
 func (f ForwardToClusterBySNIConfig) MarshalJSON() ([]byte, error) {
@@ -32,26 +35,26 @@ func (f ForwardToClusterBySNIConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (f *ForwardToClusterBySNIConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &f, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"type"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ForwardToClusterBySNIConfig) GetType() string {
+func (f *ForwardToClusterBySNIConfig) GetType() string {
 	return "sni"
 }
 
-func (o *ForwardToClusterBySNIConfig) GetSniSuffix() *string {
-	if o == nil {
+func (f *ForwardToClusterBySNIConfig) GetSniSuffix() *string {
+	if f == nil {
 		return nil
 	}
-	return o.SniSuffix
+	return f.SniSuffix
 }
 
-func (o *ForwardToClusterBySNIConfig) GetAdvertisedPort() *int64 {
-	if o == nil {
+func (f *ForwardToClusterBySNIConfig) GetAdvertisedPort() *int64 {
+	if f == nil {
 		return nil
 	}
-	return o.AdvertisedPort
+	return f.AdvertisedPort
 }

@@ -138,6 +138,7 @@ resource "konnect_mesh_timeout" "my_meshtimeout" {
 ### Read-Only
 
 - `creation_time` (String) Time at which the resource was created
+- `kri` (String) A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
 - `modification_time` (String) Time at which the resource was updated
 - `warnings` (List of String) warnings is a list of warning messages to return to the requesting Kuma API clients.
 Warning messages describe a problem the client making the API request should correct or be aware of.
@@ -360,6 +361,21 @@ For example, you can target port from MeshService.ports[] by its name. Only traf
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_mesh_timeout.my_konnect_mesh_timeout
+  id = jsonencode({
+    cp_id = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+    mesh = "..."
+    name = "..."
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
-terraform import konnect_mesh_timeout.my_konnect_mesh_timeout '{"cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b", "mesh": "", "name": ""}'
+terraform import konnect_mesh_timeout.my_konnect_mesh_timeout '{"cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b", "mesh": "...", "name": "..."}'
 ```

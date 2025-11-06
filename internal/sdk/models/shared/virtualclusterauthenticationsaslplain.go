@@ -35,7 +35,7 @@ func (e *Mediation) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// VirtualClusterAuthenticationSaslPlain - SASL/PLAIN authentication scheme for the virtual cluster.
+// VirtualClusterAuthenticationSaslPlain - SASL/PLAIN authentication scheme for the virtual cluster containing principals with username and password.
 type VirtualClusterAuthenticationSaslPlain struct {
 	type_ string `const:"sasl_plain" json:"type"`
 	// The mediation type for SASL/PLAIN authentication.
@@ -49,26 +49,26 @@ func (v VirtualClusterAuthenticationSaslPlain) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VirtualClusterAuthenticationSaslPlain) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"type", "mediation"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *VirtualClusterAuthenticationSaslPlain) GetType() string {
+func (v *VirtualClusterAuthenticationSaslPlain) GetType() string {
 	return "sasl_plain"
 }
 
-func (o *VirtualClusterAuthenticationSaslPlain) GetMediation() Mediation {
-	if o == nil {
+func (v *VirtualClusterAuthenticationSaslPlain) GetMediation() Mediation {
+	if v == nil {
 		return Mediation("")
 	}
-	return o.Mediation
+	return v.Mediation
 }
 
-func (o *VirtualClusterAuthenticationSaslPlain) GetPrincipals() []VirtualClusterAuthenticationPrincipal {
-	if o == nil {
+func (v *VirtualClusterAuthenticationSaslPlain) GetPrincipals() []VirtualClusterAuthenticationPrincipal {
+	if v == nil {
 		return nil
 	}
-	return o.Principals
+	return v.Principals
 }

@@ -18,6 +18,5 @@ resource "konnect_event_gateway_consume_policy_schema_validation" "my_eventgatew
     key = "value"
   }
   name               = "...my_name..."
-  parent_policy_id   = "ca823076-de76-4822-b85e-1900e0d26d92"
   virtual_cluster_id = "afccd415-a99c-4465-8754-9932a66f275f"
 }

@@ -19,7 +19,7 @@ type UpdateVirtualClusterRequest struct {
 	// It tries to authenticate with every rule sequentially one by one.
 	// It succeeds on the first match, and fails if no rule matches.
 	//
-	Authentication []VirtualClusterAuthenticationScheme `json:"authentication"`
+	Authentication []VirtualClusterAuthenticationSensitiveDataAwareScheme `json:"authentication"`
 	// Namespace allows to implement multitenancy using a single backend cluster.
 	// It allows to either hide or enforce a static prefix on resources (topics, consumer group IDs, transaction IDs).
 	//
@@ -33,7 +33,7 @@ type UpdateVirtualClusterRequest struct {
 	//
 	ACLMode VirtualClusterACLMode `json:"acl_mode"`
 	// The DNS label used in the bootstrap server URL to identify the virtual cluster when using SNI routing.
-	// The format follows the RFC1035: 1-63 chars, lowercase alphanumeric or '-', must start with a letter and end with an alphanumeric character.
+	// The format follows the RFC1035: 1-63 chars, lowercase alphanumeric or '-', must start and end with an alphanumeric character.
 	DNSLabel string `json:"dns_label"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
@@ -42,58 +42,58 @@ type UpdateVirtualClusterRequest struct {
 	Labels map[string]*string `json:"labels,omitempty"`
 }
 
-func (o *UpdateVirtualClusterRequest) GetName() string {
-	if o == nil {
+func (u *UpdateVirtualClusterRequest) GetName() string {
+	if u == nil {
 		return ""
 	}
-	return o.Name
+	return u.Name
 }
 
-func (o *UpdateVirtualClusterRequest) GetDescription() *string {
-	if o == nil {
+func (u *UpdateVirtualClusterRequest) GetDescription() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Description
+	return u.Description
 }
 
-func (o *UpdateVirtualClusterRequest) GetDestination() BackendClusterReferenceModify {
-	if o == nil {
+func (u *UpdateVirtualClusterRequest) GetDestination() BackendClusterReferenceModify {
+	if u == nil {
 		return BackendClusterReferenceModify{}
 	}
-	return o.Destination
+	return u.Destination
 }
 
-func (o *UpdateVirtualClusterRequest) GetAuthentication() []VirtualClusterAuthenticationScheme {
-	if o == nil {
-		return []VirtualClusterAuthenticationScheme{}
+func (u *UpdateVirtualClusterRequest) GetAuthentication() []VirtualClusterAuthenticationSensitiveDataAwareScheme {
+	if u == nil {
+		return []VirtualClusterAuthenticationSensitiveDataAwareScheme{}
 	}
-	return o.Authentication
+	return u.Authentication
 }
 
-func (o *UpdateVirtualClusterRequest) GetNamespace() *VirtualClusterNamespace {
-	if o == nil {
+func (u *UpdateVirtualClusterRequest) GetNamespace() *VirtualClusterNamespace {
+	if u == nil {
 		return nil
 	}
-	return o.Namespace
+	return u.Namespace
 }
 
-func (o *UpdateVirtualClusterRequest) GetACLMode() VirtualClusterACLMode {
-	if o == nil {
+func (u *UpdateVirtualClusterRequest) GetACLMode() VirtualClusterACLMode {
+	if u == nil {
 		return VirtualClusterACLMode("")
 	}
-	return o.ACLMode
+	return u.ACLMode
 }
 
-func (o *UpdateVirtualClusterRequest) GetDNSLabel() string {
-	if o == nil {
+func (u *UpdateVirtualClusterRequest) GetDNSLabel() string {
+	if u == nil {
 		return ""
 	}
-	return o.DNSLabel
+	return u.DNSLabel
 }
 
-func (o *UpdateVirtualClusterRequest) GetLabels() map[string]*string {
-	if o == nil {
+func (u *UpdateVirtualClusterRequest) GetLabels() map[string]*string {
+	if u == nil {
 		return nil
 	}
-	return o.Labels
+	return u.Labels
 }

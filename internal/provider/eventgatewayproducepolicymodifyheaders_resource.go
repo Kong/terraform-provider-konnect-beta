@@ -41,18 +41,18 @@ type EventGatewayProducePolicyModifyHeadersResource struct {
 
 // EventGatewayProducePolicyModifyHeadersResourceModel describes the resource data model.
 type EventGatewayProducePolicyModifyHeadersResourceModel struct {
-	Condition        types.String                                  `tfsdk:"condition"`
-	Config           tfTypes.EventGatewayModifyHeadersPolicyConfig `tfsdk:"config"`
-	CreatedAt        types.String                                  `tfsdk:"created_at"`
-	Description      types.String                                  `tfsdk:"description"`
-	Enabled          types.Bool                                    `tfsdk:"enabled"`
-	GatewayID        types.String                                  `tfsdk:"gateway_id"`
-	ID               types.String                                  `tfsdk:"id"`
-	Labels           map[string]types.String                       `tfsdk:"labels"`
-	Name             types.String                                  `tfsdk:"name"`
-	ParentPolicyID   types.String                                  `queryParam:"style=form,explode=true,name=parent_policy_id" tfsdk:"parent_policy_id"`
-	UpdatedAt        types.String                                  `tfsdk:"updated_at"`
-	VirtualClusterID types.String                                  `tfsdk:"virtual_cluster_id"`
+	Condition        types.String                                        `tfsdk:"condition"`
+	Config           tfTypes.EventGatewayModifyHeadersPolicyCreateConfig `tfsdk:"config"`
+	CreatedAt        types.String                                        `tfsdk:"created_at"`
+	Description      types.String                                        `tfsdk:"description"`
+	Enabled          types.Bool                                          `tfsdk:"enabled"`
+	GatewayID        types.String                                        `tfsdk:"gateway_id"`
+	ID               types.String                                        `tfsdk:"id"`
+	Labels           map[string]types.String                             `tfsdk:"labels"`
+	Name             types.String                                        `tfsdk:"name"`
+	ParentPolicyID   types.String                                        `tfsdk:"parent_policy_id"`
+	UpdatedAt        types.String                                        `tfsdk:"updated_at"`
+	VirtualClusterID types.String                                        `tfsdk:"virtual_cluster_id"`
 }
 
 func (r *EventGatewayProducePolicyModifyHeadersResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -175,7 +175,7 @@ func (r *EventGatewayProducePolicyModifyHeadersResource) Schema(ctx context.Cont
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Description: `When specified, it sets the ID of the parent policy. Requires replacement if changed.`,
+				Description: `The unique identifier of the parent schema validation policy, if any. Requires replacement if changed.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -516,7 +516,7 @@ func (r *EventGatewayProducePolicyModifyHeadersResource) ImportState(ctx context
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "virtual_cluster_id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "virtual_cluster_id": "..."}': `+err.Error())
 		return
 	}
 

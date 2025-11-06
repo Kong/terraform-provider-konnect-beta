@@ -15,55 +15,55 @@ EventGatewayVirtualCluster Resource
 ```terraform
 resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster" {
   provider = konnect-beta
-    acl_mode = "enforce_on_gateway"
-    authentication = [
-    {
-    sasl_plain = {
-    mediation = "passthrough"
-    principals = [
-    {
-                password = "${env['MY_SECRET']}"
-            username = "...my_username..."
-    }
-    ]
+acl_mode = "enforce_on_gateway"
+authentication = [
+{
+sasl_plain = {
+mediation = "passthrough"
+principals = [
+{
+password = "${vault.env['MY_ENV_VAR']}"
+username = "...my_username..."
 }
-    }
-    ]
-    description = "...my_description..."
-    destination = {
-            id = "759b5471-3de4-485c-b7d3-6e8cb8929d81"
-    }
-    dns_label = "vcluster-1"
-    gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    labels = {
-        key = "value"
-    }
-    name = "...my_name..."
-    namespace = {
-            additional = {
-                    consumer_groups = [
-            {
-            glob = {
-    glob = "...my_glob..."
+]
 }
-            }
-            ]
-            topics = [
-            {
-            exact_list = {
-    conflict = "warn"
-    exact_list = [
-    {
-                backend = "...my_backend..."
-    }
-    ]
 }
-            }
-            ]
-        }
-        mode = "hide_prefix"
-        prefix = "...my_prefix..."
-    }
+]
+description = "...my_description..."
+destination = {
+id = "759b5471-3de4-485c-b7d3-6e8cb8929d81"
+}
+dns_label = "vcluster-1"
+gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+labels = {
+    key = "value"
+}
+name = "...my_name..."
+namespace = {
+additional = {
+consumer_groups = [
+{
+glob = {
+glob = "...my_glob..."
+}
+}
+]
+topics = [
+{
+exact_list = {
+conflict = "warn"
+exact_list = [
+{
+backend = "...my_backend..."
+}
+]
+}
+}
+]
+}
+mode = "hide_prefix"
+prefix = "...my_prefix..."
+}
 }
 ```
 
@@ -88,7 +88,7 @@ It succeeds on the first match, and fails if no rule matches. (see [below for ne
 Either `id` or `name` must be provided. Following changes to the backend cluster name won't affect the
 reference, as the system will create the entities relationship by `id`. (see [below for nested schema](#nestedatt--destination))
 - `dns_label` (String) The DNS label used in the bootstrap server URL to identify the virtual cluster when using SNI routing.
-The format follows the RFC1035: 1-63 chars, lowercase alphanumeric or '-', must start with a letter and end with an alphanumeric character.
+The format follows the RFC1035: 1-63 chars, lowercase alphanumeric or '-', must start and end with an alphanumeric character.
 - `gateway_id` (String) The UUID of your Gateway.
 - `name` (String) The name of the virtual cluster.
 
@@ -192,8 +192,13 @@ Optional:
 
 Optional:
 
-- `password` (String) A template string expression containing a reference to a secret
-- `username` (String) A template string expression containing a reference to a secret or a literal value
+- `password` (String) A sensitive value containing the secret or a reference to a secret as a template string expression.
+If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
+If provided as an expression, the expression itself is stored and returned by the API.
+Not Null
+- `username` (String) A literal value or a reference to an existing secret as a template string expression.
+The value is stored and returned by the API as-is, not treated as sensitive information.
+Not Null
 
 
 
@@ -324,6 +329,20 @@ Default: "warn"; must be one of ["warn", "ignore"]
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_event_gateway_virtual_cluster.my_konnect_event_gateway_virtual_cluster
+  id = jsonencode({
+    gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id = "..."
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
-terraform import konnect_event_gateway_virtual_cluster.my_konnect_event_gateway_virtual_cluster '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": ""}'
+terraform import konnect_event_gateway_virtual_cluster.my_konnect_event_gateway_virtual_cluster '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "..."}'
 ```

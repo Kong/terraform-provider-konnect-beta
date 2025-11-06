@@ -20,8 +20,6 @@ func (r *PortalCustomDomainResourceModel) RefreshFromSharedPortalCustomDomain(ct
 		r.Enabled = types.BoolValue(resp.Enabled)
 		r.Hostname = types.StringValue(resp.Hostname)
 		sslPriorData := r.Ssl
-		r.Ssl.CustomCertificate = sslPriorData.CustomCertificate
-		r.Ssl.CustomPrivateKey = sslPriorData.CustomPrivateKey
 		r.Ssl.DomainVerificationMethod = types.StringValue(string(resp.Ssl.DomainVerificationMethod))
 		r.Ssl.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.Ssl.ExpiresAt))
 		r.Ssl.SkipCaCheck = types.BoolPointerValue(resp.Ssl.SkipCaCheck)
@@ -31,6 +29,8 @@ func (r *PortalCustomDomainResourceModel) RefreshFromSharedPortalCustomDomain(ct
 			r.Ssl.ValidationErrors = append(r.Ssl.ValidationErrors, types.StringValue(v))
 		}
 		r.Ssl.VerificationStatus = types.StringValue(string(resp.Ssl.VerificationStatus))
+		r.Ssl.CustomCertificate = sslPriorData.CustomCertificate
+		r.Ssl.CustomPrivateKey = sslPriorData.CustomPrivateKey
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
 
@@ -132,10 +132,17 @@ func (r *PortalCustomDomainResourceModel) ToSharedCreatePortalCustomDomainReques
 	} else {
 		customPrivateKey = nil
 	}
+	skipCaCheck := new(bool)
+	if !r.Ssl.SkipCaCheck.IsUnknown() && !r.Ssl.SkipCaCheck.IsNull() {
+		*skipCaCheck = r.Ssl.SkipCaCheck.ValueBool()
+	} else {
+		skipCaCheck = nil
+	}
 	ssl := shared.CreatePortalCustomDomainSSL{
 		DomainVerificationMethod: domainVerificationMethod,
 		CustomCertificate:        customCertificate,
 		CustomPrivateKey:         customPrivateKey,
+		SkipCaCheck:              skipCaCheck,
 	}
 	out := shared.CreatePortalCustomDomainRequest{
 		Hostname: hostname,

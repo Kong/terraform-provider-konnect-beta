@@ -13,7 +13,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -48,7 +47,7 @@ type EventGatewayClusterPolicyAclsResourceModel struct {
 	ID               types.String                        `tfsdk:"id"`
 	Labels           map[string]types.String             `tfsdk:"labels"`
 	Name             types.String                        `tfsdk:"name"`
-	ParentPolicyID   types.String                        `queryParam:"style=form,explode=true,name=parent_policy_id" tfsdk:"parent_policy_id"`
+	ParentPolicyID   types.String                        `tfsdk:"parent_policy_id"`
 	UpdatedAt        types.String                        `tfsdk:"updated_at"`
 	VirtualClusterID types.String                        `tfsdk:"virtual_cluster_id"`
 }
@@ -91,9 +90,10 @@ func (r *EventGatewayClusterPolicyAclsResource) Schema(ctx context.Context, req 
 										Attributes: map[string]schema.Attribute{
 											"name": schema.StringAttribute{
 												Required:    true,
-												Description: `must be one of ["alter", "alter_configs", "create", "delete", "describe", "describe_configs", "idempotent_write", "read", "write"]`,
+												Description: `must be one of ["all", "alter", "alter_configs", "create", "delete", "describe", "describe_configs", "idempotent_write", "read", "write"]`,
 												Validators: []validator.String{
 													stringvalidator.OneOf(
+														"all",
 														"alter",
 														"alter_configs",
 														"create",
@@ -125,12 +125,13 @@ func (r *EventGatewayClusterPolicyAclsResource) Schema(ctx context.Context, req 
 								},
 								"resource_type": schema.StringAttribute{
 									Required:    true,
-									Description: `This rule applies to access only for type of resource. must be one of ["topic", "group", "transactional_id"]`,
+									Description: `This rule applies to access only for type of resource. must be one of ["topic", "group", "transactional_id", "cluster"]`,
 									Validators: []validator.String{
 										stringvalidator.OneOf(
 											"topic",
 											"group",
 											"transactional_id",
+											"cluster",
 										),
 									},
 								},
@@ -188,11 +189,8 @@ func (r *EventGatewayClusterPolicyAclsResource) Schema(ctx context.Context, req 
 				},
 			},
 			"parent_policy_id": schema.StringAttribute{
-				Optional: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				Description: `When specified, it sets the ID of the parent policy. Requires replacement if changed.`,
+				Computed:    true,
+				Description: `The unique identifier of the parent policy, if any.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -533,7 +531,7 @@ func (r *EventGatewayClusterPolicyAclsResource) ImportState(ctx context.Context,
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "virtual_cluster_id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "virtual_cluster_id": "..."}': `+err.Error())
 		return
 	}
 

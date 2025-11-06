@@ -63,7 +63,7 @@ func (s *EventGatewayVaults) CreateEventGatewayVault(ctx context.Context, reques
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-event-gateway-vault",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayModifyVault", "json", `request:"mediaType=application/json"`)
@@ -311,7 +311,7 @@ func (s *EventGatewayVaults) CreateEventGatewayVault(ctx context.Context, reques
 
 }
 
-// GetEventGatewayVault - Fetch Vault
+// GetEventGatewayVault - Get a Vault
 // Returns information about a specific vault associated with the Event Gateway.
 func (s *EventGatewayVaults) GetEventGatewayVault(ctx context.Context, request operations.GetEventGatewayVaultRequest, opts ...operations.Option) (*operations.GetEventGatewayVaultResponse, error) {
 	o := operations.Options{}
@@ -344,7 +344,7 @@ func (s *EventGatewayVaults) GetEventGatewayVault(ctx context.Context, request o
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-event-gateway-vault",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -618,7 +618,7 @@ func (s *EventGatewayVaults) UpdateEventGatewayVault(ctx context.Context, reques
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-event-gateway-vault",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayModifyVault", "json", `request:"mediaType=application/json"`)
@@ -898,7 +898,7 @@ func (s *EventGatewayVaults) DeleteEventGatewayVault(ctx context.Context, reques
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-event-gateway-vault",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
