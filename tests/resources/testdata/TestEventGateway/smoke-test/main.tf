@@ -137,6 +137,60 @@ resource "konnect_event_gateway_listener_policy_forward_to_virtual_cluster" "my_
   gateway_id = konnect_event_gateway.my_eventgateway.id
 }
 
+resource "konnect_event_gateway_static_key" "my_eventgatewaystatickey" {
+  provider = konnect-beta
+  gateway_id = konnect_event_gateway.my_eventgateway.id
+  name = "mytftestkey"
+  value = "$${vault.env['MY_ENV_VAR']}"
+}
+
+resource "konnect_event_gateway_produce_policy_encrypt" "my_eventgatewayproducepolicyencrypt" {
+  provider = konnect-beta
+  condition = "context.topic.name.endsWith('my_suffix')"
+  config = {
+    encryption_key = {
+      static = {
+        key = {
+          encryption_key_static_reference_by_id = {
+            id = konnect_event_gateway_static_key.my_eventgatewaystatickey.id
+          }
+        }
+      }
+    }
+    failure_mode = "error"
+    part_of_record = [
+      "key"
+    ]
+  }
+  description = "my_description"
+  enabled = true
+  gateway_id = konnect_event_gateway.my_eventgateway.id
+
+  name = "mytftestencryptpolicy"
+  virtual_cluster_id = konnect_event_gateway_virtual_cluster.my_eventgatewayvirtualcluster.id
+}
+
+resource "konnect_event_gateway_consume_policy_decrypt" "my_eventgatewayconsumepolicydecrypt" {
+  provider = konnect-beta
+  condition = "context.topic.name.endsWith('my_suffix')"
+  config = {
+    failure_mode = "passthrough"
+    key_sources = [
+      {
+        static = {
+        }
+      }
+    ]
+    part_of_record = [
+      "key"
+    ]
+  }
+  enabled     = true
+  gateway_id  = konnect_event_gateway.my_eventgateway.id
+  name               = "mytftestconsumedrcryptpolicy"
+  virtual_cluster_id = konnect_event_gateway_virtual_cluster.my_eventgatewayvirtualcluster.id
+}
+
 resource "konnect_event_gateway_produce_policy_modify_headers" "my_eventgatewayvirtualclusterproducepolicy" {
   provider = konnect-beta
   virtual_cluster_id = konnect_event_gateway_virtual_cluster.my_eventgatewayvirtualcluster.id
