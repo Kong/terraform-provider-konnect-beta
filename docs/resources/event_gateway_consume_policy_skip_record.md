@@ -48,7 +48,7 @@ When the policy is applied as a child policy of schema_validation, the expressio
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `name` (String) A unique user-defined name of the policy.
-- `parent_policy_id` (String) When specified, it sets the ID of the parent policy. Requires replacement if changed.
+- `parent_policy_id` (String) The unique identifier of the parent schema validation policy, if any. Requires replacement if changed.
 
 ### Read-Only
 

@@ -15,7 +15,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -23,7 +22,6 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
-	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -51,7 +49,7 @@ type EventGatewayConsumePolicyDecryptResourceModel struct {
 	ID               types.String                            `tfsdk:"id"`
 	Labels           map[string]types.String                 `tfsdk:"labels"`
 	Name             types.String                            `tfsdk:"name"`
-	ParentPolicyID   types.String                            `queryParam:"style=form,explode=true,name=parent_policy_id" tfsdk:"parent_policy_id"`
+	ParentPolicyID   types.String                            `tfsdk:"parent_policy_id"`
 	UpdatedAt        types.String                            `tfsdk:"updated_at"`
 	VirtualClusterID types.String                            `tfsdk:"virtual_cluster_id"`
 }
@@ -74,29 +72,6 @@ func (r *EventGatewayConsumePolicyDecryptResource) Schema(ctx context.Context, r
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
-					"decrypt": schema.ListNestedAttribute{
-						Required: true,
-						NestedObject: schema.NestedAttributeObject{
-							Attributes: map[string]schema.Attribute{
-								"part_of_record": schema.StringAttribute{
-									Required: true,
-									MarkdownDescription: `* key - decrypt the record key` + "\n" +
-										`* value - decrypt the record value` + "\n" +
-										`must be one of ["key", "value"]`,
-									Validators: []validator.String{
-										stringvalidator.OneOf(
-											"key",
-											"value",
-										),
-									},
-								},
-							},
-						},
-						Description: `Describes what parts of a record to decrypt.`,
-						Validators: []validator.List{
-							listvalidator.SizeAtLeast(1),
-						},
-					},
 					"failure_mode": schema.StringAttribute{
 						Required: true,
 						MarkdownDescription: `Describes how to handle failing encryption or decryption.` + "\n" +
@@ -127,36 +102,8 @@ func (r *EventGatewayConsumePolicyDecryptResource) Schema(ctx context.Context, r
 									},
 								},
 								"static": schema.SingleNestedAttribute{
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"keys": schema.ListNestedAttribute{
-											Required: true,
-											NestedObject: schema.NestedAttributeObject{
-												Attributes: map[string]schema.Attribute{
-													"id": schema.StringAttribute{
-														Required: true,
-														MarkdownDescription: `The identifier of the key. To decrypt using this key, the same id must be used in the decrypt policy.` + "\n" +
-															`It must have the prefix static://`,
-														Validators: []validator.String{
-															stringvalidator.UTF8LengthBetween(10, 65535),
-															stringvalidator.RegexMatches(regexp.MustCompile(`^static:\/\/.+$`), "must match pattern "+regexp.MustCompile(`^static:\/\/.+$`).String()),
-														},
-													},
-													"key": schema.StringAttribute{
-														Required: true,
-														MarkdownDescription: `A sensitive value containing the secret or a reference to a secret as a template string expression.` + "\n" +
-															`If the value is provided as plain text, it is encrypted at rest and omitted from API responses.` + "\n" +
-															`If provided as an expression, the expression itself is stored and returned by the API.`,
-													},
-												},
-											},
-											Description: `A list of static, user-provided keys. Each one must be 128 bits long.`,
-											Validators: []validator.List{
-												listvalidator.SizeAtLeast(1),
-											},
-										},
-									},
-									Description: `A key source that uses a static symmetric key. The key is provided as a base64-encoded string.`,
+									Optional:    true,
+									Description: `A key source that uses static symmetric keys.`,
 									Validators: []validator.Object{
 										objectvalidator.ConflictsWith(path.Expressions{
 											path.MatchRelative().AtParent().AtName("aws"),
@@ -166,6 +113,14 @@ func (r *EventGatewayConsumePolicyDecryptResource) Schema(ctx context.Context, r
 							},
 						},
 						Description: `Describes how to find a symmetric key for decryption.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+						},
+					},
+					"part_of_record": schema.ListAttribute{
+						Required:    true,
+						ElementType: types.StringType,
+						Description: `Describes the parts of a record to decrypt.`,
 						Validators: []validator.List{
 							listvalidator.SizeAtLeast(1),
 						},
@@ -220,11 +175,8 @@ func (r *EventGatewayConsumePolicyDecryptResource) Schema(ctx context.Context, r
 				},
 			},
 			"parent_policy_id": schema.StringAttribute{
-				Optional: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				Description: `When specified, it sets the ID of the parent policy. Requires replacement if changed.`,
+				Computed:    true,
+				Description: `The unique identifier of the parent policy, if any.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

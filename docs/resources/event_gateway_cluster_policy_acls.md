@@ -41,7 +41,6 @@ resource "konnect_event_gateway_cluster_policy_acls" "my_eventgatewayclusterpoli
     key = "value"
   }
   name               = "...my_name..."
-  parent_policy_id   = "528824ff-4d3e-47af-9e16-af5bb53cc0fa"
   virtual_cluster_id = "4a444990-e7d1-4dfb-b2bf-2d8e113d1b6e"
 }
 ```
@@ -64,12 +63,12 @@ resource "konnect_event_gateway_cluster_policy_acls" "my_eventgatewayclusterpoli
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `name` (String) A unique user-defined name of the policy.
-- `parent_policy_id` (String) When specified, it sets the ID of the parent policy. Requires replacement if changed.
 
 ### Read-Only
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) The unique identifier of the policy.
+- `parent_policy_id` (String) The unique identifier of the parent policy, if any.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--config"></a>
@@ -87,7 +86,7 @@ Required:
 - `action` (String) How to handle the request if the rule matches. must be one of ["allow", "deny"]
 - `operations` (Attributes List) Types of Kafka operations to match against. Note that not every operation can apply to every resource type. (see [below for nested schema](#nestedatt--config--rules--operations))
 - `resource_names` (Attributes List) If any of these entries match, the resource name matches for this rule. (see [below for nested schema](#nestedatt--config--rules--resource_names))
-- `resource_type` (String) This rule applies to access only for type of resource. must be one of ["topic", "group", "transactional_id"]
+- `resource_type` (String) This rule applies to access only for type of resource. must be one of ["topic", "group", "transactional_id", "cluster"]
 
 <a id="nestedatt--config--rules--operations"></a>
 ### Nested Schema for `config.rules.operations`

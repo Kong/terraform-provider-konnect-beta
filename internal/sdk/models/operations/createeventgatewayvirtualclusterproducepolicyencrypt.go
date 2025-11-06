@@ -11,9 +11,7 @@ type CreateEventGatewayVirtualClusterProducePolicyEncryptRequest struct {
 	// The UUID of your Gateway.
 	GatewayID string `pathParam:"style=simple,explode=false,name=gatewayId"`
 	// The ID of the Virtual Cluster.
-	VirtualClusterID string `pathParam:"style=simple,explode=false,name=virtualClusterId"`
-	// When specified, it sets the ID of the parent policy.
-	ParentPolicyID            *string                           `queryParam:"style=form,explode=true,name=parent_policy_id"`
+	VirtualClusterID          string                            `pathParam:"style=simple,explode=false,name=virtualClusterId"`
 	EventGatewayEncryptPolicy *shared.EventGatewayEncryptPolicy `request:"mediaType=application/json"`
 }
 
@@ -29,13 +27,6 @@ func (c *CreateEventGatewayVirtualClusterProducePolicyEncryptRequest) GetVirtual
 		return ""
 	}
 	return c.VirtualClusterID
-}
-
-func (c *CreateEventGatewayVirtualClusterProducePolicyEncryptRequest) GetParentPolicyID() *string {
-	if c == nil {
-		return nil
-	}
-	return c.ParentPolicyID
 }
 
 func (c *CreateEventGatewayVirtualClusterProducePolicyEncryptRequest) GetEventGatewayEncryptPolicy() *shared.EventGatewayEncryptPolicy {

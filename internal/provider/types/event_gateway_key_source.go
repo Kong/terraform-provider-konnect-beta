@@ -4,5 +4,5 @@ package types
 
 type EventGatewayKeySource struct {
 	Aws    *BackendClusterAuthenticationAnonymous `queryParam:"inline" tfsdk:"aws" tfPlanOnly:"true"`
-	Static *EventGatewayStaticKeySource           `queryParam:"inline" tfsdk:"static" tfPlanOnly:"true"`
+	Static *BackendClusterAuthenticationAnonymous `queryParam:"inline" tfsdk:"static" tfPlanOnly:"true"`
 }

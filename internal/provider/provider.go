@@ -163,8 +163,8 @@ func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.R
 		NewEventGatewayProducePolicyEncryptResource,
 		NewEventGatewayProducePolicyModifyHeadersResource,
 		NewEventGatewayProducePolicySchemaValidationResource,
-		NewEventGatewayProducePolicySkipRecordResource,
 		NewEventGatewaySchemaRegistryResource,
+		NewEventGatewayStaticKeyResource,
 		NewEventGatewayVaultResource,
 		NewEventGatewayVirtualClusterResource,
 		NewMeshResource,
@@ -195,6 +195,8 @@ func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.R
 		NewMeshTraceResource,
 		NewMeshTrafficPermissionResource,
 		NewMeshTrustResource,
+		NewMeshZoneEgressResource,
+		NewMeshZoneIngressResource,
 		NewPortalResource,
 		NewPortalAuthResource,
 		NewPortalCustomDomainResource,
@@ -204,8 +206,6 @@ func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.R
 		NewPortalPageResource,
 		NewPortalSnippetResource,
 		NewPortalTeamResource,
-		NewZoneEgressResource,
-		NewZoneIngressResource,
 	}
 }
 

@@ -11,10 +11,8 @@ type CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersRequest struct {
 	// The UUID of your Gateway.
 	GatewayID string `pathParam:"style=simple,explode=false,name=gatewayId"`
 	// The ID of the Virtual Cluster.
-	VirtualClusterID string `pathParam:"style=simple,explode=false,name=virtualClusterId"`
-	// When specified, it sets the ID of the parent policy.
-	ParentPolicyID                  *string                                 `queryParam:"style=form,explode=true,name=parent_policy_id"`
-	EventGatewayModifyHeadersPolicy *shared.EventGatewayModifyHeadersPolicy `request:"mediaType=application/json"`
+	VirtualClusterID                      string                                        `pathParam:"style=simple,explode=false,name=virtualClusterId"`
+	EventGatewayModifyHeadersPolicyCreate *shared.EventGatewayModifyHeadersPolicyCreate `request:"mediaType=application/json"`
 }
 
 func (c *CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersRequest) GetGatewayID() string {
@@ -31,18 +29,11 @@ func (c *CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersRequest) GetV
 	return c.VirtualClusterID
 }
 
-func (c *CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersRequest) GetParentPolicyID() *string {
+func (c *CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersRequest) GetEventGatewayModifyHeadersPolicyCreate() *shared.EventGatewayModifyHeadersPolicyCreate {
 	if c == nil {
 		return nil
 	}
-	return c.ParentPolicyID
-}
-
-func (c *CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersRequest) GetEventGatewayModifyHeadersPolicy() *shared.EventGatewayModifyHeadersPolicy {
-	if c == nil {
-		return nil
-	}
-	return c.EventGatewayModifyHeadersPolicy
+	return c.EventGatewayModifyHeadersPolicyCreate
 }
 
 type CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse struct {

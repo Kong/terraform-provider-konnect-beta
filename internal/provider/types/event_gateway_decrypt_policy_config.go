@@ -7,7 +7,7 @@ import (
 )
 
 type EventGatewayDecryptPolicyConfig struct {
-	Decrypt     []DecryptionRecordSelector `tfsdk:"decrypt"`
-	FailureMode types.String               `tfsdk:"failure_mode"`
-	KeySources  []EventGatewayKeySource    `tfsdk:"key_sources"`
+	FailureMode  types.String            `tfsdk:"failure_mode"`
+	KeySources   []EventGatewayKeySource `tfsdk:"key_sources"`
+	PartOfRecord []types.String          `tfsdk:"part_of_record"`
 }

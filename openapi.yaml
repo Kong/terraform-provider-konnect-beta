@@ -3922,7 +3922,7 @@ paths:
   '/v1/mesh/control-planes/{cpId}/api/zoneegresses/{name}':
     get:
       x-speakeasy-entity-operation:
-        terraform-resource: ZoneEgress#get
+        terraform-resource: MeshZoneEgress#get
         terraform-datasource: null
       operationId: getZoneEgress
       summary: Returns ZoneEgress entity
@@ -3942,7 +3942,7 @@ paths:
         - ZoneEgress
     put:
       x-speakeasy-entity-operation:
-        terraform-resource: 'ZoneEgress#create,update'
+        terraform-resource: 'MeshZoneEgress#create,update'
         terraform-datasource: null
       operationId: putZoneEgress
       summary: Creates or Updates ZoneEgress entity
@@ -3969,7 +3969,7 @@ paths:
         - ZoneEgress
     delete:
       x-speakeasy-entity-operation:
-        terraform-resource: ZoneEgress#delete
+        terraform-resource: MeshZoneEgress#delete
         terraform-datasource: null
       operationId: deleteZoneEgress
       summary: Deletes ZoneEgress entity
@@ -4036,7 +4036,7 @@ paths:
   '/v1/mesh/control-planes/{cpId}/api/zoneingresses/{name}':
     get:
       x-speakeasy-entity-operation:
-        terraform-resource: ZoneIngress#get
+        terraform-resource: MeshZoneIngress#get
         terraform-datasource: null
       operationId: getZoneIngress
       summary: Returns ZoneIngress entity
@@ -4056,7 +4056,7 @@ paths:
         - ZoneIngress
     put:
       x-speakeasy-entity-operation:
-        terraform-resource: 'ZoneIngress#create,update'
+        terraform-resource: 'MeshZoneIngress#create,update'
         terraform-datasource: null
       operationId: putZoneIngress
       summary: Creates or Updates ZoneIngress entity
@@ -4083,7 +4083,7 @@ paths:
         - ZoneIngress
     delete:
       x-speakeasy-entity-operation:
-        terraform-resource: ZoneIngress#delete
+        terraform-resource: MeshZoneIngress#delete
         terraform-datasource: null
       operationId: deleteZoneIngress
       summary: Deletes ZoneIngress entity
@@ -6555,6 +6555,94 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Event Gateway DataPlane Certificates
+  '/v1/event-gateways/{gatewayId}/static-keys':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+    post:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayStaticKey#create
+        terraform-datasource: null
+      operationId: create-event-gateway-static-key
+      summary: Create a New Static Key
+      description: Create new static key to this event gateway.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateEventGatewayStaticKeyRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayStaticKey'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Static Keys
+  '/v1/event-gateways/{gatewayId}/static-keys/{staticKeyId}':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - name: staticKeyId
+        in: path
+        description: The ID of the static key.
+        required: true
+        schema:
+          type: string
+          format: uuid
+        x-speakeasy-match: id
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayStaticKey#read
+        terraform-datasource: null
+      operationId: get-event-gateway-static-key
+      summary: Get a Static Key
+      description: Returns information about an individual static key.
+      responses:
+        '200':
+          description: A single static key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventGatewayStaticKey'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Static Keys
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayStaticKey#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-static-key
+      summary: Delete Event Gateway Static Key
+      description: Deletes a specific static key associated with the Event Gateway.
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway Static Keys
   '/v1/event-gateways/{gatewayId}/listeners/{eventGatewayListenerId}/policies/{policyId}#TlsServer':
     get:
       x-unstable: true
@@ -7003,7 +7091,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EventGatewayDecryptSensitiveDataAwarePolicy'
+              $ref: '#/components/schemas/EventGatewayDecryptPolicy'
       responses:
         '200':
           description: Updated consume policy object.
@@ -7147,13 +7235,11 @@ paths:
       operationId: create-event-gateway-virtual-cluster-consume-policy-modify-headers
       summary: Create Consume Policy for Virtual Cluster
       description: Creates a new consume policy associated with the specified Event Gateway virtual cluster.
-      parameters:
-        - $ref: '#/components/parameters/parentPolicyId'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EventGatewayModifyHeadersPolicy'
+              $ref: '#/components/schemas/EventGatewayModifyHeadersPolicyCreate'
       responses:
         '201':
           description: Created
@@ -7182,8 +7268,6 @@ paths:
       operationId: create-event-gateway-virtual-cluster-consume-policy-schema-validation
       summary: Create Consume Policy for Virtual Cluster
       description: Creates a new consume policy associated with the specified Event Gateway virtual cluster.
-      parameters:
-        - $ref: '#/components/parameters/parentPolicyId'
       requestBody:
         content:
           application/json:
@@ -7217,8 +7301,6 @@ paths:
       operationId: create-event-gateway-virtual-cluster-consume-policy-decrypt
       summary: Create Consume Policy for Virtual Cluster
       description: Creates a new consume policy associated with the specified Event Gateway virtual cluster.
-      parameters:
-        - $ref: '#/components/parameters/parentPolicyId'
       requestBody:
         content:
           application/json:
@@ -7252,13 +7334,11 @@ paths:
       operationId: create-event-gateway-virtual-cluster-consume-policy-skip-record
       summary: Create Consume Policy for Virtual Cluster
       description: Creates a new consume policy associated with the specified Event Gateway virtual cluster.
-      parameters:
-        - $ref: '#/components/parameters/parentPolicyId'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EventGatewaySkipRecordPolicy'
+              $ref: '#/components/schemas/EventGatewaySkipRecordPolicyCreate'
       responses:
         '201':
           description: Created
@@ -7487,7 +7567,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EventGatewayEncryptSensitiveDataAwarePolicy'
+              $ref: '#/components/schemas/EventGatewayEncryptPolicy'
       responses:
         '200':
           description: Updated produce policy object.
@@ -7535,92 +7615,6 @@ paths:
           format: uuid
           example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
         x-speakeasy-match: id
-  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies/{policyId}#SkipRecord':
-    get:
-      x-unstable: true
-      x-internal: true
-      x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayProducePolicySkipRecord#get
-        terraform-datasource: null
-      operationId: get-event-gateway-virtual-cluster-produce-policy-skip-record
-      summary: Get a Produce Policy for Virtual Cluster
-      description: Returns information about a specific produce policy associated with the Event Gateway virtual cluster.
-      responses:
-        '200':
-          description: A single produce policy object.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Event Gateway Virtual Cluster Produce Policies
-    put:
-      x-unstable: true
-      x-internal: true
-      x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayProducePolicySkipRecord#update
-        terraform-datasource: null
-      operationId: update-event-gateway-virtual-cluster-produce-policy-skip-record
-      summary: Update Produce Policy for Virtual Cluster
-      description: Updates an existing produce policy associated with the specified Event Gateway virtual cluster.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EventGatewaySkipRecordPolicy'
-      responses:
-        '200':
-          description: Updated produce policy object.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-      tags:
-        - Event Gateway Virtual Cluster Produce Policies
-    delete:
-      x-unstable: true
-      x-internal: true
-      x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayProducePolicySkipRecord#delete
-        terraform-datasource: null
-      operationId: delete-event-gateway-virtual-cluster-produce-policy-skip-record
-      summary: Delete Produce Policy for Virtual Cluster
-      description: Deletes a specific produce policy associated with the Event Gateway virtual cluster.
-      responses:
-        '204':
-          description: No Content
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Event Gateway Virtual Cluster Produce Policies
-    parameters:
-      - $ref: '#/components/parameters/gatewayId'
-      - $ref: '#/components/parameters/virtualClusterId'
-      - name: policyId
-        in: path
-        description: The UUID of the policy.
-        required: true
-        schema:
-          type: string
-          format: uuid
-          example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
-        x-speakeasy-match: id
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies#ModifyHeaders':
     post:
       x-unstable: true
@@ -7631,13 +7625,11 @@ paths:
       operationId: create-event-gateway-virtual-cluster-produce-policy-modify-headers
       summary: Create Produce Policy for Virtual Cluster
       description: Creates a new produce policy associated with the specified Event Gateway virtual cluster.
-      parameters:
-        - $ref: '#/components/parameters/parentPolicyId'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EventGatewayModifyHeadersPolicy'
+              $ref: '#/components/schemas/EventGatewayModifyHeadersPolicyCreate'
       responses:
         '201':
           description: Created
@@ -7666,8 +7658,6 @@ paths:
       operationId: create-event-gateway-virtual-cluster-produce-policy-schema-validation
       summary: Create Produce Policy for Virtual Cluster
       description: Creates a new produce policy associated with the specified Event Gateway virtual cluster.
-      parameters:
-        - $ref: '#/components/parameters/parentPolicyId'
       requestBody:
         content:
           application/json:
@@ -7701,48 +7691,11 @@ paths:
       operationId: create-event-gateway-virtual-cluster-produce-policy-encrypt
       summary: Create Produce Policy for Virtual Cluster
       description: Creates a new produce policy associated with the specified Event Gateway virtual cluster.
-      parameters:
-        - $ref: '#/components/parameters/parentPolicyId'
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/EventGatewayEncryptPolicy'
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-      tags:
-        - Event Gateway Virtual Cluster Produce Policies
-    parameters:
-      - $ref: '#/components/parameters/gatewayId'
-      - $ref: '#/components/parameters/virtualClusterId'
-  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies#SkipRecord':
-    post:
-      x-unstable: true
-      x-internal: true
-      x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayProducePolicySkipRecord#create
-        terraform-datasource: null
-      operationId: create-event-gateway-virtual-cluster-produce-policy-skip-record
-      summary: Create Produce Policy for Virtual Cluster
-      description: Creates a new produce policy associated with the specified Event Gateway virtual cluster.
-      parameters:
-        - $ref: '#/components/parameters/parentPolicyId'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EventGatewaySkipRecordPolicy'
       responses:
         '201':
           description: Created
@@ -7857,8 +7810,6 @@ paths:
       operationId: create-event-gateway-virtual-cluster-cluster-level-policy-acls
       summary: Create Cluster Policy for Virtual Cluster
       description: Creates a new cluster-level policy associated with the specified Event Gateway virtual cluster.
-      parameters:
-        - $ref: '#/components/parameters/parentPolicyId'
       requestBody:
         content:
           application/json:
@@ -8006,13 +7957,6 @@ components:
       schema:
         type: integer
         example: 100
-    parentPolicyId:
-      schema:
-        type: string
-        format: uuid
-      name: parent_policy_id
-      in: query
-      description: 'When specified, it sets the ID of the parent policy.'
     PortalId:
       schema:
         type: string
@@ -25083,14 +25027,14 @@ components:
               description: The unique identifier of the vault.
               type: string
               format: uuid
-        - oneOf:
-            - $ref: '#/components/schemas/EventGatewayEnvVault'
-            - $ref: '#/components/schemas/EventGatewayKonnectVault'
         - discriminator:
             propertyName: type
             mapping:
               env: '#/components/schemas/EventGatewayEnvVault'
               konnect: '#/components/schemas/EventGatewayKonnectVault'
+          oneOf:
+            - $ref: '#/components/schemas/EventGatewayEnvVault'
+            - $ref: '#/components/schemas/EventGatewayKonnectVault'
     EventGatewayBaseVault:
       description: Base properties of a vault.
       type: object
@@ -25754,17 +25698,6 @@ components:
       additionalProperties: false
       required:
         - type
-    EventGatewayEncryptSensitiveDataAwarePolicy:
-      allOf:
-        - $ref: '#/components/schemas/BaseEventGatewayPolicy'
-        - type: object
-          description: Encrypts portions of Kafka records using AES_128_GCM. Keys are therefore 128 bits long.
-          properties:
-            type:
-              type: string
-              const: encrypt
-            config:
-              $ref: '#/components/schemas/EventGatewayEncryptConfigSensitiveDataAware'
     EventGatewayEncryptPolicy:
       allOf:
         - $ref: '#/components/schemas/BaseEventGatewayPolicy'
@@ -25776,63 +25709,24 @@ components:
               const: encrypt
             config:
               $ref: '#/components/schemas/EventGatewayEncryptConfig'
-    EventGatewayEncryptConfigSensitiveDataAware:
-      description: The configuration of the encrypt policy.
-      type: object
-      properties:
-        failure_mode:
-          $ref: '#/components/schemas/EncryptionFailureMode'
-        key_sources:
-          description: |
-            Describes how to find a symmetric key for encryption.
-          type: array
-          items:
-            $ref: '#/components/schemas/EventGatewayKeySource'
-          minItems: 1
-        encrypt:
-          description: Describes what parts of a record to encrypt.
-          type: array
-          items:
-            $ref: '#/components/schemas/EncryptionRecordSelector'
-          minItems: 1
-      required:
-        - failure_mode
-        - key_sources
-        - encrypt
     EventGatewayEncryptConfig:
       description: The configuration of the encrypt policy.
       type: object
       properties:
         failure_mode:
           $ref: '#/components/schemas/EncryptionFailureMode'
-        key_sources:
-          description: |
-            Describes how to find a symmetric key for encryption.
+        part_of_record:
+          description: Describes the parts of a record to encrypt.
           type: array
           items:
-            $ref: '#/components/schemas/EventGatewayKeySourceSensitiveDataAware'
+            $ref: '#/components/schemas/EncryptionRecordPart'
           minItems: 1
-        encrypt:
-          description: Describes what parts of a record to encrypt.
-          type: array
-          items:
-            $ref: '#/components/schemas/EncryptionRecordSelector'
-          minItems: 1
+        encryption_key:
+          $ref: '#/components/schemas/EncryptionKey'
       required:
         - failure_mode
-        - key_sources
-        - encrypt
-    EventGatewayDecryptSensitiveDataAwarePolicy:
-      allOf:
-        - $ref: '#/components/schemas/BaseEventGatewayPolicy'
-        - type: object
-          description: Decrypts portions of Kafka records using AES_128_GCM. Keys are therefore 128 bits long.
-          properties:
-            type:
-              type: string
-              const: decrypt
-            config:
-              $ref: '#/components/schemas/EventGatewayDecryptPolicyConfigSensitiveDataAware'
+        - part_of_record
+        - encryption_key
     EventGatewayDecryptPolicy:
       allOf:
         - $ref: '#/components/schemas/BaseEventGatewayPolicy'
@@ -25844,28 +25738,6 @@ components:
               const: decrypt
             config:
               $ref: '#/components/schemas/EventGatewayDecryptPolicyConfig'
-    EventGatewayDecryptPolicyConfigSensitiveDataAware:
-      description: The configuration of the decrypt policy.
-      type: object
-      properties:
-        failure_mode:
-          $ref: '#/components/schemas/EncryptionFailureMode'
-        key_sources:
-          description: Describes how to find a symmetric key for decryption.
-          type: array
-          items:
-            $ref: '#/components/schemas/EventGatewayKeySourceSensitiveDataAware'
-          minItems: 1
-        decrypt:
-          description: Describes what parts of a record to decrypt.
-          type: array
-          items:
-            $ref: '#/components/schemas/DecryptionRecordSelector'
-          minItems: 1
-      required:
-        - failure_mode
-        - key_sources
-        - decrypt
     EventGatewayDecryptPolicyConfig:
       description: The configuration of the decrypt policy.
       type: object
@@ -25878,16 +25750,16 @@ components:
           items:
             $ref: '#/components/schemas/EventGatewayKeySource'
           minItems: 1
-        decrypt:
-          description: Describes what parts of a record to decrypt.
+        part_of_record:
+          description: Describes the parts of a record to decrypt.
           type: array
           items:
-            $ref: '#/components/schemas/DecryptionRecordSelector'
+            $ref: '#/components/schemas/DecryptionRecordPart'
           minItems: 1
       required:
         - failure_mode
         - key_sources
-        - decrypt
+        - part_of_record
     EventGatewayModifyHeadersPolicy:
       allOf:
         - $ref: '#/components/schemas/BaseEventGatewayPolicy'
@@ -25933,6 +25805,16 @@ components:
                   minItems: 1
                   nullable: true
                   x-speakeasy-param-computed: false
+    EventGatewayModifyHeadersPolicyCreate:
+      allOf:
+        - $ref: '#/components/schemas/EventGatewayModifyHeadersPolicy'
+        - type: object
+          properties:
+            parent_policy_id:
+              description: 'The unique identifier of the parent schema validation policy, if any.'
+              type: string
+              format: uuid
+              nullable: false
     EventGatewaySkipRecordPolicy:
       description: A policy that skips processing of a record.
       type: object
@@ -25982,6 +25864,16 @@ components:
           $ref: '#/components/schemas/Labels'
       required:
         - type
+    EventGatewaySkipRecordPolicyCreate:
+      allOf:
+        - $ref: '#/components/schemas/EventGatewaySkipRecordPolicy'
+        - type: object
+          properties:
+            parent_policy_id:
+              description: 'The unique identifier of the parent schema validation policy, if any.'
+              type: string
+              format: uuid
+              nullable: false
     EventGatewayModifyHeaderAction:
       description: An action that modifies a header.
       discriminator:
@@ -26139,6 +26031,7 @@ components:
             - topic
             - group
             - transactional_id
+            - cluster
           x-speakeasy-unknown-values: allow
         action:
           description: How to handle the request if the rule matches
@@ -26194,19 +26087,6 @@ components:
           format: glob
       required:
         - match
-    EventGatewayKeySourceSensitiveDataAware:
-      description: |
-        A key source that describes how to find a symmetric key for encryption or decryption.
-        It can be an AWS KMS key source that uses a KMS to find a symmetric key,
-        or a static key source that uses a static symmetric key provided as secrets.
-      discriminator:
-        propertyName: type
-        mapping:
-          aws: '#/components/schemas/EventGatewayAWSKeySource'
-          static: '#/components/schemas/EventGatewayStaticKeySourceSensitiveDataAware'
-      oneOf:
-        - $ref: '#/components/schemas/EventGatewayAWSKeySource'
-        - $ref: '#/components/schemas/EventGatewayStaticKeySourceSensitiveDataAware'
     EventGatewayKeySource:
       description: |
         A key source that describes how to find a symmetric key for encryption or decryption.
@@ -26234,67 +26114,17 @@ components:
       additionalProperties: false
       required:
         - type
-    EventGatewayStaticKeySourceSensitiveDataAware:
-      description: |
-        A key source that uses a static symmetric key. The key is provided as a base64-encoded string.
-      type: object
-      properties:
-        type:
-          type: string
-          const: static
-        keys:
-          description: 'A list of static, user-provided keys. Each one must be 128 bits long.'
-          type: array
-          items:
-            type: object
-            additionalProperties: false
-            required:
-              - id
-            properties:
-              id:
-                description: The unique identifier of the key.
-                type: string
-              key:
-                $ref: '#/components/schemas/GatewaySecret'
-          minItems: 1
-      additionalProperties: false
-      required:
-        - type
-        - keys
     EventGatewayStaticKeySource:
       description: |
-        A key source that uses a static symmetric key. The key is provided as a base64-encoded string.
+        A key source that uses static symmetric keys.
       type: object
       properties:
         type:
           type: string
           const: static
-        keys:
-          description: 'A list of static, user-provided keys. Each one must be 128 bits long.'
-          type: array
-          items:
-            type: object
-            additionalProperties: false
-            required:
-              - id
-              - key
-            properties:
-              id:
-                description: |
-                  The identifier of the key. To decrypt using this key, the same id must be used in the decrypt policy.
-                  It must have the prefix static://
-                type: string
-                format: uri
-                maxLength: 65535
-                minLength: 10
-                pattern: '^static:\/\/.+$'
-              key:
-                $ref: '#/components/schemas/GatewaySecret'
-          minItems: 1
       additionalProperties: false
       required:
         - type
-        - keys
     EncryptionFailureMode:
       description: |
         Describes how to handle failing encryption or decryption.
@@ -26305,52 +26135,97 @@ components:
         - error
         - passthrough
       x-speakeasy-unknown-values: allow
-    EncryptionRecordSelector:
-      description: Defines how to select part of a record for encryption as well as what key to encrypt it with.
-      type: object
-      properties:
-        part_of_record:
-          description: |
-            * key - encrypt the record key
-            * value - encrypt the record value
-          type: string
-          enum:
-            - key
-            - value
-          x-speakeasy-unknown-values: allow
-        key_id:
-          $ref: '#/components/schemas/EncryptionKeyId'
-      required:
-        - part_of_record
-        - key_id
-    DecryptionRecordSelector:
-      description: Defines how to select part of a record for decryption.
-      type: object
-      properties:
-        part_of_record:
-          description: |
-            * key - decrypt the record key
-            * value - decrypt the record value
-          type: string
-          enum:
-            - key
-            - value
-          x-speakeasy-unknown-values: allow
-      required:
-        - part_of_record
-    EncryptionKeyId:
+    EncryptionRecordPart:
       description: |
-        The id of the key to use for encryption. It must match one of the keys defined in the policy's key_sources.
-
-        An ID is a URI where the scheme refers to the type of key source and the rest is source-specific:
-        - static: the id defined in the list of static keys
-        - aws: a KMS key ARN
+        * key - encrypt the record key
+        * value - encrypt the record value
       type: string
-      format: uri
-      example: 'static://static-key-named-in-source'
-      maxLength: 65535
-      minLength: 5
-      pattern: '^.+:\/\/.+$'
+      enum:
+        - key
+        - value
+      x-speakeasy-unknown-values: allow
+    DecryptionRecordPart:
+      description: |
+        * key - decrypt the record key
+        * value - decrypt the record value
+      type: string
+      enum:
+        - key
+        - value
+      x-speakeasy-unknown-values: allow
+    EncryptionKey:
+      description: |
+        The key to use for encryption.
+      discriminator:
+        propertyName: type
+        mapping:
+          aws: '#/components/schemas/EncryptionKeyAWS'
+          static: '#/components/schemas/EncryptionKeyStatic'
+      oneOf:
+        - $ref: '#/components/schemas/EncryptionKeyAWS'
+        - $ref: '#/components/schemas/EncryptionKeyStatic'
+    EncryptionKeyAWS:
+      description: |
+        The AWS KMS key to use for encryption.
+      type: object
+      properties:
+        type:
+          type: string
+          const: aws
+        arn:
+          description: The AWS KMS key ARN.
+          type: string
+          maxLength: 2048
+          minLength: 10
+          pattern: '^arn:aws:kms:.+'
+      example:
+        type: aws
+        arn: 'arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab'
+      required:
+        - type
+        - arn
+    EncryptionKeyStatic:
+      description: |
+        A static encryption key.
+      type: object
+      properties:
+        type:
+          type: string
+          const: static
+        key:
+          $ref: '#/components/schemas/EncryptionKeyStaticReference'
+      required:
+        - type
+        - key
+    EncryptionKeyStaticReference:
+      description: |
+        A static encryption key reference, either by ID or by value.
+      anyOf:
+        - $ref: '#/components/schemas/EncryptionKeyStaticReferenceById'
+        - $ref: '#/components/schemas/EncryptionKeyStaticReferenceByName'
+    EncryptionKeyStaticReferenceById:
+      description: A static encryption key reference by ID.
+      type: object
+      properties:
+        id:
+          description: The ID of the static key defined in the key source.
+          type: string
+          format: uuid
+      required:
+        - id
+      x-speakeasy-name-override: ReferenceByID
+    EncryptionKeyStaticReferenceByName:
+      description: A static encryption key reference by name.
+      type: object
+      properties:
+        name:
+          description: The name of the static key defined in the key source.
+          type: string
+          maxLength: 255
+          minLength: 1
+      required:
+        - name
+      x-speakeasy-name-override: ReferenceByName
     ConsumeKeyValidationAction:
       description: |
         Defines a behavior when record key is not valid.
@@ -26687,6 +26562,58 @@ components:
           x-speakeasy-param-computed: false
       required:
         - type
+    BaseEventGatewayStaticKey:
+      description: |
+        The base configuration of a symmetric key.
+      type: object
+      properties:
+        name:
+          description: The unique name of the static key.
+          type: string
+          maxLength: 255
+          minLength: 1
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the static key.
+          type: string
+          maxLength: 512
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
+      required:
+        - name
+    EventGatewayStaticKey:
+      allOf:
+        - $ref: '#/components/schemas/BaseEventGatewayStaticKey'
+        - type: object
+          description: |
+            A symmetric key with its secret value.
+          required:
+            - id
+            - created_at
+            - updated_at
+          properties:
+            id:
+              description: The unique identifier of the static key.
+              type: string
+              format: uuid
+            value:
+              $ref: '#/components/schemas/GatewaySecret'
+            created_at:
+              $ref: '#/components/schemas/CreatedAt'
+            updated_at:
+              $ref: '#/components/schemas/UpdatedAt'
+    EventGatewayStaticKeyCreate:
+      allOf:
+        - $ref: '#/components/schemas/BaseEventGatewayStaticKey'
+        - type: object
+          description: |
+            A symmetric key with its secret value for creation.
+          required:
+            - value
+          properties:
+            value:
+              $ref: '#/components/schemas/GatewaySecret'
     GatewayName:
       description: The name of the Gateway.
       type: string
@@ -27897,6 +27824,12 @@ components:
                 x-speakeasy-param-computed: false
             required:
               - certificate
+    CreateEventGatewayStaticKeyRequest:
+      description: The request schema for creating a static key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventGatewayStaticKeyCreate'
   responses:
     PortalAuthenticationSettings:
       description: Details about a portal's authentication settings.

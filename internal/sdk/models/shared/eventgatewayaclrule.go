@@ -14,6 +14,7 @@ const (
 	ResourceTypeTopic           ResourceType = "topic"
 	ResourceTypeGroup           ResourceType = "group"
 	ResourceTypeTransactionalID ResourceType = "transactional_id"
+	ResourceTypeCluster         ResourceType = "cluster"
 )
 
 func (e ResourceType) ToPointer() *ResourceType {
@@ -30,6 +31,8 @@ func (e *ResourceType) UnmarshalJSON(data []byte) error {
 	case "group":
 		fallthrough
 	case "transactional_id":
+		fallthrough
+	case "cluster":
 		*e = ResourceType(v)
 		return nil
 	default:
