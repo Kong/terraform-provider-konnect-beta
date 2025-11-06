@@ -13,8 +13,8 @@ type UpdateEventGatewayVirtualClusterConsumePolicyDecryptRequest struct {
 	// The ID of the Virtual Cluster.
 	VirtualClusterID string `pathParam:"style=simple,explode=false,name=virtualClusterId"`
 	// The UUID of the policy.
-	PolicyID                                    string                                              `pathParam:"style=simple,explode=false,name=policyId"`
-	EventGatewayDecryptSensitiveDataAwarePolicy *shared.EventGatewayDecryptSensitiveDataAwarePolicy `request:"mediaType=application/json"`
+	PolicyID                  string                            `pathParam:"style=simple,explode=false,name=policyId"`
+	EventGatewayDecryptPolicy *shared.EventGatewayDecryptPolicy `request:"mediaType=application/json"`
 }
 
 func (u *UpdateEventGatewayVirtualClusterConsumePolicyDecryptRequest) GetGatewayID() string {
@@ -38,11 +38,11 @@ func (u *UpdateEventGatewayVirtualClusterConsumePolicyDecryptRequest) GetPolicyI
 	return u.PolicyID
 }
 
-func (u *UpdateEventGatewayVirtualClusterConsumePolicyDecryptRequest) GetEventGatewayDecryptSensitiveDataAwarePolicy() *shared.EventGatewayDecryptSensitiveDataAwarePolicy {
+func (u *UpdateEventGatewayVirtualClusterConsumePolicyDecryptRequest) GetEventGatewayDecryptPolicy() *shared.EventGatewayDecryptPolicy {
 	if u == nil {
 		return nil
 	}
-	return u.EventGatewayDecryptSensitiveDataAwarePolicy
+	return u.EventGatewayDecryptPolicy
 }
 
 type UpdateEventGatewayVirtualClusterConsumePolicyDecryptResponse struct {

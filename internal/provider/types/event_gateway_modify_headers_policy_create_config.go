@@ -2,6 +2,6 @@
 
 package types
 
-type EventGatewayModifyHeadersPolicyConfig struct {
+type EventGatewayModifyHeadersPolicyCreateConfig struct {
 	Actions []EventGatewayModifyHeaderAction `tfsdk:"actions"`
 }

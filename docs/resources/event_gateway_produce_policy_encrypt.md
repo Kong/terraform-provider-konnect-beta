@@ -15,37 +15,31 @@ EventGatewayProducePolicyEncrypt Resource
 ```terraform
 resource "konnect_event_gateway_produce_policy_encrypt" "my_eventgatewayproducepolicyencrypt" {
   provider = konnect-beta
-condition = "context.topic.name.endsWith('my_suffix')"
-config = {
-encrypt = [
-{
-key_id = "static://static-key-named-in-source"
-part_of_record = "value"
-}
-]
-failure_mode = "error"
-key_sources = [
-{
-static = {
-keys = [
-{
-id = "...my_id..."
-key = "${vault.env['MY_ENV_VAR']}"
-}
-]
-}
-}
-]
-}
-description = "...my_description..."
-enabled = true
-gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-labels = {
+  condition = "context.topic.name.endsWith('my_suffix')"
+  config = {
+    encryption_key = {
+      static = {
+        key = {
+          encryption_key_static_reference_by_id = {
+            id = "3c6c7f5f-dbfc-4485-8c15-ba82760e16a3"
+          }
+        }
+      }
+    }
+    failure_mode = "error"
+    part_of_record = [
+      "key"
+    ]
+  }
+  description = "...my_description..."
+  enabled     = true
+  gateway_id  = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  labels = {
     key = "value"
-}
-name = "...my_name..."
-parent_policy_id = "d360a229-0d2f-4566-9b8e-dad95ffde3d0"
-virtual_cluster_id = "6ea3798e-38ca-4c28-a68e-1a577e478f2c"
+  }
+  name               = "...my_name..."
+  parent_policy_id   = "d360a229-0d2f-4566-9b8e-dad95ffde3d0"
+  virtual_cluster_id = "6ea3798e-38ca-4c28-a68e-1a577e478f2c"
 }
 ```
 
@@ -80,62 +74,58 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 
 Required:
 
-- `encrypt` (Attributes List) Describes what parts of a record to encrypt. (see [below for nested schema](#nestedatt--config--encrypt))
+- `encryption_key` (Attributes) The key to use for encryption. (see [below for nested schema](#nestedatt--config--encryption_key))
 - `failure_mode` (String) Describes how to handle failing encryption or decryption.
 Use `error` if the record should be rejected if encryption or decryption fails.
 Use `passthrough` to ignore encryption or decryption failure and continue proxying the record.
 must be one of ["error", "passthrough"]
-- `key_sources` (Attributes List) Describes how to find a symmetric key for encryption. (see [below for nested schema](#nestedatt--config--key_sources))
+- `part_of_record` (List of String) Describes the parts of a record to encrypt.
 
-<a id="nestedatt--config--encrypt"></a>
-### Nested Schema for `config.encrypt`
-
-Required:
-
-- `key_id` (String) The id of the key to use for encryption. It must match one of the keys defined in the policy's key_sources.
-
-An ID is a URI where the scheme refers to the type of key source and the rest is source-specific:
-- static: the id defined in the list of static keys
-- aws: a KMS key ARN
-- `part_of_record` (String) * key - encrypt the record key
-* value - encrypt the record value
-must be one of ["key", "value"]
-
-
-<a id="nestedatt--config--key_sources"></a>
-### Nested Schema for `config.key_sources`
+<a id="nestedatt--config--encryption_key"></a>
+### Nested Schema for `config.encryption_key`
 
 Optional:
 
-- `aws` (Attributes) A key source that uses an AWS KMS to find a symmetric key. Load KMS credentials from the environment.
+- `aws` (Attributes) The AWS KMS key to use for encryption. (see [below for nested schema](#nestedatt--config--encryption_key--aws))
+- `static` (Attributes) A static encryption key. (see [below for nested schema](#nestedatt--config--encryption_key--static))
 
-See [aws docs](https://docs.aws.amazon.com/sdk-for-rust/latest/dg/credproviders.html#credproviders-default-credentials-provider-chain)
-for more information about how credential retrieval. (see [below for nested schema](#nestedatt--config--key_sources--aws))
-- `static` (Attributes) A key source that uses a static symmetric key. The key is provided as a base64-encoded string. (see [below for nested schema](#nestedatt--config--key_sources--static))
-
-<a id="nestedatt--config--key_sources--aws"></a>
-### Nested Schema for `config.key_sources.aws`
-
-
-<a id="nestedatt--config--key_sources--static"></a>
-### Nested Schema for `config.key_sources.static`
+<a id="nestedatt--config--encryption_key--aws"></a>
+### Nested Schema for `config.encryption_key.aws`
 
 Required:
 
-- `keys` (Attributes List) A list of static, user-provided keys. Each one must be 128 bits long. (see [below for nested schema](#nestedatt--config--key_sources--static--keys))
+- `arn` (String) The AWS KMS key ARN.
 
-<a id="nestedatt--config--key_sources--static--keys"></a>
-### Nested Schema for `config.key_sources.static.keys`
+
+<a id="nestedatt--config--encryption_key--static"></a>
+### Nested Schema for `config.encryption_key.static`
 
 Required:
 
-- `id` (String) The unique identifier of the key.
+- `key` (Attributes) A static encryption key reference, either by ID or by value. (see [below for nested schema](#nestedatt--config--encryption_key--static--key))
+
+<a id="nestedatt--config--encryption_key--static--key"></a>
+### Nested Schema for `config.encryption_key.static.key`
 
 Optional:
 
-- `key` (String) A sensitive value containing the secret or a reference to a secret as a template string expression.
-If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
-If provided as an expression, the expression itself is stored and returned by the API.
+- `encryption_key_static_reference_by_id` (Attributes) A static encryption key reference by ID. (see [below for nested schema](#nestedatt--config--encryption_key--static--key--encryption_key_static_reference_by_id))
+- `encryption_key_static_reference_by_name` (Attributes) A static encryption key reference by name. (see [below for nested schema](#nestedatt--config--encryption_key--static--key--encryption_key_static_reference_by_name))
+
+<a id="nestedatt--config--encryption_key--static--key--encryption_key_static_reference_by_id"></a>
+### Nested Schema for `config.encryption_key.static.key.encryption_key_static_reference_by_id`
+
+Required:
+
+- `id` (String) The ID of the static key defined in the key source.
+
+
+<a id="nestedatt--config--encryption_key--static--key--encryption_key_static_reference_by_name"></a>
+### Nested Schema for `config.encryption_key.static.key.encryption_key_static_reference_by_name`
+
+Required:
+
+- `name` (String) The name of the static key defined in the key source.
 
 ## Import
 

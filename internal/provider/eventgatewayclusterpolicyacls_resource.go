@@ -126,12 +126,13 @@ func (r *EventGatewayClusterPolicyAclsResource) Schema(ctx context.Context, req 
 								},
 								"resource_type": schema.StringAttribute{
 									Required:    true,
-									Description: `This rule applies to access only for type of resource. must be one of ["topic", "group", "transactional_id"]`,
+									Description: `This rule applies to access only for type of resource. must be one of ["topic", "group", "transactional_id", "cluster"]`,
 									Validators: []validator.String{
 										stringvalidator.OneOf(
 											"topic",
 											"group",
 											"transactional_id",
+											"cluster",
 										),
 									},
 								},

@@ -6,48 +6,9 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-type EventGatewayStaticKeySourceKeys struct {
-	// The identifier of the key. To decrypt using this key, the same id must be used in the decrypt policy.
-	// It must have the prefix static://
-	//
-	ID string `json:"id"`
-	// A sensitive value containing the secret or a reference to a secret as a template string expression.
-	// If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
-	// If provided as an expression, the expression itself is stored and returned by the API.
-	//
-	Key string `json:"key"`
-}
-
-func (e EventGatewayStaticKeySourceKeys) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(e, "", false)
-}
-
-func (e *EventGatewayStaticKeySourceKeys) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"id", "key"}); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (e *EventGatewayStaticKeySourceKeys) GetID() string {
-	if e == nil {
-		return ""
-	}
-	return e.ID
-}
-
-func (e *EventGatewayStaticKeySourceKeys) GetKey() string {
-	if e == nil {
-		return ""
-	}
-	return e.Key
-}
-
-// EventGatewayStaticKeySource - A key source that uses a static symmetric key. The key is provided as a base64-encoded string.
+// EventGatewayStaticKeySource - A key source that uses static symmetric keys.
 type EventGatewayStaticKeySource struct {
 	type_ string `const:"static" json:"type"`
-	// A list of static, user-provided keys. Each one must be 128 bits long.
-	Keys []EventGatewayStaticKeySourceKeys `json:"keys"`
 }
 
 func (e EventGatewayStaticKeySource) MarshalJSON() ([]byte, error) {
@@ -55,7 +16,7 @@ func (e EventGatewayStaticKeySource) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayStaticKeySource) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type", "keys"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type"}); err != nil {
 		return err
 	}
 	return nil
@@ -63,11 +24,4 @@ func (e *EventGatewayStaticKeySource) UnmarshalJSON(data []byte) error {
 
 func (e *EventGatewayStaticKeySource) GetType() string {
 	return "static"
-}
-
-func (e *EventGatewayStaticKeySource) GetKeys() []EventGatewayStaticKeySourceKeys {
-	if e == nil {
-		return []EventGatewayStaticKeySourceKeys{}
-	}
-	return e.Keys
 }

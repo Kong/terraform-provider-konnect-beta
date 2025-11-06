@@ -6,7 +6,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type EncryptionRecordSelector struct {
-	KeyID        types.String `tfsdk:"key_id"`
-	PartOfRecord types.String `tfsdk:"part_of_record"`
+type EncryptionKeyAWS struct {
+	Arn types.String `tfsdk:"arn"`
 }

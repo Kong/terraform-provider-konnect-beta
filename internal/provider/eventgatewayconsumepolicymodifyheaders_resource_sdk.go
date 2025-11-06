@@ -51,18 +51,18 @@ func (r *EventGatewayConsumePolicyModifyHeadersResourceModel) ToOperationsCreate
 	} else {
 		parentPolicyID = nil
 	}
-	eventGatewayModifyHeadersPolicy, eventGatewayModifyHeadersPolicyDiags := r.ToSharedEventGatewayModifyHeadersPolicy(ctx)
-	diags.Append(eventGatewayModifyHeadersPolicyDiags...)
+	eventGatewayModifyHeadersPolicyCreate, eventGatewayModifyHeadersPolicyCreateDiags := r.ToSharedEventGatewayModifyHeadersPolicyCreate(ctx)
+	diags.Append(eventGatewayModifyHeadersPolicyCreateDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	out := operations.CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersRequest{
-		GatewayID:                       gatewayID,
-		VirtualClusterID:                virtualClusterID,
-		ParentPolicyID:                  parentPolicyID,
-		EventGatewayModifyHeadersPolicy: eventGatewayModifyHeadersPolicy,
+		GatewayID:                             gatewayID,
+		VirtualClusterID:                      virtualClusterID,
+		ParentPolicyID:                        parentPolicyID,
+		EventGatewayModifyHeadersPolicyCreate: eventGatewayModifyHeadersPolicyCreate,
 	}
 
 	return &out, diags
@@ -218,6 +218,97 @@ func (r *EventGatewayConsumePolicyModifyHeadersResourceModel) ToSharedEventGatew
 		Condition:   condition,
 		Config:      config,
 		Labels:      labels,
+	}
+
+	return &out, diags
+}
+
+func (r *EventGatewayConsumePolicyModifyHeadersResourceModel) ToSharedEventGatewayModifyHeadersPolicyCreate(ctx context.Context) (*shared.EventGatewayModifyHeadersPolicyCreate, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	name := new(string)
+	if !r.Name.IsUnknown() && !r.Name.IsNull() {
+		*name = r.Name.ValueString()
+	} else {
+		name = nil
+	}
+	description := new(string)
+	if !r.Description.IsUnknown() && !r.Description.IsNull() {
+		*description = r.Description.ValueString()
+	} else {
+		description = nil
+	}
+	enabled := new(bool)
+	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
+		*enabled = r.Enabled.ValueBool()
+	} else {
+		enabled = nil
+	}
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
+	var actions []shared.EventGatewayModifyHeaderAction
+	if r.Config.Actions != nil {
+		actions = make([]shared.EventGatewayModifyHeaderAction, 0, len(r.Config.Actions))
+		for _, actionsItem := range r.Config.Actions {
+			if actionsItem.Remove != nil {
+				var key string
+				key = actionsItem.Remove.Key.ValueString()
+
+				eventGatewayModifyHeaderRemoveAction := shared.EventGatewayModifyHeaderRemoveAction{
+					Key: key,
+				}
+				actions = append(actions, shared.EventGatewayModifyHeaderAction{
+					EventGatewayModifyHeaderRemoveAction: &eventGatewayModifyHeaderRemoveAction,
+				})
+			}
+			if actionsItem.Set != nil {
+				var key1 string
+				key1 = actionsItem.Set.Key.ValueString()
+
+				var value string
+				value = actionsItem.Set.Value.ValueString()
+
+				eventGatewayModifyHeaderSetAction := shared.EventGatewayModifyHeaderSetAction{
+					Key:   key1,
+					Value: value,
+				}
+				actions = append(actions, shared.EventGatewayModifyHeaderAction{
+					EventGatewayModifyHeaderSetAction: &eventGatewayModifyHeaderSetAction,
+				})
+			}
+		}
+	}
+	config := shared.EventGatewayModifyHeadersPolicyCreateConfig{
+		Actions: actions,
+	}
+	labels := make(map[string]*string)
+	for labelsKey, labelsValue := range r.Labels {
+		labelsInst := new(string)
+		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
+			*labelsInst = labelsValue.ValueString()
+		} else {
+			labelsInst = nil
+		}
+		labels[labelsKey] = labelsInst
+	}
+	parentPolicyID := new(string)
+	if !r.ParentPolicyID.IsUnknown() && !r.ParentPolicyID.IsNull() {
+		*parentPolicyID = r.ParentPolicyID.ValueString()
+	} else {
+		parentPolicyID = nil
+	}
+	out := shared.EventGatewayModifyHeadersPolicyCreate{
+		Name:           name,
+		Description:    description,
+		Enabled:        enabled,
+		Condition:      condition,
+		Config:         config,
+		Labels:         labels,
+		ParentPolicyID: parentPolicyID,
 	}
 
 	return &out, diags

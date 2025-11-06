@@ -17,18 +17,19 @@ resource "konnect_event_gateway_consume_policy_decrypt" "my_eventgatewayconsumep
   provider = konnect-beta
   condition = "context.topic.name.endsWith('my_suffix')"
   config = {
-    decrypt = [
-      {
-        part_of_record = "key"
-      }
-    ]
     failure_mode = "passthrough"
     key_sources = [
       {
         aws = {
           # ...
         }
+        static = {
+          # ...
+        }
       }
+    ]
+    part_of_record = [
+      "key"
     ]
   }
   description = "...my_description..."
@@ -74,22 +75,12 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 
 Required:
 
-- `decrypt` (Attributes List) Describes what parts of a record to decrypt. (see [below for nested schema](#nestedatt--config--decrypt))
 - `failure_mode` (String) Describes how to handle failing encryption or decryption.
 Use `error` if the record should be rejected if encryption or decryption fails.
 Use `passthrough` to ignore encryption or decryption failure and continue proxying the record.
 must be one of ["error", "passthrough"]
 - `key_sources` (Attributes List) Describes how to find a symmetric key for decryption. (see [below for nested schema](#nestedatt--config--key_sources))
-
-<a id="nestedatt--config--decrypt"></a>
-### Nested Schema for `config.decrypt`
-
-Required:
-
-- `part_of_record` (String) * key - decrypt the record key
-* value - decrypt the record value
-must be one of ["key", "value"]
-
+- `part_of_record` (List of String) Describes the parts of a record to decrypt.
 
 <a id="nestedatt--config--key_sources"></a>
 ### Nested Schema for `config.key_sources`
@@ -100,7 +91,7 @@ Optional:
 
 See [aws docs](https://docs.aws.amazon.com/sdk-for-rust/latest/dg/credproviders.html#credproviders-default-credentials-provider-chain)
 for more information about how credential retrieval. (see [below for nested schema](#nestedatt--config--key_sources--aws))
-- `static` (Attributes) A key source that uses a static symmetric key. The key is provided as a base64-encoded string. (see [below for nested schema](#nestedatt--config--key_sources--static))
+- `static` (Attributes) A key source that uses static symmetric keys. (see [below for nested schema](#nestedatt--config--key_sources--static))
 
 <a id="nestedatt--config--key_sources--aws"></a>
 ### Nested Schema for `config.key_sources.aws`
@@ -108,21 +99,6 @@ for more information about how credential retrieval. (see [below for nested sche
 
 <a id="nestedatt--config--key_sources--static"></a>
 ### Nested Schema for `config.key_sources.static`
-
-Required:
-
-- `keys` (Attributes List) A list of static, user-provided keys. Each one must be 128 bits long. (see [below for nested schema](#nestedatt--config--key_sources--static--keys))
-
-<a id="nestedatt--config--key_sources--static--keys"></a>
-### Nested Schema for `config.key_sources.static.keys`
-
-Required:
-
-- `id` (String) The identifier of the key. To decrypt using this key, the same id must be used in the decrypt policy.
-It must have the prefix static://
-- `key` (String) A sensitive value containing the secret or a reference to a secret as a template string expression.
-If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
-If provided as an expression, the expression itself is stored and returned by the API.
 
 ## Import
 

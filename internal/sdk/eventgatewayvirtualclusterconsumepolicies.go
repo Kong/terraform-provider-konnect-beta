@@ -1946,7 +1946,7 @@ func (s *EventGatewayVirtualClusterConsumePolicies) UpdateEventGatewayVirtualClu
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayDecryptSensitiveDataAwarePolicy", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayDecryptPolicy", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -3278,7 +3278,7 @@ func (s *EventGatewayVirtualClusterConsumePolicies) CreateEventGatewayVirtualClu
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayModifyHeadersPolicy", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayModifyHeadersPolicyCreate", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -4133,7 +4133,7 @@ func (s *EventGatewayVirtualClusterConsumePolicies) CreateEventGatewayVirtualClu
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewaySkipRecordPolicy", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewaySkipRecordPolicyCreate", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}

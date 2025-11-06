@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: 16b8b71044e15d87342c10564c8b7970
+  docChecksum: 2e706a0f89105e31cd7fcce809904b54
   docVersion: 2.0.0
   speakeasyVersion: 1.648.0
   generationVersion: 2.737.0
@@ -104,12 +104,12 @@ generatedFiles:
   - examples/resources/konnect-beta_event_gateway_produce_policy_schema_validation/import-by-string-id.tf
   - examples/resources/konnect-beta_event_gateway_produce_policy_schema_validation/import.sh
   - examples/resources/konnect-beta_event_gateway_produce_policy_schema_validation/resource.tf
-  - examples/resources/konnect-beta_event_gateway_produce_policy_skip_record/import-by-string-id.tf
-  - examples/resources/konnect-beta_event_gateway_produce_policy_skip_record/import.sh
-  - examples/resources/konnect-beta_event_gateway_produce_policy_skip_record/resource.tf
   - examples/resources/konnect-beta_event_gateway_schema_registry/import-by-string-id.tf
   - examples/resources/konnect-beta_event_gateway_schema_registry/import.sh
   - examples/resources/konnect-beta_event_gateway_schema_registry/resource.tf
+  - examples/resources/konnect-beta_event_gateway_static_key/import-by-string-id.tf
+  - examples/resources/konnect-beta_event_gateway_static_key/import.sh
+  - examples/resources/konnect-beta_event_gateway_static_key/resource.tf
   - examples/resources/konnect-beta_event_gateway_vault/import-by-string-id.tf
   - examples/resources/konnect-beta_event_gateway_vault/import.sh
   - examples/resources/konnect-beta_event_gateway_vault/resource.tf
@@ -297,10 +297,10 @@ generatedFiles:
   - internal/provider/eventgatewayproducepolicymodifyheaders_resource_sdk.go
   - internal/provider/eventgatewayproducepolicyschemavalidation_resource.go
   - internal/provider/eventgatewayproducepolicyschemavalidation_resource_sdk.go
-  - internal/provider/eventgatewayproducepolicyskiprecord_resource.go
-  - internal/provider/eventgatewayproducepolicyskiprecord_resource_sdk.go
   - internal/provider/eventgatewayschemaregistry_resource.go
   - internal/provider/eventgatewayschemaregistry_resource_sdk.go
+  - internal/provider/eventgatewaystatickey_resource.go
+  - internal/provider/eventgatewaystatickey_resource_sdk.go
   - internal/provider/eventgatewayvault_resource.go
   - internal/provider/eventgatewayvault_resource_sdk.go
   - internal/provider/eventgatewayvirtualcluster_resource.go
@@ -468,13 +468,15 @@ generatedFiles:
   - internal/provider/types/dataplane_proxies.go
   - internal/provider/types/dataplane_proxy.go
   - internal/provider/types/dataplane_ref.go
-  - internal/provider/types/decryption_record_selector.go
   - internal/provider/types/default.go
   - internal/provider/types/definition.go
   - internal/provider/types/delay.go
   - internal/provider/types/detectors.go
   - internal/provider/types/dp_cert.go
-  - internal/provider/types/encryption_record_selector.go
+  - internal/provider/types/encryption_key.go
+  - internal/provider/types/encryption_key_aws.go
+  - internal/provider/types/encryption_key_static.go
+  - internal/provider/types/encryption_key_static_reference.go
   - internal/provider/types/endpoints.go
   - internal/provider/types/envoy.go
   - internal/provider/types/event_gateway_acl_operation.go
@@ -486,16 +488,13 @@ generatedFiles:
   - internal/provider/types/event_gateway_encrypt_config.go
   - internal/provider/types/event_gateway_env_vault.go
   - internal/provider/types/event_gateway_key_source.go
-  - internal/provider/types/event_gateway_key_source1.go
   - internal/provider/types/event_gateway_konnect_vault.go
   - internal/provider/types/event_gateway_modify_header_action.go
   - internal/provider/types/event_gateway_modify_header_remove_action.go
   - internal/provider/types/event_gateway_modify_header_set_action.go
-  - internal/provider/types/event_gateway_modify_headers_policy_config.go
+  - internal/provider/types/event_gateway_modify_headers_policy_create_config.go
   - internal/provider/types/event_gateway_produce_schema_validation_policy_config.go
   - internal/provider/types/event_gateway_produce_schema_validation_policy_json_config.go
-  - internal/provider/types/event_gateway_static_key_source.go
-  - internal/provider/types/event_gateway_static_key_source1.go
   - internal/provider/types/event_gateway_tls_listener_policy_config.go
   - internal/provider/types/exact_list.go
   - internal/provider/types/exclude.go
@@ -526,8 +525,6 @@ generatedFiles:
   - internal/provider/types/issuer_ref.go
   - internal/provider/types/js.go
   - internal/provider/types/json_patches.go
-  - internal/provider/types/keys.go
-  - internal/provider/types/keys1.go
   - internal/provider/types/layout.go
   - internal/provider/types/least_request.go
   - internal/provider/types/limits.go
@@ -790,6 +787,7 @@ generatedFiles:
   - internal/sdk/eventgatewaylisteners.go
   - internal/sdk/eventgateways.go
   - internal/sdk/eventgatewayschemaregistries.go
+  - internal/sdk/eventgatewaystatickeys.go
   - internal/sdk/eventgatewayvaults.go
   - internal/sdk/eventgatewayvirtualclusterconsumepolicies.go
   - internal/sdk/eventgatewayvirtualclusterpolicies.go
@@ -853,6 +851,7 @@ generatedFiles:
   - internal/sdk/models/operations/createeventgatewaylistenerpolicyforwardtovirtualcluster.go
   - internal/sdk/models/operations/createeventgatewaylistenerpolicytlsserver.go
   - internal/sdk/models/operations/createeventgatewayschemaregistry.go
+  - internal/sdk/models/operations/createeventgatewaystatickey.go
   - internal/sdk/models/operations/createeventgatewayvault.go
   - internal/sdk/models/operations/createeventgatewayvirtualcluster.go
   - internal/sdk/models/operations/createeventgatewayvirtualclusterclusterlevelpolicyacls.go
@@ -863,7 +862,6 @@ generatedFiles:
   - internal/sdk/models/operations/createeventgatewayvirtualclusterproducepolicyencrypt.go
   - internal/sdk/models/operations/createeventgatewayvirtualclusterproducepolicymodifyheaders.go
   - internal/sdk/models/operations/createeventgatewayvirtualclusterproducepolicyschemavalidation.go
-  - internal/sdk/models/operations/createeventgatewayvirtualclusterproducepolicyskiprecord.go
   - internal/sdk/models/operations/createportal.go
   - internal/sdk/models/operations/createportalcustomdomain.go
   - internal/sdk/models/operations/createportalpage.go
@@ -889,6 +887,7 @@ generatedFiles:
   - internal/sdk/models/operations/deleteeventgatewaylistenerpolicyforwardtovirtualcluster.go
   - internal/sdk/models/operations/deleteeventgatewaylistenerpolicytlsserver.go
   - internal/sdk/models/operations/deleteeventgatewayschemaregistry.go
+  - internal/sdk/models/operations/deleteeventgatewaystatickey.go
   - internal/sdk/models/operations/deleteeventgatewayvault.go
   - internal/sdk/models/operations/deleteeventgatewayvirtualcluster.go
   - internal/sdk/models/operations/deleteeventgatewayvirtualclusterclusterlevelpolicyacls.go
@@ -899,7 +898,6 @@ generatedFiles:
   - internal/sdk/models/operations/deleteeventgatewayvirtualclusterproducepolicyencrypt.go
   - internal/sdk/models/operations/deleteeventgatewayvirtualclusterproducepolicymodifyheaders.go
   - internal/sdk/models/operations/deleteeventgatewayvirtualclusterproducepolicyschemavalidation.go
-  - internal/sdk/models/operations/deleteeventgatewayvirtualclusterproducepolicyskiprecord.go
   - internal/sdk/models/operations/deletehostnamegenerator.go
   - internal/sdk/models/operations/deletemesh.go
   - internal/sdk/models/operations/deletemeshaccesslog.go
@@ -953,6 +951,7 @@ generatedFiles:
   - internal/sdk/models/operations/geteventgatewaylistenerpolicyforwardtovirtualcluster.go
   - internal/sdk/models/operations/geteventgatewaylistenerpolicytlsserver.go
   - internal/sdk/models/operations/geteventgatewayschemaregistry.go
+  - internal/sdk/models/operations/geteventgatewaystatickey.go
   - internal/sdk/models/operations/geteventgatewayvault.go
   - internal/sdk/models/operations/geteventgatewayvirtualcluster.go
   - internal/sdk/models/operations/geteventgatewayvirtualclusterclusterlevelpolicyacls.go
@@ -963,7 +962,6 @@ generatedFiles:
   - internal/sdk/models/operations/geteventgatewayvirtualclusterproducepolicyencrypt.go
   - internal/sdk/models/operations/geteventgatewayvirtualclusterproducepolicymodifyheaders.go
   - internal/sdk/models/operations/geteventgatewayvirtualclusterproducepolicyschemavalidation.go
-  - internal/sdk/models/operations/geteventgatewayvirtualclusterproducepolicyskiprecord.go
   - internal/sdk/models/operations/gethostnamegenerator.go
   - internal/sdk/models/operations/gethostnamegeneratorlist.go
   - internal/sdk/models/operations/getmesh.go
@@ -1093,7 +1091,6 @@ generatedFiles:
   - internal/sdk/models/operations/updateeventgatewayvirtualclusterproducepolicyencrypt.go
   - internal/sdk/models/operations/updateeventgatewayvirtualclusterproducepolicymodifyheaders.go
   - internal/sdk/models/operations/updateeventgatewayvirtualclusterproducepolicyschemavalidation.go
-  - internal/sdk/models/operations/updateeventgatewayvirtualclusterproducepolicyskiprecord.go
   - internal/sdk/models/operations/updatehoudinieventgateway.go
   - internal/sdk/models/operations/updateportal.go
   - internal/sdk/models/operations/updateportalauthenticationsettings.go
@@ -1170,10 +1167,16 @@ generatedFiles:
   - internal/sdk/models/shared/dashboard.go
   - internal/sdk/models/shared/dashboardresponse.go
   - internal/sdk/models/shared/dashboardupdaterequest.go
-  - internal/sdk/models/shared/decryptionrecordselector.go
+  - internal/sdk/models/shared/decryptionrecordpart.go
   - internal/sdk/models/shared/donutchart.go
   - internal/sdk/models/shared/encryptionfailuremode.go
-  - internal/sdk/models/shared/encryptionrecordselector.go
+  - internal/sdk/models/shared/encryptionkey.go
+  - internal/sdk/models/shared/encryptionkeyaws.go
+  - internal/sdk/models/shared/encryptionkeystatic.go
+  - internal/sdk/models/shared/encryptionkeystaticreference.go
+  - internal/sdk/models/shared/encryptionkeystaticreferencebyid.go
+  - internal/sdk/models/shared/encryptionkeystaticreferencebyname.go
+  - internal/sdk/models/shared/encryptionrecordpart.go
   - internal/sdk/models/shared/eventgatewayacloperation.go
   - internal/sdk/models/shared/eventgatewayaclpolicyconfig.go
   - internal/sdk/models/shared/eventgatewayaclresourcename.go
@@ -1184,16 +1187,11 @@ generatedFiles:
   - internal/sdk/models/shared/eventgatewaydataplanecertificate.go
   - internal/sdk/models/shared/eventgatewaydecryptpolicy.go
   - internal/sdk/models/shared/eventgatewaydecryptpolicyconfig.go
-  - internal/sdk/models/shared/eventgatewaydecryptpolicyconfigsensitivedataaware.go
-  - internal/sdk/models/shared/eventgatewaydecryptsensitivedataawarepolicy.go
   - internal/sdk/models/shared/eventgatewayencryptconfig.go
-  - internal/sdk/models/shared/eventgatewayencryptconfigsensitivedataaware.go
   - internal/sdk/models/shared/eventgatewayencryptpolicy.go
-  - internal/sdk/models/shared/eventgatewayencryptsensitivedataawarepolicy.go
   - internal/sdk/models/shared/eventgatewayenvvault.go
   - internal/sdk/models/shared/eventgatewayinfo.go
   - internal/sdk/models/shared/eventgatewaykeysource.go
-  - internal/sdk/models/shared/eventgatewaykeysourcesensitivedataaware.go
   - internal/sdk/models/shared/eventgatewaykonnectvault.go
   - internal/sdk/models/shared/eventgatewaylistener.go
   - internal/sdk/models/shared/eventgatewaylistenerpolicy.go
@@ -1201,6 +1199,7 @@ generatedFiles:
   - internal/sdk/models/shared/eventgatewaymodifyheaderremoveaction.go
   - internal/sdk/models/shared/eventgatewaymodifyheadersetaction.go
   - internal/sdk/models/shared/eventgatewaymodifyheaderspolicy.go
+  - internal/sdk/models/shared/eventgatewaymodifyheaderspolicycreate.go
   - internal/sdk/models/shared/eventgatewaymodifyvault.go
   - internal/sdk/models/shared/eventgatewaypolicy.go
   - internal/sdk/models/shared/eventgatewayproduceschemavalidationpolicy.go
@@ -1208,8 +1207,10 @@ generatedFiles:
   - internal/sdk/models/shared/eventgatewayproduceschemavalidationpolicyjsonconfig.go
   - internal/sdk/models/shared/eventgatewayproduceschemavalidationpolicyschemaregistryconfig.go
   - internal/sdk/models/shared/eventgatewayskiprecordpolicy.go
+  - internal/sdk/models/shared/eventgatewayskiprecordpolicycreate.go
+  - internal/sdk/models/shared/eventgatewaystatickey.go
+  - internal/sdk/models/shared/eventgatewaystatickeycreate.go
   - internal/sdk/models/shared/eventgatewaystatickeysource.go
-  - internal/sdk/models/shared/eventgatewaystatickeysourcesensitivedataaware.go
   - internal/sdk/models/shared/eventgatewaytlslistenerpolicy.go
   - internal/sdk/models/shared/eventgatewaytlslistenerpolicyconfig.go
   - internal/sdk/models/shared/eventgatewaytlslistenerpolicyconfigsensitivedataaware.go
@@ -6632,7 +6633,7 @@ examples:
           virtualClusterId: "eb84f991-ae6d-4ed9-a84f-dd27dd8493c1"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "decrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"failure_mode": "passthrough", "key_sources": [{"type": "static", "keys": []}], "decrypt": [{"part_of_record": "value"}]}, "labels": {"env": "test"}}
+        application/json: {"type": "decrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"failure_mode": "passthrough", "key_sources": [{"type": "static"}], "part_of_record": ["value"]}, "labels": {"env": "test"}}
       responses:
         "200":
           application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "b7a563ad-fad7-4c5f-b18a-ba17dd92a28a", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -6745,7 +6746,7 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "995bc147-2750-4c10-a0e2-ec9b901491eb"
       requestBody:
-        application/json: {"type": "decrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"failure_mode": "passthrough", "key_sources": [{"type": "aws"}], "decrypt": [{"part_of_record": "value"}]}, "labels": {"env": "test"}}
+        application/json: {"type": "decrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"failure_mode": "passthrough", "key_sources": [{"type": "aws"}], "part_of_record": ["value"]}, "labels": {"env": "test"}}
       responses:
         "201":
           application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "627ce5c5-8fd9-43a2-8c83-eafe3d39fe8e", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -6892,7 +6893,7 @@ examples:
           virtualClusterId: "f5cf6665-58bb-47f4-be01-926b2c0b6612"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "encrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"failure_mode": "passthrough", "key_sources": [], "encrypt": [{"part_of_record": "value", "key_id": "static://static-key-named-in-source"}]}, "labels": {"env": "test"}}
+        application/json: {"type": "encrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"failure_mode": "passthrough", "part_of_record": ["key"], "encryption_key": {"type": "aws", "arn": "arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab"}}, "labels": {"env": "test"}}
       responses:
         "200":
           application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "f9bcd779-cf70-4a2f-949f-99f677043c70", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -7005,7 +7006,7 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "593ecd65-910f-4bd8-9c22-0dd3eaa403c3"
       requestBody:
-        application/json: {"type": "encrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"failure_mode": "error", "key_sources": [{"type": "aws"}], "encrypt": [{"part_of_record": "value", "key_id": "static://static-key-named-in-source"}]}, "labels": {"env": "test"}}
+        application/json: {"type": "encrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"failure_mode": "error", "part_of_record": [], "encryption_key": {"type": "aws", "arn": "arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab"}}, "labels": {"env": "test"}}
       responses:
         "201":
           application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "bd47b7ed-1b37-4332-8874-76c9a0e498b9", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -7425,6 +7426,54 @@ examples:
           virtualClusterId: "b11f9cef-8525-4040-b5eb-48289887c507"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-event-gateway-static-key:
+    speakeasy-default-create-event-gateway-static-key:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"name": "<value>", "labels": {"env": "test"}, "value": "${vault.env['MY_ENV_VAR']}"}
+      responses:
+        "201":
+          application/json: {"name": "<value>", "labels": {"env": "test"}, "id": "8424b7b8-66f8-4f77-b380-3a9a19e7a60f", "value": "${vault.env['MY_ENV_VAR']}", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 435352, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  get-event-gateway-static-key:
+    speakeasy-default-get-event-gateway-static-key:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          staticKeyId: "8d254be7-bd8f-484b-82e5-613cd779035d"
+      responses:
+        "200":
+          application/json: {"name": "<value>", "labels": {"env": "test"}, "id": "7a2977da-d640-474f-96bf-4a6cf9f8520a", "value": "${vault.env['MY_ENV_VAR']}", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  delete-event-gateway-static-key:
+    speakeasy-default-delete-event-gateway-static-key:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          staticKeyId: "ca8184fe-dd21-42a1-be12-30b80192392f"
+      responses:
+        "400":
+          application/problem+json: {"status": 962997, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":

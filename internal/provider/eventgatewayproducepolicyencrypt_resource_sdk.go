@@ -17,9 +17,9 @@ func (r *EventGatewayProducePolicyEncryptResourceModel) RefreshFromSharedEventGa
 	if resp != nil {
 		r.Condition = types.StringPointerValue(resp.Condition)
 		configPriorData := r.Config
-		r.Config.Encrypt = configPriorData.Encrypt
+		r.Config.EncryptionKey = configPriorData.EncryptionKey
 		r.Config.FailureMode = configPriorData.FailureMode
-		r.Config.KeySources = configPriorData.KeySources
+		r.Config.PartOfRecord = configPriorData.PartOfRecord
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -124,18 +124,18 @@ func (r *EventGatewayProducePolicyEncryptResourceModel) ToOperationsUpdateEventG
 	var policyID string
 	policyID = r.ID.ValueString()
 
-	eventGatewayEncryptSensitiveDataAwarePolicy, eventGatewayEncryptSensitiveDataAwarePolicyDiags := r.ToSharedEventGatewayEncryptSensitiveDataAwarePolicy(ctx)
-	diags.Append(eventGatewayEncryptSensitiveDataAwarePolicyDiags...)
+	eventGatewayEncryptPolicy, eventGatewayEncryptPolicyDiags := r.ToSharedEventGatewayEncryptPolicy(ctx)
+	diags.Append(eventGatewayEncryptPolicyDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	out := operations.UpdateEventGatewayVirtualClusterProducePolicyEncryptRequest{
-		GatewayID:        gatewayID,
-		VirtualClusterID: virtualClusterID,
-		PolicyID:         policyID,
-		EventGatewayEncryptSensitiveDataAwarePolicy: eventGatewayEncryptSensitiveDataAwarePolicy,
+		GatewayID:                 gatewayID,
+		VirtualClusterID:          virtualClusterID,
+		PolicyID:                  policyID,
+		EventGatewayEncryptPolicy: eventGatewayEncryptPolicy,
 	}
 
 	return &out, diags
@@ -169,54 +169,69 @@ func (r *EventGatewayProducePolicyEncryptResourceModel) ToSharedEventGatewayEncr
 		condition = nil
 	}
 	failureMode := shared.EncryptionFailureMode(r.Config.FailureMode.ValueString())
-	keySources := make([]shared.EventGatewayKeySourceSensitiveDataAware, 0, len(r.Config.KeySources))
-	for _, keySourcesItem := range r.Config.KeySources {
-		if keySourcesItem.Aws != nil {
-			eventGatewayAWSKeySource := shared.EventGatewayAWSKeySource{}
-			keySources = append(keySources, shared.EventGatewayKeySourceSensitiveDataAware{
-				EventGatewayAWSKeySource: &eventGatewayAWSKeySource,
-			})
-		}
-		if keySourcesItem.Static != nil {
-			keys := make([]shared.Keys, 0, len(keySourcesItem.Static.Keys))
-			for _, keysItem := range keySourcesItem.Static.Keys {
-				var id string
-				id = keysItem.ID.ValueString()
+	partOfRecord := make([]shared.EncryptionRecordPart, 0, len(r.Config.PartOfRecord))
+	for _, partOfRecordItem := range r.Config.PartOfRecord {
+		partOfRecord = append(partOfRecord, shared.EncryptionRecordPart(partOfRecordItem.ValueString()))
+	}
+	var encryptionKey shared.EncryptionKey
+	var encryptionKeyAWS *shared.EncryptionKeyAWS
+	if r.Config.EncryptionKey.Aws != nil {
+		var arn string
+		arn = r.Config.EncryptionKey.Aws.Arn.ValueString()
 
-				key := new(string)
-				if !keysItem.Key.IsUnknown() && !keysItem.Key.IsNull() {
-					*key = keysItem.Key.ValueString()
-				} else {
-					key = nil
-				}
-				keys = append(keys, shared.Keys{
-					ID:  id,
-					Key: key,
-				})
-			}
-			eventGatewayStaticKeySourceSensitiveDataAware := shared.EventGatewayStaticKeySourceSensitiveDataAware{
-				Keys: keys,
-			}
-			keySources = append(keySources, shared.EventGatewayKeySourceSensitiveDataAware{
-				EventGatewayStaticKeySourceSensitiveDataAware: &eventGatewayStaticKeySourceSensitiveDataAware,
-			})
+		encryptionKeyAWS = &shared.EncryptionKeyAWS{
+			Arn: arn,
 		}
 	}
-	encrypt := make([]shared.EncryptionRecordSelector, 0, len(r.Config.Encrypt))
-	for _, encryptItem := range r.Config.Encrypt {
-		partOfRecord := shared.EncryptionRecordSelectorPartOfRecord(encryptItem.PartOfRecord.ValueString())
-		var keyID string
-		keyID = encryptItem.KeyID.ValueString()
+	if encryptionKeyAWS != nil {
+		encryptionKey = shared.EncryptionKey{
+			EncryptionKeyAWS: encryptionKeyAWS,
+		}
+	}
+	var encryptionKeyStatic *shared.EncryptionKeyStatic
+	if r.Config.EncryptionKey.Static != nil {
+		var key shared.EncryptionKeyStaticReference
+		var encryptionKeyStaticReferenceByID *shared.EncryptionKeyStaticReferenceByID
+		if r.Config.EncryptionKey.Static.Key.EncryptionKeyStaticReferenceByID != nil {
+			var id string
+			id = r.Config.EncryptionKey.Static.Key.EncryptionKeyStaticReferenceByID.ID.ValueString()
 
-		encrypt = append(encrypt, shared.EncryptionRecordSelector{
-			PartOfRecord: partOfRecord,
-			KeyID:        keyID,
-		})
+			encryptionKeyStaticReferenceByID = &shared.EncryptionKeyStaticReferenceByID{
+				ID: id,
+			}
+		}
+		if encryptionKeyStaticReferenceByID != nil {
+			key = shared.EncryptionKeyStaticReference{
+				EncryptionKeyStaticReferenceByID: encryptionKeyStaticReferenceByID,
+			}
+		}
+		var encryptionKeyStaticReferenceByName *shared.EncryptionKeyStaticReferenceByName
+		if r.Config.EncryptionKey.Static.Key.EncryptionKeyStaticReferenceByName != nil {
+			var name1 string
+			name1 = r.Config.EncryptionKey.Static.Key.EncryptionKeyStaticReferenceByName.Name.ValueString()
+
+			encryptionKeyStaticReferenceByName = &shared.EncryptionKeyStaticReferenceByName{
+				Name: name1,
+			}
+		}
+		if encryptionKeyStaticReferenceByName != nil {
+			key = shared.EncryptionKeyStaticReference{
+				EncryptionKeyStaticReferenceByName: encryptionKeyStaticReferenceByName,
+			}
+		}
+		encryptionKeyStatic = &shared.EncryptionKeyStatic{
+			Key: key,
+		}
+	}
+	if encryptionKeyStatic != nil {
+		encryptionKey = shared.EncryptionKey{
+			EncryptionKeyStatic: encryptionKeyStatic,
+		}
 	}
 	config := shared.EventGatewayEncryptConfig{
-		FailureMode: failureMode,
-		KeySources:  keySources,
-		Encrypt:     encrypt,
+		FailureMode:   failureMode,
+		PartOfRecord:  partOfRecord,
+		EncryptionKey: encryptionKey,
 	}
 	labels := make(map[string]*string)
 	for labelsKey, labelsValue := range r.Labels {
@@ -229,81 +244,6 @@ func (r *EventGatewayProducePolicyEncryptResourceModel) ToSharedEventGatewayEncr
 		labels[labelsKey] = labelsInst
 	}
 	out := shared.EventGatewayEncryptPolicy{
-		Name:        name,
-		Description: description,
-		Enabled:     enabled,
-		Condition:   condition,
-		Config:      config,
-		Labels:      labels,
-	}
-
-	return &out, diags
-}
-
-func (r *EventGatewayProducePolicyEncryptResourceModel) ToSharedEventGatewayEncryptSensitiveDataAwarePolicy(ctx context.Context) (*shared.EventGatewayEncryptSensitiveDataAwarePolicy, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
-	} else {
-		name = nil
-	}
-	description := new(string)
-	if !r.Description.IsUnknown() && !r.Description.IsNull() {
-		*description = r.Description.ValueString()
-	} else {
-		description = nil
-	}
-	enabled := new(bool)
-	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
-		*enabled = r.Enabled.ValueBool()
-	} else {
-		enabled = nil
-	}
-	condition := new(string)
-	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
-		*condition = r.Condition.ValueString()
-	} else {
-		condition = nil
-	}
-	failureMode := shared.EncryptionFailureMode(r.Config.FailureMode.ValueString())
-	keySources := make([]shared.EventGatewayKeySource, 0, len(r.Config.KeySources))
-	for _, keySourcesItem := range r.Config.KeySources {
-		if keySourcesItem.Aws != nil {
-			eventGatewayAWSKeySource := shared.EventGatewayAWSKeySource{}
-			keySources = append(keySources, shared.EventGatewayKeySource{
-				EventGatewayAWSKeySource: &eventGatewayAWSKeySource,
-			})
-		}
-	}
-	encrypt := make([]shared.EncryptionRecordSelector, 0, len(r.Config.Encrypt))
-	for _, encryptItem := range r.Config.Encrypt {
-		partOfRecord := shared.EncryptionRecordSelectorPartOfRecord(encryptItem.PartOfRecord.ValueString())
-		var keyID string
-		keyID = encryptItem.KeyID.ValueString()
-
-		encrypt = append(encrypt, shared.EncryptionRecordSelector{
-			PartOfRecord: partOfRecord,
-			KeyID:        keyID,
-		})
-	}
-	config := shared.EventGatewayEncryptConfigSensitiveDataAware{
-		FailureMode: failureMode,
-		KeySources:  keySources,
-		Encrypt:     encrypt,
-	}
-	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
-		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
-		} else {
-			labelsInst = nil
-		}
-		labels[labelsKey] = labelsInst
-	}
-	out := shared.EventGatewayEncryptSensitiveDataAwarePolicy{
 		Name:        name,
 		Description: description,
 		Enabled:     enabled,

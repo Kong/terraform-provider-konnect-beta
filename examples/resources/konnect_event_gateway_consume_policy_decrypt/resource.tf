@@ -2,18 +2,19 @@ resource "konnect_event_gateway_consume_policy_decrypt" "my_eventgatewayconsumep
   provider = konnect-beta
   condition = "context.topic.name.endsWith('my_suffix')"
   config = {
-    decrypt = [
-      {
-        part_of_record = "key"
-      }
-    ]
     failure_mode = "passthrough"
     key_sources = [
       {
         aws = {
           # ...
         }
+        static = {
+          # ...
+        }
       }
+    ]
+    part_of_record = [
+      "key"
     ]
   }
   description = "...my_description..."

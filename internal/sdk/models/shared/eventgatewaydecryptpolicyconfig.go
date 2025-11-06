@@ -11,8 +11,8 @@ type EventGatewayDecryptPolicyConfig struct {
 	FailureMode EncryptionFailureMode `json:"failure_mode"`
 	// Describes how to find a symmetric key for decryption.
 	KeySources []EventGatewayKeySource `json:"key_sources"`
-	// Describes what parts of a record to decrypt.
-	Decrypt []DecryptionRecordSelector `json:"decrypt"`
+	// Describes the parts of a record to decrypt.
+	PartOfRecord []DecryptionRecordPart `json:"part_of_record"`
 }
 
 func (e *EventGatewayDecryptPolicyConfig) GetFailureMode() EncryptionFailureMode {
@@ -29,9 +29,9 @@ func (e *EventGatewayDecryptPolicyConfig) GetKeySources() []EventGatewayKeySourc
 	return e.KeySources
 }
 
-func (e *EventGatewayDecryptPolicyConfig) GetDecrypt() []DecryptionRecordSelector {
+func (e *EventGatewayDecryptPolicyConfig) GetPartOfRecord() []DecryptionRecordPart {
 	if e == nil {
-		return []DecryptionRecordSelector{}
+		return []DecryptionRecordPart{}
 	}
-	return e.Decrypt
+	return e.PartOfRecord
 }

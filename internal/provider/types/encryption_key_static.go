@@ -2,6 +2,6 @@
 
 package types
 
-type EventGatewayStaticKeySource struct {
-	Keys []Keys `tfsdk:"keys"`
+type EncryptionKeyStatic struct {
+	Key EncryptionKeyStaticReference `tfsdk:"key"`
 }

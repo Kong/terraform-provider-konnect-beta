@@ -122,6 +122,7 @@ type KonnectBeta struct {
 	EventGatewayVaults                        *EventGatewayVaults
 	EventGatewaySchemaRegistries              *EventGatewaySchemaRegistries
 	EventGatewayDataPlaneCertificates         *EventGatewayDataPlaneCertificates
+	EventGatewayStaticKeys                    *EventGatewayStaticKeys
 	EventGatewayListenerPolicies              *EventGatewayListenerPolicies
 	EventGatewayVirtualClusterConsumePolicies *EventGatewayVirtualClusterConsumePolicies
 	EventGatewayVirtualClusterProducePolicies *EventGatewayVirtualClusterProducePolicies
@@ -279,6 +280,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.EventGatewayVaults = newEventGatewayVaults(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewaySchemaRegistries = newEventGatewaySchemaRegistries(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayDataPlaneCertificates = newEventGatewayDataPlaneCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.EventGatewayStaticKeys = newEventGatewayStaticKeys(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayListenerPolicies = newEventGatewayListenerPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayVirtualClusterConsumePolicies = newEventGatewayVirtualClusterConsumePolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayVirtualClusterProducePolicies = newEventGatewayVirtualClusterProducePolicies(sdk, sdk.sdkConfiguration, sdk.hooks)

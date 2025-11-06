@@ -9,11 +9,11 @@ type EventGatewayEncryptConfig struct {
 	// Use `passthrough` to ignore encryption or decryption failure and continue proxying the record.
 	//
 	FailureMode EncryptionFailureMode `json:"failure_mode"`
-	// Describes how to find a symmetric key for encryption.
+	// Describes the parts of a record to encrypt.
+	PartOfRecord []EncryptionRecordPart `json:"part_of_record"`
+	// The key to use for encryption.
 	//
-	KeySources []EventGatewayKeySourceSensitiveDataAware `json:"key_sources"`
-	// Describes what parts of a record to encrypt.
-	Encrypt []EncryptionRecordSelector `json:"encrypt"`
+	EncryptionKey EncryptionKey `json:"encryption_key"`
 }
 
 func (e *EventGatewayEncryptConfig) GetFailureMode() EncryptionFailureMode {
@@ -23,16 +23,24 @@ func (e *EventGatewayEncryptConfig) GetFailureMode() EncryptionFailureMode {
 	return e.FailureMode
 }
 
-func (e *EventGatewayEncryptConfig) GetKeySources() []EventGatewayKeySourceSensitiveDataAware {
+func (e *EventGatewayEncryptConfig) GetPartOfRecord() []EncryptionRecordPart {
 	if e == nil {
-		return []EventGatewayKeySourceSensitiveDataAware{}
+		return []EncryptionRecordPart{}
 	}
-	return e.KeySources
+	return e.PartOfRecord
 }
 
-func (e *EventGatewayEncryptConfig) GetEncrypt() []EncryptionRecordSelector {
+func (e *EventGatewayEncryptConfig) GetEncryptionKey() EncryptionKey {
 	if e == nil {
-		return []EncryptionRecordSelector{}
+		return EncryptionKey{}
 	}
-	return e.Encrypt
+	return e.EncryptionKey
+}
+
+func (e *EventGatewayEncryptConfig) GetEncryptionKeyAws() *EncryptionKeyAWS {
+	return e.GetEncryptionKey().EncryptionKeyAWS
+}
+
+func (e *EventGatewayEncryptConfig) GetEncryptionKeyStatic() *EncryptionKeyStatic {
+	return e.GetEncryptionKey().EncryptionKeyStatic
 }

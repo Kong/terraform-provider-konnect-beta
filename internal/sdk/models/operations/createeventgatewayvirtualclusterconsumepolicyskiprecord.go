@@ -13,8 +13,8 @@ type CreateEventGatewayVirtualClusterConsumePolicySkipRecordRequest struct {
 	// The ID of the Virtual Cluster.
 	VirtualClusterID string `pathParam:"style=simple,explode=false,name=virtualClusterId"`
 	// When specified, it sets the ID of the parent policy.
-	ParentPolicyID               *string                              `queryParam:"style=form,explode=true,name=parent_policy_id"`
-	EventGatewaySkipRecordPolicy *shared.EventGatewaySkipRecordPolicy `request:"mediaType=application/json"`
+	ParentPolicyID                     *string                                    `queryParam:"style=form,explode=true,name=parent_policy_id"`
+	EventGatewaySkipRecordPolicyCreate *shared.EventGatewaySkipRecordPolicyCreate `request:"mediaType=application/json"`
 }
 
 func (c *CreateEventGatewayVirtualClusterConsumePolicySkipRecordRequest) GetGatewayID() string {
@@ -38,11 +38,11 @@ func (c *CreateEventGatewayVirtualClusterConsumePolicySkipRecordRequest) GetPare
 	return c.ParentPolicyID
 }
 
-func (c *CreateEventGatewayVirtualClusterConsumePolicySkipRecordRequest) GetEventGatewaySkipRecordPolicy() *shared.EventGatewaySkipRecordPolicy {
+func (c *CreateEventGatewayVirtualClusterConsumePolicySkipRecordRequest) GetEventGatewaySkipRecordPolicyCreate() *shared.EventGatewaySkipRecordPolicyCreate {
 	if c == nil {
 		return nil
 	}
-	return c.EventGatewaySkipRecordPolicy
+	return c.EventGatewaySkipRecordPolicyCreate
 }
 
 type CreateEventGatewayVirtualClusterConsumePolicySkipRecordResponse struct {

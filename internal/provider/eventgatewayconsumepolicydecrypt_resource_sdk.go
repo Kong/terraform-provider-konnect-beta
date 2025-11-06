@@ -17,9 +17,9 @@ func (r *EventGatewayConsumePolicyDecryptResourceModel) RefreshFromSharedEventGa
 	if resp != nil {
 		r.Condition = types.StringPointerValue(resp.Condition)
 		configPriorData := r.Config
-		r.Config.Decrypt = configPriorData.Decrypt
 		r.Config.FailureMode = configPriorData.FailureMode
 		r.Config.KeySources = configPriorData.KeySources
+		r.Config.PartOfRecord = configPriorData.PartOfRecord
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -124,18 +124,18 @@ func (r *EventGatewayConsumePolicyDecryptResourceModel) ToOperationsUpdateEventG
 	var policyID string
 	policyID = r.ID.ValueString()
 
-	eventGatewayDecryptSensitiveDataAwarePolicy, eventGatewayDecryptSensitiveDataAwarePolicyDiags := r.ToSharedEventGatewayDecryptSensitiveDataAwarePolicy(ctx)
-	diags.Append(eventGatewayDecryptSensitiveDataAwarePolicyDiags...)
+	eventGatewayDecryptPolicy, eventGatewayDecryptPolicyDiags := r.ToSharedEventGatewayDecryptPolicy(ctx)
+	diags.Append(eventGatewayDecryptPolicyDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	out := operations.UpdateEventGatewayVirtualClusterConsumePolicyDecryptRequest{
-		GatewayID:        gatewayID,
-		VirtualClusterID: virtualClusterID,
-		PolicyID:         policyID,
-		EventGatewayDecryptSensitiveDataAwarePolicy: eventGatewayDecryptSensitiveDataAwarePolicy,
+		GatewayID:                 gatewayID,
+		VirtualClusterID:          virtualClusterID,
+		PolicyID:                  policyID,
+		EventGatewayDecryptPolicy: eventGatewayDecryptPolicy,
 	}
 
 	return &out, diags
@@ -178,38 +178,20 @@ func (r *EventGatewayConsumePolicyDecryptResourceModel) ToSharedEventGatewayDecr
 			})
 		}
 		if keySourcesItem.Static != nil {
-			keys := make([]shared.EventGatewayStaticKeySourceKeys, 0, len(keySourcesItem.Static.Keys))
-			for _, keysItem := range keySourcesItem.Static.Keys {
-				var id string
-				id = keysItem.ID.ValueString()
-
-				var key string
-				key = keysItem.Key.ValueString()
-
-				keys = append(keys, shared.EventGatewayStaticKeySourceKeys{
-					ID:  id,
-					Key: key,
-				})
-			}
-			eventGatewayStaticKeySource := shared.EventGatewayStaticKeySource{
-				Keys: keys,
-			}
+			eventGatewayStaticKeySource := shared.EventGatewayStaticKeySource{}
 			keySources = append(keySources, shared.EventGatewayKeySource{
 				EventGatewayStaticKeySource: &eventGatewayStaticKeySource,
 			})
 		}
 	}
-	decrypt := make([]shared.DecryptionRecordSelector, 0, len(r.Config.Decrypt))
-	for _, decryptItem := range r.Config.Decrypt {
-		partOfRecord := shared.PartOfRecord(decryptItem.PartOfRecord.ValueString())
-		decrypt = append(decrypt, shared.DecryptionRecordSelector{
-			PartOfRecord: partOfRecord,
-		})
+	partOfRecord := make([]shared.DecryptionRecordPart, 0, len(r.Config.PartOfRecord))
+	for _, partOfRecordItem := range r.Config.PartOfRecord {
+		partOfRecord = append(partOfRecord, shared.DecryptionRecordPart(partOfRecordItem.ValueString()))
 	}
 	config := shared.EventGatewayDecryptPolicyConfig{
-		FailureMode: failureMode,
-		KeySources:  keySources,
-		Decrypt:     decrypt,
+		FailureMode:  failureMode,
+		KeySources:   keySources,
+		PartOfRecord: partOfRecord,
 	}
 	labels := make(map[string]*string)
 	for labelsKey, labelsValue := range r.Labels {
@@ -222,77 +204,6 @@ func (r *EventGatewayConsumePolicyDecryptResourceModel) ToSharedEventGatewayDecr
 		labels[labelsKey] = labelsInst
 	}
 	out := shared.EventGatewayDecryptPolicy{
-		Name:        name,
-		Description: description,
-		Enabled:     enabled,
-		Condition:   condition,
-		Config:      config,
-		Labels:      labels,
-	}
-
-	return &out, diags
-}
-
-func (r *EventGatewayConsumePolicyDecryptResourceModel) ToSharedEventGatewayDecryptSensitiveDataAwarePolicy(ctx context.Context) (*shared.EventGatewayDecryptSensitiveDataAwarePolicy, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
-	} else {
-		name = nil
-	}
-	description := new(string)
-	if !r.Description.IsUnknown() && !r.Description.IsNull() {
-		*description = r.Description.ValueString()
-	} else {
-		description = nil
-	}
-	enabled := new(bool)
-	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
-		*enabled = r.Enabled.ValueBool()
-	} else {
-		enabled = nil
-	}
-	condition := new(string)
-	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
-		*condition = r.Condition.ValueString()
-	} else {
-		condition = nil
-	}
-	failureMode := shared.EncryptionFailureMode(r.Config.FailureMode.ValueString())
-	keySources := make([]shared.EventGatewayKeySourceSensitiveDataAware, 0, len(r.Config.KeySources))
-	for _, keySourcesItem := range r.Config.KeySources {
-		if keySourcesItem.Aws != nil {
-			eventGatewayAWSKeySource := shared.EventGatewayAWSKeySource{}
-			keySources = append(keySources, shared.EventGatewayKeySourceSensitiveDataAware{
-				EventGatewayAWSKeySource: &eventGatewayAWSKeySource,
-			})
-		}
-	}
-	decrypt := make([]shared.DecryptionRecordSelector, 0, len(r.Config.Decrypt))
-	for _, decryptItem := range r.Config.Decrypt {
-		partOfRecord := shared.PartOfRecord(decryptItem.PartOfRecord.ValueString())
-		decrypt = append(decrypt, shared.DecryptionRecordSelector{
-			PartOfRecord: partOfRecord,
-		})
-	}
-	config := shared.EventGatewayDecryptPolicyConfigSensitiveDataAware{
-		FailureMode: failureMode,
-		KeySources:  keySources,
-		Decrypt:     decrypt,
-	}
-	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
-		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
-		} else {
-			labelsInst = nil
-		}
-		labels[labelsKey] = labelsInst
-	}
-	out := shared.EventGatewayDecryptSensitiveDataAwarePolicy{
 		Name:        name,
 		Description: description,
 		Enabled:     enabled,

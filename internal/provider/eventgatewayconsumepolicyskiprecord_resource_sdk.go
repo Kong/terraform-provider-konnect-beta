@@ -49,18 +49,18 @@ func (r *EventGatewayConsumePolicySkipRecordResourceModel) ToOperationsCreateEve
 	} else {
 		parentPolicyID = nil
 	}
-	eventGatewaySkipRecordPolicy, eventGatewaySkipRecordPolicyDiags := r.ToSharedEventGatewaySkipRecordPolicy(ctx)
-	diags.Append(eventGatewaySkipRecordPolicyDiags...)
+	eventGatewaySkipRecordPolicyCreate, eventGatewaySkipRecordPolicyCreateDiags := r.ToSharedEventGatewaySkipRecordPolicyCreate(ctx)
+	diags.Append(eventGatewaySkipRecordPolicyCreateDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	out := operations.CreateEventGatewayVirtualClusterConsumePolicySkipRecordRequest{
-		GatewayID:                    gatewayID,
-		VirtualClusterID:             virtualClusterID,
-		ParentPolicyID:               parentPolicyID,
-		EventGatewaySkipRecordPolicy: eventGatewaySkipRecordPolicy,
+		GatewayID:                          gatewayID,
+		VirtualClusterID:                   virtualClusterID,
+		ParentPolicyID:                     parentPolicyID,
+		EventGatewaySkipRecordPolicyCreate: eventGatewaySkipRecordPolicyCreate,
 	}
 
 	return &out, diags
@@ -180,6 +180,61 @@ func (r *EventGatewayConsumePolicySkipRecordResourceModel) ToSharedEventGatewayS
 		Enabled:     enabled,
 		Condition:   condition,
 		Labels:      labels,
+	}
+
+	return &out, diags
+}
+
+func (r *EventGatewayConsumePolicySkipRecordResourceModel) ToSharedEventGatewaySkipRecordPolicyCreate(ctx context.Context) (*shared.EventGatewaySkipRecordPolicyCreate, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	name := new(string)
+	if !r.Name.IsUnknown() && !r.Name.IsNull() {
+		*name = r.Name.ValueString()
+	} else {
+		name = nil
+	}
+	description := new(string)
+	if !r.Description.IsUnknown() && !r.Description.IsNull() {
+		*description = r.Description.ValueString()
+	} else {
+		description = nil
+	}
+	enabled := new(bool)
+	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
+		*enabled = r.Enabled.ValueBool()
+	} else {
+		enabled = nil
+	}
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
+	labels := make(map[string]*string)
+	for labelsKey, labelsValue := range r.Labels {
+		labelsInst := new(string)
+		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
+			*labelsInst = labelsValue.ValueString()
+		} else {
+			labelsInst = nil
+		}
+		labels[labelsKey] = labelsInst
+	}
+	parentPolicyID := new(string)
+	if !r.ParentPolicyID.IsUnknown() && !r.ParentPolicyID.IsNull() {
+		*parentPolicyID = r.ParentPolicyID.ValueString()
+	} else {
+		parentPolicyID = nil
+	}
+	out := shared.EventGatewaySkipRecordPolicyCreate{
+		Name:           name,
+		Description:    description,
+		Enabled:        enabled,
+		Condition:      condition,
+		Labels:         labels,
+		ParentPolicyID: parentPolicyID,
 	}
 
 	return &out, diags
