@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: 2e706a0f89105e31cd7fcce809904b54
+  docChecksum: aa9f01905d4ecb3caefd35f00070266b
   docVersion: 2.0.0
   speakeasyVersion: 1.648.0
   generationVersion: 2.737.0
@@ -1174,8 +1174,6 @@ generatedFiles:
   - internal/sdk/models/shared/encryptionkeyaws.go
   - internal/sdk/models/shared/encryptionkeystatic.go
   - internal/sdk/models/shared/encryptionkeystaticreference.go
-  - internal/sdk/models/shared/encryptionkeystaticreferencebyid.go
-  - internal/sdk/models/shared/encryptionkeystaticreferencebyname.go
   - internal/sdk/models/shared/encryptionrecordpart.go
   - internal/sdk/models/shared/eventgatewayacloperation.go
   - internal/sdk/models/shared/eventgatewayaclpolicyconfig.go
@@ -1373,6 +1371,8 @@ generatedFiles:
   - internal/sdk/models/shared/producevaluevalidationaction.go
   - internal/sdk/models/shared/publishedstatus.go
   - internal/sdk/models/shared/putmeshcontrolplanerequest.go
+  - internal/sdk/models/shared/referencebyid.go
+  - internal/sdk/models/shared/referencebyname.go
   - internal/sdk/models/shared/replaceclient.go
   - internal/sdk/models/shared/replaceportalimageasset.go
   - internal/sdk/models/shared/responsetype.go

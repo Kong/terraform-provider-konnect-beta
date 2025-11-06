@@ -102,7 +102,7 @@ func (r *EventGatewayProducePolicyEncryptResource) Schema(ctx context.Context, r
 									"key": schema.SingleNestedAttribute{
 										Required: true,
 										Attributes: map[string]schema.Attribute{
-											"encryption_key_static_reference_by_id": schema.SingleNestedAttribute{
+											"reference_by_id": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"id": schema.StringAttribute{
@@ -113,11 +113,11 @@ func (r *EventGatewayProducePolicyEncryptResource) Schema(ctx context.Context, r
 												Description: `A static encryption key reference by ID.`,
 												Validators: []validator.Object{
 													objectvalidator.ConflictsWith(path.Expressions{
-														path.MatchRelative().AtParent().AtName("encryption_key_static_reference_by_name"),
+														path.MatchRelative().AtParent().AtName("reference_by_name"),
 													}...),
 												},
 											},
-											"encryption_key_static_reference_by_name": schema.SingleNestedAttribute{
+											"reference_by_name": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"name": schema.StringAttribute{
@@ -131,7 +131,7 @@ func (r *EventGatewayProducePolicyEncryptResource) Schema(ctx context.Context, r
 												Description: `A static encryption key reference by name.`,
 												Validators: []validator.Object{
 													objectvalidator.ConflictsWith(path.Expressions{
-														path.MatchRelative().AtParent().AtName("encryption_key_static_reference_by_id"),
+														path.MatchRelative().AtParent().AtName("reference_by_id"),
 													}...),
 												},
 											},

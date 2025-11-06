@@ -191,32 +191,32 @@ func (r *EventGatewayProducePolicyEncryptResourceModel) ToSharedEventGatewayEncr
 	var encryptionKeyStatic *shared.EncryptionKeyStatic
 	if r.Config.EncryptionKey.Static != nil {
 		var key shared.EncryptionKeyStaticReference
-		var encryptionKeyStaticReferenceByID *shared.EncryptionKeyStaticReferenceByID
-		if r.Config.EncryptionKey.Static.Key.EncryptionKeyStaticReferenceByID != nil {
+		var referenceByID *shared.ReferenceByID
+		if r.Config.EncryptionKey.Static.Key.ReferenceByID != nil {
 			var id string
-			id = r.Config.EncryptionKey.Static.Key.EncryptionKeyStaticReferenceByID.ID.ValueString()
+			id = r.Config.EncryptionKey.Static.Key.ReferenceByID.ID.ValueString()
 
-			encryptionKeyStaticReferenceByID = &shared.EncryptionKeyStaticReferenceByID{
+			referenceByID = &shared.ReferenceByID{
 				ID: id,
 			}
 		}
-		if encryptionKeyStaticReferenceByID != nil {
+		if referenceByID != nil {
 			key = shared.EncryptionKeyStaticReference{
-				EncryptionKeyStaticReferenceByID: encryptionKeyStaticReferenceByID,
+				ReferenceByID: referenceByID,
 			}
 		}
-		var encryptionKeyStaticReferenceByName *shared.EncryptionKeyStaticReferenceByName
-		if r.Config.EncryptionKey.Static.Key.EncryptionKeyStaticReferenceByName != nil {
+		var referenceByName *shared.ReferenceByName
+		if r.Config.EncryptionKey.Static.Key.ReferenceByName != nil {
 			var name1 string
-			name1 = r.Config.EncryptionKey.Static.Key.EncryptionKeyStaticReferenceByName.Name.ValueString()
+			name1 = r.Config.EncryptionKey.Static.Key.ReferenceByName.Name.ValueString()
 
-			encryptionKeyStaticReferenceByName = &shared.EncryptionKeyStaticReferenceByName{
+			referenceByName = &shared.ReferenceByName{
 				Name: name1,
 			}
 		}
-		if encryptionKeyStaticReferenceByName != nil {
+		if referenceByName != nil {
 			key = shared.EncryptionKeyStaticReference{
-				EncryptionKeyStaticReferenceByName: encryptionKeyStaticReferenceByName,
+				ReferenceByName: referenceByName,
 			}
 		}
 		encryptionKeyStatic = &shared.EncryptionKeyStatic{
