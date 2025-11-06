@@ -3922,7 +3922,7 @@ paths:
   '/v1/mesh/control-planes/{cpId}/api/zoneegresses/{name}':
     get:
       x-speakeasy-entity-operation:
-        terraform-resource: ZoneEgress#get
+        terraform-resource: MeshZoneEgress#get
         terraform-datasource: null
       operationId: getZoneEgress
       summary: Returns ZoneEgress entity
@@ -3942,7 +3942,7 @@ paths:
         - ZoneEgress
     put:
       x-speakeasy-entity-operation:
-        terraform-resource: 'ZoneEgress#create,update'
+        terraform-resource: 'MeshZoneEgress#create,update'
         terraform-datasource: null
       operationId: putZoneEgress
       summary: Creates or Updates ZoneEgress entity
@@ -3969,7 +3969,7 @@ paths:
         - ZoneEgress
     delete:
       x-speakeasy-entity-operation:
-        terraform-resource: ZoneEgress#delete
+        terraform-resource: MeshZoneEgress#delete
         terraform-datasource: null
       operationId: deleteZoneEgress
       summary: Deletes ZoneEgress entity
@@ -4036,7 +4036,7 @@ paths:
   '/v1/mesh/control-planes/{cpId}/api/zoneingresses/{name}':
     get:
       x-speakeasy-entity-operation:
-        terraform-resource: ZoneIngress#get
+        terraform-resource: MeshZoneIngress#get
         terraform-datasource: null
       operationId: getZoneIngress
       summary: Returns ZoneIngress entity
@@ -4056,7 +4056,7 @@ paths:
         - ZoneIngress
     put:
       x-speakeasy-entity-operation:
-        terraform-resource: 'ZoneIngress#create,update'
+        terraform-resource: 'MeshZoneIngress#create,update'
         terraform-datasource: null
       operationId: putZoneIngress
       summary: Creates or Updates ZoneIngress entity
@@ -4083,7 +4083,7 @@ paths:
         - ZoneIngress
     delete:
       x-speakeasy-entity-operation:
-        terraform-resource: ZoneIngress#delete
+        terraform-resource: MeshZoneIngress#delete
         terraform-datasource: null
       operationId: deleteZoneIngress
       summary: Deletes ZoneIngress entity
@@ -7235,8 +7235,6 @@ paths:
       operationId: create-event-gateway-virtual-cluster-consume-policy-modify-headers
       summary: Create Consume Policy for Virtual Cluster
       description: Creates a new consume policy associated with the specified Event Gateway virtual cluster.
-      parameters:
-        - $ref: '#/components/parameters/parentPolicyId'
       requestBody:
         content:
           application/json:
@@ -7270,8 +7268,6 @@ paths:
       operationId: create-event-gateway-virtual-cluster-consume-policy-schema-validation
       summary: Create Consume Policy for Virtual Cluster
       description: Creates a new consume policy associated with the specified Event Gateway virtual cluster.
-      parameters:
-        - $ref: '#/components/parameters/parentPolicyId'
       requestBody:
         content:
           application/json:
@@ -7305,8 +7301,6 @@ paths:
       operationId: create-event-gateway-virtual-cluster-consume-policy-decrypt
       summary: Create Consume Policy for Virtual Cluster
       description: Creates a new consume policy associated with the specified Event Gateway virtual cluster.
-      parameters:
-        - $ref: '#/components/parameters/parentPolicyId'
       requestBody:
         content:
           application/json:
@@ -7340,8 +7334,6 @@ paths:
       operationId: create-event-gateway-virtual-cluster-consume-policy-skip-record
       summary: Create Consume Policy for Virtual Cluster
       description: Creates a new consume policy associated with the specified Event Gateway virtual cluster.
-      parameters:
-        - $ref: '#/components/parameters/parentPolicyId'
       requestBody:
         content:
           application/json:
@@ -7633,8 +7625,6 @@ paths:
       operationId: create-event-gateway-virtual-cluster-produce-policy-modify-headers
       summary: Create Produce Policy for Virtual Cluster
       description: Creates a new produce policy associated with the specified Event Gateway virtual cluster.
-      parameters:
-        - $ref: '#/components/parameters/parentPolicyId'
       requestBody:
         content:
           application/json:
@@ -7668,8 +7658,6 @@ paths:
       operationId: create-event-gateway-virtual-cluster-produce-policy-schema-validation
       summary: Create Produce Policy for Virtual Cluster
       description: Creates a new produce policy associated with the specified Event Gateway virtual cluster.
-      parameters:
-        - $ref: '#/components/parameters/parentPolicyId'
       requestBody:
         content:
           application/json:
@@ -7703,8 +7691,6 @@ paths:
       operationId: create-event-gateway-virtual-cluster-produce-policy-encrypt
       summary: Create Produce Policy for Virtual Cluster
       description: Creates a new produce policy associated with the specified Event Gateway virtual cluster.
-      parameters:
-        - $ref: '#/components/parameters/parentPolicyId'
       requestBody:
         content:
           application/json:
@@ -7824,8 +7810,6 @@ paths:
       operationId: create-event-gateway-virtual-cluster-cluster-level-policy-acls
       summary: Create Cluster Policy for Virtual Cluster
       description: Creates a new cluster-level policy associated with the specified Event Gateway virtual cluster.
-      parameters:
-        - $ref: '#/components/parameters/parentPolicyId'
       requestBody:
         content:
           application/json:
@@ -7973,15 +7957,6 @@ components:
       schema:
         type: integer
         example: 100
-    parentPolicyId:
-      x-internal: true
-      x-unstable: true
-      schema:
-        type: string
-        format: uuid
-      name: parent_policy_id
-      in: query
-      description: 'When specified, it sets the ID of the parent policy.'
     PortalId:
       schema:
         type: string
