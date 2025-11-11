@@ -5765,8 +5765,6 @@ paths:
   /v1/event-gateways:
     parameters: []
     post:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGateway#create
         terraform-datasource: null
@@ -5810,8 +5808,6 @@ paths:
           example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
         x-speakeasy-match: id
     get:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGateway#read
         terraform-datasource: null
@@ -5840,8 +5836,6 @@ paths:
       tags:
         - Event Gateways
     put:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGateway#update
         terraform-datasource: null
@@ -5872,8 +5866,6 @@ paths:
       tags:
         - Event Gateways
     delete:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGateway#delete
         terraform-datasource: null
@@ -5895,8 +5887,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/gatewayId'
     post:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayListener#create
         terraform-datasource: null
@@ -5932,8 +5922,6 @@ paths:
           format: uuid
         x-speakeasy-match: id
     get:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayListener#read
         terraform-datasource: null
@@ -5956,8 +5944,6 @@ paths:
       tags:
         - Event Gateway Listeners
     put:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayListener#update
         terraform-datasource: null
@@ -5982,8 +5968,6 @@ paths:
       tags:
         - Event Gateway Listeners
     delete:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayListener#delete
         terraform-datasource: null
@@ -6005,8 +5989,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/gatewayId'
     post:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayVirtualCluster#create
         terraform-datasource: null
@@ -6042,8 +6024,6 @@ paths:
           format: uuid
         x-speakeasy-match: id
     get:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayVirtualCluster#read
         terraform-datasource: null
@@ -6066,8 +6046,6 @@ paths:
       tags:
         - Event Gateway Virtual Clusters
     put:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayVirtualCluster#update
         terraform-datasource: null
@@ -6092,8 +6070,6 @@ paths:
       tags:
         - Event Gateway Virtual Clusters
     delete:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayVirtualCluster#delete
         terraform-datasource: null
@@ -6115,8 +6091,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/gatewayId'
     post:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayBackendCluster#create
         terraform-datasource: null
@@ -6152,8 +6126,6 @@ paths:
           format: uuid
         x-speakeasy-match: id
     get:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayBackendCluster#read
         terraform-datasource: null
@@ -6176,8 +6148,6 @@ paths:
       tags:
         - Event Gateway Backend Clusters
     put:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayBackendCluster#update
         terraform-datasource: null
@@ -6202,8 +6172,6 @@ paths:
       tags:
         - Event Gateway Backend Clusters
     delete:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayBackendCluster#delete
         terraform-datasource: null
@@ -6225,8 +6193,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/gatewayId'
     post:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayVault#create
         terraform-datasource: null
@@ -6262,8 +6228,6 @@ paths:
           format: uuid
         x-speakeasy-match: id
     get:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayVault#read
         terraform-datasource: null
@@ -6286,8 +6250,6 @@ paths:
       tags:
         - Event Gateway Vaults
     put:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayVault#update
         terraform-datasource: null
@@ -6312,8 +6274,6 @@ paths:
       tags:
         - Event Gateway Vaults
     delete:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayVault#delete
         terraform-datasource: null
@@ -6335,8 +6295,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/gatewayId'
     post:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewaySchemaRegistry#create
         terraform-datasource: null
@@ -6372,8 +6330,6 @@ paths:
           format: uuid
         x-speakeasy-match: id
     get:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewaySchemaRegistry#read
         terraform-datasource: null
@@ -6396,8 +6352,6 @@ paths:
       tags:
         - Event Gateway Schema Registries
     put:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewaySchemaRegistry#update
         terraform-datasource: null
@@ -6422,8 +6376,6 @@ paths:
       tags:
         - Event Gateway Schema Registries
     delete:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewaySchemaRegistry#delete
         terraform-datasource: null
@@ -6447,8 +6399,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/gatewayId'
     post:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayDataPlaneCertificate#create
         terraform-datasource: null
@@ -6486,8 +6436,6 @@ paths:
           format: uuid
         x-speakeasy-match: id
     get:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayDataPlaneCertificate#read
         terraform-datasource: null
@@ -6510,8 +6458,6 @@ paths:
       tags:
         - Event Gateway DataPlane Certificates
     put:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayDataPlaneCertificate#update
         terraform-datasource: null
@@ -6536,8 +6482,6 @@ paths:
       tags:
         - Event Gateway DataPlane Certificates
     delete:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayDataPlaneCertificate#delete
         terraform-datasource: null
@@ -6559,8 +6503,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/gatewayId'
     post:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayStaticKey#create
         terraform-datasource: null
@@ -6598,8 +6540,6 @@ paths:
           format: uuid
         x-speakeasy-match: id
     get:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayStaticKey#read
         terraform-datasource: null
@@ -6622,8 +6562,6 @@ paths:
       tags:
         - Event Gateway Static Keys
     delete:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayStaticKey#delete
         terraform-datasource: null
@@ -6645,8 +6583,6 @@ paths:
         - Event Gateway Static Keys
   '/v1/event-gateways/{gatewayId}/listeners/{eventGatewayListenerId}/policies/{policyId}#TlsServer':
     get:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayListenerPolicyTlsServer#get
         terraform-datasource: null
@@ -6669,8 +6605,6 @@ paths:
       tags:
         - Event Gateway Listener Policies
     put:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayListenerPolicyTlsServer#update
         terraform-datasource: null
@@ -6698,8 +6632,6 @@ paths:
       tags:
         - Event Gateway Listener Policies
     delete:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayListenerPolicyTlsServer#delete
         terraform-datasource: null
@@ -6731,8 +6663,6 @@ paths:
         x-speakeasy-match: id
   '/v1/event-gateways/{gatewayId}/listeners/{eventGatewayListenerId}/policies/{policyId}#ForwardToVirtualCluster':
     get:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayListenerPolicyForwardToVirtualCluster#get
         terraform-datasource: null
@@ -6755,8 +6685,6 @@ paths:
       tags:
         - Event Gateway Listener Policies
     put:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayListenerPolicyForwardToVirtualCluster#update
         terraform-datasource: null
@@ -6784,8 +6712,6 @@ paths:
       tags:
         - Event Gateway Listener Policies
     delete:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayListenerPolicyForwardToVirtualCluster#delete
         terraform-datasource: null
@@ -6817,8 +6743,6 @@ paths:
         x-speakeasy-match: id
   '/v1/event-gateways/{gatewayId}/listeners/{eventGatewayListenerId}/policies#TlsServer':
     post:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayListenerPolicyTlsServer#create
         terraform-datasource: null
@@ -6850,8 +6774,6 @@ paths:
       - $ref: '#/components/parameters/eventGatewayListenerId'
   '/v1/event-gateways/{gatewayId}/listeners/{eventGatewayListenerId}/policies#ForwardToVirtualCluster':
     post:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayListenerPolicyForwardToVirtualCluster#create
         terraform-datasource: null
@@ -6883,8 +6805,6 @@ paths:
       - $ref: '#/components/parameters/eventGatewayListenerId'
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies/{policyId}#ModifyHeaders':
     get:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayConsumePolicyModifyHeaders#get
         terraform-datasource: null
@@ -6907,8 +6827,6 @@ paths:
       tags:
         - Event Gateway Virtual Cluster Consume Policies
     put:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayConsumePolicyModifyHeaders#update
         terraform-datasource: null
@@ -6936,8 +6854,6 @@ paths:
       tags:
         - Event Gateway Virtual Cluster Consume Policies
     delete:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayConsumePolicyModifyHeaders#delete
         terraform-datasource: null
@@ -6969,8 +6885,6 @@ paths:
         x-speakeasy-match: id
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies/{policyId}#SchemaValidation':
     get:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayConsumePolicySchemaValidation#get
         terraform-datasource: null
@@ -6993,8 +6907,6 @@ paths:
       tags:
         - Event Gateway Virtual Cluster Consume Policies
     put:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayConsumePolicySchemaValidation#update
         terraform-datasource: null
@@ -7022,8 +6934,6 @@ paths:
       tags:
         - Event Gateway Virtual Cluster Consume Policies
     delete:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayConsumePolicySchemaValidation#delete
         terraform-datasource: null
@@ -7055,8 +6965,6 @@ paths:
         x-speakeasy-match: id
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies/{policyId}#Decrypt':
     get:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayConsumePolicyDecrypt#get
         terraform-datasource: null
@@ -7079,8 +6987,6 @@ paths:
       tags:
         - Event Gateway Virtual Cluster Consume Policies
     put:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayConsumePolicyDecrypt#update
         terraform-datasource: null
@@ -7108,8 +7014,6 @@ paths:
       tags:
         - Event Gateway Virtual Cluster Consume Policies
     delete:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayConsumePolicyDecrypt#delete
         terraform-datasource: null
@@ -7141,8 +7045,6 @@ paths:
         x-speakeasy-match: id
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies/{policyId}#SkipRecord':
     get:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayConsumePolicySkipRecord#get
         terraform-datasource: null
@@ -7165,8 +7067,6 @@ paths:
       tags:
         - Event Gateway Virtual Cluster Consume Policies
     put:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayConsumePolicySkipRecord#update
         terraform-datasource: null
@@ -7194,8 +7094,6 @@ paths:
       tags:
         - Event Gateway Virtual Cluster Consume Policies
     delete:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayConsumePolicySkipRecord#delete
         terraform-datasource: null
@@ -7227,8 +7125,6 @@ paths:
         x-speakeasy-match: id
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies#ModifyHeaders':
     post:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayConsumePolicyModifyHeaders#create
         terraform-datasource: null
@@ -7260,8 +7156,6 @@ paths:
       - $ref: '#/components/parameters/virtualClusterId'
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies#SchemaValidation':
     post:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayConsumePolicySchemaValidation#create
         terraform-datasource: null
@@ -7293,8 +7187,6 @@ paths:
       - $ref: '#/components/parameters/virtualClusterId'
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies#Decrypt':
     post:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayConsumePolicyDecrypt#create
         terraform-datasource: null
@@ -7326,8 +7218,6 @@ paths:
       - $ref: '#/components/parameters/virtualClusterId'
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies#SkipRecord':
     post:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayConsumePolicySkipRecord#create
         terraform-datasource: null
@@ -7359,8 +7249,6 @@ paths:
       - $ref: '#/components/parameters/virtualClusterId'
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies/{policyId}#ModifyHeaders':
     get:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayProducePolicyModifyHeaders#get
         terraform-datasource: null
@@ -7383,8 +7271,6 @@ paths:
       tags:
         - Event Gateway Virtual Cluster Produce Policies
     put:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayProducePolicyModifyHeaders#update
         terraform-datasource: null
@@ -7412,8 +7298,6 @@ paths:
       tags:
         - Event Gateway Virtual Cluster Produce Policies
     delete:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayProducePolicyModifyHeaders#delete
         terraform-datasource: null
@@ -7445,8 +7329,6 @@ paths:
         x-speakeasy-match: id
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies/{policyId}#SchemaValidation':
     get:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayProducePolicySchemaValidation#get
         terraform-datasource: null
@@ -7469,8 +7351,6 @@ paths:
       tags:
         - Event Gateway Virtual Cluster Produce Policies
     put:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayProducePolicySchemaValidation#update
         terraform-datasource: null
@@ -7498,8 +7378,6 @@ paths:
       tags:
         - Event Gateway Virtual Cluster Produce Policies
     delete:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayProducePolicySchemaValidation#delete
         terraform-datasource: null
@@ -7531,8 +7409,6 @@ paths:
         x-speakeasy-match: id
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies/{policyId}#Encrypt':
     get:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayProducePolicyEncrypt#get
         terraform-datasource: null
@@ -7555,8 +7431,6 @@ paths:
       tags:
         - Event Gateway Virtual Cluster Produce Policies
     put:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayProducePolicyEncrypt#update
         terraform-datasource: null
@@ -7584,8 +7458,6 @@ paths:
       tags:
         - Event Gateway Virtual Cluster Produce Policies
     delete:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayProducePolicyEncrypt#delete
         terraform-datasource: null
@@ -7617,8 +7489,6 @@ paths:
         x-speakeasy-match: id
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies#ModifyHeaders':
     post:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayProducePolicyModifyHeaders#create
         terraform-datasource: null
@@ -7650,8 +7520,6 @@ paths:
       - $ref: '#/components/parameters/virtualClusterId'
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies#SchemaValidation':
     post:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayProducePolicySchemaValidation#create
         terraform-datasource: null
@@ -7683,8 +7551,6 @@ paths:
       - $ref: '#/components/parameters/virtualClusterId'
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies#Encrypt':
     post:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayProducePolicyEncrypt#create
         terraform-datasource: null
@@ -7716,8 +7582,6 @@ paths:
       - $ref: '#/components/parameters/virtualClusterId'
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/cluster-policies/{policyId}#Acls':
     get:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayClusterPolicyAcls#get
         terraform-datasource: null
@@ -7740,8 +7604,6 @@ paths:
       tags:
         - Event Gateway Virtual Cluster Policies
     put:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayClusterPolicyAcls#update
         terraform-datasource: null
@@ -7769,8 +7631,6 @@ paths:
       tags:
         - Event Gateway Virtual Cluster Policies
     delete:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayClusterPolicyAcls#delete
         terraform-datasource: null
@@ -7802,8 +7662,6 @@ paths:
         x-speakeasy-match: id
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/cluster-policies#Acls':
     post:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayClusterPolicyAcls#create
         terraform-datasource: null
@@ -8847,12 +8705,15 @@ components:
         number:
           type: number
           example: 1
+          x-speakeasy-terraform-ignore: true
         size:
           type: number
           example: 10
+          x-speakeasy-terraform-ignore: true
         total:
           type: number
           example: 100
+          x-speakeasy-terraform-ignore: true
       required:
         - number
         - size
@@ -8866,6 +8727,7 @@ components:
       required:
         - page
       title: PaginatedMeta
+      x-speakeasy-terraform-ignore: true
     BaseError:
       description: standard error
       type: object
@@ -22434,6 +22296,18 @@ components:
         - client_secret_post
         - none
       x-speakeasy-unknown-values: allow
+    TrustedOrigins:
+      description: A list or trusted origins to apply the CORS header on for the auth server
+      type: array
+      items:
+        $ref: '#/components/schemas/TrustedOrigin'
+      maxLength: 16
+      uniqueItems: true
+    TrustedOrigin:
+      description: A trusted origin for the auth server
+      type: string
+      format: uri
+      example: 'https://example.com'
     AuthServer:
       type: object
       properties:
@@ -22461,6 +22335,8 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
+        trusted_origins:
+          $ref: '#/components/schemas/TrustedOrigins'
       required:
         - id
         - name
@@ -22472,6 +22348,10 @@ components:
         - labels
         - created_at
         - updated_at
+      x-property-annotations:
+        trusted_origins:
+          - x-internal
+          - x-unstable
     ClaimName:
       description: The name of the claim
       type: string
@@ -27387,9 +27267,15 @@ components:
                 $ref: '#/components/schemas/Algorithm'
               labels:
                 $ref: '#/components/schemas/Labels'
+              trusted_origins:
+                $ref: '#/components/schemas/TrustedOrigins'
             required:
               - name
               - audience
+            x-property-annotations:
+              trusted_origins:
+                - x-internal
+                - x-unstable
     UpdateAuthServer:
       description: Auth server to be updated
       required: true
@@ -27408,6 +27294,12 @@ components:
                 $ref: '#/components/schemas/UpdateAlgorithm'
               labels:
                 $ref: '#/components/schemas/LabelsUpdate'
+              trusted_origins:
+                $ref: '#/components/schemas/TrustedOrigins'
+            x-property-annotations:
+              trusted_origins:
+                - x-internal
+                - x-unstable
     CreateClaim:
       description: Claim to be created
       required: true
