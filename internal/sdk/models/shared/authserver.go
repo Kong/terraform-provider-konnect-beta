@@ -32,6 +32,8 @@ type AuthServer struct {
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
+	// A list or trusted origins to apply the CORS header on for the auth server
+	TrustedOrigins []string `json:"trusted_origins,omitempty"`
 }
 
 func (a AuthServer) MarshalJSON() ([]byte, error) {
@@ -113,4 +115,11 @@ func (a *AuthServer) GetUpdatedAt() time.Time {
 		return time.Time{}
 	}
 	return a.UpdatedAt
+}
+
+func (a *AuthServer) GetTrustedOrigins() []string {
+	if a == nil {
+		return nil
+	}
+	return a.TrustedOrigins
 }

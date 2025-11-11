@@ -26,9 +26,6 @@ func (r *PortalDataSourceModel) RefreshFromSharedListPortalsResponse(ctx context
 			return diags
 		}
 
-		r.Number = types.Float64Value(resp.Meta.Page.Number)
-		r.Size = types.Float64Value(resp.Meta.Page.Size)
-		r.Total = types.Float64Value(resp.Meta.Page.Total)
 	}
 
 	return diags
