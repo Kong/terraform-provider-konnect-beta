@@ -22,6 +22,9 @@ resource "konnect_auth_server" "my_authserver" {
   }
   name              = "...my_name..."
   signing_algorithm = "RS384"
+  trusted_origins = [
+    "https://example.com"
+  ]
 }
 ```
 
@@ -40,6 +43,7 @@ resource "konnect_auth_server" "my_authserver" {
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `signing_algorithm` (String) Algorithm used in the key signing process. Default: "RS256"; must be one of ["RS256", "RS384", "RS512", "PS256", "PS384", "PS512"]
+- `trusted_origins` (List of String) A list or trusted origins to apply the CORS header on for the auth server
 
 ### Read-Only
 
