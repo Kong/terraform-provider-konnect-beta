@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -44,6 +45,7 @@ type AuthServerResourceModel struct {
 	MetadataURI      types.String            `tfsdk:"metadata_uri"`
 	Name             types.String            `tfsdk:"name"`
 	SigningAlgorithm types.String            `tfsdk:"signing_algorithm"`
+	TrustedOrigins   []types.String          `tfsdk:"trusted_origins"`
 	UpdatedAt        types.String            `tfsdk:"updated_at"`
 }
 
@@ -118,6 +120,15 @@ func (r *AuthServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 						"PS384",
 						"PS512",
 					),
+				},
+			},
+			"trusted_origins": schema.ListAttribute{
+				Computed:    true,
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `A list or trusted origins to apply the CORS header on for the auth server`,
+				Validators: []validator.List{
+					listvalidator.UniqueValues(),
 				},
 			},
 			"updated_at": schema.StringAttribute{

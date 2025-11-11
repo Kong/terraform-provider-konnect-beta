@@ -33,6 +33,10 @@ func (r *AuthServerResourceModel) RefreshFromSharedAuthServer(ctx context.Contex
 		} else {
 			r.SigningAlgorithm = types.StringNull()
 		}
+		r.TrustedOrigins = make([]types.String, 0, len(resp.TrustedOrigins))
+		for _, v := range resp.TrustedOrigins {
+			r.TrustedOrigins = append(r.TrustedOrigins, types.StringValue(v))
+		}
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
 
@@ -117,12 +121,17 @@ func (r *AuthServerResourceModel) ToSharedCreateAuthServer(ctx context.Context) 
 		}
 		labels[labelsKey] = labelsInst
 	}
+	trustedOrigins := make([]string, 0, len(r.TrustedOrigins))
+	for _, trustedOriginsItem := range r.TrustedOrigins {
+		trustedOrigins = append(trustedOrigins, trustedOriginsItem.ValueString())
+	}
 	out := shared.CreateAuthServer{
 		Name:             name,
 		Description:      description,
 		Audience:         audience,
 		SigningAlgorithm: signingAlgorithm,
 		Labels:           labels,
+		TrustedOrigins:   trustedOrigins,
 	}
 
 	return &out, diags
@@ -168,12 +177,17 @@ func (r *AuthServerResourceModel) ToSharedUpdateAuthServer(ctx context.Context) 
 			labels[labelsKey] = labelsInst
 		}
 	}
+	trustedOrigins := make([]string, 0, len(r.TrustedOrigins))
+	for _, trustedOriginsItem := range r.TrustedOrigins {
+		trustedOrigins = append(trustedOrigins, trustedOriginsItem.ValueString())
+	}
 	out := shared.UpdateAuthServer{
 		Name:             name,
 		Description:      description,
 		Audience:         audience,
 		SigningAlgorithm: signingAlgorithm,
 		Labels:           labels,
+		TrustedOrigins:   trustedOrigins,
 	}
 
 	return &out, diags
