@@ -2,18 +2,19 @@
 
 package sdk
 
-// Generated from OpenAPI doc version 2.0.0 and generator version 2.737.0
+// Generated from OpenAPI doc version 2.0.0 and generator version 2.748.0
 
 import (
 	"context"
 	"fmt"
+	"net/http"
+	"time"
+
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/config"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/hooks"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/retry"
-	"net/http"
-	"time"
 )
 
 // ServerList contains the list of servers available to the SDK
