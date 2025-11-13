@@ -49,6 +49,7 @@ func (r *MeshTrafficPermissionResource) ModifyPlan(
 	if cpID.IsUnknown() {
 		return
 	}
+
 	request := operations.GetMeshTrafficPermissionRequest{
 		Name: name.ValueString(),
 	}

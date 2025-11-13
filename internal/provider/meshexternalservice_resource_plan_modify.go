@@ -49,6 +49,7 @@ func (r *MeshExternalServiceResource) ModifyPlan(
 	if cpID.IsUnknown() {
 		return
 	}
+
 	request := operations.GetMeshExternalServiceRequest{
 		Name: name.ValueString(),
 	}

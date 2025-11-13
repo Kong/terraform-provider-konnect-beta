@@ -49,6 +49,7 @@ func (r *MeshCircuitBreakerResource) ModifyPlan(
 	if cpID.IsUnknown() {
 		return
 	}
+
 	request := operations.GetMeshCircuitBreakerRequest{
 		Name: name.ValueString(),
 	}

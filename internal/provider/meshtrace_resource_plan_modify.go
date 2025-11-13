@@ -49,6 +49,7 @@ func (r *MeshTraceResource) ModifyPlan(
 	if cpID.IsUnknown() {
 		return
 	}
+
 	request := operations.GetMeshTraceRequest{
 		Name: name.ValueString(),
 	}

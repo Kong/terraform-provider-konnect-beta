@@ -49,6 +49,7 @@ func (r *MeshHealthCheckResource) ModifyPlan(
 	if cpID.IsUnknown() {
 		return
 	}
+
 	request := operations.GetMeshHealthCheckRequest{
 		Name: name.ValueString(),
 	}

@@ -41,6 +41,7 @@ func (r *MeshResource) ModifyPlan(
 	if cpID.IsUnknown() {
 		return
 	}
+
 	request := operations.GetMeshRequest{
 		Name: name.ValueString(),
 	}

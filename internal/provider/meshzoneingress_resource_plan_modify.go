@@ -13,9 +13,9 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 )
 
-var _ resource.ResourceWithModifyPlan = &MeshFaultInjectionResource{}
+var _ resource.ResourceWithModifyPlan = &MeshZoneIngressResource{}
 
-func (r *MeshFaultInjectionResource) ModifyPlan(
+func (r *MeshZoneIngressResource) ModifyPlan(
 	ctx context.Context,
 	req resource.ModifyPlanRequest,
 	resp *resource.ModifyPlanResponse,
@@ -50,12 +50,12 @@ func (r *MeshFaultInjectionResource) ModifyPlan(
 		return
 	}
 
-	request := operations.GetMeshFaultInjectionRequest{
+	request := operations.GetZoneIngressRequest{
 		Name: name.ValueString(),
 	}
 	request.Mesh = mesh.ValueString()
 	request.CpID = cpID.ValueString()
-	res, err := r.client.MeshFaultInjection.GetMeshFaultInjection(ctx, request)
+	res, err := r.client.ZoneIngress.GetZoneIngress(ctx, request)
 
 	if err != nil {
 		var sdkError *sdkerrors.SDKError
@@ -80,7 +80,7 @@ func (r *MeshFaultInjectionResource) ModifyPlan(
 
 	if res.StatusCode != http.StatusNotFound {
 		resp.Diagnostics.AddError(
-			"MeshFaultInjection already exists",
+			"MeshZoneIngress already exists",
 			"A resource with the name "+name.String()+" already exists in the mesh "+mesh.String()+" - to be managed via Terraform it needs to be imported first",
 		)
 	}

@@ -49,6 +49,7 @@ func (r *MeshRetryResource) ModifyPlan(
 	if cpID.IsUnknown() {
 		return
 	}
+
 	request := operations.GetMeshRetryRequest{
 		Name: name.ValueString(),
 	}

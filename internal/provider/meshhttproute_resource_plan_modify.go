@@ -49,6 +49,7 @@ func (r *MeshHTTPRouteResource) ModifyPlan(
 	if cpID.IsUnknown() {
 		return
 	}
+
 	request := operations.GetMeshHTTPRouteRequest{
 		Name: name.ValueString(),
 	}

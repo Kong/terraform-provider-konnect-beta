@@ -49,6 +49,7 @@ func (r *MeshOPAResource) ModifyPlan(
 	if cpID.IsUnknown() {
 		return
 	}
+
 	request := operations.GetMeshOPARequest{
 		Name: name.ValueString(),
 	}

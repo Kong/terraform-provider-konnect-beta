@@ -49,6 +49,7 @@ func (r *MeshProxyPatchResource) ModifyPlan(
 	if cpID.IsUnknown() {
 		return
 	}
+
 	request := operations.GetMeshProxyPatchRequest{
 		Name: name.ValueString(),
 	}
