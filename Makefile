@@ -3,7 +3,7 @@
 all: generate
 
 .PHONY: generate
-generate: speakeasy generate-plan-modifiers
+generate: generate-plan-modifiers speakeasy
 
 speakeasy: check-speakeasy
 	@rm -rf examples/resources
