@@ -49,6 +49,7 @@ func (r *MeshGatewayResource) ModifyPlan(
 	if cpID.IsUnknown() {
 		return
 	}
+
 	request := operations.GetMeshGatewayRequest{
 		Name: name.ValueString(),
 	}

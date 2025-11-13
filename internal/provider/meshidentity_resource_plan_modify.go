@@ -49,6 +49,7 @@ func (r *MeshIdentityResource) ModifyPlan(
 	if cpID.IsUnknown() {
 		return
 	}
+
 	request := operations.GetMeshIdentityRequest{
 		Name: name.ValueString(),
 	}

@@ -49,6 +49,7 @@ func (r *MeshAccessLogResource) ModifyPlan(
 	if cpID.IsUnknown() {
 		return
 	}
+
 	request := operations.GetMeshAccessLogRequest{
 		Name: name.ValueString(),
 	}

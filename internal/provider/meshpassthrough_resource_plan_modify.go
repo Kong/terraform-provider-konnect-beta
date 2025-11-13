@@ -49,6 +49,7 @@ func (r *MeshPassthroughResource) ModifyPlan(
 	if cpID.IsUnknown() {
 		return
 	}
+
 	request := operations.GetMeshPassthroughRequest{
 		Name: name.ValueString(),
 	}

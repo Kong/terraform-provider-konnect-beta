@@ -49,6 +49,7 @@ func (r *MeshTCPRouteResource) ModifyPlan(
 	if cpID.IsUnknown() {
 		return
 	}
+
 	request := operations.GetMeshTCPRouteRequest{
 		Name: name.ValueString(),
 	}

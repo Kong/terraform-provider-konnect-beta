@@ -49,6 +49,7 @@ func (r *MeshTLSResource) ModifyPlan(
 	if cpID.IsUnknown() {
 		return
 	}
+
 	request := operations.GetMeshTLSRequest{
 		Name: name.ValueString(),
 	}

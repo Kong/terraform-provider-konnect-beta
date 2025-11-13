@@ -2,7 +2,7 @@ terraform {
   required_providers {
     konnect-beta = {
       source  = "kong/konnect-beta"
-      version = "0.12.0"
+      version = "0.12.1"
     }
   }
 }

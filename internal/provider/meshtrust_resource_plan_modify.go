@@ -49,6 +49,7 @@ func (r *MeshTrustResource) ModifyPlan(
 	if cpID.IsUnknown() {
 		return
 	}
+
 	request := operations.GetMeshTrustRequest{
 		Name: name.ValueString(),
 	}

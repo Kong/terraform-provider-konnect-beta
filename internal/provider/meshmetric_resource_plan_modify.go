@@ -49,6 +49,7 @@ func (r *MeshMetricResource) ModifyPlan(
 	if cpID.IsUnknown() {
 		return
 	}
+
 	request := operations.GetMeshMetricRequest{
 		Name: name.ValueString(),
 	}
