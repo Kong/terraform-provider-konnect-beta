@@ -56,7 +56,7 @@ func (r *EventGatewayResourceModel) ToOperationsGetEventGatewayRequest(ctx conte
 	return &out, diags
 }
 
-func (r *EventGatewayResourceModel) ToOperationsUpdateHoudiniEventGatewayRequest(ctx context.Context) (*operations.UpdateHoudiniEventGatewayRequest, diag.Diagnostics) {
+func (r *EventGatewayResourceModel) ToOperationsUpdateEventGatewayRequest(ctx context.Context) (*operations.UpdateEventGatewayRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var gatewayID string
@@ -69,7 +69,7 @@ func (r *EventGatewayResourceModel) ToOperationsUpdateHoudiniEventGatewayRequest
 		return nil, diags
 	}
 
-	out := operations.UpdateHoudiniEventGatewayRequest{
+	out := operations.UpdateEventGatewayRequest{
 		GatewayID:            gatewayID,
 		UpdateGatewayRequest: *updateGatewayRequest,
 	}

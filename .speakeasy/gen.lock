@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: 24e8c166fd45eaedcdf6c70ff56e4d26
+  docChecksum: 6d6c8cec606073cfc718d4b15c900a01
   docVersion: 2.0.0
   speakeasyVersion: 1.653.0
   generationVersion: 2.748.0
@@ -1073,6 +1073,7 @@ generatedFiles:
   - internal/sdk/models/operations/updateauthserverclaim.go
   - internal/sdk/models/operations/updateauthserverscope.go
   - internal/sdk/models/operations/updatecp.go
+  - internal/sdk/models/operations/updateeventgateway.go
   - internal/sdk/models/operations/updateeventgatewaybackendcluster.go
   - internal/sdk/models/operations/updateeventgatewaydataplanecertificate.go
   - internal/sdk/models/operations/updateeventgatewaylistener.go
@@ -1089,7 +1090,6 @@ generatedFiles:
   - internal/sdk/models/operations/updateeventgatewayvirtualclusterproducepolicyencrypt.go
   - internal/sdk/models/operations/updateeventgatewayvirtualclusterproducepolicymodifyheaders.go
   - internal/sdk/models/operations/updateeventgatewayvirtualclusterproducepolicyschemavalidation.go
-  - internal/sdk/models/operations/updatehoudinieventgateway.go
   - internal/sdk/models/operations/updateportal.go
   - internal/sdk/models/operations/updateportalauthenticationsettings.go
   - internal/sdk/models/operations/updateportalcustomdomain.go
@@ -5173,9 +5173,13 @@ examples:
       parameters:
         path:
           authServerId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+        query:
+          force: "false"
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "400":
+          application/problem+json: {"status": 380037, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
   createAuthServerClaim:
     speakeasy-default-create-auth-server-claim:
       parameters:
@@ -5778,6 +5782,7 @@ examples:
         query:
           page[size]: 100
           page[number]: 1
+          filter: {"id": {"eq": "?filter[field_name_here][eq]=foo", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "name": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "description": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "default_api_visibility": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "default_page_visibility": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "default_application_auth_strategy_id": {"eq": "?filter[field_name_here][eq]=foo", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "default_domain": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "canonical_domain": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}}
       responses:
         "200":
           application/json: {"data": [], "meta": {"page": {"number": 1, "size": 10, "total": 100}}}
@@ -7436,10 +7441,10 @@ examples:
         path:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"name": "<value>", "labels": {"env": "test"}, "value": "${vault.env['MY_ENV_VAR']}"}
+        application/json: {"name": "<value>", "labels": {"env": "test"}, "value": "$${vault.env['MY_ENV_VAR']}"}
       responses:
         "201":
-          application/json: {"name": "<value>", "labels": {"env": "test"}, "id": "8424b7b8-66f8-4f77-b380-3a9a19e7a60f", "value": "${vault.env['MY_ENV_VAR']}", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"name": "<value>", "labels": {"env": "test"}, "id": "8424b7b8-66f8-4f77-b380-3a9a19e7a60f", "value": "$${vault.env['MY_ENV_VAR']}", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 435352, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -7456,7 +7461,7 @@ examples:
           staticKeyId: "8d254be7-bd8f-484b-82e5-613cd779035d"
       responses:
         "200":
-          application/json: {"name": "<value>", "labels": {"env": "test"}, "id": "7a2977da-d640-474f-96bf-4a6cf9f8520a", "value": "${vault.env['MY_ENV_VAR']}", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"name": "<value>", "labels": {"env": "test"}, "id": "7a2977da-d640-474f-96bf-4a6cf9f8520a", "value": "$${vault.env['MY_ENV_VAR']}", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -7478,5 +7483,25 @@ examples:
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-event-gateway:
+    speakeasy-default-update-event-gateway:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"labels": {"env": "test"}}
+      responses:
+        "200":
+          application/json: {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "nodes_total": 668718, "virtual_clusters_total": 719051, "version": "v1_123"}
+        "400":
+          application/problem+json: {"status": 131258, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max_length", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "500":
+          application/problem+json: {"status": 878067, "title": "<value>", "instance": "<value>", "detail": "<value>"}
 examplesVersion: 1.0.2
 generatedTests: {}

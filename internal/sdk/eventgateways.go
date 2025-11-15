@@ -695,9 +695,9 @@ func (s *EventGateways) GetEventGateway(ctx context.Context, request operations.
 
 }
 
-// UpdateHoudiniEventGateway - Update Event Gateway
+// UpdateEventGateway - Update Event Gateway
 // Update an individual gateway.
-func (s *EventGateways) UpdateHoudiniEventGateway(ctx context.Context, request operations.UpdateHoudiniEventGatewayRequest, opts ...operations.Option) (*operations.UpdateHoudiniEventGatewayResponse, error) {
+func (s *EventGateways) UpdateEventGateway(ctx context.Context, request operations.UpdateEventGatewayRequest, opts ...operations.Option) (*operations.UpdateEventGatewayResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -727,7 +727,7 @@ func (s *EventGateways) UpdateHoudiniEventGateway(ctx context.Context, request o
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "update-houdini-event-gateway",
+		OperationID:      "update-event-gateway",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
@@ -873,7 +873,7 @@ func (s *EventGateways) UpdateHoudiniEventGateway(ctx context.Context, request o
 		}
 	}
 
-	res := &operations.UpdateHoudiniEventGatewayResponse{
+	res := &operations.UpdateEventGatewayResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

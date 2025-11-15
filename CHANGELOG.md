@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.13.0
+
+### Features
+* Support `force_destroy` parameter to optionally delete resources associated with `konnect_auth_server`
+
 ## 0.12.1
 > Released on 2025/11/13
 

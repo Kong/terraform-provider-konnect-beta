@@ -1,7 +1,8 @@
 resource "konnect_auth_server" "my_authserver" {
   provider = konnect-beta
-  audience    = "...my_audience..."
-  description = "...my_description..."
+  audience      = "...my_audience..."
+  description   = "...my_description..."
+  force_destroy = "true"
   labels = {
     key = "value"
   }

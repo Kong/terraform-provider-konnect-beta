@@ -39,6 +39,7 @@ type AuthServerResourceModel struct {
 	Audience         types.String            `tfsdk:"audience"`
 	CreatedAt        types.String            `tfsdk:"created_at"`
 	Description      types.String            `tfsdk:"description"`
+	ForceDestroy     types.String            `queryParam:"style=form,explode=true,name=force" tfsdk:"force_destroy"`
 	ID               types.String            `tfsdk:"id"`
 	Issuer           types.String            `tfsdk:"issuer"`
 	Labels           map[string]types.String `tfsdk:"labels"`
@@ -78,6 +79,18 @@ func (r *AuthServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Computed:    true,
 				Optional:    true,
 				Description: `The description of the auth server`,
+			},
+			"force_destroy": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Default:     stringdefault.StaticString(`false`),
+				Description: `If true, delete the specified auth server and all its associated resources. If false, only allow deletion if no clients, scopes or claims are associated with the auth server. Default: "false"; must be one of ["true", "false"]`,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						"true",
+						"false",
+					),
+				},
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,

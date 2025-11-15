@@ -3,13 +3,56 @@
 package operations
 
 import (
+	"encoding/json"
+	"fmt"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 	"net/http"
 )
 
+// DeleteAuthServerQueryParamForce - If true, delete the specified auth server and all its associated resources. If false, only allow deletion if no clients, scopes or claims are associated with the auth server.
+type DeleteAuthServerQueryParamForce string
+
+const (
+	DeleteAuthServerQueryParamForceTrue  DeleteAuthServerQueryParamForce = "true"
+	DeleteAuthServerQueryParamForceFalse DeleteAuthServerQueryParamForce = "false"
+)
+
+func (e DeleteAuthServerQueryParamForce) ToPointer() *DeleteAuthServerQueryParamForce {
+	return &e
+}
+func (e *DeleteAuthServerQueryParamForce) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "true":
+		fallthrough
+	case "false":
+		*e = DeleteAuthServerQueryParamForce(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for DeleteAuthServerQueryParamForce: %v", v)
+	}
+}
+
 type DeleteAuthServerRequest struct {
 	// The auth server ID
 	AuthServerID string `pathParam:"style=simple,explode=false,name=authServerId"`
+	// If true, delete the specified auth server and all its associated resources. If false, only allow deletion if no clients, scopes or claims are associated with the auth server.
+	ForceDestroy *DeleteAuthServerQueryParamForce `default:"false" queryParam:"style=form,explode=true,name=force"`
+}
+
+func (d DeleteAuthServerRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteAuthServerRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"authServerId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteAuthServerRequest) GetAuthServerID() string {
@@ -19,6 +62,13 @@ func (d *DeleteAuthServerRequest) GetAuthServerID() string {
 	return d.AuthServerID
 }
 
+func (d *DeleteAuthServerRequest) GetForceDestroy() *DeleteAuthServerQueryParamForce {
+	if d == nil {
+		return nil
+	}
+	return d.ForceDestroy
+}
+
 type DeleteAuthServerResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -26,6 +76,8 @@ type DeleteAuthServerResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// Bad Request
+	BadRequestError *shared.BadRequestError
 	// Not Found
 	NotFoundError *shared.NotFoundError
 }
@@ -49,6 +101,13 @@ func (d *DeleteAuthServerResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return d.RawResponse
+}
+
+func (d *DeleteAuthServerResponse) GetBadRequestError() *shared.BadRequestError {
+	if d == nil {
+		return nil
+	}
+	return d.BadRequestError
 }
 
 func (d *DeleteAuthServerResponse) GetNotFoundError() *shared.NotFoundError {

@@ -240,13 +240,13 @@ func (r *EventGatewayResource) Update(ctx context.Context, req resource.UpdateRe
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateHoudiniEventGatewayRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateEventGatewayRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.EventGateways.UpdateHoudiniEventGateway(ctx, *request)
+	res, err := r.client.EventGateways.UpdateEventGateway(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
