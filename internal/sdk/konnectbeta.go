@@ -7,14 +7,13 @@ package sdk
 import (
 	"context"
 	"fmt"
-	"net/http"
-	"time"
-
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/config"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/hooks"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/retry"
+	"net/http"
+	"time"
 )
 
 // ServerList contains the list of servers available to the SDK
@@ -205,7 +204,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk := &KonnectBeta{
 		SDKVersion: "0.12.1",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 0.12.1 2.737.0 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 0.12.1 2.748.0 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
 			ServerList: ServerList,
 		},
 		hooks: hooks.New(),
