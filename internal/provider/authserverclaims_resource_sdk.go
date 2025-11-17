@@ -134,8 +134,8 @@ func (r *AuthServerClaimsResourceModel) ToSharedCreateClaim(ctx context.Context)
 		includeInAllScopes = nil
 	}
 	includeInScopes := make([]string, 0, len(r.IncludeInScopes))
-	for _, includeInScopesItem := range r.IncludeInScopes {
-		includeInScopes = append(includeInScopes, includeInScopesItem.ValueString())
+	for includeInScopesIndex := range r.IncludeInScopes {
+		includeInScopes = append(includeInScopes, r.IncludeInScopes[includeInScopesIndex].ValueString())
 	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
@@ -183,8 +183,8 @@ func (r *AuthServerClaimsResourceModel) ToSharedUpdateClaim(ctx context.Context)
 		includeInAllScopes = nil
 	}
 	includeInScopes := make([]string, 0, len(r.IncludeInScopes))
-	for _, includeInScopesItem := range r.IncludeInScopes {
-		includeInScopes = append(includeInScopes, includeInScopesItem.ValueString())
+	for includeInScopesIndex := range r.IncludeInScopes {
+		includeInScopes = append(includeInScopes, r.IncludeInScopes[includeInScopesIndex].ValueString())
 	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {

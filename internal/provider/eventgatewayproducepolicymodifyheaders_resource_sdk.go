@@ -162,10 +162,10 @@ func (r *EventGatewayProducePolicyModifyHeadersResourceModel) ToSharedEventGatew
 	var actions []shared.EventGatewayModifyHeaderAction
 	if r.Config.Actions != nil {
 		actions = make([]shared.EventGatewayModifyHeaderAction, 0, len(r.Config.Actions))
-		for _, actionsItem := range r.Config.Actions {
-			if actionsItem.Remove != nil {
+		for actionsItem := range r.Config.Actions {
+			if r.Config.Actions[actionsItem].Remove != nil {
 				var key string
-				key = actionsItem.Remove.Key.ValueString()
+				key = r.Config.Actions[actionsItem].Remove.Key.ValueString()
 
 				eventGatewayModifyHeaderRemoveAction := shared.EventGatewayModifyHeaderRemoveAction{
 					Key: key,
@@ -174,12 +174,12 @@ func (r *EventGatewayProducePolicyModifyHeadersResourceModel) ToSharedEventGatew
 					EventGatewayModifyHeaderRemoveAction: &eventGatewayModifyHeaderRemoveAction,
 				})
 			}
-			if actionsItem.Set != nil {
+			if r.Config.Actions[actionsItem].Set != nil {
 				var key1 string
-				key1 = actionsItem.Set.Key.ValueString()
+				key1 = r.Config.Actions[actionsItem].Set.Key.ValueString()
 
 				var value string
-				value = actionsItem.Set.Value.ValueString()
+				value = r.Config.Actions[actionsItem].Set.Value.ValueString()
 
 				eventGatewayModifyHeaderSetAction := shared.EventGatewayModifyHeaderSetAction{
 					Key:   key1,
@@ -195,10 +195,10 @@ func (r *EventGatewayProducePolicyModifyHeadersResourceModel) ToSharedEventGatew
 		Actions: actions,
 	}
 	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
+	for labelsKey := range r.Labels {
 		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
 		} else {
 			labelsInst = nil
 		}
@@ -246,10 +246,10 @@ func (r *EventGatewayProducePolicyModifyHeadersResourceModel) ToSharedEventGatew
 	var actions []shared.EventGatewayModifyHeaderAction
 	if r.Config.Actions != nil {
 		actions = make([]shared.EventGatewayModifyHeaderAction, 0, len(r.Config.Actions))
-		for _, actionsItem := range r.Config.Actions {
-			if actionsItem.Remove != nil {
+		for actionsItem := range r.Config.Actions {
+			if r.Config.Actions[actionsItem].Remove != nil {
 				var key string
-				key = actionsItem.Remove.Key.ValueString()
+				key = r.Config.Actions[actionsItem].Remove.Key.ValueString()
 
 				eventGatewayModifyHeaderRemoveAction := shared.EventGatewayModifyHeaderRemoveAction{
 					Key: key,
@@ -258,12 +258,12 @@ func (r *EventGatewayProducePolicyModifyHeadersResourceModel) ToSharedEventGatew
 					EventGatewayModifyHeaderRemoveAction: &eventGatewayModifyHeaderRemoveAction,
 				})
 			}
-			if actionsItem.Set != nil {
+			if r.Config.Actions[actionsItem].Set != nil {
 				var key1 string
-				key1 = actionsItem.Set.Key.ValueString()
+				key1 = r.Config.Actions[actionsItem].Set.Key.ValueString()
 
 				var value string
-				value = actionsItem.Set.Value.ValueString()
+				value = r.Config.Actions[actionsItem].Set.Value.ValueString()
 
 				eventGatewayModifyHeaderSetAction := shared.EventGatewayModifyHeaderSetAction{
 					Key:   key1,
@@ -279,10 +279,10 @@ func (r *EventGatewayProducePolicyModifyHeadersResourceModel) ToSharedEventGatew
 		Actions: actions,
 	}
 	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
+	for labelsKey := range r.Labels {
 		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
 		} else {
 			labelsInst = nil
 		}

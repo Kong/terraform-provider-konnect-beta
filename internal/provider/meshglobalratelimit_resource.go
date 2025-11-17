@@ -23,7 +23,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 	speakeasy_int32validators "github.com/kong/terraform-provider-konnect-beta/internal/validators/int32validators"
 	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/listvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
@@ -80,9 +79,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `Time at which the resource was created`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"kri": schema.StringAttribute{
 				Computed:    true,
@@ -107,9 +103,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `Time at which the resource was updated`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"name": schema.StringAttribute{
 				Required: true,

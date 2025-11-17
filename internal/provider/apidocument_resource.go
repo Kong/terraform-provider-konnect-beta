@@ -18,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 	"regexp"
 )
 
@@ -71,9 +70,6 @@ func (r *APIDocumentResource) Schema(ctx context.Context, req resource.SchemaReq
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
@@ -121,9 +117,6 @@ func (r *APIDocumentResource) Schema(ctx context.Context, req resource.SchemaReq
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 		},
 	}
@@ -183,6 +176,13 @@ func (r *APIDocumentResource) Create(ctx context.Context, req resource.CreateReq
 	}
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode == 409 {
+		resp.Diagnostics.AddError(
+			"Resource Already Exists",
+			"When creating this resource, the API indicated that this resource already exists. You can bring the existing resource under management using Terraform import functionality or retry with a unique configuration.",
+		)
 		return
 	}
 	if res.StatusCode != 201 {

@@ -19,6 +19,7 @@ generation:
     hoistGlobalSecurity: true
   schemas:
     allOfMergeStrategy: shallowMerge
+  requestBodyFieldName: ""
   tests:
     generateTests: true
     generateNewTests: false
@@ -44,6 +45,8 @@ terraform:
   author: kong
   baseErrorName: KonnectBetaError
   defaultErrorName: SDKError
+  enableCustomCodeRegions: false
+  enableOperationSecurity: false
   enableOperationServers: false
   enableTypeDeduplication: true
   environmentVariables:
@@ -53,6 +56,7 @@ terraform:
       providerAttribute: system_account_access_token
     - env: KONNECT_SERVER_URL
       providerAttribute: server_url
+  excludeEmptyObjectSchemas: false
   imports:
     option: openapi
     paths:

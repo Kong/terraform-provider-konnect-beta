@@ -17,7 +17,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 	"regexp"
 )
 
@@ -58,9 +57,6 @@ func (r *PortalTeamResource) Schema(ctx context.Context, req resource.SchemaRequ
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"description": schema.StringAttribute{
 				Optional: true,
@@ -89,9 +85,6 @@ func (r *PortalTeamResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
-				Validators: []validator.String{
-					validators.IsRFC3339(),
 				},
 			},
 		},

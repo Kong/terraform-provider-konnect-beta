@@ -20,7 +20,6 @@ import (
 	speakeasy_mapplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/mapplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -63,9 +62,6 @@ func (r *EventGatewayStaticKeyResource) Schema(ctx context.Context, req resource
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"description": schema.StringAttribute{
 				Optional: true,
@@ -118,9 +114,6 @@ func (r *EventGatewayStaticKeyResource) Schema(ctx context.Context, req resource
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"value": schema.StringAttribute{
 				Required: true,
