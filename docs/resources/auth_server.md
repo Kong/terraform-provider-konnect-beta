@@ -15,8 +15,9 @@ AuthServer Resource
 ```terraform
 resource "konnect_auth_server" "my_authserver" {
   provider = konnect-beta
-  audience    = "...my_audience..."
-  description = "...my_description..."
+  audience      = "...my_audience..."
+  description   = "...my_description..."
+  force_destroy = "true"
   labels = {
     key = "value"
   }
@@ -39,6 +40,7 @@ resource "konnect_auth_server" "my_authserver" {
 ### Optional
 
 - `description` (String) The description of the auth server
+- `force_destroy` (String) If true, delete the specified auth server and all its associated resources. If false, only allow deletion if no clients, scopes or claims are associated with the auth server. Default: "false"; must be one of ["true", "false"]
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".

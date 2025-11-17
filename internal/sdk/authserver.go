@@ -806,7 +806,7 @@ func (s *AuthServer) UpdateAuthServer(ctx context.Context, request operations.Up
 }
 
 // DeleteAuthServer - Delete an auth server
-// Delete an auth server. All resources associated with the auth server will also be deleted. This action is irreversible.
+// Delete an auth server. If force=true, delete the auth server and all its associated resources. If force=false, only allow deletion if no resources are associated with the auth server. This action is irreversible.
 func (s *AuthServer) DeleteAuthServer(ctx context.Context, request operations.DeleteAuthServerRequest, opts ...operations.Option) (*operations.DeleteAuthServerResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -858,6 +858,10 @@ func (s *AuthServer) DeleteAuthServer(ctx context.Context, request operations.De
 	}
 	req.Header.Set("Accept", "application/problem+json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
+
+	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
+		return nil, fmt.Errorf("error populating query params: %w", err)
+	}
 
 	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
 		return nil, err
@@ -978,6 +982,27 @@ func (s *AuthServer) DeleteAuthServer(ctx context.Context, request operations.De
 
 	switch {
 	case httpRes.StatusCode == 204:
+	case httpRes.StatusCode == 400:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.BadRequestError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.BadRequestError = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
 	case httpRes.StatusCode == 404:
 		switch {
 		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):

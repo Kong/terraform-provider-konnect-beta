@@ -5417,10 +5417,23 @@ paths:
         terraform-datasource: null
       operationId: deleteAuthServer
       summary: Delete an auth server
-      description: Delete an auth server. All resources associated with the auth server will also be deleted. This action is irreversible.
+      description: 'Delete an auth server. If force=true, delete the auth server and all its associated resources. If force=false, only allow deletion if no resources are associated with the auth server. This action is irreversible.'
+      parameters:
+        - name: force
+          in: query
+          description: 'If true, delete the specified auth server and all its associated resources. If false, only allow deletion if no clients, scopes or claims are associated with the auth server.'
+          schema:
+            type: string
+            default: 'false'
+            enum:
+              - 'true'
+              - 'false'
+          x-speakeasy-name-override: force_destroy
       responses:
         '204':
           description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -5839,7 +5852,7 @@ paths:
       x-speakeasy-entity-operation:
         terraform-resource: EventGateway#update
         terraform-datasource: null
-      operationId: update-houdini-event-gateway
+      operationId: update-event-gateway
       summary: Update Event Gateway
       description: Update an individual gateway.
       requestBody:
@@ -8632,30 +8645,46 @@ components:
         updated_at: '2022-08-31T17:00:00.52Z'
       title: PortalTeamResponse
     UuidFieldFilter:
-      description: Filters on the given string field value by exact match inequality.
+      description: 'Filter using **one** of the following operators: `eq`, `oeq`, `neq`'
       type: object
       properties:
         eq:
+          description: The field exactly matches the provided value.
           type: string
+          example: '?filter[field_name_here][eq]=foo'
         oeq:
+          description: The field matches any of the provided values.
           type: string
+          example: '?filter[field_name_here][oeq]=foo,bar'
         neq:
+          description: The field does not match the provided value.
           type: string
+          example: '?filter[field_name_here][neq]=bar'
       additionalProperties: false
     StringFieldFilter:
-      description: Filters on the given string field value by exact match inequality.
+      description: 'Filter using **one** of the following operators: `eq`, `oeq`, `neq`, `contains`, `ocontains`'
       type: object
       properties:
         eq:
+          description: The field exactly matches the provided value.
           type: string
+          example: '?filter[field_name_here][eq]=foo'
         contains:
+          description: The field contains the provided value.
           type: string
+          example: '?filter[field_name_here][contains]=foo'
         ocontains:
+          description: The field contains any of the provided values.
           type: string
+          example: '?filter[field_name_here][ocontains]=foo,bar'
         oeq:
+          description: The field matches any of the provided values.
           type: string
+          example: '?filter[field_name_here][oeq]=foo,bar'
         neq:
+          description: The field does not match the provided value.
           type: string
+          example: '?filter[field_name_here][neq]=bar'
       additionalProperties: false
     BooleanFieldFilter:
       description: Filter by a boolean value (true/false).
@@ -26585,7 +26614,7 @@ components:
         If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
         If provided as an expression, the expression itself is stored and returned by the API.
       type: string
-      example: '${vault.env[''MY_ENV_VAR'']}'
+      example: '$${vault.env[''MY_ENV_VAR'']}'
       x-expression:
         type: string
         fields:
