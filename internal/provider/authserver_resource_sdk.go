@@ -49,8 +49,15 @@ func (r *AuthServerResourceModel) ToOperationsDeleteAuthServerRequest(ctx contex
 	var authServerID string
 	authServerID = r.ID.ValueString()
 
+	forceDestroy := new(operations.DeleteAuthServerQueryParamForce)
+	if !r.ForceDestroy.IsUnknown() && !r.ForceDestroy.IsNull() {
+		*forceDestroy = operations.DeleteAuthServerQueryParamForce(r.ForceDestroy.ValueString())
+	} else {
+		forceDestroy = nil
+	}
 	out := operations.DeleteAuthServerRequest{
 		AuthServerID: authServerID,
+		ForceDestroy: forceDestroy,
 	}
 
 	return &out, diags
