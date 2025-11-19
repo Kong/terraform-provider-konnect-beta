@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -38,12 +39,14 @@ type AuthServerResourceModel struct {
 	Audience         types.String            `tfsdk:"audience"`
 	CreatedAt        types.String            `tfsdk:"created_at"`
 	Description      types.String            `tfsdk:"description"`
+	ForceDestroy     types.String            `queryParam:"style=form,explode=true,name=force" tfsdk:"force_destroy"`
 	ID               types.String            `tfsdk:"id"`
 	Issuer           types.String            `tfsdk:"issuer"`
 	Labels           map[string]types.String `tfsdk:"labels"`
 	MetadataURI      types.String            `tfsdk:"metadata_uri"`
 	Name             types.String            `tfsdk:"name"`
 	SigningAlgorithm types.String            `tfsdk:"signing_algorithm"`
+	TrustedOrigins   []types.String          `tfsdk:"trusted_origins"`
 	UpdatedAt        types.String            `tfsdk:"updated_at"`
 }
 
@@ -76,6 +79,18 @@ func (r *AuthServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Computed:    true,
 				Optional:    true,
 				Description: `The description of the auth server`,
+			},
+			"force_destroy": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Default:     stringdefault.StaticString(`false`),
+				Description: `If true, delete the specified auth server and all its associated resources. If false, only allow deletion if no clients, scopes or claims are associated with the auth server. Default: "false"; must be one of ["true", "false"]`,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						"true",
+						"false",
+					),
+				},
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -118,6 +133,15 @@ func (r *AuthServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 						"PS384",
 						"PS512",
 					),
+				},
+			},
+			"trusted_origins": schema.ListAttribute{
+				Computed:    true,
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `A list or trusted origins to apply the CORS header on for the auth server`,
+				Validators: []validator.List{
+					listvalidator.UniqueValues(),
 				},
 			},
 			"updated_at": schema.StringAttribute{
