@@ -1,17 +1,17 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: d3c2f54b944416ad3ad055068baac0df
+  docChecksum: 6d6c8cec606073cfc718d4b15c900a01
   docVersion: 2.0.0
-  speakeasyVersion: 1.648.0
-  generationVersion: 2.737.0
+  speakeasyVersion: 1.653.0
+  generationVersion: 2.748.0
   releaseVersion: 0.12.1
-  configChecksum: 0be56ab30f6736f2840f78d3b229d788
+  configChecksum: 6c8b646447ad45c68f441a62cfa6a0c0
 features:
   terraform:
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.3.0
-    core: 3.46.5
+    core: 3.46.8
     deepObjectParams: 0.1.0
     deprecations: 2.82.0
     globalSecurity: 2.82.1
@@ -5782,6 +5782,7 @@ examples:
         query:
           page[size]: 100
           page[number]: 1
+          filter: {"id": {"eq": "?filter[field_name_here][eq]=foo", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "name": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "description": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "default_api_visibility": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "default_page_visibility": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "default_application_auth_strategy_id": {"eq": "?filter[field_name_here][eq]=foo", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "default_domain": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "canonical_domain": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}}
       responses:
         "200":
           application/json: {"data": [], "meta": {"page": {"number": 1, "size": 10, "total": 100}}}
