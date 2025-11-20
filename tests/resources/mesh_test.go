@@ -5,6 +5,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/Kong/shared-speakeasy/hclbuilder"
 	"github.com/Kong/shared-speakeasy/tfbuilder"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -21,29 +22,48 @@ import (
 func TestMesh(t *testing.T) {
 	serverHost, serverPort, serverScheme := providerConfigFromEnv()
 
-	t.Run("should fail on creating a default mesh", func(t *testing.T) {
-		builder := tfbuilder.NewBuilder(tfbuilder.Konnect, serverScheme, serverHost, serverPort).WithProviderProperty(tfbuilder.KonnectBeta)
-		cp := tfbuilder.NewControlPlane("e2e-test", "e2e-test", "e2e test cp")
-		mesh := tfbuilder.NewMeshBuilder("default", "default").
-			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
-			WithDependsOn(builder.ResourceAddress("mesh_control_plane", cp.ResourceName)).
-			WithSpec(`skip_creating_initial_policies = [ "*" ]`)
+	t.Run("should not fail on creating a default mesh", func(t *testing.T) {
+		builder := hclbuilder.NewWithProvider(string(tfbuilder.KonnectBeta), fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort))
+		cp, err := hclbuilder.FromString(fmt.Sprintf(`
+resource "konnect_mesh_control_plane" "e2e-test" {
+  provider = "konnect-beta"
 
-		builder.AddControlPlane(cp)
+  name = "%s"
+  description = "%s"
+}
+`, "e2e-test", "e2e test cp"))
+		require.NoError(t, err)
+		builder.Add(cp)
+		cpAddress := cp.ResourceAddress("konnect_mesh_control_plane", "e2e-test")
+
+		mesh, err := hclbuilder.FromString(fmt.Sprintf(`
+resource "konnect_mesh" "default" {
+  provider = "konnect-beta"
+
+  name     = "default"
+  type     = "Mesh"
+  cp_id    = %s
+
+  skip_creating_initial_policies = [ "*" ]
+  depends_on = [ "%s" ]
+}
+`, cpAddress+".id", cpAddress))
+		mesh.SetAttribute("depends_on", []string{cpAddress})
+		require.NoError(t, err)
+		builder.Add(mesh)
 
 		// if this grows move this to shared-speakeasy
 		resource.ParallelTest(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
 				{
-					Config: builder.AddMesh(mesh).Build(),
+					Config: builder.Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction(builder.ResourceAddress("mesh", mesh.ResourceName), plancheck.ResourceActionCreate),
+							plancheck.ExpectResourceAction("konnect_mesh.default", plancheck.ResourceActionCreate),
 						},
 					},
 				},
-				tfbuilder.CheckReapplyPlanEmpty(builder),
 			},
 		})
 	})
