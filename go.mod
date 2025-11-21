@@ -6,10 +6,10 @@ toolchain go1.24.3
 
 require (
 	github.com/Kong/shared-speakeasy/customtypes v0.2.4
+	github.com/Kong/shared-speakeasy/hclbuilder v0.0.0-20251121095436-8af129c422c3
 	github.com/Kong/shared-speakeasy/hooks/mesh_defaults v0.0.4
 	github.com/Kong/shared-speakeasy/planmodifiers/arbitrary_json v0.0.1
 	github.com/Kong/shared-speakeasy/planmodifiers/suppress_zero_null v0.0.1
-	github.com/Kong/shared-speakeasy/tfbuilder v0.0.5
 	github.com/hashicorp/go-uuid v1.0.3
 	github.com/hashicorp/terraform-plugin-docs v0.22.0
 	github.com/hashicorp/terraform-plugin-framework v1.15.1
@@ -23,7 +23,6 @@ require (
 
 require (
 	github.com/BurntSushi/toml v1.2.1 // indirect
-	github.com/Kong/shared-speakeasy/hclbuilder v0.0.0-20251121095436-8af129c422c3 // indirect
 	github.com/Kunde21/markdownfmt/v3 v3.1.0 // indirect
 	github.com/Masterminds/goutils v1.1.1 // indirect
 	github.com/Masterminds/semver/v3 v3.2.0 // indirect
