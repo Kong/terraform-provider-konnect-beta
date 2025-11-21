@@ -23,41 +23,41 @@ func TestMesh(t *testing.T) {
 	serverHost, serverPort, serverScheme := providerConfigFromEnv()
 
 	t.Run("should not fail on creating a default mesh", func(t *testing.T) {
-		builder := hclbuilder.NewWithProvider(string(tfbuilder.KonnectBeta), fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort))
-		cp, err := hclbuilder.FromString(fmt.Sprintf(`
+		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort))
+		builder.ProviderProperty = hclbuilder.KonnectBeta
+
+		cp, err := hclbuilder.FromString(`
 resource "konnect_mesh_control_plane" "e2e-test" {
-  provider = "konnect-beta"
+  provider = konnect-beta
 
-  name = "%s"
-  description = "%s"
+  name = "e2e-test"
+  description = "e2e test cp"
 }
-`, "e2e-test", "e2e test cp"))
+`)
 		require.NoError(t, err)
-		builder.Add(cp)
-		cpAddress := cp.ResourceAddress("konnect_mesh_control_plane", "e2e-test")
 
-		mesh, err := hclbuilder.FromString(fmt.Sprintf(`
+		mesh, err := hclbuilder.FromString(`
 resource "konnect_mesh" "default" {
-  provider = "konnect-beta"
+  provider = konnect-beta
 
   name     = "default"
   type     = "Mesh"
-  cp_id    = %s
 
   skip_creating_initial_policies = [ "*" ]
-  depends_on = [ "%s" ]
 }
-`, cpAddress+".id", cpAddress))
-		mesh.SetAttribute("depends_on", []string{cpAddress})
+`)
 		require.NoError(t, err)
-		builder.Add(mesh)
+
+		// Set cp_id and add dependency
+		mesh.AddAttribute("cp_id", cp.ResourcePath()+".id")
+		mesh.DependsOn(cp)
 
 		// if this grows move this to shared-speakeasy
 		resource.ParallelTest(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
 				{
-					Config: builder.Build(),
+					Config: builder.Add(cp).Add(mesh).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
 							plancheck.ExpectResourceAction("konnect_mesh.default", plancheck.ResourceActionCreate),
@@ -69,16 +69,38 @@ resource "konnect_mesh" "default" {
 	})
 
 	t.Run("create a mesh and modify fields on it", func(t *testing.T) {
-		builder := tfbuilder.NewBuilder(tfbuilder.Konnect, serverScheme, serverHost, serverPort).WithProviderProperty(tfbuilder.KonnectBeta)
-		cp := tfbuilder.NewControlPlane("e2e-test", "e2e-test", "e2e test cp")
-		mesh := tfbuilder.NewMeshBuilder("m1", "m1").
-			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
-			WithDependsOn(builder.ResourceAddress("mesh_control_plane", cp.ResourceName)).
-			WithSpec(`skip_creating_initial_policies = [ "*" ]`)
+		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort))
+		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		builder.AddControlPlane(cp)
+		cp, err := hclbuilder.FromString(`
+resource "konnect_mesh_control_plane" "e2e-test" {
+  provider = konnect-beta
 
-		resource.ParallelTest(t, tfbuilder.CreateMeshAndModifyFieldsOnIt(providerFactory, builder, mesh))
+  name = "e2e-test"
+  description = "e2e test cp"
+}
+`)
+		require.NoError(t, err)
+
+		mesh, err := hclbuilder.FromString(`
+resource "konnect_mesh" "default" {
+  provider = konnect-beta
+
+  name     = "default"
+  type     = "Mesh"
+
+  skip_creating_initial_policies = [ "*" ]
+}
+`)
+		require.NoError(t, err)
+
+		// Set cp_id and add dependency
+		mesh.AddAttribute("cp_id", cp.ResourcePath()+".id")
+		mesh.DependsOn(cp)
+
+		builder.Add(cp)
+
+		resource.ParallelTest(t, hclbuilder.CreateMeshAndModifyFields(providerFactory, builder, mesh))
 	})
 
 	t.Run("create a policy and modify fields on it", func(t *testing.T) {
