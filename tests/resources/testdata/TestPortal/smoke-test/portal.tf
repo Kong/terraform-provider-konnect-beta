@@ -1,3 +1,7 @@
+resource "random_id" "hostname_suffix" {
+  byte_length = 4
+}
+
 resource "konnect_portal" "my_portal" {
   provider                             = konnect-beta
   name                                 = "Hello World"
@@ -19,7 +23,7 @@ resource "konnect_portal_custom_domain" "my_portalcustomdomain" {
   provider  = konnect-beta
   enabled   = false
   # From the API: Custom hostnames ending in example.com, example.net, or example.org are prohibited
-  hostname  = "tfautomatedtests.mheap.xyz"
+  hostname  = "tfautomatedtests-${random_id.hostname_suffix.hex}.mheap.xyz"
   portal_id = konnect_portal.my_portal.id
   ssl = {
     domain_verification_method = "http"
