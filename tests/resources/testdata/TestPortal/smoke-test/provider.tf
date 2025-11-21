@@ -3,6 +3,9 @@ terraform {
     konnect = {
       source = "kong/konnect"
     }
+    random = {
+      source = "hashicorp/random"
+    }
   }
 }
 
