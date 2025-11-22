@@ -2,7 +2,7 @@
 
 package sdk
 
-// Generated from OpenAPI doc version 2.0.0 and generator version 2.737.0
+// Generated from OpenAPI doc version 2.0.0 and generator version 2.755.6
 
 import (
 	"context"
@@ -204,7 +204,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk := &KonnectBeta{
 		SDKVersion: "0.12.1",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 0.12.1 2.737.0 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 0.12.1 2.755.6 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
 			ServerList: ServerList,
 		},
 		hooks: hooks.New(),

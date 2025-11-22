@@ -3,15 +3,15 @@ id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
   docChecksum: 0e25c36053ea26b820ca120b8c26cc81
   docVersion: 2.0.0
-  speakeasyVersion: 1.648.0
-  generationVersion: 2.737.0
+  speakeasyVersion: 1.658.1
+  generationVersion: 2.755.6
   releaseVersion: 0.12.1
-  configChecksum: 0be56ab30f6736f2840f78d3b229d788
+  configChecksum: 6e364e1445c4417c4a22d1959d824ff7
 features:
   terraform:
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.3.0
-    core: 3.46.5
+    core: 3.46.16
     deepObjectParams: 0.1.0
     deprecations: 2.82.0
     globalSecurity: 2.82.1

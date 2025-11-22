@@ -20,7 +20,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -151,16 +150,10 @@ func (r *EventGatewaySchemaRegistryResource) Schema(ctx context.Context, req res
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,
 				Description: `A human-readable description of the virtual cluster.`,
-				Validators: []validator.String{
-					stringvalidator.UTF8LengthAtMost(512),
-				},
 			},
 			"gateway_id": schema.StringAttribute{
 				Required:    true,
@@ -180,9 +173,6 @@ func (r *EventGatewaySchemaRegistryResource) Schema(ctx context.Context, req res
 			"name": schema.StringAttribute{
 				Computed:    true,
 				Description: `The unique name of the schema registry.`,
-				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 255),
-				},
 			},
 			"type": schema.StringAttribute{
 				Computed:    true,
@@ -194,9 +184,6 @@ func (r *EventGatewaySchemaRegistryResource) Schema(ctx context.Context, req res
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 		},
 	}

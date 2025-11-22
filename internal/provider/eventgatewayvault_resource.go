@@ -19,7 +19,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
 	"regexp"
@@ -60,9 +59,6 @@ func (r *EventGatewayVaultResource) Schema(ctx context.Context, req resource.Sch
 			"description": schema.StringAttribute{
 				Computed:    true,
 				Description: `A human-readable description of the vault.`,
-				Validators: []validator.String{
-					stringvalidator.UTF8LengthAtMost(512),
-				},
 			},
 			"env": schema.SingleNestedAttribute{
 				Computed: true,
@@ -92,9 +88,6 @@ func (r *EventGatewayVaultResource) Schema(ctx context.Context, req resource.Sch
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
 					"description": schema.StringAttribute{
 						Optional:    true,
@@ -131,9 +124,6 @@ func (r *EventGatewayVaultResource) Schema(ctx context.Context, req resource.Sch
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
 				},
 				Description: `An environment vault.`,
@@ -161,9 +151,6 @@ func (r *EventGatewayVaultResource) Schema(ctx context.Context, req resource.Sch
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
 					"description": schema.StringAttribute{
 						Optional:    true,
@@ -200,9 +187,6 @@ func (r *EventGatewayVaultResource) Schema(ctx context.Context, req resource.Sch
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
 				},
 				Description: `A konnect vault.`,
@@ -215,10 +199,6 @@ func (r *EventGatewayVaultResource) Schema(ctx context.Context, req resource.Sch
 			"name": schema.StringAttribute{
 				Computed:    true,
 				Description: `The name of the vault.`,
-				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 255),
-					stringvalidator.RegexMatches(regexp.MustCompile(`^[\p{L}\p{N}][\p{L}\p{N} _\-\.']*[\p{L}\p{N}]$`), "must match pattern "+regexp.MustCompile(`^[\p{L}\p{N}][\p{L}\p{N} _\-\.']*[\p{L}\p{N}]$`).String()),
-				},
 			},
 		},
 	}

@@ -21,7 +21,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
 	"regexp"
@@ -326,9 +325,6 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"description": schema.StringAttribute{
 				Optional:    true,
@@ -348,9 +344,6 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 					"name": schema.StringAttribute{
 						Computed:    true,
 						Description: `The unique name of the backend cluster.`,
-						Validators: []validator.String{
-							stringvalidator.UTF8LengthBetween(1, 255),
-						},
 					},
 				},
 				MarkdownDescription: `The backend cluster associated with the virtual cluster.` + "\n" +
@@ -601,9 +594,6 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 		},
 	}

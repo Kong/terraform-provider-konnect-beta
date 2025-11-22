@@ -23,7 +23,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 	speakeasy_boolvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/boolvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
@@ -67,9 +66,6 @@ func (r *MeshControlPlaneResource) Schema(ctx context.Context, req resource.Sche
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
-				Validators: []validator.String{
-					validators.IsRFC3339(),
 				},
 			},
 			"description": schema.StringAttribute{
@@ -186,9 +182,6 @@ func (r *MeshControlPlaneResource) Schema(ctx context.Context, req resource.Sche
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
-				Validators: []validator.String{
-					validators.IsRFC3339(),
 				},
 			},
 		},

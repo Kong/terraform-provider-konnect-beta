@@ -22,8 +22,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
-	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -106,9 +104,6 @@ func (r *AuthServerClientsResource) Schema(ctx context.Context, req resource.Sch
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"grant_types": schema.ListAttribute{
 				Required:    true,
@@ -124,10 +119,6 @@ func (r *AuthServerClientsResource) Schema(ctx context.Context, req resource.Sch
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `The OAuth 2.0 client ID`,
-				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 36),
-					stringvalidator.RegexMatches(regexp.MustCompile(`[-_\w]+`), "must match pattern "+regexp.MustCompile(`[-_\w]+`).String()),
-				},
 			},
 			"id_token_duration": schema.Int64Attribute{
 				Computed:    true,
@@ -186,9 +177,6 @@ func (r *AuthServerClientsResource) Schema(ctx context.Context, req resource.Sch
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 		},
 	}
@@ -248,6 +236,13 @@ func (r *AuthServerClientsResource) Create(ctx context.Context, req resource.Cre
 	}
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode == 409 {
+		resp.Diagnostics.AddError(
+			"Resource Already Exists",
+			"When creating this resource, the API indicated that this resource already exists. You can bring the existing resource under management using Terraform import functionality or retry with a unique configuration.",
+		)
 		return
 	}
 	if res.StatusCode != 201 {
