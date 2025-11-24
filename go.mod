@@ -3,7 +3,7 @@ module github.com/kong/terraform-provider-konnect-beta
 go 1.24.1
 
 require (
-	github.com/Kong/shared-speakeasy/customtypes v0.2.4
+	github.com/Kong/shared-speakeasy/customtypes v0.2.5
 	github.com/Kong/shared-speakeasy/hclbuilder v0.0.1
 	github.com/Kong/shared-speakeasy/hooks/mesh_defaults v0.0.4
 	github.com/Kong/shared-speakeasy/planmodifiers/arbitrary_json v0.0.1
