@@ -14,18 +14,18 @@ type ReplacePortalAssetFaviconRequest struct {
 	ReplacePortalImageAsset *shared.ReplacePortalImageAsset `request:"mediaType=application/json"`
 }
 
-func (r *ReplacePortalAssetFaviconRequest) GetPortalID() string {
-	if r == nil {
+func (o *ReplacePortalAssetFaviconRequest) GetPortalID() string {
+	if o == nil {
 		return ""
 	}
-	return r.PortalID
+	return o.PortalID
 }
 
-func (r *ReplacePortalAssetFaviconRequest) GetReplacePortalImageAsset() *shared.ReplacePortalImageAsset {
-	if r == nil {
+func (o *ReplacePortalAssetFaviconRequest) GetReplacePortalImageAsset() *shared.ReplacePortalImageAsset {
+	if o == nil {
 		return nil
 	}
-	return r.ReplacePortalImageAsset
+	return o.ReplacePortalImageAsset
 }
 
 type ReplacePortalAssetFaviconResponse struct {
@@ -45,51 +45,51 @@ type ReplacePortalAssetFaviconResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (r *ReplacePortalAssetFaviconResponse) GetContentType() string {
-	if r == nil {
+func (o *ReplacePortalAssetFaviconResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return r.ContentType
+	return o.ContentType
 }
 
-func (r *ReplacePortalAssetFaviconResponse) GetStatusCode() int {
-	if r == nil {
+func (o *ReplacePortalAssetFaviconResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return r.StatusCode
+	return o.StatusCode
 }
 
-func (r *ReplacePortalAssetFaviconResponse) GetRawResponse() *http.Response {
-	if r == nil {
+func (o *ReplacePortalAssetFaviconResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return r.RawResponse
+	return o.RawResponse
 }
 
-func (r *ReplacePortalAssetFaviconResponse) GetPortalAssetResponse() *shared.PortalAssetResponse {
-	if r == nil {
+func (o *ReplacePortalAssetFaviconResponse) GetPortalAssetResponse() *shared.PortalAssetResponse {
+	if o == nil {
 		return nil
 	}
-	return r.PortalAssetResponse
+	return o.PortalAssetResponse
 }
 
-func (r *ReplacePortalAssetFaviconResponse) GetBadRequestError() *shared.BadRequestError {
-	if r == nil {
+func (o *ReplacePortalAssetFaviconResponse) GetBadRequestError() *shared.BadRequestError {
+	if o == nil {
 		return nil
 	}
-	return r.BadRequestError
+	return o.BadRequestError
 }
 
-func (r *ReplacePortalAssetFaviconResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if r == nil {
+func (o *ReplacePortalAssetFaviconResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return r.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (r *ReplacePortalAssetFaviconResponse) GetForbiddenError() *shared.ForbiddenError {
-	if r == nil {
+func (o *ReplacePortalAssetFaviconResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return r.ForbiddenError
+	return o.ForbiddenError
 }

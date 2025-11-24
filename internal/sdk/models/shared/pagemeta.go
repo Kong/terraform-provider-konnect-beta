@@ -9,23 +9,23 @@ type PageMeta struct {
 	Total  float64 `json:"total"`
 }
 
-func (p *PageMeta) GetNumber() float64 {
-	if p == nil {
+func (o *PageMeta) GetNumber() float64 {
+	if o == nil {
 		return 0.0
 	}
-	return p.Number
+	return o.Number
 }
 
-func (p *PageMeta) GetSize() float64 {
-	if p == nil {
+func (o *PageMeta) GetSize() float64 {
+	if o == nil {
 		return 0.0
 	}
-	return p.Size
+	return o.Size
 }
 
-func (p *PageMeta) GetTotal() float64 {
-	if p == nil {
+func (o *PageMeta) GetTotal() float64 {
+	if o == nil {
 		return 0.0
 	}
-	return p.Total
+	return o.Total
 }

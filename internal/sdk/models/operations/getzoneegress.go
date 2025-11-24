@@ -14,18 +14,18 @@ type GetZoneEgressRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (g *GetZoneEgressRequest) GetCpID() string {
-	if g == nil {
+func (o *GetZoneEgressRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return g.CpID
+	return o.CpID
 }
 
-func (g *GetZoneEgressRequest) GetName() string {
-	if g == nil {
+func (o *GetZoneEgressRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return g.Name
+	return o.Name
 }
 
 type GetZoneEgressResponse struct {
@@ -41,37 +41,37 @@ type GetZoneEgressResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (g *GetZoneEgressResponse) GetContentType() string {
-	if g == nil {
+func (o *GetZoneEgressResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetZoneEgressResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetZoneEgressResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetZoneEgressResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetZoneEgressResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetZoneEgressResponse) GetZoneEgressItem() *shared.ZoneEgressItem {
-	if g == nil {
+func (o *GetZoneEgressResponse) GetZoneEgressItem() *shared.ZoneEgressItem {
+	if o == nil {
 		return nil
 	}
-	return g.ZoneEgressItem
+	return o.ZoneEgressItem
 }
 
-func (g *GetZoneEgressResponse) GetNotFoundError() *shared.NotFoundError {
-	if g == nil {
+func (o *GetZoneEgressResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return g.NotFoundError
+	return o.NotFoundError
 }

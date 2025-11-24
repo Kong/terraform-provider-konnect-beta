@@ -14,18 +14,18 @@ type QueryParamFilter struct {
 	Value *string `queryParam:"name=value"`
 }
 
-func (q *QueryParamFilter) GetKey() *string {
-	if q == nil {
+func (o *QueryParamFilter) GetKey() *string {
+	if o == nil {
 		return nil
 	}
-	return q.Key
+	return o.Key
 }
 
-func (q *QueryParamFilter) GetValue() *string {
-	if q == nil {
+func (o *QueryParamFilter) GetValue() *string {
+	if o == nil {
 		return nil
 	}
-	return q.Value
+	return o.Value
 }
 
 type GetMeshCircuitBreakerListRequest struct {
@@ -46,45 +46,45 @@ func (g GetMeshCircuitBreakerListRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetMeshCircuitBreakerListRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"cpId", "mesh"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (g *GetMeshCircuitBreakerListRequest) GetCpID() string {
-	if g == nil {
+func (o *GetMeshCircuitBreakerListRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return g.CpID
+	return o.CpID
 }
 
-func (g *GetMeshCircuitBreakerListRequest) GetOffset() *int64 {
-	if g == nil {
+func (o *GetMeshCircuitBreakerListRequest) GetOffset() *int64 {
+	if o == nil {
 		return nil
 	}
-	return g.Offset
+	return o.Offset
 }
 
-func (g *GetMeshCircuitBreakerListRequest) GetSize() *int64 {
-	if g == nil {
+func (o *GetMeshCircuitBreakerListRequest) GetSize() *int64 {
+	if o == nil {
 		return nil
 	}
-	return g.Size
+	return o.Size
 }
 
-func (g *GetMeshCircuitBreakerListRequest) GetFilter() *QueryParamFilter {
-	if g == nil {
+func (o *GetMeshCircuitBreakerListRequest) GetFilter() *QueryParamFilter {
+	if o == nil {
 		return nil
 	}
-	return g.Filter
+	return o.Filter
 }
 
-func (g *GetMeshCircuitBreakerListRequest) GetMesh() string {
-	if g == nil {
+func (o *GetMeshCircuitBreakerListRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return g.Mesh
+	return o.Mesh
 }
 
 type GetMeshCircuitBreakerListResponse struct {
@@ -98,30 +98,30 @@ type GetMeshCircuitBreakerListResponse struct {
 	MeshCircuitBreakerList *shared.MeshCircuitBreakerList
 }
 
-func (g *GetMeshCircuitBreakerListResponse) GetContentType() string {
-	if g == nil {
+func (o *GetMeshCircuitBreakerListResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetMeshCircuitBreakerListResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetMeshCircuitBreakerListResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetMeshCircuitBreakerListResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetMeshCircuitBreakerListResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetMeshCircuitBreakerListResponse) GetMeshCircuitBreakerList() *shared.MeshCircuitBreakerList {
-	if g == nil {
+func (o *GetMeshCircuitBreakerListResponse) GetMeshCircuitBreakerList() *shared.MeshCircuitBreakerList {
+	if o == nil {
 		return nil
 	}
-	return g.MeshCircuitBreakerList
+	return o.MeshCircuitBreakerList
 }

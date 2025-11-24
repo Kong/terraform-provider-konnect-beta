@@ -18,32 +18,32 @@ type PutMeshAccessLogRequest struct {
 	MeshAccessLogItem shared.MeshAccessLogItemInput `request:"mediaType=application/json"`
 }
 
-func (p *PutMeshAccessLogRequest) GetCpID() string {
-	if p == nil {
+func (o *PutMeshAccessLogRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return p.CpID
+	return o.CpID
 }
 
-func (p *PutMeshAccessLogRequest) GetMesh() string {
-	if p == nil {
+func (o *PutMeshAccessLogRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return p.Mesh
+	return o.Mesh
 }
 
-func (p *PutMeshAccessLogRequest) GetName() string {
-	if p == nil {
+func (o *PutMeshAccessLogRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return p.Name
+	return o.Name
 }
 
-func (p *PutMeshAccessLogRequest) GetMeshAccessLogItem() shared.MeshAccessLogItemInput {
-	if p == nil {
+func (o *PutMeshAccessLogRequest) GetMeshAccessLogItem() shared.MeshAccessLogItemInput {
+	if o == nil {
 		return shared.MeshAccessLogItemInput{}
 	}
-	return p.MeshAccessLogItem
+	return o.MeshAccessLogItem
 }
 
 type PutMeshAccessLogResponse struct {
@@ -57,30 +57,30 @@ type PutMeshAccessLogResponse struct {
 	MeshAccessLogCreateOrUpdateSuccessResponse *shared.MeshAccessLogCreateOrUpdateSuccessResponse
 }
 
-func (p *PutMeshAccessLogResponse) GetContentType() string {
-	if p == nil {
+func (o *PutMeshAccessLogResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return p.ContentType
+	return o.ContentType
 }
 
-func (p *PutMeshAccessLogResponse) GetStatusCode() int {
-	if p == nil {
+func (o *PutMeshAccessLogResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return p.StatusCode
+	return o.StatusCode
 }
 
-func (p *PutMeshAccessLogResponse) GetRawResponse() *http.Response {
-	if p == nil {
+func (o *PutMeshAccessLogResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return p.RawResponse
+	return o.RawResponse
 }
 
-func (p *PutMeshAccessLogResponse) GetMeshAccessLogCreateOrUpdateSuccessResponse() *shared.MeshAccessLogCreateOrUpdateSuccessResponse {
-	if p == nil {
+func (o *PutMeshAccessLogResponse) GetMeshAccessLogCreateOrUpdateSuccessResponse() *shared.MeshAccessLogCreateOrUpdateSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return p.MeshAccessLogCreateOrUpdateSuccessResponse
+	return o.MeshAccessLogCreateOrUpdateSuccessResponse
 }

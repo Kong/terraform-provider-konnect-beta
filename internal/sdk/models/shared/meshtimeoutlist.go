@@ -11,23 +11,23 @@ type MeshTimeoutList struct {
 	Next *string `json:"next,omitempty"`
 }
 
-func (m *MeshTimeoutList) GetItems() []MeshTimeoutItem {
-	if m == nil {
+func (o *MeshTimeoutList) GetItems() []MeshTimeoutItem {
+	if o == nil {
 		return nil
 	}
-	return m.Items
+	return o.Items
 }
 
-func (m *MeshTimeoutList) GetTotal() *float64 {
-	if m == nil {
+func (o *MeshTimeoutList) GetTotal() *float64 {
+	if o == nil {
 		return nil
 	}
-	return m.Total
+	return o.Total
 }
 
-func (m *MeshTimeoutList) GetNext() *string {
-	if m == nil {
+func (o *MeshTimeoutList) GetNext() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Next
+	return o.Next
 }

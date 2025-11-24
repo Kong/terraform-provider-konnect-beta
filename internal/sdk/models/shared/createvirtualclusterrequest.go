@@ -42,58 +42,58 @@ type CreateVirtualClusterRequest struct {
 	Labels map[string]*string `json:"labels,omitempty"`
 }
 
-func (c *CreateVirtualClusterRequest) GetName() string {
-	if c == nil {
+func (o *CreateVirtualClusterRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return c.Name
+	return o.Name
 }
 
-func (c *CreateVirtualClusterRequest) GetDescription() *string {
-	if c == nil {
+func (o *CreateVirtualClusterRequest) GetDescription() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Description
+	return o.Description
 }
 
-func (c *CreateVirtualClusterRequest) GetDestination() BackendClusterReferenceModify {
-	if c == nil {
+func (o *CreateVirtualClusterRequest) GetDestination() BackendClusterReferenceModify {
+	if o == nil {
 		return BackendClusterReferenceModify{}
 	}
-	return c.Destination
+	return o.Destination
 }
 
-func (c *CreateVirtualClusterRequest) GetAuthentication() []VirtualClusterAuthenticationScheme {
-	if c == nil {
+func (o *CreateVirtualClusterRequest) GetAuthentication() []VirtualClusterAuthenticationScheme {
+	if o == nil {
 		return []VirtualClusterAuthenticationScheme{}
 	}
-	return c.Authentication
+	return o.Authentication
 }
 
-func (c *CreateVirtualClusterRequest) GetNamespace() *VirtualClusterNamespace {
-	if c == nil {
+func (o *CreateVirtualClusterRequest) GetNamespace() *VirtualClusterNamespace {
+	if o == nil {
 		return nil
 	}
-	return c.Namespace
+	return o.Namespace
 }
 
-func (c *CreateVirtualClusterRequest) GetACLMode() VirtualClusterACLMode {
-	if c == nil {
+func (o *CreateVirtualClusterRequest) GetACLMode() VirtualClusterACLMode {
+	if o == nil {
 		return VirtualClusterACLMode("")
 	}
-	return c.ACLMode
+	return o.ACLMode
 }
 
-func (c *CreateVirtualClusterRequest) GetDNSLabel() string {
-	if c == nil {
+func (o *CreateVirtualClusterRequest) GetDNSLabel() string {
+	if o == nil {
 		return ""
 	}
-	return c.DNSLabel
+	return o.DNSLabel
 }
 
-func (c *CreateVirtualClusterRequest) GetLabels() map[string]*string {
-	if c == nil {
+func (o *CreateVirtualClusterRequest) GetLabels() map[string]*string {
+	if o == nil {
 		return nil
 	}
-	return c.Labels
+	return o.Labels
 }

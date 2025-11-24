@@ -14,18 +14,18 @@ type GetMeshListQueryParamFilter struct {
 	Value *string `queryParam:"name=value"`
 }
 
-func (g *GetMeshListQueryParamFilter) GetKey() *string {
-	if g == nil {
+func (o *GetMeshListQueryParamFilter) GetKey() *string {
+	if o == nil {
 		return nil
 	}
-	return g.Key
+	return o.Key
 }
 
-func (g *GetMeshListQueryParamFilter) GetValue() *string {
-	if g == nil {
+func (o *GetMeshListQueryParamFilter) GetValue() *string {
+	if o == nil {
 		return nil
 	}
-	return g.Value
+	return o.Value
 }
 
 type GetMeshListRequest struct {
@@ -44,38 +44,38 @@ func (g GetMeshListRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetMeshListRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"cpId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (g *GetMeshListRequest) GetCpID() string {
-	if g == nil {
+func (o *GetMeshListRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return g.CpID
+	return o.CpID
 }
 
-func (g *GetMeshListRequest) GetOffset() *int64 {
-	if g == nil {
+func (o *GetMeshListRequest) GetOffset() *int64 {
+	if o == nil {
 		return nil
 	}
-	return g.Offset
+	return o.Offset
 }
 
-func (g *GetMeshListRequest) GetSize() *int64 {
-	if g == nil {
+func (o *GetMeshListRequest) GetSize() *int64 {
+	if o == nil {
 		return nil
 	}
-	return g.Size
+	return o.Size
 }
 
-func (g *GetMeshListRequest) GetFilter() *GetMeshListQueryParamFilter {
-	if g == nil {
+func (o *GetMeshListRequest) GetFilter() *GetMeshListQueryParamFilter {
+	if o == nil {
 		return nil
 	}
-	return g.Filter
+	return o.Filter
 }
 
 type GetMeshListResponse struct {
@@ -89,30 +89,30 @@ type GetMeshListResponse struct {
 	MeshList *shared.MeshList
 }
 
-func (g *GetMeshListResponse) GetContentType() string {
-	if g == nil {
+func (o *GetMeshListResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetMeshListResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetMeshListResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetMeshListResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetMeshListResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetMeshListResponse) GetMeshList() *shared.MeshList {
-	if g == nil {
+func (o *GetMeshListResponse) GetMeshList() *shared.MeshList {
+	if o == nil {
 		return nil
 	}
-	return g.MeshList
+	return o.MeshList
 }

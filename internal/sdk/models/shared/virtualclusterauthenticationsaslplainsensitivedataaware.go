@@ -49,26 +49,26 @@ func (v VirtualClusterAuthenticationSaslPlainSensitiveDataAware) MarshalJSON() (
 }
 
 func (v *VirtualClusterAuthenticationSaslPlainSensitiveDataAware) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"type", "mediation"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (v *VirtualClusterAuthenticationSaslPlainSensitiveDataAware) GetType() string {
+func (o *VirtualClusterAuthenticationSaslPlainSensitiveDataAware) GetType() string {
 	return "sasl_plain"
 }
 
-func (v *VirtualClusterAuthenticationSaslPlainSensitiveDataAware) GetMediation() VirtualClusterAuthenticationSaslPlainSensitiveDataAwareMediation {
-	if v == nil {
+func (o *VirtualClusterAuthenticationSaslPlainSensitiveDataAware) GetMediation() VirtualClusterAuthenticationSaslPlainSensitiveDataAwareMediation {
+	if o == nil {
 		return VirtualClusterAuthenticationSaslPlainSensitiveDataAwareMediation("")
 	}
-	return v.Mediation
+	return o.Mediation
 }
 
-func (v *VirtualClusterAuthenticationSaslPlainSensitiveDataAware) GetPrincipals() []VirtualClusterAuthenticationPrincipalSensitiveDataAware {
-	if v == nil {
+func (o *VirtualClusterAuthenticationSaslPlainSensitiveDataAware) GetPrincipals() []VirtualClusterAuthenticationPrincipalSensitiveDataAware {
+	if o == nil {
 		return nil
 	}
-	return v.Principals
+	return o.Principals
 }

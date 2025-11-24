@@ -33,85 +33,85 @@ func (p PortalAuthenticationSettingsUpdateRequest) MarshalJSON() ([]byte, error)
 }
 
 func (p *PortalAuthenticationSettingsUpdateRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *PortalAuthenticationSettingsUpdateRequest) GetBasicAuthEnabled() *bool {
-	if p == nil {
+func (o *PortalAuthenticationSettingsUpdateRequest) GetBasicAuthEnabled() *bool {
+	if o == nil {
 		return nil
 	}
-	return p.BasicAuthEnabled
+	return o.BasicAuthEnabled
 }
 
-func (p *PortalAuthenticationSettingsUpdateRequest) GetOidcAuthEnabled() *bool {
-	if p == nil {
+func (o *PortalAuthenticationSettingsUpdateRequest) GetOidcAuthEnabled() *bool {
+	if o == nil {
 		return nil
 	}
-	return p.OidcAuthEnabled
+	return o.OidcAuthEnabled
 }
 
-func (p *PortalAuthenticationSettingsUpdateRequest) GetSamlAuthEnabled() *bool {
-	if p == nil {
+func (o *PortalAuthenticationSettingsUpdateRequest) GetSamlAuthEnabled() *bool {
+	if o == nil {
 		return nil
 	}
-	return p.SamlAuthEnabled
+	return o.SamlAuthEnabled
 }
 
-func (p *PortalAuthenticationSettingsUpdateRequest) GetOidcTeamMappingEnabled() *bool {
-	if p == nil {
+func (o *PortalAuthenticationSettingsUpdateRequest) GetOidcTeamMappingEnabled() *bool {
+	if o == nil {
 		return nil
 	}
-	return p.OidcTeamMappingEnabled
+	return o.OidcTeamMappingEnabled
 }
 
-func (p *PortalAuthenticationSettingsUpdateRequest) GetKonnectMappingEnabled() *bool {
-	if p == nil {
+func (o *PortalAuthenticationSettingsUpdateRequest) GetKonnectMappingEnabled() *bool {
+	if o == nil {
 		return nil
 	}
-	return p.KonnectMappingEnabled
+	return o.KonnectMappingEnabled
 }
 
-func (p *PortalAuthenticationSettingsUpdateRequest) GetIdpMappingEnabled() *bool {
-	if p == nil {
+func (o *PortalAuthenticationSettingsUpdateRequest) GetIdpMappingEnabled() *bool {
+	if o == nil {
 		return nil
 	}
-	return p.IdpMappingEnabled
+	return o.IdpMappingEnabled
 }
 
-func (p *PortalAuthenticationSettingsUpdateRequest) GetOidcIssuer() *string {
-	if p == nil {
+func (o *PortalAuthenticationSettingsUpdateRequest) GetOidcIssuer() *string {
+	if o == nil {
 		return nil
 	}
-	return p.OidcIssuer
+	return o.OidcIssuer
 }
 
-func (p *PortalAuthenticationSettingsUpdateRequest) GetOidcClientID() *string {
-	if p == nil {
+func (o *PortalAuthenticationSettingsUpdateRequest) GetOidcClientID() *string {
+	if o == nil {
 		return nil
 	}
-	return p.OidcClientID
+	return o.OidcClientID
 }
 
-func (p *PortalAuthenticationSettingsUpdateRequest) GetOidcClientSecret() *string {
-	if p == nil {
+func (o *PortalAuthenticationSettingsUpdateRequest) GetOidcClientSecret() *string {
+	if o == nil {
 		return nil
 	}
-	return p.OidcClientSecret
+	return o.OidcClientSecret
 }
 
-func (p *PortalAuthenticationSettingsUpdateRequest) GetOidcScopes() []string {
-	if p == nil {
+func (o *PortalAuthenticationSettingsUpdateRequest) GetOidcScopes() []string {
+	if o == nil {
 		return nil
 	}
-	return p.OidcScopes
+	return o.OidcScopes
 }
 
-func (p *PortalAuthenticationSettingsUpdateRequest) GetOidcClaimMappings() *PortalClaimMappings {
-	if p == nil {
+func (o *PortalAuthenticationSettingsUpdateRequest) GetOidcClaimMappings() *PortalClaimMappings {
+	if o == nil {
 		return nil
 	}
-	return p.OidcClaimMappings
+	return o.OidcClaimMappings
 }

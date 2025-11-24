@@ -62,9 +62,9 @@ type EventGatewayACLOperation struct {
 	Name Name `json:"name"`
 }
 
-func (e *EventGatewayACLOperation) GetName() Name {
-	if e == nil {
+func (o *EventGatewayACLOperation) GetName() Name {
+	if o == nil {
 		return Name("")
 	}
-	return e.Name
+	return o.Name
 }

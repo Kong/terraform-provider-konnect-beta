@@ -16,25 +16,25 @@ type UpdateEventGatewayBackendClusterRequest struct {
 	UpdateBackendClusterRequest *shared.UpdateBackendClusterRequest `request:"mediaType=application/json"`
 }
 
-func (u *UpdateEventGatewayBackendClusterRequest) GetGatewayID() string {
-	if u == nil {
+func (o *UpdateEventGatewayBackendClusterRequest) GetGatewayID() string {
+	if o == nil {
 		return ""
 	}
-	return u.GatewayID
+	return o.GatewayID
 }
 
-func (u *UpdateEventGatewayBackendClusterRequest) GetBackendClusterID() string {
-	if u == nil {
+func (o *UpdateEventGatewayBackendClusterRequest) GetBackendClusterID() string {
+	if o == nil {
 		return ""
 	}
-	return u.BackendClusterID
+	return o.BackendClusterID
 }
 
-func (u *UpdateEventGatewayBackendClusterRequest) GetUpdateBackendClusterRequest() *shared.UpdateBackendClusterRequest {
-	if u == nil {
+func (o *UpdateEventGatewayBackendClusterRequest) GetUpdateBackendClusterRequest() *shared.UpdateBackendClusterRequest {
+	if o == nil {
 		return nil
 	}
-	return u.UpdateBackendClusterRequest
+	return o.UpdateBackendClusterRequest
 }
 
 type UpdateEventGatewayBackendClusterResponse struct {
@@ -54,51 +54,51 @@ type UpdateEventGatewayBackendClusterResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (u *UpdateEventGatewayBackendClusterResponse) GetContentType() string {
-	if u == nil {
+func (o *UpdateEventGatewayBackendClusterResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return u.ContentType
+	return o.ContentType
 }
 
-func (u *UpdateEventGatewayBackendClusterResponse) GetStatusCode() int {
-	if u == nil {
+func (o *UpdateEventGatewayBackendClusterResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return u.StatusCode
+	return o.StatusCode
 }
 
-func (u *UpdateEventGatewayBackendClusterResponse) GetRawResponse() *http.Response {
-	if u == nil {
+func (o *UpdateEventGatewayBackendClusterResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return u.RawResponse
+	return o.RawResponse
 }
 
-func (u *UpdateEventGatewayBackendClusterResponse) GetBackendCluster() *shared.BackendCluster {
-	if u == nil {
+func (o *UpdateEventGatewayBackendClusterResponse) GetBackendCluster() *shared.BackendCluster {
+	if o == nil {
 		return nil
 	}
-	return u.BackendCluster
+	return o.BackendCluster
 }
 
-func (u *UpdateEventGatewayBackendClusterResponse) GetBadRequestError() *shared.BadRequestError {
-	if u == nil {
+func (o *UpdateEventGatewayBackendClusterResponse) GetBadRequestError() *shared.BadRequestError {
+	if o == nil {
 		return nil
 	}
-	return u.BadRequestError
+	return o.BadRequestError
 }
 
-func (u *UpdateEventGatewayBackendClusterResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if u == nil {
+func (o *UpdateEventGatewayBackendClusterResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return u.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (u *UpdateEventGatewayBackendClusterResponse) GetForbiddenError() *shared.ForbiddenError {
-	if u == nil {
+func (o *UpdateEventGatewayBackendClusterResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return u.ForbiddenError
+	return o.ForbiddenError
 }

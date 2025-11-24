@@ -10,9 +10,9 @@ type HostnameGeneratorCreateOrUpdateSuccessResponse struct {
 	Warnings []string `json:"warnings,omitempty"`
 }
 
-func (h *HostnameGeneratorCreateOrUpdateSuccessResponse) GetWarnings() []string {
-	if h == nil {
+func (o *HostnameGeneratorCreateOrUpdateSuccessResponse) GetWarnings() []string {
+	if o == nil {
 		return nil
 	}
-	return h.Warnings
+	return o.Warnings
 }

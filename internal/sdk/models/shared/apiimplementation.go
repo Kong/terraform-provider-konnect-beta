@@ -16,7 +16,7 @@ const (
 
 // APIImplementation - An entity that implements an API
 type APIImplementation struct {
-	ServiceReference *ServiceReference `queryParam:"inline,name=ApiImplementation"`
+	ServiceReference *ServiceReference `queryParam:"inline"`
 
 	Type APIImplementationType
 }
@@ -32,32 +32,10 @@ func CreateAPIImplementationServiceReference(serviceReference ServiceReference) 
 
 func (u *APIImplementation) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var serviceReference ServiceReference = ServiceReference{}
-	if err := utils.UnmarshalJSON(data, &serviceReference, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  APIImplementationTypeServiceReference,
-			Value: &serviceReference,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for APIImplementation", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for APIImplementation", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(APIImplementationType)
-	switch best.Type {
-	case APIImplementationTypeServiceReference:
-		u.ServiceReference = best.Value.(*ServiceReference)
+	if err := utils.UnmarshalJSON(data, &serviceReference, "", true, true); err == nil {
+		u.ServiceReference = &serviceReference
+		u.Type = APIImplementationTypeServiceReference
 		return nil
 	}
 

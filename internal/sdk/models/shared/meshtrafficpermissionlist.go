@@ -11,23 +11,23 @@ type MeshTrafficPermissionList struct {
 	Next *string `json:"next,omitempty"`
 }
 
-func (m *MeshTrafficPermissionList) GetItems() []MeshTrafficPermissionItem {
-	if m == nil {
+func (o *MeshTrafficPermissionList) GetItems() []MeshTrafficPermissionItem {
+	if o == nil {
 		return nil
 	}
-	return m.Items
+	return o.Items
 }
 
-func (m *MeshTrafficPermissionList) GetTotal() *float64 {
-	if m == nil {
+func (o *MeshTrafficPermissionList) GetTotal() *float64 {
+	if o == nil {
 		return nil
 	}
-	return m.Total
+	return o.Total
 }
 
-func (m *MeshTrafficPermissionList) GetNext() *string {
-	if m == nil {
+func (o *MeshTrafficPermissionList) GetNext() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Next
+	return o.Next
 }

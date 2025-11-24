@@ -14,18 +14,18 @@ type ListMeshControlPlanesRequest struct {
 	PageNumber *int64 `queryParam:"style=form,explode=true,name=page[number]"`
 }
 
-func (l *ListMeshControlPlanesRequest) GetPageSize() *int64 {
-	if l == nil {
+func (o *ListMeshControlPlanesRequest) GetPageSize() *int64 {
+	if o == nil {
 		return nil
 	}
-	return l.PageSize
+	return o.PageSize
 }
 
-func (l *ListMeshControlPlanesRequest) GetPageNumber() *int64 {
-	if l == nil {
+func (o *ListMeshControlPlanesRequest) GetPageNumber() *int64 {
+	if o == nil {
 		return nil
 	}
-	return l.PageNumber
+	return o.PageNumber
 }
 
 type ListMeshControlPlanesResponse struct {
@@ -43,44 +43,44 @@ type ListMeshControlPlanesResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (l *ListMeshControlPlanesResponse) GetContentType() string {
-	if l == nil {
+func (o *ListMeshControlPlanesResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return l.ContentType
+	return o.ContentType
 }
 
-func (l *ListMeshControlPlanesResponse) GetStatusCode() int {
-	if l == nil {
+func (o *ListMeshControlPlanesResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return l.StatusCode
+	return o.StatusCode
 }
 
-func (l *ListMeshControlPlanesResponse) GetRawResponse() *http.Response {
-	if l == nil {
+func (o *ListMeshControlPlanesResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return l.RawResponse
+	return o.RawResponse
 }
 
-func (l *ListMeshControlPlanesResponse) GetListMeshControlPlanesResponse() *shared.ListMeshControlPlanesResponse {
-	if l == nil {
+func (o *ListMeshControlPlanesResponse) GetListMeshControlPlanesResponse() *shared.ListMeshControlPlanesResponse {
+	if o == nil {
 		return nil
 	}
-	return l.ListMeshControlPlanesResponse
+	return o.ListMeshControlPlanesResponse
 }
 
-func (l *ListMeshControlPlanesResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if l == nil {
+func (o *ListMeshControlPlanesResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return l.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (l *ListMeshControlPlanesResponse) GetForbiddenError() *shared.ForbiddenError {
-	if l == nil {
+func (o *ListMeshControlPlanesResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return l.ForbiddenError
+	return o.ForbiddenError
 }

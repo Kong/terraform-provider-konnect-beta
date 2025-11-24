@@ -12,11 +12,11 @@ type DeleteAPIRequest struct {
 	APIID string `pathParam:"style=simple,explode=false,name=apiId"`
 }
 
-func (d *DeleteAPIRequest) GetAPIID() string {
-	if d == nil {
+func (o *DeleteAPIRequest) GetAPIID() string {
+	if o == nil {
 		return ""
 	}
-	return d.APIID
+	return o.APIID
 }
 
 type DeleteAPIResponse struct {
@@ -34,44 +34,44 @@ type DeleteAPIResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeleteAPIResponse) GetContentType() string {
-	if d == nil {
+func (o *DeleteAPIResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeleteAPIResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeleteAPIResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeleteAPIResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeleteAPIResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeleteAPIResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if d == nil {
+func (o *DeleteAPIResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return d.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (d *DeleteAPIResponse) GetForbiddenError() *shared.ForbiddenError {
-	if d == nil {
+func (o *DeleteAPIResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return d.ForbiddenError
+	return o.ForbiddenError
 }
 
-func (d *DeleteAPIResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeleteAPIResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

@@ -44,8 +44,8 @@ const (
 // Percentage of requests on which abort will be injected, has to be
 // either int or decimal represented as string.
 type Percentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage"`
-	Str     *string `queryParam:"inline,name=percentage"`
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type PercentageType
 }
@@ -70,43 +70,17 @@ func CreatePercentageStr(str string) Percentage {
 
 func (u *Percentage) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  PercentageTypeInteger,
-			Value: &integer,
-		})
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = PercentageTypeInteger
+		return nil
 	}
 
 	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  PercentageTypeStr,
-			Value: &str,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Percentage", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Percentage", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(PercentageType)
-	switch best.Type {
-	case PercentageTypeInteger:
-		u.Integer = best.Value.(*int64)
-		return nil
-	case PercentageTypeStr:
-		u.Str = best.Value.(*string)
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = PercentageTypeStr
 		return nil
 	}
 
@@ -136,18 +110,18 @@ type Abort struct {
 	Percentage Percentage `json:"percentage"`
 }
 
-func (a *Abort) GetHTTPStatus() int {
-	if a == nil {
+func (o *Abort) GetHTTPStatus() int {
+	if o == nil {
 		return 0
 	}
-	return a.HTTPStatus
+	return o.HTTPStatus
 }
 
-func (a *Abort) GetPercentage() Percentage {
-	if a == nil {
+func (o *Abort) GetPercentage() Percentage {
+	if o == nil {
 		return Percentage{}
 	}
-	return a.Percentage
+	return o.Percentage
 }
 
 type MeshFaultInjectionItemPercentageType string
@@ -160,8 +134,8 @@ const (
 // MeshFaultInjectionItemPercentage - Percentage of requests on which delay will be injected, has to be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage"`
-	Str     *string `queryParam:"inline,name=percentage"`
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type MeshFaultInjectionItemPercentageType
 }
@@ -186,43 +160,17 @@ func CreateMeshFaultInjectionItemPercentageStr(str string) MeshFaultInjectionIte
 
 func (u *MeshFaultInjectionItemPercentage) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshFaultInjectionItemPercentageTypeInteger,
-			Value: &integer,
-		})
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = MeshFaultInjectionItemPercentageTypeInteger
+		return nil
 	}
 
 	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshFaultInjectionItemPercentageTypeStr,
-			Value: &str,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshFaultInjectionItemPercentage", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshFaultInjectionItemPercentage", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(MeshFaultInjectionItemPercentageType)
-	switch best.Type {
-	case MeshFaultInjectionItemPercentageTypeInteger:
-		u.Integer = best.Value.(*int64)
-		return nil
-	case MeshFaultInjectionItemPercentageTypeStr:
-		u.Str = best.Value.(*string)
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = MeshFaultInjectionItemPercentageTypeStr
 		return nil
 	}
 
@@ -250,18 +198,18 @@ type Delay struct {
 	Value string `json:"value"`
 }
 
-func (d *Delay) GetPercentage() MeshFaultInjectionItemPercentage {
-	if d == nil {
+func (o *Delay) GetPercentage() MeshFaultInjectionItemPercentage {
+	if o == nil {
 		return MeshFaultInjectionItemPercentage{}
 	}
-	return d.Percentage
+	return o.Percentage
 }
 
-func (d *Delay) GetValue() string {
-	if d == nil {
+func (o *Delay) GetValue() string {
+	if o == nil {
 		return ""
 	}
-	return d.Value
+	return o.Value
 }
 
 type MeshFaultInjectionItemSpecPercentageType string
@@ -274,8 +222,8 @@ const (
 // MeshFaultInjectionItemSpecPercentage - Percentage of requests on which response bandwidth limit will be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage"`
-	Str     *string `queryParam:"inline,name=percentage"`
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type MeshFaultInjectionItemSpecPercentageType
 }
@@ -300,43 +248,17 @@ func CreateMeshFaultInjectionItemSpecPercentageStr(str string) MeshFaultInjectio
 
 func (u *MeshFaultInjectionItemSpecPercentage) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshFaultInjectionItemSpecPercentageTypeInteger,
-			Value: &integer,
-		})
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = MeshFaultInjectionItemSpecPercentageTypeInteger
+		return nil
 	}
 
 	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshFaultInjectionItemSpecPercentageTypeStr,
-			Value: &str,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshFaultInjectionItemSpecPercentage", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshFaultInjectionItemSpecPercentage", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(MeshFaultInjectionItemSpecPercentageType)
-	switch best.Type {
-	case MeshFaultInjectionItemSpecPercentageTypeInteger:
-		u.Integer = best.Value.(*int64)
-		return nil
-	case MeshFaultInjectionItemSpecPercentageTypeStr:
-		u.Str = best.Value.(*string)
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = MeshFaultInjectionItemSpecPercentageTypeStr
 		return nil
 	}
 
@@ -366,18 +288,18 @@ type ResponseBandwidth struct {
 	Percentage MeshFaultInjectionItemSpecPercentage `json:"percentage"`
 }
 
-func (r *ResponseBandwidth) GetLimit() string {
-	if r == nil {
+func (o *ResponseBandwidth) GetLimit() string {
+	if o == nil {
 		return ""
 	}
-	return r.Limit
+	return o.Limit
 }
 
-func (r *ResponseBandwidth) GetPercentage() MeshFaultInjectionItemSpecPercentage {
-	if r == nil {
+func (o *ResponseBandwidth) GetPercentage() MeshFaultInjectionItemSpecPercentage {
+	if o == nil {
 		return MeshFaultInjectionItemSpecPercentage{}
 	}
-	return r.Percentage
+	return o.Percentage
 }
 
 // HTTP - FaultInjection defines the configuration of faults between dataplanes.
@@ -393,25 +315,25 @@ type HTTP struct {
 	ResponseBandwidth *ResponseBandwidth `json:"responseBandwidth,omitempty"`
 }
 
-func (h *HTTP) GetAbort() *Abort {
-	if h == nil {
+func (o *HTTP) GetAbort() *Abort {
+	if o == nil {
 		return nil
 	}
-	return h.Abort
+	return o.Abort
 }
 
-func (h *HTTP) GetDelay() *Delay {
-	if h == nil {
+func (o *HTTP) GetDelay() *Delay {
+	if o == nil {
 		return nil
 	}
-	return h.Delay
+	return o.Delay
 }
 
-func (h *HTTP) GetResponseBandwidth() *ResponseBandwidth {
-	if h == nil {
+func (o *HTTP) GetResponseBandwidth() *ResponseBandwidth {
+	if o == nil {
 		return nil
 	}
-	return h.ResponseBandwidth
+	return o.ResponseBandwidth
 }
 
 // MeshFaultInjectionItemDefault - Default is a configuration specific to the group of destinations referenced in
@@ -421,11 +343,11 @@ type MeshFaultInjectionItemDefault struct {
 	HTTP []HTTP `json:"http,omitempty"`
 }
 
-func (m *MeshFaultInjectionItemDefault) GetHTTP() []HTTP {
-	if m == nil {
+func (o *MeshFaultInjectionItemDefault) GetHTTP() []HTTP {
+	if o == nil {
 		return nil
 	}
-	return m.HTTP
+	return o.HTTP
 }
 
 // MeshFaultInjectionItemSpecKind - Kind of the referenced resource
@@ -529,60 +451,60 @@ type MeshFaultInjectionItemSpecTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (m *MeshFaultInjectionItemSpecTargetRef) GetKind() MeshFaultInjectionItemSpecKind {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpecTargetRef) GetKind() MeshFaultInjectionItemSpecKind {
+	if o == nil {
 		return MeshFaultInjectionItemSpecKind("")
 	}
-	return m.Kind
+	return o.Kind
 }
 
-func (m *MeshFaultInjectionItemSpecTargetRef) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpecTargetRef) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshFaultInjectionItemSpecTargetRef) GetMesh() *string {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpecTargetRef) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Mesh
+	return o.Mesh
 }
 
-func (m *MeshFaultInjectionItemSpecTargetRef) GetName() *string {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpecTargetRef) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshFaultInjectionItemSpecTargetRef) GetNamespace() *string {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpecTargetRef) GetNamespace() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Namespace
+	return o.Namespace
 }
 
-func (m *MeshFaultInjectionItemSpecTargetRef) GetProxyTypes() []MeshFaultInjectionItemSpecProxyTypes {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpecTargetRef) GetProxyTypes() []MeshFaultInjectionItemSpecProxyTypes {
+	if o == nil {
 		return nil
 	}
-	return m.ProxyTypes
+	return o.ProxyTypes
 }
 
-func (m *MeshFaultInjectionItemSpecTargetRef) GetSectionName() *string {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpecTargetRef) GetSectionName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.SectionName
+	return o.SectionName
 }
 
-func (m *MeshFaultInjectionItemSpecTargetRef) GetTags() map[string]string {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpecTargetRef) GetTags() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Tags
+	return o.Tags
 }
 
 type MeshFaultInjectionItemFrom struct {
@@ -594,18 +516,18 @@ type MeshFaultInjectionItemFrom struct {
 	TargetRef MeshFaultInjectionItemSpecTargetRef `json:"targetRef"`
 }
 
-func (m *MeshFaultInjectionItemFrom) GetDefault() *MeshFaultInjectionItemDefault {
-	if m == nil {
+func (o *MeshFaultInjectionItemFrom) GetDefault() *MeshFaultInjectionItemDefault {
+	if o == nil {
 		return nil
 	}
-	return m.Default
+	return o.Default
 }
 
-func (m *MeshFaultInjectionItemFrom) GetTargetRef() MeshFaultInjectionItemSpecTargetRef {
-	if m == nil {
+func (o *MeshFaultInjectionItemFrom) GetTargetRef() MeshFaultInjectionItemSpecTargetRef {
+	if o == nil {
 		return MeshFaultInjectionItemSpecTargetRef{}
 	}
-	return m.TargetRef
+	return o.TargetRef
 }
 
 type MeshFaultInjectionItemSpecRulesPercentageType string
@@ -618,8 +540,8 @@ const (
 // MeshFaultInjectionItemSpecRulesPercentage - Percentage of requests on which abort will be injected, has to be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecRulesPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage"`
-	Str     *string `queryParam:"inline,name=percentage"`
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type MeshFaultInjectionItemSpecRulesPercentageType
 }
@@ -644,43 +566,17 @@ func CreateMeshFaultInjectionItemSpecRulesPercentageStr(str string) MeshFaultInj
 
 func (u *MeshFaultInjectionItemSpecRulesPercentage) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshFaultInjectionItemSpecRulesPercentageTypeInteger,
-			Value: &integer,
-		})
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = MeshFaultInjectionItemSpecRulesPercentageTypeInteger
+		return nil
 	}
 
 	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshFaultInjectionItemSpecRulesPercentageTypeStr,
-			Value: &str,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshFaultInjectionItemSpecRulesPercentage", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshFaultInjectionItemSpecRulesPercentage", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(MeshFaultInjectionItemSpecRulesPercentageType)
-	switch best.Type {
-	case MeshFaultInjectionItemSpecRulesPercentageTypeInteger:
-		u.Integer = best.Value.(*int64)
-		return nil
-	case MeshFaultInjectionItemSpecRulesPercentageTypeStr:
-		u.Str = best.Value.(*string)
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = MeshFaultInjectionItemSpecRulesPercentageTypeStr
 		return nil
 	}
 
@@ -710,18 +606,18 @@ type MeshFaultInjectionItemAbort struct {
 	Percentage MeshFaultInjectionItemSpecRulesPercentage `json:"percentage"`
 }
 
-func (m *MeshFaultInjectionItemAbort) GetHTTPStatus() int {
-	if m == nil {
+func (o *MeshFaultInjectionItemAbort) GetHTTPStatus() int {
+	if o == nil {
 		return 0
 	}
-	return m.HTTPStatus
+	return o.HTTPStatus
 }
 
-func (m *MeshFaultInjectionItemAbort) GetPercentage() MeshFaultInjectionItemSpecRulesPercentage {
-	if m == nil {
+func (o *MeshFaultInjectionItemAbort) GetPercentage() MeshFaultInjectionItemSpecRulesPercentage {
+	if o == nil {
 		return MeshFaultInjectionItemSpecRulesPercentage{}
 	}
-	return m.Percentage
+	return o.Percentage
 }
 
 type MeshFaultInjectionItemSpecRulesDefaultPercentageType string
@@ -734,8 +630,8 @@ const (
 // MeshFaultInjectionItemSpecRulesDefaultPercentage - Percentage of requests on which delay will be injected, has to be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecRulesDefaultPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage"`
-	Str     *string `queryParam:"inline,name=percentage"`
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type MeshFaultInjectionItemSpecRulesDefaultPercentageType
 }
@@ -760,43 +656,17 @@ func CreateMeshFaultInjectionItemSpecRulesDefaultPercentageStr(str string) MeshF
 
 func (u *MeshFaultInjectionItemSpecRulesDefaultPercentage) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshFaultInjectionItemSpecRulesDefaultPercentageTypeInteger,
-			Value: &integer,
-		})
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = MeshFaultInjectionItemSpecRulesDefaultPercentageTypeInteger
+		return nil
 	}
 
 	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshFaultInjectionItemSpecRulesDefaultPercentageTypeStr,
-			Value: &str,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshFaultInjectionItemSpecRulesDefaultPercentage", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshFaultInjectionItemSpecRulesDefaultPercentage", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(MeshFaultInjectionItemSpecRulesDefaultPercentageType)
-	switch best.Type {
-	case MeshFaultInjectionItemSpecRulesDefaultPercentageTypeInteger:
-		u.Integer = best.Value.(*int64)
-		return nil
-	case MeshFaultInjectionItemSpecRulesDefaultPercentageTypeStr:
-		u.Str = best.Value.(*string)
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = MeshFaultInjectionItemSpecRulesDefaultPercentageTypeStr
 		return nil
 	}
 
@@ -824,18 +694,18 @@ type MeshFaultInjectionItemDelay struct {
 	Value string `json:"value"`
 }
 
-func (m *MeshFaultInjectionItemDelay) GetPercentage() MeshFaultInjectionItemSpecRulesDefaultPercentage {
-	if m == nil {
+func (o *MeshFaultInjectionItemDelay) GetPercentage() MeshFaultInjectionItemSpecRulesDefaultPercentage {
+	if o == nil {
 		return MeshFaultInjectionItemSpecRulesDefaultPercentage{}
 	}
-	return m.Percentage
+	return o.Percentage
 }
 
-func (m *MeshFaultInjectionItemDelay) GetValue() string {
-	if m == nil {
+func (o *MeshFaultInjectionItemDelay) GetValue() string {
+	if o == nil {
 		return ""
 	}
-	return m.Value
+	return o.Value
 }
 
 type MeshFaultInjectionItemSpecRulesDefaultHTTPPercentageType string
@@ -848,8 +718,8 @@ const (
 // MeshFaultInjectionItemSpecRulesDefaultHTTPPercentage - Percentage of requests on which response bandwidth limit will be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecRulesDefaultHTTPPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage"`
-	Str     *string `queryParam:"inline,name=percentage"`
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type MeshFaultInjectionItemSpecRulesDefaultHTTPPercentageType
 }
@@ -874,43 +744,17 @@ func CreateMeshFaultInjectionItemSpecRulesDefaultHTTPPercentageStr(str string) M
 
 func (u *MeshFaultInjectionItemSpecRulesDefaultHTTPPercentage) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshFaultInjectionItemSpecRulesDefaultHTTPPercentageTypeInteger,
-			Value: &integer,
-		})
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = MeshFaultInjectionItemSpecRulesDefaultHTTPPercentageTypeInteger
+		return nil
 	}
 
 	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshFaultInjectionItemSpecRulesDefaultHTTPPercentageTypeStr,
-			Value: &str,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshFaultInjectionItemSpecRulesDefaultHTTPPercentage", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshFaultInjectionItemSpecRulesDefaultHTTPPercentage", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(MeshFaultInjectionItemSpecRulesDefaultHTTPPercentageType)
-	switch best.Type {
-	case MeshFaultInjectionItemSpecRulesDefaultHTTPPercentageTypeInteger:
-		u.Integer = best.Value.(*int64)
-		return nil
-	case MeshFaultInjectionItemSpecRulesDefaultHTTPPercentageTypeStr:
-		u.Str = best.Value.(*string)
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = MeshFaultInjectionItemSpecRulesDefaultHTTPPercentageTypeStr
 		return nil
 	}
 
@@ -940,18 +784,18 @@ type MeshFaultInjectionItemResponseBandwidth struct {
 	Percentage MeshFaultInjectionItemSpecRulesDefaultHTTPPercentage `json:"percentage"`
 }
 
-func (m *MeshFaultInjectionItemResponseBandwidth) GetLimit() string {
-	if m == nil {
+func (o *MeshFaultInjectionItemResponseBandwidth) GetLimit() string {
+	if o == nil {
 		return ""
 	}
-	return m.Limit
+	return o.Limit
 }
 
-func (m *MeshFaultInjectionItemResponseBandwidth) GetPercentage() MeshFaultInjectionItemSpecRulesDefaultHTTPPercentage {
-	if m == nil {
+func (o *MeshFaultInjectionItemResponseBandwidth) GetPercentage() MeshFaultInjectionItemSpecRulesDefaultHTTPPercentage {
+	if o == nil {
 		return MeshFaultInjectionItemSpecRulesDefaultHTTPPercentage{}
 	}
-	return m.Percentage
+	return o.Percentage
 }
 
 // MeshFaultInjectionItemHTTP - FaultInjection defines the configuration of faults between dataplanes.
@@ -967,25 +811,25 @@ type MeshFaultInjectionItemHTTP struct {
 	ResponseBandwidth *MeshFaultInjectionItemResponseBandwidth `json:"responseBandwidth,omitempty"`
 }
 
-func (m *MeshFaultInjectionItemHTTP) GetAbort() *MeshFaultInjectionItemAbort {
-	if m == nil {
+func (o *MeshFaultInjectionItemHTTP) GetAbort() *MeshFaultInjectionItemAbort {
+	if o == nil {
 		return nil
 	}
-	return m.Abort
+	return o.Abort
 }
 
-func (m *MeshFaultInjectionItemHTTP) GetDelay() *MeshFaultInjectionItemDelay {
-	if m == nil {
+func (o *MeshFaultInjectionItemHTTP) GetDelay() *MeshFaultInjectionItemDelay {
+	if o == nil {
 		return nil
 	}
-	return m.Delay
+	return o.Delay
 }
 
-func (m *MeshFaultInjectionItemHTTP) GetResponseBandwidth() *MeshFaultInjectionItemResponseBandwidth {
-	if m == nil {
+func (o *MeshFaultInjectionItemHTTP) GetResponseBandwidth() *MeshFaultInjectionItemResponseBandwidth {
+	if o == nil {
 		return nil
 	}
-	return m.ResponseBandwidth
+	return o.ResponseBandwidth
 }
 
 // MeshFaultInjectionItemSpecDefault - Default defines fault configuration
@@ -994,11 +838,11 @@ type MeshFaultInjectionItemSpecDefault struct {
 	HTTP []MeshFaultInjectionItemHTTP `json:"http,omitempty"`
 }
 
-func (m *MeshFaultInjectionItemSpecDefault) GetHTTP() []MeshFaultInjectionItemHTTP {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpecDefault) GetHTTP() []MeshFaultInjectionItemHTTP {
+	if o == nil {
 		return nil
 	}
-	return m.HTTP
+	return o.HTTP
 }
 
 // MeshFaultInjectionItemSpecType - Type defines how to match incoming traffic by SpiffeID. `Exact` or `Prefix` are allowed.
@@ -1036,18 +880,18 @@ type MeshFaultInjectionItemSpiffeID struct {
 	Value string `json:"value"`
 }
 
-func (m *MeshFaultInjectionItemSpiffeID) GetType() MeshFaultInjectionItemSpecType {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpiffeID) GetType() MeshFaultInjectionItemSpecType {
+	if o == nil {
 		return MeshFaultInjectionItemSpecType("")
 	}
-	return m.Type
+	return o.Type
 }
 
-func (m *MeshFaultInjectionItemSpiffeID) GetValue() string {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpiffeID) GetValue() string {
+	if o == nil {
 		return ""
 	}
-	return m.Value
+	return o.Value
 }
 
 type Matches struct {
@@ -1055,11 +899,11 @@ type Matches struct {
 	SpiffeID *MeshFaultInjectionItemSpiffeID `json:"spiffeID,omitempty"`
 }
 
-func (m *Matches) GetSpiffeID() *MeshFaultInjectionItemSpiffeID {
-	if m == nil {
+func (o *Matches) GetSpiffeID() *MeshFaultInjectionItemSpiffeID {
+	if o == nil {
 		return nil
 	}
-	return m.SpiffeID
+	return o.SpiffeID
 }
 
 type MeshFaultInjectionItemRules struct {
@@ -1069,18 +913,18 @@ type MeshFaultInjectionItemRules struct {
 	Matches []Matches `json:"matches,omitempty"`
 }
 
-func (m *MeshFaultInjectionItemRules) GetDefault() MeshFaultInjectionItemSpecDefault {
-	if m == nil {
+func (o *MeshFaultInjectionItemRules) GetDefault() MeshFaultInjectionItemSpecDefault {
+	if o == nil {
 		return MeshFaultInjectionItemSpecDefault{}
 	}
-	return m.Default
+	return o.Default
 }
 
-func (m *MeshFaultInjectionItemRules) GetMatches() []Matches {
-	if m == nil {
+func (o *MeshFaultInjectionItemRules) GetMatches() []Matches {
+	if o == nil {
 		return nil
 	}
-	return m.Matches
+	return o.Matches
 }
 
 // MeshFaultInjectionItemKind - Kind of the referenced resource
@@ -1185,60 +1029,60 @@ type MeshFaultInjectionItemTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (m *MeshFaultInjectionItemTargetRef) GetKind() MeshFaultInjectionItemKind {
-	if m == nil {
+func (o *MeshFaultInjectionItemTargetRef) GetKind() MeshFaultInjectionItemKind {
+	if o == nil {
 		return MeshFaultInjectionItemKind("")
 	}
-	return m.Kind
+	return o.Kind
 }
 
-func (m *MeshFaultInjectionItemTargetRef) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshFaultInjectionItemTargetRef) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshFaultInjectionItemTargetRef) GetMesh() *string {
-	if m == nil {
+func (o *MeshFaultInjectionItemTargetRef) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Mesh
+	return o.Mesh
 }
 
-func (m *MeshFaultInjectionItemTargetRef) GetName() *string {
-	if m == nil {
+func (o *MeshFaultInjectionItemTargetRef) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshFaultInjectionItemTargetRef) GetNamespace() *string {
-	if m == nil {
+func (o *MeshFaultInjectionItemTargetRef) GetNamespace() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Namespace
+	return o.Namespace
 }
 
-func (m *MeshFaultInjectionItemTargetRef) GetProxyTypes() []MeshFaultInjectionItemProxyTypes {
-	if m == nil {
+func (o *MeshFaultInjectionItemTargetRef) GetProxyTypes() []MeshFaultInjectionItemProxyTypes {
+	if o == nil {
 		return nil
 	}
-	return m.ProxyTypes
+	return o.ProxyTypes
 }
 
-func (m *MeshFaultInjectionItemTargetRef) GetSectionName() *string {
-	if m == nil {
+func (o *MeshFaultInjectionItemTargetRef) GetSectionName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.SectionName
+	return o.SectionName
 }
 
-func (m *MeshFaultInjectionItemTargetRef) GetTags() map[string]string {
-	if m == nil {
+func (o *MeshFaultInjectionItemTargetRef) GetTags() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Tags
+	return o.Tags
 }
 
 type MeshFaultInjectionItemSpecToPercentageType string
@@ -1251,8 +1095,8 @@ const (
 // MeshFaultInjectionItemSpecToPercentage - Percentage of requests on which abort will be injected, has to be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecToPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage"`
-	Str     *string `queryParam:"inline,name=percentage"`
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type MeshFaultInjectionItemSpecToPercentageType
 }
@@ -1277,43 +1121,17 @@ func CreateMeshFaultInjectionItemSpecToPercentageStr(str string) MeshFaultInject
 
 func (u *MeshFaultInjectionItemSpecToPercentage) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshFaultInjectionItemSpecToPercentageTypeInteger,
-			Value: &integer,
-		})
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = MeshFaultInjectionItemSpecToPercentageTypeInteger
+		return nil
 	}
 
 	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshFaultInjectionItemSpecToPercentageTypeStr,
-			Value: &str,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshFaultInjectionItemSpecToPercentage", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshFaultInjectionItemSpecToPercentage", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(MeshFaultInjectionItemSpecToPercentageType)
-	switch best.Type {
-	case MeshFaultInjectionItemSpecToPercentageTypeInteger:
-		u.Integer = best.Value.(*int64)
-		return nil
-	case MeshFaultInjectionItemSpecToPercentageTypeStr:
-		u.Str = best.Value.(*string)
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = MeshFaultInjectionItemSpecToPercentageTypeStr
 		return nil
 	}
 
@@ -1343,18 +1161,18 @@ type MeshFaultInjectionItemSpecAbort struct {
 	Percentage MeshFaultInjectionItemSpecToPercentage `json:"percentage"`
 }
 
-func (m *MeshFaultInjectionItemSpecAbort) GetHTTPStatus() int {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpecAbort) GetHTTPStatus() int {
+	if o == nil {
 		return 0
 	}
-	return m.HTTPStatus
+	return o.HTTPStatus
 }
 
-func (m *MeshFaultInjectionItemSpecAbort) GetPercentage() MeshFaultInjectionItemSpecToPercentage {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpecAbort) GetPercentage() MeshFaultInjectionItemSpecToPercentage {
+	if o == nil {
 		return MeshFaultInjectionItemSpecToPercentage{}
 	}
-	return m.Percentage
+	return o.Percentage
 }
 
 type MeshFaultInjectionItemSpecToDefaultPercentageType string
@@ -1367,8 +1185,8 @@ const (
 // MeshFaultInjectionItemSpecToDefaultPercentage - Percentage of requests on which delay will be injected, has to be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecToDefaultPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage"`
-	Str     *string `queryParam:"inline,name=percentage"`
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type MeshFaultInjectionItemSpecToDefaultPercentageType
 }
@@ -1393,43 +1211,17 @@ func CreateMeshFaultInjectionItemSpecToDefaultPercentageStr(str string) MeshFaul
 
 func (u *MeshFaultInjectionItemSpecToDefaultPercentage) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshFaultInjectionItemSpecToDefaultPercentageTypeInteger,
-			Value: &integer,
-		})
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = MeshFaultInjectionItemSpecToDefaultPercentageTypeInteger
+		return nil
 	}
 
 	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshFaultInjectionItemSpecToDefaultPercentageTypeStr,
-			Value: &str,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshFaultInjectionItemSpecToDefaultPercentage", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshFaultInjectionItemSpecToDefaultPercentage", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(MeshFaultInjectionItemSpecToDefaultPercentageType)
-	switch best.Type {
-	case MeshFaultInjectionItemSpecToDefaultPercentageTypeInteger:
-		u.Integer = best.Value.(*int64)
-		return nil
-	case MeshFaultInjectionItemSpecToDefaultPercentageTypeStr:
-		u.Str = best.Value.(*string)
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = MeshFaultInjectionItemSpecToDefaultPercentageTypeStr
 		return nil
 	}
 
@@ -1457,18 +1249,18 @@ type MeshFaultInjectionItemSpecDelay struct {
 	Value string `json:"value"`
 }
 
-func (m *MeshFaultInjectionItemSpecDelay) GetPercentage() MeshFaultInjectionItemSpecToDefaultPercentage {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpecDelay) GetPercentage() MeshFaultInjectionItemSpecToDefaultPercentage {
+	if o == nil {
 		return MeshFaultInjectionItemSpecToDefaultPercentage{}
 	}
-	return m.Percentage
+	return o.Percentage
 }
 
-func (m *MeshFaultInjectionItemSpecDelay) GetValue() string {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpecDelay) GetValue() string {
+	if o == nil {
 		return ""
 	}
-	return m.Value
+	return o.Value
 }
 
 type MeshFaultInjectionItemSpecToDefaultHTTPPercentageType string
@@ -1481,8 +1273,8 @@ const (
 // MeshFaultInjectionItemSpecToDefaultHTTPPercentage - Percentage of requests on which response bandwidth limit will be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecToDefaultHTTPPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage"`
-	Str     *string `queryParam:"inline,name=percentage"`
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type MeshFaultInjectionItemSpecToDefaultHTTPPercentageType
 }
@@ -1507,43 +1299,17 @@ func CreateMeshFaultInjectionItemSpecToDefaultHTTPPercentageStr(str string) Mesh
 
 func (u *MeshFaultInjectionItemSpecToDefaultHTTPPercentage) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshFaultInjectionItemSpecToDefaultHTTPPercentageTypeInteger,
-			Value: &integer,
-		})
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = MeshFaultInjectionItemSpecToDefaultHTTPPercentageTypeInteger
+		return nil
 	}
 
 	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshFaultInjectionItemSpecToDefaultHTTPPercentageTypeStr,
-			Value: &str,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshFaultInjectionItemSpecToDefaultHTTPPercentage", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshFaultInjectionItemSpecToDefaultHTTPPercentage", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(MeshFaultInjectionItemSpecToDefaultHTTPPercentageType)
-	switch best.Type {
-	case MeshFaultInjectionItemSpecToDefaultHTTPPercentageTypeInteger:
-		u.Integer = best.Value.(*int64)
-		return nil
-	case MeshFaultInjectionItemSpecToDefaultHTTPPercentageTypeStr:
-		u.Str = best.Value.(*string)
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = MeshFaultInjectionItemSpecToDefaultHTTPPercentageTypeStr
 		return nil
 	}
 
@@ -1573,18 +1339,18 @@ type MeshFaultInjectionItemSpecResponseBandwidth struct {
 	Percentage MeshFaultInjectionItemSpecToDefaultHTTPPercentage `json:"percentage"`
 }
 
-func (m *MeshFaultInjectionItemSpecResponseBandwidth) GetLimit() string {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpecResponseBandwidth) GetLimit() string {
+	if o == nil {
 		return ""
 	}
-	return m.Limit
+	return o.Limit
 }
 
-func (m *MeshFaultInjectionItemSpecResponseBandwidth) GetPercentage() MeshFaultInjectionItemSpecToDefaultHTTPPercentage {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpecResponseBandwidth) GetPercentage() MeshFaultInjectionItemSpecToDefaultHTTPPercentage {
+	if o == nil {
 		return MeshFaultInjectionItemSpecToDefaultHTTPPercentage{}
 	}
-	return m.Percentage
+	return o.Percentage
 }
 
 // MeshFaultInjectionItemSpecHTTP - FaultInjection defines the configuration of faults between dataplanes.
@@ -1600,25 +1366,25 @@ type MeshFaultInjectionItemSpecHTTP struct {
 	ResponseBandwidth *MeshFaultInjectionItemSpecResponseBandwidth `json:"responseBandwidth,omitempty"`
 }
 
-func (m *MeshFaultInjectionItemSpecHTTP) GetAbort() *MeshFaultInjectionItemSpecAbort {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpecHTTP) GetAbort() *MeshFaultInjectionItemSpecAbort {
+	if o == nil {
 		return nil
 	}
-	return m.Abort
+	return o.Abort
 }
 
-func (m *MeshFaultInjectionItemSpecHTTP) GetDelay() *MeshFaultInjectionItemSpecDelay {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpecHTTP) GetDelay() *MeshFaultInjectionItemSpecDelay {
+	if o == nil {
 		return nil
 	}
-	return m.Delay
+	return o.Delay
 }
 
-func (m *MeshFaultInjectionItemSpecHTTP) GetResponseBandwidth() *MeshFaultInjectionItemSpecResponseBandwidth {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpecHTTP) GetResponseBandwidth() *MeshFaultInjectionItemSpecResponseBandwidth {
+	if o == nil {
 		return nil
 	}
-	return m.ResponseBandwidth
+	return o.ResponseBandwidth
 }
 
 // MeshFaultInjectionItemSpecToDefault - Default is a configuration specific to the group of destinations referenced in
@@ -1628,11 +1394,11 @@ type MeshFaultInjectionItemSpecToDefault struct {
 	HTTP []MeshFaultInjectionItemSpecHTTP `json:"http,omitempty"`
 }
 
-func (m *MeshFaultInjectionItemSpecToDefault) GetHTTP() []MeshFaultInjectionItemSpecHTTP {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpecToDefault) GetHTTP() []MeshFaultInjectionItemSpecHTTP {
+	if o == nil {
 		return nil
 	}
-	return m.HTTP
+	return o.HTTP
 }
 
 // MeshFaultInjectionItemSpecToKind - Kind of the referenced resource
@@ -1736,60 +1502,60 @@ type MeshFaultInjectionItemSpecToTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (m *MeshFaultInjectionItemSpecToTargetRef) GetKind() MeshFaultInjectionItemSpecToKind {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpecToTargetRef) GetKind() MeshFaultInjectionItemSpecToKind {
+	if o == nil {
 		return MeshFaultInjectionItemSpecToKind("")
 	}
-	return m.Kind
+	return o.Kind
 }
 
-func (m *MeshFaultInjectionItemSpecToTargetRef) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpecToTargetRef) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshFaultInjectionItemSpecToTargetRef) GetMesh() *string {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpecToTargetRef) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Mesh
+	return o.Mesh
 }
 
-func (m *MeshFaultInjectionItemSpecToTargetRef) GetName() *string {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpecToTargetRef) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshFaultInjectionItemSpecToTargetRef) GetNamespace() *string {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpecToTargetRef) GetNamespace() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Namespace
+	return o.Namespace
 }
 
-func (m *MeshFaultInjectionItemSpecToTargetRef) GetProxyTypes() []MeshFaultInjectionItemSpecToProxyTypes {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpecToTargetRef) GetProxyTypes() []MeshFaultInjectionItemSpecToProxyTypes {
+	if o == nil {
 		return nil
 	}
-	return m.ProxyTypes
+	return o.ProxyTypes
 }
 
-func (m *MeshFaultInjectionItemSpecToTargetRef) GetSectionName() *string {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpecToTargetRef) GetSectionName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.SectionName
+	return o.SectionName
 }
 
-func (m *MeshFaultInjectionItemSpecToTargetRef) GetTags() map[string]string {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpecToTargetRef) GetTags() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Tags
+	return o.Tags
 }
 
 type MeshFaultInjectionItemTo struct {
@@ -1801,18 +1567,18 @@ type MeshFaultInjectionItemTo struct {
 	TargetRef MeshFaultInjectionItemSpecToTargetRef `json:"targetRef"`
 }
 
-func (m *MeshFaultInjectionItemTo) GetDefault() *MeshFaultInjectionItemSpecToDefault {
-	if m == nil {
+func (o *MeshFaultInjectionItemTo) GetDefault() *MeshFaultInjectionItemSpecToDefault {
+	if o == nil {
 		return nil
 	}
-	return m.Default
+	return o.Default
 }
 
-func (m *MeshFaultInjectionItemTo) GetTargetRef() MeshFaultInjectionItemSpecToTargetRef {
-	if m == nil {
+func (o *MeshFaultInjectionItemTo) GetTargetRef() MeshFaultInjectionItemSpecToTargetRef {
+	if o == nil {
 		return MeshFaultInjectionItemSpecToTargetRef{}
 	}
-	return m.TargetRef
+	return o.TargetRef
 }
 
 // MeshFaultInjectionItemSpec - Spec is the specification of the Kuma MeshFaultInjection resource.
@@ -1829,32 +1595,32 @@ type MeshFaultInjectionItemSpec struct {
 	To []MeshFaultInjectionItemTo `json:"to,omitempty"`
 }
 
-func (m *MeshFaultInjectionItemSpec) GetFrom() []MeshFaultInjectionItemFrom {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpec) GetFrom() []MeshFaultInjectionItemFrom {
+	if o == nil {
 		return nil
 	}
-	return m.From
+	return o.From
 }
 
-func (m *MeshFaultInjectionItemSpec) GetRules() []MeshFaultInjectionItemRules {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpec) GetRules() []MeshFaultInjectionItemRules {
+	if o == nil {
 		return nil
 	}
-	return m.Rules
+	return o.Rules
 }
 
-func (m *MeshFaultInjectionItemSpec) GetTargetRef() *MeshFaultInjectionItemTargetRef {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpec) GetTargetRef() *MeshFaultInjectionItemTargetRef {
+	if o == nil {
 		return nil
 	}
-	return m.TargetRef
+	return o.TargetRef
 }
 
-func (m *MeshFaultInjectionItemSpec) GetTo() []MeshFaultInjectionItemTo {
-	if m == nil {
+func (o *MeshFaultInjectionItemSpec) GetTo() []MeshFaultInjectionItemTo {
+	if o == nil {
 		return nil
 	}
-	return m.To
+	return o.To
 }
 
 // MeshFaultInjectionItem - Successful response
@@ -1882,66 +1648,66 @@ func (m MeshFaultInjectionItem) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshFaultInjectionItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (m *MeshFaultInjectionItem) GetType() MeshFaultInjectionItemType {
-	if m == nil {
+func (o *MeshFaultInjectionItem) GetType() MeshFaultInjectionItemType {
+	if o == nil {
 		return MeshFaultInjectionItemType("")
 	}
-	return m.Type
+	return o.Type
 }
 
-func (m *MeshFaultInjectionItem) GetMesh() *string {
-	if m == nil {
+func (o *MeshFaultInjectionItem) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Mesh
+	return o.Mesh
 }
 
-func (m *MeshFaultInjectionItem) GetKri() *string {
-	if m == nil {
+func (o *MeshFaultInjectionItem) GetKri() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Kri
+	return o.Kri
 }
 
-func (m *MeshFaultInjectionItem) GetName() string {
-	if m == nil {
+func (o *MeshFaultInjectionItem) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshFaultInjectionItem) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshFaultInjectionItem) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshFaultInjectionItem) GetSpec() MeshFaultInjectionItemSpec {
-	if m == nil {
+func (o *MeshFaultInjectionItem) GetSpec() MeshFaultInjectionItemSpec {
+	if o == nil {
 		return MeshFaultInjectionItemSpec{}
 	}
-	return m.Spec
+	return o.Spec
 }
 
-func (m *MeshFaultInjectionItem) GetCreationTime() *time.Time {
-	if m == nil {
+func (o *MeshFaultInjectionItem) GetCreationTime() *time.Time {
+	if o == nil {
 		return nil
 	}
-	return m.CreationTime
+	return o.CreationTime
 }
 
-func (m *MeshFaultInjectionItem) GetModificationTime() *time.Time {
-	if m == nil {
+func (o *MeshFaultInjectionItem) GetModificationTime() *time.Time {
+	if o == nil {
 		return nil
 	}
-	return m.ModificationTime
+	return o.ModificationTime
 }
 
 // MeshFaultInjectionItemInput - Successful response
@@ -1963,43 +1729,43 @@ func (m MeshFaultInjectionItemInput) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshFaultInjectionItemInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (m *MeshFaultInjectionItemInput) GetType() MeshFaultInjectionItemType {
-	if m == nil {
+func (o *MeshFaultInjectionItemInput) GetType() MeshFaultInjectionItemType {
+	if o == nil {
 		return MeshFaultInjectionItemType("")
 	}
-	return m.Type
+	return o.Type
 }
 
-func (m *MeshFaultInjectionItemInput) GetMesh() *string {
-	if m == nil {
+func (o *MeshFaultInjectionItemInput) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Mesh
+	return o.Mesh
 }
 
-func (m *MeshFaultInjectionItemInput) GetName() string {
-	if m == nil {
+func (o *MeshFaultInjectionItemInput) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshFaultInjectionItemInput) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshFaultInjectionItemInput) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshFaultInjectionItemInput) GetSpec() MeshFaultInjectionItemSpec {
-	if m == nil {
+func (o *MeshFaultInjectionItemInput) GetSpec() MeshFaultInjectionItemSpec {
+	if o == nil {
 		return MeshFaultInjectionItemSpec{}
 	}
-	return m.Spec
+	return o.Spec
 }

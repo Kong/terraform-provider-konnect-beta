@@ -33,37 +33,37 @@ type CreateEventGatewayListenerRequest struct {
 	Labels map[string]*string `json:"labels,omitempty"`
 }
 
-func (c *CreateEventGatewayListenerRequest) GetName() string {
-	if c == nil {
+func (o *CreateEventGatewayListenerRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return c.Name
+	return o.Name
 }
 
-func (c *CreateEventGatewayListenerRequest) GetDescription() *string {
-	if c == nil {
+func (o *CreateEventGatewayListenerRequest) GetDescription() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Description
+	return o.Description
 }
 
-func (c *CreateEventGatewayListenerRequest) GetAddresses() []string {
-	if c == nil {
+func (o *CreateEventGatewayListenerRequest) GetAddresses() []string {
+	if o == nil {
 		return []string{}
 	}
-	return c.Addresses
+	return o.Addresses
 }
 
-func (c *CreateEventGatewayListenerRequest) GetPorts() []string {
-	if c == nil {
+func (o *CreateEventGatewayListenerRequest) GetPorts() []string {
+	if o == nil {
 		return []string{}
 	}
-	return c.Ports
+	return o.Ports
 }
 
-func (c *CreateEventGatewayListenerRequest) GetLabels() map[string]*string {
-	if c == nil {
+func (o *CreateEventGatewayListenerRequest) GetLabels() map[string]*string {
+	if o == nil {
 		return nil
 	}
-	return c.Labels
+	return o.Labels
 }

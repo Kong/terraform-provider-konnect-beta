@@ -12,11 +12,11 @@ type GetPortalAssetLogoRequest struct {
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 }
 
-func (g *GetPortalAssetLogoRequest) GetPortalID() string {
-	if g == nil {
+func (o *GetPortalAssetLogoRequest) GetPortalID() string {
+	if o == nil {
 		return ""
 	}
-	return g.PortalID
+	return o.PortalID
 }
 
 type GetPortalAssetLogoResponse struct {
@@ -34,44 +34,44 @@ type GetPortalAssetLogoResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (g *GetPortalAssetLogoResponse) GetContentType() string {
-	if g == nil {
+func (o *GetPortalAssetLogoResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetPortalAssetLogoResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetPortalAssetLogoResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetPortalAssetLogoResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetPortalAssetLogoResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetPortalAssetLogoResponse) GetPortalAssetResponse() *shared.PortalAssetResponse {
-	if g == nil {
+func (o *GetPortalAssetLogoResponse) GetPortalAssetResponse() *shared.PortalAssetResponse {
+	if o == nil {
 		return nil
 	}
-	return g.PortalAssetResponse
+	return o.PortalAssetResponse
 }
 
-func (g *GetPortalAssetLogoResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if g == nil {
+func (o *GetPortalAssetLogoResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return g.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (g *GetPortalAssetLogoResponse) GetForbiddenError() *shared.ForbiddenError {
-	if g == nil {
+func (o *GetPortalAssetLogoResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return g.ForbiddenError
+	return o.ForbiddenError
 }

@@ -18,19 +18,19 @@ func (e EventGatewayModifyHeaderRemoveAction) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayModifyHeaderRemoveAction) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"op", "key"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (e *EventGatewayModifyHeaderRemoveAction) GetOp() string {
+func (o *EventGatewayModifyHeaderRemoveAction) GetOp() string {
 	return "remove"
 }
 
-func (e *EventGatewayModifyHeaderRemoveAction) GetKey() string {
-	if e == nil {
+func (o *EventGatewayModifyHeaderRemoveAction) GetKey() string {
+	if o == nil {
 		return ""
 	}
-	return e.Key
+	return o.Key
 }

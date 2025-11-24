@@ -14,18 +14,18 @@ type DeleteZoneIngressRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (d *DeleteZoneIngressRequest) GetCpID() string {
-	if d == nil {
+func (o *DeleteZoneIngressRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return d.CpID
+	return o.CpID
 }
 
-func (d *DeleteZoneIngressRequest) GetName() string {
-	if d == nil {
+func (o *DeleteZoneIngressRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return d.Name
+	return o.Name
 }
 
 type DeleteZoneIngressResponse struct {
@@ -41,37 +41,37 @@ type DeleteZoneIngressResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeleteZoneIngressResponse) GetContentType() string {
-	if d == nil {
+func (o *DeleteZoneIngressResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeleteZoneIngressResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeleteZoneIngressResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeleteZoneIngressResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeleteZoneIngressResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeleteZoneIngressResponse) GetZoneIngressDeleteSuccessResponse() *shared.ZoneIngressDeleteSuccessResponse {
-	if d == nil {
+func (o *DeleteZoneIngressResponse) GetZoneIngressDeleteSuccessResponse() *shared.ZoneIngressDeleteSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return d.ZoneIngressDeleteSuccessResponse
+	return o.ZoneIngressDeleteSuccessResponse
 }
 
-func (d *DeleteZoneIngressResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeleteZoneIngressResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

@@ -16,25 +16,25 @@ type GetMeshProxyPatchRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (g *GetMeshProxyPatchRequest) GetCpID() string {
-	if g == nil {
+func (o *GetMeshProxyPatchRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return g.CpID
+	return o.CpID
 }
 
-func (g *GetMeshProxyPatchRequest) GetMesh() string {
-	if g == nil {
+func (o *GetMeshProxyPatchRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return g.Mesh
+	return o.Mesh
 }
 
-func (g *GetMeshProxyPatchRequest) GetName() string {
-	if g == nil {
+func (o *GetMeshProxyPatchRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return g.Name
+	return o.Name
 }
 
 type GetMeshProxyPatchResponse struct {
@@ -50,37 +50,37 @@ type GetMeshProxyPatchResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (g *GetMeshProxyPatchResponse) GetContentType() string {
-	if g == nil {
+func (o *GetMeshProxyPatchResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetMeshProxyPatchResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetMeshProxyPatchResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetMeshProxyPatchResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetMeshProxyPatchResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetMeshProxyPatchResponse) GetMeshProxyPatchItem() *shared.MeshProxyPatchItem {
-	if g == nil {
+func (o *GetMeshProxyPatchResponse) GetMeshProxyPatchItem() *shared.MeshProxyPatchItem {
+	if o == nil {
 		return nil
 	}
-	return g.MeshProxyPatchItem
+	return o.MeshProxyPatchItem
 }
 
-func (g *GetMeshProxyPatchResponse) GetNotFoundError() *shared.NotFoundError {
-	if g == nil {
+func (o *GetMeshProxyPatchResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return g.NotFoundError
+	return o.NotFoundError
 }

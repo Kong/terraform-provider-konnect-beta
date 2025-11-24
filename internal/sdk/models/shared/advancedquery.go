@@ -5,7 +5,6 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
 type Datasource string
@@ -145,68 +144,57 @@ type AdvancedQuery struct {
 	TimeRange *TimeRange `json:"time_range,omitempty"`
 }
 
-func (a AdvancedQuery) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AdvancedQuery) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"datasource"}); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *AdvancedQuery) GetDatasource() Datasource {
-	if a == nil {
+func (o *AdvancedQuery) GetDatasource() Datasource {
+	if o == nil {
 		return Datasource("")
 	}
-	return a.Datasource
+	return o.Datasource
 }
 
-func (a *AdvancedQuery) GetMetrics() []AdvancedMetrics {
-	if a == nil {
+func (o *AdvancedQuery) GetMetrics() []AdvancedMetrics {
+	if o == nil {
 		return nil
 	}
-	return a.Metrics
+	return o.Metrics
 }
 
-func (a *AdvancedQuery) GetDimensions() []Dimensions {
-	if a == nil {
+func (o *AdvancedQuery) GetDimensions() []Dimensions {
+	if o == nil {
 		return nil
 	}
-	return a.Dimensions
+	return o.Dimensions
 }
 
-func (a *AdvancedQuery) GetFilters() []AdvancedFilters {
-	if a == nil {
+func (o *AdvancedQuery) GetFilters() []AdvancedFilters {
+	if o == nil {
 		return nil
 	}
-	return a.Filters
+	return o.Filters
 }
 
-func (a *AdvancedQuery) GetGranularity() *Granularity {
-	if a == nil {
+func (o *AdvancedQuery) GetGranularity() *Granularity {
+	if o == nil {
 		return nil
 	}
-	return a.Granularity
+	return o.Granularity
 }
 
-func (a *AdvancedQuery) GetTimeRange() *TimeRange {
-	if a == nil {
+func (o *AdvancedQuery) GetTimeRange() *TimeRange {
+	if o == nil {
 		return nil
 	}
-	return a.TimeRange
+	return o.TimeRange
 }
 
-func (a *AdvancedQuery) GetTimeRangeRelative() *MetricsRelativeTimeRangeDtoV2 {
-	if v := a.GetTimeRange(); v != nil {
+func (o *AdvancedQuery) GetTimeRangeRelative() *MetricsRelativeTimeRangeDtoV2 {
+	if v := o.GetTimeRange(); v != nil {
 		return v.MetricsRelativeTimeRangeDtoV2
 	}
 	return nil
 }
 
-func (a *AdvancedQuery) GetTimeRangeAbsolute() *MetricsAbsoluteTimeRangeDtoV2 {
-	if v := a.GetTimeRange(); v != nil {
+func (o *AdvancedQuery) GetTimeRangeAbsolute() *MetricsAbsoluteTimeRangeDtoV2 {
+	if v := o.GetTimeRange(); v != nil {
 		return v.MetricsAbsoluteTimeRangeDtoV2
 	}
 	return nil

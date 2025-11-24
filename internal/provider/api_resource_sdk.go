@@ -188,18 +188,15 @@ func (r *APIResourceModel) ToSharedUpdateAPIRequest(ctx context.Context) (*share
 	} else {
 		slug = nil
 	}
-	var labels map[string]*string
-	if r.Labels != nil {
-		labels = make(map[string]*string)
-		for labelsKey, labelsValue := range r.Labels {
-			labelsInst := new(string)
-			if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-				*labelsInst = labelsValue.ValueString()
-			} else {
-				labelsInst = nil
-			}
-			labels[labelsKey] = labelsInst
+	labels := make(map[string]*string)
+	for labelsKey, labelsValue := range r.Labels {
+		labelsInst := new(string)
+		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
+			*labelsInst = labelsValue.ValueString()
+		} else {
+			labelsInst = nil
 		}
+		labels[labelsKey] = labelsInst
 	}
 	var attributes interface{}
 	if !r.Attributes.IsUnknown() && !r.Attributes.IsNull() {

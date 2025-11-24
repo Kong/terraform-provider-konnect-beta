@@ -35,26 +35,26 @@ func (f ForwardToClusterBySNIConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (f *ForwardToClusterBySNIConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &f, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (f *ForwardToClusterBySNIConfig) GetType() string {
+func (o *ForwardToClusterBySNIConfig) GetType() string {
 	return "sni"
 }
 
-func (f *ForwardToClusterBySNIConfig) GetSniSuffix() *string {
-	if f == nil {
+func (o *ForwardToClusterBySNIConfig) GetSniSuffix() *string {
+	if o == nil {
 		return nil
 	}
-	return f.SniSuffix
+	return o.SniSuffix
 }
 
-func (f *ForwardToClusterBySNIConfig) GetAdvertisedPort() *int64 {
-	if f == nil {
+func (o *ForwardToClusterBySNIConfig) GetAdvertisedPort() *int64 {
+	if o == nil {
 		return nil
 	}
-	return f.AdvertisedPort
+	return o.AdvertisedPort
 }

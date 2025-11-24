@@ -41,11 +41,11 @@ type Colors struct {
 	Primary *string `json:"primary,omitempty"`
 }
 
-func (c *Colors) GetPrimary() *string {
-	if c == nil {
+func (o *Colors) GetPrimary() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Primary
+	return o.Primary
 }
 
 type Theme struct {
@@ -54,25 +54,25 @@ type Theme struct {
 	Colors *Colors                  `json:"colors,omitempty"`
 }
 
-func (t *Theme) GetName() *string {
-	if t == nil {
+func (o *Theme) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return t.Name
+	return o.Name
 }
 
-func (t *Theme) GetMode() *PortalCustomizationMode {
-	if t == nil {
+func (o *Theme) GetMode() *PortalCustomizationMode {
+	if o == nil {
 		return nil
 	}
-	return t.Mode
+	return o.Mode
 }
 
-func (t *Theme) GetColors() *Colors {
-	if t == nil {
+func (o *Theme) GetColors() *Colors {
+	if o == nil {
 		return nil
 	}
-	return t.Colors
+	return o.Colors
 }
 
 type Js struct {
@@ -85,24 +85,24 @@ func (j Js) MarshalJSON() ([]byte, error) {
 }
 
 func (j *Js) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &j, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (j *Js) GetCustom() *string {
-	if j == nil {
+func (o *Js) GetCustom() *string {
+	if o == nil {
 		return nil
 	}
-	return j.Custom
+	return o.Custom
 }
 
-func (j *Js) GetScripts() []string {
-	if j == nil {
+func (o *Js) GetScripts() []string {
+	if o == nil {
 		return nil
 	}
-	return j.Scripts
+	return o.Scripts
 }
 
 type Menu struct {
@@ -111,25 +111,25 @@ type Menu struct {
 	FooterBottom   []PortalMenuItem          `json:"footer_bottom"`
 }
 
-func (m *Menu) GetMain() []PortalMenuItem {
-	if m == nil {
+func (o *Menu) GetMain() []PortalMenuItem {
+	if o == nil {
 		return nil
 	}
-	return m.Main
+	return o.Main
 }
 
-func (m *Menu) GetFooterSections() []PortalFooterMenuSection {
-	if m == nil {
+func (o *Menu) GetFooterSections() []PortalFooterMenuSection {
+	if o == nil {
 		return nil
 	}
-	return m.FooterSections
+	return o.FooterSections
 }
 
-func (m *Menu) GetFooterBottom() []PortalMenuItem {
-	if m == nil {
+func (o *Menu) GetFooterBottom() []PortalMenuItem {
+	if o == nil {
 		return nil
 	}
-	return m.FooterBottom
+	return o.FooterBottom
 }
 
 type SpecRenderer struct {
@@ -154,59 +154,59 @@ func (s SpecRenderer) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SpecRenderer) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *SpecRenderer) GetTryItUI() *bool {
-	if s == nil {
+func (o *SpecRenderer) GetTryItUI() *bool {
+	if o == nil {
 		return nil
 	}
-	return s.TryItUI
+	return o.TryItUI
 }
 
-func (s *SpecRenderer) GetTryItInsomnia() *bool {
-	if s == nil {
+func (o *SpecRenderer) GetTryItInsomnia() *bool {
+	if o == nil {
 		return nil
 	}
-	return s.TryItInsomnia
+	return o.TryItInsomnia
 }
 
-func (s *SpecRenderer) GetInfiniteScroll() *bool {
-	if s == nil {
+func (o *SpecRenderer) GetInfiniteScroll() *bool {
+	if o == nil {
 		return nil
 	}
-	return s.InfiniteScroll
+	return o.InfiniteScroll
 }
 
-func (s *SpecRenderer) GetShowSchemas() *bool {
-	if s == nil {
+func (o *SpecRenderer) GetShowSchemas() *bool {
+	if o == nil {
 		return nil
 	}
-	return s.ShowSchemas
+	return o.ShowSchemas
 }
 
-func (s *SpecRenderer) GetHideInternal() *bool {
-	if s == nil {
+func (o *SpecRenderer) GetHideInternal() *bool {
+	if o == nil {
 		return nil
 	}
-	return s.HideInternal
+	return o.HideInternal
 }
 
-func (s *SpecRenderer) GetHideDeprecated() *bool {
-	if s == nil {
+func (o *SpecRenderer) GetHideDeprecated() *bool {
+	if o == nil {
 		return nil
 	}
-	return s.HideDeprecated
+	return o.HideDeprecated
 }
 
-func (s *SpecRenderer) GetAllowCustomServerUrls() *bool {
-	if s == nil {
+func (o *SpecRenderer) GetAllowCustomServerUrls() *bool {
+	if o == nil {
 		return nil
 	}
-	return s.AllowCustomServerUrls
+	return o.AllowCustomServerUrls
 }
 
 // PortalCustomization - The custom settings of this portal
@@ -225,57 +225,57 @@ func (p PortalCustomization) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PortalCustomization) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *PortalCustomization) GetTheme() *Theme {
-	if p == nil {
+func (o *PortalCustomization) GetTheme() *Theme {
+	if o == nil {
 		return nil
 	}
-	return p.Theme
+	return o.Theme
 }
 
-func (p *PortalCustomization) GetLayout() *string {
-	if p == nil {
+func (o *PortalCustomization) GetLayout() *string {
+	if o == nil {
 		return nil
 	}
-	return p.Layout
+	return o.Layout
 }
 
-func (p *PortalCustomization) GetCSS() *string {
-	if p == nil {
+func (o *PortalCustomization) GetCSS() *string {
+	if o == nil {
 		return nil
 	}
-	return p.CSS
+	return o.CSS
 }
 
-func (p *PortalCustomization) GetJs() *Js {
-	if p == nil {
+func (o *PortalCustomization) GetJs() *Js {
+	if o == nil {
 		return nil
 	}
-	return p.Js
+	return o.Js
 }
 
-func (p *PortalCustomization) GetMenu() *Menu {
-	if p == nil {
+func (o *PortalCustomization) GetMenu() *Menu {
+	if o == nil {
 		return nil
 	}
-	return p.Menu
+	return o.Menu
 }
 
-func (p *PortalCustomization) GetSpecRenderer() *SpecRenderer {
-	if p == nil {
+func (o *PortalCustomization) GetSpecRenderer() *SpecRenderer {
+	if o == nil {
 		return nil
 	}
-	return p.SpecRenderer
+	return o.SpecRenderer
 }
 
-func (p *PortalCustomization) GetRobots() *string {
-	if p == nil {
+func (o *PortalCustomization) GetRobots() *string {
+	if o == nil {
 		return nil
 	}
-	return p.Robots
+	return o.Robots
 }

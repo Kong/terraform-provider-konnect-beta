@@ -16,25 +16,25 @@ type GetMeshTLSRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (g *GetMeshTLSRequest) GetCpID() string {
-	if g == nil {
+func (o *GetMeshTLSRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return g.CpID
+	return o.CpID
 }
 
-func (g *GetMeshTLSRequest) GetMesh() string {
-	if g == nil {
+func (o *GetMeshTLSRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return g.Mesh
+	return o.Mesh
 }
 
-func (g *GetMeshTLSRequest) GetName() string {
-	if g == nil {
+func (o *GetMeshTLSRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return g.Name
+	return o.Name
 }
 
 type GetMeshTLSResponse struct {
@@ -50,37 +50,37 @@ type GetMeshTLSResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (g *GetMeshTLSResponse) GetContentType() string {
-	if g == nil {
+func (o *GetMeshTLSResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetMeshTLSResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetMeshTLSResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetMeshTLSResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetMeshTLSResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetMeshTLSResponse) GetMeshTLSItem() *shared.MeshTLSItem {
-	if g == nil {
+func (o *GetMeshTLSResponse) GetMeshTLSItem() *shared.MeshTLSItem {
+	if o == nil {
 		return nil
 	}
-	return g.MeshTLSItem
+	return o.MeshTLSItem
 }
 
-func (g *GetMeshTLSResponse) GetNotFoundError() *shared.NotFoundError {
-	if g == nil {
+func (o *GetMeshTLSResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return g.NotFoundError
+	return o.NotFoundError
 }

@@ -18,32 +18,32 @@ type PutMeshTraceRequest struct {
 	MeshTraceItem shared.MeshTraceItemInput `request:"mediaType=application/json"`
 }
 
-func (p *PutMeshTraceRequest) GetCpID() string {
-	if p == nil {
+func (o *PutMeshTraceRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return p.CpID
+	return o.CpID
 }
 
-func (p *PutMeshTraceRequest) GetMesh() string {
-	if p == nil {
+func (o *PutMeshTraceRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return p.Mesh
+	return o.Mesh
 }
 
-func (p *PutMeshTraceRequest) GetName() string {
-	if p == nil {
+func (o *PutMeshTraceRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return p.Name
+	return o.Name
 }
 
-func (p *PutMeshTraceRequest) GetMeshTraceItem() shared.MeshTraceItemInput {
-	if p == nil {
+func (o *PutMeshTraceRequest) GetMeshTraceItem() shared.MeshTraceItemInput {
+	if o == nil {
 		return shared.MeshTraceItemInput{}
 	}
-	return p.MeshTraceItem
+	return o.MeshTraceItem
 }
 
 type PutMeshTraceResponse struct {
@@ -57,30 +57,30 @@ type PutMeshTraceResponse struct {
 	MeshTraceCreateOrUpdateSuccessResponse *shared.MeshTraceCreateOrUpdateSuccessResponse
 }
 
-func (p *PutMeshTraceResponse) GetContentType() string {
-	if p == nil {
+func (o *PutMeshTraceResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return p.ContentType
+	return o.ContentType
 }
 
-func (p *PutMeshTraceResponse) GetStatusCode() int {
-	if p == nil {
+func (o *PutMeshTraceResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return p.StatusCode
+	return o.StatusCode
 }
 
-func (p *PutMeshTraceResponse) GetRawResponse() *http.Response {
-	if p == nil {
+func (o *PutMeshTraceResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return p.RawResponse
+	return o.RawResponse
 }
 
-func (p *PutMeshTraceResponse) GetMeshTraceCreateOrUpdateSuccessResponse() *shared.MeshTraceCreateOrUpdateSuccessResponse {
-	if p == nil {
+func (o *PutMeshTraceResponse) GetMeshTraceCreateOrUpdateSuccessResponse() *shared.MeshTraceCreateOrUpdateSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return p.MeshTraceCreateOrUpdateSuccessResponse
+	return o.MeshTraceCreateOrUpdateSuccessResponse
 }

@@ -16,25 +16,25 @@ type GetMeshHTTPRouteRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (g *GetMeshHTTPRouteRequest) GetCpID() string {
-	if g == nil {
+func (o *GetMeshHTTPRouteRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return g.CpID
+	return o.CpID
 }
 
-func (g *GetMeshHTTPRouteRequest) GetMesh() string {
-	if g == nil {
+func (o *GetMeshHTTPRouteRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return g.Mesh
+	return o.Mesh
 }
 
-func (g *GetMeshHTTPRouteRequest) GetName() string {
-	if g == nil {
+func (o *GetMeshHTTPRouteRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return g.Name
+	return o.Name
 }
 
 type GetMeshHTTPRouteResponse struct {
@@ -50,37 +50,37 @@ type GetMeshHTTPRouteResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (g *GetMeshHTTPRouteResponse) GetContentType() string {
-	if g == nil {
+func (o *GetMeshHTTPRouteResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetMeshHTTPRouteResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetMeshHTTPRouteResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetMeshHTTPRouteResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetMeshHTTPRouteResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetMeshHTTPRouteResponse) GetMeshHTTPRouteItem() *shared.MeshHTTPRouteItem {
-	if g == nil {
+func (o *GetMeshHTTPRouteResponse) GetMeshHTTPRouteItem() *shared.MeshHTTPRouteItem {
+	if o == nil {
 		return nil
 	}
-	return g.MeshHTTPRouteItem
+	return o.MeshHTTPRouteItem
 }
 
-func (g *GetMeshHTTPRouteResponse) GetNotFoundError() *shared.NotFoundError {
-	if g == nil {
+func (o *GetMeshHTTPRouteResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return g.NotFoundError
+	return o.NotFoundError
 }

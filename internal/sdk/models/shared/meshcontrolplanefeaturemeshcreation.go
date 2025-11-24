@@ -6,9 +6,9 @@ type MeshControlPlaneFeatureMeshCreation struct {
 	Enabled bool `json:"enabled"`
 }
 
-func (m *MeshControlPlaneFeatureMeshCreation) GetEnabled() bool {
-	if m == nil {
+func (o *MeshControlPlaneFeatureMeshCreation) GetEnabled() bool {
+	if o == nil {
 		return false
 	}
-	return m.Enabled
+	return o.Enabled
 }

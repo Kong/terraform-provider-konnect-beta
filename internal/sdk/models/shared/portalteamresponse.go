@@ -21,43 +21,43 @@ func (p PortalTeamResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PortalTeamResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *PortalTeamResponse) GetID() *string {
-	if p == nil {
+func (o *PortalTeamResponse) GetID() *string {
+	if o == nil {
 		return nil
 	}
-	return p.ID
+	return o.ID
 }
 
-func (p *PortalTeamResponse) GetName() *string {
-	if p == nil {
+func (o *PortalTeamResponse) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return p.Name
+	return o.Name
 }
 
-func (p *PortalTeamResponse) GetDescription() *string {
-	if p == nil {
+func (o *PortalTeamResponse) GetDescription() *string {
+	if o == nil {
 		return nil
 	}
-	return p.Description
+	return o.Description
 }
 
-func (p *PortalTeamResponse) GetCreatedAt() *time.Time {
-	if p == nil {
+func (o *PortalTeamResponse) GetCreatedAt() *time.Time {
+	if o == nil {
 		return nil
 	}
-	return p.CreatedAt
+	return o.CreatedAt
 }
 
-func (p *PortalTeamResponse) GetUpdatedAt() *time.Time {
-	if p == nil {
+func (o *PortalTeamResponse) GetUpdatedAt() *time.Time {
+	if o == nil {
 		return nil
 	}
-	return p.UpdatedAt
+	return o.UpdatedAt
 }

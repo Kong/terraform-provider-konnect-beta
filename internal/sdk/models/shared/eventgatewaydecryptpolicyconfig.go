@@ -15,23 +15,23 @@ type EventGatewayDecryptPolicyConfig struct {
 	PartOfRecord []DecryptionRecordPart `json:"part_of_record"`
 }
 
-func (e *EventGatewayDecryptPolicyConfig) GetFailureMode() EncryptionFailureMode {
-	if e == nil {
+func (o *EventGatewayDecryptPolicyConfig) GetFailureMode() EncryptionFailureMode {
+	if o == nil {
 		return EncryptionFailureMode("")
 	}
-	return e.FailureMode
+	return o.FailureMode
 }
 
-func (e *EventGatewayDecryptPolicyConfig) GetKeySources() []EventGatewayKeySource {
-	if e == nil {
+func (o *EventGatewayDecryptPolicyConfig) GetKeySources() []EventGatewayKeySource {
+	if o == nil {
 		return []EventGatewayKeySource{}
 	}
-	return e.KeySources
+	return o.KeySources
 }
 
-func (e *EventGatewayDecryptPolicyConfig) GetPartOfRecord() []DecryptionRecordPart {
-	if e == nil {
+func (o *EventGatewayDecryptPolicyConfig) GetPartOfRecord() []DecryptionRecordPart {
+	if o == nil {
 		return []DecryptionRecordPart{}
 	}
-	return e.PartOfRecord
+	return o.PartOfRecord
 }

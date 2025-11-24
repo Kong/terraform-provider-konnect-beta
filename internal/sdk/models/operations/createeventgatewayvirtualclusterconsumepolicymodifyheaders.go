@@ -15,25 +15,25 @@ type CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersRequest struct {
 	EventGatewayModifyHeadersPolicyCreate *shared.EventGatewayModifyHeadersPolicyCreate `request:"mediaType=application/json"`
 }
 
-func (c *CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersRequest) GetGatewayID() string {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersRequest) GetGatewayID() string {
+	if o == nil {
 		return ""
 	}
-	return c.GatewayID
+	return o.GatewayID
 }
 
-func (c *CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersRequest) GetVirtualClusterID() string {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersRequest) GetVirtualClusterID() string {
+	if o == nil {
 		return ""
 	}
-	return c.VirtualClusterID
+	return o.VirtualClusterID
 }
 
-func (c *CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersRequest) GetEventGatewayModifyHeadersPolicyCreate() *shared.EventGatewayModifyHeadersPolicyCreate {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersRequest) GetEventGatewayModifyHeadersPolicyCreate() *shared.EventGatewayModifyHeadersPolicyCreate {
+	if o == nil {
 		return nil
 	}
-	return c.EventGatewayModifyHeadersPolicyCreate
+	return o.EventGatewayModifyHeadersPolicyCreate
 }
 
 type CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse struct {
@@ -53,51 +53,51 @@ type CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (c *CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetContentType() string {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return c.ContentType
+	return o.ContentType
 }
 
-func (c *CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetStatusCode() int {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return c.StatusCode
+	return o.StatusCode
 }
 
-func (c *CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetRawResponse() *http.Response {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return c.RawResponse
+	return o.RawResponse
 }
 
-func (c *CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetEventGatewayPolicy() *shared.EventGatewayPolicy {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetEventGatewayPolicy() *shared.EventGatewayPolicy {
+	if o == nil {
 		return nil
 	}
-	return c.EventGatewayPolicy
+	return o.EventGatewayPolicy
 }
 
-func (c *CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetBadRequestError() *shared.BadRequestError {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetBadRequestError() *shared.BadRequestError {
+	if o == nil {
 		return nil
 	}
-	return c.BadRequestError
+	return o.BadRequestError
 }
 
-func (c *CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return c.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (c *CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetForbiddenError() *shared.ForbiddenError {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return c.ForbiddenError
+	return o.ForbiddenError
 }

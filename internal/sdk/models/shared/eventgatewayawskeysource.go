@@ -19,12 +19,12 @@ func (e EventGatewayAWSKeySource) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayAWSKeySource) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (e *EventGatewayAWSKeySource) GetType() string {
+func (o *EventGatewayAWSKeySource) GetType() string {
 	return "aws"
 }

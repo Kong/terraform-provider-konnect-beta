@@ -5,11 +5,9 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -137,14 +135,8 @@ func (r *PortalAuthResource) Schema(ctx context.Context, req resource.SchemaRequ
 						Computed: true,
 					},
 					"scopes": schema.ListAttribute{
-						Computed: true,
-						Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
-							types.StringValue("email"),
-							types.StringValue("openid"),
-							types.StringValue("profile"),
-						})),
+						Computed:    true,
 						ElementType: types.StringType,
-						Description: `Default: ["email","openid","profile"]`,
 					},
 				},
 				Description: `Configuration properties for an OpenID Connect Identity Provider.`,

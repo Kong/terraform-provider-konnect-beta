@@ -39,57 +39,57 @@ func (d DashboardResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DashboardResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"name", "definition"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (d *DashboardResponse) GetName() string {
-	if d == nil {
+func (o *DashboardResponse) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return d.Name
+	return o.Name
 }
 
-func (d *DashboardResponse) GetDefinition() Dashboard {
-	if d == nil {
+func (o *DashboardResponse) GetDefinition() Dashboard {
+	if o == nil {
 		return Dashboard{}
 	}
-	return d.Definition
+	return o.Definition
 }
 
-func (d *DashboardResponse) GetLabels() map[string]*string {
-	if d == nil {
+func (o *DashboardResponse) GetLabels() map[string]*string {
+	if o == nil {
 		return nil
 	}
-	return d.Labels
+	return o.Labels
 }
 
-func (d *DashboardResponse) GetID() *string {
-	if d == nil {
+func (o *DashboardResponse) GetID() *string {
+	if o == nil {
 		return nil
 	}
-	return d.ID
+	return o.ID
 }
 
-func (d *DashboardResponse) GetCreatedBy() *string {
-	if d == nil {
+func (o *DashboardResponse) GetCreatedBy() *string {
+	if o == nil {
 		return nil
 	}
-	return d.CreatedBy
+	return o.CreatedBy
 }
 
-func (d *DashboardResponse) GetCreatedAt() *time.Time {
-	if d == nil {
+func (o *DashboardResponse) GetCreatedAt() *time.Time {
+	if o == nil {
 		return nil
 	}
-	return d.CreatedAt
+	return o.CreatedAt
 }
 
-func (d *DashboardResponse) GetUpdatedAt() *time.Time {
-	if d == nil {
+func (o *DashboardResponse) GetUpdatedAt() *time.Time {
+	if o == nil {
 		return nil
 	}
-	return d.UpdatedAt
+	return o.UpdatedAt
 }

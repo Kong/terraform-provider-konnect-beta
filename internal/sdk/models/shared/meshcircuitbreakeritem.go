@@ -58,39 +58,39 @@ type ConnectionLimits struct {
 	MaxRetries *int `json:"maxRetries,omitempty"`
 }
 
-func (c *ConnectionLimits) GetMaxConnectionPools() *int {
-	if c == nil {
+func (o *ConnectionLimits) GetMaxConnectionPools() *int {
+	if o == nil {
 		return nil
 	}
-	return c.MaxConnectionPools
+	return o.MaxConnectionPools
 }
 
-func (c *ConnectionLimits) GetMaxConnections() *int {
-	if c == nil {
+func (o *ConnectionLimits) GetMaxConnections() *int {
+	if o == nil {
 		return nil
 	}
-	return c.MaxConnections
+	return o.MaxConnections
 }
 
-func (c *ConnectionLimits) GetMaxPendingRequests() *int {
-	if c == nil {
+func (o *ConnectionLimits) GetMaxPendingRequests() *int {
+	if o == nil {
 		return nil
 	}
-	return c.MaxPendingRequests
+	return o.MaxPendingRequests
 }
 
-func (c *ConnectionLimits) GetMaxRequests() *int {
-	if c == nil {
+func (o *ConnectionLimits) GetMaxRequests() *int {
+	if o == nil {
 		return nil
 	}
-	return c.MaxRequests
+	return o.MaxRequests
 }
 
-func (c *ConnectionLimits) GetMaxRetries() *int {
-	if c == nil {
+func (o *ConnectionLimits) GetMaxRetries() *int {
+	if o == nil {
 		return nil
 	}
-	return c.MaxRetries
+	return o.MaxRetries
 }
 
 // FailurePercentage - Failure Percentage based outlier detection functions similarly to success
@@ -125,25 +125,25 @@ type FailurePercentage struct {
 	Threshold *int `json:"threshold,omitempty"`
 }
 
-func (f *FailurePercentage) GetMinimumHosts() *int {
-	if f == nil {
+func (o *FailurePercentage) GetMinimumHosts() *int {
+	if o == nil {
 		return nil
 	}
-	return f.MinimumHosts
+	return o.MinimumHosts
 }
 
-func (f *FailurePercentage) GetRequestVolume() *int {
-	if f == nil {
+func (o *FailurePercentage) GetRequestVolume() *int {
+	if o == nil {
 		return nil
 	}
-	return f.RequestVolume
+	return o.RequestVolume
 }
 
-func (f *FailurePercentage) GetThreshold() *int {
-	if f == nil {
+func (o *FailurePercentage) GetThreshold() *int {
+	if o == nil {
 		return nil
 	}
-	return f.Threshold
+	return o.Threshold
 }
 
 // GatewayFailures - In the default mode (outlierDetection.splitExternalLocalOriginErrors is
@@ -160,11 +160,11 @@ type GatewayFailures struct {
 	Consecutive *int `json:"consecutive,omitempty"`
 }
 
-func (g *GatewayFailures) GetConsecutive() *int {
-	if g == nil {
+func (o *GatewayFailures) GetConsecutive() *int {
+	if o == nil {
 		return nil
 	}
-	return g.Consecutive
+	return o.Consecutive
 }
 
 // LocalOriginFailures - This detection type is enabled only when
@@ -182,11 +182,11 @@ type LocalOriginFailures struct {
 	Consecutive *int `json:"consecutive,omitempty"`
 }
 
-func (l *LocalOriginFailures) GetConsecutive() *int {
-	if l == nil {
+func (o *LocalOriginFailures) GetConsecutive() *int {
+	if o == nil {
 		return nil
 	}
-	return l.Consecutive
+	return o.Consecutive
 }
 
 type StandardDeviationFactorType string
@@ -203,8 +203,8 @@ const (
 // success_rate_standard_deviation_factor).
 // Either int or decimal represented as string.
 type StandardDeviationFactor struct {
-	Integer *int64  `queryParam:"inline,name=standardDeviationFactor"`
-	Str     *string `queryParam:"inline,name=standardDeviationFactor"`
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type StandardDeviationFactorType
 }
@@ -229,43 +229,17 @@ func CreateStandardDeviationFactorStr(str string) StandardDeviationFactor {
 
 func (u *StandardDeviationFactor) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  StandardDeviationFactorTypeInteger,
-			Value: &integer,
-		})
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = StandardDeviationFactorTypeInteger
+		return nil
 	}
 
 	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  StandardDeviationFactorTypeStr,
-			Value: &str,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for StandardDeviationFactor", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for StandardDeviationFactor", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(StandardDeviationFactorType)
-	switch best.Type {
-	case StandardDeviationFactorTypeInteger:
-		u.Integer = best.Value.(*int64)
-		return nil
-	case StandardDeviationFactorTypeStr:
-		u.Str = best.Value.(*string)
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = StandardDeviationFactorTypeStr
 		return nil
 	}
 
@@ -321,25 +295,25 @@ type SuccessRate struct {
 	StandardDeviationFactor *StandardDeviationFactor `json:"standardDeviationFactor,omitempty"`
 }
 
-func (s *SuccessRate) GetMinimumHosts() *int {
-	if s == nil {
+func (o *SuccessRate) GetMinimumHosts() *int {
+	if o == nil {
 		return nil
 	}
-	return s.MinimumHosts
+	return o.MinimumHosts
 }
 
-func (s *SuccessRate) GetRequestVolume() *int {
-	if s == nil {
+func (o *SuccessRate) GetRequestVolume() *int {
+	if o == nil {
 		return nil
 	}
-	return s.RequestVolume
+	return o.RequestVolume
 }
 
-func (s *SuccessRate) GetStandardDeviationFactor() *StandardDeviationFactor {
-	if s == nil {
+func (o *SuccessRate) GetStandardDeviationFactor() *StandardDeviationFactor {
+	if o == nil {
 		return nil
 	}
-	return s.StandardDeviationFactor
+	return o.StandardDeviationFactor
 }
 
 // TotalFailures - In the default mode (outlierDetection.splitExternalAndLocalErrors is
@@ -360,11 +334,11 @@ type TotalFailures struct {
 	Consecutive *int `json:"consecutive,omitempty"`
 }
 
-func (t *TotalFailures) GetConsecutive() *int {
-	if t == nil {
+func (o *TotalFailures) GetConsecutive() *int {
+	if o == nil {
 		return nil
 	}
-	return t.Consecutive
+	return o.Consecutive
 }
 
 // Detectors - Contains configuration for supported outlier detectors
@@ -432,39 +406,39 @@ type Detectors struct {
 	TotalFailures *TotalFailures `json:"totalFailures,omitempty"`
 }
 
-func (d *Detectors) GetFailurePercentage() *FailurePercentage {
-	if d == nil {
+func (o *Detectors) GetFailurePercentage() *FailurePercentage {
+	if o == nil {
 		return nil
 	}
-	return d.FailurePercentage
+	return o.FailurePercentage
 }
 
-func (d *Detectors) GetGatewayFailures() *GatewayFailures {
-	if d == nil {
+func (o *Detectors) GetGatewayFailures() *GatewayFailures {
+	if o == nil {
 		return nil
 	}
-	return d.GatewayFailures
+	return o.GatewayFailures
 }
 
-func (d *Detectors) GetLocalOriginFailures() *LocalOriginFailures {
-	if d == nil {
+func (o *Detectors) GetLocalOriginFailures() *LocalOriginFailures {
+	if o == nil {
 		return nil
 	}
-	return d.LocalOriginFailures
+	return o.LocalOriginFailures
 }
 
-func (d *Detectors) GetSuccessRate() *SuccessRate {
-	if d == nil {
+func (o *Detectors) GetSuccessRate() *SuccessRate {
+	if o == nil {
 		return nil
 	}
-	return d.SuccessRate
+	return o.SuccessRate
 }
 
-func (d *Detectors) GetTotalFailures() *TotalFailures {
-	if d == nil {
+func (o *Detectors) GetTotalFailures() *TotalFailures {
+	if o == nil {
 		return nil
 	}
-	return d.TotalFailures
+	return o.TotalFailures
 }
 
 type MeshCircuitBreakerItemSpecFromHealthyPanicThresholdType string
@@ -478,8 +452,8 @@ const (
 // the default is 50%. To disable panic mode, set to 0%.
 // Either int or decimal represented as string.
 type MeshCircuitBreakerItemSpecFromHealthyPanicThreshold struct {
-	Integer *int64  `queryParam:"inline,name=healthyPanicThreshold"`
-	Str     *string `queryParam:"inline,name=healthyPanicThreshold"`
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type MeshCircuitBreakerItemSpecFromHealthyPanicThresholdType
 }
@@ -504,43 +478,17 @@ func CreateMeshCircuitBreakerItemSpecFromHealthyPanicThresholdStr(str string) Me
 
 func (u *MeshCircuitBreakerItemSpecFromHealthyPanicThreshold) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshCircuitBreakerItemSpecFromHealthyPanicThresholdTypeInteger,
-			Value: &integer,
-		})
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = MeshCircuitBreakerItemSpecFromHealthyPanicThresholdTypeInteger
+		return nil
 	}
 
 	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshCircuitBreakerItemSpecFromHealthyPanicThresholdTypeStr,
-			Value: &str,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshCircuitBreakerItemSpecFromHealthyPanicThreshold", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshCircuitBreakerItemSpecFromHealthyPanicThreshold", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(MeshCircuitBreakerItemSpecFromHealthyPanicThresholdType)
-	switch best.Type {
-	case MeshCircuitBreakerItemSpecFromHealthyPanicThresholdTypeInteger:
-		u.Integer = best.Value.(*int64)
-		return nil
-	case MeshCircuitBreakerItemSpecFromHealthyPanicThresholdTypeStr:
-		u.Str = best.Value.(*string)
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = MeshCircuitBreakerItemSpecFromHealthyPanicThresholdTypeStr
 		return nil
 	}
 
@@ -657,18 +605,18 @@ type MeshCircuitBreakerItemDefault struct {
 	OutlierDetection *OutlierDetection `json:"outlierDetection,omitempty"`
 }
 
-func (m *MeshCircuitBreakerItemDefault) GetConnectionLimits() *ConnectionLimits {
-	if m == nil {
+func (o *MeshCircuitBreakerItemDefault) GetConnectionLimits() *ConnectionLimits {
+	if o == nil {
 		return nil
 	}
-	return m.ConnectionLimits
+	return o.ConnectionLimits
 }
 
-func (m *MeshCircuitBreakerItemDefault) GetOutlierDetection() *OutlierDetection {
-	if m == nil {
+func (o *MeshCircuitBreakerItemDefault) GetOutlierDetection() *OutlierDetection {
+	if o == nil {
 		return nil
 	}
-	return m.OutlierDetection
+	return o.OutlierDetection
 }
 
 // MeshCircuitBreakerItemSpecKind - Kind of the referenced resource
@@ -772,60 +720,60 @@ type MeshCircuitBreakerItemSpecTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (m *MeshCircuitBreakerItemSpecTargetRef) GetKind() MeshCircuitBreakerItemSpecKind {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecTargetRef) GetKind() MeshCircuitBreakerItemSpecKind {
+	if o == nil {
 		return MeshCircuitBreakerItemSpecKind("")
 	}
-	return m.Kind
+	return o.Kind
 }
 
-func (m *MeshCircuitBreakerItemSpecTargetRef) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecTargetRef) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshCircuitBreakerItemSpecTargetRef) GetMesh() *string {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecTargetRef) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Mesh
+	return o.Mesh
 }
 
-func (m *MeshCircuitBreakerItemSpecTargetRef) GetName() *string {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecTargetRef) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshCircuitBreakerItemSpecTargetRef) GetNamespace() *string {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecTargetRef) GetNamespace() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Namespace
+	return o.Namespace
 }
 
-func (m *MeshCircuitBreakerItemSpecTargetRef) GetProxyTypes() []MeshCircuitBreakerItemSpecProxyTypes {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecTargetRef) GetProxyTypes() []MeshCircuitBreakerItemSpecProxyTypes {
+	if o == nil {
 		return nil
 	}
-	return m.ProxyTypes
+	return o.ProxyTypes
 }
 
-func (m *MeshCircuitBreakerItemSpecTargetRef) GetSectionName() *string {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecTargetRef) GetSectionName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.SectionName
+	return o.SectionName
 }
 
-func (m *MeshCircuitBreakerItemSpecTargetRef) GetTags() map[string]string {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecTargetRef) GetTags() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Tags
+	return o.Tags
 }
 
 type MeshCircuitBreakerItemFrom struct {
@@ -837,18 +785,18 @@ type MeshCircuitBreakerItemFrom struct {
 	TargetRef MeshCircuitBreakerItemSpecTargetRef `json:"targetRef"`
 }
 
-func (m *MeshCircuitBreakerItemFrom) GetDefault() *MeshCircuitBreakerItemDefault {
-	if m == nil {
+func (o *MeshCircuitBreakerItemFrom) GetDefault() *MeshCircuitBreakerItemDefault {
+	if o == nil {
 		return nil
 	}
-	return m.Default
+	return o.Default
 }
 
-func (m *MeshCircuitBreakerItemFrom) GetTargetRef() MeshCircuitBreakerItemSpecTargetRef {
-	if m == nil {
+func (o *MeshCircuitBreakerItemFrom) GetTargetRef() MeshCircuitBreakerItemSpecTargetRef {
+	if o == nil {
 		return MeshCircuitBreakerItemSpecTargetRef{}
 	}
-	return m.TargetRef
+	return o.TargetRef
 }
 
 // MeshCircuitBreakerItemConnectionLimits - ConnectionLimits contains configuration of each circuit breaking limit,
@@ -875,39 +823,39 @@ type MeshCircuitBreakerItemConnectionLimits struct {
 	MaxRetries *int `json:"maxRetries,omitempty"`
 }
 
-func (m *MeshCircuitBreakerItemConnectionLimits) GetMaxConnectionPools() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemConnectionLimits) GetMaxConnectionPools() *int {
+	if o == nil {
 		return nil
 	}
-	return m.MaxConnectionPools
+	return o.MaxConnectionPools
 }
 
-func (m *MeshCircuitBreakerItemConnectionLimits) GetMaxConnections() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemConnectionLimits) GetMaxConnections() *int {
+	if o == nil {
 		return nil
 	}
-	return m.MaxConnections
+	return o.MaxConnections
 }
 
-func (m *MeshCircuitBreakerItemConnectionLimits) GetMaxPendingRequests() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemConnectionLimits) GetMaxPendingRequests() *int {
+	if o == nil {
 		return nil
 	}
-	return m.MaxPendingRequests
+	return o.MaxPendingRequests
 }
 
-func (m *MeshCircuitBreakerItemConnectionLimits) GetMaxRequests() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemConnectionLimits) GetMaxRequests() *int {
+	if o == nil {
 		return nil
 	}
-	return m.MaxRequests
+	return o.MaxRequests
 }
 
-func (m *MeshCircuitBreakerItemConnectionLimits) GetMaxRetries() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemConnectionLimits) GetMaxRetries() *int {
+	if o == nil {
 		return nil
 	}
-	return m.MaxRetries
+	return o.MaxRetries
 }
 
 // MeshCircuitBreakerItemFailurePercentage - Failure Percentage based outlier detection functions similarly to success
@@ -942,25 +890,25 @@ type MeshCircuitBreakerItemFailurePercentage struct {
 	Threshold *int `json:"threshold,omitempty"`
 }
 
-func (m *MeshCircuitBreakerItemFailurePercentage) GetMinimumHosts() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemFailurePercentage) GetMinimumHosts() *int {
+	if o == nil {
 		return nil
 	}
-	return m.MinimumHosts
+	return o.MinimumHosts
 }
 
-func (m *MeshCircuitBreakerItemFailurePercentage) GetRequestVolume() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemFailurePercentage) GetRequestVolume() *int {
+	if o == nil {
 		return nil
 	}
-	return m.RequestVolume
+	return o.RequestVolume
 }
 
-func (m *MeshCircuitBreakerItemFailurePercentage) GetThreshold() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemFailurePercentage) GetThreshold() *int {
+	if o == nil {
 		return nil
 	}
-	return m.Threshold
+	return o.Threshold
 }
 
 // MeshCircuitBreakerItemGatewayFailures - In the default mode (outlierDetection.splitExternalLocalOriginErrors is
@@ -977,11 +925,11 @@ type MeshCircuitBreakerItemGatewayFailures struct {
 	Consecutive *int `json:"consecutive,omitempty"`
 }
 
-func (m *MeshCircuitBreakerItemGatewayFailures) GetConsecutive() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemGatewayFailures) GetConsecutive() *int {
+	if o == nil {
 		return nil
 	}
-	return m.Consecutive
+	return o.Consecutive
 }
 
 // MeshCircuitBreakerItemLocalOriginFailures - This detection type is enabled only when
@@ -999,11 +947,11 @@ type MeshCircuitBreakerItemLocalOriginFailures struct {
 	Consecutive *int `json:"consecutive,omitempty"`
 }
 
-func (m *MeshCircuitBreakerItemLocalOriginFailures) GetConsecutive() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemLocalOriginFailures) GetConsecutive() *int {
+	if o == nil {
 		return nil
 	}
-	return m.Consecutive
+	return o.Consecutive
 }
 
 type MeshCircuitBreakerItemStandardDeviationFactorType string
@@ -1020,8 +968,8 @@ const (
 // success_rate_standard_deviation_factor).
 // Either int or decimal represented as string.
 type MeshCircuitBreakerItemStandardDeviationFactor struct {
-	Integer *int64  `queryParam:"inline,name=standardDeviationFactor"`
-	Str     *string `queryParam:"inline,name=standardDeviationFactor"`
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type MeshCircuitBreakerItemStandardDeviationFactorType
 }
@@ -1046,43 +994,17 @@ func CreateMeshCircuitBreakerItemStandardDeviationFactorStr(str string) MeshCirc
 
 func (u *MeshCircuitBreakerItemStandardDeviationFactor) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshCircuitBreakerItemStandardDeviationFactorTypeInteger,
-			Value: &integer,
-		})
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = MeshCircuitBreakerItemStandardDeviationFactorTypeInteger
+		return nil
 	}
 
 	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshCircuitBreakerItemStandardDeviationFactorTypeStr,
-			Value: &str,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshCircuitBreakerItemStandardDeviationFactor", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshCircuitBreakerItemStandardDeviationFactor", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(MeshCircuitBreakerItemStandardDeviationFactorType)
-	switch best.Type {
-	case MeshCircuitBreakerItemStandardDeviationFactorTypeInteger:
-		u.Integer = best.Value.(*int64)
-		return nil
-	case MeshCircuitBreakerItemStandardDeviationFactorTypeStr:
-		u.Str = best.Value.(*string)
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = MeshCircuitBreakerItemStandardDeviationFactorTypeStr
 		return nil
 	}
 
@@ -1138,25 +1060,25 @@ type MeshCircuitBreakerItemSuccessRate struct {
 	StandardDeviationFactor *MeshCircuitBreakerItemStandardDeviationFactor `json:"standardDeviationFactor,omitempty"`
 }
 
-func (m *MeshCircuitBreakerItemSuccessRate) GetMinimumHosts() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSuccessRate) GetMinimumHosts() *int {
+	if o == nil {
 		return nil
 	}
-	return m.MinimumHosts
+	return o.MinimumHosts
 }
 
-func (m *MeshCircuitBreakerItemSuccessRate) GetRequestVolume() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSuccessRate) GetRequestVolume() *int {
+	if o == nil {
 		return nil
 	}
-	return m.RequestVolume
+	return o.RequestVolume
 }
 
-func (m *MeshCircuitBreakerItemSuccessRate) GetStandardDeviationFactor() *MeshCircuitBreakerItemStandardDeviationFactor {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSuccessRate) GetStandardDeviationFactor() *MeshCircuitBreakerItemStandardDeviationFactor {
+	if o == nil {
 		return nil
 	}
-	return m.StandardDeviationFactor
+	return o.StandardDeviationFactor
 }
 
 // MeshCircuitBreakerItemTotalFailures - In the default mode (outlierDetection.splitExternalAndLocalErrors is
@@ -1177,11 +1099,11 @@ type MeshCircuitBreakerItemTotalFailures struct {
 	Consecutive *int `json:"consecutive,omitempty"`
 }
 
-func (m *MeshCircuitBreakerItemTotalFailures) GetConsecutive() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemTotalFailures) GetConsecutive() *int {
+	if o == nil {
 		return nil
 	}
-	return m.Consecutive
+	return o.Consecutive
 }
 
 // MeshCircuitBreakerItemDetectors - Contains configuration for supported outlier detectors
@@ -1249,39 +1171,39 @@ type MeshCircuitBreakerItemDetectors struct {
 	TotalFailures *MeshCircuitBreakerItemTotalFailures `json:"totalFailures,omitempty"`
 }
 
-func (m *MeshCircuitBreakerItemDetectors) GetFailurePercentage() *MeshCircuitBreakerItemFailurePercentage {
-	if m == nil {
+func (o *MeshCircuitBreakerItemDetectors) GetFailurePercentage() *MeshCircuitBreakerItemFailurePercentage {
+	if o == nil {
 		return nil
 	}
-	return m.FailurePercentage
+	return o.FailurePercentage
 }
 
-func (m *MeshCircuitBreakerItemDetectors) GetGatewayFailures() *MeshCircuitBreakerItemGatewayFailures {
-	if m == nil {
+func (o *MeshCircuitBreakerItemDetectors) GetGatewayFailures() *MeshCircuitBreakerItemGatewayFailures {
+	if o == nil {
 		return nil
 	}
-	return m.GatewayFailures
+	return o.GatewayFailures
 }
 
-func (m *MeshCircuitBreakerItemDetectors) GetLocalOriginFailures() *MeshCircuitBreakerItemLocalOriginFailures {
-	if m == nil {
+func (o *MeshCircuitBreakerItemDetectors) GetLocalOriginFailures() *MeshCircuitBreakerItemLocalOriginFailures {
+	if o == nil {
 		return nil
 	}
-	return m.LocalOriginFailures
+	return o.LocalOriginFailures
 }
 
-func (m *MeshCircuitBreakerItemDetectors) GetSuccessRate() *MeshCircuitBreakerItemSuccessRate {
-	if m == nil {
+func (o *MeshCircuitBreakerItemDetectors) GetSuccessRate() *MeshCircuitBreakerItemSuccessRate {
+	if o == nil {
 		return nil
 	}
-	return m.SuccessRate
+	return o.SuccessRate
 }
 
-func (m *MeshCircuitBreakerItemDetectors) GetTotalFailures() *MeshCircuitBreakerItemTotalFailures {
-	if m == nil {
+func (o *MeshCircuitBreakerItemDetectors) GetTotalFailures() *MeshCircuitBreakerItemTotalFailures {
+	if o == nil {
 		return nil
 	}
-	return m.TotalFailures
+	return o.TotalFailures
 }
 
 type MeshCircuitBreakerItemHealthyPanicThresholdType string
@@ -1295,8 +1217,8 @@ const (
 // the default is 50%. To disable panic mode, set to 0%.
 // Either int or decimal represented as string.
 type MeshCircuitBreakerItemHealthyPanicThreshold struct {
-	Integer *int64  `queryParam:"inline,name=healthyPanicThreshold"`
-	Str     *string `queryParam:"inline,name=healthyPanicThreshold"`
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type MeshCircuitBreakerItemHealthyPanicThresholdType
 }
@@ -1321,43 +1243,17 @@ func CreateMeshCircuitBreakerItemHealthyPanicThresholdStr(str string) MeshCircui
 
 func (u *MeshCircuitBreakerItemHealthyPanicThreshold) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshCircuitBreakerItemHealthyPanicThresholdTypeInteger,
-			Value: &integer,
-		})
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = MeshCircuitBreakerItemHealthyPanicThresholdTypeInteger
+		return nil
 	}
 
 	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshCircuitBreakerItemHealthyPanicThresholdTypeStr,
-			Value: &str,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshCircuitBreakerItemHealthyPanicThreshold", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshCircuitBreakerItemHealthyPanicThreshold", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(MeshCircuitBreakerItemHealthyPanicThresholdType)
-	switch best.Type {
-	case MeshCircuitBreakerItemHealthyPanicThresholdTypeInteger:
-		u.Integer = best.Value.(*int64)
-		return nil
-	case MeshCircuitBreakerItemHealthyPanicThresholdTypeStr:
-		u.Str = best.Value.(*string)
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = MeshCircuitBreakerItemHealthyPanicThresholdTypeStr
 		return nil
 	}
 
@@ -1408,53 +1304,53 @@ type MeshCircuitBreakerItemOutlierDetection struct {
 	SplitExternalAndLocalErrors *bool `json:"splitExternalAndLocalErrors,omitempty"`
 }
 
-func (m *MeshCircuitBreakerItemOutlierDetection) GetBaseEjectionTime() *string {
-	if m == nil {
+func (o *MeshCircuitBreakerItemOutlierDetection) GetBaseEjectionTime() *string {
+	if o == nil {
 		return nil
 	}
-	return m.BaseEjectionTime
+	return o.BaseEjectionTime
 }
 
-func (m *MeshCircuitBreakerItemOutlierDetection) GetDetectors() *MeshCircuitBreakerItemDetectors {
-	if m == nil {
+func (o *MeshCircuitBreakerItemOutlierDetection) GetDetectors() *MeshCircuitBreakerItemDetectors {
+	if o == nil {
 		return nil
 	}
-	return m.Detectors
+	return o.Detectors
 }
 
-func (m *MeshCircuitBreakerItemOutlierDetection) GetDisabled() *bool {
-	if m == nil {
+func (o *MeshCircuitBreakerItemOutlierDetection) GetDisabled() *bool {
+	if o == nil {
 		return nil
 	}
-	return m.Disabled
+	return o.Disabled
 }
 
-func (m *MeshCircuitBreakerItemOutlierDetection) GetHealthyPanicThreshold() *MeshCircuitBreakerItemHealthyPanicThreshold {
-	if m == nil {
+func (o *MeshCircuitBreakerItemOutlierDetection) GetHealthyPanicThreshold() *MeshCircuitBreakerItemHealthyPanicThreshold {
+	if o == nil {
 		return nil
 	}
-	return m.HealthyPanicThreshold
+	return o.HealthyPanicThreshold
 }
 
-func (m *MeshCircuitBreakerItemOutlierDetection) GetInterval() *string {
-	if m == nil {
+func (o *MeshCircuitBreakerItemOutlierDetection) GetInterval() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Interval
+	return o.Interval
 }
 
-func (m *MeshCircuitBreakerItemOutlierDetection) GetMaxEjectionPercent() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemOutlierDetection) GetMaxEjectionPercent() *int {
+	if o == nil {
 		return nil
 	}
-	return m.MaxEjectionPercent
+	return o.MaxEjectionPercent
 }
 
-func (m *MeshCircuitBreakerItemOutlierDetection) GetSplitExternalAndLocalErrors() *bool {
-	if m == nil {
+func (o *MeshCircuitBreakerItemOutlierDetection) GetSplitExternalAndLocalErrors() *bool {
+	if o == nil {
 		return nil
 	}
-	return m.SplitExternalAndLocalErrors
+	return o.SplitExternalAndLocalErrors
 }
 
 // MeshCircuitBreakerItemSpecDefault - Default contains configuration of the inbound circuit breaker
@@ -1473,18 +1369,18 @@ type MeshCircuitBreakerItemSpecDefault struct {
 	OutlierDetection *MeshCircuitBreakerItemOutlierDetection `json:"outlierDetection,omitempty"`
 }
 
-func (m *MeshCircuitBreakerItemSpecDefault) GetConnectionLimits() *MeshCircuitBreakerItemConnectionLimits {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecDefault) GetConnectionLimits() *MeshCircuitBreakerItemConnectionLimits {
+	if o == nil {
 		return nil
 	}
-	return m.ConnectionLimits
+	return o.ConnectionLimits
 }
 
-func (m *MeshCircuitBreakerItemSpecDefault) GetOutlierDetection() *MeshCircuitBreakerItemOutlierDetection {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecDefault) GetOutlierDetection() *MeshCircuitBreakerItemOutlierDetection {
+	if o == nil {
 		return nil
 	}
-	return m.OutlierDetection
+	return o.OutlierDetection
 }
 
 type MeshCircuitBreakerItemRules struct {
@@ -1492,11 +1388,11 @@ type MeshCircuitBreakerItemRules struct {
 	Default *MeshCircuitBreakerItemSpecDefault `json:"default,omitempty"`
 }
 
-func (m *MeshCircuitBreakerItemRules) GetDefault() *MeshCircuitBreakerItemSpecDefault {
-	if m == nil {
+func (o *MeshCircuitBreakerItemRules) GetDefault() *MeshCircuitBreakerItemSpecDefault {
+	if o == nil {
 		return nil
 	}
-	return m.Default
+	return o.Default
 }
 
 // MeshCircuitBreakerItemKind - Kind of the referenced resource
@@ -1601,60 +1497,60 @@ type MeshCircuitBreakerItemTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (m *MeshCircuitBreakerItemTargetRef) GetKind() MeshCircuitBreakerItemKind {
-	if m == nil {
+func (o *MeshCircuitBreakerItemTargetRef) GetKind() MeshCircuitBreakerItemKind {
+	if o == nil {
 		return MeshCircuitBreakerItemKind("")
 	}
-	return m.Kind
+	return o.Kind
 }
 
-func (m *MeshCircuitBreakerItemTargetRef) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshCircuitBreakerItemTargetRef) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshCircuitBreakerItemTargetRef) GetMesh() *string {
-	if m == nil {
+func (o *MeshCircuitBreakerItemTargetRef) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Mesh
+	return o.Mesh
 }
 
-func (m *MeshCircuitBreakerItemTargetRef) GetName() *string {
-	if m == nil {
+func (o *MeshCircuitBreakerItemTargetRef) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshCircuitBreakerItemTargetRef) GetNamespace() *string {
-	if m == nil {
+func (o *MeshCircuitBreakerItemTargetRef) GetNamespace() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Namespace
+	return o.Namespace
 }
 
-func (m *MeshCircuitBreakerItemTargetRef) GetProxyTypes() []MeshCircuitBreakerItemProxyTypes {
-	if m == nil {
+func (o *MeshCircuitBreakerItemTargetRef) GetProxyTypes() []MeshCircuitBreakerItemProxyTypes {
+	if o == nil {
 		return nil
 	}
-	return m.ProxyTypes
+	return o.ProxyTypes
 }
 
-func (m *MeshCircuitBreakerItemTargetRef) GetSectionName() *string {
-	if m == nil {
+func (o *MeshCircuitBreakerItemTargetRef) GetSectionName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.SectionName
+	return o.SectionName
 }
 
-func (m *MeshCircuitBreakerItemTargetRef) GetTags() map[string]string {
-	if m == nil {
+func (o *MeshCircuitBreakerItemTargetRef) GetTags() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Tags
+	return o.Tags
 }
 
 // MeshCircuitBreakerItemSpecConnectionLimits - ConnectionLimits contains configuration of each circuit breaking limit,
@@ -1681,39 +1577,39 @@ type MeshCircuitBreakerItemSpecConnectionLimits struct {
 	MaxRetries *int `json:"maxRetries,omitempty"`
 }
 
-func (m *MeshCircuitBreakerItemSpecConnectionLimits) GetMaxConnectionPools() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecConnectionLimits) GetMaxConnectionPools() *int {
+	if o == nil {
 		return nil
 	}
-	return m.MaxConnectionPools
+	return o.MaxConnectionPools
 }
 
-func (m *MeshCircuitBreakerItemSpecConnectionLimits) GetMaxConnections() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecConnectionLimits) GetMaxConnections() *int {
+	if o == nil {
 		return nil
 	}
-	return m.MaxConnections
+	return o.MaxConnections
 }
 
-func (m *MeshCircuitBreakerItemSpecConnectionLimits) GetMaxPendingRequests() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecConnectionLimits) GetMaxPendingRequests() *int {
+	if o == nil {
 		return nil
 	}
-	return m.MaxPendingRequests
+	return o.MaxPendingRequests
 }
 
-func (m *MeshCircuitBreakerItemSpecConnectionLimits) GetMaxRequests() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecConnectionLimits) GetMaxRequests() *int {
+	if o == nil {
 		return nil
 	}
-	return m.MaxRequests
+	return o.MaxRequests
 }
 
-func (m *MeshCircuitBreakerItemSpecConnectionLimits) GetMaxRetries() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecConnectionLimits) GetMaxRetries() *int {
+	if o == nil {
 		return nil
 	}
-	return m.MaxRetries
+	return o.MaxRetries
 }
 
 // MeshCircuitBreakerItemSpecFailurePercentage - Failure Percentage based outlier detection functions similarly to success
@@ -1748,25 +1644,25 @@ type MeshCircuitBreakerItemSpecFailurePercentage struct {
 	Threshold *int `json:"threshold,omitempty"`
 }
 
-func (m *MeshCircuitBreakerItemSpecFailurePercentage) GetMinimumHosts() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecFailurePercentage) GetMinimumHosts() *int {
+	if o == nil {
 		return nil
 	}
-	return m.MinimumHosts
+	return o.MinimumHosts
 }
 
-func (m *MeshCircuitBreakerItemSpecFailurePercentage) GetRequestVolume() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecFailurePercentage) GetRequestVolume() *int {
+	if o == nil {
 		return nil
 	}
-	return m.RequestVolume
+	return o.RequestVolume
 }
 
-func (m *MeshCircuitBreakerItemSpecFailurePercentage) GetThreshold() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecFailurePercentage) GetThreshold() *int {
+	if o == nil {
 		return nil
 	}
-	return m.Threshold
+	return o.Threshold
 }
 
 // MeshCircuitBreakerItemSpecGatewayFailures - In the default mode (outlierDetection.splitExternalLocalOriginErrors is
@@ -1783,11 +1679,11 @@ type MeshCircuitBreakerItemSpecGatewayFailures struct {
 	Consecutive *int `json:"consecutive,omitempty"`
 }
 
-func (m *MeshCircuitBreakerItemSpecGatewayFailures) GetConsecutive() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecGatewayFailures) GetConsecutive() *int {
+	if o == nil {
 		return nil
 	}
-	return m.Consecutive
+	return o.Consecutive
 }
 
 // MeshCircuitBreakerItemSpecLocalOriginFailures - This detection type is enabled only when
@@ -1805,11 +1701,11 @@ type MeshCircuitBreakerItemSpecLocalOriginFailures struct {
 	Consecutive *int `json:"consecutive,omitempty"`
 }
 
-func (m *MeshCircuitBreakerItemSpecLocalOriginFailures) GetConsecutive() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecLocalOriginFailures) GetConsecutive() *int {
+	if o == nil {
 		return nil
 	}
-	return m.Consecutive
+	return o.Consecutive
 }
 
 type MeshCircuitBreakerItemSpecStandardDeviationFactorType string
@@ -1826,8 +1722,8 @@ const (
 // success_rate_standard_deviation_factor).
 // Either int or decimal represented as string.
 type MeshCircuitBreakerItemSpecStandardDeviationFactor struct {
-	Integer *int64  `queryParam:"inline,name=standardDeviationFactor"`
-	Str     *string `queryParam:"inline,name=standardDeviationFactor"`
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type MeshCircuitBreakerItemSpecStandardDeviationFactorType
 }
@@ -1852,43 +1748,17 @@ func CreateMeshCircuitBreakerItemSpecStandardDeviationFactorStr(str string) Mesh
 
 func (u *MeshCircuitBreakerItemSpecStandardDeviationFactor) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshCircuitBreakerItemSpecStandardDeviationFactorTypeInteger,
-			Value: &integer,
-		})
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = MeshCircuitBreakerItemSpecStandardDeviationFactorTypeInteger
+		return nil
 	}
 
 	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshCircuitBreakerItemSpecStandardDeviationFactorTypeStr,
-			Value: &str,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshCircuitBreakerItemSpecStandardDeviationFactor", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshCircuitBreakerItemSpecStandardDeviationFactor", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(MeshCircuitBreakerItemSpecStandardDeviationFactorType)
-	switch best.Type {
-	case MeshCircuitBreakerItemSpecStandardDeviationFactorTypeInteger:
-		u.Integer = best.Value.(*int64)
-		return nil
-	case MeshCircuitBreakerItemSpecStandardDeviationFactorTypeStr:
-		u.Str = best.Value.(*string)
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = MeshCircuitBreakerItemSpecStandardDeviationFactorTypeStr
 		return nil
 	}
 
@@ -1944,25 +1814,25 @@ type MeshCircuitBreakerItemSpecSuccessRate struct {
 	StandardDeviationFactor *MeshCircuitBreakerItemSpecStandardDeviationFactor `json:"standardDeviationFactor,omitempty"`
 }
 
-func (m *MeshCircuitBreakerItemSpecSuccessRate) GetMinimumHosts() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecSuccessRate) GetMinimumHosts() *int {
+	if o == nil {
 		return nil
 	}
-	return m.MinimumHosts
+	return o.MinimumHosts
 }
 
-func (m *MeshCircuitBreakerItemSpecSuccessRate) GetRequestVolume() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecSuccessRate) GetRequestVolume() *int {
+	if o == nil {
 		return nil
 	}
-	return m.RequestVolume
+	return o.RequestVolume
 }
 
-func (m *MeshCircuitBreakerItemSpecSuccessRate) GetStandardDeviationFactor() *MeshCircuitBreakerItemSpecStandardDeviationFactor {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecSuccessRate) GetStandardDeviationFactor() *MeshCircuitBreakerItemSpecStandardDeviationFactor {
+	if o == nil {
 		return nil
 	}
-	return m.StandardDeviationFactor
+	return o.StandardDeviationFactor
 }
 
 // MeshCircuitBreakerItemSpecTotalFailures - In the default mode (outlierDetection.splitExternalAndLocalErrors is
@@ -1983,11 +1853,11 @@ type MeshCircuitBreakerItemSpecTotalFailures struct {
 	Consecutive *int `json:"consecutive,omitempty"`
 }
 
-func (m *MeshCircuitBreakerItemSpecTotalFailures) GetConsecutive() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecTotalFailures) GetConsecutive() *int {
+	if o == nil {
 		return nil
 	}
-	return m.Consecutive
+	return o.Consecutive
 }
 
 // MeshCircuitBreakerItemSpecDetectors - Contains configuration for supported outlier detectors
@@ -2055,39 +1925,39 @@ type MeshCircuitBreakerItemSpecDetectors struct {
 	TotalFailures *MeshCircuitBreakerItemSpecTotalFailures `json:"totalFailures,omitempty"`
 }
 
-func (m *MeshCircuitBreakerItemSpecDetectors) GetFailurePercentage() *MeshCircuitBreakerItemSpecFailurePercentage {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecDetectors) GetFailurePercentage() *MeshCircuitBreakerItemSpecFailurePercentage {
+	if o == nil {
 		return nil
 	}
-	return m.FailurePercentage
+	return o.FailurePercentage
 }
 
-func (m *MeshCircuitBreakerItemSpecDetectors) GetGatewayFailures() *MeshCircuitBreakerItemSpecGatewayFailures {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecDetectors) GetGatewayFailures() *MeshCircuitBreakerItemSpecGatewayFailures {
+	if o == nil {
 		return nil
 	}
-	return m.GatewayFailures
+	return o.GatewayFailures
 }
 
-func (m *MeshCircuitBreakerItemSpecDetectors) GetLocalOriginFailures() *MeshCircuitBreakerItemSpecLocalOriginFailures {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecDetectors) GetLocalOriginFailures() *MeshCircuitBreakerItemSpecLocalOriginFailures {
+	if o == nil {
 		return nil
 	}
-	return m.LocalOriginFailures
+	return o.LocalOriginFailures
 }
 
-func (m *MeshCircuitBreakerItemSpecDetectors) GetSuccessRate() *MeshCircuitBreakerItemSpecSuccessRate {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecDetectors) GetSuccessRate() *MeshCircuitBreakerItemSpecSuccessRate {
+	if o == nil {
 		return nil
 	}
-	return m.SuccessRate
+	return o.SuccessRate
 }
 
-func (m *MeshCircuitBreakerItemSpecDetectors) GetTotalFailures() *MeshCircuitBreakerItemSpecTotalFailures {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecDetectors) GetTotalFailures() *MeshCircuitBreakerItemSpecTotalFailures {
+	if o == nil {
 		return nil
 	}
-	return m.TotalFailures
+	return o.TotalFailures
 }
 
 type MeshCircuitBreakerItemSpecHealthyPanicThresholdType string
@@ -2101,8 +1971,8 @@ const (
 // the default is 50%. To disable panic mode, set to 0%.
 // Either int or decimal represented as string.
 type MeshCircuitBreakerItemSpecHealthyPanicThreshold struct {
-	Integer *int64  `queryParam:"inline,name=healthyPanicThreshold"`
-	Str     *string `queryParam:"inline,name=healthyPanicThreshold"`
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type MeshCircuitBreakerItemSpecHealthyPanicThresholdType
 }
@@ -2127,43 +1997,17 @@ func CreateMeshCircuitBreakerItemSpecHealthyPanicThresholdStr(str string) MeshCi
 
 func (u *MeshCircuitBreakerItemSpecHealthyPanicThreshold) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshCircuitBreakerItemSpecHealthyPanicThresholdTypeInteger,
-			Value: &integer,
-		})
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = MeshCircuitBreakerItemSpecHealthyPanicThresholdTypeInteger
+		return nil
 	}
 
 	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshCircuitBreakerItemSpecHealthyPanicThresholdTypeStr,
-			Value: &str,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshCircuitBreakerItemSpecHealthyPanicThreshold", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshCircuitBreakerItemSpecHealthyPanicThreshold", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(MeshCircuitBreakerItemSpecHealthyPanicThresholdType)
-	switch best.Type {
-	case MeshCircuitBreakerItemSpecHealthyPanicThresholdTypeInteger:
-		u.Integer = best.Value.(*int64)
-		return nil
-	case MeshCircuitBreakerItemSpecHealthyPanicThresholdTypeStr:
-		u.Str = best.Value.(*string)
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = MeshCircuitBreakerItemSpecHealthyPanicThresholdTypeStr
 		return nil
 	}
 
@@ -2214,53 +2058,53 @@ type MeshCircuitBreakerItemSpecOutlierDetection struct {
 	SplitExternalAndLocalErrors *bool `json:"splitExternalAndLocalErrors,omitempty"`
 }
 
-func (m *MeshCircuitBreakerItemSpecOutlierDetection) GetBaseEjectionTime() *string {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecOutlierDetection) GetBaseEjectionTime() *string {
+	if o == nil {
 		return nil
 	}
-	return m.BaseEjectionTime
+	return o.BaseEjectionTime
 }
 
-func (m *MeshCircuitBreakerItemSpecOutlierDetection) GetDetectors() *MeshCircuitBreakerItemSpecDetectors {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecOutlierDetection) GetDetectors() *MeshCircuitBreakerItemSpecDetectors {
+	if o == nil {
 		return nil
 	}
-	return m.Detectors
+	return o.Detectors
 }
 
-func (m *MeshCircuitBreakerItemSpecOutlierDetection) GetDisabled() *bool {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecOutlierDetection) GetDisabled() *bool {
+	if o == nil {
 		return nil
 	}
-	return m.Disabled
+	return o.Disabled
 }
 
-func (m *MeshCircuitBreakerItemSpecOutlierDetection) GetHealthyPanicThreshold() *MeshCircuitBreakerItemSpecHealthyPanicThreshold {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecOutlierDetection) GetHealthyPanicThreshold() *MeshCircuitBreakerItemSpecHealthyPanicThreshold {
+	if o == nil {
 		return nil
 	}
-	return m.HealthyPanicThreshold
+	return o.HealthyPanicThreshold
 }
 
-func (m *MeshCircuitBreakerItemSpecOutlierDetection) GetInterval() *string {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecOutlierDetection) GetInterval() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Interval
+	return o.Interval
 }
 
-func (m *MeshCircuitBreakerItemSpecOutlierDetection) GetMaxEjectionPercent() *int {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecOutlierDetection) GetMaxEjectionPercent() *int {
+	if o == nil {
 		return nil
 	}
-	return m.MaxEjectionPercent
+	return o.MaxEjectionPercent
 }
 
-func (m *MeshCircuitBreakerItemSpecOutlierDetection) GetSplitExternalAndLocalErrors() *bool {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecOutlierDetection) GetSplitExternalAndLocalErrors() *bool {
+	if o == nil {
 		return nil
 	}
-	return m.SplitExternalAndLocalErrors
+	return o.SplitExternalAndLocalErrors
 }
 
 // MeshCircuitBreakerItemSpecToDefault - Default is a configuration specific to the group of destinations
@@ -2280,18 +2124,18 @@ type MeshCircuitBreakerItemSpecToDefault struct {
 	OutlierDetection *MeshCircuitBreakerItemSpecOutlierDetection `json:"outlierDetection,omitempty"`
 }
 
-func (m *MeshCircuitBreakerItemSpecToDefault) GetConnectionLimits() *MeshCircuitBreakerItemSpecConnectionLimits {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecToDefault) GetConnectionLimits() *MeshCircuitBreakerItemSpecConnectionLimits {
+	if o == nil {
 		return nil
 	}
-	return m.ConnectionLimits
+	return o.ConnectionLimits
 }
 
-func (m *MeshCircuitBreakerItemSpecToDefault) GetOutlierDetection() *MeshCircuitBreakerItemSpecOutlierDetection {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecToDefault) GetOutlierDetection() *MeshCircuitBreakerItemSpecOutlierDetection {
+	if o == nil {
 		return nil
 	}
-	return m.OutlierDetection
+	return o.OutlierDetection
 }
 
 // MeshCircuitBreakerItemSpecToKind - Kind of the referenced resource
@@ -2395,60 +2239,60 @@ type MeshCircuitBreakerItemSpecToTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (m *MeshCircuitBreakerItemSpecToTargetRef) GetKind() MeshCircuitBreakerItemSpecToKind {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecToTargetRef) GetKind() MeshCircuitBreakerItemSpecToKind {
+	if o == nil {
 		return MeshCircuitBreakerItemSpecToKind("")
 	}
-	return m.Kind
+	return o.Kind
 }
 
-func (m *MeshCircuitBreakerItemSpecToTargetRef) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecToTargetRef) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshCircuitBreakerItemSpecToTargetRef) GetMesh() *string {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecToTargetRef) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Mesh
+	return o.Mesh
 }
 
-func (m *MeshCircuitBreakerItemSpecToTargetRef) GetName() *string {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecToTargetRef) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshCircuitBreakerItemSpecToTargetRef) GetNamespace() *string {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecToTargetRef) GetNamespace() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Namespace
+	return o.Namespace
 }
 
-func (m *MeshCircuitBreakerItemSpecToTargetRef) GetProxyTypes() []MeshCircuitBreakerItemSpecToProxyTypes {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecToTargetRef) GetProxyTypes() []MeshCircuitBreakerItemSpecToProxyTypes {
+	if o == nil {
 		return nil
 	}
-	return m.ProxyTypes
+	return o.ProxyTypes
 }
 
-func (m *MeshCircuitBreakerItemSpecToTargetRef) GetSectionName() *string {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecToTargetRef) GetSectionName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.SectionName
+	return o.SectionName
 }
 
-func (m *MeshCircuitBreakerItemSpecToTargetRef) GetTags() map[string]string {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpecToTargetRef) GetTags() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Tags
+	return o.Tags
 }
 
 type MeshCircuitBreakerItemTo struct {
@@ -2460,18 +2304,18 @@ type MeshCircuitBreakerItemTo struct {
 	TargetRef MeshCircuitBreakerItemSpecToTargetRef `json:"targetRef"`
 }
 
-func (m *MeshCircuitBreakerItemTo) GetDefault() *MeshCircuitBreakerItemSpecToDefault {
-	if m == nil {
+func (o *MeshCircuitBreakerItemTo) GetDefault() *MeshCircuitBreakerItemSpecToDefault {
+	if o == nil {
 		return nil
 	}
-	return m.Default
+	return o.Default
 }
 
-func (m *MeshCircuitBreakerItemTo) GetTargetRef() MeshCircuitBreakerItemSpecToTargetRef {
-	if m == nil {
+func (o *MeshCircuitBreakerItemTo) GetTargetRef() MeshCircuitBreakerItemSpecToTargetRef {
+	if o == nil {
 		return MeshCircuitBreakerItemSpecToTargetRef{}
 	}
-	return m.TargetRef
+	return o.TargetRef
 }
 
 // MeshCircuitBreakerItemSpec - Spec is the specification of the Kuma MeshCircuitBreaker resource.
@@ -2490,32 +2334,32 @@ type MeshCircuitBreakerItemSpec struct {
 	To []MeshCircuitBreakerItemTo `json:"to,omitempty"`
 }
 
-func (m *MeshCircuitBreakerItemSpec) GetFrom() []MeshCircuitBreakerItemFrom {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpec) GetFrom() []MeshCircuitBreakerItemFrom {
+	if o == nil {
 		return nil
 	}
-	return m.From
+	return o.From
 }
 
-func (m *MeshCircuitBreakerItemSpec) GetRules() []MeshCircuitBreakerItemRules {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpec) GetRules() []MeshCircuitBreakerItemRules {
+	if o == nil {
 		return nil
 	}
-	return m.Rules
+	return o.Rules
 }
 
-func (m *MeshCircuitBreakerItemSpec) GetTargetRef() *MeshCircuitBreakerItemTargetRef {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpec) GetTargetRef() *MeshCircuitBreakerItemTargetRef {
+	if o == nil {
 		return nil
 	}
-	return m.TargetRef
+	return o.TargetRef
 }
 
-func (m *MeshCircuitBreakerItemSpec) GetTo() []MeshCircuitBreakerItemTo {
-	if m == nil {
+func (o *MeshCircuitBreakerItemSpec) GetTo() []MeshCircuitBreakerItemTo {
+	if o == nil {
 		return nil
 	}
-	return m.To
+	return o.To
 }
 
 // MeshCircuitBreakerItem - Successful response
@@ -2543,66 +2387,66 @@ func (m MeshCircuitBreakerItem) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshCircuitBreakerItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (m *MeshCircuitBreakerItem) GetType() MeshCircuitBreakerItemType {
-	if m == nil {
+func (o *MeshCircuitBreakerItem) GetType() MeshCircuitBreakerItemType {
+	if o == nil {
 		return MeshCircuitBreakerItemType("")
 	}
-	return m.Type
+	return o.Type
 }
 
-func (m *MeshCircuitBreakerItem) GetMesh() *string {
-	if m == nil {
+func (o *MeshCircuitBreakerItem) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Mesh
+	return o.Mesh
 }
 
-func (m *MeshCircuitBreakerItem) GetKri() *string {
-	if m == nil {
+func (o *MeshCircuitBreakerItem) GetKri() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Kri
+	return o.Kri
 }
 
-func (m *MeshCircuitBreakerItem) GetName() string {
-	if m == nil {
+func (o *MeshCircuitBreakerItem) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshCircuitBreakerItem) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshCircuitBreakerItem) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshCircuitBreakerItem) GetSpec() MeshCircuitBreakerItemSpec {
-	if m == nil {
+func (o *MeshCircuitBreakerItem) GetSpec() MeshCircuitBreakerItemSpec {
+	if o == nil {
 		return MeshCircuitBreakerItemSpec{}
 	}
-	return m.Spec
+	return o.Spec
 }
 
-func (m *MeshCircuitBreakerItem) GetCreationTime() *time.Time {
-	if m == nil {
+func (o *MeshCircuitBreakerItem) GetCreationTime() *time.Time {
+	if o == nil {
 		return nil
 	}
-	return m.CreationTime
+	return o.CreationTime
 }
 
-func (m *MeshCircuitBreakerItem) GetModificationTime() *time.Time {
-	if m == nil {
+func (o *MeshCircuitBreakerItem) GetModificationTime() *time.Time {
+	if o == nil {
 		return nil
 	}
-	return m.ModificationTime
+	return o.ModificationTime
 }
 
 // MeshCircuitBreakerItemInput - Successful response
@@ -2624,43 +2468,43 @@ func (m MeshCircuitBreakerItemInput) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshCircuitBreakerItemInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (m *MeshCircuitBreakerItemInput) GetType() MeshCircuitBreakerItemType {
-	if m == nil {
+func (o *MeshCircuitBreakerItemInput) GetType() MeshCircuitBreakerItemType {
+	if o == nil {
 		return MeshCircuitBreakerItemType("")
 	}
-	return m.Type
+	return o.Type
 }
 
-func (m *MeshCircuitBreakerItemInput) GetMesh() *string {
-	if m == nil {
+func (o *MeshCircuitBreakerItemInput) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Mesh
+	return o.Mesh
 }
 
-func (m *MeshCircuitBreakerItemInput) GetName() string {
-	if m == nil {
+func (o *MeshCircuitBreakerItemInput) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshCircuitBreakerItemInput) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshCircuitBreakerItemInput) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshCircuitBreakerItemInput) GetSpec() MeshCircuitBreakerItemSpec {
-	if m == nil {
+func (o *MeshCircuitBreakerItemInput) GetSpec() MeshCircuitBreakerItemSpec {
+	if o == nil {
 		return MeshCircuitBreakerItemSpec{}
 	}
-	return m.Spec
+	return o.Spec
 }

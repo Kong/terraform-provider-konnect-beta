@@ -16,25 +16,25 @@ type GetMeshRetryRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (g *GetMeshRetryRequest) GetCpID() string {
-	if g == nil {
+func (o *GetMeshRetryRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return g.CpID
+	return o.CpID
 }
 
-func (g *GetMeshRetryRequest) GetMesh() string {
-	if g == nil {
+func (o *GetMeshRetryRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return g.Mesh
+	return o.Mesh
 }
 
-func (g *GetMeshRetryRequest) GetName() string {
-	if g == nil {
+func (o *GetMeshRetryRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return g.Name
+	return o.Name
 }
 
 type GetMeshRetryResponse struct {
@@ -50,37 +50,37 @@ type GetMeshRetryResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (g *GetMeshRetryResponse) GetContentType() string {
-	if g == nil {
+func (o *GetMeshRetryResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetMeshRetryResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetMeshRetryResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetMeshRetryResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetMeshRetryResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetMeshRetryResponse) GetMeshRetryItem() *shared.MeshRetryItem {
-	if g == nil {
+func (o *GetMeshRetryResponse) GetMeshRetryItem() *shared.MeshRetryItem {
+	if o == nil {
 		return nil
 	}
-	return g.MeshRetryItem
+	return o.MeshRetryItem
 }
 
-func (g *GetMeshRetryResponse) GetNotFoundError() *shared.NotFoundError {
-	if g == nil {
+func (o *GetMeshRetryResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return g.NotFoundError
+	return o.NotFoundError
 }

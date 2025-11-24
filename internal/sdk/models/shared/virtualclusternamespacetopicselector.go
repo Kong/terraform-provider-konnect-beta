@@ -17,8 +17,8 @@ const (
 )
 
 type VirtualClusterNamespaceTopicSelector struct {
-	VirtualClusterNamespaceTopicSelectorGlob      *VirtualClusterNamespaceTopicSelectorGlob      `queryParam:"inline,name=VirtualClusterNamespaceTopicSelector"`
-	VirtualClusterNamespaceTopicSelectorExactList *VirtualClusterNamespaceTopicSelectorExactList `queryParam:"inline,name=VirtualClusterNamespaceTopicSelector"`
+	VirtualClusterNamespaceTopicSelectorGlob      *VirtualClusterNamespaceTopicSelectorGlob      `queryParam:"inline"`
+	VirtualClusterNamespaceTopicSelectorExactList *VirtualClusterNamespaceTopicSelectorExactList `queryParam:"inline"`
 
 	Type VirtualClusterNamespaceTopicSelectorType
 }
@@ -55,7 +55,7 @@ func (u *VirtualClusterNamespaceTopicSelector) UnmarshalJSON(data []byte) error 
 	switch dis.Type {
 	case "glob":
 		virtualClusterNamespaceTopicSelectorGlob := new(VirtualClusterNamespaceTopicSelectorGlob)
-		if err := utils.UnmarshalJSON(data, &virtualClusterNamespaceTopicSelectorGlob, "", true, nil); err != nil {
+		if err := utils.UnmarshalJSON(data, &virtualClusterNamespaceTopicSelectorGlob, "", true, false); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == glob) type VirtualClusterNamespaceTopicSelectorGlob within VirtualClusterNamespaceTopicSelector: %w", string(data), err)
 		}
 
@@ -64,7 +64,7 @@ func (u *VirtualClusterNamespaceTopicSelector) UnmarshalJSON(data []byte) error 
 		return nil
 	case "exact_list":
 		virtualClusterNamespaceTopicSelectorExactList := new(VirtualClusterNamespaceTopicSelectorExactList)
-		if err := utils.UnmarshalJSON(data, &virtualClusterNamespaceTopicSelectorExactList, "", true, nil); err != nil {
+		if err := utils.UnmarshalJSON(data, &virtualClusterNamespaceTopicSelectorExactList, "", true, false); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == exact_list) type VirtualClusterNamespaceTopicSelectorExactList within VirtualClusterNamespaceTopicSelector: %w", string(data), err)
 		}
 

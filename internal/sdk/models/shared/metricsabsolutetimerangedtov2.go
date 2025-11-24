@@ -45,36 +45,36 @@ func (m MetricsAbsoluteTimeRangeDtoV2) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MetricsAbsoluteTimeRangeDtoV2) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (m *MetricsAbsoluteTimeRangeDtoV2) GetTz() *string {
-	if m == nil {
+func (o *MetricsAbsoluteTimeRangeDtoV2) GetTz() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Tz
+	return o.Tz
 }
 
-func (m *MetricsAbsoluteTimeRangeDtoV2) GetType() MetricsAbsoluteTimeRangeDtoV2Type {
-	if m == nil {
+func (o *MetricsAbsoluteTimeRangeDtoV2) GetType() MetricsAbsoluteTimeRangeDtoV2Type {
+	if o == nil {
 		return MetricsAbsoluteTimeRangeDtoV2Type("")
 	}
-	return m.Type
+	return o.Type
 }
 
-func (m *MetricsAbsoluteTimeRangeDtoV2) GetStart() *time.Time {
-	if m == nil {
+func (o *MetricsAbsoluteTimeRangeDtoV2) GetStart() *time.Time {
+	if o == nil {
 		return nil
 	}
-	return m.Start
+	return o.Start
 }
 
-func (m *MetricsAbsoluteTimeRangeDtoV2) GetEnd() *time.Time {
-	if m == nil {
+func (o *MetricsAbsoluteTimeRangeDtoV2) GetEnd() *time.Time {
+	if o == nil {
 		return nil
 	}
-	return m.End
+	return o.End
 }

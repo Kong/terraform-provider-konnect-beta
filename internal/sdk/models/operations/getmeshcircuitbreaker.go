@@ -16,25 +16,25 @@ type GetMeshCircuitBreakerRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (g *GetMeshCircuitBreakerRequest) GetCpID() string {
-	if g == nil {
+func (o *GetMeshCircuitBreakerRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return g.CpID
+	return o.CpID
 }
 
-func (g *GetMeshCircuitBreakerRequest) GetMesh() string {
-	if g == nil {
+func (o *GetMeshCircuitBreakerRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return g.Mesh
+	return o.Mesh
 }
 
-func (g *GetMeshCircuitBreakerRequest) GetName() string {
-	if g == nil {
+func (o *GetMeshCircuitBreakerRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return g.Name
+	return o.Name
 }
 
 type GetMeshCircuitBreakerResponse struct {
@@ -50,37 +50,37 @@ type GetMeshCircuitBreakerResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (g *GetMeshCircuitBreakerResponse) GetContentType() string {
-	if g == nil {
+func (o *GetMeshCircuitBreakerResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetMeshCircuitBreakerResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetMeshCircuitBreakerResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetMeshCircuitBreakerResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetMeshCircuitBreakerResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetMeshCircuitBreakerResponse) GetMeshCircuitBreakerItem() *shared.MeshCircuitBreakerItem {
-	if g == nil {
+func (o *GetMeshCircuitBreakerResponse) GetMeshCircuitBreakerItem() *shared.MeshCircuitBreakerItem {
+	if o == nil {
 		return nil
 	}
-	return g.MeshCircuitBreakerItem
+	return o.MeshCircuitBreakerItem
 }
 
-func (g *GetMeshCircuitBreakerResponse) GetNotFoundError() *shared.NotFoundError {
-	if g == nil {
+func (o *GetMeshCircuitBreakerResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return g.NotFoundError
+	return o.NotFoundError
 }

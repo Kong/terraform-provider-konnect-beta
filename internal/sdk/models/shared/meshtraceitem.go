@@ -52,24 +52,24 @@ func (d Datadog) MarshalJSON() ([]byte, error) {
 }
 
 func (d *Datadog) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"url"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (d *Datadog) GetSplitService() *bool {
-	if d == nil {
+func (o *Datadog) GetSplitService() *bool {
+	if o == nil {
 		return nil
 	}
-	return d.SplitService
+	return o.SplitService
 }
 
-func (d *Datadog) GetURL() string {
-	if d == nil {
+func (o *Datadog) GetURL() string {
+	if o == nil {
 		return ""
 	}
-	return d.URL
+	return o.URL
 }
 
 // MeshTraceItemOpenTelemetry - OpenTelemetry backend configuration.
@@ -78,11 +78,11 @@ type MeshTraceItemOpenTelemetry struct {
 	Endpoint string `json:"endpoint"`
 }
 
-func (m *MeshTraceItemOpenTelemetry) GetEndpoint() string {
-	if m == nil {
+func (o *MeshTraceItemOpenTelemetry) GetEndpoint() string {
+	if o == nil {
 		return ""
 	}
-	return m.Endpoint
+	return o.Endpoint
 }
 
 type MeshTraceItemSpecType string
@@ -162,38 +162,38 @@ func (z Zipkin) MarshalJSON() ([]byte, error) {
 }
 
 func (z *Zipkin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &z, "", false, []string{"url"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &z, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (z *Zipkin) GetAPIVersion() *MeshTraceItemAPIVersion {
-	if z == nil {
+func (o *Zipkin) GetAPIVersion() *MeshTraceItemAPIVersion {
+	if o == nil {
 		return nil
 	}
-	return z.APIVersion
+	return o.APIVersion
 }
 
-func (z *Zipkin) GetSharedSpanContext() *bool {
-	if z == nil {
+func (o *Zipkin) GetSharedSpanContext() *bool {
+	if o == nil {
 		return nil
 	}
-	return z.SharedSpanContext
+	return o.SharedSpanContext
 }
 
-func (z *Zipkin) GetTraceId128bit() *bool {
-	if z == nil {
+func (o *Zipkin) GetTraceId128bit() *bool {
+	if o == nil {
 		return nil
 	}
-	return z.TraceId128bit
+	return o.TraceId128bit
 }
 
-func (z *Zipkin) GetURL() string {
-	if z == nil {
+func (o *Zipkin) GetURL() string {
+	if o == nil {
 		return ""
 	}
-	return z.URL
+	return o.URL
 }
 
 // MeshTraceItemBackends - Only one of zipkin, datadog or openTelemetry can be used.
@@ -207,32 +207,32 @@ type MeshTraceItemBackends struct {
 	Zipkin *Zipkin `json:"zipkin,omitempty"`
 }
 
-func (m *MeshTraceItemBackends) GetDatadog() *Datadog {
-	if m == nil {
+func (o *MeshTraceItemBackends) GetDatadog() *Datadog {
+	if o == nil {
 		return nil
 	}
-	return m.Datadog
+	return o.Datadog
 }
 
-func (m *MeshTraceItemBackends) GetOpenTelemetry() *MeshTraceItemOpenTelemetry {
-	if m == nil {
+func (o *MeshTraceItemBackends) GetOpenTelemetry() *MeshTraceItemOpenTelemetry {
+	if o == nil {
 		return nil
 	}
-	return m.OpenTelemetry
+	return o.OpenTelemetry
 }
 
-func (m *MeshTraceItemBackends) GetType() MeshTraceItemSpecType {
-	if m == nil {
+func (o *MeshTraceItemBackends) GetType() MeshTraceItemSpecType {
+	if o == nil {
 		return MeshTraceItemSpecType("")
 	}
-	return m.Type
+	return o.Type
 }
 
-func (m *MeshTraceItemBackends) GetZipkin() *Zipkin {
-	if m == nil {
+func (o *MeshTraceItemBackends) GetZipkin() *Zipkin {
+	if o == nil {
 		return nil
 	}
-	return m.Zipkin
+	return o.Zipkin
 }
 
 type MeshTraceItemClientType string
@@ -248,8 +248,8 @@ const (
 // Either int or decimal represented as string.
 // If not specified then the default value is 100.
 type MeshTraceItemClient struct {
-	Integer *int64  `queryParam:"inline,name=client"`
-	Str     *string `queryParam:"inline,name=client"`
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type MeshTraceItemClientType
 }
@@ -274,43 +274,17 @@ func CreateMeshTraceItemClientStr(str string) MeshTraceItemClient {
 
 func (u *MeshTraceItemClient) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshTraceItemClientTypeInteger,
-			Value: &integer,
-		})
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = MeshTraceItemClientTypeInteger
+		return nil
 	}
 
 	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshTraceItemClientTypeStr,
-			Value: &str,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshTraceItemClient", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshTraceItemClient", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(MeshTraceItemClientType)
-	switch best.Type {
-	case MeshTraceItemClientTypeInteger:
-		u.Integer = best.Value.(*int64)
-		return nil
-	case MeshTraceItemClientTypeStr:
-		u.Str = best.Value.(*string)
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = MeshTraceItemClientTypeStr
 		return nil
 	}
 
@@ -347,8 +321,8 @@ const (
 // Either int or decimal represented as string.
 // If not specified then the default value is 100.
 type Overall struct {
-	Integer *int64  `queryParam:"inline,name=overall"`
-	Str     *string `queryParam:"inline,name=overall"`
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type OverallType
 }
@@ -373,43 +347,17 @@ func CreateOverallStr(str string) Overall {
 
 func (u *Overall) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  OverallTypeInteger,
-			Value: &integer,
-		})
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = OverallTypeInteger
+		return nil
 	}
 
 	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  OverallTypeStr,
-			Value: &str,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Overall", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Overall", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(OverallType)
-	switch best.Type {
-	case OverallTypeInteger:
-		u.Integer = best.Value.(*int64)
-		return nil
-	case OverallTypeStr:
-		u.Str = best.Value.(*string)
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = OverallTypeStr
 		return nil
 	}
 
@@ -442,8 +390,8 @@ const (
 // Either int or decimal represented as string.
 // If not specified then the default value is 100.
 type Random struct {
-	Integer *int64  `queryParam:"inline,name=random"`
-	Str     *string `queryParam:"inline,name=random"`
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type RandomType
 }
@@ -468,43 +416,17 @@ func CreateRandomStr(str string) Random {
 
 func (u *Random) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  RandomTypeInteger,
-			Value: &integer,
-		})
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = RandomTypeInteger
+		return nil
 	}
 
 	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  RandomTypeStr,
-			Value: &str,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Random", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Random", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(RandomType)
-	switch best.Type {
-	case RandomTypeInteger:
-		u.Integer = best.Value.(*int64)
-		return nil
-	case RandomTypeStr:
-		u.Str = best.Value.(*string)
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = RandomTypeStr
 		return nil
 	}
 
@@ -553,25 +475,25 @@ type Sampling struct {
 	Random *Random `json:"random,omitempty"`
 }
 
-func (s *Sampling) GetClient() *MeshTraceItemClient {
-	if s == nil {
+func (o *Sampling) GetClient() *MeshTraceItemClient {
+	if o == nil {
 		return nil
 	}
-	return s.Client
+	return o.Client
 }
 
-func (s *Sampling) GetOverall() *Overall {
-	if s == nil {
+func (o *Sampling) GetOverall() *Overall {
+	if o == nil {
 		return nil
 	}
-	return s.Overall
+	return o.Overall
 }
 
-func (s *Sampling) GetRandom() *Random {
-	if s == nil {
+func (o *Sampling) GetRandom() *Random {
+	if o == nil {
 		return nil
 	}
-	return s.Random
+	return o.Random
 }
 
 // Header - Tag taken from a header.
@@ -584,18 +506,18 @@ type Header struct {
 	Name string `json:"name"`
 }
 
-func (h *Header) GetDefault() *string {
-	if h == nil {
+func (o *Header) GetDefault() *string {
+	if o == nil {
 		return nil
 	}
-	return h.Default
+	return o.Default
 }
 
-func (h *Header) GetName() string {
-	if h == nil {
+func (o *Header) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return h.Name
+	return o.Name
 }
 
 // Tags - Custom tags configuration.
@@ -609,25 +531,25 @@ type Tags struct {
 	Name string `json:"name"`
 }
 
-func (t *Tags) GetHeader() *Header {
-	if t == nil {
+func (o *Tags) GetHeader() *Header {
+	if o == nil {
 		return nil
 	}
-	return t.Header
+	return o.Header
 }
 
-func (t *Tags) GetLiteral() *string {
-	if t == nil {
+func (o *Tags) GetLiteral() *string {
+	if o == nil {
 		return nil
 	}
-	return t.Literal
+	return o.Literal
 }
 
-func (t *Tags) GetName() string {
-	if t == nil {
+func (o *Tags) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return t.Name
+	return o.Name
 }
 
 // MeshTraceItemDefault - MeshTrace configuration.
@@ -647,25 +569,25 @@ type MeshTraceItemDefault struct {
 	Tags []Tags `json:"tags,omitempty"`
 }
 
-func (m *MeshTraceItemDefault) GetBackends() []MeshTraceItemBackends {
-	if m == nil {
+func (o *MeshTraceItemDefault) GetBackends() []MeshTraceItemBackends {
+	if o == nil {
 		return nil
 	}
-	return m.Backends
+	return o.Backends
 }
 
-func (m *MeshTraceItemDefault) GetSampling() *Sampling {
-	if m == nil {
+func (o *MeshTraceItemDefault) GetSampling() *Sampling {
+	if o == nil {
 		return nil
 	}
-	return m.Sampling
+	return o.Sampling
 }
 
-func (m *MeshTraceItemDefault) GetTags() []Tags {
-	if m == nil {
+func (o *MeshTraceItemDefault) GetTags() []Tags {
+	if o == nil {
 		return nil
 	}
-	return m.Tags
+	return o.Tags
 }
 
 // MeshTraceItemKind - Kind of the referenced resource
@@ -770,60 +692,60 @@ type MeshTraceItemTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (m *MeshTraceItemTargetRef) GetKind() MeshTraceItemKind {
-	if m == nil {
+func (o *MeshTraceItemTargetRef) GetKind() MeshTraceItemKind {
+	if o == nil {
 		return MeshTraceItemKind("")
 	}
-	return m.Kind
+	return o.Kind
 }
 
-func (m *MeshTraceItemTargetRef) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshTraceItemTargetRef) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshTraceItemTargetRef) GetMesh() *string {
-	if m == nil {
+func (o *MeshTraceItemTargetRef) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Mesh
+	return o.Mesh
 }
 
-func (m *MeshTraceItemTargetRef) GetName() *string {
-	if m == nil {
+func (o *MeshTraceItemTargetRef) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshTraceItemTargetRef) GetNamespace() *string {
-	if m == nil {
+func (o *MeshTraceItemTargetRef) GetNamespace() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Namespace
+	return o.Namespace
 }
 
-func (m *MeshTraceItemTargetRef) GetProxyTypes() []MeshTraceItemProxyTypes {
-	if m == nil {
+func (o *MeshTraceItemTargetRef) GetProxyTypes() []MeshTraceItemProxyTypes {
+	if o == nil {
 		return nil
 	}
-	return m.ProxyTypes
+	return o.ProxyTypes
 }
 
-func (m *MeshTraceItemTargetRef) GetSectionName() *string {
-	if m == nil {
+func (o *MeshTraceItemTargetRef) GetSectionName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.SectionName
+	return o.SectionName
 }
 
-func (m *MeshTraceItemTargetRef) GetTags() map[string]string {
-	if m == nil {
+func (o *MeshTraceItemTargetRef) GetTags() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Tags
+	return o.Tags
 }
 
 // MeshTraceItemSpec - Spec is the specification of the Kuma MeshTrace resource.
@@ -836,18 +758,18 @@ type MeshTraceItemSpec struct {
 	TargetRef *MeshTraceItemTargetRef `json:"targetRef,omitempty"`
 }
 
-func (m *MeshTraceItemSpec) GetDefault() *MeshTraceItemDefault {
-	if m == nil {
+func (o *MeshTraceItemSpec) GetDefault() *MeshTraceItemDefault {
+	if o == nil {
 		return nil
 	}
-	return m.Default
+	return o.Default
 }
 
-func (m *MeshTraceItemSpec) GetTargetRef() *MeshTraceItemTargetRef {
-	if m == nil {
+func (o *MeshTraceItemSpec) GetTargetRef() *MeshTraceItemTargetRef {
+	if o == nil {
 		return nil
 	}
-	return m.TargetRef
+	return o.TargetRef
 }
 
 // MeshTraceItem - Successful response
@@ -875,66 +797,66 @@ func (m MeshTraceItem) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshTraceItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (m *MeshTraceItem) GetType() MeshTraceItemType {
-	if m == nil {
+func (o *MeshTraceItem) GetType() MeshTraceItemType {
+	if o == nil {
 		return MeshTraceItemType("")
 	}
-	return m.Type
+	return o.Type
 }
 
-func (m *MeshTraceItem) GetMesh() *string {
-	if m == nil {
+func (o *MeshTraceItem) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Mesh
+	return o.Mesh
 }
 
-func (m *MeshTraceItem) GetKri() *string {
-	if m == nil {
+func (o *MeshTraceItem) GetKri() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Kri
+	return o.Kri
 }
 
-func (m *MeshTraceItem) GetName() string {
-	if m == nil {
+func (o *MeshTraceItem) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshTraceItem) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshTraceItem) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshTraceItem) GetSpec() MeshTraceItemSpec {
-	if m == nil {
+func (o *MeshTraceItem) GetSpec() MeshTraceItemSpec {
+	if o == nil {
 		return MeshTraceItemSpec{}
 	}
-	return m.Spec
+	return o.Spec
 }
 
-func (m *MeshTraceItem) GetCreationTime() *time.Time {
-	if m == nil {
+func (o *MeshTraceItem) GetCreationTime() *time.Time {
+	if o == nil {
 		return nil
 	}
-	return m.CreationTime
+	return o.CreationTime
 }
 
-func (m *MeshTraceItem) GetModificationTime() *time.Time {
-	if m == nil {
+func (o *MeshTraceItem) GetModificationTime() *time.Time {
+	if o == nil {
 		return nil
 	}
-	return m.ModificationTime
+	return o.ModificationTime
 }
 
 // MeshTraceItemInput - Successful response
@@ -956,43 +878,43 @@ func (m MeshTraceItemInput) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshTraceItemInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (m *MeshTraceItemInput) GetType() MeshTraceItemType {
-	if m == nil {
+func (o *MeshTraceItemInput) GetType() MeshTraceItemType {
+	if o == nil {
 		return MeshTraceItemType("")
 	}
-	return m.Type
+	return o.Type
 }
 
-func (m *MeshTraceItemInput) GetMesh() *string {
-	if m == nil {
+func (o *MeshTraceItemInput) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Mesh
+	return o.Mesh
 }
 
-func (m *MeshTraceItemInput) GetName() string {
-	if m == nil {
+func (o *MeshTraceItemInput) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshTraceItemInput) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshTraceItemInput) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshTraceItemInput) GetSpec() MeshTraceItemSpec {
-	if m == nil {
+func (o *MeshTraceItemInput) GetSpec() MeshTraceItemSpec {
+	if o == nil {
 		return MeshTraceItemSpec{}
 	}
-	return m.Spec
+	return o.Spec
 }

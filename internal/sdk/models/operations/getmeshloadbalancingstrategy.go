@@ -16,25 +16,25 @@ type GetMeshLoadBalancingStrategyRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (g *GetMeshLoadBalancingStrategyRequest) GetCpID() string {
-	if g == nil {
+func (o *GetMeshLoadBalancingStrategyRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return g.CpID
+	return o.CpID
 }
 
-func (g *GetMeshLoadBalancingStrategyRequest) GetMesh() string {
-	if g == nil {
+func (o *GetMeshLoadBalancingStrategyRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return g.Mesh
+	return o.Mesh
 }
 
-func (g *GetMeshLoadBalancingStrategyRequest) GetName() string {
-	if g == nil {
+func (o *GetMeshLoadBalancingStrategyRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return g.Name
+	return o.Name
 }
 
 type GetMeshLoadBalancingStrategyResponse struct {
@@ -50,37 +50,37 @@ type GetMeshLoadBalancingStrategyResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (g *GetMeshLoadBalancingStrategyResponse) GetContentType() string {
-	if g == nil {
+func (o *GetMeshLoadBalancingStrategyResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetMeshLoadBalancingStrategyResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetMeshLoadBalancingStrategyResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetMeshLoadBalancingStrategyResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetMeshLoadBalancingStrategyResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetMeshLoadBalancingStrategyResponse) GetMeshLoadBalancingStrategyItem() *shared.MeshLoadBalancingStrategyItem {
-	if g == nil {
+func (o *GetMeshLoadBalancingStrategyResponse) GetMeshLoadBalancingStrategyItem() *shared.MeshLoadBalancingStrategyItem {
+	if o == nil {
 		return nil
 	}
-	return g.MeshLoadBalancingStrategyItem
+	return o.MeshLoadBalancingStrategyItem
 }
 
-func (g *GetMeshLoadBalancingStrategyResponse) GetNotFoundError() *shared.NotFoundError {
-	if g == nil {
+func (o *GetMeshLoadBalancingStrategyResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return g.NotFoundError
+	return o.NotFoundError
 }

@@ -10,9 +10,9 @@ type MeshRetryCreateOrUpdateSuccessResponse struct {
 	Warnings []string `json:"warnings,omitempty"`
 }
 
-func (m *MeshRetryCreateOrUpdateSuccessResponse) GetWarnings() []string {
-	if m == nil {
+func (o *MeshRetryCreateOrUpdateSuccessResponse) GetWarnings() []string {
+	if o == nil {
 		return nil
 	}
-	return m.Warnings
+	return o.Warnings
 }

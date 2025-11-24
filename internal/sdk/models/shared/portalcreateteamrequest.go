@@ -17,22 +17,22 @@ func (p PortalCreateTeamRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PortalCreateTeamRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *PortalCreateTeamRequest) GetName() string {
-	if p == nil {
+func (o *PortalCreateTeamRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return p.Name
+	return o.Name
 }
 
-func (p *PortalCreateTeamRequest) GetDescription() *string {
-	if p == nil {
+func (o *PortalCreateTeamRequest) GetDescription() *string {
+	if o == nil {
 		return nil
 	}
-	return p.Description
+	return o.Description
 }

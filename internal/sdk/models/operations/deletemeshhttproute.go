@@ -16,25 +16,25 @@ type DeleteMeshHTTPRouteRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (d *DeleteMeshHTTPRouteRequest) GetCpID() string {
-	if d == nil {
+func (o *DeleteMeshHTTPRouteRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return d.CpID
+	return o.CpID
 }
 
-func (d *DeleteMeshHTTPRouteRequest) GetMesh() string {
-	if d == nil {
+func (o *DeleteMeshHTTPRouteRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return d.Mesh
+	return o.Mesh
 }
 
-func (d *DeleteMeshHTTPRouteRequest) GetName() string {
-	if d == nil {
+func (o *DeleteMeshHTTPRouteRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return d.Name
+	return o.Name
 }
 
 type DeleteMeshHTTPRouteResponse struct {
@@ -50,37 +50,37 @@ type DeleteMeshHTTPRouteResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeleteMeshHTTPRouteResponse) GetContentType() string {
-	if d == nil {
+func (o *DeleteMeshHTTPRouteResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeleteMeshHTTPRouteResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeleteMeshHTTPRouteResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeleteMeshHTTPRouteResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeleteMeshHTTPRouteResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeleteMeshHTTPRouteResponse) GetMeshHTTPRouteDeleteSuccessResponse() *shared.MeshHTTPRouteDeleteSuccessResponse {
-	if d == nil {
+func (o *DeleteMeshHTTPRouteResponse) GetMeshHTTPRouteDeleteSuccessResponse() *shared.MeshHTTPRouteDeleteSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return d.MeshHTTPRouteDeleteSuccessResponse
+	return o.MeshHTTPRouteDeleteSuccessResponse
 }
 
-func (d *DeleteMeshHTTPRouteResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeleteMeshHTTPRouteResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

@@ -12,11 +12,11 @@ type GetPortalRequest struct {
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 }
 
-func (g *GetPortalRequest) GetPortalID() string {
-	if g == nil {
+func (o *GetPortalRequest) GetPortalID() string {
+	if o == nil {
 		return ""
 	}
-	return g.PortalID
+	return o.PortalID
 }
 
 type GetPortalResponse struct {
@@ -36,51 +36,51 @@ type GetPortalResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (g *GetPortalResponse) GetContentType() string {
-	if g == nil {
+func (o *GetPortalResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetPortalResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetPortalResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetPortalResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetPortalResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetPortalResponse) GetPortalResponse() *shared.PortalResponse {
-	if g == nil {
+func (o *GetPortalResponse) GetPortalResponse() *shared.PortalResponse {
+	if o == nil {
 		return nil
 	}
-	return g.PortalResponse
+	return o.PortalResponse
 }
 
-func (g *GetPortalResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if g == nil {
+func (o *GetPortalResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return g.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (g *GetPortalResponse) GetForbiddenError() *shared.ForbiddenError {
-	if g == nil {
+func (o *GetPortalResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return g.ForbiddenError
+	return o.ForbiddenError
 }
 
-func (g *GetPortalResponse) GetNotFoundError() *shared.NotFoundError {
-	if g == nil {
+func (o *GetPortalResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return g.NotFoundError
+	return o.NotFoundError
 }

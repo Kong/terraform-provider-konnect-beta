@@ -16,25 +16,25 @@ type DeleteMeshTrafficPermissionRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (d *DeleteMeshTrafficPermissionRequest) GetCpID() string {
-	if d == nil {
+func (o *DeleteMeshTrafficPermissionRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return d.CpID
+	return o.CpID
 }
 
-func (d *DeleteMeshTrafficPermissionRequest) GetMesh() string {
-	if d == nil {
+func (o *DeleteMeshTrafficPermissionRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return d.Mesh
+	return o.Mesh
 }
 
-func (d *DeleteMeshTrafficPermissionRequest) GetName() string {
-	if d == nil {
+func (o *DeleteMeshTrafficPermissionRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return d.Name
+	return o.Name
 }
 
 type DeleteMeshTrafficPermissionResponse struct {
@@ -50,37 +50,37 @@ type DeleteMeshTrafficPermissionResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeleteMeshTrafficPermissionResponse) GetContentType() string {
-	if d == nil {
+func (o *DeleteMeshTrafficPermissionResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeleteMeshTrafficPermissionResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeleteMeshTrafficPermissionResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeleteMeshTrafficPermissionResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeleteMeshTrafficPermissionResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeleteMeshTrafficPermissionResponse) GetMeshTrafficPermissionDeleteSuccessResponse() *shared.MeshTrafficPermissionDeleteSuccessResponse {
-	if d == nil {
+func (o *DeleteMeshTrafficPermissionResponse) GetMeshTrafficPermissionDeleteSuccessResponse() *shared.MeshTrafficPermissionDeleteSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return d.MeshTrafficPermissionDeleteSuccessResponse
+	return o.MeshTrafficPermissionDeleteSuccessResponse
 }
 
-func (d *DeleteMeshTrafficPermissionResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeleteMeshTrafficPermissionResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

@@ -10,9 +10,9 @@ type MeshHTTPRouteCreateOrUpdateSuccessResponse struct {
 	Warnings []string `json:"warnings,omitempty"`
 }
 
-func (m *MeshHTTPRouteCreateOrUpdateSuccessResponse) GetWarnings() []string {
-	if m == nil {
+func (o *MeshHTTPRouteCreateOrUpdateSuccessResponse) GetWarnings() []string {
+	if o == nil {
 		return nil
 	}
-	return m.Warnings
+	return o.Warnings
 }

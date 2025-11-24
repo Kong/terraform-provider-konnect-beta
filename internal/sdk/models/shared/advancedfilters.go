@@ -5,7 +5,6 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
 type Field string
@@ -123,34 +122,23 @@ type AdvancedFilters struct {
 	Value    any      `json:"value,omitempty"`
 }
 
-func (a AdvancedFilters) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AdvancedFilters) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"field", "operator"}); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *AdvancedFilters) GetField() Field {
-	if a == nil {
+func (o *AdvancedFilters) GetField() Field {
+	if o == nil {
 		return Field("")
 	}
-	return a.Field
+	return o.Field
 }
 
-func (a *AdvancedFilters) GetOperator() Operator {
-	if a == nil {
+func (o *AdvancedFilters) GetOperator() Operator {
+	if o == nil {
 		return Operator("")
 	}
-	return a.Operator
+	return o.Operator
 }
 
-func (a *AdvancedFilters) GetValue() any {
-	if a == nil {
+func (o *AdvancedFilters) GetValue() any {
+	if o == nil {
 		return nil
 	}
-	return a.Value
+	return o.Value
 }

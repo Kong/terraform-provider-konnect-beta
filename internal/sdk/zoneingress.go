@@ -62,7 +62,7 @@ func (s *ZoneIngress) GetZoneIngress(ctx context.Context, request operations.Get
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "getZoneIngress",
-		OAuth2Scopes:     nil,
+		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -292,7 +292,7 @@ func (s *ZoneIngress) PutZoneIngress(ctx context.Context, request operations.Put
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "putZoneIngress",
-		OAuth2Scopes:     nil,
+		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ZoneIngressItem", "json", `request:"mediaType=application/json"`)
@@ -506,7 +506,7 @@ func (s *ZoneIngress) DeleteZoneIngress(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "deleteZoneIngress",
-		OAuth2Scopes:     nil,
+		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -736,7 +736,7 @@ func (s *ZoneIngress) GetZoneIngressList(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "getZoneIngressList",
-		OAuth2Scopes:     nil,
+		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

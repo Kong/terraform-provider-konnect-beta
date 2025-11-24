@@ -19,44 +19,44 @@ type CreatePortalSnippetRequest struct {
 	Description *string          `json:"description,omitempty"`
 }
 
-func (c *CreatePortalSnippetRequest) GetName() string {
-	if c == nil {
+func (o *CreatePortalSnippetRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return c.Name
+	return o.Name
 }
 
-func (c *CreatePortalSnippetRequest) GetTitle() *string {
-	if c == nil {
+func (o *CreatePortalSnippetRequest) GetTitle() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Title
+	return o.Title
 }
 
-func (c *CreatePortalSnippetRequest) GetContent() string {
-	if c == nil {
+func (o *CreatePortalSnippetRequest) GetContent() string {
+	if o == nil {
 		return ""
 	}
-	return c.Content
+	return o.Content
 }
 
-func (c *CreatePortalSnippetRequest) GetVisibility() *SnippetVisibilityStatus {
-	if c == nil {
+func (o *CreatePortalSnippetRequest) GetVisibility() *SnippetVisibilityStatus {
+	if o == nil {
 		return nil
 	}
-	return c.Visibility
+	return o.Visibility
 }
 
-func (c *CreatePortalSnippetRequest) GetStatus() *PublishedStatus {
-	if c == nil {
+func (o *CreatePortalSnippetRequest) GetStatus() *PublishedStatus {
+	if o == nil {
 		return nil
 	}
-	return c.Status
+	return o.Status
 }
 
-func (c *CreatePortalSnippetRequest) GetDescription() *string {
-	if c == nil {
+func (o *CreatePortalSnippetRequest) GetDescription() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Description
+	return o.Description
 }

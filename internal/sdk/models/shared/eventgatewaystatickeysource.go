@@ -16,12 +16,12 @@ func (e EventGatewayStaticKeySource) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayStaticKeySource) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (e *EventGatewayStaticKeySource) GetType() string {
+func (o *EventGatewayStaticKeySource) GetType() string {
 	return "static"
 }

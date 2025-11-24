@@ -20,30 +20,30 @@ type EventGatewayStaticKeyCreate struct {
 	Value string `json:"value"`
 }
 
-func (e *EventGatewayStaticKeyCreate) GetName() string {
-	if e == nil {
+func (o *EventGatewayStaticKeyCreate) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return e.Name
+	return o.Name
 }
 
-func (e *EventGatewayStaticKeyCreate) GetDescription() *string {
-	if e == nil {
+func (o *EventGatewayStaticKeyCreate) GetDescription() *string {
+	if o == nil {
 		return nil
 	}
-	return e.Description
+	return o.Description
 }
 
-func (e *EventGatewayStaticKeyCreate) GetLabels() map[string]*string {
-	if e == nil {
+func (o *EventGatewayStaticKeyCreate) GetLabels() map[string]*string {
+	if o == nil {
 		return nil
 	}
-	return e.Labels
+	return o.Labels
 }
 
-func (e *EventGatewayStaticKeyCreate) GetValue() string {
-	if e == nil {
+func (o *EventGatewayStaticKeyCreate) GetValue() string {
+	if o == nil {
 		return ""
 	}
-	return e.Value
+	return o.Value
 }

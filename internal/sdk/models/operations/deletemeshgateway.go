@@ -16,25 +16,25 @@ type DeleteMeshGatewayRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (d *DeleteMeshGatewayRequest) GetCpID() string {
-	if d == nil {
+func (o *DeleteMeshGatewayRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return d.CpID
+	return o.CpID
 }
 
-func (d *DeleteMeshGatewayRequest) GetMesh() string {
-	if d == nil {
+func (o *DeleteMeshGatewayRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return d.Mesh
+	return o.Mesh
 }
 
-func (d *DeleteMeshGatewayRequest) GetName() string {
-	if d == nil {
+func (o *DeleteMeshGatewayRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return d.Name
+	return o.Name
 }
 
 type DeleteMeshGatewayResponse struct {
@@ -50,37 +50,37 @@ type DeleteMeshGatewayResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeleteMeshGatewayResponse) GetContentType() string {
-	if d == nil {
+func (o *DeleteMeshGatewayResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeleteMeshGatewayResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeleteMeshGatewayResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeleteMeshGatewayResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeleteMeshGatewayResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeleteMeshGatewayResponse) GetMeshGatewayDeleteSuccessResponse() *shared.MeshGatewayDeleteSuccessResponse {
-	if d == nil {
+func (o *DeleteMeshGatewayResponse) GetMeshGatewayDeleteSuccessResponse() *shared.MeshGatewayDeleteSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return d.MeshGatewayDeleteSuccessResponse
+	return o.MeshGatewayDeleteSuccessResponse
 }
 
-func (d *DeleteMeshGatewayResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeleteMeshGatewayResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

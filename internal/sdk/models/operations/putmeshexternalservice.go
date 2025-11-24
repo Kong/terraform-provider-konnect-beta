@@ -18,32 +18,32 @@ type PutMeshExternalServiceRequest struct {
 	MeshExternalServiceItem shared.MeshExternalServiceItemInput `request:"mediaType=application/json"`
 }
 
-func (p *PutMeshExternalServiceRequest) GetCpID() string {
-	if p == nil {
+func (o *PutMeshExternalServiceRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return p.CpID
+	return o.CpID
 }
 
-func (p *PutMeshExternalServiceRequest) GetMesh() string {
-	if p == nil {
+func (o *PutMeshExternalServiceRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return p.Mesh
+	return o.Mesh
 }
 
-func (p *PutMeshExternalServiceRequest) GetName() string {
-	if p == nil {
+func (o *PutMeshExternalServiceRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return p.Name
+	return o.Name
 }
 
-func (p *PutMeshExternalServiceRequest) GetMeshExternalServiceItem() shared.MeshExternalServiceItemInput {
-	if p == nil {
+func (o *PutMeshExternalServiceRequest) GetMeshExternalServiceItem() shared.MeshExternalServiceItemInput {
+	if o == nil {
 		return shared.MeshExternalServiceItemInput{}
 	}
-	return p.MeshExternalServiceItem
+	return o.MeshExternalServiceItem
 }
 
 type PutMeshExternalServiceResponse struct {
@@ -57,30 +57,30 @@ type PutMeshExternalServiceResponse struct {
 	MeshExternalServiceCreateOrUpdateSuccessResponse *shared.MeshExternalServiceCreateOrUpdateSuccessResponse
 }
 
-func (p *PutMeshExternalServiceResponse) GetContentType() string {
-	if p == nil {
+func (o *PutMeshExternalServiceResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return p.ContentType
+	return o.ContentType
 }
 
-func (p *PutMeshExternalServiceResponse) GetStatusCode() int {
-	if p == nil {
+func (o *PutMeshExternalServiceResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return p.StatusCode
+	return o.StatusCode
 }
 
-func (p *PutMeshExternalServiceResponse) GetRawResponse() *http.Response {
-	if p == nil {
+func (o *PutMeshExternalServiceResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return p.RawResponse
+	return o.RawResponse
 }
 
-func (p *PutMeshExternalServiceResponse) GetMeshExternalServiceCreateOrUpdateSuccessResponse() *shared.MeshExternalServiceCreateOrUpdateSuccessResponse {
-	if p == nil {
+func (o *PutMeshExternalServiceResponse) GetMeshExternalServiceCreateOrUpdateSuccessResponse() *shared.MeshExternalServiceCreateOrUpdateSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return p.MeshExternalServiceCreateOrUpdateSuccessResponse
+	return o.MeshExternalServiceCreateOrUpdateSuccessResponse
 }

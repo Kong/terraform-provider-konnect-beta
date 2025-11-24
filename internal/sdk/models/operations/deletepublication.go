@@ -14,18 +14,18 @@ type DeletePublicationRequest struct {
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 }
 
-func (d *DeletePublicationRequest) GetAPIID() string {
-	if d == nil {
+func (o *DeletePublicationRequest) GetAPIID() string {
+	if o == nil {
 		return ""
 	}
-	return d.APIID
+	return o.APIID
 }
 
-func (d *DeletePublicationRequest) GetPortalID() string {
-	if d == nil {
+func (o *DeletePublicationRequest) GetPortalID() string {
+	if o == nil {
 		return ""
 	}
-	return d.PortalID
+	return o.PortalID
 }
 
 type DeletePublicationResponse struct {
@@ -43,44 +43,44 @@ type DeletePublicationResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeletePublicationResponse) GetContentType() string {
-	if d == nil {
+func (o *DeletePublicationResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeletePublicationResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeletePublicationResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeletePublicationResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeletePublicationResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeletePublicationResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if d == nil {
+func (o *DeletePublicationResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return d.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (d *DeletePublicationResponse) GetForbiddenError() *shared.ForbiddenError {
-	if d == nil {
+func (o *DeletePublicationResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return d.ForbiddenError
+	return o.ForbiddenError
 }
 
-func (d *DeletePublicationResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeletePublicationResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

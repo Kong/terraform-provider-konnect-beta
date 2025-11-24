@@ -16,25 +16,25 @@ type DeleteMeshFaultInjectionRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (d *DeleteMeshFaultInjectionRequest) GetCpID() string {
-	if d == nil {
+func (o *DeleteMeshFaultInjectionRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return d.CpID
+	return o.CpID
 }
 
-func (d *DeleteMeshFaultInjectionRequest) GetMesh() string {
-	if d == nil {
+func (o *DeleteMeshFaultInjectionRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return d.Mesh
+	return o.Mesh
 }
 
-func (d *DeleteMeshFaultInjectionRequest) GetName() string {
-	if d == nil {
+func (o *DeleteMeshFaultInjectionRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return d.Name
+	return o.Name
 }
 
 type DeleteMeshFaultInjectionResponse struct {
@@ -50,37 +50,37 @@ type DeleteMeshFaultInjectionResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeleteMeshFaultInjectionResponse) GetContentType() string {
-	if d == nil {
+func (o *DeleteMeshFaultInjectionResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeleteMeshFaultInjectionResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeleteMeshFaultInjectionResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeleteMeshFaultInjectionResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeleteMeshFaultInjectionResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeleteMeshFaultInjectionResponse) GetMeshFaultInjectionDeleteSuccessResponse() *shared.MeshFaultInjectionDeleteSuccessResponse {
-	if d == nil {
+func (o *DeleteMeshFaultInjectionResponse) GetMeshFaultInjectionDeleteSuccessResponse() *shared.MeshFaultInjectionDeleteSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return d.MeshFaultInjectionDeleteSuccessResponse
+	return o.MeshFaultInjectionDeleteSuccessResponse
 }
 
-func (d *DeleteMeshFaultInjectionResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeleteMeshFaultInjectionResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

@@ -11,23 +11,23 @@ type MeshOPAList struct {
 	Next *string `json:"next,omitempty"`
 }
 
-func (m *MeshOPAList) GetItems() []MeshOPAItem {
-	if m == nil {
+func (o *MeshOPAList) GetItems() []MeshOPAItem {
+	if o == nil {
 		return nil
 	}
-	return m.Items
+	return o.Items
 }
 
-func (m *MeshOPAList) GetTotal() *float64 {
-	if m == nil {
+func (o *MeshOPAList) GetTotal() *float64 {
+	if o == nil {
 		return nil
 	}
-	return m.Total
+	return o.Total
 }
 
-func (m *MeshOPAList) GetNext() *string {
-	if m == nil {
+func (o *MeshOPAList) GetNext() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Next
+	return o.Next
 }

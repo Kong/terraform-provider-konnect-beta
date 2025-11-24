@@ -30,57 +30,57 @@ func (e EventGatewayDataPlaneCertificate) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayDataPlaneCertificate) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"id", "certificate", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (e *EventGatewayDataPlaneCertificate) GetID() string {
-	if e == nil {
+func (o *EventGatewayDataPlaneCertificate) GetID() string {
+	if o == nil {
 		return ""
 	}
-	return e.ID
+	return o.ID
 }
 
-func (e *EventGatewayDataPlaneCertificate) GetCertificate() string {
-	if e == nil {
+func (o *EventGatewayDataPlaneCertificate) GetCertificate() string {
+	if o == nil {
 		return ""
 	}
-	return e.Certificate
+	return o.Certificate
 }
 
-func (e *EventGatewayDataPlaneCertificate) GetName() *string {
-	if e == nil {
+func (o *EventGatewayDataPlaneCertificate) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return e.Name
+	return o.Name
 }
 
-func (e *EventGatewayDataPlaneCertificate) GetDescription() *string {
-	if e == nil {
+func (o *EventGatewayDataPlaneCertificate) GetDescription() *string {
+	if o == nil {
 		return nil
 	}
-	return e.Description
+	return o.Description
 }
 
-func (e *EventGatewayDataPlaneCertificate) GetCreatedAt() time.Time {
-	if e == nil {
+func (o *EventGatewayDataPlaneCertificate) GetCreatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return e.CreatedAt
+	return o.CreatedAt
 }
 
-func (e *EventGatewayDataPlaneCertificate) GetUpdatedAt() time.Time {
-	if e == nil {
+func (o *EventGatewayDataPlaneCertificate) GetUpdatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return e.UpdatedAt
+	return o.UpdatedAt
 }
 
-func (e *EventGatewayDataPlaneCertificate) GetMetadata() *CertificateMetadata {
-	if e == nil {
+func (o *EventGatewayDataPlaneCertificate) GetMetadata() *CertificateMetadata {
+	if o == nil {
 		return nil
 	}
-	return e.Metadata
+	return o.Metadata
 }

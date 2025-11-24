@@ -17,8 +17,8 @@ const (
 )
 
 type VirtualClusterNamespaceIDSelector struct {
-	VirtualClusterNamespaceIDSelectorGlob      *VirtualClusterNamespaceIDSelectorGlob      `queryParam:"inline,name=VirtualClusterNamespaceIdSelector"`
-	VirtualClusterNamespaceIDSelectorExactList *VirtualClusterNamespaceIDSelectorExactList `queryParam:"inline,name=VirtualClusterNamespaceIdSelector"`
+	VirtualClusterNamespaceIDSelectorGlob      *VirtualClusterNamespaceIDSelectorGlob      `queryParam:"inline"`
+	VirtualClusterNamespaceIDSelectorExactList *VirtualClusterNamespaceIDSelectorExactList `queryParam:"inline"`
 
 	Type VirtualClusterNamespaceIDSelectorType
 }
@@ -55,7 +55,7 @@ func (u *VirtualClusterNamespaceIDSelector) UnmarshalJSON(data []byte) error {
 	switch dis.Type {
 	case "glob":
 		virtualClusterNamespaceIDSelectorGlob := new(VirtualClusterNamespaceIDSelectorGlob)
-		if err := utils.UnmarshalJSON(data, &virtualClusterNamespaceIDSelectorGlob, "", true, nil); err != nil {
+		if err := utils.UnmarshalJSON(data, &virtualClusterNamespaceIDSelectorGlob, "", true, false); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == glob) type VirtualClusterNamespaceIDSelectorGlob within VirtualClusterNamespaceIDSelector: %w", string(data), err)
 		}
 
@@ -64,7 +64,7 @@ func (u *VirtualClusterNamespaceIDSelector) UnmarshalJSON(data []byte) error {
 		return nil
 	case "exact_list":
 		virtualClusterNamespaceIDSelectorExactList := new(VirtualClusterNamespaceIDSelectorExactList)
-		if err := utils.UnmarshalJSON(data, &virtualClusterNamespaceIDSelectorExactList, "", true, nil); err != nil {
+		if err := utils.UnmarshalJSON(data, &virtualClusterNamespaceIDSelectorExactList, "", true, false); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == exact_list) type VirtualClusterNamespaceIDSelectorExactList within VirtualClusterNamespaceIDSelector: %w", string(data), err)
 		}
 

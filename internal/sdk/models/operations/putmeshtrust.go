@@ -18,32 +18,32 @@ type PutMeshTrustRequest struct {
 	MeshTrustItem shared.MeshTrustItemInput `request:"mediaType=application/json"`
 }
 
-func (p *PutMeshTrustRequest) GetCpID() string {
-	if p == nil {
+func (o *PutMeshTrustRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return p.CpID
+	return o.CpID
 }
 
-func (p *PutMeshTrustRequest) GetMesh() string {
-	if p == nil {
+func (o *PutMeshTrustRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return p.Mesh
+	return o.Mesh
 }
 
-func (p *PutMeshTrustRequest) GetName() string {
-	if p == nil {
+func (o *PutMeshTrustRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return p.Name
+	return o.Name
 }
 
-func (p *PutMeshTrustRequest) GetMeshTrustItem() shared.MeshTrustItemInput {
-	if p == nil {
+func (o *PutMeshTrustRequest) GetMeshTrustItem() shared.MeshTrustItemInput {
+	if o == nil {
 		return shared.MeshTrustItemInput{}
 	}
-	return p.MeshTrustItem
+	return o.MeshTrustItem
 }
 
 type PutMeshTrustResponse struct {
@@ -57,30 +57,30 @@ type PutMeshTrustResponse struct {
 	MeshTrustCreateOrUpdateSuccessResponse *shared.MeshTrustCreateOrUpdateSuccessResponse
 }
 
-func (p *PutMeshTrustResponse) GetContentType() string {
-	if p == nil {
+func (o *PutMeshTrustResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return p.ContentType
+	return o.ContentType
 }
 
-func (p *PutMeshTrustResponse) GetStatusCode() int {
-	if p == nil {
+func (o *PutMeshTrustResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return p.StatusCode
+	return o.StatusCode
 }
 
-func (p *PutMeshTrustResponse) GetRawResponse() *http.Response {
-	if p == nil {
+func (o *PutMeshTrustResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return p.RawResponse
+	return o.RawResponse
 }
 
-func (p *PutMeshTrustResponse) GetMeshTrustCreateOrUpdateSuccessResponse() *shared.MeshTrustCreateOrUpdateSuccessResponse {
-	if p == nil {
+func (o *PutMeshTrustResponse) GetMeshTrustCreateOrUpdateSuccessResponse() *shared.MeshTrustCreateOrUpdateSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return p.MeshTrustCreateOrUpdateSuccessResponse
+	return o.MeshTrustCreateOrUpdateSuccessResponse
 }

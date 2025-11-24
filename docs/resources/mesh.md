@@ -219,7 +219,6 @@ for each dataplane individually using Dataplane resource.
 - `skip_creating_initial_policies` (List of String) List of policies to skip creating by default when the mesh is created.
 e.g. TrafficPermission, MeshRetry, etc. An '*' can be used to skip all
 policies.
-Default: []
 - `tracing` (Attributes) Tracing settings.
 +optional (see [below for nested schema](#nestedatt--tracing))
 
@@ -643,7 +642,7 @@ Optional:
 
 - `ca_cert` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config--ca_cert))
 - `common_name` (String)
-- `dns_names` (List of String) Default: []
+- `dns_names` (List of String)
 - `issuer_ref` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config--issuer_ref))
 
 <a id="nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config--ca_cert"></a>
@@ -1221,20 +1220,6 @@ https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/zipkin.proto#
 
 Import is supported using the following syntax:
 
-In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
-
-```terraform
-import {
-  to = konnect_mesh.my_konnect_mesh
-  id = jsonencode({
-    cp_id = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
-    name = "..."
-  })
-}
-```
-
-The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
-
 ```shell
-terraform import konnect_mesh.my_konnect_mesh '{"cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b", "name": "..."}'
+terraform import konnect_mesh.my_konnect_mesh '{"cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b", "name": ""}'
 ```

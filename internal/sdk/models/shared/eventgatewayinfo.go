@@ -39,71 +39,71 @@ func (e EventGatewayInfo) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayInfo) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"id", "name", "created_at", "updated_at", "nodes_total", "virtual_clusters_total", "version"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (e *EventGatewayInfo) GetID() string {
-	if e == nil {
+func (o *EventGatewayInfo) GetID() string {
+	if o == nil {
 		return ""
 	}
-	return e.ID
+	return o.ID
 }
 
-func (e *EventGatewayInfo) GetName() string {
-	if e == nil {
+func (o *EventGatewayInfo) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return e.Name
+	return o.Name
 }
 
-func (e *EventGatewayInfo) GetDescription() *string {
-	if e == nil {
+func (o *EventGatewayInfo) GetDescription() *string {
+	if o == nil {
 		return nil
 	}
-	return e.Description
+	return o.Description
 }
 
-func (e *EventGatewayInfo) GetLabels() map[string]*string {
-	if e == nil {
+func (o *EventGatewayInfo) GetLabels() map[string]*string {
+	if o == nil {
 		return nil
 	}
-	return e.Labels
+	return o.Labels
 }
 
-func (e *EventGatewayInfo) GetCreatedAt() time.Time {
-	if e == nil {
+func (o *EventGatewayInfo) GetCreatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return e.CreatedAt
+	return o.CreatedAt
 }
 
-func (e *EventGatewayInfo) GetUpdatedAt() time.Time {
-	if e == nil {
+func (o *EventGatewayInfo) GetUpdatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return e.UpdatedAt
+	return o.UpdatedAt
 }
 
-func (e *EventGatewayInfo) GetNodesTotal() int64 {
-	if e == nil {
+func (o *EventGatewayInfo) GetNodesTotal() int64 {
+	if o == nil {
 		return 0
 	}
-	return e.NodesTotal
+	return o.NodesTotal
 }
 
-func (e *EventGatewayInfo) GetVirtualClustersTotal() int64 {
-	if e == nil {
+func (o *EventGatewayInfo) GetVirtualClustersTotal() int64 {
+	if o == nil {
 		return 0
 	}
-	return e.VirtualClustersTotal
+	return o.VirtualClustersTotal
 }
 
-func (e *EventGatewayInfo) GetVersion() string {
-	if e == nil {
+func (o *EventGatewayInfo) GetVersion() string {
+	if o == nil {
 		return ""
 	}
-	return e.Version
+	return o.Version
 }

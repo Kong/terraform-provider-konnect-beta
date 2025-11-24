@@ -20,29 +20,29 @@ func (s SecretList) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SecretList) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *SecretList) GetItems() []SecretItem {
-	if s == nil {
+func (o *SecretList) GetItems() []SecretItem {
+	if o == nil {
 		return nil
 	}
-	return s.Items
+	return o.Items
 }
 
-func (s *SecretList) GetTotal() *float64 {
-	if s == nil {
+func (o *SecretList) GetTotal() *float64 {
+	if o == nil {
 		return nil
 	}
-	return s.Total
+	return o.Total
 }
 
-func (s *SecretList) GetNext() *string {
-	if s == nil {
+func (o *SecretList) GetNext() *string {
+	if o == nil {
 		return nil
 	}
-	return s.Next
+	return o.Next
 }

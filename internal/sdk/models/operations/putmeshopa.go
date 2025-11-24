@@ -18,32 +18,32 @@ type PutMeshOPARequest struct {
 	MeshOPAItem shared.MeshOPAItemInput `request:"mediaType=application/json"`
 }
 
-func (p *PutMeshOPARequest) GetCpID() string {
-	if p == nil {
+func (o *PutMeshOPARequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return p.CpID
+	return o.CpID
 }
 
-func (p *PutMeshOPARequest) GetMesh() string {
-	if p == nil {
+func (o *PutMeshOPARequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return p.Mesh
+	return o.Mesh
 }
 
-func (p *PutMeshOPARequest) GetName() string {
-	if p == nil {
+func (o *PutMeshOPARequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return p.Name
+	return o.Name
 }
 
-func (p *PutMeshOPARequest) GetMeshOPAItem() shared.MeshOPAItemInput {
-	if p == nil {
+func (o *PutMeshOPARequest) GetMeshOPAItem() shared.MeshOPAItemInput {
+	if o == nil {
 		return shared.MeshOPAItemInput{}
 	}
-	return p.MeshOPAItem
+	return o.MeshOPAItem
 }
 
 type PutMeshOPAResponse struct {
@@ -57,30 +57,30 @@ type PutMeshOPAResponse struct {
 	MeshOPACreateOrUpdateSuccessResponse *shared.MeshOPACreateOrUpdateSuccessResponse
 }
 
-func (p *PutMeshOPAResponse) GetContentType() string {
-	if p == nil {
+func (o *PutMeshOPAResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return p.ContentType
+	return o.ContentType
 }
 
-func (p *PutMeshOPAResponse) GetStatusCode() int {
-	if p == nil {
+func (o *PutMeshOPAResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return p.StatusCode
+	return o.StatusCode
 }
 
-func (p *PutMeshOPAResponse) GetRawResponse() *http.Response {
-	if p == nil {
+func (o *PutMeshOPAResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return p.RawResponse
+	return o.RawResponse
 }
 
-func (p *PutMeshOPAResponse) GetMeshOPACreateOrUpdateSuccessResponse() *shared.MeshOPACreateOrUpdateSuccessResponse {
-	if p == nil {
+func (o *PutMeshOPAResponse) GetMeshOPACreateOrUpdateSuccessResponse() *shared.MeshOPACreateOrUpdateSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return p.MeshOPACreateOrUpdateSuccessResponse
+	return o.MeshOPACreateOrUpdateSuccessResponse
 }

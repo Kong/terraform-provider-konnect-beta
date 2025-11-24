@@ -16,25 +16,25 @@ type GetMeshPassthroughRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (g *GetMeshPassthroughRequest) GetCpID() string {
-	if g == nil {
+func (o *GetMeshPassthroughRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return g.CpID
+	return o.CpID
 }
 
-func (g *GetMeshPassthroughRequest) GetMesh() string {
-	if g == nil {
+func (o *GetMeshPassthroughRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return g.Mesh
+	return o.Mesh
 }
 
-func (g *GetMeshPassthroughRequest) GetName() string {
-	if g == nil {
+func (o *GetMeshPassthroughRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return g.Name
+	return o.Name
 }
 
 type GetMeshPassthroughResponse struct {
@@ -50,37 +50,37 @@ type GetMeshPassthroughResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (g *GetMeshPassthroughResponse) GetContentType() string {
-	if g == nil {
+func (o *GetMeshPassthroughResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetMeshPassthroughResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetMeshPassthroughResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetMeshPassthroughResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetMeshPassthroughResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetMeshPassthroughResponse) GetMeshPassthroughItem() *shared.MeshPassthroughItem {
-	if g == nil {
+func (o *GetMeshPassthroughResponse) GetMeshPassthroughItem() *shared.MeshPassthroughItem {
+	if o == nil {
 		return nil
 	}
-	return g.MeshPassthroughItem
+	return o.MeshPassthroughItem
 }
 
-func (g *GetMeshPassthroughResponse) GetNotFoundError() *shared.NotFoundError {
-	if g == nil {
+func (o *GetMeshPassthroughResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return g.NotFoundError
+	return o.NotFoundError
 }

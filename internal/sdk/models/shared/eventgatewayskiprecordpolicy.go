@@ -33,47 +33,47 @@ func (e EventGatewaySkipRecordPolicy) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewaySkipRecordPolicy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (e *EventGatewaySkipRecordPolicy) GetType() string {
+func (o *EventGatewaySkipRecordPolicy) GetType() string {
 	return "skip_record"
 }
 
-func (e *EventGatewaySkipRecordPolicy) GetName() *string {
-	if e == nil {
+func (o *EventGatewaySkipRecordPolicy) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return e.Name
+	return o.Name
 }
 
-func (e *EventGatewaySkipRecordPolicy) GetDescription() *string {
-	if e == nil {
+func (o *EventGatewaySkipRecordPolicy) GetDescription() *string {
+	if o == nil {
 		return nil
 	}
-	return e.Description
+	return o.Description
 }
 
-func (e *EventGatewaySkipRecordPolicy) GetEnabled() *bool {
-	if e == nil {
+func (o *EventGatewaySkipRecordPolicy) GetEnabled() *bool {
+	if o == nil {
 		return nil
 	}
-	return e.Enabled
+	return o.Enabled
 }
 
-func (e *EventGatewaySkipRecordPolicy) GetCondition() *string {
-	if e == nil {
+func (o *EventGatewaySkipRecordPolicy) GetCondition() *string {
+	if o == nil {
 		return nil
 	}
-	return e.Condition
+	return o.Condition
 }
 
-func (e *EventGatewaySkipRecordPolicy) GetLabels() map[string]*string {
-	if e == nil {
+func (o *EventGatewaySkipRecordPolicy) GetLabels() map[string]*string {
+	if o == nil {
 		return nil
 	}
-	return e.Labels
+	return o.Labels
 }

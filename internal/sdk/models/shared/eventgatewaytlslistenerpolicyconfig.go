@@ -20,29 +20,29 @@ func (e EventGatewayTLSListenerPolicyConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayTLSListenerPolicyConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"certificates"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (e *EventGatewayTLSListenerPolicyConfig) GetCertificates() []TLSCertificate {
-	if e == nil {
+func (o *EventGatewayTLSListenerPolicyConfig) GetCertificates() []TLSCertificate {
+	if o == nil {
 		return []TLSCertificate{}
 	}
-	return e.Certificates
+	return o.Certificates
 }
 
-func (e *EventGatewayTLSListenerPolicyConfig) GetVersions() *TLSVersionRange {
-	if e == nil {
+func (o *EventGatewayTLSListenerPolicyConfig) GetVersions() *TLSVersionRange {
+	if o == nil {
 		return nil
 	}
-	return e.Versions
+	return o.Versions
 }
 
-func (e *EventGatewayTLSListenerPolicyConfig) GetAllowPlaintext() *bool {
-	if e == nil {
+func (o *EventGatewayTLSListenerPolicyConfig) GetAllowPlaintext() *bool {
+	if o == nil {
 		return nil
 	}
-	return e.AllowPlaintext
+	return o.AllowPlaintext
 }

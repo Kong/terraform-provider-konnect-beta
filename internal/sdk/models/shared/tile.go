@@ -16,7 +16,7 @@ const (
 )
 
 type Tile struct {
-	ChartTile *ChartTile `queryParam:"inline,name=Tile"`
+	ChartTile *ChartTile `queryParam:"inline"`
 
 	Type TileType
 }
@@ -47,7 +47,7 @@ func (u *Tile) UnmarshalJSON(data []byte) error {
 	switch dis.Type {
 	case "chart":
 		chartTile := new(ChartTile)
-		if err := utils.UnmarshalJSON(data, &chartTile, "", true, nil); err != nil {
+		if err := utils.UnmarshalJSON(data, &chartTile, "", true, false); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == chart) type ChartTile within Tile: %w", string(data), err)
 		}
 

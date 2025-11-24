@@ -16,25 +16,25 @@ type DeleteMeshCircuitBreakerRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (d *DeleteMeshCircuitBreakerRequest) GetCpID() string {
-	if d == nil {
+func (o *DeleteMeshCircuitBreakerRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return d.CpID
+	return o.CpID
 }
 
-func (d *DeleteMeshCircuitBreakerRequest) GetMesh() string {
-	if d == nil {
+func (o *DeleteMeshCircuitBreakerRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return d.Mesh
+	return o.Mesh
 }
 
-func (d *DeleteMeshCircuitBreakerRequest) GetName() string {
-	if d == nil {
+func (o *DeleteMeshCircuitBreakerRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return d.Name
+	return o.Name
 }
 
 type DeleteMeshCircuitBreakerResponse struct {
@@ -50,37 +50,37 @@ type DeleteMeshCircuitBreakerResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeleteMeshCircuitBreakerResponse) GetContentType() string {
-	if d == nil {
+func (o *DeleteMeshCircuitBreakerResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeleteMeshCircuitBreakerResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeleteMeshCircuitBreakerResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeleteMeshCircuitBreakerResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeleteMeshCircuitBreakerResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeleteMeshCircuitBreakerResponse) GetMeshCircuitBreakerDeleteSuccessResponse() *shared.MeshCircuitBreakerDeleteSuccessResponse {
-	if d == nil {
+func (o *DeleteMeshCircuitBreakerResponse) GetMeshCircuitBreakerDeleteSuccessResponse() *shared.MeshCircuitBreakerDeleteSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return d.MeshCircuitBreakerDeleteSuccessResponse
+	return o.MeshCircuitBreakerDeleteSuccessResponse
 }
 
-func (d *DeleteMeshCircuitBreakerResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeleteMeshCircuitBreakerResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

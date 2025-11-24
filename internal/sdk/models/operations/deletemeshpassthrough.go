@@ -16,25 +16,25 @@ type DeleteMeshPassthroughRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (d *DeleteMeshPassthroughRequest) GetCpID() string {
-	if d == nil {
+func (o *DeleteMeshPassthroughRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return d.CpID
+	return o.CpID
 }
 
-func (d *DeleteMeshPassthroughRequest) GetMesh() string {
-	if d == nil {
+func (o *DeleteMeshPassthroughRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return d.Mesh
+	return o.Mesh
 }
 
-func (d *DeleteMeshPassthroughRequest) GetName() string {
-	if d == nil {
+func (o *DeleteMeshPassthroughRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return d.Name
+	return o.Name
 }
 
 type DeleteMeshPassthroughResponse struct {
@@ -50,37 +50,37 @@ type DeleteMeshPassthroughResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeleteMeshPassthroughResponse) GetContentType() string {
-	if d == nil {
+func (o *DeleteMeshPassthroughResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeleteMeshPassthroughResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeleteMeshPassthroughResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeleteMeshPassthroughResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeleteMeshPassthroughResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeleteMeshPassthroughResponse) GetMeshPassthroughDeleteSuccessResponse() *shared.MeshPassthroughDeleteSuccessResponse {
-	if d == nil {
+func (o *DeleteMeshPassthroughResponse) GetMeshPassthroughDeleteSuccessResponse() *shared.MeshPassthroughDeleteSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return d.MeshPassthroughDeleteSuccessResponse
+	return o.MeshPassthroughDeleteSuccessResponse
 }
 
-func (d *DeleteMeshPassthroughResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeleteMeshPassthroughResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

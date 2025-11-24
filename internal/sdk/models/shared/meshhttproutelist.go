@@ -11,23 +11,23 @@ type MeshHTTPRouteList struct {
 	Next *string `json:"next,omitempty"`
 }
 
-func (m *MeshHTTPRouteList) GetItems() []MeshHTTPRouteItem {
-	if m == nil {
+func (o *MeshHTTPRouteList) GetItems() []MeshHTTPRouteItem {
+	if o == nil {
 		return nil
 	}
-	return m.Items
+	return o.Items
 }
 
-func (m *MeshHTTPRouteList) GetTotal() *float64 {
-	if m == nil {
+func (o *MeshHTTPRouteList) GetTotal() *float64 {
+	if o == nil {
 		return nil
 	}
-	return m.Total
+	return o.Total
 }
 
-func (m *MeshHTTPRouteList) GetNext() *string {
-	if m == nil {
+func (o *MeshHTTPRouteList) GetNext() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Next
+	return o.Next
 }

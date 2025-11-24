@@ -14,18 +14,18 @@ type GetMeshProxyPatchListQueryParamFilter struct {
 	Value *string `queryParam:"name=value"`
 }
 
-func (g *GetMeshProxyPatchListQueryParamFilter) GetKey() *string {
-	if g == nil {
+func (o *GetMeshProxyPatchListQueryParamFilter) GetKey() *string {
+	if o == nil {
 		return nil
 	}
-	return g.Key
+	return o.Key
 }
 
-func (g *GetMeshProxyPatchListQueryParamFilter) GetValue() *string {
-	if g == nil {
+func (o *GetMeshProxyPatchListQueryParamFilter) GetValue() *string {
+	if o == nil {
 		return nil
 	}
-	return g.Value
+	return o.Value
 }
 
 type GetMeshProxyPatchListRequest struct {
@@ -46,45 +46,45 @@ func (g GetMeshProxyPatchListRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetMeshProxyPatchListRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"cpId", "mesh"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (g *GetMeshProxyPatchListRequest) GetCpID() string {
-	if g == nil {
+func (o *GetMeshProxyPatchListRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return g.CpID
+	return o.CpID
 }
 
-func (g *GetMeshProxyPatchListRequest) GetOffset() *int64 {
-	if g == nil {
+func (o *GetMeshProxyPatchListRequest) GetOffset() *int64 {
+	if o == nil {
 		return nil
 	}
-	return g.Offset
+	return o.Offset
 }
 
-func (g *GetMeshProxyPatchListRequest) GetSize() *int64 {
-	if g == nil {
+func (o *GetMeshProxyPatchListRequest) GetSize() *int64 {
+	if o == nil {
 		return nil
 	}
-	return g.Size
+	return o.Size
 }
 
-func (g *GetMeshProxyPatchListRequest) GetFilter() *GetMeshProxyPatchListQueryParamFilter {
-	if g == nil {
+func (o *GetMeshProxyPatchListRequest) GetFilter() *GetMeshProxyPatchListQueryParamFilter {
+	if o == nil {
 		return nil
 	}
-	return g.Filter
+	return o.Filter
 }
 
-func (g *GetMeshProxyPatchListRequest) GetMesh() string {
-	if g == nil {
+func (o *GetMeshProxyPatchListRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return g.Mesh
+	return o.Mesh
 }
 
 type GetMeshProxyPatchListResponse struct {
@@ -98,30 +98,30 @@ type GetMeshProxyPatchListResponse struct {
 	MeshProxyPatchList *shared.MeshProxyPatchList
 }
 
-func (g *GetMeshProxyPatchListResponse) GetContentType() string {
-	if g == nil {
+func (o *GetMeshProxyPatchListResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetMeshProxyPatchListResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetMeshProxyPatchListResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetMeshProxyPatchListResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetMeshProxyPatchListResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetMeshProxyPatchListResponse) GetMeshProxyPatchList() *shared.MeshProxyPatchList {
-	if g == nil {
+func (o *GetMeshProxyPatchListResponse) GetMeshProxyPatchList() *shared.MeshProxyPatchList {
+	if o == nil {
 		return nil
 	}
-	return g.MeshProxyPatchList
+	return o.MeshProxyPatchList
 }

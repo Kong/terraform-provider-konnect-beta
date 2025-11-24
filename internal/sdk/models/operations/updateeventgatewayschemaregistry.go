@@ -16,29 +16,29 @@ type UpdateEventGatewaySchemaRegistryRequest struct {
 	SchemaRegistryUpdate *shared.SchemaRegistryUpdate `request:"mediaType=application/json"`
 }
 
-func (u *UpdateEventGatewaySchemaRegistryRequest) GetGatewayID() string {
-	if u == nil {
+func (o *UpdateEventGatewaySchemaRegistryRequest) GetGatewayID() string {
+	if o == nil {
 		return ""
 	}
-	return u.GatewayID
+	return o.GatewayID
 }
 
-func (u *UpdateEventGatewaySchemaRegistryRequest) GetSchemaRegistryID() string {
-	if u == nil {
+func (o *UpdateEventGatewaySchemaRegistryRequest) GetSchemaRegistryID() string {
+	if o == nil {
 		return ""
 	}
-	return u.SchemaRegistryID
+	return o.SchemaRegistryID
 }
 
-func (u *UpdateEventGatewaySchemaRegistryRequest) GetSchemaRegistryUpdate() *shared.SchemaRegistryUpdate {
-	if u == nil {
+func (o *UpdateEventGatewaySchemaRegistryRequest) GetSchemaRegistryUpdate() *shared.SchemaRegistryUpdate {
+	if o == nil {
 		return nil
 	}
-	return u.SchemaRegistryUpdate
+	return o.SchemaRegistryUpdate
 }
 
-func (u *UpdateEventGatewaySchemaRegistryRequest) GetSchemaRegistryUpdateConfluent() *shared.SchemaRegistryConfluentSensitiveDataAware {
-	if v := u.GetSchemaRegistryUpdate(); v != nil {
+func (o *UpdateEventGatewaySchemaRegistryRequest) GetSchemaRegistryUpdateConfluent() *shared.SchemaRegistryConfluentSensitiveDataAware {
+	if v := o.GetSchemaRegistryUpdate(); v != nil {
 		return v.SchemaRegistryConfluentSensitiveDataAware
 	}
 	return nil
@@ -61,51 +61,51 @@ type UpdateEventGatewaySchemaRegistryResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (u *UpdateEventGatewaySchemaRegistryResponse) GetContentType() string {
-	if u == nil {
+func (o *UpdateEventGatewaySchemaRegistryResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return u.ContentType
+	return o.ContentType
 }
 
-func (u *UpdateEventGatewaySchemaRegistryResponse) GetStatusCode() int {
-	if u == nil {
+func (o *UpdateEventGatewaySchemaRegistryResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return u.StatusCode
+	return o.StatusCode
 }
 
-func (u *UpdateEventGatewaySchemaRegistryResponse) GetRawResponse() *http.Response {
-	if u == nil {
+func (o *UpdateEventGatewaySchemaRegistryResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return u.RawResponse
+	return o.RawResponse
 }
 
-func (u *UpdateEventGatewaySchemaRegistryResponse) GetSchemaRegistry() *shared.SchemaRegistry {
-	if u == nil {
+func (o *UpdateEventGatewaySchemaRegistryResponse) GetSchemaRegistry() *shared.SchemaRegistry {
+	if o == nil {
 		return nil
 	}
-	return u.SchemaRegistry
+	return o.SchemaRegistry
 }
 
-func (u *UpdateEventGatewaySchemaRegistryResponse) GetBadRequestError() *shared.BadRequestError {
-	if u == nil {
+func (o *UpdateEventGatewaySchemaRegistryResponse) GetBadRequestError() *shared.BadRequestError {
+	if o == nil {
 		return nil
 	}
-	return u.BadRequestError
+	return o.BadRequestError
 }
 
-func (u *UpdateEventGatewaySchemaRegistryResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if u == nil {
+func (o *UpdateEventGatewaySchemaRegistryResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return u.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (u *UpdateEventGatewaySchemaRegistryResponse) GetForbiddenError() *shared.ForbiddenError {
-	if u == nil {
+func (o *UpdateEventGatewaySchemaRegistryResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return u.ForbiddenError
+	return o.ForbiddenError
 }

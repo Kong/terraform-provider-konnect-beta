@@ -17,8 +17,8 @@ const (
 
 // SchemaRegistryReference - A reference to a schema Registry.
 type SchemaRegistryReference struct {
-	SchemaRegistryReferenceByID   *SchemaRegistryReferenceByID   `queryParam:"inline,name=SchemaRegistryReference"`
-	SchemaRegistryReferenceByName *SchemaRegistryReferenceByName `queryParam:"inline,name=SchemaRegistryReference"`
+	SchemaRegistryReferenceByID   *SchemaRegistryReferenceByID   `queryParam:"inline"`
+	SchemaRegistryReferenceByName *SchemaRegistryReferenceByName `queryParam:"inline"`
 
 	Type SchemaRegistryReferenceType
 }
@@ -43,43 +43,17 @@ func CreateSchemaRegistryReferenceSchemaRegistryReferenceByName(schemaRegistryRe
 
 func (u *SchemaRegistryReference) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var schemaRegistryReferenceByID SchemaRegistryReferenceByID = SchemaRegistryReferenceByID{}
-	if err := utils.UnmarshalJSON(data, &schemaRegistryReferenceByID, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  SchemaRegistryReferenceTypeSchemaRegistryReferenceByID,
-			Value: &schemaRegistryReferenceByID,
-		})
+	if err := utils.UnmarshalJSON(data, &schemaRegistryReferenceByID, "", true, true); err == nil {
+		u.SchemaRegistryReferenceByID = &schemaRegistryReferenceByID
+		u.Type = SchemaRegistryReferenceTypeSchemaRegistryReferenceByID
+		return nil
 	}
 
 	var schemaRegistryReferenceByName SchemaRegistryReferenceByName = SchemaRegistryReferenceByName{}
-	if err := utils.UnmarshalJSON(data, &schemaRegistryReferenceByName, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  SchemaRegistryReferenceTypeSchemaRegistryReferenceByName,
-			Value: &schemaRegistryReferenceByName,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for SchemaRegistryReference", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for SchemaRegistryReference", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(SchemaRegistryReferenceType)
-	switch best.Type {
-	case SchemaRegistryReferenceTypeSchemaRegistryReferenceByID:
-		u.SchemaRegistryReferenceByID = best.Value.(*SchemaRegistryReferenceByID)
-		return nil
-	case SchemaRegistryReferenceTypeSchemaRegistryReferenceByName:
-		u.SchemaRegistryReferenceByName = best.Value.(*SchemaRegistryReferenceByName)
+	if err := utils.UnmarshalJSON(data, &schemaRegistryReferenceByName, "", true, true); err == nil {
+		u.SchemaRegistryReferenceByName = &schemaRegistryReferenceByName
+		u.Type = SchemaRegistryReferenceTypeSchemaRegistryReferenceByName
 		return nil
 	}
 

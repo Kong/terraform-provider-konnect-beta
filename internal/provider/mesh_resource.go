@@ -741,7 +741,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 													Optional:    true,
 													Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 													ElementType: types.StringType,
-													Description: `Default: []`,
 												},
 												"issuer_ref": schema.SingleNestedAttribute{
 													Optional: true,
@@ -1473,8 +1472,7 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				ElementType: types.StringType,
 				MarkdownDescription: `List of policies to skip creating by default when the mesh is created.` + "\n" +
 					`e.g. TrafficPermission, MeshRetry, etc. An '*' can be used to skip all` + "\n" +
-					`policies.` + "\n" +
-					`Default: []`,
+					`policies.`,
 			},
 			"tracing": schema.SingleNestedAttribute{
 				Optional: true,
@@ -1916,7 +1914,7 @@ func (r *MeshResource) ImportState(ctx context.Context, req resource.ImportState
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b", "name": "..."}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"cp_id": "bf138ba2-c9b1-4229-b268-04d9d8a6410b", "name": ""}': `+err.Error())
 		return
 	}
 

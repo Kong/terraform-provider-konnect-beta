@@ -12,11 +12,11 @@ type FetchAPIRequest struct {
 	APIID string `pathParam:"style=simple,explode=false,name=apiId"`
 }
 
-func (f *FetchAPIRequest) GetAPIID() string {
-	if f == nil {
+func (o *FetchAPIRequest) GetAPIID() string {
+	if o == nil {
 		return ""
 	}
-	return f.APIID
+	return o.APIID
 }
 
 type FetchAPIResponse struct {
@@ -36,51 +36,51 @@ type FetchAPIResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (f *FetchAPIResponse) GetContentType() string {
-	if f == nil {
+func (o *FetchAPIResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return f.ContentType
+	return o.ContentType
 }
 
-func (f *FetchAPIResponse) GetStatusCode() int {
-	if f == nil {
+func (o *FetchAPIResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return f.StatusCode
+	return o.StatusCode
 }
 
-func (f *FetchAPIResponse) GetRawResponse() *http.Response {
-	if f == nil {
+func (o *FetchAPIResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return f.RawResponse
+	return o.RawResponse
 }
 
-func (f *FetchAPIResponse) GetAPIResponseSchema() *shared.APIResponseSchema {
-	if f == nil {
+func (o *FetchAPIResponse) GetAPIResponseSchema() *shared.APIResponseSchema {
+	if o == nil {
 		return nil
 	}
-	return f.APIResponseSchema
+	return o.APIResponseSchema
 }
 
-func (f *FetchAPIResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if f == nil {
+func (o *FetchAPIResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return f.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (f *FetchAPIResponse) GetForbiddenError() *shared.ForbiddenError {
-	if f == nil {
+func (o *FetchAPIResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return f.ForbiddenError
+	return o.ForbiddenError
 }
 
-func (f *FetchAPIResponse) GetNotFoundError() *shared.NotFoundError {
-	if f == nil {
+func (o *FetchAPIResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return f.NotFoundError
+	return o.NotFoundError
 }

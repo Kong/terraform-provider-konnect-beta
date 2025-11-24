@@ -18,32 +18,32 @@ type PutMeshTCPRouteRequest struct {
 	MeshTCPRouteItem shared.MeshTCPRouteItemInput `request:"mediaType=application/json"`
 }
 
-func (p *PutMeshTCPRouteRequest) GetCpID() string {
-	if p == nil {
+func (o *PutMeshTCPRouteRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return p.CpID
+	return o.CpID
 }
 
-func (p *PutMeshTCPRouteRequest) GetMesh() string {
-	if p == nil {
+func (o *PutMeshTCPRouteRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return p.Mesh
+	return o.Mesh
 }
 
-func (p *PutMeshTCPRouteRequest) GetName() string {
-	if p == nil {
+func (o *PutMeshTCPRouteRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return p.Name
+	return o.Name
 }
 
-func (p *PutMeshTCPRouteRequest) GetMeshTCPRouteItem() shared.MeshTCPRouteItemInput {
-	if p == nil {
+func (o *PutMeshTCPRouteRequest) GetMeshTCPRouteItem() shared.MeshTCPRouteItemInput {
+	if o == nil {
 		return shared.MeshTCPRouteItemInput{}
 	}
-	return p.MeshTCPRouteItem
+	return o.MeshTCPRouteItem
 }
 
 type PutMeshTCPRouteResponse struct {
@@ -57,30 +57,30 @@ type PutMeshTCPRouteResponse struct {
 	MeshTCPRouteCreateOrUpdateSuccessResponse *shared.MeshTCPRouteCreateOrUpdateSuccessResponse
 }
 
-func (p *PutMeshTCPRouteResponse) GetContentType() string {
-	if p == nil {
+func (o *PutMeshTCPRouteResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return p.ContentType
+	return o.ContentType
 }
 
-func (p *PutMeshTCPRouteResponse) GetStatusCode() int {
-	if p == nil {
+func (o *PutMeshTCPRouteResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return p.StatusCode
+	return o.StatusCode
 }
 
-func (p *PutMeshTCPRouteResponse) GetRawResponse() *http.Response {
-	if p == nil {
+func (o *PutMeshTCPRouteResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return p.RawResponse
+	return o.RawResponse
 }
 
-func (p *PutMeshTCPRouteResponse) GetMeshTCPRouteCreateOrUpdateSuccessResponse() *shared.MeshTCPRouteCreateOrUpdateSuccessResponse {
-	if p == nil {
+func (o *PutMeshTCPRouteResponse) GetMeshTCPRouteCreateOrUpdateSuccessResponse() *shared.MeshTCPRouteCreateOrUpdateSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return p.MeshTCPRouteCreateOrUpdateSuccessResponse
+	return o.MeshTCPRouteCreateOrUpdateSuccessResponse
 }

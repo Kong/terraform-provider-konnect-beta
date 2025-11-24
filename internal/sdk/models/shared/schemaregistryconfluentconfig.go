@@ -53,42 +53,42 @@ func (s SchemaRegistryConfluentConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SchemaRegistryConfluentConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"schema_type", "endpoint"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *SchemaRegistryConfluentConfig) GetSchemaType() SchemaType {
-	if s == nil {
+func (o *SchemaRegistryConfluentConfig) GetSchemaType() SchemaType {
+	if o == nil {
 		return SchemaType("")
 	}
-	return s.SchemaType
+	return o.SchemaType
 }
 
-func (s *SchemaRegistryConfluentConfig) GetEndpoint() string {
-	if s == nil {
+func (o *SchemaRegistryConfluentConfig) GetEndpoint() string {
+	if o == nil {
 		return ""
 	}
-	return s.Endpoint
+	return o.Endpoint
 }
 
-func (s *SchemaRegistryConfluentConfig) GetTimeoutSeconds() *int64 {
-	if s == nil {
+func (o *SchemaRegistryConfluentConfig) GetTimeoutSeconds() *int64 {
+	if o == nil {
 		return nil
 	}
-	return s.TimeoutSeconds
+	return o.TimeoutSeconds
 }
 
-func (s *SchemaRegistryConfluentConfig) GetAuthentication() *SchemaRegistryAuthenticationScheme {
-	if s == nil {
+func (o *SchemaRegistryConfluentConfig) GetAuthentication() *SchemaRegistryAuthenticationScheme {
+	if o == nil {
 		return nil
 	}
-	return s.Authentication
+	return o.Authentication
 }
 
-func (s *SchemaRegistryConfluentConfig) GetAuthenticationBasic() *SchemaRegistryAuthenticationBasic {
-	if v := s.GetAuthentication(); v != nil {
+func (o *SchemaRegistryConfluentConfig) GetAuthenticationBasic() *SchemaRegistryAuthenticationBasic {
+	if v := o.GetAuthentication(); v != nil {
 		return v.SchemaRegistryAuthenticationBasic
 	}
 	return nil

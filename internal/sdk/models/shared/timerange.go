@@ -18,8 +18,8 @@ const (
 
 // TimeRange - The time range to query.
 type TimeRange struct {
-	MetricsRelativeTimeRangeDtoV2 *MetricsRelativeTimeRangeDtoV2 `queryParam:"inline,name=TimeRange"`
-	MetricsAbsoluteTimeRangeDtoV2 *MetricsAbsoluteTimeRangeDtoV2 `queryParam:"inline,name=TimeRange"`
+	MetricsRelativeTimeRangeDtoV2 *MetricsRelativeTimeRangeDtoV2 `queryParam:"inline"`
+	MetricsAbsoluteTimeRangeDtoV2 *MetricsAbsoluteTimeRangeDtoV2 `queryParam:"inline"`
 
 	Type TimeRangeType
 }
@@ -62,7 +62,7 @@ func (u *TimeRange) UnmarshalJSON(data []byte) error {
 	switch dis.Type {
 	case "relative":
 		metricsRelativeTimeRangeDtoV2 := new(MetricsRelativeTimeRangeDtoV2)
-		if err := utils.UnmarshalJSON(data, &metricsRelativeTimeRangeDtoV2, "", true, nil); err != nil {
+		if err := utils.UnmarshalJSON(data, &metricsRelativeTimeRangeDtoV2, "", true, false); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == relative) type MetricsRelativeTimeRangeDtoV2 within TimeRange: %w", string(data), err)
 		}
 
@@ -71,7 +71,7 @@ func (u *TimeRange) UnmarshalJSON(data []byte) error {
 		return nil
 	case "absolute":
 		metricsAbsoluteTimeRangeDtoV2 := new(MetricsAbsoluteTimeRangeDtoV2)
-		if err := utils.UnmarshalJSON(data, &metricsAbsoluteTimeRangeDtoV2, "", true, nil); err != nil {
+		if err := utils.UnmarshalJSON(data, &metricsAbsoluteTimeRangeDtoV2, "", true, false); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == absolute) type MetricsAbsoluteTimeRangeDtoV2 within TimeRange: %w", string(data), err)
 		}
 

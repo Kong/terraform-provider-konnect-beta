@@ -41,97 +41,97 @@ func (b BackendCluster) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BackendCluster) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"id", "name", "authentication", "bootstrap_servers", "tls", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (b *BackendCluster) GetID() string {
-	if b == nil {
+func (o *BackendCluster) GetID() string {
+	if o == nil {
 		return ""
 	}
-	return b.ID
+	return o.ID
 }
 
-func (b *BackendCluster) GetName() string {
-	if b == nil {
+func (o *BackendCluster) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return b.Name
+	return o.Name
 }
 
-func (b *BackendCluster) GetDescription() *string {
-	if b == nil {
+func (o *BackendCluster) GetDescription() *string {
+	if o == nil {
 		return nil
 	}
-	return b.Description
+	return o.Description
 }
 
-func (b *BackendCluster) GetAuthentication() BackendClusterAuthenticationSensitiveDataAwareScheme {
-	if b == nil {
+func (o *BackendCluster) GetAuthentication() BackendClusterAuthenticationSensitiveDataAwareScheme {
+	if o == nil {
 		return BackendClusterAuthenticationSensitiveDataAwareScheme{}
 	}
-	return b.Authentication
+	return o.Authentication
 }
 
-func (b *BackendCluster) GetAuthenticationAnonymous() *BackendClusterAuthenticationAnonymous {
-	return b.GetAuthentication().BackendClusterAuthenticationAnonymous
+func (o *BackendCluster) GetAuthenticationAnonymous() *BackendClusterAuthenticationAnonymous {
+	return o.GetAuthentication().BackendClusterAuthenticationAnonymous
 }
 
-func (b *BackendCluster) GetAuthenticationSaslPlain() *BackendClusterAuthenticationSaslPlainSensitiveDataAware {
-	return b.GetAuthentication().BackendClusterAuthenticationSaslPlainSensitiveDataAware
+func (o *BackendCluster) GetAuthenticationSaslPlain() *BackendClusterAuthenticationSaslPlainSensitiveDataAware {
+	return o.GetAuthentication().BackendClusterAuthenticationSaslPlainSensitiveDataAware
 }
 
-func (b *BackendCluster) GetAuthenticationSaslScram() *BackendClusterAuthenticationSaslScramSensitiveDataAware {
-	return b.GetAuthentication().BackendClusterAuthenticationSaslScramSensitiveDataAware
+func (o *BackendCluster) GetAuthenticationSaslScram() *BackendClusterAuthenticationSaslScramSensitiveDataAware {
+	return o.GetAuthentication().BackendClusterAuthenticationSaslScramSensitiveDataAware
 }
 
-func (b *BackendCluster) GetInsecureAllowAnonymousVirtualClusterAuth() *bool {
-	if b == nil {
+func (o *BackendCluster) GetInsecureAllowAnonymousVirtualClusterAuth() *bool {
+	if o == nil {
 		return nil
 	}
-	return b.InsecureAllowAnonymousVirtualClusterAuth
+	return o.InsecureAllowAnonymousVirtualClusterAuth
 }
 
-func (b *BackendCluster) GetBootstrapServers() []string {
-	if b == nil {
+func (o *BackendCluster) GetBootstrapServers() []string {
+	if o == nil {
 		return []string{}
 	}
-	return b.BootstrapServers
+	return o.BootstrapServers
 }
 
-func (b *BackendCluster) GetTLS() BackendClusterTLS {
-	if b == nil {
+func (o *BackendCluster) GetTLS() BackendClusterTLS {
+	if o == nil {
 		return BackendClusterTLS{}
 	}
-	return b.TLS
+	return o.TLS
 }
 
-func (b *BackendCluster) GetMetadataUpdateIntervalSeconds() *int64 {
-	if b == nil {
+func (o *BackendCluster) GetMetadataUpdateIntervalSeconds() *int64 {
+	if o == nil {
 		return nil
 	}
-	return b.MetadataUpdateIntervalSeconds
+	return o.MetadataUpdateIntervalSeconds
 }
 
-func (b *BackendCluster) GetLabels() map[string]*string {
-	if b == nil {
+func (o *BackendCluster) GetLabels() map[string]*string {
+	if o == nil {
 		return nil
 	}
-	return b.Labels
+	return o.Labels
 }
 
-func (b *BackendCluster) GetCreatedAt() time.Time {
-	if b == nil {
+func (o *BackendCluster) GetCreatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return b.CreatedAt
+	return o.CreatedAt
 }
 
-func (b *BackendCluster) GetUpdatedAt() time.Time {
-	if b == nil {
+func (o *BackendCluster) GetUpdatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return b.UpdatedAt
+	return o.UpdatedAt
 }

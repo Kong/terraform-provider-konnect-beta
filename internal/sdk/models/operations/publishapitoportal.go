@@ -15,25 +15,25 @@ type PublishAPIToPortalRequest struct {
 	APIPublication shared.APIPublication `request:"mediaType=application/json"`
 }
 
-func (p *PublishAPIToPortalRequest) GetAPIID() string {
-	if p == nil {
+func (o *PublishAPIToPortalRequest) GetAPIID() string {
+	if o == nil {
 		return ""
 	}
-	return p.APIID
+	return o.APIID
 }
 
-func (p *PublishAPIToPortalRequest) GetPortalID() string {
-	if p == nil {
+func (o *PublishAPIToPortalRequest) GetPortalID() string {
+	if o == nil {
 		return ""
 	}
-	return p.PortalID
+	return o.PortalID
 }
 
-func (p *PublishAPIToPortalRequest) GetAPIPublication() shared.APIPublication {
-	if p == nil {
+func (o *PublishAPIToPortalRequest) GetAPIPublication() shared.APIPublication {
+	if o == nil {
 		return shared.APIPublication{}
 	}
-	return p.APIPublication
+	return o.APIPublication
 }
 
 type PublishAPIToPortalResponse struct {
@@ -55,58 +55,58 @@ type PublishAPIToPortalResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (p *PublishAPIToPortalResponse) GetContentType() string {
-	if p == nil {
+func (o *PublishAPIToPortalResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return p.ContentType
+	return o.ContentType
 }
 
-func (p *PublishAPIToPortalResponse) GetStatusCode() int {
-	if p == nil {
+func (o *PublishAPIToPortalResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return p.StatusCode
+	return o.StatusCode
 }
 
-func (p *PublishAPIToPortalResponse) GetRawResponse() *http.Response {
-	if p == nil {
+func (o *PublishAPIToPortalResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return p.RawResponse
+	return o.RawResponse
 }
 
-func (p *PublishAPIToPortalResponse) GetAPIPublicationResponse() *shared.APIPublicationResponse {
-	if p == nil {
+func (o *PublishAPIToPortalResponse) GetAPIPublicationResponse() *shared.APIPublicationResponse {
+	if o == nil {
 		return nil
 	}
-	return p.APIPublicationResponse
+	return o.APIPublicationResponse
 }
 
-func (p *PublishAPIToPortalResponse) GetBadRequestError() *shared.BadRequestError {
-	if p == nil {
+func (o *PublishAPIToPortalResponse) GetBadRequestError() *shared.BadRequestError {
+	if o == nil {
 		return nil
 	}
-	return p.BadRequestError
+	return o.BadRequestError
 }
 
-func (p *PublishAPIToPortalResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if p == nil {
+func (o *PublishAPIToPortalResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return p.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (p *PublishAPIToPortalResponse) GetForbiddenError() *shared.ForbiddenError {
-	if p == nil {
+func (o *PublishAPIToPortalResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return p.ForbiddenError
+	return o.ForbiddenError
 }
 
-func (p *PublishAPIToPortalResponse) GetNotFoundError() *shared.NotFoundError {
-	if p == nil {
+func (o *PublishAPIToPortalResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return p.NotFoundError
+	return o.NotFoundError
 }

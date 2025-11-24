@@ -18,32 +18,32 @@ type PutMeshGlobalRateLimitRequest struct {
 	MeshGlobalRateLimitItem shared.MeshGlobalRateLimitItemInput `request:"mediaType=application/json"`
 }
 
-func (p *PutMeshGlobalRateLimitRequest) GetCpID() string {
-	if p == nil {
+func (o *PutMeshGlobalRateLimitRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return p.CpID
+	return o.CpID
 }
 
-func (p *PutMeshGlobalRateLimitRequest) GetMesh() string {
-	if p == nil {
+func (o *PutMeshGlobalRateLimitRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return p.Mesh
+	return o.Mesh
 }
 
-func (p *PutMeshGlobalRateLimitRequest) GetName() string {
-	if p == nil {
+func (o *PutMeshGlobalRateLimitRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return p.Name
+	return o.Name
 }
 
-func (p *PutMeshGlobalRateLimitRequest) GetMeshGlobalRateLimitItem() shared.MeshGlobalRateLimitItemInput {
-	if p == nil {
+func (o *PutMeshGlobalRateLimitRequest) GetMeshGlobalRateLimitItem() shared.MeshGlobalRateLimitItemInput {
+	if o == nil {
 		return shared.MeshGlobalRateLimitItemInput{}
 	}
-	return p.MeshGlobalRateLimitItem
+	return o.MeshGlobalRateLimitItem
 }
 
 type PutMeshGlobalRateLimitResponse struct {
@@ -57,30 +57,30 @@ type PutMeshGlobalRateLimitResponse struct {
 	MeshGlobalRateLimitCreateOrUpdateSuccessResponse *shared.MeshGlobalRateLimitCreateOrUpdateSuccessResponse
 }
 
-func (p *PutMeshGlobalRateLimitResponse) GetContentType() string {
-	if p == nil {
+func (o *PutMeshGlobalRateLimitResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return p.ContentType
+	return o.ContentType
 }
 
-func (p *PutMeshGlobalRateLimitResponse) GetStatusCode() int {
-	if p == nil {
+func (o *PutMeshGlobalRateLimitResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return p.StatusCode
+	return o.StatusCode
 }
 
-func (p *PutMeshGlobalRateLimitResponse) GetRawResponse() *http.Response {
-	if p == nil {
+func (o *PutMeshGlobalRateLimitResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return p.RawResponse
+	return o.RawResponse
 }
 
-func (p *PutMeshGlobalRateLimitResponse) GetMeshGlobalRateLimitCreateOrUpdateSuccessResponse() *shared.MeshGlobalRateLimitCreateOrUpdateSuccessResponse {
-	if p == nil {
+func (o *PutMeshGlobalRateLimitResponse) GetMeshGlobalRateLimitCreateOrUpdateSuccessResponse() *shared.MeshGlobalRateLimitCreateOrUpdateSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return p.MeshGlobalRateLimitCreateOrUpdateSuccessResponse
+	return o.MeshGlobalRateLimitCreateOrUpdateSuccessResponse
 }

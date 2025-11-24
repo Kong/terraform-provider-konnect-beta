@@ -14,18 +14,18 @@ type DeleteEventGatewayVirtualClusterRequest struct {
 	VirtualClusterID string `pathParam:"style=simple,explode=false,name=virtualClusterId"`
 }
 
-func (d *DeleteEventGatewayVirtualClusterRequest) GetGatewayID() string {
-	if d == nil {
+func (o *DeleteEventGatewayVirtualClusterRequest) GetGatewayID() string {
+	if o == nil {
 		return ""
 	}
-	return d.GatewayID
+	return o.GatewayID
 }
 
-func (d *DeleteEventGatewayVirtualClusterRequest) GetVirtualClusterID() string {
-	if d == nil {
+func (o *DeleteEventGatewayVirtualClusterRequest) GetVirtualClusterID() string {
+	if o == nil {
 		return ""
 	}
-	return d.VirtualClusterID
+	return o.VirtualClusterID
 }
 
 type DeleteEventGatewayVirtualClusterResponse struct {
@@ -43,44 +43,44 @@ type DeleteEventGatewayVirtualClusterResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeleteEventGatewayVirtualClusterResponse) GetContentType() string {
-	if d == nil {
+func (o *DeleteEventGatewayVirtualClusterResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeleteEventGatewayVirtualClusterResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeleteEventGatewayVirtualClusterResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeleteEventGatewayVirtualClusterResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeleteEventGatewayVirtualClusterResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeleteEventGatewayVirtualClusterResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if d == nil {
+func (o *DeleteEventGatewayVirtualClusterResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return d.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (d *DeleteEventGatewayVirtualClusterResponse) GetForbiddenError() *shared.ForbiddenError {
-	if d == nil {
+func (o *DeleteEventGatewayVirtualClusterResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return d.ForbiddenError
+	return o.ForbiddenError
 }
 
-func (d *DeleteEventGatewayVirtualClusterResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeleteEventGatewayVirtualClusterResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

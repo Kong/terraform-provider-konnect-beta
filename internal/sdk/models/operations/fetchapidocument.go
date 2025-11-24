@@ -14,18 +14,18 @@ type FetchAPIDocumentRequest struct {
 	DocumentID string `pathParam:"style=simple,explode=false,name=documentId"`
 }
 
-func (f *FetchAPIDocumentRequest) GetAPIID() string {
-	if f == nil {
+func (o *FetchAPIDocumentRequest) GetAPIID() string {
+	if o == nil {
 		return ""
 	}
-	return f.APIID
+	return o.APIID
 }
 
-func (f *FetchAPIDocumentRequest) GetDocumentID() string {
-	if f == nil {
+func (o *FetchAPIDocumentRequest) GetDocumentID() string {
+	if o == nil {
 		return ""
 	}
-	return f.DocumentID
+	return o.DocumentID
 }
 
 type FetchAPIDocumentResponse struct {
@@ -45,51 +45,51 @@ type FetchAPIDocumentResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (f *FetchAPIDocumentResponse) GetContentType() string {
-	if f == nil {
+func (o *FetchAPIDocumentResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return f.ContentType
+	return o.ContentType
 }
 
-func (f *FetchAPIDocumentResponse) GetStatusCode() int {
-	if f == nil {
+func (o *FetchAPIDocumentResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return f.StatusCode
+	return o.StatusCode
 }
 
-func (f *FetchAPIDocumentResponse) GetRawResponse() *http.Response {
-	if f == nil {
+func (o *FetchAPIDocumentResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return f.RawResponse
+	return o.RawResponse
 }
 
-func (f *FetchAPIDocumentResponse) GetAPIDocumentResponse() *shared.APIDocumentResponse {
-	if f == nil {
+func (o *FetchAPIDocumentResponse) GetAPIDocumentResponse() *shared.APIDocumentResponse {
+	if o == nil {
 		return nil
 	}
-	return f.APIDocumentResponse
+	return o.APIDocumentResponse
 }
 
-func (f *FetchAPIDocumentResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if f == nil {
+func (o *FetchAPIDocumentResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return f.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (f *FetchAPIDocumentResponse) GetForbiddenError() *shared.ForbiddenError {
-	if f == nil {
+func (o *FetchAPIDocumentResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return f.ForbiddenError
+	return o.ForbiddenError
 }
 
-func (f *FetchAPIDocumentResponse) GetNotFoundError() *shared.NotFoundError {
-	if f == nil {
+func (o *FetchAPIDocumentResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return f.NotFoundError
+	return o.NotFoundError
 }

@@ -14,18 +14,18 @@ type GetZoneIngressRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (g *GetZoneIngressRequest) GetCpID() string {
-	if g == nil {
+func (o *GetZoneIngressRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return g.CpID
+	return o.CpID
 }
 
-func (g *GetZoneIngressRequest) GetName() string {
-	if g == nil {
+func (o *GetZoneIngressRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return g.Name
+	return o.Name
 }
 
 type GetZoneIngressResponse struct {
@@ -41,37 +41,37 @@ type GetZoneIngressResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (g *GetZoneIngressResponse) GetContentType() string {
-	if g == nil {
+func (o *GetZoneIngressResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetZoneIngressResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetZoneIngressResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetZoneIngressResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetZoneIngressResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetZoneIngressResponse) GetZoneIngressItem() *shared.ZoneIngressItem {
-	if g == nil {
+func (o *GetZoneIngressResponse) GetZoneIngressItem() *shared.ZoneIngressItem {
+	if o == nil {
 		return nil
 	}
-	return g.ZoneIngressItem
+	return o.ZoneIngressItem
 }
 
-func (g *GetZoneIngressResponse) GetNotFoundError() *shared.NotFoundError {
-	if g == nil {
+func (o *GetZoneIngressResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return g.NotFoundError
+	return o.NotFoundError
 }

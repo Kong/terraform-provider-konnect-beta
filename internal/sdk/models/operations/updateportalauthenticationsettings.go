@@ -14,18 +14,18 @@ type UpdatePortalAuthenticationSettingsRequest struct {
 	PortalAuthenticationSettingsUpdateRequest *shared.PortalAuthenticationSettingsUpdateRequest `request:"mediaType=application/json"`
 }
 
-func (u *UpdatePortalAuthenticationSettingsRequest) GetPortalID() string {
-	if u == nil {
+func (o *UpdatePortalAuthenticationSettingsRequest) GetPortalID() string {
+	if o == nil {
 		return ""
 	}
-	return u.PortalID
+	return o.PortalID
 }
 
-func (u *UpdatePortalAuthenticationSettingsRequest) GetPortalAuthenticationSettingsUpdateRequest() *shared.PortalAuthenticationSettingsUpdateRequest {
-	if u == nil {
+func (o *UpdatePortalAuthenticationSettingsRequest) GetPortalAuthenticationSettingsUpdateRequest() *shared.PortalAuthenticationSettingsUpdateRequest {
+	if o == nil {
 		return nil
 	}
-	return u.PortalAuthenticationSettingsUpdateRequest
+	return o.PortalAuthenticationSettingsUpdateRequest
 }
 
 type UpdatePortalAuthenticationSettingsResponse struct {
@@ -45,51 +45,51 @@ type UpdatePortalAuthenticationSettingsResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (u *UpdatePortalAuthenticationSettingsResponse) GetContentType() string {
-	if u == nil {
+func (o *UpdatePortalAuthenticationSettingsResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return u.ContentType
+	return o.ContentType
 }
 
-func (u *UpdatePortalAuthenticationSettingsResponse) GetStatusCode() int {
-	if u == nil {
+func (o *UpdatePortalAuthenticationSettingsResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return u.StatusCode
+	return o.StatusCode
 }
 
-func (u *UpdatePortalAuthenticationSettingsResponse) GetRawResponse() *http.Response {
-	if u == nil {
+func (o *UpdatePortalAuthenticationSettingsResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return u.RawResponse
+	return o.RawResponse
 }
 
-func (u *UpdatePortalAuthenticationSettingsResponse) GetPortalAuthenticationSettingsResponse() *shared.PortalAuthenticationSettingsResponse {
-	if u == nil {
+func (o *UpdatePortalAuthenticationSettingsResponse) GetPortalAuthenticationSettingsResponse() *shared.PortalAuthenticationSettingsResponse {
+	if o == nil {
 		return nil
 	}
-	return u.PortalAuthenticationSettingsResponse
+	return o.PortalAuthenticationSettingsResponse
 }
 
-func (u *UpdatePortalAuthenticationSettingsResponse) GetBadRequestError() *shared.BadRequestError {
-	if u == nil {
+func (o *UpdatePortalAuthenticationSettingsResponse) GetBadRequestError() *shared.BadRequestError {
+	if o == nil {
 		return nil
 	}
-	return u.BadRequestError
+	return o.BadRequestError
 }
 
-func (u *UpdatePortalAuthenticationSettingsResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if u == nil {
+func (o *UpdatePortalAuthenticationSettingsResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return u.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (u *UpdatePortalAuthenticationSettingsResponse) GetForbiddenError() *shared.ForbiddenError {
-	if u == nil {
+func (o *UpdatePortalAuthenticationSettingsResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return u.ForbiddenError
+	return o.ForbiddenError
 }

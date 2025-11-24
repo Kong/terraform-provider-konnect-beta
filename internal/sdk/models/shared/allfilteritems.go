@@ -143,23 +143,23 @@ type AllFilterItems struct {
 	Value    any                    `json:"value,omitempty"`
 }
 
-func (a *AllFilterItems) GetField() AllFilterItemsField {
-	if a == nil {
+func (o *AllFilterItems) GetField() AllFilterItemsField {
+	if o == nil {
 		return AllFilterItemsField("")
 	}
-	return a.Field
+	return o.Field
 }
 
-func (a *AllFilterItems) GetOperator() AllFilterItemsOperator {
-	if a == nil {
+func (o *AllFilterItems) GetOperator() AllFilterItemsOperator {
+	if o == nil {
 		return AllFilterItemsOperator("")
 	}
-	return a.Operator
+	return o.Operator
 }
 
-func (a *AllFilterItems) GetValue() any {
-	if a == nil {
+func (o *AllFilterItems) GetValue() any {
+	if o == nil {
 		return nil
 	}
-	return a.Value
+	return o.Value
 }

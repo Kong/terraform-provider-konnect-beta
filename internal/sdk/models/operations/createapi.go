@@ -28,65 +28,65 @@ type CreateAPIResponse struct {
 	UnsupportedMediaTypeError *shared.UnsupportedMediaTypeError
 }
 
-func (c *CreateAPIResponse) GetContentType() string {
-	if c == nil {
+func (o *CreateAPIResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return c.ContentType
+	return o.ContentType
 }
 
-func (c *CreateAPIResponse) GetStatusCode() int {
-	if c == nil {
+func (o *CreateAPIResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return c.StatusCode
+	return o.StatusCode
 }
 
-func (c *CreateAPIResponse) GetRawResponse() *http.Response {
-	if c == nil {
+func (o *CreateAPIResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return c.RawResponse
+	return o.RawResponse
 }
 
-func (c *CreateAPIResponse) GetAPIResponseSchema() *shared.APIResponseSchema {
-	if c == nil {
+func (o *CreateAPIResponse) GetAPIResponseSchema() *shared.APIResponseSchema {
+	if o == nil {
 		return nil
 	}
-	return c.APIResponseSchema
+	return o.APIResponseSchema
 }
 
-func (c *CreateAPIResponse) GetBadRequestError() *shared.BadRequestError {
-	if c == nil {
+func (o *CreateAPIResponse) GetBadRequestError() *shared.BadRequestError {
+	if o == nil {
 		return nil
 	}
-	return c.BadRequestError
+	return o.BadRequestError
 }
 
-func (c *CreateAPIResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if c == nil {
+func (o *CreateAPIResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return c.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (c *CreateAPIResponse) GetForbiddenError() *shared.ForbiddenError {
-	if c == nil {
+func (o *CreateAPIResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return c.ForbiddenError
+	return o.ForbiddenError
 }
 
-func (c *CreateAPIResponse) GetNotFoundError() *shared.NotFoundError {
-	if c == nil {
+func (o *CreateAPIResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return c.NotFoundError
+	return o.NotFoundError
 }
 
-func (c *CreateAPIResponse) GetUnsupportedMediaTypeError() *shared.UnsupportedMediaTypeError {
-	if c == nil {
+func (o *CreateAPIResponse) GetUnsupportedMediaTypeError() *shared.UnsupportedMediaTypeError {
+	if o == nil {
 		return nil
 	}
-	return c.UnsupportedMediaTypeError
+	return o.UnsupportedMediaTypeError
 }

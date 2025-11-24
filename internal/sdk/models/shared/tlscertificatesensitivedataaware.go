@@ -15,16 +15,16 @@ type TLSCertificateSensitiveDataAware struct {
 	Key *string `json:"key,omitempty"`
 }
 
-func (t *TLSCertificateSensitiveDataAware) GetCertificate() string {
-	if t == nil {
+func (o *TLSCertificateSensitiveDataAware) GetCertificate() string {
+	if o == nil {
 		return ""
 	}
-	return t.Certificate
+	return o.Certificate
 }
 
-func (t *TLSCertificateSensitiveDataAware) GetKey() *string {
-	if t == nil {
+func (o *TLSCertificateSensitiveDataAware) GetKey() *string {
+	if o == nil {
 		return nil
 	}
-	return t.Key
+	return o.Key
 }

@@ -2,30 +2,15 @@
 
 package shared
 
-import (
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
-)
-
 // VirtualClusterReferenceByName - Reference a virtual cluster by its unique name.
 type VirtualClusterReferenceByName struct {
 	// The name of the virtual cluster.
 	Name string `json:"name"`
 }
 
-func (v VirtualClusterReferenceByName) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(v, "", false)
-}
-
-func (v *VirtualClusterReferenceByName) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"name"}); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (v *VirtualClusterReferenceByName) GetName() string {
-	if v == nil {
+func (o *VirtualClusterReferenceByName) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return v.Name
+	return o.Name
 }

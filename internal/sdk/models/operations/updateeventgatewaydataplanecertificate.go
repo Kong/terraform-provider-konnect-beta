@@ -16,25 +16,25 @@ type UpdateEventGatewayDataPlaneCertificateRequest struct {
 	UpdateEventGatewayDataPlaneCertificateRequest *shared.UpdateEventGatewayDataPlaneCertificateRequest `request:"mediaType=application/json"`
 }
 
-func (u *UpdateEventGatewayDataPlaneCertificateRequest) GetGatewayID() string {
-	if u == nil {
+func (o *UpdateEventGatewayDataPlaneCertificateRequest) GetGatewayID() string {
+	if o == nil {
 		return ""
 	}
-	return u.GatewayID
+	return o.GatewayID
 }
 
-func (u *UpdateEventGatewayDataPlaneCertificateRequest) GetCertificateID() string {
-	if u == nil {
+func (o *UpdateEventGatewayDataPlaneCertificateRequest) GetCertificateID() string {
+	if o == nil {
 		return ""
 	}
-	return u.CertificateID
+	return o.CertificateID
 }
 
-func (u *UpdateEventGatewayDataPlaneCertificateRequest) GetUpdateEventGatewayDataPlaneCertificateRequest() *shared.UpdateEventGatewayDataPlaneCertificateRequest {
-	if u == nil {
+func (o *UpdateEventGatewayDataPlaneCertificateRequest) GetUpdateEventGatewayDataPlaneCertificateRequest() *shared.UpdateEventGatewayDataPlaneCertificateRequest {
+	if o == nil {
 		return nil
 	}
-	return u.UpdateEventGatewayDataPlaneCertificateRequest
+	return o.UpdateEventGatewayDataPlaneCertificateRequest
 }
 
 type UpdateEventGatewayDataPlaneCertificateResponse struct {
@@ -54,51 +54,51 @@ type UpdateEventGatewayDataPlaneCertificateResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (u *UpdateEventGatewayDataPlaneCertificateResponse) GetContentType() string {
-	if u == nil {
+func (o *UpdateEventGatewayDataPlaneCertificateResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return u.ContentType
+	return o.ContentType
 }
 
-func (u *UpdateEventGatewayDataPlaneCertificateResponse) GetStatusCode() int {
-	if u == nil {
+func (o *UpdateEventGatewayDataPlaneCertificateResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return u.StatusCode
+	return o.StatusCode
 }
 
-func (u *UpdateEventGatewayDataPlaneCertificateResponse) GetRawResponse() *http.Response {
-	if u == nil {
+func (o *UpdateEventGatewayDataPlaneCertificateResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return u.RawResponse
+	return o.RawResponse
 }
 
-func (u *UpdateEventGatewayDataPlaneCertificateResponse) GetEventGatewayDataPlaneCertificate() *shared.EventGatewayDataPlaneCertificate {
-	if u == nil {
+func (o *UpdateEventGatewayDataPlaneCertificateResponse) GetEventGatewayDataPlaneCertificate() *shared.EventGatewayDataPlaneCertificate {
+	if o == nil {
 		return nil
 	}
-	return u.EventGatewayDataPlaneCertificate
+	return o.EventGatewayDataPlaneCertificate
 }
 
-func (u *UpdateEventGatewayDataPlaneCertificateResponse) GetBadRequestError() *shared.BadRequestError {
-	if u == nil {
+func (o *UpdateEventGatewayDataPlaneCertificateResponse) GetBadRequestError() *shared.BadRequestError {
+	if o == nil {
 		return nil
 	}
-	return u.BadRequestError
+	return o.BadRequestError
 }
 
-func (u *UpdateEventGatewayDataPlaneCertificateResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if u == nil {
+func (o *UpdateEventGatewayDataPlaneCertificateResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return u.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (u *UpdateEventGatewayDataPlaneCertificateResponse) GetForbiddenError() *shared.ForbiddenError {
-	if u == nil {
+func (o *UpdateEventGatewayDataPlaneCertificateResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return u.ForbiddenError
+	return o.ForbiddenError
 }

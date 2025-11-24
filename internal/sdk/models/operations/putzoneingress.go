@@ -16,25 +16,25 @@ type PutZoneIngressRequest struct {
 	ZoneIngressItem shared.ZoneIngressItem `request:"mediaType=application/json"`
 }
 
-func (p *PutZoneIngressRequest) GetCpID() string {
-	if p == nil {
+func (o *PutZoneIngressRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return p.CpID
+	return o.CpID
 }
 
-func (p *PutZoneIngressRequest) GetName() string {
-	if p == nil {
+func (o *PutZoneIngressRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return p.Name
+	return o.Name
 }
 
-func (p *PutZoneIngressRequest) GetZoneIngressItem() shared.ZoneIngressItem {
-	if p == nil {
+func (o *PutZoneIngressRequest) GetZoneIngressItem() shared.ZoneIngressItem {
+	if o == nil {
 		return shared.ZoneIngressItem{}
 	}
-	return p.ZoneIngressItem
+	return o.ZoneIngressItem
 }
 
 type PutZoneIngressResponse struct {
@@ -48,30 +48,30 @@ type PutZoneIngressResponse struct {
 	ZoneIngressCreateOrUpdateSuccessResponse *shared.ZoneIngressCreateOrUpdateSuccessResponse
 }
 
-func (p *PutZoneIngressResponse) GetContentType() string {
-	if p == nil {
+func (o *PutZoneIngressResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return p.ContentType
+	return o.ContentType
 }
 
-func (p *PutZoneIngressResponse) GetStatusCode() int {
-	if p == nil {
+func (o *PutZoneIngressResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return p.StatusCode
+	return o.StatusCode
 }
 
-func (p *PutZoneIngressResponse) GetRawResponse() *http.Response {
-	if p == nil {
+func (o *PutZoneIngressResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return p.RawResponse
+	return o.RawResponse
 }
 
-func (p *PutZoneIngressResponse) GetZoneIngressCreateOrUpdateSuccessResponse() *shared.ZoneIngressCreateOrUpdateSuccessResponse {
-	if p == nil {
+func (o *PutZoneIngressResponse) GetZoneIngressCreateOrUpdateSuccessResponse() *shared.ZoneIngressCreateOrUpdateSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return p.ZoneIngressCreateOrUpdateSuccessResponse
+	return o.ZoneIngressCreateOrUpdateSuccessResponse
 }

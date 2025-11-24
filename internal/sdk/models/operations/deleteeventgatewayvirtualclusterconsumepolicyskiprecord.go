@@ -16,25 +16,25 @@ type DeleteEventGatewayVirtualClusterConsumePolicySkipRecordRequest struct {
 	PolicyID string `pathParam:"style=simple,explode=false,name=policyId"`
 }
 
-func (d *DeleteEventGatewayVirtualClusterConsumePolicySkipRecordRequest) GetGatewayID() string {
-	if d == nil {
+func (o *DeleteEventGatewayVirtualClusterConsumePolicySkipRecordRequest) GetGatewayID() string {
+	if o == nil {
 		return ""
 	}
-	return d.GatewayID
+	return o.GatewayID
 }
 
-func (d *DeleteEventGatewayVirtualClusterConsumePolicySkipRecordRequest) GetVirtualClusterID() string {
-	if d == nil {
+func (o *DeleteEventGatewayVirtualClusterConsumePolicySkipRecordRequest) GetVirtualClusterID() string {
+	if o == nil {
 		return ""
 	}
-	return d.VirtualClusterID
+	return o.VirtualClusterID
 }
 
-func (d *DeleteEventGatewayVirtualClusterConsumePolicySkipRecordRequest) GetPolicyID() string {
-	if d == nil {
+func (o *DeleteEventGatewayVirtualClusterConsumePolicySkipRecordRequest) GetPolicyID() string {
+	if o == nil {
 		return ""
 	}
-	return d.PolicyID
+	return o.PolicyID
 }
 
 type DeleteEventGatewayVirtualClusterConsumePolicySkipRecordResponse struct {
@@ -52,44 +52,44 @@ type DeleteEventGatewayVirtualClusterConsumePolicySkipRecordResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeleteEventGatewayVirtualClusterConsumePolicySkipRecordResponse) GetContentType() string {
-	if d == nil {
+func (o *DeleteEventGatewayVirtualClusterConsumePolicySkipRecordResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeleteEventGatewayVirtualClusterConsumePolicySkipRecordResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeleteEventGatewayVirtualClusterConsumePolicySkipRecordResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeleteEventGatewayVirtualClusterConsumePolicySkipRecordResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeleteEventGatewayVirtualClusterConsumePolicySkipRecordResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeleteEventGatewayVirtualClusterConsumePolicySkipRecordResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if d == nil {
+func (o *DeleteEventGatewayVirtualClusterConsumePolicySkipRecordResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return d.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (d *DeleteEventGatewayVirtualClusterConsumePolicySkipRecordResponse) GetForbiddenError() *shared.ForbiddenError {
-	if d == nil {
+func (o *DeleteEventGatewayVirtualClusterConsumePolicySkipRecordResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return d.ForbiddenError
+	return o.ForbiddenError
 }
 
-func (d *DeleteEventGatewayVirtualClusterConsumePolicySkipRecordResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeleteEventGatewayVirtualClusterConsumePolicySkipRecordResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

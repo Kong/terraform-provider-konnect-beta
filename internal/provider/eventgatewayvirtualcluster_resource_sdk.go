@@ -559,6 +559,35 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 				VirtualClusterAuthenticationAnonymous: &virtualClusterAuthenticationAnonymous,
 			})
 		}
+		if authenticationItem.SaslPlain != nil {
+			mediation := shared.VirtualClusterAuthenticationSaslPlainSensitiveDataAwareMediation(authenticationItem.SaslPlain.Mediation.ValueString())
+			var principals []shared.VirtualClusterAuthenticationPrincipalSensitiveDataAware
+			if authenticationItem.SaslPlain.Principals != nil {
+				principals = make([]shared.VirtualClusterAuthenticationPrincipalSensitiveDataAware, 0, len(authenticationItem.SaslPlain.Principals))
+				for _, principalsItem := range authenticationItem.SaslPlain.Principals {
+					var username string
+					username = principalsItem.Username.ValueString()
+
+					password := new(string)
+					if !principalsItem.Password.IsUnknown() && !principalsItem.Password.IsNull() {
+						*password = principalsItem.Password.ValueString()
+					} else {
+						password = nil
+					}
+					principals = append(principals, shared.VirtualClusterAuthenticationPrincipalSensitiveDataAware{
+						Username: username,
+						Password: password,
+					})
+				}
+			}
+			virtualClusterAuthenticationSaslPlainSensitiveDataAware := shared.VirtualClusterAuthenticationSaslPlainSensitiveDataAware{
+				Mediation:  mediation,
+				Principals: principals,
+			}
+			authentication = append(authentication, shared.VirtualClusterAuthenticationSensitiveDataAwareScheme{
+				VirtualClusterAuthenticationSaslPlainSensitiveDataAware: &virtualClusterAuthenticationSaslPlainSensitiveDataAware,
+			})
+		}
 		if authenticationItem.SaslScram != nil {
 			algorithm := shared.VirtualClusterAuthenticationSaslScramAlgorithm(authenticationItem.SaslScram.Algorithm.ValueString())
 			virtualClusterAuthenticationSaslScram := shared.VirtualClusterAuthenticationSaslScram{
@@ -569,7 +598,7 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 			})
 		}
 		if authenticationItem.OauthBearer != nil {
-			mediation := shared.VirtualClusterAuthenticationOauthBearerMediation(authenticationItem.OauthBearer.Mediation.ValueString())
+			mediation1 := shared.VirtualClusterAuthenticationOauthBearerMediation(authenticationItem.OauthBearer.Mediation.ValueString())
 			var claimsMapping *shared.VirtualClusterAuthenticationClaimsMapping
 			if authenticationItem.OauthBearer.ClaimsMapping != nil {
 				sub := new(string)
@@ -638,7 +667,7 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 				}
 			}
 			virtualClusterAuthenticationOauthBearer := shared.VirtualClusterAuthenticationOauthBearer{
-				Mediation:     mediation,
+				Mediation:     mediation1,
 				ClaimsMapping: claimsMapping,
 				Jwks:          jwks,
 				Validate:      validate,

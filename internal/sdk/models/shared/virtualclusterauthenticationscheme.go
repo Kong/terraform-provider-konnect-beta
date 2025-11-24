@@ -19,10 +19,10 @@ const (
 )
 
 type VirtualClusterAuthenticationScheme struct {
-	VirtualClusterAuthenticationAnonymous   *VirtualClusterAuthenticationAnonymous   `queryParam:"inline,name=VirtualClusterAuthenticationScheme"`
-	VirtualClusterAuthenticationSaslPlain   *VirtualClusterAuthenticationSaslPlain   `queryParam:"inline,name=VirtualClusterAuthenticationScheme"`
-	VirtualClusterAuthenticationSaslScram   *VirtualClusterAuthenticationSaslScram   `queryParam:"inline,name=VirtualClusterAuthenticationScheme"`
-	VirtualClusterAuthenticationOauthBearer *VirtualClusterAuthenticationOauthBearer `queryParam:"inline,name=VirtualClusterAuthenticationScheme"`
+	VirtualClusterAuthenticationAnonymous   *VirtualClusterAuthenticationAnonymous   `queryParam:"inline"`
+	VirtualClusterAuthenticationSaslPlain   *VirtualClusterAuthenticationSaslPlain   `queryParam:"inline"`
+	VirtualClusterAuthenticationSaslScram   *VirtualClusterAuthenticationSaslScram   `queryParam:"inline"`
+	VirtualClusterAuthenticationOauthBearer *VirtualClusterAuthenticationOauthBearer `queryParam:"inline"`
 
 	Type VirtualClusterAuthenticationSchemeType
 }
@@ -77,7 +77,7 @@ func (u *VirtualClusterAuthenticationScheme) UnmarshalJSON(data []byte) error {
 	switch dis.Type {
 	case "anonymous":
 		virtualClusterAuthenticationAnonymous := new(VirtualClusterAuthenticationAnonymous)
-		if err := utils.UnmarshalJSON(data, &virtualClusterAuthenticationAnonymous, "", true, nil); err != nil {
+		if err := utils.UnmarshalJSON(data, &virtualClusterAuthenticationAnonymous, "", true, false); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == anonymous) type VirtualClusterAuthenticationAnonymous within VirtualClusterAuthenticationScheme: %w", string(data), err)
 		}
 
@@ -86,7 +86,7 @@ func (u *VirtualClusterAuthenticationScheme) UnmarshalJSON(data []byte) error {
 		return nil
 	case "sasl_plain":
 		virtualClusterAuthenticationSaslPlain := new(VirtualClusterAuthenticationSaslPlain)
-		if err := utils.UnmarshalJSON(data, &virtualClusterAuthenticationSaslPlain, "", true, nil); err != nil {
+		if err := utils.UnmarshalJSON(data, &virtualClusterAuthenticationSaslPlain, "", true, false); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == sasl_plain) type VirtualClusterAuthenticationSaslPlain within VirtualClusterAuthenticationScheme: %w", string(data), err)
 		}
 
@@ -95,7 +95,7 @@ func (u *VirtualClusterAuthenticationScheme) UnmarshalJSON(data []byte) error {
 		return nil
 	case "sasl_scram":
 		virtualClusterAuthenticationSaslScram := new(VirtualClusterAuthenticationSaslScram)
-		if err := utils.UnmarshalJSON(data, &virtualClusterAuthenticationSaslScram, "", true, nil); err != nil {
+		if err := utils.UnmarshalJSON(data, &virtualClusterAuthenticationSaslScram, "", true, false); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == sasl_scram) type VirtualClusterAuthenticationSaslScram within VirtualClusterAuthenticationScheme: %w", string(data), err)
 		}
 
@@ -104,7 +104,7 @@ func (u *VirtualClusterAuthenticationScheme) UnmarshalJSON(data []byte) error {
 		return nil
 	case "oauth_bearer":
 		virtualClusterAuthenticationOauthBearer := new(VirtualClusterAuthenticationOauthBearer)
-		if err := utils.UnmarshalJSON(data, &virtualClusterAuthenticationOauthBearer, "", true, nil); err != nil {
+		if err := utils.UnmarshalJSON(data, &virtualClusterAuthenticationOauthBearer, "", true, false); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == oauth_bearer) type VirtualClusterAuthenticationOauthBearer within VirtualClusterAuthenticationScheme: %w", string(data), err)
 		}
 

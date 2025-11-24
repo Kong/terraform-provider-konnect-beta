@@ -12,11 +12,11 @@ type GetEventGatewayRequest struct {
 	GatewayID string `pathParam:"style=simple,explode=false,name=gatewayId"`
 }
 
-func (g *GetEventGatewayRequest) GetGatewayID() string {
-	if g == nil {
+func (o *GetEventGatewayRequest) GetGatewayID() string {
+	if o == nil {
 		return ""
 	}
-	return g.GatewayID
+	return o.GatewayID
 }
 
 type GetEventGatewayResponse struct {
@@ -40,65 +40,65 @@ type GetEventGatewayResponse struct {
 	BaseError *shared.BaseError
 }
 
-func (g *GetEventGatewayResponse) GetContentType() string {
-	if g == nil {
+func (o *GetEventGatewayResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetEventGatewayResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetEventGatewayResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetEventGatewayResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetEventGatewayResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetEventGatewayResponse) GetEventGatewayInfo() *shared.EventGatewayInfo {
-	if g == nil {
+func (o *GetEventGatewayResponse) GetEventGatewayInfo() *shared.EventGatewayInfo {
+	if o == nil {
 		return nil
 	}
-	return g.EventGatewayInfo
+	return o.EventGatewayInfo
 }
 
-func (g *GetEventGatewayResponse) GetBadRequestError() *shared.BadRequestError {
-	if g == nil {
+func (o *GetEventGatewayResponse) GetBadRequestError() *shared.BadRequestError {
+	if o == nil {
 		return nil
 	}
-	return g.BadRequestError
+	return o.BadRequestError
 }
 
-func (g *GetEventGatewayResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if g == nil {
+func (o *GetEventGatewayResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return g.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (g *GetEventGatewayResponse) GetForbiddenError() *shared.ForbiddenError {
-	if g == nil {
+func (o *GetEventGatewayResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return g.ForbiddenError
+	return o.ForbiddenError
 }
 
-func (g *GetEventGatewayResponse) GetNotFoundError() *shared.NotFoundError {
-	if g == nil {
+func (o *GetEventGatewayResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return g.NotFoundError
+	return o.NotFoundError
 }
 
-func (g *GetEventGatewayResponse) GetBaseError() *shared.BaseError {
-	if g == nil {
+func (o *GetEventGatewayResponse) GetBaseError() *shared.BaseError {
+	if o == nil {
 		return nil
 	}
-	return g.BaseError
+	return o.BaseError
 }

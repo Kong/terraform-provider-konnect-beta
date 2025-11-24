@@ -10,9 +10,9 @@ type EventGatewayACLResourceName struct {
 	Match string `json:"match"`
 }
 
-func (e *EventGatewayACLResourceName) GetMatch() string {
-	if e == nil {
+func (o *EventGatewayACLResourceName) GetMatch() string {
+	if o == nil {
 		return ""
 	}
-	return e.Match
+	return o.Match
 }

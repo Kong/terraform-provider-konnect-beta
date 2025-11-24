@@ -10,9 +10,9 @@ type MeshAccessLogCreateOrUpdateSuccessResponse struct {
 	Warnings []string `json:"warnings,omitempty"`
 }
 
-func (m *MeshAccessLogCreateOrUpdateSuccessResponse) GetWarnings() []string {
-	if m == nil {
+func (o *MeshAccessLogCreateOrUpdateSuccessResponse) GetWarnings() []string {
+	if o == nil {
 		return nil
 	}
-	return m.Warnings
+	return o.Warnings
 }

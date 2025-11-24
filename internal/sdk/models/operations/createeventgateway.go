@@ -30,72 +30,72 @@ type CreateEventGatewayResponse struct {
 	BaseError *shared.BaseError
 }
 
-func (c *CreateEventGatewayResponse) GetContentType() string {
-	if c == nil {
+func (o *CreateEventGatewayResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return c.ContentType
+	return o.ContentType
 }
 
-func (c *CreateEventGatewayResponse) GetStatusCode() int {
-	if c == nil {
+func (o *CreateEventGatewayResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return c.StatusCode
+	return o.StatusCode
 }
 
-func (c *CreateEventGatewayResponse) GetRawResponse() *http.Response {
-	if c == nil {
+func (o *CreateEventGatewayResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return c.RawResponse
+	return o.RawResponse
 }
 
-func (c *CreateEventGatewayResponse) GetEventGatewayInfo() *shared.EventGatewayInfo {
-	if c == nil {
+func (o *CreateEventGatewayResponse) GetEventGatewayInfo() *shared.EventGatewayInfo {
+	if o == nil {
 		return nil
 	}
-	return c.EventGatewayInfo
+	return o.EventGatewayInfo
 }
 
-func (c *CreateEventGatewayResponse) GetBadRequestError() *shared.BadRequestError {
-	if c == nil {
+func (o *CreateEventGatewayResponse) GetBadRequestError() *shared.BadRequestError {
+	if o == nil {
 		return nil
 	}
-	return c.BadRequestError
+	return o.BadRequestError
 }
 
-func (c *CreateEventGatewayResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if c == nil {
+func (o *CreateEventGatewayResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return c.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (c *CreateEventGatewayResponse) GetForbiddenError() *shared.ForbiddenError {
-	if c == nil {
+func (o *CreateEventGatewayResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return c.ForbiddenError
+	return o.ForbiddenError
 }
 
-func (c *CreateEventGatewayResponse) GetNotFoundError() *shared.NotFoundError {
-	if c == nil {
+func (o *CreateEventGatewayResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return c.NotFoundError
+	return o.NotFoundError
 }
 
-func (c *CreateEventGatewayResponse) GetConflictError() *shared.ConflictError {
-	if c == nil {
+func (o *CreateEventGatewayResponse) GetConflictError() *shared.ConflictError {
+	if o == nil {
 		return nil
 	}
-	return c.ConflictError
+	return o.ConflictError
 }
 
-func (c *CreateEventGatewayResponse) GetBaseError() *shared.BaseError {
-	if c == nil {
+func (o *CreateEventGatewayResponse) GetBaseError() *shared.BaseError {
+	if o == nil {
 		return nil
 	}
-	return c.BaseError
+	return o.BaseError
 }

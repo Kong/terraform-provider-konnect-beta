@@ -20,29 +20,29 @@ func (z ZoneEgressList) MarshalJSON() ([]byte, error) {
 }
 
 func (z *ZoneEgressList) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &z, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &z, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (z *ZoneEgressList) GetItems() []ZoneEgressItem {
-	if z == nil {
+func (o *ZoneEgressList) GetItems() []ZoneEgressItem {
+	if o == nil {
 		return nil
 	}
-	return z.Items
+	return o.Items
 }
 
-func (z *ZoneEgressList) GetTotal() *float64 {
-	if z == nil {
+func (o *ZoneEgressList) GetTotal() *float64 {
+	if o == nil {
 		return nil
 	}
-	return z.Total
+	return o.Total
 }
 
-func (z *ZoneEgressList) GetNext() *string {
-	if z == nil {
+func (o *ZoneEgressList) GetNext() *string {
+	if o == nil {
 		return nil
 	}
-	return z.Next
+	return o.Next
 }

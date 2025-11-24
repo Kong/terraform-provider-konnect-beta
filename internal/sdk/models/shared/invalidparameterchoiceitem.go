@@ -46,43 +46,43 @@ func (i InvalidParameterChoiceItem) MarshalJSON() ([]byte, error) {
 }
 
 func (i *InvalidParameterChoiceItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &i, "", false, []string{"field", "rule", "reason", "choices"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &i, "", false, true); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (i *InvalidParameterChoiceItem) GetField() string {
-	if i == nil {
+func (o *InvalidParameterChoiceItem) GetField() string {
+	if o == nil {
 		return ""
 	}
-	return i.Field
+	return o.Field
 }
 
-func (i *InvalidParameterChoiceItem) GetRule() InvalidParameterChoiceItemRule {
-	if i == nil {
+func (o *InvalidParameterChoiceItem) GetRule() InvalidParameterChoiceItemRule {
+	if o == nil {
 		return InvalidParameterChoiceItemRule("")
 	}
-	return i.Rule
+	return o.Rule
 }
 
-func (i *InvalidParameterChoiceItem) GetReason() string {
-	if i == nil {
+func (o *InvalidParameterChoiceItem) GetReason() string {
+	if o == nil {
 		return ""
 	}
-	return i.Reason
+	return o.Reason
 }
 
-func (i *InvalidParameterChoiceItem) GetChoices() []any {
-	if i == nil {
+func (o *InvalidParameterChoiceItem) GetChoices() []any {
+	if o == nil {
 		return []any{}
 	}
-	return i.Choices
+	return o.Choices
 }
 
-func (i *InvalidParameterChoiceItem) GetSource() *string {
-	if i == nil {
+func (o *InvalidParameterChoiceItem) GetSource() *string {
+	if o == nil {
 		return nil
 	}
-	return i.Source
+	return o.Source
 }

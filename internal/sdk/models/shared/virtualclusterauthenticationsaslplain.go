@@ -49,26 +49,26 @@ func (v VirtualClusterAuthenticationSaslPlain) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VirtualClusterAuthenticationSaslPlain) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"type", "mediation"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (v *VirtualClusterAuthenticationSaslPlain) GetType() string {
+func (o *VirtualClusterAuthenticationSaslPlain) GetType() string {
 	return "sasl_plain"
 }
 
-func (v *VirtualClusterAuthenticationSaslPlain) GetMediation() Mediation {
-	if v == nil {
+func (o *VirtualClusterAuthenticationSaslPlain) GetMediation() Mediation {
+	if o == nil {
 		return Mediation("")
 	}
-	return v.Mediation
+	return o.Mediation
 }
 
-func (v *VirtualClusterAuthenticationSaslPlain) GetPrincipals() []VirtualClusterAuthenticationPrincipal {
-	if v == nil {
+func (o *VirtualClusterAuthenticationSaslPlain) GetPrincipals() []VirtualClusterAuthenticationPrincipal {
+	if o == nil {
 		return nil
 	}
-	return v.Principals
+	return o.Principals
 }

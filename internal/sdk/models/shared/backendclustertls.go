@@ -52,36 +52,36 @@ func (b BackendClusterTLS) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BackendClusterTLS) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"enabled"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (b *BackendClusterTLS) GetEnabled() bool {
-	if b == nil {
+func (o *BackendClusterTLS) GetEnabled() bool {
+	if o == nil {
 		return false
 	}
-	return b.Enabled
+	return o.Enabled
 }
 
-func (b *BackendClusterTLS) GetInsecureSkipVerify() *bool {
-	if b == nil {
+func (o *BackendClusterTLS) GetInsecureSkipVerify() *bool {
+	if o == nil {
 		return nil
 	}
-	return b.InsecureSkipVerify
+	return o.InsecureSkipVerify
 }
 
-func (b *BackendClusterTLS) GetCaBundle() *string {
-	if b == nil {
+func (o *BackendClusterTLS) GetCaBundle() *string {
+	if o == nil {
 		return nil
 	}
-	return b.CaBundle
+	return o.CaBundle
 }
 
-func (b *BackendClusterTLS) GetTLSVersions() []TLSVersions {
-	if b == nil {
+func (o *BackendClusterTLS) GetTLSVersions() []TLSVersions {
+	if o == nil {
 		return nil
 	}
-	return b.TLSVersions
+	return o.TLSVersions
 }

@@ -5,7 +5,6 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
 type ChoroplethMapChartType string
@@ -40,27 +39,16 @@ type ChoroplethMapChart struct {
 	Type       ChoroplethMapChartType `json:"type"`
 }
 
-func (c ChoroplethMapChart) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *ChoroplethMapChart) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"type"}); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *ChoroplethMapChart) GetChartTitle() *string {
-	if c == nil {
+func (o *ChoroplethMapChart) GetChartTitle() *string {
+	if o == nil {
 		return nil
 	}
-	return c.ChartTitle
+	return o.ChartTitle
 }
 
-func (c *ChoroplethMapChart) GetType() ChoroplethMapChartType {
-	if c == nil {
+func (o *ChoroplethMapChart) GetType() ChoroplethMapChartType {
+	if o == nil {
 		return ChoroplethMapChartType("")
 	}
-	return c.Type
+	return o.Type
 }

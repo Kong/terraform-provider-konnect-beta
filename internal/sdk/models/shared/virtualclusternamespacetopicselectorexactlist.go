@@ -53,26 +53,26 @@ func (v VirtualClusterNamespaceTopicSelectorExactList) MarshalJSON() ([]byte, er
 }
 
 func (v *VirtualClusterNamespaceTopicSelectorExactList) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (v *VirtualClusterNamespaceTopicSelectorExactList) GetType() string {
+func (o *VirtualClusterNamespaceTopicSelectorExactList) GetType() string {
 	return "exact_list"
 }
 
-func (v *VirtualClusterNamespaceTopicSelectorExactList) GetExactList() []NamespaceExactAllowListItem {
-	if v == nil {
+func (o *VirtualClusterNamespaceTopicSelectorExactList) GetExactList() []NamespaceExactAllowListItem {
+	if o == nil {
 		return nil
 	}
-	return v.ExactList
+	return o.ExactList
 }
 
-func (v *VirtualClusterNamespaceTopicSelectorExactList) GetConflict() *VirtualClusterNamespaceTopicSelectorExactListConflict {
-	if v == nil {
+func (o *VirtualClusterNamespaceTopicSelectorExactList) GetConflict() *VirtualClusterNamespaceTopicSelectorExactListConflict {
+	if o == nil {
 		return nil
 	}
-	return v.Conflict
+	return o.Conflict
 }

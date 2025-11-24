@@ -18,32 +18,32 @@ type PutMeshRetryRequest struct {
 	MeshRetryItem shared.MeshRetryItemInput `request:"mediaType=application/json"`
 }
 
-func (p *PutMeshRetryRequest) GetCpID() string {
-	if p == nil {
+func (o *PutMeshRetryRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return p.CpID
+	return o.CpID
 }
 
-func (p *PutMeshRetryRequest) GetMesh() string {
-	if p == nil {
+func (o *PutMeshRetryRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return p.Mesh
+	return o.Mesh
 }
 
-func (p *PutMeshRetryRequest) GetName() string {
-	if p == nil {
+func (o *PutMeshRetryRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return p.Name
+	return o.Name
 }
 
-func (p *PutMeshRetryRequest) GetMeshRetryItem() shared.MeshRetryItemInput {
-	if p == nil {
+func (o *PutMeshRetryRequest) GetMeshRetryItem() shared.MeshRetryItemInput {
+	if o == nil {
 		return shared.MeshRetryItemInput{}
 	}
-	return p.MeshRetryItem
+	return o.MeshRetryItem
 }
 
 type PutMeshRetryResponse struct {
@@ -57,30 +57,30 @@ type PutMeshRetryResponse struct {
 	MeshRetryCreateOrUpdateSuccessResponse *shared.MeshRetryCreateOrUpdateSuccessResponse
 }
 
-func (p *PutMeshRetryResponse) GetContentType() string {
-	if p == nil {
+func (o *PutMeshRetryResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return p.ContentType
+	return o.ContentType
 }
 
-func (p *PutMeshRetryResponse) GetStatusCode() int {
-	if p == nil {
+func (o *PutMeshRetryResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return p.StatusCode
+	return o.StatusCode
 }
 
-func (p *PutMeshRetryResponse) GetRawResponse() *http.Response {
-	if p == nil {
+func (o *PutMeshRetryResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return p.RawResponse
+	return o.RawResponse
 }
 
-func (p *PutMeshRetryResponse) GetMeshRetryCreateOrUpdateSuccessResponse() *shared.MeshRetryCreateOrUpdateSuccessResponse {
-	if p == nil {
+func (o *PutMeshRetryResponse) GetMeshRetryCreateOrUpdateSuccessResponse() *shared.MeshRetryCreateOrUpdateSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return p.MeshRetryCreateOrUpdateSuccessResponse
+	return o.MeshRetryCreateOrUpdateSuccessResponse
 }

@@ -16,31 +16,31 @@ type EventGatewayEncryptConfig struct {
 	EncryptionKey EncryptionKey `json:"encryption_key"`
 }
 
-func (e *EventGatewayEncryptConfig) GetFailureMode() EncryptionFailureMode {
-	if e == nil {
+func (o *EventGatewayEncryptConfig) GetFailureMode() EncryptionFailureMode {
+	if o == nil {
 		return EncryptionFailureMode("")
 	}
-	return e.FailureMode
+	return o.FailureMode
 }
 
-func (e *EventGatewayEncryptConfig) GetPartOfRecord() []EncryptionRecordPart {
-	if e == nil {
+func (o *EventGatewayEncryptConfig) GetPartOfRecord() []EncryptionRecordPart {
+	if o == nil {
 		return []EncryptionRecordPart{}
 	}
-	return e.PartOfRecord
+	return o.PartOfRecord
 }
 
-func (e *EventGatewayEncryptConfig) GetEncryptionKey() EncryptionKey {
-	if e == nil {
+func (o *EventGatewayEncryptConfig) GetEncryptionKey() EncryptionKey {
+	if o == nil {
 		return EncryptionKey{}
 	}
-	return e.EncryptionKey
+	return o.EncryptionKey
 }
 
-func (e *EventGatewayEncryptConfig) GetEncryptionKeyAws() *EncryptionKeyAWS {
-	return e.GetEncryptionKey().EncryptionKeyAWS
+func (o *EventGatewayEncryptConfig) GetEncryptionKeyAws() *EncryptionKeyAWS {
+	return o.GetEncryptionKey().EncryptionKeyAWS
 }
 
-func (e *EventGatewayEncryptConfig) GetEncryptionKeyStatic() *EncryptionKeyStatic {
-	return e.GetEncryptionKey().EncryptionKeyStatic
+func (o *EventGatewayEncryptConfig) GetEncryptionKeyStatic() *EncryptionKeyStatic {
+	return o.GetEncryptionKey().EncryptionKeyStatic
 }

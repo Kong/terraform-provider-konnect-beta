@@ -11,23 +11,23 @@ type MeshTCPRouteList struct {
 	Next *string `json:"next,omitempty"`
 }
 
-func (m *MeshTCPRouteList) GetItems() []MeshTCPRouteItem {
-	if m == nil {
+func (o *MeshTCPRouteList) GetItems() []MeshTCPRouteItem {
+	if o == nil {
 		return nil
 	}
-	return m.Items
+	return o.Items
 }
 
-func (m *MeshTCPRouteList) GetTotal() *float64 {
-	if m == nil {
+func (o *MeshTCPRouteList) GetTotal() *float64 {
+	if o == nil {
 		return nil
 	}
-	return m.Total
+	return o.Total
 }
 
-func (m *MeshTCPRouteList) GetNext() *string {
-	if m == nil {
+func (o *MeshTCPRouteList) GetNext() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Next
+	return o.Next
 }

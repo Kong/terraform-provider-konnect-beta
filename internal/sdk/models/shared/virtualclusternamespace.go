@@ -59,23 +59,23 @@ type VirtualClusterNamespace struct {
 	Additional *VirtualClusterNamespaceAdditionalProperties `json:"additional,omitempty"`
 }
 
-func (v *VirtualClusterNamespace) GetMode() Mode {
-	if v == nil {
+func (o *VirtualClusterNamespace) GetMode() Mode {
+	if o == nil {
 		return Mode("")
 	}
-	return v.Mode
+	return o.Mode
 }
 
-func (v *VirtualClusterNamespace) GetPrefix() string {
-	if v == nil {
+func (o *VirtualClusterNamespace) GetPrefix() string {
+	if o == nil {
 		return ""
 	}
-	return v.Prefix
+	return o.Prefix
 }
 
-func (v *VirtualClusterNamespace) GetAdditional() *VirtualClusterNamespaceAdditionalProperties {
-	if v == nil {
+func (o *VirtualClusterNamespace) GetAdditional() *VirtualClusterNamespaceAdditionalProperties {
+	if o == nil {
 		return nil
 	}
-	return v.Additional
+	return o.Additional
 }

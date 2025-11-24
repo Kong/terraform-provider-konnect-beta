@@ -18,32 +18,32 @@ type PutMeshIdentityRequest struct {
 	MeshIdentityItem shared.MeshIdentityItemInput `request:"mediaType=application/json"`
 }
 
-func (p *PutMeshIdentityRequest) GetCpID() string {
-	if p == nil {
+func (o *PutMeshIdentityRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return p.CpID
+	return o.CpID
 }
 
-func (p *PutMeshIdentityRequest) GetMesh() string {
-	if p == nil {
+func (o *PutMeshIdentityRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return p.Mesh
+	return o.Mesh
 }
 
-func (p *PutMeshIdentityRequest) GetName() string {
-	if p == nil {
+func (o *PutMeshIdentityRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return p.Name
+	return o.Name
 }
 
-func (p *PutMeshIdentityRequest) GetMeshIdentityItem() shared.MeshIdentityItemInput {
-	if p == nil {
+func (o *PutMeshIdentityRequest) GetMeshIdentityItem() shared.MeshIdentityItemInput {
+	if o == nil {
 		return shared.MeshIdentityItemInput{}
 	}
-	return p.MeshIdentityItem
+	return o.MeshIdentityItem
 }
 
 type PutMeshIdentityResponse struct {
@@ -57,30 +57,30 @@ type PutMeshIdentityResponse struct {
 	MeshIdentityCreateOrUpdateSuccessResponse *shared.MeshIdentityCreateOrUpdateSuccessResponse
 }
 
-func (p *PutMeshIdentityResponse) GetContentType() string {
-	if p == nil {
+func (o *PutMeshIdentityResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return p.ContentType
+	return o.ContentType
 }
 
-func (p *PutMeshIdentityResponse) GetStatusCode() int {
-	if p == nil {
+func (o *PutMeshIdentityResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return p.StatusCode
+	return o.StatusCode
 }
 
-func (p *PutMeshIdentityResponse) GetRawResponse() *http.Response {
-	if p == nil {
+func (o *PutMeshIdentityResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return p.RawResponse
+	return o.RawResponse
 }
 
-func (p *PutMeshIdentityResponse) GetMeshIdentityCreateOrUpdateSuccessResponse() *shared.MeshIdentityCreateOrUpdateSuccessResponse {
-	if p == nil {
+func (o *PutMeshIdentityResponse) GetMeshIdentityCreateOrUpdateSuccessResponse() *shared.MeshIdentityCreateOrUpdateSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return p.MeshIdentityCreateOrUpdateSuccessResponse
+	return o.MeshIdentityCreateOrUpdateSuccessResponse
 }

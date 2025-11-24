@@ -14,18 +14,18 @@ type CreateEventGatewayDataPlaneCertificateRequest struct {
 	CreateEventGatewayDataPlaneCertificateRequest *shared.CreateEventGatewayDataPlaneCertificateRequest `request:"mediaType=application/json"`
 }
 
-func (c *CreateEventGatewayDataPlaneCertificateRequest) GetGatewayID() string {
-	if c == nil {
+func (o *CreateEventGatewayDataPlaneCertificateRequest) GetGatewayID() string {
+	if o == nil {
 		return ""
 	}
-	return c.GatewayID
+	return o.GatewayID
 }
 
-func (c *CreateEventGatewayDataPlaneCertificateRequest) GetCreateEventGatewayDataPlaneCertificateRequest() *shared.CreateEventGatewayDataPlaneCertificateRequest {
-	if c == nil {
+func (o *CreateEventGatewayDataPlaneCertificateRequest) GetCreateEventGatewayDataPlaneCertificateRequest() *shared.CreateEventGatewayDataPlaneCertificateRequest {
+	if o == nil {
 		return nil
 	}
-	return c.CreateEventGatewayDataPlaneCertificateRequest
+	return o.CreateEventGatewayDataPlaneCertificateRequest
 }
 
 type CreateEventGatewayDataPlaneCertificateResponse struct {
@@ -47,58 +47,58 @@ type CreateEventGatewayDataPlaneCertificateResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (c *CreateEventGatewayDataPlaneCertificateResponse) GetContentType() string {
-	if c == nil {
+func (o *CreateEventGatewayDataPlaneCertificateResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return c.ContentType
+	return o.ContentType
 }
 
-func (c *CreateEventGatewayDataPlaneCertificateResponse) GetStatusCode() int {
-	if c == nil {
+func (o *CreateEventGatewayDataPlaneCertificateResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return c.StatusCode
+	return o.StatusCode
 }
 
-func (c *CreateEventGatewayDataPlaneCertificateResponse) GetRawResponse() *http.Response {
-	if c == nil {
+func (o *CreateEventGatewayDataPlaneCertificateResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return c.RawResponse
+	return o.RawResponse
 }
 
-func (c *CreateEventGatewayDataPlaneCertificateResponse) GetEventGatewayDataPlaneCertificate() *shared.EventGatewayDataPlaneCertificate {
-	if c == nil {
+func (o *CreateEventGatewayDataPlaneCertificateResponse) GetEventGatewayDataPlaneCertificate() *shared.EventGatewayDataPlaneCertificate {
+	if o == nil {
 		return nil
 	}
-	return c.EventGatewayDataPlaneCertificate
+	return o.EventGatewayDataPlaneCertificate
 }
 
-func (c *CreateEventGatewayDataPlaneCertificateResponse) GetBadRequestError() *shared.BadRequestError {
-	if c == nil {
+func (o *CreateEventGatewayDataPlaneCertificateResponse) GetBadRequestError() *shared.BadRequestError {
+	if o == nil {
 		return nil
 	}
-	return c.BadRequestError
+	return o.BadRequestError
 }
 
-func (c *CreateEventGatewayDataPlaneCertificateResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if c == nil {
+func (o *CreateEventGatewayDataPlaneCertificateResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return c.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (c *CreateEventGatewayDataPlaneCertificateResponse) GetForbiddenError() *shared.ForbiddenError {
-	if c == nil {
+func (o *CreateEventGatewayDataPlaneCertificateResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return c.ForbiddenError
+	return o.ForbiddenError
 }
 
-func (c *CreateEventGatewayDataPlaneCertificateResponse) GetNotFoundError() *shared.NotFoundError {
-	if c == nil {
+func (o *CreateEventGatewayDataPlaneCertificateResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return c.NotFoundError
+	return o.NotFoundError
 }

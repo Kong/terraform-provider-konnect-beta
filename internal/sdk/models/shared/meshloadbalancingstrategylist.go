@@ -11,23 +11,23 @@ type MeshLoadBalancingStrategyList struct {
 	Next *string `json:"next,omitempty"`
 }
 
-func (m *MeshLoadBalancingStrategyList) GetItems() []MeshLoadBalancingStrategyItem {
-	if m == nil {
+func (o *MeshLoadBalancingStrategyList) GetItems() []MeshLoadBalancingStrategyItem {
+	if o == nil {
 		return nil
 	}
-	return m.Items
+	return o.Items
 }
 
-func (m *MeshLoadBalancingStrategyList) GetTotal() *float64 {
-	if m == nil {
+func (o *MeshLoadBalancingStrategyList) GetTotal() *float64 {
+	if o == nil {
 		return nil
 	}
-	return m.Total
+	return o.Total
 }
 
-func (m *MeshLoadBalancingStrategyList) GetNext() *string {
-	if m == nil {
+func (o *MeshLoadBalancingStrategyList) GetNext() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Next
+	return o.Next
 }

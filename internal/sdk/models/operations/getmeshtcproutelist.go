@@ -14,18 +14,18 @@ type GetMeshTCPRouteListQueryParamFilter struct {
 	Value *string `queryParam:"name=value"`
 }
 
-func (g *GetMeshTCPRouteListQueryParamFilter) GetKey() *string {
-	if g == nil {
+func (o *GetMeshTCPRouteListQueryParamFilter) GetKey() *string {
+	if o == nil {
 		return nil
 	}
-	return g.Key
+	return o.Key
 }
 
-func (g *GetMeshTCPRouteListQueryParamFilter) GetValue() *string {
-	if g == nil {
+func (o *GetMeshTCPRouteListQueryParamFilter) GetValue() *string {
+	if o == nil {
 		return nil
 	}
-	return g.Value
+	return o.Value
 }
 
 type GetMeshTCPRouteListRequest struct {
@@ -46,45 +46,45 @@ func (g GetMeshTCPRouteListRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetMeshTCPRouteListRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"cpId", "mesh"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (g *GetMeshTCPRouteListRequest) GetCpID() string {
-	if g == nil {
+func (o *GetMeshTCPRouteListRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return g.CpID
+	return o.CpID
 }
 
-func (g *GetMeshTCPRouteListRequest) GetOffset() *int64 {
-	if g == nil {
+func (o *GetMeshTCPRouteListRequest) GetOffset() *int64 {
+	if o == nil {
 		return nil
 	}
-	return g.Offset
+	return o.Offset
 }
 
-func (g *GetMeshTCPRouteListRequest) GetSize() *int64 {
-	if g == nil {
+func (o *GetMeshTCPRouteListRequest) GetSize() *int64 {
+	if o == nil {
 		return nil
 	}
-	return g.Size
+	return o.Size
 }
 
-func (g *GetMeshTCPRouteListRequest) GetFilter() *GetMeshTCPRouteListQueryParamFilter {
-	if g == nil {
+func (o *GetMeshTCPRouteListRequest) GetFilter() *GetMeshTCPRouteListQueryParamFilter {
+	if o == nil {
 		return nil
 	}
-	return g.Filter
+	return o.Filter
 }
 
-func (g *GetMeshTCPRouteListRequest) GetMesh() string {
-	if g == nil {
+func (o *GetMeshTCPRouteListRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return g.Mesh
+	return o.Mesh
 }
 
 type GetMeshTCPRouteListResponse struct {
@@ -98,30 +98,30 @@ type GetMeshTCPRouteListResponse struct {
 	MeshTCPRouteList *shared.MeshTCPRouteList
 }
 
-func (g *GetMeshTCPRouteListResponse) GetContentType() string {
-	if g == nil {
+func (o *GetMeshTCPRouteListResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetMeshTCPRouteListResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetMeshTCPRouteListResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetMeshTCPRouteListResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetMeshTCPRouteListResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetMeshTCPRouteListResponse) GetMeshTCPRouteList() *shared.MeshTCPRouteList {
-	if g == nil {
+func (o *GetMeshTCPRouteListResponse) GetMeshTCPRouteList() *shared.MeshTCPRouteList {
+	if o == nil {
 		return nil
 	}
-	return g.MeshTCPRouteList
+	return o.MeshTCPRouteList
 }

@@ -17,19 +17,19 @@ func (v VirtualClusterNamespaceIDSelectorGlob) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VirtualClusterNamespaceIDSelectorGlob) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"type", "glob"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (v *VirtualClusterNamespaceIDSelectorGlob) GetType() string {
+func (o *VirtualClusterNamespaceIDSelectorGlob) GetType() string {
 	return "glob"
 }
 
-func (v *VirtualClusterNamespaceIDSelectorGlob) GetGlob() string {
-	if v == nil {
+func (o *VirtualClusterNamespaceIDSelectorGlob) GetGlob() string {
+	if o == nil {
 		return ""
 	}
-	return v.Glob
+	return o.Glob
 }

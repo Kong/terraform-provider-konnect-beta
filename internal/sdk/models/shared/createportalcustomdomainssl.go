@@ -44,30 +44,30 @@ type CreatePortalCustomDomainSSL struct {
 	SkipCaCheck *bool `json:"skip_ca_check,omitempty"`
 }
 
-func (c *CreatePortalCustomDomainSSL) GetDomainVerificationMethod() *DomainVerificationMethod {
-	if c == nil {
+func (o *CreatePortalCustomDomainSSL) GetDomainVerificationMethod() *DomainVerificationMethod {
+	if o == nil {
 		return nil
 	}
-	return c.DomainVerificationMethod
+	return o.DomainVerificationMethod
 }
 
-func (c *CreatePortalCustomDomainSSL) GetCustomCertificate() *string {
-	if c == nil {
+func (o *CreatePortalCustomDomainSSL) GetCustomCertificate() *string {
+	if o == nil {
 		return nil
 	}
-	return c.CustomCertificate
+	return o.CustomCertificate
 }
 
-func (c *CreatePortalCustomDomainSSL) GetCustomPrivateKey() *string {
-	if c == nil {
+func (o *CreatePortalCustomDomainSSL) GetCustomPrivateKey() *string {
+	if o == nil {
 		return nil
 	}
-	return c.CustomPrivateKey
+	return o.CustomPrivateKey
 }
 
-func (c *CreatePortalCustomDomainSSL) GetSkipCaCheck() *bool {
-	if c == nil {
+func (o *CreatePortalCustomDomainSSL) GetSkipCaCheck() *bool {
+	if o == nil {
 		return nil
 	}
-	return c.SkipCaCheck
+	return o.SkipCaCheck
 }

@@ -16,25 +16,25 @@ type DeleteMeshOPARequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (d *DeleteMeshOPARequest) GetCpID() string {
-	if d == nil {
+func (o *DeleteMeshOPARequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return d.CpID
+	return o.CpID
 }
 
-func (d *DeleteMeshOPARequest) GetMesh() string {
-	if d == nil {
+func (o *DeleteMeshOPARequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return d.Mesh
+	return o.Mesh
 }
 
-func (d *DeleteMeshOPARequest) GetName() string {
-	if d == nil {
+func (o *DeleteMeshOPARequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return d.Name
+	return o.Name
 }
 
 type DeleteMeshOPAResponse struct {
@@ -50,37 +50,37 @@ type DeleteMeshOPAResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeleteMeshOPAResponse) GetContentType() string {
-	if d == nil {
+func (o *DeleteMeshOPAResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeleteMeshOPAResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeleteMeshOPAResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeleteMeshOPAResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeleteMeshOPAResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeleteMeshOPAResponse) GetMeshOPADeleteSuccessResponse() *shared.MeshOPADeleteSuccessResponse {
-	if d == nil {
+func (o *DeleteMeshOPAResponse) GetMeshOPADeleteSuccessResponse() *shared.MeshOPADeleteSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return d.MeshOPADeleteSuccessResponse
+	return o.MeshOPADeleteSuccessResponse
 }
 
-func (d *DeleteMeshOPAResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeleteMeshOPAResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

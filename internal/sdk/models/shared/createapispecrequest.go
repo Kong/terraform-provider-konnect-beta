@@ -46,16 +46,16 @@ type CreateAPISpecRequest struct {
 	Type *CreateAPISpecRequestAPISpecType `json:"type,omitempty"`
 }
 
-func (c *CreateAPISpecRequest) GetContent() string {
-	if c == nil {
+func (o *CreateAPISpecRequest) GetContent() string {
+	if o == nil {
 		return ""
 	}
-	return c.Content
+	return o.Content
 }
 
-func (c *CreateAPISpecRequest) GetType() *CreateAPISpecRequestAPISpecType {
-	if c == nil {
+func (o *CreateAPISpecRequest) GetType() *CreateAPISpecRequestAPISpecType {
+	if o == nil {
 		return nil
 	}
-	return c.Type
+	return o.Type
 }

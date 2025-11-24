@@ -17,8 +17,8 @@ const (
 
 // Protocol specifies the network protocol this listener expects to receive.
 type Protocol struct {
-	Str     *string `queryParam:"inline,name=protocol"`
-	Integer *int64  `queryParam:"inline,name=protocol"`
+	Str     *string `queryParam:"inline"`
+	Integer *int64  `queryParam:"inline"`
 
 	Type ProtocolType
 }
@@ -43,43 +43,17 @@ func CreateProtocolInteger(integer int64) Protocol {
 
 func (u *Protocol) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  ProtocolTypeStr,
-			Value: &str,
-		})
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = ProtocolTypeStr
+		return nil
 	}
 
 	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  ProtocolTypeInteger,
-			Value: &integer,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Protocol", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Protocol", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(ProtocolType)
-	switch best.Type {
-	case ProtocolTypeStr:
-		u.Str = best.Value.(*string)
-		return nil
-	case ProtocolTypeInteger:
-		u.Integer = best.Value.(*int64)
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = ProtocolTypeInteger
 		return nil
 	}
 
@@ -103,11 +77,11 @@ type Resources struct {
 	ConnectionLimit *int64 `json:"connectionLimit,omitempty"`
 }
 
-func (r *Resources) GetConnectionLimit() *int64 {
-	if r == nil {
+func (o *Resources) GetConnectionLimit() *int64 {
+	if o == nil {
 		return nil
 	}
-	return r.ConnectionLimit
+	return o.ConnectionLimit
 }
 
 type DataSourceSecret struct {
@@ -115,22 +89,11 @@ type DataSourceSecret struct {
 	Secret *string `json:"secret,omitempty"`
 }
 
-func (d DataSourceSecret) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(d, "", false)
-}
-
-func (d *DataSourceSecret) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (d *DataSourceSecret) GetSecret() *string {
-	if d == nil {
+func (o *DataSourceSecret) GetSecret() *string {
+	if o == nil {
 		return nil
 	}
-	return d.Secret
+	return o.Secret
 }
 
 type DataSourceInlineString struct {
@@ -138,22 +101,11 @@ type DataSourceInlineString struct {
 	InlineString *string `json:"inlineString,omitempty"`
 }
 
-func (d DataSourceInlineString) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(d, "", false)
-}
-
-func (d *DataSourceInlineString) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (d *DataSourceInlineString) GetInlineString() *string {
-	if d == nil {
+func (o *DataSourceInlineString) GetInlineString() *string {
+	if o == nil {
 		return nil
 	}
-	return d.InlineString
+	return o.InlineString
 }
 
 type DataSourceInline struct {
@@ -161,22 +113,11 @@ type DataSourceInline struct {
 	Inline *string `json:"inline,omitempty"`
 }
 
-func (d DataSourceInline) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(d, "", false)
-}
-
-func (d *DataSourceInline) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (d *DataSourceInline) GetInline() *string {
-	if d == nil {
+func (o *DataSourceInline) GetInline() *string {
+	if o == nil {
 		return nil
 	}
-	return d.Inline
+	return o.Inline
 }
 
 type DataSourceFile struct {
@@ -185,22 +126,11 @@ type DataSourceFile struct {
 	File *string `json:"file,omitempty"`
 }
 
-func (d DataSourceFile) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(d, "", false)
-}
-
-func (d *DataSourceFile) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (d *DataSourceFile) GetFile() *string {
-	if d == nil {
+func (o *DataSourceFile) GetFile() *string {
+	if o == nil {
 		return nil
 	}
-	return d.File
+	return o.File
 }
 
 type CertificatesType string
@@ -213,10 +143,10 @@ const (
 )
 
 type Certificates struct {
-	DataSourceFile         *DataSourceFile         `queryParam:"inline,name=certificates"`
-	DataSourceInline       *DataSourceInline       `queryParam:"inline,name=certificates"`
-	DataSourceInlineString *DataSourceInlineString `queryParam:"inline,name=certificates"`
-	DataSourceSecret       *DataSourceSecret       `queryParam:"inline,name=certificates"`
+	DataSourceFile         *DataSourceFile         `queryParam:"inline"`
+	DataSourceInline       *DataSourceInline       `queryParam:"inline"`
+	DataSourceInlineString *DataSourceInlineString `queryParam:"inline"`
+	DataSourceSecret       *DataSourceSecret       `queryParam:"inline"`
 
 	Type CertificatesType
 }
@@ -259,65 +189,31 @@ func CreateCertificatesDataSourceSecret(dataSourceSecret DataSourceSecret) Certi
 
 func (u *Certificates) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var dataSourceFile DataSourceFile = DataSourceFile{}
-	if err := utils.UnmarshalJSON(data, &dataSourceFile, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  CertificatesTypeDataSourceFile,
-			Value: &dataSourceFile,
-		})
+	if err := utils.UnmarshalJSON(data, &dataSourceFile, "", true, true); err == nil {
+		u.DataSourceFile = &dataSourceFile
+		u.Type = CertificatesTypeDataSourceFile
+		return nil
 	}
 
 	var dataSourceInline DataSourceInline = DataSourceInline{}
-	if err := utils.UnmarshalJSON(data, &dataSourceInline, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  CertificatesTypeDataSourceInline,
-			Value: &dataSourceInline,
-		})
+	if err := utils.UnmarshalJSON(data, &dataSourceInline, "", true, true); err == nil {
+		u.DataSourceInline = &dataSourceInline
+		u.Type = CertificatesTypeDataSourceInline
+		return nil
 	}
 
 	var dataSourceInlineString DataSourceInlineString = DataSourceInlineString{}
-	if err := utils.UnmarshalJSON(data, &dataSourceInlineString, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  CertificatesTypeDataSourceInlineString,
-			Value: &dataSourceInlineString,
-		})
+	if err := utils.UnmarshalJSON(data, &dataSourceInlineString, "", true, true); err == nil {
+		u.DataSourceInlineString = &dataSourceInlineString
+		u.Type = CertificatesTypeDataSourceInlineString
+		return nil
 	}
 
 	var dataSourceSecret DataSourceSecret = DataSourceSecret{}
-	if err := utils.UnmarshalJSON(data, &dataSourceSecret, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  CertificatesTypeDataSourceSecret,
-			Value: &dataSourceSecret,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Certificates", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Certificates", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(CertificatesType)
-	switch best.Type {
-	case CertificatesTypeDataSourceFile:
-		u.DataSourceFile = best.Value.(*DataSourceFile)
-		return nil
-	case CertificatesTypeDataSourceInline:
-		u.DataSourceInline = best.Value.(*DataSourceInline)
-		return nil
-	case CertificatesTypeDataSourceInlineString:
-		u.DataSourceInlineString = best.Value.(*DataSourceInlineString)
-		return nil
-	case CertificatesTypeDataSourceSecret:
-		u.DataSourceSecret = best.Value.(*DataSourceSecret)
+	if err := utils.UnmarshalJSON(data, &dataSourceSecret, "", true, true); err == nil {
+		u.DataSourceSecret = &dataSourceSecret
+		u.Type = CertificatesTypeDataSourceSecret
 		return nil
 	}
 
@@ -354,8 +250,8 @@ const (
 // MeshGatewayItemMode - Mode defines the TLS behavior for the TLS session initiated
 // by the client.
 type MeshGatewayItemMode struct {
-	Str     *string `queryParam:"inline,name=mode"`
-	Integer *int64  `queryParam:"inline,name=mode"`
+	Str     *string `queryParam:"inline"`
+	Integer *int64  `queryParam:"inline"`
 
 	Type MeshGatewayItemModeType
 }
@@ -380,43 +276,17 @@ func CreateMeshGatewayItemModeInteger(integer int64) MeshGatewayItemMode {
 
 func (u *MeshGatewayItemMode) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshGatewayItemModeTypeStr,
-			Value: &str,
-		})
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = MeshGatewayItemModeTypeStr
+		return nil
 	}
 
 	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshGatewayItemModeTypeInteger,
-			Value: &integer,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshGatewayItemMode", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshGatewayItemMode", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(MeshGatewayItemModeType)
-	switch best.Type {
-	case MeshGatewayItemModeTypeStr:
-		u.Str = best.Value.(*string)
-		return nil
-	case MeshGatewayItemModeTypeInteger:
-		u.Integer = best.Value.(*int64)
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = MeshGatewayItemModeTypeInteger
 		return nil
 	}
 
@@ -466,25 +336,25 @@ type MeshGatewayItemTLS struct {
 	Options *OptionsObj `json:"options,omitempty"`
 }
 
-func (m *MeshGatewayItemTLS) GetCertificates() []Certificates {
-	if m == nil {
+func (o *MeshGatewayItemTLS) GetCertificates() []Certificates {
+	if o == nil {
 		return nil
 	}
-	return m.Certificates
+	return o.Certificates
 }
 
-func (m *MeshGatewayItemTLS) GetMode() *MeshGatewayItemMode {
-	if m == nil {
+func (o *MeshGatewayItemTLS) GetMode() *MeshGatewayItemMode {
+	if o == nil {
 		return nil
 	}
-	return m.Mode
+	return o.Mode
 }
 
-func (m *MeshGatewayItemTLS) GetOptions() *OptionsObj {
-	if m == nil {
+func (o *MeshGatewayItemTLS) GetOptions() *OptionsObj {
+	if o == nil {
 		return nil
 	}
-	return m.Options
+	return o.Options
 }
 
 type Listeners struct {
@@ -517,53 +387,53 @@ type Listeners struct {
 	TLS *MeshGatewayItemTLS `json:"tls,omitempty"`
 }
 
-func (l *Listeners) GetCrossMesh() *bool {
-	if l == nil {
+func (o *Listeners) GetCrossMesh() *bool {
+	if o == nil {
 		return nil
 	}
-	return l.CrossMesh
+	return o.CrossMesh
 }
 
-func (l *Listeners) GetHostname() *string {
-	if l == nil {
+func (o *Listeners) GetHostname() *string {
+	if o == nil {
 		return nil
 	}
-	return l.Hostname
+	return o.Hostname
 }
 
-func (l *Listeners) GetPort() *int64 {
-	if l == nil {
+func (o *Listeners) GetPort() *int64 {
+	if o == nil {
 		return nil
 	}
-	return l.Port
+	return o.Port
 }
 
-func (l *Listeners) GetProtocol() *Protocol {
-	if l == nil {
+func (o *Listeners) GetProtocol() *Protocol {
+	if o == nil {
 		return nil
 	}
-	return l.Protocol
+	return o.Protocol
 }
 
-func (l *Listeners) GetResources() *Resources {
-	if l == nil {
+func (o *Listeners) GetResources() *Resources {
+	if o == nil {
 		return nil
 	}
-	return l.Resources
+	return o.Resources
 }
 
-func (l *Listeners) GetTags() map[string]string {
-	if l == nil {
+func (o *Listeners) GetTags() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return l.Tags
+	return o.Tags
 }
 
-func (l *Listeners) GetTLS() *MeshGatewayItemTLS {
-	if l == nil {
+func (o *Listeners) GetTLS() *MeshGatewayItemTLS {
+	if o == nil {
 		return nil
 	}
-	return l.TLS
+	return o.TLS
 }
 
 // Conf - The desired configuration of the MeshGateway.
@@ -573,11 +443,11 @@ type Conf struct {
 	Listeners []Listeners `json:"listeners,omitempty"`
 }
 
-func (c *Conf) GetListeners() []Listeners {
-	if c == nil {
+func (o *Conf) GetListeners() []Listeners {
+	if o == nil {
 		return nil
 	}
-	return c.Listeners
+	return o.Listeners
 }
 
 // Selectors - Selector defines structure for selecting tags for given dataplane
@@ -586,11 +456,11 @@ type Selectors struct {
 	Match map[string]string `json:"match,omitempty"`
 }
 
-func (s *Selectors) GetMatch() map[string]string {
-	if s == nil {
+func (o *Selectors) GetMatch() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return s.Match
+	return o.Match
 }
 
 // MeshGatewayItem - Successful response
@@ -611,51 +481,51 @@ type MeshGatewayItem struct {
 	Type string            `json:"type"`
 }
 
-func (m *MeshGatewayItem) GetConf() *Conf {
-	if m == nil {
+func (o *MeshGatewayItem) GetConf() *Conf {
+	if o == nil {
 		return nil
 	}
-	return m.Conf
+	return o.Conf
 }
 
-func (m *MeshGatewayItem) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshGatewayItem) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshGatewayItem) GetMesh() string {
-	if m == nil {
+func (o *MeshGatewayItem) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return m.Mesh
+	return o.Mesh
 }
 
-func (m *MeshGatewayItem) GetName() string {
-	if m == nil {
+func (o *MeshGatewayItem) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshGatewayItem) GetSelectors() []Selectors {
-	if m == nil {
+func (o *MeshGatewayItem) GetSelectors() []Selectors {
+	if o == nil {
 		return nil
 	}
-	return m.Selectors
+	return o.Selectors
 }
 
-func (m *MeshGatewayItem) GetTags() map[string]string {
-	if m == nil {
+func (o *MeshGatewayItem) GetTags() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Tags
+	return o.Tags
 }
 
-func (m *MeshGatewayItem) GetType() string {
-	if m == nil {
+func (o *MeshGatewayItem) GetType() string {
+	if o == nil {
 		return ""
 	}
-	return m.Type
+	return o.Type
 }

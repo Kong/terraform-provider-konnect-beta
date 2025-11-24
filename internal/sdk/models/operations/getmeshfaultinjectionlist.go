@@ -14,18 +14,18 @@ type GetMeshFaultInjectionListQueryParamFilter struct {
 	Value *string `queryParam:"name=value"`
 }
 
-func (g *GetMeshFaultInjectionListQueryParamFilter) GetKey() *string {
-	if g == nil {
+func (o *GetMeshFaultInjectionListQueryParamFilter) GetKey() *string {
+	if o == nil {
 		return nil
 	}
-	return g.Key
+	return o.Key
 }
 
-func (g *GetMeshFaultInjectionListQueryParamFilter) GetValue() *string {
-	if g == nil {
+func (o *GetMeshFaultInjectionListQueryParamFilter) GetValue() *string {
+	if o == nil {
 		return nil
 	}
-	return g.Value
+	return o.Value
 }
 
 type GetMeshFaultInjectionListRequest struct {
@@ -46,45 +46,45 @@ func (g GetMeshFaultInjectionListRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetMeshFaultInjectionListRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"cpId", "mesh"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (g *GetMeshFaultInjectionListRequest) GetCpID() string {
-	if g == nil {
+func (o *GetMeshFaultInjectionListRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return g.CpID
+	return o.CpID
 }
 
-func (g *GetMeshFaultInjectionListRequest) GetOffset() *int64 {
-	if g == nil {
+func (o *GetMeshFaultInjectionListRequest) GetOffset() *int64 {
+	if o == nil {
 		return nil
 	}
-	return g.Offset
+	return o.Offset
 }
 
-func (g *GetMeshFaultInjectionListRequest) GetSize() *int64 {
-	if g == nil {
+func (o *GetMeshFaultInjectionListRequest) GetSize() *int64 {
+	if o == nil {
 		return nil
 	}
-	return g.Size
+	return o.Size
 }
 
-func (g *GetMeshFaultInjectionListRequest) GetFilter() *GetMeshFaultInjectionListQueryParamFilter {
-	if g == nil {
+func (o *GetMeshFaultInjectionListRequest) GetFilter() *GetMeshFaultInjectionListQueryParamFilter {
+	if o == nil {
 		return nil
 	}
-	return g.Filter
+	return o.Filter
 }
 
-func (g *GetMeshFaultInjectionListRequest) GetMesh() string {
-	if g == nil {
+func (o *GetMeshFaultInjectionListRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return g.Mesh
+	return o.Mesh
 }
 
 type GetMeshFaultInjectionListResponse struct {
@@ -98,30 +98,30 @@ type GetMeshFaultInjectionListResponse struct {
 	MeshFaultInjectionList *shared.MeshFaultInjectionList
 }
 
-func (g *GetMeshFaultInjectionListResponse) GetContentType() string {
-	if g == nil {
+func (o *GetMeshFaultInjectionListResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetMeshFaultInjectionListResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetMeshFaultInjectionListResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetMeshFaultInjectionListResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetMeshFaultInjectionListResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetMeshFaultInjectionListResponse) GetMeshFaultInjectionList() *shared.MeshFaultInjectionList {
-	if g == nil {
+func (o *GetMeshFaultInjectionListResponse) GetMeshFaultInjectionList() *shared.MeshFaultInjectionList {
+	if o == nil {
 		return nil
 	}
-	return g.MeshFaultInjectionList
+	return o.MeshFaultInjectionList
 }

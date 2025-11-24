@@ -38,64 +38,64 @@ func (a APIDocumentResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *APIDocumentResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "content", "title", "slug", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *APIDocumentResponse) GetID() string {
-	if a == nil {
+func (o *APIDocumentResponse) GetID() string {
+	if o == nil {
 		return ""
 	}
-	return a.ID
+	return o.ID
 }
 
-func (a *APIDocumentResponse) GetContent() string {
-	if a == nil {
+func (o *APIDocumentResponse) GetContent() string {
+	if o == nil {
 		return ""
 	}
-	return a.Content
+	return o.Content
 }
 
-func (a *APIDocumentResponse) GetTitle() string {
-	if a == nil {
+func (o *APIDocumentResponse) GetTitle() string {
+	if o == nil {
 		return ""
 	}
-	return a.Title
+	return o.Title
 }
 
-func (a *APIDocumentResponse) GetSlug() string {
-	if a == nil {
+func (o *APIDocumentResponse) GetSlug() string {
+	if o == nil {
 		return ""
 	}
-	return a.Slug
+	return o.Slug
 }
 
-func (a *APIDocumentResponse) GetStatus() *APIDocumentStatus {
-	if a == nil {
+func (o *APIDocumentResponse) GetStatus() *APIDocumentStatus {
+	if o == nil {
 		return nil
 	}
-	return a.Status
+	return o.Status
 }
 
-func (a *APIDocumentResponse) GetParentDocumentID() *string {
-	if a == nil {
+func (o *APIDocumentResponse) GetParentDocumentID() *string {
+	if o == nil {
 		return nil
 	}
-	return a.ParentDocumentID
+	return o.ParentDocumentID
 }
 
-func (a *APIDocumentResponse) GetCreatedAt() time.Time {
-	if a == nil {
+func (o *APIDocumentResponse) GetCreatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return a.CreatedAt
+	return o.CreatedAt
 }
 
-func (a *APIDocumentResponse) GetUpdatedAt() time.Time {
-	if a == nil {
+func (o *APIDocumentResponse) GetUpdatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return a.UpdatedAt
+	return o.UpdatedAt
 }

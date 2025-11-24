@@ -13,16 +13,16 @@ type VirtualClusterNamespaceAdditionalProperties struct {
 	ConsumerGroups []VirtualClusterNamespaceIDSelector `json:"consumer_groups,omitempty"`
 }
 
-func (v *VirtualClusterNamespaceAdditionalProperties) GetTopics() []VirtualClusterNamespaceTopicSelector {
-	if v == nil {
+func (o *VirtualClusterNamespaceAdditionalProperties) GetTopics() []VirtualClusterNamespaceTopicSelector {
+	if o == nil {
 		return nil
 	}
-	return v.Topics
+	return o.Topics
 }
 
-func (v *VirtualClusterNamespaceAdditionalProperties) GetConsumerGroups() []VirtualClusterNamespaceIDSelector {
-	if v == nil {
+func (o *VirtualClusterNamespaceAdditionalProperties) GetConsumerGroups() []VirtualClusterNamespaceIDSelector {
+	if o == nil {
 		return nil
 	}
-	return v.ConsumerGroups
+	return o.ConsumerGroups
 }

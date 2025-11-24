@@ -14,18 +14,18 @@ type GetMeshRetryListQueryParamFilter struct {
 	Value *string `queryParam:"name=value"`
 }
 
-func (g *GetMeshRetryListQueryParamFilter) GetKey() *string {
-	if g == nil {
+func (o *GetMeshRetryListQueryParamFilter) GetKey() *string {
+	if o == nil {
 		return nil
 	}
-	return g.Key
+	return o.Key
 }
 
-func (g *GetMeshRetryListQueryParamFilter) GetValue() *string {
-	if g == nil {
+func (o *GetMeshRetryListQueryParamFilter) GetValue() *string {
+	if o == nil {
 		return nil
 	}
-	return g.Value
+	return o.Value
 }
 
 type GetMeshRetryListRequest struct {
@@ -46,45 +46,45 @@ func (g GetMeshRetryListRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetMeshRetryListRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"cpId", "mesh"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (g *GetMeshRetryListRequest) GetCpID() string {
-	if g == nil {
+func (o *GetMeshRetryListRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return g.CpID
+	return o.CpID
 }
 
-func (g *GetMeshRetryListRequest) GetOffset() *int64 {
-	if g == nil {
+func (o *GetMeshRetryListRequest) GetOffset() *int64 {
+	if o == nil {
 		return nil
 	}
-	return g.Offset
+	return o.Offset
 }
 
-func (g *GetMeshRetryListRequest) GetSize() *int64 {
-	if g == nil {
+func (o *GetMeshRetryListRequest) GetSize() *int64 {
+	if o == nil {
 		return nil
 	}
-	return g.Size
+	return o.Size
 }
 
-func (g *GetMeshRetryListRequest) GetFilter() *GetMeshRetryListQueryParamFilter {
-	if g == nil {
+func (o *GetMeshRetryListRequest) GetFilter() *GetMeshRetryListQueryParamFilter {
+	if o == nil {
 		return nil
 	}
-	return g.Filter
+	return o.Filter
 }
 
-func (g *GetMeshRetryListRequest) GetMesh() string {
-	if g == nil {
+func (o *GetMeshRetryListRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return g.Mesh
+	return o.Mesh
 }
 
 type GetMeshRetryListResponse struct {
@@ -98,30 +98,30 @@ type GetMeshRetryListResponse struct {
 	MeshRetryList *shared.MeshRetryList
 }
 
-func (g *GetMeshRetryListResponse) GetContentType() string {
-	if g == nil {
+func (o *GetMeshRetryListResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetMeshRetryListResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetMeshRetryListResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetMeshRetryListResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetMeshRetryListResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetMeshRetryListResponse) GetMeshRetryList() *shared.MeshRetryList {
-	if g == nil {
+func (o *GetMeshRetryListResponse) GetMeshRetryList() *shared.MeshRetryList {
+	if o == nil {
 		return nil
 	}
-	return g.MeshRetryList
+	return o.MeshRetryList
 }

@@ -16,25 +16,25 @@ type GetMeshGlobalRateLimitRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (g *GetMeshGlobalRateLimitRequest) GetCpID() string {
-	if g == nil {
+func (o *GetMeshGlobalRateLimitRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return g.CpID
+	return o.CpID
 }
 
-func (g *GetMeshGlobalRateLimitRequest) GetMesh() string {
-	if g == nil {
+func (o *GetMeshGlobalRateLimitRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return g.Mesh
+	return o.Mesh
 }
 
-func (g *GetMeshGlobalRateLimitRequest) GetName() string {
-	if g == nil {
+func (o *GetMeshGlobalRateLimitRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return g.Name
+	return o.Name
 }
 
 type GetMeshGlobalRateLimitResponse struct {
@@ -50,37 +50,37 @@ type GetMeshGlobalRateLimitResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (g *GetMeshGlobalRateLimitResponse) GetContentType() string {
-	if g == nil {
+func (o *GetMeshGlobalRateLimitResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetMeshGlobalRateLimitResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetMeshGlobalRateLimitResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetMeshGlobalRateLimitResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetMeshGlobalRateLimitResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetMeshGlobalRateLimitResponse) GetMeshGlobalRateLimitItem() *shared.MeshGlobalRateLimitItem {
-	if g == nil {
+func (o *GetMeshGlobalRateLimitResponse) GetMeshGlobalRateLimitItem() *shared.MeshGlobalRateLimitItem {
+	if o == nil {
 		return nil
 	}
-	return g.MeshGlobalRateLimitItem
+	return o.MeshGlobalRateLimitItem
 }
 
-func (g *GetMeshGlobalRateLimitResponse) GetNotFoundError() *shared.NotFoundError {
-	if g == nil {
+func (o *GetMeshGlobalRateLimitResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return g.NotFoundError
+	return o.NotFoundError
 }

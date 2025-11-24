@@ -25,33 +25,33 @@ func (e EventGatewayKonnectVault) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayKonnectVault) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"name", "type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (e *EventGatewayKonnectVault) GetName() string {
-	if e == nil {
+func (o *EventGatewayKonnectVault) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return e.Name
+	return o.Name
 }
 
-func (e *EventGatewayKonnectVault) GetType() string {
+func (o *EventGatewayKonnectVault) GetType() string {
 	return "konnect"
 }
 
-func (e *EventGatewayKonnectVault) GetDescription() *string {
-	if e == nil {
+func (o *EventGatewayKonnectVault) GetDescription() *string {
+	if o == nil {
 		return nil
 	}
-	return e.Description
+	return o.Description
 }
 
-func (e *EventGatewayKonnectVault) GetLabels() map[string]*string {
-	if e == nil {
+func (o *EventGatewayKonnectVault) GetLabels() map[string]*string {
+	if o == nil {
 		return nil
 	}
-	return e.Labels
+	return o.Labels
 }

@@ -9,23 +9,23 @@ type CreatePortalCustomDomainRequest struct {
 	Ssl      CreatePortalCustomDomainSSL `json:"ssl"`
 }
 
-func (c *CreatePortalCustomDomainRequest) GetHostname() string {
-	if c == nil {
+func (o *CreatePortalCustomDomainRequest) GetHostname() string {
+	if o == nil {
 		return ""
 	}
-	return c.Hostname
+	return o.Hostname
 }
 
-func (c *CreatePortalCustomDomainRequest) GetEnabled() bool {
-	if c == nil {
+func (o *CreatePortalCustomDomainRequest) GetEnabled() bool {
+	if o == nil {
 		return false
 	}
-	return c.Enabled
+	return o.Enabled
 }
 
-func (c *CreatePortalCustomDomainRequest) GetSsl() CreatePortalCustomDomainSSL {
-	if c == nil {
+func (o *CreatePortalCustomDomainRequest) GetSsl() CreatePortalCustomDomainSSL {
+	if o == nil {
 		return CreatePortalCustomDomainSSL{}
 	}
-	return c.Ssl
+	return o.Ssl
 }

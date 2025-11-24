@@ -28,40 +28,40 @@ func (s SchemaRegistryConfluent) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SchemaRegistryConfluent) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"name", "type", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *SchemaRegistryConfluent) GetName() string {
-	if s == nil {
+func (o *SchemaRegistryConfluent) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return s.Name
+	return o.Name
 }
 
-func (s *SchemaRegistryConfluent) GetDescription() *string {
-	if s == nil {
+func (o *SchemaRegistryConfluent) GetDescription() *string {
+	if o == nil {
 		return nil
 	}
-	return s.Description
+	return o.Description
 }
 
-func (s *SchemaRegistryConfluent) GetType() string {
+func (o *SchemaRegistryConfluent) GetType() string {
 	return "confluent"
 }
 
-func (s *SchemaRegistryConfluent) GetConfig() SchemaRegistryConfluentConfig {
-	if s == nil {
+func (o *SchemaRegistryConfluent) GetConfig() SchemaRegistryConfluentConfig {
+	if o == nil {
 		return SchemaRegistryConfluentConfig{}
 	}
-	return s.Config
+	return o.Config
 }
 
-func (s *SchemaRegistryConfluent) GetLabels() map[string]*string {
-	if s == nil {
+func (o *SchemaRegistryConfluent) GetLabels() map[string]*string {
+	if o == nil {
 		return nil
 	}
-	return s.Labels
+	return o.Labels
 }

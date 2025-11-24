@@ -34,71 +34,71 @@ func (c Claim) MarshalJSON() ([]byte, error) {
 }
 
 func (c *Claim) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "name", "value", "include_in_scopes", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *Claim) GetID() string {
-	if c == nil {
+func (o *Claim) GetID() string {
+	if o == nil {
 		return ""
 	}
-	return c.ID
+	return o.ID
 }
 
-func (c *Claim) GetName() string {
-	if c == nil {
+func (o *Claim) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return c.Name
+	return o.Name
 }
 
-func (c *Claim) GetValue() string {
-	if c == nil {
+func (o *Claim) GetValue() string {
+	if o == nil {
 		return ""
 	}
-	return c.Value
+	return o.Value
 }
 
-func (c *Claim) GetIncludeInToken() *bool {
-	if c == nil {
+func (o *Claim) GetIncludeInToken() *bool {
+	if o == nil {
 		return nil
 	}
-	return c.IncludeInToken
+	return o.IncludeInToken
 }
 
-func (c *Claim) GetIncludeInAllScopes() *bool {
-	if c == nil {
+func (o *Claim) GetIncludeInAllScopes() *bool {
+	if o == nil {
 		return nil
 	}
-	return c.IncludeInAllScopes
+	return o.IncludeInAllScopes
 }
 
-func (c *Claim) GetIncludeInScopes() []string {
-	if c == nil {
+func (o *Claim) GetIncludeInScopes() []string {
+	if o == nil {
 		return []string{}
 	}
-	return c.IncludeInScopes
+	return o.IncludeInScopes
 }
 
-func (c *Claim) GetEnabled() *bool {
-	if c == nil {
+func (o *Claim) GetEnabled() *bool {
+	if o == nil {
 		return nil
 	}
-	return c.Enabled
+	return o.Enabled
 }
 
-func (c *Claim) GetCreatedAt() time.Time {
-	if c == nil {
+func (o *Claim) GetCreatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return c.CreatedAt
+	return o.CreatedAt
 }
 
-func (c *Claim) GetUpdatedAt() time.Time {
-	if c == nil {
+func (o *Claim) GetUpdatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return c.UpdatedAt
+	return o.UpdatedAt
 }

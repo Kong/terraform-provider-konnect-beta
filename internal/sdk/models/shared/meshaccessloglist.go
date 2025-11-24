@@ -11,23 +11,23 @@ type MeshAccessLogList struct {
 	Next *string `json:"next,omitempty"`
 }
 
-func (m *MeshAccessLogList) GetItems() []MeshAccessLogItem {
-	if m == nil {
+func (o *MeshAccessLogList) GetItems() []MeshAccessLogItem {
+	if o == nil {
 		return nil
 	}
-	return m.Items
+	return o.Items
 }
 
-func (m *MeshAccessLogList) GetTotal() *float64 {
-	if m == nil {
+func (o *MeshAccessLogList) GetTotal() *float64 {
+	if o == nil {
 		return nil
 	}
-	return m.Total
+	return o.Total
 }
 
-func (m *MeshAccessLogList) GetNext() *string {
-	if m == nil {
+func (o *MeshAccessLogList) GetNext() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Next
+	return o.Next
 }

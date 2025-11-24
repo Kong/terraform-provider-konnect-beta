@@ -16,25 +16,25 @@ type GetMeshRateLimitRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (g *GetMeshRateLimitRequest) GetCpID() string {
-	if g == nil {
+func (o *GetMeshRateLimitRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return g.CpID
+	return o.CpID
 }
 
-func (g *GetMeshRateLimitRequest) GetMesh() string {
-	if g == nil {
+func (o *GetMeshRateLimitRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return g.Mesh
+	return o.Mesh
 }
 
-func (g *GetMeshRateLimitRequest) GetName() string {
-	if g == nil {
+func (o *GetMeshRateLimitRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return g.Name
+	return o.Name
 }
 
 type GetMeshRateLimitResponse struct {
@@ -50,37 +50,37 @@ type GetMeshRateLimitResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (g *GetMeshRateLimitResponse) GetContentType() string {
-	if g == nil {
+func (o *GetMeshRateLimitResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetMeshRateLimitResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetMeshRateLimitResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetMeshRateLimitResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetMeshRateLimitResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetMeshRateLimitResponse) GetMeshRateLimitItem() *shared.MeshRateLimitItem {
-	if g == nil {
+func (o *GetMeshRateLimitResponse) GetMeshRateLimitItem() *shared.MeshRateLimitItem {
+	if o == nil {
 		return nil
 	}
-	return g.MeshRateLimitItem
+	return o.MeshRateLimitItem
 }
 
-func (g *GetMeshRateLimitResponse) GetNotFoundError() *shared.NotFoundError {
-	if g == nil {
+func (o *GetMeshRateLimitResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return g.NotFoundError
+	return o.NotFoundError
 }

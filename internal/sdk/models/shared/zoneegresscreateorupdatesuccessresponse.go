@@ -10,9 +10,9 @@ type ZoneEgressCreateOrUpdateSuccessResponse struct {
 	Warnings []string `json:"warnings,omitempty"`
 }
 
-func (z *ZoneEgressCreateOrUpdateSuccessResponse) GetWarnings() []string {
-	if z == nil {
+func (o *ZoneEgressCreateOrUpdateSuccessResponse) GetWarnings() []string {
+	if o == nil {
 		return nil
 	}
-	return z.Warnings
+	return o.Warnings
 }

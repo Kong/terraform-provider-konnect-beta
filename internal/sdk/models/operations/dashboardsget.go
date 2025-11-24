@@ -12,11 +12,11 @@ type DashboardsGetRequest struct {
 	DashboardID string `pathParam:"style=simple,explode=false,name=dashboardId"`
 }
 
-func (d *DashboardsGetRequest) GetDashboardID() string {
-	if d == nil {
+func (o *DashboardsGetRequest) GetDashboardID() string {
+	if o == nil {
 		return ""
 	}
-	return d.DashboardID
+	return o.DashboardID
 }
 
 type DashboardsGetResponse struct {
@@ -36,51 +36,51 @@ type DashboardsGetResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DashboardsGetResponse) GetContentType() string {
-	if d == nil {
+func (o *DashboardsGetResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DashboardsGetResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DashboardsGetResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DashboardsGetResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DashboardsGetResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DashboardsGetResponse) GetDashboardResponse() *shared.DashboardResponse {
-	if d == nil {
+func (o *DashboardsGetResponse) GetDashboardResponse() *shared.DashboardResponse {
+	if o == nil {
 		return nil
 	}
-	return d.DashboardResponse
+	return o.DashboardResponse
 }
 
-func (d *DashboardsGetResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if d == nil {
+func (o *DashboardsGetResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return d.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (d *DashboardsGetResponse) GetForbiddenError() *shared.ForbiddenError {
-	if d == nil {
+func (o *DashboardsGetResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return d.ForbiddenError
+	return o.ForbiddenError
 }
 
-func (d *DashboardsGetResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DashboardsGetResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

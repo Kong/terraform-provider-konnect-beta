@@ -16,25 +16,25 @@ type DeleteMeshHealthCheckRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (d *DeleteMeshHealthCheckRequest) GetCpID() string {
-	if d == nil {
+func (o *DeleteMeshHealthCheckRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return d.CpID
+	return o.CpID
 }
 
-func (d *DeleteMeshHealthCheckRequest) GetMesh() string {
-	if d == nil {
+func (o *DeleteMeshHealthCheckRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return d.Mesh
+	return o.Mesh
 }
 
-func (d *DeleteMeshHealthCheckRequest) GetName() string {
-	if d == nil {
+func (o *DeleteMeshHealthCheckRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return d.Name
+	return o.Name
 }
 
 type DeleteMeshHealthCheckResponse struct {
@@ -50,37 +50,37 @@ type DeleteMeshHealthCheckResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeleteMeshHealthCheckResponse) GetContentType() string {
-	if d == nil {
+func (o *DeleteMeshHealthCheckResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeleteMeshHealthCheckResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeleteMeshHealthCheckResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeleteMeshHealthCheckResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeleteMeshHealthCheckResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeleteMeshHealthCheckResponse) GetMeshHealthCheckDeleteSuccessResponse() *shared.MeshHealthCheckDeleteSuccessResponse {
-	if d == nil {
+func (o *DeleteMeshHealthCheckResponse) GetMeshHealthCheckDeleteSuccessResponse() *shared.MeshHealthCheckDeleteSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return d.MeshHealthCheckDeleteSuccessResponse
+	return o.MeshHealthCheckDeleteSuccessResponse
 }
 
-func (d *DeleteMeshHealthCheckResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeleteMeshHealthCheckResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

@@ -33,71 +33,71 @@ func (p PortalSnippetResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PortalSnippetResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"id", "name", "content", "visibility", "status", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *PortalSnippetResponse) GetID() string {
-	if p == nil {
+func (o *PortalSnippetResponse) GetID() string {
+	if o == nil {
 		return ""
 	}
-	return p.ID
+	return o.ID
 }
 
-func (p *PortalSnippetResponse) GetName() string {
-	if p == nil {
+func (o *PortalSnippetResponse) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return p.Name
+	return o.Name
 }
 
-func (p *PortalSnippetResponse) GetTitle() *string {
-	if p == nil {
+func (o *PortalSnippetResponse) GetTitle() *string {
+	if o == nil {
 		return nil
 	}
-	return p.Title
+	return o.Title
 }
 
-func (p *PortalSnippetResponse) GetContent() string {
-	if p == nil {
+func (o *PortalSnippetResponse) GetContent() string {
+	if o == nil {
 		return ""
 	}
-	return p.Content
+	return o.Content
 }
 
-func (p *PortalSnippetResponse) GetVisibility() VisibilityStatus {
-	if p == nil {
+func (o *PortalSnippetResponse) GetVisibility() VisibilityStatus {
+	if o == nil {
 		return VisibilityStatus("")
 	}
-	return p.Visibility
+	return o.Visibility
 }
 
-func (p *PortalSnippetResponse) GetStatus() PublishedStatus {
-	if p == nil {
+func (o *PortalSnippetResponse) GetStatus() PublishedStatus {
+	if o == nil {
 		return PublishedStatus("")
 	}
-	return p.Status
+	return o.Status
 }
 
-func (p *PortalSnippetResponse) GetDescription() *string {
-	if p == nil {
+func (o *PortalSnippetResponse) GetDescription() *string {
+	if o == nil {
 		return nil
 	}
-	return p.Description
+	return o.Description
 }
 
-func (p *PortalSnippetResponse) GetCreatedAt() time.Time {
-	if p == nil {
+func (o *PortalSnippetResponse) GetCreatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return p.CreatedAt
+	return o.CreatedAt
 }
 
-func (p *PortalSnippetResponse) GetUpdatedAt() time.Time {
-	if p == nil {
+func (o *PortalSnippetResponse) GetUpdatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return p.UpdatedAt
+	return o.UpdatedAt
 }

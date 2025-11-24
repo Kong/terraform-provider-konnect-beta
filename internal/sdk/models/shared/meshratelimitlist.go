@@ -11,23 +11,23 @@ type MeshRateLimitList struct {
 	Next *string `json:"next,omitempty"`
 }
 
-func (m *MeshRateLimitList) GetItems() []MeshRateLimitItem {
-	if m == nil {
+func (o *MeshRateLimitList) GetItems() []MeshRateLimitItem {
+	if o == nil {
 		return nil
 	}
-	return m.Items
+	return o.Items
 }
 
-func (m *MeshRateLimitList) GetTotal() *float64 {
-	if m == nil {
+func (o *MeshRateLimitList) GetTotal() *float64 {
+	if o == nil {
 		return nil
 	}
-	return m.Total
+	return o.Total
 }
 
-func (m *MeshRateLimitList) GetNext() *string {
-	if m == nil {
+func (o *MeshRateLimitList) GetNext() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Next
+	return o.Next
 }

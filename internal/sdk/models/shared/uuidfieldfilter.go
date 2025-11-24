@@ -12,23 +12,23 @@ type UUIDFieldFilter struct {
 	Neq *string `queryParam:"name=neq"`
 }
 
-func (u *UUIDFieldFilter) GetEq() *string {
-	if u == nil {
+func (o *UUIDFieldFilter) GetEq() *string {
+	if o == nil {
 		return nil
 	}
-	return u.Eq
+	return o.Eq
 }
 
-func (u *UUIDFieldFilter) GetOeq() *string {
-	if u == nil {
+func (o *UUIDFieldFilter) GetOeq() *string {
+	if o == nil {
 		return nil
 	}
-	return u.Oeq
+	return o.Oeq
 }
 
-func (u *UUIDFieldFilter) GetNeq() *string {
-	if u == nil {
+func (o *UUIDFieldFilter) GetNeq() *string {
+	if o == nil {
 		return nil
 	}
-	return u.Neq
+	return o.Neq
 }

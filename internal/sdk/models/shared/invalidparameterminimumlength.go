@@ -64,43 +64,43 @@ func (i InvalidParameterMinimumLength) MarshalJSON() ([]byte, error) {
 }
 
 func (i *InvalidParameterMinimumLength) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &i, "", false, []string{"field", "rule", "minimum", "reason"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &i, "", false, true); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (i *InvalidParameterMinimumLength) GetField() string {
-	if i == nil {
+func (o *InvalidParameterMinimumLength) GetField() string {
+	if o == nil {
 		return ""
 	}
-	return i.Field
+	return o.Field
 }
 
-func (i *InvalidParameterMinimumLength) GetRule() Rule {
-	if i == nil {
+func (o *InvalidParameterMinimumLength) GetRule() Rule {
+	if o == nil {
 		return Rule("")
 	}
-	return i.Rule
+	return o.Rule
 }
 
-func (i *InvalidParameterMinimumLength) GetMinimum() int64 {
-	if i == nil {
+func (o *InvalidParameterMinimumLength) GetMinimum() int64 {
+	if o == nil {
 		return 0
 	}
-	return i.Minimum
+	return o.Minimum
 }
 
-func (i *InvalidParameterMinimumLength) GetSource() *string {
-	if i == nil {
+func (o *InvalidParameterMinimumLength) GetSource() *string {
+	if o == nil {
 		return nil
 	}
-	return i.Source
+	return o.Source
 }
 
-func (i *InvalidParameterMinimumLength) GetReason() string {
-	if i == nil {
+func (o *InvalidParameterMinimumLength) GetReason() string {
+	if o == nil {
 		return ""
 	}
-	return i.Reason
+	return o.Reason
 }

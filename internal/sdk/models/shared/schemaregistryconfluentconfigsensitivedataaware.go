@@ -53,42 +53,42 @@ func (s SchemaRegistryConfluentConfigSensitiveDataAware) MarshalJSON() ([]byte, 
 }
 
 func (s *SchemaRegistryConfluentConfigSensitiveDataAware) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"schema_type", "endpoint"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *SchemaRegistryConfluentConfigSensitiveDataAware) GetSchemaType() SchemaRegistryConfluentConfigSensitiveDataAwareSchemaType {
-	if s == nil {
+func (o *SchemaRegistryConfluentConfigSensitiveDataAware) GetSchemaType() SchemaRegistryConfluentConfigSensitiveDataAwareSchemaType {
+	if o == nil {
 		return SchemaRegistryConfluentConfigSensitiveDataAwareSchemaType("")
 	}
-	return s.SchemaType
+	return o.SchemaType
 }
 
-func (s *SchemaRegistryConfluentConfigSensitiveDataAware) GetEndpoint() string {
-	if s == nil {
+func (o *SchemaRegistryConfluentConfigSensitiveDataAware) GetEndpoint() string {
+	if o == nil {
 		return ""
 	}
-	return s.Endpoint
+	return o.Endpoint
 }
 
-func (s *SchemaRegistryConfluentConfigSensitiveDataAware) GetTimeoutSeconds() *int64 {
-	if s == nil {
+func (o *SchemaRegistryConfluentConfigSensitiveDataAware) GetTimeoutSeconds() *int64 {
+	if o == nil {
 		return nil
 	}
-	return s.TimeoutSeconds
+	return o.TimeoutSeconds
 }
 
-func (s *SchemaRegistryConfluentConfigSensitiveDataAware) GetAuthentication() *SchemaRegistryAuthenticationSensitiveDataAwareScheme {
-	if s == nil {
+func (o *SchemaRegistryConfluentConfigSensitiveDataAware) GetAuthentication() *SchemaRegistryAuthenticationSensitiveDataAwareScheme {
+	if o == nil {
 		return nil
 	}
-	return s.Authentication
+	return o.Authentication
 }
 
-func (s *SchemaRegistryConfluentConfigSensitiveDataAware) GetAuthenticationBasic() *SchemaRegistryAuthenticationBasicSensitiveDataAware {
-	if v := s.GetAuthentication(); v != nil {
+func (o *SchemaRegistryConfluentConfigSensitiveDataAware) GetAuthenticationBasic() *SchemaRegistryAuthenticationBasicSensitiveDataAware {
+	if v := o.GetAuthentication(); v != nil {
 		return v.SchemaRegistryAuthenticationBasicSensitiveDataAware
 	}
 	return nil

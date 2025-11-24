@@ -14,18 +14,18 @@ type GetMeshTrafficPermissionListQueryParamFilter struct {
 	Value *string `queryParam:"name=value"`
 }
 
-func (g *GetMeshTrafficPermissionListQueryParamFilter) GetKey() *string {
-	if g == nil {
+func (o *GetMeshTrafficPermissionListQueryParamFilter) GetKey() *string {
+	if o == nil {
 		return nil
 	}
-	return g.Key
+	return o.Key
 }
 
-func (g *GetMeshTrafficPermissionListQueryParamFilter) GetValue() *string {
-	if g == nil {
+func (o *GetMeshTrafficPermissionListQueryParamFilter) GetValue() *string {
+	if o == nil {
 		return nil
 	}
-	return g.Value
+	return o.Value
 }
 
 type GetMeshTrafficPermissionListRequest struct {
@@ -46,45 +46,45 @@ func (g GetMeshTrafficPermissionListRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetMeshTrafficPermissionListRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"cpId", "mesh"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (g *GetMeshTrafficPermissionListRequest) GetCpID() string {
-	if g == nil {
+func (o *GetMeshTrafficPermissionListRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return g.CpID
+	return o.CpID
 }
 
-func (g *GetMeshTrafficPermissionListRequest) GetOffset() *int64 {
-	if g == nil {
+func (o *GetMeshTrafficPermissionListRequest) GetOffset() *int64 {
+	if o == nil {
 		return nil
 	}
-	return g.Offset
+	return o.Offset
 }
 
-func (g *GetMeshTrafficPermissionListRequest) GetSize() *int64 {
-	if g == nil {
+func (o *GetMeshTrafficPermissionListRequest) GetSize() *int64 {
+	if o == nil {
 		return nil
 	}
-	return g.Size
+	return o.Size
 }
 
-func (g *GetMeshTrafficPermissionListRequest) GetFilter() *GetMeshTrafficPermissionListQueryParamFilter {
-	if g == nil {
+func (o *GetMeshTrafficPermissionListRequest) GetFilter() *GetMeshTrafficPermissionListQueryParamFilter {
+	if o == nil {
 		return nil
 	}
-	return g.Filter
+	return o.Filter
 }
 
-func (g *GetMeshTrafficPermissionListRequest) GetMesh() string {
-	if g == nil {
+func (o *GetMeshTrafficPermissionListRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return g.Mesh
+	return o.Mesh
 }
 
 type GetMeshTrafficPermissionListResponse struct {
@@ -98,30 +98,30 @@ type GetMeshTrafficPermissionListResponse struct {
 	MeshTrafficPermissionList *shared.MeshTrafficPermissionList
 }
 
-func (g *GetMeshTrafficPermissionListResponse) GetContentType() string {
-	if g == nil {
+func (o *GetMeshTrafficPermissionListResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetMeshTrafficPermissionListResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetMeshTrafficPermissionListResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetMeshTrafficPermissionListResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetMeshTrafficPermissionListResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetMeshTrafficPermissionListResponse) GetMeshTrafficPermissionList() *shared.MeshTrafficPermissionList {
-	if g == nil {
+func (o *GetMeshTrafficPermissionListResponse) GetMeshTrafficPermissionList() *shared.MeshTrafficPermissionList {
+	if o == nil {
 		return nil
 	}
-	return g.MeshTrafficPermissionList
+	return o.MeshTrafficPermissionList
 }

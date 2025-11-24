@@ -14,18 +14,18 @@ type FetchAPISpecRequest struct {
 	SpecID string `pathParam:"style=simple,explode=false,name=specId"`
 }
 
-func (f *FetchAPISpecRequest) GetAPIID() string {
-	if f == nil {
+func (o *FetchAPISpecRequest) GetAPIID() string {
+	if o == nil {
 		return ""
 	}
-	return f.APIID
+	return o.APIID
 }
 
-func (f *FetchAPISpecRequest) GetSpecID() string {
-	if f == nil {
+func (o *FetchAPISpecRequest) GetSpecID() string {
+	if o == nil {
 		return ""
 	}
-	return f.SpecID
+	return o.SpecID
 }
 
 type FetchAPISpecResponse struct {
@@ -45,51 +45,51 @@ type FetchAPISpecResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (f *FetchAPISpecResponse) GetContentType() string {
-	if f == nil {
+func (o *FetchAPISpecResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return f.ContentType
+	return o.ContentType
 }
 
-func (f *FetchAPISpecResponse) GetStatusCode() int {
-	if f == nil {
+func (o *FetchAPISpecResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return f.StatusCode
+	return o.StatusCode
 }
 
-func (f *FetchAPISpecResponse) GetRawResponse() *http.Response {
-	if f == nil {
+func (o *FetchAPISpecResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return f.RawResponse
+	return o.RawResponse
 }
 
-func (f *FetchAPISpecResponse) GetAPISpecResponse() *shared.APISpecResponse {
-	if f == nil {
+func (o *FetchAPISpecResponse) GetAPISpecResponse() *shared.APISpecResponse {
+	if o == nil {
 		return nil
 	}
-	return f.APISpecResponse
+	return o.APISpecResponse
 }
 
-func (f *FetchAPISpecResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if f == nil {
+func (o *FetchAPISpecResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return f.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (f *FetchAPISpecResponse) GetForbiddenError() *shared.ForbiddenError {
-	if f == nil {
+func (o *FetchAPISpecResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return f.ForbiddenError
+	return o.ForbiddenError
 }
 
-func (f *FetchAPISpecResponse) GetNotFoundError() *shared.NotFoundError {
-	if f == nil {
+func (o *FetchAPISpecResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return f.NotFoundError
+	return o.NotFoundError
 }

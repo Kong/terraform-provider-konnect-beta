@@ -16,25 +16,25 @@ type PutHostnameGeneratorRequest struct {
 	HostnameGeneratorItem shared.HostnameGeneratorItemInput `request:"mediaType=application/json"`
 }
 
-func (p *PutHostnameGeneratorRequest) GetCpID() string {
-	if p == nil {
+func (o *PutHostnameGeneratorRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return p.CpID
+	return o.CpID
 }
 
-func (p *PutHostnameGeneratorRequest) GetName() string {
-	if p == nil {
+func (o *PutHostnameGeneratorRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return p.Name
+	return o.Name
 }
 
-func (p *PutHostnameGeneratorRequest) GetHostnameGeneratorItem() shared.HostnameGeneratorItemInput {
-	if p == nil {
+func (o *PutHostnameGeneratorRequest) GetHostnameGeneratorItem() shared.HostnameGeneratorItemInput {
+	if o == nil {
 		return shared.HostnameGeneratorItemInput{}
 	}
-	return p.HostnameGeneratorItem
+	return o.HostnameGeneratorItem
 }
 
 type PutHostnameGeneratorResponse struct {
@@ -48,30 +48,30 @@ type PutHostnameGeneratorResponse struct {
 	HostnameGeneratorCreateOrUpdateSuccessResponse *shared.HostnameGeneratorCreateOrUpdateSuccessResponse
 }
 
-func (p *PutHostnameGeneratorResponse) GetContentType() string {
-	if p == nil {
+func (o *PutHostnameGeneratorResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return p.ContentType
+	return o.ContentType
 }
 
-func (p *PutHostnameGeneratorResponse) GetStatusCode() int {
-	if p == nil {
+func (o *PutHostnameGeneratorResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return p.StatusCode
+	return o.StatusCode
 }
 
-func (p *PutHostnameGeneratorResponse) GetRawResponse() *http.Response {
-	if p == nil {
+func (o *PutHostnameGeneratorResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return p.RawResponse
+	return o.RawResponse
 }
 
-func (p *PutHostnameGeneratorResponse) GetHostnameGeneratorCreateOrUpdateSuccessResponse() *shared.HostnameGeneratorCreateOrUpdateSuccessResponse {
-	if p == nil {
+func (o *PutHostnameGeneratorResponse) GetHostnameGeneratorCreateOrUpdateSuccessResponse() *shared.HostnameGeneratorCreateOrUpdateSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return p.HostnameGeneratorCreateOrUpdateSuccessResponse
+	return o.HostnameGeneratorCreateOrUpdateSuccessResponse
 }

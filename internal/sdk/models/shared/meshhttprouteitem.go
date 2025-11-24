@@ -136,60 +136,60 @@ type MeshHTTPRouteItemTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (m *MeshHTTPRouteItemTargetRef) GetKind() MeshHTTPRouteItemKind {
-	if m == nil {
+func (o *MeshHTTPRouteItemTargetRef) GetKind() MeshHTTPRouteItemKind {
+	if o == nil {
 		return MeshHTTPRouteItemKind("")
 	}
-	return m.Kind
+	return o.Kind
 }
 
-func (m *MeshHTTPRouteItemTargetRef) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshHTTPRouteItemTargetRef) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshHTTPRouteItemTargetRef) GetMesh() *string {
-	if m == nil {
+func (o *MeshHTTPRouteItemTargetRef) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Mesh
+	return o.Mesh
 }
 
-func (m *MeshHTTPRouteItemTargetRef) GetName() *string {
-	if m == nil {
+func (o *MeshHTTPRouteItemTargetRef) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshHTTPRouteItemTargetRef) GetNamespace() *string {
-	if m == nil {
+func (o *MeshHTTPRouteItemTargetRef) GetNamespace() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Namespace
+	return o.Namespace
 }
 
-func (m *MeshHTTPRouteItemTargetRef) GetProxyTypes() []MeshHTTPRouteItemProxyTypes {
-	if m == nil {
+func (o *MeshHTTPRouteItemTargetRef) GetProxyTypes() []MeshHTTPRouteItemProxyTypes {
+	if o == nil {
 		return nil
 	}
-	return m.ProxyTypes
+	return o.ProxyTypes
 }
 
-func (m *MeshHTTPRouteItemTargetRef) GetSectionName() *string {
-	if m == nil {
+func (o *MeshHTTPRouteItemTargetRef) GetSectionName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.SectionName
+	return o.SectionName
 }
 
-func (m *MeshHTTPRouteItemTargetRef) GetTags() map[string]string {
-	if m == nil {
+func (o *MeshHTTPRouteItemTargetRef) GetTags() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Tags
+	return o.Tags
 }
 
 // MeshHTTPRouteItemSpecToKind - Kind of the referenced resource
@@ -300,80 +300,80 @@ func (b BackendRefs) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BackendRefs) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"kind"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (b *BackendRefs) GetKind() MeshHTTPRouteItemSpecToKind {
-	if b == nil {
+func (o *BackendRefs) GetKind() MeshHTTPRouteItemSpecToKind {
+	if o == nil {
 		return MeshHTTPRouteItemSpecToKind("")
 	}
-	return b.Kind
+	return o.Kind
 }
 
-func (b *BackendRefs) GetLabels() map[string]string {
-	if b == nil {
+func (o *BackendRefs) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return b.Labels
+	return o.Labels
 }
 
-func (b *BackendRefs) GetMesh() *string {
-	if b == nil {
+func (o *BackendRefs) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return b.Mesh
+	return o.Mesh
 }
 
-func (b *BackendRefs) GetName() *string {
-	if b == nil {
+func (o *BackendRefs) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return b.Name
+	return o.Name
 }
 
-func (b *BackendRefs) GetNamespace() *string {
-	if b == nil {
+func (o *BackendRefs) GetNamespace() *string {
+	if o == nil {
 		return nil
 	}
-	return b.Namespace
+	return o.Namespace
 }
 
-func (b *BackendRefs) GetPort() *int {
-	if b == nil {
+func (o *BackendRefs) GetPort() *int {
+	if o == nil {
 		return nil
 	}
-	return b.Port
+	return o.Port
 }
 
-func (b *BackendRefs) GetProxyTypes() []MeshHTTPRouteItemSpecToProxyTypes {
-	if b == nil {
+func (o *BackendRefs) GetProxyTypes() []MeshHTTPRouteItemSpecToProxyTypes {
+	if o == nil {
 		return nil
 	}
-	return b.ProxyTypes
+	return o.ProxyTypes
 }
 
-func (b *BackendRefs) GetSectionName() *string {
-	if b == nil {
+func (o *BackendRefs) GetSectionName() *string {
+	if o == nil {
 		return nil
 	}
-	return b.SectionName
+	return o.SectionName
 }
 
-func (b *BackendRefs) GetTags() map[string]string {
-	if b == nil {
+func (o *BackendRefs) GetTags() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return b.Tags
+	return o.Tags
 }
 
-func (b *BackendRefs) GetWeight() *int64 {
-	if b == nil {
+func (o *BackendRefs) GetWeight() *int64 {
+	if o == nil {
 		return nil
 	}
-	return b.Weight
+	return o.Weight
 }
 
 type MeshHTTPRouteItemAdd struct {
@@ -381,18 +381,18 @@ type MeshHTTPRouteItemAdd struct {
 	Value string `json:"value"`
 }
 
-func (m *MeshHTTPRouteItemAdd) GetName() string {
-	if m == nil {
+func (o *MeshHTTPRouteItemAdd) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshHTTPRouteItemAdd) GetValue() string {
-	if m == nil {
+func (o *MeshHTTPRouteItemAdd) GetValue() string {
+	if o == nil {
 		return ""
 	}
-	return m.Value
+	return o.Value
 }
 
 type MeshHTTPRouteItemSet struct {
@@ -400,18 +400,18 @@ type MeshHTTPRouteItemSet struct {
 	Value string `json:"value"`
 }
 
-func (m *MeshHTTPRouteItemSet) GetName() string {
-	if m == nil {
+func (o *MeshHTTPRouteItemSet) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshHTTPRouteItemSet) GetValue() string {
-	if m == nil {
+func (o *MeshHTTPRouteItemSet) GetValue() string {
+	if o == nil {
 		return ""
 	}
-	return m.Value
+	return o.Value
 }
 
 // RequestHeaderModifier - Only one action is supported per header name.
@@ -423,25 +423,25 @@ type RequestHeaderModifier struct {
 	Set    []MeshHTTPRouteItemSet `json:"set,omitempty"`
 }
 
-func (r *RequestHeaderModifier) GetAdd() []MeshHTTPRouteItemAdd {
-	if r == nil {
+func (o *RequestHeaderModifier) GetAdd() []MeshHTTPRouteItemAdd {
+	if o == nil {
 		return nil
 	}
-	return r.Add
+	return o.Add
 }
 
-func (r *RequestHeaderModifier) GetRemove() []string {
-	if r == nil {
+func (o *RequestHeaderModifier) GetRemove() []string {
+	if o == nil {
 		return nil
 	}
-	return r.Remove
+	return o.Remove
 }
 
-func (r *RequestHeaderModifier) GetSet() []MeshHTTPRouteItemSet {
-	if r == nil {
+func (o *RequestHeaderModifier) GetSet() []MeshHTTPRouteItemSet {
+	if o == nil {
 		return nil
 	}
-	return r.Set
+	return o.Set
 }
 
 // MeshHTTPRouteItemSpecToRulesKind - Kind of the referenced resource
@@ -552,80 +552,80 @@ func (b BackendRef) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BackendRef) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"kind"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (b *BackendRef) GetKind() MeshHTTPRouteItemSpecToRulesKind {
-	if b == nil {
+func (o *BackendRef) GetKind() MeshHTTPRouteItemSpecToRulesKind {
+	if o == nil {
 		return MeshHTTPRouteItemSpecToRulesKind("")
 	}
-	return b.Kind
+	return o.Kind
 }
 
-func (b *BackendRef) GetLabels() map[string]string {
-	if b == nil {
+func (o *BackendRef) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return b.Labels
+	return o.Labels
 }
 
-func (b *BackendRef) GetMesh() *string {
-	if b == nil {
+func (o *BackendRef) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return b.Mesh
+	return o.Mesh
 }
 
-func (b *BackendRef) GetName() *string {
-	if b == nil {
+func (o *BackendRef) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return b.Name
+	return o.Name
 }
 
-func (b *BackendRef) GetNamespace() *string {
-	if b == nil {
+func (o *BackendRef) GetNamespace() *string {
+	if o == nil {
 		return nil
 	}
-	return b.Namespace
+	return o.Namespace
 }
 
-func (b *BackendRef) GetPort() *int {
-	if b == nil {
+func (o *BackendRef) GetPort() *int {
+	if o == nil {
 		return nil
 	}
-	return b.Port
+	return o.Port
 }
 
-func (b *BackendRef) GetProxyTypes() []MeshHTTPRouteItemSpecToRulesProxyTypes {
-	if b == nil {
+func (o *BackendRef) GetProxyTypes() []MeshHTTPRouteItemSpecToRulesProxyTypes {
+	if o == nil {
 		return nil
 	}
-	return b.ProxyTypes
+	return o.ProxyTypes
 }
 
-func (b *BackendRef) GetSectionName() *string {
-	if b == nil {
+func (o *BackendRef) GetSectionName() *string {
+	if o == nil {
 		return nil
 	}
-	return b.SectionName
+	return o.SectionName
 }
 
-func (b *BackendRef) GetTags() map[string]string {
-	if b == nil {
+func (o *BackendRef) GetTags() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return b.Tags
+	return o.Tags
 }
 
-func (b *BackendRef) GetWeight() *int64 {
-	if b == nil {
+func (o *BackendRef) GetWeight() *int64 {
+	if o == nil {
 		return nil
 	}
-	return b.Weight
+	return o.Weight
 }
 
 type MeshHTTPRouteItemPercentageType string
@@ -638,8 +638,8 @@ const (
 // MeshHTTPRouteItemPercentage - Percentage of requests to mirror. If not specified, all requests
 // to the target cluster will be mirrored.
 type MeshHTTPRouteItemPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage"`
-	Str     *string `queryParam:"inline,name=percentage"`
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type MeshHTTPRouteItemPercentageType
 }
@@ -664,43 +664,17 @@ func CreateMeshHTTPRouteItemPercentageStr(str string) MeshHTTPRouteItemPercentag
 
 func (u *MeshHTTPRouteItemPercentage) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshHTTPRouteItemPercentageTypeInteger,
-			Value: &integer,
-		})
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = MeshHTTPRouteItemPercentageTypeInteger
+		return nil
 	}
 
 	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshHTTPRouteItemPercentageTypeStr,
-			Value: &str,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshHTTPRouteItemPercentage", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshHTTPRouteItemPercentage", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(MeshHTTPRouteItemPercentageType)
-	switch best.Type {
-	case MeshHTTPRouteItemPercentageTypeInteger:
-		u.Integer = best.Value.(*int64)
-		return nil
-	case MeshHTTPRouteItemPercentageTypeStr:
-		u.Str = best.Value.(*string)
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = MeshHTTPRouteItemPercentageTypeStr
 		return nil
 	}
 
@@ -727,18 +701,18 @@ type RequestMirror struct {
 	Percentage *MeshHTTPRouteItemPercentage `json:"percentage,omitempty"`
 }
 
-func (r *RequestMirror) GetBackendRef() BackendRef {
-	if r == nil {
+func (o *RequestMirror) GetBackendRef() BackendRef {
+	if o == nil {
 		return BackendRef{}
 	}
-	return r.BackendRef
+	return o.BackendRef
 }
 
-func (r *RequestMirror) GetPercentage() *MeshHTTPRouteItemPercentage {
-	if r == nil {
+func (o *RequestMirror) GetPercentage() *MeshHTTPRouteItemPercentage {
+	if o == nil {
 		return nil
 	}
-	return r.Percentage
+	return o.Percentage
 }
 
 type MeshHTTPRouteItemSpecToRulesDefaultType string
@@ -776,25 +750,25 @@ type MeshHTTPRouteItemSpecPath struct {
 	Type               MeshHTTPRouteItemSpecToRulesDefaultType `json:"type"`
 }
 
-func (m *MeshHTTPRouteItemSpecPath) GetReplaceFullPath() *string {
-	if m == nil {
+func (o *MeshHTTPRouteItemSpecPath) GetReplaceFullPath() *string {
+	if o == nil {
 		return nil
 	}
-	return m.ReplaceFullPath
+	return o.ReplaceFullPath
 }
 
-func (m *MeshHTTPRouteItemSpecPath) GetReplacePrefixMatch() *string {
-	if m == nil {
+func (o *MeshHTTPRouteItemSpecPath) GetReplacePrefixMatch() *string {
+	if o == nil {
 		return nil
 	}
-	return m.ReplacePrefixMatch
+	return o.ReplacePrefixMatch
 }
 
-func (m *MeshHTTPRouteItemSpecPath) GetType() MeshHTTPRouteItemSpecToRulesDefaultType {
-	if m == nil {
+func (o *MeshHTTPRouteItemSpecPath) GetType() MeshHTTPRouteItemSpecToRulesDefaultType {
+	if o == nil {
 		return MeshHTTPRouteItemSpecToRulesDefaultType("")
 	}
-	return m.Type
+	return o.Type
 }
 
 type Scheme string
@@ -886,45 +860,45 @@ func (r RequestRedirect) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestRedirect) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *RequestRedirect) GetHostname() *string {
-	if r == nil {
+func (o *RequestRedirect) GetHostname() *string {
+	if o == nil {
 		return nil
 	}
-	return r.Hostname
+	return o.Hostname
 }
 
-func (r *RequestRedirect) GetPath() *MeshHTTPRouteItemSpecPath {
-	if r == nil {
+func (o *RequestRedirect) GetPath() *MeshHTTPRouteItemSpecPath {
+	if o == nil {
 		return nil
 	}
-	return r.Path
+	return o.Path
 }
 
-func (r *RequestRedirect) GetPort() *int {
-	if r == nil {
+func (o *RequestRedirect) GetPort() *int {
+	if o == nil {
 		return nil
 	}
-	return r.Port
+	return o.Port
 }
 
-func (r *RequestRedirect) GetScheme() *Scheme {
-	if r == nil {
+func (o *RequestRedirect) GetScheme() *Scheme {
+	if o == nil {
 		return nil
 	}
-	return r.Scheme
+	return o.Scheme
 }
 
-func (r *RequestRedirect) GetStatusCode() *StatusCode {
-	if r == nil {
+func (o *RequestRedirect) GetStatusCode() *StatusCode {
+	if o == nil {
 		return nil
 	}
-	return r.StatusCode
+	return o.StatusCode
 }
 
 type MeshHTTPRouteItemSpecAdd struct {
@@ -932,18 +906,18 @@ type MeshHTTPRouteItemSpecAdd struct {
 	Value string `json:"value"`
 }
 
-func (m *MeshHTTPRouteItemSpecAdd) GetName() string {
-	if m == nil {
+func (o *MeshHTTPRouteItemSpecAdd) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshHTTPRouteItemSpecAdd) GetValue() string {
-	if m == nil {
+func (o *MeshHTTPRouteItemSpecAdd) GetValue() string {
+	if o == nil {
 		return ""
 	}
-	return m.Value
+	return o.Value
 }
 
 type MeshHTTPRouteItemSpecSet struct {
@@ -951,18 +925,18 @@ type MeshHTTPRouteItemSpecSet struct {
 	Value string `json:"value"`
 }
 
-func (m *MeshHTTPRouteItemSpecSet) GetName() string {
-	if m == nil {
+func (o *MeshHTTPRouteItemSpecSet) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshHTTPRouteItemSpecSet) GetValue() string {
-	if m == nil {
+func (o *MeshHTTPRouteItemSpecSet) GetValue() string {
+	if o == nil {
 		return ""
 	}
-	return m.Value
+	return o.Value
 }
 
 // ResponseHeaderModifier - Only one action is supported per header name.
@@ -974,25 +948,25 @@ type ResponseHeaderModifier struct {
 	Set    []MeshHTTPRouteItemSpecSet `json:"set,omitempty"`
 }
 
-func (r *ResponseHeaderModifier) GetAdd() []MeshHTTPRouteItemSpecAdd {
-	if r == nil {
+func (o *ResponseHeaderModifier) GetAdd() []MeshHTTPRouteItemSpecAdd {
+	if o == nil {
 		return nil
 	}
-	return r.Add
+	return o.Add
 }
 
-func (r *ResponseHeaderModifier) GetRemove() []string {
-	if r == nil {
+func (o *ResponseHeaderModifier) GetRemove() []string {
+	if o == nil {
 		return nil
 	}
-	return r.Remove
+	return o.Remove
 }
 
-func (r *ResponseHeaderModifier) GetSet() []MeshHTTPRouteItemSpecSet {
-	if r == nil {
+func (o *ResponseHeaderModifier) GetSet() []MeshHTTPRouteItemSpecSet {
+	if o == nil {
 		return nil
 	}
-	return r.Set
+	return o.Set
 }
 
 type MeshHTTPRouteItemSpecType string
@@ -1063,25 +1037,25 @@ type MeshHTTPRouteItemPath struct {
 	Type               MeshHTTPRouteItemSpecToRulesDefaultFiltersType `json:"type"`
 }
 
-func (m *MeshHTTPRouteItemPath) GetReplaceFullPath() *string {
-	if m == nil {
+func (o *MeshHTTPRouteItemPath) GetReplaceFullPath() *string {
+	if o == nil {
 		return nil
 	}
-	return m.ReplaceFullPath
+	return o.ReplaceFullPath
 }
 
-func (m *MeshHTTPRouteItemPath) GetReplacePrefixMatch() *string {
-	if m == nil {
+func (o *MeshHTTPRouteItemPath) GetReplacePrefixMatch() *string {
+	if o == nil {
 		return nil
 	}
-	return m.ReplacePrefixMatch
+	return o.ReplacePrefixMatch
 }
 
-func (m *MeshHTTPRouteItemPath) GetType() MeshHTTPRouteItemSpecToRulesDefaultFiltersType {
-	if m == nil {
+func (o *MeshHTTPRouteItemPath) GetType() MeshHTTPRouteItemSpecToRulesDefaultFiltersType {
+	if o == nil {
 		return MeshHTTPRouteItemSpecToRulesDefaultFiltersType("")
 	}
-	return m.Type
+	return o.Type
 }
 
 type URLRewrite struct {
@@ -1094,25 +1068,25 @@ type URLRewrite struct {
 	Path *MeshHTTPRouteItemPath `json:"path,omitempty"`
 }
 
-func (u *URLRewrite) GetHostToBackendHostname() *bool {
-	if u == nil {
+func (o *URLRewrite) GetHostToBackendHostname() *bool {
+	if o == nil {
 		return nil
 	}
-	return u.HostToBackendHostname
+	return o.HostToBackendHostname
 }
 
-func (u *URLRewrite) GetHostname() *string {
-	if u == nil {
+func (o *URLRewrite) GetHostname() *string {
+	if o == nil {
 		return nil
 	}
-	return u.Hostname
+	return o.Hostname
 }
 
-func (u *URLRewrite) GetPath() *MeshHTTPRouteItemPath {
-	if u == nil {
+func (o *URLRewrite) GetPath() *MeshHTTPRouteItemPath {
+	if o == nil {
 		return nil
 	}
-	return u.Path
+	return o.Path
 }
 
 type Filters struct {
@@ -1130,46 +1104,46 @@ type Filters struct {
 	URLRewrite             *URLRewrite               `json:"urlRewrite,omitempty"`
 }
 
-func (f *Filters) GetRequestHeaderModifier() *RequestHeaderModifier {
-	if f == nil {
+func (o *Filters) GetRequestHeaderModifier() *RequestHeaderModifier {
+	if o == nil {
 		return nil
 	}
-	return f.RequestHeaderModifier
+	return o.RequestHeaderModifier
 }
 
-func (f *Filters) GetRequestMirror() *RequestMirror {
-	if f == nil {
+func (o *Filters) GetRequestMirror() *RequestMirror {
+	if o == nil {
 		return nil
 	}
-	return f.RequestMirror
+	return o.RequestMirror
 }
 
-func (f *Filters) GetRequestRedirect() *RequestRedirect {
-	if f == nil {
+func (o *Filters) GetRequestRedirect() *RequestRedirect {
+	if o == nil {
 		return nil
 	}
-	return f.RequestRedirect
+	return o.RequestRedirect
 }
 
-func (f *Filters) GetResponseHeaderModifier() *ResponseHeaderModifier {
-	if f == nil {
+func (o *Filters) GetResponseHeaderModifier() *ResponseHeaderModifier {
+	if o == nil {
 		return nil
 	}
-	return f.ResponseHeaderModifier
+	return o.ResponseHeaderModifier
 }
 
-func (f *Filters) GetType() MeshHTTPRouteItemSpecType {
-	if f == nil {
+func (o *Filters) GetType() MeshHTTPRouteItemSpecType {
+	if o == nil {
 		return MeshHTTPRouteItemSpecType("")
 	}
-	return f.Type
+	return o.Type
 }
 
-func (f *Filters) GetURLRewrite() *URLRewrite {
-	if f == nil {
+func (o *Filters) GetURLRewrite() *URLRewrite {
+	if o == nil {
 		return nil
 	}
-	return f.URLRewrite
+	return o.URLRewrite
 }
 
 // MeshHTTPRouteItemDefault - Default holds routing rules that can be merged with rules from other
@@ -1179,18 +1153,18 @@ type MeshHTTPRouteItemDefault struct {
 	Filters     []Filters     `json:"filters,omitempty"`
 }
 
-func (m *MeshHTTPRouteItemDefault) GetBackendRefs() []BackendRefs {
-	if m == nil {
+func (o *MeshHTTPRouteItemDefault) GetBackendRefs() []BackendRefs {
+	if o == nil {
 		return nil
 	}
-	return m.BackendRefs
+	return o.BackendRefs
 }
 
-func (m *MeshHTTPRouteItemDefault) GetFilters() []Filters {
-	if m == nil {
+func (o *MeshHTTPRouteItemDefault) GetFilters() []Filters {
+	if o == nil {
 		return nil
 	}
-	return m.Filters
+	return o.Filters
 }
 
 // MeshHTTPRouteItemSpecToType - Type specifies how to match against the value of the header.
@@ -1246,31 +1220,31 @@ func (h Headers) MarshalJSON() ([]byte, error) {
 }
 
 func (h *Headers) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &h, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &h, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (h *Headers) GetName() string {
-	if h == nil {
+func (o *Headers) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return h.Name
+	return o.Name
 }
 
-func (h *Headers) GetType() *MeshHTTPRouteItemSpecToType {
-	if h == nil {
+func (o *Headers) GetType() *MeshHTTPRouteItemSpecToType {
+	if o == nil {
 		return nil
 	}
-	return h.Type
+	return o.Type
 }
 
-func (h *Headers) GetValue() *string {
-	if h == nil {
+func (o *Headers) GetValue() *string {
+	if o == nil {
 		return nil
 	}
-	return h.Value
+	return o.Value
 }
 
 type Method string
@@ -1356,18 +1330,18 @@ type Path struct {
 	Value string `json:"value"`
 }
 
-func (p *Path) GetType() MeshHTTPRouteItemSpecToRulesType {
-	if p == nil {
+func (o *Path) GetType() MeshHTTPRouteItemSpecToRulesType {
+	if o == nil {
 		return MeshHTTPRouteItemSpecToRulesType("")
 	}
-	return p.Type
+	return o.Type
 }
 
-func (p *Path) GetValue() string {
-	if p == nil {
+func (o *Path) GetValue() string {
+	if o == nil {
 		return ""
 	}
-	return p.Value
+	return o.Value
 }
 
 type MeshHTTPRouteItemSpecToRulesMatchesType string
@@ -1402,25 +1376,25 @@ type QueryParams struct {
 	Value string                                  `json:"value"`
 }
 
-func (q *QueryParams) GetName() string {
-	if q == nil {
+func (o *QueryParams) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return q.Name
+	return o.Name
 }
 
-func (q *QueryParams) GetType() MeshHTTPRouteItemSpecToRulesMatchesType {
-	if q == nil {
+func (o *QueryParams) GetType() MeshHTTPRouteItemSpecToRulesMatchesType {
+	if o == nil {
 		return MeshHTTPRouteItemSpecToRulesMatchesType("")
 	}
-	return q.Type
+	return o.Type
 }
 
-func (q *QueryParams) GetValue() string {
-	if q == nil {
+func (o *QueryParams) GetValue() string {
+	if o == nil {
 		return ""
 	}
-	return q.Value
+	return o.Value
 }
 
 type MeshHTTPRouteItemMatches struct {
@@ -1432,32 +1406,32 @@ type MeshHTTPRouteItemMatches struct {
 	QueryParams []QueryParams `json:"queryParams,omitempty"`
 }
 
-func (m *MeshHTTPRouteItemMatches) GetHeaders() []Headers {
-	if m == nil {
+func (o *MeshHTTPRouteItemMatches) GetHeaders() []Headers {
+	if o == nil {
 		return nil
 	}
-	return m.Headers
+	return o.Headers
 }
 
-func (m *MeshHTTPRouteItemMatches) GetMethod() *Method {
-	if m == nil {
+func (o *MeshHTTPRouteItemMatches) GetMethod() *Method {
+	if o == nil {
 		return nil
 	}
-	return m.Method
+	return o.Method
 }
 
-func (m *MeshHTTPRouteItemMatches) GetPath() *Path {
-	if m == nil {
+func (o *MeshHTTPRouteItemMatches) GetPath() *Path {
+	if o == nil {
 		return nil
 	}
-	return m.Path
+	return o.Path
 }
 
-func (m *MeshHTTPRouteItemMatches) GetQueryParams() []QueryParams {
-	if m == nil {
+func (o *MeshHTTPRouteItemMatches) GetQueryParams() []QueryParams {
+	if o == nil {
 		return nil
 	}
-	return m.QueryParams
+	return o.QueryParams
 }
 
 type MeshHTTPRouteItemRules struct {
@@ -1469,18 +1443,18 @@ type MeshHTTPRouteItemRules struct {
 	Matches []MeshHTTPRouteItemMatches `json:"matches"`
 }
 
-func (m *MeshHTTPRouteItemRules) GetDefault() MeshHTTPRouteItemDefault {
-	if m == nil {
+func (o *MeshHTTPRouteItemRules) GetDefault() MeshHTTPRouteItemDefault {
+	if o == nil {
 		return MeshHTTPRouteItemDefault{}
 	}
-	return m.Default
+	return o.Default
 }
 
-func (m *MeshHTTPRouteItemRules) GetMatches() []MeshHTTPRouteItemMatches {
-	if m == nil {
+func (o *MeshHTTPRouteItemRules) GetMatches() []MeshHTTPRouteItemMatches {
+	if o == nil {
 		return []MeshHTTPRouteItemMatches{}
 	}
-	return m.Matches
+	return o.Matches
 }
 
 // MeshHTTPRouteItemSpecKind - Kind of the referenced resource
@@ -1584,60 +1558,60 @@ type MeshHTTPRouteItemSpecTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (m *MeshHTTPRouteItemSpecTargetRef) GetKind() MeshHTTPRouteItemSpecKind {
-	if m == nil {
+func (o *MeshHTTPRouteItemSpecTargetRef) GetKind() MeshHTTPRouteItemSpecKind {
+	if o == nil {
 		return MeshHTTPRouteItemSpecKind("")
 	}
-	return m.Kind
+	return o.Kind
 }
 
-func (m *MeshHTTPRouteItemSpecTargetRef) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshHTTPRouteItemSpecTargetRef) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshHTTPRouteItemSpecTargetRef) GetMesh() *string {
-	if m == nil {
+func (o *MeshHTTPRouteItemSpecTargetRef) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Mesh
+	return o.Mesh
 }
 
-func (m *MeshHTTPRouteItemSpecTargetRef) GetName() *string {
-	if m == nil {
+func (o *MeshHTTPRouteItemSpecTargetRef) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshHTTPRouteItemSpecTargetRef) GetNamespace() *string {
-	if m == nil {
+func (o *MeshHTTPRouteItemSpecTargetRef) GetNamespace() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Namespace
+	return o.Namespace
 }
 
-func (m *MeshHTTPRouteItemSpecTargetRef) GetProxyTypes() []MeshHTTPRouteItemSpecProxyTypes {
-	if m == nil {
+func (o *MeshHTTPRouteItemSpecTargetRef) GetProxyTypes() []MeshHTTPRouteItemSpecProxyTypes {
+	if o == nil {
 		return nil
 	}
-	return m.ProxyTypes
+	return o.ProxyTypes
 }
 
-func (m *MeshHTTPRouteItemSpecTargetRef) GetSectionName() *string {
-	if m == nil {
+func (o *MeshHTTPRouteItemSpecTargetRef) GetSectionName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.SectionName
+	return o.SectionName
 }
 
-func (m *MeshHTTPRouteItemSpecTargetRef) GetTags() map[string]string {
-	if m == nil {
+func (o *MeshHTTPRouteItemSpecTargetRef) GetTags() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Tags
+	return o.Tags
 }
 
 type MeshHTTPRouteItemTo struct {
@@ -1654,25 +1628,25 @@ type MeshHTTPRouteItemTo struct {
 	TargetRef MeshHTTPRouteItemSpecTargetRef `json:"targetRef"`
 }
 
-func (m *MeshHTTPRouteItemTo) GetHostnames() []string {
-	if m == nil {
+func (o *MeshHTTPRouteItemTo) GetHostnames() []string {
+	if o == nil {
 		return nil
 	}
-	return m.Hostnames
+	return o.Hostnames
 }
 
-func (m *MeshHTTPRouteItemTo) GetRules() []MeshHTTPRouteItemRules {
-	if m == nil {
+func (o *MeshHTTPRouteItemTo) GetRules() []MeshHTTPRouteItemRules {
+	if o == nil {
 		return []MeshHTTPRouteItemRules{}
 	}
-	return m.Rules
+	return o.Rules
 }
 
-func (m *MeshHTTPRouteItemTo) GetTargetRef() MeshHTTPRouteItemSpecTargetRef {
-	if m == nil {
+func (o *MeshHTTPRouteItemTo) GetTargetRef() MeshHTTPRouteItemSpecTargetRef {
+	if o == nil {
 		return MeshHTTPRouteItemSpecTargetRef{}
 	}
-	return m.TargetRef
+	return o.TargetRef
 }
 
 // MeshHTTPRouteItemSpec - Spec is the specification of the Kuma MeshHTTPRoute resource.
@@ -1685,18 +1659,18 @@ type MeshHTTPRouteItemSpec struct {
 	To []MeshHTTPRouteItemTo `json:"to,omitempty"`
 }
 
-func (m *MeshHTTPRouteItemSpec) GetTargetRef() *MeshHTTPRouteItemTargetRef {
-	if m == nil {
+func (o *MeshHTTPRouteItemSpec) GetTargetRef() *MeshHTTPRouteItemTargetRef {
+	if o == nil {
 		return nil
 	}
-	return m.TargetRef
+	return o.TargetRef
 }
 
-func (m *MeshHTTPRouteItemSpec) GetTo() []MeshHTTPRouteItemTo {
-	if m == nil {
+func (o *MeshHTTPRouteItemSpec) GetTo() []MeshHTTPRouteItemTo {
+	if o == nil {
 		return nil
 	}
-	return m.To
+	return o.To
 }
 
 // MeshHTTPRouteItem - Successful response
@@ -1724,66 +1698,66 @@ func (m MeshHTTPRouteItem) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshHTTPRouteItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (m *MeshHTTPRouteItem) GetType() MeshHTTPRouteItemType {
-	if m == nil {
+func (o *MeshHTTPRouteItem) GetType() MeshHTTPRouteItemType {
+	if o == nil {
 		return MeshHTTPRouteItemType("")
 	}
-	return m.Type
+	return o.Type
 }
 
-func (m *MeshHTTPRouteItem) GetMesh() *string {
-	if m == nil {
+func (o *MeshHTTPRouteItem) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Mesh
+	return o.Mesh
 }
 
-func (m *MeshHTTPRouteItem) GetKri() *string {
-	if m == nil {
+func (o *MeshHTTPRouteItem) GetKri() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Kri
+	return o.Kri
 }
 
-func (m *MeshHTTPRouteItem) GetName() string {
-	if m == nil {
+func (o *MeshHTTPRouteItem) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshHTTPRouteItem) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshHTTPRouteItem) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshHTTPRouteItem) GetSpec() MeshHTTPRouteItemSpec {
-	if m == nil {
+func (o *MeshHTTPRouteItem) GetSpec() MeshHTTPRouteItemSpec {
+	if o == nil {
 		return MeshHTTPRouteItemSpec{}
 	}
-	return m.Spec
+	return o.Spec
 }
 
-func (m *MeshHTTPRouteItem) GetCreationTime() *time.Time {
-	if m == nil {
+func (o *MeshHTTPRouteItem) GetCreationTime() *time.Time {
+	if o == nil {
 		return nil
 	}
-	return m.CreationTime
+	return o.CreationTime
 }
 
-func (m *MeshHTTPRouteItem) GetModificationTime() *time.Time {
-	if m == nil {
+func (o *MeshHTTPRouteItem) GetModificationTime() *time.Time {
+	if o == nil {
 		return nil
 	}
-	return m.ModificationTime
+	return o.ModificationTime
 }
 
 // MeshHTTPRouteItemInput - Successful response
@@ -1805,43 +1779,43 @@ func (m MeshHTTPRouteItemInput) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshHTTPRouteItemInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (m *MeshHTTPRouteItemInput) GetType() MeshHTTPRouteItemType {
-	if m == nil {
+func (o *MeshHTTPRouteItemInput) GetType() MeshHTTPRouteItemType {
+	if o == nil {
 		return MeshHTTPRouteItemType("")
 	}
-	return m.Type
+	return o.Type
 }
 
-func (m *MeshHTTPRouteItemInput) GetMesh() *string {
-	if m == nil {
+func (o *MeshHTTPRouteItemInput) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Mesh
+	return o.Mesh
 }
 
-func (m *MeshHTTPRouteItemInput) GetName() string {
-	if m == nil {
+func (o *MeshHTTPRouteItemInput) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshHTTPRouteItemInput) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshHTTPRouteItemInput) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshHTTPRouteItemInput) GetSpec() MeshHTTPRouteItemSpec {
-	if m == nil {
+func (o *MeshHTTPRouteItemInput) GetSpec() MeshHTTPRouteItemSpec {
+	if o == nil {
 		return MeshHTTPRouteItemSpec{}
 	}
-	return m.Spec
+	return o.Spec
 }

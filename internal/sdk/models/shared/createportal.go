@@ -98,85 +98,85 @@ func (c CreatePortal) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreatePortal) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *CreatePortal) GetName() string {
-	if c == nil {
+func (o *CreatePortal) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return c.Name
+	return o.Name
 }
 
-func (c *CreatePortal) GetDisplayName() *string {
-	if c == nil {
+func (o *CreatePortal) GetDisplayName() *string {
+	if o == nil {
 		return nil
 	}
-	return c.DisplayName
+	return o.DisplayName
 }
 
-func (c *CreatePortal) GetDescription() *string {
-	if c == nil {
+func (o *CreatePortal) GetDescription() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Description
+	return o.Description
 }
 
-func (c *CreatePortal) GetAuthenticationEnabled() *bool {
-	if c == nil {
+func (o *CreatePortal) GetAuthenticationEnabled() *bool {
+	if o == nil {
 		return nil
 	}
-	return c.AuthenticationEnabled
+	return o.AuthenticationEnabled
 }
 
-func (c *CreatePortal) GetRbacEnabled() *bool {
-	if c == nil {
+func (o *CreatePortal) GetRbacEnabled() *bool {
+	if o == nil {
 		return nil
 	}
-	return c.RbacEnabled
+	return o.RbacEnabled
 }
 
-func (c *CreatePortal) GetDefaultAPIVisibility() *DefaultAPIVisibility {
-	if c == nil {
+func (o *CreatePortal) GetDefaultAPIVisibility() *DefaultAPIVisibility {
+	if o == nil {
 		return nil
 	}
-	return c.DefaultAPIVisibility
+	return o.DefaultAPIVisibility
 }
 
-func (c *CreatePortal) GetDefaultPageVisibility() *DefaultPageVisibility {
-	if c == nil {
+func (o *CreatePortal) GetDefaultPageVisibility() *DefaultPageVisibility {
+	if o == nil {
 		return nil
 	}
-	return c.DefaultPageVisibility
+	return o.DefaultPageVisibility
 }
 
-func (c *CreatePortal) GetDefaultApplicationAuthStrategyID() *string {
-	if c == nil {
+func (o *CreatePortal) GetDefaultApplicationAuthStrategyID() *string {
+	if o == nil {
 		return nil
 	}
-	return c.DefaultApplicationAuthStrategyID
+	return o.DefaultApplicationAuthStrategyID
 }
 
-func (c *CreatePortal) GetAutoApproveDevelopers() *bool {
-	if c == nil {
+func (o *CreatePortal) GetAutoApproveDevelopers() *bool {
+	if o == nil {
 		return nil
 	}
-	return c.AutoApproveDevelopers
+	return o.AutoApproveDevelopers
 }
 
-func (c *CreatePortal) GetAutoApproveApplications() *bool {
-	if c == nil {
+func (o *CreatePortal) GetAutoApproveApplications() *bool {
+	if o == nil {
 		return nil
 	}
-	return c.AutoApproveApplications
+	return o.AutoApproveApplications
 }
 
-func (c *CreatePortal) GetLabels() map[string]*string {
-	if c == nil {
+func (o *CreatePortal) GetLabels() map[string]*string {
+	if o == nil {
 		return nil
 	}
-	return c.Labels
+	return o.Labels
 }

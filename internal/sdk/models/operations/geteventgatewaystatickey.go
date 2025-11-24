@@ -14,18 +14,18 @@ type GetEventGatewayStaticKeyRequest struct {
 	StaticKeyID string `pathParam:"style=simple,explode=false,name=staticKeyId"`
 }
 
-func (g *GetEventGatewayStaticKeyRequest) GetGatewayID() string {
-	if g == nil {
+func (o *GetEventGatewayStaticKeyRequest) GetGatewayID() string {
+	if o == nil {
 		return ""
 	}
-	return g.GatewayID
+	return o.GatewayID
 }
 
-func (g *GetEventGatewayStaticKeyRequest) GetStaticKeyID() string {
-	if g == nil {
+func (o *GetEventGatewayStaticKeyRequest) GetStaticKeyID() string {
+	if o == nil {
 		return ""
 	}
-	return g.StaticKeyID
+	return o.StaticKeyID
 }
 
 type GetEventGatewayStaticKeyResponse struct {
@@ -45,51 +45,51 @@ type GetEventGatewayStaticKeyResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (g *GetEventGatewayStaticKeyResponse) GetContentType() string {
-	if g == nil {
+func (o *GetEventGatewayStaticKeyResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetEventGatewayStaticKeyResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetEventGatewayStaticKeyResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetEventGatewayStaticKeyResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetEventGatewayStaticKeyResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetEventGatewayStaticKeyResponse) GetEventGatewayStaticKey() *shared.EventGatewayStaticKey {
-	if g == nil {
+func (o *GetEventGatewayStaticKeyResponse) GetEventGatewayStaticKey() *shared.EventGatewayStaticKey {
+	if o == nil {
 		return nil
 	}
-	return g.EventGatewayStaticKey
+	return o.EventGatewayStaticKey
 }
 
-func (g *GetEventGatewayStaticKeyResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if g == nil {
+func (o *GetEventGatewayStaticKeyResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return g.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (g *GetEventGatewayStaticKeyResponse) GetForbiddenError() *shared.ForbiddenError {
-	if g == nil {
+func (o *GetEventGatewayStaticKeyResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return g.ForbiddenError
+	return o.ForbiddenError
 }
 
-func (g *GetEventGatewayStaticKeyResponse) GetNotFoundError() *shared.NotFoundError {
-	if g == nil {
+func (o *GetEventGatewayStaticKeyResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return g.NotFoundError
+	return o.NotFoundError
 }

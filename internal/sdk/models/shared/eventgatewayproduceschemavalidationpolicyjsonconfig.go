@@ -32,33 +32,33 @@ func (e EventGatewayProduceSchemaValidationPolicyJSONConfig) MarshalJSON() ([]by
 }
 
 func (e *EventGatewayProduceSchemaValidationPolicyJSONConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (e *EventGatewayProduceSchemaValidationPolicyJSONConfig) GetSchemaRegistry() *SchemaRegistryReference {
-	if e == nil {
+func (o *EventGatewayProduceSchemaValidationPolicyJSONConfig) GetSchemaRegistry() *SchemaRegistryReference {
+	if o == nil {
 		return nil
 	}
-	return e.SchemaRegistry
+	return o.SchemaRegistry
 }
 
-func (e *EventGatewayProduceSchemaValidationPolicyJSONConfig) GetKeyValidationAction() *ProduceKeyValidationAction {
-	if e == nil {
+func (o *EventGatewayProduceSchemaValidationPolicyJSONConfig) GetKeyValidationAction() *ProduceKeyValidationAction {
+	if o == nil {
 		return nil
 	}
-	return e.KeyValidationAction
+	return o.KeyValidationAction
 }
 
-func (e *EventGatewayProduceSchemaValidationPolicyJSONConfig) GetValueValidationAction() *ProduceValueValidationAction {
-	if e == nil {
+func (o *EventGatewayProduceSchemaValidationPolicyJSONConfig) GetValueValidationAction() *ProduceValueValidationAction {
+	if o == nil {
 		return nil
 	}
-	return e.ValueValidationAction
+	return o.ValueValidationAction
 }
 
-func (e *EventGatewayProduceSchemaValidationPolicyJSONConfig) GetType() string {
+func (o *EventGatewayProduceSchemaValidationPolicyJSONConfig) GetType() string {
 	return "json"
 }

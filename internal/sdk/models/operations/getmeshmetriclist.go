@@ -14,18 +14,18 @@ type GetMeshMetricListQueryParamFilter struct {
 	Value *string `queryParam:"name=value"`
 }
 
-func (g *GetMeshMetricListQueryParamFilter) GetKey() *string {
-	if g == nil {
+func (o *GetMeshMetricListQueryParamFilter) GetKey() *string {
+	if o == nil {
 		return nil
 	}
-	return g.Key
+	return o.Key
 }
 
-func (g *GetMeshMetricListQueryParamFilter) GetValue() *string {
-	if g == nil {
+func (o *GetMeshMetricListQueryParamFilter) GetValue() *string {
+	if o == nil {
 		return nil
 	}
-	return g.Value
+	return o.Value
 }
 
 type GetMeshMetricListRequest struct {
@@ -46,45 +46,45 @@ func (g GetMeshMetricListRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetMeshMetricListRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"cpId", "mesh"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (g *GetMeshMetricListRequest) GetCpID() string {
-	if g == nil {
+func (o *GetMeshMetricListRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return g.CpID
+	return o.CpID
 }
 
-func (g *GetMeshMetricListRequest) GetOffset() *int64 {
-	if g == nil {
+func (o *GetMeshMetricListRequest) GetOffset() *int64 {
+	if o == nil {
 		return nil
 	}
-	return g.Offset
+	return o.Offset
 }
 
-func (g *GetMeshMetricListRequest) GetSize() *int64 {
-	if g == nil {
+func (o *GetMeshMetricListRequest) GetSize() *int64 {
+	if o == nil {
 		return nil
 	}
-	return g.Size
+	return o.Size
 }
 
-func (g *GetMeshMetricListRequest) GetFilter() *GetMeshMetricListQueryParamFilter {
-	if g == nil {
+func (o *GetMeshMetricListRequest) GetFilter() *GetMeshMetricListQueryParamFilter {
+	if o == nil {
 		return nil
 	}
-	return g.Filter
+	return o.Filter
 }
 
-func (g *GetMeshMetricListRequest) GetMesh() string {
-	if g == nil {
+func (o *GetMeshMetricListRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return g.Mesh
+	return o.Mesh
 }
 
 type GetMeshMetricListResponse struct {
@@ -98,30 +98,30 @@ type GetMeshMetricListResponse struct {
 	MeshMetricList *shared.MeshMetricList
 }
 
-func (g *GetMeshMetricListResponse) GetContentType() string {
-	if g == nil {
+func (o *GetMeshMetricListResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetMeshMetricListResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetMeshMetricListResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetMeshMetricListResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetMeshMetricListResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetMeshMetricListResponse) GetMeshMetricList() *shared.MeshMetricList {
-	if g == nil {
+func (o *GetMeshMetricListResponse) GetMeshMetricList() *shared.MeshMetricList {
+	if o == nil {
 		return nil
 	}
-	return g.MeshMetricList
+	return o.MeshMetricList
 }

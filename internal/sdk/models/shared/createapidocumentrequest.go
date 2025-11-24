@@ -30,43 +30,43 @@ func (c CreateAPIDocumentRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateAPIDocumentRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"content"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *CreateAPIDocumentRequest) GetContent() string {
-	if c == nil {
+func (o *CreateAPIDocumentRequest) GetContent() string {
+	if o == nil {
 		return ""
 	}
-	return c.Content
+	return o.Content
 }
 
-func (c *CreateAPIDocumentRequest) GetTitle() *string {
-	if c == nil {
+func (o *CreateAPIDocumentRequest) GetTitle() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Title
+	return o.Title
 }
 
-func (c *CreateAPIDocumentRequest) GetSlug() *string {
-	if c == nil {
+func (o *CreateAPIDocumentRequest) GetSlug() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Slug
+	return o.Slug
 }
 
-func (c *CreateAPIDocumentRequest) GetStatus() *APIDocumentStatus {
-	if c == nil {
+func (o *CreateAPIDocumentRequest) GetStatus() *APIDocumentStatus {
+	if o == nil {
 		return nil
 	}
-	return c.Status
+	return o.Status
 }
 
-func (c *CreateAPIDocumentRequest) GetParentDocumentID() *string {
-	if c == nil {
+func (o *CreateAPIDocumentRequest) GetParentDocumentID() *string {
+	if o == nil {
 		return nil
 	}
-	return c.ParentDocumentID
+	return o.ParentDocumentID
 }

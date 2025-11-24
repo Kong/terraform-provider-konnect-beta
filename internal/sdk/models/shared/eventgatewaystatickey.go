@@ -36,57 +36,57 @@ func (e EventGatewayStaticKey) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayStaticKey) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"name", "id", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (e *EventGatewayStaticKey) GetName() string {
-	if e == nil {
+func (o *EventGatewayStaticKey) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return e.Name
+	return o.Name
 }
 
-func (e *EventGatewayStaticKey) GetDescription() *string {
-	if e == nil {
+func (o *EventGatewayStaticKey) GetDescription() *string {
+	if o == nil {
 		return nil
 	}
-	return e.Description
+	return o.Description
 }
 
-func (e *EventGatewayStaticKey) GetLabels() map[string]*string {
-	if e == nil {
+func (o *EventGatewayStaticKey) GetLabels() map[string]*string {
+	if o == nil {
 		return nil
 	}
-	return e.Labels
+	return o.Labels
 }
 
-func (e *EventGatewayStaticKey) GetID() string {
-	if e == nil {
+func (o *EventGatewayStaticKey) GetID() string {
+	if o == nil {
 		return ""
 	}
-	return e.ID
+	return o.ID
 }
 
-func (e *EventGatewayStaticKey) GetValue() *string {
-	if e == nil {
+func (o *EventGatewayStaticKey) GetValue() *string {
+	if o == nil {
 		return nil
 	}
-	return e.Value
+	return o.Value
 }
 
-func (e *EventGatewayStaticKey) GetCreatedAt() time.Time {
-	if e == nil {
+func (o *EventGatewayStaticKey) GetCreatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return e.CreatedAt
+	return o.CreatedAt
 }
 
-func (e *EventGatewayStaticKey) GetUpdatedAt() time.Time {
-	if e == nil {
+func (o *EventGatewayStaticKey) GetUpdatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return e.UpdatedAt
+	return o.UpdatedAt
 }

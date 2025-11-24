@@ -63,7 +63,7 @@ func (s *EventGatewayVirtualClusterProducePolicies) GetEventGatewayVirtualCluste
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-event-gateway-virtual-cluster-produce-policy-modify-headers",
-		OAuth2Scopes:     nil,
+		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -337,7 +337,7 @@ func (s *EventGatewayVirtualClusterProducePolicies) UpdateEventGatewayVirtualClu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-event-gateway-virtual-cluster-produce-policy-modify-headers",
-		OAuth2Scopes:     nil,
+		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayModifyHeadersPolicy", "json", `request:"mediaType=application/json"`)
@@ -617,7 +617,7 @@ func (s *EventGatewayVirtualClusterProducePolicies) DeleteEventGatewayVirtualClu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-event-gateway-virtual-cluster-produce-policy-modify-headers",
-		OAuth2Scopes:     nil,
+		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -866,7 +866,7 @@ func (s *EventGatewayVirtualClusterProducePolicies) GetEventGatewayVirtualCluste
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-event-gateway-virtual-cluster-produce-policy-schema-validation",
-		OAuth2Scopes:     nil,
+		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -1140,7 +1140,7 @@ func (s *EventGatewayVirtualClusterProducePolicies) UpdateEventGatewayVirtualClu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-event-gateway-virtual-cluster-produce-policy-schema-validation",
-		OAuth2Scopes:     nil,
+		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayProduceSchemaValidationPolicy", "json", `request:"mediaType=application/json"`)
@@ -1420,7 +1420,7 @@ func (s *EventGatewayVirtualClusterProducePolicies) DeleteEventGatewayVirtualClu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-event-gateway-virtual-cluster-produce-policy-schema-validation",
-		OAuth2Scopes:     nil,
+		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -1669,7 +1669,7 @@ func (s *EventGatewayVirtualClusterProducePolicies) GetEventGatewayVirtualCluste
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-event-gateway-virtual-cluster-produce-policy-encrypt",
-		OAuth2Scopes:     nil,
+		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -1943,7 +1943,7 @@ func (s *EventGatewayVirtualClusterProducePolicies) UpdateEventGatewayVirtualClu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-event-gateway-virtual-cluster-produce-policy-encrypt",
-		OAuth2Scopes:     nil,
+		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayEncryptPolicy", "json", `request:"mediaType=application/json"`)
@@ -2223,7 +2223,7 @@ func (s *EventGatewayVirtualClusterProducePolicies) DeleteEventGatewayVirtualClu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-event-gateway-virtual-cluster-produce-policy-encrypt",
-		OAuth2Scopes:     nil,
+		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -2472,7 +2472,7 @@ func (s *EventGatewayVirtualClusterProducePolicies) CreateEventGatewayVirtualClu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-event-gateway-virtual-cluster-produce-policy-modify-headers",
-		OAuth2Scopes:     nil,
+		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayModifyHeadersPolicyCreate", "json", `request:"mediaType=application/json"`)
@@ -2753,7 +2753,7 @@ func (s *EventGatewayVirtualClusterProducePolicies) CreateEventGatewayVirtualClu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-event-gateway-virtual-cluster-produce-policy-schema-validation",
-		OAuth2Scopes:     nil,
+		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayProduceSchemaValidationPolicy", "json", `request:"mediaType=application/json"`)
@@ -3034,7 +3034,7 @@ func (s *EventGatewayVirtualClusterProducePolicies) CreateEventGatewayVirtualClu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-event-gateway-virtual-cluster-produce-policy-encrypt",
-		OAuth2Scopes:     nil,
+		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayEncryptPolicy", "json", `request:"mediaType=application/json"`)

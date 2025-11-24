@@ -14,18 +14,18 @@ type DeleteHostnameGeneratorRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (d *DeleteHostnameGeneratorRequest) GetCpID() string {
-	if d == nil {
+func (o *DeleteHostnameGeneratorRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return d.CpID
+	return o.CpID
 }
 
-func (d *DeleteHostnameGeneratorRequest) GetName() string {
-	if d == nil {
+func (o *DeleteHostnameGeneratorRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return d.Name
+	return o.Name
 }
 
 type DeleteHostnameGeneratorResponse struct {
@@ -41,37 +41,37 @@ type DeleteHostnameGeneratorResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeleteHostnameGeneratorResponse) GetContentType() string {
-	if d == nil {
+func (o *DeleteHostnameGeneratorResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeleteHostnameGeneratorResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeleteHostnameGeneratorResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeleteHostnameGeneratorResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeleteHostnameGeneratorResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeleteHostnameGeneratorResponse) GetHostnameGeneratorDeleteSuccessResponse() *shared.HostnameGeneratorDeleteSuccessResponse {
-	if d == nil {
+func (o *DeleteHostnameGeneratorResponse) GetHostnameGeneratorDeleteSuccessResponse() *shared.HostnameGeneratorDeleteSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return d.HostnameGeneratorDeleteSuccessResponse
+	return o.HostnameGeneratorDeleteSuccessResponse
 }
 
-func (d *DeleteHostnameGeneratorResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeleteHostnameGeneratorResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

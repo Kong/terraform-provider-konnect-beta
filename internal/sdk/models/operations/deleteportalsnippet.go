@@ -14,18 +14,18 @@ type DeletePortalSnippetRequest struct {
 	SnippetID string `pathParam:"style=simple,explode=false,name=snippetId"`
 }
 
-func (d *DeletePortalSnippetRequest) GetPortalID() string {
-	if d == nil {
+func (o *DeletePortalSnippetRequest) GetPortalID() string {
+	if o == nil {
 		return ""
 	}
-	return d.PortalID
+	return o.PortalID
 }
 
-func (d *DeletePortalSnippetRequest) GetSnippetID() string {
-	if d == nil {
+func (o *DeletePortalSnippetRequest) GetSnippetID() string {
+	if o == nil {
 		return ""
 	}
-	return d.SnippetID
+	return o.SnippetID
 }
 
 type DeletePortalSnippetResponse struct {
@@ -43,44 +43,44 @@ type DeletePortalSnippetResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeletePortalSnippetResponse) GetContentType() string {
-	if d == nil {
+func (o *DeletePortalSnippetResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeletePortalSnippetResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeletePortalSnippetResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeletePortalSnippetResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeletePortalSnippetResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeletePortalSnippetResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if d == nil {
+func (o *DeletePortalSnippetResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return d.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (d *DeletePortalSnippetResponse) GetForbiddenError() *shared.ForbiddenError {
-	if d == nil {
+func (o *DeletePortalSnippetResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return d.ForbiddenError
+	return o.ForbiddenError
 }
 
-func (d *DeletePortalSnippetResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeletePortalSnippetResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

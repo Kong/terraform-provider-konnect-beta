@@ -75,22 +75,22 @@ func (t TLSVersionRange) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TLSVersionRange) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (t *TLSVersionRange) GetMin() *Min {
-	if t == nil {
+func (o *TLSVersionRange) GetMin() *Min {
+	if o == nil {
 		return nil
 	}
-	return t.Min
+	return o.Min
 }
 
-func (t *TLSVersionRange) GetMax() *Max {
-	if t == nil {
+func (o *TLSVersionRange) GetMax() *Max {
+	if o == nil {
 		return nil
 	}
-	return t.Max
+	return o.Max
 }

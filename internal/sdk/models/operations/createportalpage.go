@@ -14,18 +14,18 @@ type CreatePortalPageRequest struct {
 	CreatePortalPageRequest shared.CreatePortalPageRequest `request:"mediaType=application/json"`
 }
 
-func (c *CreatePortalPageRequest) GetPortalID() string {
-	if c == nil {
+func (o *CreatePortalPageRequest) GetPortalID() string {
+	if o == nil {
 		return ""
 	}
-	return c.PortalID
+	return o.PortalID
 }
 
-func (c *CreatePortalPageRequest) GetCreatePortalPageRequest() shared.CreatePortalPageRequest {
-	if c == nil {
+func (o *CreatePortalPageRequest) GetCreatePortalPageRequest() shared.CreatePortalPageRequest {
+	if o == nil {
 		return shared.CreatePortalPageRequest{}
 	}
-	return c.CreatePortalPageRequest
+	return o.CreatePortalPageRequest
 }
 
 type CreatePortalPageResponse struct {
@@ -47,58 +47,58 @@ type CreatePortalPageResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (c *CreatePortalPageResponse) GetContentType() string {
-	if c == nil {
+func (o *CreatePortalPageResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return c.ContentType
+	return o.ContentType
 }
 
-func (c *CreatePortalPageResponse) GetStatusCode() int {
-	if c == nil {
+func (o *CreatePortalPageResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return c.StatusCode
+	return o.StatusCode
 }
 
-func (c *CreatePortalPageResponse) GetRawResponse() *http.Response {
-	if c == nil {
+func (o *CreatePortalPageResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return c.RawResponse
+	return o.RawResponse
 }
 
-func (c *CreatePortalPageResponse) GetPortalPageResponse() *shared.PortalPageResponse {
-	if c == nil {
+func (o *CreatePortalPageResponse) GetPortalPageResponse() *shared.PortalPageResponse {
+	if o == nil {
 		return nil
 	}
-	return c.PortalPageResponse
+	return o.PortalPageResponse
 }
 
-func (c *CreatePortalPageResponse) GetBadRequestError() *shared.BadRequestError {
-	if c == nil {
+func (o *CreatePortalPageResponse) GetBadRequestError() *shared.BadRequestError {
+	if o == nil {
 		return nil
 	}
-	return c.BadRequestError
+	return o.BadRequestError
 }
 
-func (c *CreatePortalPageResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if c == nil {
+func (o *CreatePortalPageResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return c.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (c *CreatePortalPageResponse) GetForbiddenError() *shared.ForbiddenError {
-	if c == nil {
+func (o *CreatePortalPageResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return c.ForbiddenError
+	return o.ForbiddenError
 }
 
-func (c *CreatePortalPageResponse) GetNotFoundError() *shared.NotFoundError {
-	if c == nil {
+func (o *CreatePortalPageResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return c.NotFoundError
+	return o.NotFoundError
 }

@@ -16,25 +16,25 @@ type GetEventGatewayVirtualClusterConsumePolicyModifyHeadersRequest struct {
 	PolicyID string `pathParam:"style=simple,explode=false,name=policyId"`
 }
 
-func (g *GetEventGatewayVirtualClusterConsumePolicyModifyHeadersRequest) GetGatewayID() string {
-	if g == nil {
+func (o *GetEventGatewayVirtualClusterConsumePolicyModifyHeadersRequest) GetGatewayID() string {
+	if o == nil {
 		return ""
 	}
-	return g.GatewayID
+	return o.GatewayID
 }
 
-func (g *GetEventGatewayVirtualClusterConsumePolicyModifyHeadersRequest) GetVirtualClusterID() string {
-	if g == nil {
+func (o *GetEventGatewayVirtualClusterConsumePolicyModifyHeadersRequest) GetVirtualClusterID() string {
+	if o == nil {
 		return ""
 	}
-	return g.VirtualClusterID
+	return o.VirtualClusterID
 }
 
-func (g *GetEventGatewayVirtualClusterConsumePolicyModifyHeadersRequest) GetPolicyID() string {
-	if g == nil {
+func (o *GetEventGatewayVirtualClusterConsumePolicyModifyHeadersRequest) GetPolicyID() string {
+	if o == nil {
 		return ""
 	}
-	return g.PolicyID
+	return o.PolicyID
 }
 
 type GetEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse struct {
@@ -54,51 +54,51 @@ type GetEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (g *GetEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetContentType() string {
-	if g == nil {
+func (o *GetEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetEventGatewayPolicy() *shared.EventGatewayPolicy {
-	if g == nil {
+func (o *GetEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetEventGatewayPolicy() *shared.EventGatewayPolicy {
+	if o == nil {
 		return nil
 	}
-	return g.EventGatewayPolicy
+	return o.EventGatewayPolicy
 }
 
-func (g *GetEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if g == nil {
+func (o *GetEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return g.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (g *GetEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetForbiddenError() *shared.ForbiddenError {
-	if g == nil {
+func (o *GetEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return g.ForbiddenError
+	return o.ForbiddenError
 }
 
-func (g *GetEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetNotFoundError() *shared.NotFoundError {
-	if g == nil {
+func (o *GetEventGatewayVirtualClusterConsumePolicyModifyHeadersResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return g.NotFoundError
+	return o.NotFoundError
 }

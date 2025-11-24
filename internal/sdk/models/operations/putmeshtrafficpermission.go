@@ -18,32 +18,32 @@ type PutMeshTrafficPermissionRequest struct {
 	MeshTrafficPermissionItem shared.MeshTrafficPermissionItemInput `request:"mediaType=application/json"`
 }
 
-func (p *PutMeshTrafficPermissionRequest) GetCpID() string {
-	if p == nil {
+func (o *PutMeshTrafficPermissionRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return p.CpID
+	return o.CpID
 }
 
-func (p *PutMeshTrafficPermissionRequest) GetMesh() string {
-	if p == nil {
+func (o *PutMeshTrafficPermissionRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return p.Mesh
+	return o.Mesh
 }
 
-func (p *PutMeshTrafficPermissionRequest) GetName() string {
-	if p == nil {
+func (o *PutMeshTrafficPermissionRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return p.Name
+	return o.Name
 }
 
-func (p *PutMeshTrafficPermissionRequest) GetMeshTrafficPermissionItem() shared.MeshTrafficPermissionItemInput {
-	if p == nil {
+func (o *PutMeshTrafficPermissionRequest) GetMeshTrafficPermissionItem() shared.MeshTrafficPermissionItemInput {
+	if o == nil {
 		return shared.MeshTrafficPermissionItemInput{}
 	}
-	return p.MeshTrafficPermissionItem
+	return o.MeshTrafficPermissionItem
 }
 
 type PutMeshTrafficPermissionResponse struct {
@@ -57,30 +57,30 @@ type PutMeshTrafficPermissionResponse struct {
 	MeshTrafficPermissionCreateOrUpdateSuccessResponse *shared.MeshTrafficPermissionCreateOrUpdateSuccessResponse
 }
 
-func (p *PutMeshTrafficPermissionResponse) GetContentType() string {
-	if p == nil {
+func (o *PutMeshTrafficPermissionResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return p.ContentType
+	return o.ContentType
 }
 
-func (p *PutMeshTrafficPermissionResponse) GetStatusCode() int {
-	if p == nil {
+func (o *PutMeshTrafficPermissionResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return p.StatusCode
+	return o.StatusCode
 }
 
-func (p *PutMeshTrafficPermissionResponse) GetRawResponse() *http.Response {
-	if p == nil {
+func (o *PutMeshTrafficPermissionResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return p.RawResponse
+	return o.RawResponse
 }
 
-func (p *PutMeshTrafficPermissionResponse) GetMeshTrafficPermissionCreateOrUpdateSuccessResponse() *shared.MeshTrafficPermissionCreateOrUpdateSuccessResponse {
-	if p == nil {
+func (o *PutMeshTrafficPermissionResponse) GetMeshTrafficPermissionCreateOrUpdateSuccessResponse() *shared.MeshTrafficPermissionCreateOrUpdateSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return p.MeshTrafficPermissionCreateOrUpdateSuccessResponse
+	return o.MeshTrafficPermissionCreateOrUpdateSuccessResponse
 }

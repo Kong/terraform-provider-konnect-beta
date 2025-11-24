@@ -10,9 +10,9 @@ type SecretCreateOrUpdateSuccessResponse struct {
 	Warnings []string `json:"warnings,omitempty"`
 }
 
-func (s *SecretCreateOrUpdateSuccessResponse) GetWarnings() []string {
-	if s == nil {
+func (o *SecretCreateOrUpdateSuccessResponse) GetWarnings() []string {
+	if o == nil {
 		return nil
 	}
-	return s.Warnings
+	return o.Warnings
 }

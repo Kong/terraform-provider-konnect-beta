@@ -106,122 +106,122 @@ func (p Portal) MarshalJSON() ([]byte, error) {
 }
 
 func (p *Portal) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"id", "created_at", "updated_at", "name", "display_name", "default_api_visibility", "default_page_visibility", "default_domain", "canonical_domain"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *Portal) GetID() string {
-	if p == nil {
+func (o *Portal) GetID() string {
+	if o == nil {
 		return ""
 	}
-	return p.ID
+	return o.ID
 }
 
-func (p *Portal) GetCreatedAt() time.Time {
-	if p == nil {
+func (o *Portal) GetCreatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return p.CreatedAt
+	return o.CreatedAt
 }
 
-func (p *Portal) GetUpdatedAt() time.Time {
-	if p == nil {
+func (o *Portal) GetUpdatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return p.UpdatedAt
+	return o.UpdatedAt
 }
 
-func (p *Portal) GetName() string {
-	if p == nil {
+func (o *Portal) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return p.Name
+	return o.Name
 }
 
-func (p *Portal) GetDisplayName() string {
-	if p == nil {
+func (o *Portal) GetDisplayName() string {
+	if o == nil {
 		return ""
 	}
-	return p.DisplayName
+	return o.DisplayName
 }
 
-func (p *Portal) GetDescription() *string {
-	if p == nil {
+func (o *Portal) GetDescription() *string {
+	if o == nil {
 		return nil
 	}
-	return p.Description
+	return o.Description
 }
 
-func (p *Portal) GetAuthenticationEnabled() *bool {
-	if p == nil {
+func (o *Portal) GetAuthenticationEnabled() *bool {
+	if o == nil {
 		return nil
 	}
-	return p.AuthenticationEnabled
+	return o.AuthenticationEnabled
 }
 
-func (p *Portal) GetRbacEnabled() *bool {
-	if p == nil {
+func (o *Portal) GetRbacEnabled() *bool {
+	if o == nil {
 		return nil
 	}
-	return p.RbacEnabled
+	return o.RbacEnabled
 }
 
-func (p *Portal) GetDefaultAPIVisibility() ListPortalsResponseDefaultAPIVisibility {
-	if p == nil {
+func (o *Portal) GetDefaultAPIVisibility() ListPortalsResponseDefaultAPIVisibility {
+	if o == nil {
 		return ListPortalsResponseDefaultAPIVisibility("")
 	}
-	return p.DefaultAPIVisibility
+	return o.DefaultAPIVisibility
 }
 
-func (p *Portal) GetDefaultPageVisibility() ListPortalsResponseDefaultPageVisibility {
-	if p == nil {
+func (o *Portal) GetDefaultPageVisibility() ListPortalsResponseDefaultPageVisibility {
+	if o == nil {
 		return ListPortalsResponseDefaultPageVisibility("")
 	}
-	return p.DefaultPageVisibility
+	return o.DefaultPageVisibility
 }
 
-func (p *Portal) GetDefaultApplicationAuthStrategyID() *string {
-	if p == nil {
+func (o *Portal) GetDefaultApplicationAuthStrategyID() *string {
+	if o == nil {
 		return nil
 	}
-	return p.DefaultApplicationAuthStrategyID
+	return o.DefaultApplicationAuthStrategyID
 }
 
-func (p *Portal) GetAutoApproveDevelopers() *bool {
-	if p == nil {
+func (o *Portal) GetAutoApproveDevelopers() *bool {
+	if o == nil {
 		return nil
 	}
-	return p.AutoApproveDevelopers
+	return o.AutoApproveDevelopers
 }
 
-func (p *Portal) GetAutoApproveApplications() *bool {
-	if p == nil {
+func (o *Portal) GetAutoApproveApplications() *bool {
+	if o == nil {
 		return nil
 	}
-	return p.AutoApproveApplications
+	return o.AutoApproveApplications
 }
 
-func (p *Portal) GetDefaultDomain() string {
-	if p == nil {
+func (o *Portal) GetDefaultDomain() string {
+	if o == nil {
 		return ""
 	}
-	return p.DefaultDomain
+	return o.DefaultDomain
 }
 
-func (p *Portal) GetCanonicalDomain() string {
-	if p == nil {
+func (o *Portal) GetCanonicalDomain() string {
+	if o == nil {
 		return ""
 	}
-	return p.CanonicalDomain
+	return o.CanonicalDomain
 }
 
-func (p *Portal) GetLabels() map[string]*string {
-	if p == nil {
+func (o *Portal) GetLabels() map[string]*string {
+	if o == nil {
 		return nil
 	}
-	return p.Labels
+	return o.Labels
 }
 
 // ListPortalsResponse - A paginated list of portals in the current region of an organization.
@@ -231,16 +231,16 @@ type ListPortalsResponse struct {
 	Meta PaginatedMeta `json:"meta"`
 }
 
-func (l *ListPortalsResponse) GetData() []Portal {
-	if l == nil {
+func (o *ListPortalsResponse) GetData() []Portal {
+	if o == nil {
 		return []Portal{}
 	}
-	return l.Data
+	return o.Data
 }
 
-func (l *ListPortalsResponse) GetMeta() PaginatedMeta {
-	if l == nil {
+func (o *ListPortalsResponse) GetMeta() PaginatedMeta {
+	if o == nil {
 		return PaginatedMeta{}
 	}
-	return l.Meta
+	return o.Meta
 }

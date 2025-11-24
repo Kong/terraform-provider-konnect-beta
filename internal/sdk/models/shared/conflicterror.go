@@ -11,37 +11,37 @@ type ConflictError struct {
 	Detail   any `json:"detail"`
 }
 
-func (c *ConflictError) GetStatus() any {
-	if c == nil {
+func (o *ConflictError) GetStatus() any {
+	if o == nil {
 		return nil
 	}
-	return c.Status
+	return o.Status
 }
 
-func (c *ConflictError) GetTitle() any {
-	if c == nil {
+func (o *ConflictError) GetTitle() any {
+	if o == nil {
 		return nil
 	}
-	return c.Title
+	return o.Title
 }
 
-func (c *ConflictError) GetType() any {
-	if c == nil {
+func (o *ConflictError) GetType() any {
+	if o == nil {
 		return nil
 	}
-	return c.Type
+	return o.Type
 }
 
-func (c *ConflictError) GetInstance() any {
-	if c == nil {
+func (o *ConflictError) GetInstance() any {
+	if o == nil {
 		return nil
 	}
-	return c.Instance
+	return o.Instance
 }
 
-func (c *ConflictError) GetDetail() any {
-	if c == nil {
+func (o *ConflictError) GetDetail() any {
+	if o == nil {
 		return nil
 	}
-	return c.Detail
+	return o.Detail
 }

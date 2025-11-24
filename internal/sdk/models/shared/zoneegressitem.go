@@ -8,11 +8,11 @@ type Admin struct {
 	Port *int64 `json:"port,omitempty"`
 }
 
-func (a *Admin) GetPort() *int64 {
-	if a == nil {
+func (o *Admin) GetPort() *int64 {
+	if o == nil {
 		return nil
 	}
-	return a.Port
+	return o.Port
 }
 
 // ZoneEgressItemNetworking - Networking defines the address and port of the Egress to listen on.
@@ -25,25 +25,25 @@ type ZoneEgressItemNetworking struct {
 	Port *int64 `json:"port,omitempty"`
 }
 
-func (z *ZoneEgressItemNetworking) GetAddress() *string {
-	if z == nil {
+func (o *ZoneEgressItemNetworking) GetAddress() *string {
+	if o == nil {
 		return nil
 	}
-	return z.Address
+	return o.Address
 }
 
-func (z *ZoneEgressItemNetworking) GetAdmin() *Admin {
-	if z == nil {
+func (o *ZoneEgressItemNetworking) GetAdmin() *Admin {
+	if o == nil {
 		return nil
 	}
-	return z.Admin
+	return o.Admin
 }
 
-func (z *ZoneEgressItemNetworking) GetPort() *int64 {
-	if z == nil {
+func (o *ZoneEgressItemNetworking) GetPort() *int64 {
+	if o == nil {
 		return nil
 	}
-	return z.Port
+	return o.Port
 }
 
 // ZoneEgressItem - Successful response
@@ -58,37 +58,37 @@ type ZoneEgressItem struct {
 	Zone *string `json:"zone,omitempty"`
 }
 
-func (z *ZoneEgressItem) GetLabels() map[string]string {
-	if z == nil {
+func (o *ZoneEgressItem) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return z.Labels
+	return o.Labels
 }
 
-func (z *ZoneEgressItem) GetName() string {
-	if z == nil {
+func (o *ZoneEgressItem) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return z.Name
+	return o.Name
 }
 
-func (z *ZoneEgressItem) GetNetworking() *ZoneEgressItemNetworking {
-	if z == nil {
+func (o *ZoneEgressItem) GetNetworking() *ZoneEgressItemNetworking {
+	if o == nil {
 		return nil
 	}
-	return z.Networking
+	return o.Networking
 }
 
-func (z *ZoneEgressItem) GetType() string {
-	if z == nil {
+func (o *ZoneEgressItem) GetType() string {
+	if o == nil {
 		return ""
 	}
-	return z.Type
+	return o.Type
 }
 
-func (z *ZoneEgressItem) GetZone() *string {
-	if z == nil {
+func (o *ZoneEgressItem) GetZone() *string {
+	if o == nil {
 		return nil
 	}
-	return z.Zone
+	return o.Zone
 }

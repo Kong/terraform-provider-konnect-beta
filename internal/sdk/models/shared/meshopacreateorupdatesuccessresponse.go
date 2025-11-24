@@ -10,9 +10,9 @@ type MeshOPACreateOrUpdateSuccessResponse struct {
 	Warnings []string `json:"warnings,omitempty"`
 }
 
-func (m *MeshOPACreateOrUpdateSuccessResponse) GetWarnings() []string {
-	if m == nil {
+func (o *MeshOPACreateOrUpdateSuccessResponse) GetWarnings() []string {
+	if o == nil {
 		return nil
 	}
-	return m.Warnings
+	return o.Warnings
 }

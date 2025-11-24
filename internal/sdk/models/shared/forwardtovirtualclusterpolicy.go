@@ -17,8 +17,8 @@ const (
 )
 
 type ForwardToVirtualClusterPolicyConfig struct {
-	ForwardToClusterBySNIConfig         *ForwardToClusterBySNIConfig         `queryParam:"inline,name=config"`
-	ForwardToClusterByPortMappingConfig *ForwardToClusterByPortMappingConfig `queryParam:"inline,name=config"`
+	ForwardToClusterBySNIConfig         *ForwardToClusterBySNIConfig         `queryParam:"inline"`
+	ForwardToClusterByPortMappingConfig *ForwardToClusterByPortMappingConfig `queryParam:"inline"`
 
 	Type ForwardToVirtualClusterPolicyConfigType
 }
@@ -55,7 +55,7 @@ func (u *ForwardToVirtualClusterPolicyConfig) UnmarshalJSON(data []byte) error {
 	switch dis.Type {
 	case "port_mapping":
 		forwardToClusterByPortMappingConfig := new(ForwardToClusterByPortMappingConfig)
-		if err := utils.UnmarshalJSON(data, &forwardToClusterByPortMappingConfig, "", true, nil); err != nil {
+		if err := utils.UnmarshalJSON(data, &forwardToClusterByPortMappingConfig, "", true, false); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == port_mapping) type ForwardToClusterByPortMappingConfig within ForwardToVirtualClusterPolicyConfig: %w", string(data), err)
 		}
 
@@ -64,7 +64,7 @@ func (u *ForwardToVirtualClusterPolicyConfig) UnmarshalJSON(data []byte) error {
 		return nil
 	case "sni":
 		forwardToClusterBySNIConfig := new(ForwardToClusterBySNIConfig)
-		if err := utils.UnmarshalJSON(data, &forwardToClusterBySNIConfig, "", true, nil); err != nil {
+		if err := utils.UnmarshalJSON(data, &forwardToClusterBySNIConfig, "", true, false); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == sni) type ForwardToClusterBySNIConfig within ForwardToVirtualClusterPolicyConfig: %w", string(data), err)
 		}
 
@@ -117,55 +117,55 @@ func (f ForwardToVirtualClusterPolicy) MarshalJSON() ([]byte, error) {
 }
 
 func (f *ForwardToVirtualClusterPolicy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"type", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &f, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (f *ForwardToVirtualClusterPolicy) GetType() string {
+func (o *ForwardToVirtualClusterPolicy) GetType() string {
 	return "forward_to_virtual_cluster"
 }
 
-func (f *ForwardToVirtualClusterPolicy) GetName() *string {
-	if f == nil {
+func (o *ForwardToVirtualClusterPolicy) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return f.Name
+	return o.Name
 }
 
-func (f *ForwardToVirtualClusterPolicy) GetDescription() *string {
-	if f == nil {
+func (o *ForwardToVirtualClusterPolicy) GetDescription() *string {
+	if o == nil {
 		return nil
 	}
-	return f.Description
+	return o.Description
 }
 
-func (f *ForwardToVirtualClusterPolicy) GetEnabled() *bool {
-	if f == nil {
+func (o *ForwardToVirtualClusterPolicy) GetEnabled() *bool {
+	if o == nil {
 		return nil
 	}
-	return f.Enabled
+	return o.Enabled
 }
 
-func (f *ForwardToVirtualClusterPolicy) GetConfig() ForwardToVirtualClusterPolicyConfig {
-	if f == nil {
+func (o *ForwardToVirtualClusterPolicy) GetConfig() ForwardToVirtualClusterPolicyConfig {
+	if o == nil {
 		return ForwardToVirtualClusterPolicyConfig{}
 	}
-	return f.Config
+	return o.Config
 }
 
-func (f *ForwardToVirtualClusterPolicy) GetConfigPortMapping() *ForwardToClusterByPortMappingConfig {
-	return f.GetConfig().ForwardToClusterByPortMappingConfig
+func (o *ForwardToVirtualClusterPolicy) GetConfigPortMapping() *ForwardToClusterByPortMappingConfig {
+	return o.GetConfig().ForwardToClusterByPortMappingConfig
 }
 
-func (f *ForwardToVirtualClusterPolicy) GetConfigSni() *ForwardToClusterBySNIConfig {
-	return f.GetConfig().ForwardToClusterBySNIConfig
+func (o *ForwardToVirtualClusterPolicy) GetConfigSni() *ForwardToClusterBySNIConfig {
+	return o.GetConfig().ForwardToClusterBySNIConfig
 }
 
-func (f *ForwardToVirtualClusterPolicy) GetLabels() map[string]*string {
-	if f == nil {
+func (o *ForwardToVirtualClusterPolicy) GetLabels() map[string]*string {
+	if o == nil {
 		return nil
 	}
-	return f.Labels
+	return o.Labels
 }

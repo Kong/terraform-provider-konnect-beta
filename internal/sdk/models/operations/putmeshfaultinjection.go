@@ -18,32 +18,32 @@ type PutMeshFaultInjectionRequest struct {
 	MeshFaultInjectionItem shared.MeshFaultInjectionItemInput `request:"mediaType=application/json"`
 }
 
-func (p *PutMeshFaultInjectionRequest) GetCpID() string {
-	if p == nil {
+func (o *PutMeshFaultInjectionRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return p.CpID
+	return o.CpID
 }
 
-func (p *PutMeshFaultInjectionRequest) GetMesh() string {
-	if p == nil {
+func (o *PutMeshFaultInjectionRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return p.Mesh
+	return o.Mesh
 }
 
-func (p *PutMeshFaultInjectionRequest) GetName() string {
-	if p == nil {
+func (o *PutMeshFaultInjectionRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return p.Name
+	return o.Name
 }
 
-func (p *PutMeshFaultInjectionRequest) GetMeshFaultInjectionItem() shared.MeshFaultInjectionItemInput {
-	if p == nil {
+func (o *PutMeshFaultInjectionRequest) GetMeshFaultInjectionItem() shared.MeshFaultInjectionItemInput {
+	if o == nil {
 		return shared.MeshFaultInjectionItemInput{}
 	}
-	return p.MeshFaultInjectionItem
+	return o.MeshFaultInjectionItem
 }
 
 type PutMeshFaultInjectionResponse struct {
@@ -57,30 +57,30 @@ type PutMeshFaultInjectionResponse struct {
 	MeshFaultInjectionCreateOrUpdateSuccessResponse *shared.MeshFaultInjectionCreateOrUpdateSuccessResponse
 }
 
-func (p *PutMeshFaultInjectionResponse) GetContentType() string {
-	if p == nil {
+func (o *PutMeshFaultInjectionResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return p.ContentType
+	return o.ContentType
 }
 
-func (p *PutMeshFaultInjectionResponse) GetStatusCode() int {
-	if p == nil {
+func (o *PutMeshFaultInjectionResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return p.StatusCode
+	return o.StatusCode
 }
 
-func (p *PutMeshFaultInjectionResponse) GetRawResponse() *http.Response {
-	if p == nil {
+func (o *PutMeshFaultInjectionResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return p.RawResponse
+	return o.RawResponse
 }
 
-func (p *PutMeshFaultInjectionResponse) GetMeshFaultInjectionCreateOrUpdateSuccessResponse() *shared.MeshFaultInjectionCreateOrUpdateSuccessResponse {
-	if p == nil {
+func (o *PutMeshFaultInjectionResponse) GetMeshFaultInjectionCreateOrUpdateSuccessResponse() *shared.MeshFaultInjectionCreateOrUpdateSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return p.MeshFaultInjectionCreateOrUpdateSuccessResponse
+	return o.MeshFaultInjectionCreateOrUpdateSuccessResponse
 }

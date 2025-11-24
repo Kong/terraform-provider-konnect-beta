@@ -79,30 +79,30 @@ type EventGatewayACLRule struct {
 	ResourceNames []EventGatewayACLResourceName `json:"resource_names"`
 }
 
-func (e *EventGatewayACLRule) GetResourceType() ResourceType {
-	if e == nil {
+func (o *EventGatewayACLRule) GetResourceType() ResourceType {
+	if o == nil {
 		return ResourceType("")
 	}
-	return e.ResourceType
+	return o.ResourceType
 }
 
-func (e *EventGatewayACLRule) GetAction() Action {
-	if e == nil {
+func (o *EventGatewayACLRule) GetAction() Action {
+	if o == nil {
 		return Action("")
 	}
-	return e.Action
+	return o.Action
 }
 
-func (e *EventGatewayACLRule) GetOperations() []EventGatewayACLOperation {
-	if e == nil {
+func (o *EventGatewayACLRule) GetOperations() []EventGatewayACLOperation {
+	if o == nil {
 		return []EventGatewayACLOperation{}
 	}
-	return e.Operations
+	return o.Operations
 }
 
-func (e *EventGatewayACLRule) GetResourceNames() []EventGatewayACLResourceName {
-	if e == nil {
+func (o *EventGatewayACLRule) GetResourceNames() []EventGatewayACLResourceName {
+	if o == nil {
 		return []EventGatewayACLResourceName{}
 	}
-	return e.ResourceNames
+	return o.ResourceNames
 }

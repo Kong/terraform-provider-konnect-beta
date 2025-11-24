@@ -16,25 +16,25 @@ type DeleteMeshIdentityRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (d *DeleteMeshIdentityRequest) GetCpID() string {
-	if d == nil {
+func (o *DeleteMeshIdentityRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return d.CpID
+	return o.CpID
 }
 
-func (d *DeleteMeshIdentityRequest) GetMesh() string {
-	if d == nil {
+func (o *DeleteMeshIdentityRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return d.Mesh
+	return o.Mesh
 }
 
-func (d *DeleteMeshIdentityRequest) GetName() string {
-	if d == nil {
+func (o *DeleteMeshIdentityRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return d.Name
+	return o.Name
 }
 
 type DeleteMeshIdentityResponse struct {
@@ -50,37 +50,37 @@ type DeleteMeshIdentityResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeleteMeshIdentityResponse) GetContentType() string {
-	if d == nil {
+func (o *DeleteMeshIdentityResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeleteMeshIdentityResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeleteMeshIdentityResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeleteMeshIdentityResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeleteMeshIdentityResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeleteMeshIdentityResponse) GetMeshIdentityDeleteSuccessResponse() *shared.MeshIdentityDeleteSuccessResponse {
-	if d == nil {
+func (o *DeleteMeshIdentityResponse) GetMeshIdentityDeleteSuccessResponse() *shared.MeshIdentityDeleteSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return d.MeshIdentityDeleteSuccessResponse
+	return o.MeshIdentityDeleteSuccessResponse
 }
 
-func (d *DeleteMeshIdentityResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeleteMeshIdentityResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

@@ -2,29 +2,14 @@
 
 package shared
 
-import (
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
-)
-
 type SchemaRegistryReferenceByID struct {
 	// The unique identifier of the schema registry.
 	ID string `json:"id"`
 }
 
-func (s SchemaRegistryReferenceByID) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(s, "", false)
-}
-
-func (s *SchemaRegistryReferenceByID) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"id"}); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (s *SchemaRegistryReferenceByID) GetID() string {
-	if s == nil {
+func (o *SchemaRegistryReferenceByID) GetID() string {
+	if o == nil {
 		return ""
 	}
-	return s.ID
+	return o.ID
 }

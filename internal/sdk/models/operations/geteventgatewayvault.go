@@ -14,18 +14,18 @@ type GetEventGatewayVaultRequest struct {
 	VaultID string `pathParam:"style=simple,explode=false,name=vaultId"`
 }
 
-func (g *GetEventGatewayVaultRequest) GetGatewayID() string {
-	if g == nil {
+func (o *GetEventGatewayVaultRequest) GetGatewayID() string {
+	if o == nil {
 		return ""
 	}
-	return g.GatewayID
+	return o.GatewayID
 }
 
-func (g *GetEventGatewayVaultRequest) GetVaultID() string {
-	if g == nil {
+func (o *GetEventGatewayVaultRequest) GetVaultID() string {
+	if o == nil {
 		return ""
 	}
-	return g.VaultID
+	return o.VaultID
 }
 
 type GetEventGatewayVaultResponse struct {
@@ -45,65 +45,65 @@ type GetEventGatewayVaultResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (g *GetEventGatewayVaultResponse) GetContentType() string {
-	if g == nil {
+func (o *GetEventGatewayVaultResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetEventGatewayVaultResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetEventGatewayVaultResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetEventGatewayVaultResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetEventGatewayVaultResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetEventGatewayVaultResponse) GetEventGatewayVault() *shared.EventGatewayVault {
-	if g == nil {
+func (o *GetEventGatewayVaultResponse) GetEventGatewayVault() *shared.EventGatewayVault {
+	if o == nil {
 		return nil
 	}
-	return g.EventGatewayVault
+	return o.EventGatewayVault
 }
 
-func (g *GetEventGatewayVaultResponse) GetEventGatewayVaultEnv() *shared.EventGatewayVaultEventGatewayEnvVault {
-	if v := g.GetEventGatewayVault(); v != nil {
+func (o *GetEventGatewayVaultResponse) GetEventGatewayVaultEnv() *shared.EventGatewayVaultEventGatewayEnvVault {
+	if v := o.GetEventGatewayVault(); v != nil {
 		return v.EventGatewayVaultEventGatewayEnvVault
 	}
 	return nil
 }
 
-func (g *GetEventGatewayVaultResponse) GetEventGatewayVaultKonnect() *shared.EventGatewayVaultEventGatewayKonnectVault {
-	if v := g.GetEventGatewayVault(); v != nil {
+func (o *GetEventGatewayVaultResponse) GetEventGatewayVaultKonnect() *shared.EventGatewayVaultEventGatewayKonnectVault {
+	if v := o.GetEventGatewayVault(); v != nil {
 		return v.EventGatewayVaultEventGatewayKonnectVault
 	}
 	return nil
 }
 
-func (g *GetEventGatewayVaultResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if g == nil {
+func (o *GetEventGatewayVaultResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return g.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (g *GetEventGatewayVaultResponse) GetForbiddenError() *shared.ForbiddenError {
-	if g == nil {
+func (o *GetEventGatewayVaultResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return g.ForbiddenError
+	return o.ForbiddenError
 }
 
-func (g *GetEventGatewayVaultResponse) GetNotFoundError() *shared.NotFoundError {
-	if g == nil {
+func (o *GetEventGatewayVaultResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return g.NotFoundError
+	return o.NotFoundError
 }

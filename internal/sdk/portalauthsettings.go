@@ -67,7 +67,7 @@ func (s *PortalAuthSettings) GetPortalAuthenticationSettings(ctx context.Context
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-portal-authentication-settings",
-		OAuth2Scopes:     nil,
+		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -302,7 +302,7 @@ func (s *PortalAuthSettings) UpdatePortalAuthenticationSettings(ctx context.Cont
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-portal-authentication-settings",
-		OAuth2Scopes:     nil,
+		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "PortalAuthenticationSettingsUpdateRequest", "json", `request:"mediaType=application/json"`)

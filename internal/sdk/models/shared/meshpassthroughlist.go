@@ -11,23 +11,23 @@ type MeshPassthroughList struct {
 	Next *string `json:"next,omitempty"`
 }
 
-func (m *MeshPassthroughList) GetItems() []MeshPassthroughItem {
-	if m == nil {
+func (o *MeshPassthroughList) GetItems() []MeshPassthroughItem {
+	if o == nil {
 		return nil
 	}
-	return m.Items
+	return o.Items
 }
 
-func (m *MeshPassthroughList) GetTotal() *float64 {
-	if m == nil {
+func (o *MeshPassthroughList) GetTotal() *float64 {
+	if o == nil {
 		return nil
 	}
-	return m.Total
+	return o.Total
 }
 
-func (m *MeshPassthroughList) GetNext() *string {
-	if m == nil {
+func (o *MeshPassthroughList) GetNext() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Next
+	return o.Next
 }

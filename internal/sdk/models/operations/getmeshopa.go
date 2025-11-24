@@ -16,25 +16,25 @@ type GetMeshOPARequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (g *GetMeshOPARequest) GetCpID() string {
-	if g == nil {
+func (o *GetMeshOPARequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return g.CpID
+	return o.CpID
 }
 
-func (g *GetMeshOPARequest) GetMesh() string {
-	if g == nil {
+func (o *GetMeshOPARequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return g.Mesh
+	return o.Mesh
 }
 
-func (g *GetMeshOPARequest) GetName() string {
-	if g == nil {
+func (o *GetMeshOPARequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return g.Name
+	return o.Name
 }
 
 type GetMeshOPAResponse struct {
@@ -50,37 +50,37 @@ type GetMeshOPAResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (g *GetMeshOPAResponse) GetContentType() string {
-	if g == nil {
+func (o *GetMeshOPAResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetMeshOPAResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetMeshOPAResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetMeshOPAResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetMeshOPAResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetMeshOPAResponse) GetMeshOPAItem() *shared.MeshOPAItem {
-	if g == nil {
+func (o *GetMeshOPAResponse) GetMeshOPAItem() *shared.MeshOPAItem {
+	if o == nil {
 		return nil
 	}
-	return g.MeshOPAItem
+	return o.MeshOPAItem
 }
 
-func (g *GetMeshOPAResponse) GetNotFoundError() *shared.NotFoundError {
-	if g == nil {
+func (o *GetMeshOPAResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return g.NotFoundError
+	return o.NotFoundError
 }

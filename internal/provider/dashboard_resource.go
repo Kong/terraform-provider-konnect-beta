@@ -10,11 +10,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -490,9 +488,8 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																"metrics": schema.ListAttribute{
 																	Computed:    true,
 																	Optional:    true,
-																	Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("request_count")})),
 																	ElementType: types.StringType,
-																	Description: `List of aggregated metrics to collect across the requested time span. If no metrics are specified, request_count will be computed by default. Default: ["request_count"]`,
+																	Description: `List of aggregated metrics to collect across the requested time span. If no metrics are specified, request_count will be computed by default.`,
 																},
 																"time_range": schema.SingleNestedAttribute{
 																	Computed: true,
@@ -722,9 +719,8 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																"metrics": schema.ListAttribute{
 																	Computed:    true,
 																	Optional:    true,
-																	Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("ai_request_count")})),
 																	ElementType: types.StringType,
-																	Description: `List of aggregated metrics to collect across the requested time span. Default: ["ai_request_count"]`,
+																	Description: `List of aggregated metrics to collect across the requested time span.`,
 																},
 																"time_range": schema.SingleNestedAttribute{
 																	Computed: true,

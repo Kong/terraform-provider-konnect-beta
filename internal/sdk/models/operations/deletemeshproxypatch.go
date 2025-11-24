@@ -16,25 +16,25 @@ type DeleteMeshProxyPatchRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (d *DeleteMeshProxyPatchRequest) GetCpID() string {
-	if d == nil {
+func (o *DeleteMeshProxyPatchRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return d.CpID
+	return o.CpID
 }
 
-func (d *DeleteMeshProxyPatchRequest) GetMesh() string {
-	if d == nil {
+func (o *DeleteMeshProxyPatchRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return d.Mesh
+	return o.Mesh
 }
 
-func (d *DeleteMeshProxyPatchRequest) GetName() string {
-	if d == nil {
+func (o *DeleteMeshProxyPatchRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return d.Name
+	return o.Name
 }
 
 type DeleteMeshProxyPatchResponse struct {
@@ -50,37 +50,37 @@ type DeleteMeshProxyPatchResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeleteMeshProxyPatchResponse) GetContentType() string {
-	if d == nil {
+func (o *DeleteMeshProxyPatchResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeleteMeshProxyPatchResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeleteMeshProxyPatchResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeleteMeshProxyPatchResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeleteMeshProxyPatchResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeleteMeshProxyPatchResponse) GetMeshProxyPatchDeleteSuccessResponse() *shared.MeshProxyPatchDeleteSuccessResponse {
-	if d == nil {
+func (o *DeleteMeshProxyPatchResponse) GetMeshProxyPatchDeleteSuccessResponse() *shared.MeshProxyPatchDeleteSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return d.MeshProxyPatchDeleteSuccessResponse
+	return o.MeshProxyPatchDeleteSuccessResponse
 }
 
-func (d *DeleteMeshProxyPatchResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeleteMeshProxyPatchResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

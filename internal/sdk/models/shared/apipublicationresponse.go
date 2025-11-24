@@ -33,43 +33,43 @@ func (a APIPublicationResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *APIPublicationResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *APIPublicationResponse) GetAutoApproveRegistrations() *bool {
-	if a == nil {
+func (o *APIPublicationResponse) GetAutoApproveRegistrations() *bool {
+	if o == nil {
 		return nil
 	}
-	return a.AutoApproveRegistrations
+	return o.AutoApproveRegistrations
 }
 
-func (a *APIPublicationResponse) GetAuthStrategyIds() []string {
-	if a == nil {
+func (o *APIPublicationResponse) GetAuthStrategyIds() []string {
+	if o == nil {
 		return nil
 	}
-	return a.AuthStrategyIds
+	return o.AuthStrategyIds
 }
 
-func (a *APIPublicationResponse) GetVisibility() *APIPublicationVisibility {
-	if a == nil {
+func (o *APIPublicationResponse) GetVisibility() *APIPublicationVisibility {
+	if o == nil {
 		return nil
 	}
-	return a.Visibility
+	return o.Visibility
 }
 
-func (a *APIPublicationResponse) GetCreatedAt() time.Time {
-	if a == nil {
+func (o *APIPublicationResponse) GetCreatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return a.CreatedAt
+	return o.CreatedAt
 }
 
-func (a *APIPublicationResponse) GetUpdatedAt() time.Time {
-	if a == nil {
+func (o *APIPublicationResponse) GetUpdatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return a.UpdatedAt
+	return o.UpdatedAt
 }

@@ -47,17 +47,6 @@ under this gateway will modify the version.
 
 Import is supported using the following syntax:
 
-In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
-
-```terraform
-import {
-  to = konnect_event_gateway.my_konnect_event_gateway
-  id = "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
-}
-```
-
-The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
-
 ```shell
 terraform import konnect_event_gateway.my_konnect_event_gateway "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
 ```

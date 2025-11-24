@@ -23,8 +23,14 @@ func (r *EventGatewayConsumePolicySchemaValidationResourceModel) RefreshFromShar
 
 			if configPriorData != nil {
 				r.Config.KeyValidationAction = configPriorData.KeyValidationAction
+			}
+			if configPriorData != nil {
 				r.Config.SchemaRegistry = configPriorData.SchemaRegistry
+			}
+			if configPriorData != nil {
 				r.Config.Type = configPriorData.Type
+			}
+			if configPriorData != nil {
 				r.Config.ValueValidationAction = configPriorData.ValueValidationAction
 			}
 		}

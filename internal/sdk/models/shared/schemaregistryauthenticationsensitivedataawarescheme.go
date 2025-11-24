@@ -17,7 +17,7 @@ const (
 
 // SchemaRegistryAuthenticationSensitiveDataAwareScheme - The authentication configuration for the schema registry.
 type SchemaRegistryAuthenticationSensitiveDataAwareScheme struct {
-	SchemaRegistryAuthenticationBasicSensitiveDataAware *SchemaRegistryAuthenticationBasicSensitiveDataAware `queryParam:"inline,name=SchemaRegistryAuthenticationSensitiveDataAwareScheme"`
+	SchemaRegistryAuthenticationBasicSensitiveDataAware *SchemaRegistryAuthenticationBasicSensitiveDataAware `queryParam:"inline"`
 
 	Type SchemaRegistryAuthenticationSensitiveDataAwareSchemeType
 }
@@ -45,7 +45,7 @@ func (u *SchemaRegistryAuthenticationSensitiveDataAwareScheme) UnmarshalJSON(dat
 	switch dis.Type {
 	case "basic":
 		schemaRegistryAuthenticationBasicSensitiveDataAware := new(SchemaRegistryAuthenticationBasicSensitiveDataAware)
-		if err := utils.UnmarshalJSON(data, &schemaRegistryAuthenticationBasicSensitiveDataAware, "", true, nil); err != nil {
+		if err := utils.UnmarshalJSON(data, &schemaRegistryAuthenticationBasicSensitiveDataAware, "", true, false); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == basic) type SchemaRegistryAuthenticationBasicSensitiveDataAware within SchemaRegistryAuthenticationSensitiveDataAwareScheme: %w", string(data), err)
 		}
 

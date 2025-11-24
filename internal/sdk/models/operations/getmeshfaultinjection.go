@@ -16,25 +16,25 @@ type GetMeshFaultInjectionRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (g *GetMeshFaultInjectionRequest) GetCpID() string {
-	if g == nil {
+func (o *GetMeshFaultInjectionRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return g.CpID
+	return o.CpID
 }
 
-func (g *GetMeshFaultInjectionRequest) GetMesh() string {
-	if g == nil {
+func (o *GetMeshFaultInjectionRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return g.Mesh
+	return o.Mesh
 }
 
-func (g *GetMeshFaultInjectionRequest) GetName() string {
-	if g == nil {
+func (o *GetMeshFaultInjectionRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return g.Name
+	return o.Name
 }
 
 type GetMeshFaultInjectionResponse struct {
@@ -50,37 +50,37 @@ type GetMeshFaultInjectionResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (g *GetMeshFaultInjectionResponse) GetContentType() string {
-	if g == nil {
+func (o *GetMeshFaultInjectionResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetMeshFaultInjectionResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetMeshFaultInjectionResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetMeshFaultInjectionResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetMeshFaultInjectionResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetMeshFaultInjectionResponse) GetMeshFaultInjectionItem() *shared.MeshFaultInjectionItem {
-	if g == nil {
+func (o *GetMeshFaultInjectionResponse) GetMeshFaultInjectionItem() *shared.MeshFaultInjectionItem {
+	if o == nil {
 		return nil
 	}
-	return g.MeshFaultInjectionItem
+	return o.MeshFaultInjectionItem
 }
 
-func (g *GetMeshFaultInjectionResponse) GetNotFoundError() *shared.NotFoundError {
-	if g == nil {
+func (o *GetMeshFaultInjectionResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return g.NotFoundError
+	return o.NotFoundError
 }

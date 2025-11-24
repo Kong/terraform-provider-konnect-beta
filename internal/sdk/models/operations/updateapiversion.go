@@ -57,38 +57,38 @@ func (u UpdateAPIVersionRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateAPIVersionRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"apiId", "versionId", "ApiVersion"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (u *UpdateAPIVersionRequest) GetAPIID() string {
-	if u == nil {
+func (o *UpdateAPIVersionRequest) GetAPIID() string {
+	if o == nil {
 		return ""
 	}
-	return u.APIID
+	return o.APIID
 }
 
-func (u *UpdateAPIVersionRequest) GetVersionID() string {
-	if u == nil {
+func (o *UpdateAPIVersionRequest) GetVersionID() string {
+	if o == nil {
 		return ""
 	}
-	return u.VersionID
+	return o.VersionID
 }
 
-func (u *UpdateAPIVersionRequest) GetForce() *UpdateAPIVersionQueryParamForce {
-	if u == nil {
+func (o *UpdateAPIVersionRequest) GetForce() *UpdateAPIVersionQueryParamForce {
+	if o == nil {
 		return nil
 	}
-	return u.Force
+	return o.Force
 }
 
-func (u *UpdateAPIVersionRequest) GetAPIVersion() shared.APIVersion {
-	if u == nil {
+func (o *UpdateAPIVersionRequest) GetAPIVersion() shared.APIVersion {
+	if o == nil {
 		return shared.APIVersion{}
 	}
-	return u.APIVersion
+	return o.APIVersion
 }
 
 type UpdateAPIVersionResponse struct {
@@ -114,72 +114,72 @@ type UpdateAPIVersionResponse struct {
 	UnsupportedMediaTypeError *shared.UnsupportedMediaTypeError
 }
 
-func (u *UpdateAPIVersionResponse) GetContentType() string {
-	if u == nil {
+func (o *UpdateAPIVersionResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return u.ContentType
+	return o.ContentType
 }
 
-func (u *UpdateAPIVersionResponse) GetStatusCode() int {
-	if u == nil {
+func (o *UpdateAPIVersionResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return u.StatusCode
+	return o.StatusCode
 }
 
-func (u *UpdateAPIVersionResponse) GetRawResponse() *http.Response {
-	if u == nil {
+func (o *UpdateAPIVersionResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return u.RawResponse
+	return o.RawResponse
 }
 
-func (u *UpdateAPIVersionResponse) GetAPIVersionResponse() *shared.APIVersionResponse {
-	if u == nil {
+func (o *UpdateAPIVersionResponse) GetAPIVersionResponse() *shared.APIVersionResponse {
+	if o == nil {
 		return nil
 	}
-	return u.APIVersionResponse
+	return o.APIVersionResponse
 }
 
-func (u *UpdateAPIVersionResponse) GetBadRequestError() *shared.BadRequestError {
-	if u == nil {
+func (o *UpdateAPIVersionResponse) GetBadRequestError() *shared.BadRequestError {
+	if o == nil {
 		return nil
 	}
-	return u.BadRequestError
+	return o.BadRequestError
 }
 
-func (u *UpdateAPIVersionResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if u == nil {
+func (o *UpdateAPIVersionResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return u.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (u *UpdateAPIVersionResponse) GetForbiddenError() *shared.ForbiddenError {
-	if u == nil {
+func (o *UpdateAPIVersionResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return u.ForbiddenError
+	return o.ForbiddenError
 }
 
-func (u *UpdateAPIVersionResponse) GetNotFoundError() *shared.NotFoundError {
-	if u == nil {
+func (o *UpdateAPIVersionResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return u.NotFoundError
+	return o.NotFoundError
 }
 
-func (u *UpdateAPIVersionResponse) GetConflictError() *shared.ConflictError {
-	if u == nil {
+func (o *UpdateAPIVersionResponse) GetConflictError() *shared.ConflictError {
+	if o == nil {
 		return nil
 	}
-	return u.ConflictError
+	return o.ConflictError
 }
 
-func (u *UpdateAPIVersionResponse) GetUnsupportedMediaTypeError() *shared.UnsupportedMediaTypeError {
-	if u == nil {
+func (o *UpdateAPIVersionResponse) GetUnsupportedMediaTypeError() *shared.UnsupportedMediaTypeError {
+	if o == nil {
 		return nil
 	}
-	return u.UnsupportedMediaTypeError
+	return o.UnsupportedMediaTypeError
 }

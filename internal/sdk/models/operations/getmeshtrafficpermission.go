@@ -16,25 +16,25 @@ type GetMeshTrafficPermissionRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (g *GetMeshTrafficPermissionRequest) GetCpID() string {
-	if g == nil {
+func (o *GetMeshTrafficPermissionRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return g.CpID
+	return o.CpID
 }
 
-func (g *GetMeshTrafficPermissionRequest) GetMesh() string {
-	if g == nil {
+func (o *GetMeshTrafficPermissionRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return g.Mesh
+	return o.Mesh
 }
 
-func (g *GetMeshTrafficPermissionRequest) GetName() string {
-	if g == nil {
+func (o *GetMeshTrafficPermissionRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return g.Name
+	return o.Name
 }
 
 type GetMeshTrafficPermissionResponse struct {
@@ -50,37 +50,37 @@ type GetMeshTrafficPermissionResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (g *GetMeshTrafficPermissionResponse) GetContentType() string {
-	if g == nil {
+func (o *GetMeshTrafficPermissionResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetMeshTrafficPermissionResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetMeshTrafficPermissionResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetMeshTrafficPermissionResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetMeshTrafficPermissionResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetMeshTrafficPermissionResponse) GetMeshTrafficPermissionItem() *shared.MeshTrafficPermissionItem {
-	if g == nil {
+func (o *GetMeshTrafficPermissionResponse) GetMeshTrafficPermissionItem() *shared.MeshTrafficPermissionItem {
+	if o == nil {
 		return nil
 	}
-	return g.MeshTrafficPermissionItem
+	return o.MeshTrafficPermissionItem
 }
 
-func (g *GetMeshTrafficPermissionResponse) GetNotFoundError() *shared.NotFoundError {
-	if g == nil {
+func (o *GetMeshTrafficPermissionResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return g.NotFoundError
+	return o.NotFoundError
 }

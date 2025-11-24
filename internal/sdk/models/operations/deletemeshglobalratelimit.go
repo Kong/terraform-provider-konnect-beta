@@ -16,25 +16,25 @@ type DeleteMeshGlobalRateLimitRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (d *DeleteMeshGlobalRateLimitRequest) GetCpID() string {
-	if d == nil {
+func (o *DeleteMeshGlobalRateLimitRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return d.CpID
+	return o.CpID
 }
 
-func (d *DeleteMeshGlobalRateLimitRequest) GetMesh() string {
-	if d == nil {
+func (o *DeleteMeshGlobalRateLimitRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return d.Mesh
+	return o.Mesh
 }
 
-func (d *DeleteMeshGlobalRateLimitRequest) GetName() string {
-	if d == nil {
+func (o *DeleteMeshGlobalRateLimitRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return d.Name
+	return o.Name
 }
 
 type DeleteMeshGlobalRateLimitResponse struct {
@@ -50,37 +50,37 @@ type DeleteMeshGlobalRateLimitResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeleteMeshGlobalRateLimitResponse) GetContentType() string {
-	if d == nil {
+func (o *DeleteMeshGlobalRateLimitResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeleteMeshGlobalRateLimitResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeleteMeshGlobalRateLimitResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeleteMeshGlobalRateLimitResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeleteMeshGlobalRateLimitResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeleteMeshGlobalRateLimitResponse) GetMeshGlobalRateLimitDeleteSuccessResponse() *shared.MeshGlobalRateLimitDeleteSuccessResponse {
-	if d == nil {
+func (o *DeleteMeshGlobalRateLimitResponse) GetMeshGlobalRateLimitDeleteSuccessResponse() *shared.MeshGlobalRateLimitDeleteSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return d.MeshGlobalRateLimitDeleteSuccessResponse
+	return o.MeshGlobalRateLimitDeleteSuccessResponse
 }
 
-func (d *DeleteMeshGlobalRateLimitResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeleteMeshGlobalRateLimitResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

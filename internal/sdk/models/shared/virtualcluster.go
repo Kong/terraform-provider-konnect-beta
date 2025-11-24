@@ -54,85 +54,85 @@ func (v VirtualCluster) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VirtualCluster) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"id", "destination", "authentication", "name", "dns_label", "acl_mode", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (v *VirtualCluster) GetID() string {
-	if v == nil {
+func (o *VirtualCluster) GetID() string {
+	if o == nil {
 		return ""
 	}
-	return v.ID
+	return o.ID
 }
 
-func (v *VirtualCluster) GetDescription() *string {
-	if v == nil {
+func (o *VirtualCluster) GetDescription() *string {
+	if o == nil {
 		return nil
 	}
-	return v.Description
+	return o.Description
 }
 
-func (v *VirtualCluster) GetDestination() BackendClusterReference {
-	if v == nil {
+func (o *VirtualCluster) GetDestination() BackendClusterReference {
+	if o == nil {
 		return BackendClusterReference{}
 	}
-	return v.Destination
+	return o.Destination
 }
 
-func (v *VirtualCluster) GetAuthentication() []VirtualClusterAuthenticationSensitiveDataAwareScheme {
-	if v == nil {
+func (o *VirtualCluster) GetAuthentication() []VirtualClusterAuthenticationSensitiveDataAwareScheme {
+	if o == nil {
 		return []VirtualClusterAuthenticationSensitiveDataAwareScheme{}
 	}
-	return v.Authentication
+	return o.Authentication
 }
 
-func (v *VirtualCluster) GetNamespace() *VirtualClusterNamespace {
-	if v == nil {
+func (o *VirtualCluster) GetNamespace() *VirtualClusterNamespace {
+	if o == nil {
 		return nil
 	}
-	return v.Namespace
+	return o.Namespace
 }
 
-func (v *VirtualCluster) GetName() string {
-	if v == nil {
+func (o *VirtualCluster) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return v.Name
+	return o.Name
 }
 
-func (v *VirtualCluster) GetDNSLabel() string {
-	if v == nil {
+func (o *VirtualCluster) GetDNSLabel() string {
+	if o == nil {
 		return ""
 	}
-	return v.DNSLabel
+	return o.DNSLabel
 }
 
-func (v *VirtualCluster) GetACLMode() VirtualClusterACLMode {
-	if v == nil {
+func (o *VirtualCluster) GetACLMode() VirtualClusterACLMode {
+	if o == nil {
 		return VirtualClusterACLMode("")
 	}
-	return v.ACLMode
+	return o.ACLMode
 }
 
-func (v *VirtualCluster) GetLabels() map[string]*string {
-	if v == nil {
+func (o *VirtualCluster) GetLabels() map[string]*string {
+	if o == nil {
 		return nil
 	}
-	return v.Labels
+	return o.Labels
 }
 
-func (v *VirtualCluster) GetCreatedAt() time.Time {
-	if v == nil {
+func (o *VirtualCluster) GetCreatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return v.CreatedAt
+	return o.CreatedAt
 }
 
-func (v *VirtualCluster) GetUpdatedAt() time.Time {
-	if v == nil {
+func (o *VirtualCluster) GetUpdatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return v.UpdatedAt
+	return o.UpdatedAt
 }

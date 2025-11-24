@@ -136,60 +136,60 @@ type MeshHealthCheckItemTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (m *MeshHealthCheckItemTargetRef) GetKind() MeshHealthCheckItemKind {
-	if m == nil {
+func (o *MeshHealthCheckItemTargetRef) GetKind() MeshHealthCheckItemKind {
+	if o == nil {
 		return MeshHealthCheckItemKind("")
 	}
-	return m.Kind
+	return o.Kind
 }
 
-func (m *MeshHealthCheckItemTargetRef) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshHealthCheckItemTargetRef) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshHealthCheckItemTargetRef) GetMesh() *string {
-	if m == nil {
+func (o *MeshHealthCheckItemTargetRef) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Mesh
+	return o.Mesh
 }
 
-func (m *MeshHealthCheckItemTargetRef) GetName() *string {
-	if m == nil {
+func (o *MeshHealthCheckItemTargetRef) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshHealthCheckItemTargetRef) GetNamespace() *string {
-	if m == nil {
+func (o *MeshHealthCheckItemTargetRef) GetNamespace() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Namespace
+	return o.Namespace
 }
 
-func (m *MeshHealthCheckItemTargetRef) GetProxyTypes() []MeshHealthCheckItemProxyTypes {
-	if m == nil {
+func (o *MeshHealthCheckItemTargetRef) GetProxyTypes() []MeshHealthCheckItemProxyTypes {
+	if o == nil {
 		return nil
 	}
-	return m.ProxyTypes
+	return o.ProxyTypes
 }
 
-func (m *MeshHealthCheckItemTargetRef) GetSectionName() *string {
-	if m == nil {
+func (o *MeshHealthCheckItemTargetRef) GetSectionName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.SectionName
+	return o.SectionName
 }
 
-func (m *MeshHealthCheckItemTargetRef) GetTags() map[string]string {
-	if m == nil {
+func (o *MeshHealthCheckItemTargetRef) GetTags() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Tags
+	return o.Tags
 }
 
 // Grpc - GrpcHealthCheck defines gRPC configuration which will instruct the service
@@ -204,25 +204,25 @@ type Grpc struct {
 	ServiceName *string `json:"serviceName,omitempty"`
 }
 
-func (g *Grpc) GetAuthority() *string {
-	if g == nil {
+func (o *Grpc) GetAuthority() *string {
+	if o == nil {
 		return nil
 	}
-	return g.Authority
+	return o.Authority
 }
 
-func (g *Grpc) GetDisabled() *bool {
-	if g == nil {
+func (o *Grpc) GetDisabled() *bool {
+	if o == nil {
 		return nil
 	}
-	return g.Disabled
+	return o.Disabled
 }
 
-func (g *Grpc) GetServiceName() *string {
-	if g == nil {
+func (o *Grpc) GetServiceName() *string {
+	if o == nil {
 		return nil
 	}
-	return g.ServiceName
+	return o.ServiceName
 }
 
 type HealthyPanicThresholdType string
@@ -238,8 +238,8 @@ const (
 // Deprecated: the setting has been moved to MeshCircuitBreaker policy,
 // please use MeshCircuitBreaker policy instead.
 type HealthyPanicThreshold struct {
-	Integer *int64  `queryParam:"inline,name=healthyPanicThreshold"`
-	Str     *string `queryParam:"inline,name=healthyPanicThreshold"`
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type HealthyPanicThresholdType
 }
@@ -264,43 +264,17 @@ func CreateHealthyPanicThresholdStr(str string) HealthyPanicThreshold {
 
 func (u *HealthyPanicThreshold) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  HealthyPanicThresholdTypeInteger,
-			Value: &integer,
-		})
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = HealthyPanicThresholdTypeInteger
+		return nil
 	}
 
 	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  HealthyPanicThresholdTypeStr,
-			Value: &str,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for HealthyPanicThreshold", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for HealthyPanicThreshold", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(HealthyPanicThresholdType)
-	switch best.Type {
-	case HealthyPanicThresholdTypeInteger:
-		u.Integer = best.Value.(*int64)
-		return nil
-	case HealthyPanicThresholdTypeStr:
-		u.Str = best.Value.(*string)
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = HealthyPanicThresholdTypeStr
 		return nil
 	}
 
@@ -324,18 +298,18 @@ type Add struct {
 	Value string `json:"value"`
 }
 
-func (a *Add) GetName() string {
-	if a == nil {
+func (o *Add) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return a.Name
+	return o.Name
 }
 
-func (a *Add) GetValue() string {
-	if a == nil {
+func (o *Add) GetValue() string {
+	if o == nil {
 		return ""
 	}
-	return a.Value
+	return o.Value
 }
 
 type Set struct {
@@ -343,18 +317,18 @@ type Set struct {
 	Value string `json:"value"`
 }
 
-func (s *Set) GetName() string {
-	if s == nil {
+func (o *Set) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return s.Name
+	return o.Name
 }
 
-func (s *Set) GetValue() string {
-	if s == nil {
+func (o *Set) GetValue() string {
+	if o == nil {
 		return ""
 	}
-	return s.Value
+	return o.Value
 }
 
 // RequestHeadersToAdd - The list of HTTP headers which should be added to each health check
@@ -364,18 +338,18 @@ type RequestHeadersToAdd struct {
 	Set []Set `json:"set,omitempty"`
 }
 
-func (r *RequestHeadersToAdd) GetAdd() []Add {
-	if r == nil {
+func (o *RequestHeadersToAdd) GetAdd() []Add {
+	if o == nil {
 		return nil
 	}
-	return r.Add
+	return o.Add
 }
 
-func (r *RequestHeadersToAdd) GetSet() []Set {
-	if r == nil {
+func (o *RequestHeadersToAdd) GetSet() []Set {
+	if o == nil {
 		return nil
 	}
-	return r.Set
+	return o.Set
 }
 
 // MeshHealthCheckItemHTTP - HttpHealthCheck defines HTTP configuration which will instruct the service
@@ -394,32 +368,32 @@ type MeshHealthCheckItemHTTP struct {
 	RequestHeadersToAdd *RequestHeadersToAdd `json:"requestHeadersToAdd,omitempty"`
 }
 
-func (m *MeshHealthCheckItemHTTP) GetDisabled() *bool {
-	if m == nil {
+func (o *MeshHealthCheckItemHTTP) GetDisabled() *bool {
+	if o == nil {
 		return nil
 	}
-	return m.Disabled
+	return o.Disabled
 }
 
-func (m *MeshHealthCheckItemHTTP) GetExpectedStatuses() []int64 {
-	if m == nil {
+func (o *MeshHealthCheckItemHTTP) GetExpectedStatuses() []int64 {
+	if o == nil {
 		return nil
 	}
-	return m.ExpectedStatuses
+	return o.ExpectedStatuses
 }
 
-func (m *MeshHealthCheckItemHTTP) GetPath() *string {
-	if m == nil {
+func (o *MeshHealthCheckItemHTTP) GetPath() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Path
+	return o.Path
 }
 
-func (m *MeshHealthCheckItemHTTP) GetRequestHeadersToAdd() *RequestHeadersToAdd {
-	if m == nil {
+func (o *MeshHealthCheckItemHTTP) GetRequestHeadersToAdd() *RequestHeadersToAdd {
+	if o == nil {
 		return nil
 	}
-	return m.RequestHeadersToAdd
+	return o.RequestHeadersToAdd
 }
 
 // TCP - TcpHealthCheck defines configuration for specifying bytes to send and
@@ -436,25 +410,25 @@ type TCP struct {
 	Send *string `json:"send,omitempty"`
 }
 
-func (t *TCP) GetDisabled() *bool {
-	if t == nil {
+func (o *TCP) GetDisabled() *bool {
+	if o == nil {
 		return nil
 	}
-	return t.Disabled
+	return o.Disabled
 }
 
-func (t *TCP) GetReceive() []string {
-	if t == nil {
+func (o *TCP) GetReceive() []string {
+	if o == nil {
 		return nil
 	}
-	return t.Receive
+	return o.Receive
 }
 
-func (t *TCP) GetSend() *string {
-	if t == nil {
+func (o *TCP) GetSend() *string {
+	if o == nil {
 		return nil
 	}
-	return t.Send
+	return o.Send
 }
 
 // MeshHealthCheckItemDefault - Default is a configuration specific to the group of destinations referenced in
@@ -525,116 +499,116 @@ type MeshHealthCheckItemDefault struct {
 	UnhealthyThreshold *int `json:"unhealthyThreshold,omitempty"`
 }
 
-func (m *MeshHealthCheckItemDefault) GetAlwaysLogHealthCheckFailures() *bool {
-	if m == nil {
+func (o *MeshHealthCheckItemDefault) GetAlwaysLogHealthCheckFailures() *bool {
+	if o == nil {
 		return nil
 	}
-	return m.AlwaysLogHealthCheckFailures
+	return o.AlwaysLogHealthCheckFailures
 }
 
-func (m *MeshHealthCheckItemDefault) GetEventLogPath() *string {
-	if m == nil {
+func (o *MeshHealthCheckItemDefault) GetEventLogPath() *string {
+	if o == nil {
 		return nil
 	}
-	return m.EventLogPath
+	return o.EventLogPath
 }
 
-func (m *MeshHealthCheckItemDefault) GetFailTrafficOnPanic() *bool {
-	if m == nil {
+func (o *MeshHealthCheckItemDefault) GetFailTrafficOnPanic() *bool {
+	if o == nil {
 		return nil
 	}
-	return m.FailTrafficOnPanic
+	return o.FailTrafficOnPanic
 }
 
-func (m *MeshHealthCheckItemDefault) GetGrpc() *Grpc {
-	if m == nil {
+func (o *MeshHealthCheckItemDefault) GetGrpc() *Grpc {
+	if o == nil {
 		return nil
 	}
-	return m.Grpc
+	return o.Grpc
 }
 
-func (m *MeshHealthCheckItemDefault) GetHealthyPanicThreshold() *HealthyPanicThreshold {
-	if m == nil {
+func (o *MeshHealthCheckItemDefault) GetHealthyPanicThreshold() *HealthyPanicThreshold {
+	if o == nil {
 		return nil
 	}
-	return m.HealthyPanicThreshold
+	return o.HealthyPanicThreshold
 }
 
-func (m *MeshHealthCheckItemDefault) GetHealthyThreshold() *int {
-	if m == nil {
+func (o *MeshHealthCheckItemDefault) GetHealthyThreshold() *int {
+	if o == nil {
 		return nil
 	}
-	return m.HealthyThreshold
+	return o.HealthyThreshold
 }
 
-func (m *MeshHealthCheckItemDefault) GetHTTP() *MeshHealthCheckItemHTTP {
-	if m == nil {
+func (o *MeshHealthCheckItemDefault) GetHTTP() *MeshHealthCheckItemHTTP {
+	if o == nil {
 		return nil
 	}
-	return m.HTTP
+	return o.HTTP
 }
 
-func (m *MeshHealthCheckItemDefault) GetInitialJitter() *string {
-	if m == nil {
+func (o *MeshHealthCheckItemDefault) GetInitialJitter() *string {
+	if o == nil {
 		return nil
 	}
-	return m.InitialJitter
+	return o.InitialJitter
 }
 
-func (m *MeshHealthCheckItemDefault) GetInterval() *string {
-	if m == nil {
+func (o *MeshHealthCheckItemDefault) GetInterval() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Interval
+	return o.Interval
 }
 
-func (m *MeshHealthCheckItemDefault) GetIntervalJitter() *string {
-	if m == nil {
+func (o *MeshHealthCheckItemDefault) GetIntervalJitter() *string {
+	if o == nil {
 		return nil
 	}
-	return m.IntervalJitter
+	return o.IntervalJitter
 }
 
-func (m *MeshHealthCheckItemDefault) GetIntervalJitterPercent() *int {
-	if m == nil {
+func (o *MeshHealthCheckItemDefault) GetIntervalJitterPercent() *int {
+	if o == nil {
 		return nil
 	}
-	return m.IntervalJitterPercent
+	return o.IntervalJitterPercent
 }
 
-func (m *MeshHealthCheckItemDefault) GetNoTrafficInterval() *string {
-	if m == nil {
+func (o *MeshHealthCheckItemDefault) GetNoTrafficInterval() *string {
+	if o == nil {
 		return nil
 	}
-	return m.NoTrafficInterval
+	return o.NoTrafficInterval
 }
 
-func (m *MeshHealthCheckItemDefault) GetReuseConnection() *bool {
-	if m == nil {
+func (o *MeshHealthCheckItemDefault) GetReuseConnection() *bool {
+	if o == nil {
 		return nil
 	}
-	return m.ReuseConnection
+	return o.ReuseConnection
 }
 
-func (m *MeshHealthCheckItemDefault) GetTCP() *TCP {
-	if m == nil {
+func (o *MeshHealthCheckItemDefault) GetTCP() *TCP {
+	if o == nil {
 		return nil
 	}
-	return m.TCP
+	return o.TCP
 }
 
-func (m *MeshHealthCheckItemDefault) GetTimeout() *string {
-	if m == nil {
+func (o *MeshHealthCheckItemDefault) GetTimeout() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Timeout
+	return o.Timeout
 }
 
-func (m *MeshHealthCheckItemDefault) GetUnhealthyThreshold() *int {
-	if m == nil {
+func (o *MeshHealthCheckItemDefault) GetUnhealthyThreshold() *int {
+	if o == nil {
 		return nil
 	}
-	return m.UnhealthyThreshold
+	return o.UnhealthyThreshold
 }
 
 // MeshHealthCheckItemSpecKind - Kind of the referenced resource
@@ -738,60 +712,60 @@ type MeshHealthCheckItemSpecTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (m *MeshHealthCheckItemSpecTargetRef) GetKind() MeshHealthCheckItemSpecKind {
-	if m == nil {
+func (o *MeshHealthCheckItemSpecTargetRef) GetKind() MeshHealthCheckItemSpecKind {
+	if o == nil {
 		return MeshHealthCheckItemSpecKind("")
 	}
-	return m.Kind
+	return o.Kind
 }
 
-func (m *MeshHealthCheckItemSpecTargetRef) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshHealthCheckItemSpecTargetRef) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshHealthCheckItemSpecTargetRef) GetMesh() *string {
-	if m == nil {
+func (o *MeshHealthCheckItemSpecTargetRef) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Mesh
+	return o.Mesh
 }
 
-func (m *MeshHealthCheckItemSpecTargetRef) GetName() *string {
-	if m == nil {
+func (o *MeshHealthCheckItemSpecTargetRef) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshHealthCheckItemSpecTargetRef) GetNamespace() *string {
-	if m == nil {
+func (o *MeshHealthCheckItemSpecTargetRef) GetNamespace() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Namespace
+	return o.Namespace
 }
 
-func (m *MeshHealthCheckItemSpecTargetRef) GetProxyTypes() []MeshHealthCheckItemSpecProxyTypes {
-	if m == nil {
+func (o *MeshHealthCheckItemSpecTargetRef) GetProxyTypes() []MeshHealthCheckItemSpecProxyTypes {
+	if o == nil {
 		return nil
 	}
-	return m.ProxyTypes
+	return o.ProxyTypes
 }
 
-func (m *MeshHealthCheckItemSpecTargetRef) GetSectionName() *string {
-	if m == nil {
+func (o *MeshHealthCheckItemSpecTargetRef) GetSectionName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.SectionName
+	return o.SectionName
 }
 
-func (m *MeshHealthCheckItemSpecTargetRef) GetTags() map[string]string {
-	if m == nil {
+func (o *MeshHealthCheckItemSpecTargetRef) GetTags() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Tags
+	return o.Tags
 }
 
 type MeshHealthCheckItemTo struct {
@@ -803,18 +777,18 @@ type MeshHealthCheckItemTo struct {
 	TargetRef MeshHealthCheckItemSpecTargetRef `json:"targetRef"`
 }
 
-func (m *MeshHealthCheckItemTo) GetDefault() *MeshHealthCheckItemDefault {
-	if m == nil {
+func (o *MeshHealthCheckItemTo) GetDefault() *MeshHealthCheckItemDefault {
+	if o == nil {
 		return nil
 	}
-	return m.Default
+	return o.Default
 }
 
-func (m *MeshHealthCheckItemTo) GetTargetRef() MeshHealthCheckItemSpecTargetRef {
-	if m == nil {
+func (o *MeshHealthCheckItemTo) GetTargetRef() MeshHealthCheckItemSpecTargetRef {
+	if o == nil {
 		return MeshHealthCheckItemSpecTargetRef{}
 	}
-	return m.TargetRef
+	return o.TargetRef
 }
 
 // MeshHealthCheckItemSpec - Spec is the specification of the Kuma MeshHealthCheck resource.
@@ -827,18 +801,18 @@ type MeshHealthCheckItemSpec struct {
 	To []MeshHealthCheckItemTo `json:"to,omitempty"`
 }
 
-func (m *MeshHealthCheckItemSpec) GetTargetRef() *MeshHealthCheckItemTargetRef {
-	if m == nil {
+func (o *MeshHealthCheckItemSpec) GetTargetRef() *MeshHealthCheckItemTargetRef {
+	if o == nil {
 		return nil
 	}
-	return m.TargetRef
+	return o.TargetRef
 }
 
-func (m *MeshHealthCheckItemSpec) GetTo() []MeshHealthCheckItemTo {
-	if m == nil {
+func (o *MeshHealthCheckItemSpec) GetTo() []MeshHealthCheckItemTo {
+	if o == nil {
 		return nil
 	}
-	return m.To
+	return o.To
 }
 
 // MeshHealthCheckItem - Successful response
@@ -866,66 +840,66 @@ func (m MeshHealthCheckItem) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshHealthCheckItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (m *MeshHealthCheckItem) GetType() MeshHealthCheckItemType {
-	if m == nil {
+func (o *MeshHealthCheckItem) GetType() MeshHealthCheckItemType {
+	if o == nil {
 		return MeshHealthCheckItemType("")
 	}
-	return m.Type
+	return o.Type
 }
 
-func (m *MeshHealthCheckItem) GetMesh() *string {
-	if m == nil {
+func (o *MeshHealthCheckItem) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Mesh
+	return o.Mesh
 }
 
-func (m *MeshHealthCheckItem) GetKri() *string {
-	if m == nil {
+func (o *MeshHealthCheckItem) GetKri() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Kri
+	return o.Kri
 }
 
-func (m *MeshHealthCheckItem) GetName() string {
-	if m == nil {
+func (o *MeshHealthCheckItem) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshHealthCheckItem) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshHealthCheckItem) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshHealthCheckItem) GetSpec() MeshHealthCheckItemSpec {
-	if m == nil {
+func (o *MeshHealthCheckItem) GetSpec() MeshHealthCheckItemSpec {
+	if o == nil {
 		return MeshHealthCheckItemSpec{}
 	}
-	return m.Spec
+	return o.Spec
 }
 
-func (m *MeshHealthCheckItem) GetCreationTime() *time.Time {
-	if m == nil {
+func (o *MeshHealthCheckItem) GetCreationTime() *time.Time {
+	if o == nil {
 		return nil
 	}
-	return m.CreationTime
+	return o.CreationTime
 }
 
-func (m *MeshHealthCheckItem) GetModificationTime() *time.Time {
-	if m == nil {
+func (o *MeshHealthCheckItem) GetModificationTime() *time.Time {
+	if o == nil {
 		return nil
 	}
-	return m.ModificationTime
+	return o.ModificationTime
 }
 
 // MeshHealthCheckItemInput - Successful response
@@ -947,43 +921,43 @@ func (m MeshHealthCheckItemInput) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshHealthCheckItemInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (m *MeshHealthCheckItemInput) GetType() MeshHealthCheckItemType {
-	if m == nil {
+func (o *MeshHealthCheckItemInput) GetType() MeshHealthCheckItemType {
+	if o == nil {
 		return MeshHealthCheckItemType("")
 	}
-	return m.Type
+	return o.Type
 }
 
-func (m *MeshHealthCheckItemInput) GetMesh() *string {
-	if m == nil {
+func (o *MeshHealthCheckItemInput) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Mesh
+	return o.Mesh
 }
 
-func (m *MeshHealthCheckItemInput) GetName() string {
-	if m == nil {
+func (o *MeshHealthCheckItemInput) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshHealthCheckItemInput) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshHealthCheckItemInput) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshHealthCheckItemInput) GetSpec() MeshHealthCheckItemSpec {
-	if m == nil {
+func (o *MeshHealthCheckItemInput) GetSpec() MeshHealthCheckItemSpec {
+	if o == nil {
 		return MeshHealthCheckItemSpec{}
 	}
-	return m.Spec
+	return o.Spec
 }

@@ -16,25 +16,25 @@ type DeleteMeshMultiZoneServiceRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (d *DeleteMeshMultiZoneServiceRequest) GetCpID() string {
-	if d == nil {
+func (o *DeleteMeshMultiZoneServiceRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return d.CpID
+	return o.CpID
 }
 
-func (d *DeleteMeshMultiZoneServiceRequest) GetMesh() string {
-	if d == nil {
+func (o *DeleteMeshMultiZoneServiceRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return d.Mesh
+	return o.Mesh
 }
 
-func (d *DeleteMeshMultiZoneServiceRequest) GetName() string {
-	if d == nil {
+func (o *DeleteMeshMultiZoneServiceRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return d.Name
+	return o.Name
 }
 
 type DeleteMeshMultiZoneServiceResponse struct {
@@ -50,37 +50,37 @@ type DeleteMeshMultiZoneServiceResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeleteMeshMultiZoneServiceResponse) GetContentType() string {
-	if d == nil {
+func (o *DeleteMeshMultiZoneServiceResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeleteMeshMultiZoneServiceResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeleteMeshMultiZoneServiceResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeleteMeshMultiZoneServiceResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeleteMeshMultiZoneServiceResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeleteMeshMultiZoneServiceResponse) GetMeshMultiZoneServiceDeleteSuccessResponse() *shared.MeshMultiZoneServiceDeleteSuccessResponse {
-	if d == nil {
+func (o *DeleteMeshMultiZoneServiceResponse) GetMeshMultiZoneServiceDeleteSuccessResponse() *shared.MeshMultiZoneServiceDeleteSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return d.MeshMultiZoneServiceDeleteSuccessResponse
+	return o.MeshMultiZoneServiceDeleteSuccessResponse
 }
 
-func (d *DeleteMeshMultiZoneServiceResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeleteMeshMultiZoneServiceResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

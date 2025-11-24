@@ -43,11 +43,7 @@ resource "konnect_mesh_retry" "my_meshretry" {
               ]
             }
             retry_on = [
-              "Canceled",
-              "DeadlineExceeded",
-              "Internal",
-              "ResourceExhausted",
-              "Unavailable",
+              "DeadlineExceeded"
             ]
           }
           http = {
@@ -91,25 +87,7 @@ resource "konnect_mesh_retry" "my_meshretry" {
               }
             ]
             retry_on = [
-              "5XX",
-              "GatewayError",
-              "Reset",
-              "Retriable4xx",
-              "ConnectFailure",
-              "EnvoyRatelimited",
-              "RefusedStream",
-              "Http3PostConnectFailure",
-              "HttpMethodConnect",
-              "HttpMethodDelete",
-              "HttpMethodGet",
-              "HttpMethodHead",
-              "HttpMethodOptions",
-              "HttpMethodPatch",
-              "HttpMethodPost",
-              "HttpMethodPut",
-              "HttpMethodTrace",
-              "500",
-              "503",
+              "..."
             ]
           }
           tcp = {

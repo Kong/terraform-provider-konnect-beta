@@ -16,25 +16,25 @@ type GetMeshTCPRouteRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (g *GetMeshTCPRouteRequest) GetCpID() string {
-	if g == nil {
+func (o *GetMeshTCPRouteRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return g.CpID
+	return o.CpID
 }
 
-func (g *GetMeshTCPRouteRequest) GetMesh() string {
-	if g == nil {
+func (o *GetMeshTCPRouteRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return g.Mesh
+	return o.Mesh
 }
 
-func (g *GetMeshTCPRouteRequest) GetName() string {
-	if g == nil {
+func (o *GetMeshTCPRouteRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return g.Name
+	return o.Name
 }
 
 type GetMeshTCPRouteResponse struct {
@@ -50,37 +50,37 @@ type GetMeshTCPRouteResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (g *GetMeshTCPRouteResponse) GetContentType() string {
-	if g == nil {
+func (o *GetMeshTCPRouteResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetMeshTCPRouteResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetMeshTCPRouteResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetMeshTCPRouteResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetMeshTCPRouteResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetMeshTCPRouteResponse) GetMeshTCPRouteItem() *shared.MeshTCPRouteItem {
-	if g == nil {
+func (o *GetMeshTCPRouteResponse) GetMeshTCPRouteItem() *shared.MeshTCPRouteItem {
+	if o == nil {
 		return nil
 	}
-	return g.MeshTCPRouteItem
+	return o.MeshTCPRouteItem
 }
 
-func (g *GetMeshTCPRouteResponse) GetNotFoundError() *shared.NotFoundError {
-	if g == nil {
+func (o *GetMeshTCPRouteResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return g.NotFoundError
+	return o.NotFoundError
 }

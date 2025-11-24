@@ -53,20 +53,6 @@ resource "konnect_auth_server_claims" "my_authserverclaims" {
 
 Import is supported using the following syntax:
 
-In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
-
-```terraform
-import {
-  to = konnect_auth_server_claims.my_konnect_auth_server_claims
-  id = jsonencode({
-    auth_server_id = "d32d905a-ed33-46a3-a093-d8f536af9a8a"
-    id = "07d05309-45cc-4b37-92fb-1524846deec3"
-  })
-}
-```
-
-The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
-
 ```shell
 terraform import konnect_auth_server_claims.my_konnect_auth_server_claims '{"auth_server_id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "id": "07d05309-45cc-4b37-92fb-1524846deec3"}'
 ```

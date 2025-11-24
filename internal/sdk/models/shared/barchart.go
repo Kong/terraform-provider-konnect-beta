@@ -5,7 +5,6 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
 type BarChartType string
@@ -45,34 +44,23 @@ type BarChart struct {
 	Stacked *bool `json:"stacked,omitempty"`
 }
 
-func (b BarChart) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(b, "", false)
-}
-
-func (b *BarChart) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"type"}); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (b *BarChart) GetChartTitle() *string {
-	if b == nil {
+func (o *BarChart) GetChartTitle() *string {
+	if o == nil {
 		return nil
 	}
-	return b.ChartTitle
+	return o.ChartTitle
 }
 
-func (b *BarChart) GetType() BarChartType {
-	if b == nil {
+func (o *BarChart) GetType() BarChartType {
+	if o == nil {
 		return BarChartType("")
 	}
-	return b.Type
+	return o.Type
 }
 
-func (b *BarChart) GetStacked() *bool {
-	if b == nil {
+func (o *BarChart) GetStacked() *bool {
+	if o == nil {
 		return nil
 	}
-	return b.Stacked
+	return o.Stacked
 }

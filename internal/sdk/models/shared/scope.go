@@ -32,64 +32,64 @@ func (s Scope) MarshalJSON() ([]byte, error) {
 }
 
 func (s *Scope) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"id", "name", "description", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *Scope) GetID() string {
-	if s == nil {
+func (o *Scope) GetID() string {
+	if o == nil {
 		return ""
 	}
-	return s.ID
+	return o.ID
 }
 
-func (s *Scope) GetName() string {
-	if s == nil {
+func (o *Scope) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return s.Name
+	return o.Name
 }
 
-func (s *Scope) GetDescription() string {
-	if s == nil {
+func (o *Scope) GetDescription() string {
+	if o == nil {
 		return ""
 	}
-	return s.Description
+	return o.Description
 }
 
-func (s *Scope) GetDefault() *bool {
-	if s == nil {
+func (o *Scope) GetDefault() *bool {
+	if o == nil {
 		return nil
 	}
-	return s.Default
+	return o.Default
 }
 
-func (s *Scope) GetIncludeInMetadata() *bool {
-	if s == nil {
+func (o *Scope) GetIncludeInMetadata() *bool {
+	if o == nil {
 		return nil
 	}
-	return s.IncludeInMetadata
+	return o.IncludeInMetadata
 }
 
-func (s *Scope) GetEnabled() *bool {
-	if s == nil {
+func (o *Scope) GetEnabled() *bool {
+	if o == nil {
 		return nil
 	}
-	return s.Enabled
+	return o.Enabled
 }
 
-func (s *Scope) GetCreatedAt() time.Time {
-	if s == nil {
+func (o *Scope) GetCreatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return s.CreatedAt
+	return o.CreatedAt
 }
 
-func (s *Scope) GetUpdatedAt() time.Time {
-	if s == nil {
+func (o *Scope) GetUpdatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return s.UpdatedAt
+	return o.UpdatedAt
 }

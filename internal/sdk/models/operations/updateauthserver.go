@@ -14,18 +14,18 @@ type UpdateAuthServerRequest struct {
 	UpdateAuthServer shared.UpdateAuthServer `request:"mediaType=application/json"`
 }
 
-func (u *UpdateAuthServerRequest) GetAuthServerID() string {
-	if u == nil {
+func (o *UpdateAuthServerRequest) GetAuthServerID() string {
+	if o == nil {
 		return ""
 	}
-	return u.AuthServerID
+	return o.AuthServerID
 }
 
-func (u *UpdateAuthServerRequest) GetUpdateAuthServer() shared.UpdateAuthServer {
-	if u == nil {
+func (o *UpdateAuthServerRequest) GetUpdateAuthServer() shared.UpdateAuthServer {
+	if o == nil {
 		return shared.UpdateAuthServer{}
 	}
-	return u.UpdateAuthServer
+	return o.UpdateAuthServer
 }
 
 type UpdateAuthServerResponse struct {
@@ -45,51 +45,51 @@ type UpdateAuthServerResponse struct {
 	ConflictError *shared.ConflictError
 }
 
-func (u *UpdateAuthServerResponse) GetContentType() string {
-	if u == nil {
+func (o *UpdateAuthServerResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return u.ContentType
+	return o.ContentType
 }
 
-func (u *UpdateAuthServerResponse) GetStatusCode() int {
-	if u == nil {
+func (o *UpdateAuthServerResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return u.StatusCode
+	return o.StatusCode
 }
 
-func (u *UpdateAuthServerResponse) GetRawResponse() *http.Response {
-	if u == nil {
+func (o *UpdateAuthServerResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return u.RawResponse
+	return o.RawResponse
 }
 
-func (u *UpdateAuthServerResponse) GetAuthServer() *shared.AuthServer {
-	if u == nil {
+func (o *UpdateAuthServerResponse) GetAuthServer() *shared.AuthServer {
+	if o == nil {
 		return nil
 	}
-	return u.AuthServer
+	return o.AuthServer
 }
 
-func (u *UpdateAuthServerResponse) GetBadRequestError() *shared.BadRequestError {
-	if u == nil {
+func (o *UpdateAuthServerResponse) GetBadRequestError() *shared.BadRequestError {
+	if o == nil {
 		return nil
 	}
-	return u.BadRequestError
+	return o.BadRequestError
 }
 
-func (u *UpdateAuthServerResponse) GetNotFoundError() *shared.NotFoundError {
-	if u == nil {
+func (o *UpdateAuthServerResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return u.NotFoundError
+	return o.NotFoundError
 }
 
-func (u *UpdateAuthServerResponse) GetConflictError() *shared.ConflictError {
-	if u == nil {
+func (o *UpdateAuthServerResponse) GetConflictError() *shared.ConflictError {
+	if o == nil {
 		return nil
 	}
-	return u.ConflictError
+	return o.ConflictError
 }

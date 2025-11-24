@@ -171,18 +171,15 @@ func (r *AuthServerResourceModel) ToSharedUpdateAuthServer(ctx context.Context) 
 	} else {
 		signingAlgorithm = nil
 	}
-	var labels map[string]*string
-	if r.Labels != nil {
-		labels = make(map[string]*string)
-		for labelsKey, labelsValue := range r.Labels {
-			labelsInst := new(string)
-			if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-				*labelsInst = labelsValue.ValueString()
-			} else {
-				labelsInst = nil
-			}
-			labels[labelsKey] = labelsInst
+	labels := make(map[string]*string)
+	for labelsKey, labelsValue := range r.Labels {
+		labelsInst := new(string)
+		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
+			*labelsInst = labelsValue.ValueString()
+		} else {
+			labelsInst = nil
 		}
+		labels[labelsKey] = labelsInst
 	}
 	trustedOrigins := make([]string, 0, len(r.TrustedOrigins))
 	for _, trustedOriginsItem := range r.TrustedOrigins {

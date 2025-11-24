@@ -18,32 +18,32 @@ type PutMeshGatewayRequest struct {
 	MeshGatewayItem shared.MeshGatewayItem `request:"mediaType=application/json"`
 }
 
-func (p *PutMeshGatewayRequest) GetCpID() string {
-	if p == nil {
+func (o *PutMeshGatewayRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return p.CpID
+	return o.CpID
 }
 
-func (p *PutMeshGatewayRequest) GetMesh() string {
-	if p == nil {
+func (o *PutMeshGatewayRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return p.Mesh
+	return o.Mesh
 }
 
-func (p *PutMeshGatewayRequest) GetName() string {
-	if p == nil {
+func (o *PutMeshGatewayRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return p.Name
+	return o.Name
 }
 
-func (p *PutMeshGatewayRequest) GetMeshGatewayItem() shared.MeshGatewayItem {
-	if p == nil {
+func (o *PutMeshGatewayRequest) GetMeshGatewayItem() shared.MeshGatewayItem {
+	if o == nil {
 		return shared.MeshGatewayItem{}
 	}
-	return p.MeshGatewayItem
+	return o.MeshGatewayItem
 }
 
 type PutMeshGatewayResponse struct {
@@ -57,30 +57,30 @@ type PutMeshGatewayResponse struct {
 	MeshGatewayCreateOrUpdateSuccessResponse *shared.MeshGatewayCreateOrUpdateSuccessResponse
 }
 
-func (p *PutMeshGatewayResponse) GetContentType() string {
-	if p == nil {
+func (o *PutMeshGatewayResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return p.ContentType
+	return o.ContentType
 }
 
-func (p *PutMeshGatewayResponse) GetStatusCode() int {
-	if p == nil {
+func (o *PutMeshGatewayResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return p.StatusCode
+	return o.StatusCode
 }
 
-func (p *PutMeshGatewayResponse) GetRawResponse() *http.Response {
-	if p == nil {
+func (o *PutMeshGatewayResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return p.RawResponse
+	return o.RawResponse
 }
 
-func (p *PutMeshGatewayResponse) GetMeshGatewayCreateOrUpdateSuccessResponse() *shared.MeshGatewayCreateOrUpdateSuccessResponse {
-	if p == nil {
+func (o *PutMeshGatewayResponse) GetMeshGatewayCreateOrUpdateSuccessResponse() *shared.MeshGatewayCreateOrUpdateSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return p.MeshGatewayCreateOrUpdateSuccessResponse
+	return o.MeshGatewayCreateOrUpdateSuccessResponse
 }

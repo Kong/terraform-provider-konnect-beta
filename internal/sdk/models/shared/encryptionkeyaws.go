@@ -18,19 +18,19 @@ func (e EncryptionKeyAWS) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EncryptionKeyAWS) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type", "arn"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (e *EncryptionKeyAWS) GetType() string {
+func (o *EncryptionKeyAWS) GetType() string {
 	return "aws"
 }
 
-func (e *EncryptionKeyAWS) GetArn() string {
-	if e == nil {
+func (o *EncryptionKeyAWS) GetArn() string {
+	if o == nil {
 		return ""
 	}
-	return e.Arn
+	return o.Arn
 }

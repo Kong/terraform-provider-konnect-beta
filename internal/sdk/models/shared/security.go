@@ -8,23 +8,23 @@ type Security struct {
 	KonnectAccessToken       *string `security:"scheme,type=http,subtype=bearer,name=Authorization"`
 }
 
-func (s *Security) GetPersonalAccessToken() *string {
-	if s == nil {
+func (o *Security) GetPersonalAccessToken() *string {
+	if o == nil {
 		return nil
 	}
-	return s.PersonalAccessToken
+	return o.PersonalAccessToken
 }
 
-func (s *Security) GetSystemAccountAccessToken() *string {
-	if s == nil {
+func (o *Security) GetSystemAccountAccessToken() *string {
+	if o == nil {
 		return nil
 	}
-	return s.SystemAccountAccessToken
+	return o.SystemAccountAccessToken
 }
 
-func (s *Security) GetKonnectAccessToken() *string {
-	if s == nil {
+func (o *Security) GetKonnectAccessToken() *string {
+	if o == nil {
 		return nil
 	}
-	return s.KonnectAccessToken
+	return o.KonnectAccessToken
 }

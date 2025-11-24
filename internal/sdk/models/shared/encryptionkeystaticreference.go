@@ -17,8 +17,8 @@ const (
 
 // EncryptionKeyStaticReference - A static encryption key reference, either by ID or by value.
 type EncryptionKeyStaticReference struct {
-	ReferenceByID   *ReferenceByID   `queryParam:"inline,name=EncryptionKeyStaticReference"`
-	ReferenceByName *ReferenceByName `queryParam:"inline,name=EncryptionKeyStaticReference"`
+	ReferenceByID   *ReferenceByID   `queryParam:"inline"`
+	ReferenceByName *ReferenceByName `queryParam:"inline"`
 
 	Type EncryptionKeyStaticReferenceType
 }
@@ -43,43 +43,17 @@ func CreateEncryptionKeyStaticReferenceReferenceByName(referenceByName Reference
 
 func (u *EncryptionKeyStaticReference) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var referenceByID ReferenceByID = ReferenceByID{}
-	if err := utils.UnmarshalJSON(data, &referenceByID, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  EncryptionKeyStaticReferenceTypeReferenceByID,
-			Value: &referenceByID,
-		})
+	if err := utils.UnmarshalJSON(data, &referenceByID, "", true, true); err == nil {
+		u.ReferenceByID = &referenceByID
+		u.Type = EncryptionKeyStaticReferenceTypeReferenceByID
+		return nil
 	}
 
 	var referenceByName ReferenceByName = ReferenceByName{}
-	if err := utils.UnmarshalJSON(data, &referenceByName, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  EncryptionKeyStaticReferenceTypeReferenceByName,
-			Value: &referenceByName,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for EncryptionKeyStaticReference", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for EncryptionKeyStaticReference", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(EncryptionKeyStaticReferenceType)
-	switch best.Type {
-	case EncryptionKeyStaticReferenceTypeReferenceByID:
-		u.ReferenceByID = best.Value.(*ReferenceByID)
-		return nil
-	case EncryptionKeyStaticReferenceTypeReferenceByName:
-		u.ReferenceByName = best.Value.(*ReferenceByName)
+	if err := utils.UnmarshalJSON(data, &referenceByName, "", true, true); err == nil {
+		u.ReferenceByName = &referenceByName
+		u.Type = EncryptionKeyStaticReferenceTypeReferenceByName
 		return nil
 	}
 

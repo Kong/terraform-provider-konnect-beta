@@ -17,32 +17,32 @@ type UpdateEventGatewayVirtualClusterClusterLevelPolicyAclsRequest struct {
 	EventGatewayACLsPolicy *shared.EventGatewayACLsPolicy `request:"mediaType=application/json"`
 }
 
-func (u *UpdateEventGatewayVirtualClusterClusterLevelPolicyAclsRequest) GetGatewayID() string {
-	if u == nil {
+func (o *UpdateEventGatewayVirtualClusterClusterLevelPolicyAclsRequest) GetGatewayID() string {
+	if o == nil {
 		return ""
 	}
-	return u.GatewayID
+	return o.GatewayID
 }
 
-func (u *UpdateEventGatewayVirtualClusterClusterLevelPolicyAclsRequest) GetVirtualClusterID() string {
-	if u == nil {
+func (o *UpdateEventGatewayVirtualClusterClusterLevelPolicyAclsRequest) GetVirtualClusterID() string {
+	if o == nil {
 		return ""
 	}
-	return u.VirtualClusterID
+	return o.VirtualClusterID
 }
 
-func (u *UpdateEventGatewayVirtualClusterClusterLevelPolicyAclsRequest) GetPolicyID() string {
-	if u == nil {
+func (o *UpdateEventGatewayVirtualClusterClusterLevelPolicyAclsRequest) GetPolicyID() string {
+	if o == nil {
 		return ""
 	}
-	return u.PolicyID
+	return o.PolicyID
 }
 
-func (u *UpdateEventGatewayVirtualClusterClusterLevelPolicyAclsRequest) GetEventGatewayACLsPolicy() *shared.EventGatewayACLsPolicy {
-	if u == nil {
+func (o *UpdateEventGatewayVirtualClusterClusterLevelPolicyAclsRequest) GetEventGatewayACLsPolicy() *shared.EventGatewayACLsPolicy {
+	if o == nil {
 		return nil
 	}
-	return u.EventGatewayACLsPolicy
+	return o.EventGatewayACLsPolicy
 }
 
 type UpdateEventGatewayVirtualClusterClusterLevelPolicyAclsResponse struct {
@@ -62,51 +62,51 @@ type UpdateEventGatewayVirtualClusterClusterLevelPolicyAclsResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (u *UpdateEventGatewayVirtualClusterClusterLevelPolicyAclsResponse) GetContentType() string {
-	if u == nil {
+func (o *UpdateEventGatewayVirtualClusterClusterLevelPolicyAclsResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return u.ContentType
+	return o.ContentType
 }
 
-func (u *UpdateEventGatewayVirtualClusterClusterLevelPolicyAclsResponse) GetStatusCode() int {
-	if u == nil {
+func (o *UpdateEventGatewayVirtualClusterClusterLevelPolicyAclsResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return u.StatusCode
+	return o.StatusCode
 }
 
-func (u *UpdateEventGatewayVirtualClusterClusterLevelPolicyAclsResponse) GetRawResponse() *http.Response {
-	if u == nil {
+func (o *UpdateEventGatewayVirtualClusterClusterLevelPolicyAclsResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return u.RawResponse
+	return o.RawResponse
 }
 
-func (u *UpdateEventGatewayVirtualClusterClusterLevelPolicyAclsResponse) GetEventGatewayPolicy() *shared.EventGatewayPolicy {
-	if u == nil {
+func (o *UpdateEventGatewayVirtualClusterClusterLevelPolicyAclsResponse) GetEventGatewayPolicy() *shared.EventGatewayPolicy {
+	if o == nil {
 		return nil
 	}
-	return u.EventGatewayPolicy
+	return o.EventGatewayPolicy
 }
 
-func (u *UpdateEventGatewayVirtualClusterClusterLevelPolicyAclsResponse) GetBadRequestError() *shared.BadRequestError {
-	if u == nil {
+func (o *UpdateEventGatewayVirtualClusterClusterLevelPolicyAclsResponse) GetBadRequestError() *shared.BadRequestError {
+	if o == nil {
 		return nil
 	}
-	return u.BadRequestError
+	return o.BadRequestError
 }
 
-func (u *UpdateEventGatewayVirtualClusterClusterLevelPolicyAclsResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if u == nil {
+func (o *UpdateEventGatewayVirtualClusterClusterLevelPolicyAclsResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return u.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (u *UpdateEventGatewayVirtualClusterClusterLevelPolicyAclsResponse) GetForbiddenError() *shared.ForbiddenError {
-	if u == nil {
+func (o *UpdateEventGatewayVirtualClusterClusterLevelPolicyAclsResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return u.ForbiddenError
+	return o.ForbiddenError
 }

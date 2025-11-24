@@ -11,23 +11,23 @@ type MeshProxyPatchList struct {
 	Next *string `json:"next,omitempty"`
 }
 
-func (m *MeshProxyPatchList) GetItems() []MeshProxyPatchItem {
-	if m == nil {
+func (o *MeshProxyPatchList) GetItems() []MeshProxyPatchItem {
+	if o == nil {
 		return nil
 	}
-	return m.Items
+	return o.Items
 }
 
-func (m *MeshProxyPatchList) GetTotal() *float64 {
-	if m == nil {
+func (o *MeshProxyPatchList) GetTotal() *float64 {
+	if o == nil {
 		return nil
 	}
-	return m.Total
+	return o.Total
 }
 
-func (m *MeshProxyPatchList) GetNext() *string {
-	if m == nil {
+func (o *MeshProxyPatchList) GetNext() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Next
+	return o.Next
 }

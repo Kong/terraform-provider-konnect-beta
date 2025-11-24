@@ -22,44 +22,44 @@ type CreateAuthServerResponse struct {
 	ConflictError *shared.ConflictError
 }
 
-func (c *CreateAuthServerResponse) GetContentType() string {
-	if c == nil {
+func (o *CreateAuthServerResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return c.ContentType
+	return o.ContentType
 }
 
-func (c *CreateAuthServerResponse) GetStatusCode() int {
-	if c == nil {
+func (o *CreateAuthServerResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return c.StatusCode
+	return o.StatusCode
 }
 
-func (c *CreateAuthServerResponse) GetRawResponse() *http.Response {
-	if c == nil {
+func (o *CreateAuthServerResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return c.RawResponse
+	return o.RawResponse
 }
 
-func (c *CreateAuthServerResponse) GetAuthServer() *shared.AuthServer {
-	if c == nil {
+func (o *CreateAuthServerResponse) GetAuthServer() *shared.AuthServer {
+	if o == nil {
 		return nil
 	}
-	return c.AuthServer
+	return o.AuthServer
 }
 
-func (c *CreateAuthServerResponse) GetBadRequestError() *shared.BadRequestError {
-	if c == nil {
+func (o *CreateAuthServerResponse) GetBadRequestError() *shared.BadRequestError {
+	if o == nil {
 		return nil
 	}
-	return c.BadRequestError
+	return o.BadRequestError
 }
 
-func (c *CreateAuthServerResponse) GetConflictError() *shared.ConflictError {
-	if c == nil {
+func (o *CreateAuthServerResponse) GetConflictError() *shared.ConflictError {
+	if o == nil {
 		return nil
 	}
-	return c.ConflictError
+	return o.ConflictError
 }

@@ -57,39 +57,39 @@ type MeshTimeoutItemHTTP struct {
 	StreamIdleTimeout *string `json:"streamIdleTimeout,omitempty"`
 }
 
-func (m *MeshTimeoutItemHTTP) GetMaxConnectionDuration() *string {
-	if m == nil {
+func (o *MeshTimeoutItemHTTP) GetMaxConnectionDuration() *string {
+	if o == nil {
 		return nil
 	}
-	return m.MaxConnectionDuration
+	return o.MaxConnectionDuration
 }
 
-func (m *MeshTimeoutItemHTTP) GetMaxStreamDuration() *string {
-	if m == nil {
+func (o *MeshTimeoutItemHTTP) GetMaxStreamDuration() *string {
+	if o == nil {
 		return nil
 	}
-	return m.MaxStreamDuration
+	return o.MaxStreamDuration
 }
 
-func (m *MeshTimeoutItemHTTP) GetRequestHeadersTimeout() *string {
-	if m == nil {
+func (o *MeshTimeoutItemHTTP) GetRequestHeadersTimeout() *string {
+	if o == nil {
 		return nil
 	}
-	return m.RequestHeadersTimeout
+	return o.RequestHeadersTimeout
 }
 
-func (m *MeshTimeoutItemHTTP) GetRequestTimeout() *string {
-	if m == nil {
+func (o *MeshTimeoutItemHTTP) GetRequestTimeout() *string {
+	if o == nil {
 		return nil
 	}
-	return m.RequestTimeout
+	return o.RequestTimeout
 }
 
-func (m *MeshTimeoutItemHTTP) GetStreamIdleTimeout() *string {
-	if m == nil {
+func (o *MeshTimeoutItemHTTP) GetStreamIdleTimeout() *string {
+	if o == nil {
 		return nil
 	}
-	return m.StreamIdleTimeout
+	return o.StreamIdleTimeout
 }
 
 // MeshTimeoutItemDefault - Default is a configuration specific to the group of clients referenced in
@@ -106,25 +106,25 @@ type MeshTimeoutItemDefault struct {
 	IdleTimeout *string `json:"idleTimeout,omitempty"`
 }
 
-func (m *MeshTimeoutItemDefault) GetConnectionTimeout() *string {
-	if m == nil {
+func (o *MeshTimeoutItemDefault) GetConnectionTimeout() *string {
+	if o == nil {
 		return nil
 	}
-	return m.ConnectionTimeout
+	return o.ConnectionTimeout
 }
 
-func (m *MeshTimeoutItemDefault) GetHTTP() *MeshTimeoutItemHTTP {
-	if m == nil {
+func (o *MeshTimeoutItemDefault) GetHTTP() *MeshTimeoutItemHTTP {
+	if o == nil {
 		return nil
 	}
-	return m.HTTP
+	return o.HTTP
 }
 
-func (m *MeshTimeoutItemDefault) GetIdleTimeout() *string {
-	if m == nil {
+func (o *MeshTimeoutItemDefault) GetIdleTimeout() *string {
+	if o == nil {
 		return nil
 	}
-	return m.IdleTimeout
+	return o.IdleTimeout
 }
 
 // MeshTimeoutItemSpecKind - Kind of the referenced resource
@@ -228,60 +228,60 @@ type MeshTimeoutItemSpecTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (m *MeshTimeoutItemSpecTargetRef) GetKind() MeshTimeoutItemSpecKind {
-	if m == nil {
+func (o *MeshTimeoutItemSpecTargetRef) GetKind() MeshTimeoutItemSpecKind {
+	if o == nil {
 		return MeshTimeoutItemSpecKind("")
 	}
-	return m.Kind
+	return o.Kind
 }
 
-func (m *MeshTimeoutItemSpecTargetRef) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshTimeoutItemSpecTargetRef) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshTimeoutItemSpecTargetRef) GetMesh() *string {
-	if m == nil {
+func (o *MeshTimeoutItemSpecTargetRef) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Mesh
+	return o.Mesh
 }
 
-func (m *MeshTimeoutItemSpecTargetRef) GetName() *string {
-	if m == nil {
+func (o *MeshTimeoutItemSpecTargetRef) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshTimeoutItemSpecTargetRef) GetNamespace() *string {
-	if m == nil {
+func (o *MeshTimeoutItemSpecTargetRef) GetNamespace() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Namespace
+	return o.Namespace
 }
 
-func (m *MeshTimeoutItemSpecTargetRef) GetProxyTypes() []MeshTimeoutItemSpecProxyTypes {
-	if m == nil {
+func (o *MeshTimeoutItemSpecTargetRef) GetProxyTypes() []MeshTimeoutItemSpecProxyTypes {
+	if o == nil {
 		return nil
 	}
-	return m.ProxyTypes
+	return o.ProxyTypes
 }
 
-func (m *MeshTimeoutItemSpecTargetRef) GetSectionName() *string {
-	if m == nil {
+func (o *MeshTimeoutItemSpecTargetRef) GetSectionName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.SectionName
+	return o.SectionName
 }
 
-func (m *MeshTimeoutItemSpecTargetRef) GetTags() map[string]string {
-	if m == nil {
+func (o *MeshTimeoutItemSpecTargetRef) GetTags() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Tags
+	return o.Tags
 }
 
 type MeshTimeoutItemFrom struct {
@@ -293,18 +293,18 @@ type MeshTimeoutItemFrom struct {
 	TargetRef MeshTimeoutItemSpecTargetRef `json:"targetRef"`
 }
 
-func (m *MeshTimeoutItemFrom) GetDefault() *MeshTimeoutItemDefault {
-	if m == nil {
+func (o *MeshTimeoutItemFrom) GetDefault() *MeshTimeoutItemDefault {
+	if o == nil {
 		return nil
 	}
-	return m.Default
+	return o.Default
 }
 
-func (m *MeshTimeoutItemFrom) GetTargetRef() MeshTimeoutItemSpecTargetRef {
-	if m == nil {
+func (o *MeshTimeoutItemFrom) GetTargetRef() MeshTimeoutItemSpecTargetRef {
+	if o == nil {
 		return MeshTimeoutItemSpecTargetRef{}
 	}
-	return m.TargetRef
+	return o.TargetRef
 }
 
 // MeshTimeoutItemSpecHTTP - Http provides configuration for HTTP specific timeouts
@@ -331,39 +331,39 @@ type MeshTimeoutItemSpecHTTP struct {
 	StreamIdleTimeout *string `json:"streamIdleTimeout,omitempty"`
 }
 
-func (m *MeshTimeoutItemSpecHTTP) GetMaxConnectionDuration() *string {
-	if m == nil {
+func (o *MeshTimeoutItemSpecHTTP) GetMaxConnectionDuration() *string {
+	if o == nil {
 		return nil
 	}
-	return m.MaxConnectionDuration
+	return o.MaxConnectionDuration
 }
 
-func (m *MeshTimeoutItemSpecHTTP) GetMaxStreamDuration() *string {
-	if m == nil {
+func (o *MeshTimeoutItemSpecHTTP) GetMaxStreamDuration() *string {
+	if o == nil {
 		return nil
 	}
-	return m.MaxStreamDuration
+	return o.MaxStreamDuration
 }
 
-func (m *MeshTimeoutItemSpecHTTP) GetRequestHeadersTimeout() *string {
-	if m == nil {
+func (o *MeshTimeoutItemSpecHTTP) GetRequestHeadersTimeout() *string {
+	if o == nil {
 		return nil
 	}
-	return m.RequestHeadersTimeout
+	return o.RequestHeadersTimeout
 }
 
-func (m *MeshTimeoutItemSpecHTTP) GetRequestTimeout() *string {
-	if m == nil {
+func (o *MeshTimeoutItemSpecHTTP) GetRequestTimeout() *string {
+	if o == nil {
 		return nil
 	}
-	return m.RequestTimeout
+	return o.RequestTimeout
 }
 
-func (m *MeshTimeoutItemSpecHTTP) GetStreamIdleTimeout() *string {
-	if m == nil {
+func (o *MeshTimeoutItemSpecHTTP) GetStreamIdleTimeout() *string {
+	if o == nil {
 		return nil
 	}
-	return m.StreamIdleTimeout
+	return o.StreamIdleTimeout
 }
 
 // MeshTimeoutItemSpecDefault - Default contains configuration of the inbound timeouts
@@ -379,25 +379,25 @@ type MeshTimeoutItemSpecDefault struct {
 	IdleTimeout *string `json:"idleTimeout,omitempty"`
 }
 
-func (m *MeshTimeoutItemSpecDefault) GetConnectionTimeout() *string {
-	if m == nil {
+func (o *MeshTimeoutItemSpecDefault) GetConnectionTimeout() *string {
+	if o == nil {
 		return nil
 	}
-	return m.ConnectionTimeout
+	return o.ConnectionTimeout
 }
 
-func (m *MeshTimeoutItemSpecDefault) GetHTTP() *MeshTimeoutItemSpecHTTP {
-	if m == nil {
+func (o *MeshTimeoutItemSpecDefault) GetHTTP() *MeshTimeoutItemSpecHTTP {
+	if o == nil {
 		return nil
 	}
-	return m.HTTP
+	return o.HTTP
 }
 
-func (m *MeshTimeoutItemSpecDefault) GetIdleTimeout() *string {
-	if m == nil {
+func (o *MeshTimeoutItemSpecDefault) GetIdleTimeout() *string {
+	if o == nil {
 		return nil
 	}
-	return m.IdleTimeout
+	return o.IdleTimeout
 }
 
 type MeshTimeoutItemRules struct {
@@ -405,11 +405,11 @@ type MeshTimeoutItemRules struct {
 	Default *MeshTimeoutItemSpecDefault `json:"default,omitempty"`
 }
 
-func (m *MeshTimeoutItemRules) GetDefault() *MeshTimeoutItemSpecDefault {
-	if m == nil {
+func (o *MeshTimeoutItemRules) GetDefault() *MeshTimeoutItemSpecDefault {
+	if o == nil {
 		return nil
 	}
-	return m.Default
+	return o.Default
 }
 
 // MeshTimeoutItemKind - Kind of the referenced resource
@@ -514,60 +514,60 @@ type MeshTimeoutItemTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (m *MeshTimeoutItemTargetRef) GetKind() MeshTimeoutItemKind {
-	if m == nil {
+func (o *MeshTimeoutItemTargetRef) GetKind() MeshTimeoutItemKind {
+	if o == nil {
 		return MeshTimeoutItemKind("")
 	}
-	return m.Kind
+	return o.Kind
 }
 
-func (m *MeshTimeoutItemTargetRef) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshTimeoutItemTargetRef) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshTimeoutItemTargetRef) GetMesh() *string {
-	if m == nil {
+func (o *MeshTimeoutItemTargetRef) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Mesh
+	return o.Mesh
 }
 
-func (m *MeshTimeoutItemTargetRef) GetName() *string {
-	if m == nil {
+func (o *MeshTimeoutItemTargetRef) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshTimeoutItemTargetRef) GetNamespace() *string {
-	if m == nil {
+func (o *MeshTimeoutItemTargetRef) GetNamespace() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Namespace
+	return o.Namespace
 }
 
-func (m *MeshTimeoutItemTargetRef) GetProxyTypes() []MeshTimeoutItemProxyTypes {
-	if m == nil {
+func (o *MeshTimeoutItemTargetRef) GetProxyTypes() []MeshTimeoutItemProxyTypes {
+	if o == nil {
 		return nil
 	}
-	return m.ProxyTypes
+	return o.ProxyTypes
 }
 
-func (m *MeshTimeoutItemTargetRef) GetSectionName() *string {
-	if m == nil {
+func (o *MeshTimeoutItemTargetRef) GetSectionName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.SectionName
+	return o.SectionName
 }
 
-func (m *MeshTimeoutItemTargetRef) GetTags() map[string]string {
-	if m == nil {
+func (o *MeshTimeoutItemTargetRef) GetTags() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Tags
+	return o.Tags
 }
 
 // MeshTimeoutItemSpecToHTTP - Http provides configuration for HTTP specific timeouts
@@ -594,39 +594,39 @@ type MeshTimeoutItemSpecToHTTP struct {
 	StreamIdleTimeout *string `json:"streamIdleTimeout,omitempty"`
 }
 
-func (m *MeshTimeoutItemSpecToHTTP) GetMaxConnectionDuration() *string {
-	if m == nil {
+func (o *MeshTimeoutItemSpecToHTTP) GetMaxConnectionDuration() *string {
+	if o == nil {
 		return nil
 	}
-	return m.MaxConnectionDuration
+	return o.MaxConnectionDuration
 }
 
-func (m *MeshTimeoutItemSpecToHTTP) GetMaxStreamDuration() *string {
-	if m == nil {
+func (o *MeshTimeoutItemSpecToHTTP) GetMaxStreamDuration() *string {
+	if o == nil {
 		return nil
 	}
-	return m.MaxStreamDuration
+	return o.MaxStreamDuration
 }
 
-func (m *MeshTimeoutItemSpecToHTTP) GetRequestHeadersTimeout() *string {
-	if m == nil {
+func (o *MeshTimeoutItemSpecToHTTP) GetRequestHeadersTimeout() *string {
+	if o == nil {
 		return nil
 	}
-	return m.RequestHeadersTimeout
+	return o.RequestHeadersTimeout
 }
 
-func (m *MeshTimeoutItemSpecToHTTP) GetRequestTimeout() *string {
-	if m == nil {
+func (o *MeshTimeoutItemSpecToHTTP) GetRequestTimeout() *string {
+	if o == nil {
 		return nil
 	}
-	return m.RequestTimeout
+	return o.RequestTimeout
 }
 
-func (m *MeshTimeoutItemSpecToHTTP) GetStreamIdleTimeout() *string {
-	if m == nil {
+func (o *MeshTimeoutItemSpecToHTTP) GetStreamIdleTimeout() *string {
+	if o == nil {
 		return nil
 	}
-	return m.StreamIdleTimeout
+	return o.StreamIdleTimeout
 }
 
 // MeshTimeoutItemSpecToDefault - Default is a configuration specific to the group of destinations referenced in
@@ -643,25 +643,25 @@ type MeshTimeoutItemSpecToDefault struct {
 	IdleTimeout *string `json:"idleTimeout,omitempty"`
 }
 
-func (m *MeshTimeoutItemSpecToDefault) GetConnectionTimeout() *string {
-	if m == nil {
+func (o *MeshTimeoutItemSpecToDefault) GetConnectionTimeout() *string {
+	if o == nil {
 		return nil
 	}
-	return m.ConnectionTimeout
+	return o.ConnectionTimeout
 }
 
-func (m *MeshTimeoutItemSpecToDefault) GetHTTP() *MeshTimeoutItemSpecToHTTP {
-	if m == nil {
+func (o *MeshTimeoutItemSpecToDefault) GetHTTP() *MeshTimeoutItemSpecToHTTP {
+	if o == nil {
 		return nil
 	}
-	return m.HTTP
+	return o.HTTP
 }
 
-func (m *MeshTimeoutItemSpecToDefault) GetIdleTimeout() *string {
-	if m == nil {
+func (o *MeshTimeoutItemSpecToDefault) GetIdleTimeout() *string {
+	if o == nil {
 		return nil
 	}
-	return m.IdleTimeout
+	return o.IdleTimeout
 }
 
 // MeshTimeoutItemSpecToKind - Kind of the referenced resource
@@ -765,60 +765,60 @@ type MeshTimeoutItemSpecToTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (m *MeshTimeoutItemSpecToTargetRef) GetKind() MeshTimeoutItemSpecToKind {
-	if m == nil {
+func (o *MeshTimeoutItemSpecToTargetRef) GetKind() MeshTimeoutItemSpecToKind {
+	if o == nil {
 		return MeshTimeoutItemSpecToKind("")
 	}
-	return m.Kind
+	return o.Kind
 }
 
-func (m *MeshTimeoutItemSpecToTargetRef) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshTimeoutItemSpecToTargetRef) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshTimeoutItemSpecToTargetRef) GetMesh() *string {
-	if m == nil {
+func (o *MeshTimeoutItemSpecToTargetRef) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Mesh
+	return o.Mesh
 }
 
-func (m *MeshTimeoutItemSpecToTargetRef) GetName() *string {
-	if m == nil {
+func (o *MeshTimeoutItemSpecToTargetRef) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshTimeoutItemSpecToTargetRef) GetNamespace() *string {
-	if m == nil {
+func (o *MeshTimeoutItemSpecToTargetRef) GetNamespace() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Namespace
+	return o.Namespace
 }
 
-func (m *MeshTimeoutItemSpecToTargetRef) GetProxyTypes() []MeshTimeoutItemSpecToProxyTypes {
-	if m == nil {
+func (o *MeshTimeoutItemSpecToTargetRef) GetProxyTypes() []MeshTimeoutItemSpecToProxyTypes {
+	if o == nil {
 		return nil
 	}
-	return m.ProxyTypes
+	return o.ProxyTypes
 }
 
-func (m *MeshTimeoutItemSpecToTargetRef) GetSectionName() *string {
-	if m == nil {
+func (o *MeshTimeoutItemSpecToTargetRef) GetSectionName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.SectionName
+	return o.SectionName
 }
 
-func (m *MeshTimeoutItemSpecToTargetRef) GetTags() map[string]string {
-	if m == nil {
+func (o *MeshTimeoutItemSpecToTargetRef) GetTags() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Tags
+	return o.Tags
 }
 
 type MeshTimeoutItemTo struct {
@@ -830,18 +830,18 @@ type MeshTimeoutItemTo struct {
 	TargetRef MeshTimeoutItemSpecToTargetRef `json:"targetRef"`
 }
 
-func (m *MeshTimeoutItemTo) GetDefault() *MeshTimeoutItemSpecToDefault {
-	if m == nil {
+func (o *MeshTimeoutItemTo) GetDefault() *MeshTimeoutItemSpecToDefault {
+	if o == nil {
 		return nil
 	}
-	return m.Default
+	return o.Default
 }
 
-func (m *MeshTimeoutItemTo) GetTargetRef() MeshTimeoutItemSpecToTargetRef {
-	if m == nil {
+func (o *MeshTimeoutItemTo) GetTargetRef() MeshTimeoutItemSpecToTargetRef {
+	if o == nil {
 		return MeshTimeoutItemSpecToTargetRef{}
 	}
-	return m.TargetRef
+	return o.TargetRef
 }
 
 // MeshTimeoutItemSpec - Spec is the specification of the Kuma MeshTimeout resource.
@@ -859,32 +859,32 @@ type MeshTimeoutItemSpec struct {
 	To []MeshTimeoutItemTo `json:"to,omitempty"`
 }
 
-func (m *MeshTimeoutItemSpec) GetFrom() []MeshTimeoutItemFrom {
-	if m == nil {
+func (o *MeshTimeoutItemSpec) GetFrom() []MeshTimeoutItemFrom {
+	if o == nil {
 		return nil
 	}
-	return m.From
+	return o.From
 }
 
-func (m *MeshTimeoutItemSpec) GetRules() []MeshTimeoutItemRules {
-	if m == nil {
+func (o *MeshTimeoutItemSpec) GetRules() []MeshTimeoutItemRules {
+	if o == nil {
 		return nil
 	}
-	return m.Rules
+	return o.Rules
 }
 
-func (m *MeshTimeoutItemSpec) GetTargetRef() *MeshTimeoutItemTargetRef {
-	if m == nil {
+func (o *MeshTimeoutItemSpec) GetTargetRef() *MeshTimeoutItemTargetRef {
+	if o == nil {
 		return nil
 	}
-	return m.TargetRef
+	return o.TargetRef
 }
 
-func (m *MeshTimeoutItemSpec) GetTo() []MeshTimeoutItemTo {
-	if m == nil {
+func (o *MeshTimeoutItemSpec) GetTo() []MeshTimeoutItemTo {
+	if o == nil {
 		return nil
 	}
-	return m.To
+	return o.To
 }
 
 // MeshTimeoutItem - Successful response
@@ -912,66 +912,66 @@ func (m MeshTimeoutItem) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshTimeoutItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (m *MeshTimeoutItem) GetType() MeshTimeoutItemType {
-	if m == nil {
+func (o *MeshTimeoutItem) GetType() MeshTimeoutItemType {
+	if o == nil {
 		return MeshTimeoutItemType("")
 	}
-	return m.Type
+	return o.Type
 }
 
-func (m *MeshTimeoutItem) GetMesh() *string {
-	if m == nil {
+func (o *MeshTimeoutItem) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Mesh
+	return o.Mesh
 }
 
-func (m *MeshTimeoutItem) GetKri() *string {
-	if m == nil {
+func (o *MeshTimeoutItem) GetKri() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Kri
+	return o.Kri
 }
 
-func (m *MeshTimeoutItem) GetName() string {
-	if m == nil {
+func (o *MeshTimeoutItem) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshTimeoutItem) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshTimeoutItem) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshTimeoutItem) GetSpec() MeshTimeoutItemSpec {
-	if m == nil {
+func (o *MeshTimeoutItem) GetSpec() MeshTimeoutItemSpec {
+	if o == nil {
 		return MeshTimeoutItemSpec{}
 	}
-	return m.Spec
+	return o.Spec
 }
 
-func (m *MeshTimeoutItem) GetCreationTime() *time.Time {
-	if m == nil {
+func (o *MeshTimeoutItem) GetCreationTime() *time.Time {
+	if o == nil {
 		return nil
 	}
-	return m.CreationTime
+	return o.CreationTime
 }
 
-func (m *MeshTimeoutItem) GetModificationTime() *time.Time {
-	if m == nil {
+func (o *MeshTimeoutItem) GetModificationTime() *time.Time {
+	if o == nil {
 		return nil
 	}
-	return m.ModificationTime
+	return o.ModificationTime
 }
 
 // MeshTimeoutItemInput - Successful response
@@ -993,43 +993,43 @@ func (m MeshTimeoutItemInput) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshTimeoutItemInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (m *MeshTimeoutItemInput) GetType() MeshTimeoutItemType {
-	if m == nil {
+func (o *MeshTimeoutItemInput) GetType() MeshTimeoutItemType {
+	if o == nil {
 		return MeshTimeoutItemType("")
 	}
-	return m.Type
+	return o.Type
 }
 
-func (m *MeshTimeoutItemInput) GetMesh() *string {
-	if m == nil {
+func (o *MeshTimeoutItemInput) GetMesh() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Mesh
+	return o.Mesh
 }
 
-func (m *MeshTimeoutItemInput) GetName() string {
-	if m == nil {
+func (o *MeshTimeoutItemInput) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshTimeoutItemInput) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshTimeoutItemInput) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshTimeoutItemInput) GetSpec() MeshTimeoutItemSpec {
-	if m == nil {
+func (o *MeshTimeoutItemInput) GetSpec() MeshTimeoutItemSpec {
+	if o == nil {
 		return MeshTimeoutItemSpec{}
 	}
-	return m.Spec
+	return o.Spec
 }

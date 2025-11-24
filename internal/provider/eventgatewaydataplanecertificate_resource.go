@@ -400,7 +400,7 @@ func (r *EventGatewayDataPlaneCertificateResource) ImportState(ctx context.Conte
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "..."}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": ""}': `+err.Error())
 		return
 	}
 

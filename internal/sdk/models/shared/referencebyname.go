@@ -2,30 +2,15 @@
 
 package shared
 
-import (
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
-)
-
 // ReferenceByName - A static encryption key reference by name.
 type ReferenceByName struct {
 	// The name of the static key defined in the key source.
 	Name string `json:"name"`
 }
 
-func (r ReferenceByName) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(r, "", false)
-}
-
-func (r *ReferenceByName) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"name"}); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (r *ReferenceByName) GetName() string {
-	if r == nil {
+func (o *ReferenceByName) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return r.Name
+	return o.Name
 }

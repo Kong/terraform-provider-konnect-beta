@@ -15,25 +15,25 @@ type CreateEventGatewayVirtualClusterProducePolicyEncryptRequest struct {
 	EventGatewayEncryptPolicy *shared.EventGatewayEncryptPolicy `request:"mediaType=application/json"`
 }
 
-func (c *CreateEventGatewayVirtualClusterProducePolicyEncryptRequest) GetGatewayID() string {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterProducePolicyEncryptRequest) GetGatewayID() string {
+	if o == nil {
 		return ""
 	}
-	return c.GatewayID
+	return o.GatewayID
 }
 
-func (c *CreateEventGatewayVirtualClusterProducePolicyEncryptRequest) GetVirtualClusterID() string {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterProducePolicyEncryptRequest) GetVirtualClusterID() string {
+	if o == nil {
 		return ""
 	}
-	return c.VirtualClusterID
+	return o.VirtualClusterID
 }
 
-func (c *CreateEventGatewayVirtualClusterProducePolicyEncryptRequest) GetEventGatewayEncryptPolicy() *shared.EventGatewayEncryptPolicy {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterProducePolicyEncryptRequest) GetEventGatewayEncryptPolicy() *shared.EventGatewayEncryptPolicy {
+	if o == nil {
 		return nil
 	}
-	return c.EventGatewayEncryptPolicy
+	return o.EventGatewayEncryptPolicy
 }
 
 type CreateEventGatewayVirtualClusterProducePolicyEncryptResponse struct {
@@ -53,51 +53,51 @@ type CreateEventGatewayVirtualClusterProducePolicyEncryptResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (c *CreateEventGatewayVirtualClusterProducePolicyEncryptResponse) GetContentType() string {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterProducePolicyEncryptResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return c.ContentType
+	return o.ContentType
 }
 
-func (c *CreateEventGatewayVirtualClusterProducePolicyEncryptResponse) GetStatusCode() int {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterProducePolicyEncryptResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return c.StatusCode
+	return o.StatusCode
 }
 
-func (c *CreateEventGatewayVirtualClusterProducePolicyEncryptResponse) GetRawResponse() *http.Response {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterProducePolicyEncryptResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return c.RawResponse
+	return o.RawResponse
 }
 
-func (c *CreateEventGatewayVirtualClusterProducePolicyEncryptResponse) GetEventGatewayPolicy() *shared.EventGatewayPolicy {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterProducePolicyEncryptResponse) GetEventGatewayPolicy() *shared.EventGatewayPolicy {
+	if o == nil {
 		return nil
 	}
-	return c.EventGatewayPolicy
+	return o.EventGatewayPolicy
 }
 
-func (c *CreateEventGatewayVirtualClusterProducePolicyEncryptResponse) GetBadRequestError() *shared.BadRequestError {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterProducePolicyEncryptResponse) GetBadRequestError() *shared.BadRequestError {
+	if o == nil {
 		return nil
 	}
-	return c.BadRequestError
+	return o.BadRequestError
 }
 
-func (c *CreateEventGatewayVirtualClusterProducePolicyEncryptResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterProducePolicyEncryptResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return c.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (c *CreateEventGatewayVirtualClusterProducePolicyEncryptResponse) GetForbiddenError() *shared.ForbiddenError {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterProducePolicyEncryptResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return c.ForbiddenError
+	return o.ForbiddenError
 }

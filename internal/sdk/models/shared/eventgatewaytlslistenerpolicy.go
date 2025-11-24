@@ -31,47 +31,47 @@ func (e EventGatewayTLSListenerPolicy) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayTLSListenerPolicy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (e *EventGatewayTLSListenerPolicy) GetType() string {
+func (o *EventGatewayTLSListenerPolicy) GetType() string {
 	return "tls_server"
 }
 
-func (e *EventGatewayTLSListenerPolicy) GetName() *string {
-	if e == nil {
+func (o *EventGatewayTLSListenerPolicy) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return e.Name
+	return o.Name
 }
 
-func (e *EventGatewayTLSListenerPolicy) GetDescription() *string {
-	if e == nil {
+func (o *EventGatewayTLSListenerPolicy) GetDescription() *string {
+	if o == nil {
 		return nil
 	}
-	return e.Description
+	return o.Description
 }
 
-func (e *EventGatewayTLSListenerPolicy) GetEnabled() *bool {
-	if e == nil {
+func (o *EventGatewayTLSListenerPolicy) GetEnabled() *bool {
+	if o == nil {
 		return nil
 	}
-	return e.Enabled
+	return o.Enabled
 }
 
-func (e *EventGatewayTLSListenerPolicy) GetConfig() EventGatewayTLSListenerPolicyConfig {
-	if e == nil {
+func (o *EventGatewayTLSListenerPolicy) GetConfig() EventGatewayTLSListenerPolicyConfig {
+	if o == nil {
 		return EventGatewayTLSListenerPolicyConfig{}
 	}
-	return e.Config
+	return o.Config
 }
 
-func (e *EventGatewayTLSListenerPolicy) GetLabels() map[string]*string {
-	if e == nil {
+func (o *EventGatewayTLSListenerPolicy) GetLabels() map[string]*string {
+	if o == nil {
 		return nil
 	}
-	return e.Labels
+	return o.Labels
 }

@@ -18,32 +18,32 @@ type PutMeshRateLimitRequest struct {
 	MeshRateLimitItem shared.MeshRateLimitItemInput `request:"mediaType=application/json"`
 }
 
-func (p *PutMeshRateLimitRequest) GetCpID() string {
-	if p == nil {
+func (o *PutMeshRateLimitRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return p.CpID
+	return o.CpID
 }
 
-func (p *PutMeshRateLimitRequest) GetMesh() string {
-	if p == nil {
+func (o *PutMeshRateLimitRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return p.Mesh
+	return o.Mesh
 }
 
-func (p *PutMeshRateLimitRequest) GetName() string {
-	if p == nil {
+func (o *PutMeshRateLimitRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return p.Name
+	return o.Name
 }
 
-func (p *PutMeshRateLimitRequest) GetMeshRateLimitItem() shared.MeshRateLimitItemInput {
-	if p == nil {
+func (o *PutMeshRateLimitRequest) GetMeshRateLimitItem() shared.MeshRateLimitItemInput {
+	if o == nil {
 		return shared.MeshRateLimitItemInput{}
 	}
-	return p.MeshRateLimitItem
+	return o.MeshRateLimitItem
 }
 
 type PutMeshRateLimitResponse struct {
@@ -57,30 +57,30 @@ type PutMeshRateLimitResponse struct {
 	MeshRateLimitCreateOrUpdateSuccessResponse *shared.MeshRateLimitCreateOrUpdateSuccessResponse
 }
 
-func (p *PutMeshRateLimitResponse) GetContentType() string {
-	if p == nil {
+func (o *PutMeshRateLimitResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return p.ContentType
+	return o.ContentType
 }
 
-func (p *PutMeshRateLimitResponse) GetStatusCode() int {
-	if p == nil {
+func (o *PutMeshRateLimitResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return p.StatusCode
+	return o.StatusCode
 }
 
-func (p *PutMeshRateLimitResponse) GetRawResponse() *http.Response {
-	if p == nil {
+func (o *PutMeshRateLimitResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return p.RawResponse
+	return o.RawResponse
 }
 
-func (p *PutMeshRateLimitResponse) GetMeshRateLimitCreateOrUpdateSuccessResponse() *shared.MeshRateLimitCreateOrUpdateSuccessResponse {
-	if p == nil {
+func (o *PutMeshRateLimitResponse) GetMeshRateLimitCreateOrUpdateSuccessResponse() *shared.MeshRateLimitCreateOrUpdateSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return p.MeshRateLimitCreateOrUpdateSuccessResponse
+	return o.MeshRateLimitCreateOrUpdateSuccessResponse
 }

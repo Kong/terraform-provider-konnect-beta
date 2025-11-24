@@ -14,18 +14,18 @@ type DeleteEventGatewayVaultRequest struct {
 	VaultID string `pathParam:"style=simple,explode=false,name=vaultId"`
 }
 
-func (d *DeleteEventGatewayVaultRequest) GetGatewayID() string {
-	if d == nil {
+func (o *DeleteEventGatewayVaultRequest) GetGatewayID() string {
+	if o == nil {
 		return ""
 	}
-	return d.GatewayID
+	return o.GatewayID
 }
 
-func (d *DeleteEventGatewayVaultRequest) GetVaultID() string {
-	if d == nil {
+func (o *DeleteEventGatewayVaultRequest) GetVaultID() string {
+	if o == nil {
 		return ""
 	}
-	return d.VaultID
+	return o.VaultID
 }
 
 type DeleteEventGatewayVaultResponse struct {
@@ -43,44 +43,44 @@ type DeleteEventGatewayVaultResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeleteEventGatewayVaultResponse) GetContentType() string {
-	if d == nil {
+func (o *DeleteEventGatewayVaultResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeleteEventGatewayVaultResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeleteEventGatewayVaultResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeleteEventGatewayVaultResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeleteEventGatewayVaultResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeleteEventGatewayVaultResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if d == nil {
+func (o *DeleteEventGatewayVaultResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return d.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (d *DeleteEventGatewayVaultResponse) GetForbiddenError() *shared.ForbiddenError {
-	if d == nil {
+func (o *DeleteEventGatewayVaultResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return d.ForbiddenError
+	return o.ForbiddenError
 }
 
-func (d *DeleteEventGatewayVaultResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeleteEventGatewayVaultResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

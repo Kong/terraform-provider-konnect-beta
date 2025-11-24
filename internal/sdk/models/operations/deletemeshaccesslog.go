@@ -16,25 +16,25 @@ type DeleteMeshAccessLogRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (d *DeleteMeshAccessLogRequest) GetCpID() string {
-	if d == nil {
+func (o *DeleteMeshAccessLogRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return d.CpID
+	return o.CpID
 }
 
-func (d *DeleteMeshAccessLogRequest) GetMesh() string {
-	if d == nil {
+func (o *DeleteMeshAccessLogRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return d.Mesh
+	return o.Mesh
 }
 
-func (d *DeleteMeshAccessLogRequest) GetName() string {
-	if d == nil {
+func (o *DeleteMeshAccessLogRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return d.Name
+	return o.Name
 }
 
 type DeleteMeshAccessLogResponse struct {
@@ -50,37 +50,37 @@ type DeleteMeshAccessLogResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeleteMeshAccessLogResponse) GetContentType() string {
-	if d == nil {
+func (o *DeleteMeshAccessLogResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeleteMeshAccessLogResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeleteMeshAccessLogResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeleteMeshAccessLogResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeleteMeshAccessLogResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeleteMeshAccessLogResponse) GetMeshAccessLogDeleteSuccessResponse() *shared.MeshAccessLogDeleteSuccessResponse {
-	if d == nil {
+func (o *DeleteMeshAccessLogResponse) GetMeshAccessLogDeleteSuccessResponse() *shared.MeshAccessLogDeleteSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return d.MeshAccessLogDeleteSuccessResponse
+	return o.MeshAccessLogDeleteSuccessResponse
 }
 
-func (d *DeleteMeshAccessLogResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeleteMeshAccessLogResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

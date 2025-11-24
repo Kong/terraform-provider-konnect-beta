@@ -14,18 +14,18 @@ type GetMeshExternalServiceListQueryParamFilter struct {
 	Value *string `queryParam:"name=value"`
 }
 
-func (g *GetMeshExternalServiceListQueryParamFilter) GetKey() *string {
-	if g == nil {
+func (o *GetMeshExternalServiceListQueryParamFilter) GetKey() *string {
+	if o == nil {
 		return nil
 	}
-	return g.Key
+	return o.Key
 }
 
-func (g *GetMeshExternalServiceListQueryParamFilter) GetValue() *string {
-	if g == nil {
+func (o *GetMeshExternalServiceListQueryParamFilter) GetValue() *string {
+	if o == nil {
 		return nil
 	}
-	return g.Value
+	return o.Value
 }
 
 type GetMeshExternalServiceListRequest struct {
@@ -46,45 +46,45 @@ func (g GetMeshExternalServiceListRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetMeshExternalServiceListRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"cpId", "mesh"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (g *GetMeshExternalServiceListRequest) GetCpID() string {
-	if g == nil {
+func (o *GetMeshExternalServiceListRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return g.CpID
+	return o.CpID
 }
 
-func (g *GetMeshExternalServiceListRequest) GetOffset() *int64 {
-	if g == nil {
+func (o *GetMeshExternalServiceListRequest) GetOffset() *int64 {
+	if o == nil {
 		return nil
 	}
-	return g.Offset
+	return o.Offset
 }
 
-func (g *GetMeshExternalServiceListRequest) GetSize() *int64 {
-	if g == nil {
+func (o *GetMeshExternalServiceListRequest) GetSize() *int64 {
+	if o == nil {
 		return nil
 	}
-	return g.Size
+	return o.Size
 }
 
-func (g *GetMeshExternalServiceListRequest) GetFilter() *GetMeshExternalServiceListQueryParamFilter {
-	if g == nil {
+func (o *GetMeshExternalServiceListRequest) GetFilter() *GetMeshExternalServiceListQueryParamFilter {
+	if o == nil {
 		return nil
 	}
-	return g.Filter
+	return o.Filter
 }
 
-func (g *GetMeshExternalServiceListRequest) GetMesh() string {
-	if g == nil {
+func (o *GetMeshExternalServiceListRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return g.Mesh
+	return o.Mesh
 }
 
 type GetMeshExternalServiceListResponse struct {
@@ -98,30 +98,30 @@ type GetMeshExternalServiceListResponse struct {
 	MeshExternalServiceList *shared.MeshExternalServiceList
 }
 
-func (g *GetMeshExternalServiceListResponse) GetContentType() string {
-	if g == nil {
+func (o *GetMeshExternalServiceListResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetMeshExternalServiceListResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetMeshExternalServiceListResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetMeshExternalServiceListResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetMeshExternalServiceListResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetMeshExternalServiceListResponse) GetMeshExternalServiceList() *shared.MeshExternalServiceList {
-	if g == nil {
+func (o *GetMeshExternalServiceListResponse) GetMeshExternalServiceList() *shared.MeshExternalServiceList {
+	if o == nil {
 		return nil
 	}
-	return g.MeshExternalServiceList
+	return o.MeshExternalServiceList
 }

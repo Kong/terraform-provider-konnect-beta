@@ -29,86 +29,86 @@ type PortalFilterParameters struct {
 	CanonicalDomain *StringFieldFilter `queryParam:"name=canonical_domain"`
 }
 
-func (p *PortalFilterParameters) GetID() *UUIDFieldFilter {
-	if p == nil {
+func (o *PortalFilterParameters) GetID() *UUIDFieldFilter {
+	if o == nil {
 		return nil
 	}
-	return p.ID
+	return o.ID
 }
 
-func (p *PortalFilterParameters) GetName() *StringFieldFilter {
-	if p == nil {
+func (o *PortalFilterParameters) GetName() *StringFieldFilter {
+	if o == nil {
 		return nil
 	}
-	return p.Name
+	return o.Name
 }
 
-func (p *PortalFilterParameters) GetDescription() *StringFieldFilter {
-	if p == nil {
+func (o *PortalFilterParameters) GetDescription() *StringFieldFilter {
+	if o == nil {
 		return nil
 	}
-	return p.Description
+	return o.Description
 }
 
-func (p *PortalFilterParameters) GetAuthenticationEnabled() *bool {
-	if p == nil {
+func (o *PortalFilterParameters) GetAuthenticationEnabled() *bool {
+	if o == nil {
 		return nil
 	}
-	return p.AuthenticationEnabled
+	return o.AuthenticationEnabled
 }
 
-func (p *PortalFilterParameters) GetRbacEnabled() *bool {
-	if p == nil {
+func (o *PortalFilterParameters) GetRbacEnabled() *bool {
+	if o == nil {
 		return nil
 	}
-	return p.RbacEnabled
+	return o.RbacEnabled
 }
 
-func (p *PortalFilterParameters) GetDefaultAPIVisibility() *StringFieldFilter {
-	if p == nil {
+func (o *PortalFilterParameters) GetDefaultAPIVisibility() *StringFieldFilter {
+	if o == nil {
 		return nil
 	}
-	return p.DefaultAPIVisibility
+	return o.DefaultAPIVisibility
 }
 
-func (p *PortalFilterParameters) GetDefaultPageVisibility() *StringFieldFilter {
-	if p == nil {
+func (o *PortalFilterParameters) GetDefaultPageVisibility() *StringFieldFilter {
+	if o == nil {
 		return nil
 	}
-	return p.DefaultPageVisibility
+	return o.DefaultPageVisibility
 }
 
-func (p *PortalFilterParameters) GetDefaultApplicationAuthStrategyID() *UUIDFieldFilter {
-	if p == nil {
+func (o *PortalFilterParameters) GetDefaultApplicationAuthStrategyID() *UUIDFieldFilter {
+	if o == nil {
 		return nil
 	}
-	return p.DefaultApplicationAuthStrategyID
+	return o.DefaultApplicationAuthStrategyID
 }
 
-func (p *PortalFilterParameters) GetAutoApproveDevelopers() *bool {
-	if p == nil {
+func (o *PortalFilterParameters) GetAutoApproveDevelopers() *bool {
+	if o == nil {
 		return nil
 	}
-	return p.AutoApproveDevelopers
+	return o.AutoApproveDevelopers
 }
 
-func (p *PortalFilterParameters) GetAutoApproveApplications() *bool {
-	if p == nil {
+func (o *PortalFilterParameters) GetAutoApproveApplications() *bool {
+	if o == nil {
 		return nil
 	}
-	return p.AutoApproveApplications
+	return o.AutoApproveApplications
 }
 
-func (p *PortalFilterParameters) GetDefaultDomain() *StringFieldFilter {
-	if p == nil {
+func (o *PortalFilterParameters) GetDefaultDomain() *StringFieldFilter {
+	if o == nil {
 		return nil
 	}
-	return p.DefaultDomain
+	return o.DefaultDomain
 }
 
-func (p *PortalFilterParameters) GetCanonicalDomain() *StringFieldFilter {
-	if p == nil {
+func (o *PortalFilterParameters) GetCanonicalDomain() *StringFieldFilter {
+	if o == nil {
 		return nil
 	}
-	return p.CanonicalDomain
+	return o.CanonicalDomain
 }

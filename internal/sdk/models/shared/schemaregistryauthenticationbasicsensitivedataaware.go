@@ -24,26 +24,26 @@ func (s SchemaRegistryAuthenticationBasicSensitiveDataAware) MarshalJSON() ([]by
 }
 
 func (s *SchemaRegistryAuthenticationBasicSensitiveDataAware) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"type", "username"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *SchemaRegistryAuthenticationBasicSensitiveDataAware) GetType() string {
+func (o *SchemaRegistryAuthenticationBasicSensitiveDataAware) GetType() string {
 	return "basic"
 }
 
-func (s *SchemaRegistryAuthenticationBasicSensitiveDataAware) GetUsername() string {
-	if s == nil {
+func (o *SchemaRegistryAuthenticationBasicSensitiveDataAware) GetUsername() string {
+	if o == nil {
 		return ""
 	}
-	return s.Username
+	return o.Username
 }
 
-func (s *SchemaRegistryAuthenticationBasicSensitiveDataAware) GetPassword() *string {
-	if s == nil {
+func (o *SchemaRegistryAuthenticationBasicSensitiveDataAware) GetPassword() *string {
+	if o == nil {
 		return nil
 	}
-	return s.Password
+	return o.Password
 }

@@ -16,25 +16,25 @@ type DeleteMeshExternalServiceRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (d *DeleteMeshExternalServiceRequest) GetCpID() string {
-	if d == nil {
+func (o *DeleteMeshExternalServiceRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return d.CpID
+	return o.CpID
 }
 
-func (d *DeleteMeshExternalServiceRequest) GetMesh() string {
-	if d == nil {
+func (o *DeleteMeshExternalServiceRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return d.Mesh
+	return o.Mesh
 }
 
-func (d *DeleteMeshExternalServiceRequest) GetName() string {
-	if d == nil {
+func (o *DeleteMeshExternalServiceRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return d.Name
+	return o.Name
 }
 
 type DeleteMeshExternalServiceResponse struct {
@@ -50,37 +50,37 @@ type DeleteMeshExternalServiceResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeleteMeshExternalServiceResponse) GetContentType() string {
-	if d == nil {
+func (o *DeleteMeshExternalServiceResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeleteMeshExternalServiceResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeleteMeshExternalServiceResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeleteMeshExternalServiceResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeleteMeshExternalServiceResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeleteMeshExternalServiceResponse) GetMeshExternalServiceDeleteSuccessResponse() *shared.MeshExternalServiceDeleteSuccessResponse {
-	if d == nil {
+func (o *DeleteMeshExternalServiceResponse) GetMeshExternalServiceDeleteSuccessResponse() *shared.MeshExternalServiceDeleteSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return d.MeshExternalServiceDeleteSuccessResponse
+	return o.MeshExternalServiceDeleteSuccessResponse
 }
 
-func (d *DeleteMeshExternalServiceResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeleteMeshExternalServiceResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

@@ -74,20 +74,6 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 
 Import is supported using the following syntax:
 
-In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
-
-```terraform
-import {
-  to = konnect_auth_server_clients.my_konnect_auth_server_clients
-  id = jsonencode({
-    auth_server_id = "d32d905a-ed33-46a3-a093-d8f536af9a8a"
-    id = "kYa9iQFU5xPDSIUH9z1z"
-  })
-}
-```
-
-The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
-
 ```shell
 terraform import konnect_auth_server_clients.my_konnect_auth_server_clients '{"auth_server_id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "id": "kYa9iQFU5xPDSIUH9z1z"}'
 ```

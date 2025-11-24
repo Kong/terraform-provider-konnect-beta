@@ -23,44 +23,44 @@ type UpdateAuthServer struct {
 	TrustedOrigins []string `json:"trusted_origins,omitempty"`
 }
 
-func (u *UpdateAuthServer) GetName() *string {
-	if u == nil {
+func (o *UpdateAuthServer) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return u.Name
+	return o.Name
 }
 
-func (u *UpdateAuthServer) GetDescription() *string {
-	if u == nil {
+func (o *UpdateAuthServer) GetDescription() *string {
+	if o == nil {
 		return nil
 	}
-	return u.Description
+	return o.Description
 }
 
-func (u *UpdateAuthServer) GetAudience() *string {
-	if u == nil {
+func (o *UpdateAuthServer) GetAudience() *string {
+	if o == nil {
 		return nil
 	}
-	return u.Audience
+	return o.Audience
 }
 
-func (u *UpdateAuthServer) GetSigningAlgorithm() *UpdateAlgorithm {
-	if u == nil {
+func (o *UpdateAuthServer) GetSigningAlgorithm() *UpdateAlgorithm {
+	if o == nil {
 		return nil
 	}
-	return u.SigningAlgorithm
+	return o.SigningAlgorithm
 }
 
-func (u *UpdateAuthServer) GetLabels() map[string]*string {
-	if u == nil {
+func (o *UpdateAuthServer) GetLabels() map[string]*string {
+	if o == nil {
 		return nil
 	}
-	return u.Labels
+	return o.Labels
 }
 
-func (u *UpdateAuthServer) GetTrustedOrigins() []string {
-	if u == nil {
+func (o *UpdateAuthServer) GetTrustedOrigins() []string {
+	if o == nil {
 		return nil
 	}
-	return u.TrustedOrigins
+	return o.TrustedOrigins
 }

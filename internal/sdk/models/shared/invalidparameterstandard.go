@@ -19,36 +19,36 @@ func (i InvalidParameterStandard) MarshalJSON() ([]byte, error) {
 }
 
 func (i *InvalidParameterStandard) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &i, "", false, []string{"field", "reason"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &i, "", false, true); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (i *InvalidParameterStandard) GetField() string {
-	if i == nil {
+func (o *InvalidParameterStandard) GetField() string {
+	if o == nil {
 		return ""
 	}
-	return i.Field
+	return o.Field
 }
 
-func (i *InvalidParameterStandard) GetRule() *InvalidRules {
-	if i == nil {
+func (o *InvalidParameterStandard) GetRule() *InvalidRules {
+	if o == nil {
 		return nil
 	}
-	return i.Rule
+	return o.Rule
 }
 
-func (i *InvalidParameterStandard) GetSource() *string {
-	if i == nil {
+func (o *InvalidParameterStandard) GetSource() *string {
+	if o == nil {
 		return nil
 	}
-	return i.Source
+	return o.Source
 }
 
-func (i *InvalidParameterStandard) GetReason() string {
-	if i == nil {
+func (o *InvalidParameterStandard) GetReason() string {
+	if o == nil {
 		return ""
 	}
-	return i.Reason
+	return o.Reason
 }

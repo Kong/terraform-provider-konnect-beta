@@ -18,32 +18,32 @@ type PutMeshLoadBalancingStrategyRequest struct {
 	MeshLoadBalancingStrategyItem shared.MeshLoadBalancingStrategyItemInput `request:"mediaType=application/json"`
 }
 
-func (p *PutMeshLoadBalancingStrategyRequest) GetCpID() string {
-	if p == nil {
+func (o *PutMeshLoadBalancingStrategyRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return p.CpID
+	return o.CpID
 }
 
-func (p *PutMeshLoadBalancingStrategyRequest) GetMesh() string {
-	if p == nil {
+func (o *PutMeshLoadBalancingStrategyRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return p.Mesh
+	return o.Mesh
 }
 
-func (p *PutMeshLoadBalancingStrategyRequest) GetName() string {
-	if p == nil {
+func (o *PutMeshLoadBalancingStrategyRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return p.Name
+	return o.Name
 }
 
-func (p *PutMeshLoadBalancingStrategyRequest) GetMeshLoadBalancingStrategyItem() shared.MeshLoadBalancingStrategyItemInput {
-	if p == nil {
+func (o *PutMeshLoadBalancingStrategyRequest) GetMeshLoadBalancingStrategyItem() shared.MeshLoadBalancingStrategyItemInput {
+	if o == nil {
 		return shared.MeshLoadBalancingStrategyItemInput{}
 	}
-	return p.MeshLoadBalancingStrategyItem
+	return o.MeshLoadBalancingStrategyItem
 }
 
 type PutMeshLoadBalancingStrategyResponse struct {
@@ -57,30 +57,30 @@ type PutMeshLoadBalancingStrategyResponse struct {
 	MeshLoadBalancingStrategyCreateOrUpdateSuccessResponse *shared.MeshLoadBalancingStrategyCreateOrUpdateSuccessResponse
 }
 
-func (p *PutMeshLoadBalancingStrategyResponse) GetContentType() string {
-	if p == nil {
+func (o *PutMeshLoadBalancingStrategyResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return p.ContentType
+	return o.ContentType
 }
 
-func (p *PutMeshLoadBalancingStrategyResponse) GetStatusCode() int {
-	if p == nil {
+func (o *PutMeshLoadBalancingStrategyResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return p.StatusCode
+	return o.StatusCode
 }
 
-func (p *PutMeshLoadBalancingStrategyResponse) GetRawResponse() *http.Response {
-	if p == nil {
+func (o *PutMeshLoadBalancingStrategyResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return p.RawResponse
+	return o.RawResponse
 }
 
-func (p *PutMeshLoadBalancingStrategyResponse) GetMeshLoadBalancingStrategyCreateOrUpdateSuccessResponse() *shared.MeshLoadBalancingStrategyCreateOrUpdateSuccessResponse {
-	if p == nil {
+func (o *PutMeshLoadBalancingStrategyResponse) GetMeshLoadBalancingStrategyCreateOrUpdateSuccessResponse() *shared.MeshLoadBalancingStrategyCreateOrUpdateSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return p.MeshLoadBalancingStrategyCreateOrUpdateSuccessResponse
+	return o.MeshLoadBalancingStrategyCreateOrUpdateSuccessResponse
 }

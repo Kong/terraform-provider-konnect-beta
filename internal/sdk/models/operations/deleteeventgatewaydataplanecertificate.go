@@ -14,18 +14,18 @@ type DeleteEventGatewayDataPlaneCertificateRequest struct {
 	CertificateID string `pathParam:"style=simple,explode=false,name=certificateId"`
 }
 
-func (d *DeleteEventGatewayDataPlaneCertificateRequest) GetGatewayID() string {
-	if d == nil {
+func (o *DeleteEventGatewayDataPlaneCertificateRequest) GetGatewayID() string {
+	if o == nil {
 		return ""
 	}
-	return d.GatewayID
+	return o.GatewayID
 }
 
-func (d *DeleteEventGatewayDataPlaneCertificateRequest) GetCertificateID() string {
-	if d == nil {
+func (o *DeleteEventGatewayDataPlaneCertificateRequest) GetCertificateID() string {
+	if o == nil {
 		return ""
 	}
-	return d.CertificateID
+	return o.CertificateID
 }
 
 type DeleteEventGatewayDataPlaneCertificateResponse struct {
@@ -43,44 +43,44 @@ type DeleteEventGatewayDataPlaneCertificateResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeleteEventGatewayDataPlaneCertificateResponse) GetContentType() string {
-	if d == nil {
+func (o *DeleteEventGatewayDataPlaneCertificateResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeleteEventGatewayDataPlaneCertificateResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeleteEventGatewayDataPlaneCertificateResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeleteEventGatewayDataPlaneCertificateResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeleteEventGatewayDataPlaneCertificateResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeleteEventGatewayDataPlaneCertificateResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if d == nil {
+func (o *DeleteEventGatewayDataPlaneCertificateResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return d.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (d *DeleteEventGatewayDataPlaneCertificateResponse) GetForbiddenError() *shared.ForbiddenError {
-	if d == nil {
+func (o *DeleteEventGatewayDataPlaneCertificateResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return d.ForbiddenError
+	return o.ForbiddenError
 }
 
-func (d *DeleteEventGatewayDataPlaneCertificateResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeleteEventGatewayDataPlaneCertificateResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

@@ -18,32 +18,32 @@ type PutSecretRequest struct {
 	SecretItem shared.SecretItem `request:"mediaType=application/json"`
 }
 
-func (p *PutSecretRequest) GetCpID() string {
-	if p == nil {
+func (o *PutSecretRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return p.CpID
+	return o.CpID
 }
 
-func (p *PutSecretRequest) GetMesh() string {
-	if p == nil {
+func (o *PutSecretRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return p.Mesh
+	return o.Mesh
 }
 
-func (p *PutSecretRequest) GetName() string {
-	if p == nil {
+func (o *PutSecretRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return p.Name
+	return o.Name
 }
 
-func (p *PutSecretRequest) GetSecretItem() shared.SecretItem {
-	if p == nil {
+func (o *PutSecretRequest) GetSecretItem() shared.SecretItem {
+	if o == nil {
 		return shared.SecretItem{}
 	}
-	return p.SecretItem
+	return o.SecretItem
 }
 
 type PutSecretResponse struct {
@@ -57,30 +57,30 @@ type PutSecretResponse struct {
 	SecretCreateOrUpdateSuccessResponse *shared.SecretCreateOrUpdateSuccessResponse
 }
 
-func (p *PutSecretResponse) GetContentType() string {
-	if p == nil {
+func (o *PutSecretResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return p.ContentType
+	return o.ContentType
 }
 
-func (p *PutSecretResponse) GetStatusCode() int {
-	if p == nil {
+func (o *PutSecretResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return p.StatusCode
+	return o.StatusCode
 }
 
-func (p *PutSecretResponse) GetRawResponse() *http.Response {
-	if p == nil {
+func (o *PutSecretResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return p.RawResponse
+	return o.RawResponse
 }
 
-func (p *PutSecretResponse) GetSecretCreateOrUpdateSuccessResponse() *shared.SecretCreateOrUpdateSuccessResponse {
-	if p == nil {
+func (o *PutSecretResponse) GetSecretCreateOrUpdateSuccessResponse() *shared.SecretCreateOrUpdateSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return p.SecretCreateOrUpdateSuccessResponse
+	return o.SecretCreateOrUpdateSuccessResponse
 }

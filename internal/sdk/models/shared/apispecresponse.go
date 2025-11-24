@@ -13,11 +13,11 @@ type ValidationMessages struct {
 	Message string `json:"message"`
 }
 
-func (v *ValidationMessages) GetMessage() string {
-	if v == nil {
+func (o *ValidationMessages) GetMessage() string {
+	if o == nil {
 		return ""
 	}
-	return v.Message
+	return o.Message
 }
 
 // APISpecResponseAPISpecType - The type of specification being stored. This allows us to render the specification correctly.
@@ -73,50 +73,50 @@ func (a APISpecResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *APISpecResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "content", "validation_messages", "type", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *APISpecResponse) GetID() string {
-	if a == nil {
+func (o *APISpecResponse) GetID() string {
+	if o == nil {
 		return ""
 	}
-	return a.ID
+	return o.ID
 }
 
-func (a *APISpecResponse) GetContent() string {
-	if a == nil {
+func (o *APISpecResponse) GetContent() string {
+	if o == nil {
 		return ""
 	}
-	return a.Content
+	return o.Content
 }
 
-func (a *APISpecResponse) GetValidationMessages() []ValidationMessages {
-	if a == nil {
+func (o *APISpecResponse) GetValidationMessages() []ValidationMessages {
+	if o == nil {
 		return []ValidationMessages{}
 	}
-	return a.ValidationMessages
+	return o.ValidationMessages
 }
 
-func (a *APISpecResponse) GetType() APISpecResponseAPISpecType {
-	if a == nil {
+func (o *APISpecResponse) GetType() APISpecResponseAPISpecType {
+	if o == nil {
 		return APISpecResponseAPISpecType("")
 	}
-	return a.Type
+	return o.Type
 }
 
-func (a *APISpecResponse) GetCreatedAt() time.Time {
-	if a == nil {
+func (o *APISpecResponse) GetCreatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return a.CreatedAt
+	return o.CreatedAt
 }
 
-func (a *APISpecResponse) GetUpdatedAt() time.Time {
-	if a == nil {
+func (o *APISpecResponse) GetUpdatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return a.UpdatedAt
+	return o.UpdatedAt
 }

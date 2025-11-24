@@ -11,30 +11,30 @@ type PortalOIDCConfig struct {
 	ClaimMappings *PortalClaimMappings `json:"claim_mappings,omitempty"`
 }
 
-func (p *PortalOIDCConfig) GetIssuer() string {
-	if p == nil {
+func (o *PortalOIDCConfig) GetIssuer() string {
+	if o == nil {
 		return ""
 	}
-	return p.Issuer
+	return o.Issuer
 }
 
-func (p *PortalOIDCConfig) GetClientID() string {
-	if p == nil {
+func (o *PortalOIDCConfig) GetClientID() string {
+	if o == nil {
 		return ""
 	}
-	return p.ClientID
+	return o.ClientID
 }
 
-func (p *PortalOIDCConfig) GetScopes() []string {
-	if p == nil {
+func (o *PortalOIDCConfig) GetScopes() []string {
+	if o == nil {
 		return nil
 	}
-	return p.Scopes
+	return o.Scopes
 }
 
-func (p *PortalOIDCConfig) GetClaimMappings() *PortalClaimMappings {
-	if p == nil {
+func (o *PortalOIDCConfig) GetClaimMappings() *PortalClaimMappings {
+	if o == nil {
 		return nil
 	}
-	return p.ClaimMappings
+	return o.ClaimMappings
 }

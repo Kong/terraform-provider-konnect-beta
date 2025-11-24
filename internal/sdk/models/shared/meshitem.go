@@ -15,11 +15,11 @@ type Requirements struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (r *Requirements) GetTags() map[string]string {
-	if r == nil {
+func (o *Requirements) GetTags() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return r.Tags
+	return o.Tags
 }
 
 // Restrictions - Rules defines a set of rules for data plane proxies to be member of the mesh.
@@ -29,11 +29,11 @@ type Restrictions struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (r *Restrictions) GetTags() map[string]string {
-	if r == nil {
+func (o *Restrictions) GetTags() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return r.Tags
+	return o.Tags
 }
 
 // DataplaneProxy - DataplaneProxyMembership defines a set of requirements for data plane
@@ -51,18 +51,18 @@ type DataplaneProxy struct {
 	Restrictions []Restrictions `json:"restrictions,omitempty"`
 }
 
-func (d *DataplaneProxy) GetRequirements() []Requirements {
-	if d == nil {
+func (o *DataplaneProxy) GetRequirements() []Requirements {
+	if o == nil {
 		return nil
 	}
-	return d.Requirements
+	return o.Requirements
 }
 
-func (d *DataplaneProxy) GetRestrictions() []Restrictions {
-	if d == nil {
+func (o *DataplaneProxy) GetRestrictions() []Restrictions {
+	if o == nil {
 		return nil
 	}
-	return d.Restrictions
+	return o.Restrictions
 }
 
 // Constraints that applies to the mesh and its entities
@@ -72,11 +72,11 @@ type Constraints struct {
 	DataplaneProxy *DataplaneProxy `json:"dataplaneProxy,omitempty"`
 }
 
-func (c *Constraints) GetDataplaneProxy() *DataplaneProxy {
-	if c == nil {
+func (o *Constraints) GetDataplaneProxy() *DataplaneProxy {
+	if o == nil {
 		return nil
 	}
-	return c.DataplaneProxy
+	return o.DataplaneProxy
 }
 
 // TCPLoggingBackendConfig - TcpLoggingBackendConfig defines configuration for TCP based access logs
@@ -85,22 +85,11 @@ type TCPLoggingBackendConfig struct {
 	Address *string `json:"address,omitempty"`
 }
 
-func (t TCPLoggingBackendConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(t, "", false)
-}
-
-func (t *TCPLoggingBackendConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (t *TCPLoggingBackendConfig) GetAddress() *string {
-	if t == nil {
+func (o *TCPLoggingBackendConfig) GetAddress() *string {
+	if o == nil {
 		return nil
 	}
-	return t.Address
+	return o.Address
 }
 
 // FileLoggingBackendConfig defines configuration for file based access logs
@@ -109,22 +98,11 @@ type FileLoggingBackendConfig struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (f FileLoggingBackendConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(f, "", false)
-}
-
-func (f *FileLoggingBackendConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (f *FileLoggingBackendConfig) GetPath() *string {
-	if f == nil {
+func (o *FileLoggingBackendConfig) GetPath() *string {
+	if o == nil {
 		return nil
 	}
-	return f.Path
+	return o.Path
 }
 
 type MeshItemLoggingConfType string
@@ -135,8 +113,8 @@ const (
 )
 
 type MeshItemLoggingConf struct {
-	FileLoggingBackendConfig *FileLoggingBackendConfig `queryParam:"inline,name=conf"`
-	TCPLoggingBackendConfig  *TCPLoggingBackendConfig  `queryParam:"inline,name=conf"`
+	FileLoggingBackendConfig *FileLoggingBackendConfig `queryParam:"inline"`
+	TCPLoggingBackendConfig  *TCPLoggingBackendConfig  `queryParam:"inline"`
 
 	Type MeshItemLoggingConfType
 }
@@ -161,43 +139,17 @@ func CreateMeshItemLoggingConfTCPLoggingBackendConfig(tcpLoggingBackendConfig TC
 
 func (u *MeshItemLoggingConf) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var fileLoggingBackendConfig FileLoggingBackendConfig = FileLoggingBackendConfig{}
-	if err := utils.UnmarshalJSON(data, &fileLoggingBackendConfig, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshItemLoggingConfTypeFileLoggingBackendConfig,
-			Value: &fileLoggingBackendConfig,
-		})
+	if err := utils.UnmarshalJSON(data, &fileLoggingBackendConfig, "", true, true); err == nil {
+		u.FileLoggingBackendConfig = &fileLoggingBackendConfig
+		u.Type = MeshItemLoggingConfTypeFileLoggingBackendConfig
+		return nil
 	}
 
 	var tcpLoggingBackendConfig TCPLoggingBackendConfig = TCPLoggingBackendConfig{}
-	if err := utils.UnmarshalJSON(data, &tcpLoggingBackendConfig, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshItemLoggingConfTypeTCPLoggingBackendConfig,
-			Value: &tcpLoggingBackendConfig,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshItemLoggingConf", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshItemLoggingConf", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(MeshItemLoggingConfType)
-	switch best.Type {
-	case MeshItemLoggingConfTypeFileLoggingBackendConfig:
-		u.FileLoggingBackendConfig = best.Value.(*FileLoggingBackendConfig)
-		return nil
-	case MeshItemLoggingConfTypeTCPLoggingBackendConfig:
-		u.TCPLoggingBackendConfig = best.Value.(*TCPLoggingBackendConfig)
+	if err := utils.UnmarshalJSON(data, &tcpLoggingBackendConfig, "", true, true); err == nil {
+		u.TCPLoggingBackendConfig = &tcpLoggingBackendConfig
+		u.Type = MeshItemLoggingConfTypeTCPLoggingBackendConfig
 		return nil
 	}
 
@@ -229,32 +181,32 @@ type Backends struct {
 	Type *string `json:"type,omitempty"`
 }
 
-func (b *Backends) GetConf() *MeshItemLoggingConf {
-	if b == nil {
+func (o *Backends) GetConf() *MeshItemLoggingConf {
+	if o == nil {
 		return nil
 	}
-	return b.Conf
+	return o.Conf
 }
 
-func (b *Backends) GetFormat() *string {
-	if b == nil {
+func (o *Backends) GetFormat() *string {
+	if o == nil {
 		return nil
 	}
-	return b.Format
+	return o.Format
 }
 
-func (b *Backends) GetName() *string {
-	if b == nil {
+func (o *Backends) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return b.Name
+	return o.Name
 }
 
-func (b *Backends) GetType() *string {
-	if b == nil {
+func (o *Backends) GetType() *string {
+	if o == nil {
 		return nil
 	}
-	return b.Type
+	return o.Type
 }
 
 // Logging settings.
@@ -266,18 +218,18 @@ type Logging struct {
 	DefaultBackend *string `json:"defaultBackend,omitempty"`
 }
 
-func (l *Logging) GetBackends() []Backends {
-	if l == nil {
+func (o *Logging) GetBackends() []Backends {
+	if o == nil {
 		return nil
 	}
-	return l.Backends
+	return o.Backends
 }
 
-func (l *Logging) GetDefaultBackend() *string {
-	if l == nil {
+func (o *Logging) GetDefaultBackend() *string {
+	if o == nil {
 		return nil
 	}
-	return l.DefaultBackend
+	return o.DefaultBackend
 }
 
 type MeshItemModeType string
@@ -288,8 +240,8 @@ const (
 )
 
 type MeshItemMode struct {
-	Str     *string `queryParam:"inline,name=mode"`
-	Integer *int64  `queryParam:"inline,name=mode"`
+	Str     *string `queryParam:"inline"`
+	Integer *int64  `queryParam:"inline"`
 
 	Type MeshItemModeType
 }
@@ -314,43 +266,17 @@ func CreateMeshItemModeInteger(integer int64) MeshItemMode {
 
 func (u *MeshItemMode) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshItemModeTypeStr,
-			Value: &str,
-		})
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = MeshItemModeTypeStr
+		return nil
 	}
 
 	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshItemModeTypeInteger,
-			Value: &integer,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshItemMode", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshItemMode", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(MeshItemModeType)
-	switch best.Type {
-	case MeshItemModeTypeStr:
-		u.Str = best.Value.(*string)
-		return nil
-	case MeshItemModeTypeInteger:
-		u.Integer = best.Value.(*int64)
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = MeshItemModeTypeInteger
 		return nil
 	}
 
@@ -373,11 +299,11 @@ type MeshServices struct {
 	Mode *MeshItemMode `json:"mode,omitempty"`
 }
 
-func (m *MeshServices) GetMode() *MeshItemMode {
-	if m == nil {
+func (o *MeshServices) GetMode() *MeshItemMode {
+	if o == nil {
 		return nil
 	}
-	return m.Mode
+	return o.Mode
 }
 
 // Aggregate - PrometheusAggregateMetricsConfig defines endpoints that should be scrapped by kuma-dp for prometheus metrics.
@@ -395,50 +321,39 @@ type Aggregate struct {
 	Port *int64 `json:"port,omitempty"`
 }
 
-func (a Aggregate) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *Aggregate) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *Aggregate) GetAddress() *string {
-	if a == nil {
+func (o *Aggregate) GetAddress() *string {
+	if o == nil {
 		return nil
 	}
-	return a.Address
+	return o.Address
 }
 
-func (a *Aggregate) GetEnabled() *bool {
-	if a == nil {
+func (o *Aggregate) GetEnabled() *bool {
+	if o == nil {
 		return nil
 	}
-	return a.Enabled
+	return o.Enabled
 }
 
-func (a *Aggregate) GetName() *string {
-	if a == nil {
+func (o *Aggregate) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return a.Name
+	return o.Name
 }
 
-func (a *Aggregate) GetPath() *string {
-	if a == nil {
+func (o *Aggregate) GetPath() *string {
+	if o == nil {
 		return nil
 	}
-	return a.Path
+	return o.Path
 }
 
-func (a *Aggregate) GetPort() *int64 {
-	if a == nil {
+func (o *Aggregate) GetPort() *int64 {
+	if o == nil {
 		return nil
 	}
-	return a.Port
+	return o.Port
 }
 
 // Envoy - Configuration of Envoy's metrics.
@@ -452,29 +367,18 @@ type Envoy struct {
 	UsedOnly *bool `json:"usedOnly,omitempty"`
 }
 
-func (e Envoy) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(e, "", false)
-}
-
-func (e *Envoy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (e *Envoy) GetFilterRegex() *string {
-	if e == nil {
+func (o *Envoy) GetFilterRegex() *string {
+	if o == nil {
 		return nil
 	}
-	return e.FilterRegex
+	return o.FilterRegex
 }
 
-func (e *Envoy) GetUsedOnly() *bool {
-	if e == nil {
+func (o *Envoy) GetUsedOnly() *bool {
+	if o == nil {
 		return nil
 	}
-	return e.UsedOnly
+	return o.UsedOnly
 }
 
 type ConfModeType string
@@ -488,8 +392,8 @@ const (
 // Supported values, delegated, disabled, activeMTLSBackend. Default to
 // `activeMTLSBackend`.
 type ConfMode struct {
-	Str     *string `queryParam:"inline,name=mode"`
-	Integer *int64  `queryParam:"inline,name=mode"`
+	Str     *string `queryParam:"inline"`
+	Integer *int64  `queryParam:"inline"`
 
 	Type ConfModeType
 }
@@ -514,43 +418,17 @@ func CreateConfModeInteger(integer int64) ConfMode {
 
 func (u *ConfMode) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  ConfModeTypeStr,
-			Value: &str,
-		})
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = ConfModeTypeStr
+		return nil
 	}
 
 	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  ConfModeTypeInteger,
-			Value: &integer,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for ConfMode", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for ConfMode", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(ConfModeType)
-	switch best.Type {
-	case ConfModeTypeStr:
-		u.Str = best.Value.(*string)
-		return nil
-	case ConfModeTypeInteger:
-		u.Integer = best.Value.(*int64)
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = ConfModeTypeInteger
 		return nil
 	}
 
@@ -577,22 +455,11 @@ type ConfTLS struct {
 	Mode *ConfMode `json:"mode,omitempty"`
 }
 
-func (c ConfTLS) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *ConfTLS) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *ConfTLS) GetMode() *ConfMode {
-	if c == nil {
+func (o *ConfTLS) GetMode() *ConfMode {
+	if o == nil {
 		return nil
 	}
-	return c.Mode
+	return o.Mode
 }
 
 // PrometheusMetricsBackendConfig defines configuration of Prometheus backend
@@ -619,64 +486,53 @@ type PrometheusMetricsBackendConfig struct {
 	TLS *ConfTLS `json:"tls,omitempty"`
 }
 
-func (p PrometheusMetricsBackendConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(p, "", false)
-}
-
-func (p *PrometheusMetricsBackendConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (p *PrometheusMetricsBackendConfig) GetAggregate() []Aggregate {
-	if p == nil {
+func (o *PrometheusMetricsBackendConfig) GetAggregate() []Aggregate {
+	if o == nil {
 		return nil
 	}
-	return p.Aggregate
+	return o.Aggregate
 }
 
-func (p *PrometheusMetricsBackendConfig) GetEnvoy() *Envoy {
-	if p == nil {
+func (o *PrometheusMetricsBackendConfig) GetEnvoy() *Envoy {
+	if o == nil {
 		return nil
 	}
-	return p.Envoy
+	return o.Envoy
 }
 
-func (p *PrometheusMetricsBackendConfig) GetPath() *string {
-	if p == nil {
+func (o *PrometheusMetricsBackendConfig) GetPath() *string {
+	if o == nil {
 		return nil
 	}
-	return p.Path
+	return o.Path
 }
 
-func (p *PrometheusMetricsBackendConfig) GetPort() *int64 {
-	if p == nil {
+func (o *PrometheusMetricsBackendConfig) GetPort() *int64 {
+	if o == nil {
 		return nil
 	}
-	return p.Port
+	return o.Port
 }
 
-func (p *PrometheusMetricsBackendConfig) GetSkipMTLS() *bool {
-	if p == nil {
+func (o *PrometheusMetricsBackendConfig) GetSkipMTLS() *bool {
+	if o == nil {
 		return nil
 	}
-	return p.SkipMTLS
+	return o.SkipMTLS
 }
 
-func (p *PrometheusMetricsBackendConfig) GetTags() map[string]string {
-	if p == nil {
+func (o *PrometheusMetricsBackendConfig) GetTags() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return p.Tags
+	return o.Tags
 }
 
-func (p *PrometheusMetricsBackendConfig) GetTLS() *ConfTLS {
-	if p == nil {
+func (o *PrometheusMetricsBackendConfig) GetTLS() *ConfTLS {
+	if o == nil {
 		return nil
 	}
-	return p.TLS
+	return o.TLS
 }
 
 type MeshItemConfType string
@@ -686,7 +542,7 @@ const (
 )
 
 type MeshItemConf struct {
-	PrometheusMetricsBackendConfig *PrometheusMetricsBackendConfig `queryParam:"inline,name=conf"`
+	PrometheusMetricsBackendConfig *PrometheusMetricsBackendConfig `queryParam:"inline"`
 
 	Type MeshItemConfType
 }
@@ -702,32 +558,10 @@ func CreateMeshItemConfPrometheusMetricsBackendConfig(prometheusMetricsBackendCo
 
 func (u *MeshItemConf) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var prometheusMetricsBackendConfig PrometheusMetricsBackendConfig = PrometheusMetricsBackendConfig{}
-	if err := utils.UnmarshalJSON(data, &prometheusMetricsBackendConfig, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshItemConfTypePrometheusMetricsBackendConfig,
-			Value: &prometheusMetricsBackendConfig,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshItemConf", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshItemConf", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(MeshItemConfType)
-	switch best.Type {
-	case MeshItemConfTypePrometheusMetricsBackendConfig:
-		u.PrometheusMetricsBackendConfig = best.Value.(*PrometheusMetricsBackendConfig)
+	if err := utils.UnmarshalJSON(data, &prometheusMetricsBackendConfig, "", true, true); err == nil {
+		u.PrometheusMetricsBackendConfig = &prometheusMetricsBackendConfig
+		u.Type = MeshItemConfTypePrometheusMetricsBackendConfig
 		return nil
 	}
 
@@ -751,25 +585,25 @@ type MeshItemBackends struct {
 	Type *string `json:"type,omitempty"`
 }
 
-func (m *MeshItemBackends) GetConf() *MeshItemConf {
-	if m == nil {
+func (o *MeshItemBackends) GetConf() *MeshItemConf {
+	if o == nil {
 		return nil
 	}
-	return m.Conf
+	return o.Conf
 }
 
-func (m *MeshItemBackends) GetName() *string {
-	if m == nil {
+func (o *MeshItemBackends) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshItemBackends) GetType() *string {
-	if m == nil {
+func (o *MeshItemBackends) GetType() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Type
+	return o.Type
 }
 
 // Metrics - Configuration for metrics collected and exposed by dataplanes.
@@ -785,18 +619,18 @@ type Metrics struct {
 	EnabledBackend *string `json:"enabledBackend,omitempty"`
 }
 
-func (m *Metrics) GetBackends() []MeshItemBackends {
-	if m == nil {
+func (o *Metrics) GetBackends() []MeshItemBackends {
+	if o == nil {
 		return nil
 	}
-	return m.Backends
+	return o.Backends
 }
 
-func (m *Metrics) GetEnabledBackend() *string {
-	if m == nil {
+func (o *Metrics) GetEnabledBackend() *string {
+	if o == nil {
 		return nil
 	}
-	return m.EnabledBackend
+	return o.EnabledBackend
 }
 
 type CertManagerCertificateAuthorityConfigCaCertDataSourceSecret struct {
@@ -804,22 +638,11 @@ type CertManagerCertificateAuthorityConfigCaCertDataSourceSecret struct {
 	Secret *string `json:"secret,omitempty"`
 }
 
-func (c CertManagerCertificateAuthorityConfigCaCertDataSourceSecret) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CertManagerCertificateAuthorityConfigCaCertDataSourceSecret) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *CertManagerCertificateAuthorityConfigCaCertDataSourceSecret) GetSecret() *string {
-	if c == nil {
+func (o *CertManagerCertificateAuthorityConfigCaCertDataSourceSecret) GetSecret() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Secret
+	return o.Secret
 }
 
 type CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString struct {
@@ -827,22 +650,11 @@ type CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString struct {
 	InlineString *string `json:"inlineString,omitempty"`
 }
 
-func (c CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString) GetInlineString() *string {
-	if c == nil {
+func (o *CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString) GetInlineString() *string {
+	if o == nil {
 		return nil
 	}
-	return c.InlineString
+	return o.InlineString
 }
 
 type CertManagerCertificateAuthorityConfigCaCertDataSourceInline struct {
@@ -850,22 +662,11 @@ type CertManagerCertificateAuthorityConfigCaCertDataSourceInline struct {
 	Inline *string `json:"inline,omitempty"`
 }
 
-func (c CertManagerCertificateAuthorityConfigCaCertDataSourceInline) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CertManagerCertificateAuthorityConfigCaCertDataSourceInline) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *CertManagerCertificateAuthorityConfigCaCertDataSourceInline) GetInline() *string {
-	if c == nil {
+func (o *CertManagerCertificateAuthorityConfigCaCertDataSourceInline) GetInline() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Inline
+	return o.Inline
 }
 
 type CertManagerCertificateAuthorityConfigCaCertDataSourceFile struct {
@@ -874,22 +675,11 @@ type CertManagerCertificateAuthorityConfigCaCertDataSourceFile struct {
 	File *string `json:"file,omitempty"`
 }
 
-func (c CertManagerCertificateAuthorityConfigCaCertDataSourceFile) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CertManagerCertificateAuthorityConfigCaCertDataSourceFile) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *CertManagerCertificateAuthorityConfigCaCertDataSourceFile) GetFile() *string {
-	if c == nil {
+func (o *CertManagerCertificateAuthorityConfigCaCertDataSourceFile) GetFile() *string {
+	if o == nil {
 		return nil
 	}
-	return c.File
+	return o.File
 }
 
 type CertManagerCertificateAuthorityConfigConfCaCertType string
@@ -902,10 +692,10 @@ const (
 )
 
 type CertManagerCertificateAuthorityConfigConfCaCert struct {
-	CertManagerCertificateAuthorityConfigCaCertDataSourceFile         *CertManagerCertificateAuthorityConfigCaCertDataSourceFile         `queryParam:"inline,name=caCert"`
-	CertManagerCertificateAuthorityConfigCaCertDataSourceInline       *CertManagerCertificateAuthorityConfigCaCertDataSourceInline       `queryParam:"inline,name=caCert"`
-	CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString *CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString `queryParam:"inline,name=caCert"`
-	CertManagerCertificateAuthorityConfigCaCertDataSourceSecret       *CertManagerCertificateAuthorityConfigCaCertDataSourceSecret       `queryParam:"inline,name=caCert"`
+	CertManagerCertificateAuthorityConfigCaCertDataSourceFile         *CertManagerCertificateAuthorityConfigCaCertDataSourceFile         `queryParam:"inline"`
+	CertManagerCertificateAuthorityConfigCaCertDataSourceInline       *CertManagerCertificateAuthorityConfigCaCertDataSourceInline       `queryParam:"inline"`
+	CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString *CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString `queryParam:"inline"`
+	CertManagerCertificateAuthorityConfigCaCertDataSourceSecret       *CertManagerCertificateAuthorityConfigCaCertDataSourceSecret       `queryParam:"inline"`
 
 	Type CertManagerCertificateAuthorityConfigConfCaCertType
 }
@@ -948,65 +738,31 @@ func CreateCertManagerCertificateAuthorityConfigConfCaCertCertManagerCertificate
 
 func (u *CertManagerCertificateAuthorityConfigConfCaCert) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var certManagerCertificateAuthorityConfigCaCertDataSourceFile CertManagerCertificateAuthorityConfigCaCertDataSourceFile = CertManagerCertificateAuthorityConfigCaCertDataSourceFile{}
-	if err := utils.UnmarshalJSON(data, &certManagerCertificateAuthorityConfigCaCertDataSourceFile, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  CertManagerCertificateAuthorityConfigConfCaCertTypeCertManagerCertificateAuthorityConfigCaCertDataSourceFile,
-			Value: &certManagerCertificateAuthorityConfigCaCertDataSourceFile,
-		})
+	if err := utils.UnmarshalJSON(data, &certManagerCertificateAuthorityConfigCaCertDataSourceFile, "", true, true); err == nil {
+		u.CertManagerCertificateAuthorityConfigCaCertDataSourceFile = &certManagerCertificateAuthorityConfigCaCertDataSourceFile
+		u.Type = CertManagerCertificateAuthorityConfigConfCaCertTypeCertManagerCertificateAuthorityConfigCaCertDataSourceFile
+		return nil
 	}
 
 	var certManagerCertificateAuthorityConfigCaCertDataSourceInline CertManagerCertificateAuthorityConfigCaCertDataSourceInline = CertManagerCertificateAuthorityConfigCaCertDataSourceInline{}
-	if err := utils.UnmarshalJSON(data, &certManagerCertificateAuthorityConfigCaCertDataSourceInline, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  CertManagerCertificateAuthorityConfigConfCaCertTypeCertManagerCertificateAuthorityConfigCaCertDataSourceInline,
-			Value: &certManagerCertificateAuthorityConfigCaCertDataSourceInline,
-		})
+	if err := utils.UnmarshalJSON(data, &certManagerCertificateAuthorityConfigCaCertDataSourceInline, "", true, true); err == nil {
+		u.CertManagerCertificateAuthorityConfigCaCertDataSourceInline = &certManagerCertificateAuthorityConfigCaCertDataSourceInline
+		u.Type = CertManagerCertificateAuthorityConfigConfCaCertTypeCertManagerCertificateAuthorityConfigCaCertDataSourceInline
+		return nil
 	}
 
 	var certManagerCertificateAuthorityConfigCaCertDataSourceInlineString CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString = CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString{}
-	if err := utils.UnmarshalJSON(data, &certManagerCertificateAuthorityConfigCaCertDataSourceInlineString, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  CertManagerCertificateAuthorityConfigConfCaCertTypeCertManagerCertificateAuthorityConfigCaCertDataSourceInlineString,
-			Value: &certManagerCertificateAuthorityConfigCaCertDataSourceInlineString,
-		})
+	if err := utils.UnmarshalJSON(data, &certManagerCertificateAuthorityConfigCaCertDataSourceInlineString, "", true, true); err == nil {
+		u.CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString = &certManagerCertificateAuthorityConfigCaCertDataSourceInlineString
+		u.Type = CertManagerCertificateAuthorityConfigConfCaCertTypeCertManagerCertificateAuthorityConfigCaCertDataSourceInlineString
+		return nil
 	}
 
 	var certManagerCertificateAuthorityConfigCaCertDataSourceSecret CertManagerCertificateAuthorityConfigCaCertDataSourceSecret = CertManagerCertificateAuthorityConfigCaCertDataSourceSecret{}
-	if err := utils.UnmarshalJSON(data, &certManagerCertificateAuthorityConfigCaCertDataSourceSecret, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  CertManagerCertificateAuthorityConfigConfCaCertTypeCertManagerCertificateAuthorityConfigCaCertDataSourceSecret,
-			Value: &certManagerCertificateAuthorityConfigCaCertDataSourceSecret,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for CertManagerCertificateAuthorityConfigConfCaCert", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for CertManagerCertificateAuthorityConfigConfCaCert", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(CertManagerCertificateAuthorityConfigConfCaCertType)
-	switch best.Type {
-	case CertManagerCertificateAuthorityConfigConfCaCertTypeCertManagerCertificateAuthorityConfigCaCertDataSourceFile:
-		u.CertManagerCertificateAuthorityConfigCaCertDataSourceFile = best.Value.(*CertManagerCertificateAuthorityConfigCaCertDataSourceFile)
-		return nil
-	case CertManagerCertificateAuthorityConfigConfCaCertTypeCertManagerCertificateAuthorityConfigCaCertDataSourceInline:
-		u.CertManagerCertificateAuthorityConfigCaCertDataSourceInline = best.Value.(*CertManagerCertificateAuthorityConfigCaCertDataSourceInline)
-		return nil
-	case CertManagerCertificateAuthorityConfigConfCaCertTypeCertManagerCertificateAuthorityConfigCaCertDataSourceInlineString:
-		u.CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString = best.Value.(*CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString)
-		return nil
-	case CertManagerCertificateAuthorityConfigConfCaCertTypeCertManagerCertificateAuthorityConfigCaCertDataSourceSecret:
-		u.CertManagerCertificateAuthorityConfigCaCertDataSourceSecret = best.Value.(*CertManagerCertificateAuthorityConfigCaCertDataSourceSecret)
+	if err := utils.UnmarshalJSON(data, &certManagerCertificateAuthorityConfigCaCertDataSourceSecret, "", true, true); err == nil {
+		u.CertManagerCertificateAuthorityConfigCaCertDataSourceSecret = &certManagerCertificateAuthorityConfigCaCertDataSourceSecret
+		u.Type = CertManagerCertificateAuthorityConfigConfCaCertTypeCertManagerCertificateAuthorityConfigCaCertDataSourceSecret
 		return nil
 	}
 
@@ -1039,36 +795,25 @@ type IssuerRef struct {
 	Name  *string `json:"name,omitempty"`
 }
 
-func (i IssuerRef) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(i, "", false)
-}
-
-func (i *IssuerRef) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (i *IssuerRef) GetGroup() *string {
-	if i == nil {
+func (o *IssuerRef) GetGroup() *string {
+	if o == nil {
 		return nil
 	}
-	return i.Group
+	return o.Group
 }
 
-func (i *IssuerRef) GetKind() *string {
-	if i == nil {
+func (o *IssuerRef) GetKind() *string {
+	if o == nil {
 		return nil
 	}
-	return i.Kind
+	return o.Kind
 }
 
-func (i *IssuerRef) GetName() *string {
-	if i == nil {
+func (o *IssuerRef) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return i.Name
+	return o.Name
 }
 
 type CertManagerCertificateAuthorityConfig struct {
@@ -1078,43 +823,32 @@ type CertManagerCertificateAuthorityConfig struct {
 	IssuerRef  *IssuerRef                                       `json:"issuerRef,omitempty"`
 }
 
-func (c CertManagerCertificateAuthorityConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CertManagerCertificateAuthorityConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *CertManagerCertificateAuthorityConfig) GetCaCert() *CertManagerCertificateAuthorityConfigConfCaCert {
-	if c == nil {
+func (o *CertManagerCertificateAuthorityConfig) GetCaCert() *CertManagerCertificateAuthorityConfigConfCaCert {
+	if o == nil {
 		return nil
 	}
-	return c.CaCert
+	return o.CaCert
 }
 
-func (c *CertManagerCertificateAuthorityConfig) GetCommonName() *string {
-	if c == nil {
+func (o *CertManagerCertificateAuthorityConfig) GetCommonName() *string {
+	if o == nil {
 		return nil
 	}
-	return c.CommonName
+	return o.CommonName
 }
 
-func (c *CertManagerCertificateAuthorityConfig) GetDNSNames() []string {
-	if c == nil {
+func (o *CertManagerCertificateAuthorityConfig) GetDNSNames() []string {
+	if o == nil {
 		return nil
 	}
-	return c.DNSNames
+	return o.DNSNames
 }
 
-func (c *CertManagerCertificateAuthorityConfig) GetIssuerRef() *IssuerRef {
-	if c == nil {
+func (o *CertManagerCertificateAuthorityConfig) GetIssuerRef() *IssuerRef {
+	if o == nil {
 		return nil
 	}
-	return c.IssuerRef
+	return o.IssuerRef
 }
 
 type AccessKeyDataSourceSecret struct {
@@ -1122,22 +856,11 @@ type AccessKeyDataSourceSecret struct {
 	Secret *string `json:"secret,omitempty"`
 }
 
-func (a AccessKeyDataSourceSecret) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AccessKeyDataSourceSecret) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *AccessKeyDataSourceSecret) GetSecret() *string {
-	if a == nil {
+func (o *AccessKeyDataSourceSecret) GetSecret() *string {
+	if o == nil {
 		return nil
 	}
-	return a.Secret
+	return o.Secret
 }
 
 type AccessKeyDataSourceInlineString struct {
@@ -1145,22 +868,11 @@ type AccessKeyDataSourceInlineString struct {
 	InlineString *string `json:"inlineString,omitempty"`
 }
 
-func (a AccessKeyDataSourceInlineString) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AccessKeyDataSourceInlineString) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *AccessKeyDataSourceInlineString) GetInlineString() *string {
-	if a == nil {
+func (o *AccessKeyDataSourceInlineString) GetInlineString() *string {
+	if o == nil {
 		return nil
 	}
-	return a.InlineString
+	return o.InlineString
 }
 
 type AccessKeyDataSourceInline struct {
@@ -1168,22 +880,11 @@ type AccessKeyDataSourceInline struct {
 	Inline *string `json:"inline,omitempty"`
 }
 
-func (a AccessKeyDataSourceInline) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AccessKeyDataSourceInline) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *AccessKeyDataSourceInline) GetInline() *string {
-	if a == nil {
+func (o *AccessKeyDataSourceInline) GetInline() *string {
+	if o == nil {
 		return nil
 	}
-	return a.Inline
+	return o.Inline
 }
 
 type AccessKeyDataSourceFile struct {
@@ -1192,22 +893,11 @@ type AccessKeyDataSourceFile struct {
 	File *string `json:"file,omitempty"`
 }
 
-func (a AccessKeyDataSourceFile) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AccessKeyDataSourceFile) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *AccessKeyDataSourceFile) GetFile() *string {
-	if a == nil {
+func (o *AccessKeyDataSourceFile) GetFile() *string {
+	if o == nil {
 		return nil
 	}
-	return a.File
+	return o.File
 }
 
 type AccessKeyType string
@@ -1220,10 +910,10 @@ const (
 )
 
 type AccessKey struct {
-	AccessKeyDataSourceFile         *AccessKeyDataSourceFile         `queryParam:"inline,name=accessKey"`
-	AccessKeyDataSourceInline       *AccessKeyDataSourceInline       `queryParam:"inline,name=accessKey"`
-	AccessKeyDataSourceInlineString *AccessKeyDataSourceInlineString `queryParam:"inline,name=accessKey"`
-	AccessKeyDataSourceSecret       *AccessKeyDataSourceSecret       `queryParam:"inline,name=accessKey"`
+	AccessKeyDataSourceFile         *AccessKeyDataSourceFile         `queryParam:"inline"`
+	AccessKeyDataSourceInline       *AccessKeyDataSourceInline       `queryParam:"inline"`
+	AccessKeyDataSourceInlineString *AccessKeyDataSourceInlineString `queryParam:"inline"`
+	AccessKeyDataSourceSecret       *AccessKeyDataSourceSecret       `queryParam:"inline"`
 
 	Type AccessKeyType
 }
@@ -1266,65 +956,31 @@ func CreateAccessKeyAccessKeyDataSourceSecret(accessKeyDataSourceSecret AccessKe
 
 func (u *AccessKey) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var accessKeyDataSourceFile AccessKeyDataSourceFile = AccessKeyDataSourceFile{}
-	if err := utils.UnmarshalJSON(data, &accessKeyDataSourceFile, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AccessKeyTypeAccessKeyDataSourceFile,
-			Value: &accessKeyDataSourceFile,
-		})
+	if err := utils.UnmarshalJSON(data, &accessKeyDataSourceFile, "", true, true); err == nil {
+		u.AccessKeyDataSourceFile = &accessKeyDataSourceFile
+		u.Type = AccessKeyTypeAccessKeyDataSourceFile
+		return nil
 	}
 
 	var accessKeyDataSourceInline AccessKeyDataSourceInline = AccessKeyDataSourceInline{}
-	if err := utils.UnmarshalJSON(data, &accessKeyDataSourceInline, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AccessKeyTypeAccessKeyDataSourceInline,
-			Value: &accessKeyDataSourceInline,
-		})
+	if err := utils.UnmarshalJSON(data, &accessKeyDataSourceInline, "", true, true); err == nil {
+		u.AccessKeyDataSourceInline = &accessKeyDataSourceInline
+		u.Type = AccessKeyTypeAccessKeyDataSourceInline
+		return nil
 	}
 
 	var accessKeyDataSourceInlineString AccessKeyDataSourceInlineString = AccessKeyDataSourceInlineString{}
-	if err := utils.UnmarshalJSON(data, &accessKeyDataSourceInlineString, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AccessKeyTypeAccessKeyDataSourceInlineString,
-			Value: &accessKeyDataSourceInlineString,
-		})
+	if err := utils.UnmarshalJSON(data, &accessKeyDataSourceInlineString, "", true, true); err == nil {
+		u.AccessKeyDataSourceInlineString = &accessKeyDataSourceInlineString
+		u.Type = AccessKeyTypeAccessKeyDataSourceInlineString
+		return nil
 	}
 
 	var accessKeyDataSourceSecret AccessKeyDataSourceSecret = AccessKeyDataSourceSecret{}
-	if err := utils.UnmarshalJSON(data, &accessKeyDataSourceSecret, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AccessKeyTypeAccessKeyDataSourceSecret,
-			Value: &accessKeyDataSourceSecret,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for AccessKey", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for AccessKey", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(AccessKeyType)
-	switch best.Type {
-	case AccessKeyTypeAccessKeyDataSourceFile:
-		u.AccessKeyDataSourceFile = best.Value.(*AccessKeyDataSourceFile)
-		return nil
-	case AccessKeyTypeAccessKeyDataSourceInline:
-		u.AccessKeyDataSourceInline = best.Value.(*AccessKeyDataSourceInline)
-		return nil
-	case AccessKeyTypeAccessKeyDataSourceInlineString:
-		u.AccessKeyDataSourceInlineString = best.Value.(*AccessKeyDataSourceInlineString)
-		return nil
-	case AccessKeyTypeAccessKeyDataSourceSecret:
-		u.AccessKeyDataSourceSecret = best.Value.(*AccessKeyDataSourceSecret)
+	if err := utils.UnmarshalJSON(data, &accessKeyDataSourceSecret, "", true, true); err == nil {
+		u.AccessKeyDataSourceSecret = &accessKeyDataSourceSecret
+		u.Type = AccessKeyTypeAccessKeyDataSourceSecret
 		return nil
 	}
 
@@ -1356,22 +1012,11 @@ type AccessKeySecretDataSourceSecret struct {
 	Secret *string `json:"secret,omitempty"`
 }
 
-func (a AccessKeySecretDataSourceSecret) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AccessKeySecretDataSourceSecret) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *AccessKeySecretDataSourceSecret) GetSecret() *string {
-	if a == nil {
+func (o *AccessKeySecretDataSourceSecret) GetSecret() *string {
+	if o == nil {
 		return nil
 	}
-	return a.Secret
+	return o.Secret
 }
 
 type AccessKeySecretDataSourceInlineString struct {
@@ -1379,22 +1024,11 @@ type AccessKeySecretDataSourceInlineString struct {
 	InlineString *string `json:"inlineString,omitempty"`
 }
 
-func (a AccessKeySecretDataSourceInlineString) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AccessKeySecretDataSourceInlineString) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *AccessKeySecretDataSourceInlineString) GetInlineString() *string {
-	if a == nil {
+func (o *AccessKeySecretDataSourceInlineString) GetInlineString() *string {
+	if o == nil {
 		return nil
 	}
-	return a.InlineString
+	return o.InlineString
 }
 
 type AccessKeySecretDataSourceInline struct {
@@ -1402,22 +1036,11 @@ type AccessKeySecretDataSourceInline struct {
 	Inline *string `json:"inline,omitempty"`
 }
 
-func (a AccessKeySecretDataSourceInline) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AccessKeySecretDataSourceInline) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *AccessKeySecretDataSourceInline) GetInline() *string {
-	if a == nil {
+func (o *AccessKeySecretDataSourceInline) GetInline() *string {
+	if o == nil {
 		return nil
 	}
-	return a.Inline
+	return o.Inline
 }
 
 type AccessKeySecretDataSourceFile struct {
@@ -1426,22 +1049,11 @@ type AccessKeySecretDataSourceFile struct {
 	File *string `json:"file,omitempty"`
 }
 
-func (a AccessKeySecretDataSourceFile) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AccessKeySecretDataSourceFile) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *AccessKeySecretDataSourceFile) GetFile() *string {
-	if a == nil {
+func (o *AccessKeySecretDataSourceFile) GetFile() *string {
+	if o == nil {
 		return nil
 	}
-	return a.File
+	return o.File
 }
 
 type AccessKeySecretType string
@@ -1454,10 +1066,10 @@ const (
 )
 
 type AccessKeySecret struct {
-	AccessKeySecretDataSourceFile         *AccessKeySecretDataSourceFile         `queryParam:"inline,name=accessKeySecret"`
-	AccessKeySecretDataSourceInline       *AccessKeySecretDataSourceInline       `queryParam:"inline,name=accessKeySecret"`
-	AccessKeySecretDataSourceInlineString *AccessKeySecretDataSourceInlineString `queryParam:"inline,name=accessKeySecret"`
-	AccessKeySecretDataSourceSecret       *AccessKeySecretDataSourceSecret       `queryParam:"inline,name=accessKeySecret"`
+	AccessKeySecretDataSourceFile         *AccessKeySecretDataSourceFile         `queryParam:"inline"`
+	AccessKeySecretDataSourceInline       *AccessKeySecretDataSourceInline       `queryParam:"inline"`
+	AccessKeySecretDataSourceInlineString *AccessKeySecretDataSourceInlineString `queryParam:"inline"`
+	AccessKeySecretDataSourceSecret       *AccessKeySecretDataSourceSecret       `queryParam:"inline"`
 
 	Type AccessKeySecretType
 }
@@ -1500,65 +1112,31 @@ func CreateAccessKeySecretAccessKeySecretDataSourceSecret(accessKeySecretDataSou
 
 func (u *AccessKeySecret) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var accessKeySecretDataSourceFile AccessKeySecretDataSourceFile = AccessKeySecretDataSourceFile{}
-	if err := utils.UnmarshalJSON(data, &accessKeySecretDataSourceFile, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AccessKeySecretTypeAccessKeySecretDataSourceFile,
-			Value: &accessKeySecretDataSourceFile,
-		})
+	if err := utils.UnmarshalJSON(data, &accessKeySecretDataSourceFile, "", true, true); err == nil {
+		u.AccessKeySecretDataSourceFile = &accessKeySecretDataSourceFile
+		u.Type = AccessKeySecretTypeAccessKeySecretDataSourceFile
+		return nil
 	}
 
 	var accessKeySecretDataSourceInline AccessKeySecretDataSourceInline = AccessKeySecretDataSourceInline{}
-	if err := utils.UnmarshalJSON(data, &accessKeySecretDataSourceInline, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AccessKeySecretTypeAccessKeySecretDataSourceInline,
-			Value: &accessKeySecretDataSourceInline,
-		})
+	if err := utils.UnmarshalJSON(data, &accessKeySecretDataSourceInline, "", true, true); err == nil {
+		u.AccessKeySecretDataSourceInline = &accessKeySecretDataSourceInline
+		u.Type = AccessKeySecretTypeAccessKeySecretDataSourceInline
+		return nil
 	}
 
 	var accessKeySecretDataSourceInlineString AccessKeySecretDataSourceInlineString = AccessKeySecretDataSourceInlineString{}
-	if err := utils.UnmarshalJSON(data, &accessKeySecretDataSourceInlineString, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AccessKeySecretTypeAccessKeySecretDataSourceInlineString,
-			Value: &accessKeySecretDataSourceInlineString,
-		})
+	if err := utils.UnmarshalJSON(data, &accessKeySecretDataSourceInlineString, "", true, true); err == nil {
+		u.AccessKeySecretDataSourceInlineString = &accessKeySecretDataSourceInlineString
+		u.Type = AccessKeySecretTypeAccessKeySecretDataSourceInlineString
+		return nil
 	}
 
 	var accessKeySecretDataSourceSecret AccessKeySecretDataSourceSecret = AccessKeySecretDataSourceSecret{}
-	if err := utils.UnmarshalJSON(data, &accessKeySecretDataSourceSecret, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AccessKeySecretTypeAccessKeySecretDataSourceSecret,
-			Value: &accessKeySecretDataSourceSecret,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for AccessKeySecret", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for AccessKeySecret", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(AccessKeySecretType)
-	switch best.Type {
-	case AccessKeySecretTypeAccessKeySecretDataSourceFile:
-		u.AccessKeySecretDataSourceFile = best.Value.(*AccessKeySecretDataSourceFile)
-		return nil
-	case AccessKeySecretTypeAccessKeySecretDataSourceInline:
-		u.AccessKeySecretDataSourceInline = best.Value.(*AccessKeySecretDataSourceInline)
-		return nil
-	case AccessKeySecretTypeAccessKeySecretDataSourceInlineString:
-		u.AccessKeySecretDataSourceInlineString = best.Value.(*AccessKeySecretDataSourceInlineString)
-		return nil
-	case AccessKeySecretTypeAccessKeySecretDataSourceSecret:
-		u.AccessKeySecretDataSourceSecret = best.Value.(*AccessKeySecretDataSourceSecret)
+	if err := utils.UnmarshalJSON(data, &accessKeySecretDataSourceSecret, "", true, true); err == nil {
+		u.AccessKeySecretDataSourceSecret = &accessKeySecretDataSourceSecret
+		u.Type = AccessKeySecretTypeAccessKeySecretDataSourceSecret
 		return nil
 	}
 
@@ -1590,51 +1168,29 @@ type AwsCredentials struct {
 	AccessKeySecret *AccessKeySecret `json:"accessKeySecret,omitempty"`
 }
 
-func (a AwsCredentials) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AwsCredentials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *AwsCredentials) GetAccessKey() *AccessKey {
-	if a == nil {
+func (o *AwsCredentials) GetAccessKey() *AccessKey {
+	if o == nil {
 		return nil
 	}
-	return a.AccessKey
+	return o.AccessKey
 }
 
-func (a *AwsCredentials) GetAccessKeySecret() *AccessKeySecret {
-	if a == nil {
+func (o *AwsCredentials) GetAccessKeySecret() *AccessKeySecret {
+	if o == nil {
 		return nil
 	}
-	return a.AccessKeySecret
+	return o.AccessKeySecret
 }
 
 type Auth struct {
 	AwsCredentials *AwsCredentials `json:"awsCredentials,omitempty"`
 }
 
-func (a Auth) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *Auth) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *Auth) GetAwsCredentials() *AwsCredentials {
-	if a == nil {
+func (o *Auth) GetAwsCredentials() *AwsCredentials {
+	if o == nil {
 		return nil
 	}
-	return a.AwsCredentials
+	return o.AwsCredentials
 }
 
 type CaCertDataSourceSecret struct {
@@ -1642,22 +1198,11 @@ type CaCertDataSourceSecret struct {
 	Secret *string `json:"secret,omitempty"`
 }
 
-func (c CaCertDataSourceSecret) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CaCertDataSourceSecret) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *CaCertDataSourceSecret) GetSecret() *string {
-	if c == nil {
+func (o *CaCertDataSourceSecret) GetSecret() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Secret
+	return o.Secret
 }
 
 type CaCertDataSourceInlineString struct {
@@ -1665,22 +1210,11 @@ type CaCertDataSourceInlineString struct {
 	InlineString *string `json:"inlineString,omitempty"`
 }
 
-func (c CaCertDataSourceInlineString) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CaCertDataSourceInlineString) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *CaCertDataSourceInlineString) GetInlineString() *string {
-	if c == nil {
+func (o *CaCertDataSourceInlineString) GetInlineString() *string {
+	if o == nil {
 		return nil
 	}
-	return c.InlineString
+	return o.InlineString
 }
 
 type CaCertDataSourceInline struct {
@@ -1688,22 +1222,11 @@ type CaCertDataSourceInline struct {
 	Inline *string `json:"inline,omitempty"`
 }
 
-func (c CaCertDataSourceInline) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CaCertDataSourceInline) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *CaCertDataSourceInline) GetInline() *string {
-	if c == nil {
+func (o *CaCertDataSourceInline) GetInline() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Inline
+	return o.Inline
 }
 
 type CaCertDataSourceFile struct {
@@ -1712,22 +1235,11 @@ type CaCertDataSourceFile struct {
 	File *string `json:"file,omitempty"`
 }
 
-func (c CaCertDataSourceFile) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CaCertDataSourceFile) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *CaCertDataSourceFile) GetFile() *string {
-	if c == nil {
+func (o *CaCertDataSourceFile) GetFile() *string {
+	if o == nil {
 		return nil
 	}
-	return c.File
+	return o.File
 }
 
 type ConfCaCertType string
@@ -1740,10 +1252,10 @@ const (
 )
 
 type ConfCaCert struct {
-	CaCertDataSourceFile         *CaCertDataSourceFile         `queryParam:"inline,name=caCert"`
-	CaCertDataSourceInline       *CaCertDataSourceInline       `queryParam:"inline,name=caCert"`
-	CaCertDataSourceInlineString *CaCertDataSourceInlineString `queryParam:"inline,name=caCert"`
-	CaCertDataSourceSecret       *CaCertDataSourceSecret       `queryParam:"inline,name=caCert"`
+	CaCertDataSourceFile         *CaCertDataSourceFile         `queryParam:"inline"`
+	CaCertDataSourceInline       *CaCertDataSourceInline       `queryParam:"inline"`
+	CaCertDataSourceInlineString *CaCertDataSourceInlineString `queryParam:"inline"`
+	CaCertDataSourceSecret       *CaCertDataSourceSecret       `queryParam:"inline"`
 
 	Type ConfCaCertType
 }
@@ -1786,65 +1298,31 @@ func CreateConfCaCertCaCertDataSourceSecret(caCertDataSourceSecret CaCertDataSou
 
 func (u *ConfCaCert) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var caCertDataSourceFile CaCertDataSourceFile = CaCertDataSourceFile{}
-	if err := utils.UnmarshalJSON(data, &caCertDataSourceFile, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  ConfCaCertTypeCaCertDataSourceFile,
-			Value: &caCertDataSourceFile,
-		})
+	if err := utils.UnmarshalJSON(data, &caCertDataSourceFile, "", true, true); err == nil {
+		u.CaCertDataSourceFile = &caCertDataSourceFile
+		u.Type = ConfCaCertTypeCaCertDataSourceFile
+		return nil
 	}
 
 	var caCertDataSourceInline CaCertDataSourceInline = CaCertDataSourceInline{}
-	if err := utils.UnmarshalJSON(data, &caCertDataSourceInline, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  ConfCaCertTypeCaCertDataSourceInline,
-			Value: &caCertDataSourceInline,
-		})
+	if err := utils.UnmarshalJSON(data, &caCertDataSourceInline, "", true, true); err == nil {
+		u.CaCertDataSourceInline = &caCertDataSourceInline
+		u.Type = ConfCaCertTypeCaCertDataSourceInline
+		return nil
 	}
 
 	var caCertDataSourceInlineString CaCertDataSourceInlineString = CaCertDataSourceInlineString{}
-	if err := utils.UnmarshalJSON(data, &caCertDataSourceInlineString, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  ConfCaCertTypeCaCertDataSourceInlineString,
-			Value: &caCertDataSourceInlineString,
-		})
+	if err := utils.UnmarshalJSON(data, &caCertDataSourceInlineString, "", true, true); err == nil {
+		u.CaCertDataSourceInlineString = &caCertDataSourceInlineString
+		u.Type = ConfCaCertTypeCaCertDataSourceInlineString
+		return nil
 	}
 
 	var caCertDataSourceSecret CaCertDataSourceSecret = CaCertDataSourceSecret{}
-	if err := utils.UnmarshalJSON(data, &caCertDataSourceSecret, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  ConfCaCertTypeCaCertDataSourceSecret,
-			Value: &caCertDataSourceSecret,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for ConfCaCert", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for ConfCaCert", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(ConfCaCertType)
-	switch best.Type {
-	case ConfCaCertTypeCaCertDataSourceFile:
-		u.CaCertDataSourceFile = best.Value.(*CaCertDataSourceFile)
-		return nil
-	case ConfCaCertTypeCaCertDataSourceInline:
-		u.CaCertDataSourceInline = best.Value.(*CaCertDataSourceInline)
-		return nil
-	case ConfCaCertTypeCaCertDataSourceInlineString:
-		u.CaCertDataSourceInlineString = best.Value.(*CaCertDataSourceInlineString)
-		return nil
-	case ConfCaCertTypeCaCertDataSourceSecret:
-		u.CaCertDataSourceSecret = best.Value.(*CaCertDataSourceSecret)
+	if err := utils.UnmarshalJSON(data, &caCertDataSourceSecret, "", true, true); err == nil {
+		u.CaCertDataSourceSecret = &caCertDataSourceSecret
+		u.Type = ConfCaCertTypeCaCertDataSourceSecret
 		return nil
 	}
 
@@ -1878,43 +1356,32 @@ type ACMCertificateAuthorityConfig struct {
 	CommonName *string     `json:"commonName,omitempty"`
 }
 
-func (a ACMCertificateAuthorityConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *ACMCertificateAuthorityConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *ACMCertificateAuthorityConfig) GetArn() *string {
-	if a == nil {
+func (o *ACMCertificateAuthorityConfig) GetArn() *string {
+	if o == nil {
 		return nil
 	}
-	return a.Arn
+	return o.Arn
 }
 
-func (a *ACMCertificateAuthorityConfig) GetAuth() *Auth {
-	if a == nil {
+func (o *ACMCertificateAuthorityConfig) GetAuth() *Auth {
+	if o == nil {
 		return nil
 	}
-	return a.Auth
+	return o.Auth
 }
 
-func (a *ACMCertificateAuthorityConfig) GetCaCert() *ConfCaCert {
-	if a == nil {
+func (o *ACMCertificateAuthorityConfig) GetCaCert() *ConfCaCert {
+	if o == nil {
 		return nil
 	}
-	return a.CaCert
+	return o.CaCert
 }
 
-func (a *ACMCertificateAuthorityConfig) GetCommonName() *string {
-	if a == nil {
+func (o *ACMCertificateAuthorityConfig) GetCommonName() *string {
+	if o == nil {
 		return nil
 	}
-	return a.CommonName
+	return o.CommonName
 }
 
 type TokenDataSourceSecret struct {
@@ -1922,22 +1389,11 @@ type TokenDataSourceSecret struct {
 	Secret *string `json:"secret,omitempty"`
 }
 
-func (t TokenDataSourceSecret) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(t, "", false)
-}
-
-func (t *TokenDataSourceSecret) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (t *TokenDataSourceSecret) GetSecret() *string {
-	if t == nil {
+func (o *TokenDataSourceSecret) GetSecret() *string {
+	if o == nil {
 		return nil
 	}
-	return t.Secret
+	return o.Secret
 }
 
 type TokenDataSourceInlineString struct {
@@ -1945,22 +1401,11 @@ type TokenDataSourceInlineString struct {
 	InlineString *string `json:"inlineString,omitempty"`
 }
 
-func (t TokenDataSourceInlineString) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(t, "", false)
-}
-
-func (t *TokenDataSourceInlineString) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (t *TokenDataSourceInlineString) GetInlineString() *string {
-	if t == nil {
+func (o *TokenDataSourceInlineString) GetInlineString() *string {
+	if o == nil {
 		return nil
 	}
-	return t.InlineString
+	return o.InlineString
 }
 
 type TokenDataSourceInline struct {
@@ -1968,22 +1413,11 @@ type TokenDataSourceInline struct {
 	Inline *string `json:"inline,omitempty"`
 }
 
-func (t TokenDataSourceInline) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(t, "", false)
-}
-
-func (t *TokenDataSourceInline) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (t *TokenDataSourceInline) GetInline() *string {
-	if t == nil {
+func (o *TokenDataSourceInline) GetInline() *string {
+	if o == nil {
 		return nil
 	}
-	return t.Inline
+	return o.Inline
 }
 
 type TokenDataSourceFile struct {
@@ -1992,22 +1426,11 @@ type TokenDataSourceFile struct {
 	File *string `json:"file,omitempty"`
 }
 
-func (t TokenDataSourceFile) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(t, "", false)
-}
-
-func (t *TokenDataSourceFile) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (t *TokenDataSourceFile) GetFile() *string {
-	if t == nil {
+func (o *TokenDataSourceFile) GetFile() *string {
+	if o == nil {
 		return nil
 	}
-	return t.File
+	return o.File
 }
 
 type TokenType string
@@ -2020,10 +1443,10 @@ const (
 )
 
 type Token struct {
-	TokenDataSourceFile         *TokenDataSourceFile         `queryParam:"inline,name=token"`
-	TokenDataSourceInline       *TokenDataSourceInline       `queryParam:"inline,name=token"`
-	TokenDataSourceInlineString *TokenDataSourceInlineString `queryParam:"inline,name=token"`
-	TokenDataSourceSecret       *TokenDataSourceSecret       `queryParam:"inline,name=token"`
+	TokenDataSourceFile         *TokenDataSourceFile         `queryParam:"inline"`
+	TokenDataSourceInline       *TokenDataSourceInline       `queryParam:"inline"`
+	TokenDataSourceInlineString *TokenDataSourceInlineString `queryParam:"inline"`
+	TokenDataSourceSecret       *TokenDataSourceSecret       `queryParam:"inline"`
 
 	Type TokenType
 }
@@ -2066,65 +1489,31 @@ func CreateTokenTokenDataSourceSecret(tokenDataSourceSecret TokenDataSourceSecre
 
 func (u *Token) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var tokenDataSourceFile TokenDataSourceFile = TokenDataSourceFile{}
-	if err := utils.UnmarshalJSON(data, &tokenDataSourceFile, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  TokenTypeTokenDataSourceFile,
-			Value: &tokenDataSourceFile,
-		})
+	if err := utils.UnmarshalJSON(data, &tokenDataSourceFile, "", true, true); err == nil {
+		u.TokenDataSourceFile = &tokenDataSourceFile
+		u.Type = TokenTypeTokenDataSourceFile
+		return nil
 	}
 
 	var tokenDataSourceInline TokenDataSourceInline = TokenDataSourceInline{}
-	if err := utils.UnmarshalJSON(data, &tokenDataSourceInline, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  TokenTypeTokenDataSourceInline,
-			Value: &tokenDataSourceInline,
-		})
+	if err := utils.UnmarshalJSON(data, &tokenDataSourceInline, "", true, true); err == nil {
+		u.TokenDataSourceInline = &tokenDataSourceInline
+		u.Type = TokenTypeTokenDataSourceInline
+		return nil
 	}
 
 	var tokenDataSourceInlineString TokenDataSourceInlineString = TokenDataSourceInlineString{}
-	if err := utils.UnmarshalJSON(data, &tokenDataSourceInlineString, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  TokenTypeTokenDataSourceInlineString,
-			Value: &tokenDataSourceInlineString,
-		})
+	if err := utils.UnmarshalJSON(data, &tokenDataSourceInlineString, "", true, true); err == nil {
+		u.TokenDataSourceInlineString = &tokenDataSourceInlineString
+		u.Type = TokenTypeTokenDataSourceInlineString
+		return nil
 	}
 
 	var tokenDataSourceSecret TokenDataSourceSecret = TokenDataSourceSecret{}
-	if err := utils.UnmarshalJSON(data, &tokenDataSourceSecret, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  TokenTypeTokenDataSourceSecret,
-			Value: &tokenDataSourceSecret,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Token", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Token", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(TokenType)
-	switch best.Type {
-	case TokenTypeTokenDataSourceFile:
-		u.TokenDataSourceFile = best.Value.(*TokenDataSourceFile)
-		return nil
-	case TokenTypeTokenDataSourceInline:
-		u.TokenDataSourceInline = best.Value.(*TokenDataSourceInline)
-		return nil
-	case TokenTypeTokenDataSourceInlineString:
-		u.TokenDataSourceInlineString = best.Value.(*TokenDataSourceInlineString)
-		return nil
-	case TokenTypeTokenDataSourceSecret:
-		u.TokenDataSourceSecret = best.Value.(*TokenDataSourceSecret)
+	if err := utils.UnmarshalJSON(data, &tokenDataSourceSecret, "", true, true); err == nil {
+		u.TokenDataSourceSecret = &tokenDataSourceSecret
+		u.Type = TokenTypeTokenDataSourceSecret
 		return nil
 	}
 
@@ -2155,22 +1544,11 @@ type VaultCertificateAuthorityConfigFromCpAuthToken struct {
 	Token *Token `json:"token,omitempty"`
 }
 
-func (v VaultCertificateAuthorityConfigFromCpAuthToken) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(v, "", false)
-}
-
-func (v *VaultCertificateAuthorityConfigFromCpAuthToken) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (v *VaultCertificateAuthorityConfigFromCpAuthToken) GetToken() *Token {
-	if v == nil {
+func (o *VaultCertificateAuthorityConfigFromCpAuthToken) GetToken() *Token {
+	if o == nil {
 		return nil
 	}
-	return v.Token
+	return o.Token
 }
 
 type ClientCertDataSourceSecret struct {
@@ -2178,22 +1556,11 @@ type ClientCertDataSourceSecret struct {
 	Secret *string `json:"secret,omitempty"`
 }
 
-func (c ClientCertDataSourceSecret) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *ClientCertDataSourceSecret) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *ClientCertDataSourceSecret) GetSecret() *string {
-	if c == nil {
+func (o *ClientCertDataSourceSecret) GetSecret() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Secret
+	return o.Secret
 }
 
 type ClientCertDataSourceInlineString struct {
@@ -2201,22 +1568,11 @@ type ClientCertDataSourceInlineString struct {
 	InlineString *string `json:"inlineString,omitempty"`
 }
 
-func (c ClientCertDataSourceInlineString) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *ClientCertDataSourceInlineString) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *ClientCertDataSourceInlineString) GetInlineString() *string {
-	if c == nil {
+func (o *ClientCertDataSourceInlineString) GetInlineString() *string {
+	if o == nil {
 		return nil
 	}
-	return c.InlineString
+	return o.InlineString
 }
 
 type ClientCertDataSourceInline struct {
@@ -2224,22 +1580,11 @@ type ClientCertDataSourceInline struct {
 	Inline *string `json:"inline,omitempty"`
 }
 
-func (c ClientCertDataSourceInline) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *ClientCertDataSourceInline) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *ClientCertDataSourceInline) GetInline() *string {
-	if c == nil {
+func (o *ClientCertDataSourceInline) GetInline() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Inline
+	return o.Inline
 }
 
 type ClientCertDataSourceFile struct {
@@ -2248,22 +1593,11 @@ type ClientCertDataSourceFile struct {
 	File *string `json:"file,omitempty"`
 }
 
-func (c ClientCertDataSourceFile) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *ClientCertDataSourceFile) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *ClientCertDataSourceFile) GetFile() *string {
-	if c == nil {
+func (o *ClientCertDataSourceFile) GetFile() *string {
+	if o == nil {
 		return nil
 	}
-	return c.File
+	return o.File
 }
 
 type AuthClientCertType string
@@ -2276,10 +1610,10 @@ const (
 )
 
 type AuthClientCert struct {
-	ClientCertDataSourceFile         *ClientCertDataSourceFile         `queryParam:"inline,name=clientCert"`
-	ClientCertDataSourceInline       *ClientCertDataSourceInline       `queryParam:"inline,name=clientCert"`
-	ClientCertDataSourceInlineString *ClientCertDataSourceInlineString `queryParam:"inline,name=clientCert"`
-	ClientCertDataSourceSecret       *ClientCertDataSourceSecret       `queryParam:"inline,name=clientCert"`
+	ClientCertDataSourceFile         *ClientCertDataSourceFile         `queryParam:"inline"`
+	ClientCertDataSourceInline       *ClientCertDataSourceInline       `queryParam:"inline"`
+	ClientCertDataSourceInlineString *ClientCertDataSourceInlineString `queryParam:"inline"`
+	ClientCertDataSourceSecret       *ClientCertDataSourceSecret       `queryParam:"inline"`
 
 	Type AuthClientCertType
 }
@@ -2322,65 +1656,31 @@ func CreateAuthClientCertClientCertDataSourceSecret(clientCertDataSourceSecret C
 
 func (u *AuthClientCert) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var clientCertDataSourceFile ClientCertDataSourceFile = ClientCertDataSourceFile{}
-	if err := utils.UnmarshalJSON(data, &clientCertDataSourceFile, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AuthClientCertTypeClientCertDataSourceFile,
-			Value: &clientCertDataSourceFile,
-		})
+	if err := utils.UnmarshalJSON(data, &clientCertDataSourceFile, "", true, true); err == nil {
+		u.ClientCertDataSourceFile = &clientCertDataSourceFile
+		u.Type = AuthClientCertTypeClientCertDataSourceFile
+		return nil
 	}
 
 	var clientCertDataSourceInline ClientCertDataSourceInline = ClientCertDataSourceInline{}
-	if err := utils.UnmarshalJSON(data, &clientCertDataSourceInline, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AuthClientCertTypeClientCertDataSourceInline,
-			Value: &clientCertDataSourceInline,
-		})
+	if err := utils.UnmarshalJSON(data, &clientCertDataSourceInline, "", true, true); err == nil {
+		u.ClientCertDataSourceInline = &clientCertDataSourceInline
+		u.Type = AuthClientCertTypeClientCertDataSourceInline
+		return nil
 	}
 
 	var clientCertDataSourceInlineString ClientCertDataSourceInlineString = ClientCertDataSourceInlineString{}
-	if err := utils.UnmarshalJSON(data, &clientCertDataSourceInlineString, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AuthClientCertTypeClientCertDataSourceInlineString,
-			Value: &clientCertDataSourceInlineString,
-		})
+	if err := utils.UnmarshalJSON(data, &clientCertDataSourceInlineString, "", true, true); err == nil {
+		u.ClientCertDataSourceInlineString = &clientCertDataSourceInlineString
+		u.Type = AuthClientCertTypeClientCertDataSourceInlineString
+		return nil
 	}
 
 	var clientCertDataSourceSecret ClientCertDataSourceSecret = ClientCertDataSourceSecret{}
-	if err := utils.UnmarshalJSON(data, &clientCertDataSourceSecret, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AuthClientCertTypeClientCertDataSourceSecret,
-			Value: &clientCertDataSourceSecret,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for AuthClientCert", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for AuthClientCert", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(AuthClientCertType)
-	switch best.Type {
-	case AuthClientCertTypeClientCertDataSourceFile:
-		u.ClientCertDataSourceFile = best.Value.(*ClientCertDataSourceFile)
-		return nil
-	case AuthClientCertTypeClientCertDataSourceInline:
-		u.ClientCertDataSourceInline = best.Value.(*ClientCertDataSourceInline)
-		return nil
-	case AuthClientCertTypeClientCertDataSourceInlineString:
-		u.ClientCertDataSourceInlineString = best.Value.(*ClientCertDataSourceInlineString)
-		return nil
-	case AuthClientCertTypeClientCertDataSourceSecret:
-		u.ClientCertDataSourceSecret = best.Value.(*ClientCertDataSourceSecret)
+	if err := utils.UnmarshalJSON(data, &clientCertDataSourceSecret, "", true, true); err == nil {
+		u.ClientCertDataSourceSecret = &clientCertDataSourceSecret
+		u.Type = AuthClientCertTypeClientCertDataSourceSecret
 		return nil
 	}
 
@@ -2412,22 +1712,11 @@ type ClientKeyDataSourceSecret struct {
 	Secret *string `json:"secret,omitempty"`
 }
 
-func (c ClientKeyDataSourceSecret) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *ClientKeyDataSourceSecret) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *ClientKeyDataSourceSecret) GetSecret() *string {
-	if c == nil {
+func (o *ClientKeyDataSourceSecret) GetSecret() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Secret
+	return o.Secret
 }
 
 type ClientKeyDataSourceInlineString struct {
@@ -2435,22 +1724,11 @@ type ClientKeyDataSourceInlineString struct {
 	InlineString *string `json:"inlineString,omitempty"`
 }
 
-func (c ClientKeyDataSourceInlineString) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *ClientKeyDataSourceInlineString) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *ClientKeyDataSourceInlineString) GetInlineString() *string {
-	if c == nil {
+func (o *ClientKeyDataSourceInlineString) GetInlineString() *string {
+	if o == nil {
 		return nil
 	}
-	return c.InlineString
+	return o.InlineString
 }
 
 type ClientKeyDataSourceInline struct {
@@ -2458,22 +1736,11 @@ type ClientKeyDataSourceInline struct {
 	Inline *string `json:"inline,omitempty"`
 }
 
-func (c ClientKeyDataSourceInline) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *ClientKeyDataSourceInline) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *ClientKeyDataSourceInline) GetInline() *string {
-	if c == nil {
+func (o *ClientKeyDataSourceInline) GetInline() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Inline
+	return o.Inline
 }
 
 type ClientKeyDataSourceFile struct {
@@ -2482,22 +1749,11 @@ type ClientKeyDataSourceFile struct {
 	File *string `json:"file,omitempty"`
 }
 
-func (c ClientKeyDataSourceFile) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *ClientKeyDataSourceFile) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *ClientKeyDataSourceFile) GetFile() *string {
-	if c == nil {
+func (o *ClientKeyDataSourceFile) GetFile() *string {
+	if o == nil {
 		return nil
 	}
-	return c.File
+	return o.File
 }
 
 type AuthClientKeyType string
@@ -2510,10 +1766,10 @@ const (
 )
 
 type AuthClientKey struct {
-	ClientKeyDataSourceFile         *ClientKeyDataSourceFile         `queryParam:"inline,name=clientKey"`
-	ClientKeyDataSourceInline       *ClientKeyDataSourceInline       `queryParam:"inline,name=clientKey"`
-	ClientKeyDataSourceInlineString *ClientKeyDataSourceInlineString `queryParam:"inline,name=clientKey"`
-	ClientKeyDataSourceSecret       *ClientKeyDataSourceSecret       `queryParam:"inline,name=clientKey"`
+	ClientKeyDataSourceFile         *ClientKeyDataSourceFile         `queryParam:"inline"`
+	ClientKeyDataSourceInline       *ClientKeyDataSourceInline       `queryParam:"inline"`
+	ClientKeyDataSourceInlineString *ClientKeyDataSourceInlineString `queryParam:"inline"`
+	ClientKeyDataSourceSecret       *ClientKeyDataSourceSecret       `queryParam:"inline"`
 
 	Type AuthClientKeyType
 }
@@ -2556,65 +1812,31 @@ func CreateAuthClientKeyClientKeyDataSourceSecret(clientKeyDataSourceSecret Clie
 
 func (u *AuthClientKey) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var clientKeyDataSourceFile ClientKeyDataSourceFile = ClientKeyDataSourceFile{}
-	if err := utils.UnmarshalJSON(data, &clientKeyDataSourceFile, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AuthClientKeyTypeClientKeyDataSourceFile,
-			Value: &clientKeyDataSourceFile,
-		})
+	if err := utils.UnmarshalJSON(data, &clientKeyDataSourceFile, "", true, true); err == nil {
+		u.ClientKeyDataSourceFile = &clientKeyDataSourceFile
+		u.Type = AuthClientKeyTypeClientKeyDataSourceFile
+		return nil
 	}
 
 	var clientKeyDataSourceInline ClientKeyDataSourceInline = ClientKeyDataSourceInline{}
-	if err := utils.UnmarshalJSON(data, &clientKeyDataSourceInline, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AuthClientKeyTypeClientKeyDataSourceInline,
-			Value: &clientKeyDataSourceInline,
-		})
+	if err := utils.UnmarshalJSON(data, &clientKeyDataSourceInline, "", true, true); err == nil {
+		u.ClientKeyDataSourceInline = &clientKeyDataSourceInline
+		u.Type = AuthClientKeyTypeClientKeyDataSourceInline
+		return nil
 	}
 
 	var clientKeyDataSourceInlineString ClientKeyDataSourceInlineString = ClientKeyDataSourceInlineString{}
-	if err := utils.UnmarshalJSON(data, &clientKeyDataSourceInlineString, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AuthClientKeyTypeClientKeyDataSourceInlineString,
-			Value: &clientKeyDataSourceInlineString,
-		})
+	if err := utils.UnmarshalJSON(data, &clientKeyDataSourceInlineString, "", true, true); err == nil {
+		u.ClientKeyDataSourceInlineString = &clientKeyDataSourceInlineString
+		u.Type = AuthClientKeyTypeClientKeyDataSourceInlineString
+		return nil
 	}
 
 	var clientKeyDataSourceSecret ClientKeyDataSourceSecret = ClientKeyDataSourceSecret{}
-	if err := utils.UnmarshalJSON(data, &clientKeyDataSourceSecret, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AuthClientKeyTypeClientKeyDataSourceSecret,
-			Value: &clientKeyDataSourceSecret,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for AuthClientKey", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for AuthClientKey", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(AuthClientKeyType)
-	switch best.Type {
-	case AuthClientKeyTypeClientKeyDataSourceFile:
-		u.ClientKeyDataSourceFile = best.Value.(*ClientKeyDataSourceFile)
-		return nil
-	case AuthClientKeyTypeClientKeyDataSourceInline:
-		u.ClientKeyDataSourceInline = best.Value.(*ClientKeyDataSourceInline)
-		return nil
-	case AuthClientKeyTypeClientKeyDataSourceInlineString:
-		u.ClientKeyDataSourceInlineString = best.Value.(*ClientKeyDataSourceInlineString)
-		return nil
-	case AuthClientKeyTypeClientKeyDataSourceSecret:
-		u.ClientKeyDataSourceSecret = best.Value.(*ClientKeyDataSourceSecret)
+	if err := utils.UnmarshalJSON(data, &clientKeyDataSourceSecret, "", true, true); err == nil {
+		u.ClientKeyDataSourceSecret = &clientKeyDataSourceSecret
+		u.Type = AuthClientKeyTypeClientKeyDataSourceSecret
 		return nil
 	}
 
@@ -2646,51 +1868,29 @@ type AuthTLS struct {
 	ClientKey  *AuthClientKey  `json:"clientKey,omitempty"`
 }
 
-func (a AuthTLS) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AuthTLS) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *AuthTLS) GetClientCert() *AuthClientCert {
-	if a == nil {
+func (o *AuthTLS) GetClientCert() *AuthClientCert {
+	if o == nil {
 		return nil
 	}
-	return a.ClientCert
+	return o.ClientCert
 }
 
-func (a *AuthTLS) GetClientKey() *AuthClientKey {
-	if a == nil {
+func (o *AuthTLS) GetClientKey() *AuthClientKey {
+	if o == nil {
 		return nil
 	}
-	return a.ClientKey
+	return o.ClientKey
 }
 
 type VaultCertificateAuthorityConfigFromCpAuthTLS struct {
 	TLS *AuthTLS `json:"tls,omitempty"`
 }
 
-func (v VaultCertificateAuthorityConfigFromCpAuthTLS) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(v, "", false)
-}
-
-func (v *VaultCertificateAuthorityConfigFromCpAuthTLS) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (v *VaultCertificateAuthorityConfigFromCpAuthTLS) GetTLS() *AuthTLS {
-	if v == nil {
+func (o *VaultCertificateAuthorityConfigFromCpAuthTLS) GetTLS() *AuthTLS {
+	if o == nil {
 		return nil
 	}
-	return v.TLS
+	return o.TLS
 }
 
 type AuthTypeType string
@@ -2701,8 +1901,8 @@ const (
 )
 
 type AuthType struct {
-	Str     *string `queryParam:"inline,name=type"`
-	Integer *int64  `queryParam:"inline,name=type"`
+	Str     *string `queryParam:"inline"`
+	Integer *int64  `queryParam:"inline"`
 
 	Type AuthTypeType
 }
@@ -2727,43 +1927,17 @@ func CreateAuthTypeInteger(integer int64) AuthType {
 
 func (u *AuthType) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AuthTypeTypeStr,
-			Value: &str,
-		})
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = AuthTypeTypeStr
+		return nil
 	}
 
 	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AuthTypeTypeInteger,
-			Value: &integer,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for AuthType", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for AuthType", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(AuthTypeType)
-	switch best.Type {
-	case AuthTypeTypeStr:
-		u.Str = best.Value.(*string)
-		return nil
-	case AuthTypeTypeInteger:
-		u.Integer = best.Value.(*int64)
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = AuthTypeTypeInteger
 		return nil
 	}
 
@@ -2788,58 +1962,36 @@ type Aws struct {
 	Type              *AuthType `json:"type,omitempty"`
 }
 
-func (a Aws) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *Aws) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (a *Aws) GetIamServerIDHeader() *string {
-	if a == nil {
+func (o *Aws) GetIamServerIDHeader() *string {
+	if o == nil {
 		return nil
 	}
-	return a.IamServerIDHeader
+	return o.IamServerIDHeader
 }
 
-func (a *Aws) GetRole() *string {
-	if a == nil {
+func (o *Aws) GetRole() *string {
+	if o == nil {
 		return nil
 	}
-	return a.Role
+	return o.Role
 }
 
-func (a *Aws) GetType() *AuthType {
-	if a == nil {
+func (o *Aws) GetType() *AuthType {
+	if o == nil {
 		return nil
 	}
-	return a.Type
+	return o.Type
 }
 
 type VaultCertificateAuthorityConfigFromCpAuthAws struct {
 	Aws *Aws `json:"aws,omitempty"`
 }
 
-func (v VaultCertificateAuthorityConfigFromCpAuthAws) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(v, "", false)
-}
-
-func (v *VaultCertificateAuthorityConfigFromCpAuthAws) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (v *VaultCertificateAuthorityConfigFromCpAuthAws) GetAws() *Aws {
-	if v == nil {
+func (o *VaultCertificateAuthorityConfigFromCpAuthAws) GetAws() *Aws {
+	if o == nil {
 		return nil
 	}
-	return v.Aws
+	return o.Aws
 }
 
 type VaultCertificateAuthorityConfigAuthType string
@@ -2851,9 +2003,9 @@ const (
 )
 
 type VaultCertificateAuthorityConfigAuth struct {
-	VaultCertificateAuthorityConfigFromCpAuthAws   *VaultCertificateAuthorityConfigFromCpAuthAws   `queryParam:"inline,name=auth"`
-	VaultCertificateAuthorityConfigFromCpAuthTLS   *VaultCertificateAuthorityConfigFromCpAuthTLS   `queryParam:"inline,name=auth"`
-	VaultCertificateAuthorityConfigFromCpAuthToken *VaultCertificateAuthorityConfigFromCpAuthToken `queryParam:"inline,name=auth"`
+	VaultCertificateAuthorityConfigFromCpAuthAws   *VaultCertificateAuthorityConfigFromCpAuthAws   `queryParam:"inline"`
+	VaultCertificateAuthorityConfigFromCpAuthTLS   *VaultCertificateAuthorityConfigFromCpAuthTLS   `queryParam:"inline"`
+	VaultCertificateAuthorityConfigFromCpAuthToken *VaultCertificateAuthorityConfigFromCpAuthToken `queryParam:"inline"`
 
 	Type VaultCertificateAuthorityConfigAuthType
 }
@@ -2887,54 +2039,24 @@ func CreateVaultCertificateAuthorityConfigAuthVaultCertificateAuthorityConfigFro
 
 func (u *VaultCertificateAuthorityConfigAuth) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var vaultCertificateAuthorityConfigFromCpAuthAws VaultCertificateAuthorityConfigFromCpAuthAws = VaultCertificateAuthorityConfigFromCpAuthAws{}
-	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfigFromCpAuthAws, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  VaultCertificateAuthorityConfigAuthTypeVaultCertificateAuthorityConfigFromCpAuthAws,
-			Value: &vaultCertificateAuthorityConfigFromCpAuthAws,
-		})
+	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfigFromCpAuthAws, "", true, true); err == nil {
+		u.VaultCertificateAuthorityConfigFromCpAuthAws = &vaultCertificateAuthorityConfigFromCpAuthAws
+		u.Type = VaultCertificateAuthorityConfigAuthTypeVaultCertificateAuthorityConfigFromCpAuthAws
+		return nil
 	}
 
 	var vaultCertificateAuthorityConfigFromCpAuthTLS VaultCertificateAuthorityConfigFromCpAuthTLS = VaultCertificateAuthorityConfigFromCpAuthTLS{}
-	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfigFromCpAuthTLS, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  VaultCertificateAuthorityConfigAuthTypeVaultCertificateAuthorityConfigFromCpAuthTLS,
-			Value: &vaultCertificateAuthorityConfigFromCpAuthTLS,
-		})
+	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfigFromCpAuthTLS, "", true, true); err == nil {
+		u.VaultCertificateAuthorityConfigFromCpAuthTLS = &vaultCertificateAuthorityConfigFromCpAuthTLS
+		u.Type = VaultCertificateAuthorityConfigAuthTypeVaultCertificateAuthorityConfigFromCpAuthTLS
+		return nil
 	}
 
 	var vaultCertificateAuthorityConfigFromCpAuthToken VaultCertificateAuthorityConfigFromCpAuthToken = VaultCertificateAuthorityConfigFromCpAuthToken{}
-	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfigFromCpAuthToken, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  VaultCertificateAuthorityConfigAuthTypeVaultCertificateAuthorityConfigFromCpAuthToken,
-			Value: &vaultCertificateAuthorityConfigFromCpAuthToken,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for VaultCertificateAuthorityConfigAuth", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for VaultCertificateAuthorityConfigAuth", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(VaultCertificateAuthorityConfigAuthType)
-	switch best.Type {
-	case VaultCertificateAuthorityConfigAuthTypeVaultCertificateAuthorityConfigFromCpAuthAws:
-		u.VaultCertificateAuthorityConfigFromCpAuthAws = best.Value.(*VaultCertificateAuthorityConfigFromCpAuthAws)
-		return nil
-	case VaultCertificateAuthorityConfigAuthTypeVaultCertificateAuthorityConfigFromCpAuthTLS:
-		u.VaultCertificateAuthorityConfigFromCpAuthTLS = best.Value.(*VaultCertificateAuthorityConfigFromCpAuthTLS)
-		return nil
-	case VaultCertificateAuthorityConfigAuthTypeVaultCertificateAuthorityConfigFromCpAuthToken:
-		u.VaultCertificateAuthorityConfigFromCpAuthToken = best.Value.(*VaultCertificateAuthorityConfigFromCpAuthToken)
+	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfigFromCpAuthToken, "", true, true); err == nil {
+		u.VaultCertificateAuthorityConfigFromCpAuthToken = &vaultCertificateAuthorityConfigFromCpAuthToken
+		u.Type = VaultCertificateAuthorityConfigAuthTypeVaultCertificateAuthorityConfigFromCpAuthToken
 		return nil
 	}
 
@@ -2962,22 +2084,11 @@ type VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret struct {
 	Secret *string `json:"secret,omitempty"`
 }
 
-func (v VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(v, "", false)
-}
-
-func (v *VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (v *VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret) GetSecret() *string {
-	if v == nil {
+func (o *VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret) GetSecret() *string {
+	if o == nil {
 		return nil
 	}
-	return v.Secret
+	return o.Secret
 }
 
 type VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString struct {
@@ -2985,22 +2096,11 @@ type VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString struct {
 	InlineString *string `json:"inlineString,omitempty"`
 }
 
-func (v VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(v, "", false)
-}
-
-func (v *VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (v *VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString) GetInlineString() *string {
-	if v == nil {
+func (o *VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString) GetInlineString() *string {
+	if o == nil {
 		return nil
 	}
-	return v.InlineString
+	return o.InlineString
 }
 
 type VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline struct {
@@ -3008,22 +2108,11 @@ type VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline struct {
 	Inline *string `json:"inline,omitempty"`
 }
 
-func (v VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(v, "", false)
-}
-
-func (v *VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (v *VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline) GetInline() *string {
-	if v == nil {
+func (o *VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline) GetInline() *string {
+	if o == nil {
 		return nil
 	}
-	return v.Inline
+	return o.Inline
 }
 
 type VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile struct {
@@ -3032,22 +2121,11 @@ type VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile struct {
 	File *string `json:"file,omitempty"`
 }
 
-func (v VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(v, "", false)
-}
-
-func (v *VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (v *VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile) GetFile() *string {
-	if v == nil {
+func (o *VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile) GetFile() *string {
+	if o == nil {
 		return nil
 	}
-	return v.File
+	return o.File
 }
 
 type VaultCertificateAuthorityConfigCaCertType string
@@ -3060,10 +2138,10 @@ const (
 )
 
 type VaultCertificateAuthorityConfigCaCert struct {
-	VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile         *VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile         `queryParam:"inline,name=caCert"`
-	VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline       *VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline       `queryParam:"inline,name=caCert"`
-	VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString *VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString `queryParam:"inline,name=caCert"`
-	VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret       *VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret       `queryParam:"inline,name=caCert"`
+	VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile         *VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile         `queryParam:"inline"`
+	VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline       *VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline       `queryParam:"inline"`
+	VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString *VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString `queryParam:"inline"`
+	VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret       *VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret       `queryParam:"inline"`
 
 	Type VaultCertificateAuthorityConfigCaCertType
 }
@@ -3106,65 +2184,31 @@ func CreateVaultCertificateAuthorityConfigCaCertVaultCertificateAuthorityConfigF
 
 func (u *VaultCertificateAuthorityConfigCaCert) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var vaultCertificateAuthorityConfigFromCpCaCertDataSourceFile VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile = VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile{}
-	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfigFromCpCaCertDataSourceFile, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  VaultCertificateAuthorityConfigCaCertTypeVaultCertificateAuthorityConfigFromCpCaCertDataSourceFile,
-			Value: &vaultCertificateAuthorityConfigFromCpCaCertDataSourceFile,
-		})
+	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfigFromCpCaCertDataSourceFile, "", true, true); err == nil {
+		u.VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile = &vaultCertificateAuthorityConfigFromCpCaCertDataSourceFile
+		u.Type = VaultCertificateAuthorityConfigCaCertTypeVaultCertificateAuthorityConfigFromCpCaCertDataSourceFile
+		return nil
 	}
 
 	var vaultCertificateAuthorityConfigFromCpCaCertDataSourceInline VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline = VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline{}
-	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfigFromCpCaCertDataSourceInline, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  VaultCertificateAuthorityConfigCaCertTypeVaultCertificateAuthorityConfigFromCpCaCertDataSourceInline,
-			Value: &vaultCertificateAuthorityConfigFromCpCaCertDataSourceInline,
-		})
+	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfigFromCpCaCertDataSourceInline, "", true, true); err == nil {
+		u.VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline = &vaultCertificateAuthorityConfigFromCpCaCertDataSourceInline
+		u.Type = VaultCertificateAuthorityConfigCaCertTypeVaultCertificateAuthorityConfigFromCpCaCertDataSourceInline
+		return nil
 	}
 
 	var vaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString = VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString{}
-	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  VaultCertificateAuthorityConfigCaCertTypeVaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString,
-			Value: &vaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString,
-		})
+	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString, "", true, true); err == nil {
+		u.VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString = &vaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString
+		u.Type = VaultCertificateAuthorityConfigCaCertTypeVaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString
+		return nil
 	}
 
 	var vaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret = VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret{}
-	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  VaultCertificateAuthorityConfigCaCertTypeVaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret,
-			Value: &vaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for VaultCertificateAuthorityConfigCaCert", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for VaultCertificateAuthorityConfigCaCert", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(VaultCertificateAuthorityConfigCaCertType)
-	switch best.Type {
-	case VaultCertificateAuthorityConfigCaCertTypeVaultCertificateAuthorityConfigFromCpCaCertDataSourceFile:
-		u.VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile = best.Value.(*VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile)
-		return nil
-	case VaultCertificateAuthorityConfigCaCertTypeVaultCertificateAuthorityConfigFromCpCaCertDataSourceInline:
-		u.VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline = best.Value.(*VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline)
-		return nil
-	case VaultCertificateAuthorityConfigCaCertTypeVaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString:
-		u.VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString = best.Value.(*VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString)
-		return nil
-	case VaultCertificateAuthorityConfigCaCertTypeVaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret:
-		u.VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret = best.Value.(*VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret)
+	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret, "", true, true); err == nil {
+		u.VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret = &vaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret
+		u.Type = VaultCertificateAuthorityConfigCaCertTypeVaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret
 		return nil
 	}
 
@@ -3197,36 +2241,25 @@ type VaultCertificateAuthorityConfigTLS struct {
 	SkipVerify *bool                                  `json:"skipVerify,omitempty"`
 }
 
-func (v VaultCertificateAuthorityConfigTLS) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(v, "", false)
-}
-
-func (v *VaultCertificateAuthorityConfigTLS) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (v *VaultCertificateAuthorityConfigTLS) GetCaCert() *VaultCertificateAuthorityConfigCaCert {
-	if v == nil {
+func (o *VaultCertificateAuthorityConfigTLS) GetCaCert() *VaultCertificateAuthorityConfigCaCert {
+	if o == nil {
 		return nil
 	}
-	return v.CaCert
+	return o.CaCert
 }
 
-func (v *VaultCertificateAuthorityConfigTLS) GetServerName() *string {
-	if v == nil {
+func (o *VaultCertificateAuthorityConfigTLS) GetServerName() *string {
+	if o == nil {
 		return nil
 	}
-	return v.ServerName
+	return o.ServerName
 }
 
-func (v *VaultCertificateAuthorityConfigTLS) GetSkipVerify() *bool {
-	if v == nil {
+func (o *VaultCertificateAuthorityConfigTLS) GetSkipVerify() *bool {
+	if o == nil {
 		return nil
 	}
-	return v.SkipVerify
+	return o.SkipVerify
 }
 
 type FromCp struct {
@@ -3240,93 +2273,71 @@ type FromCp struct {
 	TLS          *VaultCertificateAuthorityConfigTLS  `json:"tls,omitempty"`
 }
 
-func (f FromCp) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(f, "", false)
-}
-
-func (f *FromCp) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (f *FromCp) GetAddress() *string {
-	if f == nil {
+func (o *FromCp) GetAddress() *string {
+	if o == nil {
 		return nil
 	}
-	return f.Address
+	return o.Address
 }
 
-func (f *FromCp) GetAgentAddress() *string {
-	if f == nil {
+func (o *FromCp) GetAgentAddress() *string {
+	if o == nil {
 		return nil
 	}
-	return f.AgentAddress
+	return o.AgentAddress
 }
 
-func (f *FromCp) GetAuth() *VaultCertificateAuthorityConfigAuth {
-	if f == nil {
+func (o *FromCp) GetAuth() *VaultCertificateAuthorityConfigAuth {
+	if o == nil {
 		return nil
 	}
-	return f.Auth
+	return o.Auth
 }
 
-func (f *FromCp) GetCommonName() *string {
-	if f == nil {
+func (o *FromCp) GetCommonName() *string {
+	if o == nil {
 		return nil
 	}
-	return f.CommonName
+	return o.CommonName
 }
 
-func (f *FromCp) GetNamespace() *string {
-	if f == nil {
+func (o *FromCp) GetNamespace() *string {
+	if o == nil {
 		return nil
 	}
-	return f.Namespace
+	return o.Namespace
 }
 
-func (f *FromCp) GetPki() *string {
-	if f == nil {
+func (o *FromCp) GetPki() *string {
+	if o == nil {
 		return nil
 	}
-	return f.Pki
+	return o.Pki
 }
 
-func (f *FromCp) GetRole() *string {
-	if f == nil {
+func (o *FromCp) GetRole() *string {
+	if o == nil {
 		return nil
 	}
-	return f.Role
+	return o.Role
 }
 
-func (f *FromCp) GetTLS() *VaultCertificateAuthorityConfigTLS {
-	if f == nil {
+func (o *FromCp) GetTLS() *VaultCertificateAuthorityConfigTLS {
+	if o == nil {
 		return nil
 	}
-	return f.TLS
+	return o.TLS
 }
 
 type VaultCertificateAuthorityConfigFromCp struct {
 	FromCp *FromCp `json:"fromCp,omitempty"`
 }
 
-func (v VaultCertificateAuthorityConfigFromCp) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(v, "", false)
-}
-
-func (v *VaultCertificateAuthorityConfigFromCp) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (v *VaultCertificateAuthorityConfigFromCp) GetFromCp() *FromCp {
-	if v == nil {
+func (o *VaultCertificateAuthorityConfigFromCp) GetFromCp() *FromCp {
+	if o == nil {
 		return nil
 	}
-	return v.FromCp
+	return o.FromCp
 }
 
 type VaultCertificateAuthorityConfigType string
@@ -3336,7 +2347,7 @@ const (
 )
 
 type VaultCertificateAuthorityConfig struct {
-	VaultCertificateAuthorityConfigFromCp *VaultCertificateAuthorityConfigFromCp `queryParam:"inline,name=VaultCertificateAuthorityConfig"`
+	VaultCertificateAuthorityConfigFromCp *VaultCertificateAuthorityConfigFromCp `queryParam:"inline"`
 
 	Type VaultCertificateAuthorityConfigType
 }
@@ -3352,32 +2363,10 @@ func CreateVaultCertificateAuthorityConfigVaultCertificateAuthorityConfigFromCp(
 
 func (u *VaultCertificateAuthorityConfig) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var vaultCertificateAuthorityConfigFromCp VaultCertificateAuthorityConfigFromCp = VaultCertificateAuthorityConfigFromCp{}
-	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfigFromCp, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  VaultCertificateAuthorityConfigTypeVaultCertificateAuthorityConfigFromCp,
-			Value: &vaultCertificateAuthorityConfigFromCp,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for VaultCertificateAuthorityConfig", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for VaultCertificateAuthorityConfig", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(VaultCertificateAuthorityConfigType)
-	switch best.Type {
-	case VaultCertificateAuthorityConfigTypeVaultCertificateAuthorityConfigFromCp:
-		u.VaultCertificateAuthorityConfigFromCp = best.Value.(*VaultCertificateAuthorityConfigFromCp)
+	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfigFromCp, "", true, true); err == nil {
+		u.VaultCertificateAuthorityConfigFromCp = &vaultCertificateAuthorityConfigFromCp
+		u.Type = VaultCertificateAuthorityConfigTypeVaultCertificateAuthorityConfigFromCp
 		return nil
 	}
 
@@ -3397,51 +2386,29 @@ type BuiltinCertificateAuthorityConfigConfCaCert struct {
 	RsaBits    *int64  `json:"rsaBits,omitempty"`
 }
 
-func (b BuiltinCertificateAuthorityConfigConfCaCert) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(b, "", false)
-}
-
-func (b *BuiltinCertificateAuthorityConfigConfCaCert) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (b *BuiltinCertificateAuthorityConfigConfCaCert) GetExpiration() *string {
-	if b == nil {
+func (o *BuiltinCertificateAuthorityConfigConfCaCert) GetExpiration() *string {
+	if o == nil {
 		return nil
 	}
-	return b.Expiration
+	return o.Expiration
 }
 
-func (b *BuiltinCertificateAuthorityConfigConfCaCert) GetRsaBits() *int64 {
-	if b == nil {
+func (o *BuiltinCertificateAuthorityConfigConfCaCert) GetRsaBits() *int64 {
+	if o == nil {
 		return nil
 	}
-	return b.RsaBits
+	return o.RsaBits
 }
 
 type BuiltinCertificateAuthorityConfig struct {
 	CaCert *BuiltinCertificateAuthorityConfigConfCaCert `json:"caCert,omitempty"`
 }
 
-func (b BuiltinCertificateAuthorityConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(b, "", false)
-}
-
-func (b *BuiltinCertificateAuthorityConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (b *BuiltinCertificateAuthorityConfig) GetCaCert() *BuiltinCertificateAuthorityConfigConfCaCert {
-	if b == nil {
+func (o *BuiltinCertificateAuthorityConfig) GetCaCert() *BuiltinCertificateAuthorityConfigConfCaCert {
+	if o == nil {
 		return nil
 	}
-	return b.CaCert
+	return o.CaCert
 }
 
 type CertDataSourceSecret struct {
@@ -3449,22 +2416,11 @@ type CertDataSourceSecret struct {
 	Secret *string `json:"secret,omitempty"`
 }
 
-func (c CertDataSourceSecret) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CertDataSourceSecret) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *CertDataSourceSecret) GetSecret() *string {
-	if c == nil {
+func (o *CertDataSourceSecret) GetSecret() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Secret
+	return o.Secret
 }
 
 type CertDataSourceInlineString struct {
@@ -3472,22 +2428,11 @@ type CertDataSourceInlineString struct {
 	InlineString *string `json:"inlineString,omitempty"`
 }
 
-func (c CertDataSourceInlineString) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CertDataSourceInlineString) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *CertDataSourceInlineString) GetInlineString() *string {
-	if c == nil {
+func (o *CertDataSourceInlineString) GetInlineString() *string {
+	if o == nil {
 		return nil
 	}
-	return c.InlineString
+	return o.InlineString
 }
 
 type CertDataSourceInline struct {
@@ -3495,22 +2440,11 @@ type CertDataSourceInline struct {
 	Inline *string `json:"inline,omitempty"`
 }
 
-func (c CertDataSourceInline) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CertDataSourceInline) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *CertDataSourceInline) GetInline() *string {
-	if c == nil {
+func (o *CertDataSourceInline) GetInline() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Inline
+	return o.Inline
 }
 
 type CertDataSourceFile struct {
@@ -3519,22 +2453,11 @@ type CertDataSourceFile struct {
 	File *string `json:"file,omitempty"`
 }
 
-func (c CertDataSourceFile) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CertDataSourceFile) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *CertDataSourceFile) GetFile() *string {
-	if c == nil {
+func (o *CertDataSourceFile) GetFile() *string {
+	if o == nil {
 		return nil
 	}
-	return c.File
+	return o.File
 }
 
 type CertType string
@@ -3547,10 +2470,10 @@ const (
 )
 
 type Cert struct {
-	CertDataSourceFile         *CertDataSourceFile         `queryParam:"inline,name=cert"`
-	CertDataSourceInline       *CertDataSourceInline       `queryParam:"inline,name=cert"`
-	CertDataSourceInlineString *CertDataSourceInlineString `queryParam:"inline,name=cert"`
-	CertDataSourceSecret       *CertDataSourceSecret       `queryParam:"inline,name=cert"`
+	CertDataSourceFile         *CertDataSourceFile         `queryParam:"inline"`
+	CertDataSourceInline       *CertDataSourceInline       `queryParam:"inline"`
+	CertDataSourceInlineString *CertDataSourceInlineString `queryParam:"inline"`
+	CertDataSourceSecret       *CertDataSourceSecret       `queryParam:"inline"`
 
 	Type CertType
 }
@@ -3593,65 +2516,31 @@ func CreateCertCertDataSourceSecret(certDataSourceSecret CertDataSourceSecret) C
 
 func (u *Cert) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var certDataSourceFile CertDataSourceFile = CertDataSourceFile{}
-	if err := utils.UnmarshalJSON(data, &certDataSourceFile, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  CertTypeCertDataSourceFile,
-			Value: &certDataSourceFile,
-		})
+	if err := utils.UnmarshalJSON(data, &certDataSourceFile, "", true, true); err == nil {
+		u.CertDataSourceFile = &certDataSourceFile
+		u.Type = CertTypeCertDataSourceFile
+		return nil
 	}
 
 	var certDataSourceInline CertDataSourceInline = CertDataSourceInline{}
-	if err := utils.UnmarshalJSON(data, &certDataSourceInline, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  CertTypeCertDataSourceInline,
-			Value: &certDataSourceInline,
-		})
+	if err := utils.UnmarshalJSON(data, &certDataSourceInline, "", true, true); err == nil {
+		u.CertDataSourceInline = &certDataSourceInline
+		u.Type = CertTypeCertDataSourceInline
+		return nil
 	}
 
 	var certDataSourceInlineString CertDataSourceInlineString = CertDataSourceInlineString{}
-	if err := utils.UnmarshalJSON(data, &certDataSourceInlineString, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  CertTypeCertDataSourceInlineString,
-			Value: &certDataSourceInlineString,
-		})
+	if err := utils.UnmarshalJSON(data, &certDataSourceInlineString, "", true, true); err == nil {
+		u.CertDataSourceInlineString = &certDataSourceInlineString
+		u.Type = CertTypeCertDataSourceInlineString
+		return nil
 	}
 
 	var certDataSourceSecret CertDataSourceSecret = CertDataSourceSecret{}
-	if err := utils.UnmarshalJSON(data, &certDataSourceSecret, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  CertTypeCertDataSourceSecret,
-			Value: &certDataSourceSecret,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Cert", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Cert", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(CertType)
-	switch best.Type {
-	case CertTypeCertDataSourceFile:
-		u.CertDataSourceFile = best.Value.(*CertDataSourceFile)
-		return nil
-	case CertTypeCertDataSourceInline:
-		u.CertDataSourceInline = best.Value.(*CertDataSourceInline)
-		return nil
-	case CertTypeCertDataSourceInlineString:
-		u.CertDataSourceInlineString = best.Value.(*CertDataSourceInlineString)
-		return nil
-	case CertTypeCertDataSourceSecret:
-		u.CertDataSourceSecret = best.Value.(*CertDataSourceSecret)
+	if err := utils.UnmarshalJSON(data, &certDataSourceSecret, "", true, true); err == nil {
+		u.CertDataSourceSecret = &certDataSourceSecret
+		u.Type = CertTypeCertDataSourceSecret
 		return nil
 	}
 
@@ -3683,22 +2572,11 @@ type KeyDataSourceSecret struct {
 	Secret *string `json:"secret,omitempty"`
 }
 
-func (k KeyDataSourceSecret) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(k, "", false)
-}
-
-func (k *KeyDataSourceSecret) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (k *KeyDataSourceSecret) GetSecret() *string {
-	if k == nil {
+func (o *KeyDataSourceSecret) GetSecret() *string {
+	if o == nil {
 		return nil
 	}
-	return k.Secret
+	return o.Secret
 }
 
 type KeyDataSourceInlineString struct {
@@ -3706,22 +2584,11 @@ type KeyDataSourceInlineString struct {
 	InlineString *string `json:"inlineString,omitempty"`
 }
 
-func (k KeyDataSourceInlineString) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(k, "", false)
-}
-
-func (k *KeyDataSourceInlineString) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (k *KeyDataSourceInlineString) GetInlineString() *string {
-	if k == nil {
+func (o *KeyDataSourceInlineString) GetInlineString() *string {
+	if o == nil {
 		return nil
 	}
-	return k.InlineString
+	return o.InlineString
 }
 
 type KeyDataSourceInline struct {
@@ -3729,22 +2596,11 @@ type KeyDataSourceInline struct {
 	Inline *string `json:"inline,omitempty"`
 }
 
-func (k KeyDataSourceInline) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(k, "", false)
-}
-
-func (k *KeyDataSourceInline) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (k *KeyDataSourceInline) GetInline() *string {
-	if k == nil {
+func (o *KeyDataSourceInline) GetInline() *string {
+	if o == nil {
 		return nil
 	}
-	return k.Inline
+	return o.Inline
 }
 
 type KeyDataSourceFile struct {
@@ -3753,22 +2609,11 @@ type KeyDataSourceFile struct {
 	File *string `json:"file,omitempty"`
 }
 
-func (k KeyDataSourceFile) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(k, "", false)
-}
-
-func (k *KeyDataSourceFile) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (k *KeyDataSourceFile) GetFile() *string {
-	if k == nil {
+func (o *KeyDataSourceFile) GetFile() *string {
+	if o == nil {
 		return nil
 	}
-	return k.File
+	return o.File
 }
 
 type KeyType string
@@ -3781,10 +2626,10 @@ const (
 )
 
 type Key struct {
-	KeyDataSourceFile         *KeyDataSourceFile         `queryParam:"inline,name=key"`
-	KeyDataSourceInline       *KeyDataSourceInline       `queryParam:"inline,name=key"`
-	KeyDataSourceInlineString *KeyDataSourceInlineString `queryParam:"inline,name=key"`
-	KeyDataSourceSecret       *KeyDataSourceSecret       `queryParam:"inline,name=key"`
+	KeyDataSourceFile         *KeyDataSourceFile         `queryParam:"inline"`
+	KeyDataSourceInline       *KeyDataSourceInline       `queryParam:"inline"`
+	KeyDataSourceInlineString *KeyDataSourceInlineString `queryParam:"inline"`
+	KeyDataSourceSecret       *KeyDataSourceSecret       `queryParam:"inline"`
 
 	Type KeyType
 }
@@ -3827,65 +2672,31 @@ func CreateKeyKeyDataSourceSecret(keyDataSourceSecret KeyDataSourceSecret) Key {
 
 func (u *Key) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var keyDataSourceFile KeyDataSourceFile = KeyDataSourceFile{}
-	if err := utils.UnmarshalJSON(data, &keyDataSourceFile, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  KeyTypeKeyDataSourceFile,
-			Value: &keyDataSourceFile,
-		})
+	if err := utils.UnmarshalJSON(data, &keyDataSourceFile, "", true, true); err == nil {
+		u.KeyDataSourceFile = &keyDataSourceFile
+		u.Type = KeyTypeKeyDataSourceFile
+		return nil
 	}
 
 	var keyDataSourceInline KeyDataSourceInline = KeyDataSourceInline{}
-	if err := utils.UnmarshalJSON(data, &keyDataSourceInline, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  KeyTypeKeyDataSourceInline,
-			Value: &keyDataSourceInline,
-		})
+	if err := utils.UnmarshalJSON(data, &keyDataSourceInline, "", true, true); err == nil {
+		u.KeyDataSourceInline = &keyDataSourceInline
+		u.Type = KeyTypeKeyDataSourceInline
+		return nil
 	}
 
 	var keyDataSourceInlineString KeyDataSourceInlineString = KeyDataSourceInlineString{}
-	if err := utils.UnmarshalJSON(data, &keyDataSourceInlineString, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  KeyTypeKeyDataSourceInlineString,
-			Value: &keyDataSourceInlineString,
-		})
+	if err := utils.UnmarshalJSON(data, &keyDataSourceInlineString, "", true, true); err == nil {
+		u.KeyDataSourceInlineString = &keyDataSourceInlineString
+		u.Type = KeyTypeKeyDataSourceInlineString
+		return nil
 	}
 
 	var keyDataSourceSecret KeyDataSourceSecret = KeyDataSourceSecret{}
-	if err := utils.UnmarshalJSON(data, &keyDataSourceSecret, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  KeyTypeKeyDataSourceSecret,
-			Value: &keyDataSourceSecret,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Key", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Key", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(KeyType)
-	switch best.Type {
-	case KeyTypeKeyDataSourceFile:
-		u.KeyDataSourceFile = best.Value.(*KeyDataSourceFile)
-		return nil
-	case KeyTypeKeyDataSourceInline:
-		u.KeyDataSourceInline = best.Value.(*KeyDataSourceInline)
-		return nil
-	case KeyTypeKeyDataSourceInlineString:
-		u.KeyDataSourceInlineString = best.Value.(*KeyDataSourceInlineString)
-		return nil
-	case KeyTypeKeyDataSourceSecret:
-		u.KeyDataSourceSecret = best.Value.(*KeyDataSourceSecret)
+	if err := utils.UnmarshalJSON(data, &keyDataSourceSecret, "", true, true); err == nil {
+		u.KeyDataSourceSecret = &keyDataSourceSecret
+		u.Type = KeyTypeKeyDataSourceSecret
 		return nil
 	}
 
@@ -3917,29 +2728,18 @@ type ProvidedCertificateAuthorityConfig struct {
 	Key  *Key  `json:"key,omitempty"`
 }
 
-func (p ProvidedCertificateAuthorityConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(p, "", false)
-}
-
-func (p *ProvidedCertificateAuthorityConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (p *ProvidedCertificateAuthorityConfig) GetCert() *Cert {
-	if p == nil {
+func (o *ProvidedCertificateAuthorityConfig) GetCert() *Cert {
+	if o == nil {
 		return nil
 	}
-	return p.Cert
+	return o.Cert
 }
 
-func (p *ProvidedCertificateAuthorityConfig) GetKey() *Key {
-	if p == nil {
+func (o *ProvidedCertificateAuthorityConfig) GetKey() *Key {
+	if o == nil {
 		return nil
 	}
-	return p.Key
+	return o.Key
 }
 
 type MeshItemMtlsConfType string
@@ -3953,11 +2753,11 @@ const (
 )
 
 type MeshItemMtlsConf struct {
-	ProvidedCertificateAuthorityConfig    *ProvidedCertificateAuthorityConfig    `queryParam:"inline,name=conf"`
-	BuiltinCertificateAuthorityConfig     *BuiltinCertificateAuthorityConfig     `queryParam:"inline,name=conf"`
-	VaultCertificateAuthorityConfig       *VaultCertificateAuthorityConfig       `queryParam:"inline,name=conf"`
-	ACMCertificateAuthorityConfig         *ACMCertificateAuthorityConfig         `queryParam:"inline,name=conf"`
-	CertManagerCertificateAuthorityConfig *CertManagerCertificateAuthorityConfig `queryParam:"inline,name=conf"`
+	ProvidedCertificateAuthorityConfig    *ProvidedCertificateAuthorityConfig    `queryParam:"inline"`
+	BuiltinCertificateAuthorityConfig     *BuiltinCertificateAuthorityConfig     `queryParam:"inline"`
+	VaultCertificateAuthorityConfig       *VaultCertificateAuthorityConfig       `queryParam:"inline"`
+	ACMCertificateAuthorityConfig         *ACMCertificateAuthorityConfig         `queryParam:"inline"`
+	CertManagerCertificateAuthorityConfig *CertManagerCertificateAuthorityConfig `queryParam:"inline"`
 
 	Type MeshItemMtlsConfType
 }
@@ -4009,76 +2809,38 @@ func CreateMeshItemMtlsConfCertManagerCertificateAuthorityConfig(certManagerCert
 
 func (u *MeshItemMtlsConf) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
-	var providedCertificateAuthorityConfig ProvidedCertificateAuthorityConfig = ProvidedCertificateAuthorityConfig{}
-	if err := utils.UnmarshalJSON(data, &providedCertificateAuthorityConfig, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshItemMtlsConfTypeProvidedCertificateAuthorityConfig,
-			Value: &providedCertificateAuthorityConfig,
-		})
-	}
-
 	var builtinCertificateAuthorityConfig BuiltinCertificateAuthorityConfig = BuiltinCertificateAuthorityConfig{}
-	if err := utils.UnmarshalJSON(data, &builtinCertificateAuthorityConfig, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshItemMtlsConfTypeBuiltinCertificateAuthorityConfig,
-			Value: &builtinCertificateAuthorityConfig,
-		})
+	if err := utils.UnmarshalJSON(data, &builtinCertificateAuthorityConfig, "", true, true); err == nil {
+		u.BuiltinCertificateAuthorityConfig = &builtinCertificateAuthorityConfig
+		u.Type = MeshItemMtlsConfTypeBuiltinCertificateAuthorityConfig
+		return nil
 	}
 
-	var vaultCertificateAuthorityConfig VaultCertificateAuthorityConfig = VaultCertificateAuthorityConfig{}
-	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfig, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshItemMtlsConfTypeVaultCertificateAuthorityConfig,
-			Value: &vaultCertificateAuthorityConfig,
-		})
+	var providedCertificateAuthorityConfig ProvidedCertificateAuthorityConfig = ProvidedCertificateAuthorityConfig{}
+	if err := utils.UnmarshalJSON(data, &providedCertificateAuthorityConfig, "", true, true); err == nil {
+		u.ProvidedCertificateAuthorityConfig = &providedCertificateAuthorityConfig
+		u.Type = MeshItemMtlsConfTypeProvidedCertificateAuthorityConfig
+		return nil
 	}
 
 	var acmCertificateAuthorityConfig ACMCertificateAuthorityConfig = ACMCertificateAuthorityConfig{}
-	if err := utils.UnmarshalJSON(data, &acmCertificateAuthorityConfig, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshItemMtlsConfTypeACMCertificateAuthorityConfig,
-			Value: &acmCertificateAuthorityConfig,
-		})
+	if err := utils.UnmarshalJSON(data, &acmCertificateAuthorityConfig, "", true, true); err == nil {
+		u.ACMCertificateAuthorityConfig = &acmCertificateAuthorityConfig
+		u.Type = MeshItemMtlsConfTypeACMCertificateAuthorityConfig
+		return nil
 	}
 
 	var certManagerCertificateAuthorityConfig CertManagerCertificateAuthorityConfig = CertManagerCertificateAuthorityConfig{}
-	if err := utils.UnmarshalJSON(data, &certManagerCertificateAuthorityConfig, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshItemMtlsConfTypeCertManagerCertificateAuthorityConfig,
-			Value: &certManagerCertificateAuthorityConfig,
-		})
+	if err := utils.UnmarshalJSON(data, &certManagerCertificateAuthorityConfig, "", true, true); err == nil {
+		u.CertManagerCertificateAuthorityConfig = &certManagerCertificateAuthorityConfig
+		u.Type = MeshItemMtlsConfTypeCertManagerCertificateAuthorityConfig
+		return nil
 	}
 
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshItemMtlsConf", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshItemMtlsConf", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(MeshItemMtlsConfType)
-	switch best.Type {
-	case MeshItemMtlsConfTypeProvidedCertificateAuthorityConfig:
-		u.ProvidedCertificateAuthorityConfig = best.Value.(*ProvidedCertificateAuthorityConfig)
-		return nil
-	case MeshItemMtlsConfTypeBuiltinCertificateAuthorityConfig:
-		u.BuiltinCertificateAuthorityConfig = best.Value.(*BuiltinCertificateAuthorityConfig)
-		return nil
-	case MeshItemMtlsConfTypeVaultCertificateAuthorityConfig:
-		u.VaultCertificateAuthorityConfig = best.Value.(*VaultCertificateAuthorityConfig)
-		return nil
-	case MeshItemMtlsConfTypeACMCertificateAuthorityConfig:
-		u.ACMCertificateAuthorityConfig = best.Value.(*ACMCertificateAuthorityConfig)
-		return nil
-	case MeshItemMtlsConfTypeCertManagerCertificateAuthorityConfig:
-		u.CertManagerCertificateAuthorityConfig = best.Value.(*CertManagerCertificateAuthorityConfig)
+	var vaultCertificateAuthorityConfig VaultCertificateAuthorityConfig = VaultCertificateAuthorityConfig{}
+	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfig, "", true, true); err == nil {
+		u.VaultCertificateAuthorityConfig = &vaultCertificateAuthorityConfig
+		u.Type = MeshItemMtlsConfTypeVaultCertificateAuthorityConfig
 		return nil
 	}
 
@@ -4115,18 +2877,18 @@ type RequestTimeout struct {
 	Seconds *int64 `json:"seconds,omitempty"`
 }
 
-func (r *RequestTimeout) GetNanos() *int64 {
-	if r == nil {
+func (o *RequestTimeout) GetNanos() *int64 {
+	if o == nil {
 		return nil
 	}
-	return r.Nanos
+	return o.Nanos
 }
 
-func (r *RequestTimeout) GetSeconds() *int64 {
-	if r == nil {
+func (o *RequestTimeout) GetSeconds() *int64 {
+	if o == nil {
 		return nil
 	}
-	return r.Seconds
+	return o.Seconds
 }
 
 // Rotation settings
@@ -4135,11 +2897,11 @@ type Rotation struct {
 	Expiration *string `json:"expiration,omitempty"`
 }
 
-func (r *Rotation) GetExpiration() *string {
-	if r == nil {
+func (o *Rotation) GetExpiration() *string {
+	if o == nil {
 		return nil
 	}
-	return r.Expiration
+	return o.Expiration
 }
 
 // DpCert - Dataplane certificate settings
@@ -4150,18 +2912,18 @@ type DpCert struct {
 	Rotation *Rotation `json:"rotation,omitempty"`
 }
 
-func (d *DpCert) GetRequestTimeout() *RequestTimeout {
-	if d == nil {
+func (o *DpCert) GetRequestTimeout() *RequestTimeout {
+	if o == nil {
 		return nil
 	}
-	return d.RequestTimeout
+	return o.RequestTimeout
 }
 
-func (d *DpCert) GetRotation() *Rotation {
-	if d == nil {
+func (o *DpCert) GetRotation() *Rotation {
+	if o == nil {
 		return nil
 	}
-	return d.Rotation
+	return o.Rotation
 }
 
 type MeshItemMtlsModeType string
@@ -4174,8 +2936,8 @@ const (
 // MeshItemMtlsMode - Mode defines the behaviour of inbound listeners with regard to traffic
 // encryption
 type MeshItemMtlsMode struct {
-	Str     *string `queryParam:"inline,name=mode"`
-	Integer *int64  `queryParam:"inline,name=mode"`
+	Str     *string `queryParam:"inline"`
+	Integer *int64  `queryParam:"inline"`
 
 	Type MeshItemMtlsModeType
 }
@@ -4200,43 +2962,17 @@ func CreateMeshItemMtlsModeInteger(integer int64) MeshItemMtlsMode {
 
 func (u *MeshItemMtlsMode) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var str string = ""
-	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshItemMtlsModeTypeStr,
-			Value: &str,
-		})
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = MeshItemMtlsModeTypeStr
+		return nil
 	}
 
 	var integer int64 = int64(0)
-	if err := utils.UnmarshalJSON(data, &integer, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshItemMtlsModeTypeInteger,
-			Value: &integer,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshItemMtlsMode", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshItemMtlsMode", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(MeshItemMtlsModeType)
-	switch best.Type {
-	case MeshItemMtlsModeTypeStr:
-		u.Str = best.Value.(*string)
-		return nil
-	case MeshItemMtlsModeTypeInteger:
-		u.Integer = best.Value.(*int64)
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = MeshItemMtlsModeTypeInteger
 		return nil
 	}
 
@@ -4262,18 +2998,18 @@ type MeshItemRequestTimeout struct {
 	Seconds *int64 `json:"seconds,omitempty"`
 }
 
-func (m *MeshItemRequestTimeout) GetNanos() *int64 {
-	if m == nil {
+func (o *MeshItemRequestTimeout) GetNanos() *int64 {
+	if o == nil {
 		return nil
 	}
-	return m.Nanos
+	return o.Nanos
 }
 
-func (m *MeshItemRequestTimeout) GetSeconds() *int64 {
-	if m == nil {
+func (o *MeshItemRequestTimeout) GetSeconds() *int64 {
+	if o == nil {
 		return nil
 	}
-	return m.Seconds
+	return o.Seconds
 }
 
 type RootChain struct {
@@ -4282,11 +3018,11 @@ type RootChain struct {
 	RequestTimeout *MeshItemRequestTimeout `json:"requestTimeout,omitempty"`
 }
 
-func (r *RootChain) GetRequestTimeout() *MeshItemRequestTimeout {
-	if r == nil {
+func (o *RootChain) GetRequestTimeout() *MeshItemRequestTimeout {
+	if o == nil {
 		return nil
 	}
-	return r.RequestTimeout
+	return o.RequestTimeout
 }
 
 // MeshItemMtlsBackends - CertificateAuthorityBackend defines Certificate Authority backend
@@ -4305,46 +3041,46 @@ type MeshItemMtlsBackends struct {
 	Type *string `json:"type,omitempty"`
 }
 
-func (m *MeshItemMtlsBackends) GetConf() *MeshItemMtlsConf {
-	if m == nil {
+func (o *MeshItemMtlsBackends) GetConf() *MeshItemMtlsConf {
+	if o == nil {
 		return nil
 	}
-	return m.Conf
+	return o.Conf
 }
 
-func (m *MeshItemMtlsBackends) GetDpCert() *DpCert {
-	if m == nil {
+func (o *MeshItemMtlsBackends) GetDpCert() *DpCert {
+	if o == nil {
 		return nil
 	}
-	return m.DpCert
+	return o.DpCert
 }
 
-func (m *MeshItemMtlsBackends) GetMode() *MeshItemMtlsMode {
-	if m == nil {
+func (o *MeshItemMtlsBackends) GetMode() *MeshItemMtlsMode {
+	if o == nil {
 		return nil
 	}
-	return m.Mode
+	return o.Mode
 }
 
-func (m *MeshItemMtlsBackends) GetName() *string {
-	if m == nil {
+func (o *MeshItemMtlsBackends) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshItemMtlsBackends) GetRootChain() *RootChain {
-	if m == nil {
+func (o *MeshItemMtlsBackends) GetRootChain() *RootChain {
+	if o == nil {
 		return nil
 	}
-	return m.RootChain
+	return o.RootChain
 }
 
-func (m *MeshItemMtlsBackends) GetType() *string {
-	if m == nil {
+func (o *MeshItemMtlsBackends) GetType() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Type
+	return o.Type
 }
 
 // Mtls - mTLS settings.
@@ -4358,25 +3094,25 @@ type Mtls struct {
 	SkipValidation *bool `json:"skipValidation,omitempty"`
 }
 
-func (m *Mtls) GetBackends() []MeshItemMtlsBackends {
-	if m == nil {
+func (o *Mtls) GetBackends() []MeshItemMtlsBackends {
+	if o == nil {
 		return nil
 	}
-	return m.Backends
+	return o.Backends
 }
 
-func (m *Mtls) GetEnabledBackend() *string {
-	if m == nil {
+func (o *Mtls) GetEnabledBackend() *string {
+	if o == nil {
 		return nil
 	}
-	return m.EnabledBackend
+	return o.EnabledBackend
 }
 
-func (m *Mtls) GetSkipValidation() *bool {
-	if m == nil {
+func (o *Mtls) GetSkipValidation() *bool {
+	if o == nil {
 		return nil
 	}
-	return m.SkipValidation
+	return o.SkipValidation
 }
 
 // Outbound settings
@@ -4398,11 +3134,11 @@ type Networking struct {
 	Outbound *Outbound `json:"outbound,omitempty"`
 }
 
-func (n *Networking) GetOutbound() *Outbound {
-	if n == nil {
+func (o *Networking) GetOutbound() *Outbound {
+	if o == nil {
 		return nil
 	}
-	return n.Outbound
+	return o.Outbound
 }
 
 // Routing settings of the mesh
@@ -4417,25 +3153,25 @@ type Routing struct {
 	ZoneEgress *bool `json:"zoneEgress,omitempty"`
 }
 
-func (r *Routing) GetDefaultForbidMeshExternalServiceAccess() *bool {
-	if r == nil {
+func (o *Routing) GetDefaultForbidMeshExternalServiceAccess() *bool {
+	if o == nil {
 		return nil
 	}
-	return r.DefaultForbidMeshExternalServiceAccess
+	return o.DefaultForbidMeshExternalServiceAccess
 }
 
-func (r *Routing) GetLocalityAwareLoadBalancing() *bool {
-	if r == nil {
+func (o *Routing) GetLocalityAwareLoadBalancing() *bool {
+	if o == nil {
 		return nil
 	}
-	return r.LocalityAwareLoadBalancing
+	return o.LocalityAwareLoadBalancing
 }
 
-func (r *Routing) GetZoneEgress() *bool {
-	if r == nil {
+func (o *Routing) GetZoneEgress() *bool {
+	if o == nil {
 		return nil
 	}
-	return r.ZoneEgress
+	return o.ZoneEgress
 }
 
 type ZipkinTracingBackendConfig struct {
@@ -4453,43 +3189,32 @@ type ZipkinTracingBackendConfig struct {
 	URL *string `json:"url,omitempty"`
 }
 
-func (z ZipkinTracingBackendConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(z, "", false)
-}
-
-func (z *ZipkinTracingBackendConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &z, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (z *ZipkinTracingBackendConfig) GetAPIVersion() *string {
-	if z == nil {
+func (o *ZipkinTracingBackendConfig) GetAPIVersion() *string {
+	if o == nil {
 		return nil
 	}
-	return z.APIVersion
+	return o.APIVersion
 }
 
-func (z *ZipkinTracingBackendConfig) GetSharedSpanContext() *bool {
-	if z == nil {
+func (o *ZipkinTracingBackendConfig) GetSharedSpanContext() *bool {
+	if o == nil {
 		return nil
 	}
-	return z.SharedSpanContext
+	return o.SharedSpanContext
 }
 
-func (z *ZipkinTracingBackendConfig) GetTraceId128bit() *bool {
-	if z == nil {
+func (o *ZipkinTracingBackendConfig) GetTraceId128bit() *bool {
+	if o == nil {
 		return nil
 	}
-	return z.TraceId128bit
+	return o.TraceId128bit
 }
 
-func (z *ZipkinTracingBackendConfig) GetURL() *string {
-	if z == nil {
+func (o *ZipkinTracingBackendConfig) GetURL() *string {
+	if o == nil {
 		return nil
 	}
-	return z.URL
+	return o.URL
 }
 
 type DatadogTracingBackendConfig struct {
@@ -4505,36 +3230,25 @@ type DatadogTracingBackendConfig struct {
 	SplitService *bool `json:"splitService,omitempty"`
 }
 
-func (d DatadogTracingBackendConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(d, "", false)
-}
-
-func (d *DatadogTracingBackendConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (d *DatadogTracingBackendConfig) GetAddress() *string {
-	if d == nil {
+func (o *DatadogTracingBackendConfig) GetAddress() *string {
+	if o == nil {
 		return nil
 	}
-	return d.Address
+	return o.Address
 }
 
-func (d *DatadogTracingBackendConfig) GetPort() *int64 {
-	if d == nil {
+func (o *DatadogTracingBackendConfig) GetPort() *int64 {
+	if o == nil {
 		return nil
 	}
-	return d.Port
+	return o.Port
 }
 
-func (d *DatadogTracingBackendConfig) GetSplitService() *bool {
-	if d == nil {
+func (o *DatadogTracingBackendConfig) GetSplitService() *bool {
+	if o == nil {
 		return nil
 	}
-	return d.SplitService
+	return o.SplitService
 }
 
 type MeshItemTracingConfType string
@@ -4545,8 +3259,8 @@ const (
 )
 
 type MeshItemTracingConf struct {
-	DatadogTracingBackendConfig *DatadogTracingBackendConfig `queryParam:"inline,name=conf"`
-	ZipkinTracingBackendConfig  *ZipkinTracingBackendConfig  `queryParam:"inline,name=conf"`
+	DatadogTracingBackendConfig *DatadogTracingBackendConfig `queryParam:"inline"`
+	ZipkinTracingBackendConfig  *ZipkinTracingBackendConfig  `queryParam:"inline"`
 
 	Type MeshItemTracingConfType
 }
@@ -4571,43 +3285,17 @@ func CreateMeshItemTracingConfZipkinTracingBackendConfig(zipkinTracingBackendCon
 
 func (u *MeshItemTracingConf) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var datadogTracingBackendConfig DatadogTracingBackendConfig = DatadogTracingBackendConfig{}
-	if err := utils.UnmarshalJSON(data, &datadogTracingBackendConfig, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshItemTracingConfTypeDatadogTracingBackendConfig,
-			Value: &datadogTracingBackendConfig,
-		})
+	if err := utils.UnmarshalJSON(data, &datadogTracingBackendConfig, "", true, true); err == nil {
+		u.DatadogTracingBackendConfig = &datadogTracingBackendConfig
+		u.Type = MeshItemTracingConfTypeDatadogTracingBackendConfig
+		return nil
 	}
 
 	var zipkinTracingBackendConfig ZipkinTracingBackendConfig = ZipkinTracingBackendConfig{}
-	if err := utils.UnmarshalJSON(data, &zipkinTracingBackendConfig, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  MeshItemTracingConfTypeZipkinTracingBackendConfig,
-			Value: &zipkinTracingBackendConfig,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshItemTracingConf", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshItemTracingConf", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(MeshItemTracingConfType)
-	switch best.Type {
-	case MeshItemTracingConfTypeDatadogTracingBackendConfig:
-		u.DatadogTracingBackendConfig = best.Value.(*DatadogTracingBackendConfig)
-		return nil
-	case MeshItemTracingConfTypeZipkinTracingBackendConfig:
-		u.ZipkinTracingBackendConfig = best.Value.(*ZipkinTracingBackendConfig)
+	if err := utils.UnmarshalJSON(data, &zipkinTracingBackendConfig, "", true, true); err == nil {
+		u.ZipkinTracingBackendConfig = &zipkinTracingBackendConfig
+		u.Type = MeshItemTracingConfTypeZipkinTracingBackendConfig
 		return nil
 	}
 
@@ -4639,32 +3327,32 @@ type MeshItemTracingBackends struct {
 	Type *string `json:"type,omitempty"`
 }
 
-func (m *MeshItemTracingBackends) GetConf() *MeshItemTracingConf {
-	if m == nil {
+func (o *MeshItemTracingBackends) GetConf() *MeshItemTracingConf {
+	if o == nil {
 		return nil
 	}
-	return m.Conf
+	return o.Conf
 }
 
-func (m *MeshItemTracingBackends) GetName() *string {
-	if m == nil {
+func (o *MeshItemTracingBackends) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshItemTracingBackends) GetSampling() *float64 {
-	if m == nil {
+func (o *MeshItemTracingBackends) GetSampling() *float64 {
+	if o == nil {
 		return nil
 	}
-	return m.Sampling
+	return o.Sampling
 }
 
-func (m *MeshItemTracingBackends) GetType() *string {
-	if m == nil {
+func (o *MeshItemTracingBackends) GetType() *string {
+	if o == nil {
 		return nil
 	}
-	return m.Type
+	return o.Type
 }
 
 // Tracing settings.
@@ -4676,18 +3364,18 @@ type Tracing struct {
 	DefaultBackend *string `json:"defaultBackend,omitempty"`
 }
 
-func (t *Tracing) GetBackends() []MeshItemTracingBackends {
-	if t == nil {
+func (o *Tracing) GetBackends() []MeshItemTracingBackends {
+	if o == nil {
 		return nil
 	}
-	return t.Backends
+	return o.Backends
 }
 
-func (t *Tracing) GetDefaultBackend() *string {
-	if t == nil {
+func (o *Tracing) GetDefaultBackend() *string {
+	if o == nil {
 		return nil
 	}
-	return t.DefaultBackend
+	return o.DefaultBackend
 }
 
 // MeshItem - Successful response
@@ -4724,86 +3412,86 @@ type MeshItem struct {
 	Type    string   `json:"type"`
 }
 
-func (m *MeshItem) GetConstraints() *Constraints {
-	if m == nil {
+func (o *MeshItem) GetConstraints() *Constraints {
+	if o == nil {
 		return nil
 	}
-	return m.Constraints
+	return o.Constraints
 }
 
-func (m *MeshItem) GetLabels() map[string]string {
-	if m == nil {
+func (o *MeshItem) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.Labels
+	return o.Labels
 }
 
-func (m *MeshItem) GetLogging() *Logging {
-	if m == nil {
+func (o *MeshItem) GetLogging() *Logging {
+	if o == nil {
 		return nil
 	}
-	return m.Logging
+	return o.Logging
 }
 
-func (m *MeshItem) GetMeshServices() *MeshServices {
-	if m == nil {
+func (o *MeshItem) GetMeshServices() *MeshServices {
+	if o == nil {
 		return nil
 	}
-	return m.MeshServices
+	return o.MeshServices
 }
 
-func (m *MeshItem) GetMetrics() *Metrics {
-	if m == nil {
+func (o *MeshItem) GetMetrics() *Metrics {
+	if o == nil {
 		return nil
 	}
-	return m.Metrics
+	return o.Metrics
 }
 
-func (m *MeshItem) GetMtls() *Mtls {
-	if m == nil {
+func (o *MeshItem) GetMtls() *Mtls {
+	if o == nil {
 		return nil
 	}
-	return m.Mtls
+	return o.Mtls
 }
 
-func (m *MeshItem) GetName() string {
-	if m == nil {
+func (o *MeshItem) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return m.Name
+	return o.Name
 }
 
-func (m *MeshItem) GetNetworking() *Networking {
-	if m == nil {
+func (o *MeshItem) GetNetworking() *Networking {
+	if o == nil {
 		return nil
 	}
-	return m.Networking
+	return o.Networking
 }
 
-func (m *MeshItem) GetRouting() *Routing {
-	if m == nil {
+func (o *MeshItem) GetRouting() *Routing {
+	if o == nil {
 		return nil
 	}
-	return m.Routing
+	return o.Routing
 }
 
-func (m *MeshItem) GetSkipCreatingInitialPolicies() []string {
-	if m == nil {
+func (o *MeshItem) GetSkipCreatingInitialPolicies() []string {
+	if o == nil {
 		return nil
 	}
-	return m.SkipCreatingInitialPolicies
+	return o.SkipCreatingInitialPolicies
 }
 
-func (m *MeshItem) GetTracing() *Tracing {
-	if m == nil {
+func (o *MeshItem) GetTracing() *Tracing {
+	if o == nil {
 		return nil
 	}
-	return m.Tracing
+	return o.Tracing
 }
 
-func (m *MeshItem) GetType() string {
-	if m == nil {
+func (o *MeshItem) GetType() string {
+	if o == nil {
 		return ""
 	}
-	return m.Type
+	return o.Type
 }

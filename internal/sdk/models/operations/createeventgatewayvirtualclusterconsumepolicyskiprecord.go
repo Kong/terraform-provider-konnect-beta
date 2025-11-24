@@ -15,25 +15,25 @@ type CreateEventGatewayVirtualClusterConsumePolicySkipRecordRequest struct {
 	EventGatewaySkipRecordPolicyCreate *shared.EventGatewaySkipRecordPolicyCreate `request:"mediaType=application/json"`
 }
 
-func (c *CreateEventGatewayVirtualClusterConsumePolicySkipRecordRequest) GetGatewayID() string {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterConsumePolicySkipRecordRequest) GetGatewayID() string {
+	if o == nil {
 		return ""
 	}
-	return c.GatewayID
+	return o.GatewayID
 }
 
-func (c *CreateEventGatewayVirtualClusterConsumePolicySkipRecordRequest) GetVirtualClusterID() string {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterConsumePolicySkipRecordRequest) GetVirtualClusterID() string {
+	if o == nil {
 		return ""
 	}
-	return c.VirtualClusterID
+	return o.VirtualClusterID
 }
 
-func (c *CreateEventGatewayVirtualClusterConsumePolicySkipRecordRequest) GetEventGatewaySkipRecordPolicyCreate() *shared.EventGatewaySkipRecordPolicyCreate {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterConsumePolicySkipRecordRequest) GetEventGatewaySkipRecordPolicyCreate() *shared.EventGatewaySkipRecordPolicyCreate {
+	if o == nil {
 		return nil
 	}
-	return c.EventGatewaySkipRecordPolicyCreate
+	return o.EventGatewaySkipRecordPolicyCreate
 }
 
 type CreateEventGatewayVirtualClusterConsumePolicySkipRecordResponse struct {
@@ -53,51 +53,51 @@ type CreateEventGatewayVirtualClusterConsumePolicySkipRecordResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (c *CreateEventGatewayVirtualClusterConsumePolicySkipRecordResponse) GetContentType() string {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterConsumePolicySkipRecordResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return c.ContentType
+	return o.ContentType
 }
 
-func (c *CreateEventGatewayVirtualClusterConsumePolicySkipRecordResponse) GetStatusCode() int {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterConsumePolicySkipRecordResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return c.StatusCode
+	return o.StatusCode
 }
 
-func (c *CreateEventGatewayVirtualClusterConsumePolicySkipRecordResponse) GetRawResponse() *http.Response {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterConsumePolicySkipRecordResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return c.RawResponse
+	return o.RawResponse
 }
 
-func (c *CreateEventGatewayVirtualClusterConsumePolicySkipRecordResponse) GetEventGatewayPolicy() *shared.EventGatewayPolicy {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterConsumePolicySkipRecordResponse) GetEventGatewayPolicy() *shared.EventGatewayPolicy {
+	if o == nil {
 		return nil
 	}
-	return c.EventGatewayPolicy
+	return o.EventGatewayPolicy
 }
 
-func (c *CreateEventGatewayVirtualClusterConsumePolicySkipRecordResponse) GetBadRequestError() *shared.BadRequestError {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterConsumePolicySkipRecordResponse) GetBadRequestError() *shared.BadRequestError {
+	if o == nil {
 		return nil
 	}
-	return c.BadRequestError
+	return o.BadRequestError
 }
 
-func (c *CreateEventGatewayVirtualClusterConsumePolicySkipRecordResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterConsumePolicySkipRecordResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return c.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (c *CreateEventGatewayVirtualClusterConsumePolicySkipRecordResponse) GetForbiddenError() *shared.ForbiddenError {
-	if c == nil {
+func (o *CreateEventGatewayVirtualClusterConsumePolicySkipRecordResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return c.ForbiddenError
+	return o.ForbiddenError
 }

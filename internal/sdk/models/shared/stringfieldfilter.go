@@ -16,37 +16,37 @@ type StringFieldFilter struct {
 	Neq *string `queryParam:"name=neq"`
 }
 
-func (s *StringFieldFilter) GetEq() *string {
-	if s == nil {
+func (o *StringFieldFilter) GetEq() *string {
+	if o == nil {
 		return nil
 	}
-	return s.Eq
+	return o.Eq
 }
 
-func (s *StringFieldFilter) GetContains() *string {
-	if s == nil {
+func (o *StringFieldFilter) GetContains() *string {
+	if o == nil {
 		return nil
 	}
-	return s.Contains
+	return o.Contains
 }
 
-func (s *StringFieldFilter) GetOcontains() *string {
-	if s == nil {
+func (o *StringFieldFilter) GetOcontains() *string {
+	if o == nil {
 		return nil
 	}
-	return s.Ocontains
+	return o.Ocontains
 }
 
-func (s *StringFieldFilter) GetOeq() *string {
-	if s == nil {
+func (o *StringFieldFilter) GetOeq() *string {
+	if o == nil {
 		return nil
 	}
-	return s.Oeq
+	return o.Oeq
 }
 
-func (s *StringFieldFilter) GetNeq() *string {
-	if s == nil {
+func (o *StringFieldFilter) GetNeq() *string {
+	if o == nil {
 		return nil
 	}
-	return s.Neq
+	return o.Neq
 }

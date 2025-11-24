@@ -15,25 +15,25 @@ type CreateEventGatewayListenerPolicyForwardToVirtualClusterRequest struct {
 	ForwardToVirtualClusterPolicy *shared.ForwardToVirtualClusterPolicy `request:"mediaType=application/json"`
 }
 
-func (c *CreateEventGatewayListenerPolicyForwardToVirtualClusterRequest) GetGatewayID() string {
-	if c == nil {
+func (o *CreateEventGatewayListenerPolicyForwardToVirtualClusterRequest) GetGatewayID() string {
+	if o == nil {
 		return ""
 	}
-	return c.GatewayID
+	return o.GatewayID
 }
 
-func (c *CreateEventGatewayListenerPolicyForwardToVirtualClusterRequest) GetEventGatewayListenerID() string {
-	if c == nil {
+func (o *CreateEventGatewayListenerPolicyForwardToVirtualClusterRequest) GetEventGatewayListenerID() string {
+	if o == nil {
 		return ""
 	}
-	return c.EventGatewayListenerID
+	return o.EventGatewayListenerID
 }
 
-func (c *CreateEventGatewayListenerPolicyForwardToVirtualClusterRequest) GetForwardToVirtualClusterPolicy() *shared.ForwardToVirtualClusterPolicy {
-	if c == nil {
+func (o *CreateEventGatewayListenerPolicyForwardToVirtualClusterRequest) GetForwardToVirtualClusterPolicy() *shared.ForwardToVirtualClusterPolicy {
+	if o == nil {
 		return nil
 	}
-	return c.ForwardToVirtualClusterPolicy
+	return o.ForwardToVirtualClusterPolicy
 }
 
 type CreateEventGatewayListenerPolicyForwardToVirtualClusterResponse struct {
@@ -53,51 +53,51 @@ type CreateEventGatewayListenerPolicyForwardToVirtualClusterResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (c *CreateEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetContentType() string {
-	if c == nil {
+func (o *CreateEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return c.ContentType
+	return o.ContentType
 }
 
-func (c *CreateEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetStatusCode() int {
-	if c == nil {
+func (o *CreateEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return c.StatusCode
+	return o.StatusCode
 }
 
-func (c *CreateEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetRawResponse() *http.Response {
-	if c == nil {
+func (o *CreateEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return c.RawResponse
+	return o.RawResponse
 }
 
-func (c *CreateEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetEventGatewayListenerPolicy() *shared.EventGatewayListenerPolicy {
-	if c == nil {
+func (o *CreateEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetEventGatewayListenerPolicy() *shared.EventGatewayListenerPolicy {
+	if o == nil {
 		return nil
 	}
-	return c.EventGatewayListenerPolicy
+	return o.EventGatewayListenerPolicy
 }
 
-func (c *CreateEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetBadRequestError() *shared.BadRequestError {
-	if c == nil {
+func (o *CreateEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetBadRequestError() *shared.BadRequestError {
+	if o == nil {
 		return nil
 	}
-	return c.BadRequestError
+	return o.BadRequestError
 }
 
-func (c *CreateEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if c == nil {
+func (o *CreateEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return c.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (c *CreateEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetForbiddenError() *shared.ForbiddenError {
-	if c == nil {
+func (o *CreateEventGatewayListenerPolicyForwardToVirtualClusterResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return c.ForbiddenError
+	return o.ForbiddenError
 }

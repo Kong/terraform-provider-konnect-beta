@@ -15,23 +15,23 @@ type CreateGatewayRequest struct {
 	Labels map[string]*string `json:"labels,omitempty"`
 }
 
-func (c *CreateGatewayRequest) GetName() string {
-	if c == nil {
+func (o *CreateGatewayRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return c.Name
+	return o.Name
 }
 
-func (c *CreateGatewayRequest) GetDescription() *string {
-	if c == nil {
+func (o *CreateGatewayRequest) GetDescription() *string {
+	if o == nil {
 		return nil
 	}
-	return c.Description
+	return o.Description
 }
 
-func (c *CreateGatewayRequest) GetLabels() map[string]*string {
-	if c == nil {
+func (o *CreateGatewayRequest) GetLabels() map[string]*string {
+	if o == nil {
 		return nil
 	}
-	return c.Labels
+	return o.Labels
 }

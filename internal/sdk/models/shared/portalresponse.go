@@ -107,120 +107,120 @@ func (p PortalResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PortalResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"id", "created_at", "updated_at", "name", "display_name", "default_api_visibility", "default_page_visibility", "default_domain", "canonical_domain"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *PortalResponse) GetID() string {
-	if p == nil {
+func (o *PortalResponse) GetID() string {
+	if o == nil {
 		return ""
 	}
-	return p.ID
+	return o.ID
 }
 
-func (p *PortalResponse) GetCreatedAt() time.Time {
-	if p == nil {
+func (o *PortalResponse) GetCreatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return p.CreatedAt
+	return o.CreatedAt
 }
 
-func (p *PortalResponse) GetUpdatedAt() time.Time {
-	if p == nil {
+func (o *PortalResponse) GetUpdatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return p.UpdatedAt
+	return o.UpdatedAt
 }
 
-func (p *PortalResponse) GetName() string {
-	if p == nil {
+func (o *PortalResponse) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return p.Name
+	return o.Name
 }
 
-func (p *PortalResponse) GetDisplayName() string {
-	if p == nil {
+func (o *PortalResponse) GetDisplayName() string {
+	if o == nil {
 		return ""
 	}
-	return p.DisplayName
+	return o.DisplayName
 }
 
-func (p *PortalResponse) GetDescription() *string {
-	if p == nil {
+func (o *PortalResponse) GetDescription() *string {
+	if o == nil {
 		return nil
 	}
-	return p.Description
+	return o.Description
 }
 
-func (p *PortalResponse) GetAuthenticationEnabled() *bool {
-	if p == nil {
+func (o *PortalResponse) GetAuthenticationEnabled() *bool {
+	if o == nil {
 		return nil
 	}
-	return p.AuthenticationEnabled
+	return o.AuthenticationEnabled
 }
 
-func (p *PortalResponse) GetRbacEnabled() *bool {
-	if p == nil {
+func (o *PortalResponse) GetRbacEnabled() *bool {
+	if o == nil {
 		return nil
 	}
-	return p.RbacEnabled
+	return o.RbacEnabled
 }
 
-func (p *PortalResponse) GetDefaultAPIVisibility() PortalResponseDefaultAPIVisibility {
-	if p == nil {
+func (o *PortalResponse) GetDefaultAPIVisibility() PortalResponseDefaultAPIVisibility {
+	if o == nil {
 		return PortalResponseDefaultAPIVisibility("")
 	}
-	return p.DefaultAPIVisibility
+	return o.DefaultAPIVisibility
 }
 
-func (p *PortalResponse) GetDefaultPageVisibility() PortalResponseDefaultPageVisibility {
-	if p == nil {
+func (o *PortalResponse) GetDefaultPageVisibility() PortalResponseDefaultPageVisibility {
+	if o == nil {
 		return PortalResponseDefaultPageVisibility("")
 	}
-	return p.DefaultPageVisibility
+	return o.DefaultPageVisibility
 }
 
-func (p *PortalResponse) GetDefaultApplicationAuthStrategyID() *string {
-	if p == nil {
+func (o *PortalResponse) GetDefaultApplicationAuthStrategyID() *string {
+	if o == nil {
 		return nil
 	}
-	return p.DefaultApplicationAuthStrategyID
+	return o.DefaultApplicationAuthStrategyID
 }
 
-func (p *PortalResponse) GetAutoApproveDevelopers() *bool {
-	if p == nil {
+func (o *PortalResponse) GetAutoApproveDevelopers() *bool {
+	if o == nil {
 		return nil
 	}
-	return p.AutoApproveDevelopers
+	return o.AutoApproveDevelopers
 }
 
-func (p *PortalResponse) GetAutoApproveApplications() *bool {
-	if p == nil {
+func (o *PortalResponse) GetAutoApproveApplications() *bool {
+	if o == nil {
 		return nil
 	}
-	return p.AutoApproveApplications
+	return o.AutoApproveApplications
 }
 
-func (p *PortalResponse) GetDefaultDomain() string {
-	if p == nil {
+func (o *PortalResponse) GetDefaultDomain() string {
+	if o == nil {
 		return ""
 	}
-	return p.DefaultDomain
+	return o.DefaultDomain
 }
 
-func (p *PortalResponse) GetCanonicalDomain() string {
-	if p == nil {
+func (o *PortalResponse) GetCanonicalDomain() string {
+	if o == nil {
 		return ""
 	}
-	return p.CanonicalDomain
+	return o.CanonicalDomain
 }
 
-func (p *PortalResponse) GetLabels() map[string]*string {
-	if p == nil {
+func (o *PortalResponse) GetLabels() map[string]*string {
+	if o == nil {
 		return nil
 	}
-	return p.Labels
+	return o.Labels
 }

@@ -19,19 +19,19 @@ func (e EncryptionKeyStatic) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EncryptionKeyStatic) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type", "key"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (e *EncryptionKeyStatic) GetType() string {
+func (o *EncryptionKeyStatic) GetType() string {
 	return "static"
 }
 
-func (e *EncryptionKeyStatic) GetKey() EncryptionKeyStaticReference {
-	if e == nil {
+func (o *EncryptionKeyStatic) GetKey() EncryptionKeyStaticReference {
+	if o == nil {
 		return EncryptionKeyStaticReference{}
 	}
-	return e.Key
+	return o.Key
 }

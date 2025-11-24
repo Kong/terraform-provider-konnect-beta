@@ -46,57 +46,57 @@ func (e Extension) MarshalJSON() ([]byte, error) {
 }
 
 func (e *Extension) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (e *Extension) GetConfig() any {
-	if e == nil {
+func (o *Extension) GetConfig() any {
+	if o == nil {
 		return nil
 	}
-	return e.Config
+	return o.Config
 }
 
-func (e *Extension) GetType() string {
-	if e == nil {
+func (o *Extension) GetType() string {
+	if o == nil {
 		return ""
 	}
-	return e.Type
+	return o.Type
 }
 
 type MeshExternalService struct {
 	MatchLabels map[string]string `json:"matchLabels,omitempty"`
 }
 
-func (m *MeshExternalService) GetMatchLabels() map[string]string {
-	if m == nil {
+func (o *MeshExternalService) GetMatchLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.MatchLabels
+	return o.MatchLabels
 }
 
 type MeshMultiZoneService struct {
 	MatchLabels map[string]string `json:"matchLabels,omitempty"`
 }
 
-func (m *MeshMultiZoneService) GetMatchLabels() map[string]string {
-	if m == nil {
+func (o *MeshMultiZoneService) GetMatchLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.MatchLabels
+	return o.MatchLabels
 }
 
 type MeshService struct {
 	MatchLabels map[string]string `json:"matchLabels,omitempty"`
 }
 
-func (m *MeshService) GetMatchLabels() map[string]string {
-	if m == nil {
+func (o *MeshService) GetMatchLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return m.MatchLabels
+	return o.MatchLabels
 }
 
 type Selector struct {
@@ -105,25 +105,25 @@ type Selector struct {
 	MeshService          *MeshService          `json:"meshService,omitempty"`
 }
 
-func (s *Selector) GetMeshExternalService() *MeshExternalService {
-	if s == nil {
+func (o *Selector) GetMeshExternalService() *MeshExternalService {
+	if o == nil {
 		return nil
 	}
-	return s.MeshExternalService
+	return o.MeshExternalService
 }
 
-func (s *Selector) GetMeshMultiZoneService() *MeshMultiZoneService {
-	if s == nil {
+func (o *Selector) GetMeshMultiZoneService() *MeshMultiZoneService {
+	if o == nil {
 		return nil
 	}
-	return s.MeshMultiZoneService
+	return o.MeshMultiZoneService
 }
 
-func (s *Selector) GetMeshService() *MeshService {
-	if s == nil {
+func (o *Selector) GetMeshService() *MeshService {
+	if o == nil {
 		return nil
 	}
-	return s.MeshService
+	return o.MeshService
 }
 
 // HostnameGeneratorItemSpec - Spec is the specification of the Kuma HostnameGenerator resource.
@@ -134,25 +134,25 @@ type HostnameGeneratorItemSpec struct {
 	Template  string     `json:"template"`
 }
 
-func (h *HostnameGeneratorItemSpec) GetExtension() *Extension {
-	if h == nil {
+func (o *HostnameGeneratorItemSpec) GetExtension() *Extension {
+	if o == nil {
 		return nil
 	}
-	return h.Extension
+	return o.Extension
 }
 
-func (h *HostnameGeneratorItemSpec) GetSelector() *Selector {
-	if h == nil {
+func (o *HostnameGeneratorItemSpec) GetSelector() *Selector {
+	if o == nil {
 		return nil
 	}
-	return h.Selector
+	return o.Selector
 }
 
-func (h *HostnameGeneratorItemSpec) GetTemplate() string {
-	if h == nil {
+func (o *HostnameGeneratorItemSpec) GetTemplate() string {
+	if o == nil {
 		return ""
 	}
-	return h.Template
+	return o.Template
 }
 
 // HostnameGeneratorItem - Successful response
@@ -178,59 +178,59 @@ func (h HostnameGeneratorItem) MarshalJSON() ([]byte, error) {
 }
 
 func (h *HostnameGeneratorItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &h, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &h, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (h *HostnameGeneratorItem) GetType() HostnameGeneratorItemType {
-	if h == nil {
+func (o *HostnameGeneratorItem) GetType() HostnameGeneratorItemType {
+	if o == nil {
 		return HostnameGeneratorItemType("")
 	}
-	return h.Type
+	return o.Type
 }
 
-func (h *HostnameGeneratorItem) GetKri() *string {
-	if h == nil {
+func (o *HostnameGeneratorItem) GetKri() *string {
+	if o == nil {
 		return nil
 	}
-	return h.Kri
+	return o.Kri
 }
 
-func (h *HostnameGeneratorItem) GetName() string {
-	if h == nil {
+func (o *HostnameGeneratorItem) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return h.Name
+	return o.Name
 }
 
-func (h *HostnameGeneratorItem) GetLabels() map[string]string {
-	if h == nil {
+func (o *HostnameGeneratorItem) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return h.Labels
+	return o.Labels
 }
 
-func (h *HostnameGeneratorItem) GetSpec() HostnameGeneratorItemSpec {
-	if h == nil {
+func (o *HostnameGeneratorItem) GetSpec() HostnameGeneratorItemSpec {
+	if o == nil {
 		return HostnameGeneratorItemSpec{}
 	}
-	return h.Spec
+	return o.Spec
 }
 
-func (h *HostnameGeneratorItem) GetCreationTime() *time.Time {
-	if h == nil {
+func (o *HostnameGeneratorItem) GetCreationTime() *time.Time {
+	if o == nil {
 		return nil
 	}
-	return h.CreationTime
+	return o.CreationTime
 }
 
-func (h *HostnameGeneratorItem) GetModificationTime() *time.Time {
-	if h == nil {
+func (o *HostnameGeneratorItem) GetModificationTime() *time.Time {
+	if o == nil {
 		return nil
 	}
-	return h.ModificationTime
+	return o.ModificationTime
 }
 
 type HostnameGeneratorItemInput struct {
@@ -244,30 +244,30 @@ type HostnameGeneratorItemInput struct {
 	Spec HostnameGeneratorItemSpec `json:"spec"`
 }
 
-func (h *HostnameGeneratorItemInput) GetType() HostnameGeneratorItemType {
-	if h == nil {
+func (o *HostnameGeneratorItemInput) GetType() HostnameGeneratorItemType {
+	if o == nil {
 		return HostnameGeneratorItemType("")
 	}
-	return h.Type
+	return o.Type
 }
 
-func (h *HostnameGeneratorItemInput) GetName() string {
-	if h == nil {
+func (o *HostnameGeneratorItemInput) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return h.Name
+	return o.Name
 }
 
-func (h *HostnameGeneratorItemInput) GetLabels() map[string]string {
-	if h == nil {
+func (o *HostnameGeneratorItemInput) GetLabels() map[string]string {
+	if o == nil {
 		return nil
 	}
-	return h.Labels
+	return o.Labels
 }
 
-func (h *HostnameGeneratorItemInput) GetSpec() HostnameGeneratorItemSpec {
-	if h == nil {
+func (o *HostnameGeneratorItemInput) GetSpec() HostnameGeneratorItemSpec {
+	if o == nil {
 		return HostnameGeneratorItemSpec{}
 	}
-	return h.Spec
+	return o.Spec
 }

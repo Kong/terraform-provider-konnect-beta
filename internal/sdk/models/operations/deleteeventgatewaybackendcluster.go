@@ -14,18 +14,18 @@ type DeleteEventGatewayBackendClusterRequest struct {
 	BackendClusterID string `pathParam:"style=simple,explode=false,name=backendClusterId"`
 }
 
-func (d *DeleteEventGatewayBackendClusterRequest) GetGatewayID() string {
-	if d == nil {
+func (o *DeleteEventGatewayBackendClusterRequest) GetGatewayID() string {
+	if o == nil {
 		return ""
 	}
-	return d.GatewayID
+	return o.GatewayID
 }
 
-func (d *DeleteEventGatewayBackendClusterRequest) GetBackendClusterID() string {
-	if d == nil {
+func (o *DeleteEventGatewayBackendClusterRequest) GetBackendClusterID() string {
+	if o == nil {
 		return ""
 	}
-	return d.BackendClusterID
+	return o.BackendClusterID
 }
 
 type DeleteEventGatewayBackendClusterResponse struct {
@@ -43,44 +43,44 @@ type DeleteEventGatewayBackendClusterResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeleteEventGatewayBackendClusterResponse) GetContentType() string {
-	if d == nil {
+func (o *DeleteEventGatewayBackendClusterResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeleteEventGatewayBackendClusterResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeleteEventGatewayBackendClusterResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeleteEventGatewayBackendClusterResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeleteEventGatewayBackendClusterResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeleteEventGatewayBackendClusterResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if d == nil {
+func (o *DeleteEventGatewayBackendClusterResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return d.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (d *DeleteEventGatewayBackendClusterResponse) GetForbiddenError() *shared.ForbiddenError {
-	if d == nil {
+func (o *DeleteEventGatewayBackendClusterResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return d.ForbiddenError
+	return o.ForbiddenError
 }
 
-func (d *DeleteEventGatewayBackendClusterResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeleteEventGatewayBackendClusterResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

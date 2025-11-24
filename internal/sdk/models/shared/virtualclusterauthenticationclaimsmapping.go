@@ -19,22 +19,22 @@ func (v VirtualClusterAuthenticationClaimsMapping) MarshalJSON() ([]byte, error)
 }
 
 func (v *VirtualClusterAuthenticationClaimsMapping) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (v *VirtualClusterAuthenticationClaimsMapping) GetSub() *string {
-	if v == nil {
+func (o *VirtualClusterAuthenticationClaimsMapping) GetSub() *string {
+	if o == nil {
 		return nil
 	}
-	return v.Sub
+	return o.Sub
 }
 
-func (v *VirtualClusterAuthenticationClaimsMapping) GetScope() *string {
-	if v == nil {
+func (o *VirtualClusterAuthenticationClaimsMapping) GetScope() *string {
+	if o == nil {
 		return nil
 	}
-	return v.Scope
+	return o.Scope
 }

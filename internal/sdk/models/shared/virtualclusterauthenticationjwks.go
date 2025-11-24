@@ -21,29 +21,29 @@ func (v VirtualClusterAuthenticationJWKS) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VirtualClusterAuthenticationJWKS) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"endpoint"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (v *VirtualClusterAuthenticationJWKS) GetEndpoint() string {
-	if v == nil {
+func (o *VirtualClusterAuthenticationJWKS) GetEndpoint() string {
+	if o == nil {
 		return ""
 	}
-	return v.Endpoint
+	return o.Endpoint
 }
 
-func (v *VirtualClusterAuthenticationJWKS) GetTimeout() *string {
-	if v == nil {
+func (o *VirtualClusterAuthenticationJWKS) GetTimeout() *string {
+	if o == nil {
 		return nil
 	}
-	return v.Timeout
+	return o.Timeout
 }
 
-func (v *VirtualClusterAuthenticationJWKS) GetCacheExpiration() *string {
-	if v == nil {
+func (o *VirtualClusterAuthenticationJWKS) GetCacheExpiration() *string {
+	if o == nil {
 		return nil
 	}
-	return v.CacheExpiration
+	return o.CacheExpiration
 }

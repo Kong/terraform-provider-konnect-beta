@@ -12,11 +12,11 @@ type GetPortalAuthenticationSettingsRequest struct {
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 }
 
-func (g *GetPortalAuthenticationSettingsRequest) GetPortalID() string {
-	if g == nil {
+func (o *GetPortalAuthenticationSettingsRequest) GetPortalID() string {
+	if o == nil {
 		return ""
 	}
-	return g.PortalID
+	return o.PortalID
 }
 
 type GetPortalAuthenticationSettingsResponse struct {
@@ -32,37 +32,37 @@ type GetPortalAuthenticationSettingsResponse struct {
 	UnauthorizedError *shared.UnauthorizedError
 }
 
-func (g *GetPortalAuthenticationSettingsResponse) GetContentType() string {
-	if g == nil {
+func (o *GetPortalAuthenticationSettingsResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetPortalAuthenticationSettingsResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetPortalAuthenticationSettingsResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetPortalAuthenticationSettingsResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetPortalAuthenticationSettingsResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetPortalAuthenticationSettingsResponse) GetPortalAuthenticationSettingsResponse() *shared.PortalAuthenticationSettingsResponse {
-	if g == nil {
+func (o *GetPortalAuthenticationSettingsResponse) GetPortalAuthenticationSettingsResponse() *shared.PortalAuthenticationSettingsResponse {
+	if o == nil {
 		return nil
 	}
-	return g.PortalAuthenticationSettingsResponse
+	return o.PortalAuthenticationSettingsResponse
 }
 
-func (g *GetPortalAuthenticationSettingsResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if g == nil {
+func (o *GetPortalAuthenticationSettingsResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return g.UnauthorizedError
+	return o.UnauthorizedError
 }

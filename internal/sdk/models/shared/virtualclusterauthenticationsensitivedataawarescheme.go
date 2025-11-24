@@ -19,10 +19,10 @@ const (
 )
 
 type VirtualClusterAuthenticationSensitiveDataAwareScheme struct {
-	VirtualClusterAuthenticationAnonymous                   *VirtualClusterAuthenticationAnonymous                   `queryParam:"inline,name=VirtualClusterAuthenticationSensitiveDataAwareScheme"`
-	VirtualClusterAuthenticationSaslPlainSensitiveDataAware *VirtualClusterAuthenticationSaslPlainSensitiveDataAware `queryParam:"inline,name=VirtualClusterAuthenticationSensitiveDataAwareScheme"`
-	VirtualClusterAuthenticationSaslScram                   *VirtualClusterAuthenticationSaslScram                   `queryParam:"inline,name=VirtualClusterAuthenticationSensitiveDataAwareScheme"`
-	VirtualClusterAuthenticationOauthBearer                 *VirtualClusterAuthenticationOauthBearer                 `queryParam:"inline,name=VirtualClusterAuthenticationSensitiveDataAwareScheme"`
+	VirtualClusterAuthenticationAnonymous                   *VirtualClusterAuthenticationAnonymous                   `queryParam:"inline"`
+	VirtualClusterAuthenticationSaslPlainSensitiveDataAware *VirtualClusterAuthenticationSaslPlainSensitiveDataAware `queryParam:"inline"`
+	VirtualClusterAuthenticationSaslScram                   *VirtualClusterAuthenticationSaslScram                   `queryParam:"inline"`
+	VirtualClusterAuthenticationOauthBearer                 *VirtualClusterAuthenticationOauthBearer                 `queryParam:"inline"`
 
 	Type VirtualClusterAuthenticationSensitiveDataAwareSchemeType
 }
@@ -77,7 +77,7 @@ func (u *VirtualClusterAuthenticationSensitiveDataAwareScheme) UnmarshalJSON(dat
 	switch dis.Type {
 	case "anonymous":
 		virtualClusterAuthenticationAnonymous := new(VirtualClusterAuthenticationAnonymous)
-		if err := utils.UnmarshalJSON(data, &virtualClusterAuthenticationAnonymous, "", true, nil); err != nil {
+		if err := utils.UnmarshalJSON(data, &virtualClusterAuthenticationAnonymous, "", true, false); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == anonymous) type VirtualClusterAuthenticationAnonymous within VirtualClusterAuthenticationSensitiveDataAwareScheme: %w", string(data), err)
 		}
 
@@ -86,7 +86,7 @@ func (u *VirtualClusterAuthenticationSensitiveDataAwareScheme) UnmarshalJSON(dat
 		return nil
 	case "sasl_plain":
 		virtualClusterAuthenticationSaslPlainSensitiveDataAware := new(VirtualClusterAuthenticationSaslPlainSensitiveDataAware)
-		if err := utils.UnmarshalJSON(data, &virtualClusterAuthenticationSaslPlainSensitiveDataAware, "", true, nil); err != nil {
+		if err := utils.UnmarshalJSON(data, &virtualClusterAuthenticationSaslPlainSensitiveDataAware, "", true, false); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == sasl_plain) type VirtualClusterAuthenticationSaslPlainSensitiveDataAware within VirtualClusterAuthenticationSensitiveDataAwareScheme: %w", string(data), err)
 		}
 
@@ -95,7 +95,7 @@ func (u *VirtualClusterAuthenticationSensitiveDataAwareScheme) UnmarshalJSON(dat
 		return nil
 	case "sasl_scram":
 		virtualClusterAuthenticationSaslScram := new(VirtualClusterAuthenticationSaslScram)
-		if err := utils.UnmarshalJSON(data, &virtualClusterAuthenticationSaslScram, "", true, nil); err != nil {
+		if err := utils.UnmarshalJSON(data, &virtualClusterAuthenticationSaslScram, "", true, false); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == sasl_scram) type VirtualClusterAuthenticationSaslScram within VirtualClusterAuthenticationSensitiveDataAwareScheme: %w", string(data), err)
 		}
 
@@ -104,7 +104,7 @@ func (u *VirtualClusterAuthenticationSensitiveDataAwareScheme) UnmarshalJSON(dat
 		return nil
 	case "oauth_bearer":
 		virtualClusterAuthenticationOauthBearer := new(VirtualClusterAuthenticationOauthBearer)
-		if err := utils.UnmarshalJSON(data, &virtualClusterAuthenticationOauthBearer, "", true, nil); err != nil {
+		if err := utils.UnmarshalJSON(data, &virtualClusterAuthenticationOauthBearer, "", true, false); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == oauth_bearer) type VirtualClusterAuthenticationOauthBearer within VirtualClusterAuthenticationSensitiveDataAwareScheme: %w", string(data), err)
 		}
 

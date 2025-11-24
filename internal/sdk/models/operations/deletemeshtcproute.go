@@ -16,25 +16,25 @@ type DeleteMeshTCPRouteRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (d *DeleteMeshTCPRouteRequest) GetCpID() string {
-	if d == nil {
+func (o *DeleteMeshTCPRouteRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return d.CpID
+	return o.CpID
 }
 
-func (d *DeleteMeshTCPRouteRequest) GetMesh() string {
-	if d == nil {
+func (o *DeleteMeshTCPRouteRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return d.Mesh
+	return o.Mesh
 }
 
-func (d *DeleteMeshTCPRouteRequest) GetName() string {
-	if d == nil {
+func (o *DeleteMeshTCPRouteRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return d.Name
+	return o.Name
 }
 
 type DeleteMeshTCPRouteResponse struct {
@@ -50,37 +50,37 @@ type DeleteMeshTCPRouteResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeleteMeshTCPRouteResponse) GetContentType() string {
-	if d == nil {
+func (o *DeleteMeshTCPRouteResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeleteMeshTCPRouteResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeleteMeshTCPRouteResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeleteMeshTCPRouteResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeleteMeshTCPRouteResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeleteMeshTCPRouteResponse) GetMeshTCPRouteDeleteSuccessResponse() *shared.MeshTCPRouteDeleteSuccessResponse {
-	if d == nil {
+func (o *DeleteMeshTCPRouteResponse) GetMeshTCPRouteDeleteSuccessResponse() *shared.MeshTCPRouteDeleteSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return d.MeshTCPRouteDeleteSuccessResponse
+	return o.MeshTCPRouteDeleteSuccessResponse
 }
 
-func (d *DeleteMeshTCPRouteResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeleteMeshTCPRouteResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

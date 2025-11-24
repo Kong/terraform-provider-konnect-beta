@@ -32,33 +32,33 @@ func (e EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig) MarshalJS
 }
 
 func (e *EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (e *EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig) GetSchemaRegistry() *SchemaRegistryReference {
-	if e == nil {
+func (o *EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig) GetSchemaRegistry() *SchemaRegistryReference {
+	if o == nil {
 		return nil
 	}
-	return e.SchemaRegistry
+	return o.SchemaRegistry
 }
 
-func (e *EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig) GetKeyValidationAction() *ProduceKeyValidationAction {
-	if e == nil {
+func (o *EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig) GetKeyValidationAction() *ProduceKeyValidationAction {
+	if o == nil {
 		return nil
 	}
-	return e.KeyValidationAction
+	return o.KeyValidationAction
 }
 
-func (e *EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig) GetValueValidationAction() *ProduceValueValidationAction {
-	if e == nil {
+func (o *EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig) GetValueValidationAction() *ProduceValueValidationAction {
+	if o == nil {
 		return nil
 	}
-	return e.ValueValidationAction
+	return o.ValueValidationAction
 }
 
-func (e *EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig) GetType() string {
+func (o *EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig) GetType() string {
 	return "confluent_schema_registry"
 }

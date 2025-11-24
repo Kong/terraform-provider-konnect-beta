@@ -17,8 +17,8 @@ const (
 
 // VirtualClusterReference - A reference to a virtual cluster.
 type VirtualClusterReference struct {
-	VirtualClusterReferenceByID   *VirtualClusterReferenceByID   `queryParam:"inline,name=VirtualClusterReference"`
-	VirtualClusterReferenceByName *VirtualClusterReferenceByName `queryParam:"inline,name=VirtualClusterReference"`
+	VirtualClusterReferenceByID   *VirtualClusterReferenceByID   `queryParam:"inline"`
+	VirtualClusterReferenceByName *VirtualClusterReferenceByName `queryParam:"inline"`
 
 	Type VirtualClusterReferenceType
 }
@@ -43,43 +43,17 @@ func CreateVirtualClusterReferenceVirtualClusterReferenceByName(virtualClusterRe
 
 func (u *VirtualClusterReference) UnmarshalJSON(data []byte) error {
 
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
 	var virtualClusterReferenceByID VirtualClusterReferenceByID = VirtualClusterReferenceByID{}
-	if err := utils.UnmarshalJSON(data, &virtualClusterReferenceByID, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  VirtualClusterReferenceTypeVirtualClusterReferenceByID,
-			Value: &virtualClusterReferenceByID,
-		})
+	if err := utils.UnmarshalJSON(data, &virtualClusterReferenceByID, "", true, true); err == nil {
+		u.VirtualClusterReferenceByID = &virtualClusterReferenceByID
+		u.Type = VirtualClusterReferenceTypeVirtualClusterReferenceByID
+		return nil
 	}
 
 	var virtualClusterReferenceByName VirtualClusterReferenceByName = VirtualClusterReferenceByName{}
-	if err := utils.UnmarshalJSON(data, &virtualClusterReferenceByName, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  VirtualClusterReferenceTypeVirtualClusterReferenceByName,
-			Value: &virtualClusterReferenceByName,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for VirtualClusterReference", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for VirtualClusterReference", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(VirtualClusterReferenceType)
-	switch best.Type {
-	case VirtualClusterReferenceTypeVirtualClusterReferenceByID:
-		u.VirtualClusterReferenceByID = best.Value.(*VirtualClusterReferenceByID)
-		return nil
-	case VirtualClusterReferenceTypeVirtualClusterReferenceByName:
-		u.VirtualClusterReferenceByName = best.Value.(*VirtualClusterReferenceByName)
+	if err := utils.UnmarshalJSON(data, &virtualClusterReferenceByName, "", true, true); err == nil {
+		u.VirtualClusterReferenceByName = &virtualClusterReferenceByName
+		u.Type = VirtualClusterReferenceTypeVirtualClusterReferenceByName
 		return nil
 	}
 

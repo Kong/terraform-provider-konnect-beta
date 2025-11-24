@@ -3,18 +3,18 @@ id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
   docChecksum: 6d6c8cec606073cfc718d4b15c900a01
   docVersion: 2.0.0
-  speakeasyVersion: 1.653.0
-  generationVersion: 2.748.0
+  speakeasyVersion: 1.602.0
+  generationVersion: 2.681.1
   releaseVersion: 0.12.1
-  configChecksum: 6c8b646447ad45c68f441a62cfa6a0c0
+  configChecksum: bbb785cc0b9d8b7549ce3691034bc143
 features:
   terraform:
     additionalDependencies: 0.1.0
-    constsAndDefaults: 0.3.0
-    core: 3.46.8
+    constsAndDefaults: 0.2.1
+    core: 3.44.0
     deepObjectParams: 0.1.0
     deprecations: 2.82.0
-    globalSecurity: 2.82.1
+    globalSecurity: 2.81.12
     globalServerURLs: 2.83.0
     ignores: 2.81.1
     inputOutputModels: 2.83.0
@@ -22,215 +22,148 @@ features:
     nullables: 0.0.0
     retries: 2.81.4
     typeOverrides: 2.81.1
-    unions: 2.82.2
+    unions: 2.81.17
 generatedFiles:
   - .gitattributes
   - USAGE.md
+  - examples/README.md
   - examples/data-sources/konnect-beta_mesh_control_planes/data-source.tf
   - examples/data-sources/konnect-beta_portal/data-source.tf
   - examples/provider/provider.tf
-  - examples/resources/konnect-beta_api/import-by-string-id.tf
   - examples/resources/konnect-beta_api/import.sh
   - examples/resources/konnect-beta_api/resource.tf
-  - examples/resources/konnect-beta_api_document/import-by-string-id.tf
   - examples/resources/konnect-beta_api_document/import.sh
   - examples/resources/konnect-beta_api_document/resource.tf
-  - examples/resources/konnect-beta_api_implementation/import-by-string-id.tf
   - examples/resources/konnect-beta_api_implementation/import.sh
   - examples/resources/konnect-beta_api_implementation/resource.tf
-  - examples/resources/konnect-beta_api_publication/import-by-string-id.tf
   - examples/resources/konnect-beta_api_publication/import.sh
   - examples/resources/konnect-beta_api_publication/resource.tf
-  - examples/resources/konnect-beta_api_specification/import-by-string-id.tf
   - examples/resources/konnect-beta_api_specification/import.sh
   - examples/resources/konnect-beta_api_specification/resource.tf
-  - examples/resources/konnect-beta_api_version/import-by-string-id.tf
   - examples/resources/konnect-beta_api_version/import.sh
   - examples/resources/konnect-beta_api_version/resource.tf
-  - examples/resources/konnect-beta_auth_server/import-by-string-id.tf
   - examples/resources/konnect-beta_auth_server/import.sh
   - examples/resources/konnect-beta_auth_server/resource.tf
-  - examples/resources/konnect-beta_auth_server_claims/import-by-string-id.tf
   - examples/resources/konnect-beta_auth_server_claims/import.sh
   - examples/resources/konnect-beta_auth_server_claims/resource.tf
-  - examples/resources/konnect-beta_auth_server_clients/import-by-string-id.tf
   - examples/resources/konnect-beta_auth_server_clients/import.sh
   - examples/resources/konnect-beta_auth_server_clients/resource.tf
-  - examples/resources/konnect-beta_auth_server_scopes/import-by-string-id.tf
   - examples/resources/konnect-beta_auth_server_scopes/import.sh
   - examples/resources/konnect-beta_auth_server_scopes/resource.tf
-  - examples/resources/konnect-beta_dashboard/import-by-string-id.tf
   - examples/resources/konnect-beta_dashboard/import.sh
   - examples/resources/konnect-beta_dashboard/resource.tf
-  - examples/resources/konnect-beta_event_gateway/import-by-string-id.tf
   - examples/resources/konnect-beta_event_gateway/import.sh
   - examples/resources/konnect-beta_event_gateway/resource.tf
-  - examples/resources/konnect-beta_event_gateway_backend_cluster/import-by-string-id.tf
   - examples/resources/konnect-beta_event_gateway_backend_cluster/import.sh
   - examples/resources/konnect-beta_event_gateway_backend_cluster/resource.tf
-  - examples/resources/konnect-beta_event_gateway_cluster_policy_acls/import-by-string-id.tf
   - examples/resources/konnect-beta_event_gateway_cluster_policy_acls/import.sh
   - examples/resources/konnect-beta_event_gateway_cluster_policy_acls/resource.tf
-  - examples/resources/konnect-beta_event_gateway_consume_policy_decrypt/import-by-string-id.tf
   - examples/resources/konnect-beta_event_gateway_consume_policy_decrypt/import.sh
   - examples/resources/konnect-beta_event_gateway_consume_policy_decrypt/resource.tf
-  - examples/resources/konnect-beta_event_gateway_consume_policy_modify_headers/import-by-string-id.tf
   - examples/resources/konnect-beta_event_gateway_consume_policy_modify_headers/import.sh
   - examples/resources/konnect-beta_event_gateway_consume_policy_modify_headers/resource.tf
-  - examples/resources/konnect-beta_event_gateway_consume_policy_schema_validation/import-by-string-id.tf
   - examples/resources/konnect-beta_event_gateway_consume_policy_schema_validation/import.sh
   - examples/resources/konnect-beta_event_gateway_consume_policy_schema_validation/resource.tf
-  - examples/resources/konnect-beta_event_gateway_consume_policy_skip_record/import-by-string-id.tf
   - examples/resources/konnect-beta_event_gateway_consume_policy_skip_record/import.sh
   - examples/resources/konnect-beta_event_gateway_consume_policy_skip_record/resource.tf
-  - examples/resources/konnect-beta_event_gateway_data_plane_certificate/import-by-string-id.tf
   - examples/resources/konnect-beta_event_gateway_data_plane_certificate/import.sh
   - examples/resources/konnect-beta_event_gateway_data_plane_certificate/resource.tf
-  - examples/resources/konnect-beta_event_gateway_listener/import-by-string-id.tf
   - examples/resources/konnect-beta_event_gateway_listener/import.sh
   - examples/resources/konnect-beta_event_gateway_listener/resource.tf
-  - examples/resources/konnect-beta_event_gateway_listener_policy_forward_to_virtual_cluster/import-by-string-id.tf
   - examples/resources/konnect-beta_event_gateway_listener_policy_forward_to_virtual_cluster/import.sh
   - examples/resources/konnect-beta_event_gateway_listener_policy_forward_to_virtual_cluster/resource.tf
-  - examples/resources/konnect-beta_event_gateway_listener_policy_tls_server/import-by-string-id.tf
   - examples/resources/konnect-beta_event_gateway_listener_policy_tls_server/import.sh
   - examples/resources/konnect-beta_event_gateway_listener_policy_tls_server/resource.tf
-  - examples/resources/konnect-beta_event_gateway_produce_policy_encrypt/import-by-string-id.tf
   - examples/resources/konnect-beta_event_gateway_produce_policy_encrypt/import.sh
   - examples/resources/konnect-beta_event_gateway_produce_policy_encrypt/resource.tf
-  - examples/resources/konnect-beta_event_gateway_produce_policy_modify_headers/import-by-string-id.tf
   - examples/resources/konnect-beta_event_gateway_produce_policy_modify_headers/import.sh
   - examples/resources/konnect-beta_event_gateway_produce_policy_modify_headers/resource.tf
-  - examples/resources/konnect-beta_event_gateway_produce_policy_schema_validation/import-by-string-id.tf
   - examples/resources/konnect-beta_event_gateway_produce_policy_schema_validation/import.sh
   - examples/resources/konnect-beta_event_gateway_produce_policy_schema_validation/resource.tf
-  - examples/resources/konnect-beta_event_gateway_schema_registry/import-by-string-id.tf
   - examples/resources/konnect-beta_event_gateway_schema_registry/import.sh
   - examples/resources/konnect-beta_event_gateway_schema_registry/resource.tf
-  - examples/resources/konnect-beta_event_gateway_static_key/import-by-string-id.tf
   - examples/resources/konnect-beta_event_gateway_static_key/import.sh
   - examples/resources/konnect-beta_event_gateway_static_key/resource.tf
-  - examples/resources/konnect-beta_event_gateway_vault/import-by-string-id.tf
   - examples/resources/konnect-beta_event_gateway_vault/import.sh
   - examples/resources/konnect-beta_event_gateway_vault/resource.tf
-  - examples/resources/konnect-beta_event_gateway_virtual_cluster/import-by-string-id.tf
   - examples/resources/konnect-beta_event_gateway_virtual_cluster/import.sh
   - examples/resources/konnect-beta_event_gateway_virtual_cluster/resource.tf
-  - examples/resources/konnect-beta_mesh/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh/import.sh
   - examples/resources/konnect-beta_mesh/resource.tf
-  - examples/resources/konnect-beta_mesh_access_log/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_access_log/import.sh
   - examples/resources/konnect-beta_mesh_access_log/resource.tf
-  - examples/resources/konnect-beta_mesh_circuit_breaker/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_circuit_breaker/import.sh
   - examples/resources/konnect-beta_mesh_circuit_breaker/resource.tf
-  - examples/resources/konnect-beta_mesh_control_plane/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_control_plane/import.sh
   - examples/resources/konnect-beta_mesh_control_plane/resource.tf
-  - examples/resources/konnect-beta_mesh_external_service/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_external_service/import.sh
   - examples/resources/konnect-beta_mesh_external_service/resource.tf
-  - examples/resources/konnect-beta_mesh_fault_injection/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_fault_injection/import.sh
   - examples/resources/konnect-beta_mesh_fault_injection/resource.tf
-  - examples/resources/konnect-beta_mesh_gateway/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_gateway/import.sh
   - examples/resources/konnect-beta_mesh_gateway/resource.tf
-  - examples/resources/konnect-beta_mesh_global_rate_limit/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_global_rate_limit/import.sh
   - examples/resources/konnect-beta_mesh_global_rate_limit/resource.tf
-  - examples/resources/konnect-beta_mesh_health_check/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_health_check/import.sh
   - examples/resources/konnect-beta_mesh_health_check/resource.tf
-  - examples/resources/konnect-beta_mesh_hostname_generator/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_hostname_generator/import.sh
   - examples/resources/konnect-beta_mesh_hostname_generator/resource.tf
-  - examples/resources/konnect-beta_mesh_http_route/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_http_route/import.sh
   - examples/resources/konnect-beta_mesh_http_route/resource.tf
-  - examples/resources/konnect-beta_mesh_identity/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_identity/import.sh
   - examples/resources/konnect-beta_mesh_identity/resource.tf
-  - examples/resources/konnect-beta_mesh_load_balancing_strategy/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_load_balancing_strategy/import.sh
   - examples/resources/konnect-beta_mesh_load_balancing_strategy/resource.tf
-  - examples/resources/konnect-beta_mesh_metric/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_metric/import.sh
   - examples/resources/konnect-beta_mesh_metric/resource.tf
-  - examples/resources/konnect-beta_mesh_multi_zone_service/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_multi_zone_service/import.sh
   - examples/resources/konnect-beta_mesh_multi_zone_service/resource.tf
-  - examples/resources/konnect-beta_mesh_opa/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_opa/import.sh
   - examples/resources/konnect-beta_mesh_opa/resource.tf
-  - examples/resources/konnect-beta_mesh_passthrough/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_passthrough/import.sh
   - examples/resources/konnect-beta_mesh_passthrough/resource.tf
-  - examples/resources/konnect-beta_mesh_proxy_patch/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_proxy_patch/import.sh
   - examples/resources/konnect-beta_mesh_proxy_patch/resource.tf
-  - examples/resources/konnect-beta_mesh_rate_limit/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_rate_limit/import.sh
   - examples/resources/konnect-beta_mesh_rate_limit/resource.tf
-  - examples/resources/konnect-beta_mesh_retry/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_retry/import.sh
   - examples/resources/konnect-beta_mesh_retry/resource.tf
-  - examples/resources/konnect-beta_mesh_secret/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_secret/import.sh
   - examples/resources/konnect-beta_mesh_secret/resource.tf
-  - examples/resources/konnect-beta_mesh_service/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_service/import.sh
   - examples/resources/konnect-beta_mesh_service/resource.tf
-  - examples/resources/konnect-beta_mesh_tcp_route/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_tcp_route/import.sh
   - examples/resources/konnect-beta_mesh_tcp_route/resource.tf
-  - examples/resources/konnect-beta_mesh_timeout/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_timeout/import.sh
   - examples/resources/konnect-beta_mesh_timeout/resource.tf
-  - examples/resources/konnect-beta_mesh_tls/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_tls/import.sh
   - examples/resources/konnect-beta_mesh_tls/resource.tf
-  - examples/resources/konnect-beta_mesh_trace/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_trace/import.sh
   - examples/resources/konnect-beta_mesh_trace/resource.tf
-  - examples/resources/konnect-beta_mesh_traffic_permission/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_traffic_permission/import.sh
   - examples/resources/konnect-beta_mesh_traffic_permission/resource.tf
-  - examples/resources/konnect-beta_mesh_trust/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_trust/import.sh
   - examples/resources/konnect-beta_mesh_trust/resource.tf
-  - examples/resources/konnect-beta_mesh_zone_egress/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_zone_egress/import.sh
   - examples/resources/konnect-beta_mesh_zone_egress/resource.tf
-  - examples/resources/konnect-beta_mesh_zone_ingress/import-by-string-id.tf
   - examples/resources/konnect-beta_mesh_zone_ingress/import.sh
   - examples/resources/konnect-beta_mesh_zone_ingress/resource.tf
-  - examples/resources/konnect-beta_portal/import-by-string-id.tf
   - examples/resources/konnect-beta_portal/import.sh
   - examples/resources/konnect-beta_portal/resource.tf
-  - examples/resources/konnect-beta_portal_auth/import-by-string-id.tf
   - examples/resources/konnect-beta_portal_auth/import.sh
   - examples/resources/konnect-beta_portal_auth/resource.tf
-  - examples/resources/konnect-beta_portal_custom_domain/import-by-string-id.tf
   - examples/resources/konnect-beta_portal_custom_domain/import.sh
   - examples/resources/konnect-beta_portal_custom_domain/resource.tf
-  - examples/resources/konnect-beta_portal_customization/import-by-string-id.tf
   - examples/resources/konnect-beta_portal_customization/import.sh
   - examples/resources/konnect-beta_portal_customization/resource.tf
-  - examples/resources/konnect-beta_portal_favicon/import-by-string-id.tf
   - examples/resources/konnect-beta_portal_favicon/import.sh
   - examples/resources/konnect-beta_portal_favicon/resource.tf
-  - examples/resources/konnect-beta_portal_logo/import-by-string-id.tf
   - examples/resources/konnect-beta_portal_logo/import.sh
   - examples/resources/konnect-beta_portal_logo/resource.tf
-  - examples/resources/konnect-beta_portal_page/import-by-string-id.tf
   - examples/resources/konnect-beta_portal_page/import.sh
   - examples/resources/konnect-beta_portal_page/resource.tf
-  - examples/resources/konnect-beta_portal_snippet/import-by-string-id.tf
   - examples/resources/konnect-beta_portal_snippet/import.sh
   - examples/resources/konnect-beta_portal_snippet/resource.tf
-  - examples/resources/konnect-beta_portal_team/import-by-string-id.tf
   - examples/resources/konnect-beta_portal_team/import.sh
   - examples/resources/konnect-beta_portal_team/resource.tf
   - go.mod
@@ -1459,8 +1392,6 @@ generatedFiles:
   - internal/sdk/models/shared/zoneingressdeletesuccessresponse.go
   - internal/sdk/models/shared/zoneingressitem.go
   - internal/sdk/models/shared/zoneingresslist.go
-  - internal/sdk/optionalnullable/optionalnullable.go
-  - internal/sdk/optionalnullable/optionalnullable_test.go
   - internal/sdk/pages.go
   - internal/sdk/portalauthsettings.go
   - internal/sdk/portalcustomdomains.go
@@ -1473,6 +1404,7 @@ generatedFiles:
   - internal/sdk/types/bigint.go
   - internal/sdk/types/date.go
   - internal/sdk/types/datetime.go
+  - internal/sdk/types/decimal.go
   - internal/sdk/types/pointers.go
   - internal/sdk/zoneegress.go
   - internal/sdk/zoneingress.go

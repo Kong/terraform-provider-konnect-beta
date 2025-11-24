@@ -16,25 +16,25 @@ type UpdateEventGatewayListenerRequest struct {
 	UpdateEventGatewayListenerRequest *shared.UpdateEventGatewayListenerRequest `request:"mediaType=application/json"`
 }
 
-func (u *UpdateEventGatewayListenerRequest) GetGatewayID() string {
-	if u == nil {
+func (o *UpdateEventGatewayListenerRequest) GetGatewayID() string {
+	if o == nil {
 		return ""
 	}
-	return u.GatewayID
+	return o.GatewayID
 }
 
-func (u *UpdateEventGatewayListenerRequest) GetEventGatewayListenerID() string {
-	if u == nil {
+func (o *UpdateEventGatewayListenerRequest) GetEventGatewayListenerID() string {
+	if o == nil {
 		return ""
 	}
-	return u.EventGatewayListenerID
+	return o.EventGatewayListenerID
 }
 
-func (u *UpdateEventGatewayListenerRequest) GetUpdateEventGatewayListenerRequest() *shared.UpdateEventGatewayListenerRequest {
-	if u == nil {
+func (o *UpdateEventGatewayListenerRequest) GetUpdateEventGatewayListenerRequest() *shared.UpdateEventGatewayListenerRequest {
+	if o == nil {
 		return nil
 	}
-	return u.UpdateEventGatewayListenerRequest
+	return o.UpdateEventGatewayListenerRequest
 }
 
 type UpdateEventGatewayListenerResponse struct {
@@ -54,51 +54,51 @@ type UpdateEventGatewayListenerResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (u *UpdateEventGatewayListenerResponse) GetContentType() string {
-	if u == nil {
+func (o *UpdateEventGatewayListenerResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return u.ContentType
+	return o.ContentType
 }
 
-func (u *UpdateEventGatewayListenerResponse) GetStatusCode() int {
-	if u == nil {
+func (o *UpdateEventGatewayListenerResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return u.StatusCode
+	return o.StatusCode
 }
 
-func (u *UpdateEventGatewayListenerResponse) GetRawResponse() *http.Response {
-	if u == nil {
+func (o *UpdateEventGatewayListenerResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return u.RawResponse
+	return o.RawResponse
 }
 
-func (u *UpdateEventGatewayListenerResponse) GetEventGatewayListener() *shared.EventGatewayListener {
-	if u == nil {
+func (o *UpdateEventGatewayListenerResponse) GetEventGatewayListener() *shared.EventGatewayListener {
+	if o == nil {
 		return nil
 	}
-	return u.EventGatewayListener
+	return o.EventGatewayListener
 }
 
-func (u *UpdateEventGatewayListenerResponse) GetBadRequestError() *shared.BadRequestError {
-	if u == nil {
+func (o *UpdateEventGatewayListenerResponse) GetBadRequestError() *shared.BadRequestError {
+	if o == nil {
 		return nil
 	}
-	return u.BadRequestError
+	return o.BadRequestError
 }
 
-func (u *UpdateEventGatewayListenerResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if u == nil {
+func (o *UpdateEventGatewayListenerResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return u.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (u *UpdateEventGatewayListenerResponse) GetForbiddenError() *shared.ForbiddenError {
-	if u == nil {
+func (o *UpdateEventGatewayListenerResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return u.ForbiddenError
+	return o.ForbiddenError
 }

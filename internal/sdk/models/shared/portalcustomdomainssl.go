@@ -25,50 +25,50 @@ func (p PortalCustomDomainSSL) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PortalCustomDomainSSL) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"domain_verification_method", "verification_status"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *PortalCustomDomainSSL) GetDomainVerificationMethod() PortalCustomDomainVerificationMethod {
-	if p == nil {
+func (o *PortalCustomDomainSSL) GetDomainVerificationMethod() PortalCustomDomainVerificationMethod {
+	if o == nil {
 		return PortalCustomDomainVerificationMethod("")
 	}
-	return p.DomainVerificationMethod
+	return o.DomainVerificationMethod
 }
 
-func (p *PortalCustomDomainSSL) GetVerificationStatus() PortalCustomDomainVerificationStatus {
-	if p == nil {
+func (o *PortalCustomDomainSSL) GetVerificationStatus() PortalCustomDomainVerificationStatus {
+	if o == nil {
 		return PortalCustomDomainVerificationStatus("")
 	}
-	return p.VerificationStatus
+	return o.VerificationStatus
 }
 
-func (p *PortalCustomDomainSSL) GetValidationErrors() []string {
-	if p == nil {
+func (o *PortalCustomDomainSSL) GetValidationErrors() []string {
+	if o == nil {
 		return nil
 	}
-	return p.ValidationErrors
+	return o.ValidationErrors
 }
 
-func (p *PortalCustomDomainSSL) GetUploadedAt() *time.Time {
-	if p == nil {
+func (o *PortalCustomDomainSSL) GetUploadedAt() *time.Time {
+	if o == nil {
 		return nil
 	}
-	return p.UploadedAt
+	return o.UploadedAt
 }
 
-func (p *PortalCustomDomainSSL) GetExpiresAt() *time.Time {
-	if p == nil {
+func (o *PortalCustomDomainSSL) GetExpiresAt() *time.Time {
+	if o == nil {
 		return nil
 	}
-	return p.ExpiresAt
+	return o.ExpiresAt
 }
 
-func (p *PortalCustomDomainSSL) GetSkipCaCheck() *bool {
-	if p == nil {
+func (o *PortalCustomDomainSSL) GetSkipCaCheck() *bool {
+	if o == nil {
 		return nil
 	}
-	return p.SkipCaCheck
+	return o.SkipCaCheck
 }

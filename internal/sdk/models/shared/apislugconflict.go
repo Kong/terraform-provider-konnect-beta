@@ -19,36 +19,36 @@ func (a APISlugConflict) MarshalJSON() ([]byte, error) {
 }
 
 func (a *APISlugConflict) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"status", "title", "instance"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *APISlugConflict) GetStatus() float64 {
-	if a == nil {
+func (o *APISlugConflict) GetStatus() float64 {
+	if o == nil {
 		return 0.0
 	}
-	return a.Status
+	return o.Status
 }
 
-func (a *APISlugConflict) GetTitle() string {
-	if a == nil {
+func (o *APISlugConflict) GetTitle() string {
+	if o == nil {
 		return ""
 	}
-	return a.Title
+	return o.Title
 }
 
-func (a *APISlugConflict) GetType() *string {
-	if a == nil {
+func (o *APISlugConflict) GetType() *string {
+	if o == nil {
 		return nil
 	}
-	return a.Type
+	return o.Type
 }
 
-func (a *APISlugConflict) GetInstance() string {
-	if a == nil {
+func (o *APISlugConflict) GetInstance() string {
+	if o == nil {
 		return ""
 	}
-	return a.Instance
+	return o.Instance
 }

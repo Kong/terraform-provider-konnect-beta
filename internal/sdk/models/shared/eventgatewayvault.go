@@ -35,56 +35,56 @@ func (e EventGatewayVaultEventGatewayKonnectVault) MarshalJSON() ([]byte, error)
 }
 
 func (e *EventGatewayVaultEventGatewayKonnectVault) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"name", "type", "created_at", "updated_at", "id"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (e *EventGatewayVaultEventGatewayKonnectVault) GetName() string {
-	if e == nil {
+func (o *EventGatewayVaultEventGatewayKonnectVault) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return e.Name
+	return o.Name
 }
 
-func (e *EventGatewayVaultEventGatewayKonnectVault) GetType() string {
+func (o *EventGatewayVaultEventGatewayKonnectVault) GetType() string {
 	return "konnect"
 }
 
-func (e *EventGatewayVaultEventGatewayKonnectVault) GetCreatedAt() time.Time {
-	if e == nil {
+func (o *EventGatewayVaultEventGatewayKonnectVault) GetCreatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return e.CreatedAt
+	return o.CreatedAt
 }
 
-func (e *EventGatewayVaultEventGatewayKonnectVault) GetUpdatedAt() time.Time {
-	if e == nil {
+func (o *EventGatewayVaultEventGatewayKonnectVault) GetUpdatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return e.UpdatedAt
+	return o.UpdatedAt
 }
 
-func (e *EventGatewayVaultEventGatewayKonnectVault) GetDescription() *string {
-	if e == nil {
+func (o *EventGatewayVaultEventGatewayKonnectVault) GetDescription() *string {
+	if o == nil {
 		return nil
 	}
-	return e.Description
+	return o.Description
 }
 
-func (e *EventGatewayVaultEventGatewayKonnectVault) GetLabels() map[string]*string {
-	if e == nil {
+func (o *EventGatewayVaultEventGatewayKonnectVault) GetLabels() map[string]*string {
+	if o == nil {
 		return nil
 	}
-	return e.Labels
+	return o.Labels
 }
 
-func (e *EventGatewayVaultEventGatewayKonnectVault) GetID() string {
-	if e == nil {
+func (o *EventGatewayVaultEventGatewayKonnectVault) GetID() string {
+	if o == nil {
 		return ""
 	}
-	return e.ID
+	return o.ID
 }
 
 // EventGatewayEnvVaultConfig - The configuration of the environment vault.
@@ -93,22 +93,11 @@ type EventGatewayEnvVaultConfig struct {
 	Prefix string `json:"prefix"`
 }
 
-func (e EventGatewayEnvVaultConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(e, "", false)
-}
-
-func (e *EventGatewayEnvVaultConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"prefix"}); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (e *EventGatewayEnvVaultConfig) GetPrefix() string {
-	if e == nil {
+func (o *EventGatewayEnvVaultConfig) GetPrefix() string {
+	if o == nil {
 		return ""
 	}
-	return e.Prefix
+	return o.Prefix
 }
 
 // EventGatewayVaultEventGatewayEnvVault - An environment vault.
@@ -138,63 +127,63 @@ func (e EventGatewayVaultEventGatewayEnvVault) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayVaultEventGatewayEnvVault) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"name", "type", "created_at", "updated_at", "config", "id"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (e *EventGatewayVaultEventGatewayEnvVault) GetName() string {
-	if e == nil {
+func (o *EventGatewayVaultEventGatewayEnvVault) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return e.Name
+	return o.Name
 }
 
-func (e *EventGatewayVaultEventGatewayEnvVault) GetType() string {
+func (o *EventGatewayVaultEventGatewayEnvVault) GetType() string {
 	return "env"
 }
 
-func (e *EventGatewayVaultEventGatewayEnvVault) GetCreatedAt() time.Time {
-	if e == nil {
+func (o *EventGatewayVaultEventGatewayEnvVault) GetCreatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return e.CreatedAt
+	return o.CreatedAt
 }
 
-func (e *EventGatewayVaultEventGatewayEnvVault) GetUpdatedAt() time.Time {
-	if e == nil {
+func (o *EventGatewayVaultEventGatewayEnvVault) GetUpdatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return e.UpdatedAt
+	return o.UpdatedAt
 }
 
-func (e *EventGatewayVaultEventGatewayEnvVault) GetDescription() *string {
-	if e == nil {
+func (o *EventGatewayVaultEventGatewayEnvVault) GetDescription() *string {
+	if o == nil {
 		return nil
 	}
-	return e.Description
+	return o.Description
 }
 
-func (e *EventGatewayVaultEventGatewayEnvVault) GetLabels() map[string]*string {
-	if e == nil {
+func (o *EventGatewayVaultEventGatewayEnvVault) GetLabels() map[string]*string {
+	if o == nil {
 		return nil
 	}
-	return e.Labels
+	return o.Labels
 }
 
-func (e *EventGatewayVaultEventGatewayEnvVault) GetConfig() EventGatewayEnvVaultConfig {
-	if e == nil {
+func (o *EventGatewayVaultEventGatewayEnvVault) GetConfig() EventGatewayEnvVaultConfig {
+	if o == nil {
 		return EventGatewayEnvVaultConfig{}
 	}
-	return e.Config
+	return o.Config
 }
 
-func (e *EventGatewayVaultEventGatewayEnvVault) GetID() string {
-	if e == nil {
+func (o *EventGatewayVaultEventGatewayEnvVault) GetID() string {
+	if o == nil {
 		return ""
 	}
-	return e.ID
+	return o.ID
 }
 
 type EventGatewayVaultType string
@@ -205,8 +194,8 @@ const (
 )
 
 type EventGatewayVault struct {
-	EventGatewayVaultEventGatewayEnvVault     *EventGatewayVaultEventGatewayEnvVault     `queryParam:"inline,name=EventGatewayVault"`
-	EventGatewayVaultEventGatewayKonnectVault *EventGatewayVaultEventGatewayKonnectVault `queryParam:"inline,name=EventGatewayVault"`
+	EventGatewayVaultEventGatewayEnvVault     *EventGatewayVaultEventGatewayEnvVault     `queryParam:"inline"`
+	EventGatewayVaultEventGatewayKonnectVault *EventGatewayVaultEventGatewayKonnectVault `queryParam:"inline"`
 
 	Type EventGatewayVaultType
 }
@@ -243,7 +232,7 @@ func (u *EventGatewayVault) UnmarshalJSON(data []byte) error {
 	switch dis.Type {
 	case "env":
 		eventGatewayVaultEventGatewayEnvVault := new(EventGatewayVaultEventGatewayEnvVault)
-		if err := utils.UnmarshalJSON(data, &eventGatewayVaultEventGatewayEnvVault, "", true, nil); err != nil {
+		if err := utils.UnmarshalJSON(data, &eventGatewayVaultEventGatewayEnvVault, "", true, false); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == env) type EventGatewayVaultEventGatewayEnvVault within EventGatewayVault: %w", string(data), err)
 		}
 
@@ -252,7 +241,7 @@ func (u *EventGatewayVault) UnmarshalJSON(data []byte) error {
 		return nil
 	case "konnect":
 		eventGatewayVaultEventGatewayKonnectVault := new(EventGatewayVaultEventGatewayKonnectVault)
-		if err := utils.UnmarshalJSON(data, &eventGatewayVaultEventGatewayKonnectVault, "", true, nil); err != nil {
+		if err := utils.UnmarshalJSON(data, &eventGatewayVaultEventGatewayKonnectVault, "", true, false); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == konnect) type EventGatewayVaultEventGatewayKonnectVault within EventGatewayVault: %w", string(data), err)
 		}
 

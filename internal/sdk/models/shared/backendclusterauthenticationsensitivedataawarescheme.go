@@ -18,9 +18,9 @@ const (
 )
 
 type BackendClusterAuthenticationSensitiveDataAwareScheme struct {
-	BackendClusterAuthenticationAnonymous                   *BackendClusterAuthenticationAnonymous                   `queryParam:"inline,name=BackendClusterAuthenticationSensitiveDataAwareScheme"`
-	BackendClusterAuthenticationSaslPlainSensitiveDataAware *BackendClusterAuthenticationSaslPlainSensitiveDataAware `queryParam:"inline,name=BackendClusterAuthenticationSensitiveDataAwareScheme"`
-	BackendClusterAuthenticationSaslScramSensitiveDataAware *BackendClusterAuthenticationSaslScramSensitiveDataAware `queryParam:"inline,name=BackendClusterAuthenticationSensitiveDataAwareScheme"`
+	BackendClusterAuthenticationAnonymous                   *BackendClusterAuthenticationAnonymous                   `queryParam:"inline"`
+	BackendClusterAuthenticationSaslPlainSensitiveDataAware *BackendClusterAuthenticationSaslPlainSensitiveDataAware `queryParam:"inline"`
+	BackendClusterAuthenticationSaslScramSensitiveDataAware *BackendClusterAuthenticationSaslScramSensitiveDataAware `queryParam:"inline"`
 
 	Type BackendClusterAuthenticationSensitiveDataAwareSchemeType
 }
@@ -66,7 +66,7 @@ func (u *BackendClusterAuthenticationSensitiveDataAwareScheme) UnmarshalJSON(dat
 	switch dis.Type {
 	case "anonymous":
 		backendClusterAuthenticationAnonymous := new(BackendClusterAuthenticationAnonymous)
-		if err := utils.UnmarshalJSON(data, &backendClusterAuthenticationAnonymous, "", true, nil); err != nil {
+		if err := utils.UnmarshalJSON(data, &backendClusterAuthenticationAnonymous, "", true, false); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == anonymous) type BackendClusterAuthenticationAnonymous within BackendClusterAuthenticationSensitiveDataAwareScheme: %w", string(data), err)
 		}
 
@@ -75,7 +75,7 @@ func (u *BackendClusterAuthenticationSensitiveDataAwareScheme) UnmarshalJSON(dat
 		return nil
 	case "sasl_plain":
 		backendClusterAuthenticationSaslPlainSensitiveDataAware := new(BackendClusterAuthenticationSaslPlainSensitiveDataAware)
-		if err := utils.UnmarshalJSON(data, &backendClusterAuthenticationSaslPlainSensitiveDataAware, "", true, nil); err != nil {
+		if err := utils.UnmarshalJSON(data, &backendClusterAuthenticationSaslPlainSensitiveDataAware, "", true, false); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == sasl_plain) type BackendClusterAuthenticationSaslPlainSensitiveDataAware within BackendClusterAuthenticationSensitiveDataAwareScheme: %w", string(data), err)
 		}
 
@@ -84,7 +84,7 @@ func (u *BackendClusterAuthenticationSensitiveDataAwareScheme) UnmarshalJSON(dat
 		return nil
 	case "sasl_scram":
 		backendClusterAuthenticationSaslScramSensitiveDataAware := new(BackendClusterAuthenticationSaslScramSensitiveDataAware)
-		if err := utils.UnmarshalJSON(data, &backendClusterAuthenticationSaslScramSensitiveDataAware, "", true, nil); err != nil {
+		if err := utils.UnmarshalJSON(data, &backendClusterAuthenticationSaslScramSensitiveDataAware, "", true, false); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == sasl_scram) type BackendClusterAuthenticationSaslScramSensitiveDataAware within BackendClusterAuthenticationSensitiveDataAwareScheme: %w", string(data), err)
 		}
 

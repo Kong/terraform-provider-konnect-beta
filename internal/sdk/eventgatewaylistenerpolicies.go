@@ -63,7 +63,7 @@ func (s *EventGatewayListenerPolicies) GetEventGatewayListenerPolicyTLSServer(ct
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-event-gateway-listener-policy-tls-server",
-		OAuth2Scopes:     nil,
+		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -337,7 +337,7 @@ func (s *EventGatewayListenerPolicies) UpdateEventGatewayListenerPolicyTLSServer
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-event-gateway-listener-policy-tls-server",
-		OAuth2Scopes:     nil,
+		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayTLSListenerSensitiveDataAwarePolicy", "json", `request:"mediaType=application/json"`)
@@ -617,7 +617,7 @@ func (s *EventGatewayListenerPolicies) DeleteEventGatewayListenerPolicyTLSServer
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-event-gateway-listener-policy-tls-server",
-		OAuth2Scopes:     nil,
+		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -866,7 +866,7 @@ func (s *EventGatewayListenerPolicies) GetEventGatewayListenerPolicyForwardToVir
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-event-gateway-listener-policy-forward-to_virtual_cluster",
-		OAuth2Scopes:     nil,
+		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -1140,7 +1140,7 @@ func (s *EventGatewayListenerPolicies) UpdateEventGatewayListenerPolicyForwardTo
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-event-gateway-listener-policy-forward-to_virtual_cluster",
-		OAuth2Scopes:     nil,
+		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "ForwardToVirtualClusterPolicy", "json", `request:"mediaType=application/json"`)
@@ -1420,7 +1420,7 @@ func (s *EventGatewayListenerPolicies) DeleteEventGatewayListenerPolicyForwardTo
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-event-gateway-listener-policy-forward-to_virtual_cluster",
-		OAuth2Scopes:     nil,
+		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -1669,7 +1669,7 @@ func (s *EventGatewayListenerPolicies) CreateEventGatewayListenerPolicyTLSServer
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-event-gateway-listener-policy-tls-server",
-		OAuth2Scopes:     nil,
+		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EventGatewayTLSListenerPolicy", "json", `request:"mediaType=application/json"`)
@@ -1950,7 +1950,7 @@ func (s *EventGatewayListenerPolicies) CreateEventGatewayListenerPolicyForwardTo
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-event-gateway-listener-policy-forward-to_virtual_cluster",
-		OAuth2Scopes:     nil,
+		OAuth2Scopes:     []string{},
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "ForwardToVirtualClusterPolicy", "json", `request:"mediaType=application/json"`)

@@ -47,106 +47,106 @@ func (c Client) MarshalJSON() ([]byte, error) {
 }
 
 func (c *Client) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "name", "grant_types", "redirect_uris", "allow_scopes", "labels", "response_types", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *Client) GetID() string {
-	if c == nil {
+func (o *Client) GetID() string {
+	if o == nil {
 		return ""
 	}
-	return c.ID
+	return o.ID
 }
 
-func (c *Client) GetName() string {
-	if c == nil {
+func (o *Client) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return c.Name
+	return o.Name
 }
 
-func (c *Client) GetGrantTypes() []GrantType {
-	if c == nil {
+func (o *Client) GetGrantTypes() []GrantType {
+	if o == nil {
 		return []GrantType{}
 	}
-	return c.GrantTypes
+	return o.GrantTypes
 }
 
-func (c *Client) GetRedirectUris() []string {
-	if c == nil {
+func (o *Client) GetRedirectUris() []string {
+	if o == nil {
 		return []string{}
 	}
-	return c.RedirectUris
+	return o.RedirectUris
 }
 
-func (c *Client) GetLoginURI() *string {
-	if c == nil {
+func (o *Client) GetLoginURI() *string {
+	if o == nil {
 		return nil
 	}
-	return c.LoginURI
+	return o.LoginURI
 }
 
-func (c *Client) GetAccessTokenDuration() *int64 {
-	if c == nil {
+func (o *Client) GetAccessTokenDuration() *int64 {
+	if o == nil {
 		return nil
 	}
-	return c.AccessTokenDuration
+	return o.AccessTokenDuration
 }
 
-func (c *Client) GetIDTokenDuration() *int64 {
-	if c == nil {
+func (o *Client) GetIDTokenDuration() *int64 {
+	if o == nil {
 		return nil
 	}
-	return c.IDTokenDuration
+	return o.IDTokenDuration
 }
 
-func (c *Client) GetAllowAllScopes() *bool {
-	if c == nil {
+func (o *Client) GetAllowAllScopes() *bool {
+	if o == nil {
 		return nil
 	}
-	return c.AllowAllScopes
+	return o.AllowAllScopes
 }
 
-func (c *Client) GetAllowScopes() []string {
-	if c == nil {
+func (o *Client) GetAllowScopes() []string {
+	if o == nil {
 		return []string{}
 	}
-	return c.AllowScopes
+	return o.AllowScopes
 }
 
-func (c *Client) GetLabels() map[string]*string {
-	if c == nil {
+func (o *Client) GetLabels() map[string]*string {
+	if o == nil {
 		return map[string]*string{}
 	}
-	return c.Labels
+	return o.Labels
 }
 
-func (c *Client) GetResponseTypes() []ResponseType {
-	if c == nil {
+func (o *Client) GetResponseTypes() []ResponseType {
+	if o == nil {
 		return []ResponseType{}
 	}
-	return c.ResponseTypes
+	return o.ResponseTypes
 }
 
-func (c *Client) GetTokenEndpointAuthMethod() *TokenEndpointAuthMethod {
-	if c == nil {
+func (o *Client) GetTokenEndpointAuthMethod() *TokenEndpointAuthMethod {
+	if o == nil {
 		return nil
 	}
-	return c.TokenEndpointAuthMethod
+	return o.TokenEndpointAuthMethod
 }
 
-func (c *Client) GetCreatedAt() time.Time {
-	if c == nil {
+func (o *Client) GetCreatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return c.CreatedAt
+	return o.CreatedAt
 }
 
-func (c *Client) GetUpdatedAt() time.Time {
-	if c == nil {
+func (o *Client) GetUpdatedAt() time.Time {
+	if o == nil {
 		return time.Time{}
 	}
-	return c.UpdatedAt
+	return o.UpdatedAt
 }

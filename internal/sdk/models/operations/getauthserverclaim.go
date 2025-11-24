@@ -14,18 +14,18 @@ type GetAuthServerClaimRequest struct {
 	ClaimID string `pathParam:"style=simple,explode=false,name=claimId"`
 }
 
-func (g *GetAuthServerClaimRequest) GetAuthServerID() string {
-	if g == nil {
+func (o *GetAuthServerClaimRequest) GetAuthServerID() string {
+	if o == nil {
 		return ""
 	}
-	return g.AuthServerID
+	return o.AuthServerID
 }
 
-func (g *GetAuthServerClaimRequest) GetClaimID() string {
-	if g == nil {
+func (o *GetAuthServerClaimRequest) GetClaimID() string {
+	if o == nil {
 		return ""
 	}
-	return g.ClaimID
+	return o.ClaimID
 }
 
 type GetAuthServerClaimResponse struct {
@@ -41,37 +41,37 @@ type GetAuthServerClaimResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (g *GetAuthServerClaimResponse) GetContentType() string {
-	if g == nil {
+func (o *GetAuthServerClaimResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetAuthServerClaimResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetAuthServerClaimResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetAuthServerClaimResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetAuthServerClaimResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetAuthServerClaimResponse) GetClaim() *shared.Claim {
-	if g == nil {
+func (o *GetAuthServerClaimResponse) GetClaim() *shared.Claim {
+	if o == nil {
 		return nil
 	}
-	return g.Claim
+	return o.Claim
 }
 
-func (g *GetAuthServerClaimResponse) GetNotFoundError() *shared.NotFoundError {
-	if g == nil {
+func (o *GetAuthServerClaimResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return g.NotFoundError
+	return o.NotFoundError
 }

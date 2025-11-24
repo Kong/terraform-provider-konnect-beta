@@ -16,25 +16,25 @@ type DeleteSecretRequest struct {
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (d *DeleteSecretRequest) GetCpID() string {
-	if d == nil {
+func (o *DeleteSecretRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return d.CpID
+	return o.CpID
 }
 
-func (d *DeleteSecretRequest) GetMesh() string {
-	if d == nil {
+func (o *DeleteSecretRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return d.Mesh
+	return o.Mesh
 }
 
-func (d *DeleteSecretRequest) GetName() string {
-	if d == nil {
+func (o *DeleteSecretRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return d.Name
+	return o.Name
 }
 
 type DeleteSecretResponse struct {
@@ -50,37 +50,37 @@ type DeleteSecretResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeleteSecretResponse) GetContentType() string {
-	if d == nil {
+func (o *DeleteSecretResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeleteSecretResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeleteSecretResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeleteSecretResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeleteSecretResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeleteSecretResponse) GetSecretDeleteSuccessResponse() *shared.SecretDeleteSuccessResponse {
-	if d == nil {
+func (o *DeleteSecretResponse) GetSecretDeleteSuccessResponse() *shared.SecretDeleteSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return d.SecretDeleteSuccessResponse
+	return o.SecretDeleteSuccessResponse
 }
 
-func (d *DeleteSecretResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeleteSecretResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

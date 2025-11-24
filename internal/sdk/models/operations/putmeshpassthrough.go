@@ -18,32 +18,32 @@ type PutMeshPassthroughRequest struct {
 	MeshPassthroughItem shared.MeshPassthroughItemInput `request:"mediaType=application/json"`
 }
 
-func (p *PutMeshPassthroughRequest) GetCpID() string {
-	if p == nil {
+func (o *PutMeshPassthroughRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return p.CpID
+	return o.CpID
 }
 
-func (p *PutMeshPassthroughRequest) GetMesh() string {
-	if p == nil {
+func (o *PutMeshPassthroughRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return p.Mesh
+	return o.Mesh
 }
 
-func (p *PutMeshPassthroughRequest) GetName() string {
-	if p == nil {
+func (o *PutMeshPassthroughRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return p.Name
+	return o.Name
 }
 
-func (p *PutMeshPassthroughRequest) GetMeshPassthroughItem() shared.MeshPassthroughItemInput {
-	if p == nil {
+func (o *PutMeshPassthroughRequest) GetMeshPassthroughItem() shared.MeshPassthroughItemInput {
+	if o == nil {
 		return shared.MeshPassthroughItemInput{}
 	}
-	return p.MeshPassthroughItem
+	return o.MeshPassthroughItem
 }
 
 type PutMeshPassthroughResponse struct {
@@ -57,30 +57,30 @@ type PutMeshPassthroughResponse struct {
 	MeshPassthroughCreateOrUpdateSuccessResponse *shared.MeshPassthroughCreateOrUpdateSuccessResponse
 }
 
-func (p *PutMeshPassthroughResponse) GetContentType() string {
-	if p == nil {
+func (o *PutMeshPassthroughResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return p.ContentType
+	return o.ContentType
 }
 
-func (p *PutMeshPassthroughResponse) GetStatusCode() int {
-	if p == nil {
+func (o *PutMeshPassthroughResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return p.StatusCode
+	return o.StatusCode
 }
 
-func (p *PutMeshPassthroughResponse) GetRawResponse() *http.Response {
-	if p == nil {
+func (o *PutMeshPassthroughResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return p.RawResponse
+	return o.RawResponse
 }
 
-func (p *PutMeshPassthroughResponse) GetMeshPassthroughCreateOrUpdateSuccessResponse() *shared.MeshPassthroughCreateOrUpdateSuccessResponse {
-	if p == nil {
+func (o *PutMeshPassthroughResponse) GetMeshPassthroughCreateOrUpdateSuccessResponse() *shared.MeshPassthroughCreateOrUpdateSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return p.MeshPassthroughCreateOrUpdateSuccessResponse
+	return o.MeshPassthroughCreateOrUpdateSuccessResponse
 }

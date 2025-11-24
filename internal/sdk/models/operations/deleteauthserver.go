@@ -49,24 +49,24 @@ func (d DeleteAuthServerRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeleteAuthServerRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"authServerId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (d *DeleteAuthServerRequest) GetAuthServerID() string {
-	if d == nil {
+func (o *DeleteAuthServerRequest) GetAuthServerID() string {
+	if o == nil {
 		return ""
 	}
-	return d.AuthServerID
+	return o.AuthServerID
 }
 
-func (d *DeleteAuthServerRequest) GetForceDestroy() *DeleteAuthServerQueryParamForce {
-	if d == nil {
+func (o *DeleteAuthServerRequest) GetForceDestroy() *DeleteAuthServerQueryParamForce {
+	if o == nil {
 		return nil
 	}
-	return d.ForceDestroy
+	return o.ForceDestroy
 }
 
 type DeleteAuthServerResponse struct {
@@ -82,37 +82,37 @@ type DeleteAuthServerResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeleteAuthServerResponse) GetContentType() string {
-	if d == nil {
+func (o *DeleteAuthServerResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeleteAuthServerResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeleteAuthServerResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeleteAuthServerResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeleteAuthServerResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeleteAuthServerResponse) GetBadRequestError() *shared.BadRequestError {
-	if d == nil {
+func (o *DeleteAuthServerResponse) GetBadRequestError() *shared.BadRequestError {
+	if o == nil {
 		return nil
 	}
-	return d.BadRequestError
+	return o.BadRequestError
 }
 
-func (d *DeleteAuthServerResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeleteAuthServerResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

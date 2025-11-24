@@ -18,8 +18,8 @@ const (
 
 // EventGatewayModifyHeaderAction - An action that modifies a header.
 type EventGatewayModifyHeaderAction struct {
-	EventGatewayModifyHeaderRemoveAction *EventGatewayModifyHeaderRemoveAction `queryParam:"inline,name=EventGatewayModifyHeaderAction"`
-	EventGatewayModifyHeaderSetAction    *EventGatewayModifyHeaderSetAction    `queryParam:"inline,name=EventGatewayModifyHeaderAction"`
+	EventGatewayModifyHeaderRemoveAction *EventGatewayModifyHeaderRemoveAction `queryParam:"inline"`
+	EventGatewayModifyHeaderSetAction    *EventGatewayModifyHeaderSetAction    `queryParam:"inline"`
 
 	Type EventGatewayModifyHeaderActionType
 }
@@ -56,7 +56,7 @@ func (u *EventGatewayModifyHeaderAction) UnmarshalJSON(data []byte) error {
 	switch dis.Op {
 	case "remove":
 		eventGatewayModifyHeaderRemoveAction := new(EventGatewayModifyHeaderRemoveAction)
-		if err := utils.UnmarshalJSON(data, &eventGatewayModifyHeaderRemoveAction, "", true, nil); err != nil {
+		if err := utils.UnmarshalJSON(data, &eventGatewayModifyHeaderRemoveAction, "", true, false); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Op == remove) type EventGatewayModifyHeaderRemoveAction within EventGatewayModifyHeaderAction: %w", string(data), err)
 		}
 
@@ -65,7 +65,7 @@ func (u *EventGatewayModifyHeaderAction) UnmarshalJSON(data []byte) error {
 		return nil
 	case "set":
 		eventGatewayModifyHeaderSetAction := new(EventGatewayModifyHeaderSetAction)
-		if err := utils.UnmarshalJSON(data, &eventGatewayModifyHeaderSetAction, "", true, nil); err != nil {
+		if err := utils.UnmarshalJSON(data, &eventGatewayModifyHeaderSetAction, "", true, false); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Op == set) type EventGatewayModifyHeaderSetAction within EventGatewayModifyHeaderAction: %w", string(data), err)
 		}
 

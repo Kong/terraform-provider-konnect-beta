@@ -12,22 +12,11 @@ type Config struct {
 	Prefix string `json:"prefix"`
 }
 
-func (c Config) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *Config) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"prefix"}); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *Config) GetPrefix() string {
-	if c == nil {
+func (o *Config) GetPrefix() string {
+	if o == nil {
 		return ""
 	}
-	return c.Prefix
+	return o.Prefix
 }
 
 // EventGatewayEnvVault - An environment vault.
@@ -51,40 +40,40 @@ func (e EventGatewayEnvVault) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayEnvVault) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"name", "type", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (e *EventGatewayEnvVault) GetName() string {
-	if e == nil {
+func (o *EventGatewayEnvVault) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return e.Name
+	return o.Name
 }
 
-func (e *EventGatewayEnvVault) GetType() string {
+func (o *EventGatewayEnvVault) GetType() string {
 	return "env"
 }
 
-func (e *EventGatewayEnvVault) GetDescription() *string {
-	if e == nil {
+func (o *EventGatewayEnvVault) GetDescription() *string {
+	if o == nil {
 		return nil
 	}
-	return e.Description
+	return o.Description
 }
 
-func (e *EventGatewayEnvVault) GetLabels() map[string]*string {
-	if e == nil {
+func (o *EventGatewayEnvVault) GetLabels() map[string]*string {
+	if o == nil {
 		return nil
 	}
-	return e.Labels
+	return o.Labels
 }
 
-func (e *EventGatewayEnvVault) GetConfig() Config {
-	if e == nil {
+func (o *EventGatewayEnvVault) GetConfig() Config {
+	if o == nil {
 		return Config{}
 	}
-	return e.Config
+	return o.Config
 }

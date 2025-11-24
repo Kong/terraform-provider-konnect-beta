@@ -18,32 +18,32 @@ type PutMeshTLSRequest struct {
 	MeshTLSItem shared.MeshTLSItemInput `request:"mediaType=application/json"`
 }
 
-func (p *PutMeshTLSRequest) GetCpID() string {
-	if p == nil {
+func (o *PutMeshTLSRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return p.CpID
+	return o.CpID
 }
 
-func (p *PutMeshTLSRequest) GetMesh() string {
-	if p == nil {
+func (o *PutMeshTLSRequest) GetMesh() string {
+	if o == nil {
 		return ""
 	}
-	return p.Mesh
+	return o.Mesh
 }
 
-func (p *PutMeshTLSRequest) GetName() string {
-	if p == nil {
+func (o *PutMeshTLSRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return p.Name
+	return o.Name
 }
 
-func (p *PutMeshTLSRequest) GetMeshTLSItem() shared.MeshTLSItemInput {
-	if p == nil {
+func (o *PutMeshTLSRequest) GetMeshTLSItem() shared.MeshTLSItemInput {
+	if o == nil {
 		return shared.MeshTLSItemInput{}
 	}
-	return p.MeshTLSItem
+	return o.MeshTLSItem
 }
 
 type PutMeshTLSResponse struct {
@@ -57,30 +57,30 @@ type PutMeshTLSResponse struct {
 	MeshTLSCreateOrUpdateSuccessResponse *shared.MeshTLSCreateOrUpdateSuccessResponse
 }
 
-func (p *PutMeshTLSResponse) GetContentType() string {
-	if p == nil {
+func (o *PutMeshTLSResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return p.ContentType
+	return o.ContentType
 }
 
-func (p *PutMeshTLSResponse) GetStatusCode() int {
-	if p == nil {
+func (o *PutMeshTLSResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return p.StatusCode
+	return o.StatusCode
 }
 
-func (p *PutMeshTLSResponse) GetRawResponse() *http.Response {
-	if p == nil {
+func (o *PutMeshTLSResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return p.RawResponse
+	return o.RawResponse
 }
 
-func (p *PutMeshTLSResponse) GetMeshTLSCreateOrUpdateSuccessResponse() *shared.MeshTLSCreateOrUpdateSuccessResponse {
-	if p == nil {
+func (o *PutMeshTLSResponse) GetMeshTLSCreateOrUpdateSuccessResponse() *shared.MeshTLSCreateOrUpdateSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return p.MeshTLSCreateOrUpdateSuccessResponse
+	return o.MeshTLSCreateOrUpdateSuccessResponse
 }

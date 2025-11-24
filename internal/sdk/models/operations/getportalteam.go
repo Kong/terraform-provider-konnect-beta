@@ -14,18 +14,18 @@ type GetPortalTeamRequest struct {
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 }
 
-func (g *GetPortalTeamRequest) GetTeamID() string {
-	if g == nil {
+func (o *GetPortalTeamRequest) GetTeamID() string {
+	if o == nil {
 		return ""
 	}
-	return g.TeamID
+	return o.TeamID
 }
 
-func (g *GetPortalTeamRequest) GetPortalID() string {
-	if g == nil {
+func (o *GetPortalTeamRequest) GetPortalID() string {
+	if o == nil {
 		return ""
 	}
-	return g.PortalID
+	return o.PortalID
 }
 
 type GetPortalTeamResponse struct {
@@ -45,51 +45,51 @@ type GetPortalTeamResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (g *GetPortalTeamResponse) GetContentType() string {
-	if g == nil {
+func (o *GetPortalTeamResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetPortalTeamResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetPortalTeamResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetPortalTeamResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetPortalTeamResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetPortalTeamResponse) GetPortalTeamResponse() *shared.PortalTeamResponse {
-	if g == nil {
+func (o *GetPortalTeamResponse) GetPortalTeamResponse() *shared.PortalTeamResponse {
+	if o == nil {
 		return nil
 	}
-	return g.PortalTeamResponse
+	return o.PortalTeamResponse
 }
 
-func (g *GetPortalTeamResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if g == nil {
+func (o *GetPortalTeamResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return g.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (g *GetPortalTeamResponse) GetForbiddenError() *shared.ForbiddenError {
-	if g == nil {
+func (o *GetPortalTeamResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return g.ForbiddenError
+	return o.ForbiddenError
 }
 
-func (g *GetPortalTeamResponse) GetNotFoundError() *shared.NotFoundError {
-	if g == nil {
+func (o *GetPortalTeamResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return g.NotFoundError
+	return o.NotFoundError
 }

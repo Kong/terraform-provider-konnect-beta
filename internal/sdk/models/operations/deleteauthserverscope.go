@@ -14,18 +14,18 @@ type DeleteAuthServerScopeRequest struct {
 	ScopeID string `pathParam:"style=simple,explode=false,name=scopeId"`
 }
 
-func (d *DeleteAuthServerScopeRequest) GetAuthServerID() string {
-	if d == nil {
+func (o *DeleteAuthServerScopeRequest) GetAuthServerID() string {
+	if o == nil {
 		return ""
 	}
-	return d.AuthServerID
+	return o.AuthServerID
 }
 
-func (d *DeleteAuthServerScopeRequest) GetScopeID() string {
-	if d == nil {
+func (o *DeleteAuthServerScopeRequest) GetScopeID() string {
+	if o == nil {
 		return ""
 	}
-	return d.ScopeID
+	return o.ScopeID
 }
 
 type DeleteAuthServerScopeResponse struct {
@@ -39,30 +39,30 @@ type DeleteAuthServerScopeResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (d *DeleteAuthServerScopeResponse) GetContentType() string {
-	if d == nil {
+func (o *DeleteAuthServerScopeResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return d.ContentType
+	return o.ContentType
 }
 
-func (d *DeleteAuthServerScopeResponse) GetStatusCode() int {
-	if d == nil {
+func (o *DeleteAuthServerScopeResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return d.StatusCode
+	return o.StatusCode
 }
 
-func (d *DeleteAuthServerScopeResponse) GetRawResponse() *http.Response {
-	if d == nil {
+func (o *DeleteAuthServerScopeResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return d.RawResponse
+	return o.RawResponse
 }
 
-func (d *DeleteAuthServerScopeResponse) GetNotFoundError() *shared.NotFoundError {
-	if d == nil {
+func (o *DeleteAuthServerScopeResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return d.NotFoundError
+	return o.NotFoundError
 }

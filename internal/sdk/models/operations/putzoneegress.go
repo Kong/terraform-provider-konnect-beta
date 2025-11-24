@@ -16,25 +16,25 @@ type PutZoneEgressRequest struct {
 	ZoneEgressItem shared.ZoneEgressItem `request:"mediaType=application/json"`
 }
 
-func (p *PutZoneEgressRequest) GetCpID() string {
-	if p == nil {
+func (o *PutZoneEgressRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return p.CpID
+	return o.CpID
 }
 
-func (p *PutZoneEgressRequest) GetName() string {
-	if p == nil {
+func (o *PutZoneEgressRequest) GetName() string {
+	if o == nil {
 		return ""
 	}
-	return p.Name
+	return o.Name
 }
 
-func (p *PutZoneEgressRequest) GetZoneEgressItem() shared.ZoneEgressItem {
-	if p == nil {
+func (o *PutZoneEgressRequest) GetZoneEgressItem() shared.ZoneEgressItem {
+	if o == nil {
 		return shared.ZoneEgressItem{}
 	}
-	return p.ZoneEgressItem
+	return o.ZoneEgressItem
 }
 
 type PutZoneEgressResponse struct {
@@ -48,30 +48,30 @@ type PutZoneEgressResponse struct {
 	ZoneEgressCreateOrUpdateSuccessResponse *shared.ZoneEgressCreateOrUpdateSuccessResponse
 }
 
-func (p *PutZoneEgressResponse) GetContentType() string {
-	if p == nil {
+func (o *PutZoneEgressResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return p.ContentType
+	return o.ContentType
 }
 
-func (p *PutZoneEgressResponse) GetStatusCode() int {
-	if p == nil {
+func (o *PutZoneEgressResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return p.StatusCode
+	return o.StatusCode
 }
 
-func (p *PutZoneEgressResponse) GetRawResponse() *http.Response {
-	if p == nil {
+func (o *PutZoneEgressResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return p.RawResponse
+	return o.RawResponse
 }
 
-func (p *PutZoneEgressResponse) GetZoneEgressCreateOrUpdateSuccessResponse() *shared.ZoneEgressCreateOrUpdateSuccessResponse {
-	if p == nil {
+func (o *PutZoneEgressResponse) GetZoneEgressCreateOrUpdateSuccessResponse() *shared.ZoneEgressCreateOrUpdateSuccessResponse {
+	if o == nil {
 		return nil
 	}
-	return p.ZoneEgressCreateOrUpdateSuccessResponse
+	return o.ZoneEgressCreateOrUpdateSuccessResponse
 }

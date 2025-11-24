@@ -12,11 +12,11 @@ type GetMeshControlPlaneRequest struct {
 	CpID string `pathParam:"style=simple,explode=false,name=cpId"`
 }
 
-func (g *GetMeshControlPlaneRequest) GetCpID() string {
-	if g == nil {
+func (o *GetMeshControlPlaneRequest) GetCpID() string {
+	if o == nil {
 		return ""
 	}
-	return g.CpID
+	return o.CpID
 }
 
 type GetMeshControlPlaneResponse struct {
@@ -36,51 +36,51 @@ type GetMeshControlPlaneResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (g *GetMeshControlPlaneResponse) GetContentType() string {
-	if g == nil {
+func (o *GetMeshControlPlaneResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetMeshControlPlaneResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetMeshControlPlaneResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetMeshControlPlaneResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetMeshControlPlaneResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetMeshControlPlaneResponse) GetMeshControlPlane() *shared.MeshControlPlane {
-	if g == nil {
+func (o *GetMeshControlPlaneResponse) GetMeshControlPlane() *shared.MeshControlPlane {
+	if o == nil {
 		return nil
 	}
-	return g.MeshControlPlane
+	return o.MeshControlPlane
 }
 
-func (g *GetMeshControlPlaneResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if g == nil {
+func (o *GetMeshControlPlaneResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return g.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (g *GetMeshControlPlaneResponse) GetForbiddenError() *shared.ForbiddenError {
-	if g == nil {
+func (o *GetMeshControlPlaneResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return g.ForbiddenError
+	return o.ForbiddenError
 }
 
-func (g *GetMeshControlPlaneResponse) GetNotFoundError() *shared.NotFoundError {
-	if g == nil {
+func (o *GetMeshControlPlaneResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return g.NotFoundError
+	return o.NotFoundError
 }

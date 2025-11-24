@@ -18,8 +18,8 @@ const (
 
 // EncryptionKey - The key to use for encryption.
 type EncryptionKey struct {
-	EncryptionKeyAWS    *EncryptionKeyAWS    `queryParam:"inline,name=EncryptionKey"`
-	EncryptionKeyStatic *EncryptionKeyStatic `queryParam:"inline,name=EncryptionKey"`
+	EncryptionKeyAWS    *EncryptionKeyAWS    `queryParam:"inline"`
+	EncryptionKeyStatic *EncryptionKeyStatic `queryParam:"inline"`
 
 	Type EncryptionKeyType
 }
@@ -56,7 +56,7 @@ func (u *EncryptionKey) UnmarshalJSON(data []byte) error {
 	switch dis.Type {
 	case "aws":
 		encryptionKeyAWS := new(EncryptionKeyAWS)
-		if err := utils.UnmarshalJSON(data, &encryptionKeyAWS, "", true, nil); err != nil {
+		if err := utils.UnmarshalJSON(data, &encryptionKeyAWS, "", true, false); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == aws) type EncryptionKeyAWS within EncryptionKey: %w", string(data), err)
 		}
 
@@ -65,7 +65,7 @@ func (u *EncryptionKey) UnmarshalJSON(data []byte) error {
 		return nil
 	case "static":
 		encryptionKeyStatic := new(EncryptionKeyStatic)
-		if err := utils.UnmarshalJSON(data, &encryptionKeyStatic, "", true, nil); err != nil {
+		if err := utils.UnmarshalJSON(data, &encryptionKeyStatic, "", true, false); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == static) type EncryptionKeyStatic within EncryptionKey: %w", string(data), err)
 		}
 

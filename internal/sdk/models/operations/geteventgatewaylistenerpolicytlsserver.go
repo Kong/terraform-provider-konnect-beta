@@ -16,25 +16,25 @@ type GetEventGatewayListenerPolicyTLSServerRequest struct {
 	PolicyID string `pathParam:"style=simple,explode=false,name=policyId"`
 }
 
-func (g *GetEventGatewayListenerPolicyTLSServerRequest) GetGatewayID() string {
-	if g == nil {
+func (o *GetEventGatewayListenerPolicyTLSServerRequest) GetGatewayID() string {
+	if o == nil {
 		return ""
 	}
-	return g.GatewayID
+	return o.GatewayID
 }
 
-func (g *GetEventGatewayListenerPolicyTLSServerRequest) GetEventGatewayListenerID() string {
-	if g == nil {
+func (o *GetEventGatewayListenerPolicyTLSServerRequest) GetEventGatewayListenerID() string {
+	if o == nil {
 		return ""
 	}
-	return g.EventGatewayListenerID
+	return o.EventGatewayListenerID
 }
 
-func (g *GetEventGatewayListenerPolicyTLSServerRequest) GetPolicyID() string {
-	if g == nil {
+func (o *GetEventGatewayListenerPolicyTLSServerRequest) GetPolicyID() string {
+	if o == nil {
 		return ""
 	}
-	return g.PolicyID
+	return o.PolicyID
 }
 
 type GetEventGatewayListenerPolicyTLSServerResponse struct {
@@ -54,51 +54,51 @@ type GetEventGatewayListenerPolicyTLSServerResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (g *GetEventGatewayListenerPolicyTLSServerResponse) GetContentType() string {
-	if g == nil {
+func (o *GetEventGatewayListenerPolicyTLSServerResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return g.ContentType
+	return o.ContentType
 }
 
-func (g *GetEventGatewayListenerPolicyTLSServerResponse) GetStatusCode() int {
-	if g == nil {
+func (o *GetEventGatewayListenerPolicyTLSServerResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return g.StatusCode
+	return o.StatusCode
 }
 
-func (g *GetEventGatewayListenerPolicyTLSServerResponse) GetRawResponse() *http.Response {
-	if g == nil {
+func (o *GetEventGatewayListenerPolicyTLSServerResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return g.RawResponse
+	return o.RawResponse
 }
 
-func (g *GetEventGatewayListenerPolicyTLSServerResponse) GetEventGatewayListenerPolicy() *shared.EventGatewayListenerPolicy {
-	if g == nil {
+func (o *GetEventGatewayListenerPolicyTLSServerResponse) GetEventGatewayListenerPolicy() *shared.EventGatewayListenerPolicy {
+	if o == nil {
 		return nil
 	}
-	return g.EventGatewayListenerPolicy
+	return o.EventGatewayListenerPolicy
 }
 
-func (g *GetEventGatewayListenerPolicyTLSServerResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if g == nil {
+func (o *GetEventGatewayListenerPolicyTLSServerResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return g.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (g *GetEventGatewayListenerPolicyTLSServerResponse) GetForbiddenError() *shared.ForbiddenError {
-	if g == nil {
+func (o *GetEventGatewayListenerPolicyTLSServerResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return g.ForbiddenError
+	return o.ForbiddenError
 }
 
-func (g *GetEventGatewayListenerPolicyTLSServerResponse) GetNotFoundError() *shared.NotFoundError {
-	if g == nil {
+func (o *GetEventGatewayListenerPolicyTLSServerResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
 		return nil
 	}
-	return g.NotFoundError
+	return o.NotFoundError
 }

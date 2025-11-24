@@ -17,32 +17,32 @@ type UpdateEventGatewayListenerPolicyTLSServerRequest struct {
 	EventGatewayTLSListenerSensitiveDataAwarePolicy *shared.EventGatewayTLSListenerSensitiveDataAwarePolicy `request:"mediaType=application/json"`
 }
 
-func (u *UpdateEventGatewayListenerPolicyTLSServerRequest) GetGatewayID() string {
-	if u == nil {
+func (o *UpdateEventGatewayListenerPolicyTLSServerRequest) GetGatewayID() string {
+	if o == nil {
 		return ""
 	}
-	return u.GatewayID
+	return o.GatewayID
 }
 
-func (u *UpdateEventGatewayListenerPolicyTLSServerRequest) GetEventGatewayListenerID() string {
-	if u == nil {
+func (o *UpdateEventGatewayListenerPolicyTLSServerRequest) GetEventGatewayListenerID() string {
+	if o == nil {
 		return ""
 	}
-	return u.EventGatewayListenerID
+	return o.EventGatewayListenerID
 }
 
-func (u *UpdateEventGatewayListenerPolicyTLSServerRequest) GetPolicyID() string {
-	if u == nil {
+func (o *UpdateEventGatewayListenerPolicyTLSServerRequest) GetPolicyID() string {
+	if o == nil {
 		return ""
 	}
-	return u.PolicyID
+	return o.PolicyID
 }
 
-func (u *UpdateEventGatewayListenerPolicyTLSServerRequest) GetEventGatewayTLSListenerSensitiveDataAwarePolicy() *shared.EventGatewayTLSListenerSensitiveDataAwarePolicy {
-	if u == nil {
+func (o *UpdateEventGatewayListenerPolicyTLSServerRequest) GetEventGatewayTLSListenerSensitiveDataAwarePolicy() *shared.EventGatewayTLSListenerSensitiveDataAwarePolicy {
+	if o == nil {
 		return nil
 	}
-	return u.EventGatewayTLSListenerSensitiveDataAwarePolicy
+	return o.EventGatewayTLSListenerSensitiveDataAwarePolicy
 }
 
 type UpdateEventGatewayListenerPolicyTLSServerResponse struct {
@@ -62,51 +62,51 @@ type UpdateEventGatewayListenerPolicyTLSServerResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (u *UpdateEventGatewayListenerPolicyTLSServerResponse) GetContentType() string {
-	if u == nil {
+func (o *UpdateEventGatewayListenerPolicyTLSServerResponse) GetContentType() string {
+	if o == nil {
 		return ""
 	}
-	return u.ContentType
+	return o.ContentType
 }
 
-func (u *UpdateEventGatewayListenerPolicyTLSServerResponse) GetStatusCode() int {
-	if u == nil {
+func (o *UpdateEventGatewayListenerPolicyTLSServerResponse) GetStatusCode() int {
+	if o == nil {
 		return 0
 	}
-	return u.StatusCode
+	return o.StatusCode
 }
 
-func (u *UpdateEventGatewayListenerPolicyTLSServerResponse) GetRawResponse() *http.Response {
-	if u == nil {
+func (o *UpdateEventGatewayListenerPolicyTLSServerResponse) GetRawResponse() *http.Response {
+	if o == nil {
 		return nil
 	}
-	return u.RawResponse
+	return o.RawResponse
 }
 
-func (u *UpdateEventGatewayListenerPolicyTLSServerResponse) GetEventGatewayListenerPolicy() *shared.EventGatewayListenerPolicy {
-	if u == nil {
+func (o *UpdateEventGatewayListenerPolicyTLSServerResponse) GetEventGatewayListenerPolicy() *shared.EventGatewayListenerPolicy {
+	if o == nil {
 		return nil
 	}
-	return u.EventGatewayListenerPolicy
+	return o.EventGatewayListenerPolicy
 }
 
-func (u *UpdateEventGatewayListenerPolicyTLSServerResponse) GetBadRequestError() *shared.BadRequestError {
-	if u == nil {
+func (o *UpdateEventGatewayListenerPolicyTLSServerResponse) GetBadRequestError() *shared.BadRequestError {
+	if o == nil {
 		return nil
 	}
-	return u.BadRequestError
+	return o.BadRequestError
 }
 
-func (u *UpdateEventGatewayListenerPolicyTLSServerResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if u == nil {
+func (o *UpdateEventGatewayListenerPolicyTLSServerResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if o == nil {
 		return nil
 	}
-	return u.UnauthorizedError
+	return o.UnauthorizedError
 }
 
-func (u *UpdateEventGatewayListenerPolicyTLSServerResponse) GetForbiddenError() *shared.ForbiddenError {
-	if u == nil {
+func (o *UpdateEventGatewayListenerPolicyTLSServerResponse) GetForbiddenError() *shared.ForbiddenError {
+	if o == nil {
 		return nil
 	}
-	return u.ForbiddenError
+	return o.ForbiddenError
 }

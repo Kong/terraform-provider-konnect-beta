@@ -17,22 +17,22 @@ func (p PortalUpdateTeamRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PortalUpdateTeamRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *PortalUpdateTeamRequest) GetName() *string {
-	if p == nil {
+func (o *PortalUpdateTeamRequest) GetName() *string {
+	if o == nil {
 		return nil
 	}
-	return p.Name
+	return o.Name
 }
 
-func (p *PortalUpdateTeamRequest) GetDescription() *string {
-	if p == nil {
+func (o *PortalUpdateTeamRequest) GetDescription() *string {
+	if o == nil {
 		return nil
 	}
-	return p.Description
+	return o.Description
 }

@@ -20,29 +20,29 @@ func (h HostnameGeneratorList) MarshalJSON() ([]byte, error) {
 }
 
 func (h *HostnameGeneratorList) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &h, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (h *HostnameGeneratorList) GetItems() []HostnameGeneratorItem {
-	if h == nil {
+func (o *HostnameGeneratorList) GetItems() []HostnameGeneratorItem {
+	if o == nil {
 		return nil
 	}
-	return h.Items
+	return o.Items
 }
 
-func (h *HostnameGeneratorList) GetTotal() *float64 {
-	if h == nil {
+func (o *HostnameGeneratorList) GetTotal() *float64 {
+	if o == nil {
 		return nil
 	}
-	return h.Total
+	return o.Total
 }
 
-func (h *HostnameGeneratorList) GetNext() *string {
-	if h == nil {
+func (o *HostnameGeneratorList) GetNext() *string {
+	if o == nil {
 		return nil
 	}
-	return h.Next
+	return o.Next
 }
