@@ -8,6 +8,8 @@ github.com/Kong/shared-speakeasy/hclbuilder v0.0.0-20251121095436-8af129c422c3 h
 github.com/Kong/shared-speakeasy/hclbuilder v0.0.0-20251121095436-8af129c422c3/go.mod h1:g7/r/ksRwKhskqr9Hga47H8PH6wjh6LcXBhFAAomIgA=
 github.com/Kong/shared-speakeasy/hclbuilder v0.0.0-20251121105919-8b57b5a7b345 h1:YqZmMYNgwpykXySCc0VKNynFbXzF05yOAuvNIBy/FRQ=
 github.com/Kong/shared-speakeasy/hclbuilder v0.0.0-20251121105919-8b57b5a7b345/go.mod h1:g7/r/ksRwKhskqr9Hga47H8PH6wjh6LcXBhFAAomIgA=
+github.com/Kong/shared-speakeasy/hclbuilder v0.0.1 h1:4qGdHFEd4f7fK+zQi7xBHaqXkY3yh6WuKjp33Ha6JGs=
+github.com/Kong/shared-speakeasy/hclbuilder v0.0.1/go.mod h1:g7/r/ksRwKhskqr9Hga47H8PH6wjh6LcXBhFAAomIgA=
 github.com/Kong/shared-speakeasy/hooks/mesh_defaults v0.0.4 h1:BIlFfdeqRP33wP5GOSwLxFPujL4C1GozoIjZMpzZXj0=
 github.com/Kong/shared-speakeasy/hooks/mesh_defaults v0.0.4/go.mod h1:Tu9kdp+k8JF7ES5gcXBi6jHyLEOr1EAAWq8ROOipWqg=
 github.com/Kong/shared-speakeasy/planmodifiers/arbitrary_json v0.0.1 h1:S3f3RAPNv274Yd8ShkGjSTXLWS55AY1SHNKfcX8sQjU=

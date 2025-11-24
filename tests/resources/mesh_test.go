@@ -56,7 +56,7 @@ resource "konnect_mesh" "default" {
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
 				{
-					Config: builder.Add(cp).Add(mesh).Build(),
+					Config: builder.Upsert(cp).Upsert(mesh).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
 							plancheck.ExpectResourceAction("konnect_mesh.default", plancheck.ResourceActionCreate),
@@ -97,7 +97,7 @@ resource "konnect_mesh" "default" {
 		mesh.AddAttribute("cp_id", cp.ResourcePath()+".id")
 		mesh.DependsOn(cp)
 
-		builder.Add(cp)
+		builder.Upsert(cp)
 
 		resource.ParallelTest(t, hclbuilder.CreateMeshAndModifyFields(providerFactory, builder, mesh))
 	})
@@ -146,7 +146,7 @@ resource "konnect_mesh_traffic_permission" "allow_all" {
 		mtp.AddAttribute("mesh", mesh.ResourcePath()+".name")
 		mtp.DependsOn(mesh)
 
-		builder.Add(cp)
+		builder.Upsert(cp)
 
 		resource.ParallelTest(t, hclbuilder.CreatePolicyAndModifyFields(providerFactory, builder, mesh, mtp))
 	})
@@ -222,7 +222,7 @@ resource "konnect_mesh" "m1" {
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
 				{
-					Config: builder.Add(cp).Add(mesh).Build(),
+					Config: builder.Upsert(cp).Upsert(mesh).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
 							plancheck.ExpectResourceAction("konnect_mesh.m1", plancheck.ResourceActionCreate),
@@ -230,7 +230,7 @@ resource "konnect_mesh" "m1" {
 					},
 				},
 				{
-					Config: builder.Add(cp).Add(mesh).Build(),
+					Config: builder.Upsert(cp).Upsert(mesh).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
 							plancheck.ExpectEmptyPlan(),
@@ -329,7 +329,7 @@ resource "konnect_mesh_external_service" "mes_1" {
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
 				{
-					Config:             builder.Add(cp).Add(mesh).Add(mes).Build(),
+					Config:             builder.Upsert(cp).Upsert(mesh).Upsert(mes).Build(),
 					ExpectNonEmptyPlan: true,
 				},
 			},
@@ -429,11 +429,11 @@ resource "konnect_mesh_traffic_permission" "allow_all" {
 
 		builder1 := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort))
 		builder1.ProviderProperty = hclbuilder.KonnectBeta
-		config1 := builder1.Add(cp).Add(mesh).Add(mtp1).Build()
+		config1 := builder1.Upsert(cp).Upsert(mesh).Upsert(mtp1).Build()
 
 		builder2 := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort))
 		builder2.ProviderProperty = hclbuilder.KonnectBeta
-		config2 := builder2.Add(cp).Add(mesh).Add(mtp2).Build()
+		config2 := builder2.Upsert(cp).Upsert(mesh).Upsert(mtp2).Build()
 
 		resource.ParallelTest(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
@@ -549,7 +549,7 @@ resource "konnect_mesh_traffic_permission" "allow_all" {
 		mtp.AddAttribute("mesh", mesh.ResourcePath()+".name")
 		mtp.DependsOn(mesh)
 
-		builder.Add(cp)
+		builder.Upsert(cp)
 
 		resource.ParallelTest(t, hclbuilder.NotImportedResourceShouldError(providerFactory, builder, mesh, mtp, func() { createAnMTP(t, cpName, meshName, mtpName) }))
 	})
@@ -614,7 +614,7 @@ resource "konnect_mesh_secret" "scert" {
 		scert.AddAttribute("mesh", mesh.ResourcePath()+".name")
 		scert.DependsOn(mesh)
 
-		builder.Add(cp).Add(mesh)
+		builder.Upsert(cp).Upsert(mesh)
 
 		resource.ParallelTest(t, hclbuilder.ShouldBeAbleToStoreSecrets(providerFactory, builder, mesh, scert, skey))
 	})
