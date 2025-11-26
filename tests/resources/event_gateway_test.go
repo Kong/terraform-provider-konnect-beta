@@ -5,7 +5,6 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-testing/config"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 )
 
 func TestEventGateway(t *testing.T) {
@@ -76,12 +75,11 @@ func TestEventGateway(t *testing.T) {
 				},
 				{
 					ProtoV6ProviderFactories: providerFactory,
-					ConfigDirectory:          config.TestNameDirectory(),
-					ConfigPlanChecks: resource.ConfigPlanChecks{
-						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectEmptyPlan(),
-						},
-					},
+					ConfigDirectory:          config.TestStepDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						// Update Event Gateway Virtual Cluster
+						resource.TestCheckResourceAttr("konnect_event_gateway_virtual_cluster.my_eventgatewayvirtualcluster", "description", "description_updated"),
+					),
 				},
 			},
 		})

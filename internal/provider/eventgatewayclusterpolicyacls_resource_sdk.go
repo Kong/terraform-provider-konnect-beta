@@ -160,20 +160,20 @@ func (r *EventGatewayClusterPolicyAclsResourceModel) ToSharedEventGatewayACLsPol
 		condition = nil
 	}
 	rules := make([]shared.EventGatewayACLRule, 0, len(r.Config.Rules))
-	for _, rulesItem := range r.Config.Rules {
-		resourceType := shared.ResourceType(rulesItem.ResourceType.ValueString())
-		action := shared.Action(rulesItem.Action.ValueString())
-		operationsVar := make([]shared.EventGatewayACLOperation, 0, len(rulesItem.Operations))
-		for _, operationsItem := range rulesItem.Operations {
-			name1 := shared.Name(operationsItem.Name.ValueString())
+	for rulesIndex := range r.Config.Rules {
+		resourceType := shared.ResourceType(r.Config.Rules[rulesIndex].ResourceType.ValueString())
+		action := shared.Action(r.Config.Rules[rulesIndex].Action.ValueString())
+		operationsVar := make([]shared.EventGatewayACLOperation, 0, len(r.Config.Rules[rulesIndex].Operations))
+		for operationsIndex := range r.Config.Rules[rulesIndex].Operations {
+			name1 := shared.Name(r.Config.Rules[rulesIndex].Operations[operationsIndex].Name.ValueString())
 			operationsVar = append(operationsVar, shared.EventGatewayACLOperation{
 				Name: name1,
 			})
 		}
-		resourceNames := make([]shared.EventGatewayACLResourceName, 0, len(rulesItem.ResourceNames))
-		for _, resourceNamesItem := range rulesItem.ResourceNames {
+		resourceNames := make([]shared.EventGatewayACLResourceName, 0, len(r.Config.Rules[rulesIndex].ResourceNames))
+		for resourceNamesIndex := range r.Config.Rules[rulesIndex].ResourceNames {
 			var match string
-			match = resourceNamesItem.Match.ValueString()
+			match = r.Config.Rules[rulesIndex].ResourceNames[resourceNamesIndex].Match.ValueString()
 
 			resourceNames = append(resourceNames, shared.EventGatewayACLResourceName{
 				Match: match,
@@ -190,10 +190,10 @@ func (r *EventGatewayClusterPolicyAclsResourceModel) ToSharedEventGatewayACLsPol
 		Rules: rules,
 	}
 	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
+	for labelsKey := range r.Labels {
 		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
 		} else {
 			labelsInst = nil
 		}
