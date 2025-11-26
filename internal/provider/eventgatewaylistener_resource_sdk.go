@@ -132,18 +132,18 @@ func (r *EventGatewayListenerResourceModel) ToSharedCreateEventGatewayListenerRe
 		description = nil
 	}
 	addresses := make([]string, 0, len(r.Addresses))
-	for _, addressesItem := range r.Addresses {
-		addresses = append(addresses, addressesItem.ValueString())
+	for addressesIndex := range r.Addresses {
+		addresses = append(addresses, r.Addresses[addressesIndex].ValueString())
 	}
 	ports := make([]string, 0, len(r.Ports))
-	for _, portsItem := range r.Ports {
-		ports = append(ports, portsItem.ValueString())
+	for portsIndex := range r.Ports {
+		ports = append(ports, r.Ports[portsIndex].ValueString())
 	}
 	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
+	for labelsKey := range r.Labels {
 		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
 		} else {
 			labelsInst = nil
 		}
@@ -173,18 +173,18 @@ func (r *EventGatewayListenerResourceModel) ToSharedUpdateEventGatewayListenerRe
 		description = nil
 	}
 	addresses := make([]string, 0, len(r.Addresses))
-	for _, addressesItem := range r.Addresses {
-		addresses = append(addresses, addressesItem.ValueString())
+	for addressesIndex := range r.Addresses {
+		addresses = append(addresses, r.Addresses[addressesIndex].ValueString())
 	}
 	ports := make([]string, 0, len(r.Ports))
-	for _, portsItem := range r.Ports {
-		ports = append(ports, portsItem.ValueString())
+	for portsIndex := range r.Ports {
+		ports = append(ports, r.Ports[portsIndex].ValueString())
 	}
 	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
+	for labelsKey := range r.Labels {
 		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
 		} else {
 			labelsInst = nil
 		}

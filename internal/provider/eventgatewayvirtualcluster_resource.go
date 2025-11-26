@@ -21,7 +21,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
 	"regexp"
@@ -89,7 +88,6 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 					},
 					Attributes: map[string]schema.Attribute{
 						"anonymous": schema.SingleNestedAttribute{
-							Computed: true,
 							Optional: true,
 							Validators: []validator.Object{
 								objectvalidator.ConflictsWith(path.Expressions{
@@ -100,7 +98,6 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 							},
 						},
 						"oauth_bearer": schema.SingleNestedAttribute{
-							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
 								"claims_mapping": schema.SingleNestedAttribute{
@@ -224,7 +221,6 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 							},
 						},
 						"sasl_plain": schema.SingleNestedAttribute{
-							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
 								"mediation": schema.StringAttribute{
@@ -285,7 +281,6 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 							},
 						},
 						"sasl_scram": schema.SingleNestedAttribute{
-							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
 								"algorithm": schema.StringAttribute{
@@ -326,9 +321,6 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"description": schema.StringAttribute{
 				Optional:    true,
@@ -348,9 +340,6 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 					"name": schema.StringAttribute{
 						Computed:    true,
 						Description: `The unique name of the backend cluster.`,
-						Validators: []validator.String{
-							stringvalidator.UTF8LengthBetween(1, 255),
-						},
 					},
 				},
 				MarkdownDescription: `The backend cluster associated with the virtual cluster.` + "\n" +
@@ -408,7 +397,6 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 									},
 									Attributes: map[string]schema.Attribute{
 										"exact_list": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"exact_list": schema.ListNestedAttribute{
@@ -441,7 +429,6 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 											},
 										},
 										"glob": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"glob": schema.StringAttribute{
@@ -474,7 +461,6 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 									},
 									Attributes: map[string]schema.Attribute{
 										"exact_list": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"conflict": schema.StringAttribute{
@@ -523,7 +509,6 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 											},
 										},
 										"glob": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"conflict": schema.StringAttribute{
@@ -601,9 +586,6 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 		},
 	}
@@ -839,7 +821,10 @@ func (r *EventGatewayVirtualClusterResource) Delete(ctx context.Context, req res
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 204 {
+	switch res.StatusCode {
+	case 204, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

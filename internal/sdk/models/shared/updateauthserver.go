@@ -19,6 +19,8 @@ type UpdateAuthServer struct {
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
+	// A list or trusted origins to apply the CORS header on for the auth server
+	TrustedOrigins []string `json:"trusted_origins,omitempty"`
 }
 
 func (u *UpdateAuthServer) GetName() *string {
@@ -54,4 +56,11 @@ func (u *UpdateAuthServer) GetLabels() map[string]*string {
 		return nil
 	}
 	return u.Labels
+}
+
+func (u *UpdateAuthServer) GetTrustedOrigins() []string {
+	if u == nil {
+		return nil
+	}
+	return u.TrustedOrigins
 }

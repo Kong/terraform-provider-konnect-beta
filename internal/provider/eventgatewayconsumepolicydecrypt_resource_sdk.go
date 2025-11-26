@@ -163,14 +163,14 @@ func (r *EventGatewayConsumePolicyDecryptResourceModel) ToSharedEventGatewayDecr
 	}
 	failureMode := shared.EncryptionFailureMode(r.Config.FailureMode.ValueString())
 	keySources := make([]shared.EventGatewayKeySource, 0, len(r.Config.KeySources))
-	for _, keySourcesItem := range r.Config.KeySources {
-		if keySourcesItem.Aws != nil {
+	for keySourcesItem := range r.Config.KeySources {
+		if r.Config.KeySources[keySourcesItem].Aws != nil {
 			eventGatewayAWSKeySource := shared.EventGatewayAWSKeySource{}
 			keySources = append(keySources, shared.EventGatewayKeySource{
 				EventGatewayAWSKeySource: &eventGatewayAWSKeySource,
 			})
 		}
-		if keySourcesItem.Static != nil {
+		if r.Config.KeySources[keySourcesItem].Static != nil {
 			eventGatewayStaticKeySource := shared.EventGatewayStaticKeySource{}
 			keySources = append(keySources, shared.EventGatewayKeySource{
 				EventGatewayStaticKeySource: &eventGatewayStaticKeySource,
@@ -187,10 +187,10 @@ func (r *EventGatewayConsumePolicyDecryptResourceModel) ToSharedEventGatewayDecr
 		PartOfRecord: partOfRecord,
 	}
 	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
+	for labelsKey := range r.Labels {
 		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
 		} else {
 			labelsInst = nil
 		}

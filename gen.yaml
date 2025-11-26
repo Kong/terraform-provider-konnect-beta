@@ -19,6 +19,7 @@ generation:
     hoistGlobalSecurity: true
   schemas:
     allOfMergeStrategy: shallowMerge
+  requestBodyFieldName: ""
   tests:
     generateTests: true
     generateNewTests: false
@@ -27,7 +28,7 @@ generation:
 go:
   version: 1.24.1
 terraform:
-  version: 0.12.1
+  version: 0.13.0
   additionalDataSources: []
   additionalDependencies:
     github.com/Kong/shared-speakeasy/customtypes: v0.2.5
@@ -44,6 +45,8 @@ terraform:
   author: kong
   baseErrorName: KonnectBetaError
   defaultErrorName: SDKError
+  enableCustomCodeRegions: false
+  enableOperationSecurity: false
   enableOperationServers: false
   enableTypeDeduplication: true
   environmentVariables:
@@ -53,6 +56,7 @@ terraform:
       providerAttribute: system_account_access_token
     - env: KONNECT_SERVER_URL
       providerAttribute: server_url
+  excludeEmptyObjectSchemas: false
   imports:
     option: openapi
     paths:
@@ -62,5 +66,6 @@ terraform:
       shared: shared
       webhooks: webhooks
   includeEmptyObjects: false
+  inferUnionDiscriminators: false
   packageName: konnect-beta
-  unionDeserializationStrategy: populated-fields
+  unionStrategy: populated-fields
