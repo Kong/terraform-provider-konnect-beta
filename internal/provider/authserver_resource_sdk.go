@@ -119,18 +119,18 @@ func (r *AuthServerResourceModel) ToSharedCreateAuthServer(ctx context.Context) 
 		signingAlgorithm = nil
 	}
 	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
+	for labelsKey := range r.Labels {
 		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
 		} else {
 			labelsInst = nil
 		}
 		labels[labelsKey] = labelsInst
 	}
 	trustedOrigins := make([]string, 0, len(r.TrustedOrigins))
-	for _, trustedOriginsItem := range r.TrustedOrigins {
-		trustedOrigins = append(trustedOrigins, trustedOriginsItem.ValueString())
+	for trustedOriginsIndex := range r.TrustedOrigins {
+		trustedOrigins = append(trustedOrigins, r.TrustedOrigins[trustedOriginsIndex].ValueString())
 	}
 	out := shared.CreateAuthServer{
 		Name:             name,
@@ -174,10 +174,10 @@ func (r *AuthServerResourceModel) ToSharedUpdateAuthServer(ctx context.Context) 
 	var labels map[string]*string
 	if r.Labels != nil {
 		labels = make(map[string]*string)
-		for labelsKey, labelsValue := range r.Labels {
+		for labelsKey := range r.Labels {
 			labelsInst := new(string)
-			if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-				*labelsInst = labelsValue.ValueString()
+			if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+				*labelsInst = r.Labels[labelsKey].ValueString()
 			} else {
 				labelsInst = nil
 			}
@@ -185,8 +185,8 @@ func (r *AuthServerResourceModel) ToSharedUpdateAuthServer(ctx context.Context) 
 		}
 	}
 	trustedOrigins := make([]string, 0, len(r.TrustedOrigins))
-	for _, trustedOriginsItem := range r.TrustedOrigins {
-		trustedOrigins = append(trustedOrigins, trustedOriginsItem.ValueString())
+	for trustedOriginsIndex := range r.TrustedOrigins {
+		trustedOrigins = append(trustedOrigins, r.TrustedOrigins[trustedOriginsIndex].ValueString())
 	}
 	out := shared.UpdateAuthServer{
 		Name:             name,

@@ -206,8 +206,8 @@ func (r *EventGatewayBackendClusterResourceModel) ToSharedCreateBackendClusterRe
 		insecureAllowAnonymousVirtualClusterAuth = nil
 	}
 	bootstrapServers := make([]string, 0, len(r.BootstrapServers))
-	for _, bootstrapServersItem := range r.BootstrapServers {
-		bootstrapServers = append(bootstrapServers, bootstrapServersItem.ValueString())
+	for bootstrapServersIndex := range r.BootstrapServers {
+		bootstrapServers = append(bootstrapServers, r.BootstrapServers[bootstrapServersIndex].ValueString())
 	}
 	var enabled bool
 	enabled = r.TLS.Enabled.ValueBool()
@@ -241,10 +241,10 @@ func (r *EventGatewayBackendClusterResourceModel) ToSharedCreateBackendClusterRe
 		metadataUpdateIntervalSeconds = nil
 	}
 	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
+	for labelsKey := range r.Labels {
 		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
 		} else {
 			labelsInst = nil
 		}
@@ -337,8 +337,8 @@ func (r *EventGatewayBackendClusterResourceModel) ToSharedUpdateBackendClusterRe
 		insecureAllowAnonymousVirtualClusterAuth = nil
 	}
 	bootstrapServers := make([]string, 0, len(r.BootstrapServers))
-	for _, bootstrapServersItem := range r.BootstrapServers {
-		bootstrapServers = append(bootstrapServers, bootstrapServersItem.ValueString())
+	for bootstrapServersIndex := range r.BootstrapServers {
+		bootstrapServers = append(bootstrapServers, r.BootstrapServers[bootstrapServersIndex].ValueString())
 	}
 	var enabled bool
 	enabled = r.TLS.Enabled.ValueBool()
@@ -372,10 +372,10 @@ func (r *EventGatewayBackendClusterResourceModel) ToSharedUpdateBackendClusterRe
 		metadataUpdateIntervalSeconds = nil
 	}
 	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
+	for labelsKey := range r.Labels {
 		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
 		} else {
 			labelsInst = nil
 		}
