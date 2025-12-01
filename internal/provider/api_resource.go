@@ -7,9 +7,11 @@ import (
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -44,6 +46,7 @@ type APIResourceModel struct {
 	CreatedAt   types.String            `tfsdk:"created_at"`
 	Description types.String            `tfsdk:"description"`
 	ID          types.String            `tfsdk:"id"`
+	Images      *tfTypes.Images         `tfsdk:"images"`
 	Labels      map[string]types.String `tfsdk:"labels"`
 	Name        types.String            `tfsdk:"name"`
 	Portals     []tfTypes.Portals       `tfsdk:"portals"`
@@ -93,6 +96,35 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `The API identifier.`,
+			},
+			"images": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"icon": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`url`: types.StringType,
+						},
+					},
+				})),
+				Attributes: map[string]schema.Attribute{
+					"icon": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"url": types.StringType,
+						})),
+						Attributes: map[string]schema.Attribute{
+							"url": schema.StringAttribute{
+								Optional:    true,
+								Description: `The URL of the icon image. Must be an HTTPS URL.`,
+								Validators: []validator.String{
+									stringvalidator.RegexMatches(regexp.MustCompile(`^https://[^\s]+$`), "must match pattern "+regexp.MustCompile(`^https://[^\s]+$`).String()),
+								},
+							},
+						},
+					},
+				},
 			},
 			"labels": schema.MapAttribute{
 				Computed:    true,

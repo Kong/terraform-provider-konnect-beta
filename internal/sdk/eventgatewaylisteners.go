@@ -16,6 +16,9 @@ import (
 	"net/http"
 )
 
+// EventGatewayListeners - A listener represents hostname-port or IP-port combinations that connect to TCP sockets. Listeners need at least as many ports as backend brokers if you use port mapping in a Forward to Virtual Cluster policy. For SNI routing, you can route all brokers using a listener with only one port. Ports can be expressed as a single port or range. Addresses can be IPv4, IPv6, or hostnames.
+//
+// A listener can have policies that enforce TLS certificates and perform SNI routing. The listener runs at Layer 4 of the network stack. In Kong Event Gateway, listeners first take in the connection and then route the TCP connection to a virtual cluster based on conditions defined in listener policies.
 type EventGatewayListeners struct {
 	rootSDK          *KonnectBeta
 	sdkConfiguration config.SDKConfiguration

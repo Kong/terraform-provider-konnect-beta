@@ -16,6 +16,9 @@ import (
 	"net/http"
 )
 
+// EventGatewayVirtualClusterProducePolicies - Produce policies operate on Kafka messages before they are written to the Kafka cluster.
+//
+// Where possible, apply transformations to the data using produce policies rather than consume policies for maximum efficiency.
 type EventGatewayVirtualClusterProducePolicies struct {
 	rootSDK          *KonnectBeta
 	sdkConfiguration config.SDKConfiguration

@@ -9,12 +9,10 @@ import (
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -40,18 +38,18 @@ type EventGatewayConsumePolicySchemaValidationResource struct {
 
 // EventGatewayConsumePolicySchemaValidationResourceModel describes the resource data model.
 type EventGatewayConsumePolicySchemaValidationResourceModel struct {
-	Condition        types.String                                             `tfsdk:"condition"`
-	Config           *tfTypes.EventGatewayConsumeSchemaValidationPolicyConfig `tfsdk:"config"`
-	CreatedAt        types.String                                             `tfsdk:"created_at"`
-	Description      types.String                                             `tfsdk:"description"`
-	Enabled          types.Bool                                               `tfsdk:"enabled"`
-	GatewayID        types.String                                             `tfsdk:"gateway_id"`
-	ID               types.String                                             `tfsdk:"id"`
-	Labels           map[string]types.String                                  `tfsdk:"labels"`
-	Name             types.String                                             `tfsdk:"name"`
-	ParentPolicyID   types.String                                             `tfsdk:"parent_policy_id"`
-	UpdatedAt        types.String                                             `tfsdk:"updated_at"`
-	VirtualClusterID types.String                                             `tfsdk:"virtual_cluster_id"`
+	Condition        types.String                                            `tfsdk:"condition"`
+	Config           tfTypes.EventGatewayConsumeSchemaValidationPolicyConfig `tfsdk:"config"`
+	CreatedAt        types.String                                            `tfsdk:"created_at"`
+	Description      types.String                                            `tfsdk:"description"`
+	Enabled          types.Bool                                              `tfsdk:"enabled"`
+	GatewayID        types.String                                            `tfsdk:"gateway_id"`
+	ID               types.String                                            `tfsdk:"id"`
+	Labels           map[string]types.String                                 `tfsdk:"labels"`
+	Name             types.String                                            `tfsdk:"name"`
+	ParentPolicyID   types.String                                            `tfsdk:"parent_policy_id"`
+	UpdatedAt        types.String                                            `tfsdk:"updated_at"`
+	VirtualClusterID types.String                                            `tfsdk:"virtual_cluster_id"`
 }
 
 func (r *EventGatewayConsumePolicySchemaValidationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -70,27 +68,7 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 				},
 			},
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"key_validation_action": types.StringType,
-					"schema_registry": types.ObjectType{
-						AttrTypes: map[string]attr.Type{
-							`schema_registry_reference_by_id`: types.ObjectType{
-								AttrTypes: map[string]attr.Type{
-									`id`: types.StringType,
-								},
-							},
-							`schema_registry_reference_by_name`: types.ObjectType{
-								AttrTypes: map[string]attr.Type{
-									`name`: types.StringType,
-								},
-							},
-						},
-					},
-					"type":                    types.StringType,
-					"value_validation_action": types.StringType,
-				})),
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"key_validation_action": schema.StringAttribute{
 						Optional: true,

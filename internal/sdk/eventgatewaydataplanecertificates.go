@@ -16,6 +16,7 @@ import (
 	"net/http"
 )
 
+// EventGatewayDataPlaneCertificates - DataPlane certificates control how your running Event Gateway instances connect to the Control Plane
 type EventGatewayDataPlaneCertificates struct {
 	rootSDK          *KonnectBeta
 	sdkConfiguration config.SDKConfiguration

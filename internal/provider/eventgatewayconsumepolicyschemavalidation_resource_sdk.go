@@ -7,7 +7,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
-	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
@@ -17,17 +16,11 @@ func (r *EventGatewayConsumePolicySchemaValidationResourceModel) RefreshFromShar
 
 	if resp != nil {
 		r.Condition = types.StringPointerValue(resp.Condition)
-		if r.Config == nil {
-			configPriorData := r.Config
-			r.Config = &tfTypes.EventGatewayConsumeSchemaValidationPolicyConfig{}
-
-			if configPriorData != nil {
-				r.Config.KeyValidationAction = configPriorData.KeyValidationAction
-				r.Config.SchemaRegistry = configPriorData.SchemaRegistry
-				r.Config.Type = configPriorData.Type
-				r.Config.ValueValidationAction = configPriorData.ValueValidationAction
-			}
-		}
+		configPriorData := r.Config
+		r.Config.KeyValidationAction = configPriorData.KeyValidationAction
+		r.Config.SchemaRegistry = configPriorData.SchemaRegistry
+		r.Config.Type = configPriorData.Type
+		r.Config.ValueValidationAction = configPriorData.ValueValidationAction
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -169,58 +162,55 @@ func (r *EventGatewayConsumePolicySchemaValidationResourceModel) ToSharedEventGa
 	} else {
 		condition = nil
 	}
-	var config *shared.EventGatewayConsumeSchemaValidationPolicyConfig
-	if r.Config != nil {
-		typeVar := shared.SchemaValidationType(r.Config.Type.ValueString())
-		var schemaRegistry *shared.SchemaRegistryReference
-		if r.Config.SchemaRegistry != nil {
-			var schemaRegistryReferenceByID *shared.SchemaRegistryReferenceByID
-			if r.Config.SchemaRegistry.SchemaRegistryReferenceByID != nil {
-				var id string
-				id = r.Config.SchemaRegistry.SchemaRegistryReferenceByID.ID.ValueString()
+	typeVar := shared.SchemaValidationType(r.Config.Type.ValueString())
+	var schemaRegistry *shared.SchemaRegistryReference
+	if r.Config.SchemaRegistry != nil {
+		var schemaRegistryReferenceByID *shared.SchemaRegistryReferenceByID
+		if r.Config.SchemaRegistry.SchemaRegistryReferenceByID != nil {
+			var id string
+			id = r.Config.SchemaRegistry.SchemaRegistryReferenceByID.ID.ValueString()
 
-				schemaRegistryReferenceByID = &shared.SchemaRegistryReferenceByID{
-					ID: id,
-				}
+			schemaRegistryReferenceByID = &shared.SchemaRegistryReferenceByID{
+				ID: id,
 			}
-			if schemaRegistryReferenceByID != nil {
-				schemaRegistry = &shared.SchemaRegistryReference{
-					SchemaRegistryReferenceByID: schemaRegistryReferenceByID,
-				}
+		}
+		if schemaRegistryReferenceByID != nil {
+			schemaRegistry = &shared.SchemaRegistryReference{
+				SchemaRegistryReferenceByID: schemaRegistryReferenceByID,
 			}
-			var schemaRegistryReferenceByName *shared.SchemaRegistryReferenceByName
-			if r.Config.SchemaRegistry.SchemaRegistryReferenceByName != nil {
-				var name1 string
-				name1 = r.Config.SchemaRegistry.SchemaRegistryReferenceByName.Name.ValueString()
+		}
+		var schemaRegistryReferenceByName *shared.SchemaRegistryReferenceByName
+		if r.Config.SchemaRegistry.SchemaRegistryReferenceByName != nil {
+			var name1 string
+			name1 = r.Config.SchemaRegistry.SchemaRegistryReferenceByName.Name.ValueString()
 
-				schemaRegistryReferenceByName = &shared.SchemaRegistryReferenceByName{
-					Name: name1,
-				}
-			}
-			if schemaRegistryReferenceByName != nil {
-				schemaRegistry = &shared.SchemaRegistryReference{
-					SchemaRegistryReferenceByName: schemaRegistryReferenceByName,
-				}
+			schemaRegistryReferenceByName = &shared.SchemaRegistryReferenceByName{
+				Name: name1,
 			}
 		}
-		keyValidationAction := new(shared.ConsumeKeyValidationAction)
-		if !r.Config.KeyValidationAction.IsUnknown() && !r.Config.KeyValidationAction.IsNull() {
-			*keyValidationAction = shared.ConsumeKeyValidationAction(r.Config.KeyValidationAction.ValueString())
-		} else {
-			keyValidationAction = nil
+		if schemaRegistryReferenceByName != nil {
+			schemaRegistry = &shared.SchemaRegistryReference{
+				SchemaRegistryReferenceByName: schemaRegistryReferenceByName,
+			}
 		}
-		valueValidationAction := new(shared.ConsumeValueValidationAction)
-		if !r.Config.ValueValidationAction.IsUnknown() && !r.Config.ValueValidationAction.IsNull() {
-			*valueValidationAction = shared.ConsumeValueValidationAction(r.Config.ValueValidationAction.ValueString())
-		} else {
-			valueValidationAction = nil
-		}
-		config = &shared.EventGatewayConsumeSchemaValidationPolicyConfig{
-			Type:                  typeVar,
-			SchemaRegistry:        schemaRegistry,
-			KeyValidationAction:   keyValidationAction,
-			ValueValidationAction: valueValidationAction,
-		}
+	}
+	keyValidationAction := new(shared.ConsumeKeyValidationAction)
+	if !r.Config.KeyValidationAction.IsUnknown() && !r.Config.KeyValidationAction.IsNull() {
+		*keyValidationAction = shared.ConsumeKeyValidationAction(r.Config.KeyValidationAction.ValueString())
+	} else {
+		keyValidationAction = nil
+	}
+	valueValidationAction := new(shared.ConsumeValueValidationAction)
+	if !r.Config.ValueValidationAction.IsUnknown() && !r.Config.ValueValidationAction.IsNull() {
+		*valueValidationAction = shared.ConsumeValueValidationAction(r.Config.ValueValidationAction.ValueString())
+	} else {
+		valueValidationAction = nil
+	}
+	config := shared.EventGatewayConsumeSchemaValidationPolicyConfig{
+		Type:                  typeVar,
+		SchemaRegistry:        schemaRegistry,
+		KeyValidationAction:   keyValidationAction,
+		ValueValidationAction: valueValidationAction,
 	}
 	labels := make(map[string]*string)
 	for labelsKey := range r.Labels {

@@ -113,20 +113,54 @@ type KonnectBeta struct {
 	// Scopes define the extent of access that an access token grants to a Client. The management API will give you the ability to create, configure and manage multiple Scopes per Auth Server, and restrict their usage by Client.
 	AuthServerScopes *AuthServerScopes
 	// Clients represent the identity of machines, such as microservices, mobile apps, or scripts entity. The management API will give you the ability to create, configure and manage multiple Clients per Auth Server.
-	AuthServerClients                         *AuthServerClients
-	Dashboards                                *Dashboards
-	EventGateways                             *EventGateways
-	EventGatewayListeners                     *EventGatewayListeners
-	EventGatewayVirtualClusters               *EventGatewayVirtualClusters
-	EventGatewayBackendClusters               *EventGatewayBackendClusters
-	EventGatewayVaults                        *EventGatewayVaults
-	EventGatewaySchemaRegistries              *EventGatewaySchemaRegistries
-	EventGatewayDataPlaneCertificates         *EventGatewayDataPlaneCertificates
-	EventGatewayStaticKeys                    *EventGatewayStaticKeys
-	EventGatewayListenerPolicies              *EventGatewayListenerPolicies
+	AuthServerClients *AuthServerClients
+	Dashboards        *Dashboards
+	// Create an Event Gateway Control Plane, used to store Event Gateway configuration
+	//
+	EventGateways *EventGateways
+	// A listener represents hostname-port or IP-port combinations that connect to TCP sockets. Listeners need at least as many ports as backend brokers if you use port mapping in a Forward to Virtual Cluster policy. For SNI routing, you can route all brokers using a listener with only one port. Ports can be expressed as a single port or range. Addresses can be IPv4, IPv6, or hostnames.
+	//
+	// A listener can have policies that enforce TLS certificates and perform SNI routing. The listener runs at Layer 4 of the network stack. In Kong Event Gateway, listeners first take in the connection and then route the TCP connection to a virtual cluster based on conditions defined in listener policies.
+	//
+	EventGatewayListeners *EventGatewayListeners
+	// Virtual clusters are the primary way clients interact with the Event Gateway proxy. They allow you to isolate clients from each other when connecting to the same backend cluster, and provide each client with modified view while still appearing as a standard Kafka cluster.
+	//
+	EventGatewayVirtualClusters *EventGatewayVirtualClusters
+	// A backend cluster is an abstraction of a real Kafka cluster. It stores the connection and configuration details required for Kong Event Gateway to proxy traffic to Kafka.
+	//
+	// Multiple Kafka clusters can be proxied through a single Kong Event Gateway.
+	//
+	EventGatewayBackendClusters *EventGatewayBackendClusters
+	EventGatewayVaults          *EventGatewayVaults
+	// Configure a schema registry that can be used to validate payloads when producing/consuming messages
+	//
+	EventGatewaySchemaRegistries *EventGatewaySchemaRegistries
+	// DataPlane certificates control how your running Event Gateway instances connect to the Control Plane
+	//
+	EventGatewayDataPlaneCertificates *EventGatewayDataPlaneCertificates
+	// Static Keys are used by the Encrypt and Decrypt policies to encrypt data at rest
+	//
+	EventGatewayStaticKeys *EventGatewayStaticKeys
+	// Policies control how Kafka protocol traffic is modified between the client and the backend cluster.
+	//
+	// Listener policies are routing policies that pass traffic to the virtual cluster.
+	//
+	EventGatewayListenerPolicies *EventGatewayListenerPolicies
+	// Consume policies operate on Kafka messages as they are read from a Kafka cluster.
+	//
+	// Transformations may be applied at consume time, but they are applied once per Consumer. Where possible, transofmrations should be applied as a Produce policy
+	//
 	EventGatewayVirtualClusterConsumePolicies *EventGatewayVirtualClusterConsumePolicies
+	// Produce policies operate on Kafka messages before they are written to the Kafka cluster.
+	//
+	// Where possible, apply transformations to the data using produce policies rather than consume policies for maximum efficiency.
+	//
 	EventGatewayVirtualClusterProducePolicies *EventGatewayVirtualClusterProducePolicies
-	EventGatewayVirtualClusterPolicies        *EventGatewayVirtualClusterPolicies
+	// Policies control how Kafka protocol traffic is modified between the client and the backend cluster.
+	//
+	// Cluster policies are transformation and validation policies that can be applied to Kafka messages.
+	//
+	EventGatewayVirtualClusterPolicies *EventGatewayVirtualClusterPolicies
 
 	sdkConfiguration config.SDKConfiguration
 	hooks            *hooks.Hooks
