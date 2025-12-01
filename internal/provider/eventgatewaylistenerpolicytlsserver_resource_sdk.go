@@ -155,12 +155,12 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToSharedEventGatewayT
 		enabled = nil
 	}
 	certificates := make([]shared.TLSCertificate, 0, len(r.Config.Certificates))
-	for _, certificatesItem := range r.Config.Certificates {
+	for certificatesIndex := range r.Config.Certificates {
 		var certificate string
-		certificate = certificatesItem.Certificate.ValueString()
+		certificate = r.Config.Certificates[certificatesIndex].Certificate.ValueString()
 
 		var key string
-		key = certificatesItem.Key.ValueString()
+		key = r.Config.Certificates[certificatesIndex].Key.ValueString()
 
 		certificates = append(certificates, shared.TLSCertificate{
 			Certificate: certificate,
@@ -198,10 +198,10 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToSharedEventGatewayT
 		AllowPlaintext: allowPlaintext,
 	}
 	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
+	for labelsKey := range r.Labels {
 		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
 		} else {
 			labelsInst = nil
 		}
@@ -240,13 +240,13 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToSharedEventGatewayT
 		enabled = nil
 	}
 	certificates := make([]shared.TLSCertificateSensitiveDataAware, 0, len(r.Config.Certificates))
-	for _, certificatesItem := range r.Config.Certificates {
+	for certificatesIndex := range r.Config.Certificates {
 		var certificate string
-		certificate = certificatesItem.Certificate.ValueString()
+		certificate = r.Config.Certificates[certificatesIndex].Certificate.ValueString()
 
 		key := new(string)
-		if !certificatesItem.Key.IsUnknown() && !certificatesItem.Key.IsNull() {
-			*key = certificatesItem.Key.ValueString()
+		if !r.Config.Certificates[certificatesIndex].Key.IsUnknown() && !r.Config.Certificates[certificatesIndex].Key.IsNull() {
+			*key = r.Config.Certificates[certificatesIndex].Key.ValueString()
 		} else {
 			key = nil
 		}
@@ -286,10 +286,10 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToSharedEventGatewayT
 		AllowPlaintext: allowPlaintext,
 	}
 	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
+	for labelsKey := range r.Labels {
 		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
 		} else {
 			labelsInst = nil
 		}

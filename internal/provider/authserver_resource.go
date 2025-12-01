@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -16,7 +17,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
-	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -38,12 +38,14 @@ type AuthServerResourceModel struct {
 	Audience         types.String            `tfsdk:"audience"`
 	CreatedAt        types.String            `tfsdk:"created_at"`
 	Description      types.String            `tfsdk:"description"`
+	ForceDestroy     types.String            `queryParam:"style=form,explode=true,name=force" tfsdk:"force_destroy"`
 	ID               types.String            `tfsdk:"id"`
 	Issuer           types.String            `tfsdk:"issuer"`
 	Labels           map[string]types.String `tfsdk:"labels"`
 	MetadataURI      types.String            `tfsdk:"metadata_uri"`
 	Name             types.String            `tfsdk:"name"`
 	SigningAlgorithm types.String            `tfsdk:"signing_algorithm"`
+	TrustedOrigins   []types.String          `tfsdk:"trusted_origins"`
 	UpdatedAt        types.String            `tfsdk:"updated_at"`
 }
 
@@ -68,14 +70,23 @@ func (r *AuthServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
 				Description: `The description of the auth server`,
+			},
+			"force_destroy": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Default:     stringdefault.StaticString(`false`),
+				Description: `If true, delete the specified auth server and all its associated resources. If false, only allow deletion if no clients, scopes or claims are associated with the auth server. Default: "false"; must be one of ["true", "false"]`,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						"true",
+						"false",
+					),
+				},
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -120,15 +131,21 @@ func (r *AuthServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 					),
 				},
 			},
+			"trusted_origins": schema.ListAttribute{
+				Computed:    true,
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `A list or trusted origins to apply the CORS header on for the auth server`,
+				Validators: []validator.List{
+					listvalidator.UniqueValues(),
+				},
+			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 		},
 	}
@@ -188,6 +205,13 @@ func (r *AuthServerResource) Create(ctx context.Context, req resource.CreateRequ
 	}
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode == 409 {
+		resp.Diagnostics.AddError(
+			"Resource Already Exists",
+			"When creating this resource, the API indicated that this resource already exists. You can bring the existing resource under management using Terraform import functionality or retry with a unique configuration.",
+		)
 		return
 	}
 	if res.StatusCode != 201 {
@@ -364,7 +388,10 @@ func (r *AuthServerResource) Delete(ctx context.Context, req resource.DeleteRequ
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 204 {
+	switch res.StatusCode {
+	case 204, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

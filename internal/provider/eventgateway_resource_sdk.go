@@ -56,7 +56,7 @@ func (r *EventGatewayResourceModel) ToOperationsGetEventGatewayRequest(ctx conte
 	return &out, diags
 }
 
-func (r *EventGatewayResourceModel) ToOperationsUpdateHoudiniEventGatewayRequest(ctx context.Context) (*operations.UpdateHoudiniEventGatewayRequest, diag.Diagnostics) {
+func (r *EventGatewayResourceModel) ToOperationsUpdateEventGatewayRequest(ctx context.Context) (*operations.UpdateEventGatewayRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var gatewayID string
@@ -69,7 +69,7 @@ func (r *EventGatewayResourceModel) ToOperationsUpdateHoudiniEventGatewayRequest
 		return nil, diags
 	}
 
-	out := operations.UpdateHoudiniEventGatewayRequest{
+	out := operations.UpdateEventGatewayRequest{
 		GatewayID:            gatewayID,
 		UpdateGatewayRequest: *updateGatewayRequest,
 	}
@@ -84,10 +84,10 @@ func (r *EventGatewayResourceModel) ToSharedCreateGatewayRequest(ctx context.Con
 	name = r.Name.ValueString()
 
 	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
+	for labelsKey := range r.Labels {
 		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
 		} else {
 			labelsInst = nil
 		}
@@ -111,10 +111,10 @@ func (r *EventGatewayResourceModel) ToSharedUpdateGatewayRequest(ctx context.Con
 		name = nil
 	}
 	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
+	for labelsKey := range r.Labels {
 		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
 		} else {
 			labelsInst = nil
 		}

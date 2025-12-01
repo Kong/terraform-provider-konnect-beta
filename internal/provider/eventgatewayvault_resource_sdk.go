@@ -152,10 +152,10 @@ func (r *EventGatewayVaultResourceModel) ToSharedEventGatewayModifyVault(ctx con
 			description = nil
 		}
 		labels := make(map[string]*string)
-		for labelsKey, labelsValue := range r.Env.Labels {
+		for labelsKey := range r.Env.Labels {
 			labelsInst := new(string)
-			if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-				*labelsInst = labelsValue.ValueString()
+			if !r.Env.Labels[labelsKey].IsUnknown() && !r.Env.Labels[labelsKey].IsNull() {
+				*labelsInst = r.Env.Labels[labelsKey].ValueString()
 			} else {
 				labelsInst = nil
 			}
@@ -191,10 +191,10 @@ func (r *EventGatewayVaultResourceModel) ToSharedEventGatewayModifyVault(ctx con
 			description1 = nil
 		}
 		labels1 := make(map[string]*string)
-		for labelsKey1, labelsValue1 := range r.Konnect.Labels {
+		for labelsKey1 := range r.Konnect.Labels {
 			labelsInst1 := new(string)
-			if !labelsValue1.IsUnknown() && !labelsValue1.IsNull() {
-				*labelsInst1 = labelsValue1.ValueString()
+			if !r.Konnect.Labels[labelsKey1].IsUnknown() && !r.Konnect.Labels[labelsKey1].IsNull() {
+				*labelsInst1 = r.Konnect.Labels[labelsKey1].ValueString()
 			} else {
 				labelsInst1 = nil
 			}

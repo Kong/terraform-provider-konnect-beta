@@ -171,10 +171,10 @@ func (r *EventGatewaySchemaRegistryResourceModel) ToSharedSchemaRegistryCreate(c
 			Authentication: authentication,
 		}
 		labels := make(map[string]*string)
-		for labelsKey, labelsValue := range r.Confluent.Labels {
+		for labelsKey := range r.Confluent.Labels {
 			labelsInst := new(string)
-			if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-				*labelsInst = labelsValue.ValueString()
+			if !r.Confluent.Labels[labelsKey].IsUnknown() && !r.Confluent.Labels[labelsKey].IsNull() {
+				*labelsInst = r.Confluent.Labels[labelsKey].ValueString()
 			} else {
 				labelsInst = nil
 			}
@@ -252,10 +252,10 @@ func (r *EventGatewaySchemaRegistryResourceModel) ToSharedSchemaRegistryUpdate(c
 			Authentication: authentication,
 		}
 		labels := make(map[string]*string)
-		for labelsKey, labelsValue := range r.Confluent.Labels {
+		for labelsKey := range r.Confluent.Labels {
 			labelsInst := new(string)
-			if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-				*labelsInst = labelsValue.ValueString()
+			if !r.Confluent.Labels[labelsKey].IsUnknown() && !r.Confluent.Labels[labelsKey].IsNull() {
+				*labelsInst = r.Confluent.Labels[labelsKey].ValueString()
 			} else {
 				labelsInst = nil
 			}

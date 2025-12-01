@@ -195,8 +195,8 @@ func (r *AuthServerClientsResourceModel) ToSharedCreateClient(ctx context.Contex
 		responseTypes = append(responseTypes, shared.ResponseType(responseTypesItem.ValueString()))
 	}
 	redirectUris := make([]string, 0, len(r.RedirectUris))
-	for _, redirectUrisItem := range r.RedirectUris {
-		redirectUris = append(redirectUris, redirectUrisItem.ValueString())
+	for redirectUrisIndex := range r.RedirectUris {
+		redirectUris = append(redirectUris, r.RedirectUris[redirectUrisIndex].ValueString())
 	}
 	loginURI := new(string)
 	if !r.LoginURI.IsUnknown() && !r.LoginURI.IsNull() {
@@ -223,14 +223,14 @@ func (r *AuthServerClientsResourceModel) ToSharedCreateClient(ctx context.Contex
 		allowAllScopes = nil
 	}
 	allowScopes := make([]string, 0, len(r.AllowScopes))
-	for _, allowScopesItem := range r.AllowScopes {
-		allowScopes = append(allowScopes, allowScopesItem.ValueString())
+	for allowScopesIndex := range r.AllowScopes {
+		allowScopes = append(allowScopes, r.AllowScopes[allowScopesIndex].ValueString())
 	}
 	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
+	for labelsKey := range r.Labels {
 		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
 		} else {
 			labelsInst = nil
 		}
@@ -277,8 +277,8 @@ func (r *AuthServerClientsResourceModel) ToSharedReplaceClient(ctx context.Conte
 		responseTypes = append(responseTypes, shared.ResponseType(responseTypesItem.ValueString()))
 	}
 	redirectUris := make([]string, 0, len(r.RedirectUris))
-	for _, redirectUrisItem := range r.RedirectUris {
-		redirectUris = append(redirectUris, redirectUrisItem.ValueString())
+	for redirectUrisIndex := range r.RedirectUris {
+		redirectUris = append(redirectUris, r.RedirectUris[redirectUrisIndex].ValueString())
 	}
 	loginURI := new(string)
 	if !r.LoginURI.IsUnknown() && !r.LoginURI.IsNull() {
@@ -305,8 +305,8 @@ func (r *AuthServerClientsResourceModel) ToSharedReplaceClient(ctx context.Conte
 		allowAllScopes = nil
 	}
 	allowScopes := make([]string, 0, len(r.AllowScopes))
-	for _, allowScopesItem := range r.AllowScopes {
-		allowScopes = append(allowScopes, allowScopesItem.ValueString())
+	for allowScopesIndex := range r.AllowScopes {
+		allowScopes = append(allowScopes, r.AllowScopes[allowScopesIndex].ValueString())
 	}
 	tokenEndpointAuthMethod := new(shared.TokenEndpointAuthMethod)
 	if !r.TokenEndpointAuthMethod.IsUnknown() && !r.TokenEndpointAuthMethod.IsNull() {
@@ -315,10 +315,10 @@ func (r *AuthServerClientsResourceModel) ToSharedReplaceClient(ctx context.Conte
 		tokenEndpointAuthMethod = nil
 	}
 	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
+	for labelsKey := range r.Labels {
 		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
 		} else {
 			labelsInst = nil
 		}

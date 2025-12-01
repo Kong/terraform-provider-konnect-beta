@@ -68,9 +68,6 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"created_by": schema.StringAttribute{
 				Computed: true,
@@ -160,7 +157,6 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 							},
 							Attributes: map[string]schema.Attribute{
 								"chart": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"definition": schema.SingleNestedAttribute{
@@ -172,7 +168,6 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"choropleth_map": schema.SingleNestedAttribute{
-															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"chart_title": schema.StringAttribute{
@@ -205,7 +200,6 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 															},
 														},
 														"donut": schema.SingleNestedAttribute{
-															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"chart_title": schema.StringAttribute{
@@ -235,7 +229,6 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 															},
 														},
 														"horizontal_bar": schema.SingleNestedAttribute{
-															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"chart_title": schema.StringAttribute{
@@ -273,7 +266,6 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 															},
 														},
 														"single_value": schema.SingleNestedAttribute{
-															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"chart_title": schema.StringAttribute{
@@ -308,7 +300,6 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 															},
 														},
 														"timeseries_line": schema.SingleNestedAttribute{
-															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"chart_title": schema.StringAttribute{
@@ -362,7 +353,6 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"api_usage": schema.SingleNestedAttribute{
-															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"datasource": schema.StringAttribute{
@@ -499,7 +489,6 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																	Optional: true,
 																	Attributes: map[string]schema.Attribute{
 																		"absolute": schema.SingleNestedAttribute{
-																			Computed: true,
 																			Optional: true,
 																			Attributes: map[string]schema.Attribute{
 																				"end": schema.StringAttribute{
@@ -538,7 +527,6 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																			},
 																		},
 																		"relative": schema.SingleNestedAttribute{
-																			Computed: true,
 																			Optional: true,
 																			Attributes: map[string]schema.Attribute{
 																				"time_range": schema.StringAttribute{
@@ -597,7 +585,6 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 															},
 														},
 														"llm_usage": schema.SingleNestedAttribute{
-															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"datasource": schema.StringAttribute{
@@ -731,7 +718,6 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																	Optional: true,
 																	Attributes: map[string]schema.Attribute{
 																		"absolute": schema.SingleNestedAttribute{
-																			Computed: true,
 																			Optional: true,
 																			Attributes: map[string]schema.Attribute{
 																				"end": schema.StringAttribute{
@@ -770,7 +756,6 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																			},
 																		},
 																		"relative": schema.SingleNestedAttribute{
-																			Computed: true,
 																			Optional: true,
 																			Attributes: map[string]schema.Attribute{
 																				"time_range": schema.StringAttribute{
@@ -964,9 +949,6 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 		},
 	}
@@ -1202,7 +1184,10 @@ func (r *DashboardResource) Delete(ctx context.Context, req resource.DeleteReque
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 204 {
+	switch res.StatusCode {
+	case 204, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

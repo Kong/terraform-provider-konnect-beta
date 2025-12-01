@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.13.0
+> Released on 2025/11/26
+
+### Features
+* Support `force_destroy` parameter to optionally delete resources associated with `konnect_auth_server`
+
+### Bug fixes
+* Fix update operation on `konnect_event_gateway_virtual_cluster` resource when `sasl_plain` authentication scheme is used
+
 ## 0.12.1
 > Released on 2025/11/13
 

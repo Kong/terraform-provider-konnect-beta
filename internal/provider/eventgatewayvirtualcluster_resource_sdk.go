@@ -279,24 +279,24 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 		ID: id,
 	}
 	authentication := make([]shared.VirtualClusterAuthenticationScheme, 0, len(r.Authentication))
-	for _, authenticationItem := range r.Authentication {
-		if authenticationItem.Anonymous != nil {
+	for authenticationItem := range r.Authentication {
+		if r.Authentication[authenticationItem].Anonymous != nil {
 			virtualClusterAuthenticationAnonymous := shared.VirtualClusterAuthenticationAnonymous{}
 			authentication = append(authentication, shared.VirtualClusterAuthenticationScheme{
 				VirtualClusterAuthenticationAnonymous: &virtualClusterAuthenticationAnonymous,
 			})
 		}
-		if authenticationItem.SaslPlain != nil {
-			mediation := shared.Mediation(authenticationItem.SaslPlain.Mediation.ValueString())
+		if r.Authentication[authenticationItem].SaslPlain != nil {
+			mediation := shared.Mediation(r.Authentication[authenticationItem].SaslPlain.Mediation.ValueString())
 			var principals []shared.VirtualClusterAuthenticationPrincipal
-			if authenticationItem.SaslPlain.Principals != nil {
-				principals = make([]shared.VirtualClusterAuthenticationPrincipal, 0, len(authenticationItem.SaslPlain.Principals))
-				for _, principalsItem := range authenticationItem.SaslPlain.Principals {
+			if r.Authentication[authenticationItem].SaslPlain.Principals != nil {
+				principals = make([]shared.VirtualClusterAuthenticationPrincipal, 0, len(r.Authentication[authenticationItem].SaslPlain.Principals))
+				for principalsIndex := range r.Authentication[authenticationItem].SaslPlain.Principals {
 					var username string
-					username = principalsItem.Username.ValueString()
+					username = r.Authentication[authenticationItem].SaslPlain.Principals[principalsIndex].Username.ValueString()
 
 					var password string
-					password = principalsItem.Password.ValueString()
+					password = r.Authentication[authenticationItem].SaslPlain.Principals[principalsIndex].Password.ValueString()
 
 					principals = append(principals, shared.VirtualClusterAuthenticationPrincipal{
 						Username: username,
@@ -312,8 +312,8 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 				VirtualClusterAuthenticationSaslPlain: &virtualClusterAuthenticationSaslPlain,
 			})
 		}
-		if authenticationItem.SaslScram != nil {
-			algorithm := shared.VirtualClusterAuthenticationSaslScramAlgorithm(authenticationItem.SaslScram.Algorithm.ValueString())
+		if r.Authentication[authenticationItem].SaslScram != nil {
+			algorithm := shared.VirtualClusterAuthenticationSaslScramAlgorithm(r.Authentication[authenticationItem].SaslScram.Algorithm.ValueString())
 			virtualClusterAuthenticationSaslScram := shared.VirtualClusterAuthenticationSaslScram{
 				Algorithm: algorithm,
 			}
@@ -321,19 +321,19 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 				VirtualClusterAuthenticationSaslScram: &virtualClusterAuthenticationSaslScram,
 			})
 		}
-		if authenticationItem.OauthBearer != nil {
-			mediation1 := shared.VirtualClusterAuthenticationOauthBearerMediation(authenticationItem.OauthBearer.Mediation.ValueString())
+		if r.Authentication[authenticationItem].OauthBearer != nil {
+			mediation1 := shared.VirtualClusterAuthenticationOauthBearerMediation(r.Authentication[authenticationItem].OauthBearer.Mediation.ValueString())
 			var claimsMapping *shared.VirtualClusterAuthenticationClaimsMapping
-			if authenticationItem.OauthBearer.ClaimsMapping != nil {
+			if r.Authentication[authenticationItem].OauthBearer.ClaimsMapping != nil {
 				sub := new(string)
-				if !authenticationItem.OauthBearer.ClaimsMapping.Sub.IsUnknown() && !authenticationItem.OauthBearer.ClaimsMapping.Sub.IsNull() {
-					*sub = authenticationItem.OauthBearer.ClaimsMapping.Sub.ValueString()
+				if !r.Authentication[authenticationItem].OauthBearer.ClaimsMapping.Sub.IsUnknown() && !r.Authentication[authenticationItem].OauthBearer.ClaimsMapping.Sub.IsNull() {
+					*sub = r.Authentication[authenticationItem].OauthBearer.ClaimsMapping.Sub.ValueString()
 				} else {
 					sub = nil
 				}
 				scope := new(string)
-				if !authenticationItem.OauthBearer.ClaimsMapping.Scope.IsUnknown() && !authenticationItem.OauthBearer.ClaimsMapping.Scope.IsNull() {
-					*scope = authenticationItem.OauthBearer.ClaimsMapping.Scope.ValueString()
+				if !r.Authentication[authenticationItem].OauthBearer.ClaimsMapping.Scope.IsUnknown() && !r.Authentication[authenticationItem].OauthBearer.ClaimsMapping.Scope.IsNull() {
+					*scope = r.Authentication[authenticationItem].OauthBearer.ClaimsMapping.Scope.ValueString()
 				} else {
 					scope = nil
 				}
@@ -343,19 +343,19 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 				}
 			}
 			var jwks *shared.VirtualClusterAuthenticationJWKS
-			if authenticationItem.OauthBearer.Jwks != nil {
+			if r.Authentication[authenticationItem].OauthBearer.Jwks != nil {
 				var endpoint string
-				endpoint = authenticationItem.OauthBearer.Jwks.Endpoint.ValueString()
+				endpoint = r.Authentication[authenticationItem].OauthBearer.Jwks.Endpoint.ValueString()
 
 				timeout := new(string)
-				if !authenticationItem.OauthBearer.Jwks.Timeout.IsUnknown() && !authenticationItem.OauthBearer.Jwks.Timeout.IsNull() {
-					*timeout = authenticationItem.OauthBearer.Jwks.Timeout.ValueString()
+				if !r.Authentication[authenticationItem].OauthBearer.Jwks.Timeout.IsUnknown() && !r.Authentication[authenticationItem].OauthBearer.Jwks.Timeout.IsNull() {
+					*timeout = r.Authentication[authenticationItem].OauthBearer.Jwks.Timeout.ValueString()
 				} else {
 					timeout = nil
 				}
 				cacheExpiration := new(string)
-				if !authenticationItem.OauthBearer.Jwks.CacheExpiration.IsUnknown() && !authenticationItem.OauthBearer.Jwks.CacheExpiration.IsNull() {
-					*cacheExpiration = authenticationItem.OauthBearer.Jwks.CacheExpiration.ValueString()
+				if !r.Authentication[authenticationItem].OauthBearer.Jwks.CacheExpiration.IsUnknown() && !r.Authentication[authenticationItem].OauthBearer.Jwks.CacheExpiration.IsNull() {
+					*cacheExpiration = r.Authentication[authenticationItem].OauthBearer.Jwks.CacheExpiration.ValueString()
 				} else {
 					cacheExpiration = nil
 				}
@@ -366,13 +366,13 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 				}
 			}
 			var validate *shared.VirtualClusterAuthenticationValidate
-			if authenticationItem.OauthBearer.Validate != nil {
+			if r.Authentication[authenticationItem].OauthBearer.Validate != nil {
 				var audiences []shared.VirtualClusterAuthenticationAudience
-				if authenticationItem.OauthBearer.Validate.Audiences != nil {
-					audiences = make([]shared.VirtualClusterAuthenticationAudience, 0, len(authenticationItem.OauthBearer.Validate.Audiences))
-					for _, audiencesItem := range authenticationItem.OauthBearer.Validate.Audiences {
+				if r.Authentication[authenticationItem].OauthBearer.Validate.Audiences != nil {
+					audiences = make([]shared.VirtualClusterAuthenticationAudience, 0, len(r.Authentication[authenticationItem].OauthBearer.Validate.Audiences))
+					for audiencesIndex := range r.Authentication[authenticationItem].OauthBearer.Validate.Audiences {
 						var name1 string
-						name1 = audiencesItem.Name.ValueString()
+						name1 = r.Authentication[authenticationItem].OauthBearer.Validate.Audiences[audiencesIndex].Name.ValueString()
 
 						audiences = append(audiences, shared.VirtualClusterAuthenticationAudience{
 							Name: name1,
@@ -380,8 +380,8 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 					}
 				}
 				issuer := new(string)
-				if !authenticationItem.OauthBearer.Validate.Issuer.IsUnknown() && !authenticationItem.OauthBearer.Validate.Issuer.IsNull() {
-					*issuer = authenticationItem.OauthBearer.Validate.Issuer.ValueString()
+				if !r.Authentication[authenticationItem].OauthBearer.Validate.Issuer.IsUnknown() && !r.Authentication[authenticationItem].OauthBearer.Validate.Issuer.IsNull() {
+					*issuer = r.Authentication[authenticationItem].OauthBearer.Validate.Issuer.ValueString()
 				} else {
 					issuer = nil
 				}
@@ -410,14 +410,14 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 		var additional *shared.VirtualClusterNamespaceAdditionalProperties
 		if r.Namespace.Additional != nil {
 			topics := make([]shared.VirtualClusterNamespaceTopicSelector, 0, len(r.Namespace.Additional.Topics))
-			for _, topicsItem := range r.Namespace.Additional.Topics {
-				if topicsItem.Glob != nil {
+			for topicsItem := range r.Namespace.Additional.Topics {
+				if r.Namespace.Additional.Topics[topicsItem].Glob != nil {
 					var glob string
-					glob = topicsItem.Glob.Glob.ValueString()
+					glob = r.Namespace.Additional.Topics[topicsItem].Glob.Glob.ValueString()
 
 					conflict := new(shared.Conflict)
-					if !topicsItem.Glob.Conflict.IsUnknown() && !topicsItem.Glob.Conflict.IsNull() {
-						*conflict = shared.Conflict(topicsItem.Glob.Conflict.ValueString())
+					if !r.Namespace.Additional.Topics[topicsItem].Glob.Conflict.IsUnknown() && !r.Namespace.Additional.Topics[topicsItem].Glob.Conflict.IsNull() {
+						*conflict = shared.Conflict(r.Namespace.Additional.Topics[topicsItem].Glob.Conflict.ValueString())
 					} else {
 						conflict = nil
 					}
@@ -429,13 +429,13 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 						VirtualClusterNamespaceTopicSelectorGlob: &virtualClusterNamespaceTopicSelectorGlob,
 					})
 				}
-				if topicsItem.ExactList != nil {
+				if r.Namespace.Additional.Topics[topicsItem].ExactList != nil {
 					var exactList []shared.NamespaceExactAllowListItem
-					if topicsItem.ExactList.ExactList != nil {
-						exactList = make([]shared.NamespaceExactAllowListItem, 0, len(topicsItem.ExactList.ExactList))
-						for _, exactListItem := range topicsItem.ExactList.ExactList {
+					if r.Namespace.Additional.Topics[topicsItem].ExactList.ExactList != nil {
+						exactList = make([]shared.NamespaceExactAllowListItem, 0, len(r.Namespace.Additional.Topics[topicsItem].ExactList.ExactList))
+						for exactListIndex := range r.Namespace.Additional.Topics[topicsItem].ExactList.ExactList {
 							var backend string
-							backend = exactListItem.Backend.ValueString()
+							backend = r.Namespace.Additional.Topics[topicsItem].ExactList.ExactList[exactListIndex].Backend.ValueString()
 
 							exactList = append(exactList, shared.NamespaceExactAllowListItem{
 								Backend: backend,
@@ -443,8 +443,8 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 						}
 					}
 					conflict1 := new(shared.VirtualClusterNamespaceTopicSelectorExactListConflict)
-					if !topicsItem.ExactList.Conflict.IsUnknown() && !topicsItem.ExactList.Conflict.IsNull() {
-						*conflict1 = shared.VirtualClusterNamespaceTopicSelectorExactListConflict(topicsItem.ExactList.Conflict.ValueString())
+					if !r.Namespace.Additional.Topics[topicsItem].ExactList.Conflict.IsUnknown() && !r.Namespace.Additional.Topics[topicsItem].ExactList.Conflict.IsNull() {
+						*conflict1 = shared.VirtualClusterNamespaceTopicSelectorExactListConflict(r.Namespace.Additional.Topics[topicsItem].ExactList.Conflict.ValueString())
 					} else {
 						conflict1 = nil
 					}
@@ -458,10 +458,10 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 				}
 			}
 			consumerGroups := make([]shared.VirtualClusterNamespaceIDSelector, 0, len(r.Namespace.Additional.ConsumerGroups))
-			for _, consumerGroupsItem := range r.Namespace.Additional.ConsumerGroups {
-				if consumerGroupsItem.Glob != nil {
+			for consumerGroupsItem := range r.Namespace.Additional.ConsumerGroups {
+				if r.Namespace.Additional.ConsumerGroups[consumerGroupsItem].Glob != nil {
 					var glob1 string
-					glob1 = consumerGroupsItem.Glob.Glob.ValueString()
+					glob1 = r.Namespace.Additional.ConsumerGroups[consumerGroupsItem].Glob.Glob.ValueString()
 
 					virtualClusterNamespaceIDSelectorGlob := shared.VirtualClusterNamespaceIDSelectorGlob{
 						Glob: glob1,
@@ -470,13 +470,13 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 						VirtualClusterNamespaceIDSelectorGlob: &virtualClusterNamespaceIDSelectorGlob,
 					})
 				}
-				if consumerGroupsItem.ExactList != nil {
+				if r.Namespace.Additional.ConsumerGroups[consumerGroupsItem].ExactList != nil {
 					var exactList1 []shared.ExactList
-					if consumerGroupsItem.ExactList.ExactList != nil {
-						exactList1 = make([]shared.ExactList, 0, len(consumerGroupsItem.ExactList.ExactList))
-						for _, exactListItem1 := range consumerGroupsItem.ExactList.ExactList {
+					if r.Namespace.Additional.ConsumerGroups[consumerGroupsItem].ExactList.ExactList != nil {
+						exactList1 = make([]shared.ExactList, 0, len(r.Namespace.Additional.ConsumerGroups[consumerGroupsItem].ExactList.ExactList))
+						for exactListIndex1 := range r.Namespace.Additional.ConsumerGroups[consumerGroupsItem].ExactList.ExactList {
 							var value string
-							value = exactListItem1.Value.ValueString()
+							value = r.Namespace.Additional.ConsumerGroups[consumerGroupsItem].ExactList.ExactList[exactListIndex1].Value.ValueString()
 
 							exactList1 = append(exactList1, shared.ExactList{
 								Value: value,
@@ -507,10 +507,10 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 	dnsLabel = r.DNSLabel.ValueString()
 
 	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
+	for labelsKey := range r.Labels {
 		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
 		} else {
 			labelsInst = nil
 		}
@@ -552,15 +552,44 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 		ID: id,
 	}
 	authentication := make([]shared.VirtualClusterAuthenticationSensitiveDataAwareScheme, 0, len(r.Authentication))
-	for _, authenticationItem := range r.Authentication {
-		if authenticationItem.Anonymous != nil {
+	for authenticationItem := range r.Authentication {
+		if r.Authentication[authenticationItem].Anonymous != nil {
 			virtualClusterAuthenticationAnonymous := shared.VirtualClusterAuthenticationAnonymous{}
 			authentication = append(authentication, shared.VirtualClusterAuthenticationSensitiveDataAwareScheme{
 				VirtualClusterAuthenticationAnonymous: &virtualClusterAuthenticationAnonymous,
 			})
 		}
-		if authenticationItem.SaslScram != nil {
-			algorithm := shared.VirtualClusterAuthenticationSaslScramAlgorithm(authenticationItem.SaslScram.Algorithm.ValueString())
+		if r.Authentication[authenticationItem].SaslPlain != nil {
+			mediation := shared.VirtualClusterAuthenticationSaslPlainSensitiveDataAwareMediation(r.Authentication[authenticationItem].SaslPlain.Mediation.ValueString())
+			var principals []shared.VirtualClusterAuthenticationPrincipalSensitiveDataAware
+			if r.Authentication[authenticationItem].SaslPlain.Principals != nil {
+				principals = make([]shared.VirtualClusterAuthenticationPrincipalSensitiveDataAware, 0, len(r.Authentication[authenticationItem].SaslPlain.Principals))
+				for principalsIndex := range r.Authentication[authenticationItem].SaslPlain.Principals {
+					var username string
+					username = r.Authentication[authenticationItem].SaslPlain.Principals[principalsIndex].Username.ValueString()
+
+					password := new(string)
+					if !r.Authentication[authenticationItem].SaslPlain.Principals[principalsIndex].Password.IsUnknown() && !r.Authentication[authenticationItem].SaslPlain.Principals[principalsIndex].Password.IsNull() {
+						*password = r.Authentication[authenticationItem].SaslPlain.Principals[principalsIndex].Password.ValueString()
+					} else {
+						password = nil
+					}
+					principals = append(principals, shared.VirtualClusterAuthenticationPrincipalSensitiveDataAware{
+						Username: username,
+						Password: password,
+					})
+				}
+			}
+			virtualClusterAuthenticationSaslPlainSensitiveDataAware := shared.VirtualClusterAuthenticationSaslPlainSensitiveDataAware{
+				Mediation:  mediation,
+				Principals: principals,
+			}
+			authentication = append(authentication, shared.VirtualClusterAuthenticationSensitiveDataAwareScheme{
+				VirtualClusterAuthenticationSaslPlainSensitiveDataAware: &virtualClusterAuthenticationSaslPlainSensitiveDataAware,
+			})
+		}
+		if r.Authentication[authenticationItem].SaslScram != nil {
+			algorithm := shared.VirtualClusterAuthenticationSaslScramAlgorithm(r.Authentication[authenticationItem].SaslScram.Algorithm.ValueString())
 			virtualClusterAuthenticationSaslScram := shared.VirtualClusterAuthenticationSaslScram{
 				Algorithm: algorithm,
 			}
@@ -568,19 +597,19 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 				VirtualClusterAuthenticationSaslScram: &virtualClusterAuthenticationSaslScram,
 			})
 		}
-		if authenticationItem.OauthBearer != nil {
-			mediation := shared.VirtualClusterAuthenticationOauthBearerMediation(authenticationItem.OauthBearer.Mediation.ValueString())
+		if r.Authentication[authenticationItem].OauthBearer != nil {
+			mediation1 := shared.VirtualClusterAuthenticationOauthBearerMediation(r.Authentication[authenticationItem].OauthBearer.Mediation.ValueString())
 			var claimsMapping *shared.VirtualClusterAuthenticationClaimsMapping
-			if authenticationItem.OauthBearer.ClaimsMapping != nil {
+			if r.Authentication[authenticationItem].OauthBearer.ClaimsMapping != nil {
 				sub := new(string)
-				if !authenticationItem.OauthBearer.ClaimsMapping.Sub.IsUnknown() && !authenticationItem.OauthBearer.ClaimsMapping.Sub.IsNull() {
-					*sub = authenticationItem.OauthBearer.ClaimsMapping.Sub.ValueString()
+				if !r.Authentication[authenticationItem].OauthBearer.ClaimsMapping.Sub.IsUnknown() && !r.Authentication[authenticationItem].OauthBearer.ClaimsMapping.Sub.IsNull() {
+					*sub = r.Authentication[authenticationItem].OauthBearer.ClaimsMapping.Sub.ValueString()
 				} else {
 					sub = nil
 				}
 				scope := new(string)
-				if !authenticationItem.OauthBearer.ClaimsMapping.Scope.IsUnknown() && !authenticationItem.OauthBearer.ClaimsMapping.Scope.IsNull() {
-					*scope = authenticationItem.OauthBearer.ClaimsMapping.Scope.ValueString()
+				if !r.Authentication[authenticationItem].OauthBearer.ClaimsMapping.Scope.IsUnknown() && !r.Authentication[authenticationItem].OauthBearer.ClaimsMapping.Scope.IsNull() {
+					*scope = r.Authentication[authenticationItem].OauthBearer.ClaimsMapping.Scope.ValueString()
 				} else {
 					scope = nil
 				}
@@ -590,19 +619,19 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 				}
 			}
 			var jwks *shared.VirtualClusterAuthenticationJWKS
-			if authenticationItem.OauthBearer.Jwks != nil {
+			if r.Authentication[authenticationItem].OauthBearer.Jwks != nil {
 				var endpoint string
-				endpoint = authenticationItem.OauthBearer.Jwks.Endpoint.ValueString()
+				endpoint = r.Authentication[authenticationItem].OauthBearer.Jwks.Endpoint.ValueString()
 
 				timeout := new(string)
-				if !authenticationItem.OauthBearer.Jwks.Timeout.IsUnknown() && !authenticationItem.OauthBearer.Jwks.Timeout.IsNull() {
-					*timeout = authenticationItem.OauthBearer.Jwks.Timeout.ValueString()
+				if !r.Authentication[authenticationItem].OauthBearer.Jwks.Timeout.IsUnknown() && !r.Authentication[authenticationItem].OauthBearer.Jwks.Timeout.IsNull() {
+					*timeout = r.Authentication[authenticationItem].OauthBearer.Jwks.Timeout.ValueString()
 				} else {
 					timeout = nil
 				}
 				cacheExpiration := new(string)
-				if !authenticationItem.OauthBearer.Jwks.CacheExpiration.IsUnknown() && !authenticationItem.OauthBearer.Jwks.CacheExpiration.IsNull() {
-					*cacheExpiration = authenticationItem.OauthBearer.Jwks.CacheExpiration.ValueString()
+				if !r.Authentication[authenticationItem].OauthBearer.Jwks.CacheExpiration.IsUnknown() && !r.Authentication[authenticationItem].OauthBearer.Jwks.CacheExpiration.IsNull() {
+					*cacheExpiration = r.Authentication[authenticationItem].OauthBearer.Jwks.CacheExpiration.ValueString()
 				} else {
 					cacheExpiration = nil
 				}
@@ -613,13 +642,13 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 				}
 			}
 			var validate *shared.VirtualClusterAuthenticationValidate
-			if authenticationItem.OauthBearer.Validate != nil {
+			if r.Authentication[authenticationItem].OauthBearer.Validate != nil {
 				var audiences []shared.VirtualClusterAuthenticationAudience
-				if authenticationItem.OauthBearer.Validate.Audiences != nil {
-					audiences = make([]shared.VirtualClusterAuthenticationAudience, 0, len(authenticationItem.OauthBearer.Validate.Audiences))
-					for _, audiencesItem := range authenticationItem.OauthBearer.Validate.Audiences {
+				if r.Authentication[authenticationItem].OauthBearer.Validate.Audiences != nil {
+					audiences = make([]shared.VirtualClusterAuthenticationAudience, 0, len(r.Authentication[authenticationItem].OauthBearer.Validate.Audiences))
+					for audiencesIndex := range r.Authentication[authenticationItem].OauthBearer.Validate.Audiences {
 						var name1 string
-						name1 = audiencesItem.Name.ValueString()
+						name1 = r.Authentication[authenticationItem].OauthBearer.Validate.Audiences[audiencesIndex].Name.ValueString()
 
 						audiences = append(audiences, shared.VirtualClusterAuthenticationAudience{
 							Name: name1,
@@ -627,8 +656,8 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 					}
 				}
 				issuer := new(string)
-				if !authenticationItem.OauthBearer.Validate.Issuer.IsUnknown() && !authenticationItem.OauthBearer.Validate.Issuer.IsNull() {
-					*issuer = authenticationItem.OauthBearer.Validate.Issuer.ValueString()
+				if !r.Authentication[authenticationItem].OauthBearer.Validate.Issuer.IsUnknown() && !r.Authentication[authenticationItem].OauthBearer.Validate.Issuer.IsNull() {
+					*issuer = r.Authentication[authenticationItem].OauthBearer.Validate.Issuer.ValueString()
 				} else {
 					issuer = nil
 				}
@@ -638,7 +667,7 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 				}
 			}
 			virtualClusterAuthenticationOauthBearer := shared.VirtualClusterAuthenticationOauthBearer{
-				Mediation:     mediation,
+				Mediation:     mediation1,
 				ClaimsMapping: claimsMapping,
 				Jwks:          jwks,
 				Validate:      validate,
@@ -657,14 +686,14 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 		var additional *shared.VirtualClusterNamespaceAdditionalProperties
 		if r.Namespace.Additional != nil {
 			topics := make([]shared.VirtualClusterNamespaceTopicSelector, 0, len(r.Namespace.Additional.Topics))
-			for _, topicsItem := range r.Namespace.Additional.Topics {
-				if topicsItem.Glob != nil {
+			for topicsItem := range r.Namespace.Additional.Topics {
+				if r.Namespace.Additional.Topics[topicsItem].Glob != nil {
 					var glob string
-					glob = topicsItem.Glob.Glob.ValueString()
+					glob = r.Namespace.Additional.Topics[topicsItem].Glob.Glob.ValueString()
 
 					conflict := new(shared.Conflict)
-					if !topicsItem.Glob.Conflict.IsUnknown() && !topicsItem.Glob.Conflict.IsNull() {
-						*conflict = shared.Conflict(topicsItem.Glob.Conflict.ValueString())
+					if !r.Namespace.Additional.Topics[topicsItem].Glob.Conflict.IsUnknown() && !r.Namespace.Additional.Topics[topicsItem].Glob.Conflict.IsNull() {
+						*conflict = shared.Conflict(r.Namespace.Additional.Topics[topicsItem].Glob.Conflict.ValueString())
 					} else {
 						conflict = nil
 					}
@@ -676,13 +705,13 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 						VirtualClusterNamespaceTopicSelectorGlob: &virtualClusterNamespaceTopicSelectorGlob,
 					})
 				}
-				if topicsItem.ExactList != nil {
+				if r.Namespace.Additional.Topics[topicsItem].ExactList != nil {
 					var exactList []shared.NamespaceExactAllowListItem
-					if topicsItem.ExactList.ExactList != nil {
-						exactList = make([]shared.NamespaceExactAllowListItem, 0, len(topicsItem.ExactList.ExactList))
-						for _, exactListItem := range topicsItem.ExactList.ExactList {
+					if r.Namespace.Additional.Topics[topicsItem].ExactList.ExactList != nil {
+						exactList = make([]shared.NamespaceExactAllowListItem, 0, len(r.Namespace.Additional.Topics[topicsItem].ExactList.ExactList))
+						for exactListIndex := range r.Namespace.Additional.Topics[topicsItem].ExactList.ExactList {
 							var backend string
-							backend = exactListItem.Backend.ValueString()
+							backend = r.Namespace.Additional.Topics[topicsItem].ExactList.ExactList[exactListIndex].Backend.ValueString()
 
 							exactList = append(exactList, shared.NamespaceExactAllowListItem{
 								Backend: backend,
@@ -690,8 +719,8 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 						}
 					}
 					conflict1 := new(shared.VirtualClusterNamespaceTopicSelectorExactListConflict)
-					if !topicsItem.ExactList.Conflict.IsUnknown() && !topicsItem.ExactList.Conflict.IsNull() {
-						*conflict1 = shared.VirtualClusterNamespaceTopicSelectorExactListConflict(topicsItem.ExactList.Conflict.ValueString())
+					if !r.Namespace.Additional.Topics[topicsItem].ExactList.Conflict.IsUnknown() && !r.Namespace.Additional.Topics[topicsItem].ExactList.Conflict.IsNull() {
+						*conflict1 = shared.VirtualClusterNamespaceTopicSelectorExactListConflict(r.Namespace.Additional.Topics[topicsItem].ExactList.Conflict.ValueString())
 					} else {
 						conflict1 = nil
 					}
@@ -705,10 +734,10 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 				}
 			}
 			consumerGroups := make([]shared.VirtualClusterNamespaceIDSelector, 0, len(r.Namespace.Additional.ConsumerGroups))
-			for _, consumerGroupsItem := range r.Namespace.Additional.ConsumerGroups {
-				if consumerGroupsItem.Glob != nil {
+			for consumerGroupsItem := range r.Namespace.Additional.ConsumerGroups {
+				if r.Namespace.Additional.ConsumerGroups[consumerGroupsItem].Glob != nil {
 					var glob1 string
-					glob1 = consumerGroupsItem.Glob.Glob.ValueString()
+					glob1 = r.Namespace.Additional.ConsumerGroups[consumerGroupsItem].Glob.Glob.ValueString()
 
 					virtualClusterNamespaceIDSelectorGlob := shared.VirtualClusterNamespaceIDSelectorGlob{
 						Glob: glob1,
@@ -717,13 +746,13 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 						VirtualClusterNamespaceIDSelectorGlob: &virtualClusterNamespaceIDSelectorGlob,
 					})
 				}
-				if consumerGroupsItem.ExactList != nil {
+				if r.Namespace.Additional.ConsumerGroups[consumerGroupsItem].ExactList != nil {
 					var exactList1 []shared.ExactList
-					if consumerGroupsItem.ExactList.ExactList != nil {
-						exactList1 = make([]shared.ExactList, 0, len(consumerGroupsItem.ExactList.ExactList))
-						for _, exactListItem1 := range consumerGroupsItem.ExactList.ExactList {
+					if r.Namespace.Additional.ConsumerGroups[consumerGroupsItem].ExactList.ExactList != nil {
+						exactList1 = make([]shared.ExactList, 0, len(r.Namespace.Additional.ConsumerGroups[consumerGroupsItem].ExactList.ExactList))
+						for exactListIndex1 := range r.Namespace.Additional.ConsumerGroups[consumerGroupsItem].ExactList.ExactList {
 							var value string
-							value = exactListItem1.Value.ValueString()
+							value = r.Namespace.Additional.ConsumerGroups[consumerGroupsItem].ExactList.ExactList[exactListIndex1].Value.ValueString()
 
 							exactList1 = append(exactList1, shared.ExactList{
 								Value: value,
@@ -754,10 +783,10 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 	dnsLabel = r.DNSLabel.ValueString()
 
 	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
+	for labelsKey := range r.Labels {
 		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
 		} else {
 			labelsInst = nil
 		}
