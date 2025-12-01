@@ -18,24 +18,17 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
-func TestMesh(t *testing.T) {
-	serverHost, serverPort, serverScheme := providerConfigFromEnv()
-
-	t.Run("should not fail on creating a default mesh", func(t *testing.T) {
-		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort))
-		builder.ProviderProperty = hclbuilder.KonnectBeta
-
-		cp, err := hclbuilder.FromString(`
+const (
+	testControlPlaneHCL = `
 resource "konnect_mesh_control_plane" "e2e-test" {
   provider = konnect-beta
 
   name = "e2e-test"
   description = "e2e test cp"
 }
-`)
-		require.NoError(t, err)
+`
 
-		mesh, err := hclbuilder.FromString(`
+	testDefaultMeshHCL = `
 resource "konnect_mesh" "default" {
   provider = konnect-beta
 
@@ -44,7 +37,20 @@ resource "konnect_mesh" "default" {
 
   skip_creating_initial_policies = [ "*" ]
 }
-`)
+`
+)
+
+func TestMesh(t *testing.T) {
+	serverHost, serverPort, serverScheme := providerConfigFromEnv()
+
+	t.Run("should not fail on creating a default mesh", func(t *testing.T) {
+		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort))
+		builder.ProviderProperty = hclbuilder.KonnectBeta
+
+		cp, err := hclbuilder.FromString(testControlPlaneHCL)
+		require.NoError(t, err)
+
+		mesh, err := hclbuilder.FromString(testDefaultMeshHCL)
 		require.NoError(t, err)
 
 		// Set cp_id and add dependency
@@ -71,26 +77,10 @@ resource "konnect_mesh" "default" {
 		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort))
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		cp, err := hclbuilder.FromString(`
-resource "konnect_mesh_control_plane" "e2e-test" {
-  provider = konnect-beta
-
-  name = "e2e-test"
-  description = "e2e test cp"
-}
-`)
+		cp, err := hclbuilder.FromString(testControlPlaneHCL)
 		require.NoError(t, err)
 
-		mesh, err := hclbuilder.FromString(`
-resource "konnect_mesh" "default" {
-  provider = konnect-beta
-
-  name     = "default"
-  type     = "Mesh"
-
-  skip_creating_initial_policies = [ "*" ]
-}
-`)
+		mesh, err := hclbuilder.FromString(testDefaultMeshHCL)
 		require.NoError(t, err)
 
 		// Set cp_id and add dependency
@@ -106,26 +96,10 @@ resource "konnect_mesh" "default" {
 		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort))
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		cp, err := hclbuilder.FromString(`
-resource "konnect_mesh_control_plane" "e2e-test" {
-  provider = konnect-beta
-
-  name = "e2e-test"
-  description = "e2e test cp"
-}
-`)
+		cp, err := hclbuilder.FromString(testControlPlaneHCL)
 		require.NoError(t, err)
 
-		mesh, err := hclbuilder.FromString(`
-resource "konnect_mesh" "default" {
-  provider = konnect-beta
-
-  name = "default"
-  type = "Mesh"
-
-  skip_creating_initial_policies = [ "*" ]
-}
-`)
+		mesh, err := hclbuilder.FromString(testDefaultMeshHCL)
 		require.NoError(t, err)
 
 		mtp, err := hclbuilder.FromString(`
@@ -155,14 +129,7 @@ resource "konnect_mesh_traffic_permission" "allow_all" {
 		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort))
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		cp, err := hclbuilder.FromString(`
-resource "konnect_mesh_control_plane" "e2e-test" {
-  provider = konnect-beta
-
-  name = "e2e-test"
-  description = "e2e test cp"
-}
-`)
+		cp, err := hclbuilder.FromString(testControlPlaneHCL)
 		require.NoError(t, err)
 
 		mesh, err := hclbuilder.FromString(`
@@ -245,26 +212,10 @@ resource "konnect_mesh" "m1" {
 		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort))
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		cp, err := hclbuilder.FromString(`
-resource "konnect_mesh_control_plane" "e2e-test" {
-  provider = konnect-beta
-
-  name = "e2e-test"
-  description = "e2e test cp"
-}
-`)
+		cp, err := hclbuilder.FromString(testControlPlaneHCL)
 		require.NoError(t, err)
 
-		mesh, err := hclbuilder.FromString(`
-resource "konnect_mesh" "default" {
-  provider = konnect-beta
-
-  name = "default"
-  type = "Mesh"
-
-  skip_creating_initial_policies = [ "*" ]
-}
-`)
+		mesh, err := hclbuilder.FromString(testDefaultMeshHCL)
 		require.NoError(t, err)
 
 		mes, err := hclbuilder.FromString(`
@@ -340,26 +291,10 @@ resource "konnect_mesh_external_service" "mes_1" {
 		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort))
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		cp, err := hclbuilder.FromString(`
-resource "konnect_mesh_control_plane" "e2e-test" {
-  provider = konnect-beta
-
-  name = "e2e-test"
-  description = "e2e test cp"
-}
-`)
+		cp, err := hclbuilder.FromString(testControlPlaneHCL)
 		require.NoError(t, err)
 
-		mesh, err := hclbuilder.FromString(`
-resource "konnect_mesh" "default" {
-  provider = konnect-beta
-
-  name = "default"
-  type = "Mesh"
-
-  skip_creating_initial_policies = [ "*" ]
-}
-`)
+		mesh, err := hclbuilder.FromString(testDefaultMeshHCL)
 		require.NoError(t, err)
 
 		mtp1, err := hclbuilder.FromString(`
