@@ -2,11 +2,6 @@ resource "konnect_api" "my_api" {
   provider = konnect-beta
   attributes  = "{ \"see\": \"documentation\" }"
   description = "...my_description..."
-  images = {
-    icon = {
-      url = "https://example.com/icon.png"
-    }
-  }
   labels = {
     key = "value"
   }

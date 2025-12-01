@@ -67,7 +67,7 @@ type APIResponseSchema struct {
 	Labels map[string]*string `json:"labels"`
 	// A set of attributes that describe the API
 	Attributes any     `json:"attributes,omitempty"`
-	Images     *Images `json:"images"`
+	Images     *Images `json:"images,omitempty"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.

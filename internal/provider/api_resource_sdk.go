@@ -31,17 +31,6 @@ func (r *APIResourceModel) RefreshFromSharedAPIResponseSchema(ctx context.Contex
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.ID = types.StringValue(resp.ID)
-		if resp.Images == nil {
-			r.Images = nil
-		} else {
-			r.Images = &tfTypes.Images{}
-			if resp.Images.Icon == nil {
-				r.Images.Icon = nil
-			} else {
-				r.Images.Icon = &tfTypes.Icon{}
-				r.Images.Icon.URL = types.StringPointerValue(resp.Images.Icon.URL)
-			}
-		}
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
@@ -153,24 +142,6 @@ func (r *APIResourceModel) ToSharedCreateAPIRequest(ctx context.Context) (*share
 	if !r.Attributes.IsUnknown() && !r.Attributes.IsNull() {
 		_ = json.Unmarshal([]byte(r.Attributes.ValueString()), &attributes)
 	}
-	var images *shared.Images
-	if r.Images != nil {
-		var icon *shared.Icon
-		if r.Images.Icon != nil {
-			url := new(string)
-			if !r.Images.Icon.URL.IsUnknown() && !r.Images.Icon.URL.IsNull() {
-				*url = r.Images.Icon.URL.ValueString()
-			} else {
-				url = nil
-			}
-			icon = &shared.Icon{
-				URL: url,
-			}
-		}
-		images = &shared.Images{
-			Icon: icon,
-		}
-	}
 	specContent := new(string)
 	if !r.SpecContent.IsUnknown() && !r.SpecContent.IsNull() {
 		*specContent = r.SpecContent.ValueString()
@@ -184,7 +155,6 @@ func (r *APIResourceModel) ToSharedCreateAPIRequest(ctx context.Context) (*share
 		Slug:        slug,
 		Labels:      labels,
 		Attributes:  attributes,
-		Images:      images,
 		SpecContent: specContent,
 	}
 
@@ -235,24 +205,6 @@ func (r *APIResourceModel) ToSharedUpdateAPIRequest(ctx context.Context) (*share
 	if !r.Attributes.IsUnknown() && !r.Attributes.IsNull() {
 		_ = json.Unmarshal([]byte(r.Attributes.ValueString()), &attributes)
 	}
-	var images *shared.Images
-	if r.Images != nil {
-		var icon *shared.Icon
-		if r.Images.Icon != nil {
-			url := new(string)
-			if !r.Images.Icon.URL.IsUnknown() && !r.Images.Icon.URL.IsNull() {
-				*url = r.Images.Icon.URL.ValueString()
-			} else {
-				url = nil
-			}
-			icon = &shared.Icon{
-				URL: url,
-			}
-		}
-		images = &shared.Images{
-			Icon: icon,
-		}
-	}
 	out := shared.UpdateAPIRequest{
 		Name:        name,
 		Description: description,
@@ -260,7 +212,6 @@ func (r *APIResourceModel) ToSharedUpdateAPIRequest(ctx context.Context) (*share
 		Slug:        slug,
 		Labels:      labels,
 		Attributes:  attributes,
-		Images:      images,
 	}
 
 	return &out, diags

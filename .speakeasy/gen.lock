@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: 4f2c05c8dc2a208ddc69e4802c26664f
+  docChecksum: 42f0a5aff329c2c1fd4e996d0b6c4330
   docVersion: 2.0.0
   speakeasyVersion: 1.661.1
   generationVersion: 2.763.2
@@ -526,8 +526,6 @@ generatedFiles:
   - internal/provider/types/hostname_generators.go
   - internal/provider/types/http.go
   - internal/provider/types/http_filter.go
-  - internal/provider/types/icon.go
-  - internal/provider/types/images.go
   - internal/provider/types/issuer_ref.go
   - internal/provider/types/js.go
   - internal/provider/types/json_patches.go

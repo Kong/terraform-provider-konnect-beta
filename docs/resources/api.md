@@ -17,11 +17,6 @@ resource "konnect_api" "my_api" {
   provider = konnect-beta
   attributes  = "{ \"see\": \"documentation\" }"
   description = "...my_description..."
-  images = {
-    icon = {
-      url = "https://example.com/icon.png"
-    }
-  }
   labels = {
     key = "value"
   }
@@ -43,7 +38,6 @@ resource "konnect_api" "my_api" {
 
 - `attributes` (String) A set of attributes that describe the API. Parsed as JSON.
 - `description` (String) A description of your API. Will be visible on your live Portal.
-- `images` (Attributes) (see [below for nested schema](#nestedatt--images))
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -60,22 +54,6 @@ Defaults to `slugify(name + version)`
 - `id` (String) The API identifier.
 - `portals` (Attributes List) The list of portals which this API is published to. (see [below for nested schema](#nestedatt--portals))
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
-
-<a id="nestedatt--images"></a>
-### Nested Schema for `images`
-
-Optional:
-
-- `icon` (Attributes) (see [below for nested schema](#nestedatt--images--icon))
-
-<a id="nestedatt--images--icon"></a>
-### Nested Schema for `images.icon`
-
-Optional:
-
-- `url` (String) The URL of the icon image. Must be an HTTPS URL.
-
-
 
 <a id="nestedatt--portals"></a>
 ### Nested Schema for `portals`
