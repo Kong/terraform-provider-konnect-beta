@@ -9865,11 +9865,10 @@ components:
               pattern: '^https://[^\s]+$'
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
-      default: null
       additionalProperties: false
       nullable: true
       title: Images
-      x-speakeasy-param-computed: false
+      x-speakeasy-terraform-ignore: true
     UnsupportedMediaTypeError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
