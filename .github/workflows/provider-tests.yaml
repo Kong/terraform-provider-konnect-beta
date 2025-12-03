@@ -35,4 +35,5 @@ jobs:
           terraform_wrapper: false
       - env:
           KONNECT_SPAT: ${{ secrets.KONNECT_SPAT }}
+          TF_LOG: DEBUG
         run: make acceptance
