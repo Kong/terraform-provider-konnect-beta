@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/Kong/shared-speakeasy/tfbuilder"
+	"github.com/Kong/shared-speakeasy/hclbuilder"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
 	"github.com/hashicorp/terraform-plugin-testing/plancheck"
@@ -18,238 +18,370 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
+const (
+	testControlPlaneHCL = `
+resource "konnect_mesh_control_plane" "e2e-test" {
+  provider = konnect-beta
+
+  name = "e2e-test"
+  description = "e2e test cp"
+}
+`
+
+	testDefaultMeshHCL = `
+resource "konnect_mesh" "default" {
+  provider = konnect-beta
+
+  name     = "default"
+  type     = "Mesh"
+
+  skip_creating_initial_policies = [ "*" ]
+}
+`
+)
+
 func TestMesh(t *testing.T) {
 	serverHost, serverPort, serverScheme := providerConfigFromEnv()
 
-	t.Run("should fail on creating a default mesh", func(t *testing.T) {
-		builder := tfbuilder.NewBuilder(tfbuilder.Konnect, serverScheme, serverHost, serverPort).WithProviderProperty(tfbuilder.KonnectBeta)
-		cp := tfbuilder.NewControlPlane("e2e-test", "e2e-test", "e2e test cp")
-		mesh := tfbuilder.NewMeshBuilder("default", "default").
-			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
-			WithDependsOn(builder.ResourceAddress("mesh_control_plane", cp.ResourceName)).
-			WithSpec(`skip_creating_initial_policies = [ "*" ]`)
+	t.Run("should not fail on creating a default mesh", func(t *testing.T) {
+		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort))
+		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		builder.AddControlPlane(cp)
+		cp, err := hclbuilder.FromString(testControlPlaneHCL)
+		require.NoError(t, err)
+
+		mesh, err := hclbuilder.FromString(testDefaultMeshHCL)
+		require.NoError(t, err)
+
+		// Set cp_id and add dependency
+		mesh.AddAttribute("cp_id", cp.ResourcePath()+".id")
+		mesh.DependsOn(cp)
 
 		// if this grows move this to shared-speakeasy
 		resource.ParallelTest(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
 				{
-					Config: builder.AddMesh(mesh).Build(),
+					Config: builder.Upsert(cp).Upsert(mesh).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction(builder.ResourceAddress("mesh", mesh.ResourceName), plancheck.ResourceActionCreate),
+							plancheck.ExpectResourceAction("konnect_mesh.default", plancheck.ResourceActionCreate),
 						},
 					},
 				},
-				tfbuilder.CheckReapplyPlanEmpty(builder),
 			},
 		})
 	})
 
 	t.Run("create a mesh and modify fields on it", func(t *testing.T) {
-		builder := tfbuilder.NewBuilder(tfbuilder.Konnect, serverScheme, serverHost, serverPort).WithProviderProperty(tfbuilder.KonnectBeta)
-		cp := tfbuilder.NewControlPlane("e2e-test", "e2e-test", "e2e test cp")
-		mesh := tfbuilder.NewMeshBuilder("m1", "m1").
-			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
-			WithDependsOn(builder.ResourceAddress("mesh_control_plane", cp.ResourceName)).
-			WithSpec(`skip_creating_initial_policies = [ "*" ]`)
+		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort))
+		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		builder.AddControlPlane(cp)
+		cp, err := hclbuilder.FromString(testControlPlaneHCL)
+		require.NoError(t, err)
 
-		resource.ParallelTest(t, tfbuilder.CreateMeshAndModifyFieldsOnIt(providerFactory, builder, mesh))
+		mesh, err := hclbuilder.FromString(testDefaultMeshHCL)
+		require.NoError(t, err)
+
+		// Set cp_id and add dependency
+		mesh.AddAttribute("cp_id", cp.ResourcePath()+".id")
+		mesh.DependsOn(cp)
+
+		builder.Upsert(cp)
+
+		resource.ParallelTest(t, hclbuilder.CreateMeshAndModifyFields(providerFactory, builder, mesh))
 	})
 
 	t.Run("create a policy and modify fields on it", func(t *testing.T) {
-		builder := tfbuilder.NewBuilder(tfbuilder.Konnect, serverScheme, serverHost, serverPort).WithProviderProperty(tfbuilder.KonnectBeta)
-		cp := tfbuilder.NewControlPlane("e2e-test", "e2e-test", "e2e test cp")
-		builder.AddControlPlane(cp)
-		mesh := tfbuilder.NewMeshBuilder("default", "terraform-provider-kong-mesh").
-			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
-			WithDependsOn(builder.ResourceAddress("mesh_control_plane", cp.ResourceName)).
-			WithSpec(`skip_creating_initial_policies = [ "*" ]`)
-		mtp := tfbuilder.NewPolicyBuilder("mesh_traffic_permission", "allow_all", "allow-all", "MeshTrafficPermission").
-			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
-			WithMeshRef(builder.ResourceAddress("mesh", mesh.ResourceName) + ".name").
-			WithDependsOn(builder.ResourceAddress("mesh", mesh.ResourceName))
-		builder.AddMesh(mesh)
+		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort))
+		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		resource.ParallelTest(t, tfbuilder.CreatePolicyAndModifyFieldsOnIt(providerFactory, builder, mtp))
+		cp, err := hclbuilder.FromString(testControlPlaneHCL)
+		require.NoError(t, err)
+
+		mesh, err := hclbuilder.FromString(testDefaultMeshHCL)
+		require.NoError(t, err)
+
+		mtp, err := hclbuilder.FromString(`
+resource "konnect_mesh_traffic_permission" "allow_all" {
+  provider = konnect-beta
+
+  name = "allow-all"
+  type = "MeshTrafficPermission"
+}
+`)
+		require.NoError(t, err)
+
+		// Set up dependencies
+		mesh.AddAttribute("cp_id", cp.ResourcePath()+".id")
+		mesh.DependsOn(cp)
+
+		mtp.AddAttribute("cp_id", cp.ResourcePath()+".id")
+		mtp.AddAttribute("mesh", mesh.ResourcePath()+".name")
+		mtp.DependsOn(mesh)
+
+		builder.Upsert(cp)
+
+		resource.ParallelTest(t, hclbuilder.CreatePolicyAndModifyFields(providerFactory, builder, mesh, mtp))
 	})
 
 	t.Run("create mesh with oneOf", func(t *testing.T) {
-		builder := tfbuilder.NewBuilder(tfbuilder.Konnect, serverScheme, serverHost, serverPort).WithProviderProperty(tfbuilder.KonnectBeta)
-		cp := tfbuilder.NewControlPlane("e2e-test", "e2e-test", "e2e test cp")
-		mesh := tfbuilder.NewMeshBuilder("m1", "m1").
-			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
-			WithDependsOn(builder.ResourceAddress("mesh_control_plane", cp.ResourceName)).
-			WithSpec(`
-skip_creating_initial_policies = [ "*" ]
-mtls = {
-  backends = [
-    {
-      name = "mesh-a-acmpca"
-      type = "acmpca"
-      dp_cert = {
-        rotation = {
-          expiration = "24h"
-        }
-      }
-      conf = {
-        acm_certificate_authority_config = {
-          arn = "arn:hello:world"
-          ca_cert = {
-            data_source_file = {
-              file = "my-file"
-            }
-          }
-          auth = {
-            aws_credentials = {
-              access_key = {
-                data_source_inline_string = {
-                  inline_string = "TestTestTest"
-                }
-              }
-              access_key_secret = {
-                data_source_inline_string = {
-                  inline_string = "TestTestTest"
-                }
-              }
-            }
+		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort))
+		builder.ProviderProperty = hclbuilder.KonnectBeta
+
+		cp, err := hclbuilder.FromString(testControlPlaneHCL)
+		require.NoError(t, err)
+
+		mesh, err := hclbuilder.FromString(`
+resource "konnect_mesh" "m1" {
+  provider = konnect-beta
+
+  name = "m1"
+  type = "Mesh"
+
+  skip_creating_initial_policies = [ "*" ]
+  mtls = {
+    backends = [
+      {
+        name = "mesh-a-acmpca"
+        type = "acmpca"
+        dp_cert = {
+          rotation = {
+            expiration = "24h"
           }
         }
+        conf = {
+          acm_certificate_authority_config = {
+            arn = "arn:hello:world"
+            ca_cert = {
+              data_source_file = {
+                file = "my-file"
+              }
+            }
+            auth = {
+              aws_credentials = {
+                access_key = {
+                  data_source_inline_string = {
+                    inline_string = "TestTestTest"
+                  }
+                }
+                access_key_secret = {
+                  data_source_inline_string = {
+                    inline_string = "TestTestTest"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
-    }
-  ]
-  enabledBackend  = "mesh-a-acmpca"
+    ]
+    enabledBackend = "mesh-a-acmpca"
+  }
 }
 `)
+		require.NoError(t, err)
 
-		builder.AddControlPlane(cp)
+		mesh.AddAttribute("cp_id", cp.ResourcePath()+".id")
+		mesh.DependsOn(cp)
 
 		resource.ParallelTest(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
 				{
-					Config: builder.AddMesh(mesh).Build(),
+					Config: builder.Upsert(cp).Upsert(mesh).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction(builder.ResourceAddress("mesh", mesh.ResourceName), plancheck.ResourceActionCreate),
+							plancheck.ExpectResourceAction("konnect_mesh.m1", plancheck.ResourceActionCreate),
 						},
 					},
 				},
-				tfbuilder.CheckReapplyPlanEmpty(builder),
+				{
+					Config: builder.Upsert(cp).Upsert(mesh).Build(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectEmptyPlan(),
+						},
+					},
+				},
 			},
 		})
 	})
 
 	t.Run("create resource with status", func(t *testing.T) {
-		builder := tfbuilder.NewBuilder(tfbuilder.Konnect, serverScheme, serverHost, serverPort).WithProviderProperty(tfbuilder.KonnectBeta)
-		cp := tfbuilder.NewControlPlane("e2e-test", "e2e-test", "e2e test cp")
-		builder.AddControlPlane(cp)
-		mesh := tfbuilder.NewMeshBuilder("default", "terraform-provider-kong-mesh").
-			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
-			WithDependsOn(builder.ResourceAddress("mesh_control_plane", cp.ResourceName)).
-			WithSpec(`skip_creating_initial_policies = [ "*" ]`)
-		builder.AddMesh(mesh)
+		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort))
+		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		mes := tfbuilder.NewPolicyBuilder("mesh_external_service", "mes_1", "mes-1", "MeshExternalService").
-			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
-			WithMeshRef(builder.ResourceAddress("mesh", mesh.ResourceName) + ".name").
-			WithDependsOn(builder.ResourceAddress("mesh", mesh.ResourceName)).WithSpec(`
-spec = {
-  endpoints = [
-    {
-      address = "example.com"
-      port    = 9478
+		cp, err := hclbuilder.FromString(testControlPlaneHCL)
+		require.NoError(t, err)
+
+		mesh, err := hclbuilder.FromString(testDefaultMeshHCL)
+		require.NoError(t, err)
+
+		mes, err := hclbuilder.FromString(`
+resource "konnect_mesh_external_service" "mes_1" {
+  provider = konnect-beta
+
+  name = "mes-1"
+  type = "MeshExternalService"
+
+  spec = {
+    endpoints = [
+      {
+        address = "example.com"
+        port    = 9478
+      }
+    ]
+    match = {
+      port     = 1444
+      protocol = "tcp"
+      type     = "HostnameGenerator"
     }
-  ]
-  match = {
-    port     = 1444
-    protocol = "tcp"
-    type     = "HostnameGenerator"
-  }
-  tls = {
-    allow_renegotiation = false
-    enabled             = true
-    verification = {
-      ca_cert = {
-        inline_string = "-----BEGIN CERTIFICATE-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A...\n-----END CERTIFICATE-----"
-      }
-      client_cert = {
-        inline_string = "-----BEGIN CERTIFICATE-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8B...\n-----END CERTIFICATE-----"
-      }
-      client_key = {
-        inline_string = "-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEAt...\n-----END RSA PRIVATE KEY-----"
-      }
-      mode        = "SkipAll"
-      server_name = "my.server.name"
-      subject_alt_names = [
-        {
-          type  = "Exact"
-          value = "my.example.com"
+    tls = {
+      allow_renegotiation = false
+      enabled             = true
+      verification = {
+        ca_cert = {
+          inline_string = "-----BEGIN CERTIFICATE-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A...\n-----END CERTIFICATE-----"
         }
-      ]
-    }
-    version = {
-      max = "TLS12"
-      min = "TLS10"
+        client_cert = {
+          inline_string = "-----BEGIN CERTIFICATE-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8B...\n-----END CERTIFICATE-----"
+        }
+        client_key = {
+          inline_string = "-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEAt...\n-----END RSA PRIVATE KEY-----"
+        }
+        mode        = "SkipAll"
+        server_name = "my.server.name"
+        subject_alt_names = [
+          {
+            type  = "Exact"
+            value = "my.example.com"
+          }
+        ]
+      }
+      version = {
+        max = "TLS12"
+        min = "TLS10"
+      }
     }
   }
 }
 `)
+		require.NoError(t, err)
+
+		mesh.AddAttribute("cp_id", cp.ResourcePath()+".id")
+		mesh.DependsOn(cp)
+
+		mes.AddAttribute("cp_id", cp.ResourcePath()+".id")
+		mes.AddAttribute("mesh", mesh.ResourcePath()+".name")
+		mes.DependsOn(mesh)
+
 		resource.ParallelTest(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
 				{
-					Config: builder.AddPolicy(mes).Build(),
+					Config:             builder.Upsert(cp).Upsert(mesh).Upsert(mes).Build(),
+					ExpectNonEmptyPlan: true,
 				},
 			},
 		})
 	})
 
 	t.Run("create a policy and remove arrays on it", func(t *testing.T) {
-		builder := tfbuilder.NewBuilder(tfbuilder.Konnect, serverScheme, serverHost, serverPort).WithProviderProperty(tfbuilder.KonnectBeta)
-		cp := tfbuilder.NewControlPlane("e2e-test", "e2e-test", "e2e test cp")
-		builder.AddControlPlane(cp)
-		mesh := tfbuilder.NewMeshBuilder("default", "terraform-provider-kong-mesh").
-			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
-			WithDependsOn(builder.ResourceAddress("mesh_control_plane", cp.ResourceName)).
-			WithSpec(`skip_creating_initial_policies = [ "*" ]`)
-		mtp := tfbuilder.NewPolicyBuilder("mesh_traffic_permission", "allow_all", "allow-all", "MeshTrafficPermission").
-			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
-			WithMeshRef(builder.ResourceAddress("mesh", mesh.ResourceName) + ".name").
-			WithDependsOn(builder.ResourceAddress("mesh", mesh.ResourceName))
-		builder.AddMesh(mesh)
+		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort))
+		builder.ProviderProperty = hclbuilder.KonnectBeta
+
+		cp, err := hclbuilder.FromString(testControlPlaneHCL)
+		require.NoError(t, err)
+
+		mesh, err := hclbuilder.FromString(testDefaultMeshHCL)
+		require.NoError(t, err)
+
+		mtp1, err := hclbuilder.FromString(`
+resource "konnect_mesh_traffic_permission" "allow_all" {
+  provider = konnect-beta
+
+  name = "allow-all"
+  type = "MeshTrafficPermission"
+
+  spec = {
+    rules = [
+      {
+        default = {
+          allow = [
+            {
+              spiffe_id = {
+                type  = "Exact"
+                value = "spiffe://hello/world"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
+`)
+		require.NoError(t, err)
+
+		mtp2, err := hclbuilder.FromString(`
+resource "konnect_mesh_traffic_permission" "allow_all" {
+  provider = konnect-beta
+
+  name = "allow-all"
+  type = "MeshTrafficPermission"
+
+  spec = {
+    rules = [
+      {
+        default = {
+          deny = [
+            {
+              spiffe_id = {
+                type  = "Exact"
+                value = "spiffe://hello/world"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
+`)
+		require.NoError(t, err)
+
+		mesh.AddAttribute("cp_id", cp.ResourcePath()+".id")
+		mesh.DependsOn(cp)
+
+		mtp1.AddAttribute("cp_id", cp.ResourcePath()+".id")
+		mtp1.AddAttribute("mesh", mesh.ResourcePath()+".name")
+		mtp1.DependsOn(mesh)
+
+		mtp2.AddAttribute("cp_id", cp.ResourcePath()+".id")
+		mtp2.AddAttribute("mesh", mesh.ResourcePath()+".name")
+		mtp2.DependsOn(mesh)
+
+		builder1 := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort))
+		builder1.ProviderProperty = hclbuilder.KonnectBeta
+		config1 := builder1.Upsert(cp).Upsert(mesh).Upsert(mtp1).Build()
+
+		builder2 := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort))
+		builder2.ProviderProperty = hclbuilder.KonnectBeta
+		config2 := builder2.Upsert(cp).Upsert(mesh).Upsert(mtp2).Build()
 
 		resource.ParallelTest(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
 				{
-					Config: builder.AddPolicy(mtp.WithSpec(`
-spec = {
-  rules = [
-    {
-      default = {
-        allow = [
-          {
-            spiffe_id = {
-              type  = "Exact"
-              value = "spiffe://hello/world"
-            }
-          }
-        ]
-      }
-    }
-  ]
-}`)).Build(),
+					Config:             config1,
+					ExpectNonEmptyPlan: true,
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction(builder.ResourceAddress(mtp.ResourceType, mtp.ResourceName), plancheck.ResourceActionCreate),
+							plancheck.ExpectResourceAction("konnect_mesh_traffic_permission.allow_all", plancheck.ResourceActionCreate),
 						},
 						PostApplyPostRefresh: []plancheck.PlanCheck{
-							plancheck.ExpectKnownValue(builder.ResourceAddress(mtp.ResourceType, mtp.ResourceName),
+							plancheck.ExpectKnownValue("konnect_mesh_traffic_permission.allow_all",
 								tfjsonpath.New("spec").AtMapKey("rules").AtSliceIndex(0).AtMapKey("default"),
 								knownvalue.ObjectExact(map[string]knownvalue.Check{
 									"allow": knownvalue.ListExact([]knownvalue.Check{
@@ -267,31 +399,19 @@ spec = {
 						},
 					},
 				},
-				tfbuilder.CheckReapplyPlanEmpty(builder),
 				{
-					Config: builder.AddPolicy(mtp.WithSpec(`
-spec = {
-  rules = [
-    {
-      default = {
-        deny = [
-          {
-            spiffe_id = {
-              type  = "Exact"
-              value = "spiffe://hello/world"
-            }
-          }
-		]
-      }
-    }
-  ]
-}`)).Build(),
+					Config:             config1,
+					ExpectNonEmptyPlan: true,
+				},
+				{
+					Config:             config2,
+					ExpectNonEmptyPlan: true,
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction(builder.ResourceAddress(mtp.ResourceType, mtp.ResourceName), plancheck.ResourceActionUpdate),
+							plancheck.ExpectResourceAction("konnect_mesh_traffic_permission.allow_all", plancheck.ResourceActionUpdate),
 						},
 						PostApplyPostRefresh: []plancheck.PlanCheck{
-							plancheck.ExpectKnownValue(builder.ResourceAddress(mtp.ResourceType, mtp.ResourceName),
+							plancheck.ExpectKnownValue("konnect_mesh_traffic_permission.allow_all",
 								tfjsonpath.New("spec").AtMapKey("rules").AtSliceIndex(0).AtMapKey("default"),
 								knownvalue.ObjectExact(map[string]knownvalue.Check{
 									"deny": knownvalue.ListExact([]knownvalue.Check{
@@ -309,7 +429,10 @@ spec = {
 						},
 					},
 				},
-				tfbuilder.CheckReapplyPlanEmpty(builder),
+				{
+					Config:             config2,
+					ExpectNonEmptyPlan: true,
+				},
 			},
 		})
 	})
@@ -319,43 +442,116 @@ spec = {
 		mtpName := "allow-all"
 		cpName := fmt.Sprintf("e2e-test-%d", acctest.RandInt())
 
-		builder := tfbuilder.NewBuilder(tfbuilder.Konnect, serverScheme, serverHost, serverPort).WithProviderProperty(tfbuilder.KonnectBeta)
-		cp := tfbuilder.NewControlPlane("e2e-test", cpName, "e2e test cp")
-		builder.AddControlPlane(cp)
-		mesh := tfbuilder.NewMeshBuilder("default", meshName).
-			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
-			WithDependsOn(builder.ResourceAddress("mesh_control_plane", cp.ResourceName)).
-			WithSpec(`skip_creating_initial_policies = [ "*" ]`)
-		mtp := tfbuilder.NewPolicyBuilder("mesh_traffic_permission", "allow_all", mtpName, "MeshTrafficPermission").
-			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
-			WithMeshRef(builder.ResourceAddress("mesh", mesh.ResourceName) + ".name").
-			WithDependsOn(builder.ResourceAddress("mesh", mesh.ResourceName))
-		builder.AddMesh(mesh)
+		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort))
+		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		resource.ParallelTest(t, tfbuilder.NotImportedResourceShouldErrorOutWithMeaningfulMessage(providerFactory, builder, mtp, func() { createAnMTP(t, cpName, meshName, mtpName) }))
+		cp, err := hclbuilder.FromString(fmt.Sprintf(`
+resource "konnect_mesh_control_plane" "e2e-test" {
+  provider = konnect-beta
+
+  name = "%s"
+  description = "e2e test cp"
+}
+`, cpName))
+		require.NoError(t, err)
+
+		mesh, err := hclbuilder.FromString(fmt.Sprintf(`
+resource "konnect_mesh" "default" {
+  provider = konnect-beta
+
+  name = "%s"
+  type = "Mesh"
+
+  skip_creating_initial_policies = [ "*" ]
+}
+`, meshName))
+		require.NoError(t, err)
+
+		mtp, err := hclbuilder.FromString(fmt.Sprintf(`
+resource "konnect_mesh_traffic_permission" "allow_all" {
+  provider = konnect-beta
+
+  name = "%s"
+  type = "MeshTrafficPermission"
+}
+`, mtpName))
+		require.NoError(t, err)
+
+		mesh.AddAttribute("cp_id", cp.ResourcePath()+".id")
+		mesh.DependsOn(cp)
+
+		mtp.AddAttribute("cp_id", cp.ResourcePath()+".id")
+		mtp.AddAttribute("mesh", mesh.ResourcePath()+".name")
+		mtp.DependsOn(mesh)
+
+		builder.Upsert(cp)
+
+		resource.ParallelTest(t, hclbuilder.NotImportedResourceShouldError(providerFactory, builder, mesh, mtp, func() { createAnMTP(t, cpName, meshName, mtpName) }))
 	})
 
 	t.Run("should be able to store secrets", func(t *testing.T) {
 		meshName := "m4"
 		cpName := fmt.Sprintf("e2e-test-%d", acctest.RandInt())
 
-		builder := tfbuilder.NewBuilder(tfbuilder.Konnect, serverScheme, serverHost, serverPort).WithProviderProperty(tfbuilder.KonnectBeta)
-		cp := tfbuilder.NewControlPlane("e2e-test", cpName, "e2e test cp")
-		builder.AddControlPlane(cp)
-		mesh := tfbuilder.NewMeshBuilder("default", meshName).
-			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
-			WithSpec(`skip_creating_initial_policies = [ "*" ]`).
-			WithDependsOn(builder.ResourceAddress("mesh_control_plane", cp.ResourceName))
-		skey := tfbuilder.NewPolicyBuilder("mesh_secret", "skey", "skey", "Secret").
-			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
-			WithMeshRef(builder.ResourceAddress("mesh", mesh.ResourceName) + ".name").
-			WithDependsOn(builder.ResourceAddress("mesh", mesh.ResourceName))
-		scert := tfbuilder.NewPolicyBuilder("mesh_secret", "scert", "scert", "Secret").
-			WithCPID(builder.ResourceAddress("mesh_control_plane", cp.ResourceName) + ".id").
-			WithMeshRef(builder.ResourceAddress("mesh", mesh.ResourceName) + ".name").
-			WithDependsOn(builder.ResourceAddress("mesh", mesh.ResourceName))
-		builder.AddMesh(mesh)
-		resource.ParallelTest(t, tfbuilder.ShouldBeAbleToStoreSecrets(providerFactory, builder, scert, skey, mesh))
+		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort))
+		builder.ProviderProperty = hclbuilder.KonnectBeta
+
+		cp, err := hclbuilder.FromString(fmt.Sprintf(`
+resource "konnect_mesh_control_plane" "e2e-test" {
+  provider = konnect-beta
+
+  name = "%s"
+  description = "e2e test cp"
+}
+`, cpName))
+		require.NoError(t, err)
+
+		mesh, err := hclbuilder.FromString(fmt.Sprintf(`
+resource "konnect_mesh" "default" {
+  provider = konnect-beta
+
+  name = "%s"
+  type = "Mesh"
+
+  skip_creating_initial_policies = [ "*" ]
+}
+`, meshName))
+		require.NoError(t, err)
+
+		skey, err := hclbuilder.FromString(`
+resource "konnect_mesh_secret" "skey" {
+  provider = konnect-beta
+
+  name = "skey"
+  type = "Secret"
+}
+`)
+		require.NoError(t, err)
+
+		scert, err := hclbuilder.FromString(`
+resource "konnect_mesh_secret" "scert" {
+  provider = konnect-beta
+
+  name = "scert"
+  type = "Secret"
+}
+`)
+		require.NoError(t, err)
+
+		mesh.AddAttribute("cp_id", cp.ResourcePath()+".id")
+		mesh.DependsOn(cp)
+
+		skey.AddAttribute("cp_id", cp.ResourcePath()+".id")
+		skey.AddAttribute("mesh", mesh.ResourcePath()+".name")
+		skey.DependsOn(mesh)
+
+		scert.AddAttribute("cp_id", cp.ResourcePath()+".id")
+		scert.AddAttribute("mesh", mesh.ResourcePath()+".name")
+		scert.DependsOn(mesh)
+
+		builder.Upsert(cp).Upsert(mesh)
+
+		resource.ParallelTest(t, hclbuilder.ShouldBeAbleToStoreSecrets(providerFactory, builder, mesh, scert, skey))
 	})
 }
 
