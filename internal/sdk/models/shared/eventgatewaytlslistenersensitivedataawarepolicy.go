@@ -11,6 +11,7 @@ import (
 //
 // While it is possible to have multiple TLS policies on a listener, only one can be active at a time.
 type EventGatewayTLSListenerSensitiveDataAwarePolicy struct {
+	// The type name of the policy.
 	type_ string `const:"tls_server" json:"type"`
 	// A unique user-defined name of the policy.
 	Name *string `default:"null" json:"name"`

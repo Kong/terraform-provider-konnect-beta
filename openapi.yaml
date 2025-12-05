@@ -7,6 +7,17 @@ info:
   contact:
     name: Kong
     url: 'https://cloud.konghq.com'
+  x-extensions-note: |
+    This API uses the `x-expression` vendor extension to indicate that a string property is a DSL expression.
+    Supported types:
+
+      - `boolean`: An expression evaluates to boolean. For example, `context.topic.name == 'my-topic'`
+      - `string`: A template string expression that evaluates to a string or a literal string value. For example,
+        `${context.topic.name.substring(0, context.topic.name.length-4)}` or `my-literal-value`
+
+    Additionally, `x-sensitive` flag indicates that a field contains sensitive information. When the value
+    of the field is provided in plain text, it's encrypted at rest and it's never returned in API responses.
+    When the value is an expression, the expression itself is stored and returned in API responses.
 servers:
   - url: 'https://global.api.konghq.com'
   - url: 'https://us.api.konghq.com'
@@ -615,7 +626,7 @@ paths:
         **Pre-release Endpoint**
         This endpoint is currently in beta and is subject to change.
 
-        Updates the developer authentication configuration for a portal. Developers can be allowed to login using basic auth (email & password) or use Single-Sign-On (SSO) through an OIDC Identity Provider (IdP). Developers can be automatically assigned to teams by mapping claims from thier IdP account.
+        Updates the developer authentication configuration for a portal. Developers can be allowed to login using basic auth (email & password) or use Single-Sign-On through an Identity Provider. Developers can be automatically assigned to teams by mapping claims from their IdP account.
       requestBody:
         $ref: '#/components/requestBodies/UpdatePortalAuthenticationSettings'
       responses:
@@ -6206,6 +6217,8 @@ paths:
     parameters:
       - $ref: '#/components/parameters/gatewayId'
     post:
+      x-unstable: true
+      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayVault#create
         terraform-datasource: null
@@ -6241,6 +6254,8 @@ paths:
           format: uuid
         x-speakeasy-match: id
     get:
+      x-unstable: true
+      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayVault#read
         terraform-datasource: null
@@ -6263,6 +6278,8 @@ paths:
       tags:
         - Event Gateway Vaults
     put:
+      x-unstable: true
+      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayVault#update
         terraform-datasource: null
@@ -6287,6 +6304,8 @@ paths:
       tags:
         - Event Gateway Vaults
     delete:
+      x-unstable: true
+      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayVault#delete
         terraform-datasource: null
@@ -8378,46 +8397,29 @@ components:
       maxProperties: 3
       minProperties: 0
       title: PortalClaimMappings
-    PortalOIDCConfig:
-      description: Configuration properties for an OpenID Connect Identity Provider.
-      type: object
-      properties:
-        issuer:
-          type: string
-          example: 'https://identity.example.com/v2'
-        client_id:
-          type: string
-          example: x7id0o42lklas0blidl2
-        scopes:
-          type: array
-          items:
-            type: string
-            default: openid
-          example:
-            - email
-            - openid
-            - profile
-          default:
-            - email
-            - openid
-            - profile
-        claim_mappings:
-          $ref: '#/components/schemas/PortalClaimMappings'
-      example:
-        issuer: 'https://identity.example.com/v2'
-        client_id: x7id0o42lklas0blidl2
-        scopes:
-          - email
-          - openid
-          - profile
-        claim_mappings:
-          name: name
-          email: email
-          groups: custom-group-claim
-      required:
-        - issuer
-        - client_id
-      title: PortalOIDCConfig
+    OIDCAuthEnabled:
+      description: The portal has OIDC enabled or disabled.
+      type: boolean
+      example: false
+      deprecated: true
+      x-speakeasy-param-computed: true
+    SAMLAuthEnabled:
+      description: A Konnect Identity Admin assigns teams to a developer.
+      type: boolean
+      example: false
+      deprecated: true
+      x-speakeasy-param-computed: true
+    OIDCIdpMappingEnabled:
+      description: IdP groups determine the Portal Teams a developer has. Replaced by idp_mapping_enabled.
+      type: boolean
+      example: true
+      deprecated: true
+      x-speakeasy-param-computed: true
+    IDPMappingEnabled:
+      description: Whether IdP groups determine the Konnect Portal teams a developer has.
+      type: boolean
+      example: true
+      x-speakeasy-param-computed: true
     PortalAuthenticationSettingsResponse:
       x-speakeasy-entity: PortalAuth
       description: The developer authentication settings for a portal.
@@ -8428,33 +8430,61 @@ components:
           type: boolean
           example: true
         oidc_auth_enabled:
-          description: The portal has OIDC enabled or disabled.
-          type: boolean
-          example: false
+          $ref: '#/components/schemas/OIDCAuthEnabled'
         saml_auth_enabled:
-          description: The portal has SAML enabled or disabled.
-          type: boolean
-          example: false
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          $ref: '#/components/schemas/SAMLAuthEnabled'
         oidc_team_mapping_enabled:
-          description: IdP groups determine the Portal Teams a developer has.
-          type: boolean
-          example: true
+          $ref: '#/components/schemas/OIDCIdpMappingEnabled'
         idp_mapping_enabled:
-          description: IdP groups determine the Portal Teams a developer has. This will soon replace oidc_team_mapping_enabled.
-          type: boolean
-          example: true
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          $ref: '#/components/schemas/IDPMappingEnabled'
         konnect_mapping_enabled:
           description: A Konnect Identity Admin assigns teams to a developer.
           type: boolean
           example: false
         oidc_config:
-          $ref: '#/components/schemas/PortalOIDCConfig'
+          description: Configuration properties for an OpenID Connect Identity Provider.
+          type: object
+          example:
+            issuer: 'https://identity.example.com/v2'
+            client_id: x7id0o42lklas0blidl2
+            scopes:
+              - email
+              - openid
+              - profile
+            claim_mappings:
+              name: name
+              email: email
+              groups: custom-group-claim
+          default: null
+          deprecated: true
+          nullable: true
+          properties:
+            issuer:
+              type: string
+              example: 'https://identity.example.com/v2'
+            client_id:
+              type: string
+              example: x7id0o42lklas0blidl2
+            scopes:
+              type: array
+              items:
+                type: string
+                default: openid
+              example:
+                - email
+                - openid
+                - profile
+              default:
+                - email
+                - openid
+                - profile
+            claim_mappings:
+              $ref: '#/components/schemas/PortalClaimMappings'
+          required:
+            - issuer
+            - client_id
+          title: PortalOIDCConfig
+          x-speakeasy-param-computed: false
       example:
         basic_auth_enabled: true
         oidc_auth_enabled: true
@@ -8488,54 +8518,83 @@ components:
           example: true
           x-speakeasy-param-computed: true
         oidc_auth_enabled:
-          description: The organization has OIDC disabled.
+          description: 'Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.'
           type: boolean
           example: false
+          deprecated: true
           x-speakeasy-param-computed: true
         saml_auth_enabled:
-          description: The portal has SAML enabled or disabled.
+          description: 'Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.'
           type: boolean
           example: false
+          deprecated: true
           x-speakeasy-param-computed: true
         oidc_team_mapping_enabled:
-          description: Whether IdP groups determine the Konnect Portal teams a developer has.
-          type: boolean
-          example: true
-          x-speakeasy-param-computed: true
+          $ref: '#/components/schemas/OIDCIdpMappingEnabled'
         konnect_mapping_enabled:
           description: Whether a Konnect Identity Admin assigns teams to a developer.
           type: boolean
           example: false
           x-speakeasy-param-computed: true
         idp_mapping_enabled:
-          description: Whether IdP groups determine the Konnect Portal teams a developer has. This will soon replace oidc_team_mapping_enabled.
-          type: boolean
-          example: true
-          x-speakeasy-param-computed: true
+          $ref: '#/components/schemas/IDPMappingEnabled'
         oidc_issuer:
+          description: 'Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.'
           type: string
           default: null
+          deprecated: true
           nullable: true
           x-speakeasy-param-computed: false
         oidc_client_id:
+          description: 'Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.'
           type: string
           default: null
+          deprecated: true
           nullable: true
           x-speakeasy-param-computed: false
         oidc_client_secret:
+          description: 'Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.'
           type: string
           default: null
+          deprecated: true
           nullable: true
           x-speakeasy-param-computed: false
         oidc_scopes:
+          description: 'Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.'
           type: array
           items:
             type: string
           default: null
+          deprecated: true
           nullable: true
           x-speakeasy-param-computed: false
         oidc_claim_mappings:
-          $ref: '#/components/schemas/PortalClaimMappings'
+          description: 'Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.'
+          type: object
+          example:
+            name: name
+            email: email
+            groups: custom-group-claim
+          default: null
+          deprecated: true
+          maxProperties: 3
+          minProperties: 0
+          nullable: true
+          properties:
+            name:
+              type: string
+              example: name
+              default: name
+            email:
+              type: string
+              example: email
+              default: email
+            groups:
+              type: string
+              example: custom-group-claim
+              default: groups
+          title: PortalClaimMappings
+          x-speakeasy-param-computed: false
       example:
         basic_auth_enabled: true
         oidc_auth_enabled: true
@@ -9380,6 +9439,8 @@ components:
           $ref: '#/components/schemas/Labels'
         attributes:
           $ref: '#/components/schemas/ApiAttributes'
+        images:
+          $ref: '#/components/schemas/Images'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -9399,6 +9460,9 @@ components:
       title: API
       x-property-annotations:
         implementation_mode:
+          - x-unstable
+          - x-internal
+        images:
           - x-unstable
           - x-internal
     AuthStrategyApiSyncError:
@@ -9782,6 +9846,29 @@ components:
         - asyncapi
       title: API Spec Type
       x-speakeasy-unknown-values: allow
+    Images:
+      type: object
+      properties:
+        icon:
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            url:
+              description: The URL of the icon image. Must be an HTTPS URL.
+              type: string
+              format: uri
+              example: 'https://example.com/icon.png'
+              default: null
+              nullable: true
+              pattern: '^https://[^\s]+$'
+              x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      nullable: true
+      title: Images
+      x-speakeasy-terraform-ignore: true
     UnsupportedMediaTypeError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -9831,6 +9918,10 @@ components:
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-default:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaDefinition: 'kumalabels.EmptyKumaLabelsMapDefault{}'
           x-speakeasy-terraform-custom-type:
             imports:
               - github.com/Kong/shared-speakeasy/customtypes/kumalabels
@@ -10703,6 +10794,10 @@ components:
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-default:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaDefinition: 'kumalabels.EmptyKumaLabelsMapDefault{}'
           x-speakeasy-terraform-custom-type:
             imports:
               - github.com/Kong/shared-speakeasy/customtypes/kumalabels
@@ -11844,6 +11939,10 @@ components:
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-default:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaDefinition: 'kumalabels.EmptyKumaLabelsMapDefault{}'
           x-speakeasy-terraform-custom-type:
             imports:
               - github.com/Kong/shared-speakeasy/customtypes/kumalabels
@@ -12443,6 +12542,10 @@ components:
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-default:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaDefinition: 'kumalabels.EmptyKumaLabelsMapDefault{}'
           x-speakeasy-terraform-custom-type:
             imports:
               - github.com/Kong/shared-speakeasy/customtypes/kumalabels
@@ -12893,6 +12996,10 @@ components:
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-default:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaDefinition: 'kumalabels.EmptyKumaLabelsMapDefault{}'
           x-speakeasy-terraform-custom-type:
             imports:
               - github.com/Kong/shared-speakeasy/customtypes/kumalabels
@@ -13678,6 +13785,10 @@ components:
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-default:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaDefinition: 'kumalabels.EmptyKumaLabelsMapDefault{}'
           x-speakeasy-terraform-custom-type:
             imports:
               - github.com/Kong/shared-speakeasy/customtypes/kumalabels
@@ -14428,6 +14539,10 @@ components:
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-default:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaDefinition: 'kumalabels.EmptyKumaLabelsMapDefault{}'
           x-speakeasy-terraform-custom-type:
             imports:
               - github.com/Kong/shared-speakeasy/customtypes/kumalabels
@@ -14756,6 +14871,10 @@ components:
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-default:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaDefinition: 'kumalabels.EmptyKumaLabelsMapDefault{}'
           x-speakeasy-terraform-custom-type:
             imports:
               - github.com/Kong/shared-speakeasy/customtypes/kumalabels
@@ -14955,6 +15074,10 @@ components:
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-default:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaDefinition: 'kumalabels.EmptyKumaLabelsMapDefault{}'
           x-speakeasy-terraform-custom-type:
             imports:
               - github.com/Kong/shared-speakeasy/customtypes/kumalabels
@@ -15568,6 +15691,10 @@ components:
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-default:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaDefinition: 'kumalabels.EmptyKumaLabelsMapDefault{}'
           x-speakeasy-terraform-custom-type:
             imports:
               - github.com/Kong/shared-speakeasy/customtypes/kumalabels
@@ -16278,6 +16405,10 @@ components:
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-default:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaDefinition: 'kumalabels.EmptyKumaLabelsMapDefault{}'
           x-speakeasy-terraform-custom-type:
             imports:
               - github.com/Kong/shared-speakeasy/customtypes/kumalabels
@@ -16859,6 +16990,10 @@ components:
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-default:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaDefinition: 'kumalabels.EmptyKumaLabelsMapDefault{}'
           x-speakeasy-terraform-custom-type:
             imports:
               - github.com/Kong/shared-speakeasy/customtypes/kumalabels
@@ -17190,6 +17325,10 @@ components:
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-default:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaDefinition: 'kumalabels.EmptyKumaLabelsMapDefault{}'
           x-speakeasy-terraform-custom-type:
             imports:
               - github.com/Kong/shared-speakeasy/customtypes/kumalabels
@@ -17684,6 +17823,10 @@ components:
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-default:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaDefinition: 'kumalabels.EmptyKumaLabelsMapDefault{}'
           x-speakeasy-terraform-custom-type:
             imports:
               - github.com/Kong/shared-speakeasy/customtypes/kumalabels
@@ -18031,6 +18174,10 @@ components:
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-default:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaDefinition: 'kumalabels.EmptyKumaLabelsMapDefault{}'
           x-speakeasy-terraform-custom-type:
             imports:
               - github.com/Kong/shared-speakeasy/customtypes/kumalabels
@@ -18362,6 +18509,10 @@ components:
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-default:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaDefinition: 'kumalabels.EmptyKumaLabelsMapDefault{}'
           x-speakeasy-terraform-custom-type:
             imports:
               - github.com/Kong/shared-speakeasy/customtypes/kumalabels
@@ -19347,6 +19498,10 @@ components:
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-default:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaDefinition: 'kumalabels.EmptyKumaLabelsMapDefault{}'
           x-speakeasy-terraform-custom-type:
             imports:
               - github.com/Kong/shared-speakeasy/customtypes/kumalabels
@@ -19411,6 +19566,10 @@ components:
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-default:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaDefinition: 'kumalabels.EmptyKumaLabelsMapDefault{}'
           x-speakeasy-terraform-custom-type:
             imports:
               - github.com/Kong/shared-speakeasy/customtypes/kumalabels
@@ -19708,6 +19867,10 @@ components:
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-default:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaDefinition: 'kumalabels.EmptyKumaLabelsMapDefault{}'
           x-speakeasy-terraform-custom-type:
             imports:
               - github.com/Kong/shared-speakeasy/customtypes/kumalabels
@@ -20085,6 +20248,10 @@ components:
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-default:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaDefinition: 'kumalabels.EmptyKumaLabelsMapDefault{}'
           x-speakeasy-terraform-custom-type:
             imports:
               - github.com/Kong/shared-speakeasy/customtypes/kumalabels
@@ -20413,6 +20580,10 @@ components:
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-default:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaDefinition: 'kumalabels.EmptyKumaLabelsMapDefault{}'
           x-speakeasy-terraform-custom-type:
             imports:
               - github.com/Kong/shared-speakeasy/customtypes/kumalabels
@@ -20645,6 +20816,10 @@ components:
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-default:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaDefinition: 'kumalabels.EmptyKumaLabelsMapDefault{}'
           x-speakeasy-terraform-custom-type:
             imports:
               - github.com/Kong/shared-speakeasy/customtypes/kumalabels
@@ -20910,6 +21085,10 @@ components:
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-default:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaDefinition: 'kumalabels.EmptyKumaLabelsMapDefault{}'
           x-speakeasy-terraform-custom-type:
             imports:
               - github.com/Kong/shared-speakeasy/customtypes/kumalabels
@@ -21222,6 +21401,10 @@ components:
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-default:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaDefinition: 'kumalabels.EmptyKumaLabelsMapDefault{}'
           x-speakeasy-terraform-custom-type:
             imports:
               - github.com/Kong/shared-speakeasy/customtypes/kumalabels
@@ -21891,6 +22074,10 @@ components:
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-default:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaDefinition: 'kumalabels.EmptyKumaLabelsMapDefault{}'
           x-speakeasy-terraform-custom-type:
             imports:
               - github.com/Kong/shared-speakeasy/customtypes/kumalabels
@@ -24251,26 +24438,59 @@ components:
         - field
         - operator
     EventGatewayInfo:
-      allOf:
-        - $ref: '#/components/schemas/Gateway'
-        - type: object
-          required:
-            - nodes_total
-            - virtual_clusters_total
-            - version
-          properties:
-            nodes_total:
-              description: The total number of nodes associated with the Event Gateway.
-              type: integer
-            virtual_clusters_total:
-              description: The total number of virtual clusters associated with the Event Gateway.
-              type: integer
-            version:
-              description: |
-                The version number of the event gateway. Every change to an entity
-                under this gateway will modify the version.
-              type: string
-              example: v1_123
+      description: The gateway object contains information about a Konnect gateway.
+      type: object
+      properties:
+        id:
+          description: The gateway ID.
+          type: string
+          format: uuid
+          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        name:
+          $ref: '#/components/schemas/GatewayName'
+        description:
+          $ref: '#/components/schemas/GatewayDescription'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          description: An ISO-8604 timestamp representation of gateway creation date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+          x-speakeasy-terraform-ignore: true
+        updated_at:
+          description: An ISO-8604 timestamp representation of gateway update date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+          x-speakeasy-terraform-ignore: true
+        nodes_total:
+          description: The total number of nodes associated with the Event Gateway.
+          type: integer
+        virtual_clusters_total:
+          description: The total number of virtual clusters associated with the Event Gateway.
+          type: integer
+        version:
+          description: |
+            The version number of the event gateway. Every change to an entity
+            under this gateway will modify the version.
+          type: string
+          example: v1_123
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - created_at
+        - updated_at
+        - nodes_total
+        - virtual_clusters_total
+        - version
     EventGatewayListener:
       description: Listeners are used to expose virtual clusters to clients.
       type: object
@@ -24919,23 +25139,22 @@ components:
         - konnect
       x-speakeasy-unknown-values: allow
     EventGatewayVault:
-      allOf:
-        - type: object
-          required:
-            - id
-          properties:
-            id:
-              description: The unique identifier of the vault.
-              type: string
-              format: uuid
-        - discriminator:
-            propertyName: type
-            mapping:
-              env: '#/components/schemas/EventGatewayEnvVault'
-              konnect: '#/components/schemas/EventGatewayKonnectVault'
-          oneOf:
-            - $ref: '#/components/schemas/EventGatewayEnvVault'
-            - $ref: '#/components/schemas/EventGatewayKonnectVault'
+      type: object
+      properties:
+        id:
+          description: The unique identifier of the vault.
+          type: string
+          format: uuid
+      discriminator:
+        propertyName: type
+        mapping:
+          env: '#/components/schemas/EventGatewayEnvVault'
+          konnect: '#/components/schemas/EventGatewayKonnectVault'
+      oneOf:
+        - $ref: '#/components/schemas/EventGatewayEnvVault'
+        - $ref: '#/components/schemas/EventGatewayKonnectVault'
+      required:
+        - id
     EventGatewayBaseVault:
       description: Base properties of a vault.
       type: object
@@ -25008,8 +25227,8 @@ components:
       oneOf:
         - $ref: '#/components/schemas/EventGatewayEnvVault'
         - $ref: '#/components/schemas/EventGatewayKonnectVault'
-    BaseSchemaRegistry:
-      description: Base properties of a schema registry.
+    SchemaRegistry:
+      description: A schema registry that contains schemas.
       type: object
       properties:
         name:
@@ -25034,55 +25253,78 @@ components:
           x-speakeasy-param-computed: false
         labels:
           $ref: '#/components/schemas/Labels'
+        id:
+          description: The unique identifier of the schema registry.
+          type: string
+          format: uuid
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
       required:
         - name
         - type
-    SchemaRegistry:
-      allOf:
-        - $ref: '#/components/schemas/BaseSchemaRegistry'
-        - type: object
-          description: A schema registry that contains schemas.
-          required:
-            - id
-            - created_at
-            - updated_at
-          properties:
-            id:
-              description: The unique identifier of the schema registry.
-              type: string
-              format: uuid
-            created_at:
-              $ref: '#/components/schemas/CreatedAt'
-            updated_at:
-              $ref: '#/components/schemas/UpdatedAt'
+        - id
+        - created_at
+        - updated_at
     SchemaRegistryConfluentSensitiveDataAware:
-      allOf:
-        - $ref: '#/components/schemas/BaseSchemaRegistry'
-        - type: object
-          description: A Confluent schema registry.
-          required:
-            - config
-            - type
-          properties:
-            type:
-              type: string
-              const: confluent
-            config:
-              $ref: '#/components/schemas/SchemaRegistryConfluentConfigSensitiveDataAware'
+      description: A Confluent schema registry.
+      type: object
+      properties:
+        name:
+          description: The unique name of the schema registry.
+          type: string
+          maxLength: 255
+          minLength: 1
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the virtual cluster.
+          type: string
+          maxLength: 512
+          x-speakeasy-param-computed: false
+        type:
+          description: The type of the schema registry.
+          type: string
+          const: confluent
+        config:
+          description: The configuration of the schema registry.
+          type: object
+          $ref: '#/components/schemas/SchemaRegistryConfluentConfigSensitiveDataAware'
+        labels:
+          $ref: '#/components/schemas/Labels'
+      required:
+        - name
+        - type
+        - config
     SchemaRegistryConfluent:
-      allOf:
-        - $ref: '#/components/schemas/BaseSchemaRegistry'
-        - type: object
-          description: A Confluent schema registry.
-          required:
-            - config
-            - type
-          properties:
-            type:
-              type: string
-              const: confluent
-            config:
-              $ref: '#/components/schemas/SchemaRegistryConfluentConfig'
+      description: A Confluent schema registry.
+      type: object
+      properties:
+        name:
+          description: The unique name of the schema registry.
+          type: string
+          maxLength: 255
+          minLength: 1
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the virtual cluster.
+          type: string
+          maxLength: 512
+          x-speakeasy-param-computed: false
+        type:
+          description: The type of the schema registry.
+          type: string
+          const: confluent
+        config:
+          description: The configuration of the schema registry.
+          type: object
+          $ref: '#/components/schemas/SchemaRegistryConfluentConfig'
+        labels:
+          $ref: '#/components/schemas/Labels'
+      required:
+        - name
+        - type
+        - config
     SchemaRegistryConfluentConfigSensitiveDataAware:
       description: |
         The configuration of [Confluent Schema Registry](https://github.com/confluentinc/schema-registry)
@@ -25234,8 +25476,8 @@ components:
           confluent: '#/components/schemas/SchemaRegistryConfluentSensitiveDataAware'
       oneOf:
         - $ref: '#/components/schemas/SchemaRegistryConfluentSensitiveDataAware'
-    BaseEventGatewayPolicy:
-      description: The base schema for policies.
+    EventGatewayPolicy:
+      description: A policy associated with an Event Gateway.
       type: object
       properties:
         type:
@@ -25279,11 +25521,29 @@ components:
           type: object
         labels:
           $ref: '#/components/schemas/Labels'
+        id:
+          description: The unique identifier of the policy.
+          type: string
+          format: uuid
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        parent_policy_id:
+          description: 'The unique identifier of the parent policy, if any.'
+          type: string
+          format: uuid
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
       required:
         - type
         - config
-    BaseEventGatewayListenerPolicy:
-      description: The base schema for listener policies.
+        - id
+        - created_at
+        - updated_at
+    EventGatewayListenerPolicy:
+      description: A listener policy associated with an Event Gateway.
       type: object
       properties:
         type:
@@ -25314,95 +25574,110 @@ components:
           type: object
         labels:
           $ref: '#/components/schemas/Labels'
+        id:
+          description: The unique identifier of the policy.
+          type: string
+          format: uuid
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        parent_policy_id:
+          description: 'The unique identifier of the parent policy, if any.'
+          type: string
+          format: uuid
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
       required:
         - type
         - config
-    EventGatewayPolicy:
-      allOf:
-        - $ref: '#/components/schemas/BaseEventGatewayPolicy'
-        - type: object
-          description: A policy associated with an Event Gateway.
-          required:
-            - id
-            - created_at
-            - updated_at
-          properties:
-            id:
-              description: The unique identifier of the policy.
-              type: string
-              format: uuid
-            created_at:
-              $ref: '#/components/schemas/CreatedAt'
-            parent_policy_id:
-              description: 'The unique identifier of the parent policy, if any.'
-              type: string
-              format: uuid
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
-            updated_at:
-              $ref: '#/components/schemas/UpdatedAt'
-    EventGatewayListenerPolicy:
-      allOf:
-        - $ref: '#/components/schemas/BaseEventGatewayListenerPolicy'
-        - type: object
-          description: A listener policy associated with an Event Gateway.
-          required:
-            - id
-            - created_at
-            - updated_at
-          properties:
-            id:
-              description: The unique identifier of the policy.
-              type: string
-              format: uuid
-            created_at:
-              $ref: '#/components/schemas/CreatedAt'
-            parent_policy_id:
-              description: 'The unique identifier of the parent policy, if any.'
-              type: string
-              format: uuid
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
-            updated_at:
-              $ref: '#/components/schemas/UpdatedAt'
+        - id
+        - created_at
+        - updated_at
     EventGatewayTLSListenerSensitiveDataAwarePolicy:
-      allOf:
-        - $ref: '#/components/schemas/BaseEventGatewayListenerPolicy'
-        - type: object
-          description: |
-            The TLS Server policy defines the certificates and keys used by the gateway server when the client connects
-            to the gateway over TLS.
+      description: |
+        The TLS Server policy defines the certificates and keys used by the gateway server when the client connects
+        to the gateway over TLS.
 
-            While it is possible to have multiple TLS policies on a listener, only one can be active at a time.
-          properties:
-            type:
-              type: string
-              const: tls_server
-            config:
-              $ref: '#/components/schemas/EventGatewayTLSListenerPolicyConfigSensitiveDataAware'
-    EventGatewayTLSListenerPolicy:
+        While it is possible to have multiple TLS policies on a listener, only one can be active at a time.
       type: object
       properties:
+        type:
+          description: The type name of the policy.
+          type: string
+          const: tls_server
+          maxLength: 255
+          minLength: 1
+        name:
+          description: A unique user-defined name of the policy.
+          type: string
+          default: null
+          maxLength: 255
+          minLength: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the policy.
+          type: string
+          maxLength: 512
+          x-speakeasy-param-computed: false
+        enabled:
+          description: Whether the policy is enabled.
+          type: boolean
+          default: true
         config:
-          $ref: '#/components/schemas/EventGatewayTLSListenerPolicyConfig'
-      allOf:
-        - $ref: '#/components/schemas/BaseEventGatewayListenerPolicy'
-        - type: object
-          description: |
-            The TLS Server policy defines the certificates and keys used by the gateway server when the client connects
-            to the gateway over TLS.
-
-            While it is possible to have multiple TLS policies on a listener, only one can be active at a time.
-          properties:
-            type:
-              type: string
-              const: tls_server
-            config:
-              $ref: '#/components/schemas/EventGatewayTLSListenerPolicyConfigSensitiveDataAware'
+          description: The configuration of the policy.
+          type: object
+          $ref: '#/components/schemas/EventGatewayTLSListenerPolicyConfigSensitiveDataAware'
+        labels:
+          $ref: '#/components/schemas/Labels'
       required:
+        - type
         - config
+    EventGatewayTLSListenerPolicy:
+      description: |
+        The TLS Server policy defines the certificates and keys used by the gateway server when the client connects
+        to the gateway over TLS.
+
+        While it is possible to have multiple TLS policies on a listener, only one can be active at a time.
+      type: object
+      properties:
+        type:
+          description: The type name of the policy.
+          type: string
+          const: tls_server
+          maxLength: 255
+          minLength: 1
+        name:
+          description: A unique user-defined name of the policy.
+          type: string
+          default: null
+          maxLength: 255
+          minLength: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the policy.
+          type: string
+          maxLength: 512
+          x-speakeasy-param-computed: false
+        enabled:
+          description: Whether the policy is enabled.
+          type: boolean
+          default: true
+        config:
+          description: The configuration of the policy.
+          type: object
+          $ref: '#/components/schemas/EventGatewayTLSListenerPolicyConfig'
+        labels:
+          $ref: '#/components/schemas/Labels'
+      required:
+        - type
+        - config
+      title: TLS Listener
     EventGatewayTLSListenerPolicyConfigSensitiveDataAware:
       type: object
       properties:
@@ -25484,31 +25759,58 @@ components:
         min: TLSv1.2
         max: TLSv1.3
     ForwardToVirtualClusterPolicy:
-      allOf:
-        - $ref: '#/components/schemas/BaseEventGatewayListenerPolicy'
-        - type: object
-          description: |
-            Forwards requests to virtual clusters configured with port routing or SNI routing.
-            While there can be multiple of these policies configured on a listener, there can only be one instance of
-            `port_mapping`.
-            When multiple policies are configured, the first one that matches the connection is used.
-            If no policy matches, the connection is rejected.
+      description: |
+        Forwards requests to virtual clusters configured with port routing or SNI routing.
+        While there can be multiple of these policies configured on a listener, there can only be one instance of
+        `port_mapping`.
+        When multiple policies are configured, the first one that matches the connection is used.
+        If no policy matches, the connection is rejected.
 
-            When using `port_mapping`, there must be a mapping port for each broker on the backend cluster see
-            `ForwardToClusterBySNIConfig` for more details.
-          properties:
-            type:
-              type: string
-              const: forward_to_virtual_cluster
-            config:
-              discriminator:
-                propertyName: type
-                mapping:
-                  port_mapping: '#/components/schemas/ForwardToClusterByPortMappingConfig'
-                  sni: '#/components/schemas/ForwardToClusterBySNIConfig'
-              oneOf:
-                - $ref: '#/components/schemas/ForwardToClusterBySNIConfig'
-                - $ref: '#/components/schemas/ForwardToClusterByPortMappingConfig'
+        When using `port_mapping`, there must be a mapping port for each broker on the backend cluster see
+        `ForwardToClusterBySNIConfig` for more details.
+      type: object
+      properties:
+        type:
+          description: The type name of the policy.
+          type: string
+          const: forward_to_virtual_cluster
+          maxLength: 255
+          minLength: 1
+        name:
+          description: A unique user-defined name of the policy.
+          type: string
+          default: null
+          maxLength: 255
+          minLength: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the policy.
+          type: string
+          maxLength: 512
+          x-speakeasy-param-computed: false
+        enabled:
+          description: Whether the policy is enabled.
+          type: boolean
+          default: true
+        config:
+          description: The configuration of the policy.
+          type: object
+          discriminator:
+            propertyName: type
+            mapping:
+              port_mapping: '#/components/schemas/ForwardToClusterByPortMappingConfig'
+              sni: '#/components/schemas/ForwardToClusterBySNIConfig'
+          oneOf:
+            - $ref: '#/components/schemas/ForwardToClusterBySNIConfig'
+            - $ref: '#/components/schemas/ForwardToClusterByPortMappingConfig'
+        labels:
+          $ref: '#/components/schemas/Labels'
+      required:
+        - type
+        - config
+      title: Forward to Virtual Cluster
     ForwardToClusterByPortMappingConfig:
       description: |
         The configuration to forward request to `destination` and rewrite ports accordingly.
@@ -25600,16 +25902,56 @@ components:
       required:
         - type
     EventGatewayEncryptPolicy:
-      allOf:
-        - $ref: '#/components/schemas/BaseEventGatewayPolicy'
-        - type: object
-          description: Encrypts portions of Kafka records using AES_128_GCM. Keys are therefore 128 bits long.
-          properties:
-            type:
-              type: string
-              const: encrypt
-            config:
-              $ref: '#/components/schemas/EventGatewayEncryptConfig'
+      description: Encrypts portions of Kafka records using AES_128_GCM. Keys are therefore 128 bits long.
+      type: object
+      properties:
+        type:
+          description: The type name of the policy.
+          type: string
+          const: encrypt
+          maxLength: 255
+          minLength: 1
+        name:
+          description: A unique user-defined name of the policy.
+          type: string
+          default: null
+          maxLength: 255
+          minLength: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the policy.
+          type: string
+          maxLength: 512
+          x-speakeasy-param-computed: false
+        enabled:
+          description: Whether the policy is enabled.
+          type: boolean
+          default: true
+        condition:
+          description: A string containing the boolean expression that determines whether the policy is applied.
+          type: string
+          example: context.topic.name.endsWith('my_suffix')
+          maxLength: 1000
+          minLength: 1
+          x-expression:
+            type: boolean
+            fields:
+              - context.topic.name
+              - context.auth.principal.name
+              - context.auth.type
+          x-speakeasy-param-computed: false
+        config:
+          description: The configuration of the policy.
+          type: object
+          $ref: '#/components/schemas/EventGatewayEncryptConfig'
+        labels:
+          $ref: '#/components/schemas/Labels'
+      required:
+        - type
+        - config
+      title: Encrypt
     EventGatewayEncryptConfig:
       description: The configuration of the encrypt policy.
       type: object
@@ -25629,16 +25971,56 @@ components:
         - part_of_record
         - encryption_key
     EventGatewayDecryptPolicy:
-      allOf:
-        - $ref: '#/components/schemas/BaseEventGatewayPolicy'
-        - type: object
-          description: Decrypts portions of Kafka records using AES_128_GCM. Keys are therefore 128 bits long.
-          properties:
-            type:
-              type: string
-              const: decrypt
-            config:
-              $ref: '#/components/schemas/EventGatewayDecryptPolicyConfig'
+      description: Decrypts portions of Kafka records using AES_128_GCM. Keys are therefore 128 bits long.
+      type: object
+      properties:
+        type:
+          description: The type name of the policy.
+          type: string
+          const: decrypt
+          maxLength: 255
+          minLength: 1
+        name:
+          description: A unique user-defined name of the policy.
+          type: string
+          default: null
+          maxLength: 255
+          minLength: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the policy.
+          type: string
+          maxLength: 512
+          x-speakeasy-param-computed: false
+        enabled:
+          description: Whether the policy is enabled.
+          type: boolean
+          default: true
+        condition:
+          description: A string containing the boolean expression that determines whether the policy is applied.
+          type: string
+          example: context.topic.name.endsWith('my_suffix')
+          maxLength: 1000
+          minLength: 1
+          x-expression:
+            type: boolean
+            fields:
+              - context.topic.name
+              - context.auth.principal.name
+              - context.auth.type
+          x-speakeasy-param-computed: false
+        config:
+          description: The configuration of the policy.
+          type: object
+          $ref: '#/components/schemas/EventGatewayDecryptPolicyConfig'
+        labels:
+          $ref: '#/components/schemas/Labels'
+      required:
+        - type
+        - config
+      title: Decrypt
     EventGatewayDecryptPolicyConfig:
       description: The configuration of the decrypt policy.
       type: object
@@ -25662,60 +26044,144 @@ components:
         - key_sources
         - part_of_record
     EventGatewayModifyHeadersPolicy:
-      allOf:
-        - $ref: '#/components/schemas/BaseEventGatewayPolicy'
-        - type: object
-          description: A policy that modifies headers for requests.
-          required:
-            - type
-            - config
-          properties:
-            type:
-              type: string
-              const: modify_headers
-            condition:
-              description: |
-                A string containing the boolean expression that determines whether the policy is applied.
+      description: A policy that modifies headers for requests.
+      type: object
+      properties:
+        type:
+          description: The type name of the policy.
+          type: string
+          const: modify_headers
+          maxLength: 255
+          minLength: 1
+        name:
+          description: A unique user-defined name of the policy.
+          type: string
+          default: null
+          maxLength: 255
+          minLength: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the policy.
+          type: string
+          maxLength: 512
+          x-speakeasy-param-computed: false
+        enabled:
+          description: Whether the policy is enabled.
+          type: boolean
+          default: true
+        condition:
+          description: |
+            A string containing the boolean expression that determines whether the policy is applied.
 
-                When the policy is applied as a child policy of schema_validation, the expression can also reference
-                `record.value` fields.
-              type: string
-              example: context.topic.name.endsWith('my_suffix')
-              maxLength: 1000
-              minLength: 1
-              x-expression:
-                type: boolean
-                fields:
-                  - context.topic.name
-                  - context.auth.principal.name
-                  - context.auth.type
-                  - record.headers
-                  - record.value.validated
-                  - record.value.content
-              x-speakeasy-param-computed: false
-            config:
-              description: The configuration of the modify headers policy.
-              type: object
-              properties:
-                actions:
-                  description: Actions are run in sequential order and act on individual headers.
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/EventGatewayModifyHeaderAction'
-                  default: null
-                  minItems: 1
-                  nullable: true
-                  x-speakeasy-param-computed: false
-    EventGatewayModifyHeadersPolicyCreate:
-      allOf:
-        - $ref: '#/components/schemas/EventGatewayModifyHeadersPolicy'
-        - type: object
+            When the policy is applied as a child policy of schema_validation, the expression can also reference
+            `record.value` fields.
+          type: string
+          example: context.topic.name.endsWith('my_suffix')
+          maxLength: 1000
+          minLength: 1
+          x-expression:
+            type: boolean
+            fields:
+              - context.topic.name
+              - context.auth.principal.name
+              - context.auth.type
+              - record.headers
+              - record.value.validated
+              - record.value.content
+          x-speakeasy-param-computed: false
+        config:
+          description: The configuration of the modify headers policy.
+          type: object
           properties:
-            parent_policy_id:
-              description: 'The unique identifier of the parent schema validation policy, if any.'
-              type: string
-              format: uuid
-              nullable: false
+            actions:
+              description: Actions are run in sequential order and act on individual headers.
+              type: array
+              items:
+                $ref: '#/components/schemas/EventGatewayModifyHeaderAction'
+              default: null
+              minItems: 1
+              nullable: true
+              x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
+      required:
+        - type
+        - config
+      title: Modify Headers
+    EventGatewayModifyHeadersPolicyCreate:
+      description: A policy that modifies headers for requests.
+      type: object
+      properties:
+        type:
+          description: The type name of the policy.
+          type: string
+          const: modify_headers
+          maxLength: 255
+          minLength: 1
+        name:
+          description: A unique user-defined name of the policy.
+          type: string
+          default: null
+          maxLength: 255
+          minLength: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the policy.
+          type: string
+          maxLength: 512
+          x-speakeasy-param-computed: false
+        enabled:
+          description: Whether the policy is enabled.
+          type: boolean
+          default: true
+        condition:
+          description: |
+            A string containing the boolean expression that determines whether the policy is applied.
+
+            When the policy is applied as a child policy of schema_validation, the expression can also reference
+            `record.value` fields.
+          type: string
+          example: context.topic.name.endsWith('my_suffix')
+          maxLength: 1000
+          minLength: 1
+          x-expression:
+            type: boolean
+            fields:
+              - context.topic.name
+              - context.auth.principal.name
+              - context.auth.type
+              - record.headers
+              - record.value.validated
+              - record.value.content
+          x-speakeasy-param-computed: false
+        config:
+          description: The configuration of the modify headers policy.
+          type: object
+          properties:
+            actions:
+              description: Actions are run in sequential order and act on individual headers.
+              type: array
+              items:
+                $ref: '#/components/schemas/EventGatewayModifyHeaderAction'
+              default: null
+              minItems: 1
+              nullable: true
+              x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
+        parent_policy_id:
+          description: 'The unique identifier of the parent schema validation policy, if any.'
+          type: string
+          format: uuid
+          nullable: false
+      required:
+        - type
+        - config
+      title: Modify headers
     EventGatewaySkipRecordPolicy:
       description: A policy that skips processing of a record.
       type: object
@@ -25766,15 +26232,60 @@ components:
       required:
         - type
     EventGatewaySkipRecordPolicyCreate:
-      allOf:
-        - $ref: '#/components/schemas/EventGatewaySkipRecordPolicy'
-        - type: object
-          properties:
-            parent_policy_id:
-              description: 'The unique identifier of the parent schema validation policy, if any.'
-              type: string
-              format: uuid
-              nullable: false
+      description: A policy that skips processing of a record.
+      type: object
+      properties:
+        type:
+          type: string
+          const: skip_record
+        name:
+          description: A unique user-defined name of the policy.
+          type: string
+          default: null
+          maxLength: 255
+          minLength: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the policy.
+          type: string
+          maxLength: 512
+          x-speakeasy-param-computed: false
+        enabled:
+          description: Whether the policy is enabled.
+          type: boolean
+          default: true
+        condition:
+          description: |
+            A string containing the boolean expression that determines whether the policy is applied.
+
+            When the policy is applied as a child policy of schema_validation, the expression can also reference
+            `record.value` fields.
+          type: string
+          example: context.topic.name.endsWith('my_suffix')
+          maxLength: 1000
+          minLength: 1
+          x-expression:
+            type: boolean
+            fields:
+              - context.topic.name
+              - context.auth.principal.name
+              - context.auth.type
+              - record.headers
+              - record.value.validated
+              - record.value.content
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
+        parent_policy_id:
+          description: 'The unique identifier of the parent schema validation policy, if any.'
+          type: string
+          format: uuid
+          nullable: false
+      required:
+        - type
+      title: Skip Record
     EventGatewayModifyHeaderAction:
       description: An action that modifies a header.
       discriminator:
@@ -25816,45 +26327,117 @@ components:
         - key
         - value
     EventGatewayConsumeSchemaValidationPolicy:
-      allOf:
-        - $ref: '#/components/schemas/BaseEventGatewayPolicy'
-        - type: object
-          description: A policy that validates consume messages against a schema registry.
+      description: A policy that validates consume messages against a schema registry.
+      type: object
+      properties:
+        type:
+          description: The type name of the policy.
+          type: string
+          const: schema_validation
+          maxLength: 255
+          minLength: 1
+        name:
+          description: A unique user-defined name of the policy.
+          type: string
+          default: null
+          maxLength: 255
+          minLength: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the policy.
+          type: string
+          maxLength: 512
+          x-speakeasy-param-computed: false
+        enabled:
+          description: Whether the policy is enabled.
+          type: boolean
+          default: true
+        condition:
+          description: A string containing the boolean expression that determines whether the policy is applied.
+          type: string
+          example: context.topic.name.endsWith('my_suffix')
+          maxLength: 1000
+          minLength: 1
+          x-expression:
+            type: boolean
+            fields:
+              - context.topic.name
+              - context.auth.principal.name
+              - context.auth.type
+          x-speakeasy-param-computed: false
+        config:
+          description: The configuration of the schema validation policy.
+          type: object
           properties:
             type:
-              type: string
-              const: schema_validation
-            config:
-              description: The configuration of the schema validation policy.
-              type: object
-              default: null
-              nullable: true
-              properties:
-                type:
-                  $ref: '#/components/schemas/SchemaValidationType'
-                schema_registry:
-                  $ref: '#/components/schemas/SchemaRegistryReference'
-                key_validation_action:
-                  $ref: '#/components/schemas/ConsumeKeyValidationAction'
-                value_validation_action:
-                  $ref: '#/components/schemas/ConsumeValueValidationAction'
-              required:
-                - type
-              x-speakeasy-param-computed: false
-    EventGatewayProduceSchemaValidationPolicy:
-      allOf:
-        - $ref: '#/components/schemas/BaseEventGatewayPolicy'
-        - type: object
-          description: A policy that validates produce messages against a schema registry.
+              $ref: '#/components/schemas/SchemaValidationType'
+            schema_registry:
+              $ref: '#/components/schemas/SchemaRegistryReference'
+            key_validation_action:
+              $ref: '#/components/schemas/ConsumeKeyValidationAction'
+            value_validation_action:
+              $ref: '#/components/schemas/ConsumeValueValidationAction'
           required:
             - type
-            - config
-          properties:
-            type:
-              type: string
-              const: schema_validation
-            config:
-              $ref: '#/components/schemas/EventGatewayProduceSchemaValidationPolicyConfig'
+        labels:
+          $ref: '#/components/schemas/Labels'
+      required:
+        - type
+        - config
+      title: Schema Validation
+    EventGatewayProduceSchemaValidationPolicy:
+      description: A policy that validates produce messages against a schema registry.
+      type: object
+      properties:
+        type:
+          description: The type name of the policy.
+          type: string
+          const: schema_validation
+          maxLength: 255
+          minLength: 1
+        name:
+          description: A unique user-defined name of the policy.
+          type: string
+          default: null
+          maxLength: 255
+          minLength: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the policy.
+          type: string
+          maxLength: 512
+          x-speakeasy-param-computed: false
+        enabled:
+          description: Whether the policy is enabled.
+          type: boolean
+          default: true
+        condition:
+          description: A string containing the boolean expression that determines whether the policy is applied.
+          type: string
+          example: context.topic.name.endsWith('my_suffix')
+          maxLength: 1000
+          minLength: 1
+          x-expression:
+            type: boolean
+            fields:
+              - context.topic.name
+              - context.auth.principal.name
+              - context.auth.type
+          x-speakeasy-param-computed: false
+        config:
+          description: The configuration of the policy.
+          type: object
+          $ref: '#/components/schemas/EventGatewayProduceSchemaValidationPolicyConfig'
+        labels:
+          $ref: '#/components/schemas/Labels'
+      required:
+        - type
+        - config
+      title: Schema Validation
     EventGatewayProduceSchemaValidationPolicyConfig:
       description: The configuration of the produce schema validation policy.
       discriminator:
@@ -25866,31 +26449,7 @@ components:
         - $ref: '#/components/schemas/EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig'
         - $ref: '#/components/schemas/EventGatewayProduceSchemaValidationPolicyJsonConfig'
     EventGatewayProduceSchemaValidationPolicyJsonConfig:
-      allOf:
-        - $ref: '#/components/schemas/BaseEventGatewayProduceSchemaValidationPolicyConfig'
-        - type: object
-          description: The configuration of the produce schema validation policy when using JSON parsing without schema.
-          required:
-            - type
-          properties:
-            type:
-              type: string
-              const: json
-    EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig:
-      allOf:
-        - $ref: '#/components/schemas/BaseEventGatewayProduceSchemaValidationPolicyConfig'
-        - type: object
-          description: The configuration of the produce schema validation policy when using a schema registry.
-          required:
-            - type
-          properties:
-            type:
-              type: string
-              const: confluent_schema_registry
-            schema_registry:
-              $ref: '#/components/schemas/SchemaRegistryReference'
-    BaseEventGatewayProduceSchemaValidationPolicyConfig:
-      description: The base configuration of the produce schema validation policy.
+      description: The configuration of the produce schema validation policy when using JSON parsing without schema.
       type: object
       properties:
         schema_registry:
@@ -25899,17 +26458,77 @@ components:
           $ref: '#/components/schemas/ProduceKeyValidationAction'
         value_validation_action:
           $ref: '#/components/schemas/ProduceValueValidationAction'
+        type:
+          type: string
+          const: json
+      required:
+        - type
+    EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig:
+      description: The configuration of the produce schema validation policy when using a schema registry.
+      type: object
+      properties:
+        schema_registry:
+          $ref: '#/components/schemas/SchemaRegistryReference'
+        key_validation_action:
+          $ref: '#/components/schemas/ProduceKeyValidationAction'
+        value_validation_action:
+          $ref: '#/components/schemas/ProduceValueValidationAction'
+        type:
+          type: string
+          const: confluent_schema_registry
+      required:
+        - type
     EventGatewayACLsPolicy:
-      allOf:
-        - $ref: '#/components/schemas/BaseEventGatewayPolicy'
-        - type: object
-          description: Apply Kafka ACLs to virtual cluster traffic.
-          properties:
-            type:
-              type: string
-              const: acls
-            config:
-              $ref: '#/components/schemas/EventGatewayACLPolicyConfig'
+      description: Apply Kafka ACLs to virtual cluster traffic.
+      type: object
+      properties:
+        type:
+          description: The type name of the policy.
+          type: string
+          const: acls
+          maxLength: 255
+          minLength: 1
+        name:
+          description: A unique user-defined name of the policy.
+          type: string
+          default: null
+          maxLength: 255
+          minLength: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the policy.
+          type: string
+          maxLength: 512
+          x-speakeasy-param-computed: false
+        enabled:
+          description: Whether the policy is enabled.
+          type: boolean
+          default: true
+        condition:
+          description: A string containing the boolean expression that determines whether the policy is applied.
+          type: string
+          example: context.topic.name.endsWith('my_suffix')
+          maxLength: 1000
+          minLength: 1
+          x-expression:
+            type: boolean
+            fields:
+              - context.topic.name
+              - context.auth.principal.name
+              - context.auth.type
+          x-speakeasy-param-computed: false
+        config:
+          description: The configuration of the policy.
+          type: object
+          $ref: '#/components/schemas/EventGatewayACLPolicyConfig'
+        labels:
+          $ref: '#/components/schemas/Labels'
+      required:
+        - type
+        - config
+      title: ACL
     EventGatewayACLPolicyConfig:
       description: Apply ACLs to virtual cluster traffic.
       type: object
@@ -26463,9 +27082,9 @@ components:
           x-speakeasy-param-computed: false
       required:
         - type
-    BaseEventGatewayStaticKey:
+    EventGatewayStaticKey:
       description: |
-        The base configuration of a symmetric key.
+        A symmetric key with its secret value.
       type: object
       properties:
         name:
@@ -26481,40 +27100,44 @@ components:
           x-speakeasy-param-computed: false
         labels:
           $ref: '#/components/schemas/Labels'
+        id:
+          description: The unique identifier of the static key.
+          type: string
+          format: uuid
+        value:
+          $ref: '#/components/schemas/GatewaySecret'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
       required:
         - name
-    EventGatewayStaticKey:
-      allOf:
-        - $ref: '#/components/schemas/BaseEventGatewayStaticKey'
-        - type: object
-          description: |
-            A symmetric key with its secret value.
-          required:
-            - id
-            - created_at
-            - updated_at
-          properties:
-            id:
-              description: The unique identifier of the static key.
-              type: string
-              format: uuid
-            value:
-              $ref: '#/components/schemas/GatewaySecret'
-            created_at:
-              $ref: '#/components/schemas/CreatedAt'
-            updated_at:
-              $ref: '#/components/schemas/UpdatedAt'
+        - id
+        - created_at
+        - updated_at
     EventGatewayStaticKeyCreate:
-      allOf:
-        - $ref: '#/components/schemas/BaseEventGatewayStaticKey'
-        - type: object
-          description: |
-            A symmetric key with its secret value for creation.
-          required:
-            - value
-          properties:
-            value:
-              $ref: '#/components/schemas/GatewaySecret'
+      description: |
+        A symmetric key with its secret value for creation.
+      type: object
+      properties:
+        name:
+          description: The unique name of the static key.
+          type: string
+          maxLength: 255
+          minLength: 1
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the static key.
+          type: string
+          maxLength: 512
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
+        value:
+          $ref: '#/components/schemas/GatewaySecret'
+      required:
+        - name
+        - value
     GatewayName:
       description: The name of the Gateway.
       type: string
@@ -26526,45 +27149,6 @@ components:
       type: string
       maxLength: 512
       x-speakeasy-terraform-ignore: true
-    Gateway:
-      description: The gateway object contains information about a Konnect gateway.
-      type: object
-      properties:
-        id:
-          description: The gateway ID.
-          type: string
-          format: uuid
-          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-          readOnly: true
-          x-speakeasy-param-suppress-computed-diff: true
-        name:
-          $ref: '#/components/schemas/GatewayName'
-        description:
-          $ref: '#/components/schemas/GatewayDescription'
-        labels:
-          $ref: '#/components/schemas/Labels'
-        created_at:
-          description: An ISO-8604 timestamp representation of gateway creation date.
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          readOnly: true
-          x-speakeasy-param-suppress-computed-diff: true
-          x-speakeasy-terraform-ignore: true
-        updated_at:
-          description: An ISO-8604 timestamp representation of gateway update date.
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          readOnly: true
-          x-speakeasy-param-suppress-computed-diff: true
-          x-speakeasy-terraform-ignore: true
-      additionalProperties: false
-      required:
-        - id
-        - name
-        - created_at
-        - updated_at
     CreateGatewayRequest:
       description: The request schema for the create gateway request.
       type: object
@@ -26976,6 +27560,8 @@ components:
                 $ref: '#/components/schemas/Labels'
               attributes:
                 $ref: '#/components/schemas/ApiAttributes'
+              images:
+                $ref: '#/components/schemas/Images'
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
@@ -26991,6 +27577,9 @@ components:
             title: API
             x-property-annotations:
               implementation_mode:
+                - x-unstable
+                - x-internal
+              images:
                 - x-unstable
                 - x-internal
     CreateApiSpecRequest:
@@ -27230,6 +27819,8 @@ components:
                 $ref: '#/components/schemas/LabelsUpdate'
               attributes:
                 $ref: '#/components/schemas/ApiAttributes'
+              images:
+                $ref: '#/components/schemas/Images'
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
@@ -27238,6 +27829,9 @@ components:
             title: API
             x-property-annotations:
               implementation_mode:
+                - x-unstable
+                - x-internal
+              images:
                 - x-unstable
                 - x-internal
     UpdateApiDocumentRequest:
@@ -29839,6 +30433,51 @@ tags:
     description: 'Scopes define the extent of access that an access token grants to a Client. The management API will give you the ability to create, configure and manage multiple Scopes per Auth Server, and restrict their usage by Client.'
   - name: Dashboards
   - name: Event Gateways
+    description: |
+      Create an Event Gateway Control Plane, used to store Event Gateway configuration
+  - name: Event Gateway Backend Clusters
+    description: |
+      A backend cluster is an abstraction of a real Kafka cluster. It stores the connection and configuration details required for Kong Event Gateway to proxy traffic to Kafka.
+
+      Multiple Kafka clusters can be proxied through a single Kong Event Gateway.
+  - name: Event Gateway Virtual Clusters
+    description: |
+      Virtual clusters are the primary way clients interact with the Event Gateway proxy. They allow you to isolate clients from each other when connecting to the same backend cluster, and provide each client with modified view while still appearing as a standard Kafka cluster.
+  - name: Event Gateway Listeners
+    description: |
+      A listener represents hostname-port or IP-port combinations that connect to TCP sockets. Listeners need at least as many ports as backend brokers if you use port mapping in a Forward to Virtual Cluster policy. For SNI routing, you can route all brokers using a listener with only one port. Ports can be expressed as a single port or range. Addresses can be IPv4, IPv6, or hostnames.
+
+      A listener can have policies that enforce TLS certificates and perform SNI routing. The listener runs at Layer 4 of the network stack. In Kong Event Gateway, listeners first take in the connection and then route the TCP connection to a virtual cluster based on conditions defined in listener policies.
+  - name: Event Gateway Listener Policies
+    description: |
+      Policies control how Kafka protocol traffic is modified between the client and the backend cluster.
+
+      Listener policies are routing policies that pass traffic to the virtual cluster.
+  - name: Event Gateway Virtual Cluster Policies
+    description: |
+      Policies control how Kafka protocol traffic is modified between the client and the backend cluster.
+
+      Cluster policies are transformation and validation policies that can be applied to Kafka messages.
+  - name: Event Gateway Virtual Cluster Produce Policies
+    description: |
+      Produce policies operate on Kafka messages before they are written to the Kafka cluster.
+
+      Where possible, apply transformations to the data using produce policies rather than consume policies for maximum efficiency.
+  - name: Event Gateway Virtual Cluster Consume Policies
+    description: |
+      Consume policies operate on Kafka messages as they are read from a Kafka cluster.
+
+      Transformations may be applied at consume time, but they are applied once per Consumer. Where possible, transofmrations should be applied as a Produce policy
+  - name: Event Gateway DataPlane Certificates
+    description: |
+      DataPlane certificates control how your running Event Gateway instances connect to the Control Plane
+  - name: Event Gateway Static Keys
+    description: |
+      Static Keys are used by the Encrypt and Decrypt policies to encrypt data at rest
+  - name: Event Gateway Schema Registries
+    description: |
+      Configure a schema registry that can be used to validate payloads when producing/consuming messages
+  - name: Event Gateway Vaults
 security:
   - personalAccessToken: []
   - systemAccountAccessToken: []

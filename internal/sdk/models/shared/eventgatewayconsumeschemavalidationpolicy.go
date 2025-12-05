@@ -59,6 +59,7 @@ func (e *EventGatewayConsumeSchemaValidationPolicyConfig) GetValueValidationActi
 
 // EventGatewayConsumeSchemaValidationPolicy - A policy that validates consume messages against a schema registry.
 type EventGatewayConsumeSchemaValidationPolicy struct {
+	// The type name of the policy.
 	type_ string `const:"schema_validation" json:"type"`
 	// A unique user-defined name of the policy.
 	Name *string `default:"null" json:"name"`
@@ -69,7 +70,7 @@ type EventGatewayConsumeSchemaValidationPolicy struct {
 	// A string containing the boolean expression that determines whether the policy is applied.
 	Condition *string `json:"condition,omitempty"`
 	// The configuration of the schema validation policy.
-	Config *EventGatewayConsumeSchemaValidationPolicyConfig `json:"config"`
+	Config EventGatewayConsumeSchemaValidationPolicyConfig `json:"config"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -82,7 +83,7 @@ func (e EventGatewayConsumeSchemaValidationPolicy) MarshalJSON() ([]byte, error)
 }
 
 func (e *EventGatewayConsumeSchemaValidationPolicy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type", "config"}); err != nil {
 		return err
 	}
 	return nil
@@ -120,9 +121,9 @@ func (e *EventGatewayConsumeSchemaValidationPolicy) GetCondition() *string {
 	return e.Condition
 }
 
-func (e *EventGatewayConsumeSchemaValidationPolicy) GetConfig() *EventGatewayConsumeSchemaValidationPolicyConfig {
+func (e *EventGatewayConsumeSchemaValidationPolicy) GetConfig() EventGatewayConsumeSchemaValidationPolicyConfig {
 	if e == nil {
-		return nil
+		return EventGatewayConsumeSchemaValidationPolicyConfig{}
 	}
 	return e.Config
 }

@@ -16,6 +16,9 @@ import (
 	"net/http"
 )
 
+// EventGatewayListenerPolicies - Policies control how Kafka protocol traffic is modified between the client and the backend cluster.
+//
+// Listener policies are routing policies that pass traffic to the virtual cluster.
 type EventGatewayListenerPolicies struct {
 	rootSDK          *KonnectBeta
 	sdkConfiguration config.SDKConfiguration

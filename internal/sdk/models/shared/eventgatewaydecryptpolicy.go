@@ -8,6 +8,7 @@ import (
 
 // EventGatewayDecryptPolicy - Decrypts portions of Kafka records using AES_128_GCM. Keys are therefore 128 bits long.
 type EventGatewayDecryptPolicy struct {
+	// The type name of the policy.
 	type_ string `const:"decrypt" json:"type"`
 	// A unique user-defined name of the policy.
 	Name *string `default:"null" json:"name"`

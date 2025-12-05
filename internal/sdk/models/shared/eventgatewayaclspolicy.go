@@ -8,6 +8,7 @@ import (
 
 // EventGatewayACLsPolicy - Apply Kafka ACLs to virtual cluster traffic.
 type EventGatewayACLsPolicy struct {
+	// The type name of the policy.
 	type_ string `const:"acls" json:"type"`
 	// A unique user-defined name of the policy.
 	Name *string `default:"null" json:"name"`

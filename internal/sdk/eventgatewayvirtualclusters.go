@@ -16,6 +16,7 @@ import (
 	"net/http"
 )
 
+// EventGatewayVirtualClusters - Virtual clusters are the primary way clients interact with the Event Gateway proxy. They allow you to isolate clients from each other when connecting to the same backend cluster, and provide each client with modified view while still appearing as a standard Kafka cluster.
 type EventGatewayVirtualClusters struct {
 	rootSDK          *KonnectBeta
 	sdkConfiguration config.SDKConfiguration

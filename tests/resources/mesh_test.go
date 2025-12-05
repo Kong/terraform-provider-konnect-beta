@@ -280,8 +280,12 @@ resource "konnect_mesh_external_service" "mes_1" {
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
 				{
-					Config:             builder.Upsert(cp).Upsert(mesh).Upsert(mes).Build(),
-					ExpectNonEmptyPlan: true,
+					Config: builder.Upsert(cp).Upsert(mesh).Upsert(mes).Build(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectNonEmptyPlan(),
+						},
+					},
 				},
 			},
 		})
@@ -374,8 +378,7 @@ resource "konnect_mesh_traffic_permission" "allow_all" {
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
 				{
-					Config:             config1,
-					ExpectNonEmptyPlan: true,
+					Config: config1,
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
 							plancheck.ExpectResourceAction("konnect_mesh_traffic_permission.allow_all", plancheck.ResourceActionCreate),
@@ -400,12 +403,15 @@ resource "konnect_mesh_traffic_permission" "allow_all" {
 					},
 				},
 				{
-					Config:             config1,
-					ExpectNonEmptyPlan: true,
+					Config: config1,
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectEmptyPlan(),
+						},
+					},
 				},
 				{
-					Config:             config2,
-					ExpectNonEmptyPlan: true,
+					Config: config2,
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
 							plancheck.ExpectResourceAction("konnect_mesh_traffic_permission.allow_all", plancheck.ResourceActionUpdate),
@@ -430,8 +436,12 @@ resource "konnect_mesh_traffic_permission" "allow_all" {
 					},
 				},
 				{
-					Config:             config2,
-					ExpectNonEmptyPlan: true,
+					Config: config2,
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectEmptyPlan(),
+						},
+					},
 				},
 			},
 		})
