@@ -28,6 +28,11 @@ type EventGatewayInfo struct {
 	NodesTotal int64 `json:"nodes_total"`
 	// The total number of virtual clusters associated with the Event Gateway.
 	VirtualClustersTotal int64 `json:"virtual_clusters_total"`
+	// The minimum runtime version supported by the API. This is the lowest version of the data plane
+	// release that can be used with the entity model.
+	// When not specified, the minimum runtime version will be pinned to the latest available release.
+	//
+	MinRuntimeVersion string `json:"min_runtime_version"`
 	// The version number of the event gateway. Every change to an entity
 	// under this gateway will modify the version.
 	//
@@ -39,7 +44,7 @@ func (e EventGatewayInfo) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayInfo) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"id", "name", "created_at", "updated_at", "nodes_total", "virtual_clusters_total", "version"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"id", "name", "created_at", "updated_at", "nodes_total", "virtual_clusters_total", "min_runtime_version", "version"}); err != nil {
 		return err
 	}
 	return nil
@@ -99,6 +104,13 @@ func (e *EventGatewayInfo) GetVirtualClustersTotal() int64 {
 		return 0
 	}
 	return e.VirtualClustersTotal
+}
+
+func (e *EventGatewayInfo) GetMinRuntimeVersion() string {
+	if e == nil {
+		return ""
+	}
+	return e.MinRuntimeVersion
 }
 
 func (e *EventGatewayInfo) GetVersion() string {

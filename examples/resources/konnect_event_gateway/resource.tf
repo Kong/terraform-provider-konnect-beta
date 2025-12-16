@@ -3,5 +3,6 @@ resource "konnect_event_gateway" "my_eventgateway" {
   labels = {
     key = "value"
   }
-  name = "...my_name..."
+  min_runtime_version = "1.1"
+  name                = "...my_name..."
 }

@@ -18,7 +18,8 @@ resource "konnect_event_gateway" "my_eventgateway" {
   labels = {
     key = "value"
   }
-  name = "...my_name..."
+  min_runtime_version = "1.1"
+  name                = "...my_name..."
 }
 ```
 
@@ -34,6 +35,9 @@ resource "konnect_event_gateway" "my_eventgateway" {
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+- `min_runtime_version` (String) The minimum runtime version supported by the API. This is the lowest version of the data plane
+release that can be used with the entity model.
+When not specified, the minimum runtime version will be pinned to the latest available release.
 
 ### Read-Only
 

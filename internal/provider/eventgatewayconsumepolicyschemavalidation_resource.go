@@ -93,6 +93,9 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 									"id": schema.StringAttribute{
 										Required:    true,
 										Description: `The unique identifier of the schema registry.`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthAtLeast(1),
+										},
 									},
 								},
 								Validators: []validator.Object{
