@@ -40,7 +40,7 @@ func (c CreateClient) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateClient) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "grant_types", "response_types"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil

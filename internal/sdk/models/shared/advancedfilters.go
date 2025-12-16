@@ -128,7 +128,7 @@ func (a AdvancedFilters) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AdvancedFilters) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"field", "operator"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

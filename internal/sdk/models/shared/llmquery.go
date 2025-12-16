@@ -144,7 +144,7 @@ func (l LLMQuery) MarshalJSON() ([]byte, error) {
 }
 
 func (l *LLMQuery) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"datasource"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
 		return err
 	}
 	return nil

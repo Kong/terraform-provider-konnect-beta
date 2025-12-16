@@ -388,8 +388,8 @@ const (
 // value, the more forcefully it reduces the load balancing weight of endpoints that are
 // actively serving requests.
 type ActiveRequestBias struct {
-	Integer *int64  `queryParam:"inline,name=activeRequestBias"`
-	Str     *string `queryParam:"inline,name=activeRequestBias"`
+	Integer *int64  `queryParam:"inline,name=activeRequestBias" union:"member"`
+	Str     *string `queryParam:"inline,name=activeRequestBias" union:"member"`
 
 	Type ActiveRequestBiasType
 }
@@ -438,7 +438,7 @@ func (u *ActiveRequestBias) UnmarshalJSON(data []byte) error {
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for ActiveRequestBias", string(data))
 	}
@@ -1181,8 +1181,8 @@ const (
 )
 
 type MeshLoadBalancingStrategyItemPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage"`
-	Str     *string `queryParam:"inline,name=percentage"`
+	Integer *int64  `queryParam:"inline,name=percentage" union:"member"`
+	Str     *string `queryParam:"inline,name=percentage" union:"member"`
 
 	Type MeshLoadBalancingStrategyItemPercentageType
 }
@@ -1231,7 +1231,7 @@ func (u *MeshLoadBalancingStrategyItemPercentage) UnmarshalJSON(data []byte) err
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshLoadBalancingStrategyItemPercentage", string(data))
 	}
@@ -1641,7 +1641,7 @@ func (m MeshLoadBalancingStrategyItem) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshLoadBalancingStrategyItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1722,7 +1722,7 @@ func (m MeshLoadBalancingStrategyItemInput) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshLoadBalancingStrategyItemInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil

@@ -50,7 +50,7 @@ func (b BarChart) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BarChart) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
 		return err
 	}
 	return nil

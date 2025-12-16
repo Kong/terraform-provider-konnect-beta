@@ -912,7 +912,7 @@ func (m MeshTimeoutItem) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshTimeoutItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -993,7 +993,7 @@ func (m MeshTimeoutItemInput) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshTimeoutItemInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil

@@ -17,8 +17,8 @@ const (
 
 // EncryptionKeyStaticReference - A static encryption key reference, either by ID or by value.
 type EncryptionKeyStaticReference struct {
-	ReferenceByID   *ReferenceByID   `queryParam:"inline,name=EncryptionKeyStaticReference"`
-	ReferenceByName *ReferenceByName `queryParam:"inline,name=EncryptionKeyStaticReference"`
+	ReferenceByID   *ReferenceByID   `queryParam:"inline,name=EncryptionKeyStaticReference" union:"member"`
+	ReferenceByName *ReferenceByName `queryParam:"inline,name=EncryptionKeyStaticReference" union:"member"`
 
 	Type EncryptionKeyStaticReferenceType
 }
@@ -67,7 +67,7 @@ func (u *EncryptionKeyStaticReference) UnmarshalJSON(data []byte) error {
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for EncryptionKeyStaticReference", string(data))
 	}

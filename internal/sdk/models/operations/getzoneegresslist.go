@@ -44,7 +44,7 @@ func (g GetZoneEgressListRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetZoneEgressListRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"cpId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
 		return err
 	}
 	return nil

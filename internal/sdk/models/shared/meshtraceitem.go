@@ -52,7 +52,7 @@ func (d Datadog) MarshalJSON() ([]byte, error) {
 }
 
 func (d *Datadog) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"url"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -162,7 +162,7 @@ func (z Zipkin) MarshalJSON() ([]byte, error) {
 }
 
 func (z *Zipkin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &z, "", false, []string{"url"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &z, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -248,8 +248,8 @@ const (
 // Either int or decimal represented as string.
 // If not specified then the default value is 100.
 type MeshTraceItemClient struct {
-	Integer *int64  `queryParam:"inline,name=client"`
-	Str     *string `queryParam:"inline,name=client"`
+	Integer *int64  `queryParam:"inline,name=client" union:"member"`
+	Str     *string `queryParam:"inline,name=client" union:"member"`
 
 	Type MeshTraceItemClientType
 }
@@ -298,7 +298,7 @@ func (u *MeshTraceItemClient) UnmarshalJSON(data []byte) error {
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshTraceItemClient", string(data))
 	}
@@ -347,8 +347,8 @@ const (
 // Either int or decimal represented as string.
 // If not specified then the default value is 100.
 type Overall struct {
-	Integer *int64  `queryParam:"inline,name=overall"`
-	Str     *string `queryParam:"inline,name=overall"`
+	Integer *int64  `queryParam:"inline,name=overall" union:"member"`
+	Str     *string `queryParam:"inline,name=overall" union:"member"`
 
 	Type OverallType
 }
@@ -397,7 +397,7 @@ func (u *Overall) UnmarshalJSON(data []byte) error {
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Overall", string(data))
 	}
@@ -442,8 +442,8 @@ const (
 // Either int or decimal represented as string.
 // If not specified then the default value is 100.
 type Random struct {
-	Integer *int64  `queryParam:"inline,name=random"`
-	Str     *string `queryParam:"inline,name=random"`
+	Integer *int64  `queryParam:"inline,name=random" union:"member"`
+	Str     *string `queryParam:"inline,name=random" union:"member"`
 
 	Type RandomType
 }
@@ -492,7 +492,7 @@ func (u *Random) UnmarshalJSON(data []byte) error {
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Random", string(data))
 	}
@@ -875,7 +875,7 @@ func (m MeshTraceItem) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshTraceItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -956,7 +956,7 @@ func (m MeshTraceItemInput) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshTraceItemInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil

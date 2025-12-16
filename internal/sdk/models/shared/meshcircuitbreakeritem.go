@@ -203,8 +203,8 @@ const (
 // success_rate_standard_deviation_factor).
 // Either int or decimal represented as string.
 type StandardDeviationFactor struct {
-	Integer *int64  `queryParam:"inline,name=standardDeviationFactor"`
-	Str     *string `queryParam:"inline,name=standardDeviationFactor"`
+	Integer *int64  `queryParam:"inline,name=standardDeviationFactor" union:"member"`
+	Str     *string `queryParam:"inline,name=standardDeviationFactor" union:"member"`
 
 	Type StandardDeviationFactorType
 }
@@ -253,7 +253,7 @@ func (u *StandardDeviationFactor) UnmarshalJSON(data []byte) error {
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for StandardDeviationFactor", string(data))
 	}
@@ -478,8 +478,8 @@ const (
 // the default is 50%. To disable panic mode, set to 0%.
 // Either int or decimal represented as string.
 type MeshCircuitBreakerItemSpecFromHealthyPanicThreshold struct {
-	Integer *int64  `queryParam:"inline,name=healthyPanicThreshold"`
-	Str     *string `queryParam:"inline,name=healthyPanicThreshold"`
+	Integer *int64  `queryParam:"inline,name=healthyPanicThreshold" union:"member"`
+	Str     *string `queryParam:"inline,name=healthyPanicThreshold" union:"member"`
 
 	Type MeshCircuitBreakerItemSpecFromHealthyPanicThresholdType
 }
@@ -528,7 +528,7 @@ func (u *MeshCircuitBreakerItemSpecFromHealthyPanicThreshold) UnmarshalJSON(data
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshCircuitBreakerItemSpecFromHealthyPanicThreshold", string(data))
 	}
@@ -1020,8 +1020,8 @@ const (
 // success_rate_standard_deviation_factor).
 // Either int or decimal represented as string.
 type MeshCircuitBreakerItemStandardDeviationFactor struct {
-	Integer *int64  `queryParam:"inline,name=standardDeviationFactor"`
-	Str     *string `queryParam:"inline,name=standardDeviationFactor"`
+	Integer *int64  `queryParam:"inline,name=standardDeviationFactor" union:"member"`
+	Str     *string `queryParam:"inline,name=standardDeviationFactor" union:"member"`
 
 	Type MeshCircuitBreakerItemStandardDeviationFactorType
 }
@@ -1070,7 +1070,7 @@ func (u *MeshCircuitBreakerItemStandardDeviationFactor) UnmarshalJSON(data []byt
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshCircuitBreakerItemStandardDeviationFactor", string(data))
 	}
@@ -1295,8 +1295,8 @@ const (
 // the default is 50%. To disable panic mode, set to 0%.
 // Either int or decimal represented as string.
 type MeshCircuitBreakerItemHealthyPanicThreshold struct {
-	Integer *int64  `queryParam:"inline,name=healthyPanicThreshold"`
-	Str     *string `queryParam:"inline,name=healthyPanicThreshold"`
+	Integer *int64  `queryParam:"inline,name=healthyPanicThreshold" union:"member"`
+	Str     *string `queryParam:"inline,name=healthyPanicThreshold" union:"member"`
 
 	Type MeshCircuitBreakerItemHealthyPanicThresholdType
 }
@@ -1345,7 +1345,7 @@ func (u *MeshCircuitBreakerItemHealthyPanicThreshold) UnmarshalJSON(data []byte)
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshCircuitBreakerItemHealthyPanicThreshold", string(data))
 	}
@@ -1826,8 +1826,8 @@ const (
 // success_rate_standard_deviation_factor).
 // Either int or decimal represented as string.
 type MeshCircuitBreakerItemSpecStandardDeviationFactor struct {
-	Integer *int64  `queryParam:"inline,name=standardDeviationFactor"`
-	Str     *string `queryParam:"inline,name=standardDeviationFactor"`
+	Integer *int64  `queryParam:"inline,name=standardDeviationFactor" union:"member"`
+	Str     *string `queryParam:"inline,name=standardDeviationFactor" union:"member"`
 
 	Type MeshCircuitBreakerItemSpecStandardDeviationFactorType
 }
@@ -1876,7 +1876,7 @@ func (u *MeshCircuitBreakerItemSpecStandardDeviationFactor) UnmarshalJSON(data [
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshCircuitBreakerItemSpecStandardDeviationFactor", string(data))
 	}
@@ -2101,8 +2101,8 @@ const (
 // the default is 50%. To disable panic mode, set to 0%.
 // Either int or decimal represented as string.
 type MeshCircuitBreakerItemSpecHealthyPanicThreshold struct {
-	Integer *int64  `queryParam:"inline,name=healthyPanicThreshold"`
-	Str     *string `queryParam:"inline,name=healthyPanicThreshold"`
+	Integer *int64  `queryParam:"inline,name=healthyPanicThreshold" union:"member"`
+	Str     *string `queryParam:"inline,name=healthyPanicThreshold" union:"member"`
 
 	Type MeshCircuitBreakerItemSpecHealthyPanicThresholdType
 }
@@ -2151,7 +2151,7 @@ func (u *MeshCircuitBreakerItemSpecHealthyPanicThreshold) UnmarshalJSON(data []b
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshCircuitBreakerItemSpecHealthyPanicThreshold", string(data))
 	}
@@ -2543,7 +2543,7 @@ func (m MeshCircuitBreakerItem) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshCircuitBreakerItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -2624,7 +2624,7 @@ func (m MeshCircuitBreakerItemInput) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshCircuitBreakerItemInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil

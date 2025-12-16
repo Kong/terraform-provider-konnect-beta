@@ -18,8 +18,8 @@ const (
 
 // TimeRange - The time range to query.
 type TimeRange struct {
-	MetricsRelativeTimeRangeDtoV2 *MetricsRelativeTimeRangeDtoV2 `queryParam:"inline,name=TimeRange"`
-	MetricsAbsoluteTimeRangeDtoV2 *MetricsAbsoluteTimeRangeDtoV2 `queryParam:"inline,name=TimeRange"`
+	MetricsRelativeTimeRangeDtoV2 *MetricsRelativeTimeRangeDtoV2 `queryParam:"inline,name=TimeRange" union:"member"`
+	MetricsAbsoluteTimeRangeDtoV2 *MetricsAbsoluteTimeRangeDtoV2 `queryParam:"inline,name=TimeRange" union:"member"`
 
 	Type TimeRangeType
 }

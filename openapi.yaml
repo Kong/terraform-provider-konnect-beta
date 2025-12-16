@@ -18,6 +18,9 @@ info:
     Additionally, `x-sensitive` flag indicates that a field contains sensitive information. When the value
     of the field is provided in plain text, it's encrypted at rest and it's never returned in API responses.
     When the value is an expression, the expression itself is stored and returned in API responses.
+
+    `x-min-runtime-version` indicates the minimum Event Gateway runtime version required to use a certain policy or
+    policy feature. The runtime version can be configured at the Event Gateway entity level.
 servers:
   - url: 'https://global.api.konghq.com'
   - url: 'https://us.api.konghq.com'
@@ -24476,12 +24479,14 @@ components:
         virtual_clusters_total:
           description: The total number of virtual clusters associated with the Event Gateway.
           type: integer
+        min_runtime_version:
+          $ref: '#/components/schemas/MinRuntimeVersion'
         version:
           description: |
             The version number of the event gateway. Every change to an entity
             under this gateway will modify the version.
           type: string
-          example: v1_123
+          example: v1.123
       additionalProperties: false
       required:
         - id
@@ -24490,6 +24495,7 @@ components:
         - updated_at
         - nodes_total
         - virtual_clusters_total
+        - min_runtime_version
         - version
     EventGatewayListener:
       description: Listeners are used to expose virtual clusters to clients.
@@ -24620,6 +24626,7 @@ components:
           description: The unique identifier of the virtual cluster.
           type: string
           format: uuid
+          minLength: 1
       required:
         - id
     VirtualClusterReferenceByName:
@@ -25137,6 +25144,9 @@ components:
       enum:
         - env
         - konnect
+      x-enum-varnames:
+        - EventGatewayVaultTypeEnv
+        - EventGatewayVaultTypeKonnect
       x-speakeasy-unknown-values: allow
     EventGatewayVault:
       type: object
@@ -25196,6 +25206,7 @@ components:
             type:
               type: string
               const: env
+              x-go-type: EventGatewayVaultType
             config:
               description: The configuration of the environment vault.
               type: object
@@ -25217,6 +25228,7 @@ components:
             type:
               type: string
               const: konnect
+              x-go-type: EventGatewayVaultType
     EventGatewayModifyVault:
       description: The typed schema of the vault to modify it.
       discriminator:
@@ -25437,6 +25449,7 @@ components:
           description: The unique identifier of the schema registry.
           type: string
           format: uuid
+          minLength: 1
       required:
         - id
     SchemaRegistryReferenceByName:
@@ -26731,6 +26744,7 @@ components:
           description: The ID of the static key defined in the key source.
           type: string
           format: uuid
+          minLength: 1
       required:
         - id
       x-speakeasy-name-override: ReferenceByID
@@ -27149,6 +27163,14 @@ components:
       type: string
       maxLength: 512
       x-speakeasy-terraform-ignore: true
+    MinRuntimeVersion:
+      description: |
+        The minimum runtime version supported by the API. This is the lowest version of the data plane
+        release that can be used with the entity model.
+        When not specified, the minimum runtime version will be pinned to the latest available release.
+      type: string
+      example: '1.1'
+      pattern: ^\d+\.\d+$
     CreateGatewayRequest:
       description: The request schema for the create gateway request.
       type: object
@@ -27157,12 +27179,22 @@ components:
           $ref: '#/components/schemas/GatewayName'
         description:
           $ref: '#/components/schemas/GatewayDescription'
+        min_runtime_version:
+          $ref: '#/components/schemas/MinRuntimeVersion'
         labels:
           $ref: '#/components/schemas/Labels'
       additionalProperties: false
       required:
         - name
       title: CreateGatewayRequest
+    MinRuntimeVersionUpdate:
+      description: |
+        The minimum runtime version supported by the API. This is the lowest version of the data plane
+        release that can be used with the entity model.
+        When not specified, the minimum runtime version will not be updated.
+      type: string
+      example: '1.1'
+      pattern: ^\d+\.\d+$
     UpdateGatewayRequest:
       description: The request schema for the update gateway request.
       type: object
@@ -27171,6 +27203,8 @@ components:
           $ref: '#/components/schemas/GatewayName'
         description:
           $ref: '#/components/schemas/GatewayDescription'
+        min_runtime_version:
+          $ref: '#/components/schemas/MinRuntimeVersionUpdate'
         labels:
           $ref: '#/components/schemas/Labels'
       additionalProperties: false

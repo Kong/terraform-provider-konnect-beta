@@ -101,6 +101,9 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Schema(ctx c
 											"id": schema.StringAttribute{
 												Required:    true,
 												Description: `The unique identifier of the virtual cluster.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(1),
+												},
 											},
 										},
 										Description: `Reference a virtual cluster by its unique identifier.`,

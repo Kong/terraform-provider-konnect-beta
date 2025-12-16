@@ -35,7 +35,7 @@ func (e EventGatewayVaultEventGatewayKonnectVault) MarshalJSON() ([]byte, error)
 }
 
 func (e *EventGatewayVaultEventGatewayKonnectVault) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"name", "type", "created_at", "updated_at", "id"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -98,7 +98,7 @@ func (e EventGatewayEnvVaultConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayEnvVaultConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"prefix"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -138,7 +138,7 @@ func (e EventGatewayVaultEventGatewayEnvVault) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayVaultEventGatewayEnvVault) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"name", "type", "created_at", "updated_at", "config", "id"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -205,8 +205,8 @@ const (
 )
 
 type EventGatewayVault struct {
-	EventGatewayVaultEventGatewayEnvVault     *EventGatewayVaultEventGatewayEnvVault     `queryParam:"inline,name=EventGatewayVault"`
-	EventGatewayVaultEventGatewayKonnectVault *EventGatewayVaultEventGatewayKonnectVault `queryParam:"inline,name=EventGatewayVault"`
+	EventGatewayVaultEventGatewayEnvVault     *EventGatewayVaultEventGatewayEnvVault     `queryParam:"inline,name=EventGatewayVault" union:"member"`
+	EventGatewayVaultEventGatewayKonnectVault *EventGatewayVaultEventGatewayKonnectVault `queryParam:"inline,name=EventGatewayVault" union:"member"`
 
 	Type EventGatewayVaultType
 }
