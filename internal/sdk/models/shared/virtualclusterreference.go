@@ -17,8 +17,8 @@ const (
 
 // VirtualClusterReference - A reference to a virtual cluster.
 type VirtualClusterReference struct {
-	VirtualClusterReferenceByID   *VirtualClusterReferenceByID   `queryParam:"inline,name=VirtualClusterReference"`
-	VirtualClusterReferenceByName *VirtualClusterReferenceByName `queryParam:"inline,name=VirtualClusterReference"`
+	VirtualClusterReferenceByID   *VirtualClusterReferenceByID   `queryParam:"inline,name=VirtualClusterReference" union:"member"`
+	VirtualClusterReferenceByName *VirtualClusterReferenceByName `queryParam:"inline,name=VirtualClusterReference" union:"member"`
 
 	Type VirtualClusterReferenceType
 }
@@ -67,7 +67,7 @@ func (u *VirtualClusterReference) UnmarshalJSON(data []byte) error {
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for VirtualClusterReference", string(data))
 	}

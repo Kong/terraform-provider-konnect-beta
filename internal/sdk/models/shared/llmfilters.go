@@ -119,7 +119,7 @@ func (l LLMFilters) MarshalJSON() ([]byte, error) {
 }
 
 func (l *LLMFilters) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"field", "operator"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
 		return err
 	}
 	return nil

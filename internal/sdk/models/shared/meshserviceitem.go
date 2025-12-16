@@ -87,8 +87,8 @@ const (
 )
 
 type TargetPort struct {
-	Integer *int64  `queryParam:"inline,name=targetPort"`
-	Str     *string `queryParam:"inline,name=targetPort"`
+	Integer *int64  `queryParam:"inline,name=targetPort" union:"member"`
+	Str     *string `queryParam:"inline,name=targetPort" union:"member"`
 
 	Type TargetPortType
 }
@@ -137,7 +137,7 @@ func (u *TargetPort) UnmarshalJSON(data []byte) error {
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for TargetPort", string(data))
 	}
@@ -181,7 +181,7 @@ func (m MeshServiceItemPorts) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshServiceItemPorts) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"port"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -616,7 +616,7 @@ func (m MeshServiceItem) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshServiceItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -703,7 +703,7 @@ func (m MeshServiceItemInput) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshServiceItemInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil

@@ -42,7 +42,7 @@ func (r ReplaceClient) MarshalJSON() ([]byte, error) {
 }
 
 func (r *ReplaceClient) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"name", "client_secret", "grant_types", "response_types"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil

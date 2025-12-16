@@ -238,8 +238,8 @@ const (
 // Deprecated: the setting has been moved to MeshCircuitBreaker policy,
 // please use MeshCircuitBreaker policy instead.
 type HealthyPanicThreshold struct {
-	Integer *int64  `queryParam:"inline,name=healthyPanicThreshold"`
-	Str     *string `queryParam:"inline,name=healthyPanicThreshold"`
+	Integer *int64  `queryParam:"inline,name=healthyPanicThreshold" union:"member"`
+	Str     *string `queryParam:"inline,name=healthyPanicThreshold" union:"member"`
 
 	Type HealthyPanicThresholdType
 }
@@ -288,7 +288,7 @@ func (u *HealthyPanicThreshold) UnmarshalJSON(data []byte) error {
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for HealthyPanicThreshold", string(data))
 	}
@@ -866,7 +866,7 @@ func (m MeshHealthCheckItem) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshHealthCheckItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -947,7 +947,7 @@ func (m MeshHealthCheckItemInput) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshHealthCheckItemInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil

@@ -20,7 +20,7 @@ func (p Position) MarshalJSON() ([]byte, error) {
 }
 
 func (p *Position) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"col", "row"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -51,7 +51,7 @@ func (s Size) MarshalJSON() ([]byte, error) {
 }
 
 func (s *Size) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"cols", "rows"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -90,7 +90,7 @@ func (l Layout) MarshalJSON() ([]byte, error) {
 }
 
 func (l *Layout) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"position", "size"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -142,8 +142,8 @@ const (
 )
 
 type Query struct {
-	AdvancedQuery *AdvancedQuery `queryParam:"inline,name=query"`
-	LLMQuery      *LLMQuery      `queryParam:"inline,name=query"`
+	AdvancedQuery *AdvancedQuery `queryParam:"inline,name=query" union:"member"`
+	LLMQuery      *LLMQuery      `queryParam:"inline,name=query" union:"member"`
 
 	Type QueryType
 }
@@ -232,7 +232,7 @@ func (d Definition) MarshalJSON() ([]byte, error) {
 }
 
 func (d *Definition) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"query", "chart"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -310,7 +310,7 @@ func (c ChartTile) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ChartTile) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"layout", "type", "definition"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil

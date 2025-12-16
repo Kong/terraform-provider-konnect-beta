@@ -44,8 +44,8 @@ const (
 // Percentage of requests on which abort will be injected, has to be
 // either int or decimal represented as string.
 type Percentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage"`
-	Str     *string `queryParam:"inline,name=percentage"`
+	Integer *int64  `queryParam:"inline,name=percentage" union:"member"`
+	Str     *string `queryParam:"inline,name=percentage" union:"member"`
 
 	Type PercentageType
 }
@@ -94,7 +94,7 @@ func (u *Percentage) UnmarshalJSON(data []byte) error {
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Percentage", string(data))
 	}
@@ -160,8 +160,8 @@ const (
 // MeshFaultInjectionItemPercentage - Percentage of requests on which delay will be injected, has to be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage"`
-	Str     *string `queryParam:"inline,name=percentage"`
+	Integer *int64  `queryParam:"inline,name=percentage" union:"member"`
+	Str     *string `queryParam:"inline,name=percentage" union:"member"`
 
 	Type MeshFaultInjectionItemPercentageType
 }
@@ -210,7 +210,7 @@ func (u *MeshFaultInjectionItemPercentage) UnmarshalJSON(data []byte) error {
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshFaultInjectionItemPercentage", string(data))
 	}
@@ -274,8 +274,8 @@ const (
 // MeshFaultInjectionItemSpecPercentage - Percentage of requests on which response bandwidth limit will be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage"`
-	Str     *string `queryParam:"inline,name=percentage"`
+	Integer *int64  `queryParam:"inline,name=percentage" union:"member"`
+	Str     *string `queryParam:"inline,name=percentage" union:"member"`
 
 	Type MeshFaultInjectionItemSpecPercentageType
 }
@@ -324,7 +324,7 @@ func (u *MeshFaultInjectionItemSpecPercentage) UnmarshalJSON(data []byte) error 
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshFaultInjectionItemSpecPercentage", string(data))
 	}
@@ -618,8 +618,8 @@ const (
 // MeshFaultInjectionItemSpecRulesPercentage - Percentage of requests on which abort will be injected, has to be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecRulesPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage"`
-	Str     *string `queryParam:"inline,name=percentage"`
+	Integer *int64  `queryParam:"inline,name=percentage" union:"member"`
+	Str     *string `queryParam:"inline,name=percentage" union:"member"`
 
 	Type MeshFaultInjectionItemSpecRulesPercentageType
 }
@@ -668,7 +668,7 @@ func (u *MeshFaultInjectionItemSpecRulesPercentage) UnmarshalJSON(data []byte) e
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshFaultInjectionItemSpecRulesPercentage", string(data))
 	}
@@ -734,8 +734,8 @@ const (
 // MeshFaultInjectionItemSpecRulesDefaultPercentage - Percentage of requests on which delay will be injected, has to be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecRulesDefaultPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage"`
-	Str     *string `queryParam:"inline,name=percentage"`
+	Integer *int64  `queryParam:"inline,name=percentage" union:"member"`
+	Str     *string `queryParam:"inline,name=percentage" union:"member"`
 
 	Type MeshFaultInjectionItemSpecRulesDefaultPercentageType
 }
@@ -784,7 +784,7 @@ func (u *MeshFaultInjectionItemSpecRulesDefaultPercentage) UnmarshalJSON(data []
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshFaultInjectionItemSpecRulesDefaultPercentage", string(data))
 	}
@@ -848,8 +848,8 @@ const (
 // MeshFaultInjectionItemSpecRulesDefaultHTTPPercentage - Percentage of requests on which response bandwidth limit will be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecRulesDefaultHTTPPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage"`
-	Str     *string `queryParam:"inline,name=percentage"`
+	Integer *int64  `queryParam:"inline,name=percentage" union:"member"`
+	Str     *string `queryParam:"inline,name=percentage" union:"member"`
 
 	Type MeshFaultInjectionItemSpecRulesDefaultHTTPPercentageType
 }
@@ -898,7 +898,7 @@ func (u *MeshFaultInjectionItemSpecRulesDefaultHTTPPercentage) UnmarshalJSON(dat
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshFaultInjectionItemSpecRulesDefaultHTTPPercentage", string(data))
 	}
@@ -1251,8 +1251,8 @@ const (
 // MeshFaultInjectionItemSpecToPercentage - Percentage of requests on which abort will be injected, has to be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecToPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage"`
-	Str     *string `queryParam:"inline,name=percentage"`
+	Integer *int64  `queryParam:"inline,name=percentage" union:"member"`
+	Str     *string `queryParam:"inline,name=percentage" union:"member"`
 
 	Type MeshFaultInjectionItemSpecToPercentageType
 }
@@ -1301,7 +1301,7 @@ func (u *MeshFaultInjectionItemSpecToPercentage) UnmarshalJSON(data []byte) erro
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshFaultInjectionItemSpecToPercentage", string(data))
 	}
@@ -1367,8 +1367,8 @@ const (
 // MeshFaultInjectionItemSpecToDefaultPercentage - Percentage of requests on which delay will be injected, has to be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecToDefaultPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage"`
-	Str     *string `queryParam:"inline,name=percentage"`
+	Integer *int64  `queryParam:"inline,name=percentage" union:"member"`
+	Str     *string `queryParam:"inline,name=percentage" union:"member"`
 
 	Type MeshFaultInjectionItemSpecToDefaultPercentageType
 }
@@ -1417,7 +1417,7 @@ func (u *MeshFaultInjectionItemSpecToDefaultPercentage) UnmarshalJSON(data []byt
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshFaultInjectionItemSpecToDefaultPercentage", string(data))
 	}
@@ -1481,8 +1481,8 @@ const (
 // MeshFaultInjectionItemSpecToDefaultHTTPPercentage - Percentage of requests on which response bandwidth limit will be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecToDefaultHTTPPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage"`
-	Str     *string `queryParam:"inline,name=percentage"`
+	Integer *int64  `queryParam:"inline,name=percentage" union:"member"`
+	Str     *string `queryParam:"inline,name=percentage" union:"member"`
 
 	Type MeshFaultInjectionItemSpecToDefaultHTTPPercentageType
 }
@@ -1531,7 +1531,7 @@ func (u *MeshFaultInjectionItemSpecToDefaultHTTPPercentage) UnmarshalJSON(data [
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshFaultInjectionItemSpecToDefaultHTTPPercentage", string(data))
 	}
@@ -1882,7 +1882,7 @@ func (m MeshFaultInjectionItem) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshFaultInjectionItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1963,7 +1963,7 @@ func (m MeshFaultInjectionItemInput) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshFaultInjectionItemInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil

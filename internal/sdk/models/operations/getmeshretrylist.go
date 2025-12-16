@@ -46,7 +46,7 @@ func (g GetMeshRetryListRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetMeshRetryListRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"cpId", "mesh"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
 		return err
 	}
 	return nil

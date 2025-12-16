@@ -299,7 +299,7 @@ func (m MeshTCPRouteItemBackendRefs) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshTCPRouteItemBackendRefs) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"kind"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -631,7 +631,7 @@ func (m MeshTCPRouteItem) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshTCPRouteItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -712,7 +712,7 @@ func (m MeshTCPRouteItemInput) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshTCPRouteItemInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil

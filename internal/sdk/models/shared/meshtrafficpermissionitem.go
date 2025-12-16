@@ -698,7 +698,7 @@ func (m MeshTrafficPermissionItem) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshTrafficPermissionItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -779,7 +779,7 @@ func (m MeshTrafficPermissionItemInput) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshTrafficPermissionItemInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil

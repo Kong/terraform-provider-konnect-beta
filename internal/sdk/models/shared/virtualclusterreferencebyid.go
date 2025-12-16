@@ -17,7 +17,7 @@ func (v VirtualClusterReferenceByID) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VirtualClusterReferenceByID) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"id"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
 		return err
 	}
 	return nil

@@ -148,7 +148,7 @@ func (m Match) MarshalJSON() ([]byte, error) {
 }
 
 func (m *Match) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"port"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -340,7 +340,7 @@ func (s SubjectAltNames) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SubjectAltNames) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"value"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -839,7 +839,7 @@ func (m MeshExternalServiceItem) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshExternalServiceItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -926,7 +926,7 @@ func (m MeshExternalServiceItemInput) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshExternalServiceItemInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
