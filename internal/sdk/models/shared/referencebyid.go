@@ -17,7 +17,7 @@ func (r ReferenceByID) MarshalJSON() ([]byte, error) {
 }
 
 func (r *ReferenceByID) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"id"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil

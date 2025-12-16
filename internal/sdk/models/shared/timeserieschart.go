@@ -56,7 +56,7 @@ func (t TimeseriesChart) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TimeseriesChart) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
 		return err
 	}
 	return nil

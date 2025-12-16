@@ -96,7 +96,7 @@ func (r *AuthServerClientsResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"client_secret": schema.StringAttribute{
 				Computed:    true,
-				Description: `The OAuth 2.0 client secret`,
+				Description: `Secret of the client`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,

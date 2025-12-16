@@ -92,7 +92,7 @@ func (f Format) MarshalJSON() ([]byte, error) {
 }
 
 func (f *Format) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -262,7 +262,7 @@ func (m MeshAccessLogItemFormat) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshAccessLogItemFormat) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -638,7 +638,7 @@ func (m MeshAccessLogItemSpecFormat) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshAccessLogItemSpecFormat) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -808,7 +808,7 @@ func (m MeshAccessLogItemSpecRulesFormat) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshAccessLogItemSpecRulesFormat) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1173,7 +1173,7 @@ func (m MeshAccessLogItemSpecToFormat) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshAccessLogItemSpecToFormat) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1343,7 +1343,7 @@ func (m MeshAccessLogItemSpecToDefaultFormat) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshAccessLogItemSpecToDefaultFormat) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1728,7 +1728,7 @@ func (m MeshAccessLogItem) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshAccessLogItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1809,7 +1809,7 @@ func (m MeshAccessLogItemInput) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshAccessLogItemInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil

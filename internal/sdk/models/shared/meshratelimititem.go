@@ -1290,7 +1290,7 @@ func (m MeshRateLimitItem) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshRateLimitItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1371,7 +1371,7 @@ func (m MeshRateLimitItemInput) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshRateLimitItemInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil

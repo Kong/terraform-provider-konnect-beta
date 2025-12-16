@@ -453,7 +453,7 @@ func (h HostSelection) MarshalJSON() ([]byte, error) {
 }
 
 func (h *HostSelection) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &h, "", false, []string{"predicate"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -608,7 +608,7 @@ func (r RetriableRequestHeaders) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RetriableRequestHeaders) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -688,7 +688,7 @@ func (r RetriableResponseHeaders) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RetriableResponseHeaders) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1093,7 +1093,7 @@ func (m MeshRetryItem) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshRetryItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1174,7 +1174,7 @@ func (m MeshRetryItemInput) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshRetryItemInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil

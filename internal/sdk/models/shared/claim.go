@@ -34,7 +34,7 @@ func (c Claim) MarshalJSON() ([]byte, error) {
 }
 
 func (c *Claim) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "name", "value", "include_in_scopes", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil

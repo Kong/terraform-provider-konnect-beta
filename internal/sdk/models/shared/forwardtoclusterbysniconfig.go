@@ -35,7 +35,7 @@ func (f ForwardToClusterBySNIConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (f *ForwardToClusterBySNIConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
 		return err
 	}
 	return nil

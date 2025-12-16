@@ -45,7 +45,7 @@ func (c ChoroplethMapChart) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ChoroplethMapChart) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil

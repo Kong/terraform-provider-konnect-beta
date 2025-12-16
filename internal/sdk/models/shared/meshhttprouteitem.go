@@ -300,7 +300,7 @@ func (b BackendRefs) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BackendRefs) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"kind"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -552,7 +552,7 @@ func (b BackendRef) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BackendRef) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"kind"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -638,8 +638,8 @@ const (
 // MeshHTTPRouteItemPercentage - Percentage of requests to mirror. If not specified, all requests
 // to the target cluster will be mirrored.
 type MeshHTTPRouteItemPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage"`
-	Str     *string `queryParam:"inline,name=percentage"`
+	Integer *int64  `queryParam:"inline,name=percentage" union:"member"`
+	Str     *string `queryParam:"inline,name=percentage" union:"member"`
 
 	Type MeshHTTPRouteItemPercentageType
 }
@@ -688,7 +688,7 @@ func (u *MeshHTTPRouteItemPercentage) UnmarshalJSON(data []byte) error {
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshHTTPRouteItemPercentage", string(data))
 	}
@@ -1246,7 +1246,7 @@ func (h Headers) MarshalJSON() ([]byte, error) {
 }
 
 func (h *Headers) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &h, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1724,7 +1724,7 @@ func (m MeshHTTPRouteItem) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshHTTPRouteItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1805,7 +1805,7 @@ func (m MeshHTTPRouteItemInput) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshHTTPRouteItemInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil

@@ -17,8 +17,8 @@ const (
 
 // SchemaRegistryReference - A reference to a schema Registry.
 type SchemaRegistryReference struct {
-	SchemaRegistryReferenceByID   *SchemaRegistryReferenceByID   `queryParam:"inline,name=SchemaRegistryReference"`
-	SchemaRegistryReferenceByName *SchemaRegistryReferenceByName `queryParam:"inline,name=SchemaRegistryReference"`
+	SchemaRegistryReferenceByID   *SchemaRegistryReferenceByID   `queryParam:"inline,name=SchemaRegistryReference" union:"member"`
+	SchemaRegistryReferenceByName *SchemaRegistryReferenceByName `queryParam:"inline,name=SchemaRegistryReference" union:"member"`
 
 	Type SchemaRegistryReferenceType
 }
@@ -67,7 +67,7 @@ func (u *SchemaRegistryReference) UnmarshalJSON(data []byte) error {
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for SchemaRegistryReference", string(data))
 	}

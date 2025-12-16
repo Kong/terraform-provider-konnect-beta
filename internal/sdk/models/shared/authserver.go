@@ -41,7 +41,7 @@ func (a AuthServer) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AuthServer) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "name", "description", "audience", "issuer", "metadata_uri", "labels", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
