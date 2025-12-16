@@ -2,6 +2,8 @@
 
 ## 0.14.0
 > Released on 2025/12/??
+### Features
+* Support setting `min_runtime_version` on `konnect_event_gateway` resource
 
 ### Bug fixes
 * Properties related to IDP, SAML and OIDC are deprecated in `konnect_portal_auth` resource
