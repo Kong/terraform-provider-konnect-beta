@@ -1,7 +1,8 @@
 # Changelog
 
 ## 0.14.0
-> Released on 2025/12/??
+> Released on 2025/12/18
+
 ### Features
 * Support setting `min_runtime_version` on `konnect_event_gateway` resource
 
