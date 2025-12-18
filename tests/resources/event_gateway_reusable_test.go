@@ -139,4 +139,160 @@ func TestEventGatewayReusable(t *testing.T) {
 			},
 		})
 	})
+
+	t.Run("EGW Virtual Cluster", func(t *testing.T) {
+		builder := hclbuilder.NewWithProvider(
+			hclbuilder.KonnectBeta,
+			fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort),
+		)
+		builder.ProviderProperty = hclbuilder.KonnectBeta
+
+		// Event Gateway (Control Plane)
+		egwCp, err := hclbuilder.FromString(`
+resource "konnect_event_gateway" "tf_test_event_gateway" {
+  name = "my_test_event_gateway"
+}
+`)
+		require.NoError(t, err)
+
+		// Backend Cluster (required by virtual cluster destination)
+		egwBackendCluster, err := hclbuilder.FromString(`
+resource "konnect_event_gateway_backend_cluster" "tf_test_egw_backend_cluster" {
+  name = "tf_test_egw_backend_cluster"
+
+  authentication = {
+    anonymous = {}
+  }
+
+  bootstrap_servers = [
+    "10.0.0.1:8080"
+  ]
+
+  tls = {
+    enabled = false
+    insecure_skip_verify = true
+  }
+}
+`)
+		require.NoError(t, err)
+
+		// Wire gateway → backend cluster
+		egwBackendCluster.AddAttribute(
+			"gateway_id",
+			egwCp.ResourcePath()+".id",
+		)
+
+		// Virtual Cluster
+		egwVirtualCluster, err := hclbuilder.FromString(`
+resource "konnect_event_gateway_virtual_cluster" "tf_test_egw_virtual_cluster" {
+  name      = "tf_test_egw_virtual_cluster"
+  dns_label = "vcluster-1"
+  acl_mode  = "passthrough"
+
+  authentication = [
+    {
+      anonymous = {}
+    }
+  ]
+
+  destination = {
+    id = konnect_event_gateway_backend_cluster.tf_test_egw_backend_cluster.id
+  }
+}
+`)
+		require.NoError(t, err)
+
+		// Wire gateway → virtual cluster
+		egwVirtualCluster.AddAttribute(
+			"gateway_id",
+			egwCp.ResourcePath()+".id",
+		)
+
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					Config: builder.
+						Upsert(egwCp).
+						Upsert(egwBackendCluster).
+						Upsert(egwVirtualCluster).
+						Build(),
+
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectResourceAction(
+								"konnect_event_gateway.tf_test_event_gateway",
+								plancheck.ResourceActionCreate,
+							),
+							plancheck.ExpectResourceAction(
+								"konnect_event_gateway_backend_cluster.tf_test_egw_backend_cluster",
+								plancheck.ResourceActionCreate,
+							),
+							plancheck.ExpectResourceAction(
+								"konnect_event_gateway_virtual_cluster.tf_test_egw_virtual_cluster",
+								plancheck.ResourceActionCreate,
+							),
+						},
+					},
+
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr(
+							"konnect_event_gateway_virtual_cluster.tf_test_egw_virtual_cluster",
+							"name",
+							"tf_test_egw_virtual_cluster",
+						),
+					),
+				},
+				{
+					Config: builder.
+						Upsert(egwCp).
+						Upsert(egwBackendCluster).
+						Upsert(egwVirtualCluster).
+						Build(),
+
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectEmptyPlan(),
+						},
+					},
+				},
+				{
+					Config: builder.
+						Upsert(egwCp).
+						Upsert(egwBackendCluster).
+						Upsert(
+							egwVirtualCluster.AddAttribute("labels", `{ key = "value" }`),
+						).
+						Build(),
+
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr(
+							"konnect_event_gateway_virtual_cluster.tf_test_egw_virtual_cluster",
+							"labels.%",
+							"1",
+						),
+						resource.TestCheckResourceAttr(
+							"konnect_event_gateway_virtual_cluster.tf_test_egw_virtual_cluster",
+							"labels.key",
+							"value",
+						),
+					),
+				},
+				{
+					Config: builder.
+						Upsert(egwCp).
+						Upsert(egwBackendCluster).
+						Upsert(egwVirtualCluster).
+						Build(),
+
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectEmptyPlan(),
+						},
+					},
+				},
+			},
+		})
+	})
+
 }
