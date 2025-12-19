@@ -46,7 +46,7 @@ func (g GetMeshRateLimitListRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetMeshRateLimitListRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"cpId", "mesh"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
 		return err
 	}
 	return nil

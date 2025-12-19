@@ -728,7 +728,7 @@ func (m MeshIdentityItem) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshIdentityItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -815,7 +815,7 @@ func (m MeshIdentityItemInput) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshIdentityItemInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil

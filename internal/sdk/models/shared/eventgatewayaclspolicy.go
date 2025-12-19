@@ -8,6 +8,7 @@ import (
 
 // EventGatewayACLsPolicy - Apply Kafka ACLs to virtual cluster traffic.
 type EventGatewayACLsPolicy struct {
+	// The type name of the policy.
 	type_ string `const:"acls" json:"type"`
 	// A unique user-defined name of the policy.
 	Name *string `default:"null" json:"name"`
@@ -31,7 +32,7 @@ func (e EventGatewayACLsPolicy) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayACLsPolicy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
 		return err
 	}
 	return nil

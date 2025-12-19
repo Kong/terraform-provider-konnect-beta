@@ -16,6 +16,9 @@ import (
 	"net/http"
 )
 
+// EventGatewayBackendClusters - A backend cluster is an abstraction of a real Kafka cluster. It stores the connection and configuration details required for Kong Event Gateway to proxy traffic to Kafka.
+//
+// Multiple Kafka clusters can be proxied through a single Kong Event Gateway.
 type EventGatewayBackendClusters struct {
 	rootSDK          *KonnectBeta
 	sdkConfiguration config.SDKConfiguration

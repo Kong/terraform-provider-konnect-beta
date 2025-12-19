@@ -8,6 +8,7 @@ import (
 
 // EventGatewayProduceSchemaValidationPolicy - A policy that validates produce messages against a schema registry.
 type EventGatewayProduceSchemaValidationPolicy struct {
+	// The type name of the policy.
 	type_ string `const:"schema_validation" json:"type"`
 	// A unique user-defined name of the policy.
 	Name *string `default:"null" json:"name"`
@@ -31,7 +32,7 @@ func (e EventGatewayProduceSchemaValidationPolicy) MarshalJSON() ([]byte, error)
 }
 
 func (e *EventGatewayProduceSchemaValidationPolicy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
 		return err
 	}
 	return nil

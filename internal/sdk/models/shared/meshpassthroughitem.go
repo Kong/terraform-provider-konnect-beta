@@ -118,7 +118,7 @@ func (a AppendMatch) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AppendMatch) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"type", "value"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -415,7 +415,7 @@ func (m MeshPassthroughItem) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshPassthroughItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -496,7 +496,7 @@ func (m MeshPassthroughItemInput) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshPassthroughItemInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "name", "spec"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil

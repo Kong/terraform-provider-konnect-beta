@@ -16,6 +16,7 @@ import (
 	"net/http"
 )
 
+// EventGatewaySchemaRegistries - Configure a schema registry that can be used to validate payloads when producing/consuming messages
 type EventGatewaySchemaRegistries struct {
 	rootSDK          *KonnectBeta
 	sdkConfiguration config.SDKConfiguration

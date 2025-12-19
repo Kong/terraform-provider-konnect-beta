@@ -15,6 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
+	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -35,6 +36,7 @@ type EventGatewayResource struct {
 type EventGatewayResourceModel struct {
 	ID                   types.String            `tfsdk:"id"`
 	Labels               map[string]types.String `tfsdk:"labels"`
+	MinRuntimeVersion    types.String            `tfsdk:"min_runtime_version"`
 	Name                 types.String            `tfsdk:"name"`
 	NodesTotal           types.Int64             `tfsdk:"nodes_total"`
 	Version              types.String            `tfsdk:"version"`
@@ -63,6 +65,16 @@ func (r *EventGatewayResource) Schema(ctx context.Context, req resource.SchemaRe
 				MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
 					`` + "\n" +
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
+			},
+			"min_runtime_version": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				MarkdownDescription: `The minimum runtime version supported by the API. This is the lowest version of the data plane` + "\n" +
+					`release that can be used with the entity model.` + "\n" +
+					`When not specified, the minimum runtime version will be pinned to the latest available release.`,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`^\d+\.\d+$`), "must match pattern "+regexp.MustCompile(`^\d+\.\d+$`).String()),
+				},
 			},
 			"name": schema.StringAttribute{
 				Required:    true,

@@ -17,6 +17,7 @@ import (
 	"net/url"
 )
 
+// EventGateways - Create an Event Gateway Control Plane, used to store Event Gateway configuration
 type EventGateways struct {
 	rootSDK          *KonnectBeta
 	sdkConfiguration config.SDKConfiguration

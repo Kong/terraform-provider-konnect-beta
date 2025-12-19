@@ -16,6 +16,9 @@ import (
 	"net/http"
 )
 
+// EventGatewayVirtualClusterPolicies - Policies control how Kafka protocol traffic is modified between the client and the backend cluster.
+//
+// Cluster policies are transformation and validation policies that can be applied to Kafka messages.
 type EventGatewayVirtualClusterPolicies struct {
 	rootSDK          *KonnectBeta
 	sdkConfiguration config.SDKConfiguration

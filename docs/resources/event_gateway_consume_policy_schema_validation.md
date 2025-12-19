@@ -42,13 +42,13 @@ resource "konnect_event_gateway_consume_policy_schema_validation" "my_eventgatew
 
 ### Required
 
+- `config` (Attributes) The configuration of the schema validation policy. (see [below for nested schema](#nestedatt--config))
 - `gateway_id` (String) The UUID of your Gateway.
 - `virtual_cluster_id` (String) The ID of the Virtual Cluster.
 
 ### Optional
 
 - `condition` (String) A string containing the boolean expression that determines whether the policy is applied.
-- `config` (Attributes) The configuration of the schema validation policy. (see [below for nested schema](#nestedatt--config))
 - `description` (String) A human-readable description of the policy.
 - `enabled` (Boolean) Whether the policy is enabled. Default: true
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 

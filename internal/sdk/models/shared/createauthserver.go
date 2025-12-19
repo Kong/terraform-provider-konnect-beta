@@ -30,7 +30,7 @@ func (c CreateAuthServer) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateAuthServer) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "audience"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil

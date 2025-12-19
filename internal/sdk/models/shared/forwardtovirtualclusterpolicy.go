@@ -16,9 +16,10 @@ const (
 	ForwardToVirtualClusterPolicyConfigTypeSni         ForwardToVirtualClusterPolicyConfigType = "sni"
 )
 
+// ForwardToVirtualClusterPolicyConfig - The configuration of the policy.
 type ForwardToVirtualClusterPolicyConfig struct {
-	ForwardToClusterBySNIConfig         *ForwardToClusterBySNIConfig         `queryParam:"inline,name=config"`
-	ForwardToClusterByPortMappingConfig *ForwardToClusterByPortMappingConfig `queryParam:"inline,name=config"`
+	ForwardToClusterBySNIConfig         *ForwardToClusterBySNIConfig         `queryParam:"inline,name=config" union:"member"`
+	ForwardToClusterByPortMappingConfig *ForwardToClusterByPortMappingConfig `queryParam:"inline,name=config" union:"member"`
 
 	Type ForwardToVirtualClusterPolicyConfigType
 }
@@ -97,14 +98,16 @@ func (u ForwardToVirtualClusterPolicyConfig) MarshalJSON() ([]byte, error) {
 // When using `port_mapping`, there must be a mapping port for each broker on the backend cluster see
 // `ForwardToClusterBySNIConfig` for more details.
 type ForwardToVirtualClusterPolicy struct {
+	// The type name of the policy.
 	type_ string `const:"forward_to_virtual_cluster" json:"type"`
 	// A unique user-defined name of the policy.
 	Name *string `default:"null" json:"name"`
 	// A human-readable description of the policy.
 	Description *string `json:"description,omitempty"`
 	// Whether the policy is enabled.
-	Enabled *bool                               `default:"true" json:"enabled"`
-	Config  ForwardToVirtualClusterPolicyConfig `json:"config"`
+	Enabled *bool `default:"true" json:"enabled"`
+	// The configuration of the policy.
+	Config ForwardToVirtualClusterPolicyConfig `json:"config"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -117,7 +120,7 @@ func (f ForwardToVirtualClusterPolicy) MarshalJSON() ([]byte, error) {
 }
 
 func (f *ForwardToVirtualClusterPolicy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"type", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
 		return err
 	}
 	return nil

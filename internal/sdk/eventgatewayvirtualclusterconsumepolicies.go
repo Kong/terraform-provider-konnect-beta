@@ -16,6 +16,9 @@ import (
 	"net/http"
 )
 
+// EventGatewayVirtualClusterConsumePolicies - Consume policies operate on Kafka messages as they are read from a Kafka cluster.
+//
+// Transformations may be applied at consume time, but they are applied once per Consumer. Where possible, transofmrations should be applied as a Produce policy
 type EventGatewayVirtualClusterConsumePolicies struct {
 	rootSDK          *KonnectBeta
 	sdkConfiguration config.SDKConfiguration

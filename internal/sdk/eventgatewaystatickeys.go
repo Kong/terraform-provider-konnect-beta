@@ -16,6 +16,7 @@ import (
 	"net/http"
 )
 
+// EventGatewayStaticKeys - Static Keys are used by the Encrypt and Decrypt policies to encrypt data at rest
 type EventGatewayStaticKeys struct {
 	rootSDK          *KonnectBeta
 	sdkConfiguration config.SDKConfiguration

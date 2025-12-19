@@ -106,6 +106,9 @@ func (r *EventGatewayProducePolicyEncryptResource) Schema(ctx context.Context, r
 													"id": schema.StringAttribute{
 														Required:    true,
 														Description: `The ID of the static key defined in the key source.`,
+														Validators: []validator.String{
+															stringvalidator.UTF8LengthAtLeast(1),
+														},
 													},
 												},
 												Description: `A static encryption key reference by ID.`,

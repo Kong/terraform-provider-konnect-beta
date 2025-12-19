@@ -12,7 +12,8 @@ type SchemaRegistryConfluentSensitiveDataAware struct {
 	Name string `json:"name"`
 	// A human-readable description of the virtual cluster.
 	Description *string `json:"description,omitempty"`
-	type_       string  `const:"confluent" json:"type"`
+	// The type of the schema registry.
+	type_ string `const:"confluent" json:"type"`
 	// The configuration of [Confluent Schema Registry](https://github.com/confluentinc/schema-registry)
 	//
 	Config SchemaRegistryConfluentConfigSensitiveDataAware `json:"config"`
@@ -28,7 +29,7 @@ func (s SchemaRegistryConfluentSensitiveDataAware) MarshalJSON() ([]byte, error)
 }
 
 func (s *SchemaRegistryConfluentSensitiveDataAware) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"name", "type", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil

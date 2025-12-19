@@ -21,6 +21,7 @@ func (e *EventGatewayModifyHeadersPolicyConfig) GetActions() []EventGatewayModif
 
 // EventGatewayModifyHeadersPolicy - A policy that modifies headers for requests.
 type EventGatewayModifyHeadersPolicy struct {
+	// The type name of the policy.
 	type_ string `const:"modify_headers" json:"type"`
 	// A unique user-defined name of the policy.
 	Name *string `default:"null" json:"name"`
@@ -48,7 +49,7 @@ func (e EventGatewayModifyHeadersPolicy) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayModifyHeadersPolicy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
 		return err
 	}
 	return nil

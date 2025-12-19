@@ -21,6 +21,7 @@ func (r *EventGatewayResourceModel) RefreshFromSharedEventGatewayInfo(ctx contex
 				r.Labels[key] = types.StringPointerValue(value)
 			}
 		}
+		r.MinRuntimeVersion = types.StringValue(resp.MinRuntimeVersion)
 		r.Name = types.StringValue(resp.Name)
 		r.NodesTotal = types.Int64Value(resp.NodesTotal)
 		r.Version = types.StringValue(resp.Version)
@@ -83,6 +84,12 @@ func (r *EventGatewayResourceModel) ToSharedCreateGatewayRequest(ctx context.Con
 	var name string
 	name = r.Name.ValueString()
 
+	minRuntimeVersion := new(string)
+	if !r.MinRuntimeVersion.IsUnknown() && !r.MinRuntimeVersion.IsNull() {
+		*minRuntimeVersion = r.MinRuntimeVersion.ValueString()
+	} else {
+		minRuntimeVersion = nil
+	}
 	labels := make(map[string]*string)
 	for labelsKey := range r.Labels {
 		labelsInst := new(string)
@@ -94,8 +101,9 @@ func (r *EventGatewayResourceModel) ToSharedCreateGatewayRequest(ctx context.Con
 		labels[labelsKey] = labelsInst
 	}
 	out := shared.CreateGatewayRequest{
-		Name:   name,
-		Labels: labels,
+		Name:              name,
+		MinRuntimeVersion: minRuntimeVersion,
+		Labels:            labels,
 	}
 
 	return &out, diags
@@ -110,6 +118,12 @@ func (r *EventGatewayResourceModel) ToSharedUpdateGatewayRequest(ctx context.Con
 	} else {
 		name = nil
 	}
+	minRuntimeVersion := new(string)
+	if !r.MinRuntimeVersion.IsUnknown() && !r.MinRuntimeVersion.IsNull() {
+		*minRuntimeVersion = r.MinRuntimeVersion.ValueString()
+	} else {
+		minRuntimeVersion = nil
+	}
 	labels := make(map[string]*string)
 	for labelsKey := range r.Labels {
 		labelsInst := new(string)
@@ -121,8 +135,9 @@ func (r *EventGatewayResourceModel) ToSharedUpdateGatewayRequest(ctx context.Con
 		labels[labelsKey] = labelsInst
 	}
 	out := shared.UpdateGatewayRequest{
-		Name:   name,
-		Labels: labels,
+		Name:              name,
+		MinRuntimeVersion: minRuntimeVersion,
+		Labels:            labels,
 	}
 
 	return &out, diags

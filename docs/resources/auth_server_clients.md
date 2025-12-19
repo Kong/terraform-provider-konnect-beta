@@ -65,7 +65,7 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 
 ### Read-Only
 
-- `client_secret` (String) The OAuth 2.0 client secret
+- `client_secret` (String) Secret of the client
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) The OAuth 2.0 client ID
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.

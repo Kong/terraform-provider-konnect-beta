@@ -39,7 +39,7 @@ func (d DashboardResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DashboardResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"name", "definition"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
 		return err
 	}
 	return nil
