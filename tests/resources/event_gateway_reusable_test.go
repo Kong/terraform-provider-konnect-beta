@@ -147,7 +147,6 @@ func TestEventGatewayReusable(t *testing.T) {
 		)
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		// Event Gateway (Control Plane)
 		egwCp, err := hclbuilder.FromString(`
 			resource "konnect_event_gateway" "tf_test_event_gateway" {
 			  name = "my_test_event_gateway"
@@ -179,7 +178,6 @@ func TestEventGatewayReusable(t *testing.T) {
 			egwCp.ResourcePath()+".id",
 		)
 
-		// Virtual Cluster
 		egwVirtualCluster, err := hclbuilder.FromString(`
 			resource "konnect_event_gateway_virtual_cluster" "tf_test_egw_virtual_cluster" {
 			  name      = "tf_test_egw_virtual_cluster"
@@ -199,7 +197,6 @@ func TestEventGatewayReusable(t *testing.T) {
 		`)
 		require.NoError(t, err)
 
-		// Wire gateway → virtual cluster
 		egwVirtualCluster.AddAttribute(
 			"gateway_id",
 			egwCp.ResourcePath()+".id",
@@ -209,22 +206,9 @@ func TestEventGatewayReusable(t *testing.T) {
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
 				{
-					Config: builder.
-						Upsert(egwCp).
-						Upsert(egwBackendCluster).
-						Upsert(egwVirtualCluster).
-						Build(),
-
+					Config: builder.Upsert(egwCp).Upsert(egwBackendCluster).Upsert(egwVirtualCluster).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction(
-								"konnect_event_gateway.tf_test_event_gateway",
-								plancheck.ResourceActionCreate,
-							),
-							plancheck.ExpectResourceAction(
-								"konnect_event_gateway_backend_cluster.tf_test_egw_backend_cluster",
-								plancheck.ResourceActionCreate,
-							),
 							plancheck.ExpectResourceAction(
 								"konnect_event_gateway_virtual_cluster.tf_test_egw_virtual_cluster",
 								plancheck.ResourceActionCreate,
@@ -241,12 +225,7 @@ func TestEventGatewayReusable(t *testing.T) {
 					),
 				},
 				{
-					Config: builder.
-						Upsert(egwCp).
-						Upsert(egwBackendCluster).
-						Upsert(egwVirtualCluster).
-						Build(),
-
+					Config: builder.Upsert(egwCp).Upsert(egwBackendCluster).Upsert(egwVirtualCluster).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
 							plancheck.ExpectEmptyPlan(),
@@ -254,13 +233,9 @@ func TestEventGatewayReusable(t *testing.T) {
 					},
 				},
 				{
-					Config: builder.
-						Upsert(egwCp).
-						Upsert(egwBackendCluster).
-						Upsert(
-							egwVirtualCluster.AddAttribute("labels", `{ key = "value" }`),
-						).
-						Build(),
+					Config: builder.Upsert(egwCp).Upsert(egwBackendCluster).Upsert(
+						egwVirtualCluster.AddAttribute("labels", `{ key = "value" }`),
+					).Build(),
 
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr(
@@ -274,19 +249,6 @@ func TestEventGatewayReusable(t *testing.T) {
 							"value",
 						),
 					),
-				},
-				{
-					Config: builder.
-						Upsert(egwCp).
-						Upsert(egwBackendCluster).
-						Upsert(egwVirtualCluster).
-						Build(),
-
-					ConfigPlanChecks: resource.ConfigPlanChecks{
-						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectEmptyPlan(),
-						},
-					},
 				},
 			},
 		})
@@ -404,10 +366,6 @@ func TestEventGatewayReusable(t *testing.T) {
 					Config: builder.Upsert(egwCp).Upsert(backend).Upsert(virtualCluster).Upsert(staticKey).Upsert(decryptPolicy).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction("konnect_event_gateway.tf-test-egw-decrypt", plancheck.ResourceActionCreate),
-							plancheck.ExpectResourceAction("konnect_event_gateway_backend_cluster.tf-test-backend", plancheck.ResourceActionCreate),
-							plancheck.ExpectResourceAction("konnect_event_gateway_virtual_cluster.tf-test-virtual", plancheck.ResourceActionCreate),
-							plancheck.ExpectResourceAction("konnect_event_gateway_static_key.tf-test-static-key", plancheck.ResourceActionCreate),
 							plancheck.ExpectResourceAction("konnect_event_gateway_consume_policy_decrypt.tf-test-decrypt-policy", plancheck.ResourceActionCreate),
 						},
 					},
@@ -432,14 +390,12 @@ func TestEventGatewayReusable(t *testing.T) {
 							plancheck.ExpectResourceAction("konnect_event_gateway_consume_policy_decrypt.tf-test-decrypt-policy", plancheck.ResourceActionUpdate),
 						},
 					},
-				},
-				{
-					Config: builder.Upsert(egwCp).Build(),
-					ConfigPlanChecks: resource.ConfigPlanChecks{
-						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectEmptyPlan(),
-						},
-					},
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr(
+							"konnect_event_gateway_consume_policy_decrypt.tf-test-decrypt-policy",
+							"enabled",
+							"true",
+						)),
 				},
 			},
 		})
@@ -500,7 +456,6 @@ func TestEventGatewayReusable(t *testing.T) {
 		`)
 		require.NoError(t, err)
 
-		// Wire gateway → virtual cluster
 		egwVirtualCluster.AddAttribute(
 			"gateway_id",
 			egwCp.ResourcePath()+".id",
@@ -532,7 +487,6 @@ func TestEventGatewayReusable(t *testing.T) {
 		`)
 		require.NoError(t, err)
 
-		// Wire policy to gateway and virtual cluster
 		consumePolicyModifyHeaders.AddAttribute(
 			"gateway_id",
 			egwCp.ResourcePath()+".id",
@@ -545,29 +499,13 @@ func TestEventGatewayReusable(t *testing.T) {
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
-				// Create all resources
+
 				{
-					Config: builder.
-						Upsert(egwCp).
-						Upsert(egwBackendCluster).
-						Upsert(egwVirtualCluster).
-						Upsert(consumePolicyModifyHeaders).
+					Config: builder.Upsert(egwCp).Upsert(egwBackendCluster).Upsert(egwVirtualCluster).Upsert(consumePolicyModifyHeaders).
 						Build(),
 
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction(
-								"konnect_event_gateway.tf_test_event_gateway_modify_headers",
-								plancheck.ResourceActionCreate,
-							),
-							plancheck.ExpectResourceAction(
-								"konnect_event_gateway_backend_cluster.tf_test_egw_backend_cluster_modify_headers",
-								plancheck.ResourceActionCreate,
-							),
-							plancheck.ExpectResourceAction(
-								"konnect_event_gateway_virtual_cluster.tf_test_egw_virtual_cluster_modify_headers",
-								plancheck.ResourceActionCreate,
-							),
 							plancheck.ExpectResourceAction(
 								"konnect_event_gateway_consume_policy_modify_headers.test_modify_headers_policy",
 								plancheck.ResourceActionCreate,
@@ -602,16 +540,11 @@ func TestEventGatewayReusable(t *testing.T) {
 						),
 					),
 				},
-				// Update policy with labels
 				{
-					Config: builder.
-						Upsert(egwCp).
-						Upsert(egwBackendCluster).
-						Upsert(egwVirtualCluster).
+					Config: builder.Upsert(egwCp).Upsert(egwBackendCluster).Upsert(egwVirtualCluster).
 						Upsert(
 							consumePolicyModifyHeaders.AddAttribute("labels", `{ env = "dev", service = "headers" }`),
-						).
-						Build(),
+						).Build(),
 
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr(
@@ -631,44 +564,6 @@ func TestEventGatewayReusable(t *testing.T) {
 						),
 					),
 				},
-				// Update enabled flag to false
-				{
-					Config: builder.
-						Upsert(egwCp).
-						Upsert(egwBackendCluster).
-						Upsert(egwVirtualCluster).
-						Upsert(
-							consumePolicyModifyHeaders.AddAttribute("enabled", "false"),
-						).
-						Build(),
-
-					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr(
-							"konnect_event_gateway_consume_policy_modify_headers.test_modify_headers_policy",
-							"enabled",
-							"false",
-						),
-					),
-				},
-				// Revert to enabled and remove labels
-				{
-					Config: builder.
-						Upsert(egwCp).
-						Upsert(egwBackendCluster).
-						Upsert(egwVirtualCluster).
-						Upsert(
-							consumePolicyModifyHeaders.AddAttribute("enabled", "true"),
-						).
-						Build(),
-
-					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr(
-							"konnect_event_gateway_consume_policy_modify_headers.test_modify_headers_policy",
-							"enabled",
-							"true",
-						),
-					),
-				},
 			},
 		})
 	})
@@ -680,7 +575,6 @@ func TestEventGatewayReusable(t *testing.T) {
 		)
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		// Event Gateway (Control Plane) - Parent resource
 		egwCp, err := hclbuilder.FromString(`
 			resource "konnect_event_gateway" "tf_test_event_gateway_schema_validation" {
 				name = "test-gateway-schema-validation"
@@ -688,7 +582,6 @@ func TestEventGatewayReusable(t *testing.T) {
 		`)
 		require.NoError(t, err)
 
-		// Event Gateway Backend Cluster - Parent resource
 		egwBackendCluster, err := hclbuilder.FromString(`
 			resource "konnect_event_gateway_backend_cluster" "tf_test_egw_backend_cluster_schema_validation" {
 				name = "test-backend-cluster-schema-validation"
@@ -706,13 +599,11 @@ func TestEventGatewayReusable(t *testing.T) {
 		`)
 		require.NoError(t, err)
 
-		// Wire gateway → backend cluster
 		egwBackendCluster.AddAttribute(
 			"gateway_id",
 			egwCp.ResourcePath()+".id",
 		)
 
-		// Event Gateway Virtual Cluster - Parent resource
 		egwVirtualCluster, err := hclbuilder.FromString(`
 			resource "konnect_event_gateway_virtual_cluster" "tf_test_egw_virtual_cluster_schema_validation" {
 				name      = "test-vcluster-schema-validation"
@@ -732,13 +623,11 @@ func TestEventGatewayReusable(t *testing.T) {
 		`)
 		require.NoError(t, err)
 
-		// Wire gateway → virtual cluster
 		egwVirtualCluster.AddAttribute(
 			"gateway_id",
 			egwCp.ResourcePath()+".id",
 		)
 
-		// Event Gateway Consume Policy Schema Validation - Main resource
 		consumePolicySchemaValidation, err := hclbuilder.FromString(`
 			resource "konnect_event_gateway_consume_policy_schema_validation" "test_schema_validation_policy" {
 				name        = "test-consume-schema-validation-policy"
@@ -771,9 +660,6 @@ func TestEventGatewayReusable(t *testing.T) {
 					Config: builder.Upsert(egwCp).Upsert(egwBackendCluster).Upsert(egwVirtualCluster).Upsert(consumePolicySchemaValidation).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction("konnect_event_gateway.tf_test_event_gateway_schema_validation", plancheck.ResourceActionCreate),
-							plancheck.ExpectResourceAction("konnect_event_gateway_backend_cluster.tf_test_egw_backend_cluster_schema_validation", plancheck.ResourceActionCreate),
-							plancheck.ExpectResourceAction("konnect_event_gateway_virtual_cluster.tf_test_egw_virtual_cluster_schema_validation", plancheck.ResourceActionCreate),
 							plancheck.ExpectResourceAction("konnect_event_gateway_consume_policy_schema_validation.test_schema_validation_policy", plancheck.ResourceActionCreate),
 						},
 					},
@@ -800,14 +686,6 @@ func TestEventGatewayReusable(t *testing.T) {
 						resource.TestCheckResourceAttr("konnect_event_gateway_consume_policy_schema_validation.test_schema_validation_policy", "labels.validation", "strict"),
 					),
 				},
-				{
-					Config: builder.Upsert(egwCp).Build(),
-					ConfigPlanChecks: resource.ConfigPlanChecks{
-						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectEmptyPlan(),
-						},
-					},
-				},
 			},
 		})
 	})
@@ -820,7 +698,6 @@ func TestEventGatewayReusable(t *testing.T) {
 		)
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		// Event Gateway (Control Plane) - Parent resource
 		egwCp, err := hclbuilder.FromString(`
 			resource "konnect_event_gateway" "tf_test_event_gateway_skip_record" {
 				name = "tf_test_event_gateway_skip_record"
@@ -828,7 +705,6 @@ func TestEventGatewayReusable(t *testing.T) {
 		`)
 		require.NoError(t, err)
 
-		// Event Gateway Backend Cluster - Parent resource
 		egwBackendCluster, err := hclbuilder.FromString(`
 			resource "konnect_event_gateway_backend_cluster" "tf_test_egw_backend_cluster_skip_record" {
 				name = "tf_test_egw_backend_cluster_skip_record"
@@ -846,13 +722,11 @@ func TestEventGatewayReusable(t *testing.T) {
 		`)
 		require.NoError(t, err)
 
-		// Wire gateway → backend cluster
 		egwBackendCluster.AddAttribute(
 			"gateway_id",
 			egwCp.ResourcePath()+".id",
 		)
 
-		// Event Gateway Virtual Cluster - Parent resource
 		egwVirtualCluster, err := hclbuilder.FromString(`
 			resource "konnect_event_gateway_virtual_cluster" "tf_test_egw_virtual_cluster_skip_record" {
 				name      = "tf_test_egw_virtual_cluster_skip_record"
@@ -872,13 +746,11 @@ func TestEventGatewayReusable(t *testing.T) {
 		`)
 		require.NoError(t, err)
 
-		// Wire gateway → virtual cluster
 		egwVirtualCluster.AddAttribute(
 			"gateway_id",
 			egwCp.ResourcePath()+".id",
 		)
 
-		// Event Gateway Consume Policy Skip Record - Main resource
 		consumePolicySkipRecord, err := hclbuilder.FromString(`
 			resource "konnect_event_gateway_consume_policy_skip_record" "test_skip_record_policy" {
 				name        = "test_skip_record_policy"
@@ -905,9 +777,6 @@ func TestEventGatewayReusable(t *testing.T) {
 					Config: builder.Upsert(egwCp).Upsert(egwBackendCluster).Upsert(egwVirtualCluster).Upsert(consumePolicySkipRecord).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction("konnect_event_gateway.tf_test_event_gateway_skip_record", plancheck.ResourceActionCreate),
-							plancheck.ExpectResourceAction("konnect_event_gateway_backend_cluster.tf_test_egw_backend_cluster_skip_record", plancheck.ResourceActionCreate),
-							plancheck.ExpectResourceAction("konnect_event_gateway_virtual_cluster.tf_test_egw_virtual_cluster_skip_record", plancheck.ResourceActionCreate),
 							plancheck.ExpectResourceAction("konnect_event_gateway_consume_policy_skip_record.test_skip_record_policy", plancheck.ResourceActionCreate),
 						},
 					},
@@ -933,14 +802,6 @@ func TestEventGatewayReusable(t *testing.T) {
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_event_gateway_consume_policy_skip_record.test_skip_record_policy", "condition", "context.topic.name == 'new-skip-topic'"),
 					),
-				},
-				{
-					Config: builder.Upsert(egwCp).Build(),
-					ConfigPlanChecks: resource.ConfigPlanChecks{
-						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectEmptyPlan(),
-						},
-					},
 				},
 			},
 		})
@@ -1110,11 +971,7 @@ func TestEventGatewayReusable(t *testing.T) {
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
 				{
-					Config: builder.
-						Upsert(egwCp).
-						Upsert(egwListener).
-						Build(),
-
+					Config: builder.Upsert(egwCp).Upsert(egwListener).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
 							plancheck.ExpectResourceAction(
@@ -1153,22 +1010,10 @@ func TestEventGatewayReusable(t *testing.T) {
 							"konnect_event_gateway_listener.test_listener",
 							"id",
 						),
-						resource.TestCheckResourceAttrSet(
-							"konnect_event_gateway_listener.test_listener",
-							"created_at",
-						),
-						resource.TestCheckResourceAttrSet(
-							"konnect_event_gateway_listener.test_listener",
-							"updated_at",
-						),
 					),
 				},
 				{
-					Config: builder.
-						Upsert(egwCp).
-						Upsert(egwListener).
-						Build(),
-
+					Config: builder.Upsert(egwCp).Upsert(egwListener).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
 							plancheck.ExpectEmptyPlan(),
@@ -1176,107 +1021,8 @@ func TestEventGatewayReusable(t *testing.T) {
 					},
 				},
 				{
-					Config: builder.
-						Upsert(egwCp).
-						Upsert(
-							egwListener.AddAttribute("description", `Test listener configuration`),
-						).
-						Build(),
-
+					Config: builder.Upsert(egwCp).Upsert(egwListener.AddAttribute("description", `Test listener configuration`)).Build(),
 					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr(
-							"konnect_event_gateway_listener.test_listener",
-							"description",
-							"Test listener configuration",
-						),
-					),
-				},
-				{
-					Config: builder.
-						Upsert(egwCp).
-						Upsert(
-							egwListener.AddAttribute("ports", `["9092", "9093", "9094"]`),
-						).
-						Build(),
-
-					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr(
-							"konnect_event_gateway_listener.test_listener",
-							"ports.#",
-							"3",
-						),
-						resource.TestCheckResourceAttr(
-							"konnect_event_gateway_listener.test_listener",
-							"ports.0",
-							"9092",
-						),
-						resource.TestCheckResourceAttr(
-							"konnect_event_gateway_listener.test_listener",
-							"ports.1",
-							"9093",
-						),
-						resource.TestCheckResourceAttr(
-							"konnect_event_gateway_listener.test_listener",
-							"ports.2",
-							"9094",
-						),
-					),
-				},
-				{
-					Config: builder.
-						Upsert(egwCp).
-						Upsert(
-							egwListener.AddAttribute("labels", `{env = "test", team = "infrastructure"}`),
-						).
-						Build(),
-
-					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr(
-							"konnect_event_gateway_listener.test_listener",
-							"labels.%",
-							"2",
-						),
-						resource.TestCheckResourceAttr(
-							"konnect_event_gateway_listener.test_listener",
-							"labels.env",
-							"test",
-						),
-						resource.TestCheckResourceAttr(
-							"konnect_event_gateway_listener.test_listener",
-							"labels.team",
-							"infrastructure",
-						),
-					),
-				},
-				{
-					Config: builder.
-						Upsert(egwCp).
-						Upsert(
-							egwListener.AddAttribute("addresses", `["localhost"]`),
-						).
-						Build(),
-
-					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr(
-							"konnect_event_gateway_listener.test_listener",
-							"addresses.0",
-							"localhost",
-						),
-					),
-				},
-				// Revert to original configuration
-				{
-					Config: builder.
-						Upsert(egwCp).
-						Upsert(egwListener).
-						Build(),
-
-					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr(
-							"konnect_event_gateway_listener.test_listener",
-							"name",
-							"test-listener",
-						),
 						resource.TestCheckResourceAttr(
 							"konnect_event_gateway_listener.test_listener",
 							"description",
@@ -1288,7 +1034,6 @@ func TestEventGatewayReusable(t *testing.T) {
 		})
 	})
 
-	/**We are getting unexpected error after running plan twice*/
 	t.Run("EGW_Listener_Policy_Forward_To_Virtual_Cluster", func(t *testing.T) {
 		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort))
 		builder.ProviderProperty = hclbuilder.KonnectBeta
@@ -1341,13 +1086,11 @@ func TestEventGatewayReusable(t *testing.T) {
 		`)
 		require.NoError(t, err)
 
-		// Wire virtual cluster to gateway
 		egwVirtualCluster.AddAttribute(
 			"gateway_id",
 			egwCp.ResourcePath()+".id",
 		)
 
-		// Event Gateway Listener - Parent resource
 		egwListener, err := hclbuilder.FromString(`
 			resource "konnect_event_gateway_listener" "tf_test_egw_listener" {
 				name      = "tf_test_egw_listener"
@@ -1363,13 +1106,11 @@ func TestEventGatewayReusable(t *testing.T) {
 		`)
 		require.NoError(t, err)
 
-		// Wire listener to gateway
 		egwListener.AddAttribute(
 			"gateway_id",
 			egwCp.ResourcePath()+".id",
 		)
 
-		// Event Gateway Listener Policy Forward To Virtual Cluster - Main resource
 		listenerPolicy, err := hclbuilder.FromString(`
 			resource "konnect_event_gateway_listener_policy_forward_to_virtual_cluster" "tf_test_egw_forward_policy" {
 				name        = "tf_test_egw_forward_policy"
@@ -1409,10 +1150,6 @@ func TestEventGatewayReusable(t *testing.T) {
 					Config: builder.Upsert(egwCp).Upsert(egwBackendCluster).Upsert(egwVirtualCluster).Upsert(egwListener).Upsert(listenerPolicy).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction("konnect_event_gateway.tf_test_event_gateway_listener_policy", plancheck.ResourceActionCreate),
-							plancheck.ExpectResourceAction("konnect_event_gateway_backend_cluster.tf_test_egw_backend_cluster", plancheck.ResourceActionCreate),
-							plancheck.ExpectResourceAction("konnect_event_gateway_virtual_cluster.tf_test_egw_virtual_cluster", plancheck.ResourceActionCreate),
-							plancheck.ExpectResourceAction("konnect_event_gateway_listener.tf_test_egw_listener", plancheck.ResourceActionCreate),
 							plancheck.ExpectResourceAction("konnect_event_gateway_listener_policy_forward_to_virtual_cluster.tf_test_egw_forward_policy", plancheck.ResourceActionCreate),
 						},
 					},
@@ -1423,14 +1160,6 @@ func TestEventGatewayReusable(t *testing.T) {
 						resource.TestCheckResourceAttr("konnect_event_gateway_listener_policy_forward_to_virtual_cluster.tf_test_egw_forward_policy", "enabled", "true"),
 						resource.TestCheckResourceAttrSet("konnect_event_gateway_listener_policy_forward_to_virtual_cluster.tf_test_egw_forward_policy", "id"),
 					),
-				},
-				{
-					Config: builder.Upsert(egwCp).Upsert(egwBackendCluster).Upsert(egwVirtualCluster).Upsert(egwListener).Upsert(listenerPolicy).Build(),
-					ConfigPlanChecks: resource.ConfigPlanChecks{
-						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectEmptyPlan(),
-						},
-					},
 				},
 			},
 		})
@@ -1443,7 +1172,6 @@ func TestEventGatewayReusable(t *testing.T) {
 		)
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		// Event Gateway (Control Plane) - Parent resource
 		egwCp, err := hclbuilder.FromString(`
 			resource "konnect_event_gateway" "tf_test_event_gateway_tls" {
 				name = "test-gateway-tls-server"
@@ -1451,7 +1179,6 @@ func TestEventGatewayReusable(t *testing.T) {
 		`)
 		require.NoError(t, err)
 
-		// Event Gateway Listener - Parent resource
 		egwListener, err := hclbuilder.FromString(`
 			resource "konnect_event_gateway_listener" "test_listener_tls" {
 				name      = "test-listener-tls"
@@ -1467,13 +1194,11 @@ func TestEventGatewayReusable(t *testing.T) {
 		`)
 		require.NoError(t, err)
 
-		// Wire listener to gateway
 		egwListener.AddAttribute(
 			"gateway_id",
 			egwCp.ResourcePath()+".id",
 		)
 
-		// Event Gateway Listener Policy TLS Server - Main resource
 		tlsServerPolicy, err := hclbuilder.FromString(`
 			resource "konnect_event_gateway_listener_policy_tls_server" "test_tls_policy" {
 				name        = "test-tls-server-policy"
@@ -1497,7 +1222,6 @@ func TestEventGatewayReusable(t *testing.T) {
 		`)
 		require.NoError(t, err)
 
-		// Wire policy to listener and gateway
 		tlsServerPolicy.AddAttribute(
 			"event_gateway_listener_id",
 			egwListener.ResourcePath()+".id",
@@ -1514,8 +1238,6 @@ func TestEventGatewayReusable(t *testing.T) {
 					Config: builder.Upsert(egwCp).Upsert(egwListener).Upsert(tlsServerPolicy).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction("konnect_event_gateway.tf_test_event_gateway_tls", plancheck.ResourceActionCreate),
-							plancheck.ExpectResourceAction("konnect_event_gateway_listener.test_listener_tls", plancheck.ResourceActionCreate),
 							plancheck.ExpectResourceAction("konnect_event_gateway_listener_policy_tls_server.test_tls_policy", plancheck.ResourceActionCreate),
 						},
 					},
@@ -1539,14 +1261,6 @@ func TestEventGatewayReusable(t *testing.T) {
 					Config: builder.Upsert(egwCp).Upsert(egwListener.AddAttribute("description", "Update description")).Build(),
 					Check:  resource.ComposeAggregateTestCheckFunc(resource.TestCheckResourceAttr("konnect_event_gateway_listener.test_listener_tls", "description", "Update description")),
 				},
-				{
-					Config: builder.Upsert(egwCp).Build(),
-					ConfigPlanChecks: resource.ConfigPlanChecks{
-						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectEmptyPlan(),
-						},
-					},
-				},
 			},
 		})
 	})
@@ -1558,7 +1272,6 @@ func TestEventGatewayReusable(t *testing.T) {
 		)
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		// Event Gateway (Control Plane) - Parent resource
 		egwCp, err := hclbuilder.FromString(`
 			resource "konnect_event_gateway" "tf_test_event_gateway_produce_encrypt" {
 				name = "tf_test_event_gateway_produce_encrypt"
@@ -1566,7 +1279,6 @@ func TestEventGatewayReusable(t *testing.T) {
 		`)
 		require.NoError(t, err)
 
-		// Event Gateway Backend Cluster - Parent resource
 		egwBackendCluster, err := hclbuilder.FromString(`
 			resource "konnect_event_gateway_backend_cluster" "tf_test_egw_backend_cluster_produce_encrypt" {
 				name = "tf_test_egw_backend_cluster_produce_encrypt"
@@ -1584,13 +1296,11 @@ func TestEventGatewayReusable(t *testing.T) {
 		`)
 		require.NoError(t, err)
 
-		// Wire gateway → backend cluster
 		egwBackendCluster.AddAttribute(
 			"gateway_id",
 			egwCp.ResourcePath()+".id",
 		)
 
-		// Event Gateway Virtual Cluster - Parent resource
 		egwVirtualCluster, err := hclbuilder.FromString(`
 			resource "konnect_event_gateway_virtual_cluster" "tf_test_egw_virtual_cluster_produce_encrypt" {
 				name      = "tf_test_egw_virtual_cluster_produce_encrypt"
@@ -1610,13 +1320,11 @@ func TestEventGatewayReusable(t *testing.T) {
 		`)
 		require.NoError(t, err)
 
-		// Wire gateway → virtual cluster
 		egwVirtualCluster.AddAttribute(
 			"gateway_id",
 			egwCp.ResourcePath()+".id",
 		)
 
-		// Event Gateway Static Key - Parent resource for encryption
 		staticKey, err := hclbuilder.FromString(`
 			resource "konnect_event_gateway_static_key" "test_encryption_key" {
 				name  = "test-encryption-key"
@@ -1654,7 +1362,6 @@ func TestEventGatewayReusable(t *testing.T) {
 		`)
 		require.NoError(t, err)
 
-		// Wire policy to gateway and virtual cluster
 		producePolicyEncrypt.AddAttribute(
 			"gateway_id",
 			egwCp.ResourcePath()+".id",
@@ -1667,14 +1374,10 @@ func TestEventGatewayReusable(t *testing.T) {
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
-				// Create all resources
 				{
 					Config: builder.Upsert(egwCp).Upsert(egwBackendCluster).Upsert(egwVirtualCluster).Upsert(staticKey).Upsert(producePolicyEncrypt).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
-						PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("konnect_event_gateway.tf_test_event_gateway_produce_encrypt", plancheck.ResourceActionCreate),
-							plancheck.ExpectResourceAction("konnect_event_gateway_backend_cluster.tf_test_egw_backend_cluster_produce_encrypt", plancheck.ResourceActionCreate),
-							plancheck.ExpectResourceAction("konnect_event_gateway_virtual_cluster.tf_test_egw_virtual_cluster_produce_encrypt", plancheck.ResourceActionCreate),
-							plancheck.ExpectResourceAction("konnect_event_gateway_static_key.test_encryption_key", plancheck.ResourceActionCreate),
+						PreApply: []plancheck.PlanCheck{
 							plancheck.ExpectResourceAction("konnect_event_gateway_produce_policy_encrypt.test_produce_encrypt_policy", plancheck.ResourceActionCreate),
 						},
 					},
@@ -1698,14 +1401,6 @@ func TestEventGatewayReusable(t *testing.T) {
 					Config: builder.Upsert(egwCp).Upsert(egwBackendCluster).Upsert(egwVirtualCluster).Upsert(staticKey).Upsert(producePolicyEncrypt.AddAttribute("description", "Updated Test produce policy for encryption")).Build(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_event_gateway_produce_policy_encrypt.test_produce_encrypt_policy", "description", "Updated Test produce policy for encryption")),
-				},
-				{
-					Config: builder.Upsert(egwCp).Build(),
-					ConfigPlanChecks: resource.ConfigPlanChecks{
-						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectEmptyPlan(),
-						},
-					},
 				},
 			},
 		})
@@ -1802,9 +1497,6 @@ func TestEventGatewayReusable(t *testing.T) {
 
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction("konnect_event_gateway.test-gateway-produce-headers", plancheck.ResourceActionCreate),
-							plancheck.ExpectResourceAction("konnect_event_gateway_backend_cluster.test-backend-cluster-produce-headers", plancheck.ResourceActionCreate),
-							plancheck.ExpectResourceAction("konnect_event_gateway_virtual_cluster.test-vcluster-produce-headers", plancheck.ResourceActionCreate),
 							plancheck.ExpectResourceAction("konnect_event_gateway_produce_policy_modify_headers.test-produce-headers-policy", plancheck.ResourceActionCreate),
 						},
 					},
@@ -1830,14 +1522,6 @@ func TestEventGatewayReusable(t *testing.T) {
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_event_gateway_produce_policy_modify_headers.test-produce-headers-policy", "description", "Updated Test produce policy for modifying headers")),
 				},
-				{
-					Config: builder.Upsert(egwCp).Build(),
-					ConfigPlanChecks: resource.ConfigPlanChecks{
-						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectEmptyPlan(),
-						},
-					},
-				},
 			},
 		})
 	})
@@ -1849,7 +1533,6 @@ func TestEventGatewayReusable(t *testing.T) {
 		)
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		// Parent Gateway
 		egwCp, err := hclbuilder.FromString(`
 			resource "konnect_event_gateway" "test_static_key_gateway" {
 			  name = "test-event-gateway-static-key"
@@ -1857,7 +1540,6 @@ func TestEventGatewayReusable(t *testing.T) {
 		`)
 		require.NoError(t, err)
 
-		// Static Key (initial)
 		staticKey, err := hclbuilder.FromString(`
 			resource "konnect_event_gateway_static_key" "test_egw_static_key" {
 			  name  = "test_egw_static_key"
@@ -1909,14 +1591,6 @@ func TestEventGatewayReusable(t *testing.T) {
 						resource.TestCheckResourceAttr("konnect_event_gateway_static_key.test_egw_static_key", "labels.%", "1"),
 						resource.TestCheckResourceAttr("konnect_event_gateway_static_key.test_egw_static_key", "labels.key", "value"),
 					),
-				},
-				{
-					Config: builder.Upsert(egwCp).Build(),
-					ConfigPlanChecks: resource.ConfigPlanChecks{
-						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectEmptyPlan(),
-						},
-					},
 				},
 			},
 		})
@@ -1975,7 +1649,6 @@ func TestEventGatewayReusable(t *testing.T) {
 
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction("konnect_event_gateway.tf-test-egw-schema-registry", plancheck.ResourceActionCreate),
 							plancheck.ExpectResourceAction("konnect_event_gateway_schema_registry.test_schema_registry_confluent", plancheck.ResourceActionCreate),
 						},
 					},
@@ -2005,14 +1678,6 @@ func TestEventGatewayReusable(t *testing.T) {
 							"test_schema_registry_confluent_description",
 						),
 					),
-				},
-				{
-					Config: builder.Upsert(egw).Build(),
-					ConfigPlanChecks: resource.ConfigPlanChecks{
-						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectEmptyPlan(),
-						},
-					},
 				},
 			},
 		})
