@@ -254,7 +254,7 @@ func TestEventGatewayReusable(t *testing.T) {
 		})
 	})
 
-	t.Run("EGW_Consume_Policy_Decrypt", func(t *testing.T) {
+	t.Run("EGW Consume Policy Decrypt", func(t *testing.T) {
 		builder := hclbuilder.NewWithProvider(
 			hclbuilder.KonnectBeta,
 			fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort),
@@ -807,141 +807,107 @@ func TestEventGatewayReusable(t *testing.T) {
 		})
 	})
 
-	//	t.Run("EGW Data Plane Certificate", func(t *testing.T) {
-	//		builder := hclbuilder.NewWithProvider(
-	//			hclbuilder.KonnectBeta,
-	//			fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort),
-	//		)
-	//		builder.ProviderProperty = hclbuilder.KonnectBeta
+	//t.Run("EGW Data Plane Certificate", func(t *testing.T) {
+	//	builder := hclbuilder.NewWithProvider(
+	//		hclbuilder.KonnectBeta,
+	//		fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort),
+	//	)
+	//	builder.ProviderProperty = hclbuilder.KonnectBeta
 	//
-	//		// Event Gateway (Control Plane) - Parent resource
-	//		egwCp, err := hclbuilder.FromString(`
-	//			resource "konnect_event_gateway" "tf_test_event_gateway_certificate" {
-	//				name = "test-gateway-certificate"
-	//			}
-	//		`)
-	//		require.NoError(t, err)
+	//	egw, err := hclbuilder.FromString(`
+	//		resource "konnect_event_gateway" "tf-test-egw-cert" {
+	//		  name = "tf-test-egw-cert"
+	//		}
+	//	`)
+	//	require.NoError(t, err)
 	//
-	//		// Event Gateway Data Plane Certificate - Main resource
-	//		// Using a valid self-signed test certificate (PEM format)
-	//		dataplaneCertificate, err := hclbuilder.FromString(`
-	//resource "konnect_event_gateway_data_plane_certificate" "test_certificate" {
-	//  name        = "test-data-plane-certificate"
-	//  description = "Test certificate for data plane"
+	//	cert, err := hclbuilder.FromString(`
+	//		resource "konnect_event_gateway_data_plane_certificate" "tf-test-dp-cert" {
+	//		  name        = "tf-test-dp-cert"
+	//		  description = "initial certificate"
 	//
-	//  certificate = <<EOF
-	//-----BEGIN CERTIFICATE-----
-	//MIIBtjCCAVugAwIBAgIUH7xT2dL5z5wWqvZkYqQ1yYbG5cUwCgYIKoZIzj0EAwIw
-	//EzERMA8GA1UEAwwIdGVzdC1jZXJ0MB4XDTI0MDEwMTAwMDAwMFoXDTM0MDEwMTAw
-	//MDAwMFowEzERMA8GA1UEAwwIdGVzdC1jZXJ0MFkwEwYHKoZIzj0CAQYIKoZIzj0D
-	//AQcDQgAEkG+8k5X2nN3H+V5+0U7aV4j5xO0lF5sJ2M3PqZrV4s0cVtW1Lr0F6d7C
-	//mHnQ6B+9m0PZb+7E9B8F1z6kWqNTMFEwHQYDVR0OBBYEFJm7x9Z2l5+f4E0p5xVZ
-	//xC9W0M0JMB8GA1UdIwQYMBaAFJm7x9Z2l5+f4E0p5xVZxC9W0M0JMA8GA1UdEwEB
-	///wQFMAMBAf8wCgYIKoZIzj0EAwIDSAAwRQIhAPb9xYl3KJm3E+J6uVZkV5c9Wv3D
-	//d5+1m+7zZ5pBv9kRAiAQf5gWz8g7J9c8C6QJY0U6hJ4qvZ3qZ7nZxW4Y9qzQ==
-	//-----END CERTIFICATE-----
-	//EOF
-	//}
-	//`)
-	//		require.NoError(t, err)
+	//		  certificate = "-----BEGIN CERTIFICATE-----\nMIIC8DCCAdigAwIBAgIUQq4K+3Ew8E5z6m9b5H8C6VY4y2MwDQYJKoZIhvcNAQELBQAwFjEUMBIGA1UEAwwLdGYtY2VydC10ZXN0MB4XDTI0MDEwMTAwMDAwMFoXDTM0MDEwMTAwMDAwMFowFjEUMBIGA1UEAwwLdGYtY2VydC10ZXN0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwcFq4zBqjz1M2pD4tJ8bT2+T6+P9rZrXv9hcN0yCjzZ9E5nV6R1qQqzM4dYF1mT2bE1zYc3ZpPzvE7v6Y3p0b9Kz0YFqjF3J2T+Kp7L3z7F6zXk5cPp0q8F4F2N1M3Q8N6zq8K9M2X0bP0mQnM9J2N2zXkJk2y8x1VuGZPp4Y6M8ZK3P5D8Z6YF2P9Z8Q5xZ3y2N5z4k7z7p9VZP0n0k0P3bY0xwIDAQABo1MwUTAdBgNVHQ4EFgQU2g9ZpX4r9B1z0N9x0m5JXk7cN2kwHwYDVR0jBBgwFoAU2g9ZpX4r9B1z0N9x0m5JXk7cN2kwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAZP1xkP7Z8Z5xk7m9M3Z0pZ5X6k8x7J3Z8k9zP5k7Z1k2P5Z8Z6x8k7Z5Z8k9Z7Z1k5P7Z8k9Z7Z5Z8k9Z7Z5Z8k9Z7Z5Z8k9Z7Z5Z8k9Z7Z5Z8k9Z7Z5Z8k9Z7Z5Z8k9Z7Z5Z8k9Z7Z5Z8k9Z7Z5Z8k9Z7Z5Z8k9Z7Z5Z8k9Z7Z5....\n-----END CERTIFICATE-----"
+	//		}
+	//	`)
+	//	require.NoError(t, err)
 	//
-	//		// Wire certificate to gateway
-	//		dataplaneCertificate.AddAttribute(
-	//			"gateway_id",
-	//			egwCp.ResourcePath()+".id",
-	//		)
+	//	cert.AddAttribute(
+	//		"gateway_id",
+	//		egw.ResourcePath()+".id",
+	//	)
 	//
-	//		resource.Test(t, resource.TestCase{
-	//			ProtoV6ProviderFactories: providerFactory,
-	//			Steps: []resource.TestStep{
-	//				// Create all resources
-	//				{
-	//					Config: builder.
-	//						Upsert(egwCp).
-	//						Upsert(dataplaneCertificate).
-	//						Build(),
-	//
-	//					ConfigPlanChecks: resource.ConfigPlanChecks{
-	//						PreApply: []plancheck.PlanCheck{
-	//							plancheck.ExpectResourceAction(
-	//								"konnect_event_gateway.tf_test_event_gateway_certificate",
-	//								plancheck.ResourceActionCreate,
-	//							),
-	//							plancheck.ExpectResourceAction(
-	//								"konnect_event_gateway_data_plane_certificate.test_certificate",
-	//								plancheck.ResourceActionCreate,
-	//							),
-	//						},
+	//	resource.Test(t, resource.TestCase{
+	//		ProtoV6ProviderFactories: providerFactory,
+	//		Steps: []resource.TestStep{
+	//			{
+	//				Config: builder.Upsert(egw).Upsert(cert).Build(),
+	//				ConfigPlanChecks: resource.ConfigPlanChecks{
+	//					PreApply: []plancheck.PlanCheck{
+	//						plancheck.ExpectResourceAction(
+	//							"konnect_event_gateway_data_plane_certificate.tf-test-dp-cert",
+	//							plancheck.ResourceActionCreate,
+	//						),
 	//					},
-	//
-	//					Check: resource.ComposeAggregateTestCheckFunc(
-	//						resource.TestCheckResourceAttr(
-	//							"konnect_event_gateway_data_plane_certificate.test_certificate",
-	//							"name",
-	//							"test-data-plane-certificate",
-	//						),
-	//						resource.TestCheckResourceAttr(
-	//							"konnect_event_gateway_data_plane_certificate.test_certificate",
-	//							"description",
-	//							"Test certificate for data plane",
-	//						),
-	//						resource.TestCheckResourceAttrSet(
-	//							"konnect_event_gateway_data_plane_certificate.test_certificate",
-	//							"id",
-	//						),
-	//						resource.TestCheckResourceAttrSet(
-	//							"konnect_event_gateway_data_plane_certificate.test_certificate",
-	//							"metadata.sha256_fingerprint",
-	//						),
-	//						resource.TestCheckResourceAttrSet(
-	//							"konnect_event_gateway_data_plane_certificate.test_certificate",
-	//							"metadata.subject",
-	//						),
-	//						resource.TestCheckResourceAttrSet(
-	//							"konnect_event_gateway_data_plane_certificate.test_certificate",
-	//							"metadata.issuer",
-	//						),
-	//					),
 	//				},
-	//				// Update certificate description
-	//				{
-	//					Config: builder.
-	//						Upsert(egwCp).
-	//						Upsert(
-	//							dataplaneCertificate.AddAttribute("description", `Updated certificate for data plane`),
-	//						).
-	//						Build(),
 	//
-	//					Check: resource.ComposeAggregateTestCheckFunc(
-	//						resource.TestCheckResourceAttr(
-	//							"konnect_event_gateway_data_plane_certificate.test_certificate",
-	//							"description",
-	//							"Updated certificate for data plane",
-	//						),
+	//				Check: resource.ComposeAggregateTestCheckFunc(
+	//					resource.TestCheckResourceAttr(
+	//						"konnect_event_gateway_data_plane_certificate.tf-test-dp-cert",
+	//						"name",
+	//						"tf-test-dp-cert",
 	//					),
-	//				},
-	//				// Revert description
-	//				{
-	//					Config: builder.
-	//						Upsert(egwCp).
-	//						Upsert(
-	//							dataplaneCertificate.AddAttribute("description", `Test certificate for data plane`),
-	//						).
-	//						Build(),
-	//
-	//					Check: resource.ComposeAggregateTestCheckFunc(
-	//						resource.TestCheckResourceAttr(
-	//							"konnect_event_gateway_data_plane_certificate.test_certificate",
-	//							"description",
-	//							"Test certificate for data plane",
-	//						),
+	//					resource.TestCheckResourceAttr(
+	//						"konnect_event_gateway_data_plane_certificate.tf-test-dp-cert",
+	//						"description",
+	//						"initial certificate",
 	//					),
+	//					resource.TestCheckResourceAttrSet(
+	//						"konnect_event_gateway_data_plane_certificate.tf-test-dp-cert",
+	//						"id",
+	//					),
+	//				),
+	//			},
+	//			{
+	//				Config: builder.Upsert(egw).Upsert(cert).Build(),
+	//				ConfigPlanChecks: resource.ConfigPlanChecks{
+	//					PreApply: []plancheck.PlanCheck{
+	//						plancheck.ExpectEmptyPlan(),
+	//					},
 	//				},
 	//			},
-	//		})
-	//	}) // invalid certificate.
+	//			{
+	//				Config: builder.
+	//					Upsert(egw).Upsert(cert.
+	//					AddAttribute("name", `"tf-test-dp-cert-updated"`).
+	//					AddAttribute("description", `"updated certificate description"`),
+	//				).Build(),
+	//
+	//				ConfigPlanChecks: resource.ConfigPlanChecks{
+	//					PreApply: []plancheck.PlanCheck{
+	//						plancheck.ExpectResourceAction(
+	//							"konnect_event_gateway_data_plane_certificate.tf-test-dp-cert",
+	//							plancheck.ResourceActionUpdate,
+	//						),
+	//					},
+	//				},
+	//				Check: resource.ComposeAggregateTestCheckFunc(
+	//					resource.TestCheckResourceAttr(
+	//						"konnect_event_gateway_data_plane_certificate.tf-test-dp-cert",
+	//						"name",
+	//						"tf-test-dp-cert-updated",
+	//					),
+	//					resource.TestCheckResourceAttr(
+	//						"konnect_event_gateway_data_plane_certificate.tf-test-dp-cert",
+	//						"description",
+	//						"updated certificate description",
+	//					),
+	//				),
+	//			},
+	//		},
+	//	})
+	//})
 
-	t.Run("EGW_Listener", func(t *testing.T) {
+	t.Run("EGW Listener", func(t *testing.T) {
 		builder := hclbuilder.NewWithProvider(
 			hclbuilder.KonnectBeta,
 			fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort),
@@ -1034,7 +1000,7 @@ func TestEventGatewayReusable(t *testing.T) {
 		})
 	})
 
-	t.Run("EGW_Listener_Policy_Forward_To_Virtual_Cluster", func(t *testing.T) {
+	t.Run("EGW Listener Policy Forward To Virtual Cluster", func(t *testing.T) {
 		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort))
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
@@ -1165,7 +1131,7 @@ func TestEventGatewayReusable(t *testing.T) {
 		})
 	})
 
-	t.Run("EGW_Listener_Policy_TLS_Server", func(t *testing.T) {
+	t.Run("EGW Listener Policy TLS Server", func(t *testing.T) {
 		builder := hclbuilder.NewWithProvider(
 			hclbuilder.KonnectBeta,
 			fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort),
@@ -1265,7 +1231,7 @@ func TestEventGatewayReusable(t *testing.T) {
 		})
 	})
 
-	t.Run("EGW_Produce_Policy_Encrypt", func(t *testing.T) {
+	t.Run("EGW Produce Policy Encrypt", func(t *testing.T) {
 		builder := hclbuilder.NewWithProvider(
 			hclbuilder.KonnectBeta,
 			fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort),
@@ -1406,7 +1372,7 @@ func TestEventGatewayReusable(t *testing.T) {
 		})
 	})
 
-	t.Run("EGW_Produce_Policy_Modify_Headers", func(t *testing.T) {
+	t.Run("EGW Produce Policy Modify Headers", func(t *testing.T) {
 		builder := hclbuilder.NewWithProvider(
 			hclbuilder.KonnectBeta,
 			fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort),
@@ -1526,7 +1492,7 @@ func TestEventGatewayReusable(t *testing.T) {
 		})
 	})
 
-	t.Run("EGW_Static_Key", func(t *testing.T) {
+	t.Run("EGW Static Key", func(t *testing.T) {
 		builder := hclbuilder.NewWithProvider(
 			hclbuilder.KonnectBeta,
 			fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort),
@@ -1596,7 +1562,7 @@ func TestEventGatewayReusable(t *testing.T) {
 		})
 	})
 
-	t.Run("EGW_Schema_Registry_Confluent", func(t *testing.T) {
+	t.Run("EGW Schema Registry Confluent", func(t *testing.T) {
 
 		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort))
 		builder.ProviderProperty = hclbuilder.KonnectBeta
@@ -1676,6 +1642,174 @@ func TestEventGatewayReusable(t *testing.T) {
 							"konnect_event_gateway_schema_registry.test_schema_registry_confluent",
 							"confluent.description",
 							"test_schema_registry_confluent_description",
+						),
+					),
+				},
+			},
+		})
+	})
+
+	t.Run("EGW Cluster Policy ACLs", func(t *testing.T) {
+		builder := hclbuilder.NewWithProvider(
+			hclbuilder.KonnectBeta,
+			fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort),
+		)
+		builder.ProviderProperty = hclbuilder.KonnectBeta
+
+		egw, err := hclbuilder.FromString(`
+			resource "konnect_event_gateway" "tf-test-egw-acls" {
+			  name = "tf-test-egw-acls"
+			}
+		`)
+		require.NoError(t, err)
+
+		backend, err := hclbuilder.FromString(`
+			resource "konnect_event_gateway_backend_cluster" "tf-test-backend-acls" {
+			  name = "tf-test-backend-acls"
+
+			  authentication = {
+				anonymous = {}
+			  }
+
+			  bootstrap_servers = ["127.0.0.1:9092"]
+
+			  tls = {
+				enabled = false
+				insecure_skip_verify = true
+			  }
+			}
+		`)
+		require.NoError(t, err)
+
+		backend.AddAttribute(
+			"gateway_id",
+			egw.ResourcePath()+".id",
+		)
+
+		virtualCluster, err := hclbuilder.FromString(`
+			resource "konnect_event_gateway_virtual_cluster" "tf-test-virtual-acls" {
+			  name      = "tf-test-virtual-acls"
+			  dns_label = "tf-test-vc-acls"
+			  acl_mode  = "enforce_on_gateway"
+
+			  authentication = [
+				{
+				  anonymous = {}
+				}
+			  ]
+
+			  destination = {
+				id = konnect_event_gateway_backend_cluster.tf-test-backend-acls.id
+			  }
+			}
+		`)
+		require.NoError(t, err)
+
+		virtualCluster.AddAttribute(
+			"gateway_id",
+			egw.ResourcePath()+".id",
+		)
+
+		clusterPolicyACLs, err := hclbuilder.FromString(`
+			resource "konnect_event_gateway_cluster_policy_acls" "tf-test-cluster-policy-acls" {
+			  name        = "tf-test-cluster-policy-acls"
+			  description = "initial description"
+			  enabled     = false
+			  condition   = "context.topic.name.endsWith('my_suffix')"
+
+			  labels = {
+				key = "value"
+			  }
+
+			  config = {
+				rules = [
+				  {
+					action = "deny"
+
+					operations = [
+					  {
+						name = "describe_configs"
+					  }
+					]
+
+					resource_names = [
+					  {
+						match = "...my_match..."
+					  }
+					]
+
+					resource_type = "transactional_id"
+				  }
+				]
+			  }
+			}
+		`)
+		require.NoError(t, err)
+
+		clusterPolicyACLs.AddAttribute(
+			"gateway_id",
+			egw.ResourcePath()+".id",
+		)
+		clusterPolicyACLs.AddAttribute(
+			"virtual_cluster_id",
+			virtualCluster.ResourcePath()+".id",
+		)
+
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					Config: builder.Upsert(egw).Upsert(backend).Upsert(virtualCluster).Upsert(clusterPolicyACLs).Build(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectResourceAction(
+								"konnect_event_gateway_cluster_policy_acls.tf-test-cluster-policy-acls",
+								plancheck.ResourceActionCreate,
+							),
+						},
+					},
+
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr(
+							"konnect_event_gateway_cluster_policy_acls.tf-test-cluster-policy-acls",
+							"enabled",
+							"false",
+						),
+						resource.TestCheckResourceAttr(
+							"konnect_event_gateway_cluster_policy_acls.tf-test-cluster-policy-acls",
+							"config.rules.0.action",
+							"deny",
+						),
+					),
+				},
+				{
+					Config: builder.Upsert(egw).Upsert(backend).Upsert(virtualCluster).Upsert(clusterPolicyACLs).Build(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectEmptyPlan(),
+						},
+					},
+				},
+
+				{
+					Config: builder.Upsert(egw).Upsert(backend).Upsert(virtualCluster).Upsert(
+						clusterPolicyACLs.AddAttribute("enabled", "true")).
+						Build(),
+
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectResourceAction(
+								"konnect_event_gateway_cluster_policy_acls.tf-test-cluster-policy-acls",
+								plancheck.ResourceActionUpdate,
+							),
+						},
+					},
+
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr(
+							"konnect_event_gateway_cluster_policy_acls.tf-test-cluster-policy-acls",
+							"enabled",
+							"true",
 						),
 					),
 				},
