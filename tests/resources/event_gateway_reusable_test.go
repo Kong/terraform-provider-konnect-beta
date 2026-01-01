@@ -807,105 +807,117 @@ func TestEventGatewayReusable(t *testing.T) {
 		})
 	})
 
-	//t.Run("EGW Data Plane Certificate", func(t *testing.T) {
-	//	builder := hclbuilder.NewWithProvider(
-	//		hclbuilder.KonnectBeta,
-	//		fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort),
-	//	)
-	//	builder.ProviderProperty = hclbuilder.KonnectBeta
-	//
-	//	egw, err := hclbuilder.FromString(`
-	//		resource "konnect_event_gateway" "tf-test-egw-cert" {
-	//		  name = "tf-test-egw-cert"
-	//		}
-	//	`)
-	//	require.NoError(t, err)
-	//
-	//	cert, err := hclbuilder.FromString(`
-	//		resource "konnect_event_gateway_data_plane_certificate" "tf-test-dp-cert" {
-	//		  name        = "tf-test-dp-cert"
-	//		  description = "initial certificate"
-	//
-	//		  certificate = "-----BEGIN CERTIFICATE-----\nMIIC8DCCAdigAwIBAgIUQq4K+3Ew8E5z6m9b5H8C6VY4y2MwDQYJKoZIhvcNAQELBQAwFjEUMBIGA1UEAwwLdGYtY2VydC10ZXN0MB4XDTI0MDEwMTAwMDAwMFoXDTM0MDEwMTAwMDAwMFowFjEUMBIGA1UEAwwLdGYtY2VydC10ZXN0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwcFq4zBqjz1M2pD4tJ8bT2+T6+P9rZrXv9hcN0yCjzZ9E5nV6R1qQqzM4dYF1mT2bE1zYc3ZpPzvE7v6Y3p0b9Kz0YFqjF3J2T+Kp7L3z7F6zXk5cPp0q8F4F2N1M3Q8N6zq8K9M2X0bP0mQnM9J2N2zXkJk2y8x1VuGZPp4Y6M8ZK3P5D8Z6YF2P9Z8Q5xZ3y2N5z4k7z7p9VZP0n0k0P3bY0xwIDAQABo1MwUTAdBgNVHQ4EFgQU2g9ZpX4r9B1z0N9x0m5JXk7cN2kwHwYDVR0jBBgwFoAU2g9ZpX4r9B1z0N9x0m5JXk7cN2kwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAZP1xkP7Z8Z5xk7m9M3Z0pZ5X6k8x7J3Z8k9zP5k7Z1k2P5Z8Z6x8k7Z5Z8k9Z7Z1k5P7Z8k9Z7Z5Z8k9Z7Z5Z8k9Z7Z5Z8k9Z7Z5Z8k9Z7Z5Z8k9Z7Z5Z8k9Z7Z5Z8k9Z7Z5Z8k9Z7Z5Z8k9Z7Z5Z8k9Z7Z5Z8k9Z7Z5Z8k9Z7Z5....\n-----END CERTIFICATE-----"
-	//		}
-	//	`)
-	//	require.NoError(t, err)
-	//
-	//	cert.AddAttribute(
-	//		"gateway_id",
-	//		egw.ResourcePath()+".id",
-	//	)
-	//
-	//	resource.Test(t, resource.TestCase{
-	//		ProtoV6ProviderFactories: providerFactory,
-	//		Steps: []resource.TestStep{
-	//			{
-	//				Config: builder.Upsert(egw).Upsert(cert).Build(),
-	//				ConfigPlanChecks: resource.ConfigPlanChecks{
-	//					PreApply: []plancheck.PlanCheck{
-	//						plancheck.ExpectResourceAction(
-	//							"konnect_event_gateway_data_plane_certificate.tf-test-dp-cert",
-	//							plancheck.ResourceActionCreate,
-	//						),
-	//					},
-	//				},
-	//
-	//				Check: resource.ComposeAggregateTestCheckFunc(
-	//					resource.TestCheckResourceAttr(
-	//						"konnect_event_gateway_data_plane_certificate.tf-test-dp-cert",
-	//						"name",
-	//						"tf-test-dp-cert",
-	//					),
-	//					resource.TestCheckResourceAttr(
-	//						"konnect_event_gateway_data_plane_certificate.tf-test-dp-cert",
-	//						"description",
-	//						"initial certificate",
-	//					),
-	//					resource.TestCheckResourceAttrSet(
-	//						"konnect_event_gateway_data_plane_certificate.tf-test-dp-cert",
-	//						"id",
-	//					),
-	//				),
-	//			},
-	//			{
-	//				Config: builder.Upsert(egw).Upsert(cert).Build(),
-	//				ConfigPlanChecks: resource.ConfigPlanChecks{
-	//					PreApply: []plancheck.PlanCheck{
-	//						plancheck.ExpectEmptyPlan(),
-	//					},
-	//				},
-	//			},
-	//			{
-	//				Config: builder.
-	//					Upsert(egw).Upsert(cert.
-	//					AddAttribute("name", `"tf-test-dp-cert-updated"`).
-	//					AddAttribute("description", `"updated certificate description"`),
-	//				).Build(),
-	//
-	//				ConfigPlanChecks: resource.ConfigPlanChecks{
-	//					PreApply: []plancheck.PlanCheck{
-	//						plancheck.ExpectResourceAction(
-	//							"konnect_event_gateway_data_plane_certificate.tf-test-dp-cert",
-	//							plancheck.ResourceActionUpdate,
-	//						),
-	//					},
-	//				},
-	//				Check: resource.ComposeAggregateTestCheckFunc(
-	//					resource.TestCheckResourceAttr(
-	//						"konnect_event_gateway_data_plane_certificate.tf-test-dp-cert",
-	//						"name",
-	//						"tf-test-dp-cert-updated",
-	//					),
-	//					resource.TestCheckResourceAttr(
-	//						"konnect_event_gateway_data_plane_certificate.tf-test-dp-cert",
-	//						"description",
-	//						"updated certificate description",
-	//					),
-	//				),
-	//			},
-	//		},
-	//	})
-	//})
+	t.Run("EGW Data Plane Certificate", func(t *testing.T) {
+		builder := hclbuilder.NewWithProvider(
+			hclbuilder.KonnectBeta,
+			fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort),
+		)
+		builder.ProviderProperty = hclbuilder.KonnectBeta
+
+		egw, err := hclbuilder.FromString(`
+			resource "konnect_event_gateway" "tf-test-egw-cert" {
+			  name = "tf-test-egw-cert"
+			}
+		`)
+		require.NoError(t, err)
+
+		cert, err := hclbuilder.FromString(`
+			resource "konnect_event_gateway_data_plane_certificate" "tf-test-dp-cert" {
+			  name        = "tf-test-dp-cert"
+			  description = "initial certificate"
+    certificate = <<EOF
+-----BEGIN CERTIFICATE-----
+MIIB4TCCAYugAwIBAgIUAenxUyPjkSLCe2BQXoBMBacqgLowDQYJKoZIhvcNAQEL
+BQAwRTELMAkGA1UEBhMCQVUxEzARBgNVBAgMClNvbWUtU3RhdGUxITAfBgNVBAoM
+GEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZDAeFw0yNDEwMjgyMDA3NDlaFw0zNDEw
+MjYyMDA3NDlaMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEw
+HwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwXDANBgkqhkiG9w0BAQEF
+AANLADBIAkEAyzipjrbAaLO/yPg7lL1dLWzhqNdc3S4YNR7f1RG9whWhbsPE2z42
+e6WGFf9hggP6xjG4qbU8jFVczpd1UPwGbQIDAQABo1MwUTAdBgNVHQ4EFgQUkPPB
+ghj+iHOHAKJlC1gLbKT/ZHQwHwYDVR0jBBgwFoAUkPPBghj+iHOHAKJlC1gLbKT/
+ZHQwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAANBALfy49GvA2ld+u+G
+Koxa8kCt7uywoqu0hfbBfUT4HqmXPvsuhz8RinE5ltxId108vtDNlD/+bKl+N5Ub
+qKjBs0k=
+-----END CERTIFICATE-----
+EOF
+			}
+		`)
+		require.NoError(t, err)
+
+		cert.AddAttribute(
+			"gateway_id",
+			egw.ResourcePath()+".id",
+		)
+
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					Config: builder.Upsert(egw).Upsert(cert).Build(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectResourceAction(
+								"konnect_event_gateway_data_plane_certificate.tf-test-dp-cert",
+								plancheck.ResourceActionCreate,
+							),
+						},
+					},
+
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr(
+							"konnect_event_gateway_data_plane_certificate.tf-test-dp-cert",
+							"name",
+							"tf-test-dp-cert",
+						),
+						resource.TestCheckResourceAttr(
+							"konnect_event_gateway_data_plane_certificate.tf-test-dp-cert",
+							"description",
+							"initial certificate",
+						),
+						resource.TestCheckResourceAttrSet(
+							"konnect_event_gateway_data_plane_certificate.tf-test-dp-cert",
+							"id",
+						),
+					),
+				},
+				{
+					Config: builder.Upsert(egw).Upsert(cert).Build(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectEmptyPlan(),
+						},
+					},
+				},
+				{
+					Config: builder.
+						Upsert(egw).Upsert(cert.AddAttribute("name", `"tf-test-dp-cert-updated"`).
+						AddAttribute("description", `"updated certificate description"`),
+					).Build(),
+
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectResourceAction(
+								"konnect_event_gateway_data_plane_certificate.tf-test-dp-cert",
+								plancheck.ResourceActionUpdate,
+							),
+						},
+					},
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr(
+							"konnect_event_gateway_data_plane_certificate.tf-test-dp-cert",
+							"name",
+							"tf-test-dp-cert-updated",
+						),
+						resource.TestCheckResourceAttr(
+							"konnect_event_gateway_data_plane_certificate.tf-test-dp-cert",
+							"description",
+							"updated certificate description",
+						),
+					),
+				},
+			},
+		})
+	})
 
 	t.Run("EGW Listener", func(t *testing.T) {
 		builder := hclbuilder.NewWithProvider(
