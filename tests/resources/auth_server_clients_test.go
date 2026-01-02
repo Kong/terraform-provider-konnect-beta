@@ -79,8 +79,6 @@ func TestAuthServerClients(t *testing.T) {
 						},
 					},
 					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr("konnect_auth_server_clients.my_client", "name", "my-client-without-id"),
-						resource.TestCheckResourceAttrSet("konnect_auth_server_clients.my_client", "id"),
 						resource.TestCheckResourceAttr("konnect_auth_server_clients.my_client", "allow_all_scopes", "false"),
 					),
 				},
@@ -90,7 +88,6 @@ func TestAuthServerClients(t *testing.T) {
 
 	// To be enabled once the provider supports ID and client secret in input for auth server clients
 	t.Run("should do CRUD when ID and client secret are given in input", func(t *testing.T) {
-		t.Skip()
 		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf("%s://%s:%d", serverScheme, serverHost, serverPort))
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
@@ -120,16 +117,22 @@ func TestAuthServerClients(t *testing.T) {
 			`)
 		require.NoError(t, err)
 
-		uuidResource, err := hclbuilder.FromString(`resource "random_uuid" "example" {}`)
+		uuidResource, err := hclbuilder.FromString(`resource "random_id" "example" {
+		  byte_length = 16
+		}
+		`)
 		require.NoError(t, err)
 
 		authServerClient.AddAttribute("id", uuidResource.ResourcePath()+".id")
 
-		resource.ParallelTest(t, resource.TestCase{
-			ProtoV6ProviderFactories: providerFactory,
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactoryWithRandom,
+			ExternalProviders: map[string]resource.ExternalProvider{
+				"random": {Source: "hashicorp/random"},
+			},
 			Steps: []resource.TestStep{
 				{
-					Config: builder.Upsert(authServer).Upsert(authServerClient).Build(),
+					Config: builder.Upsert(authServer).Upsert(uuidResource).Upsert(authServerClient).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
 							plancheck.ExpectResourceAction("konnect_auth_server.my_authserver", plancheck.ResourceActionCreate),
@@ -137,7 +140,20 @@ func TestAuthServerClients(t *testing.T) {
 					},
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_auth_server_clients.my_client", "name", "my-client-without-id"),
-						resource.TestCheckResourceAttr("konnect_auth_server_clients.my_client", "id", uuidResource.ResourcePath()+".id"),
+						resource.TestCheckResourceAttrPair("konnect_auth_server_clients.my_client", "id", "random_id.example", "id"),
+						resource.TestCheckResourceAttr("konnect_auth_server_clients.my_client", "client_secret", "YAzsyUlNZ5gNGeKS9H3VAdxVPzhPo4ae"),
+					),
+				},
+				// Update
+				{
+					Config: builder.Upsert(authServer).Upsert(uuidResource).Upsert(authServerClient.AddAttribute("allow_all_scopes", "false")).Build(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectResourceAction("konnect_auth_server_clients.my_client", plancheck.ResourceActionUpdate),
+						},
+					},
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_auth_server_clients.my_client", "allow_all_scopes", "false"),
 					),
 				},
 			},
