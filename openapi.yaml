@@ -28038,6 +28038,17 @@ components:
           schema:
             type: object
             properties:
+              id:
+                description: The OAuth 2.0 client ID
+                type: string
+                example: kYa9iQFU5xPDSIUH9z1z
+                maxLength: 36
+                minLength: 1
+                pattern: '[-_\w]+'
+              client_secret:
+                description: Secret of the client - will be used when ID is also set.
+                type: string
+                minLength: 1
               name:
                 $ref: '#/components/schemas/ClientName'
               grant_types:

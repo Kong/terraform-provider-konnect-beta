@@ -17,11 +17,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
+	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -96,7 +98,11 @@ func (r *AuthServerClientsResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"client_secret": schema.StringAttribute{
 				Computed:    true,
-				Description: `Secret of the client`,
+				Optional:    true,
+				Description: `Secret of the client - will be used when ID is also set.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtLeast(1),
+				},
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -115,10 +121,16 @@ func (r *AuthServerClientsResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `The OAuth 2.0 client ID`,
+				Description: `The OAuth 2.0 client ID. Requires replacement if changed.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthBetween(1, 36),
+					stringvalidator.RegexMatches(regexp.MustCompile(`[-_\w]+`), "must match pattern "+regexp.MustCompile(`[-_\w]+`).String()),
+				},
 			},
 			"id_token_duration": schema.Int64Attribute{
 				Computed:    true,

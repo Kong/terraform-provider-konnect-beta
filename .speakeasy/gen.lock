@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: a7ffaf29137b6542bdcfc0b9e60a0b93
+  docChecksum: 242ef4c9eeb958167b0da50d74602fea
   docVersion: 2.0.0
   speakeasyVersion: 1.676.1
   generationVersion: 2.781.2
   releaseVersion: 0.14.0
   configChecksum: bfa214196ab0be882bc29ed6c271d9bf
 persistentEdits:
-  generation_id: 90497ed2-c228-4e41-ab0d-4edee52b73f7
-  pristine_commit_hash: 9de97f726fdfc6a835745bef37638ff36f5c9a47
-  pristine_tree_hash: 1db5e4ae1ced15924b7a42f785a89438dd3ead1d
+  generation_id: 24f92aad-f655-4007-ae51-198ab39f0c92
+  pristine_commit_hash: 1f96f3737cb9fa88308908034d23f7d5b1462779
+  pristine_tree_hash: 31e769bdfcdd4b53786cc1ae9c12d3be545ed424
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -154,8 +154,8 @@ trackedFiles:
     pristine_git_object: c80bf2c219ae1622f515677d2e6f127473920898
   examples/resources/konnect-beta_auth_server_clients/resource.tf:
     id: 4f79cb66b7aa
-    last_write_checksum: sha1:70116b767d525f5d22a5ed719e57f7939feb6fa6
-    pristine_git_object: 8aebf3f4e00f2ed0c557dc321522e58985fd872a
+    last_write_checksum: sha1:ee5ed5bd46908aca532074bc8e58e447fccec48e
+    pristine_git_object: aa450b8c18729970cb19a380c890676f2480e469
   examples/resources/konnect-beta_auth_server_scopes/import-by-string-id.tf:
     id: 351abdfb74e1
     last_write_checksum: sha1:fa7588c78a97c70b1089add3d1d46853f0e081cc
@@ -982,12 +982,12 @@ trackedFiles:
     pristine_git_object: 7209dcc8c080610d81055c01c774b9a6bfa0fcb9
   internal/provider/authserverclients_resource.go:
     id: da47f1d88fae
-    last_write_checksum: sha1:012806eb8b259cf35d5ae204177ccd7008279897
-    pristine_git_object: c877d6518c23ac15db0a197ce27b1ab0a6ec16d4
+    last_write_checksum: sha1:c5c3478c653b1562373330616e649dbea79c273c
+    pristine_git_object: d9f239484fbebe2c2e5d2c6dd07a5a387c2cf12e
   internal/provider/authserverclients_resource_sdk.go:
     id: e0c9ec7f117f
-    last_write_checksum: sha1:525c6e4b6db0a63ef0170102a81f87ba8e0f4ff1
-    pristine_git_object: d04e2168455dd2f65f473457088854e6c46610c9
+    last_write_checksum: sha1:00ed6a370e893ac79a576d6e21f2c98d87e521c1
+    pristine_git_object: 1649d902f3bdc55d5f4bf02b5eb8f0cba61013bd
   internal/provider/authserverscopes_resource.go:
     id: a72acbc13263
     last_write_checksum: sha1:8b059c4d7b3ef199d435826d0773f4928e81b341
@@ -4534,8 +4534,8 @@ trackedFiles:
     pristine_git_object: b4083bee0d57be03b59d8a7d18cfe634414b62e4
   internal/sdk/models/shared/createclient.go:
     id: 938c165c046e
-    last_write_checksum: sha1:9a32d20bbf3320c05b1f7154d724320c0b155693
-    pristine_git_object: 2e07b8cccc41bf2912ee04f2db6c267c62b41674
+    last_write_checksum: sha1:5f4f4d6d51a16dac0994d06c05c87b03d31647ac
+    pristine_git_object: 659e607f3fa1f1821f18d739cf8cdfe0e1f91515
   internal/sdk/models/shared/createdclient.go:
     id: 7b57a38b5bdf
     last_write_checksum: sha1:2257b0c2b825999214162c4d647cdd80ae500f55
@@ -9706,7 +9706,7 @@ examples:
         path:
           authServerId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
-        application/json: {"name": "<value>", "grant_types": ["client_credentials"], "response_types": [], "login_uri": null, "access_token_duration": 300, "id_token_duration": 300, "allow_all_scopes": false, "labels": {"env": "test"}, "token_endpoint_auth_method": "client_secret_post"}
+        application/json: {"id": "kYa9iQFU5xPDSIUH9z1z", "name": "<value>", "grant_types": ["client_credentials"], "response_types": [], "login_uri": null, "access_token_duration": 300, "id_token_duration": 300, "allow_all_scopes": false, "labels": {"env": "test"}, "token_endpoint_auth_method": "client_secret_post"}
       responses:
         "201":
           application/json: {"id": "kYa9iQFU5xPDSIUH9z1z", "name": "<value>", "grant_types": [], "redirect_uris": ["https://improbable-stitcher.net", "https://caring-switchboard.net"], "login_uri": null, "access_token_duration": 300, "id_token_duration": 300, "allow_all_scopes": false, "allow_scopes": ["ee2ba59e-da21-42fb-8fe0-5795664e508c", "708d5afa-b5af-42bc-b519-345a24cd65bf"], "labels": {"env": "test"}, "response_types": ["none"], "token_endpoint_auth_method": "client_secret_post", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "client_secret": "YAzsyUlNZ5gNGeKS9H3VAdxVPzhPo4ae"}
