@@ -10,6 +10,44 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const (
+	eventGatewayCP = `
+		resource "konnect_event_gateway" "my_event_gateway" {
+		  name = "my_test_event_gateway"
+		}
+	`
+	eventGatewayBackendCluster = `
+		resource "konnect_event_gateway_backend_cluster" "my_event_gateway_backend_cluster" {
+		  name = "my_test_event_gateway_backend_cluster"
+		  authentication = {
+		    anonymous = {}
+		  }
+		  bootstrap_servers = [
+		    "10.0.0.1:8080"
+		  ]
+		   tls = {
+			  enabled = false
+			  insecure_skip_verify = true
+		   }
+		}
+	`
+	eventGatewayVirtualCluster = `
+		resource "konnect_event_gateway_virtual_cluster" "my_event_gateway_virtual_cluster" {
+		  name      = "my_test_event_gateway_virtual_cluster"
+		  dns_label = "vcluster-1"
+		  acl_mode  = "passthrough"
+		  authentication = [
+				{
+				  anonymous = {}
+				}
+		  ]
+		  destination = {
+				id = konnect_event_gateway_backend_cluster.my_event_gateway_backend_cluster.id
+		  }
+		}
+	`
+)
+
 func TestEventGatewayReusable(t *testing.T) {
 	serverHost, serverPort, serverScheme := providerConfigFromEnv()
 	providerConfigTemplate := "%s://%s:%d"
@@ -18,11 +56,7 @@ func TestEventGatewayReusable(t *testing.T) {
 		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort))
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		egwCp, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway" "my_event_gateway" {
-  				name = "my_test_event_gateway"
-			}
-		`)
+		egwCp, err := hclbuilder.FromString(eventGatewayCP)
 		require.NoError(t, err)
 
 		resource.Test(t, resource.TestCase{
@@ -71,31 +105,12 @@ func TestEventGatewayReusable(t *testing.T) {
 		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort))
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		egwCp, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway" "tf_test_event_gateway" {
-  				name = "my_test_event_gateway"
-			}
-		`)
+		egwCp, err := hclbuilder.FromString(eventGatewayCP)
 		require.NoError(t, err)
 
-		egwBackendCluster, err := hclbuilder.FromString(`
-		resource "konnect_event_gateway_backend_cluster" "tf_test_egw_backend_cluster" {
-			name = "tf_test_egw_backend_cluster"
-			authentication = {
-    			anonymous = {}
-  			}
-			bootstrap_servers = [
-				"10.0.0.1:8080"
-			]
-			tls = {
-				enabled = false
-				insecure_skip_verify = true
-			}
-		}
-		`)
+		egwBackendCluster, err := hclbuilder.FromString(eventGatewayBackendCluster)
 		require.NoError(t, err)
 
-		// Set up dependencies
 		egwBackendCluster.AddAttribute("gateway_id", egwCp.ResourcePath()+".id")
 
 		resource.Test(t, resource.TestCase{
@@ -105,12 +120,12 @@ func TestEventGatewayReusable(t *testing.T) {
 					Config: builder.Upsert(egwCp).Upsert(egwBackendCluster).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction("konnect_event_gateway.tf_test_event_gateway", plancheck.ResourceActionCreate),
-							plancheck.ExpectResourceAction("konnect_event_gateway_backend_cluster.tf_test_egw_backend_cluster", plancheck.ResourceActionCreate),
+							plancheck.ExpectResourceAction("konnect_event_gateway.my_event_gateway", plancheck.ResourceActionCreate),
+							plancheck.ExpectResourceAction("konnect_event_gateway_backend_cluster.my_event_gateway_backend_cluster", plancheck.ResourceActionCreate),
 						},
 					},
 					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr("konnect_event_gateway_backend_cluster.tf_test_egw_backend_cluster", "name", "tf_test_egw_backend_cluster"),
+						resource.TestCheckResourceAttr("konnect_event_gateway_backend_cluster.my_event_gateway_backend_cluster", "name", "my_test_event_gateway_backend_cluster"),
 					),
 				},
 				{
@@ -124,8 +139,8 @@ func TestEventGatewayReusable(t *testing.T) {
 				{
 					Config: builder.Upsert(egwCp).Upsert(egwBackendCluster.AddAttribute("labels", `{key = "value"}`)).Build(),
 					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr("konnect_event_gateway_backend_cluster.tf_test_egw_backend_cluster", "labels.%", "1"),
-						resource.TestCheckResourceAttr("konnect_event_gateway_backend_cluster.tf_test_egw_backend_cluster", "labels.key", "value"),
+						resource.TestCheckResourceAttr("konnect_event_gateway_backend_cluster.my_event_gateway_backend_cluster", "labels.%", "1"),
+						resource.TestCheckResourceAttr("konnect_event_gateway_backend_cluster.my_event_gateway_backend_cluster", "labels.key", "value"),
 					),
 				},
 				{
@@ -147,54 +162,17 @@ func TestEventGatewayReusable(t *testing.T) {
 		)
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		egwCp, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway" "tf_test_event_gateway" {
-			  name = "my_test_event_gateway"
-			}
-		`)
+		egwCp, err := hclbuilder.FromString(eventGatewayCP)
 		require.NoError(t, err)
 
-		egwBackendCluster, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway_backend_cluster" "tf_test_egw_backend_cluster" {
-			  name = "tf_test_egw_backend_cluster"
-
-			  authentication = {
-				anonymous = {}
-			  }
-
-			  bootstrap_servers = [
-				"10.0.0.1:8080"
-			  ]
-
-			  tls = {
-				enabled = false
-				insecure_skip_verify = true
-			  }
-			}
-		`)
+		egwBackendCluster, err := hclbuilder.FromString(eventGatewayBackendCluster)
 		require.NoError(t, err)
 		egwBackendCluster.AddAttribute(
 			"gateway_id",
 			egwCp.ResourcePath()+".id",
 		)
 
-		egwVirtualCluster, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway_virtual_cluster" "tf_test_egw_virtual_cluster" {
-			  name      = "tf_test_egw_virtual_cluster"
-			  dns_label = "vcluster-1"
-			  acl_mode  = "passthrough"
-
-			  authentication = [
-				{
-				  anonymous = {}
-				}
-			  ]
-
-			  destination = {
-				id = konnect_event_gateway_backend_cluster.tf_test_egw_backend_cluster.id
-			  }
-			}
-		`)
+		egwVirtualCluster, err := hclbuilder.FromString(eventGatewayVirtualCluster)
 		require.NoError(t, err)
 
 		egwVirtualCluster.AddAttribute(
@@ -210,7 +188,7 @@ func TestEventGatewayReusable(t *testing.T) {
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
 							plancheck.ExpectResourceAction(
-								"konnect_event_gateway_virtual_cluster.tf_test_egw_virtual_cluster",
+								"konnect_event_gateway_virtual_cluster.my_event_gateway_virtual_cluster",
 								plancheck.ResourceActionCreate,
 							),
 						},
@@ -218,9 +196,9 @@ func TestEventGatewayReusable(t *testing.T) {
 
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr(
-							"konnect_event_gateway_virtual_cluster.tf_test_egw_virtual_cluster",
+							"konnect_event_gateway_virtual_cluster.my_event_gateway_virtual_cluster",
 							"name",
-							"tf_test_egw_virtual_cluster",
+							"my_test_event_gateway_virtual_cluster",
 						),
 					),
 				},
@@ -239,12 +217,12 @@ func TestEventGatewayReusable(t *testing.T) {
 
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr(
-							"konnect_event_gateway_virtual_cluster.tf_test_egw_virtual_cluster",
+							"konnect_event_gateway_virtual_cluster.my_event_gateway_virtual_cluster",
 							"labels.%",
 							"1",
 						),
 						resource.TestCheckResourceAttr(
-							"konnect_event_gateway_virtual_cluster.tf_test_egw_virtual_cluster",
+							"konnect_event_gateway_virtual_cluster.my_event_gateway_virtual_cluster",
 							"labels.key",
 							"value",
 						),
@@ -261,29 +239,10 @@ func TestEventGatewayReusable(t *testing.T) {
 		)
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		egwCp, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway" "tf-test-egw-decrypt" {
-			  name = "tf-test-egw-decrypt"
-			}
-		`)
+		egwCp, err := hclbuilder.FromString(eventGatewayCP)
 		require.NoError(t, err)
 
-		backend, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway_backend_cluster" "tf-test-backend" {
-			  name = "tf-test-backend"
-
-			  authentication = {
-				anonymous = {}
-			  }
-
-			  bootstrap_servers = ["127.0.0.1:9092"]
-
-			  tls = {
-				enabled = false
-				insecure_skip_verify = true
-			  }
-			}
-		`)
+		backend, err := hclbuilder.FromString(eventGatewayBackendCluster)
 		require.NoError(t, err)
 
 		backend.AddAttribute(
@@ -291,23 +250,7 @@ func TestEventGatewayReusable(t *testing.T) {
 			egwCp.ResourcePath()+".id",
 		)
 
-		virtualCluster, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway_virtual_cluster" "tf-test-virtual" {
-			  name      = "tf-test-virtual"
-			  dns_label = "tf-test-vc"
-			  acl_mode  = "passthrough"
-
-			  authentication = [
-				{
-				  anonymous = {}
-				}
-			  ]
-
-			  destination = {
-				id = konnect_event_gateway_backend_cluster.tf-test-backend.id
-			  }
-			}
-		`)
+		virtualCluster, err := hclbuilder.FromString(eventGatewayVirtualCluster)
 		require.NoError(t, err)
 
 		virtualCluster.AddAttribute(
@@ -408,28 +351,10 @@ func TestEventGatewayReusable(t *testing.T) {
 		)
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		egwCp, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway" "tf_test_event_gateway_modify_headers" {
-				name = "test-gateway-modify-headers"
-			}
-		`)
+		egwCp, err := hclbuilder.FromString(eventGatewayCP)
 		require.NoError(t, err)
 
-		egwBackendCluster, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway_backend_cluster" "tf_test_egw_backend_cluster_modify_headers" {
-				name = "test-backend-cluster-modify-headers"
-				authentication = {
-					anonymous = {}
-				}
-				bootstrap_servers = [
-					"10.0.0.1:9092"
-				]
-				tls = {
-					enabled = false
-					insecure_skip_verify = true
-				}
-			}
-		`)
+		egwBackendCluster, err := hclbuilder.FromString(eventGatewayBackendCluster)
 		require.NoError(t, err)
 
 		egwBackendCluster.AddAttribute(
@@ -437,23 +362,7 @@ func TestEventGatewayReusable(t *testing.T) {
 			egwCp.ResourcePath()+".id",
 		)
 
-		egwVirtualCluster, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway_virtual_cluster" "tf_test_egw_virtual_cluster_modify_headers" {
-				name      = "test-vcluster-modify-headers"
-				dns_label = "vcluster-modify-headers"
-				acl_mode  = "passthrough"
-
-				authentication = [
-					{
-						anonymous = {}
-					}
-				]
-
-				destination = {
-					id = konnect_event_gateway_backend_cluster.tf_test_egw_backend_cluster_modify_headers.id
-				}
-			}
-		`)
+		egwVirtualCluster, err := hclbuilder.FromString(eventGatewayVirtualCluster)
 		require.NoError(t, err)
 
 		egwVirtualCluster.AddAttribute(
@@ -575,28 +484,10 @@ func TestEventGatewayReusable(t *testing.T) {
 		)
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		egwCp, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway" "tf_test_event_gateway_schema_validation" {
-				name = "test-gateway-schema-validation"
-			}
-		`)
+		egwCp, err := hclbuilder.FromString(eventGatewayCP)
 		require.NoError(t, err)
 
-		egwBackendCluster, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway_backend_cluster" "tf_test_egw_backend_cluster_schema_validation" {
-				name = "test-backend-cluster-schema-validation"
-				authentication = {
-					anonymous = {}
-				}
-				bootstrap_servers = [
-					"10.0.0.1:9092"
-				]
-				tls = {
-					enabled = false
-					insecure_skip_verify = true
-				}
-			}
-		`)
+		egwBackendCluster, err := hclbuilder.FromString(eventGatewayBackendCluster)
 		require.NoError(t, err)
 
 		egwBackendCluster.AddAttribute(
@@ -604,23 +495,7 @@ func TestEventGatewayReusable(t *testing.T) {
 			egwCp.ResourcePath()+".id",
 		)
 
-		egwVirtualCluster, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway_virtual_cluster" "tf_test_egw_virtual_cluster_schema_validation" {
-				name      = "test-vcluster-schema-validation"
-				dns_label = "vcluster-schema-validation"
-				acl_mode  = "passthrough"
-
-				authentication = [
-					{
-						anonymous = {}
-					}
-				]
-
-				destination = {
-					id = konnect_event_gateway_backend_cluster.tf_test_egw_backend_cluster_schema_validation.id
-				}
-			}
-		`)
+		egwVirtualCluster, err := hclbuilder.FromString(eventGatewayVirtualCluster)
 		require.NoError(t, err)
 
 		egwVirtualCluster.AddAttribute(
@@ -698,28 +573,10 @@ func TestEventGatewayReusable(t *testing.T) {
 		)
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		egwCp, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway" "tf_test_event_gateway_skip_record" {
-				name = "tf_test_event_gateway_skip_record"
-			}
-		`)
+		egwCp, err := hclbuilder.FromString(eventGatewayCP)
 		require.NoError(t, err)
 
-		egwBackendCluster, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway_backend_cluster" "tf_test_egw_backend_cluster_skip_record" {
-				name = "tf_test_egw_backend_cluster_skip_record"
-				authentication = {
-					anonymous = {}
-				}
-				bootstrap_servers = [
-					"10.0.0.1:9092"
-				]
-				tls = {
-					enabled = false
-					insecure_skip_verify = true
-				}
-			}
-		`)
+		egwBackendCluster, err := hclbuilder.FromString(eventGatewayBackendCluster)
 		require.NoError(t, err)
 
 		egwBackendCluster.AddAttribute(
@@ -727,23 +584,7 @@ func TestEventGatewayReusable(t *testing.T) {
 			egwCp.ResourcePath()+".id",
 		)
 
-		egwVirtualCluster, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway_virtual_cluster" "tf_test_egw_virtual_cluster_skip_record" {
-				name      = "tf_test_egw_virtual_cluster_skip_record"
-				dns_label = "vcluster-skip-record"
-				acl_mode  = "passthrough"
-
-				authentication = [
-					{
-						anonymous = {}
-					}
-				]
-
-				destination = {
-					id = konnect_event_gateway_backend_cluster.tf_test_egw_backend_cluster_skip_record.id
-				}
-			}
-		`)
+		egwVirtualCluster, err := hclbuilder.FromString(eventGatewayVirtualCluster)
 		require.NoError(t, err)
 
 		egwVirtualCluster.AddAttribute(
@@ -814,11 +655,7 @@ func TestEventGatewayReusable(t *testing.T) {
 		)
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		egw, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway" "tf-test-egw-cert" {
-			  name = "tf-test-egw-cert"
-			}
-		`)
+		egw, err := hclbuilder.FromString(eventGatewayCP)
 		require.NoError(t, err)
 
 		cert, err := hclbuilder.FromString(`
@@ -925,11 +762,7 @@ EOF
 			fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort),
 		)
 		builder.ProviderProperty = hclbuilder.KonnectBeta
-		egwCp, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway" "tf_test_event_gateway_listener" {
-				name = "test-gateway-listener"
-			}
-		`)
+		egwCp, err := hclbuilder.FromString(eventGatewayCP)
 		require.NoError(t, err)
 		egwListener, err := hclbuilder.FromString(`
 			resource "konnect_event_gateway_listener" "test_listener" {
@@ -953,7 +786,7 @@ EOF
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
 							plancheck.ExpectResourceAction(
-								"konnect_event_gateway.tf_test_event_gateway_listener",
+								"konnect_event_gateway.my_event_gateway",
 								plancheck.ResourceActionCreate,
 							),
 							plancheck.ExpectResourceAction(
@@ -1016,28 +849,10 @@ EOF
 		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort))
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		egwCp, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway" "tf_test_event_gateway_listener_policy" {
-				name = "test-gateway-listener-policy"
-			}
-		`)
+		egwCp, err := hclbuilder.FromString(eventGatewayCP)
 		require.NoError(t, err)
 
-		egwBackendCluster, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway_backend_cluster" "tf_test_egw_backend_cluster" {
-				name = "tf_test_egw_backend_cluster"
-				authentication = {
-					anonymous = {}
-				}
-				bootstrap_servers = [
-					"10.0.0.1:9092"
-				]
-				tls = {
-					enabled = false
-					insecure_skip_verify = true
-				}
-			}
-		`)
+		egwBackendCluster, err := hclbuilder.FromString(eventGatewayBackendCluster)
 		require.NoError(t, err)
 
 		egwBackendCluster.AddAttribute(
@@ -1045,23 +860,7 @@ EOF
 			egwCp.ResourcePath()+".id",
 		)
 
-		egwVirtualCluster, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway_virtual_cluster" "tf_test_egw_virtual_cluster" {
-				name      = "tf_test_egw_virtual_cluster"
-				dns_label = "vcluster-listener-policy"
-				acl_mode  = "passthrough"
-
-				authentication = [
-					{
-						anonymous = {}
-					}
-				]
-
-				destination = {
-					id = konnect_event_gateway_backend_cluster.tf_test_egw_backend_cluster.id
-				}
-			}
-		`)
+		egwVirtualCluster, err := hclbuilder.FromString(eventGatewayVirtualCluster)
 		require.NoError(t, err)
 
 		egwVirtualCluster.AddAttribute(
@@ -1102,7 +901,7 @@ EOF
 						min_broker_id   = 0
 						destination = {
 							virtual_cluster_reference_by_name = {
-								name = konnect_event_gateway_virtual_cluster.tf_test_egw_virtual_cluster.name
+								name = konnect_event_gateway_virtual_cluster.my_event_gateway_virtual_cluster.name
 							}
 						}
 					}
@@ -1150,11 +949,7 @@ EOF
 		)
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		egwCp, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway" "tf_test_event_gateway_tls" {
-				name = "test-gateway-tls-server"
-			}
-		`)
+		egwCp, err := hclbuilder.FromString(eventGatewayCP)
 		require.NoError(t, err)
 
 		egwListener, err := hclbuilder.FromString(`
@@ -1250,28 +1045,10 @@ EOF
 		)
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		egwCp, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway" "tf_test_event_gateway_produce_encrypt" {
-				name = "tf_test_event_gateway_produce_encrypt"
-			}
-		`)
+		egwCp, err := hclbuilder.FromString(eventGatewayCP)
 		require.NoError(t, err)
 
-		egwBackendCluster, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway_backend_cluster" "tf_test_egw_backend_cluster_produce_encrypt" {
-				name = "tf_test_egw_backend_cluster_produce_encrypt"
-				authentication = {
-					anonymous = {}
-				}
-				bootstrap_servers = [
-					"10.0.0.1:9092"
-				]
-				tls = {
-					enabled = false
-					insecure_skip_verify = true
-				}
-			}
-		`)
+		egwBackendCluster, err := hclbuilder.FromString(eventGatewayBackendCluster)
 		require.NoError(t, err)
 
 		egwBackendCluster.AddAttribute(
@@ -1279,23 +1056,7 @@ EOF
 			egwCp.ResourcePath()+".id",
 		)
 
-		egwVirtualCluster, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway_virtual_cluster" "tf_test_egw_virtual_cluster_produce_encrypt" {
-				name      = "tf_test_egw_virtual_cluster_produce_encrypt"
-				dns_label = "vcluster-produce-encrypt"
-				acl_mode  = "passthrough"
-
-				authentication = [
-					{
-						anonymous = {}
-					}
-				]
-
-				destination = {
-					id = konnect_event_gateway_backend_cluster.tf_test_egw_backend_cluster_produce_encrypt.id
-				}
-			}
-		`)
+		egwVirtualCluster, err := hclbuilder.FromString(eventGatewayVirtualCluster)
 		require.NoError(t, err)
 
 		egwVirtualCluster.AddAttribute(
@@ -1391,47 +1152,18 @@ EOF
 		)
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		egwCp, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway" "test-gateway-produce-headers" {
-			  name = "test-gateway-produce-headers"
-			}
-		`)
+		egwCp, err := hclbuilder.FromString(eventGatewayCP)
 		require.NoError(t, err)
 
-		backendCluster, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway_backend_cluster" "test-backend-cluster-produce-headers" {
-			  name = "test-backend-cluster-produce-headers"
-			  authentication = {
-				anonymous = {}
-			  }
-			  bootstrap_servers = ["10.0.0.1:9092"]
-			  tls = {
-				enabled = false
-				insecure_skip_verify = true
-			  }
-			  gateway_id = konnect_event_gateway.test-gateway-produce-headers.id
-			}
-		`)
+		backendCluster, err := hclbuilder.FromString(eventGatewayBackendCluster)
 		require.NoError(t, err)
 
-		virtualCluster, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway_virtual_cluster" "test-vcluster-produce-headers" {
-			  name      = "test-vcluster-produce-headers"
-			  dns_label = "vcluster-produce-headers"
-			  acl_mode  = "passthrough"
+		backendCluster.AddAttribute("gateway_id", egwCp.ResourcePath()+".id")
 
-			  authentication = [{
-				anonymous = {}
-			  }]
-
-			  destination = {
-				id = konnect_event_gateway_backend_cluster.test-backend-cluster-produce-headers.id
-			  }
-
-			  gateway_id = konnect_event_gateway.test-gateway-produce-headers.id
-			}
-		`)
+		virtualCluster, err := hclbuilder.FromString(eventGatewayVirtualCluster)
 		require.NoError(t, err)
+
+		virtualCluster.AddAttribute("gateway_id", egwCp.ResourcePath()+".id")
 
 		policyCreate, err := hclbuilder.FromString(`
 			resource "konnect_event_gateway_produce_policy_modify_headers" "test-produce-headers-policy" {
@@ -1456,8 +1188,8 @@ EOF
 				]
 			  }
 
-			  gateway_id         = konnect_event_gateway.test-gateway-produce-headers.id
-			  virtual_cluster_id = konnect_event_gateway_virtual_cluster.test-vcluster-produce-headers.id
+			  gateway_id         = konnect_event_gateway.my_event_gateway.id
+			  virtual_cluster_id = konnect_event_gateway_virtual_cluster.my_event_gateway_virtual_cluster.id
 			}
 		`)
 		require.NoError(t, err)
@@ -1466,13 +1198,7 @@ EOF
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
 				{
-					Config: builder.
-						Upsert(egwCp).
-						Upsert(backendCluster).
-						Upsert(virtualCluster).
-						Upsert(policyCreate).
-						Build(),
-
+					Config: builder.Upsert(egwCp).Upsert(backendCluster).Upsert(virtualCluster).Upsert(policyCreate).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
 							plancheck.ExpectResourceAction("konnect_event_gateway_produce_policy_modify_headers.test-produce-headers-policy", plancheck.ResourceActionCreate),
@@ -1511,11 +1237,7 @@ EOF
 		)
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		egwCp, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway" "test_static_key_gateway" {
-			  name = "test-event-gateway-static-key"
-			}
-		`)
+		egwCp, err := hclbuilder.FromString(eventGatewayCP)
 		require.NoError(t, err)
 
 		staticKey, err := hclbuilder.FromString(`
@@ -1545,7 +1267,7 @@ EOF
 
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction("konnect_event_gateway.test_static_key_gateway", plancheck.ResourceActionCreate),
+							plancheck.ExpectResourceAction("konnect_event_gateway.my_event_gateway", plancheck.ResourceActionCreate),
 							plancheck.ExpectResourceAction("konnect_event_gateway_static_key.test_egw_static_key", plancheck.ResourceActionCreate),
 						},
 					},
@@ -1574,93 +1296,6 @@ EOF
 		})
 	})
 
-	t.Run("EGW Schema Registry Confluent", func(t *testing.T) {
-
-		builder := hclbuilder.NewWithProvider(hclbuilder.KonnectBeta, fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort))
-		builder.ProviderProperty = hclbuilder.KonnectBeta
-
-		egw, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway" "tf-test-egw-schema-registry" {
-			  name = "tf-test-egw-schema-registry"
-			}
-		`)
-		require.NoError(t, err)
-
-		schemaRegistry, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway_schema_registry" "test_schema_registry_confluent" {
-			  gateway_id = konnect_event_gateway.tf-test-egw-schema-registry.id
-
-			  confluent = {
-				name        = "test_schema_registry_confluent"
-				description = "test_schema_registry_confluent_description"
-
-				labels = {
-				  env = "test"
-				}
-
-				config = {
-				  endpoint        = "https://key-hovercraft.com"
-				  schema_type     = "avro"
-				  timeout_seconds = 8
-
-				  authentication = {
-					basic = {
-					  username = "test-user"
-					  password = "$${vault.env['MY_ENV_VAR']}"
-					}
-				  }
-				}
-			  }
-			}
-		`)
-		require.NoError(t, err)
-
-		resource.Test(t, resource.TestCase{
-			ProtoV6ProviderFactories: providerFactory,
-			Steps: []resource.TestStep{
-
-				{
-					Config: builder.
-						Upsert(egw).
-						Upsert(schemaRegistry).
-						Build(),
-
-					ConfigPlanChecks: resource.ConfigPlanChecks{
-						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction("konnect_event_gateway_schema_registry.test_schema_registry_confluent", plancheck.ResourceActionCreate),
-						},
-					},
-
-					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr("konnect_event_gateway_schema_registry.test_schema_registry_confluent", "confluent.name", "test_schema_registry_confluent"),
-						resource.TestCheckResourceAttr("konnect_event_gateway_schema_registry.test_schema_registry_confluent", "confluent.description", "test_schema_registry_confluent_description"),
-						resource.TestCheckResourceAttr("konnect_event_gateway_schema_registry.test_schema_registry_confluent", "confluent.config.schema_type", "avro"),
-						resource.TestCheckResourceAttr("konnect_event_gateway_schema_registry.test_schema_registry_confluent", "confluent.config.timeout_seconds", "8"),
-						resource.TestCheckResourceAttrSet("konnect_event_gateway_schema_registry.test_schema_registry_confluent", "id"),
-					),
-				},
-				{
-					Config: builder.Upsert(egw).Upsert(schemaRegistry).Build(),
-					ConfigPlanChecks: resource.ConfigPlanChecks{
-						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectEmptyPlan(),
-						},
-					},
-				},
-				{
-					Config: builder.Upsert(egw).Upsert(schemaRegistry.AddAttribute("confluent.description", "test_schema_registry_confluent_description")).Build(),
-					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr(
-							"konnect_event_gateway_schema_registry.test_schema_registry_confluent",
-							"confluent.description",
-							"test_schema_registry_confluent_description",
-						),
-					),
-				},
-			},
-		})
-	})
-
 	t.Run("EGW Cluster Policy ACLs", func(t *testing.T) {
 		builder := hclbuilder.NewWithProvider(
 			hclbuilder.KonnectBeta,
@@ -1668,29 +1303,10 @@ EOF
 		)
 		builder.ProviderProperty = hclbuilder.KonnectBeta
 
-		egw, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway" "tf-test-egw-acls" {
-			  name = "tf-test-egw-acls"
-			}
-		`)
+		egw, err := hclbuilder.FromString(eventGatewayCP)
 		require.NoError(t, err)
 
-		backend, err := hclbuilder.FromString(`
-			resource "konnect_event_gateway_backend_cluster" "tf-test-backend-acls" {
-			  name = "tf-test-backend-acls"
-
-			  authentication = {
-				anonymous = {}
-			  }
-
-			  bootstrap_servers = ["127.0.0.1:9092"]
-
-			  tls = {
-				enabled = false
-				insecure_skip_verify = true
-			  }
-			}
-		`)
+		backend, err := hclbuilder.FromString(eventGatewayBackendCluster)
 		require.NoError(t, err)
 
 		backend.AddAttribute(
@@ -1711,7 +1327,7 @@ EOF
 			  ]
 
 			  destination = {
-				id = konnect_event_gateway_backend_cluster.tf-test-backend-acls.id
+				id = konnect_event_gateway_backend_cluster.my_event_gateway_backend_cluster.id
 			  }
 			}
 		`)
