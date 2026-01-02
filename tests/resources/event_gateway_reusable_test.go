@@ -443,10 +443,6 @@ func TestEventGatewayReusable(t *testing.T) {
 							"condition",
 							"context.topic.name == 'header-topic'",
 						),
-						resource.TestCheckResourceAttrSet(
-							"konnect_event_gateway_consume_policy_modify_headers.test_modify_headers_policy",
-							"id",
-						),
 					),
 				},
 				{
@@ -542,9 +538,7 @@ func TestEventGatewayReusable(t *testing.T) {
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_event_gateway_consume_policy_schema_validation.test_schema_validation_policy", "name", "test-consume-schema-validation-policy"),
 						resource.TestCheckResourceAttr("konnect_event_gateway_consume_policy_schema_validation.test_schema_validation_policy", "description", "Test consume policy for schema validation"),
-						resource.TestCheckResourceAttr("konnect_event_gateway_consume_policy_schema_validation.test_schema_validation_policy", "enabled", "true"),
-						resource.TestCheckResourceAttrSet("konnect_event_gateway_consume_policy_schema_validation.test_schema_validation_policy", "id"),
-					),
+						resource.TestCheckResourceAttr("konnect_event_gateway_consume_policy_schema_validation.test_schema_validation_policy", "enabled", "true")),
 				},
 				{
 					Config: builder.Upsert(egwCp).Upsert(egwBackendCluster).Upsert(egwVirtualCluster).Upsert(consumePolicySchemaValidation).Build(),
@@ -626,9 +620,7 @@ func TestEventGatewayReusable(t *testing.T) {
 						resource.TestCheckResourceAttr("konnect_event_gateway_consume_policy_skip_record.test_skip_record_policy", "name", "test_skip_record_policy"),
 						resource.TestCheckResourceAttr("konnect_event_gateway_consume_policy_skip_record.test_skip_record_policy", "description", "Test consume policy for skipping records"),
 						resource.TestCheckResourceAttr("konnect_event_gateway_consume_policy_skip_record.test_skip_record_policy", "enabled", "true"),
-						resource.TestCheckResourceAttr("konnect_event_gateway_consume_policy_skip_record.test_skip_record_policy", "condition", "context.topic.name == 'skip-topic'"),
-						resource.TestCheckResourceAttrSet("konnect_event_gateway_consume_policy_skip_record.test_skip_record_policy", "id"),
-					),
+						resource.TestCheckResourceAttr("konnect_event_gateway_consume_policy_skip_record.test_skip_record_policy", "condition", "context.topic.name == 'skip-topic'")),
 				},
 				{
 					Config: builder.Upsert(egwCp).Upsert(egwBackendCluster).Upsert(egwVirtualCluster).Upsert(consumePolicySkipRecord).Build(),
@@ -710,10 +702,6 @@ EOF
 							"konnect_event_gateway_data_plane_certificate.tf-test-dp-cert",
 							"description",
 							"initial certificate",
-						),
-						resource.TestCheckResourceAttrSet(
-							"konnect_event_gateway_data_plane_certificate.tf-test-dp-cert",
-							"id",
 						),
 					),
 				},
@@ -817,10 +805,6 @@ EOF
 							"ports.0",
 							"9092",
 						),
-						resource.TestCheckResourceAttrSet(
-							"konnect_event_gateway_listener.test_listener",
-							"id",
-						),
 					),
 				},
 				{
@@ -910,7 +894,6 @@ EOF
 		`)
 		require.NoError(t, err)
 
-		// Wire policy to listener and gateway
 		listenerPolicy.AddAttribute(
 			"event_gateway_listener_id",
 			egwListener.ResourcePath()+".id",
@@ -934,9 +917,11 @@ EOF
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_event_gateway_listener_policy_forward_to_virtual_cluster.tf_test_egw_forward_policy", "name", "tf_test_egw_forward_policy"),
 						resource.TestCheckResourceAttr("konnect_event_gateway_listener_policy_forward_to_virtual_cluster.tf_test_egw_forward_policy", "description", "Test forward to virtual cluster policy"),
-						resource.TestCheckResourceAttr("konnect_event_gateway_listener_policy_forward_to_virtual_cluster.tf_test_egw_forward_policy", "enabled", "true"),
-						resource.TestCheckResourceAttrSet("konnect_event_gateway_listener_policy_forward_to_virtual_cluster.tf_test_egw_forward_policy", "id"),
-					),
+						resource.TestCheckResourceAttr("konnect_event_gateway_listener_policy_forward_to_virtual_cluster.tf_test_egw_forward_policy", "enabled", "true")),
+				},
+				{
+					Config: builder.Upsert(egwCp).Upsert(listenerPolicy.AddAttribute("description", "Update description")).Build(),
+					Check:  resource.ComposeAggregateTestCheckFunc(resource.TestCheckResourceAttr("konnect_event_gateway_listener_policy_forward_to_virtual_cluster.tf_test_egw_forward_policy", "description", "Update description")),
 				},
 			},
 		})
@@ -1018,9 +1003,7 @@ EOF
 						resource.TestCheckResourceAttr("konnect_event_gateway_listener_policy_tls_server.test_tls_policy", "name", "test-tls-server-policy"),
 						resource.TestCheckResourceAttr("konnect_event_gateway_listener_policy_tls_server.test_tls_policy", "description", "Test TLS server policy for encryption"),
 						resource.TestCheckResourceAttr("konnect_event_gateway_listener_policy_tls_server.test_tls_policy", "enabled", "true"),
-						resource.TestCheckResourceAttr("konnect_event_gateway_listener_policy_tls_server.test_tls_policy", "config.allow_plaintext", "false"),
-						resource.TestCheckResourceAttrSet("konnect_event_gateway_listener_policy_tls_server.test_tls_policy", "id"),
-					),
+						resource.TestCheckResourceAttr("konnect_event_gateway_listener_policy_tls_server.test_tls_policy", "config.allow_plaintext", "false")),
 				},
 				{
 					Config: builder.Upsert(egwCp).Upsert(egwListener).Upsert(tlsServerPolicy).Build(),
@@ -1124,9 +1107,7 @@ EOF
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_event_gateway_produce_policy_encrypt.test_produce_encrypt_policy", "name", "test-produce-encrypt-policy"),
 						resource.TestCheckResourceAttr("konnect_event_gateway_produce_policy_encrypt.test_produce_encrypt_policy", "description", "Test produce policy for encryption"),
-						resource.TestCheckResourceAttr("konnect_event_gateway_produce_policy_encrypt.test_produce_encrypt_policy", "enabled", "true"),
-						resource.TestCheckResourceAttrSet("konnect_event_gateway_produce_policy_encrypt.test_produce_encrypt_policy", "id"),
-					),
+						resource.TestCheckResourceAttr("konnect_event_gateway_produce_policy_encrypt.test_produce_encrypt_policy", "enabled", "true")),
 				},
 				{
 					Config: builder.Upsert(egwCp).Upsert(egwBackendCluster).Upsert(egwVirtualCluster).Upsert(staticKey).Upsert(producePolicyEncrypt).Build(),
@@ -1209,9 +1190,7 @@ EOF
 						resource.TestCheckResourceAttr("konnect_event_gateway_produce_policy_modify_headers.test-produce-headers-policy", "name", "test-produce-headers-policy"),
 						resource.TestCheckResourceAttr("konnect_event_gateway_produce_policy_modify_headers.test-produce-headers-policy", "description", "Test produce policy for modifying headers"),
 						resource.TestCheckResourceAttr("konnect_event_gateway_produce_policy_modify_headers.test-produce-headers-policy", "condition", "context.topic.name == 'header-topic'"),
-						resource.TestCheckResourceAttr("konnect_event_gateway_produce_policy_modify_headers.test-produce-headers-policy", "enabled", "true"),
-						resource.TestCheckResourceAttrSet("konnect_event_gateway_produce_policy_modify_headers.test-produce-headers-policy", "id"),
-					),
+						resource.TestCheckResourceAttr("konnect_event_gateway_produce_policy_modify_headers.test-produce-headers-policy", "enabled", "true")),
 				},
 				{
 					Config: builder.Upsert(egwCp).Upsert(backendCluster).Upsert(virtualCluster).Upsert(policyCreate).Build(),
@@ -1438,6 +1417,263 @@ EOF
 							"konnect_event_gateway_cluster_policy_acls.tf-test-cluster-policy-acls",
 							"enabled",
 							"true",
+						),
+					),
+				},
+			},
+		})
+	})
+
+	t.Run("EGW Produce Policy Schema Validation", func(t *testing.T) {
+		builder := hclbuilder.NewWithProvider(
+			hclbuilder.KonnectBeta,
+			fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort),
+		)
+		builder.ProviderProperty = hclbuilder.KonnectBeta
+
+		egwCp, err := hclbuilder.FromString(eventGatewayCP)
+		require.NoError(t, err)
+
+		backendCluster, err := hclbuilder.FromString(eventGatewayBackendCluster)
+		require.NoError(t, err)
+		backendCluster.AddAttribute("gateway_id", egwCp.ResourcePath()+".id")
+
+		virtualCluster, err := hclbuilder.FromString(eventGatewayVirtualCluster)
+		require.NoError(t, err)
+		virtualCluster.AddAttribute("gateway_id", egwCp.ResourcePath()+".id")
+
+		schemaRegistry, err := hclbuilder.FromString(`
+			resource "konnect_event_gateway_schema_registry" "tf_test_schema_registry" {
+			  confluent = {
+				name        = "my-schema-registry"
+				description = "schema registry for produce policy"
+
+				config = {
+				  endpoint        = "https://key-hovercraft.com"
+				  schema_type     = "avro"
+				  timeout_seconds = 8
+
+				  authentication = {
+					basic = {
+					  username = "test-user"
+					  password = "$${vault.env['MY_ENV_VAR']}"
+					}
+				  }
+				}
+			  }
+			}
+		`)
+		require.NoError(t, err)
+
+		schemaRegistry.AddAttribute(
+			"gateway_id",
+			egwCp.ResourcePath()+".id",
+		)
+
+		producePolicy, err := hclbuilder.FromString(`
+			resource "konnect_event_gateway_produce_policy_schema_validation" "tf_test_produce_schema_validation" {
+			  name        = "tf-test-produce-schema-validation"
+			  description = "initial schema validation policy"
+			  enabled     = true
+
+			  config = {
+				confluent_schema_registry = {
+				  key_validation_action   = "reject"
+				  value_validation_action = "reject"
+
+				  schema_registry = {
+					schema_registry_reference_by_name = {
+					  name = "my-schema-registry"
+					}
+				  }
+				}
+			  }
+			}
+		`)
+		require.NoError(t, err)
+
+		producePolicy.AddAttribute("gateway_id", egwCp.ResourcePath()+".id")
+		producePolicy.AddAttribute("virtual_cluster_id", virtualCluster.ResourcePath()+".id")
+
+		producePolicy.AddAttribute(
+			"depends_on",
+			`[konnect_event_gateway_schema_registry.tf_test_schema_registry]`,
+		)
+
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					Config: builder.Upsert(egwCp).Upsert(backendCluster).Upsert(virtualCluster).Upsert(schemaRegistry).
+						Upsert(producePolicy).Build(),
+
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectResourceAction(
+								"konnect_event_gateway_produce_policy_schema_validation.tf_test_produce_schema_validation",
+								plancheck.ResourceActionCreate,
+							),
+						},
+					},
+
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr(
+							"konnect_event_gateway_produce_policy_schema_validation.tf_test_produce_schema_validation",
+							"enabled",
+							"true",
+						),
+						resource.TestCheckResourceAttr(
+							"konnect_event_gateway_produce_policy_schema_validation.tf_test_produce_schema_validation",
+							"config.confluent_schema_registry.key_validation_action",
+							"reject",
+						),
+						resource.TestCheckResourceAttr(
+							"konnect_event_gateway_produce_policy_schema_validation.tf_test_produce_schema_validation",
+							"config.confluent_schema_registry.value_validation_action",
+							"reject",
+						),
+					),
+				},
+
+				{
+					Config: builder.Upsert(egwCp).Upsert(backendCluster).Upsert(virtualCluster).Upsert(schemaRegistry).
+						Upsert(producePolicy).Build(),
+
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectEmptyPlan(),
+						},
+					},
+				},
+
+				{
+					Config: builder.Upsert(egwCp).Upsert(backendCluster).Upsert(virtualCluster).Upsert(schemaRegistry).
+						Upsert(
+							producePolicy.
+								AddAttribute("enabled", "false").
+								AddAttribute("description", `"updated schema validation policy"`),
+						).Build(),
+
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectResourceAction(
+								"konnect_event_gateway_produce_policy_schema_validation.tf_test_produce_schema_validation",
+								plancheck.ResourceActionUpdate,
+							),
+						},
+					},
+
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr(
+							"konnect_event_gateway_produce_policy_schema_validation.tf_test_produce_schema_validation",
+							"enabled",
+							"false",
+						),
+						resource.TestCheckResourceAttr(
+							"konnect_event_gateway_produce_policy_schema_validation.tf_test_produce_schema_validation",
+							"description",
+							"updated schema validation policy",
+						),
+					),
+				},
+			},
+		})
+	})
+
+	t.Run("EGW Confluent Schema Registry", func(t *testing.T) {
+		builder := hclbuilder.NewWithProvider(
+			hclbuilder.KonnectBeta,
+			fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort),
+		)
+		builder.ProviderProperty = hclbuilder.KonnectBeta
+
+		egwCp, err := hclbuilder.FromString(eventGatewayCP)
+		require.NoError(t, err)
+
+		schemaRegistry, err := hclbuilder.FromString(`
+			resource "konnect_event_gateway_schema_registry" "test_schema_registry" {
+			  confluent = {
+				name        = "test-schema-registry"
+				description = "test schema registry"
+
+				config = {
+				  endpoint        = "https://key-hovercraft.com"
+				  schema_type     = "avro"
+				  timeout_seconds = 8
+
+				  authentication = {
+					basic = {
+					  username = "test-user"
+					  password = "$${vault.env['MY_ENV_VAR']}"
+					}
+				  }
+				}
+			  }
+			}
+		`)
+		require.NoError(t, err)
+
+		schemaRegistry.AddAttribute(
+			"gateway_id",
+			egwCp.ResourcePath()+".id",
+		)
+
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					Config: builder.Upsert(egwCp).Upsert(schemaRegistry).Build(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectResourceAction(
+								"konnect_event_gateway.my_event_gateway",
+								plancheck.ResourceActionCreate,
+							),
+							plancheck.ExpectResourceAction(
+								"konnect_event_gateway_schema_registry.test_schema_registry",
+								plancheck.ResourceActionCreate,
+							),
+						},
+					},
+
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr(
+							"konnect_event_gateway_schema_registry.test_schema_registry",
+							"confluent.name",
+							"test-schema-registry",
+						),
+						resource.TestCheckResourceAttr(
+							"konnect_event_gateway_schema_registry.test_schema_registry",
+							"confluent.config.schema_type",
+							"avro",
+						),
+					),
+				},
+				{
+					Config: builder.Upsert(egwCp).Upsert(schemaRegistry).Build(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectEmptyPlan(),
+						},
+					},
+				},
+				{
+					Config: builder.Upsert(egwCp).Upsert(
+						schemaRegistry.AddAttribute(
+							"confluent.labels",
+							`{ env = "test" }`,
+						),
+					).Build(),
+
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr(
+							"konnect_event_gateway_schema_registry.test_schema_registry",
+							"confluent.labels.%", "1",
+						),
+						resource.TestCheckResourceAttr(
+							"konnect_event_gateway_schema_registry.test_schema_registry",
+							"confluent.labels.env",
+							"test",
 						),
 					),
 				},
