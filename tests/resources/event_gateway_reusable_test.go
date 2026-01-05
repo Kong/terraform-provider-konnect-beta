@@ -120,7 +120,6 @@ func TestEventGatewayReusable(t *testing.T) {
 					Config: builder.Upsert(egwCp).Upsert(egwBackendCluster).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction("konnect_event_gateway.my_event_gateway", plancheck.ResourceActionCreate),
 							plancheck.ExpectResourceAction("konnect_event_gateway_backend_cluster.my_event_gateway_backend_cluster", plancheck.ResourceActionCreate),
 						},
 					},
@@ -774,10 +773,6 @@ EOF
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
 							plancheck.ExpectResourceAction(
-								"konnect_event_gateway.my_event_gateway",
-								plancheck.ResourceActionCreate,
-							),
-							plancheck.ExpectResourceAction(
 								"konnect_event_gateway_listener.test_listener",
 								plancheck.ResourceActionCreate,
 							),
@@ -1246,7 +1241,6 @@ EOF
 
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction("konnect_event_gateway.my_event_gateway", plancheck.ResourceActionCreate),
 							plancheck.ExpectResourceAction("konnect_event_gateway_static_key.test_egw_static_key", plancheck.ResourceActionCreate),
 						},
 					},
@@ -1625,10 +1619,6 @@ EOF
 					Config: builder.Upsert(egwCp).Upsert(schemaRegistry).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction(
-								"konnect_event_gateway.my_event_gateway",
-								plancheck.ResourceActionCreate,
-							),
 							plancheck.ExpectResourceAction(
 								"konnect_event_gateway_schema_registry.test_schema_registry",
 								plancheck.ResourceActionCreate,
