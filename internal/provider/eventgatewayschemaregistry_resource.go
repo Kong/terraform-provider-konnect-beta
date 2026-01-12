@@ -14,12 +14,15 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -38,16 +41,15 @@ type EventGatewaySchemaRegistryResource struct {
 
 // EventGatewaySchemaRegistryResourceModel describes the resource data model.
 type EventGatewaySchemaRegistryResourceModel struct {
-	Config      *tfTypes.BackendClusterAuthenticationAnonymous `tfsdk:"config"`
-	Confluent   *tfTypes.SchemaRegistryConfluent               `queryParam:"inline" tfsdk:"confluent" tfPlanOnly:"true"`
-	CreatedAt   types.String                                   `tfsdk:"created_at"`
-	Description types.String                                   `tfsdk:"description"`
-	GatewayID   types.String                                   `tfsdk:"gateway_id"`
-	ID          types.String                                   `tfsdk:"id"`
-	Labels      map[string]types.String                        `tfsdk:"labels"`
-	Name        types.String                                   `tfsdk:"name"`
-	Type        types.String                                   `tfsdk:"type"`
-	UpdatedAt   types.String                                   `tfsdk:"updated_at"`
+	Config      tfTypes.SchemaRegistryConfluentConfig `tfsdk:"config"`
+	Confluent   *tfTypes.SchemaRegistryConfluent      `queryParam:"inline" tfsdk:"confluent" tfPlanOnly:"true"`
+	CreatedAt   types.String                          `tfsdk:"created_at"`
+	Description types.String                          `tfsdk:"description"`
+	GatewayID   types.String                          `tfsdk:"gateway_id"`
+	ID          types.String                          `tfsdk:"id"`
+	Labels      map[string]types.String               `tfsdk:"labels"`
+	Name        types.String                          `tfsdk:"name"`
+	UpdatedAt   types.String                          `tfsdk:"updated_at"`
 }
 
 func (r *EventGatewaySchemaRegistryResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -59,31 +61,83 @@ func (r *EventGatewaySchemaRegistryResource) Schema(ctx context.Context, req res
 		MarkdownDescription: "EventGatewaySchemaRegistry Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed:    true,
-				Description: `The configuration of the schema registry.`,
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"authentication": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"basic": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"password": schema.StringAttribute{
+										Computed: true,
+										MarkdownDescription: `A sensitive value containing the secret or a reference to a secret as a template string expression.` + "\n" +
+											`If the value is provided as plain text, it is encrypted at rest and omitted from API responses.` + "\n" +
+											`If provided as an expression, the expression itself is stored and returned by the API.`,
+									},
+									"username": schema.StringAttribute{
+										Computed: true,
+										MarkdownDescription: `A literal value or a reference to an existing secret as a template string expression.` + "\n" +
+											`The value is stored and returned by the API as-is, not treated as sensitive information.`,
+									},
+								},
+								Description: `Basic authentication scheme for the schema registry with username and password.`,
+							},
+						},
+						Description: `The authentication configuration for the schema registry.`,
+					},
+					"endpoint": schema.StringAttribute{
+						Computed:    true,
+						Description: `The endpoint of the Confluent schema registry.`,
+					},
+					"schema_type": schema.StringAttribute{
+						Computed:    true,
+						Description: `The format of the message.`,
+					},
+					"timeout_seconds": schema.Int64Attribute{
+						Computed:    true,
+						Default:     int64default.StaticInt64(10),
+						Description: `Total time in seconds from establishing connection to receive a response from schema registry. Default: 10`,
+					},
+				},
+				Description: `The configuration of [Confluent Schema Registry](https://github.com/confluentinc/schema-registry)`,
 			},
 			"confluent": schema.SingleNestedAttribute{
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"config": schema.SingleNestedAttribute{
-						Required: true,
+						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"authentication": schema.SingleNestedAttribute{
+								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"basic": schema.SingleNestedAttribute{
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"password": schema.StringAttribute{
-												Required: true,
+												Computed: true,
+												Optional: true,
 												MarkdownDescription: `A sensitive value containing the secret or a reference to a secret as a template string expression.` + "\n" +
 													`If the value is provided as plain text, it is encrypted at rest and omitted from API responses.` + "\n" +
-													`If provided as an expression, the expression itself is stored and returned by the API.`,
+													`If provided as an expression, the expression itself is stored and returned by the API.` + "\n" +
+													`Not Null`,
+												Validators: []validator.String{
+													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtLeast(1),
+												},
 											},
 											"username": schema.StringAttribute{
-												Required: true,
+												Computed: true,
+												Optional: true,
 												MarkdownDescription: `A literal value or a reference to an existing secret as a template string expression.` + "\n" +
-													`The value is stored and returned by the API as-is, not treated as sensitive information.`,
+													`The value is stored and returned by the API as-is, not treated as sensitive information.` + "\n" +
+													`Not Null`,
+												Validators: []validator.String{
+													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.UTF8LengthAtLeast(1),
+												},
 											},
 										},
 										Description: `Basic authentication scheme for the schema registry with username and password.`,
@@ -92,16 +146,20 @@ func (r *EventGatewaySchemaRegistryResource) Schema(ctx context.Context, req res
 								Description: `The authentication configuration for the schema registry.`,
 							},
 							"endpoint": schema.StringAttribute{
-								Required:    true,
-								Description: `The endpoint of the Confluent schema registry.`,
+								Computed:    true,
+								Optional:    true,
+								Description: `The endpoint of the Confluent schema registry. Not Null`,
 								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
 									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"schema_type": schema.StringAttribute{
-								Required:    true,
-								Description: `The format of the message. must be one of ["avro", "json"]`,
+								Computed:    true,
+								Optional:    true,
+								Description: `The format of the message. Not Null; must be one of ["avro", "json"]`,
 								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
 									stringvalidator.OneOf(
 										"avro",
 										"json",
@@ -118,16 +176,33 @@ func (r *EventGatewaySchemaRegistryResource) Schema(ctx context.Context, req res
 								},
 							},
 						},
-						Description: `The configuration of [Confluent Schema Registry](https://github.com/confluentinc/schema-registry)`,
+						Description: `The configuration of [Confluent Schema Registry](https://github.com/confluentinc/schema-registry). Not Null`,
+						Validators: []validator.Object{
+							speakeasy_objectvalidators.NotNull(),
+						},
+					},
+					"created_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
 					"description": schema.StringAttribute{
+						Computed:    true,
 						Optional:    true,
-						Description: `A human-readable description of the virtual cluster.`,
+						Default:     stringdefault.StaticString(``),
+						Description: `A human-readable description of the virtual cluster. Default: ""`,
 						Validators: []validator.String{
 							stringvalidator.UTF8LengthAtMost(512),
 						},
 					},
+					"id": schema.StringAttribute{
+						Computed:    true,
+						Description: `The unique identifier of the schema registry.`,
+					},
 					"labels": schema.MapAttribute{
+						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
@@ -135,11 +210,20 @@ func (r *EventGatewaySchemaRegistryResource) Schema(ctx context.Context, req res
 							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 					},
 					"name": schema.StringAttribute{
-						Required:    true,
-						Description: `The unique name of the schema registry.`,
+						Computed:    true,
+						Optional:    true,
+						Description: `The unique name of the schema registry. Not Null`,
 						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 255),
 						},
+					},
+					"updated_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
 				Description: `A Confluent schema registry.`,
@@ -153,7 +237,8 @@ func (r *EventGatewaySchemaRegistryResource) Schema(ctx context.Context, req res
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,
-				Description: `A human-readable description of the virtual cluster.`,
+				Default:     stringdefault.StaticString(``),
+				Description: `A human-readable description of the virtual cluster. Default: ""`,
 			},
 			"gateway_id": schema.StringAttribute{
 				Required:    true,
@@ -173,10 +258,6 @@ func (r *EventGatewaySchemaRegistryResource) Schema(ctx context.Context, req res
 			"name": schema.StringAttribute{
 				Computed:    true,
 				Description: `The unique name of the schema registry.`,
-			},
-			"type": schema.StringAttribute{
-				Computed:    true,
-				Description: `The type of the schema registry.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -249,11 +330,11 @@ func (r *EventGatewaySchemaRegistryResource) Create(ctx context.Context, req res
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.SchemaRegistry != nil) {
+	if !(res.SchemaRegistryConcrete != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedSchemaRegistry(ctx, res.SchemaRegistry)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedSchemaRegistryConcrete(ctx, res.SchemaRegistryConcrete)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -313,11 +394,11 @@ func (r *EventGatewaySchemaRegistryResource) Read(ctx context.Context, req resou
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.SchemaRegistry != nil) {
+	if !(res.SchemaRegistryConcrete != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedSchemaRegistry(ctx, res.SchemaRegistry)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedSchemaRegistryConcrete(ctx, res.SchemaRegistryConcrete)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -363,11 +444,11 @@ func (r *EventGatewaySchemaRegistryResource) Update(ctx context.Context, req res
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.SchemaRegistry != nil) {
+	if !(res.SchemaRegistryConcrete != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedSchemaRegistry(ctx, res.SchemaRegistry)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedSchemaRegistryConcrete(ctx, res.SchemaRegistryConcrete)...)
 
 	if resp.Diagnostics.HasError() {
 		return

@@ -15,7 +15,7 @@ EventGatewayConsumePolicyModifyHeaders Resource
 ```terraform
 resource "konnect_event_gateway_consume_policy_modify_headers" "my_eventgatewayconsumepolicymodifyheaders" {
   provider = konnect-beta
-  condition = "context.topic.name.endsWith('my_suffix')"
+  condition = "record.value.content.foo.bar == \"a-value\""
   config = {
     actions = [
       {
@@ -52,7 +52,7 @@ resource "konnect_event_gateway_consume_policy_modify_headers" "my_eventgatewayc
 
 When the policy is applied as a child policy of schema_validation, the expression can also reference
 `record.value` fields.
-- `description` (String) A human-readable description of the policy.
+- `description` (String) A human-readable description of the policy. Default: ""
 - `enabled` (Boolean) Whether the policy is enabled. Default: true
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 

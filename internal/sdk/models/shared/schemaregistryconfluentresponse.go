@@ -7,20 +7,17 @@ import (
 	"time"
 )
 
-// SchemaRegistryConfig - The configuration of the schema registry.
-type SchemaRegistryConfig struct {
-}
-
-// SchemaRegistry - A schema registry that contains schemas.
-type SchemaRegistry struct {
+// SchemaRegistryConfluentResponse - A Confluent schema registry.
+type SchemaRegistryConfluentResponse struct {
 	// The unique name of the schema registry.
 	Name string `json:"name"`
 	// A human-readable description of the virtual cluster.
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"" json:"description"`
 	// The type of the schema registry.
-	Type string `json:"type"`
-	// The configuration of the schema registry.
-	Config *SchemaRegistryConfig `json:"config,omitempty"`
+	type_ string `const:"confluent" json:"type"`
+	// The configuration of [Confluent Schema Registry](https://github.com/confluentinc/schema-registry)
+	//
+	Config SchemaRegistryConfluentConfig `json:"config"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -34,67 +31,64 @@ type SchemaRegistry struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-func (s SchemaRegistry) MarshalJSON() ([]byte, error) {
+func (s SchemaRegistryConfluentResponse) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(s, "", false)
 }
 
-func (s *SchemaRegistry) UnmarshalJSON(data []byte) error {
+func (s *SchemaRegistryConfluentResponse) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *SchemaRegistry) GetName() string {
+func (s *SchemaRegistryConfluentResponse) GetName() string {
 	if s == nil {
 		return ""
 	}
 	return s.Name
 }
 
-func (s *SchemaRegistry) GetDescription() *string {
+func (s *SchemaRegistryConfluentResponse) GetDescription() *string {
 	if s == nil {
 		return nil
 	}
 	return s.Description
 }
 
-func (s *SchemaRegistry) GetType() string {
-	if s == nil {
-		return ""
-	}
-	return s.Type
+func (s *SchemaRegistryConfluentResponse) GetType() string {
+	return "confluent"
 }
 
-func (s *SchemaRegistry) GetConfig() *SchemaRegistryConfig {
+func (s *SchemaRegistryConfluentResponse) GetConfig() SchemaRegistryConfluentConfig {
 	if s == nil {
-		return nil
+		return SchemaRegistryConfluentConfig{}
 	}
 	return s.Config
 }
 
-func (s *SchemaRegistry) GetLabels() map[string]*string {
+func (s *SchemaRegistryConfluentResponse) GetLabels() map[string]*string {
 	if s == nil {
 		return nil
 	}
 	return s.Labels
 }
 
-func (s *SchemaRegistry) GetID() string {
+func (s *SchemaRegistryConfluentResponse) GetID() string {
 	if s == nil {
 		return ""
 	}
 	return s.ID
 }
 
-func (s *SchemaRegistry) GetCreatedAt() time.Time {
+func (s *SchemaRegistryConfluentResponse) GetCreatedAt() time.Time {
 	if s == nil {
 		return time.Time{}
 	}
 	return s.CreatedAt
 }
 
-func (s *SchemaRegistry) GetUpdatedAt() time.Time {
+func (s *SchemaRegistryConfluentResponse) GetUpdatedAt() time.Time {
 	if s == nil {
 		return time.Time{}
 	}

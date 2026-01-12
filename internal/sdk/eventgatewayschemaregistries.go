@@ -224,12 +224,12 @@ func (s *EventGatewaySchemaRegistries) CreateEventGatewaySchemaRegistry(ctx cont
 				return nil, err
 			}
 
-			var out shared.SchemaRegistry
+			var out shared.SchemaRegistryConcrete
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.SchemaRegistry = &out
+			res.SchemaRegistryConcrete = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -498,12 +498,12 @@ func (s *EventGatewaySchemaRegistries) GetEventGatewaySchemaRegistry(ctx context
 				return nil, err
 			}
 
-			var out shared.SchemaRegistry
+			var out shared.SchemaRegistryConcrete
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.SchemaRegistry = &out
+			res.SchemaRegistryConcrete = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -779,12 +779,12 @@ func (s *EventGatewaySchemaRegistries) UpdateEventGatewaySchemaRegistry(ctx cont
 				return nil, err
 			}
 
-			var out shared.SchemaRegistry
+			var out shared.SchemaRegistryConcrete
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.SchemaRegistry = &out
+			res.SchemaRegistryConcrete = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

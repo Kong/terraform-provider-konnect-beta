@@ -36,7 +36,7 @@ type GetEventGatewaySchemaRegistryResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// A single schema registry object.
-	SchemaRegistry *shared.SchemaRegistry
+	SchemaRegistryConcrete *shared.SchemaRegistryConcrete
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
@@ -66,11 +66,18 @@ func (g *GetEventGatewaySchemaRegistryResponse) GetRawResponse() *http.Response 
 	return g.RawResponse
 }
 
-func (g *GetEventGatewaySchemaRegistryResponse) GetSchemaRegistry() *shared.SchemaRegistry {
+func (g *GetEventGatewaySchemaRegistryResponse) GetSchemaRegistryConcrete() *shared.SchemaRegistryConcrete {
 	if g == nil {
 		return nil
 	}
-	return g.SchemaRegistry
+	return g.SchemaRegistryConcrete
+}
+
+func (g *GetEventGatewaySchemaRegistryResponse) GetSchemaRegistryConcreteConfluent() *shared.SchemaRegistryConfluentResponse {
+	if v := g.GetSchemaRegistryConcrete(); v != nil {
+		return v.SchemaRegistryConfluentResponse
+	}
+	return nil
 }
 
 func (g *GetEventGatewaySchemaRegistryResponse) GetUnauthorizedError() *shared.UnauthorizedError {

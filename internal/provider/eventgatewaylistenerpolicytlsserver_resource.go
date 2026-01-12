@@ -77,12 +77,18 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Schema(ctx context.Context
 									Required: true,
 									MarkdownDescription: `A literal value or a reference to an existing secret as a template string expression.` + "\n" +
 										`The value is stored and returned by the API as-is, not treated as sensitive information.`,
+									Validators: []validator.String{
+										stringvalidator.UTF8LengthAtLeast(1),
+									},
 								},
 								"key": schema.StringAttribute{
 									Required: true,
 									MarkdownDescription: `A sensitive value containing the secret or a reference to a secret as a template string expression.` + "\n" +
 										`If the value is provided as plain text, it is encrypted at rest and omitted from API responses.` + "\n" +
 										`If provided as an expression, the expression itself is stored and returned by the API.`,
+									Validators: []validator.String{
+										stringvalidator.UTF8LengthAtLeast(1),
+									},
 								},
 							},
 						},
@@ -132,8 +138,10 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Schema(ctx context.Context
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
 			"description": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
-				Description: `A human-readable description of the policy.`,
+				Default:     stringdefault.StaticString(``),
+				Description: `A human-readable description of the policy. Default: ""`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtMost(512),
 				},
@@ -168,7 +176,7 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Schema(ctx context.Context
 				Optional:    true,
 				Description: `A unique user-defined name of the policy.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 255),
+					stringvalidator.UTF8LengthAtMost(255),
 				},
 			},
 			"parent_policy_id": schema.StringAttribute{

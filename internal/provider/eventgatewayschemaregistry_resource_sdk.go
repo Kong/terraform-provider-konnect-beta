@@ -12,27 +12,40 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *EventGatewaySchemaRegistryResourceModel) RefreshFromSharedSchemaRegistry(ctx context.Context, resp *shared.SchemaRegistry) diag.Diagnostics {
+func (r *EventGatewaySchemaRegistryResourceModel) RefreshFromSharedSchemaRegistryConcrete(ctx context.Context, resp *shared.SchemaRegistryConcrete) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.BackendClusterAuthenticationAnonymous{}
-		}
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.Description = types.StringPointerValue(resp.Description)
-		r.ID = types.StringValue(resp.ID)
-		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String, len(resp.Labels))
-			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringPointerValue(value)
+		if resp.SchemaRegistryConfluentResponse != nil {
+			r.Confluent = &tfTypes.SchemaRegistryConfluent{}
+			if resp.SchemaRegistryConfluentResponse.Config.Authentication != nil {
+				r.Confluent.Config.Authentication = &tfTypes.SchemaRegistryAuthenticationScheme{}
+				if resp.SchemaRegistryConfluentResponse.Config.Authentication.SchemaRegistryAuthenticationBasic != nil {
+					r.Confluent.Config.Authentication.Basic = &tfTypes.BackendClusterAuthenticationSaslPlain{}
+					r.Confluent.Config.Authentication.Basic.Password = types.StringValue(resp.SchemaRegistryConfluentResponse.Config.Authentication.SchemaRegistryAuthenticationBasic.Password)
+					r.Confluent.Config.Authentication.Basic.Username = types.StringValue(resp.SchemaRegistryConfluentResponse.Config.Authentication.SchemaRegistryAuthenticationBasic.Username)
+				}
 			}
+			r.Confluent.Config.Endpoint = types.StringValue(resp.SchemaRegistryConfluentResponse.Config.Endpoint)
+			r.Confluent.Config.SchemaType = types.StringValue(string(resp.SchemaRegistryConfluentResponse.Config.SchemaType))
+			r.Confluent.Config.TimeoutSeconds = types.Int64PointerValue(resp.SchemaRegistryConfluentResponse.Config.TimeoutSeconds)
+			r.Confluent.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.SchemaRegistryConfluentResponse.CreatedAt))
+			r.CreatedAt = r.Confluent.CreatedAt
+			r.Confluent.Description = types.StringPointerValue(resp.SchemaRegistryConfluentResponse.Description)
+			r.Description = r.Confluent.Description
+			r.Confluent.ID = types.StringValue(resp.SchemaRegistryConfluentResponse.ID)
+			r.ID = r.Confluent.ID
+			if len(resp.SchemaRegistryConfluentResponse.Labels) > 0 {
+				r.Confluent.Labels = make(map[string]types.String, len(resp.SchemaRegistryConfluentResponse.Labels))
+				for key, value := range resp.SchemaRegistryConfluentResponse.Labels {
+					r.Confluent.Labels[key] = types.StringPointerValue(value)
+				}
+			}
+			r.Confluent.Name = types.StringValue(resp.SchemaRegistryConfluentResponse.Name)
+			r.Name = r.Confluent.Name
+			r.Confluent.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.SchemaRegistryConfluentResponse.UpdatedAt))
+			r.UpdatedAt = r.Confluent.UpdatedAt
 		}
-		r.Name = types.StringValue(resp.Name)
-		r.Type = types.StringValue(resp.Type)
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
 
 	return diags

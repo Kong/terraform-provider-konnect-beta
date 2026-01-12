@@ -43,7 +43,7 @@ type CreateEventGatewaySchemaRegistryResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Created
-	SchemaRegistry *shared.SchemaRegistry
+	SchemaRegistryConcrete *shared.SchemaRegistryConcrete
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Unauthorized
@@ -73,11 +73,18 @@ func (c *CreateEventGatewaySchemaRegistryResponse) GetRawResponse() *http.Respon
 	return c.RawResponse
 }
 
-func (c *CreateEventGatewaySchemaRegistryResponse) GetSchemaRegistry() *shared.SchemaRegistry {
+func (c *CreateEventGatewaySchemaRegistryResponse) GetSchemaRegistryConcrete() *shared.SchemaRegistryConcrete {
 	if c == nil {
 		return nil
 	}
-	return c.SchemaRegistry
+	return c.SchemaRegistryConcrete
+}
+
+func (c *CreateEventGatewaySchemaRegistryResponse) GetSchemaRegistryConcreteConfluent() *shared.SchemaRegistryConfluentResponse {
+	if v := c.GetSchemaRegistryConcrete(); v != nil {
+		return v.SchemaRegistryConfluentResponse
+	}
+	return nil
 }
 
 func (c *CreateEventGatewaySchemaRegistryResponse) GetBadRequestError() *shared.BadRequestError {

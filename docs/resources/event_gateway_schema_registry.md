@@ -50,43 +50,42 @@ resource "konnect_event_gateway_schema_registry" "my_eventgatewayschemaregistry"
 
 ### Read-Only
 
-- `config` (Attributes) The configuration of the schema registry. (see [below for nested schema](#nestedatt--config))
+- `config` (Attributes) The configuration of [Confluent Schema Registry](https://github.com/confluentinc/schema-registry) (see [below for nested schema](#nestedatt--config))
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `description` (String) A human-readable description of the virtual cluster.
+- `description` (String) A human-readable description of the virtual cluster. Default: ""
 - `id` (String) The unique identifier of the schema registry.
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `name` (String) The unique name of the schema registry.
-- `type` (String) The type of the schema registry.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--confluent"></a>
 ### Nested Schema for `confluent`
 
-Required:
-
-- `config` (Attributes) The configuration of [Confluent Schema Registry](https://github.com/confluentinc/schema-registry) (see [below for nested schema](#nestedatt--confluent--config))
-- `name` (String) The unique name of the schema registry.
-
 Optional:
 
-- `description` (String) A human-readable description of the virtual cluster.
+- `config` (Attributes) The configuration of [Confluent Schema Registry](https://github.com/confluentinc/schema-registry). Not Null (see [below for nested schema](#nestedatt--confluent--config))
+- `description` (String) A human-readable description of the virtual cluster. Default: ""
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+- `name` (String) The unique name of the schema registry. Not Null
+
+Read-Only:
+
+- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
+- `id` (String) The unique identifier of the schema registry.
+- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--confluent--config"></a>
 ### Nested Schema for `confluent.config`
 
-Required:
-
-- `endpoint` (String) The endpoint of the Confluent schema registry.
-- `schema_type` (String) The format of the message. must be one of ["avro", "json"]
-
 Optional:
 
 - `authentication` (Attributes) The authentication configuration for the schema registry. (see [below for nested schema](#nestedatt--confluent--config--authentication))
+- `endpoint` (String) The endpoint of the Confluent schema registry. Not Null
+- `schema_type` (String) The format of the message. Not Null; must be one of ["avro", "json"]
 - `timeout_seconds` (Number) Total time in seconds from establishing connection to receive a response from schema registry. Default: 10
 
 <a id="nestedatt--confluent--config--authentication"></a>
@@ -99,13 +98,15 @@ Optional:
 <a id="nestedatt--confluent--config--authentication--basic"></a>
 ### Nested Schema for `confluent.config.authentication.basic`
 
-Required:
+Optional:
 
 - `password` (String) A sensitive value containing the secret or a reference to a secret as a template string expression.
 If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
 If provided as an expression, the expression itself is stored and returned by the API.
+Not Null
 - `username` (String) A literal value or a reference to an existing secret as a template string expression.
 The value is stored and returned by the API as-is, not treated as sensitive information.
+Not Null
 
 
 
@@ -113,6 +114,31 @@ The value is stored and returned by the API as-is, not treated as sensitive info
 
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
+
+Read-Only:
+
+- `authentication` (Attributes) The authentication configuration for the schema registry. (see [below for nested schema](#nestedatt--config--authentication))
+- `endpoint` (String) The endpoint of the Confluent schema registry.
+- `schema_type` (String) The format of the message.
+- `timeout_seconds` (Number) Total time in seconds from establishing connection to receive a response from schema registry. Default: 10
+
+<a id="nestedatt--config--authentication"></a>
+### Nested Schema for `config.authentication`
+
+Read-Only:
+
+- `basic` (Attributes) Basic authentication scheme for the schema registry with username and password. (see [below for nested schema](#nestedatt--config--authentication--basic))
+
+<a id="nestedatt--config--authentication--basic"></a>
+### Nested Schema for `config.authentication.basic`
+
+Read-Only:
+
+- `password` (String) A sensitive value containing the secret or a reference to a secret as a template string expression.
+If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
+If provided as an expression, the expression itself is stored and returned by the API.
+- `username` (String) A literal value or a reference to an existing secret as a template string expression.
+The value is stored and returned by the API as-is, not treated as sensitive information.
 
 ## Import
 

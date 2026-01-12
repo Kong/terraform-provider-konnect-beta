@@ -50,7 +50,7 @@ resource "konnect_event_gateway_listener_policy_tls_server" "my_eventgatewaylist
 
 ### Optional
 
-- `description` (String) A human-readable description of the policy.
+- `description` (String) A human-readable description of the policy. Default: ""
 - `enabled` (Boolean) Whether the policy is enabled. Default: true
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
