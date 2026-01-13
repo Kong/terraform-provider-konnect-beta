@@ -6619,7 +6619,7 @@ paths:
   '/v1/event-gateways/{gatewayId}/listeners/{eventGatewayListenerId}/policies/{policyId}#TlsServer':
     get:
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayListenerPolicyTlsServer#get
+        terraform-resource: EventGatewayListenerPolicyTlsServer#read
         terraform-datasource: null
       operationId: get-event-gateway-listener-policy-tls-server
       summary: Get a Policy for Listener
@@ -6699,7 +6699,7 @@ paths:
   '/v1/event-gateways/{gatewayId}/listeners/{eventGatewayListenerId}/policies/{policyId}#ForwardToVirtualCluster':
     get:
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayListenerPolicyForwardToVirtualCluster#get
+        terraform-resource: EventGatewayListenerPolicyForwardToVirtualCluster#read
         terraform-datasource: null
       operationId: get-event-gateway-listener-policy-forward-to_virtual_cluster
       summary: Get a Policy for Listener
@@ -6841,7 +6841,7 @@ paths:
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies/{policyId}#ModifyHeaders':
     get:
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayConsumePolicyModifyHeaders#get
+        terraform-resource: EventGatewayConsumePolicyModifyHeaders#read
         terraform-datasource: null
       operationId: get-event-gateway-virtual-cluster-consume-policy-modify-headers
       summary: Get a Consume Policy for Virtual Cluster
@@ -6921,7 +6921,7 @@ paths:
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies/{policyId}#SchemaValidation':
     get:
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayConsumePolicySchemaValidation#get
+        terraform-resource: EventGatewayConsumePolicySchemaValidation#read
         terraform-datasource: null
       operationId: get-event-gateway-virtual-cluster-consume-policy-schema-validation
       summary: Get a Consume Policy for Virtual Cluster
@@ -7001,7 +7001,7 @@ paths:
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies/{policyId}#Decrypt':
     get:
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayConsumePolicyDecrypt#get
+        terraform-resource: EventGatewayConsumePolicyDecrypt#read
         terraform-datasource: null
       operationId: get-event-gateway-virtual-cluster-consume-policy-decrypt
       summary: Get a Consume Policy for Virtual Cluster
@@ -7081,7 +7081,7 @@ paths:
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies/{policyId}#SkipRecord':
     get:
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayConsumePolicySkipRecord#get
+        terraform-resource: EventGatewayConsumePolicySkipRecord#read
         terraform-datasource: null
       operationId: get-event-gateway-virtual-cluster-consume-policy-skip-record
       summary: Get a Consume Policy for Virtual Cluster
@@ -7285,7 +7285,7 @@ paths:
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies/{policyId}#ModifyHeaders':
     get:
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayProducePolicyModifyHeaders#get
+        terraform-resource: EventGatewayProducePolicyModifyHeaders#read
         terraform-datasource: null
       operationId: get-event-gateway-virtual-cluster-produce-policy-modify-headers
       summary: Get a Produce Policy for Virtual Cluster
@@ -7365,7 +7365,7 @@ paths:
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies/{policyId}#SchemaValidation':
     get:
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayProducePolicySchemaValidation#get
+        terraform-resource: EventGatewayProducePolicySchemaValidation#read
         terraform-datasource: null
       operationId: get-event-gateway-virtual-cluster-produce-policy-schema-validation
       summary: Get a Produce Policy for Virtual Cluster
@@ -7445,7 +7445,7 @@ paths:
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies/{policyId}#Encrypt':
     get:
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayProducePolicyEncrypt#get
+        terraform-resource: EventGatewayProducePolicyEncrypt#read
         terraform-datasource: null
       operationId: get-event-gateway-virtual-cluster-produce-policy-encrypt
       summary: Get a Produce Policy for Virtual Cluster
@@ -7618,7 +7618,7 @@ paths:
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/cluster-policies/{policyId}#Acls':
     get:
       x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayClusterPolicyAcls#get
+        terraform-resource: EventGatewayClusterPolicyAcls#read
         terraform-datasource: null
       operationId: get-event-gateway-virtual-cluster-cluster-level-policy-acls
       summary: Get a Cluster Policy for Virtual Cluster
