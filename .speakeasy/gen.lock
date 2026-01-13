@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: a7ffaf29137b6542bdcfc0b9e60a0b93
+  docChecksum: 4f237ae920c2dd26c7e830226a077c62
   docVersion: 2.0.0
   speakeasyVersion: 1.676.1
   generationVersion: 2.781.2
   releaseVersion: 0.14.0
   configChecksum: bfa214196ab0be882bc29ed6c271d9bf
 persistentEdits:
-  generation_id: 90497ed2-c228-4e41-ab0d-4edee52b73f7
-  pristine_commit_hash: 9de97f726fdfc6a835745bef37638ff36f5c9a47
-  pristine_tree_hash: 1db5e4ae1ced15924b7a42f785a89438dd3ead1d
+  generation_id: 11f9335d-723e-4d20-9e29-71f051f7aca3
+  pristine_commit_hash: c150aec63a8d760ef58baa92db18bb4da1812aa5
+  pristine_tree_hash: 08cedd50e6660f00d3b4f495edaa89bc25562c07
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -190,8 +190,8 @@ trackedFiles:
     pristine_git_object: 90f925c153fb2e688a93453b66654423bff1830d
   examples/resources/konnect-beta_event_gateway/resource.tf:
     id: 103ebdb571c9
-    last_write_checksum: sha1:395486f758f46a7ca1bedcdbb01bf5b00dac4531
-    pristine_git_object: 296a6cda734d13a2445973ea04c54fa61b491fea
+    last_write_checksum: sha1:ac3ec8ffcda65754784232974fc4212b2f32c52d
+    pristine_git_object: 2ff27b86f732e6a326fda1e3e06dc4c4794571a6
   examples/resources/konnect-beta_event_gateway_backend_cluster/import-by-string-id.tf:
     id: d271eae35282
     last_write_checksum: sha1:b809c5065ebdde51a78d10336c3edc6b9d7788d7
@@ -214,8 +214,8 @@ trackedFiles:
     pristine_git_object: ee92e6cabb498368d565cd425cf4bf87d394aa2d
   examples/resources/konnect-beta_event_gateway_cluster_policy_acls/resource.tf:
     id: e3afe17fe29c
-    last_write_checksum: sha1:fb9ceb2624fbd02bd08e4299f500c6f7bc7b80de
-    pristine_git_object: 6c30bcfffa13738e333943243f5ff1588299e1a0
+    last_write_checksum: sha1:b3e553b921db7255ecc574fcb643c457449c97b8
+    pristine_git_object: c8efe74e28dd14312661c4a8b55d2b36117be0d3
   examples/resources/konnect-beta_event_gateway_consume_policy_decrypt/import-by-string-id.tf:
     id: a997034c7db2
     last_write_checksum: sha1:6541ed38b4b58621e82b7db58bcc2adc3feae70e
@@ -226,8 +226,8 @@ trackedFiles:
     pristine_git_object: c32ec82dab2566e4d1bea110022170b41c943ca8
   examples/resources/konnect-beta_event_gateway_consume_policy_decrypt/resource.tf:
     id: 49c42371fdf1
-    last_write_checksum: sha1:98b7d97491c112515ac082d177af416544770b09
-    pristine_git_object: b40966503e2910ece6c10c381154e0cba292914f
+    last_write_checksum: sha1:778bb88d7af012daffc5e84b9876209a0fb46159
+    pristine_git_object: 5928d0f4a2560adab0c9814ebe3e618bedd6ed79
   examples/resources/konnect-beta_event_gateway_consume_policy_modify_headers/import-by-string-id.tf:
     id: 2833b783c60f
     last_write_checksum: sha1:a031bb11607a71137da1eb97ac9e4816d9ad8677
@@ -238,8 +238,8 @@ trackedFiles:
     pristine_git_object: 3bc0709fb57a901f93bef4b2cdd584d12c59e3e8
   examples/resources/konnect-beta_event_gateway_consume_policy_modify_headers/resource.tf:
     id: bc084880dc78
-    last_write_checksum: sha1:40ad131a1e58b3bd8f06dff3a439c6aa4cd6e13e
-    pristine_git_object: f5bbb4f243e12ca2cdbc594f0987c438a1a218fe
+    last_write_checksum: sha1:94f6a8047d9946575c5d6f4f1e77fb0e66ad7c81
+    pristine_git_object: ed51f2f704e18711e5affbe6aa80ef0c28f82b57
   examples/resources/konnect-beta_event_gateway_consume_policy_schema_validation/import-by-string-id.tf:
     id: ec5b1e16ec8d
     last_write_checksum: sha1:1355964c3369cb3605fd649e904e9534953d2acb
@@ -250,8 +250,8 @@ trackedFiles:
     pristine_git_object: a8793d37ab9e79d3d9d77d44ef58288f3fb362c1
   examples/resources/konnect-beta_event_gateway_consume_policy_schema_validation/resource.tf:
     id: 9ede8fc237f2
-    last_write_checksum: sha1:bca1fa69aa2478a8a2668229bf1ba3b086aa83de
-    pristine_git_object: b8bbcb65b91147a04107d37b60ce3570e89eb936
+    last_write_checksum: sha1:723787429971873b40fe7400c5b7a33147f465ad
+    pristine_git_object: 8832df96e73a4069720dc3119842e4e6fa5fe97a
   examples/resources/konnect-beta_event_gateway_consume_policy_skip_record/import-by-string-id.tf:
     id: 2e9fcc51bf76
     last_write_checksum: sha1:18b018e9322df755513eee7096620376bd717f4b
@@ -262,8 +262,8 @@ trackedFiles:
     pristine_git_object: a5d1e1990931da27b9e66a9117a46b5944f569c4
   examples/resources/konnect-beta_event_gateway_consume_policy_skip_record/resource.tf:
     id: ac65814c9303
-    last_write_checksum: sha1:f7f371ca6a2bab722ed512cb0836404ec95e4123
-    pristine_git_object: a27a161c804ea5316d8ceef8e3b1353fb4a0ef15
+    last_write_checksum: sha1:7a5f0946489a079c6d79a491869959df9a55296c
+    pristine_git_object: 5325635b10a7415a80316dc1e54c338602b0eaf0
   examples/resources/konnect-beta_event_gateway_data_plane_certificate/import-by-string-id.tf:
     id: 2cc8d1bd0ad5
     last_write_checksum: sha1:b145dc7e82f5b661b525d1225d984a9b3a8512ff
@@ -298,8 +298,8 @@ trackedFiles:
     pristine_git_object: 246315837d5c660cc139092f41133ea2fd4de7e0
   examples/resources/konnect-beta_event_gateway_listener_policy_forward_to_virtual_cluster/resource.tf:
     id: 0ad1e03f397e
-    last_write_checksum: sha1:c341c55c6da5cbcf2aa5edfbd3ae56c1410ff98b
-    pristine_git_object: 68d5457557b279057961953313719118c282d6c5
+    last_write_checksum: sha1:ffc87221c540f42453e4cfa196730eaf4d6da564
+    pristine_git_object: 55457cb8bc07f2940286d7fdb9c7d9066fb5f606
   examples/resources/konnect-beta_event_gateway_listener_policy_tls_server/import-by-string-id.tf:
     id: 5a8ada8ba2ce
     last_write_checksum: sha1:c0c1928712c7ab1f0b5cd661c466915a51dd009b
@@ -322,8 +322,8 @@ trackedFiles:
     pristine_git_object: 69e58d3d6c55bddfe5678f7e46096d0534333f48
   examples/resources/konnect-beta_event_gateway_produce_policy_encrypt/resource.tf:
     id: b82e999dca63
-    last_write_checksum: sha1:bb82c230c969d4ce20887d1f8e04cd32d706ecf4
-    pristine_git_object: 95d7775faa51275f58c565bc68817b804d0ae3ae
+    last_write_checksum: sha1:96f3a09fae9d628cc6da00dd051c426202c56cc0
+    pristine_git_object: b93e29137ac9f6fce03d22a6b76ed136cb163bb2
   examples/resources/konnect-beta_event_gateway_produce_policy_modify_headers/import-by-string-id.tf:
     id: bb9587b41c3e
     last_write_checksum: sha1:d46bc7686164b7551ed4902aaad67a9307bd5e80
@@ -334,8 +334,8 @@ trackedFiles:
     pristine_git_object: 2167ef670d629a5f3de1f70d134c9fd73bf60921
   examples/resources/konnect-beta_event_gateway_produce_policy_modify_headers/resource.tf:
     id: f5442cb691e4
-    last_write_checksum: sha1:92ec2db81faaa95f3baa7120b790c8d2f4965806
-    pristine_git_object: 41d2807543710f7b25ad7735c79d52b1d2ba3f2c
+    last_write_checksum: sha1:c8c7bd8425cdd984fe13a070ac7adb596da91b7b
+    pristine_git_object: ec55a9b8131129880b5a359d5c53ec026a868e9a
   examples/resources/konnect-beta_event_gateway_produce_policy_schema_validation/import-by-string-id.tf:
     id: 75fd034e615d
     last_write_checksum: sha1:8c275dd5a433f56beed01f25c17d5411bc79261a
@@ -346,8 +346,8 @@ trackedFiles:
     pristine_git_object: 6ce456e7d1dde99f4908998c095f29c3a615c155
   examples/resources/konnect-beta_event_gateway_produce_policy_schema_validation/resource.tf:
     id: 7b21a13c1211
-    last_write_checksum: sha1:e2c9c0a050f84caffb6d8d33b3ecd92a0f37cbfe
-    pristine_git_object: 99f0c3da0ffc6f468e1258143fd9ceff7fa218cf
+    last_write_checksum: sha1:8ab953eba1b18a415982772600243c07eb94ea96
+    pristine_git_object: 739f936cc5a1ea40bf18515c4d0ac8177dfd4b26
   examples/resources/konnect-beta_event_gateway_schema_registry/import-by-string-id.tf:
     id: 746bab37e919
     last_write_checksum: sha1:b47745703fe64acbf914bb12ed4991f2fd120beb
@@ -1006,60 +1006,60 @@ trackedFiles:
     pristine_git_object: 7cbfa2f1de399659183bb9ee39549383665b198c
   internal/provider/eventgateway_resource.go:
     id: 795e1c09d843
-    last_write_checksum: sha1:c050fb0ab25eab9b7eb8e0e52bae14a1bc98def5
-    pristine_git_object: 8c0435422f127ed3c5c22d0626d7c10b53e77cc1
+    last_write_checksum: sha1:810ab5b693791a12f68e0529c729b90e2cd578d3
+    pristine_git_object: 126f02850311b8e904f36e33c272f805c246adae
   internal/provider/eventgateway_resource_sdk.go:
     id: f507056646d5
-    last_write_checksum: sha1:cf7543def6147117e2e21df424f42a5c08a2f41b
-    pristine_git_object: 790622eea1349580cd999c1a3740c6a64af07780
+    last_write_checksum: sha1:0b394a38674c95f87059613017d9cf4b543b2123
+    pristine_git_object: 9cc825140e3e0540382d1832fde8f2ca10f3db7a
   internal/provider/eventgatewaybackendcluster_resource.go:
     id: 3fbb84e4cb34
-    last_write_checksum: sha1:263cb5aafeae127e3bfcb2cbd86aec6278b2c030
-    pristine_git_object: 210e4c99e039b6393b115c060196ef8d75d25569
+    last_write_checksum: sha1:e31839328f3c1a65a6bc62e879b5289254b1ce4d
+    pristine_git_object: 9012d53df0ec70a5b6995a7423d5b571347309bb
   internal/provider/eventgatewaybackendcluster_resource_sdk.go:
     id: 85e6d3ca01be
     last_write_checksum: sha1:91ce453ae3f2c7786507174beaf83ce5c94e7ac9
     pristine_git_object: d3f0f93488494779178e25b3822d9f83b206ab69
   internal/provider/eventgatewayclusterpolicyacls_resource.go:
     id: a9d91722b3fb
-    last_write_checksum: sha1:40d93f97e6a74e789fb606a7c165eb4447d6610f
-    pristine_git_object: 7ff5ce846a1f05488a1f4ac7eab85bc957ba2b21
+    last_write_checksum: sha1:2661db049f4e9b6f1efc5297ec83c96570441946
+    pristine_git_object: 4f1b378190c96738905ca5b9eca2a66707c8a08e
   internal/provider/eventgatewayclusterpolicyacls_resource_sdk.go:
     id: 7819316e947f
-    last_write_checksum: sha1:575dad550c1c945a119472d59b9631edb0c0e491
-    pristine_git_object: f4c23f8f3451a4644bb0b078c852129bf6e31bbf
+    last_write_checksum: sha1:6ca3b8865b187adae1183de059161bbf6d9d1c89
+    pristine_git_object: fdd34bfd5d959db9a38de9ad8b47f9513f761189
   internal/provider/eventgatewayconsumepolicydecrypt_resource.go:
     id: c87df885eb12
-    last_write_checksum: sha1:6dc79a8f059997e09eaeaf9b67fd365537b616cb
-    pristine_git_object: e48480aa1a5b2a6e6f3afee3b21a5d932e5567be
+    last_write_checksum: sha1:7a729c4fb48249110e6bfb5856a2f518b3742fae
+    pristine_git_object: 920a0c0e0e83035db8b3b79e390c5bcfc3e26a13
   internal/provider/eventgatewayconsumepolicydecrypt_resource_sdk.go:
     id: cc22f98163ef
-    last_write_checksum: sha1:6b7480cefbaffb9c18aa463f11af30c401be03af
-    pristine_git_object: 3c288246264bf48d0d3b3b5e18cde4c6a632b648
+    last_write_checksum: sha1:b01b95cc8e8c0ffb200ae2aa4164186077336337
+    pristine_git_object: b130164f39e759326cb25660315f7e8eda0e8a80
   internal/provider/eventgatewayconsumepolicymodifyheaders_resource.go:
     id: ca46291e305b
-    last_write_checksum: sha1:f0016a850735a0e150afe486d534bbb639d6ac75
-    pristine_git_object: 23f220cfc567e1fa3fe9f19e663ad7d37bd0c3d2
+    last_write_checksum: sha1:2ad461f03f49ea3a90acd78bb0e18a2fe02130de
+    pristine_git_object: 38b593c28badc99a6ea58800def4219969a0db26
   internal/provider/eventgatewayconsumepolicymodifyheaders_resource_sdk.go:
     id: afb0f646c243
-    last_write_checksum: sha1:97c32b0a89a68d6f48e165b629ed6c76308bc0be
-    pristine_git_object: 8449987057523ec3006e3a0733618f780d68e2af
+    last_write_checksum: sha1:fa3a93b48dd298ec4424dfdba11e91a5808072ac
+    pristine_git_object: 296d53f93c43acb087df64bd1aed998b12a5e54c
   internal/provider/eventgatewayconsumepolicyschemavalidation_resource.go:
     id: c4eddaff3ee3
-    last_write_checksum: sha1:d76968ecbf09370840a37bb502dfe2e4f34e535e
-    pristine_git_object: 264cf0418dc7d8b1994b62dafab6ad8b39a7e8e6
+    last_write_checksum: sha1:2be86802e107dba3654d3c5d7a3283117e81dd4f
+    pristine_git_object: 165cd6f4ab19b0d6f3fe3e09c485f1504d3c8875
   internal/provider/eventgatewayconsumepolicyschemavalidation_resource_sdk.go:
     id: 7eabb92c2874
-    last_write_checksum: sha1:0dce40018db6bd66190d38c93a25c4ef485820aa
-    pristine_git_object: 22a70e847cd0c7c764a8c3558e612c78e5a0506c
+    last_write_checksum: sha1:26c82828b9f6e6ccd1f48ab18cfcaf5622fc135f
+    pristine_git_object: 26ef9f362c445e2cd9d50961e5ae1f2689ed47a8
   internal/provider/eventgatewayconsumepolicyskiprecord_resource.go:
     id: bb800e741a9a
-    last_write_checksum: sha1:e66f5415238cc160654dd21aaefa7278ec1437d3
-    pristine_git_object: c834e2e9b20883ba4e2720aba993b3046980617f
+    last_write_checksum: sha1:50d78151e3c0de5e12b4246bf9190d5e7b5c5a0d
+    pristine_git_object: 0f7d76ec067f0a1308d4d0f41f056bf5b4caf63a
   internal/provider/eventgatewayconsumepolicyskiprecord_resource_sdk.go:
     id: ddd5ac0c39f9
-    last_write_checksum: sha1:7cd108ddb9967237f4101699b766d90c4e978753
-    pristine_git_object: 60d5874edbe3ff2e96b7bba0a8766da87b81e0c5
+    last_write_checksum: sha1:59476f327f6dd9651d0ec1888b5b165bae2a35f4
+    pristine_git_object: b65c9844857cef64c79ee924d4037656fc5841ee
   internal/provider/eventgatewaydataplanecertificate_resource.go:
     id: aa7673d05ef9
     last_write_checksum: sha1:96a475f0f79c53a916e5181c764a0785b5db5636
@@ -1070,80 +1070,80 @@ trackedFiles:
     pristine_git_object: 19389bcd658c420d6743f3dc23fdfc40c49c84f1
   internal/provider/eventgatewaylistener_resource.go:
     id: 76b0c7bfd317
-    last_write_checksum: sha1:6e337fda52c3007bd0490ecff0596af43c26c845
-    pristine_git_object: 88bac9733408447691b02704007ef777bb8b0c5c
+    last_write_checksum: sha1:160a8cd5eaa0aa28f198e727ecfe811fb01ef5eb
+    pristine_git_object: 2aa68ea4c1a9d7991a8a485925643bac2a05a2b6
   internal/provider/eventgatewaylistener_resource_sdk.go:
     id: 5652ff3d366b
     last_write_checksum: sha1:f951c911026b9eea4236af01bb6d659161c953dd
     pristine_git_object: 475090d6552df74e6139e9261b0e9b77d15ac5ce
   internal/provider/eventgatewaylistenerpolicyforwardtovirtualcluster_resource.go:
     id: d83cc30df1d5
-    last_write_checksum: sha1:946818af152e624fece47f268654314903947a83
-    pristine_git_object: f6dc0beea97068ae4bb9ccfbe01ec5a6529bb9c5
+    last_write_checksum: sha1:a157cc8833b864c228f7aa03e543bbfab55b8c61
+    pristine_git_object: 826fa783e55c1cad340df2a785eb54c60e35511a
   internal/provider/eventgatewaylistenerpolicyforwardtovirtualcluster_resource_sdk.go:
     id: 7b7510b81d32
-    last_write_checksum: sha1:a60863d14cf2b2c54a7de5080d612af3f5ff21b7
-    pristine_git_object: e0b0b131567d8db4ad01a06fb93d0c229800b86d
+    last_write_checksum: sha1:edd9f007288d8af73b835a0471145c2e0e9fc620
+    pristine_git_object: 1b8c1633393b8d62304779088c6472e74f737c58
   internal/provider/eventgatewaylistenerpolicytlsserver_resource.go:
     id: 37fb90ff8bf6
-    last_write_checksum: sha1:ecbe6724cdbc64c8b99adb8a03d734e138fc1b1a
-    pristine_git_object: 18606ae38585c83211e334c39d37ac4b2a6b1250
+    last_write_checksum: sha1:d989a31940e6b6c3f1dacf090e1564b4f9cd3e55
+    pristine_git_object: 69c71ad20453bf27167f4057739951bc4dde3f65
   internal/provider/eventgatewaylistenerpolicytlsserver_resource_sdk.go:
     id: 20bbcfa15dc4
-    last_write_checksum: sha1:a7d2e8d236ba6ce418c964f26d98786107a41951
-    pristine_git_object: 39f897642955f65b01148d85895718f4be852fdb
+    last_write_checksum: sha1:030875d98cc9c78fca90e9de3b2069e364a1a92c
+    pristine_git_object: 8db690d09a08a3c2cb48a400e3307b03f3dac740
   internal/provider/eventgatewayproducepolicyencrypt_resource.go:
     id: d5e93dbf411e
-    last_write_checksum: sha1:33f0139857ded7eb6964294a1d959e3b8c662684
-    pristine_git_object: 0df65b0f85095e1fb2945d51dfccc8ffbbdc67b7
+    last_write_checksum: sha1:a43519590e65a85a55698b3116a8a32300a948b2
+    pristine_git_object: d1918e31732298c11594e019b5630a23fdc81bbb
   internal/provider/eventgatewayproducepolicyencrypt_resource_sdk.go:
     id: 5ae15c6d918d
-    last_write_checksum: sha1:44f2827e118677156fce91978c25db783f7e31c2
-    pristine_git_object: b485841420f7bc8816c8382e8c04f0aed3aa860d
+    last_write_checksum: sha1:b197fa879ed59cb1102f1b76dc8bf4ed0c89cf48
+    pristine_git_object: 86a18f3e780cdc35e7feb4aed2b67b3dd95a6f69
   internal/provider/eventgatewayproducepolicymodifyheaders_resource.go:
     id: 8f53363af814
-    last_write_checksum: sha1:7e20c27b33e57f989cefa65b8e72889f8a6f41b3
-    pristine_git_object: 4f1bbab767c99d61da01ed2fef60956cccbb3f9b
+    last_write_checksum: sha1:8ca102802f85a374c7848bc29f5640a3878c2f42
+    pristine_git_object: b22750e05996170415d622426f01d0151290a212
   internal/provider/eventgatewayproducepolicymodifyheaders_resource_sdk.go:
     id: dc4eb8450e4a
-    last_write_checksum: sha1:c5cea42190261e09083ba615033137eba7cd05ed
-    pristine_git_object: fef5e9210f9bdbf3e4a9f509f6c421f479946db4
+    last_write_checksum: sha1:8c7ec08668a39b6828cb81897a8e8983b708c014
+    pristine_git_object: dfc355d692089932d091a928117099bcac811165
   internal/provider/eventgatewayproducepolicyschemavalidation_resource.go:
     id: 91c3b216a135
-    last_write_checksum: sha1:c50cfeccc8424d39b06e402fc22c73146ec202fa
-    pristine_git_object: 116df663606653644f25dc33b123c171e9b97d89
+    last_write_checksum: sha1:322778ed73a6fbb80d4cb720ac145c72d7d0f62e
+    pristine_git_object: 591d631c0a84d06a904dcdd9b89aedf6d3171d15
   internal/provider/eventgatewayproducepolicyschemavalidation_resource_sdk.go:
     id: 60a8b01272d3
-    last_write_checksum: sha1:9e072f49b3dda1902b165c14e0c265eac230528b
-    pristine_git_object: 351d039e8c6f49630c021fae45424de655b966a5
+    last_write_checksum: sha1:deb59976ddf6af9f60a5c317afbe8186b5923fdd
+    pristine_git_object: 7bbcd1321188d8ea15e24832033a7ba76703d1a7
   internal/provider/eventgatewayschemaregistry_resource.go:
     id: e5a89583fd6f
-    last_write_checksum: sha1:6520d6897214d9767396f9cd3ae575030b16fa7e
-    pristine_git_object: 7b6d1bda6bf3c9c57e1e4b2af4c0c7fa2893cefa
+    last_write_checksum: sha1:f01b62b37ed4016b4220ef982912001dc973f894
+    pristine_git_object: 9a317242c57c5b2e72ceeb9627310b574eea8268
   internal/provider/eventgatewayschemaregistry_resource_sdk.go:
     id: da966c875737
     last_write_checksum: sha1:d8246dc319505c89e5bf6b259a5a3d3d57ff4797
     pristine_git_object: 878f2ef5aecccdf9d032431f5f87c4bdf6731d6f
   internal/provider/eventgatewaystatickey_resource.go:
     id: 7c88165651a2
-    last_write_checksum: sha1:335d2298cd4905d07e846d92ee57c3aa6ff96874
-    pristine_git_object: beef09486d05b75f407628f223db60b374ca3296
+    last_write_checksum: sha1:f691a6dabacff3213e133923f9c4f7b39e30a5f2
+    pristine_git_object: 9b130f1ea29a465ebd8e0565115993548f0c68cf
   internal/provider/eventgatewaystatickey_resource_sdk.go:
     id: db04a96ed32e
     last_write_checksum: sha1:2597af5b5adf7ad56c2b0491475c3566fdc83120
     pristine_git_object: 790fdd0545981a903bbc57e90a7af4f49e9aff09
   internal/provider/eventgatewayvault_resource.go:
     id: 22532cca623f
-    last_write_checksum: sha1:d08fe45818ec4e300e41aa3a9f0602accc6f91a3
-    pristine_git_object: 0a36800a5b962c50a910a0f86c870466f9a1a98a
+    last_write_checksum: sha1:63708e318b9bc580a300a2d545965d1e80a8a4c0
+    pristine_git_object: 98fe793d6f91a7115e71a97f360e4f9aea0501de
   internal/provider/eventgatewayvault_resource_sdk.go:
     id: d1a544a6ffd6
     last_write_checksum: sha1:25980144bb21b1e5ab251d011373f09aa3ca809e
     pristine_git_object: dcc21d9716f85d0aebd5e414a297a7a04642559f
   internal/provider/eventgatewayvirtualcluster_resource.go:
     id: 99dd1f0247ba
-    last_write_checksum: sha1:1edb422628eb4f622bc3bab1af2458408409e646
-    pristine_git_object: 0b4db2f91cb5b048c54e39dfd6ae8c08666fcf0c
+    last_write_checksum: sha1:35b312d0f7970dcdaaa299744e2a9140a349d644
+    pristine_git_object: 87c97d4d7f0b4953968bc253abf6a6259ca7a5d2
   internal/provider/eventgatewayvirtualcluster_resource_sdk.go:
     id: b5c8ebb6b790
     last_write_checksum: sha1:83ce332f54287becbac1e64c5a68b75d417fb2a5
@@ -1430,32 +1430,32 @@ trackedFiles:
     pristine_git_object: e73639968a0f702c3384151e52364fbe863859ec
   internal/provider/portalcustomization_resource.go:
     id: 4abe395feccb
-    last_write_checksum: sha1:8c767f82f40a2d6f424ef156bf965394158cdc9b
-    pristine_git_object: 4487997fdbc41d71704bf2694a0e7e027b1bf1bb
+    last_write_checksum: sha1:a83cc770fc111cf99e9c5d49b94399eec3bea4a2
+    pristine_git_object: 24ea2a89232159a3b4df7dc461acc0e483a8133b
   internal/provider/portalcustomization_resource_sdk.go:
     id: c6323a5483aa
     last_write_checksum: sha1:70556c6be3c6bdadf70787e6f465240f42ba86ac
     pristine_git_object: f11606761a46dfd18d4ded6366eea163b60b1236
   internal/provider/portalfavicon_resource.go:
     id: e60687d58485
-    last_write_checksum: sha1:2de666e2c7f4e38d1e59f86aacb197c0e555d9c3
-    pristine_git_object: a98a0c9ae9415ed846dc0a7d98b6f9b9b18b9ae6
+    last_write_checksum: sha1:760ef45ffa65ea4f3a3111f29f5ef0b316af99ff
+    pristine_git_object: 0d4109b368cc51dedcdc906ea8326a68d241613e
   internal/provider/portalfavicon_resource_sdk.go:
     id: b0ffe8dc9512
     last_write_checksum: sha1:cb6c23f75847a1960502e8affc775962ed4b9ef8
     pristine_git_object: 2662c152ccf1e8e4adf3f45fc293fe8d54fbe26b
   internal/provider/portallogo_resource.go:
     id: f571068b22ce
-    last_write_checksum: sha1:ffe68dc686af9397580db6fe7682edec8ba9d3d2
-    pristine_git_object: a21441c154e6113538bb94e895ac3358b368bebb
+    last_write_checksum: sha1:e77a7c04b6bb7e8a16f3580a08ade5c44c3d59af
+    pristine_git_object: f11738068c04698089891b1c9545fd8f1b163b2e
   internal/provider/portallogo_resource_sdk.go:
     id: 1a6aa6a86b18
     last_write_checksum: sha1:bf1caa039b8c687952fd2a6cc52496ada3c3ddbd
     pristine_git_object: 73a9e72623e820c3a60954f6d82e41f4075bcd18
   internal/provider/portalpage_resource.go:
     id: bb40cee2c540
-    last_write_checksum: sha1:c35c7d5b26048632c41c523b5459d024bb569e65
-    pristine_git_object: f02feee11533ff21f56c216f64dc6861896c91e1
+    last_write_checksum: sha1:d15e0b7d2c32303d21b6b0dcb0286f879c55d46a
+    pristine_git_object: 962c5331f3d31c453e0a3de0b41871b4b4ac4c2c
   internal/provider/portalpage_resource_sdk.go:
     id: 9602eef44469
     last_write_checksum: sha1:92f7b862b726ceaad1c3b76800161565feb42ce7
@@ -1696,6 +1696,10 @@ trackedFiles:
     id: 72151f3fb42e
     last_write_checksum: sha1:58682e913cf5df949d0be9ce1990133ee7e718f4
     pristine_git_object: 5ad6698540beb3817579362c5a88f9f528d6440c
+  internal/provider/types/broker_host_format.go:
+    id: 4beb75d7755e
+    last_write_checksum: sha1:2518153e9f6dfd8c2441415e177cde1522ea67d1
+    pristine_git_object: f7687e559c622247fcdb8a872bfffeeec0129918
   internal/provider/types/builtin_certificate_authority_config.go:
     id: a7c4cd55bd60
     last_write_checksum: sha1:826fe5de3bec0e4df8fc78e3f0fd0e2abc6c11bf
@@ -1974,8 +1978,8 @@ trackedFiles:
     pristine_git_object: 4a7487a9d60c9dcf746b73508f68b048654d7ba8
   internal/provider/types/forward_to_cluster_by_sni_config.go:
     id: e8c369e3448f
-    last_write_checksum: sha1:78151342e34beb76ce820d721172d708b8a58dfb
-    pristine_git_object: 5ceebe272612073dd7f131d81cf710913a85a63d
+    last_write_checksum: sha1:d55c6ff1762778d3544bbde4fdf2199741eab60f
+    pristine_git_object: 0526d463b0475dae7eea0fbd00018ca8faad12b5
   internal/provider/types/forward_to_virtual_cluster_policy_config.go:
     id: 09f819cc8174
     last_write_checksum: sha1:4233637629203b1ea373cf559ba1742984b74da2
@@ -4378,8 +4382,8 @@ trackedFiles:
     pristine_git_object: 4016976feb21ccb97580cee6c6508b64d461a4fc
   internal/sdk/models/shared/apiresponseschema.go:
     id: fbb93a7a6763
-    last_write_checksum: sha1:387da75eb420a75fdd5e1a6a0fe60073335d4499
-    pristine_git_object: 8d879f19d8963d0a505a542c378ddef7b78c6437
+    last_write_checksum: sha1:848bb6f8a60909c5b4914175bdd51a65facab035
+    pristine_git_object: fbe922c491f104654cd17b77bdbfd69781c2e45c
   internal/sdk/models/shared/apislugconflict.go:
     id: 9855c71bb7ce
     last_write_checksum: sha1:e75248a82ac7f615c4a5e88df87591e5080fe31f
@@ -4414,8 +4418,8 @@ trackedFiles:
     pristine_git_object: 3af7e3ac4d94b01dfe99f8287680886ee4704d9d
   internal/sdk/models/shared/backendcluster.go:
     id: 650e14e0c31e
-    last_write_checksum: sha1:7c87078eecfbd1be37dbf2afbde742a091c22930
-    pristine_git_object: 652182f1850ca1817995c9eca4baf9eb3cd43115
+    last_write_checksum: sha1:16e3284daf9823b7fd9addf222b4b0dbb30628d5
+    pristine_git_object: aaefe3fd3a89121b8f49a27ba791c894980b193b
   internal/sdk/models/shared/backendclusterauthenticationanonymous.go:
     id: d68a48296b7b
     last_write_checksum: sha1:d33ed522363ab20d489b0500c3ff2047d1df8cf5
@@ -4510,8 +4514,8 @@ trackedFiles:
     pristine_git_object: 8cd2b6066aaf583e22505e765dcccd6b97941760
   internal/sdk/models/shared/createapirequest.go:
     id: 4f1680aea497
-    last_write_checksum: sha1:8295a7fd3cf6e42d149b0ac685d85a39ea1b240a
-    pristine_git_object: ab87b6035955af0b9816e626480077fd1aafd1f6
+    last_write_checksum: sha1:a93a8e75093f61ebbd7e1c39d697a5546821d861
+    pristine_git_object: 0e0d5177e82aea201262cfd11058f74286581387
   internal/sdk/models/shared/createapispecrequest.go:
     id: 9b341105955c
     last_write_checksum: sha1:4a9faf01e58ddf3e0062dba3d32a967373789b72
@@ -4526,8 +4530,8 @@ trackedFiles:
     pristine_git_object: 1afa08f30ca4488398fc8c6fb92be7fa39c55e94
   internal/sdk/models/shared/createbackendclusterrequest.go:
     id: 2ddf802cbb5d
-    last_write_checksum: sha1:b7e23227fcfa103de842deb9237e316fed837e9a
-    pristine_git_object: 90f68724a54c2323b1273cd3e274c2c718e43d0d
+    last_write_checksum: sha1:dbc00bc82c88731df121dd8d7190f56dfa4ce9e5
+    pristine_git_object: 5eef4816ddddf5ebe4a98898ed50fb75b1197234
   internal/sdk/models/shared/createclaim.go:
     id: 4caad1971bb1
     last_write_checksum: sha1:5a8f2a4e98ed689cc488edec48c9c7789636d54a
@@ -4546,8 +4550,8 @@ trackedFiles:
     pristine_git_object: 6f55991a6dd83bd31a87ff8ca17cd7493840c969
   internal/sdk/models/shared/createeventgatewaylistenerrequest.go:
     id: 18ce4d91b758
-    last_write_checksum: sha1:f58be67cb7a424a69b13a077c0c2f387de353c2f
-    pristine_git_object: aa5f0a5a473fa479ee38198de6cc94915fa21822
+    last_write_checksum: sha1:fa396b061aaa818eefef872ccbbc3cd38bfba1e1
+    pristine_git_object: 8294012af52443157bccb6d312538f6016ace6f8
   internal/sdk/models/shared/creategatewayrequest.go:
     id: cdbb52b9d5d2
     last_write_checksum: sha1:24c61eba3852b90f76702269312302914d801d12
@@ -4582,8 +4586,8 @@ trackedFiles:
     pristine_git_object: a5cd6c2bcfc79febc37ed20e9b057dfc9f9cd930
   internal/sdk/models/shared/createvirtualclusterrequest.go:
     id: c00701821a2c
-    last_write_checksum: sha1:df09df4101c028d73f3d668c76b441c77b8b14df
-    pristine_git_object: 920796fbb6c986e4b76c29533dc606fda334741a
+    last_write_checksum: sha1:907ad2aee029dad1dc5f63a0fbf83861482a3514
+    pristine_git_object: fa6f08253ecb741b3741f72a7246b7c2d1aa7525
   internal/sdk/models/shared/dashboard.go:
     id: 8190c2c78bb4
     last_write_checksum: sha1:ba40dc6effd4e212144e36faaca7f20c1c6a6e8d
@@ -4646,24 +4650,24 @@ trackedFiles:
     pristine_git_object: ded913ca0b0e9e7d4f12cb6a15a248bca2741add
   internal/sdk/models/shared/eventgatewayaclspolicy.go:
     id: 81368ac8ee2e
-    last_write_checksum: sha1:ca6bb20aa08714962063b150d6547fd09a1f1078
-    pristine_git_object: 476242d3c964711274ed0d7fd7c40884bc03d015
+    last_write_checksum: sha1:f1259bf7aefb878f53eb5c1dfd41150621dc63a1
+    pristine_git_object: 21d55de36227f098fefe84b55b806d7831a9f66b
   internal/sdk/models/shared/eventgatewayawskeysource.go:
     id: fe6b54221a82
     last_write_checksum: sha1:687f6aee6d24fa2335e211a182c7ca5faaf46782
     pristine_git_object: 14a4aa7a77c9b33d0ba46443cb709f3c92813913
   internal/sdk/models/shared/eventgatewayconsumeschemavalidationpolicy.go:
     id: 12b289092dda
-    last_write_checksum: sha1:4be575f315bbb1f468bf2cc32f88087a50593e27
-    pristine_git_object: 3af1814a0718680841df80b7322490219f4d739c
+    last_write_checksum: sha1:01e3088fb67b7fb4e7b0cb24844e1211562aeb08
+    pristine_git_object: e9152aa4c594be38c17c395c436d5d02b0854220
   internal/sdk/models/shared/eventgatewaydataplanecertificate.go:
     id: d6c51d22803c
     last_write_checksum: sha1:d55cc422f1cd29d0d32b4833bf515d098e0862d3
     pristine_git_object: 2fb0e36c19afe74a1b97c841a5910c961fe30e1a
   internal/sdk/models/shared/eventgatewaydecryptpolicy.go:
     id: ce5b7d1fe6cc
-    last_write_checksum: sha1:85bbf3d684a95e4dfbf5a0055c0613e62d3b85f6
-    pristine_git_object: ced9ae1adf7524969969c2d839a37ace70f8ec68
+    last_write_checksum: sha1:bc7cbf8f51e2174e4158a525c146aa9ac7807a86
+    pristine_git_object: 104180313a97736458ced9944f0cc3bd1d53ead4
   internal/sdk/models/shared/eventgatewaydecryptpolicyconfig.go:
     id: da3dc9dbcc35
     last_write_checksum: sha1:f08be2ffeb7dbb6d97a4b6f8731a4b355326d195
@@ -4674,12 +4678,12 @@ trackedFiles:
     pristine_git_object: a5574cf1e00f570013d3c2df87c2aa8a8377df20
   internal/sdk/models/shared/eventgatewayencryptpolicy.go:
     id: ac42eef887d3
-    last_write_checksum: sha1:d2b564a84dbaef3f6759dc880f12fef6db262139
-    pristine_git_object: 0e4e68197e3cec58cba215b6828bdd99e065072c
+    last_write_checksum: sha1:d9c4c2e3cd6b9ee9f3b69f87d838eaf1e2490751
+    pristine_git_object: 26d115199d911c6fed67f7112b73d5cab71acd25
   internal/sdk/models/shared/eventgatewayenvvault.go:
     id: 8ee14a4d5eac
-    last_write_checksum: sha1:df3fe3a326550f5fc40c22d21f6b0cdc5003dd47
-    pristine_git_object: 0025b235ec9f44293ae83226501223d5e7f1a821
+    last_write_checksum: sha1:bc43b8f2ad93c402615de859eedcb3170bf0c20b
+    pristine_git_object: 5b148424719f0850808ce0d33c005c74a05d1eda
   internal/sdk/models/shared/eventgatewayinfo.go:
     id: 5061e1504f5e
     last_write_checksum: sha1:6e13fed03d2c326ac6a23345b6f6ea4b04c5e527
@@ -4690,16 +4694,16 @@ trackedFiles:
     pristine_git_object: 3b20f30a9549b294a3c1a2a6b3703c192ee23049
   internal/sdk/models/shared/eventgatewaykonnectvault.go:
     id: e8f1f0644bce
-    last_write_checksum: sha1:6af86812286dc83e552142358e0b700366d561a0
-    pristine_git_object: 234ec73fb65caf3511e4439e9ad2bafea6a7a11b
+    last_write_checksum: sha1:9e62e8367b60cfa2331c4380b8e0130c5e9f9d5a
+    pristine_git_object: 7b5887234a34beddd291ede5c8ce80c4010f5fed
   internal/sdk/models/shared/eventgatewaylistener.go:
     id: d3233dfabd53
-    last_write_checksum: sha1:c667a5b5a7ffe18a4f2e31ada7b71927147e59de
-    pristine_git_object: 10e12990da88d5bd54eeb3b65291000eb23669a8
+    last_write_checksum: sha1:18cde583905dfa3ac90cfee46bdc14b641f28f38
+    pristine_git_object: 115d258596bb497681001374512d17928e3b12cb
   internal/sdk/models/shared/eventgatewaylistenerpolicy.go:
     id: c7cae77c8dad
-    last_write_checksum: sha1:8be40ea985592080fac59d15c83e6633573e2d3a
-    pristine_git_object: a0b14eb7dbb5a3aef33fdc56f37745b34eaf894c
+    last_write_checksum: sha1:387cbef140835b8001ea546e323d9e7bc3a2357e
+    pristine_git_object: 8e11ce3fb7b1e7dec95aecd8d537ab37ce1efec7
   internal/sdk/models/shared/eventgatewaymodifyheaderaction.go:
     id: 64ae6cd2fb9f
     last_write_checksum: sha1:1d1dd8e65c166d76e507b6bb80bc60dc516f70af
@@ -4714,24 +4718,24 @@ trackedFiles:
     pristine_git_object: 5dcaaf47c7285ec45ba6bf302fc4c27122a45d55
   internal/sdk/models/shared/eventgatewaymodifyheaderspolicy.go:
     id: 9b49fa941317
-    last_write_checksum: sha1:bc5f29ced4eaf8a86946a9e5693bf0d4fb5f65e5
-    pristine_git_object: 1a48beaf7d208ba48f17e91cb065d74567809eb0
+    last_write_checksum: sha1:2e0ee88cce7244ae22f24efbb4271eeeade35012
+    pristine_git_object: eca9801c13c79376411a7ce7438e7a04162edb84
   internal/sdk/models/shared/eventgatewaymodifyheaderspolicycreate.go:
     id: 9b203a35ce49
-    last_write_checksum: sha1:958d28d69ec6588932ed499ae24cce67b5d85fb3
-    pristine_git_object: 83c979f24401dd183973e7acde87cd6c13fae341
+    last_write_checksum: sha1:ee8e325293c9c8e90e72291e867a6018a4882ed1
+    pristine_git_object: eb3ab1b3c4147741056422eb6ae1f4105a35ce76
   internal/sdk/models/shared/eventgatewaymodifyvault.go:
     id: cb27383fadbd
     last_write_checksum: sha1:b2dba120101317a95f6c5e0bf4d77318b4a8c57e
     pristine_git_object: 86abd24608b31b3021dfe480207ee8275746b801
   internal/sdk/models/shared/eventgatewaypolicy.go:
     id: 2dd96ff43892
-    last_write_checksum: sha1:09d0cae0ede8cb4b3490e5308e61ca9f9778287d
-    pristine_git_object: 7d3fa08ccdc680fb949ce326a993ed3b04ef3c57
+    last_write_checksum: sha1:7ea60597a966c35a9c359b9d93225f65bfad8209
+    pristine_git_object: 1bd9d6010eb9c17a74477beffe83611a4f6f45ff
   internal/sdk/models/shared/eventgatewayproduceschemavalidationpolicy.go:
     id: e2d9a52e7629
-    last_write_checksum: sha1:e7ad20b2c518f5342be14953513ee5653c9225f7
-    pristine_git_object: f5ab0debab9c63216e04a7acf4fb130c59f2f395
+    last_write_checksum: sha1:3b368ea711469a5fe72d0eac28feb4b110029330
+    pristine_git_object: 4916a0fe74a14d2443abbda85e3560bfa268c022
   internal/sdk/models/shared/eventgatewayproduceschemavalidationpolicyconfig.go:
     id: 7008f411b23b
     last_write_checksum: sha1:b293b2e7e53b95aa6f77deb29d1ffb7b00bf1722
@@ -4746,28 +4750,28 @@ trackedFiles:
     pristine_git_object: eb953222af1d54e8c24e24c9542af9d7613e1afc
   internal/sdk/models/shared/eventgatewayskiprecordpolicy.go:
     id: 0fb2047528cf
-    last_write_checksum: sha1:fcde89a1b538d6e67c461bdf7c06a113b358e70e
-    pristine_git_object: 1dbf10eec0811608db686ae8a104908bb7931a29
+    last_write_checksum: sha1:becdbef17fb56c3bc02d5712a124bed7a51ae622
+    pristine_git_object: 80f1ab84c9fe503ae83850a57954454439e4f7bb
   internal/sdk/models/shared/eventgatewayskiprecordpolicycreate.go:
     id: cc3ba92db08d
-    last_write_checksum: sha1:894bc652facca6ccab800041b2d25197aea56d07
-    pristine_git_object: 6df9706745a876dae41bd2a9f2f477f0f94c00db
+    last_write_checksum: sha1:9436b7de365f77a97c9f28a9976df720a019f744
+    pristine_git_object: dfef4a212de441ac5c8ef55204b77e3b5a385189
   internal/sdk/models/shared/eventgatewaystatickey.go:
     id: 6b2e9626e672
-    last_write_checksum: sha1:7436f4fc097763efa8814f5f6dcea7df2555cbe6
-    pristine_git_object: 7332d5202138cd8dfc4a8aef7d643625b75a5955
+    last_write_checksum: sha1:fcffe685b853149025e639ee0fb65dd5106bb76f
+    pristine_git_object: f0444befaaea9a2172c3c18cf4d43fdc4682ee29
   internal/sdk/models/shared/eventgatewaystatickeycreate.go:
     id: 1c63c4b9f5df
-    last_write_checksum: sha1:9ebb746e864e140baf4e8bf410d76c69d50db45c
-    pristine_git_object: 38aa6607f9982fbb9ef0c2a99fef03cd201ad961
+    last_write_checksum: sha1:2f3b17617e1250685ddd187dea2fc7e6138650f2
+    pristine_git_object: c2d1102f6259caf5cf8b4bface97aef16cb6d65b
   internal/sdk/models/shared/eventgatewaystatickeysource.go:
     id: 0540e1d4e5f2
     last_write_checksum: sha1:bf3eb2f0b5f3706bf59ee447ca500840a8ea7af5
     pristine_git_object: 535557a03273aa600ee657a0a2d63c304728d5e0
   internal/sdk/models/shared/eventgatewaytlslistenerpolicy.go:
     id: 9b24728ae6be
-    last_write_checksum: sha1:1fc45948fb240e9b84fb3274949ed6658d15d9a3
-    pristine_git_object: 792dd5014c1bcc634c731430620388c311644da8
+    last_write_checksum: sha1:ba4fe2d0fbc4d7cb91d113d2b8e2e22f548813da
+    pristine_git_object: f0dfea3aed6832ab1c89e02784ec303c5e0e937d
   internal/sdk/models/shared/eventgatewaytlslistenerpolicyconfig.go:
     id: fc7c874b85d0
     last_write_checksum: sha1:03499f2e37e74cf9e81c8a7d4df5c6d025a0837b
@@ -4778,12 +4782,12 @@ trackedFiles:
     pristine_git_object: 3dde344ef22f1712560272464844238c376f3ad5
   internal/sdk/models/shared/eventgatewaytlslistenersensitivedataawarepolicy.go:
     id: b8daef072999
-    last_write_checksum: sha1:e9d96c8a86aadd7ad700a914b5b78639bbcc8552
-    pristine_git_object: 02416a64d6defa632cb7e8e7df8ebf530a56ac2e
+    last_write_checksum: sha1:4646015857f12c908fc86fb6409889284e2e178b
+    pristine_git_object: 55fa2cf8f7724183cc48d95982a757a696aeccf2
   internal/sdk/models/shared/eventgatewayvault.go:
     id: 87c43cb1bc69
-    last_write_checksum: sha1:70d6eef7bb21a5bdf0854e1d6010610829e03462
-    pristine_git_object: e7b9b5653e4d29da445912ff30697e2b8b8bc3dc
+    last_write_checksum: sha1:8dcac5fd905cc78bf6333c821bebd30390d1159b
+    pristine_git_object: b25f886f1846119da4894b88233675d84ebfcca9
   internal/sdk/models/shared/forbiddenerror.go:
     id: 0af2461a36c5
     last_write_checksum: sha1:5d8c763e597c03d6b578a620b641876e4df44fef
@@ -4794,12 +4798,12 @@ trackedFiles:
     pristine_git_object: e90d912c0faec6b3eeeba6554b9e5c1c71a27205
   internal/sdk/models/shared/forwardtoclusterbysniconfig.go:
     id: 124a3cc24abd
-    last_write_checksum: sha1:859b3d4316d4456b7a7418bc62d2118f1fc599b5
-    pristine_git_object: 5142a4f6fa5fc43dc6b5a7e2f82bfffac158d855
+    last_write_checksum: sha1:ed4a329f9a642f6b4fb0730fe7b92e4876535728
+    pristine_git_object: 6ac155d205a1276f3ae2b285e43cf0cfade82e2f
   internal/sdk/models/shared/forwardtovirtualclusterpolicy.go:
     id: 5914e93d63e0
-    last_write_checksum: sha1:50f90e7674093c810702fa70aa60720f5b7f083b
-    pristine_git_object: f594a2c1e51bfea09530e02e4e7c2c30e97dcfaf
+    last_write_checksum: sha1:2b93fb7fe31a9e18baa1ac6fbf1cad80511d8cf2
+    pristine_git_object: b77c087fd79f2f4b2291a3221b6480ac6b392332
   internal/sdk/models/shared/granttype.go:
     id: 18782ffd03f6
     last_write_checksum: sha1:f7e4a00e95a9e534bff4f2e667df22e307216428
@@ -4824,10 +4828,6 @@ trackedFiles:
     id: 46042c1efd91
     last_write_checksum: sha1:5f3842c620cfa8f981e5fdb4314fa36bd53835be
     pristine_git_object: 57c546b1f035dc7999237f42868d3a231b010693
-  internal/sdk/models/shared/images.go:
-    id: 508acd2e1b8f
-    last_write_checksum: sha1:0361474496df09ef112ebcc2123096b22bb5eb8d
-    pristine_git_object: 019742ec569488de91a823e83486913fcd6c3d14
   internal/sdk/models/shared/invalidparameterchoiceitem.go:
     id: 1156dab80041
     last_write_checksum: sha1:5f4417a66b9ff5f6db7297483046a44906a6577b
@@ -5362,8 +5362,8 @@ trackedFiles:
     pristine_git_object: 0bc5ef77bbcca72f91d5ec471faf3faf014ef3c2
   internal/sdk/models/shared/portalcustomization.go:
     id: e79ca8f1789a
-    last_write_checksum: sha1:20139e3ee90f1a78f13a7f90db5cad352cead1c7
-    pristine_git_object: 1c9ac3eed2fe2c360c153230aa36a8d043b8a1ce
+    last_write_checksum: sha1:8603434cbc9e01f0269d53b6b84e7814edbde191
+    pristine_git_object: 119a41fa00b6f3051ad7161d347693028b198924
   internal/sdk/models/shared/portalfilterparameters.go:
     id: 875b06406660
     last_write_checksum: sha1:3839237f235e5605509972d18a3d32b125dd50b6
@@ -5434,8 +5434,8 @@ trackedFiles:
     pristine_git_object: 7d4c5a188f789395ae3ed58d0ec0324f1588f063
   internal/sdk/models/shared/schemaregistry.go:
     id: f261d24362a8
-    last_write_checksum: sha1:4021386e619cb5e7d1fb35e56e1d2a6a457e1728
-    pristine_git_object: 46562a3b750db11921cea6a4efdc8bae3db0f701
+    last_write_checksum: sha1:eec75d7889822d1e4433615f9e613a2568ad238e
+    pristine_git_object: e7607bacb142b53812a2114aec015153708bd79c
   internal/sdk/models/shared/schemaregistryauthenticationbasic.go:
     id: 9f657fc9b8c5
     last_write_checksum: sha1:1a058cc812046e89b7c6651b25e3771c7f510654
@@ -5454,8 +5454,8 @@ trackedFiles:
     pristine_git_object: 00a7f03103fce878ba0a0d292475da8cc6460fd9
   internal/sdk/models/shared/schemaregistryconfluent.go:
     id: e906e249f88b
-    last_write_checksum: sha1:3fa73e7023bb3e3bb1e252a74a3d2ca6b3c71266
-    pristine_git_object: 9e1e47fa3db4cee3e025e3c49739ec206aad9547
+    last_write_checksum: sha1:6792d76ae6e57ca0aa81cff40542a443cd2a023b
+    pristine_git_object: 3863673f2438026fc150783e339564ccdc8f310c
   internal/sdk/models/shared/schemaregistryconfluentconfig.go:
     id: 53b349c3ad4f
     last_write_checksum: sha1:d4694d41e175283b4ed80d86530a9b91bab0ec16
@@ -5466,8 +5466,8 @@ trackedFiles:
     pristine_git_object: 95cf34f2fba4dbde965d6e6b33e73a7dda627d9b
   internal/sdk/models/shared/schemaregistryconfluentsensitivedataaware.go:
     id: 550d21ae2c73
-    last_write_checksum: sha1:5493810f5c40406330e756b30f5321dd8be00cb2
-    pristine_git_object: 6fd4b80796f56ff2e298676fbe90c0ec4987e004
+    last_write_checksum: sha1:7777d270d87aabd623679f1a6c552bd701837dbe
+    pristine_git_object: 73a134f94deddcd9ba28fe8fafd9e1cf5135ae11
   internal/sdk/models/shared/schemaregistrycreate.go:
     id: 5d33ad2dfb1b
     last_write_checksum: sha1:6b27342311d15309800ca307ed0cbbc7aaec7213
@@ -5574,16 +5574,16 @@ trackedFiles:
     pristine_git_object: b50dec94ae71d76d6ad1818bdf480f331f47928e
   internal/sdk/models/shared/updateapirequest.go:
     id: 070ace279bd4
-    last_write_checksum: sha1:db23a8e9a5344def4b127783a3e6947f4bbcf599
-    pristine_git_object: e89aec00c32df407db0d44be0262d9c0163e22fd
+    last_write_checksum: sha1:1f5e4b825cef0ca910e61a4e983fc146ac53220a
+    pristine_git_object: 5612268695f77f976ec7e3f769afeb03d0739c4e
   internal/sdk/models/shared/updateauthserver.go:
     id: 682e81afaa92
     last_write_checksum: sha1:f890696d19605d6c2b7af4ab826e20b8edbc254c
     pristine_git_object: 4a798e03e4fbbbe70bc86a86b8b21a6a0b9e522d
   internal/sdk/models/shared/updatebackendclusterrequest.go:
     id: a52f46fc63ff
-    last_write_checksum: sha1:9c8f60473175804b3cb8ba3486d3b6f7ad3771c9
-    pristine_git_object: 38f30d212640a8ada89854ec4022d93057707ed3
+    last_write_checksum: sha1:a2b603810cfd589cfb4d26afeaa85f0a667e798c
+    pristine_git_object: 26a9974b84950a2b83aca284f83e89a6106243b6
   internal/sdk/models/shared/updateclaim.go:
     id: 349f01b68e80
     last_write_checksum: sha1:5d34352f711f8ed383df36b5fbb36ac3fe4df355
@@ -5594,8 +5594,8 @@ trackedFiles:
     pristine_git_object: 9c17bf16275d5e8825d4964052a53b33adadbf63
   internal/sdk/models/shared/updateeventgatewaylistenerrequest.go:
     id: ab051277ee01
-    last_write_checksum: sha1:506ec073927ea3e30601c5984d4ff3c2370c0446
-    pristine_git_object: 2084fec098bb9e5a459a12294c4e75629ea89664
+    last_write_checksum: sha1:3b801ec26ffbfe3cf168aa76ec03f110853b431b
+    pristine_git_object: 66dc11557465c360afe487a9a3e3ac19b0038c85
   internal/sdk/models/shared/updategatewayrequest.go:
     id: 2440de676f27
     last_write_checksum: sha1:e0dcea659b36dd1b0b2ca6cf31de17ccd46141c6
@@ -5626,16 +5626,16 @@ trackedFiles:
     pristine_git_object: 29d44aff571d3aa17c1025377f4234ee48b6ab0f
   internal/sdk/models/shared/updatevirtualclusterrequest.go:
     id: 1ad8a5bf531b
-    last_write_checksum: sha1:5ca090eb7444ff7a81c4fba541395feb846f0cd8
-    pristine_git_object: 799a2c86909667721e88b40c71b9f159e71eea8a
+    last_write_checksum: sha1:5dba1f65e1f4c85cc4b6165b70d00a9677ec81dd
+    pristine_git_object: 2ad32e220b6fdb05cffcbe613b07e157c93ea982
   internal/sdk/models/shared/uuidfieldfilter.go:
     id: cceaca6a51db
     last_write_checksum: sha1:1361d8ba6676e77142c96070e36e942874e79e83
     pristine_git_object: 45f86e2f29ae5df7d92940a7e3d5ec8811e69d26
   internal/sdk/models/shared/virtualcluster.go:
     id: 7617f9eea013
-    last_write_checksum: sha1:e4f3a4759040beef4680cb6d3310fdd9ec7db6d0
-    pristine_git_object: 3a36bc5fb8341e09a7d726dbbe3ccfb907061710
+    last_write_checksum: sha1:6f61645a2d05941321b56a29cf96db92106149cc
+    pristine_git_object: faa662c35444f92fc14257e8b2ab622522dc71d8
   internal/sdk/models/shared/virtualclusteraclmode.go:
     id: 782b62524e91
     last_write_checksum: sha1:5719a9aae3501ad920b801b79f7ee48dafff5892
@@ -6284,10 +6284,10 @@ examples:
   create-api:
     speakeasy-default-create-api:
       requestBody:
-        application/json: {"name": "MyAPI", "description": null, "slug": "my-api-v1", "labels": {"env": "test"}, "images": null}
+        application/json: {"name": "MyAPI", "description": null, "slug": "my-api-v1", "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "description": null, "version": null, "current_version_summary": null, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "images": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "description": null, "version": null, "current_version_summary": null, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "images": {"icon": {"uri": "/apis/ebbac5b0-ac89-45c3-9d2e-c4542c657e79/images/icon/raw"}}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 497005, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -6305,7 +6305,7 @@ examples:
           apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
       responses:
         "200":
-          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "description": null, "version": "<value>", "current_version_summary": {"id": "7710d5c4-d902-410b-992f-18b814155b53", "version": null, "spec": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "images": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "description": null, "version": "<value>", "current_version_summary": {"id": "7710d5c4-d902-410b-992f-18b814155b53", "version": null, "spec": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}, {"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "images": {"icon": {"uri": "/apis/ebbac5b0-ac89-45c3-9d2e-c4542c657e79/images/icon/raw"}}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -6320,10 +6320,10 @@ examples:
         query:
           force: "false"
       requestBody:
-        application/json: {"name": "MyAPI", "description": null, "slug": "my-api-v1", "labels": {"env": "test"}, "images": null}
+        application/json: {"name": "MyAPI", "description": null, "slug": "my-api-v1", "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "description": null, "version": null, "current_version_summary": null, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [], "labels": {"env": "test"}, "images": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "description": null, "version": null, "current_version_summary": null, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [], "labels": {"env": "test"}, "images": {"icon": {"uri": "/apis/ebbac5b0-ac89-45c3-9d2e-c4542c657e79/images/icon/raw"}}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 683837, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
@@ -10383,10 +10383,10 @@ examples:
         path:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"name": "<value>", "addresses": ["<value 1>"], "ports": [], "labels": {"env": "test"}}
+        application/json: {"name": "<value>", "description": "", "addresses": ["<value 1>"], "ports": [], "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"id": "4da08053-2b38-4cc6-9a16-78b571cad686", "name": "<value>", "addresses": ["<value 1>", "<value 2>"], "ports": ["<value 1>"], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "4da08053-2b38-4cc6-9a16-78b571cad686", "name": "<value>", "description": "", "addresses": ["<value 1>", "<value 2>"], "ports": ["<value 1>"], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 347576, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_length", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
@@ -10401,7 +10401,7 @@ examples:
           eventGatewayListenerId: "31f35308-f007-42b7-9c56-aadf0a2e6fee"
       responses:
         "200":
-          application/json: {"id": "27a842c9-237c-490d-8a27-8a0f8874ea93", "name": "<value>", "addresses": ["<value 1>", "<value 2>", "<value 3>"], "ports": ["<value 1>", "<value 2>", "<value 3>"], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "27a842c9-237c-490d-8a27-8a0f8874ea93", "name": "<value>", "description": "", "addresses": ["<value 1>", "<value 2>", "<value 3>"], "ports": ["<value 1>", "<value 2>", "<value 3>"], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -10415,10 +10415,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           eventGatewayListenerId: "927df604-cc92-426a-b160-a94aa6e5de7d"
       requestBody:
-        application/json: {"name": "<value>", "addresses": ["<value 1>", "<value 2>"], "ports": [], "labels": {"env": "test"}}
+        application/json: {"name": "<value>", "description": "", "addresses": ["<value 1>", "<value 2>"], "ports": [], "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"id": "4d10ef63-a3e3-4e39-affa-253ee12dd0ea", "name": "<value>", "addresses": ["<value 1>"], "ports": ["<value 1>", "<value 2>", "<value 3>"], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "4d10ef63-a3e3-4e39-affa-253ee12dd0ea", "name": "<value>", "description": "", "addresses": ["<value 1>"], "ports": ["<value 1>", "<value 2>", "<value 3>"], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 359512, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -10444,10 +10444,10 @@ examples:
         path:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"name": "<value>", "destination": {}, "authentication": [{"type": "sasl_plain", "mediation": "passthrough", "principals": null}], "acl_mode": "passthrough", "dns_label": "vcluster-1", "labels": {"env": "test"}}
+        application/json: {"name": "<value>", "description": "", "destination": {}, "authentication": [{"type": "sasl_plain", "mediation": "passthrough", "principals": null}], "acl_mode": "passthrough", "dns_label": "vcluster-1", "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"id": "5c660d55-84a0-4c53-836d-12542cf396cb", "destination": {"id": "6ccb8ec8-6b0d-4ad9-bc7e-3fdd2ece7b69", "name": "<value>"}, "authentication": [{"type": "anonymous"}], "name": "<value>", "dns_label": "vcluster-1", "acl_mode": "enforce_on_gateway", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "5c660d55-84a0-4c53-836d-12542cf396cb", "description": "", "destination": {"id": "6ccb8ec8-6b0d-4ad9-bc7e-3fdd2ece7b69", "name": "<value>"}, "authentication": [{"type": "anonymous"}], "name": "<value>", "dns_label": "vcluster-1", "acl_mode": "enforce_on_gateway", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 621528, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -10462,7 +10462,7 @@ examples:
           virtualClusterId: "0b2723a8-8eff-4698-8224-0c823cd13fbf"
       responses:
         "200":
-          application/json: {"id": "f04439b9-62b9-475f-ba27-2ded26ed9d17", "destination": {"id": "088ad9ca-e831-4eaf-bd1a-361abbf7526e", "name": "<value>"}, "authentication": [], "name": "<value>", "dns_label": "vcluster-1", "acl_mode": "enforce_on_gateway", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "f04439b9-62b9-475f-ba27-2ded26ed9d17", "description": "", "destination": {"id": "088ad9ca-e831-4eaf-bd1a-361abbf7526e", "name": "<value>"}, "authentication": [], "name": "<value>", "dns_label": "vcluster-1", "acl_mode": "enforce_on_gateway", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -10476,10 +10476,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "fe909fd6-277e-424b-b080-aba0bbb79170"
       requestBody:
-        application/json: {"name": "<value>", "destination": {}, "authentication": [], "acl_mode": "enforce_on_gateway", "dns_label": "vcluster-1", "labels": {"env": "test"}}
+        application/json: {"name": "<value>", "description": "", "destination": {}, "authentication": [], "acl_mode": "enforce_on_gateway", "dns_label": "vcluster-1", "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"id": "f5486120-98cd-449b-821c-dc09b16296a1", "destination": {"id": "22a0dfa3-6039-4df9-adc6-85311527aa39", "name": "<value>"}, "authentication": [], "name": "<value>", "dns_label": "vcluster-1", "acl_mode": "passthrough", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "f5486120-98cd-449b-821c-dc09b16296a1", "description": "", "destination": {"id": "22a0dfa3-6039-4df9-adc6-85311527aa39", "name": "<value>"}, "authentication": [], "name": "<value>", "dns_label": "vcluster-1", "acl_mode": "passthrough", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 368051, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
@@ -10505,10 +10505,10 @@ examples:
         path:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"name": "<value>", "authentication": {"type": "anonymous"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>", "<value 2>"], "tls": {"enabled": true, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"]}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}}
+        application/json: {"name": "<value>", "description": "", "authentication": {"type": "anonymous"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>", "<value 2>"], "tls": {"enabled": true, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"]}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"id": "d81f0780-2250-4cde-94d5-cacf7e7ba8b3", "name": "<value>", "authentication": {"type": "anonymous"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>"], "tls": {"enabled": true, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"]}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "d81f0780-2250-4cde-94d5-cacf7e7ba8b3", "name": "<value>", "description": "", "authentication": {"type": "anonymous"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>"], "tls": {"enabled": true, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"]}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 994884, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
@@ -10523,7 +10523,7 @@ examples:
           backendClusterId: "5ef7f382-5bc5-4c2e-a215-300f045de3da"
       responses:
         "200":
-          application/json: {"id": "5d418534-2831-4847-af7c-28c816066b03", "name": "<value>", "authentication": {"type": "sasl_plain", "username": "Kenna_Crooks88", "password": "${env['MY_SECRET']}"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>", "<value 2>", "<value 3>"], "tls": {"enabled": true, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"]}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "5d418534-2831-4847-af7c-28c816066b03", "name": "<value>", "description": "", "authentication": {"type": "sasl_plain", "username": "Kenna_Crooks88", "password": "${env['MY_SECRET']}"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>", "<value 2>", "<value 3>"], "tls": {"enabled": true, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"]}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -10537,10 +10537,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           backendClusterId: "ddaa3274-bd11-4dc5-b580-21603cfec6a6"
       requestBody:
-        application/json: {"name": "<value>", "authentication": {"type": "sasl_plain", "username": "Yasmin66", "password": "${env['MY_SECRET']}"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>", "<value 2>", "<value 3>"], "tls": {"enabled": false, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"]}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}}
+        application/json: {"name": "<value>", "description": "", "authentication": {"type": "sasl_plain", "username": "Yasmin66", "password": "${env['MY_SECRET']}"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>", "<value 2>", "<value 3>"], "tls": {"enabled": false, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"]}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"id": "ac884d5a-f703-4de9-a51c-860245e22330", "name": "<value>", "authentication": {"type": "anonymous"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>"], "tls": {"enabled": false, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"]}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "ac884d5a-f703-4de9-a51c-860245e22330", "name": "<value>", "description": "", "authentication": {"type": "anonymous"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>"], "tls": {"enabled": false, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"]}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 524449, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -10569,7 +10569,7 @@ examples:
         application/json: {"name": "<value>", "type": "konnect", "description": "responsible absent per whenever expert in yowza that scholarship essence"}
       responses:
         "201":
-          application/json: {"name": "<value>", "type": "env", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "labels": {"env": "test"}, "config": {"prefix": "KONG_"}, "id": "45e89a13-9f17-4048-ad93-db24242ac984"}
+          application/json: {"name": "<value>", "type": "env", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "description": "", "labels": {"env": "test"}, "config": {"prefix": "KONG_"}, "id": "45e89a13-9f17-4048-ad93-db24242ac984"}
         "400":
           application/problem+json: {"status": 819761, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_length", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
@@ -10584,7 +10584,7 @@ examples:
           vaultId: "85a372b5-93ec-4ff9-9525-81c91606ab6a"
       responses:
         "200":
-          application/json: {"name": "<value>", "type": "konnect", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "labels": {"env": "test"}, "id": "9e333bbb-c1ef-4c74-ba0c-d3d3b493aed5"}
+          application/json: {"name": "<value>", "type": "konnect", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "description": "", "labels": {"env": "test"}, "id": "9e333bbb-c1ef-4c74-ba0c-d3d3b493aed5"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -10601,7 +10601,7 @@ examples:
         application/json: {"name": "<value>", "type": "konnect", "description": "times squirm sell poorly unfit till cheerfully"}
       responses:
         "200":
-          application/json: {"name": "<value>", "type": "env", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "labels": {"env": "test"}, "config": {"prefix": "KONG_"}, "id": "99e044c2-da86-40af-a710-3b45381a76d9"}
+          application/json: {"name": "<value>", "type": "env", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "description": "", "labels": {"env": "test"}, "config": {"prefix": "KONG_"}, "id": "99e044c2-da86-40af-a710-3b45381a76d9"}
         "400":
           application/problem+json: {"status": 871258, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -10813,7 +10813,7 @@ examples:
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "config": {}, "labels": {"env": "test"}, "id": "06a1da50-18ba-4734-a0a9-e00dd52dfc9b", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "06a1da50-18ba-4734-a0a9-e00dd52dfc9b", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -10828,10 +10828,10 @@ examples:
           eventGatewayListenerId: "8150b381-175e-48cc-b79b-78d1d98707a8"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "tls_server", "name": null, "enabled": true, "config": {"certificates": [{"certificate": "<value>", "key": "${vault.env['MY_ENV_VAR']}"}], "versions": {"min": "TLSv1.2", "max": "TLSv1.3"}, "allow_plaintext": false}, "labels": {"env": "test"}}
+        application/json: {"type": "tls_server", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"certificates": [{"certificate": "<value>", "key": "${vault.env['MY_ENV_VAR']}"}], "versions": {"min": "TLSv1.2", "max": "TLSv1.3"}, "allow_plaintext": false}}
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "config": {}, "labels": {"env": "test"}, "id": "3252186a-a8d6-45c3-ae43-7f70c4575b09", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "3252186a-a8d6-45c3-ae43-7f70c4575b09", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 976208, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -10861,7 +10861,7 @@ examples:
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "config": {}, "labels": {"env": "test"}, "id": "f674c0bd-d6b4-488d-a8b4-ff7fdb36b038", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "f674c0bd-d6b4-488d-a8b4-ff7fdb36b038", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -10876,10 +10876,10 @@ examples:
           eventGatewayListenerId: "60c0a875-ed08-4959-a810-6710c2d37b44"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "forward_to_virtual_cluster", "name": null, "enabled": true, "config": {"type": "sni", "sni_suffix": ".example.com", "advertised_port": 985890}, "labels": {"env": "test"}}
+        application/json: {"type": "forward_to_virtual_cluster", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"type": "sni", "sni_suffix": ".example.com", "advertised_port": 985890, "broker_host_format": null}}
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "config": {}, "labels": {"env": "test"}, "id": "a964a42a-4b6e-438a-847c-79680f3800f7", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "a964a42a-4b6e-438a-847c-79680f3800f7", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 258360, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_symbols", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
@@ -10907,10 +10907,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           eventGatewayListenerId: "fbb26749-530c-4cd0-8d52-9db9d81c3f08"
       requestBody:
-        application/json: {"type": "tls_server", "name": null, "enabled": true, "config": {"certificates": [{"certificate": "<value>", "key": "${vault.env['MY_ENV_VAR']}"}], "versions": {"min": "TLSv1.2", "max": "TLSv1.3"}, "allow_plaintext": false}, "labels": {"env": "test"}}
+        application/json: {"type": "tls_server", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"certificates": [{"certificate": "<value>", "key": "${vault.env['MY_ENV_VAR']}"}], "versions": {"min": "TLSv1.2", "max": "TLSv1.3"}, "allow_plaintext": false}}
       responses:
         "201":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "config": {}, "labels": {"env": "test"}, "id": "009e4bb7-902f-439c-ba0f-6126abc8ab52", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "009e4bb7-902f-439c-ba0f-6126abc8ab52", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 830414, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>"], "source": "body"}]}
         "401":
@@ -10924,10 +10924,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           eventGatewayListenerId: "cc1f804b-d05f-4c4b-ae7c-01ee08446fa7"
       requestBody:
-        application/json: {"type": "forward_to_virtual_cluster", "name": null, "enabled": true, "config": {"type": "sni", "sni_suffix": ".example.com", "advertised_port": 971355}, "labels": {"env": "test"}}
+        application/json: {"type": "forward_to_virtual_cluster", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"type": "sni", "sni_suffix": ".example.com", "advertised_port": 971355, "broker_host_format": null}}
       responses:
         "201":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "config": {}, "labels": {"env": "test"}, "id": "55a6e644-871e-4251-8b96-3dbbcc3555cf", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "55a6e644-871e-4251-8b96-3dbbcc3555cf", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 712567, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -10943,7 +10943,7 @@ examples:
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "ef80a11c-170f-4544-9076-8efb8e319de7", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "ef80a11c-170f-4544-9076-8efb8e319de7", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -10958,10 +10958,10 @@ examples:
           virtualClusterId: "7c38d3f3-5c9a-49b5-9b67-2e4f8e1f2a25"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "modify_headers", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"actions": null}, "labels": {"env": "test"}}
+        application/json: {"type": "modify_headers", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"actions": null}, "condition": "record.value.content.foo.bar == \"a-value\""}
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "507871d9-bb97-48d2-9a55-a4be33f78881", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "507871d9-bb97-48d2-9a55-a4be33f78881", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 711740, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
@@ -10991,7 +10991,7 @@ examples:
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "34538704-755b-4b27-9f94-acccd39923d1", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "34538704-755b-4b27-9f94-acccd39923d1", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -11006,10 +11006,10 @@ examples:
           virtualClusterId: "4fb63c2c-47c0-451b-a606-7002570cfd42"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "schema_validation", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"type": "confluent_schema_registry"}, "labels": {"env": "test"}}
+        application/json: {"type": "schema_validation", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"type": "confluent_schema_registry"}, "condition": "context.topic.name.endsWith(\"my_suffix\") && records.headers[\"x-flag\"] == \"a-value\""}
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "5b2191fd-223a-44f7-9d8b-d018a6e9ee5d", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "5b2191fd-223a-44f7-9d8b-d018a6e9ee5d", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 409111, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>"], "source": "body"}]}
         "401":
@@ -11039,7 +11039,7 @@ examples:
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "f444cc2a-8835-42ed-b86d-e8d664dfdb3b", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "f444cc2a-8835-42ed-b86d-e8d664dfdb3b", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -11054,10 +11054,10 @@ examples:
           virtualClusterId: "eb84f991-ae6d-4ed9-a84f-dd27dd8493c1"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "decrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"failure_mode": "passthrough", "key_sources": [{"type": "static"}], "part_of_record": ["value"]}, "labels": {"env": "test"}}
+        application/json: {"type": "decrypt", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"failure_mode": "passthrough", "key_sources": [{"type": "static"}], "part_of_record": ["value"]}, "condition": "context.topic.name.endsWith(\"my_suffix\") && records.headers[\"x-flag\"] == \"a-value\""}
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "b7a563ad-fad7-4c5f-b18a-ba17dd92a28a", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "b7a563ad-fad7-4c5f-b18a-ba17dd92a28a", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 180267, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max_length", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
         "401":
@@ -11087,7 +11087,7 @@ examples:
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "617a6a0d-2e44-47c7-8782-f21636ed5b03", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "617a6a0d-2e44-47c7-8782-f21636ed5b03", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -11102,10 +11102,10 @@ examples:
           virtualClusterId: "b85a6bf7-2401-433a-b62d-05759913d341"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "skip_record", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "labels": {"env": "test"}}
+        application/json: {"type": "skip_record", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "condition": "record.value.content.foo.bar == \"a-value\""}
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "d0435f74-88f6-4183-b808-33363bc99d2e", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "d0435f74-88f6-4183-b808-33363bc99d2e", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 643328, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
@@ -11133,10 +11133,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "87299e77-284a-47bd-9ab3-a097848681e1"
       requestBody:
-        application/json: {"type": "modify_headers", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"actions": null}, "labels": {"env": "test"}}
+        application/json: {"type": "modify_headers", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"actions": null}, "condition": "record.value.content.foo.bar == \"a-value\""}
       responses:
         "201":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "ea2b1fb4-aa48-439f-84c9-a592b6fd8d58", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "ea2b1fb4-aa48-439f-84c9-a592b6fd8d58", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 487642, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
@@ -11150,10 +11150,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "e26dd505-ebbf-4297-994b-16b07ec83735"
       requestBody:
-        application/json: {"type": "schema_validation", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"type": "json"}, "labels": {"env": "test"}}
+        application/json: {"type": "schema_validation", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"type": "json"}, "condition": "context.topic.name.endsWith(\"my_suffix\") && records.headers[\"x-flag\"] == \"a-value\""}
       responses:
         "201":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "e4117cbb-3be1-4097-80e4-cff0af8e4d75", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "e4117cbb-3be1-4097-80e4-cff0af8e4d75", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 885533, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": null, "source": "body"}]}
         "401":
@@ -11167,10 +11167,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "995bc147-2750-4c10-a0e2-ec9b901491eb"
       requestBody:
-        application/json: {"type": "decrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"failure_mode": "passthrough", "key_sources": [{"type": "aws"}], "part_of_record": ["value"]}, "labels": {"env": "test"}}
+        application/json: {"type": "decrypt", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"failure_mode": "passthrough", "key_sources": [{"type": "aws"}], "part_of_record": ["value"]}, "condition": "context.topic.name.endsWith(\"my_suffix\") && records.headers[\"x-flag\"] == \"a-value\""}
       responses:
         "201":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "627ce5c5-8fd9-43a2-8c83-eafe3d39fe8e", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "627ce5c5-8fd9-43a2-8c83-eafe3d39fe8e", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 191667, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_uppercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
@@ -11184,10 +11184,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "a5e310a4-a4c6-4950-aa8f-3767751d9b74"
       requestBody:
-        application/json: {"type": "skip_record", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "labels": {"env": "test"}}
+        application/json: {"type": "skip_record", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "condition": "record.value.content.foo.bar == \"a-value\""}
       responses:
         "201":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "975cc614-a984-4c1a-831d-f45e0b1f071e", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "975cc614-a984-4c1a-831d-f45e0b1f071e", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 492591, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -11203,7 +11203,7 @@ examples:
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "b391fbb8-2e27-47a6-a351-647b26be417b", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "b391fbb8-2e27-47a6-a351-647b26be417b", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -11218,10 +11218,10 @@ examples:
           virtualClusterId: "1ca6bca6-4a82-4d94-a3d7-098134851e5b"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "modify_headers", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"actions": null}, "labels": {"env": "test"}}
+        application/json: {"type": "modify_headers", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"actions": null}, "condition": "record.value.content.foo.bar == \"a-value\""}
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "e203f9d4-2bec-4e8b-a4c8-7b6d178a38ca", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "e203f9d4-2bec-4e8b-a4c8-7b6d178a38ca", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 474674, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
@@ -11251,7 +11251,7 @@ examples:
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "d0e0237c-69b1-426c-8e22-068ae5fad280", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "d0e0237c-69b1-426c-8e22-068ae5fad280", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -11266,10 +11266,10 @@ examples:
           virtualClusterId: "584123c6-1da3-4626-b4e1-d74eaa2e89ac"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "schema_validation", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"key_validation_action": "mark", "value_validation_action": "mark", "type": "confluent_schema_registry"}, "labels": {"env": "test"}}
+        application/json: {"type": "schema_validation", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"key_validation_action": "mark", "value_validation_action": "mark", "type": "confluent_schema_registry"}, "condition": "context.topic.name.endsWith(\"my_suffix\") && records.headers[\"x-flag\"] == \"a-value\""}
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "2ad3cdfd-1f2f-4d97-a2d3-c62063981d3d", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "2ad3cdfd-1f2f-4d97-a2d3-c62063981d3d", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 504318, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_digits", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
@@ -11299,7 +11299,7 @@ examples:
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "b516476b-9fb4-4089-bf7a-a71dc943479d", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "b516476b-9fb4-4089-bf7a-a71dc943479d", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -11314,10 +11314,10 @@ examples:
           virtualClusterId: "f5cf6665-58bb-47f4-be01-926b2c0b6612"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "encrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"failure_mode": "passthrough", "part_of_record": ["key"], "encryption_key": {"type": "aws", "arn": "arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab"}}, "labels": {"env": "test"}}
+        application/json: {"type": "encrypt", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"failure_mode": "passthrough", "part_of_record": ["key"], "encryption_key": {"type": "aws", "arn": "arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab"}}, "condition": "context.topic.name.endsWith(\"my_suffix\") && records.headers[\"x-flag\"] == \"a-value\""}
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "f9bcd779-cf70-4a2f-949f-99f677043c70", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "f9bcd779-cf70-4a2f-949f-99f677043c70", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 790793, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": null, "reason": "is a required field", "dependents": null, "source": "body"}]}
         "401":
@@ -11393,10 +11393,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "90d7fe42-a5e1-45c2-b20f-d8903a6badad"
       requestBody:
-        application/json: {"type": "modify_headers", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"actions": null}, "labels": {"env": "test"}}
+        application/json: {"type": "modify_headers", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"actions": null}, "condition": "record.value.content.foo.bar == \"a-value\""}
       responses:
         "201":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "c438b205-c91f-463b-a808-4442555c5c49", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "c438b205-c91f-463b-a808-4442555c5c49", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 923814, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_uppercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
@@ -11410,10 +11410,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "4c1ea4c2-dca9-4107-85f5-586e47f34147"
       requestBody:
-        application/json: {"type": "schema_validation", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"key_validation_action": "mark", "value_validation_action": "reject", "type": "json"}, "labels": {"env": "test"}}
+        application/json: {"type": "schema_validation", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"key_validation_action": "mark", "value_validation_action": "reject", "type": "json"}, "condition": "context.topic.name.endsWith(\"my_suffix\") && records.headers[\"x-flag\"] == \"a-value\""}
       responses:
         "201":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "565102af-89d6-424b-87d2-8133b0fcb8b8", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "565102af-89d6-424b-87d2-8133b0fcb8b8", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 677192, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -11427,10 +11427,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "593ecd65-910f-4bd8-9c22-0dd3eaa403c3"
       requestBody:
-        application/json: {"type": "encrypt", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"failure_mode": "error", "part_of_record": [], "encryption_key": {"type": "aws", "arn": "arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab"}}, "labels": {"env": "test"}}
+        application/json: {"type": "encrypt", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"failure_mode": "error", "part_of_record": [], "encryption_key": {"type": "aws", "arn": "arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab"}}, "condition": "context.topic.name.endsWith(\"my_suffix\") && records.headers[\"x-flag\"] == \"a-value\""}
       responses:
         "201":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "bd47b7ed-1b37-4332-8874-76c9a0e498b9", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "bd47b7ed-1b37-4332-8874-76c9a0e498b9", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 876417, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -11463,7 +11463,7 @@ examples:
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "64de57a6-a53e-4b74-82f3-bbfbace3f7e1", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "64de57a6-a53e-4b74-82f3-bbfbace3f7e1", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -11478,10 +11478,10 @@ examples:
           virtualClusterId: "ae29d4be-1b79-482c-881a-3476b4ebb7cf"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "acls", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"rules": []}, "labels": {"env": "test"}}
+        application/json: {"type": "acls", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"rules": []}, "condition": "context.auth.principal.name == \"this-user\""}
       responses:
         "200":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "16ab9abb-c439-4776-9d1a-d0066e92ddcf", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "16ab9abb-c439-4776-9d1a-d0066e92ddcf", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 194157, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -11509,10 +11509,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "1706d38f-88a4-4e72-a02d-65cac443f53c"
       requestBody:
-        application/json: {"type": "acls", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {"rules": []}, "labels": {"env": "test"}}
+        application/json: {"type": "acls", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"rules": []}, "condition": "context.auth.principal.name == \"this-user\""}
       responses:
         "201":
-          application/json: {"type": "<value>", "name": null, "enabled": true, "condition": "context.topic.name.endsWith('my_suffix')", "config": {}, "labels": {"env": "test"}, "id": "323ea8c8-dae4-457b-abc2-abeec4051474", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"type": "<value>", "name": null, "description": "", "enabled": true, "labels": {"env": "test"}, "id": "323ea8c8-dae4-457b-abc2-abeec4051474", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 253786, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
@@ -11859,10 +11859,10 @@ examples:
         path:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"name": "<value>", "labels": {"env": "test"}, "value": "$${vault.env['MY_ENV_VAR']}"}
+        application/json: {"name": "<value>", "description": "", "labels": {"env": "test"}, "value": "$${vault.env['MY_ENV_VAR']}"}
       responses:
         "201":
-          application/json: {"name": "<value>", "labels": {"env": "test"}, "id": "8424b7b8-66f8-4f77-b380-3a9a19e7a60f", "value": "$${vault.env['MY_ENV_VAR']}", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"name": "<value>", "description": "", "labels": {"env": "test"}, "id": "8424b7b8-66f8-4f77-b380-3a9a19e7a60f", "value": "$${vault.env['MY_ENV_VAR']}", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 435352, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -11879,7 +11879,7 @@ examples:
           staticKeyId: "8d254be7-bd8f-484b-82e5-613cd779035d"
       responses:
         "200":
-          application/json: {"name": "<value>", "labels": {"env": "test"}, "id": "7a2977da-d640-474f-96bf-4a6cf9f8520a", "value": "$${vault.env['MY_ENV_VAR']}", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"name": "<value>", "description": "", "labels": {"env": "test"}, "id": "7a2977da-d640-474f-96bf-4a6cf9f8520a", "value": "$${vault.env['MY_ENV_VAR']}", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":

@@ -50,7 +50,7 @@ resource "konnect_event_gateway_vault" "my_eventgatewayvault" {
 
 ### Read-Only
 
-- `description` (String) A human-readable description of the vault.
+- `description` (String) A human-readable description of the vault. Default: ""
 - `id` (String) The unique identifier of the vault.
 - `name` (String) The name of the vault.
 
@@ -60,7 +60,7 @@ resource "konnect_event_gateway_vault" "my_eventgatewayvault" {
 Optional:
 
 - `config` (Attributes) The configuration of the environment vault. Not Null (see [below for nested schema](#nestedatt--env--config))
-- `description` (String) A human-readable description of the vault.
+- `description` (String) A human-readable description of the vault. Default: ""
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -86,7 +86,7 @@ Optional:
 
 Optional:
 
-- `description` (String) A human-readable description of the vault.
+- `description` (String) A human-readable description of the vault. Default: ""
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".

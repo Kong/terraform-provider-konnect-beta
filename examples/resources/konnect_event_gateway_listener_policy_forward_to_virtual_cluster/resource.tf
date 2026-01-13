@@ -3,7 +3,10 @@ resource "konnect_event_gateway_listener_policy_forward_to_virtual_cluster" "my_
   config = {
     sni = {
       advertised_port = 61579
-      sni_suffix      = ".example.com"
+      broker_host_format = {
+        type = "per_cluster_suffix"
+      }
+      sni_suffix = ".example.com"
     }
   }
   description               = "...my_description..."

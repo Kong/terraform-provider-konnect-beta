@@ -151,12 +151,6 @@ func (r *EventGatewayConsumePolicySkipRecordResourceModel) ToSharedEventGatewayS
 	} else {
 		enabled = nil
 	}
-	condition := new(string)
-	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
-		*condition = r.Condition.ValueString()
-	} else {
-		condition = nil
-	}
 	labels := make(map[string]*string)
 	for labelsKey := range r.Labels {
 		labelsInst := new(string)
@@ -167,12 +161,18 @@ func (r *EventGatewayConsumePolicySkipRecordResourceModel) ToSharedEventGatewayS
 		}
 		labels[labelsKey] = labelsInst
 	}
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	out := shared.EventGatewaySkipRecordPolicy{
 		Name:        name,
 		Description: description,
 		Enabled:     enabled,
-		Condition:   condition,
 		Labels:      labels,
+		Condition:   condition,
 	}
 
 	return &out, diags
@@ -199,12 +199,6 @@ func (r *EventGatewayConsumePolicySkipRecordResourceModel) ToSharedEventGatewayS
 	} else {
 		enabled = nil
 	}
-	condition := new(string)
-	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
-		*condition = r.Condition.ValueString()
-	} else {
-		condition = nil
-	}
 	labels := make(map[string]*string)
 	for labelsKey := range r.Labels {
 		labelsInst := new(string)
@@ -214,6 +208,12 @@ func (r *EventGatewayConsumePolicySkipRecordResourceModel) ToSharedEventGatewayS
 			labelsInst = nil
 		}
 		labels[labelsKey] = labelsInst
+	}
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
 	}
 	parentPolicyID := new(string)
 	if !r.ParentPolicyID.IsUnknown() && !r.ParentPolicyID.IsNull() {
@@ -225,8 +225,8 @@ func (r *EventGatewayConsumePolicySkipRecordResourceModel) ToSharedEventGatewayS
 		Name:           name,
 		Description:    description,
 		Enabled:        enabled,
-		Condition:      condition,
 		Labels:         labels,
+		Condition:      condition,
 		ParentPolicyID: parentPolicyID,
 	}
 
