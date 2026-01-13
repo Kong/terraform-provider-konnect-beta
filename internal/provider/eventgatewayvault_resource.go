@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -58,7 +59,8 @@ func (r *EventGatewayVaultResource) Schema(ctx context.Context, req resource.Sch
 		Attributes: map[string]schema.Attribute{
 			"description": schema.StringAttribute{
 				Computed:    true,
-				Description: `A human-readable description of the vault.`,
+				Default:     stringdefault.StaticString(``),
+				Description: `A human-readable description of the vault. Default: ""`,
 			},
 			"env": schema.SingleNestedAttribute{
 				Optional: true,
@@ -89,8 +91,10 @@ func (r *EventGatewayVaultResource) Schema(ctx context.Context, req resource.Sch
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
 					"description": schema.StringAttribute{
+						Computed:    true,
 						Optional:    true,
-						Description: `A human-readable description of the vault.`,
+						Default:     stringdefault.StaticString(``),
+						Description: `A human-readable description of the vault. Default: ""`,
 						Validators: []validator.String{
 							stringvalidator.UTF8LengthAtMost(512),
 						},
@@ -151,8 +155,10 @@ func (r *EventGatewayVaultResource) Schema(ctx context.Context, req resource.Sch
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
 					"description": schema.StringAttribute{
+						Computed:    true,
 						Optional:    true,
-						Description: `A human-readable description of the vault.`,
+						Default:     stringdefault.StaticString(``),
+						Description: `A human-readable description of the vault. Default: ""`,
 						Validators: []validator.String{
 							stringvalidator.UTF8LengthAtMost(512),
 						},

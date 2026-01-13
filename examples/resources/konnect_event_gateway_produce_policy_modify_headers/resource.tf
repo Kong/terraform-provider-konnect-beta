@@ -1,6 +1,6 @@
 resource "konnect_event_gateway_produce_policy_modify_headers" "my_eventgatewayproducepolicymodifyheaders" {
   provider = konnect-beta
-  condition = "context.topic.name.endsWith('my_suffix')"
+  condition = "record.value.content.foo.bar == \"a-value\""
   config = {
     actions = [
       {
