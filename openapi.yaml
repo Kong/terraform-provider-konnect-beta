@@ -7941,9 +7941,8 @@ components:
       type: string
       format: uri
       example: 'data:image/png;base64,YW5faW1hZ2VfZmlsZQ=='
-      pattern: '^data:image/(png|jpeg|svg\+xml|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
+      pattern: '^data:image/(png|jpe?g|gif|svg+xml|x-icon|ico|icon|vnd.microsoft.icon)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
       title: PortalImageDataUri
-      x-validation-message: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
     ReplacePortalImageAsset:
       description: 'The image data to upload. Images must be a data URL with binary image data in base 64 format. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs.'
       type: object
@@ -7961,9 +7960,9 @@ components:
       x-speakeasy-param-computed: false
     PageSlug:
       description: |
-        The slug of a page in a portal, used to compute its full URL path within the portal hierarchy. 
-        When a page has a `parent_page_id`, its full path is built by joining the parent’s slug with its own. 
-        For example, if a parent page has the slug `slug1` and this page’s slug is `slug2`, the resulting path will be `/slug1/slug2`. 
+        The slug of a page in a portal, used to compute its full URL path within the portal hierarchy.
+        When a page has a `parent_page_id`, its full path is built by joining the parent’s slug with its own.
+        For example, if a parent page has the slug `slug1` and this page’s slug is `slug2`, the resulting path will be `/slug1/slug2`.
         This enables nested page structures like `/slug1/slug2/slug3`.
       type: string
       example: /my-page
@@ -9322,7 +9321,7 @@ components:
               type: boolean
               default: true
             try_it_insomnia:
-              description: Enables users to open the API spec in Insomnia to explore and send requests with the native client.
+              description: Enables users to open API specifications in Insomnia to explore and send requests with the native client. Only public API specifications are supported.
               type: boolean
               default: true
             infinite_scroll:
@@ -9443,7 +9442,32 @@ components:
         attributes:
           $ref: '#/components/schemas/ApiAttributes'
         images:
-          $ref: '#/components/schemas/Images'
+          type: object
+          example:
+            icon:
+              uri: /apis/ebbac5b0-ac89-45c3-9d2e-c4542c657e79/images/icon/raw
+          additionalProperties: false
+          nullable: true
+          properties:
+            icon:
+              type: object
+              default: null
+              additionalProperties: false
+              nullable: true
+              properties:
+                uri:
+                  description: The relative API path for retrieving the raw the icon image.
+                  type: string
+                  format: uri-reference
+                  default: null
+                  nullable: true
+                  pattern: '^/[^\s]+/images/icon/raw$'
+                  x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: false
+          readOnly: true
+          title: Images
+          x-speakeasy-param-suppress-computed-diff: true
+          x-speakeasy-terraform-ignore: true
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -9849,29 +9873,6 @@ components:
         - asyncapi
       title: API Spec Type
       x-speakeasy-unknown-values: allow
-    Images:
-      type: object
-      properties:
-        icon:
-          type: object
-          default: null
-          additionalProperties: false
-          nullable: true
-          properties:
-            url:
-              description: The URL of the icon image. Must be an HTTPS URL.
-              type: string
-              format: uri
-              example: 'https://example.com/icon.png'
-              default: null
-              nullable: true
-              pattern: '^https://[^\s]+$'
-              x-speakeasy-param-computed: false
-          x-speakeasy-param-computed: false
-      additionalProperties: false
-      nullable: true
-      title: Images
-      x-speakeasy-terraform-ignore: true
     UnsupportedMediaTypeError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -24515,8 +24516,8 @@ components:
         description:
           description: A human-readable description of the listener.
           type: string
+          default: ''
           maxLength: 512
-          x-speakeasy-param-computed: false
         addresses:
           $ref: '#/components/schemas/EventGatewayListenerAddresses'
         ports:
@@ -24548,6 +24549,7 @@ components:
       type: array
       items:
         type: string
+        minLength: 1
       minItems: 1
     EventGatewayListenerPorts:
       description: |
@@ -24577,8 +24579,8 @@ components:
         description:
           description: A human-readable description of the virtual cluster.
           type: string
+          default: ''
           maxLength: 512
-          x-speakeasy-param-computed: false
         destination:
           $ref: '#/components/schemas/BackendClusterReference'
         authentication:
@@ -24922,8 +24924,8 @@ components:
         description:
           description: A human-readable description of the backend cluster.
           type: string
+          default: ''
           maxLength: 512
-          x-speakeasy-param-computed: false
         authentication:
           $ref: '#/components/schemas/BackendClusterAuthenticationSensitiveDataAwareScheme'
         insecure_allow_anonymous_virtual_cluster_auth:
@@ -25185,8 +25187,8 @@ components:
         description:
           description: A human-readable description of the vault.
           type: string
+          default: ''
           maxLength: 512
-          x-speakeasy-param-computed: false
         labels:
           $ref: '#/components/schemas/Labels'
       required:
@@ -25250,10 +25252,10 @@ components:
           minLength: 1
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
-          description: A human-readable description of the virtual cluster.
+          description: A human-readable description.
           type: string
           maxLength: 512
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         type:
           description: The type of the schema registry.
           type: string
@@ -25290,10 +25292,10 @@ components:
           minLength: 1
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
-          description: A human-readable description of the virtual cluster.
+          description: A human-readable description.
           type: string
           maxLength: 512
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         type:
           description: The type of the schema registry.
           type: string
@@ -25319,10 +25321,10 @@ components:
           minLength: 1
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
-          description: A human-readable description of the virtual cluster.
+          description: A human-readable description.
           type: string
           maxLength: 512
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         type:
           description: The type of the schema registry.
           type: string
@@ -25503,41 +25505,27 @@ components:
           type: string
           default: null
           maxLength: 255
-          minLength: 1
           nullable: true
           x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
           type: string
+          default: ''
           maxLength: 512
-          x-speakeasy-param-computed: false
         enabled:
           description: Whether the policy is enabled.
           type: boolean
           default: true
-        condition:
-          description: A string containing the boolean expression that determines whether the policy is applied.
-          type: string
-          example: context.topic.name.endsWith('my_suffix')
-          maxLength: 1000
-          minLength: 1
-          x-expression:
-            type: boolean
-            fields:
-              - context.topic.name
-              - context.auth.principal.name
-              - context.auth.type
-          x-speakeasy-param-computed: false
-        config:
-          description: The configuration of the policy.
-          type: object
         labels:
           $ref: '#/components/schemas/Labels'
         id:
           description: The unique identifier of the policy.
           type: string
           format: uuid
+        config:
+          description: The configuration of the policy.
+          type: object
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         parent_policy_id:
@@ -25549,14 +25537,22 @@ components:
           x-speakeasy-param-computed: false
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
+        condition:
+          description: A string containing the boolean expression that determines whether the policy is applied.
+          type: string
+          maxLength: 1000
+          x-expression:
+            type: boolean
+            fields: []
+          x-speakeasy-param-computed: false
       required:
         - type
-        - config
         - id
         - created_at
         - updated_at
+        - config
     EventGatewayListenerPolicy:
-      description: A listener policy associated with an Event Gateway.
+      description: A policy associated with an Event Gateway.
       type: object
       properties:
         type:
@@ -25569,28 +25565,27 @@ components:
           type: string
           default: null
           maxLength: 255
-          minLength: 1
           nullable: true
           x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
           type: string
+          default: ''
           maxLength: 512
-          x-speakeasy-param-computed: false
         enabled:
           description: Whether the policy is enabled.
           type: boolean
           default: true
-        config:
-          description: The configuration of the policy.
-          type: object
         labels:
           $ref: '#/components/schemas/Labels'
         id:
           description: The unique identifier of the policy.
           type: string
           format: uuid
+        config:
+          description: The configuration of the policy.
+          type: object
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         parent_policy_id:
@@ -25604,10 +25599,10 @@ components:
           $ref: '#/components/schemas/UpdatedAt'
       required:
         - type
-        - config
         - id
         - created_at
         - updated_at
+        - config
     EventGatewayTLSListenerSensitiveDataAwarePolicy:
       description: |
         The TLS Server policy defines the certificates and keys used by the gateway server when the client connects
@@ -25627,25 +25622,24 @@ components:
           type: string
           default: null
           maxLength: 255
-          minLength: 1
           nullable: true
           x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
           type: string
+          default: ''
           maxLength: 512
-          x-speakeasy-param-computed: false
         enabled:
           description: Whether the policy is enabled.
           type: boolean
           default: true
+        labels:
+          $ref: '#/components/schemas/Labels'
         config:
           description: The configuration of the policy.
           type: object
           $ref: '#/components/schemas/EventGatewayTLSListenerPolicyConfigSensitiveDataAware'
-        labels:
-          $ref: '#/components/schemas/Labels'
       required:
         - type
         - config
@@ -25668,25 +25662,24 @@ components:
           type: string
           default: null
           maxLength: 255
-          minLength: 1
           nullable: true
           x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
           type: string
+          default: ''
           maxLength: 512
-          x-speakeasy-param-computed: false
         enabled:
           description: Whether the policy is enabled.
           type: boolean
           default: true
+        labels:
+          $ref: '#/components/schemas/Labels'
         config:
           description: The configuration of the policy.
           type: object
           $ref: '#/components/schemas/EventGatewayTLSListenerPolicyConfig'
-        labels:
-          $ref: '#/components/schemas/Labels'
       required:
         - type
         - config
@@ -25794,19 +25787,20 @@ components:
           type: string
           default: null
           maxLength: 255
-          minLength: 1
           nullable: true
           x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
           type: string
+          default: ''
           maxLength: 512
-          x-speakeasy-param-computed: false
         enabled:
           description: Whether the policy is enabled.
           type: boolean
           default: true
+        labels:
+          $ref: '#/components/schemas/Labels'
         config:
           description: The configuration of the policy.
           type: object
@@ -25818,8 +25812,6 @@ components:
           oneOf:
             - $ref: '#/components/schemas/ForwardToClusterBySNIConfig'
             - $ref: '#/components/schemas/ForwardToClusterByPortMappingConfig'
-        labels:
-          $ref: '#/components/schemas/Labels'
       required:
         - type
         - config
@@ -25911,11 +25903,32 @@ components:
           maximum: 65535
           minimum: 1
           nullable: false
+        broker_host_format:
+          description: |
+            Configures DNS names assigned to brokers in virtual clusters.
+
+            - `per_cluster_suffix` is the default and allocates one level in the hierarchy for virtual clusters: `broker-{node_id}.{virtual_cluster}.{sni_suffix}`
+            - `shared_suffix` puts all brokers from every virtual clusters into the same level: `broker-{node_id}-{virtual_cluster}.{sni_suffix}`. This makes it easier to manage certificates for this listener.
+          type: object
+          default: null
+          nullable: true
+          properties:
+            type:
+              type: string
+              default: per_cluster_suffix
+              enum:
+                - per_cluster_suffix
+                - shared_suffix
+              x-speakeasy-unknown-values: allow
+          required:
+            - type
+          x-min-runtime-version: '1.1'
+          x-speakeasy-param-computed: false
       additionalProperties: false
       required:
         - type
     EventGatewayEncryptPolicy:
-      description: Encrypts portions of Kafka records using AES_128_GCM. Keys are therefore 128 bits long.
+      description: Encrypts Kafka records or keys using AES_256_GCM. Keys are therefore 256 bits long.
       type: object
       properties:
         type:
@@ -25929,38 +25942,37 @@ components:
           type: string
           default: null
           maxLength: 255
-          minLength: 1
           nullable: true
           x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
           type: string
+          default: ''
           maxLength: 512
-          x-speakeasy-param-computed: false
         enabled:
           description: Whether the policy is enabled.
           type: boolean
           default: true
-        condition:
-          description: A string containing the boolean expression that determines whether the policy is applied.
-          type: string
-          example: context.topic.name.endsWith('my_suffix')
-          maxLength: 1000
-          minLength: 1
-          x-expression:
-            type: boolean
-            fields:
-              - context.topic.name
-              - context.auth.principal.name
-              - context.auth.type
-          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
         config:
           description: The configuration of the policy.
           type: object
           $ref: '#/components/schemas/EventGatewayEncryptConfig'
-        labels:
-          $ref: '#/components/schemas/Labels'
+        condition:
+          description: A string containing the boolean expression that determines whether the policy is applied.
+          type: string
+          example: 'context.topic.name.endsWith("my_suffix") && records.headers["x-flag"] == "a-value"'
+          maxLength: 1000
+          x-expression:
+            type: boolean
+            fields:
+              - context.auth.principal.name
+              - context.auth.type
+              - context.topic.name
+              - record.headers
+          x-speakeasy-param-computed: false
       required:
         - type
         - config
@@ -25984,7 +25996,7 @@ components:
         - part_of_record
         - encryption_key
     EventGatewayDecryptPolicy:
-      description: Decrypts portions of Kafka records using AES_128_GCM. Keys are therefore 128 bits long.
+      description: Decrypts Kafka records or keys using AES_256_GCM. Keys are therefore 256 bits long.
       type: object
       properties:
         type:
@@ -25998,38 +26010,37 @@ components:
           type: string
           default: null
           maxLength: 255
-          minLength: 1
           nullable: true
           x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
           type: string
+          default: ''
           maxLength: 512
-          x-speakeasy-param-computed: false
         enabled:
           description: Whether the policy is enabled.
           type: boolean
           default: true
-        condition:
-          description: A string containing the boolean expression that determines whether the policy is applied.
-          type: string
-          example: context.topic.name.endsWith('my_suffix')
-          maxLength: 1000
-          minLength: 1
-          x-expression:
-            type: boolean
-            fields:
-              - context.topic.name
-              - context.auth.principal.name
-              - context.auth.type
-          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
         config:
           description: The configuration of the policy.
           type: object
           $ref: '#/components/schemas/EventGatewayDecryptPolicyConfig'
-        labels:
-          $ref: '#/components/schemas/Labels'
+        condition:
+          description: A string containing the boolean expression that determines whether the policy is applied.
+          type: string
+          example: 'context.topic.name.endsWith("my_suffix") && records.headers["x-flag"] == "a-value"'
+          maxLength: 1000
+          x-expression:
+            type: boolean
+            fields:
+              - context.auth.principal.name
+              - context.auth.type
+              - context.topic.name
+              - record.headers
+          x-speakeasy-param-computed: false
       required:
         - type
         - config
@@ -26071,39 +26082,20 @@ components:
           type: string
           default: null
           maxLength: 255
-          minLength: 1
           nullable: true
           x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
           type: string
+          default: ''
           maxLength: 512
-          x-speakeasy-param-computed: false
         enabled:
           description: Whether the policy is enabled.
           type: boolean
           default: true
-        condition:
-          description: |
-            A string containing the boolean expression that determines whether the policy is applied.
-
-            When the policy is applied as a child policy of schema_validation, the expression can also reference
-            `record.value` fields.
-          type: string
-          example: context.topic.name.endsWith('my_suffix')
-          maxLength: 1000
-          minLength: 1
-          x-expression:
-            type: boolean
-            fields:
-              - context.topic.name
-              - context.auth.principal.name
-              - context.auth.type
-              - record.headers
-              - record.value.validated
-              - record.value.content
-          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
         config:
           description: The configuration of the modify headers policy.
           type: object
@@ -26117,8 +26109,25 @@ components:
               minItems: 1
               nullable: true
               x-speakeasy-param-computed: false
-        labels:
-          $ref: '#/components/schemas/Labels'
+        condition:
+          description: |
+            A string containing the boolean expression that determines whether the policy is applied.
+
+            When the policy is applied as a child policy of schema_validation, the expression can also reference
+            `record.value` fields.
+          type: string
+          example: record.value.content.foo.bar == "a-value"
+          maxLength: 1000
+          x-expression:
+            type: boolean
+            fields:
+              - context.auth.principal.name
+              - context.auth.type
+              - context.topic.name
+              - record.headers
+              - record.value.validated
+              - record.value.content
+          x-speakeasy-param-computed: false
       required:
         - type
         - config
@@ -26138,39 +26147,20 @@ components:
           type: string
           default: null
           maxLength: 255
-          minLength: 1
           nullable: true
           x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
           type: string
+          default: ''
           maxLength: 512
-          x-speakeasy-param-computed: false
         enabled:
           description: Whether the policy is enabled.
           type: boolean
           default: true
-        condition:
-          description: |
-            A string containing the boolean expression that determines whether the policy is applied.
-
-            When the policy is applied as a child policy of schema_validation, the expression can also reference
-            `record.value` fields.
-          type: string
-          example: context.topic.name.endsWith('my_suffix')
-          maxLength: 1000
-          minLength: 1
-          x-expression:
-            type: boolean
-            fields:
-              - context.topic.name
-              - context.auth.principal.name
-              - context.auth.type
-              - record.headers
-              - record.value.validated
-              - record.value.content
-          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
         config:
           description: The configuration of the modify headers policy.
           type: object
@@ -26184,8 +26174,25 @@ components:
               minItems: 1
               nullable: true
               x-speakeasy-param-computed: false
-        labels:
-          $ref: '#/components/schemas/Labels'
+        condition:
+          description: |
+            A string containing the boolean expression that determines whether the policy is applied.
+
+            When the policy is applied as a child policy of schema_validation, the expression can also reference
+            `record.value` fields.
+          type: string
+          example: record.value.content.foo.bar == "a-value"
+          maxLength: 1000
+          x-expression:
+            type: boolean
+            fields:
+              - context.auth.principal.name
+              - context.auth.type
+              - context.topic.name
+              - record.headers
+              - record.value.validated
+              - record.value.content
+          x-speakeasy-param-computed: false
         parent_policy_id:
           description: 'The unique identifier of the parent schema validation policy, if any.'
           type: string
@@ -26200,26 +26207,30 @@ components:
       type: object
       properties:
         type:
+          description: The type name of the policy.
           type: string
           const: skip_record
+          maxLength: 255
+          minLength: 1
         name:
           description: A unique user-defined name of the policy.
           type: string
           default: null
           maxLength: 255
-          minLength: 1
           nullable: true
           x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
           type: string
+          default: ''
           maxLength: 512
-          x-speakeasy-param-computed: false
         enabled:
           description: Whether the policy is enabled.
           type: boolean
           default: true
+        labels:
+          $ref: '#/components/schemas/Labels'
         condition:
           description: |
             A string containing the boolean expression that determines whether the policy is applied.
@@ -26227,21 +26238,18 @@ components:
             When the policy is applied as a child policy of schema_validation, the expression can also reference
             `record.value` fields.
           type: string
-          example: context.topic.name.endsWith('my_suffix')
+          example: record.value.content.foo.bar == "a-value"
           maxLength: 1000
-          minLength: 1
           x-expression:
             type: boolean
             fields:
-              - context.topic.name
               - context.auth.principal.name
               - context.auth.type
+              - context.topic.name
               - record.headers
               - record.value.validated
               - record.value.content
           x-speakeasy-param-computed: false
-        labels:
-          $ref: '#/components/schemas/Labels'
       required:
         - type
     EventGatewaySkipRecordPolicyCreate:
@@ -26249,26 +26257,30 @@ components:
       type: object
       properties:
         type:
+          description: The type name of the policy.
           type: string
           const: skip_record
+          maxLength: 255
+          minLength: 1
         name:
           description: A unique user-defined name of the policy.
           type: string
           default: null
           maxLength: 255
-          minLength: 1
           nullable: true
           x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
           type: string
+          default: ''
           maxLength: 512
-          x-speakeasy-param-computed: false
         enabled:
           description: Whether the policy is enabled.
           type: boolean
           default: true
+        labels:
+          $ref: '#/components/schemas/Labels'
         condition:
           description: |
             A string containing the boolean expression that determines whether the policy is applied.
@@ -26276,21 +26288,18 @@ components:
             When the policy is applied as a child policy of schema_validation, the expression can also reference
             `record.value` fields.
           type: string
-          example: context.topic.name.endsWith('my_suffix')
+          example: record.value.content.foo.bar == "a-value"
           maxLength: 1000
-          minLength: 1
           x-expression:
             type: boolean
             fields:
-              - context.topic.name
               - context.auth.principal.name
               - context.auth.type
+              - context.topic.name
               - record.headers
               - record.value.validated
               - record.value.content
           x-speakeasy-param-computed: false
-        labels:
-          $ref: '#/components/schemas/Labels'
         parent_policy_id:
           description: 'The unique identifier of the parent schema validation policy, if any.'
           type: string
@@ -26354,32 +26363,20 @@ components:
           type: string
           default: null
           maxLength: 255
-          minLength: 1
           nullable: true
           x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
           type: string
+          default: ''
           maxLength: 512
-          x-speakeasy-param-computed: false
         enabled:
           description: Whether the policy is enabled.
           type: boolean
           default: true
-        condition:
-          description: A string containing the boolean expression that determines whether the policy is applied.
-          type: string
-          example: context.topic.name.endsWith('my_suffix')
-          maxLength: 1000
-          minLength: 1
-          x-expression:
-            type: boolean
-            fields:
-              - context.topic.name
-              - context.auth.principal.name
-              - context.auth.type
-          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
         config:
           description: The configuration of the schema validation policy.
           type: object
@@ -26394,8 +26391,19 @@ components:
               $ref: '#/components/schemas/ConsumeValueValidationAction'
           required:
             - type
-        labels:
-          $ref: '#/components/schemas/Labels'
+        condition:
+          description: A string containing the boolean expression that determines whether the policy is applied.
+          type: string
+          example: 'context.topic.name.endsWith("my_suffix") && records.headers["x-flag"] == "a-value"'
+          maxLength: 1000
+          x-expression:
+            type: boolean
+            fields:
+              - context.auth.principal.name
+              - context.auth.type
+              - context.topic.name
+              - record.headers
+          x-speakeasy-param-computed: false
       required:
         - type
         - config
@@ -26415,38 +26423,37 @@ components:
           type: string
           default: null
           maxLength: 255
-          minLength: 1
           nullable: true
           x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
           type: string
+          default: ''
           maxLength: 512
-          x-speakeasy-param-computed: false
         enabled:
           description: Whether the policy is enabled.
           type: boolean
           default: true
-        condition:
-          description: A string containing the boolean expression that determines whether the policy is applied.
-          type: string
-          example: context.topic.name.endsWith('my_suffix')
-          maxLength: 1000
-          minLength: 1
-          x-expression:
-            type: boolean
-            fields:
-              - context.topic.name
-              - context.auth.principal.name
-              - context.auth.type
-          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
         config:
           description: The configuration of the policy.
           type: object
           $ref: '#/components/schemas/EventGatewayProduceSchemaValidationPolicyConfig'
-        labels:
-          $ref: '#/components/schemas/Labels'
+        condition:
+          description: A string containing the boolean expression that determines whether the policy is applied.
+          type: string
+          example: 'context.topic.name.endsWith("my_suffix") && records.headers["x-flag"] == "a-value"'
+          maxLength: 1000
+          x-expression:
+            type: boolean
+            fields:
+              - context.auth.principal.name
+              - context.auth.type
+              - context.topic.name
+              - record.headers
+          x-speakeasy-param-computed: false
       required:
         - type
         - config
@@ -26506,38 +26513,35 @@ components:
           type: string
           default: null
           maxLength: 255
-          minLength: 1
           nullable: true
           x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
           type: string
+          default: ''
           maxLength: 512
-          x-speakeasy-param-computed: false
         enabled:
           description: Whether the policy is enabled.
           type: boolean
           default: true
-        condition:
-          description: A string containing the boolean expression that determines whether the policy is applied.
-          type: string
-          example: context.topic.name.endsWith('my_suffix')
-          maxLength: 1000
-          minLength: 1
-          x-expression:
-            type: boolean
-            fields:
-              - context.topic.name
-              - context.auth.principal.name
-              - context.auth.type
-          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/Labels'
         config:
           description: The configuration of the policy.
           type: object
           $ref: '#/components/schemas/EventGatewayACLPolicyConfig'
-        labels:
-          $ref: '#/components/schemas/Labels'
+        condition:
+          description: A string containing the boolean expression that determines whether the policy is applied.
+          type: string
+          example: context.auth.principal.name == "this-user"
+          maxLength: 1000
+          x-expression:
+            type: boolean
+            fields:
+              - context.auth.principal.name
+              - context.auth.type
+          x-speakeasy-param-computed: false
       required:
         - type
         - config
@@ -26551,6 +26555,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/EventGatewayACLRule'
+          minItems: 1
       required:
         - rules
     EventGatewayACLRule:
@@ -27110,8 +27115,8 @@ components:
         description:
           description: A human-readable description of the static key.
           type: string
+          default: ''
           maxLength: 512
-          x-speakeasy-param-computed: false
         labels:
           $ref: '#/components/schemas/Labels'
         id:
@@ -27143,8 +27148,8 @@ components:
         description:
           description: A human-readable description of the static key.
           type: string
+          default: ''
           maxLength: 512
-          x-speakeasy-param-computed: false
         labels:
           $ref: '#/components/schemas/Labels'
         value:
@@ -27162,7 +27167,6 @@ components:
       description: A human-readable description of the Gateway.
       type: string
       maxLength: 512
-      x-speakeasy-terraform-ignore: true
     MinRuntimeVersion:
       description: |
         The minimum runtime version supported by the API. This is the lowest version of the data plane
@@ -27214,6 +27218,7 @@ components:
         A literal value or a reference to an existing secret as a template string expression.
         The value is stored and returned by the API as-is, not treated as sensitive information.
       type: string
+      minLength: 1
       x-expression:
         type: string
         fields:
@@ -27225,6 +27230,7 @@ components:
         If provided as an expression, the expression itself is stored and returned by the API.
       type: string
       example: '$${vault.env[''MY_ENV_VAR'']}'
+      minLength: 1
       x-expression:
         type: string
         fields:
@@ -27595,7 +27601,32 @@ components:
               attributes:
                 $ref: '#/components/schemas/ApiAttributes'
               images:
-                $ref: '#/components/schemas/Images'
+                type: object
+                example:
+                  icon:
+                    uri: /apis/ebbac5b0-ac89-45c3-9d2e-c4542c657e79/images/icon/raw
+                additionalProperties: false
+                nullable: true
+                properties:
+                  icon:
+                    type: object
+                    default: null
+                    additionalProperties: false
+                    nullable: true
+                    properties:
+                      uri:
+                        description: The relative API path for retrieving the raw the icon image.
+                        type: string
+                        format: uri-reference
+                        default: null
+                        nullable: true
+                        pattern: '^/[^\s]+/images/icon/raw$'
+                        x-speakeasy-param-computed: false
+                    x-speakeasy-param-computed: false
+                readOnly: true
+                title: Images
+                x-speakeasy-param-suppress-computed-diff: true
+                x-speakeasy-terraform-ignore: true
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
@@ -27854,7 +27885,32 @@ components:
               attributes:
                 $ref: '#/components/schemas/ApiAttributes'
               images:
-                $ref: '#/components/schemas/Images'
+                type: object
+                example:
+                  icon:
+                    uri: /apis/ebbac5b0-ac89-45c3-9d2e-c4542c657e79/images/icon/raw
+                additionalProperties: false
+                nullable: true
+                properties:
+                  icon:
+                    type: object
+                    default: null
+                    additionalProperties: false
+                    nullable: true
+                    properties:
+                      uri:
+                        description: The relative API path for retrieving the raw the icon image.
+                        type: string
+                        format: uri-reference
+                        default: null
+                        nullable: true
+                        pattern: '^/[^\s]+/images/icon/raw$'
+                        x-speakeasy-param-computed: false
+                    x-speakeasy-param-computed: false
+                readOnly: true
+                title: Images
+                x-speakeasy-param-suppress-computed-diff: true
+                x-speakeasy-terraform-ignore: true
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
@@ -28118,8 +28174,8 @@ components:
               description:
                 description: A human-readable description of the virtual cluster.
                 type: string
+                default: ''
                 maxLength: 512
-                x-speakeasy-param-computed: false
               addresses:
                 $ref: '#/components/schemas/EventGatewayListenerAddresses'
               ports:
@@ -28146,8 +28202,8 @@ components:
               description:
                 description: A human-readable description of the virtual cluster.
                 type: string
+                default: ''
                 maxLength: 512
-                x-speakeasy-param-computed: false
               addresses:
                 $ref: '#/components/schemas/EventGatewayListenerAddresses'
               ports:
@@ -28171,8 +28227,8 @@ components:
               description:
                 description: A human-readable description of the virtual cluster.
                 type: string
+                default: ''
                 maxLength: 512
-                x-speakeasy-param-computed: false
               destination:
                 $ref: '#/components/schemas/BackendClusterReferenceModify'
               authentication:
@@ -28204,8 +28260,8 @@ components:
               description:
                 description: A human-readable description of the virtual cluster.
                 type: string
+                default: ''
                 maxLength: 512
-                x-speakeasy-param-computed: false
               destination:
                 $ref: '#/components/schemas/BackendClusterReferenceModify'
               authentication:
@@ -28237,8 +28293,8 @@ components:
               description:
                 description: A human-readable description of the virtual cluster.
                 type: string
+                default: ''
                 maxLength: 512
-                x-speakeasy-param-computed: false
               authentication:
                 $ref: '#/components/schemas/BackendClusterAuthenticationScheme'
               insecure_allow_anonymous_virtual_cluster_auth:
@@ -28273,8 +28329,8 @@ components:
               description:
                 description: A human-readable description of the virtual cluster.
                 type: string
+                default: ''
                 maxLength: 512
-                x-speakeasy-param-computed: false
               authentication:
                 $ref: '#/components/schemas/BackendClusterAuthenticationSensitiveDataAwareScheme'
               insecure_allow_anonymous_virtual_cluster_auth:
