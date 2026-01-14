@@ -24,7 +24,7 @@ type EventGatewayProduceSchemaValidationPolicy struct {
 	// The configuration of the produce schema validation policy.
 	Config EventGatewayProduceSchemaValidationPolicyConfig `json:"config"`
 	// A string containing the boolean expression that determines whether the policy is applied.
-	Condition *string `json:"condition,omitempty"`
+	Condition *string `default:"" json:"condition"`
 }
 
 func (e EventGatewayProduceSchemaValidationPolicy) MarshalJSON() ([]byte, error) {

@@ -54,7 +54,7 @@ resource "konnect_event_gateway_consume_policy_decrypt" "my_eventgatewayconsumep
 
 ### Optional
 
-- `condition` (String) A string containing the boolean expression that determines whether the policy is applied.
+- `condition` (String) A string containing the boolean expression that determines whether the policy is applied. Default: ""
 - `description` (String) A human-readable description of the policy. Default: ""
 - `enabled` (Boolean) Whether the policy is enabled. Default: true
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 

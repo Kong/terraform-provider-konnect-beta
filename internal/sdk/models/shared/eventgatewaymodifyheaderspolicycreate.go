@@ -41,7 +41,7 @@ type EventGatewayModifyHeadersPolicyCreate struct {
 	// When the policy is applied as a child policy of schema_validation, the expression can also reference
 	// `record.value` fields.
 	//
-	Condition *string `json:"condition,omitempty"`
+	Condition *string `default:"" json:"condition"`
 	// The unique identifier of the parent schema validation policy, if any.
 	ParentPolicyID *string `json:"parent_policy_id,omitempty"`
 }

@@ -52,6 +52,7 @@ resource "konnect_event_gateway_produce_policy_modify_headers" "my_eventgatewayp
 
 When the policy is applied as a child policy of schema_validation, the expression can also reference
 `record.value` fields.
+Default: ""
 - `description` (String) A human-readable description of the policy. Default: ""
 - `enabled` (Boolean) Whether the policy is enabled. Default: true
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 

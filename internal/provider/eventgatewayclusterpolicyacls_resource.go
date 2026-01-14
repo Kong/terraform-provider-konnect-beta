@@ -62,8 +62,10 @@ func (r *EventGatewayClusterPolicyAclsResource) Schema(ctx context.Context, req 
 		MarkdownDescription: "EventGatewayClusterPolicyAcls Resource",
 		Attributes: map[string]schema.Attribute{
 			"condition": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
-				Description: `A string containing the boolean expression that determines whether the policy is applied.`,
+				Default:     stringdefault.StaticString(``),
+				Description: `A string containing the boolean expression that determines whether the policy is applied. Default: ""`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtMost(1000),
 				},

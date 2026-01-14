@@ -24,7 +24,7 @@ type EventGatewayDecryptPolicy struct {
 	// The configuration of the decrypt policy.
 	Config EventGatewayDecryptPolicyConfig `json:"config"`
 	// A string containing the boolean expression that determines whether the policy is applied.
-	Condition *string `json:"condition,omitempty"`
+	Condition *string `default:"" json:"condition"`
 }
 
 func (e EventGatewayDecryptPolicy) MarshalJSON() ([]byte, error) {

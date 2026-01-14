@@ -41,7 +41,7 @@ type EventGatewayModifyHeadersPolicy struct {
 	// When the policy is applied as a child policy of schema_validation, the expression can also reference
 	// `record.value` fields.
 	//
-	Condition *string `json:"condition,omitempty"`
+	Condition *string `default:"" json:"condition"`
 }
 
 func (e EventGatewayModifyHeadersPolicy) MarshalJSON() ([]byte, error) {

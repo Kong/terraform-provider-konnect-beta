@@ -37,7 +37,7 @@ type EventGatewayPolicy struct {
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
 	// A string containing the boolean expression that determines whether the policy is applied.
-	Condition *string `json:"condition,omitempty"`
+	Condition *string `default:"" json:"condition"`
 }
 
 func (e EventGatewayPolicy) MarshalJSON() ([]byte, error) {

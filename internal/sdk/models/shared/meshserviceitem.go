@@ -589,7 +589,7 @@ func (m *MeshServiceItemStatus) GetVips() []MeshServiceItemVips {
 	return m.Vips
 }
 
-// MeshServiceItem - Successful response
+// MeshServiceItem - MeshService represents a service in the mesh with its connectivity and health information. It defines service endpoints by selecting data plane proxies through labels or direct references, configures service ports and protocols, tracks service availability and health status, and provides automatic VIP assignment and hostname generation for service discovery.
 type MeshServiceItem struct {
 	// the type of the resource
 	Type MeshServiceItemType `json:"type"`
@@ -685,6 +685,7 @@ func (m *MeshServiceItem) GetStatus() *MeshServiceItemStatus {
 	return m.Status
 }
 
+// MeshServiceItemInput - MeshService represents a service in the mesh with its connectivity and health information. It defines service endpoints by selecting data plane proxies through labels or direct references, configures service ports and protocols, tracks service availability and health status, and provides automatic VIP assignment and hostname generation for service discovery.
 type MeshServiceItemInput struct {
 	// the type of the resource
 	Type MeshServiceItemType `json:"type"`

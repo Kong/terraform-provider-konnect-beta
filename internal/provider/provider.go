@@ -206,6 +206,7 @@ func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.R
 		NewPortalPageResource,
 		NewPortalSnippetResource,
 		NewPortalTeamResource,
+		NewWorkloadResource,
 	}
 }
 

@@ -64,11 +64,14 @@ func (r *EventGatewayConsumePolicyModifyHeadersResource) Schema(ctx context.Cont
 		MarkdownDescription: "EventGatewayConsumePolicyModifyHeaders Resource",
 		Attributes: map[string]schema.Attribute{
 			"condition": schema.StringAttribute{
+				Computed: true,
 				Optional: true,
+				Default:  stringdefault.StaticString(``),
 				MarkdownDescription: `A string containing the boolean expression that determines whether the policy is applied.` + "\n" +
 					`` + "\n" +
 					`When the policy is applied as a child policy of schema_validation, the expression can also reference` + "\n" +
-					`` + "`" + `record.value` + "`" + ` fields.`,
+					`` + "`" + `record.value` + "`" + ` fields.` + "\n" +
+					`Default: ""`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtMost(1000),
 				},
