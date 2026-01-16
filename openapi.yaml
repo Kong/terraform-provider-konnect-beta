@@ -4969,7 +4969,7 @@ paths:
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/workloads/{name}':
     get:
       x-speakeasy-entity-operation:
-        terraform-resource: Workload#get
+        terraform-resource: MeshWorkload#get
         terraform-datasource: null
       operationId: getWorkload
       summary: Returns Workload entity
@@ -4995,7 +4995,7 @@ paths:
         - Workload
     put:
       x-speakeasy-entity-operation:
-        terraform-resource: 'Workload#create,update'
+        terraform-resource: 'MeshWorkload#create,update'
         terraform-datasource: null
       operationId: putWorkload
       summary: Creates or Updates Workload entity
@@ -5028,7 +5028,7 @@ paths:
         - Workload
     delete:
       x-speakeasy-entity-operation:
-        terraform-resource: Workload#delete
+        terraform-resource: MeshWorkload#delete
         terraform-datasource: null
       operationId: deleteWorkload
       summary: Deletes Workload entity
@@ -7515,7 +7515,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
+                $ref: '#/components/schemas/EventGatewayProducePolicySchemaValidationTFOnly'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -7542,7 +7542,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
+                $ref: '#/components/schemas/EventGatewayProducePolicySchemaValidationTFOnly'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -7711,7 +7711,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
+                $ref: '#/components/schemas/EventGatewayProducePolicySchemaValidationTFOnly'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -25703,6 +25703,68 @@ components:
       oneOf:
         - $ref: '#/components/schemas/SchemaRegistryConfluentSensitiveDataAware'
     EventGatewayPolicy:
+      description: A policy associated with an Event Gateway.
+      type: object
+      properties:
+        type:
+          description: The type name of the policy.
+          type: string
+          maxLength: 255
+          minLength: 1
+        name:
+          description: A unique user-defined name of the policy.
+          type: string
+          default: null
+          maxLength: 255
+          nullable: true
+          x-speakeasy-param-computed: false
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the policy.
+          type: string
+          default: ''
+          maxLength: 512
+        enabled:
+          description: Whether the policy is enabled.
+          type: boolean
+          default: true
+        labels:
+          $ref: '#/components/schemas/Labels'
+        id:
+          description: The unique identifier of the policy.
+          type: string
+          format: uuid
+        config:
+          description: The configuration of the policy.
+          type: object
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        parent_policy_id:
+          description: 'The unique identifier of the parent policy, if any.'
+          type: string
+          format: uuid
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        condition:
+          description: A string containing the boolean expression that determines whether the policy is applied.
+          type: string
+          default: ''
+          maxLength: 1000
+          x-expression:
+            type: boolean
+            fields: []
+      required:
+        - type
+        - id
+        - created_at
+        - updated_at
+    EventGatewayProducePolicySchemaValidationTFOnly:
       description: A policy associated with an Event Gateway.
       type: object
       properties:
