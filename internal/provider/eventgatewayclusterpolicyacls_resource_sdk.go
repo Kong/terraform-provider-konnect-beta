@@ -16,8 +16,10 @@ func (r *EventGatewayClusterPolicyAclsResourceModel) RefreshFromSharedEventGatew
 
 	if resp != nil {
 		r.Condition = types.StringPointerValue(resp.Condition)
-		configPriorData := r.Config
-		r.Config.Rules = configPriorData.Rules
+		if resp.Config != nil {
+			configPriorData := r.Config
+			r.Config.Rules = configPriorData.Rules
+		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)

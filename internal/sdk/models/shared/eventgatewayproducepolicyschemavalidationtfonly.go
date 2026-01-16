@@ -7,12 +7,12 @@ import (
 	"time"
 )
 
-// EventGatewayPolicyConfig - The configuration of the policy.
-type EventGatewayPolicyConfig struct {
+// EventGatewayProducePolicySchemaValidationTFOnlyConfig - The configuration of the policy.
+type EventGatewayProducePolicySchemaValidationTFOnlyConfig struct {
 }
 
-// EventGatewayPolicy - A policy associated with an Event Gateway.
-type EventGatewayPolicy struct {
+// EventGatewayProducePolicySchemaValidationTFOnly - A policy associated with an Event Gateway.
+type EventGatewayProducePolicySchemaValidationTFOnly struct {
 	// The type name of the policy.
 	Type string `json:"type"`
 	// A unique user-defined name of the policy.
@@ -29,7 +29,7 @@ type EventGatewayPolicy struct {
 	// The unique identifier of the policy.
 	ID string `json:"id"`
 	// The configuration of the policy.
-	Config *EventGatewayPolicyConfig `json:"config,omitempty"`
+	Config EventGatewayProducePolicySchemaValidationTFOnlyConfig `json:"config"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// The unique identifier of the parent policy, if any.
@@ -40,88 +40,88 @@ type EventGatewayPolicy struct {
 	Condition *string `default:"" json:"condition"`
 }
 
-func (e EventGatewayPolicy) MarshalJSON() ([]byte, error) {
+func (e EventGatewayProducePolicySchemaValidationTFOnly) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(e, "", false)
 }
 
-func (e *EventGatewayPolicy) UnmarshalJSON(data []byte) error {
+func (e *EventGatewayProducePolicySchemaValidationTFOnly) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (e *EventGatewayPolicy) GetType() string {
+func (e *EventGatewayProducePolicySchemaValidationTFOnly) GetType() string {
 	if e == nil {
 		return ""
 	}
 	return e.Type
 }
 
-func (e *EventGatewayPolicy) GetName() *string {
+func (e *EventGatewayProducePolicySchemaValidationTFOnly) GetName() *string {
 	if e == nil {
 		return nil
 	}
 	return e.Name
 }
 
-func (e *EventGatewayPolicy) GetDescription() *string {
+func (e *EventGatewayProducePolicySchemaValidationTFOnly) GetDescription() *string {
 	if e == nil {
 		return nil
 	}
 	return e.Description
 }
 
-func (e *EventGatewayPolicy) GetEnabled() *bool {
+func (e *EventGatewayProducePolicySchemaValidationTFOnly) GetEnabled() *bool {
 	if e == nil {
 		return nil
 	}
 	return e.Enabled
 }
 
-func (e *EventGatewayPolicy) GetLabels() map[string]*string {
+func (e *EventGatewayProducePolicySchemaValidationTFOnly) GetLabels() map[string]*string {
 	if e == nil {
 		return nil
 	}
 	return e.Labels
 }
 
-func (e *EventGatewayPolicy) GetID() string {
+func (e *EventGatewayProducePolicySchemaValidationTFOnly) GetID() string {
 	if e == nil {
 		return ""
 	}
 	return e.ID
 }
 
-func (e *EventGatewayPolicy) GetConfig() *EventGatewayPolicyConfig {
+func (e *EventGatewayProducePolicySchemaValidationTFOnly) GetConfig() EventGatewayProducePolicySchemaValidationTFOnlyConfig {
 	if e == nil {
-		return nil
+		return EventGatewayProducePolicySchemaValidationTFOnlyConfig{}
 	}
 	return e.Config
 }
 
-func (e *EventGatewayPolicy) GetCreatedAt() time.Time {
+func (e *EventGatewayProducePolicySchemaValidationTFOnly) GetCreatedAt() time.Time {
 	if e == nil {
 		return time.Time{}
 	}
 	return e.CreatedAt
 }
 
-func (e *EventGatewayPolicy) GetParentPolicyID() *string {
+func (e *EventGatewayProducePolicySchemaValidationTFOnly) GetParentPolicyID() *string {
 	if e == nil {
 		return nil
 	}
 	return e.ParentPolicyID
 }
 
-func (e *EventGatewayPolicy) GetUpdatedAt() time.Time {
+func (e *EventGatewayProducePolicySchemaValidationTFOnly) GetUpdatedAt() time.Time {
 	if e == nil {
 		return time.Time{}
 	}
 	return e.UpdatedAt
 }
 
-func (e *EventGatewayPolicy) GetCondition() *string {
+func (e *EventGatewayProducePolicySchemaValidationTFOnly) GetCondition() *string {
 	if e == nil {
 		return nil
 	}

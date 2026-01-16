@@ -11,7 +11,7 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *EventGatewayProducePolicySchemaValidationResourceModel) RefreshFromSharedEventGatewayPolicy(ctx context.Context, resp *shared.EventGatewayPolicy) diag.Diagnostics {
+func (r *EventGatewayProducePolicySchemaValidationResourceModel) RefreshFromSharedEventGatewayProducePolicySchemaValidationTFOnly(ctx context.Context, resp *shared.EventGatewayProducePolicySchemaValidationTFOnly) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
