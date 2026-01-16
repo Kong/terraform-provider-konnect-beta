@@ -16,8 +16,10 @@ func (r *EventGatewayProducePolicyModifyHeadersResourceModel) RefreshFromSharedE
 
 	if resp != nil {
 		r.Condition = types.StringPointerValue(resp.Condition)
-		configPriorData := r.Config
-		r.Config.Actions = configPriorData.Actions
+		if resp.Config != nil {
+			configPriorData := r.Config
+			r.Config.Actions = configPriorData.Actions
+		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)

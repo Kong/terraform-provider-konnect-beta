@@ -16,10 +16,12 @@ func (r *EventGatewayConsumePolicyDecryptResourceModel) RefreshFromSharedEventGa
 
 	if resp != nil {
 		r.Condition = types.StringPointerValue(resp.Condition)
-		configPriorData := r.Config
-		r.Config.FailureMode = configPriorData.FailureMode
-		r.Config.KeySources = configPriorData.KeySources
-		r.Config.PartOfRecord = configPriorData.PartOfRecord
+		if resp.Config != nil {
+			configPriorData := r.Config
+			r.Config.FailureMode = configPriorData.FailureMode
+			r.Config.KeySources = configPriorData.KeySources
+			r.Config.PartOfRecord = configPriorData.PartOfRecord
+		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)

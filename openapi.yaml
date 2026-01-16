@@ -4969,7 +4969,7 @@ paths:
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/workloads/{name}':
     get:
       x-speakeasy-entity-operation:
-        terraform-resource: Workload#get
+        terraform-resource: MeshWorkload#get
         terraform-datasource: null
       operationId: getWorkload
       summary: Returns Workload entity
@@ -4995,7 +4995,7 @@ paths:
         - Workload
     put:
       x-speakeasy-entity-operation:
-        terraform-resource: 'Workload#create,update'
+        terraform-resource: 'MeshWorkload#create,update'
         terraform-datasource: null
       operationId: putWorkload
       summary: Creates or Updates Workload entity
@@ -5028,7 +5028,7 @@ paths:
         - Workload
     delete:
       x-speakeasy-entity-operation:
-        terraform-resource: Workload#delete
+        terraform-resource: MeshWorkload#delete
         terraform-datasource: null
       operationId: deleteWorkload
       summary: Deletes Workload entity
@@ -25737,6 +25737,7 @@ components:
         config:
           description: The configuration of the policy.
           type: object
+          x-speakeasy-param-computed: true
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         parent_policy_id:
@@ -25761,7 +25762,6 @@ components:
         - id
         - created_at
         - updated_at
-        - config
     EventGatewayListenerPolicy:
       description: A policy associated with an Event Gateway.
       type: object
@@ -25797,6 +25797,7 @@ components:
         config:
           description: The configuration of the policy.
           type: object
+          x-speakeasy-param-computed: true
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         parent_policy_id:

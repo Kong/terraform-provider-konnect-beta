@@ -24,21 +24,21 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &WorkloadResource{}
-var _ resource.ResourceWithImportState = &WorkloadResource{}
+var _ resource.Resource = &MeshWorkloadResource{}
+var _ resource.ResourceWithImportState = &MeshWorkloadResource{}
 
-func NewWorkloadResource() resource.Resource {
-	return &WorkloadResource{}
+func NewMeshWorkloadResource() resource.Resource {
+	return &MeshWorkloadResource{}
 }
 
-// WorkloadResource defines the resource implementation.
-type WorkloadResource struct {
+// MeshWorkloadResource defines the resource implementation.
+type MeshWorkloadResource struct {
 	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
-// WorkloadResourceModel describes the resource data model.
-type WorkloadResourceModel struct {
+// MeshWorkloadResourceModel describes the resource data model.
+type MeshWorkloadResourceModel struct {
 	CpID             types.String                                  `tfsdk:"cp_id"`
 	CreationTime     types.String                                  `tfsdk:"creation_time"`
 	Kri              types.String                                  `tfsdk:"kri"`
@@ -52,13 +52,13 @@ type WorkloadResourceModel struct {
 	Warnings         []types.String                                `tfsdk:"warnings"`
 }
 
-func (r *WorkloadResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_workload"
+func (r *MeshWorkloadResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = "konnect_mesh_workload"
 }
 
-func (r *WorkloadResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *MeshWorkloadResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Workload Resource",
+		MarkdownDescription: "MeshWorkload Resource",
 		Attributes: map[string]schema.Attribute{
 			"cp_id": schema.StringAttribute{
 				Required: true,
@@ -149,7 +149,7 @@ func (r *WorkloadResource) Schema(ctx context.Context, req resource.SchemaReques
 	}
 }
 
-func (r *WorkloadResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *MeshWorkloadResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -169,8 +169,8 @@ func (r *WorkloadResource) Configure(ctx context.Context, req resource.Configure
 	r.client = client
 }
 
-func (r *WorkloadResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *WorkloadResourceModel
+func (r *MeshWorkloadResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *MeshWorkloadResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -269,8 +269,8 @@ func (r *WorkloadResource) Create(ctx context.Context, req resource.CreateReques
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *WorkloadResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *WorkloadResourceModel
+func (r *MeshWorkloadResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *MeshWorkloadResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -327,8 +327,8 @@ func (r *WorkloadResource) Read(ctx context.Context, req resource.ReadRequest, r
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *WorkloadResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *WorkloadResourceModel
+func (r *MeshWorkloadResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *MeshWorkloadResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -423,8 +423,8 @@ func (r *WorkloadResource) Update(ctx context.Context, req resource.UpdateReques
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *WorkloadResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *WorkloadResourceModel
+func (r *MeshWorkloadResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *MeshWorkloadResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -469,7 +469,7 @@ func (r *WorkloadResource) Delete(ctx context.Context, req resource.DeleteReques
 
 }
 
-func (r *WorkloadResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *MeshWorkloadResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {

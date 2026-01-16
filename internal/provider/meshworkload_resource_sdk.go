@@ -12,7 +12,7 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *WorkloadResourceModel) RefreshFromSharedWorkloadCreateOrUpdateSuccessResponse(ctx context.Context, resp *shared.WorkloadCreateOrUpdateSuccessResponse) diag.Diagnostics {
+func (r *MeshWorkloadResourceModel) RefreshFromSharedWorkloadCreateOrUpdateSuccessResponse(ctx context.Context, resp *shared.WorkloadCreateOrUpdateSuccessResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
@@ -25,7 +25,7 @@ func (r *WorkloadResourceModel) RefreshFromSharedWorkloadCreateOrUpdateSuccessRe
 	return diags
 }
 
-func (r *WorkloadResourceModel) RefreshFromSharedWorkloadItem(ctx context.Context, resp *shared.WorkloadItem) diag.Diagnostics {
+func (r *MeshWorkloadResourceModel) RefreshFromSharedWorkloadItem(ctx context.Context, resp *shared.WorkloadItem) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
@@ -59,7 +59,7 @@ func (r *WorkloadResourceModel) RefreshFromSharedWorkloadItem(ctx context.Contex
 	return diags
 }
 
-func (r *WorkloadResourceModel) ToOperationsDeleteWorkloadRequest(ctx context.Context) (*operations.DeleteWorkloadRequest, diag.Diagnostics) {
+func (r *MeshWorkloadResourceModel) ToOperationsDeleteWorkloadRequest(ctx context.Context) (*operations.DeleteWorkloadRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -80,7 +80,7 @@ func (r *WorkloadResourceModel) ToOperationsDeleteWorkloadRequest(ctx context.Co
 	return &out, diags
 }
 
-func (r *WorkloadResourceModel) ToOperationsGetWorkloadRequest(ctx context.Context) (*operations.GetWorkloadRequest, diag.Diagnostics) {
+func (r *MeshWorkloadResourceModel) ToOperationsGetWorkloadRequest(ctx context.Context) (*operations.GetWorkloadRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -101,7 +101,7 @@ func (r *WorkloadResourceModel) ToOperationsGetWorkloadRequest(ctx context.Conte
 	return &out, diags
 }
 
-func (r *WorkloadResourceModel) ToOperationsPutWorkloadRequest(ctx context.Context) (*operations.PutWorkloadRequest, diag.Diagnostics) {
+func (r *MeshWorkloadResourceModel) ToOperationsPutWorkloadRequest(ctx context.Context) (*operations.PutWorkloadRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cpID string
@@ -130,7 +130,7 @@ func (r *WorkloadResourceModel) ToOperationsPutWorkloadRequest(ctx context.Conte
 	return &out, diags
 }
 
-func (r *WorkloadResourceModel) ToSharedWorkloadItemInput(ctx context.Context) (*shared.WorkloadItemInput, diag.Diagnostics) {
+func (r *MeshWorkloadResourceModel) ToSharedWorkloadItemInput(ctx context.Context) (*shared.WorkloadItemInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	typeVar := shared.WorkloadItemType(r.Type.ValueString())

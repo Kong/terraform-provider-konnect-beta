@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
+	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
@@ -16,6 +17,11 @@ func (r *EventGatewayConsumePolicySkipRecordResourceModel) RefreshFromSharedEven
 
 	if resp != nil {
 		r.Condition = types.StringPointerValue(resp.Condition)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.BackendClusterAuthenticationAnonymous{}
+		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)

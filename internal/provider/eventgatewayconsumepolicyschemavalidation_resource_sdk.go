@@ -16,11 +16,13 @@ func (r *EventGatewayConsumePolicySchemaValidationResourceModel) RefreshFromShar
 
 	if resp != nil {
 		r.Condition = types.StringPointerValue(resp.Condition)
-		configPriorData := r.Config
-		r.Config.KeyValidationAction = configPriorData.KeyValidationAction
-		r.Config.SchemaRegistry = configPriorData.SchemaRegistry
-		r.Config.Type = configPriorData.Type
-		r.Config.ValueValidationAction = configPriorData.ValueValidationAction
+		if resp.Config != nil {
+			configPriorData := r.Config
+			r.Config.KeyValidationAction = configPriorData.KeyValidationAction
+			r.Config.SchemaRegistry = configPriorData.SchemaRegistry
+			r.Config.Type = configPriorData.Type
+			r.Config.ValueValidationAction = configPriorData.ValueValidationAction
+		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)

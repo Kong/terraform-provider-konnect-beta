@@ -29,7 +29,7 @@ type EventGatewayPolicy struct {
 	// The unique identifier of the policy.
 	ID string `json:"id"`
 	// The configuration of the policy.
-	Config EventGatewayPolicyConfig `json:"config"`
+	Config *EventGatewayPolicyConfig `json:"config,omitempty"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// The unique identifier of the parent policy, if any.
@@ -93,9 +93,9 @@ func (e *EventGatewayPolicy) GetID() string {
 	return e.ID
 }
 
-func (e *EventGatewayPolicy) GetConfig() EventGatewayPolicyConfig {
+func (e *EventGatewayPolicy) GetConfig() *EventGatewayPolicyConfig {
 	if e == nil {
-		return EventGatewayPolicyConfig{}
+		return nil
 	}
 	return e.Config
 }
