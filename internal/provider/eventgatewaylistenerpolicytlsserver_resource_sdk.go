@@ -154,6 +154,16 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToSharedEventGatewayT
 	} else {
 		enabled = nil
 	}
+	labels := make(map[string]*string)
+	for labelsKey := range r.Labels {
+		labelsInst := new(string)
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
+		} else {
+			labelsInst = nil
+		}
+		labels[labelsKey] = labelsInst
+	}
 	certificates := make([]shared.TLSCertificate, 0, len(r.Config.Certificates))
 	for certificatesIndex := range r.Config.Certificates {
 		var certificate string
@@ -197,22 +207,12 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToSharedEventGatewayT
 		Versions:       versions,
 		AllowPlaintext: allowPlaintext,
 	}
-	labels := make(map[string]*string)
-	for labelsKey := range r.Labels {
-		labelsInst := new(string)
-		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
-			*labelsInst = r.Labels[labelsKey].ValueString()
-		} else {
-			labelsInst = nil
-		}
-		labels[labelsKey] = labelsInst
-	}
 	out := shared.EventGatewayTLSListenerPolicy{
 		Name:        name,
 		Description: description,
 		Enabled:     enabled,
-		Config:      config,
 		Labels:      labels,
+		Config:      config,
 	}
 
 	return &out, diags
@@ -238,6 +238,16 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToSharedEventGatewayT
 		*enabled = r.Enabled.ValueBool()
 	} else {
 		enabled = nil
+	}
+	labels := make(map[string]*string)
+	for labelsKey := range r.Labels {
+		labelsInst := new(string)
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
+		} else {
+			labelsInst = nil
+		}
+		labels[labelsKey] = labelsInst
 	}
 	certificates := make([]shared.TLSCertificateSensitiveDataAware, 0, len(r.Config.Certificates))
 	for certificatesIndex := range r.Config.Certificates {
@@ -285,22 +295,12 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToSharedEventGatewayT
 		Versions:       versions,
 		AllowPlaintext: allowPlaintext,
 	}
-	labels := make(map[string]*string)
-	for labelsKey := range r.Labels {
-		labelsInst := new(string)
-		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
-			*labelsInst = r.Labels[labelsKey].ValueString()
-		} else {
-			labelsInst = nil
-		}
-		labels[labelsKey] = labelsInst
-	}
 	out := shared.EventGatewayTLSListenerSensitiveDataAwarePolicy{
 		Name:        name,
 		Description: description,
 		Enabled:     enabled,
-		Config:      config,
 		Labels:      labels,
+		Config:      config,
 	}
 
 	return &out, diags

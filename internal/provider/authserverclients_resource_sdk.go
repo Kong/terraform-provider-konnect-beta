@@ -183,18 +183,6 @@ func (r *AuthServerClientsResourceModel) ToOperationsReplaceAuthServerClientRequ
 func (r *AuthServerClientsResourceModel) ToSharedCreateClient(ctx context.Context) (*shared.CreateClient, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	id := new(string)
-	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id = r.ID.ValueString()
-	} else {
-		id = nil
-	}
-	clientSecret := new(string)
-	if !r.ClientSecret.IsUnknown() && !r.ClientSecret.IsNull() {
-		*clientSecret = r.ClientSecret.ValueString()
-	} else {
-		clientSecret = nil
-	}
 	var name string
 	name = r.Name.ValueString()
 
@@ -254,9 +242,19 @@ func (r *AuthServerClientsResourceModel) ToSharedCreateClient(ctx context.Contex
 	} else {
 		tokenEndpointAuthMethod = nil
 	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
+	clientSecret := new(string)
+	if !r.ClientSecret.IsUnknown() && !r.ClientSecret.IsNull() {
+		*clientSecret = r.ClientSecret.ValueString()
+	} else {
+		clientSecret = nil
+	}
 	out := shared.CreateClient{
-		ID:                      id,
-		ClientSecret:            clientSecret,
 		Name:                    name,
 		GrantTypes:              grantTypes,
 		ResponseTypes:           responseTypes,
@@ -268,6 +266,8 @@ func (r *AuthServerClientsResourceModel) ToSharedCreateClient(ctx context.Contex
 		AllowScopes:             allowScopes,
 		Labels:                  labels,
 		TokenEndpointAuthMethod: tokenEndpointAuthMethod,
+		ID:                      id,
+		ClientSecret:            clientSecret,
 	}
 
 	return &out, diags

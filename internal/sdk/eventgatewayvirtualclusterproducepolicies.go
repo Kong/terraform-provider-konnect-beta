@@ -1022,12 +1022,12 @@ func (s *EventGatewayVirtualClusterProducePolicies) GetEventGatewayVirtualCluste
 				return nil, err
 			}
 
-			var out shared.EventGatewayPolicy
+			var out shared.EventGatewayProducePolicySchemaValidationTFOnly
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.EventGatewayPolicy = &out
+			res.EventGatewayProducePolicySchemaValidationTFOnly = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -1303,12 +1303,12 @@ func (s *EventGatewayVirtualClusterProducePolicies) UpdateEventGatewayVirtualClu
 				return nil, err
 			}
 
-			var out shared.EventGatewayPolicy
+			var out shared.EventGatewayProducePolicySchemaValidationTFOnly
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.EventGatewayPolicy = &out
+			res.EventGatewayProducePolicySchemaValidationTFOnly = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -2916,12 +2916,12 @@ func (s *EventGatewayVirtualClusterProducePolicies) CreateEventGatewayVirtualClu
 				return nil, err
 			}
 
-			var out shared.EventGatewayPolicy
+			var out shared.EventGatewayProducePolicySchemaValidationTFOnly
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.EventGatewayPolicy = &out
+			res.EventGatewayProducePolicySchemaValidationTFOnly = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

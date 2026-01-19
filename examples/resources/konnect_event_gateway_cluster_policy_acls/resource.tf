@@ -1,6 +1,6 @@
 resource "konnect_event_gateway_cluster_policy_acls" "my_eventgatewayclusterpolicyacls" {
   provider = konnect-beta
-  condition = "context.topic.name.endsWith('my_suffix')"
+  condition = "context.auth.principal.name == \"this-user\""
   config = {
     rules = [
       {

@@ -15,6 +15,7 @@ EventGateway Resource
 ```terraform
 resource "konnect_event_gateway" "my_eventgateway" {
   provider = konnect-beta
+  description = "...my_description..."
   labels = {
     key = "value"
   }
@@ -32,6 +33,7 @@ resource "konnect_event_gateway" "my_eventgateway" {
 
 ### Optional
 
+- `description` (String) A human-readable description of the Gateway.
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".

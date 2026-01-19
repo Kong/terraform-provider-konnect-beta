@@ -8,10 +8,6 @@ import (
 
 // CreateClient - Client to be created
 type CreateClient struct {
-	// The OAuth 2.0 client ID
-	ID *string `json:"id,omitempty"`
-	// Secret of the client - will be used when ID is also set.
-	ClientSecret *string `json:"client_secret,omitempty"`
 	// The name of the client
 	Name string `json:"name"`
 	// List of OAuth 2.0 grant types
@@ -37,6 +33,10 @@ type CreateClient struct {
 	Labels map[string]*string `json:"labels,omitempty"`
 	// Requested authentication method for OAuth 2.0 endpoints.
 	TokenEndpointAuthMethod *TokenEndpointAuthMethod `default:"client_secret_post" json:"token_endpoint_auth_method"`
+	// The OAuth 2.0 client ID
+	ID *string `json:"id,omitempty"`
+	// Secret of the client - will be used when ID is also set.
+	ClientSecret *string `json:"client_secret,omitempty"`
 }
 
 func (c CreateClient) MarshalJSON() ([]byte, error) {
@@ -48,20 +48,6 @@ func (c *CreateClient) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (c *CreateClient) GetID() *string {
-	if c == nil {
-		return nil
-	}
-	return c.ID
-}
-
-func (c *CreateClient) GetClientSecret() *string {
-	if c == nil {
-		return nil
-	}
-	return c.ClientSecret
 }
 
 func (c *CreateClient) GetName() string {
@@ -139,4 +125,18 @@ func (c *CreateClient) GetTokenEndpointAuthMethod() *TokenEndpointAuthMethod {
 		return nil
 	}
 	return c.TokenEndpointAuthMethod
+}
+
+func (c *CreateClient) GetID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ID
+}
+
+func (c *CreateClient) GetClientSecret() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ClientSecret
 }

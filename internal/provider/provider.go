@@ -195,6 +195,7 @@ func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.R
 		NewMeshTraceResource,
 		NewMeshTrafficPermissionResource,
 		NewMeshTrustResource,
+		NewMeshWorkloadResource,
 		NewMeshZoneEgressResource,
 		NewMeshZoneIngressResource,
 		NewPortalResource,

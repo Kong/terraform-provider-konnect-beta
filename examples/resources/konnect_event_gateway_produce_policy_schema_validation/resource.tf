@@ -1,6 +1,6 @@
 resource "konnect_event_gateway_produce_policy_schema_validation" "my_eventgatewayproducepolicyschemavalidation" {
   provider = konnect-beta
-  condition = "context.topic.name.endsWith('my_suffix')"
+  condition = "context.topic.name.endsWith(\"my_suffix\") && records.headers[\"x-flag\"] == \"a-value\""
   config = {
     confluent_schema_registry = {
       key_validation_action = "reject"

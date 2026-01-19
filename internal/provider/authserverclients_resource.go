@@ -100,9 +100,6 @@ func (r *AuthServerClientsResource) Schema(ctx context.Context, req resource.Sch
 				Computed:    true,
 				Optional:    true,
 				Description: `Secret of the client - will be used when ID is also set.`,
-				Validators: []validator.String{
-					stringvalidator.UTF8LengthAtLeast(1),
-				},
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
