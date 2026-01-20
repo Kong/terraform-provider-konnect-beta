@@ -15,7 +15,7 @@ EventGatewayConsumePolicySkipRecord Resource
 ```terraform
 resource "konnect_event_gateway_consume_policy_skip_record" "my_eventgatewayconsumepolicyskiprecord" {
   provider = konnect-beta
-  condition   = "context.topic.name.endsWith('my_suffix')"
+  condition   = "record.value.content.foo.bar == \"a-value\""
   description = "...my_description..."
   enabled     = true
   gateway_id  = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
@@ -42,7 +42,8 @@ resource "konnect_event_gateway_consume_policy_skip_record" "my_eventgatewaycons
 
 When the policy is applied as a child policy of schema_validation, the expression can also reference
 `record.value` fields.
-- `description` (String) A human-readable description of the policy.
+Default: ""
+- `description` (String) A human-readable description of the policy. Default: ""
 - `enabled` (Boolean) Whether the policy is enabled. Default: true
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 

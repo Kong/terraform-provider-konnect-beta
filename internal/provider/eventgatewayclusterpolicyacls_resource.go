@@ -7,12 +7,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -60,10 +62,12 @@ func (r *EventGatewayClusterPolicyAclsResource) Schema(ctx context.Context, req 
 		MarkdownDescription: "EventGatewayClusterPolicyAcls Resource",
 		Attributes: map[string]schema.Attribute{
 			"condition": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
-				Description: `A string containing the boolean expression that determines whether the policy is applied.`,
+				Default:     stringdefault.StaticString(``),
+				Description: `A string containing the boolean expression that determines whether the policy is applied. Default: ""`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 1000),
+					stringvalidator.UTF8LengthAtMost(1000),
 				},
 			},
 			"config": schema.SingleNestedAttribute{
@@ -137,6 +141,9 @@ func (r *EventGatewayClusterPolicyAclsResource) Schema(ctx context.Context, req 
 							},
 						},
 						Description: `Every ACL rule in this list applies independently.`,
+						Validators: []validator.List{
+							listvalidator.SizeAtLeast(1),
+						},
 					},
 				},
 				Description: `Apply ACLs to virtual cluster traffic.`,
@@ -149,8 +156,10 @@ func (r *EventGatewayClusterPolicyAclsResource) Schema(ctx context.Context, req 
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
 			"description": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
-				Description: `A human-readable description of the policy.`,
+				Default:     stringdefault.StaticString(``),
+				Description: `A human-readable description of the policy. Default: ""`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtMost(512),
 				},
@@ -181,7 +190,7 @@ func (r *EventGatewayClusterPolicyAclsResource) Schema(ctx context.Context, req 
 				Optional:    true,
 				Description: `A unique user-defined name of the policy.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 255),
+					stringvalidator.UTF8LengthAtMost(255),
 				},
 			},
 			"parent_policy_id": schema.StringAttribute{

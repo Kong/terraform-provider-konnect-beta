@@ -37,6 +37,40 @@ func (p *Portals) GetDisplayName() string {
 	return p.DisplayName
 }
 
+type Icon struct {
+	// The relative API path for retrieving the raw the icon image.
+	URI *string `default:"null" json:"uri"`
+}
+
+func (i Icon) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *Icon) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (i *Icon) GetURI() *string {
+	if i == nil {
+		return nil
+	}
+	return i.URI
+}
+
+type Images struct {
+	Icon *Icon `json:"icon"`
+}
+
+func (i *Images) GetIcon() *Icon {
+	if i == nil {
+		return nil
+	}
+	return i.Icon
+}
+
 // APIResponseSchema - API
 type APIResponseSchema struct {
 	// The API identifier.

@@ -1469,6 +1469,7 @@ EOF
 			  name        = "tf-test-produce-schema-validation"
 			  description = "initial schema validation policy"
 			  enabled     = true
+			  condition   = "context.topic.name.endsWith('my_suffix')"
 
 			  config = {
 				confluent_schema_registry = {

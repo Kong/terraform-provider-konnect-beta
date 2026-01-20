@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -38,18 +39,18 @@ type EventGatewayConsumePolicySkipRecordResource struct {
 
 // EventGatewayConsumePolicySkipRecordResourceModel describes the resource data model.
 type EventGatewayConsumePolicySkipRecordResourceModel struct {
-	Condition        types.String                                  `tfsdk:"condition"`
-	Config           tfTypes.BackendClusterAuthenticationAnonymous `tfsdk:"config"`
-	CreatedAt        types.String                                  `tfsdk:"created_at"`
-	Description      types.String                                  `tfsdk:"description"`
-	Enabled          types.Bool                                    `tfsdk:"enabled"`
-	GatewayID        types.String                                  `tfsdk:"gateway_id"`
-	ID               types.String                                  `tfsdk:"id"`
-	Labels           map[string]types.String                       `tfsdk:"labels"`
-	Name             types.String                                  `tfsdk:"name"`
-	ParentPolicyID   types.String                                  `tfsdk:"parent_policy_id"`
-	UpdatedAt        types.String                                  `tfsdk:"updated_at"`
-	VirtualClusterID types.String                                  `tfsdk:"virtual_cluster_id"`
+	Condition        types.String                                   `tfsdk:"condition"`
+	Config           *tfTypes.BackendClusterAuthenticationAnonymous `tfsdk:"config"`
+	CreatedAt        types.String                                   `tfsdk:"created_at"`
+	Description      types.String                                   `tfsdk:"description"`
+	Enabled          types.Bool                                     `tfsdk:"enabled"`
+	GatewayID        types.String                                   `tfsdk:"gateway_id"`
+	ID               types.String                                   `tfsdk:"id"`
+	Labels           map[string]types.String                        `tfsdk:"labels"`
+	Name             types.String                                   `tfsdk:"name"`
+	ParentPolicyID   types.String                                   `tfsdk:"parent_policy_id"`
+	UpdatedAt        types.String                                   `tfsdk:"updated_at"`
+	VirtualClusterID types.String                                   `tfsdk:"virtual_cluster_id"`
 }
 
 func (r *EventGatewayConsumePolicySkipRecordResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -61,13 +62,16 @@ func (r *EventGatewayConsumePolicySkipRecordResource) Schema(ctx context.Context
 		MarkdownDescription: "EventGatewayConsumePolicySkipRecord Resource",
 		Attributes: map[string]schema.Attribute{
 			"condition": schema.StringAttribute{
+				Computed: true,
 				Optional: true,
+				Default:  stringdefault.StaticString(``),
 				MarkdownDescription: `A string containing the boolean expression that determines whether the policy is applied.` + "\n" +
 					`` + "\n" +
 					`When the policy is applied as a child policy of schema_validation, the expression can also reference` + "\n" +
-					`` + "`" + `record.value` + "`" + ` fields.`,
+					`` + "`" + `record.value` + "`" + ` fields.` + "\n" +
+					`Default: ""`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 1000),
+					stringvalidator.UTF8LengthAtMost(1000),
 				},
 			},
 			"config": schema.SingleNestedAttribute{
@@ -82,8 +86,10 @@ func (r *EventGatewayConsumePolicySkipRecordResource) Schema(ctx context.Context
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
 			"description": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
-				Description: `A human-readable description of the policy.`,
+				Default:     stringdefault.StaticString(``),
+				Description: `A human-readable description of the policy. Default: ""`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtMost(512),
 				},
@@ -114,7 +120,7 @@ func (r *EventGatewayConsumePolicySkipRecordResource) Schema(ctx context.Context
 				Optional:    true,
 				Description: `A unique user-defined name of the policy.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 255),
+					stringvalidator.UTF8LengthAtMost(255),
 				},
 			},
 			"parent_policy_id": schema.StringAttribute{

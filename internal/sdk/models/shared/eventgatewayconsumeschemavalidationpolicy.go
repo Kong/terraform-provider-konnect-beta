@@ -64,18 +64,18 @@ type EventGatewayConsumeSchemaValidationPolicy struct {
 	// A unique user-defined name of the policy.
 	Name *string `default:"null" json:"name"`
 	// A human-readable description of the policy.
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"" json:"description"`
 	// Whether the policy is enabled.
 	Enabled *bool `default:"true" json:"enabled"`
-	// A string containing the boolean expression that determines whether the policy is applied.
-	Condition *string `json:"condition,omitempty"`
-	// The configuration of the schema validation policy.
-	Config EventGatewayConsumeSchemaValidationPolicyConfig `json:"config"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
+	// The configuration of the schema validation policy.
+	Config EventGatewayConsumeSchemaValidationPolicyConfig `json:"config"`
+	// A string containing the boolean expression that determines whether the policy is applied.
+	Condition *string `default:"" json:"condition"`
 }
 
 func (e EventGatewayConsumeSchemaValidationPolicy) MarshalJSON() ([]byte, error) {
@@ -114,11 +114,11 @@ func (e *EventGatewayConsumeSchemaValidationPolicy) GetEnabled() *bool {
 	return e.Enabled
 }
 
-func (e *EventGatewayConsumeSchemaValidationPolicy) GetCondition() *string {
+func (e *EventGatewayConsumeSchemaValidationPolicy) GetLabels() map[string]*string {
 	if e == nil {
 		return nil
 	}
-	return e.Condition
+	return e.Labels
 }
 
 func (e *EventGatewayConsumeSchemaValidationPolicy) GetConfig() EventGatewayConsumeSchemaValidationPolicyConfig {
@@ -128,9 +128,9 @@ func (e *EventGatewayConsumeSchemaValidationPolicy) GetConfig() EventGatewayCons
 	return e.Config
 }
 
-func (e *EventGatewayConsumeSchemaValidationPolicy) GetLabels() map[string]*string {
+func (e *EventGatewayConsumeSchemaValidationPolicy) GetCondition() *string {
 	if e == nil {
 		return nil
 	}
-	return e.Labels
+	return e.Condition
 }

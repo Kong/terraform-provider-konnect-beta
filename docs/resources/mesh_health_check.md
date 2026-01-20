@@ -200,6 +200,7 @@ the health check will be made for is a gRPC service. (see [below for nested sche
 - `healthy_panic_threshold` (Attributes) Allows to configure panic threshold for Envoy cluster. If not specified,
 the default is 50%. To disable panic mode, set to 0%.
 Either int or decimal represented as string.
+
 Deprecated: the setting has been moved to MeshCircuitBreaker policy,
 please use MeshCircuitBreaker policy instead. (see [below for nested schema](#nestedatt--spec--to--default--healthy_panic_threshold))
 - `healthy_threshold` (Number) Number of consecutive healthy checks before considering a host healthy.
