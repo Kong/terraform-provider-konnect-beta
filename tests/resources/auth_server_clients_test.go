@@ -126,7 +126,7 @@ func TestAuthServerClients(t *testing.T) {
 		authServerClient.AddAttribute("id", uuidResource.ResourcePath()+".id")
 
 		resource.Test(t, resource.TestCase{
-			ProtoV6ProviderFactories: providerFactoryWithRandom,
+			ProtoV6ProviderFactories: providerFactory,
 			ExternalProviders: map[string]resource.ExternalProvider{
 				"random": {Source: "hashicorp/random"},
 			},
