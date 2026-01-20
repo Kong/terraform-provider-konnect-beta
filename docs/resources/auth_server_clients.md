@@ -21,9 +21,11 @@ resource "konnect_auth_server_clients" "my_authserverclients" {
     "247c0ad0-5487-46a8-bedf-a569c07c2442"
   ]
   auth_server_id = "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+  client_secret  = "YAzsyUlNZ5gNGeKS9H3VAdxVPzhPo4ae"
   grant_types = [
     "authorization_code"
   ]
+  id                = "kYa9iQFU5xPDSIUH9z1z"
   id_token_duration = 961077
   labels = {
     key = "value"
@@ -55,6 +57,8 @@ resource "konnect_auth_server_clients" "my_authserverclients" {
 - `access_token_duration` (Number) The duration of the minted token is valid for, in seconds. Default: 300
 - `allow_all_scopes` (Boolean) Specifies whether the client is allowed to request all scopes. Default: false
 - `allow_scopes` (List of String) Specifies the scopes IDs that the client is allowed to request
+- `client_secret` (String) Secret of the client - will be used when ID is also set.
+- `id` (String) The OAuth 2.0 client ID. Requires replacement if changed.
 - `id_token_duration` (Number) The duration of the minted token is valid for, in seconds. Default: 300
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
@@ -65,9 +69,7 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 
 ### Read-Only
 
-- `client_secret` (String) Secret of the client
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `id` (String) The OAuth 2.0 client ID
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 ## Import
