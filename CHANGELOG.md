@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.15.0
+> Released on 2026/01/??
+
+### Features
+* Support giving `id` and `client_secret` as input to `konnect_auth_server_clients` resource
+
 ## 0.14.0
 > Released on 2025/12/18
 
