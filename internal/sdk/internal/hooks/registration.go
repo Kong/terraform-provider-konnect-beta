@@ -1,11 +1,12 @@
 package hooks
 
-import(
-"os"
+import (
+	"os"
 )
 
 func initHooks(h *Hooks) {
-    h.registerBeforeRequestHook(&MeshDefaultsHook{})
+	h.registerBeforeRequestHook(&MeshDefaultsHook{})
+	h.registerBeforeRequestHook(&AuthServerClientCreateHook{})
 
 	// Debug hooks - dump request/response
 	h.registerBeforeRequestHook(&HTTPDumpRequestHook{

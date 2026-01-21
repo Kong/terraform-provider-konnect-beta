@@ -6,9 +6,11 @@ resource "konnect_auth_server_clients" "my_authserverclients" {
     "247c0ad0-5487-46a8-bedf-a569c07c2442"
   ]
   auth_server_id = "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+  client_secret  = "YAzsyUlNZ5gNGeKS9H3VAdxVPzhPo4ae"
   grant_types = [
     "authorization_code"
   ]
+  id                = "kYa9iQFU5xPDSIUH9z1z"
   id_token_duration = 961077
   labels = {
     key = "value"

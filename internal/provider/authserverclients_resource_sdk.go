@@ -242,6 +242,18 @@ func (r *AuthServerClientsResourceModel) ToSharedCreateClient(ctx context.Contex
 	} else {
 		tokenEndpointAuthMethod = nil
 	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
+	clientSecret := new(string)
+	if !r.ClientSecret.IsUnknown() && !r.ClientSecret.IsNull() {
+		*clientSecret = r.ClientSecret.ValueString()
+	} else {
+		clientSecret = nil
+	}
 	out := shared.CreateClient{
 		Name:                    name,
 		GrantTypes:              grantTypes,
@@ -254,6 +266,8 @@ func (r *AuthServerClientsResourceModel) ToSharedCreateClient(ctx context.Contex
 		AllowScopes:             allowScopes,
 		Labels:                  labels,
 		TokenEndpointAuthMethod: tokenEndpointAuthMethod,
+		ID:                      id,
+		ClientSecret:            clientSecret,
 	}
 
 	return &out, diags

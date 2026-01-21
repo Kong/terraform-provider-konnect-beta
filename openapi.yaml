@@ -22625,6 +22625,8 @@ components:
         - authorization_code
         - implicit
         - client_credentials
+      x-enum-dev:
+        - authorization_code
       x-speakeasy-unknown-values: allow
     GrantTypes:
       description: List of OAuth 2.0 grant types
@@ -22944,13 +22946,15 @@ components:
         - redirect_uris
         - allow_all_scopes
         - allow_scopes
-        - login_uri
         - access_token_duration
         - id_token_duration
         - labels
         - response_types
         - created_at
         - updated_at
+      x-property-annotations:
+        login_uri:
+          - x-unstable
     CreatedClient:
       allOf:
         - $ref: '#/components/schemas/Client'
@@ -28389,10 +28393,24 @@ components:
                 $ref: '#/components/schemas/Labels'
               token_endpoint_auth_method:
                 $ref: '#/components/schemas/TokenEndpointAuthMethod'
+              id:
+                description: The OAuth 2.0 client ID
+                type: string
+                example: kYa9iQFU5xPDSIUH9z1z
+                maxLength: 36
+                pattern: '[-_\w]+'
+                x-speakeasy-param-computed: true
+              client_secret:
+                description: Secret of the client - will be used when ID is also set.
+                type: string
+                x-speakeasy-param-computed: true
             required:
               - name
               - grant_types
               - response_types
+            x-property-annotations:
+              login_uri:
+                - x-unstable
     ReplaceClient:
       description: Client to be replaced
       required: true
@@ -28432,6 +28450,9 @@ components:
               - client_secret
               - grant_types
               - response_types
+            x-property-annotations:
+              login_uri:
+                - x-unstable
     CreateEventGatewayListenerRequest:
       description: The request schema for creating a listener.
       content:
