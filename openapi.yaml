@@ -815,8 +815,6 @@ paths:
             enum:
               - 'true'
               - 'false'
-          x-internal: true
-          x-unstable: true
       requestBody:
         $ref: '#/components/requestBodies/UpdateApiRequest'
       responses:
@@ -1155,8 +1153,6 @@ paths:
             enum:
               - 'true'
               - 'false'
-          x-internal: true
-          x-unstable: true
       requestBody:
         $ref: '#/components/requestBodies/UpdateApiVersionRequest'
       responses:
@@ -1274,7 +1270,11 @@ paths:
       summary: Create API Implementation
       description: |
         Creates an implementation for an API.
-        An API can be implemented by a single Gateway Service.
+        If all operations in an API are implemented by a single gateway service and the service
+        has no routes that are not part of the API, then the API can be linked to the service.
+        For cases where an API is implemented by multiple gateway services, only a subset of
+        routes in one or more gateway services, or API operations need to be made available for API packages,
+        then the API should be linked to the control plane that defines the routes that overlap with the API.
       requestBody:
         $ref: '#/components/requestBodies/CreateApiImplementationRequest'
       responses:
@@ -5398,6 +5398,18 @@ paths:
           $ref: '#/components/responses/MeshControlPlaneForbiddenError'
       tags:
         - Mesh
+      x-speakeasy-pagination:
+        type: offsetLimit
+        inputs:
+          - name: 'page[number]'
+            in: parameters
+            type: page
+          - name: 'page[size]'
+            in: parameters
+            type: limit
+        outputs:
+          results: $.data
+          numPages: $.meta.page.total
     post:
       x-speakeasy-entity-operation:
         terraform-resource: MeshControlPlane#create
@@ -6923,6 +6935,9 @@ paths:
       operationId: create-event-gateway-listener-policy-tls-server
       summary: Create Policy for Listener
       description: Creates a new policy associated with the specified Event Gateway listener.
+      parameters:
+        - $ref: '#/components/parameters/EventGatewayPolicyBefore'
+        - $ref: '#/components/parameters/EventGatewayPolicyAfter'
       requestBody:
         content:
           application/json:
@@ -6954,6 +6969,9 @@ paths:
       operationId: create-event-gateway-listener-policy-forward-to_virtual_cluster
       summary: Create Policy for Listener
       description: Creates a new policy associated with the specified Event Gateway listener.
+      parameters:
+        - $ref: '#/components/parameters/EventGatewayPolicyBefore'
+        - $ref: '#/components/parameters/EventGatewayPolicyAfter'
       requestBody:
         content:
           application/json:
@@ -7305,6 +7323,9 @@ paths:
       operationId: create-event-gateway-virtual-cluster-consume-policy-modify-headers
       summary: Create Consume Policy for Virtual Cluster
       description: Creates a new consume policy associated with the specified Event Gateway virtual cluster.
+      parameters:
+        - $ref: '#/components/parameters/EventGatewayPolicyBefore'
+        - $ref: '#/components/parameters/EventGatewayPolicyAfter'
       requestBody:
         content:
           application/json:
@@ -7336,6 +7357,9 @@ paths:
       operationId: create-event-gateway-virtual-cluster-consume-policy-schema-validation
       summary: Create Consume Policy for Virtual Cluster
       description: Creates a new consume policy associated with the specified Event Gateway virtual cluster.
+      parameters:
+        - $ref: '#/components/parameters/EventGatewayPolicyBefore'
+        - $ref: '#/components/parameters/EventGatewayPolicyAfter'
       requestBody:
         content:
           application/json:
@@ -7367,6 +7391,9 @@ paths:
       operationId: create-event-gateway-virtual-cluster-consume-policy-decrypt
       summary: Create Consume Policy for Virtual Cluster
       description: Creates a new consume policy associated with the specified Event Gateway virtual cluster.
+      parameters:
+        - $ref: '#/components/parameters/EventGatewayPolicyBefore'
+        - $ref: '#/components/parameters/EventGatewayPolicyAfter'
       requestBody:
         content:
           application/json:
@@ -7398,6 +7425,9 @@ paths:
       operationId: create-event-gateway-virtual-cluster-consume-policy-skip-record
       summary: Create Consume Policy for Virtual Cluster
       description: Creates a new consume policy associated with the specified Event Gateway virtual cluster.
+      parameters:
+        - $ref: '#/components/parameters/EventGatewayPolicyBefore'
+        - $ref: '#/components/parameters/EventGatewayPolicyAfter'
       requestBody:
         content:
           application/json:
@@ -7669,6 +7699,9 @@ paths:
       operationId: create-event-gateway-virtual-cluster-produce-policy-modify-headers
       summary: Create Produce Policy for Virtual Cluster
       description: Creates a new produce policy associated with the specified Event Gateway virtual cluster.
+      parameters:
+        - $ref: '#/components/parameters/EventGatewayPolicyBefore'
+        - $ref: '#/components/parameters/EventGatewayPolicyAfter'
       requestBody:
         content:
           application/json:
@@ -7700,6 +7733,9 @@ paths:
       operationId: create-event-gateway-virtual-cluster-produce-policy-schema-validation
       summary: Create Produce Policy for Virtual Cluster
       description: Creates a new produce policy associated with the specified Event Gateway virtual cluster.
+      parameters:
+        - $ref: '#/components/parameters/EventGatewayPolicyBefore'
+        - $ref: '#/components/parameters/EventGatewayPolicyAfter'
       requestBody:
         content:
           application/json:
@@ -7731,6 +7767,9 @@ paths:
       operationId: create-event-gateway-virtual-cluster-produce-policy-encrypt
       summary: Create Produce Policy for Virtual Cluster
       description: Creates a new produce policy associated with the specified Event Gateway virtual cluster.
+      parameters:
+        - $ref: '#/components/parameters/EventGatewayPolicyBefore'
+        - $ref: '#/components/parameters/EventGatewayPolicyAfter'
       requestBody:
         content:
           application/json:
@@ -7842,6 +7881,9 @@ paths:
       operationId: create-event-gateway-virtual-cluster-cluster-level-policy-acls
       summary: Create Cluster Policy for Virtual Cluster
       description: Creates a new cluster-level policy associated with the specified Event Gateway virtual cluster.
+      parameters:
+        - $ref: '#/components/parameters/EventGatewayPolicyBefore'
+        - $ref: '#/components/parameters/EventGatewayPolicyAfter'
       requestBody:
         content:
           application/json:
@@ -7942,6 +7984,24 @@ components:
       in: path
       required: true
       description: The ID of the Event Gateway Listener.
+    EventGatewayPolicyAfter:
+      schema:
+        type: string
+        format: uuid
+      in: query
+      name: after
+      description: |
+        Determines the id of the existing policy the new policy should be inserted after. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request.
+      required: false
+    EventGatewayPolicyBefore:
+      schema:
+        type: string
+        format: uuid
+      in: query
+      name: before
+      description: |
+        Determines the id of the existing policy the new policy should be inserted before. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request.
+      required: false
     gatewayId:
       name: gatewayId
       in: path
@@ -7980,6 +8040,7 @@ components:
       schema:
         type: integer
         example: 1
+      x-speakeasy-terraform-ignore: true
     PageSize:
       name: 'page[size]'
       description: The maximum number of items to include per page. The last page of a collection may include fewer items.
@@ -7989,6 +8050,7 @@ components:
       schema:
         type: integer
         example: 100
+      x-speakeasy-terraform-ignore: true
     PortalId:
       schema:
         type: string
@@ -8903,6 +8965,10 @@ components:
       example: '2022-11-04T20:10:06.927Z'
       readOnly: true
       x-speakeasy-param-suppress-computed-diff: true
+    SourceIPEnabled:
+      description: Whether ip allow list is enabled for the organization.
+      type: boolean
+      example: true
     Labels:
       description: |
         Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
@@ -9625,9 +9691,6 @@ components:
         - current_version_summary
       title: API
       x-property-annotations:
-        implementation_mode:
-          - x-unstable
-          - x-internal
         images:
           - x-unstable
           - x-internal
@@ -22773,10 +22836,6 @@ components:
         - labels
         - created_at
         - updated_at
-      x-property-annotations:
-        trusted_origins:
-          - x-internal
-          - x-unstable
     ClaimName:
       description: The name of the claim
       type: string
@@ -22983,6 +23042,7 @@ components:
             type: string
             enum:
               - api
+              - api_package
               - api_product
               - api_product_version
               - application
@@ -23360,6 +23420,42 @@ components:
             - operator
             - field
       title: Filter by api
+    MetricsApiPackageFilterByField:
+      oneOf:
+        - title: Multiselect filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The IDs to include in the results.
+              type: array
+              items:
+                $ref: '#/components/schemas/UnscopedUuid'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - api_package
+          required:
+            - operator
+            - value
+            - field
+        - title: Empty filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - api_package
+          required:
+            - operator
+            - field
+      title: Filter by api_package
     MetricsApiProductFilterByField:
       oneOf:
         - title: Multiselect filters
@@ -24027,6 +24123,7 @@ components:
             type: string
             enum:
               - api
+              - api_package
               - api_product
               - api_product_version
               - application
@@ -24621,6 +24718,7 @@ components:
             - ai_request_model
             - ai_response_model
             - api
+            - api_package
             - api_product
             - api_product_version
             - application
@@ -26121,6 +26219,7 @@ components:
         advertised_host:
           description: 'Virtual brokers are advertised to clients using this host. Any kind of host supported by kafka can be used. If not defined, it''s listen_address. If listen_address is `0.0.0.0` it''s the destination IP of the TCP connection.'
           type: string
+          pattern: '^[a-z0-9](?:[a-z0-9\-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9\-]{0,61}[a-z0-9])?)*$'
         bootstrap_port:
           description: |
             If set to `at_start`, the first port will be used as a bootstrap port.
@@ -27592,6 +27691,8 @@ components:
                 description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.'
                 type: boolean
                 default: false
+              sipr_enabled:
+                $ref: '#/components/schemas/SourceIPEnabled'
               default_api_visibility:
                 description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
                 type: string
@@ -27640,6 +27741,10 @@ components:
             required:
               - name
             title: Portal
+            x-property-annotations:
+              sipr_enabled:
+                - x-unstable
+                - x-internal
     UpdatePortal:
       description: Update a portal's settings.
       required: true
@@ -27684,6 +27789,8 @@ components:
                 description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.'
                 type: boolean
                 default: false
+              sipr_enabled:
+                $ref: '#/components/schemas/SourceIPEnabled'
               default_api_visibility:
                 description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
                 type: string
@@ -27730,6 +27837,10 @@ components:
                 $ref: '#/components/schemas/LabelsUpdate'
             additionalProperties: false
             title: Portal
+            x-property-annotations:
+              sipr_enabled:
+                - x-unstable
+                - x-internal
     ReplacePortalImageAsset:
       description: Update an image asset for the portal.
       required: true
@@ -27918,9 +28029,6 @@ components:
               - name
             title: API
             x-property-annotations:
-              implementation_mode:
-                - x-unstable
-                - x-internal
               images:
                 - x-unstable
                 - x-internal
@@ -28195,9 +28303,6 @@ components:
             additionalProperties: false
             title: API
             x-property-annotations:
-              implementation_mode:
-                - x-unstable
-                - x-internal
               images:
                 - x-unstable
                 - x-internal
@@ -28254,10 +28359,6 @@ components:
             required:
               - name
               - audience
-            x-property-annotations:
-              trusted_origins:
-                - x-internal
-                - x-unstable
     UpdateAuthServer:
       description: Auth server to be updated
       required: true
@@ -28278,10 +28379,6 @@ components:
                 $ref: '#/components/schemas/LabelsUpdate'
               trusted_origins:
                 $ref: '#/components/schemas/TrustedOrigins'
-            x-property-annotations:
-              trusted_origins:
-                - x-internal
-                - x-unstable
     CreateClaim:
       description: Claim to be created
       required: true
@@ -28754,6 +28851,10 @@ components:
                   title: Portal
                   type: object
                   additionalProperties: false
+                  x-property-annotations:
+                    sipr_enabled:
+                      - x-unstable
+                      - x-internal
                   properties:
                     id:
                       $ref: '#/components/schemas/UUID'
@@ -28787,6 +28888,8 @@ components:
                       description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.'
                       type: boolean
                       default: false
+                    sipr_enabled:
+                      $ref: '#/components/schemas/SourceIPEnabled'
                     default_api_visibility:
                       description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
                       type: string
@@ -28893,6 +28996,8 @@ components:
                 description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.'
                 type: boolean
                 default: false
+              sipr_enabled:
+                $ref: '#/components/schemas/SourceIPEnabled'
               default_api_visibility:
                 description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
                 type: string
@@ -28955,6 +29060,10 @@ components:
               - updated_at
               - created_at
             title: Portal
+            x-property-annotations:
+              sipr_enabled:
+                - x-unstable
+                - x-internal
     PortalAssetResponse:
       description: 'Image asset for the portal. Can be either png, jpeg or svg'
       content:
