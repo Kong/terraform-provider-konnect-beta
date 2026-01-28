@@ -43,6 +43,18 @@ func (r *EventGatewayProducePolicySchemaValidationResourceModel) ToOperationsCre
 	var virtualClusterID string
 	virtualClusterID = r.VirtualClusterID.ValueString()
 
+	before := new(string)
+	if !r.Before.IsUnknown() && !r.Before.IsNull() {
+		*before = r.Before.ValueString()
+	} else {
+		before = nil
+	}
+	after := new(string)
+	if !r.After.IsUnknown() && !r.After.IsNull() {
+		*after = r.After.ValueString()
+	} else {
+		after = nil
+	}
 	eventGatewayProduceSchemaValidationPolicy, eventGatewayProduceSchemaValidationPolicyDiags := r.ToSharedEventGatewayProduceSchemaValidationPolicy(ctx)
 	diags.Append(eventGatewayProduceSchemaValidationPolicyDiags...)
 
@@ -53,6 +65,8 @@ func (r *EventGatewayProducePolicySchemaValidationResourceModel) ToOperationsCre
 	out := operations.CreateEventGatewayVirtualClusterProducePolicySchemaValidationRequest{
 		GatewayID:        gatewayID,
 		VirtualClusterID: virtualClusterID,
+		Before:           before,
+		After:            after,
 		EventGatewayProduceSchemaValidationPolicy: eventGatewayProduceSchemaValidationPolicy,
 	}
 

@@ -1,5 +1,7 @@
 resource "konnect_event_gateway_consume_policy_decrypt" "my_eventgatewayconsumepolicydecrypt" {
   provider = konnect-beta
+  after     = "4bb51b7a-2cae-4b8c-8675-18c98bb1f17c"
+  before    = "7b083f40-8351-413b-9cbe-a9e9bb0562d1"
   condition = "context.topic.name.endsWith(\"my_suffix\") && records.headers[\"x-flag\"] == \"a-value\""
   config = {
     failure_mode = "passthrough"

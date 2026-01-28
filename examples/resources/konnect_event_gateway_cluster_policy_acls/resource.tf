@@ -1,5 +1,7 @@
 resource "konnect_event_gateway_cluster_policy_acls" "my_eventgatewayclusterpolicyacls" {
   provider = konnect-beta
+  after     = "159866b6-a274-4624-aede-51da961f82cc"
+  before    = "116541a4-d532-4f25-8c70-caf7874ea092"
   condition = "context.auth.principal.name == \"this-user\""
   config = {
     rules = [

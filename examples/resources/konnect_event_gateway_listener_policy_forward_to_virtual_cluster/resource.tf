@@ -1,5 +1,7 @@
 resource "konnect_event_gateway_listener_policy_forward_to_virtual_cluster" "my_eventgatewaylistenerpolicyforwardtovirtualcluster" {
   provider = konnect-beta
+  after  = "5cdefdab-5308-4634-9a15-44d91bca4c50"
+  before = "9911945e-114e-447e-a62a-21750214dc32"
   config = {
     sni = {
       advertised_port = 61579

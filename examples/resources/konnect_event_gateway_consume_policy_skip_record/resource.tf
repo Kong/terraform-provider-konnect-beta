@@ -1,5 +1,7 @@
 resource "konnect_event_gateway_consume_policy_skip_record" "my_eventgatewayconsumepolicyskiprecord" {
   provider = konnect-beta
+  after       = "1fd29e98-9453-4db0-9ed3-3ce3c0e4b58b"
+  before      = "75496408-24ab-49a9-af05-2c893ba297be"
   condition   = "record.value.content.foo.bar == \"a-value\""
   description = "...my_description..."
   enabled     = true

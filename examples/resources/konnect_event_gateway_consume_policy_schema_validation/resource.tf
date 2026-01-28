@@ -1,5 +1,7 @@
 resource "konnect_event_gateway_consume_policy_schema_validation" "my_eventgatewayconsumepolicyschemavalidation" {
   provider = konnect-beta
+  after     = "63b07eeb-5d16-47f3-8a3f-64ce5a290390"
+  before    = "02e1d1c9-4972-464e-9353-af2f4ada694d"
   condition = "context.topic.name.endsWith(\"my_suffix\") && records.headers[\"x-flag\"] == \"a-value\""
   config = {
     key_validation_action = "mark"

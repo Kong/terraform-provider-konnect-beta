@@ -14,4 +14,5 @@ resource "konnect_portal" "my_portal" {
   }
   name         = "...my_name..."
   rbac_enabled = true
+  sipr_enabled = true
 }

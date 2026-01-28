@@ -16,6 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -41,6 +42,8 @@ type EventGatewayProducePolicyEncryptResource struct {
 
 // EventGatewayProducePolicyEncryptResourceModel describes the resource data model.
 type EventGatewayProducePolicyEncryptResourceModel struct {
+	After            types.String                      `queryParam:"style=form,explode=true,name=after" tfsdk:"after"`
+	Before           types.String                      `queryParam:"style=form,explode=true,name=before" tfsdk:"before"`
 	Condition        types.String                      `tfsdk:"condition"`
 	Config           tfTypes.EventGatewayEncryptConfig `tfsdk:"config"`
 	CreatedAt        types.String                      `tfsdk:"created_at"`
@@ -63,6 +66,20 @@ func (r *EventGatewayProducePolicyEncryptResource) Schema(ctx context.Context, r
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "EventGatewayProducePolicyEncrypt Resource",
 		Attributes: map[string]schema.Attribute{
+			"after": schema.StringAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `Determines the id of the existing policy the new policy should be inserted after. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.`,
+			},
+			"before": schema.StringAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `Determines the id of the existing policy the new policy should be inserted before. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.`,
+			},
 			"condition": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,

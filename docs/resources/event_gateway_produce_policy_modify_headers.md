@@ -15,6 +15,8 @@ EventGatewayProducePolicyModifyHeaders Resource
 ```terraform
 resource "konnect_event_gateway_produce_policy_modify_headers" "my_eventgatewayproducepolicymodifyheaders" {
   provider = konnect-beta
+  after     = "4fd8b3cf-0482-47d3-aff7-77cc9d77c4da"
+  before    = "71291c2d-430e-44cd-ba95-03943f63fac7"
   condition = "record.value.content.foo.bar == \"a-value\""
   config = {
     actions = [
@@ -48,6 +50,8 @@ resource "konnect_event_gateway_produce_policy_modify_headers" "my_eventgatewayp
 
 ### Optional
 
+- `after` (String) Determines the id of the existing policy the new policy should be inserted after. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.
+- `before` (String) Determines the id of the existing policy the new policy should be inserted before. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.
 - `condition` (String) A string containing the boolean expression that determines whether the policy is applied.
 
 When the policy is applied as a child policy of schema_validation, the expression can also reference

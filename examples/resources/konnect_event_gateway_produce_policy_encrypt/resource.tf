@@ -1,5 +1,7 @@
 resource "konnect_event_gateway_produce_policy_encrypt" "my_eventgatewayproducepolicyencrypt" {
   provider = konnect-beta
+  after     = "d1a1f544-1000-46f0-a1bb-269199a83d36"
+  before    = "f9fae4ab-cdb7-42dd-b88b-b4283f75e0c5"
   condition = "context.topic.name.endsWith(\"my_suffix\") && records.headers[\"x-flag\"] == \"a-value\""
   config = {
     encryption_key = {

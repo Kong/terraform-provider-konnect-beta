@@ -1,5 +1,7 @@
 resource "konnect_event_gateway_consume_policy_modify_headers" "my_eventgatewayconsumepolicymodifyheaders" {
   provider = konnect-beta
+  after     = "e590a6fd-18bc-4624-8e3c-f118c084a485"
+  before    = "879b2913-c41d-473d-b454-b7eae81436cb"
   condition = "record.value.content.foo.bar == \"a-value\""
   config = {
     actions = [

@@ -15,6 +15,8 @@ EventGatewayListenerPolicyTLSServer Resource
 ```terraform
 resource "konnect_event_gateway_listener_policy_tls_server" "my_eventgatewaylistenerpolicytlsserver" {
   provider = konnect-beta
+  after  = "2616a68d-afd0-4921-8e37-9ec062d78d86"
+  before = "892198ba-6589-4d64-8e1f-020d69ef34a1"
   config = {
     allow_plaintext = true
     certificates = [
@@ -50,6 +52,8 @@ resource "konnect_event_gateway_listener_policy_tls_server" "my_eventgatewaylist
 
 ### Optional
 
+- `after` (String) Determines the id of the existing policy the new policy should be inserted after. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.
+- `before` (String) Determines the id of the existing policy the new policy should be inserted before. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.
 - `description` (String) A human-readable description of the policy. Default: ""
 - `enabled` (Boolean) Whether the policy is enabled. Default: true
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 

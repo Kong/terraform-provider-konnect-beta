@@ -41,6 +41,8 @@ type EventGatewayConsumePolicyModifyHeadersResource struct {
 
 // EventGatewayConsumePolicyModifyHeadersResourceModel describes the resource data model.
 type EventGatewayConsumePolicyModifyHeadersResourceModel struct {
+	After            types.String                                        `queryParam:"style=form,explode=true,name=after" tfsdk:"after"`
+	Before           types.String                                        `queryParam:"style=form,explode=true,name=before" tfsdk:"before"`
 	Condition        types.String                                        `tfsdk:"condition"`
 	Config           tfTypes.EventGatewayModifyHeadersPolicyCreateConfig `tfsdk:"config"`
 	CreatedAt        types.String                                        `tfsdk:"created_at"`
@@ -63,6 +65,20 @@ func (r *EventGatewayConsumePolicyModifyHeadersResource) Schema(ctx context.Cont
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "EventGatewayConsumePolicyModifyHeaders Resource",
 		Attributes: map[string]schema.Attribute{
+			"after": schema.StringAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `Determines the id of the existing policy the new policy should be inserted after. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.`,
+			},
+			"before": schema.StringAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `Determines the id of the existing policy the new policy should be inserted before. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.`,
+			},
 			"condition": schema.StringAttribute{
 				Computed: true,
 				Optional: true,

@@ -15,6 +15,8 @@ EventGatewayConsumePolicySchemaValidation Resource
 ```terraform
 resource "konnect_event_gateway_consume_policy_schema_validation" "my_eventgatewayconsumepolicyschemavalidation" {
   provider = konnect-beta
+  after     = "63b07eeb-5d16-47f3-8a3f-64ce5a290390"
+  before    = "02e1d1c9-4972-464e-9353-af2f4ada694d"
   condition = "context.topic.name.endsWith(\"my_suffix\") && records.headers[\"x-flag\"] == \"a-value\""
   config = {
     key_validation_action = "mark"
@@ -48,6 +50,8 @@ resource "konnect_event_gateway_consume_policy_schema_validation" "my_eventgatew
 
 ### Optional
 
+- `after` (String) Determines the id of the existing policy the new policy should be inserted after. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.
+- `before` (String) Determines the id of the existing policy the new policy should be inserted before. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.
 - `condition` (String) A string containing the boolean expression that determines whether the policy is applied. Default: ""
 - `description` (String) A human-readable description of the policy. Default: ""
 - `enabled` (Boolean) Whether the policy is enabled. Default: true

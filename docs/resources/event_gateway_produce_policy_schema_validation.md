@@ -15,6 +15,8 @@ EventGatewayProducePolicySchemaValidation Resource
 ```terraform
 resource "konnect_event_gateway_produce_policy_schema_validation" "my_eventgatewayproducepolicyschemavalidation" {
   provider = konnect-beta
+  after     = "5c201a5b-4913-4356-a781-2cadb6632757"
+  before    = "b3d20470-a7ed-49f3-a345-a2d5aafdc44d"
   condition = "context.topic.name.endsWith(\"my_suffix\") && records.headers[\"x-flag\"] == \"a-value\""
   config = {
     confluent_schema_registry = {
@@ -58,6 +60,8 @@ resource "konnect_event_gateway_produce_policy_schema_validation" "my_eventgatew
 
 ### Optional
 
+- `after` (String) Determines the id of the existing policy the new policy should be inserted after. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.
+- `before` (String) Determines the id of the existing policy the new policy should be inserted before. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.
 - `condition` (String) A string containing the boolean expression that determines whether the policy is applied. Default: ""
 - `description` (String) A human-readable description of the policy. Default: ""
 - `enabled` (Boolean) Whether the policy is enabled. Default: true

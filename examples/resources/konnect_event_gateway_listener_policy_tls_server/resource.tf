@@ -1,5 +1,7 @@
 resource "konnect_event_gateway_listener_policy_tls_server" "my_eventgatewaylistenerpolicytlsserver" {
   provider = konnect-beta
+  after  = "2616a68d-afd0-4921-8e37-9ec062d78d86"
+  before = "892198ba-6589-4d64-8e1f-020d69ef34a1"
   config = {
     allow_plaintext = true
     certificates = [

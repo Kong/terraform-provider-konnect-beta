@@ -15,6 +15,8 @@ EventGatewayListenerPolicyForwardToVirtualCluster Resource
 ```terraform
 resource "konnect_event_gateway_listener_policy_forward_to_virtual_cluster" "my_eventgatewaylistenerpolicyforwardtovirtualcluster" {
   provider = konnect-beta
+  after  = "5cdefdab-5308-4634-9a15-44d91bca4c50"
+  before = "9911945e-114e-447e-a62a-21750214dc32"
   config = {
     sni = {
       advertised_port = 61579
@@ -46,6 +48,8 @@ resource "konnect_event_gateway_listener_policy_forward_to_virtual_cluster" "my_
 
 ### Optional
 
+- `after` (String) Determines the id of the existing policy the new policy should be inserted after. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.
+- `before` (String) Determines the id of the existing policy the new policy should be inserted before. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.
 - `description` (String) A human-readable description of the policy. Default: ""
 - `enabled` (Boolean) Whether the policy is enabled. Default: true
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 

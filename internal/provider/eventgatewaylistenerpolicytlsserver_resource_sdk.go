@@ -46,6 +46,18 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToOperationsCreateEve
 	var eventGatewayListenerID string
 	eventGatewayListenerID = r.EventGatewayListenerID.ValueString()
 
+	before := new(string)
+	if !r.Before.IsUnknown() && !r.Before.IsNull() {
+		*before = r.Before.ValueString()
+	} else {
+		before = nil
+	}
+	after := new(string)
+	if !r.After.IsUnknown() && !r.After.IsNull() {
+		*after = r.After.ValueString()
+	} else {
+		after = nil
+	}
 	eventGatewayTLSListenerPolicy, eventGatewayTLSListenerPolicyDiags := r.ToSharedEventGatewayTLSListenerPolicy(ctx)
 	diags.Append(eventGatewayTLSListenerPolicyDiags...)
 
@@ -56,6 +68,8 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToOperationsCreateEve
 	out := operations.CreateEventGatewayListenerPolicyTLSServerRequest{
 		GatewayID:                     gatewayID,
 		EventGatewayListenerID:        eventGatewayListenerID,
+		Before:                        before,
+		After:                         after,
 		EventGatewayTLSListenerPolicy: eventGatewayTLSListenerPolicy,
 	}
 
