@@ -35,6 +35,7 @@ type Dimensions string
 
 const (
 	DimensionsAPI                       Dimensions = "api"
+	DimensionsAPIPackage                Dimensions = "api_package"
 	DimensionsAPIProduct                Dimensions = "api_product"
 	DimensionsAPIProductVersion         Dimensions = "api_product_version"
 	DimensionsApplication               Dimensions = "application"
@@ -65,6 +66,8 @@ func (e *Dimensions) UnmarshalJSON(data []byte) error {
 	}
 	switch v {
 	case "api":
+		fallthrough
+	case "api_package":
 		fallthrough
 	case "api_product":
 		fallthrough

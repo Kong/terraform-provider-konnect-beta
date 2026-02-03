@@ -18,6 +18,7 @@ resource "konnect_portal" "my_portal" {
   authentication_enabled               = false
   auto_approve_applications            = false
   auto_approve_developers              = false
+  create_default_content               = false
   default_api_visibility               = "public"
   default_application_auth_strategy_id = "e7d77a5f-c5f5-49db-9b2f-cabb4401add8"
   default_page_visibility              = "private"
@@ -29,6 +30,7 @@ resource "konnect_portal" "my_portal" {
   }
   name         = "...my_name..."
   rbac_enabled = true
+  sipr_enabled = true
 }
 ```
 
@@ -44,6 +46,7 @@ resource "konnect_portal" "my_portal" {
 - `authentication_enabled` (Boolean) Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications. Default: true
 - `auto_approve_applications` (Boolean) Whether requests from applications to register for APIs will be automatically approved, or if they will be set to pending until approved by an admin. Default: false
 - `auto_approve_developers` (Boolean) Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin. Default: false
+- `create_default_content` (Boolean) Use to create the portal page default content upon creation of this portal. Default: false; Requires replacement if changed.
 - `default_api_visibility` (String) The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers. must be one of ["public", "private"]
 - `default_application_auth_strategy_id` (String) The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.
 - `default_page_visibility` (String) The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers. must be one of ["public", "private"]
@@ -59,6 +62,7 @@ Labels are intended to store **INTERNAL** metadata.
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `rbac_enabled` (Boolean) Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC. Default: false
+- `sipr_enabled` (Boolean) Whether ip allow list is enabled for the organization.
 
 ### Read-Only
 
