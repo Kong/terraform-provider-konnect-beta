@@ -8931,7 +8931,7 @@ components:
           description: Whether the team is allowed to own applications
           type: boolean
           example: true
-          default: false
+          x-speakeasy-param-computed: true
       example:
         name: IDM - Developers
         description: The Identity Management (IDM) team.
