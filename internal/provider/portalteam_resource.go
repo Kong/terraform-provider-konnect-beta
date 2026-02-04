@@ -11,7 +11,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -57,8 +56,7 @@ func (r *PortalTeamResource) Schema(ctx context.Context, req resource.SchemaRequ
 			"can_own_applications": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Default:     booldefault.StaticBool(false),
-				Description: `Whether the team is allowed to own applications. Default: false`,
+				Description: `Whether the team is allowed to own applications`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,

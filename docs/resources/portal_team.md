@@ -32,7 +32,7 @@ resource "konnect_portal_team" "my_portalteam" {
 
 ### Optional
 
-- `can_own_applications` (Boolean) Whether the team is allowed to own applications. Default: false
+- `can_own_applications` (Boolean) Whether the team is allowed to own applications
 - `description` (String)
 
 ### Read-Only

@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: 58cc87dd2b19311590e98372cc38af27
+  docChecksum: 18a9a0d2b9a29b3efa31cfdcdf7de13b
   docVersion: 2.0.0
   speakeasyVersion: 1.676.1
   generationVersion: 2.781.2
   releaseVersion: 0.14.0
   configChecksum: bfa214196ab0be882bc29ed6c271d9bf
 persistentEdits:
-  generation_id: 1c01c5cb-a243-4e5d-9abe-1d62f4ada8fe
-  pristine_commit_hash: 394dee80b41402e540b10e3e9d81d281475cf352
-  pristine_tree_hash: 59795e95c40a6a295a8cb1c405edd59d111333c8
+  generation_id: c75cff4f-5a50-4cd3-a2e1-513b673434fa
+  pristine_commit_hash: 5133bcd10d879b17b1687c598c791e0e12c20f76
+  pristine_tree_hash: e42836623d60b4b799ad5c1eae3b9acad3525771
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -1492,8 +1492,8 @@ trackedFiles:
     pristine_git_object: 118fcdea7e209608ce652355519cce08765f7e6d
   internal/provider/portalteam_resource.go:
     id: 6af9677dbf16
-    last_write_checksum: sha1:b3ffdca27c741dabc02981ab08c1ee264422989f
-    pristine_git_object: 0a648e6d21915624e5eeb878290e2e975af3ddcf
+    last_write_checksum: sha1:64fac304b4e71d553badc77d3ae58f9c0be05a4e
+    pristine_git_object: e5a857ddf54c899333edfff76a842bae82e54976
   internal/provider/portalteam_resource_sdk.go:
     id: ecdf2c88d25f
     last_write_checksum: sha1:630af17ff9f8ad9292f48f875255b2f98319055b
@@ -5396,8 +5396,8 @@ trackedFiles:
     pristine_git_object: ce37d79e84088be3ca3d299d4cc4430b1c4b4265
   internal/sdk/models/shared/portalcreateteamrequest.go:
     id: 4371381a6c63
-    last_write_checksum: sha1:cb2615ac928116bdfa5e039b5027b4d21b99332b
-    pristine_git_object: 953579946e2c20f3ffddb14e4c8cc9faa06f2db7
+    last_write_checksum: sha1:705af5ac5e6ba6c123ea8496b72f76651f0366e7
+    pristine_git_object: 9c597f592222a2a7a04454f3f3bd5e58173cc0b5
   internal/sdk/models/shared/portalcustomdomain.go:
     id: 27f237b0a607
     last_write_checksum: sha1:d9463bc5676d9a96bd11ae9c1f2f1ba3abc7918a

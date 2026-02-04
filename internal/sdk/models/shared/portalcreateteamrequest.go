@@ -11,7 +11,7 @@ type PortalCreateTeamRequest struct {
 	Name        string  `json:"name"`
 	Description *string `default:"null" json:"description"`
 	// Whether the team is allowed to own applications
-	CanOwnApplications *bool `default:"false" json:"can_own_applications"`
+	CanOwnApplications *bool `json:"can_own_applications,omitempty"`
 }
 
 func (p PortalCreateTeamRequest) MarshalJSON() ([]byte, error) {
