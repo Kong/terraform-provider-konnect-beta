@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: f5cd655207e9407d0465c89844a817e2
+  docChecksum: 5a5beb60fc31f762f380ef71790533cc
   docVersion: 2.0.0
   speakeasyVersion: 1.676.1
   generationVersion: 2.781.2
   releaseVersion: 0.14.0
   configChecksum: bfa214196ab0be882bc29ed6c271d9bf
 persistentEdits:
-  generation_id: c4163432-28f6-4d9c-b56a-999d0df2a9aa
-  pristine_commit_hash: ebfc16f917b3399419ff747f6eb6347746fed4f6
-  pristine_tree_hash: 95a6925922bdec29484f4f989ce733855e656a95
+  generation_id: 956d5ca2-3143-49b3-95d9-9a4b9d3447e2
+  pristine_commit_hash: c9af1b4032d61e11736bf6a727d82c3419c6d069
+  pristine_tree_hash: 9ce432508be9142faaefb75952c90cec564664e9
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -1088,8 +1088,8 @@ trackedFiles:
     pristine_git_object: 9cc825140e3e0540382d1832fde8f2ca10f3db7a
   internal/provider/eventgatewaybackendcluster_resource.go:
     id: 3fbb84e4cb34
-    last_write_checksum: sha1:05c94b1444e3882d5318dc5649d880d7f5696d6d
-    pristine_git_object: ef8988d1459e687c620901ced98e70816eccfdfa
+    last_write_checksum: sha1:12a8744e6fd47a59516d51f5f2b9253312f5b454
+    pristine_git_object: 862afce077ec73d91874f532a70c369151086239
   internal/provider/eventgatewaybackendcluster_resource_sdk.go:
     id: 85e6d3ca01be
     last_write_checksum: sha1:a218f8b685f380c675f490b942e7afc3ac9c4574
@@ -4728,8 +4728,8 @@ trackedFiles:
     pristine_git_object: 592c8f4dd91224e859207b956fc44c4eecf91e2d
   internal/sdk/models/shared/backendclustertls.go:
     id: 6811720fe38f
-    last_write_checksum: sha1:bcd4596604c42464d010bc08d8bd8bb97eb2bafe
-    pristine_git_object: a6080ab0699ee6be88b3ac1cdbf60a354cbcbbff
+    last_write_checksum: sha1:a73de9f9e5bb79289acb2b078044c649c44ddfca
+    pristine_git_object: a15f9b6763121b2f173f3be399d3faf7a9b4f235
   internal/sdk/models/shared/badrequesterror.go:
     id: 3bc1a5486a4f
     last_write_checksum: sha1:ea252770dc7b5e979596f6e519c55d5daff0461c
@@ -10803,10 +10803,10 @@ examples:
         path:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"name": "<value>", "description": "", "authentication": {"type": "anonymous"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>", "<value 2>"], "tls": {"enabled": true, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"], "client_identity": null}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}}
+        application/json: {"name": "<value>", "description": "", "authentication": {"type": "anonymous"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>", "<value 2>"], "tls": {"enabled": true, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"], "client_identity": {"certificate": "<value>", "key": "$${vault.env['MY_ENV_VAR']}"}}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"id": "d81f0780-2250-4cde-94d5-cacf7e7ba8b3", "name": "<value>", "description": "", "authentication": {"type": "anonymous"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>"], "tls": {"enabled": true, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"], "client_identity": null}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "d81f0780-2250-4cde-94d5-cacf7e7ba8b3", "name": "<value>", "description": "", "authentication": {"type": "anonymous"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>"], "tls": {"enabled": true, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"], "client_identity": {"certificate": "<value>", "key": "$${vault.env['MY_ENV_VAR']}"}}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 994884, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
@@ -10821,7 +10821,7 @@ examples:
           backendClusterId: "5ef7f382-5bc5-4c2e-a215-300f045de3da"
       responses:
         "200":
-          application/json: {"id": "5d418534-2831-4847-af7c-28c816066b03", "name": "<value>", "description": "", "authentication": {"type": "sasl_plain", "username": "Kenna_Crooks88", "password": "${env['MY_SECRET']}"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>", "<value 2>", "<value 3>"], "tls": {"enabled": true, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"], "client_identity": null}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "5d418534-2831-4847-af7c-28c816066b03", "name": "<value>", "description": "", "authentication": {"type": "sasl_plain", "username": "Kenna_Crooks88", "password": "${env['MY_SECRET']}"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>", "<value 2>", "<value 3>"], "tls": {"enabled": true, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"], "client_identity": {"certificate": "<value>", "key": "$${vault.env['MY_ENV_VAR']}"}}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -10835,10 +10835,10 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           backendClusterId: "ddaa3274-bd11-4dc5-b580-21603cfec6a6"
       requestBody:
-        application/json: {"name": "<value>", "description": "", "authentication": {"type": "sasl_plain", "username": "Yasmin66", "password": "${env['MY_SECRET']}"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>", "<value 2>", "<value 3>"], "tls": {"enabled": false, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"], "client_identity": null}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}}
+        application/json: {"name": "<value>", "description": "", "authentication": {"type": "sasl_plain", "username": "Yasmin66", "password": "${env['MY_SECRET']}"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>", "<value 2>", "<value 3>"], "tls": {"enabled": false, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"], "client_identity": {"certificate": "<value>", "key": "$${vault.env['MY_ENV_VAR']}"}}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"id": "ac884d5a-f703-4de9-a51c-860245e22330", "name": "<value>", "description": "", "authentication": {"type": "anonymous"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>"], "tls": {"enabled": false, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"], "client_identity": null}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "ac884d5a-f703-4de9-a51c-860245e22330", "name": "<value>", "description": "", "authentication": {"type": "anonymous"}, "insecure_allow_anonymous_virtual_cluster_auth": false, "bootstrap_servers": ["<value 1>"], "tls": {"enabled": false, "insecure_skip_verify": false, "tls_versions": ["tls12", "tls13"], "client_identity": {"certificate": "<value>", "key": "$${vault.env['MY_ENV_VAR']}"}}, "metadata_update_interval_seconds": 60, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 524449, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
