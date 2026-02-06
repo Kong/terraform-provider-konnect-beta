@@ -26084,8 +26084,6 @@ components:
         client_identity:
           description: Client mTLS configuration.
           type: object
-          default: null
-          nullable: true
           properties:
             certificate:
               $ref: '#/components/schemas/GatewaySecretReferenceOrLiteral'
