@@ -18,7 +18,10 @@ resource "konnect_event_gateway_listener_policy_forward_to_virtual_cluster" "my_
   config = {
     sni = {
       advertised_port = 61579
-      sni_suffix      = ".example.com"
+      broker_host_format = {
+        type = "per_cluster_suffix"
+      }
+      sni_suffix = ".example.com"
     }
   }
   description               = "...my_description..."
@@ -43,7 +46,7 @@ resource "konnect_event_gateway_listener_policy_forward_to_virtual_cluster" "my_
 
 ### Optional
 
-- `description` (String) A human-readable description of the policy.
+- `description` (String) A human-readable description of the policy. Default: ""
 - `enabled` (Boolean) Whether the policy is enabled. Default: true
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
@@ -133,6 +136,10 @@ Optional:
 
 - `advertised_port` (Number) Virtual brokers are advertised to clients with this port instead of listen_port. Useful when proxy is
 behind loadbalancer listening on different port.
+- `broker_host_format` (Attributes) Configures DNS names assigned to brokers in virtual clusters.
+
+- `per_cluster_suffix` is the default and allocates one level in the hierarchy for virtual clusters: `broker-{node_id}.{virtual_cluster}.{sni_suffix}`
+- `shared_suffix` puts all brokers from every virtual clusters into the same level: `broker-{node_id}-{virtual_cluster}.{sni_suffix}`. This makes it easier to manage certificates for this listener. (see [below for nested schema](#nestedatt--config--sni--broker_host_format))
 - `sni_suffix` (String) Optional suffix for TLS SNI validation.
 
 This suffix is concatenated with the virtual cluster "dns.label" label to form the base name for the SNI.
@@ -146,6 +153,13 @@ This means that your deployment needs to have a wildcard certificate for the dom
 
 The accepted format is a DNS subdomain starting with either `.` or `-`. For example, `-keg.example.com`, `.keg.example.com`, `.namespace.svc.cluster.local`, and `.localhost` are all valid,
 while `keg.example.com` is not.
+
+<a id="nestedatt--config--sni--broker_host_format"></a>
+### Nested Schema for `config.sni.broker_host_format`
+
+Optional:
+
+- `type` (String) Default: "per_cluster_suffix"; must be one of ["per_cluster_suffix", "shared_suffix"]
 
 ## Import
 

@@ -103,16 +103,16 @@ type ForwardToVirtualClusterPolicy struct {
 	// A unique user-defined name of the policy.
 	Name *string `default:"null" json:"name"`
 	// A human-readable description of the policy.
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"" json:"description"`
 	// Whether the policy is enabled.
 	Enabled *bool `default:"true" json:"enabled"`
-	// The configuration of the policy.
-	Config ForwardToVirtualClusterPolicyConfig `json:"config"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
+	// The configuration of the policy.
+	Config ForwardToVirtualClusterPolicyConfig `json:"config"`
 }
 
 func (f ForwardToVirtualClusterPolicy) MarshalJSON() ([]byte, error) {
@@ -151,6 +151,13 @@ func (f *ForwardToVirtualClusterPolicy) GetEnabled() *bool {
 	return f.Enabled
 }
 
+func (f *ForwardToVirtualClusterPolicy) GetLabels() map[string]*string {
+	if f == nil {
+		return nil
+	}
+	return f.Labels
+}
+
 func (f *ForwardToVirtualClusterPolicy) GetConfig() ForwardToVirtualClusterPolicyConfig {
 	if f == nil {
 		return ForwardToVirtualClusterPolicyConfig{}
@@ -164,11 +171,4 @@ func (f *ForwardToVirtualClusterPolicy) GetConfigPortMapping() *ForwardToCluster
 
 func (f *ForwardToVirtualClusterPolicy) GetConfigSni() *ForwardToClusterBySNIConfig {
 	return f.GetConfig().ForwardToClusterBySNIConfig
-}
-
-func (f *ForwardToVirtualClusterPolicy) GetLabels() map[string]*string {
-	if f == nil {
-		return nil
-	}
-	return f.Labels
 }

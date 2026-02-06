@@ -15,7 +15,7 @@ EventGatewayClusterPolicyAcls Resource
 ```terraform
 resource "konnect_event_gateway_cluster_policy_acls" "my_eventgatewayclusterpolicyacls" {
   provider = konnect-beta
-  condition = "context.topic.name.endsWith('my_suffix')"
+  condition = "context.auth.principal.name == \"this-user\""
   config = {
     rules = [
       {
@@ -56,8 +56,8 @@ resource "konnect_event_gateway_cluster_policy_acls" "my_eventgatewayclusterpoli
 
 ### Optional
 
-- `condition` (String) A string containing the boolean expression that determines whether the policy is applied.
-- `description` (String) A human-readable description of the policy.
+- `condition` (String) A string containing the boolean expression that determines whether the policy is applied. Default: ""
+- `description` (String) A human-readable description of the policy. Default: ""
 - `enabled` (Boolean) Whether the policy is enabled. Default: true
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 

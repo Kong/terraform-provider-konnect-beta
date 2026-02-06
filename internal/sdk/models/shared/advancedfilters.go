@@ -12,6 +12,7 @@ type Field string
 
 const (
 	FieldAPI                       Field = "api"
+	FieldAPIPackage                Field = "api_package"
 	FieldAPIProduct                Field = "api_product"
 	FieldAPIProductVersion         Field = "api_product_version"
 	FieldApplication               Field = "application"
@@ -42,6 +43,8 @@ func (e *Field) UnmarshalJSON(data []byte) error {
 	}
 	switch v {
 	case "api":
+		fallthrough
+	case "api_package":
 		fallthrough
 	case "api_product":
 		fallthrough

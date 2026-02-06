@@ -944,16 +944,16 @@ func (m *MeshAccessLogItemDefault) GetBackends() []MeshAccessLogItemBackends {
 	return m.Backends
 }
 
-type Rules struct {
+type MeshAccessLogItemRules struct {
 	// Default contains configuration of the inbound access logging
 	Default MeshAccessLogItemDefault `json:"default"`
 }
 
-func (r *Rules) GetDefault() MeshAccessLogItemDefault {
-	if r == nil {
+func (m *MeshAccessLogItemRules) GetDefault() MeshAccessLogItemDefault {
+	if m == nil {
 		return MeshAccessLogItemDefault{}
 	}
-	return r.Default
+	return m.Default
 }
 
 // Kind of the referenced resource
@@ -1666,7 +1666,7 @@ type MeshAccessLogItemSpec struct {
 	From []From `json:"from,omitempty"`
 	// Rules defines inbound access log configurations. Currently limited to
 	// selecting all inbound traffic, as L7 matching is not yet implemented.
-	Rules []Rules `json:"rules,omitempty"`
+	Rules []MeshAccessLogItemRules `json:"rules,omitempty"`
 	// TargetRef is a reference to the resource the policy takes an effect on.
 	// The resource could be either a real store object or virtual resource
 	// defined in-place.
@@ -1682,7 +1682,7 @@ func (m *MeshAccessLogItemSpec) GetFrom() []From {
 	return m.From
 }
 
-func (m *MeshAccessLogItemSpec) GetRules() []Rules {
+func (m *MeshAccessLogItemSpec) GetRules() []MeshAccessLogItemRules {
 	if m == nil {
 		return nil
 	}
@@ -1703,7 +1703,7 @@ func (m *MeshAccessLogItemSpec) GetTo() []To {
 	return m.To
 }
 
-// MeshAccessLogItem - Successful response
+// MeshAccessLogItem - MeshAccessLog configures access logging for traffic between services in the mesh. It allows you to capture and export request/response logs to various backends (file, TCP, or OpenTelemetry) for monitoring, debugging, and auditing purposes.
 type MeshAccessLogItem struct {
 	// the type of the resource
 	Type Type `json:"type"`
@@ -1790,7 +1790,7 @@ func (m *MeshAccessLogItem) GetModificationTime() *time.Time {
 	return m.ModificationTime
 }
 
-// MeshAccessLogItemInput - Successful response
+// MeshAccessLogItemInput - MeshAccessLog configures access logging for traffic between services in the mesh. It allows you to capture and export request/response logs to various backends (file, TCP, or OpenTelemetry) for monitoring, debugging, and auditing purposes.
 type MeshAccessLogItemInput struct {
 	// the type of the resource
 	Type Type `json:"type"`

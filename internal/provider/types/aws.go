@@ -7,7 +7,7 @@ import (
 )
 
 type Aws struct {
-	IamServerIDHeader types.String  `tfsdk:"iam_server_id_header"`
-	Role              types.String  `tfsdk:"role"`
-	Type              *MeshItemMode `tfsdk:"type"`
+	IamServerIDHeader types.String `tfsdk:"iam_server_id_header"`
+	Role              types.String `tfsdk:"role"`
+	Type              *Access      `tfsdk:"type"`
 }

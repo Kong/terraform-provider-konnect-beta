@@ -15,6 +15,7 @@ const (
 	AllFilterItemsFieldAiRequestModel            AllFilterItemsField = "ai_request_model"
 	AllFilterItemsFieldAiResponseModel           AllFilterItemsField = "ai_response_model"
 	AllFilterItemsFieldAPI                       AllFilterItemsField = "api"
+	AllFilterItemsFieldAPIPackage                AllFilterItemsField = "api_package"
 	AllFilterItemsFieldAPIProduct                AllFilterItemsField = "api_product"
 	AllFilterItemsFieldAPIProductVersion         AllFilterItemsField = "api_product_version"
 	AllFilterItemsFieldApplication               AllFilterItemsField = "application"
@@ -56,6 +57,8 @@ func (e *AllFilterItemsField) UnmarshalJSON(data []byte) error {
 	case "ai_response_model":
 		fallthrough
 	case "api":
+		fallthrough
+	case "api_package":
 		fallthrough
 	case "api_product":
 		fallthrough

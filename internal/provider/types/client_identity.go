@@ -6,6 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type Selectors struct {
-	Match map[string]types.String `tfsdk:"match"`
+type ClientIdentity struct {
+	Certificate types.String `tfsdk:"certificate"`
+	Key         types.String `tfsdk:"key"`
 }
