@@ -138,9 +138,6 @@ func (p *KonnectBetaProvider) Configure(ctx context.Context, req provider.Config
 
 func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
-		NewAccessAuditResource,
-		NewAccessRoleResource,
-		NewAccessRoleBindingResource,
 		NewAPIResource,
 		NewAPIDocumentResource,
 		NewAPIImplementationResource,
@@ -171,7 +168,10 @@ func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.R
 		NewEventGatewayVaultResource,
 		NewEventGatewayVirtualClusterResource,
 		NewMeshResource,
+		NewMeshAccessAuditResource,
 		NewMeshAccessLogResource,
+		NewMeshAccessRoleResource,
+		NewMeshAccessRoleBindingResource,
 		NewMeshCircuitBreakerResource,
 		NewMeshControlPlaneResource,
 		NewMeshExternalServiceResource,

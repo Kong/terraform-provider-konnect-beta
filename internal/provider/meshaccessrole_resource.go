@@ -25,21 +25,21 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &AccessRoleResource{}
-var _ resource.ResourceWithImportState = &AccessRoleResource{}
+var _ resource.Resource = &MeshAccessRoleResource{}
+var _ resource.ResourceWithImportState = &MeshAccessRoleResource{}
 
-func NewAccessRoleResource() resource.Resource {
-	return &AccessRoleResource{}
+func NewMeshAccessRoleResource() resource.Resource {
+	return &MeshAccessRoleResource{}
 }
 
-// AccessRoleResource defines the resource implementation.
-type AccessRoleResource struct {
+// MeshAccessRoleResource defines the resource implementation.
+type MeshAccessRoleResource struct {
 	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
-// AccessRoleResourceModel describes the resource data model.
-type AccessRoleResourceModel struct {
+// MeshAccessRoleResourceModel describes the resource data model.
+type MeshAccessRoleResourceModel struct {
 	CpID     types.String                  `tfsdk:"cp_id"`
 	Labels   map[string]types.String       `tfsdk:"labels"`
 	Name     types.String                  `tfsdk:"name"`
@@ -48,13 +48,13 @@ type AccessRoleResourceModel struct {
 	Warnings []types.String                `tfsdk:"warnings"`
 }
 
-func (r *AccessRoleResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_access_role"
+func (r *MeshAccessRoleResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = "konnect_mesh_access_role"
 }
 
-func (r *AccessRoleResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *MeshAccessRoleResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "AccessRole Resource",
+		MarkdownDescription: "MeshAccessRole Resource",
 		Attributes: map[string]schema.Attribute{
 			"cp_id": schema.StringAttribute{
 				Required: true,
@@ -277,7 +277,7 @@ func (r *AccessRoleResource) Schema(ctx context.Context, req resource.SchemaRequ
 	}
 }
 
-func (r *AccessRoleResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *MeshAccessRoleResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -297,8 +297,8 @@ func (r *AccessRoleResource) Configure(ctx context.Context, req resource.Configu
 	r.client = client
 }
 
-func (r *AccessRoleResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *AccessRoleResourceModel
+func (r *MeshAccessRoleResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *MeshAccessRoleResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -397,8 +397,8 @@ func (r *AccessRoleResource) Create(ctx context.Context, req resource.CreateRequ
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *AccessRoleResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *AccessRoleResourceModel
+func (r *MeshAccessRoleResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *MeshAccessRoleResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -455,8 +455,8 @@ func (r *AccessRoleResource) Read(ctx context.Context, req resource.ReadRequest,
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *AccessRoleResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *AccessRoleResourceModel
+func (r *MeshAccessRoleResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *MeshAccessRoleResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -551,8 +551,8 @@ func (r *AccessRoleResource) Update(ctx context.Context, req resource.UpdateRequ
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *AccessRoleResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *AccessRoleResourceModel
+func (r *MeshAccessRoleResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *MeshAccessRoleResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -597,7 +597,7 @@ func (r *AccessRoleResource) Delete(ctx context.Context, req resource.DeleteRequ
 
 }
 
-func (r *AccessRoleResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *MeshAccessRoleResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {

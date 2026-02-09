@@ -7,6 +7,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -23,37 +25,36 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &AccessRoleBindingResource{}
-var _ resource.ResourceWithImportState = &AccessRoleBindingResource{}
+var _ resource.Resource = &MeshAccessAuditResource{}
+var _ resource.ResourceWithImportState = &MeshAccessAuditResource{}
 
-func NewAccessRoleBindingResource() resource.Resource {
-	return &AccessRoleBindingResource{}
+func NewMeshAccessAuditResource() resource.Resource {
+	return &MeshAccessAuditResource{}
 }
 
-// AccessRoleBindingResource defines the resource implementation.
-type AccessRoleBindingResource struct {
+// MeshAccessAuditResource defines the resource implementation.
+type MeshAccessAuditResource struct {
 	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
-// AccessRoleBindingResourceModel describes the resource data model.
-type AccessRoleBindingResourceModel struct {
+// MeshAccessAuditResourceModel describes the resource data model.
+type MeshAccessAuditResourceModel struct {
 	CpID     types.String            `tfsdk:"cp_id"`
 	Labels   map[string]types.String `tfsdk:"labels"`
 	Name     types.String            `tfsdk:"name"`
-	Roles    []types.String          `tfsdk:"roles"`
-	Subjects []tfTypes.Subjects      `tfsdk:"subjects"`
+	Rules    []tfTypes.Rules         `tfsdk:"rules"`
 	Type     types.String            `tfsdk:"type"`
 	Warnings []types.String          `tfsdk:"warnings"`
 }
 
-func (r *AccessRoleBindingResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_access_role_binding"
+func (r *MeshAccessAuditResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = "konnect_mesh_access_audit"
 }
 
-func (r *AccessRoleBindingResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *MeshAccessAuditResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "AccessRoleBinding Resource",
+		MarkdownDescription: "MeshAccessAudit Resource",
 		Attributes: map[string]schema.Attribute{
 			"cp_id": schema.StringAttribute{
 				Required: true,
@@ -68,16 +69,9 @@ func (r *AccessRoleBindingResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"name": schema.StringAttribute{
 				Required:    true,
-				Description: `name of the AccessRoleBinding`,
+				Description: `name of the AccessAudit`,
 			},
-			"roles": schema.ListAttribute{
-				Optional: true,
-				PlanModifiers: []planmodifier.List{
-					custom_listplanmodifier.SupressZeroNullModifier(),
-				},
-				ElementType: types.StringType,
-			},
-			"subjects": schema.ListNestedAttribute{
+			"rules": schema.ListNestedAttribute{
 				Optional: true,
 				PlanModifiers: []planmodifier.List{
 					custom_listplanmodifier.SupressZeroNullModifier(),
@@ -87,11 +81,47 @@ func (r *AccessRoleBindingResource) Schema(ctx context.Context, req resource.Sch
 						speakeasy_objectvalidators.NotNull(),
 					},
 					Attributes: map[string]schema.Attribute{
-						"name": schema.StringAttribute{
+						"access": schema.ListNestedAttribute{
+							Optional: true,
+							PlanModifiers: []planmodifier.List{
+								custom_listplanmodifier.SupressZeroNullModifier(),
+							},
+							NestedObject: schema.NestedAttributeObject{
+								Validators: []validator.Object{
+									speakeasy_objectvalidators.NotNull(),
+								},
+								Attributes: map[string]schema.Attribute{
+									"integer": schema.Int64Attribute{
+										Optional: true,
+										Validators: []validator.Int64{
+											int64validator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("str"),
+											}...),
+										},
+									},
+									"str": schema.StringAttribute{
+										Optional: true,
+										Validators: []validator.String{
+											stringvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("integer"),
+											}...),
+										},
+									},
+								},
+							},
+						},
+						"access_all": schema.BoolAttribute{
 							Optional: true,
 						},
-						"type": schema.StringAttribute{
+						"mesh": schema.StringAttribute{
 							Optional: true,
+						},
+						"types": schema.ListAttribute{
+							Optional: true,
+							PlanModifiers: []planmodifier.List{
+								custom_listplanmodifier.SupressZeroNullModifier(),
+							},
+							ElementType: types.StringType,
 						},
 					},
 				},
@@ -112,7 +142,7 @@ func (r *AccessRoleBindingResource) Schema(ctx context.Context, req resource.Sch
 	}
 }
 
-func (r *AccessRoleBindingResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *MeshAccessAuditResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -132,8 +162,8 @@ func (r *AccessRoleBindingResource) Configure(ctx context.Context, req resource.
 	r.client = client
 }
 
-func (r *AccessRoleBindingResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *AccessRoleBindingResourceModel
+func (r *MeshAccessAuditResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *MeshAccessAuditResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -150,13 +180,13 @@ func (r *AccessRoleBindingResource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
-	request, requestDiags := data.ToOperationsPutAccessRoleBindingRequest(ctx)
+	request, requestDiags := data.ToOperationsPutAccessAuditRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.AccessRoleBinding.PutAccessRoleBinding(ctx, *request)
+	res, err := r.client.AccessAudit.PutAccessAudit(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -175,11 +205,11 @@ func (r *AccessRoleBindingResource) Create(ctx context.Context, req resource.Cre
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AccessRoleBindingCreateOrUpdateSuccessResponse != nil) {
+	if !(res.AccessAuditCreateOrUpdateSuccessResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAccessRoleBindingCreateOrUpdateSuccessResponse(ctx, res.AccessRoleBindingCreateOrUpdateSuccessResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAccessAuditCreateOrUpdateSuccessResponse(ctx, res.AccessAuditCreateOrUpdateSuccessResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -190,13 +220,13 @@ func (r *AccessRoleBindingResource) Create(ctx context.Context, req resource.Cre
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsGetAccessRoleBindingRequest(ctx)
+	request1, request1Diags := data.ToOperationsGetAccessAuditRequest(ctx)
 	resp.Diagnostics.Append(request1Diags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res1, err := r.client.AccessRoleBinding.GetAccessRoleBinding(ctx, *request1)
+	res1, err := r.client.AccessAudit.GetAccessAudit(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -212,11 +242,11 @@ func (r *AccessRoleBindingResource) Create(ctx context.Context, req resource.Cre
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if !(res1.AccessRoleBindingItem != nil) {
+	if !(res1.AccessAuditItem != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAccessRoleBindingItem(ctx, res1.AccessRoleBindingItem)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAccessAuditItem(ctx, res1.AccessAuditItem)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -232,8 +262,8 @@ func (r *AccessRoleBindingResource) Create(ctx context.Context, req resource.Cre
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *AccessRoleBindingResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *AccessRoleBindingResourceModel
+func (r *MeshAccessAuditResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *MeshAccessAuditResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -250,13 +280,13 @@ func (r *AccessRoleBindingResource) Read(ctx context.Context, req resource.ReadR
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAccessRoleBindingRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAccessAuditRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.AccessRoleBinding.GetAccessRoleBinding(ctx, *request)
+	res, err := r.client.AccessAudit.GetAccessAudit(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -276,11 +306,11 @@ func (r *AccessRoleBindingResource) Read(ctx context.Context, req resource.ReadR
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AccessRoleBindingItem != nil) {
+	if !(res.AccessAuditItem != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAccessRoleBindingItem(ctx, res.AccessRoleBindingItem)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAccessAuditItem(ctx, res.AccessAuditItem)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -290,8 +320,8 @@ func (r *AccessRoleBindingResource) Read(ctx context.Context, req resource.ReadR
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *AccessRoleBindingResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *AccessRoleBindingResourceModel
+func (r *MeshAccessAuditResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *MeshAccessAuditResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -304,13 +334,13 @@ func (r *AccessRoleBindingResource) Update(ctx context.Context, req resource.Upd
 		return
 	}
 
-	request, requestDiags := data.ToOperationsPutAccessRoleBindingRequest(ctx)
+	request, requestDiags := data.ToOperationsPutAccessAuditRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.AccessRoleBinding.PutAccessRoleBinding(ctx, *request)
+	res, err := r.client.AccessAudit.PutAccessAudit(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -329,11 +359,11 @@ func (r *AccessRoleBindingResource) Update(ctx context.Context, req resource.Upd
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AccessRoleBindingCreateOrUpdateSuccessResponse != nil) {
+	if !(res.AccessAuditCreateOrUpdateSuccessResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAccessRoleBindingCreateOrUpdateSuccessResponse(ctx, res.AccessRoleBindingCreateOrUpdateSuccessResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAccessAuditCreateOrUpdateSuccessResponse(ctx, res.AccessAuditCreateOrUpdateSuccessResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -344,13 +374,13 @@ func (r *AccessRoleBindingResource) Update(ctx context.Context, req resource.Upd
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsGetAccessRoleBindingRequest(ctx)
+	request1, request1Diags := data.ToOperationsGetAccessAuditRequest(ctx)
 	resp.Diagnostics.Append(request1Diags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res1, err := r.client.AccessRoleBinding.GetAccessRoleBinding(ctx, *request1)
+	res1, err := r.client.AccessAudit.GetAccessAudit(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -366,11 +396,11 @@ func (r *AccessRoleBindingResource) Update(ctx context.Context, req resource.Upd
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if !(res1.AccessRoleBindingItem != nil) {
+	if !(res1.AccessAuditItem != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAccessRoleBindingItem(ctx, res1.AccessRoleBindingItem)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAccessAuditItem(ctx, res1.AccessAuditItem)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -386,8 +416,8 @@ func (r *AccessRoleBindingResource) Update(ctx context.Context, req resource.Upd
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *AccessRoleBindingResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *AccessRoleBindingResourceModel
+func (r *MeshAccessAuditResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *MeshAccessAuditResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -404,13 +434,13 @@ func (r *AccessRoleBindingResource) Delete(ctx context.Context, req resource.Del
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAccessRoleBindingRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAccessAuditRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.AccessRoleBinding.DeleteAccessRoleBinding(ctx, *request)
+	res, err := r.client.AccessAudit.DeleteAccessAudit(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -432,7 +462,7 @@ func (r *AccessRoleBindingResource) Delete(ctx context.Context, req resource.Del
 
 }
 
-func (r *AccessRoleBindingResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *MeshAccessAuditResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
