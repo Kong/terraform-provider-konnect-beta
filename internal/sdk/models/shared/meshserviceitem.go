@@ -215,6 +215,17 @@ func (m *MeshServiceItemPorts) GetTargetPort() *TargetPort {
 	return m.TargetPort
 }
 
+type DataplaneLabels struct {
+	MatchLabels map[string]string `json:"matchLabels,omitempty"`
+}
+
+func (d *DataplaneLabels) GetMatchLabels() map[string]string {
+	if d == nil {
+		return nil
+	}
+	return d.MatchLabels
+}
+
 type DataplaneRef struct {
 	Name *string `json:"name,omitempty"`
 }
@@ -227,8 +238,16 @@ func (d *DataplaneRef) GetName() *string {
 }
 
 type MeshServiceItemSelector struct {
-	DataplaneRef  *DataplaneRef     `json:"dataplaneRef,omitempty"`
-	DataplaneTags map[string]string `json:"dataplaneTags,omitempty"`
+	DataplaneLabels *DataplaneLabels  `json:"dataplaneLabels,omitempty"`
+	DataplaneRef    *DataplaneRef     `json:"dataplaneRef,omitempty"`
+	DataplaneTags   map[string]string `json:"dataplaneTags,omitempty"`
+}
+
+func (m *MeshServiceItemSelector) GetDataplaneLabels() *DataplaneLabels {
+	if m == nil {
+		return nil
+	}
+	return m.DataplaneLabels
 }
 
 func (m *MeshServiceItemSelector) GetDataplaneRef() *DataplaneRef {

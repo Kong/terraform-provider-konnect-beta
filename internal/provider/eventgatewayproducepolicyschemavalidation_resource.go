@@ -81,7 +81,6 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 								MarkdownDescription: `Defines a behavior when record key is not valid.` + "\n" +
 									`* reject - rejects a batch for topic partition. Only available for produce.` + "\n" +
 									`* mark - marks a record with kong/server header and client ID value` + "\n" +
-									`` + "\n" +
 									`  to help to identify the clients violating schema.` + "\n" +
 									`must be one of ["reject", "mark"]`,
 								Validators: []validator.String{
@@ -137,7 +136,6 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 								MarkdownDescription: `Defines a behavior when record value is not valid.` + "\n" +
 									`* reject - rejects a batch for topic partition. Only available for produce.` + "\n" +
 									`* mark - marks a record with kong/server header and client ID value` + "\n" +
-									`` + "\n" +
 									`  to help to identify the clients violating schema.` + "\n" +
 									`must be one of ["reject", "mark"]`,
 								Validators: []validator.String{
@@ -163,7 +161,6 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 								MarkdownDescription: `Defines a behavior when record key is not valid.` + "\n" +
 									`* reject - rejects a batch for topic partition. Only available for produce.` + "\n" +
 									`* mark - marks a record with kong/server header and client ID value` + "\n" +
-									`` + "\n" +
 									`  to help to identify the clients violating schema.` + "\n" +
 									`must be one of ["reject", "mark"]`,
 								Validators: []validator.String{
@@ -219,7 +216,6 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 								MarkdownDescription: `Defines a behavior when record value is not valid.` + "\n" +
 									`* reject - rejects a batch for topic partition. Only available for produce.` + "\n" +
 									`* mark - marks a record with kong/server header and client ID value` + "\n" +
-									`` + "\n" +
 									`  to help to identify the clients violating schema.` + "\n" +
 									`must be one of ["reject", "mark"]`,
 								Validators: []validator.String{

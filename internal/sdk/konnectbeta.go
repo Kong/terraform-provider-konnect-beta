@@ -107,6 +107,9 @@ type KonnectBeta struct {
 	Workload                  *Workload
 	MeshGlobalRateLimit       *MeshGlobalRateLimit
 	MeshOPA                   *MeshOPA
+	AccessAudit               *AccessAudit
+	AccessRole                *AccessRole
+	AccessRoleBinding         *AccessRoleBinding
 	// Auth Servers expose an OAuth 2.0 and OpenID Connect server interface for generating access tokens. The management API will give you the ability to create, configure and manage multiple Auth Servers per Konnect organization. Auth Servers are a regional Konnect entity.
 	AuthServer *AuthServer
 	// Claims are statements about the Client, included in tokens issued by the Auth Server. The management API will give you the ability to create, configure and manage multiple Claims per Auth Server, and include them in tokens based on the requested Scopes.
@@ -304,6 +307,9 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.Workload = newWorkload(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshGlobalRateLimit = newMeshGlobalRateLimit(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshOPA = newMeshOPA(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AccessAudit = newAccessAudit(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AccessRole = newAccessRole(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AccessRoleBinding = newAccessRoleBinding(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthServer = newAuthServer(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthServerClaims = newAuthServerClaims(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthServerScopes = newAuthServerScopes(sdk, sdk.sdkConfiguration, sdk.hooks)

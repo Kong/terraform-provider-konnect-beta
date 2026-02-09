@@ -116,10 +116,10 @@ func (r *MeshGatewayResourceModel) RefreshFromSharedMeshGatewayItem(ctx context.
 		r.Labels, _ = labelsValuable.(kumalabels.KumaLabelsMapValue)
 		r.Mesh = types.StringValue(resp.Mesh)
 		r.Name = types.StringValue(resp.Name)
-		r.Selectors = []tfTypes.Selectors{}
+		r.Selectors = []tfTypes.Destinations{}
 
 		for _, selectorsItem := range resp.Selectors {
-			var selectors tfTypes.Selectors
+			var selectors tfTypes.Destinations
 
 			if len(selectorsItem.Match) > 0 {
 				selectors.Match = make(map[string]types.String, len(selectorsItem.Match))

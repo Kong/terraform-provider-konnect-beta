@@ -447,7 +447,6 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																		`If granularity is not specified and "time" is in the dimensions list, a default will be chosen based on the time range requested.` + "\n" +
 																		`` + "\n" +
 																		`Different relative times support different granularities:` + "\n" +
-																		`` + "\n" +
 																		`  - 15m => tenSecondly, thirtySecondly, minutely` + "\n" +
 																		`  - 1h  => tenSecondly, thirtySecondly, minutely, fiveMinutely, tenMinutely` + "\n" +
 																		`  - 6h  => thirtySecondly, minutely, fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
@@ -457,7 +456,6 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																		`  - 30d => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
 																		`` + "\n" +
 																		`For special time ranges:` + "\n" +
-																		`` + "\n" +
 																		`  - current_week, previous_week   => thirtyMinutely, hourly, twoHourly, twelveHourly, daily` + "\n" +
 																		`  - current_month, previous_month => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
 																		`` + "\n" +
@@ -676,7 +674,6 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																		`If granularity is not specified and "time" is in the dimensions list, a default will be chosen based on the time range requested.` + "\n" +
 																		`` + "\n" +
 																		`Different relative times support different granularities:` + "\n" +
-																		`` + "\n" +
 																		`  - 15m => tenSecondly, thirtySecondly, minutely` + "\n" +
 																		`  - 1h  => tenSecondly, thirtySecondly, minutely, fiveMinutely, tenMinutely` + "\n" +
 																		`  - 6h  => thirtySecondly, minutely, fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
@@ -686,7 +683,6 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																		`  - 30d => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
 																		`` + "\n" +
 																		`For special time ranges:` + "\n" +
-																		`` + "\n" +
 																		`  - current_week, previous_week   => thirtyMinutely, hourly, twoHourly, twelveHourly, daily` + "\n" +
 																		`  - current_month, previous_month => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
 																		`` + "\n" +

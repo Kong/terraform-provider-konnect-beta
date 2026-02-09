@@ -47,17 +47,22 @@ acceptance:
 	@TF_ACC=1 go test -count=1 -v ./tests/resources
 
 # renovate: datasource=go depName=Kong/shared-speakeasy/resource_plan_modifier packageName=github.com/Kong/shared-speakeasy/generators/resource_plan_modifier
-RESOURCE_PLAN_MODIFIER_VERSION := v0.0.13
+RESOURCE_PLAN_MODIFIER_VERSION := v0.0.15
+
+PLAN_MOD_CMD = $(if $(wildcard go.work),go run ../shared-speakeasy/generators/resource_plan_modifier,go run github.com/Kong/shared-speakeasy/generators/resource_plan_modifier@$(RESOURCE_PLAN_MODIFIER_VERSION))
 
 .PHONY: generate-plan-modifiers
 generate-plan-modifiers:
-	# MeshControlPlane is identfied by uuid so we can skip it
 	mkdir -p "resouce-plan-modifiers"
 	cat internal/provider/mesh*_resource.go \
 	| grep "Resource struct" \
 	| cut -d ' ' -f 2 \
 	| sed 's/Resource$$//' \
-	| grep -v "MeshControlPlane" \
-	| xargs -n1 -I{} sh -c '\
-		go run github.com/Kong/shared-speakeasy/generators/resource_plan_modifier@$(RESOURCE_PLAN_MODIFIER_VERSION) \
-		internal/provider/$$(echo {} | tr A-Z a-z)_resource_plan_modify.go {} terraform-provider-konnect-beta'
+	| while read RESOURCE; do \
+		LOWER=$$(echo $$RESOURCE | tr A-Z a-z); \
+		grep -q 'path\.Root("name")' internal/provider/$${LOWER}_resource.go || continue; \
+		SDK_NAME=$$(grep -oE 'r\.client\.[A-Za-z]+' internal/provider/$${LOWER}_resource.go | head -1 | sed 's/r\.client\.//'); \
+		if grep -q 'Mesh string.*json:"mesh"' internal/provider/$${LOWER}_resource.go; then MESH_SCOPED=true; else MESH_SCOPED=false; fi; \
+		$(PLAN_MOD_CMD) \
+		internal/provider/$${LOWER}_resource_plan_modify.go $$RESOURCE terraform-provider-konnect-beta $$SDK_NAME $$MESH_SCOPED; \
+	done

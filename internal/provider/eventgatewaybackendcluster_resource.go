@@ -18,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -245,12 +244,7 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 						},
 					},
 					"client_identity": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"certificate": types.StringType,
-							"key":         types.StringType,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"certificate": schema.StringAttribute{
 								Required: true,

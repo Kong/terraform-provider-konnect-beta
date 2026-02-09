@@ -39,6 +39,11 @@ resource "konnect_mesh_service" "my_meshservice" {
       }
     ]
     selector = {
+      dataplane_labels = {
+        match_labels = {
+          key = "value"
+        }
+      }
       dataplane_ref = {
         name = "...my_name..."
       }
@@ -122,8 +127,17 @@ Optional:
 
 Optional:
 
+- `dataplane_labels` (Attributes) (see [below for nested schema](#nestedatt--spec--selector--dataplane_labels))
 - `dataplane_ref` (Attributes) (see [below for nested schema](#nestedatt--spec--selector--dataplane_ref))
 - `dataplane_tags` (Map of String)
+
+<a id="nestedatt--spec--selector--dataplane_labels"></a>
+### Nested Schema for `spec.selector.dataplane_labels`
+
+Optional:
+
+- `match_labels` (Map of String)
+
 
 <a id="nestedatt--spec--selector--dataplane_ref"></a>
 ### Nested Schema for `spec.selector.dataplane_ref`
