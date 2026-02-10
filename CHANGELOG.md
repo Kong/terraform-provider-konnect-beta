@@ -1,12 +1,17 @@
 # Changelog
 
 ## 0.15.0
-> Released on 2026/01/??
+> Released on 2026/02/10
 
 ### Features
 * Support giving `id` and `client_secret` as input to `konnect_auth_server_clients` resource
-* Fix drift in `konnect_portal_auth` resource
 * Support creating default content for `konnect_portal` resource
+* Support new mesh resources - `konnect_mesh_access_audit`, `konnect_mesh_access_role`, `konnect_mesh_access_role_binding`
+* Support linking API to control plane using `konnect_api_implementation` resource
+
+### Bug fixes
+* Fix drift in `konnect_portal_auth` resource
+* Fix drift in Event Gateway resources due to default string values
 
 ## 0.14.0
 > Released on 2025/12/18
