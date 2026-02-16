@@ -10,11 +10,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -72,6 +74,9 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Schema(ctx c
 							"advertised_host": schema.StringAttribute{
 								Required:    true,
 								Description: `Virtual brokers are advertised to clients using this host. Any kind of host supported by kafka can be used. If not defined, it's listen_address. If listen_address is ` + "`" + `0.0.0.0` + "`" + ` it's the destination IP of the TCP connection.`,
+								Validators: []validator.String{
+									stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z0-9](?:[a-z0-9\-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9\-]{0,61}[a-z0-9])?)*$`), "must match pattern "+regexp.MustCompile(`^[a-z0-9](?:[a-z0-9\-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9\-]{0,61}[a-z0-9])?)*$`).String()),
+								},
 							},
 							"bootstrap_port": schema.StringAttribute{
 								Computed: true,
@@ -174,6 +179,31 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Schema(ctx c
 									int64validator.Between(1, 65535),
 								},
 							},
+							"broker_host_format": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"type": types.StringType,
+								})),
+								Attributes: map[string]schema.Attribute{
+									"type": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     stringdefault.StaticString(`per_cluster_suffix`),
+										Description: `Default: "per_cluster_suffix"; must be one of ["per_cluster_suffix", "shared_suffix"]`,
+										Validators: []validator.String{
+											stringvalidator.OneOf(
+												"per_cluster_suffix",
+												"shared_suffix",
+											),
+										},
+									},
+								},
+								MarkdownDescription: `Configures DNS names assigned to brokers in virtual clusters.` + "\n" +
+									`` + "\n" +
+									`- ` + "`" + `per_cluster_suffix` + "`" + ` is the default and allocates one level in the hierarchy for virtual clusters: ` + "`" + `broker-{node_id}.{virtual_cluster}.{sni_suffix}` + "`" + `` + "\n" +
+									`- ` + "`" + `shared_suffix` + "`" + ` puts all brokers from every virtual clusters into the same level: ` + "`" + `broker-{node_id}-{virtual_cluster}.{sni_suffix}` + "`" + `. This makes it easier to manage certificates for this listener.`,
+							},
 							"sni_suffix": schema.StringAttribute{
 								Optional: true,
 								MarkdownDescription: `Optional suffix for TLS SNI validation.` + "\n" +
@@ -212,8 +242,10 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Schema(ctx c
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
 			"description": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
-				Description: `A human-readable description of the policy.`,
+				Default:     stringdefault.StaticString(``),
+				Description: `A human-readable description of the policy. Default: ""`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtMost(512),
 				},
@@ -248,7 +280,7 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Schema(ctx c
 				Optional:    true,
 				Description: `A unique user-defined name of the policy.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 255),
+					stringvalidator.UTF8LengthAtMost(255),
 				},
 			},
 			"parent_policy_id": schema.StringAttribute{
@@ -331,6 +363,43 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Create(ctx c
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayListenerPolicy(ctx, res.EventGatewayListenerPolicy)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsGetEventGatewayListenerPolicyForwardToVirtualClusterRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.EventGatewayListenerPolicies.GetEventGatewayListenerPolicyForwardToVirtualCluster(ctx, *request1)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res1 != nil && res1.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
+		}
+		return
+	}
+	if res1 == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
+		return
+	}
+	if res1.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
+		return
+	}
+	if !(res1.EventGatewayListenerPolicy != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
+		return
+	}
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayListenerPolicy(ctx, res1.EventGatewayListenerPolicy)...)
 
 	if resp.Diagnostics.HasError() {
 		return

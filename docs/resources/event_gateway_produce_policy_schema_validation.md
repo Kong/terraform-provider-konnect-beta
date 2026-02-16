@@ -15,7 +15,7 @@ EventGatewayProducePolicySchemaValidation Resource
 ```terraform
 resource "konnect_event_gateway_produce_policy_schema_validation" "my_eventgatewayproducepolicyschemavalidation" {
   provider = konnect-beta
-  condition = "context.topic.name.endsWith('my_suffix')"
+  condition = "context.topic.name.endsWith(\"my_suffix\") && records.headers[\"x-flag\"] == \"a-value\""
   config = {
     confluent_schema_registry = {
       key_validation_action = "reject"
@@ -58,8 +58,8 @@ resource "konnect_event_gateway_produce_policy_schema_validation" "my_eventgatew
 
 ### Optional
 
-- `condition` (String) A string containing the boolean expression that determines whether the policy is applied.
-- `description` (String) A human-readable description of the policy.
+- `condition` (String) A string containing the boolean expression that determines whether the policy is applied. Default: ""
+- `description` (String) A human-readable description of the policy. Default: ""
 - `enabled` (Boolean) Whether the policy is enabled. Default: true
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
@@ -89,14 +89,12 @@ Optional:
 - `key_validation_action` (String) Defines a behavior when record key is not valid.
 * reject - rejects a batch for topic partition. Only available for produce.
 * mark - marks a record with kong/server header and client ID value
-
   to help to identify the clients violating schema.
 must be one of ["reject", "mark"]
 - `schema_registry` (Attributes) A reference to a schema Registry. (see [below for nested schema](#nestedatt--config--confluent_schema_registry--schema_registry))
 - `value_validation_action` (String) Defines a behavior when record value is not valid.
 * reject - rejects a batch for topic partition. Only available for produce.
 * mark - marks a record with kong/server header and client ID value
-
   to help to identify the clients violating schema.
 must be one of ["reject", "mark"]
 
@@ -134,14 +132,12 @@ Optional:
 - `key_validation_action` (String) Defines a behavior when record key is not valid.
 * reject - rejects a batch for topic partition. Only available for produce.
 * mark - marks a record with kong/server header and client ID value
-
   to help to identify the clients violating schema.
 must be one of ["reject", "mark"]
 - `schema_registry` (Attributes) A reference to a schema Registry. (see [below for nested schema](#nestedatt--config--json--schema_registry))
 - `value_validation_action` (String) Defines a behavior when record value is not valid.
 * reject - rejects a batch for topic partition. Only available for produce.
 * mark - marks a record with kong/server header and client ID value
-
   to help to identify the clients violating schema.
 must be one of ["reject", "mark"]
 

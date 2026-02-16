@@ -44,9 +44,8 @@ type PortalDataSourceModel struct {
 	ID                               types.String                    `tfsdk:"id"`
 	Labels                           map[string]types.String         `tfsdk:"labels"`
 	Name                             types.String                    `tfsdk:"name"`
-	PageNumber                       types.Int64                     `queryParam:"style=form,explode=true,name=page[number]" tfsdk:"page_number"`
-	PageSize                         types.Int64                     `queryParam:"style=form,explode=true,name=page[size]" tfsdk:"page_size"`
 	RbacEnabled                      types.Bool                      `tfsdk:"rbac_enabled"`
+	SiprEnabled                      types.Bool                      `tfsdk:"sipr_enabled"`
 	Sort                             types.String                    `queryParam:"style=form,explode=true,name=sort" tfsdk:"sort"`
 	UpdatedAt                        types.String                    `tfsdk:"updated_at"`
 }
@@ -335,17 +334,13 @@ func (r *PortalDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				Computed:    true,
 				Description: `The name of the portal, used to distinguish it from other portals. Name must be unique.`,
 			},
-			"page_number": schema.Int64Attribute{
-				Optional:    true,
-				Description: `Determines which page of the entities to retrieve.`,
-			},
-			"page_size": schema.Int64Attribute{
-				Optional:    true,
-				Description: `The maximum number of items to include per page. The last page of a collection may include fewer items.`,
-			},
 			"rbac_enabled": schema.BoolAttribute{
 				Computed:    true,
 				Description: `Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.`,
+			},
+			"sipr_enabled": schema.BoolAttribute{
+				Computed:    true,
+				Description: `Whether ip allow list is enabled for the organization.`,
 			},
 			"sort": schema.StringAttribute{
 				Optional: true,

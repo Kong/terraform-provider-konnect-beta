@@ -117,12 +117,9 @@ Warning messages describe a problem the client making the API request should cor
 <a id="nestedatt--spec"></a>
 ### Nested Schema for `spec`
 
-Required:
-
-- `provider` (Attributes) (see [below for nested schema](#nestedatt--spec--provider))
-
 Optional:
 
+- `provider` (Attributes) (see [below for nested schema](#nestedatt--spec--provider))
 - `selector` (Attributes) (see [below for nested schema](#nestedatt--spec--selector))
 - `spiffe_id` (Attributes) (see [below for nested schema](#nestedatt--spec--spiffe_id))
 

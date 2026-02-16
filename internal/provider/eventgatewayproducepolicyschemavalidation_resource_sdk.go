@@ -11,7 +11,7 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *EventGatewayProducePolicySchemaValidationResourceModel) RefreshFromSharedEventGatewayPolicy(ctx context.Context, resp *shared.EventGatewayPolicy) diag.Diagnostics {
+func (r *EventGatewayProducePolicySchemaValidationResourceModel) RefreshFromSharedEventGatewayProducePolicySchemaValidationTFOnly(ctx context.Context, resp *shared.EventGatewayProducePolicySchemaValidationTFOnly) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
@@ -151,11 +151,15 @@ func (r *EventGatewayProducePolicySchemaValidationResourceModel) ToSharedEventGa
 	} else {
 		enabled = nil
 	}
-	condition := new(string)
-	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
-		*condition = r.Condition.ValueString()
-	} else {
-		condition = nil
+	labels := make(map[string]*string)
+	for labelsKey := range r.Labels {
+		labelsInst := new(string)
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
+		} else {
+			labelsInst = nil
+		}
+		labels[labelsKey] = labelsInst
 	}
 	var config shared.EventGatewayProduceSchemaValidationPolicyConfig
 	var eventGatewayProduceSchemaValidationPolicySchemaRegistryConfig *shared.EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig
@@ -270,23 +274,19 @@ func (r *EventGatewayProducePolicySchemaValidationResourceModel) ToSharedEventGa
 			EventGatewayProduceSchemaValidationPolicyJSONConfig: eventGatewayProduceSchemaValidationPolicyJSONConfig,
 		}
 	}
-	labels := make(map[string]*string)
-	for labelsKey := range r.Labels {
-		labelsInst := new(string)
-		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
-			*labelsInst = r.Labels[labelsKey].ValueString()
-		} else {
-			labelsInst = nil
-		}
-		labels[labelsKey] = labelsInst
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
 	}
 	out := shared.EventGatewayProduceSchemaValidationPolicy{
 		Name:        name,
 		Description: description,
 		Enabled:     enabled,
-		Condition:   condition,
-		Config:      config,
 		Labels:      labels,
+		Config:      config,
+		Condition:   condition,
 	}
 
 	return &out, diags

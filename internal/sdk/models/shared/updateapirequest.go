@@ -27,8 +27,7 @@ type UpdateAPIRequest struct {
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
 	// A set of attributes that describe the API
-	Attributes any     `json:"attributes,omitempty"`
-	Images     *Images `json:"images,omitempty"`
+	Attributes any `json:"attributes,omitempty"`
 }
 
 func (u UpdateAPIRequest) MarshalJSON() ([]byte, error) {
@@ -82,11 +81,4 @@ func (u *UpdateAPIRequest) GetAttributes() any {
 		return nil
 	}
 	return u.Attributes
-}
-
-func (u *UpdateAPIRequest) GetImages() *Images {
-	if u == nil {
-		return nil
-	}
-	return u.Images
 }

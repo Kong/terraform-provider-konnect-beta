@@ -150,6 +150,16 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResourceModel) ToShare
 	} else {
 		enabled = nil
 	}
+	labels := make(map[string]*string)
+	for labelsKey := range r.Labels {
+		labelsInst := new(string)
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
+		} else {
+			labelsInst = nil
+		}
+		labels[labelsKey] = labelsInst
+	}
 	var config shared.ForwardToVirtualClusterPolicyConfig
 	var forwardToClusterBySNIConfig *shared.ForwardToClusterBySNIConfig
 	if r.Config.Sni != nil {
@@ -165,9 +175,22 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResourceModel) ToShare
 		} else {
 			advertisedPort = nil
 		}
+		var brokerHostFormat *shared.BrokerHostFormat
+		if r.Config.Sni.BrokerHostFormat != nil {
+			typeVar := new(shared.ForwardToClusterBySNIConfigType)
+			if !r.Config.Sni.BrokerHostFormat.Type.IsUnknown() && !r.Config.Sni.BrokerHostFormat.Type.IsNull() {
+				*typeVar = shared.ForwardToClusterBySNIConfigType(r.Config.Sni.BrokerHostFormat.Type.ValueString())
+			} else {
+				typeVar = nil
+			}
+			brokerHostFormat = &shared.BrokerHostFormat{
+				Type: typeVar,
+			}
+		}
 		forwardToClusterBySNIConfig = &shared.ForwardToClusterBySNIConfig{
-			SniSuffix:      sniSuffix,
-			AdvertisedPort: advertisedPort,
+			SniSuffix:        sniSuffix,
+			AdvertisedPort:   advertisedPort,
+			BrokerHostFormat: brokerHostFormat,
 		}
 	}
 	if forwardToClusterBySNIConfig != nil {
@@ -233,22 +256,12 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResourceModel) ToShare
 			ForwardToClusterByPortMappingConfig: forwardToClusterByPortMappingConfig,
 		}
 	}
-	labels := make(map[string]*string)
-	for labelsKey := range r.Labels {
-		labelsInst := new(string)
-		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
-			*labelsInst = r.Labels[labelsKey].ValueString()
-		} else {
-			labelsInst = nil
-		}
-		labels[labelsKey] = labelsInst
-	}
 	out := shared.ForwardToVirtualClusterPolicy{
 		Name:        name,
 		Description: description,
 		Enabled:     enabled,
-		Config:      config,
 		Labels:      labels,
+		Config:      config,
 	}
 
 	return &out, diags

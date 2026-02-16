@@ -90,7 +90,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 								"field": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `Not Null; must be one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]`,
+									Description: `Not Null; must be one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
 										stringvalidator.OneOf(
@@ -99,6 +99,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 											"ai_request_model",
 											"ai_response_model",
 											"api",
+											"api_package",
 											"api_product",
 											"api_product_version",
 											"application",
@@ -385,11 +386,12 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																			"field": schema.StringAttribute{
 																				Computed:    true,
 																				Optional:    true,
-																				Description: `Not Null; must be one of ["api", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]`,
+																				Description: `Not Null; must be one of ["api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]`,
 																				Validators: []validator.String{
 																					speakeasy_stringvalidators.NotNull(),
 																					stringvalidator.OneOf(
 																						"api",
+																						"api_package",
 																						"api_product",
 																						"api_product_version",
 																						"application",
@@ -445,7 +447,6 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																		`If granularity is not specified and "time" is in the dimensions list, a default will be chosen based on the time range requested.` + "\n" +
 																		`` + "\n" +
 																		`Different relative times support different granularities:` + "\n" +
-																		`` + "\n" +
 																		`  - 15m => tenSecondly, thirtySecondly, minutely` + "\n" +
 																		`  - 1h  => tenSecondly, thirtySecondly, minutely, fiveMinutely, tenMinutely` + "\n" +
 																		`  - 6h  => thirtySecondly, minutely, fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
@@ -455,7 +456,6 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																		`  - 30d => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
 																		`` + "\n" +
 																		`For special time ranges:` + "\n" +
-																		`` + "\n" +
 																		`  - current_week, previous_week   => thirtyMinutely, hourly, twoHourly, twelveHourly, daily` + "\n" +
 																		`  - current_month, previous_month => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
 																		`` + "\n" +
@@ -674,7 +674,6 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																		`If granularity is not specified and "time" is in the dimensions list, a default will be chosen based on the time range requested.` + "\n" +
 																		`` + "\n" +
 																		`Different relative times support different granularities:` + "\n" +
-																		`` + "\n" +
 																		`  - 15m => tenSecondly, thirtySecondly, minutely` + "\n" +
 																		`  - 1h  => tenSecondly, thirtySecondly, minutely, fiveMinutely, tenMinutely` + "\n" +
 																		`  - 6h  => thirtySecondly, minutely, fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
@@ -684,7 +683,6 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																		`  - 30d => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
 																		`` + "\n" +
 																		`For special time ranges:` + "\n" +
-																		`` + "\n" +
 																		`  - current_week, previous_week   => thirtyMinutely, hourly, twoHourly, twelveHourly, daily` + "\n" +
 																		`  - current_month, previous_month => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
 																		`` + "\n" +

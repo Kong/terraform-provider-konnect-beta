@@ -47,6 +47,13 @@ func (r *EventGatewayBackendClusterResourceModel) RefreshFromSharedBackendCluste
 		r.MetadataUpdateIntervalSeconds = types.Int64PointerValue(resp.MetadataUpdateIntervalSeconds)
 		r.Name = types.StringValue(resp.Name)
 		r.TLS.CaBundle = types.StringPointerValue(resp.TLS.CaBundle)
+		if resp.TLS.ClientIdentity == nil {
+			r.TLS.ClientIdentity = nil
+		} else {
+			r.TLS.ClientIdentity = &tfTypes.ClientIdentity{}
+			r.TLS.ClientIdentity.Certificate = types.StringValue(resp.TLS.ClientIdentity.Certificate)
+			r.TLS.ClientIdentity.Key = types.StringValue(resp.TLS.ClientIdentity.Key)
+		}
 		r.TLS.Enabled = types.BoolValue(resp.TLS.Enabled)
 		r.TLS.InsecureSkipVerify = types.BoolPointerValue(resp.TLS.InsecureSkipVerify)
 		r.TLS.TLSVersions = make([]types.String, 0, len(resp.TLS.TLSVersions))
@@ -228,11 +235,25 @@ func (r *EventGatewayBackendClusterResourceModel) ToSharedCreateBackendClusterRe
 	for _, tlsVersionsItem := range r.TLS.TLSVersions {
 		tlsVersions = append(tlsVersions, shared.TLSVersions(tlsVersionsItem.ValueString()))
 	}
+	var clientIdentity *shared.ClientIdentity
+	if r.TLS.ClientIdentity != nil {
+		var certificate string
+		certificate = r.TLS.ClientIdentity.Certificate.ValueString()
+
+		var key string
+		key = r.TLS.ClientIdentity.Key.ValueString()
+
+		clientIdentity = &shared.ClientIdentity{
+			Certificate: certificate,
+			Key:         key,
+		}
+	}
 	tls := shared.BackendClusterTLS{
 		Enabled:            enabled,
 		InsecureSkipVerify: insecureSkipVerify,
 		CaBundle:           caBundle,
 		TLSVersions:        tlsVersions,
+		ClientIdentity:     clientIdentity,
 	}
 	metadataUpdateIntervalSeconds := new(int64)
 	if !r.MetadataUpdateIntervalSeconds.IsUnknown() && !r.MetadataUpdateIntervalSeconds.IsNull() {
@@ -359,11 +380,25 @@ func (r *EventGatewayBackendClusterResourceModel) ToSharedUpdateBackendClusterRe
 	for _, tlsVersionsItem := range r.TLS.TLSVersions {
 		tlsVersions = append(tlsVersions, shared.TLSVersions(tlsVersionsItem.ValueString()))
 	}
+	var clientIdentity *shared.ClientIdentity
+	if r.TLS.ClientIdentity != nil {
+		var certificate string
+		certificate = r.TLS.ClientIdentity.Certificate.ValueString()
+
+		var key string
+		key = r.TLS.ClientIdentity.Key.ValueString()
+
+		clientIdentity = &shared.ClientIdentity{
+			Certificate: certificate,
+			Key:         key,
+		}
+	}
 	tls := shared.BackendClusterTLS{
 		Enabled:            enabled,
 		InsecureSkipVerify: insecureSkipVerify,
 		CaBundle:           caBundle,
 		TLSVersions:        tlsVersions,
+		ClientIdentity:     clientIdentity,
 	}
 	metadataUpdateIntervalSeconds := new(int64)
 	if !r.MetadataUpdateIntervalSeconds.IsUnknown() && !r.MetadataUpdateIntervalSeconds.IsNull() {

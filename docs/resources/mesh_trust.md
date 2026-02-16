@@ -59,6 +59,7 @@ resource "konnect_mesh_trust" "my_meshtrust" {
 - `creation_time` (String) Time at which the resource was created
 - `kri` (String) A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
 - `modification_time` (String) Time at which the resource was updated
+- `status` (Attributes) Status is the current status of the Kuma MeshTrust resource. (see [below for nested schema](#nestedatt--status))
 - `warnings` (List of String) warnings is a list of warning messages to return to the requesting Kuma API clients.
 Warning messages describe a problem the client making the API request should correct or be aware of.
 
@@ -73,7 +74,9 @@ At least one CA bundle must be specified. (see [below for nested schema](#nested
 
 Optional:
 
-- `origin` (Attributes) Origin specifies whether the resource was created from a MeshIdentity. (see [below for nested schema](#nestedatt--spec--origin))
+- `origin` (Attributes) Origin specifies whether the resource was created from a MeshIdentity.
+
+Deprecated: use Status.Origin instead (see [below for nested schema](#nestedatt--spec--origin))
 
 <a id="nestedatt--spec--ca_bundles"></a>
 ### Nested Schema for `spec.ca_bundles`
@@ -96,6 +99,22 @@ Optional:
 ### Nested Schema for `spec.origin`
 
 Optional:
+
+- `kri` (String) Resource identifier
+
+
+
+<a id="nestedatt--status"></a>
+### Nested Schema for `status`
+
+Read-Only:
+
+- `origin` (Attributes) Origin specifies whether the resource was created from a MeshIdentity. (see [below for nested schema](#nestedatt--status--origin))
+
+<a id="nestedatt--status--origin"></a>
+### Nested Schema for `status.origin`
+
+Read-Only:
 
 - `kri` (String) Resource identifier
 

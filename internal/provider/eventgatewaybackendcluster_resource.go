@@ -19,6 +19,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -91,6 +92,7 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 									`Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"username": schema.StringAttribute{
@@ -101,6 +103,7 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 									`Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 						},
@@ -136,6 +139,7 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 									`Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"username": schema.StringAttribute{
@@ -146,6 +150,7 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 									`Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 						},
@@ -175,8 +180,10 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
 			"description": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
-				Description: `A human-readable description of the virtual cluster.`,
+				Default:     stringdefault.StaticString(``),
+				Description: `A human-readable description of the virtual cluster. Default: ""`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtMost(512),
 				},
@@ -232,6 +239,32 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 						Optional: true,
 						MarkdownDescription: `A literal value or a reference to an existing secret as a template string expression.` + "\n" +
 							`The value is stored and returned by the API as-is, not treated as sensitive information.`,
+						Validators: []validator.String{
+							stringvalidator.UTF8LengthAtLeast(1),
+						},
+					},
+					"client_identity": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"certificate": schema.StringAttribute{
+								Required: true,
+								MarkdownDescription: `A literal value or a reference to an existing secret as a template string expression.` + "\n" +
+									`The value is stored and returned by the API as-is, not treated as sensitive information.`,
+								Validators: []validator.String{
+									stringvalidator.UTF8LengthAtLeast(1),
+								},
+							},
+							"key": schema.StringAttribute{
+								Required: true,
+								MarkdownDescription: `A sensitive value containing the secret or a reference to a secret as a template string expression.` + "\n" +
+									`If the value is provided as plain text, it is encrypted at rest and omitted from API responses.` + "\n" +
+									`If provided as an expression, the expression itself is stored and returned by the API.`,
+								Validators: []validator.String{
+									stringvalidator.UTF8LengthAtLeast(1),
+								},
+							},
+						},
+						Description: `Client mTLS configuration.`,
 					},
 					"enabled": schema.BoolAttribute{
 						Required:    true,

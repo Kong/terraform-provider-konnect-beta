@@ -6,25 +6,25 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// EventGatewayEncryptPolicy - Encrypts portions of Kafka records using AES_128_GCM. Keys are therefore 128 bits long.
+// EventGatewayEncryptPolicy - Encrypts Kafka records or keys using AES_256_GCM. Keys are therefore 256 bits long.
 type EventGatewayEncryptPolicy struct {
 	// The type name of the policy.
 	type_ string `const:"encrypt" json:"type"`
 	// A unique user-defined name of the policy.
 	Name *string `default:"null" json:"name"`
 	// A human-readable description of the policy.
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"" json:"description"`
 	// Whether the policy is enabled.
 	Enabled *bool `default:"true" json:"enabled"`
-	// A string containing the boolean expression that determines whether the policy is applied.
-	Condition *string `json:"condition,omitempty"`
-	// The configuration of the encrypt policy.
-	Config EventGatewayEncryptConfig `json:"config"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
+	// The configuration of the encrypt policy.
+	Config EventGatewayEncryptConfig `json:"config"`
+	// A string containing the boolean expression that determines whether the policy is applied.
+	Condition *string `default:"" json:"condition"`
 }
 
 func (e EventGatewayEncryptPolicy) MarshalJSON() ([]byte, error) {
@@ -63,11 +63,11 @@ func (e *EventGatewayEncryptPolicy) GetEnabled() *bool {
 	return e.Enabled
 }
 
-func (e *EventGatewayEncryptPolicy) GetCondition() *string {
+func (e *EventGatewayEncryptPolicy) GetLabels() map[string]*string {
 	if e == nil {
 		return nil
 	}
-	return e.Condition
+	return e.Labels
 }
 
 func (e *EventGatewayEncryptPolicy) GetConfig() EventGatewayEncryptConfig {
@@ -77,9 +77,9 @@ func (e *EventGatewayEncryptPolicy) GetConfig() EventGatewayEncryptConfig {
 	return e.Config
 }
 
-func (e *EventGatewayEncryptPolicy) GetLabels() map[string]*string {
+func (e *EventGatewayEncryptPolicy) GetCondition() *string {
 	if e == nil {
 		return nil
 	}
-	return e.Labels
+	return e.Condition
 }

@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -40,6 +41,7 @@ type PortalResourceModel struct {
 	AutoApproveDevelopers            types.Bool              `tfsdk:"auto_approve_developers"`
 	CanonicalDomain                  types.String            `tfsdk:"canonical_domain"`
 	CreatedAt                        types.String            `tfsdk:"created_at"`
+	CreateDefaultContent             types.Bool              `tfsdk:"create_default_content"`
 	DefaultAPIVisibility             types.String            `tfsdk:"default_api_visibility"`
 	DefaultApplicationAuthStrategyID types.String            `tfsdk:"default_application_auth_strategy_id"`
 	DefaultDomain                    types.String            `tfsdk:"default_domain"`
@@ -51,6 +53,7 @@ type PortalResourceModel struct {
 	Labels                           map[string]types.String `tfsdk:"labels"`
 	Name                             types.String            `tfsdk:"name"`
 	RbacEnabled                      types.Bool              `tfsdk:"rbac_enabled"`
+	SiprEnabled                      types.Bool              `tfsdk:"sipr_enabled"`
 	UpdatedAt                        types.String            `tfsdk:"updated_at"`
 }
 
@@ -86,6 +89,15 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `The canonical domain of the developer portal`,
+			},
+			"create_default_content": schema.BoolAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  booldefault.StaticBool(false),
+				PlanModifiers: []planmodifier.Bool{
+					boolplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `Use to create the portal page default content upon creation of this portal. Default: false; Requires replacement if changed.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -187,6 +199,11 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Default:     booldefault.StaticBool(false),
 				Description: `Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC. Default: false`,
 			},
+			"sipr_enabled": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `Whether ip allow list is enabled for the organization.`,
+			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
@@ -263,6 +280,43 @@ func (r *PortalResource) Create(ctx context.Context, req resource.CreateRequest,
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedPortalResponse(ctx, res.PortalResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsGetPortalRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.Portals.GetPortal(ctx, *request1)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res1 != nil && res1.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
+		}
+		return
+	}
+	if res1 == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
+		return
+	}
+	if res1.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
+		return
+	}
+	if !(res1.PortalResponse != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
+		return
+	}
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalResponse(ctx, res1.PortalResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

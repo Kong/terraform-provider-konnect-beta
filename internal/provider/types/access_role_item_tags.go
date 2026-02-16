@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type TLSCertificate struct {
-	Certificate types.String `tfsdk:"certificate"`
-	Key         types.String `tfsdk:"key"`
+type AccessRoleItemTags struct {
+	Name  types.String `tfsdk:"name"`
+	Value types.String `tfsdk:"value"`
 }

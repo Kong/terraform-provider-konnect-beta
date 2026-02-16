@@ -14,7 +14,6 @@ import (
 // If granularity is not specified and "time" is in the dimensions list, a default will be chosen based on the time range requested.
 //
 // Different relative times support different granularities:
-//
 //   - 15m => tenSecondly, thirtySecondly, minutely
 //   - 1h  => tenSecondly, thirtySecondly, minutely, fiveMinutely, tenMinutely
 //   - 6h  => thirtySecondly, minutely, fiveMinutely, tenMinutely, thirtyMinutely, hourly
@@ -24,7 +23,6 @@ import (
 //   - 30d => hourly, twoHourly, twelveHourly, daily, weekly
 //
 // For special time ranges:
-//
 //   - current_week, previous_week   => thirtyMinutely, hourly, twoHourly, twelveHourly, daily
 //   - current_month, previous_month => hourly, twoHourly, twelveHourly, daily, weekly
 //

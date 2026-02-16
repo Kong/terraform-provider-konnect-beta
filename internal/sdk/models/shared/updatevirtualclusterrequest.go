@@ -2,12 +2,16 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
+)
+
 // UpdateVirtualClusterRequest - The request schema for updating a virtual cluster.
 type UpdateVirtualClusterRequest struct {
 	// The name of the virtual cluster.
 	Name string `json:"name"`
 	// A human-readable description of the virtual cluster.
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"" json:"description"`
 	// The backend cluster associated with the virtual cluster.
 	//
 	// Either `id` or `name` must be provided. Following changes to the backend cluster name won't affect the
@@ -26,7 +30,6 @@ type UpdateVirtualClusterRequest struct {
 	Namespace *VirtualClusterNamespace `json:"namespace,omitempty"`
 	// Configures whether or not ACL policies are enforced on the gateway.
 	// - `enforce_on_gateway` means the gateway enforces its own ACL policies for this virtual cluster
-	//
 	//   and does not forward ACL-related commands to the backend cluster.
 	//   Note that if there are no ACL policies configured, all access is denied.
 	// - `passthrough` tells the gateway to forward all ACL-related commands.
@@ -40,6 +43,17 @@ type UpdateVirtualClusterRequest struct {
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
+}
+
+func (u UpdateVirtualClusterRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateVirtualClusterRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateVirtualClusterRequest) GetName() string {

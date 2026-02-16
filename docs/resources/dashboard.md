@@ -275,7 +275,6 @@ The granularity of the result may be coarser than requested.  The finest allowed
 If granularity is not specified and "time" is in the dimensions list, a default will be chosen based on the time range requested.
 
 Different relative times support different granularities:
-
   - 15m => tenSecondly, thirtySecondly, minutely
   - 1h  => tenSecondly, thirtySecondly, minutely, fiveMinutely, tenMinutely
   - 6h  => thirtySecondly, minutely, fiveMinutely, tenMinutely, thirtyMinutely, hourly
@@ -285,7 +284,6 @@ Different relative times support different granularities:
   - 30d => hourly, twoHourly, twelveHourly, daily, weekly
 
 For special time ranges:
-
   - current_week, previous_week   => thirtyMinutely, hourly, twoHourly, twelveHourly, daily
   - current_month, previous_month => hourly, twoHourly, twelveHourly, daily, weekly
 
@@ -299,7 +297,7 @@ must be one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "te
 
 Optional:
 
-- `field` (String) Not Null; must be one of ["api", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]
+- `field` (String) Not Null; must be one of ["api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]
 - `operator` (String) Not Null; must be one of ["in", "not_in", "empty", "not_empty"]
 - `value` (String) Parsed as JSON.
 
@@ -350,7 +348,6 @@ The granularity of the result may be coarser than requested.  The finest allowed
 If granularity is not specified and "time" is in the dimensions list, a default will be chosen based on the time range requested.
 
 Different relative times support different granularities:
-
   - 15m => tenSecondly, thirtySecondly, minutely
   - 1h  => tenSecondly, thirtySecondly, minutely, fiveMinutely, tenMinutely
   - 6h  => thirtySecondly, minutely, fiveMinutely, tenMinutely, thirtyMinutely, hourly
@@ -360,7 +357,6 @@ Different relative times support different granularities:
   - 30d => hourly, twoHourly, twelveHourly, daily, weekly
 
 For special time ranges:
-
   - current_week, previous_week   => thirtyMinutely, hourly, twoHourly, twelveHourly, daily
   - current_month, previous_month => hourly, twoHourly, twelveHourly, daily, weekly
 
@@ -446,7 +442,7 @@ Optional:
 
 Optional:
 
-- `field` (String) Not Null; must be one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]
+- `field` (String) Not Null; must be one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]
 - `operator` (String) Not Null; must be one of ["in", "not_in", "empty", "not_empty"]
 - `value` (String) Parsed as JSON.
 

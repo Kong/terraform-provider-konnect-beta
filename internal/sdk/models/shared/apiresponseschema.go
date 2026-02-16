@@ -37,6 +37,40 @@ func (p *Portals) GetDisplayName() string {
 	return p.DisplayName
 }
 
+type Icon struct {
+	// The relative API path for retrieving the raw the icon image.
+	URI *string `default:"null" json:"uri"`
+}
+
+func (i Icon) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *Icon) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (i *Icon) GetURI() *string {
+	if i == nil {
+		return nil
+	}
+	return i.URI
+}
+
+type Images struct {
+	Icon *Icon `json:"icon"`
+}
+
+func (i *Images) GetIcon() *Icon {
+	if i == nil {
+		return nil
+	}
+	return i.Icon
+}
+
 // APIResponseSchema - API
 type APIResponseSchema struct {
 	// The API identifier.
@@ -65,6 +99,8 @@ type APIResponseSchema struct {
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels"`
+	// the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement
+	ImplementationMode *string `default:"null" json:"implementation_mode"`
 	// A set of attributes that describe the API
 	Attributes any     `json:"attributes,omitempty"`
 	Images     *Images `json:"images,omitempty"`
@@ -146,6 +182,13 @@ func (a *APIResponseSchema) GetLabels() map[string]*string {
 		return map[string]*string{}
 	}
 	return a.Labels
+}
+
+func (a *APIResponseSchema) GetImplementationMode() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ImplementationMode
 }
 
 func (a *APIResponseSchema) GetAttributes() any {
