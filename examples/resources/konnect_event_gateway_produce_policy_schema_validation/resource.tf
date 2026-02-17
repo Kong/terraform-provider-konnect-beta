@@ -5,18 +5,14 @@ resource "konnect_event_gateway_produce_policy_schema_validation" "my_eventgatew
     confluent_schema_registry = {
       key_validation_action = "reject"
       schema_registry = {
-        schema_registry_reference_by_name = {
-          name = "...my_name..."
-        }
+        id = "95ce4f52-159c-43dd-a6dd-9bb6e8e07446"
       }
       value_validation_action = "reject"
     }
     json = {
       key_validation_action = "mark"
       schema_registry = {
-        schema_registry_reference_by_name = {
-          name = "...my_name..."
-        }
+        id = "74577697-03b2-4d40-bfe2-929c891c4254"
       }
       value_validation_action = "reject"
     }

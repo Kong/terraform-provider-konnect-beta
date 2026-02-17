@@ -20,9 +20,7 @@ resource "konnect_event_gateway_produce_policy_encrypt" "my_eventgatewayproducep
     encryption_key = {
       static = {
         key = {
-          reference_by_id = {
-            id = "9d9dcdc8-beb0-45dc-8f7e-521cf4b6c0c7"
-          }
+          id = "6e8740c2-fb76-4269-aeef-660d701c6ea1"
         }
       }
     }
@@ -101,30 +99,14 @@ Required:
 
 Required:
 
-- `key` (Attributes) A static encryption key reference, either by ID or by value. (see [below for nested schema](#nestedatt--config--encryption_key--static--key))
+- `key` (Attributes) A static encryption key reference by ID. (see [below for nested schema](#nestedatt--config--encryption_key--static--key))
 
 <a id="nestedatt--config--encryption_key--static--key"></a>
 ### Nested Schema for `config.encryption_key.static.key`
 
-Optional:
-
-- `reference_by_id` (Attributes) A static encryption key reference by ID. (see [below for nested schema](#nestedatt--config--encryption_key--static--key--reference_by_id))
-- `reference_by_name` (Attributes) A static encryption key reference by name. (see [below for nested schema](#nestedatt--config--encryption_key--static--key--reference_by_name))
-
-<a id="nestedatt--config--encryption_key--static--key--reference_by_id"></a>
-### Nested Schema for `config.encryption_key.static.key.reference_by_id`
-
 Required:
 
 - `id` (String) The ID of the static key defined in the key source.
-
-
-<a id="nestedatt--config--encryption_key--static--key--reference_by_name"></a>
-### Nested Schema for `config.encryption_key.static.key.reference_by_name`
-
-Required:
-
-- `name` (String) The name of the static key defined in the key source.
 
 ## Import
 

@@ -5,9 +5,7 @@ resource "konnect_event_gateway_produce_policy_encrypt" "my_eventgatewayproducep
     encryption_key = {
       static = {
         key = {
-          reference_by_id = {
-            id = "9d9dcdc8-beb0-45dc-8f7e-521cf4b6c0c7"
-          }
+          id = "6e8740c2-fb76-4269-aeef-660d701c6ea1"
         }
       }
     }

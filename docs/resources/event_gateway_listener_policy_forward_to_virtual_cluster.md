@@ -24,14 +24,14 @@ resource "konnect_event_gateway_listener_policy_forward_to_virtual_cluster" "my_
       sni_suffix = ".example.com"
     }
   }
-  description               = "...my_description..."
-  enabled                   = false
-  event_gateway_listener_id = "6feda708-3b1b-4415-b1db-cf2694f34b09"
-  gateway_id                = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  description = "...my_description..."
+  enabled     = false
+  gateway_id  = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   labels = {
     key = "value"
   }
-  name = "...my_name..."
+  listener_id = "bdaf2651-42bc-48ec-b29f-f4890f7f07fc"
+  name        = "...my_name..."
 }
 ```
 
@@ -41,8 +41,8 @@ resource "konnect_event_gateway_listener_policy_forward_to_virtual_cluster" "my_
 ### Required
 
 - `config` (Attributes) The configuration of the policy. (see [below for nested schema](#nestedatt--config))
-- `event_gateway_listener_id` (String) The ID of the Event Gateway Listener.
 - `gateway_id` (String) The UUID of your Gateway.
+- `listener_id` (String) The ID of the Event Gateway Listener.
 
 ### Optional
 
@@ -89,7 +89,7 @@ It is strongly discouraged to use port mapping in production. (see [below for ne
 Required:
 
 - `advertised_host` (String) Virtual brokers are advertised to clients using this host. Any kind of host supported by kafka can be used. If not defined, it's listen_address. If listen_address is `0.0.0.0` it's the destination IP of the TCP connection.
-- `destination` (Attributes) A reference to a virtual cluster. (see [below for nested schema](#nestedatt--config--port_mapping--destination))
+- `destination` (Attributes) Reference a virtual cluster by its unique identifier. (see [below for nested schema](#nestedatt--config--port_mapping--destination))
 
 Optional:
 
@@ -106,26 +106,9 @@ Default: "at_start"; must be one of ["none", "at_start"]
 <a id="nestedatt--config--port_mapping--destination"></a>
 ### Nested Schema for `config.port_mapping.destination`
 
-Optional:
-
-- `virtual_cluster_reference_by_id` (Attributes) Reference a virtual cluster by its unique identifier. (see [below for nested schema](#nestedatt--config--port_mapping--destination--virtual_cluster_reference_by_id))
-- `virtual_cluster_reference_by_name` (Attributes) Reference a virtual cluster by its unique name. (see [below for nested schema](#nestedatt--config--port_mapping--destination--virtual_cluster_reference_by_name))
-
-<a id="nestedatt--config--port_mapping--destination--virtual_cluster_reference_by_id"></a>
-### Nested Schema for `config.port_mapping.destination.virtual_cluster_reference_by_id`
-
 Required:
 
 - `id` (String) The unique identifier of the virtual cluster.
-
-
-<a id="nestedatt--config--port_mapping--destination--virtual_cluster_reference_by_name"></a>
-### Nested Schema for `config.port_mapping.destination.virtual_cluster_reference_by_name`
-
-Required:
-
-- `name` (String) The name of the virtual cluster.
-
 
 
 
@@ -171,9 +154,9 @@ In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.
 import {
   to = konnect_event_gateway_listener_policy_forward_to_virtual_cluster.my_konnect_event_gateway_listener_policy_forward_to_virtual_cluster
   id = jsonencode({
-    event_gateway_listener_id = "..."
     gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    listener_id = "..."
   })
 }
 ```
@@ -181,5 +164,5 @@ import {
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import konnect_event_gateway_listener_policy_forward_to_virtual_cluster.my_konnect_event_gateway_listener_policy_forward_to_virtual_cluster '{"event_gateway_listener_id": "...", "gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}'
+terraform import konnect_event_gateway_listener_policy_forward_to_virtual_cluster.my_konnect_event_gateway_listener_policy_forward_to_virtual_cluster '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "listener_id": "..."}'
 ```

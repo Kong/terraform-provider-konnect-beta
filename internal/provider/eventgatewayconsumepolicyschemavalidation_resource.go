@@ -7,7 +7,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -90,43 +89,14 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 					"schema_registry": schema.SingleNestedAttribute{
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
-							"schema_registry_reference_by_id": schema.SingleNestedAttribute{
-								Optional: true,
-								Attributes: map[string]schema.Attribute{
-									"id": schema.StringAttribute{
-										Required:    true,
-										Description: `The unique identifier of the schema registry.`,
-										Validators: []validator.String{
-											stringvalidator.UTF8LengthAtLeast(1),
-										},
-									},
-								},
-								Validators: []validator.Object{
-									objectvalidator.ConflictsWith(path.Expressions{
-										path.MatchRelative().AtParent().AtName("schema_registry_reference_by_name"),
-									}...),
-								},
-							},
-							"schema_registry_reference_by_name": schema.SingleNestedAttribute{
-								Optional: true,
-								Attributes: map[string]schema.Attribute{
-									"name": schema.StringAttribute{
-										Required:    true,
-										Description: `The unique name of the schema registry.`,
-										Validators: []validator.String{
-											stringvalidator.UTF8LengthBetween(1, 255),
-										},
-									},
-								},
-								Description: `Reference a schema registry by its unique name.`,
-								Validators: []validator.Object{
-									objectvalidator.ConflictsWith(path.Expressions{
-										path.MatchRelative().AtParent().AtName("schema_registry_reference_by_id"),
-									}...),
+							"id": schema.StringAttribute{
+								Required:    true,
+								Description: `The unique identifier of the schema registry.`,
+								Validators: []validator.String{
+									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 						},
-						Description: `A reference to a schema Registry.`,
 					},
 					"type": schema.StringAttribute{
 						Required: true,
@@ -197,6 +167,7 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
 			"name": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
 				Description: `A unique user-defined name of the policy.`,
 				Validators: []validator.String{

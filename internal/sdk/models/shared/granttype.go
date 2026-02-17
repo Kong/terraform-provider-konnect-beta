@@ -14,6 +14,7 @@ const (
 	GrantTypeAuthorizationCode GrantType = "authorization_code"
 	GrantTypeImplicit          GrantType = "implicit"
 	GrantTypeClientCredentials GrantType = "client_credentials"
+	GrantTypeRefreshToken      GrantType = "refresh_token"
 )
 
 func (e GrantType) ToPointer() *GrantType {
@@ -30,6 +31,8 @@ func (e *GrantType) UnmarshalJSON(data []byte) error {
 	case "implicit":
 		fallthrough
 	case "client_credentials":
+		fallthrough
+	case "refresh_token":
 		*e = GrantType(v)
 		return nil
 	default:

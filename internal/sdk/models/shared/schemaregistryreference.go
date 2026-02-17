@@ -3,97 +3,28 @@
 package shared
 
 import (
-	"errors"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-type SchemaRegistryReferenceType string
-
-const (
-	SchemaRegistryReferenceTypeSchemaRegistryReferenceByID   SchemaRegistryReferenceType = "SchemaRegistryReferenceById"
-	SchemaRegistryReferenceTypeSchemaRegistryReferenceByName SchemaRegistryReferenceType = "SchemaRegistryReferenceByName"
-)
-
-// SchemaRegistryReference - A reference to a schema Registry.
 type SchemaRegistryReference struct {
-	SchemaRegistryReferenceByID   *SchemaRegistryReferenceByID   `queryParam:"inline" union:"member"`
-	SchemaRegistryReferenceByName *SchemaRegistryReferenceByName `queryParam:"inline" union:"member"`
-
-	Type SchemaRegistryReferenceType
+	// The unique identifier of the schema registry.
+	ID string `json:"id"`
 }
 
-func CreateSchemaRegistryReferenceSchemaRegistryReferenceByID(schemaRegistryReferenceByID SchemaRegistryReferenceByID) SchemaRegistryReference {
-	typ := SchemaRegistryReferenceTypeSchemaRegistryReferenceByID
-
-	return SchemaRegistryReference{
-		SchemaRegistryReferenceByID: &schemaRegistryReferenceByID,
-		Type:                        typ,
-	}
+func (s SchemaRegistryReference) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
 }
 
-func CreateSchemaRegistryReferenceSchemaRegistryReferenceByName(schemaRegistryReferenceByName SchemaRegistryReferenceByName) SchemaRegistryReference {
-	typ := SchemaRegistryReferenceTypeSchemaRegistryReferenceByName
-
-	return SchemaRegistryReference{
-		SchemaRegistryReferenceByName: &schemaRegistryReferenceByName,
-		Type:                          typ,
+func (s *SchemaRegistryReference) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
 	}
+	return nil
 }
 
-func (u *SchemaRegistryReference) UnmarshalJSON(data []byte) error {
-
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
-	var schemaRegistryReferenceByID SchemaRegistryReferenceByID = SchemaRegistryReferenceByID{}
-	if err := utils.UnmarshalJSON(data, &schemaRegistryReferenceByID, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  SchemaRegistryReferenceTypeSchemaRegistryReferenceByID,
-			Value: &schemaRegistryReferenceByID,
-		})
+func (s *SchemaRegistryReference) GetID() string {
+	if s == nil {
+		return ""
 	}
-
-	var schemaRegistryReferenceByName SchemaRegistryReferenceByName = SchemaRegistryReferenceByName{}
-	if err := utils.UnmarshalJSON(data, &schemaRegistryReferenceByName, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  SchemaRegistryReferenceTypeSchemaRegistryReferenceByName,
-			Value: &schemaRegistryReferenceByName,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for SchemaRegistryReference", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestUnionCandidate(candidates, data)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for SchemaRegistryReference", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(SchemaRegistryReferenceType)
-	switch best.Type {
-	case SchemaRegistryReferenceTypeSchemaRegistryReferenceByID:
-		u.SchemaRegistryReferenceByID = best.Value.(*SchemaRegistryReferenceByID)
-		return nil
-	case SchemaRegistryReferenceTypeSchemaRegistryReferenceByName:
-		u.SchemaRegistryReferenceByName = best.Value.(*SchemaRegistryReferenceByName)
-		return nil
-	}
-
-	return fmt.Errorf("could not unmarshal `%s` into any supported union types for SchemaRegistryReference", string(data))
-}
-
-func (u SchemaRegistryReference) MarshalJSON() ([]byte, error) {
-	if u.SchemaRegistryReferenceByID != nil {
-		return utils.MarshalJSON(u.SchemaRegistryReferenceByID, "", true)
-	}
-
-	if u.SchemaRegistryReferenceByName != nil {
-		return utils.MarshalJSON(u.SchemaRegistryReferenceByName, "", true)
-	}
-
-	return nil, errors.New("could not marshal union type SchemaRegistryReference: all fields are null")
+	return s.ID
 }

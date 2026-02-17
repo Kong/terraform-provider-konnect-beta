@@ -40,6 +40,7 @@ func (r *AuthServerClientsResourceModel) RefreshFromSharedClient(ctx context.Con
 		for _, v := range resp.RedirectUris {
 			r.RedirectUris = append(r.RedirectUris, types.StringValue(v))
 		}
+		r.RefreshTokenDuration = types.Int64PointerValue(resp.RefreshTokenDuration)
 		r.ResponseTypes = make([]types.String, 0, len(resp.ResponseTypes))
 		for _, v := range resp.ResponseTypes {
 			r.ResponseTypes = append(r.ResponseTypes, types.StringValue(string(v)))
@@ -85,6 +86,7 @@ func (r *AuthServerClientsResourceModel) RefreshFromSharedCreatedClient(ctx cont
 		for _, v := range resp.RedirectUris {
 			r.RedirectUris = append(r.RedirectUris, types.StringValue(v))
 		}
+		r.RefreshTokenDuration = types.Int64PointerValue(resp.RefreshTokenDuration)
 		r.ResponseTypes = make([]types.String, 0, len(resp.ResponseTypes))
 		for _, v := range resp.ResponseTypes {
 			r.ResponseTypes = append(r.ResponseTypes, types.StringValue(string(v)))
@@ -216,6 +218,12 @@ func (r *AuthServerClientsResourceModel) ToSharedCreateClient(ctx context.Contex
 	} else {
 		idTokenDuration = nil
 	}
+	refreshTokenDuration := new(int64)
+	if !r.RefreshTokenDuration.IsUnknown() && !r.RefreshTokenDuration.IsNull() {
+		*refreshTokenDuration = r.RefreshTokenDuration.ValueInt64()
+	} else {
+		refreshTokenDuration = nil
+	}
 	allowAllScopes := new(bool)
 	if !r.AllowAllScopes.IsUnknown() && !r.AllowAllScopes.IsNull() {
 		*allowAllScopes = r.AllowAllScopes.ValueBool()
@@ -262,6 +270,7 @@ func (r *AuthServerClientsResourceModel) ToSharedCreateClient(ctx context.Contex
 		LoginURI:                loginURI,
 		AccessTokenDuration:     accessTokenDuration,
 		IDTokenDuration:         idTokenDuration,
+		RefreshTokenDuration:    refreshTokenDuration,
 		AllowAllScopes:          allowAllScopes,
 		AllowScopes:             allowScopes,
 		Labels:                  labels,
@@ -312,6 +321,12 @@ func (r *AuthServerClientsResourceModel) ToSharedReplaceClient(ctx context.Conte
 	} else {
 		idTokenDuration = nil
 	}
+	refreshTokenDuration := new(int64)
+	if !r.RefreshTokenDuration.IsUnknown() && !r.RefreshTokenDuration.IsNull() {
+		*refreshTokenDuration = r.RefreshTokenDuration.ValueInt64()
+	} else {
+		refreshTokenDuration = nil
+	}
 	allowAllScopes := new(bool)
 	if !r.AllowAllScopes.IsUnknown() && !r.AllowAllScopes.IsNull() {
 		*allowAllScopes = r.AllowAllScopes.ValueBool()
@@ -347,6 +362,7 @@ func (r *AuthServerClientsResourceModel) ToSharedReplaceClient(ctx context.Conte
 		LoginURI:                loginURI,
 		AccessTokenDuration:     accessTokenDuration,
 		IDTokenDuration:         idTokenDuration,
+		RefreshTokenDuration:    refreshTokenDuration,
 		AllowAllScopes:          allowAllScopes,
 		AllowScopes:             allowScopes,
 		TokenEndpointAuthMethod: tokenEndpointAuthMethod,

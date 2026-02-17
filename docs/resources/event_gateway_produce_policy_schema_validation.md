@@ -20,18 +20,14 @@ resource "konnect_event_gateway_produce_policy_schema_validation" "my_eventgatew
     confluent_schema_registry = {
       key_validation_action = "reject"
       schema_registry = {
-        schema_registry_reference_by_name = {
-          name = "...my_name..."
-        }
+        id = "95ce4f52-159c-43dd-a6dd-9bb6e8e07446"
       }
       value_validation_action = "reject"
     }
     json = {
       key_validation_action = "mark"
       schema_registry = {
-        schema_registry_reference_by_name = {
-          name = "...my_name..."
-        }
+        id = "74577697-03b2-4d40-bfe2-929c891c4254"
       }
       value_validation_action = "reject"
     }
@@ -91,7 +87,7 @@ Optional:
 * mark - marks a record with kong/server header and client ID value
   to help to identify the clients violating schema.
 must be one of ["reject", "mark"]
-- `schema_registry` (Attributes) A reference to a schema Registry. (see [below for nested schema](#nestedatt--config--confluent_schema_registry--schema_registry))
+- `schema_registry` (Attributes) (see [below for nested schema](#nestedatt--config--confluent_schema_registry--schema_registry))
 - `value_validation_action` (String) Defines a behavior when record value is not valid.
 * reject - rejects a batch for topic partition. Only available for produce.
 * mark - marks a record with kong/server header and client ID value
@@ -101,26 +97,9 @@ must be one of ["reject", "mark"]
 <a id="nestedatt--config--confluent_schema_registry--schema_registry"></a>
 ### Nested Schema for `config.confluent_schema_registry.schema_registry`
 
-Optional:
-
-- `schema_registry_reference_by_id` (Attributes) (see [below for nested schema](#nestedatt--config--confluent_schema_registry--schema_registry--schema_registry_reference_by_id))
-- `schema_registry_reference_by_name` (Attributes) Reference a schema registry by its unique name. (see [below for nested schema](#nestedatt--config--confluent_schema_registry--schema_registry--schema_registry_reference_by_name))
-
-<a id="nestedatt--config--confluent_schema_registry--schema_registry--schema_registry_reference_by_id"></a>
-### Nested Schema for `config.confluent_schema_registry.schema_registry.schema_registry_reference_by_id`
-
 Required:
 
 - `id` (String) The unique identifier of the schema registry.
-
-
-<a id="nestedatt--config--confluent_schema_registry--schema_registry--schema_registry_reference_by_name"></a>
-### Nested Schema for `config.confluent_schema_registry.schema_registry.schema_registry_reference_by_name`
-
-Required:
-
-- `name` (String) The unique name of the schema registry.
-
 
 
 
@@ -134,7 +113,7 @@ Optional:
 * mark - marks a record with kong/server header and client ID value
   to help to identify the clients violating schema.
 must be one of ["reject", "mark"]
-- `schema_registry` (Attributes) A reference to a schema Registry. (see [below for nested schema](#nestedatt--config--json--schema_registry))
+- `schema_registry` (Attributes) (see [below for nested schema](#nestedatt--config--json--schema_registry))
 - `value_validation_action` (String) Defines a behavior when record value is not valid.
 * reject - rejects a batch for topic partition. Only available for produce.
 * mark - marks a record with kong/server header and client ID value
@@ -144,25 +123,9 @@ must be one of ["reject", "mark"]
 <a id="nestedatt--config--json--schema_registry"></a>
 ### Nested Schema for `config.json.schema_registry`
 
-Optional:
-
-- `schema_registry_reference_by_id` (Attributes) (see [below for nested schema](#nestedatt--config--json--schema_registry--schema_registry_reference_by_id))
-- `schema_registry_reference_by_name` (Attributes) Reference a schema registry by its unique name. (see [below for nested schema](#nestedatt--config--json--schema_registry--schema_registry_reference_by_name))
-
-<a id="nestedatt--config--json--schema_registry--schema_registry_reference_by_id"></a>
-### Nested Schema for `config.json.schema_registry.schema_registry_reference_by_id`
-
 Required:
 
 - `id` (String) The unique identifier of the schema registry.
-
-
-<a id="nestedatt--config--json--schema_registry--schema_registry_reference_by_name"></a>
-### Nested Schema for `config.json.schema_registry.schema_registry_reference_by_name`
-
-Required:
-
-- `name` (String) The unique name of the schema registry.
 
 ## Import
 
