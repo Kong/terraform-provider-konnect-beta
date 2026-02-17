@@ -43,16 +43,16 @@ type MeshCircuitBreakerResource struct {
 
 // MeshCircuitBreakerResourceModel describes the resource data model.
 type MeshCircuitBreakerResourceModel struct {
-	CpID             types.String                       `tfsdk:"cp_id"`
-	CreationTime     types.String                       `tfsdk:"creation_time"`
-	Kri              types.String                       `tfsdk:"kri"`
-	Labels           kumalabels.KumaLabelsMapValue      `tfsdk:"labels"`
-	Mesh             types.String                       `tfsdk:"mesh"`
-	ModificationTime types.String                       `tfsdk:"modification_time"`
-	Name             types.String                       `tfsdk:"name"`
-	Spec             tfTypes.MeshCircuitBreakerItemSpec `tfsdk:"spec"`
-	Type             types.String                       `tfsdk:"type"`
-	Warnings         []types.String                     `tfsdk:"warnings"`
+	CpID             types.String                        `tfsdk:"cp_id"`
+	CreationTime     types.String                        `tfsdk:"creation_time"`
+	Kri              types.String                        `tfsdk:"kri"`
+	Labels           kumalabels.KumaLabelsMapValue       `tfsdk:"labels"`
+	Mesh             types.String                        `tfsdk:"mesh"`
+	ModificationTime types.String                        `tfsdk:"modification_time"`
+	Name             types.String                        `tfsdk:"name"`
+	Spec             *tfTypes.MeshCircuitBreakerItemSpec `tfsdk:"spec"`
+	Type             types.String                        `tfsdk:"type"`
+	Warnings         []types.String                      `tfsdk:"warnings"`
 }
 
 func (r *MeshCircuitBreakerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -1544,17 +1544,17 @@ func (r *MeshCircuitBreakerResource) ImportState(ctx context.Context, req resour
 	}
 
 	if len(data.CpID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field cp_id is required but was not found in the json encoded ID. It's expected to be a value alike '"bf138ba2-c9b1-4229-b268-04d9d8a6410b"`)
+		resp.Diagnostics.AddError("Missing required field", `The field cp_id is required but was not found in the json encoded ID. It's expected to be a value alike '"bf138ba2-c9b1-4229-b268-04d9d8a6410b"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("cp_id"), data.CpID)...)
 	if len(data.Mesh) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field mesh is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		resp.Diagnostics.AddError("Missing required field", `The field mesh is required but was not found in the json encoded ID.`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("mesh"), data.Mesh)...)
 	if len(data.Name) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field name is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		resp.Diagnostics.AddError("Missing required field", `The field name is required but was not found in the json encoded ID.`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), data.Name)...)

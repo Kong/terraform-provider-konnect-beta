@@ -7,7 +7,7 @@ import (
 )
 
 type EventGatewayEnvVault struct {
-	Config      Config                  `tfsdk:"config"`
+	Config      *Config                 `tfsdk:"config"`
 	CreatedAt   types.String            `tfsdk:"created_at"`
 	Description types.String            `tfsdk:"description"`
 	ID          types.String            `tfsdk:"id"`

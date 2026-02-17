@@ -40,6 +40,7 @@ func (r *MeshTraceResourceModel) RefreshFromSharedMeshTraceItem(ctx context.Cont
 		r.Mesh = types.StringPointerValue(resp.Mesh)
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
+		r.Spec = &tfTypes.MeshTraceItemSpec{}
 		if resp.Spec.Default == nil {
 			r.Spec.Default = nil
 		} else {

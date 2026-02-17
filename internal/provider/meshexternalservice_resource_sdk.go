@@ -42,6 +42,7 @@ func (r *MeshExternalServiceResourceModel) RefreshFromSharedMeshExternalServiceI
 		r.Mesh = types.StringPointerValue(resp.Mesh)
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
+		r.Spec = &tfTypes.MeshExternalServiceItemSpec{}
 		r.Spec.Endpoints = []tfTypes.Endpoints{}
 
 		for _, endpointsItem := range resp.Spec.Endpoints {
@@ -64,6 +65,7 @@ func (r *MeshExternalServiceResourceModel) RefreshFromSharedMeshExternalServiceI
 			}
 			r.Spec.Extension.Type = types.StringValue(resp.Spec.Extension.Type)
 		}
+		r.Spec.Match = &tfTypes.Match{}
 		r.Spec.Match.Port = types.Int32Value(int32(resp.Spec.Match.Port))
 		if resp.Spec.Match.Protocol != nil {
 			r.Spec.Match.Protocol = types.StringValue(string(*resp.Spec.Match.Protocol))
@@ -183,6 +185,7 @@ func (r *MeshExternalServiceResourceModel) RefreshFromSharedMeshExternalServiceI
 
 					hostnameGenerators.Conditions = append(hostnameGenerators.Conditions, conditions)
 				}
+				hostnameGenerators.HostnameGeneratorRef = &tfTypes.HostnameGeneratorRef{}
 				hostnameGenerators.HostnameGeneratorRef.CoreName = types.StringValue(hostnameGeneratorsItem.HostnameGeneratorRef.CoreName)
 
 				r.Status.HostnameGenerators = append(r.Status.HostnameGenerators, hostnameGenerators)

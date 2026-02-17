@@ -42,11 +42,13 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(ctx cont
 		r.Mesh = types.StringPointerValue(resp.Mesh)
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
+		r.Spec = &tfTypes.MeshAccessLogItemSpec{}
 		r.Spec.From = []tfTypes.From{}
 
 		for _, fromItem := range resp.Spec.From {
 			var from tfTypes.From
 
+			from.Default = &tfTypes.MeshAccessLogItemSpecFromDefault{}
 			from.Default.Backends = []tfTypes.MeshAccessLogItemSpecFromBackends{}
 
 			for _, backendsItem := range fromItem.Default.Backends {
@@ -126,6 +128,7 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(ctx cont
 
 				from.Default.Backends = append(from.Default.Backends, backends)
 			}
+			from.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			from.TargetRef.Kind = types.StringValue(string(fromItem.TargetRef.Kind))
 			if len(fromItem.TargetRef.Labels) > 0 {
 				from.TargetRef.Labels = make(map[string]types.String, len(fromItem.TargetRef.Labels))
@@ -155,6 +158,7 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(ctx cont
 		for _, rulesItem := range resp.Spec.Rules {
 			var rules tfTypes.MeshAccessLogItemRules
 
+			rules.Default = &tfTypes.MeshAccessLogItemSpecFromDefault{}
 			rules.Default.Backends = []tfTypes.MeshAccessLogItemSpecFromBackends{}
 
 			for _, backendsItem1 := range rulesItem.Default.Backends {
@@ -268,6 +272,7 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(ctx cont
 		for _, toItem := range resp.Spec.To {
 			var to tfTypes.From
 
+			to.Default = &tfTypes.MeshAccessLogItemSpecFromDefault{}
 			to.Default.Backends = []tfTypes.MeshAccessLogItemSpecFromBackends{}
 
 			for _, backendsItem2 := range toItem.Default.Backends {
@@ -347,6 +352,7 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(ctx cont
 
 				to.Default.Backends = append(to.Default.Backends, backends2)
 			}
+			to.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			to.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 			if len(toItem.TargetRef.Labels) > 0 {
 				to.TargetRef.Labels = make(map[string]types.String, len(toItem.TargetRef.Labels))

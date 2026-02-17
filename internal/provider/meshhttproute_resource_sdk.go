@@ -40,6 +40,7 @@ func (r *MeshHTTPRouteResourceModel) RefreshFromSharedMeshHTTPRouteItem(ctx cont
 		r.Mesh = types.StringPointerValue(resp.Mesh)
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
+		r.Spec = &tfTypes.MeshHTTPRouteItemSpec{}
 		if resp.Spec.TargetRef == nil {
 			r.Spec.TargetRef = nil
 		} else {
@@ -80,6 +81,7 @@ func (r *MeshHTTPRouteResourceModel) RefreshFromSharedMeshHTTPRouteItem(ctx cont
 			for _, rulesItem := range toItem.Rules {
 				var rules tfTypes.MeshHTTPRouteItemRules
 
+				rules.Default = &tfTypes.MeshHTTPRouteItemDefault{}
 				rules.Default.BackendRefs = []tfTypes.BackendRefs{}
 
 				for _, backendRefsItem := range rulesItem.Default.BackendRefs {
@@ -149,6 +151,7 @@ func (r *MeshHTTPRouteResourceModel) RefreshFromSharedMeshHTTPRouteItem(ctx cont
 						filters.RequestMirror = nil
 					} else {
 						filters.RequestMirror = &tfTypes.RequestMirror{}
+						filters.RequestMirror.BackendRef = &tfTypes.BackendRefs{}
 						filters.RequestMirror.BackendRef.Kind = types.StringValue(string(filtersItem.RequestMirror.BackendRef.Kind))
 						if len(filtersItem.RequestMirror.BackendRef.Labels) > 0 {
 							filters.RequestMirror.BackendRef.Labels = make(map[string]types.String, len(filtersItem.RequestMirror.BackendRef.Labels))
@@ -304,6 +307,7 @@ func (r *MeshHTTPRouteResourceModel) RefreshFromSharedMeshHTTPRouteItem(ctx cont
 
 				to.Rules = append(to.Rules, rules)
 			}
+			to.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			to.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 			if len(toItem.TargetRef.Labels) > 0 {
 				to.TargetRef.Labels = make(map[string]types.String, len(toItem.TargetRef.Labels))

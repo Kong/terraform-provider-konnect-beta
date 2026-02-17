@@ -374,12 +374,12 @@ func (r *AuthServerClaimsResource) ImportState(ctx context.Context, req resource
 	}
 
 	if len(data.AuthServerID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field auth_server_id is required but was not found in the json encoded ID. It's expected to be a value alike '"d32d905a-ed33-46a3-a093-d8f536af9a8a"`)
+		resp.Diagnostics.AddError("Missing required field", `The field auth_server_id is required but was not found in the json encoded ID. It's expected to be a value alike '"d32d905a-ed33-46a3-a093-d8f536af9a8a"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("auth_server_id"), data.AuthServerID)...)
 	if len(data.ID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"07d05309-45cc-4b37-92fb-1524846deec3"`)
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"07d05309-45cc-4b37-92fb-1524846deec3"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)

@@ -40,6 +40,7 @@ func (r *MeshTimeoutResourceModel) RefreshFromSharedMeshTimeoutItem(ctx context.
 		r.Mesh = types.StringPointerValue(resp.Mesh)
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
+		r.Spec = &tfTypes.MeshTimeoutItemSpec{}
 		r.Spec.From = []tfTypes.MeshTimeoutItemFrom{}
 
 		for _, fromItem := range resp.Spec.From {
@@ -62,6 +63,7 @@ func (r *MeshTimeoutResourceModel) RefreshFromSharedMeshTimeoutItem(ctx context.
 				}
 				from.Default.IdleTimeout = types.StringPointerValue(fromItem.Default.IdleTimeout)
 			}
+			from.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			from.TargetRef.Kind = types.StringValue(string(fromItem.TargetRef.Kind))
 			if len(fromItem.TargetRef.Labels) > 0 {
 				from.TargetRef.Labels = make(map[string]types.String, len(fromItem.TargetRef.Labels))
@@ -159,6 +161,7 @@ func (r *MeshTimeoutResourceModel) RefreshFromSharedMeshTimeoutItem(ctx context.
 				}
 				to.Default.IdleTimeout = types.StringPointerValue(toItem.Default.IdleTimeout)
 			}
+			to.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			to.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 			if len(toItem.TargetRef.Labels) > 0 {
 				to.TargetRef.Labels = make(map[string]types.String, len(toItem.TargetRef.Labels))

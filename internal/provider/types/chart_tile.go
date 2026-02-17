@@ -7,7 +7,7 @@ import (
 )
 
 type ChartTile struct {
-	Definition Definition   `tfsdk:"definition"`
-	Layout     Layout       `tfsdk:"layout"`
+	Definition *Definition  `tfsdk:"definition"`
+	Layout     *Layout      `tfsdk:"layout"`
 	Type       types.String `tfsdk:"type"`
 }

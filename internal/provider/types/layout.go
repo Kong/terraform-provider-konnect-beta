@@ -3,6 +3,6 @@
 package types
 
 type Layout struct {
-	Position Position `tfsdk:"position"`
-	Size     Size     `tfsdk:"size"`
+	Position *Position `tfsdk:"position"`
+	Size     *Size     `tfsdk:"size"`
 }

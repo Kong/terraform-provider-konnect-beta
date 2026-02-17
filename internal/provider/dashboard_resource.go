@@ -47,7 +47,7 @@ type DashboardResource struct {
 type DashboardResourceModel struct {
 	CreatedAt  types.String            `tfsdk:"created_at"`
 	CreatedBy  types.String            `tfsdk:"created_by"`
-	Definition tfTypes.Dashboard       `tfsdk:"definition"`
+	Definition *tfTypes.Dashboard      `tfsdk:"definition"`
 	ID         types.String            `tfsdk:"id"`
 	Labels     map[string]types.String `tfsdk:"labels"`
 	Name       types.String            `tfsdk:"name"`

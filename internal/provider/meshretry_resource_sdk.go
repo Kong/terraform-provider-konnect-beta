@@ -40,6 +40,7 @@ func (r *MeshRetryResourceModel) RefreshFromSharedMeshRetryItem(ctx context.Cont
 		r.Mesh = types.StringPointerValue(resp.Mesh)
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
+		r.Spec = &tfTypes.MeshRetryItemSpec{}
 		if resp.Spec.TargetRef == nil {
 			r.Spec.TargetRef = nil
 		} else {
@@ -197,6 +198,7 @@ func (r *MeshRetryResourceModel) RefreshFromSharedMeshRetryItem(ctx context.Cont
 					to.Default.TCP.MaxConnectAttempt = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(toItem.Default.TCP.MaxConnectAttempt))
 				}
 			}
+			to.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			to.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 			if len(toItem.TargetRef.Labels) > 0 {
 				to.TargetRef.Labels = make(map[string]types.String, len(toItem.TargetRef.Labels))

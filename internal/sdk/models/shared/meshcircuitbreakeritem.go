@@ -203,8 +203,8 @@ const (
 // success_rate_standard_deviation_factor).
 // Either int or decimal represented as string.
 type StandardDeviationFactor struct {
-	Integer *int64  `queryParam:"inline,name=standardDeviationFactor" union:"member"`
-	Str     *string `queryParam:"inline,name=standardDeviationFactor" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
 
 	Type StandardDeviationFactorType
 }
@@ -478,8 +478,8 @@ const (
 // the default is 50%. To disable panic mode, set to 0%.
 // Either int or decimal represented as string.
 type MeshCircuitBreakerItemSpecFromHealthyPanicThreshold struct {
-	Integer *int64  `queryParam:"inline,name=healthyPanicThreshold" union:"member"`
-	Str     *string `queryParam:"inline,name=healthyPanicThreshold" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
 
 	Type MeshCircuitBreakerItemSpecFromHealthyPanicThresholdType
 }
@@ -1020,8 +1020,8 @@ const (
 // success_rate_standard_deviation_factor).
 // Either int or decimal represented as string.
 type MeshCircuitBreakerItemStandardDeviationFactor struct {
-	Integer *int64  `queryParam:"inline,name=standardDeviationFactor" union:"member"`
-	Str     *string `queryParam:"inline,name=standardDeviationFactor" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
 
 	Type MeshCircuitBreakerItemStandardDeviationFactorType
 }
@@ -1295,8 +1295,8 @@ const (
 // the default is 50%. To disable panic mode, set to 0%.
 // Either int or decimal represented as string.
 type MeshCircuitBreakerItemHealthyPanicThreshold struct {
-	Integer *int64  `queryParam:"inline,name=healthyPanicThreshold" union:"member"`
-	Str     *string `queryParam:"inline,name=healthyPanicThreshold" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
 
 	Type MeshCircuitBreakerItemHealthyPanicThresholdType
 }
@@ -1826,8 +1826,8 @@ const (
 // success_rate_standard_deviation_factor).
 // Either int or decimal represented as string.
 type MeshCircuitBreakerItemSpecStandardDeviationFactor struct {
-	Integer *int64  `queryParam:"inline,name=standardDeviationFactor" union:"member"`
-	Str     *string `queryParam:"inline,name=standardDeviationFactor" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
 
 	Type MeshCircuitBreakerItemSpecStandardDeviationFactorType
 }
@@ -2101,8 +2101,8 @@ const (
 // the default is 50%. To disable panic mode, set to 0%.
 // Either int or decimal represented as string.
 type MeshCircuitBreakerItemSpecHealthyPanicThreshold struct {
-	Integer *int64  `queryParam:"inline,name=healthyPanicThreshold" union:"member"`
-	Str     *string `queryParam:"inline,name=healthyPanicThreshold" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
 
 	Type MeshCircuitBreakerItemSpecHealthyPanicThresholdType
 }

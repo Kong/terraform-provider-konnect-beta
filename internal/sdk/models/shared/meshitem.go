@@ -135,8 +135,8 @@ const (
 )
 
 type MeshItemLoggingConf struct {
-	FileLoggingBackendConfig *FileLoggingBackendConfig `queryParam:"inline,name=conf" union:"member"`
-	TCPLoggingBackendConfig  *TCPLoggingBackendConfig  `queryParam:"inline,name=conf" union:"member"`
+	FileLoggingBackendConfig *FileLoggingBackendConfig `queryParam:"inline" union:"member"`
+	TCPLoggingBackendConfig  *TCPLoggingBackendConfig  `queryParam:"inline" union:"member"`
 
 	Type MeshItemLoggingConfType
 }
@@ -288,8 +288,8 @@ const (
 )
 
 type MeshItemMode struct {
-	Str     *string `queryParam:"inline,name=mode" union:"member"`
-	Integer *int64  `queryParam:"inline,name=mode" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
 
 	Type MeshItemModeType
 }
@@ -488,8 +488,8 @@ const (
 // Supported values, delegated, disabled, activeMTLSBackend. Default to
 // `activeMTLSBackend`.
 type ConfMode struct {
-	Str     *string `queryParam:"inline,name=mode" union:"member"`
-	Integer *int64  `queryParam:"inline,name=mode" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
 
 	Type ConfModeType
 }
@@ -686,7 +686,7 @@ const (
 )
 
 type MeshItemConf struct {
-	PrometheusMetricsBackendConfig *PrometheusMetricsBackendConfig `queryParam:"inline,name=conf" union:"member"`
+	PrometheusMetricsBackendConfig *PrometheusMetricsBackendConfig `queryParam:"inline" union:"member"`
 
 	Type MeshItemConfType
 }
@@ -902,10 +902,10 @@ const (
 )
 
 type CertManagerCertificateAuthorityConfigConfCaCert struct {
-	CertManagerCertificateAuthorityConfigCaCertDataSourceFile         *CertManagerCertificateAuthorityConfigCaCertDataSourceFile         `queryParam:"inline,name=caCert" union:"member"`
-	CertManagerCertificateAuthorityConfigCaCertDataSourceInline       *CertManagerCertificateAuthorityConfigCaCertDataSourceInline       `queryParam:"inline,name=caCert" union:"member"`
-	CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString *CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString `queryParam:"inline,name=caCert" union:"member"`
-	CertManagerCertificateAuthorityConfigCaCertDataSourceSecret       *CertManagerCertificateAuthorityConfigCaCertDataSourceSecret       `queryParam:"inline,name=caCert" union:"member"`
+	CertManagerCertificateAuthorityConfigCaCertDataSourceFile         *CertManagerCertificateAuthorityConfigCaCertDataSourceFile         `queryParam:"inline" union:"member"`
+	CertManagerCertificateAuthorityConfigCaCertDataSourceInline       *CertManagerCertificateAuthorityConfigCaCertDataSourceInline       `queryParam:"inline" union:"member"`
+	CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString *CertManagerCertificateAuthorityConfigCaCertDataSourceInlineString `queryParam:"inline" union:"member"`
+	CertManagerCertificateAuthorityConfigCaCertDataSourceSecret       *CertManagerCertificateAuthorityConfigCaCertDataSourceSecret       `queryParam:"inline" union:"member"`
 
 	Type CertManagerCertificateAuthorityConfigConfCaCertType
 }
@@ -1220,10 +1220,10 @@ const (
 )
 
 type AccessKey struct {
-	AccessKeyDataSourceFile         *AccessKeyDataSourceFile         `queryParam:"inline,name=accessKey" union:"member"`
-	AccessKeyDataSourceInline       *AccessKeyDataSourceInline       `queryParam:"inline,name=accessKey" union:"member"`
-	AccessKeyDataSourceInlineString *AccessKeyDataSourceInlineString `queryParam:"inline,name=accessKey" union:"member"`
-	AccessKeyDataSourceSecret       *AccessKeyDataSourceSecret       `queryParam:"inline,name=accessKey" union:"member"`
+	AccessKeyDataSourceFile         *AccessKeyDataSourceFile         `queryParam:"inline" union:"member"`
+	AccessKeyDataSourceInline       *AccessKeyDataSourceInline       `queryParam:"inline" union:"member"`
+	AccessKeyDataSourceInlineString *AccessKeyDataSourceInlineString `queryParam:"inline" union:"member"`
+	AccessKeyDataSourceSecret       *AccessKeyDataSourceSecret       `queryParam:"inline" union:"member"`
 
 	Type AccessKeyType
 }
@@ -1454,10 +1454,10 @@ const (
 )
 
 type AccessKeySecret struct {
-	AccessKeySecretDataSourceFile         *AccessKeySecretDataSourceFile         `queryParam:"inline,name=accessKeySecret" union:"member"`
-	AccessKeySecretDataSourceInline       *AccessKeySecretDataSourceInline       `queryParam:"inline,name=accessKeySecret" union:"member"`
-	AccessKeySecretDataSourceInlineString *AccessKeySecretDataSourceInlineString `queryParam:"inline,name=accessKeySecret" union:"member"`
-	AccessKeySecretDataSourceSecret       *AccessKeySecretDataSourceSecret       `queryParam:"inline,name=accessKeySecret" union:"member"`
+	AccessKeySecretDataSourceFile         *AccessKeySecretDataSourceFile         `queryParam:"inline" union:"member"`
+	AccessKeySecretDataSourceInline       *AccessKeySecretDataSourceInline       `queryParam:"inline" union:"member"`
+	AccessKeySecretDataSourceInlineString *AccessKeySecretDataSourceInlineString `queryParam:"inline" union:"member"`
+	AccessKeySecretDataSourceSecret       *AccessKeySecretDataSourceSecret       `queryParam:"inline" union:"member"`
 
 	Type AccessKeySecretType
 }
@@ -1740,10 +1740,10 @@ const (
 )
 
 type ConfCaCert struct {
-	CaCertDataSourceFile         *CaCertDataSourceFile         `queryParam:"inline,name=caCert" union:"member"`
-	CaCertDataSourceInline       *CaCertDataSourceInline       `queryParam:"inline,name=caCert" union:"member"`
-	CaCertDataSourceInlineString *CaCertDataSourceInlineString `queryParam:"inline,name=caCert" union:"member"`
-	CaCertDataSourceSecret       *CaCertDataSourceSecret       `queryParam:"inline,name=caCert" union:"member"`
+	CaCertDataSourceFile         *CaCertDataSourceFile         `queryParam:"inline" union:"member"`
+	CaCertDataSourceInline       *CaCertDataSourceInline       `queryParam:"inline" union:"member"`
+	CaCertDataSourceInlineString *CaCertDataSourceInlineString `queryParam:"inline" union:"member"`
+	CaCertDataSourceSecret       *CaCertDataSourceSecret       `queryParam:"inline" union:"member"`
 
 	Type ConfCaCertType
 }
@@ -2020,10 +2020,10 @@ const (
 )
 
 type Token struct {
-	TokenDataSourceFile         *TokenDataSourceFile         `queryParam:"inline,name=token" union:"member"`
-	TokenDataSourceInline       *TokenDataSourceInline       `queryParam:"inline,name=token" union:"member"`
-	TokenDataSourceInlineString *TokenDataSourceInlineString `queryParam:"inline,name=token" union:"member"`
-	TokenDataSourceSecret       *TokenDataSourceSecret       `queryParam:"inline,name=token" union:"member"`
+	TokenDataSourceFile         *TokenDataSourceFile         `queryParam:"inline" union:"member"`
+	TokenDataSourceInline       *TokenDataSourceInline       `queryParam:"inline" union:"member"`
+	TokenDataSourceInlineString *TokenDataSourceInlineString `queryParam:"inline" union:"member"`
+	TokenDataSourceSecret       *TokenDataSourceSecret       `queryParam:"inline" union:"member"`
 
 	Type TokenType
 }
@@ -2276,10 +2276,10 @@ const (
 )
 
 type AuthClientCert struct {
-	ClientCertDataSourceFile         *ClientCertDataSourceFile         `queryParam:"inline,name=clientCert" union:"member"`
-	ClientCertDataSourceInline       *ClientCertDataSourceInline       `queryParam:"inline,name=clientCert" union:"member"`
-	ClientCertDataSourceInlineString *ClientCertDataSourceInlineString `queryParam:"inline,name=clientCert" union:"member"`
-	ClientCertDataSourceSecret       *ClientCertDataSourceSecret       `queryParam:"inline,name=clientCert" union:"member"`
+	ClientCertDataSourceFile         *ClientCertDataSourceFile         `queryParam:"inline" union:"member"`
+	ClientCertDataSourceInline       *ClientCertDataSourceInline       `queryParam:"inline" union:"member"`
+	ClientCertDataSourceInlineString *ClientCertDataSourceInlineString `queryParam:"inline" union:"member"`
+	ClientCertDataSourceSecret       *ClientCertDataSourceSecret       `queryParam:"inline" union:"member"`
 
 	Type AuthClientCertType
 }
@@ -2510,10 +2510,10 @@ const (
 )
 
 type AuthClientKey struct {
-	ClientKeyDataSourceFile         *ClientKeyDataSourceFile         `queryParam:"inline,name=clientKey" union:"member"`
-	ClientKeyDataSourceInline       *ClientKeyDataSourceInline       `queryParam:"inline,name=clientKey" union:"member"`
-	ClientKeyDataSourceInlineString *ClientKeyDataSourceInlineString `queryParam:"inline,name=clientKey" union:"member"`
-	ClientKeyDataSourceSecret       *ClientKeyDataSourceSecret       `queryParam:"inline,name=clientKey" union:"member"`
+	ClientKeyDataSourceFile         *ClientKeyDataSourceFile         `queryParam:"inline" union:"member"`
+	ClientKeyDataSourceInline       *ClientKeyDataSourceInline       `queryParam:"inline" union:"member"`
+	ClientKeyDataSourceInlineString *ClientKeyDataSourceInlineString `queryParam:"inline" union:"member"`
+	ClientKeyDataSourceSecret       *ClientKeyDataSourceSecret       `queryParam:"inline" union:"member"`
 
 	Type AuthClientKeyType
 }
@@ -2701,8 +2701,8 @@ const (
 )
 
 type AuthType struct {
-	Str     *string `queryParam:"inline,name=type" union:"member"`
-	Integer *int64  `queryParam:"inline,name=type" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
 
 	Type AuthTypeType
 }
@@ -2851,9 +2851,9 @@ const (
 )
 
 type VaultCertificateAuthorityConfigAuth struct {
-	VaultCertificateAuthorityConfigFromCpAuthAws   *VaultCertificateAuthorityConfigFromCpAuthAws   `queryParam:"inline,name=auth" union:"member"`
-	VaultCertificateAuthorityConfigFromCpAuthTLS   *VaultCertificateAuthorityConfigFromCpAuthTLS   `queryParam:"inline,name=auth" union:"member"`
-	VaultCertificateAuthorityConfigFromCpAuthToken *VaultCertificateAuthorityConfigFromCpAuthToken `queryParam:"inline,name=auth" union:"member"`
+	VaultCertificateAuthorityConfigFromCpAuthAws   *VaultCertificateAuthorityConfigFromCpAuthAws   `queryParam:"inline" union:"member"`
+	VaultCertificateAuthorityConfigFromCpAuthTLS   *VaultCertificateAuthorityConfigFromCpAuthTLS   `queryParam:"inline" union:"member"`
+	VaultCertificateAuthorityConfigFromCpAuthToken *VaultCertificateAuthorityConfigFromCpAuthToken `queryParam:"inline" union:"member"`
 
 	Type VaultCertificateAuthorityConfigAuthType
 }
@@ -3060,10 +3060,10 @@ const (
 )
 
 type VaultCertificateAuthorityConfigCaCert struct {
-	VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile         *VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile         `queryParam:"inline,name=caCert" union:"member"`
-	VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline       *VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline       `queryParam:"inline,name=caCert" union:"member"`
-	VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString *VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString `queryParam:"inline,name=caCert" union:"member"`
-	VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret       *VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret       `queryParam:"inline,name=caCert" union:"member"`
+	VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile         *VaultCertificateAuthorityConfigFromCpCaCertDataSourceFile         `queryParam:"inline" union:"member"`
+	VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline       *VaultCertificateAuthorityConfigFromCpCaCertDataSourceInline       `queryParam:"inline" union:"member"`
+	VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString *VaultCertificateAuthorityConfigFromCpCaCertDataSourceInlineString `queryParam:"inline" union:"member"`
+	VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret       *VaultCertificateAuthorityConfigFromCpCaCertDataSourceSecret       `queryParam:"inline" union:"member"`
 
 	Type VaultCertificateAuthorityConfigCaCertType
 }
@@ -3336,7 +3336,7 @@ const (
 )
 
 type VaultCertificateAuthorityConfig struct {
-	VaultCertificateAuthorityConfigFromCp *VaultCertificateAuthorityConfigFromCp `queryParam:"inline,name=VaultCertificateAuthorityConfig" union:"member"`
+	VaultCertificateAuthorityConfigFromCp *VaultCertificateAuthorityConfigFromCp `queryParam:"inline" union:"member"`
 
 	Type VaultCertificateAuthorityConfigType
 }
@@ -3547,10 +3547,10 @@ const (
 )
 
 type Cert struct {
-	CertDataSourceFile         *CertDataSourceFile         `queryParam:"inline,name=cert" union:"member"`
-	CertDataSourceInline       *CertDataSourceInline       `queryParam:"inline,name=cert" union:"member"`
-	CertDataSourceInlineString *CertDataSourceInlineString `queryParam:"inline,name=cert" union:"member"`
-	CertDataSourceSecret       *CertDataSourceSecret       `queryParam:"inline,name=cert" union:"member"`
+	CertDataSourceFile         *CertDataSourceFile         `queryParam:"inline" union:"member"`
+	CertDataSourceInline       *CertDataSourceInline       `queryParam:"inline" union:"member"`
+	CertDataSourceInlineString *CertDataSourceInlineString `queryParam:"inline" union:"member"`
+	CertDataSourceSecret       *CertDataSourceSecret       `queryParam:"inline" union:"member"`
 
 	Type CertType
 }
@@ -3781,10 +3781,10 @@ const (
 )
 
 type Key struct {
-	KeyDataSourceFile         *KeyDataSourceFile         `queryParam:"inline,name=key" union:"member"`
-	KeyDataSourceInline       *KeyDataSourceInline       `queryParam:"inline,name=key" union:"member"`
-	KeyDataSourceInlineString *KeyDataSourceInlineString `queryParam:"inline,name=key" union:"member"`
-	KeyDataSourceSecret       *KeyDataSourceSecret       `queryParam:"inline,name=key" union:"member"`
+	KeyDataSourceFile         *KeyDataSourceFile         `queryParam:"inline" union:"member"`
+	KeyDataSourceInline       *KeyDataSourceInline       `queryParam:"inline" union:"member"`
+	KeyDataSourceInlineString *KeyDataSourceInlineString `queryParam:"inline" union:"member"`
+	KeyDataSourceSecret       *KeyDataSourceSecret       `queryParam:"inline" union:"member"`
 
 	Type KeyType
 }
@@ -3953,11 +3953,11 @@ const (
 )
 
 type MeshItemMtlsConf struct {
-	ProvidedCertificateAuthorityConfig    *ProvidedCertificateAuthorityConfig    `queryParam:"inline,name=conf" union:"member"`
-	BuiltinCertificateAuthorityConfig     *BuiltinCertificateAuthorityConfig     `queryParam:"inline,name=conf" union:"member"`
-	VaultCertificateAuthorityConfig       *VaultCertificateAuthorityConfig       `queryParam:"inline,name=conf" union:"member"`
-	ACMCertificateAuthorityConfig         *ACMCertificateAuthorityConfig         `queryParam:"inline,name=conf" union:"member"`
-	CertManagerCertificateAuthorityConfig *CertManagerCertificateAuthorityConfig `queryParam:"inline,name=conf" union:"member"`
+	ProvidedCertificateAuthorityConfig    *ProvidedCertificateAuthorityConfig    `queryParam:"inline" union:"member"`
+	BuiltinCertificateAuthorityConfig     *BuiltinCertificateAuthorityConfig     `queryParam:"inline" union:"member"`
+	VaultCertificateAuthorityConfig       *VaultCertificateAuthorityConfig       `queryParam:"inline" union:"member"`
+	ACMCertificateAuthorityConfig         *ACMCertificateAuthorityConfig         `queryParam:"inline" union:"member"`
+	CertManagerCertificateAuthorityConfig *CertManagerCertificateAuthorityConfig `queryParam:"inline" union:"member"`
 
 	Type MeshItemMtlsConfType
 }
@@ -4174,8 +4174,8 @@ const (
 // MeshItemMtlsMode - Mode defines the behaviour of inbound listeners with regard to traffic
 // encryption
 type MeshItemMtlsMode struct {
-	Str     *string `queryParam:"inline,name=mode" union:"member"`
-	Integer *int64  `queryParam:"inline,name=mode" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
 
 	Type MeshItemMtlsModeType
 }
@@ -4545,8 +4545,8 @@ const (
 )
 
 type MeshItemTracingConf struct {
-	DatadogTracingBackendConfig *DatadogTracingBackendConfig `queryParam:"inline,name=conf" union:"member"`
-	ZipkinTracingBackendConfig  *ZipkinTracingBackendConfig  `queryParam:"inline,name=conf" union:"member"`
+	DatadogTracingBackendConfig *DatadogTracingBackendConfig `queryParam:"inline" union:"member"`
+	ZipkinTracingBackendConfig  *ZipkinTracingBackendConfig  `queryParam:"inline" union:"member"`
 
 	Type MeshItemTracingConfType
 }

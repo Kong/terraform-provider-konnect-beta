@@ -16,8 +16,8 @@ const (
 )
 
 type Access struct {
-	Str     *string `queryParam:"inline,name=access" union:"member"`
-	Integer *int64  `queryParam:"inline,name=access" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
 
 	Type AccessType
 }

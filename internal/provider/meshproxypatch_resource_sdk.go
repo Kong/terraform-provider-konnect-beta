@@ -42,6 +42,8 @@ func (r *MeshProxyPatchResourceModel) RefreshFromSharedMeshProxyPatchItem(ctx co
 		r.Mesh = types.StringPointerValue(resp.Mesh)
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
+		r.Spec = &tfTypes.MeshProxyPatchItemSpec{}
+		r.Spec.Default = &tfTypes.MeshProxyPatchItemDefault{}
 		r.Spec.Default.AppendModifications = []tfTypes.AppendModifications{}
 
 		for _, appendModificationsItem := range resp.Spec.Default.AppendModifications {
@@ -212,6 +214,7 @@ func (r *MeshProxyPatchResourceModel) RefreshFromSharedMeshProxyPatchItem(ctx co
 
 					appendModifications.VirtualHost.JSONPatches = append(appendModifications.VirtualHost.JSONPatches, jsonPatches4)
 				}
+				appendModifications.VirtualHost.Match = &tfTypes.MeshProxyPatchItemSpecDefaultAppendModificationsMatch{}
 				appendModifications.VirtualHost.Match.Name = types.StringPointerValue(appendModificationsItem.VirtualHost.Match.Name)
 				appendModifications.VirtualHost.Match.Origin = types.StringPointerValue(appendModificationsItem.VirtualHost.Match.Origin)
 				appendModifications.VirtualHost.Match.RouteConfigurationName = types.StringPointerValue(appendModificationsItem.VirtualHost.Match.RouteConfigurationName)

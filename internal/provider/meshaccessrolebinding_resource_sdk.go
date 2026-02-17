@@ -40,6 +40,8 @@ func (r *MeshAccessRoleBindingResourceModel) RefreshFromSharedAccessRoleBindingI
 			for _, v := range resp.Roles {
 				r.Roles = append(r.Roles, types.StringValue(v))
 			}
+		} else {
+			r.Roles = nil
 		}
 		if resp.Subjects != nil {
 			r.Subjects = []tfTypes.Subjects{}
@@ -52,6 +54,8 @@ func (r *MeshAccessRoleBindingResourceModel) RefreshFromSharedAccessRoleBindingI
 
 				r.Subjects = append(r.Subjects, subjects)
 			}
+		} else {
+			r.Subjects = nil
 		}
 		r.Type = types.StringValue(resp.Type)
 	}

@@ -40,6 +40,7 @@ func (r *MeshRateLimitResourceModel) RefreshFromSharedMeshRateLimitItem(ctx cont
 		r.Mesh = types.StringPointerValue(resp.Mesh)
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
+		r.Spec = &tfTypes.MeshRateLimitItemSpec{}
 		r.Spec.From = []tfTypes.MeshRateLimitItemFrom{}
 
 		for _, fromItem := range resp.Spec.From {
@@ -112,6 +113,7 @@ func (r *MeshRateLimitResourceModel) RefreshFromSharedMeshRateLimitItem(ctx cont
 					}
 				}
 			}
+			from.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			from.TargetRef.Kind = types.StringValue(string(fromItem.TargetRef.Kind))
 			if len(fromItem.TargetRef.Labels) > 0 {
 				from.TargetRef.Labels = make(map[string]types.String, len(fromItem.TargetRef.Labels))
@@ -309,6 +311,7 @@ func (r *MeshRateLimitResourceModel) RefreshFromSharedMeshRateLimitItem(ctx cont
 					}
 				}
 			}
+			to.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			to.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 			if len(toItem.TargetRef.Labels) > 0 {
 				to.TargetRef.Labels = make(map[string]types.String, len(toItem.TargetRef.Labels))
