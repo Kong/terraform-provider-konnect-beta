@@ -8249,8 +8249,107 @@ paths:
     parameters:
       - $ref: '#/components/parameters/gatewayId'
       - $ref: '#/components/parameters/virtualClusterId'
+  /v2/cloud-gateways/add-ons:
+    post:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: CloudGatewayAddOn#create
+      operationId: create-add-on
+      summary: Create Add-On
+      description: |
+        Creates a new add-on. Specific add-on types (e.g., managed cache)
+        are defined by the sub-kind configuration.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAddOnRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateAddOnResponse'
+        '400':
+          $ref: '#/components/responses/CloudGatewaysBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/CloudGatewaysForbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/CloudGatewaysConflict'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Add-Ons
+      x-servers-added: true
+      x-speakeasy-group: CloudGateways
+  '/v2/cloud-gateways/add-ons/{addOnId}':
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: CloudGatewayAddOn#read
+      operationId: get-add-on
+      summary: Get Add-On
+      description: Retrieves an add-on by ID.
+      parameters:
+        - $ref: '#/components/parameters/AddOnId'
+      responses:
+        '200':
+          $ref: '#/components/responses/RetrieveAddOnResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Add-Ons
+      x-servers-added: true
+      x-speakeasy-group: CloudGateways
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: CloudGatewayAddOn#delete
+        terraform-datasource: null
+      operationId: delete-add-on
+      summary: Delete Add-On
+      description: |
+        Deletes an add-on by ID. The request will be rejected if the managed cache partial is still in use by some plugins.
+      parameters:
+        - $ref: '#/components/parameters/AddOnId'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/CloudGatewaysBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Add-Ons
+      x-servers-added: true
+      x-speakeasy-group: CloudGateways
 components:
   parameters:
+    AddOnId:
+      name: addOnId
+      description: ID of the add-on to operate on.
+      required: true
+      in: path
+      schema:
+        $ref: '#/components/schemas/AddOnId'
+      x-speakeasy-match: id
     ApiId:
       schema:
         type: string
@@ -8326,6 +8425,7 @@ components:
       in: path
       required: true
       description: The ID of the Event Gateway Listener.
+      x-speakeasy-name-override: listenerId
     EventGatewayPolicyAfter:
       schema:
         type: string
@@ -23436,8 +23536,10 @@ components:
         - authorization_code
         - implicit
         - client_credentials
+        - refresh_token
       x-enum-dev:
         - authorization_code
+        - refresh_token
       x-speakeasy-unknown-values: allow
     GrantTypes:
       description: List of OAuth 2.0 grant types
@@ -23465,6 +23567,12 @@ components:
       type: integer
       default: 300
       maximum: 2592000
+      minimum: 60
+    RefreshTokenDuration:
+      description: 'The duration of the minted refresh token is valid for, in seconds'
+      type: integer
+      default: 2592000
+      maximum: 157680000
       minimum: 60
     ClientAllowAllScopes:
       description: Specifies whether the client is allowed to request all scopes
@@ -23732,6 +23840,8 @@ components:
           $ref: '#/components/schemas/TokenDuration'
         id_token_duration:
           $ref: '#/components/schemas/TokenDuration'
+        refresh_token_duration:
+          $ref: '#/components/schemas/RefreshTokenDuration'
         allow_all_scopes:
           $ref: '#/components/schemas/ClientAllowAllScopes'
         allow_scopes:
@@ -23755,6 +23865,7 @@ components:
         - allow_scopes
         - access_token_duration
         - id_token_duration
+        - refresh_token_duration
         - labels
         - response_types
         - created_at
@@ -23762,6 +23873,9 @@ components:
       x-property-annotations:
         login_uri:
           - x-unstable
+        refresh_token_duration:
+          - x-unstable
+          - x-internal
     CreatedClient:
       allOf:
         - $ref: '#/components/schemas/Client'
@@ -24087,7 +24201,10 @@ components:
       type: array
       items:
         type: string
+        x-enum-internal:
+          - error_rate
         enum:
+          - error_rate
           - kong_latency_average
           - kong_latency_p50
           - kong_latency_p95
@@ -25015,12 +25132,15 @@ components:
       type: array
       items:
         type: string
+        x-enum-internal:
+          - error_rate
         enum:
           - total_tokens
           - prompt_tokens
           - completion_tokens
           - ai_request_count
           - cost
+          - error_rate
           - llm_cache_embeddings_latency_average
           - llm_cache_fetch_latency_average
           - llm_latency_average
@@ -25676,9 +25796,7 @@ components:
       x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
     VirtualClusterReference:
       description: A reference to a virtual cluster.
-      anyOf:
-        - $ref: '#/components/schemas/VirtualClusterReferenceById'
-        - $ref: '#/components/schemas/VirtualClusterReferenceByName'
+      $ref: '#/components/schemas/VirtualClusterReferenceById'
     VirtualClusterReferenceById:
       description: Reference a virtual cluster by its unique identifier.
       type: object
@@ -25690,14 +25808,6 @@ components:
           minLength: 1
       required:
         - id
-    VirtualClusterReferenceByName:
-      description: Reference a virtual cluster by its unique name.
-      type: object
-      properties:
-        name:
-          $ref: '#/components/schemas/VirtualClusterName'
-      required:
-        - name
     VirtualClusterAuthenticationSensitiveDataAwareSchemes:
       description: |
         How to handle authentication from clients.
@@ -26509,9 +26619,7 @@ components:
         - password
     SchemaRegistryReference:
       description: A reference to a schema Registry.
-      oneOf:
-        - $ref: '#/components/schemas/SchemaRegistryReferenceById'
-        - $ref: '#/components/schemas/SchemaRegistryReferenceByName'
+      $ref: '#/components/schemas/SchemaRegistryReferenceById'
     SchemaRegistryReferenceById:
       type: object
       properties:
@@ -26522,17 +26630,6 @@ components:
           minLength: 1
       required:
         - id
-    SchemaRegistryReferenceByName:
-      description: Reference a schema registry by its unique name.
-      type: object
-      properties:
-        name:
-          description: The unique name of the schema registry.
-          type: string
-          maxLength: 255
-          minLength: 1
-      required:
-        - name
     SchemaValidationType:
       description: |
         How to validate the schema and parse the record.
@@ -26571,10 +26668,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -26633,10 +26728,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -26693,10 +26786,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -26750,10 +26841,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -26790,10 +26879,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -26915,10 +27002,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -27071,10 +27156,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -27139,10 +27222,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -27211,10 +27292,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -27276,10 +27355,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -27346,10 +27423,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -27396,10 +27471,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -27492,10 +27565,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -27552,10 +27623,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -27642,10 +27711,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -27715,10 +27782,24 @@ components:
           items:
             $ref: '#/components/schemas/EventGatewayACLOperation'
         resource_names:
-          description: 'If any of these entries match, the resource name matches for this rule.'
-          type: array
-          items:
-            $ref: '#/components/schemas/EventGatewayACLResourceName'
+          description: 'If any of these entries match, the resource name matches for this rule. A maximum of 50 entries are allowed.'
+          oneOf:
+            - type: array
+              maxItems: 50
+              items:
+                $ref: '#/components/schemas/EventGatewayACLResourceName'
+            - type: string
+              x-min-runtime-version: '1.1'
+              example: 'context.auth.tokens.claims["topics"]'
+              x-expression:
+                type: array
+                fields:
+                  - context.auth.principal.name
+                  - context.auth.type
+                  - context.auth.token.claims
+              description: |
+                This expression should evaluate to an array of glob patterns,
+                equivalent to the `match` values in the array form of `resource_names`.
       required:
         - resource_type
         - action
@@ -27869,9 +27950,7 @@ components:
     EncryptionKeyStaticReference:
       description: |
         A static encryption key reference, either by ID or by value.
-      anyOf:
-        - $ref: '#/components/schemas/EncryptionKeyStaticReferenceById'
-        - $ref: '#/components/schemas/EncryptionKeyStaticReferenceByName'
+      $ref: '#/components/schemas/EncryptionKeyStaticReferenceById'
     EncryptionKeyStaticReferenceById:
       description: A static encryption key reference by ID.
       type: object
@@ -27883,19 +27962,6 @@ components:
           minLength: 1
       required:
         - id
-      x-speakeasy-name-override: ReferenceByID
-    EncryptionKeyStaticReferenceByName:
-      description: A static encryption key reference by name.
-      type: object
-      properties:
-        name:
-          description: The name of the static key defined in the key source.
-          type: string
-          maxLength: 255
-          minLength: 1
-      required:
-        - name
-      x-speakeasy-name-override: ReferenceByName
     ConsumeKeyValidationAction:
       description: |
         Defines a behavior when record key is not valid.
@@ -28363,6 +28429,402 @@ components:
         fields:
           - vault
       x-sensitive: true
+    ControlPlaneGeo:
+      description: Set of control-plane geos supported for deploying cloud-gateways configurations.
+      type: string
+      enum:
+        - us
+        - eu
+        - au
+        - me
+        - in
+        - sg
+      title: Control-Plane Geo
+      x-speakeasy-unknown-values: allow
+    ProviderName:
+      description: Name of cloud provider.
+      type: string
+      example: aws
+      enum:
+        - aws
+        - azure
+        - gcp
+      title: Provider Name
+      x-enum-internal: []
+      x-speakeasy-unknown-values: allow
+    AddOnId:
+      type: string
+      format: uuid
+      example: 550e8400-e29b-41d4-a716-446655440000
+      readOnly: true
+      x-speakeasy-param-suppress-computed-diff: true
+    AddOnConfigResponse:
+      description: Configuration object for different types of add-ons.
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/ManagedCacheAddOnConfigResponse'
+      title: AddOnConfigResponse
+    ManagedCacheAddOnConfigResponse:
+      description: Configuration for managed cache add-on.
+      type: object
+      properties:
+        kind:
+          description: Type of add-on configuration.
+          type: string
+          const: managed-cache.v0
+        capacity_config:
+          $ref: '#/components/schemas/ManagedCacheCapacityConfig'
+        data_plane_groups:
+          description: List of data-plane groups where the managed cache is deployed.
+          type: array
+          items:
+            $ref: '#/components/schemas/ManagedCacheAddOnDataPlaneGroup'
+        state_metadata:
+          description: |
+            Metadata describing the state of the managed cache add-on.
+          type: object
+          additionalProperties: false
+          properties:
+            cache_config_id:
+              description: Reference to cache configuration for this add-on.
+              type: string
+              format: uuid
+              example: edaf40f9-9fb0-4ffe-bb74-4e763a6bd471
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            cache_server_name:
+              description: Env vault path to cache server name.
+              type: string
+              example: '{vault://env/ADDON_MANAGED_CACHE_SERVER_NAME}'
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            cache_host:
+              description: Env vault path to cache hostname.
+              type: string
+              example: '{vault://env/ADDON_MANAGED_CACHE_HOST}'
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            cache_port:
+              description: Env vault path to cache port.
+              type: string
+              example: '{vault://env/ADDON_MANAGED_CACHE_PORT}'
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            cache_username:
+              description: Env vault path to cache username.
+              type: string
+              example: '{vault://env/ADDON_MANAGED_CACHE_USERNAME}'
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            cloud_authentication:
+              description: |
+                Metadata describing the cloud authentication details for managed cache add-on.
+              type: object
+              default: null
+              additionalProperties: false
+              nullable: true
+              properties:
+                auth_provider:
+                  description: Env vault path to cache auth provider.
+                  type: string
+                  example: '{vault://env/ADDON_MANAGED_CACHE_AUTH_PROVIDER}'
+                  default: null
+                  nullable: true
+                  x-speakeasy-param-computed: false
+                aws_cache_name:
+                  description: Env vault path to aws cache name.
+                  type: string
+                  example: '{vault://env/ADDON_MANAGED_CACHE_AWS_CACHE_NAME}'
+                  default: null
+                  nullable: true
+                  x-speakeasy-param-computed: false
+                aws_region:
+                  description: Env vault path to aws region.
+                  type: string
+                  example: '{vault://env/ADDON_MANAGED_CACHE_AWS_REGION}'
+                  default: null
+                  nullable: true
+                  x-speakeasy-param-computed: false
+                aws_assume_role_arn:
+                  description: Env vault path to aws assume role arn.
+                  type: string
+                  example: '{vault://env/ADDON_MANAGED_CACHE_AWS_ASSUME_ROLE_ARN}'
+                  default: null
+                  nullable: true
+                  x-speakeasy-param-computed: false
+                azure_tenant_id:
+                  description: Env vault path to azure tenant id.
+                  type: string
+                  example: '{vault://env/ADDON_MANAGED_CACHE_AZURE_TENANT_ID}'
+                  default: null
+                  nullable: true
+                  x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: false
+      additionalProperties: false
+      required:
+        - kind
+        - capacity_config
+        - data_plane_groups
+        - state_metadata
+      title: ManagedCacheAddOnConfigResponse
+    ManagedCacheAddOnDataPlaneGroup:
+      description: Object that describes a data-plane group where managed cache add-on is deployed.
+      type: object
+      properties:
+        id:
+          description: ID of the data-plane group.
+          type: string
+          format: uuid
+          example: 1150820b-c69f-4a2a-b9be-bbcdbc5cd618
+        cloud_gateway_network_id:
+          description: Network ID this data-plane group is attached to.
+          type: string
+          format: uuid
+          example: 36ae63d3-efd1-4bec-b246-62aa5d3f5695
+        provider:
+          $ref: '#/components/schemas/ProviderName'
+        region:
+          description: Region of cloud provider the data-plane group is deployed to.
+          type: string
+          example: us-east-1
+        state:
+          description: |
+            The current state of the managed cache add-on in the data-plane group. Possible values:
+            - `initializing` - The add-on is in the process of being initialized/updated and is setting up necessary resources for this data-plane group.
+            - `ready` - The add-on is fully operational for this data-plane group.
+            - `error` - The add-on is in an error state, and is not operational for this data-plane group.
+            - `terminating` - The add-on is in the process of being deleted for this data-plane group.
+          type: string
+          enum:
+            - initializing
+            - ready
+            - error
+            - terminating
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+          x-speakeasy-unknown-values: allow
+        state_metadata:
+          description: |
+            Metadata describing the state of the managed cache add-on in the data-plane group.
+          type: object
+          additionalProperties: false
+          properties:
+            error_reason:
+              description: |
+                Reason why the managed cache add-on may be in an error state, reported from backing infrastructure.
+              type: string
+              example: |
+                Failed to create managed cache add-on due to invalid configuration.
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+      additionalProperties: false
+      required:
+        - id
+        - cloud_gateway_network_id
+        - provider
+        - region
+        - state
+        - state_metadata
+      title: ManagedCacheAddOnDataPlaneGroup
+    AddOnState:
+      description: |
+        The current state of the add-on. Possible values:
+        - `initializing` - The add-on is in the process of being initialized/updated.
+        - `ready` - The add-on is fully operational.
+        - `terminating` - The add-on is in the process of being deleted.
+      type: string
+      enum:
+        - initializing
+        - ready
+        - terminating
+      readOnly: true
+      title: Add-On State
+      x-speakeasy-param-suppress-computed-diff: true
+      x-speakeasy-unknown-values: allow
+    AddOnResponse:
+      description: Object containing information about an add-on.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/AddOnId'
+        name:
+          $ref: '#/components/schemas/AddOnName'
+        owner:
+          $ref: '#/components/schemas/AddOnOwner'
+        config:
+          $ref: '#/components/schemas/AddOnConfigResponse'
+        entity_version:
+          description: 'Monotonically-increasing version count of the add-on, to indicate the order of updates to the add-on.'
+          type: integer
+          example: 1
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        state:
+          $ref: '#/components/schemas/AddOnState'
+        created_at:
+          description: RFC-3339 timestamp representation of add-on creation date.
+          type: string
+          format: date-time
+          example: '2025-08-26T06:56:41Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        updated_at:
+          description: RFC-3339 timestamp representation of add-on update date.
+          type: string
+          format: date-time
+          example: '2025-08-26T06:56:41Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - owner
+        - config
+        - entity_version
+        - state
+        - created_at
+        - updated_at
+      title: AddOnResponse
+    CreateAddOnRequest:
+      description: Request schema for creating an add-on.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/AddOnName'
+        owner:
+          $ref: '#/components/schemas/AddOnOwner'
+        config:
+          $ref: '#/components/schemas/CreateAddOnConfig'
+      additionalProperties: false
+      required:
+        - name
+        - owner
+        - config
+      title: CreateAddOnRequest
+    AddOnName:
+      description: Unique human-readable name of the add-on.
+      type: string
+      example: my-add-on
+      maxLength: 70
+      minLength: 1
+      title: AddOnName
+    AddOnOwner:
+      description: Owner for the add-on.
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/ControlPlaneAddOnOwner'
+        - $ref: '#/components/schemas/ControlPlaneGroupAddOnOwner'
+      title: AddOnOwner
+    ControlPlaneAddOnOwner:
+      description: Control Plane is the owner for the add-on.
+      type: object
+      properties:
+        kind:
+          description: Type of owner for the add-on.
+          type: string
+          const: control-plane
+        control_plane_id:
+          description: ID of the control-plane that owns this add-on.
+          type: string
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        control_plane_geo:
+          $ref: '#/components/schemas/ControlPlaneGeo'
+      additionalProperties: false
+      required:
+        - kind
+        - control_plane_id
+        - control_plane_geo
+      title: ControlPlaneAddOnOwner
+    ControlPlaneGroupAddOnOwner:
+      description: Control Plane Group is the owner for the add-on.
+      type: object
+      properties:
+        kind:
+          description: Type of owner for the add-on.
+          type: string
+          const: control-plane-group
+        control_plane_group_id:
+          description: ID of the control-plane group that owns this add-on.
+          type: string
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        control_plane_group_geo:
+          $ref: '#/components/schemas/ControlPlaneGeo'
+      additionalProperties: false
+      required:
+        - kind
+        - control_plane_group_id
+        - control_plane_group_geo
+      title: ControlPlaneGroupAddOnOwner
+    CreateAddOnConfig:
+      description: Configuration for creating different types of add-ons.
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/CreateManagedCacheAddOnConfig'
+      title: CreateAddOnConfig
+    CreateManagedCacheAddOnConfig:
+      description: Configuration for creating a managed cache add-on.
+      type: object
+      properties:
+        kind:
+          description: Type of add-on configuration.
+          type: string
+          const: managed-cache.v0
+        capacity_config:
+          $ref: '#/components/schemas/ManagedCacheCapacityConfig'
+      additionalProperties: false
+      required:
+        - kind
+        - capacity_config
+      title: CreateManagedCacheAddOnConfig
+    ManagedCacheCapacityConfig:
+      description: Configuration for managed cache capacity and performance characteristics.
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/TieredCapacityConfig'
+      title: ManagedCacheCapacityConfig
+    TieredCapacityConfig:
+      description: Capacity tiers with pre-configured size and performance characteristics.
+      type: object
+      properties:
+        kind:
+          description: Type of capacity configuration.
+          type: string
+          enum:
+            - tiered
+        tier:
+          description: |
+            Capacity tier that determines both cache size and performance characteristics:
+            - micro: ~0.5 GiB capacity
+            - small: ~1 GiB capacity
+            - medium: ~3 GiB capacity
+            - large: ~6 GiB capacity
+            - xlarge: ~12 GiB capacity
+            - 2xlarge: ~25 GiB capacity
+            - 4xlarge: ~52 GiB capacity
+          type: string
+          enum:
+            - micro
+            - small
+            - medium
+            - large
+            - xlarge
+            - 2xlarge
+            - 4xlarge
+          x-speakeasy-unknown-values: allow
+      additionalProperties: false
+      required:
+        - kind
+        - tier
+      title: TieredCapacityConfig
     CreatePortalCustomDomainSSL:
       type: object
       properties:
@@ -29256,6 +29718,8 @@ components:
                 $ref: '#/components/schemas/TokenDuration'
               id_token_duration:
                 $ref: '#/components/schemas/TokenDuration'
+              refresh_token_duration:
+                $ref: '#/components/schemas/RefreshTokenDuration'
               allow_all_scopes:
                 $ref: '#/components/schemas/ClientAllowAllScopes'
               allow_scopes:
@@ -29282,6 +29746,9 @@ components:
             x-property-annotations:
               login_uri:
                 - x-unstable
+              refresh_token_duration:
+                - x-unstable
+                - x-internal
     ReplaceClient:
       description: Client to be replaced
       required: true
@@ -29308,6 +29775,8 @@ components:
                 $ref: '#/components/schemas/TokenDuration'
               id_token_duration:
                 $ref: '#/components/schemas/TokenDuration'
+              refresh_token_duration:
+                $ref: '#/components/schemas/RefreshTokenDuration'
               allow_all_scopes:
                 $ref: '#/components/schemas/ClientAllowAllScopes'
               allow_scopes:
@@ -29324,6 +29793,9 @@ components:
             x-property-annotations:
               login_uri:
                 - x-unstable
+              refresh_token_duration:
+                - x-unstable
+                - x-internal
     CreateEventGatewayListenerRequest:
       description: The request schema for creating a listener.
       content:
@@ -29337,7 +29809,7 @@ components:
                 maxLength: 255
                 minLength: 1
               description:
-                description: A human-readable description of the virtual cluster.
+                description: A human-readable description of the listener.
                 type: string
                 default: ''
                 maxLength: 512
@@ -29365,7 +29837,7 @@ components:
                 maxLength: 255
                 minLength: 1
               description:
-                description: A human-readable description of the virtual cluster.
+                description: A human-readable description of the listener.
                 type: string
                 default: ''
                 maxLength: 512
@@ -29456,7 +29928,7 @@ components:
               name:
                 $ref: '#/components/schemas/BackendClusterName'
               description:
-                description: A human-readable description of the virtual cluster.
+                description: A human-readable description of the backend cluster.
                 type: string
                 default: ''
                 maxLength: 512
@@ -29492,7 +29964,7 @@ components:
               name:
                 $ref: '#/components/schemas/BackendClusterName'
               description:
-                description: A human-readable description of the virtual cluster.
+                description: A human-readable description of the backend cluster.
                 type: string
                 default: ''
                 maxLength: 512
@@ -31861,6 +32333,36 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/BaseError'
+    CloudGatewaysBadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+    CloudGatewaysForbidden:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenError'
+    CloudGatewaysConflict:
+      description: Conflict
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
+    CreateAddOnResponse:
+      description: Response format for creating an add-on.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddOnResponse'
+    RetrieveAddOnResponse:
+      description: Response format for retrieving an add-on by ID.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddOnResponse'
   securitySchemes:
     personalAccessToken:
       type: http
@@ -31964,6 +32466,7 @@ tags:
     description: |
       Configure a schema registry that can be used to validate payloads when producing/consuming messages
   - name: Event Gateway Vaults
+  - name: Add-Ons
 security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
