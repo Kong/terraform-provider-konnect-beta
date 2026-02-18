@@ -166,33 +166,11 @@ func (r *EventGatewayProducePolicySchemaValidationResourceModel) ToSharedEventGa
 	if r.Config.ConfluentSchemaRegistry != nil {
 		var schemaRegistry *shared.SchemaRegistryReference
 		if r.Config.ConfluentSchemaRegistry.SchemaRegistry != nil {
-			var schemaRegistryReferenceByID *shared.SchemaRegistryReferenceByID
-			if r.Config.ConfluentSchemaRegistry.SchemaRegistry.SchemaRegistryReferenceByID != nil {
-				var id string
-				id = r.Config.ConfluentSchemaRegistry.SchemaRegistry.SchemaRegistryReferenceByID.ID.ValueString()
+			var id string
+			id = r.Config.ConfluentSchemaRegistry.SchemaRegistry.ID.ValueString()
 
-				schemaRegistryReferenceByID = &shared.SchemaRegistryReferenceByID{
-					ID: id,
-				}
-			}
-			if schemaRegistryReferenceByID != nil {
-				schemaRegistry = &shared.SchemaRegistryReference{
-					SchemaRegistryReferenceByID: schemaRegistryReferenceByID,
-				}
-			}
-			var schemaRegistryReferenceByName *shared.SchemaRegistryReferenceByName
-			if r.Config.ConfluentSchemaRegistry.SchemaRegistry.SchemaRegistryReferenceByName != nil {
-				var name1 string
-				name1 = r.Config.ConfluentSchemaRegistry.SchemaRegistry.SchemaRegistryReferenceByName.Name.ValueString()
-
-				schemaRegistryReferenceByName = &shared.SchemaRegistryReferenceByName{
-					Name: name1,
-				}
-			}
-			if schemaRegistryReferenceByName != nil {
-				schemaRegistry = &shared.SchemaRegistryReference{
-					SchemaRegistryReferenceByName: schemaRegistryReferenceByName,
-				}
+			schemaRegistry = &shared.SchemaRegistryReference{
+				ID: id,
 			}
 		}
 		keyValidationAction := new(shared.ProduceKeyValidationAction)
@@ -222,33 +200,11 @@ func (r *EventGatewayProducePolicySchemaValidationResourceModel) ToSharedEventGa
 	if r.Config.JSON != nil {
 		var schemaRegistry1 *shared.SchemaRegistryReference
 		if r.Config.JSON.SchemaRegistry != nil {
-			var schemaRegistryReferenceById1 *shared.SchemaRegistryReferenceByID
-			if r.Config.JSON.SchemaRegistry.SchemaRegistryReferenceByID != nil {
-				var id1 string
-				id1 = r.Config.JSON.SchemaRegistry.SchemaRegistryReferenceByID.ID.ValueString()
+			var id1 string
+			id1 = r.Config.JSON.SchemaRegistry.ID.ValueString()
 
-				schemaRegistryReferenceById1 = &shared.SchemaRegistryReferenceByID{
-					ID: id1,
-				}
-			}
-			if schemaRegistryReferenceById1 != nil {
-				schemaRegistry1 = &shared.SchemaRegistryReference{
-					SchemaRegistryReferenceByID: schemaRegistryReferenceById1,
-				}
-			}
-			var schemaRegistryReferenceByName1 *shared.SchemaRegistryReferenceByName
-			if r.Config.JSON.SchemaRegistry.SchemaRegistryReferenceByName != nil {
-				var name2 string
-				name2 = r.Config.JSON.SchemaRegistry.SchemaRegistryReferenceByName.Name.ValueString()
-
-				schemaRegistryReferenceByName1 = &shared.SchemaRegistryReferenceByName{
-					Name: name2,
-				}
-			}
-			if schemaRegistryReferenceByName1 != nil {
-				schemaRegistry1 = &shared.SchemaRegistryReference{
-					SchemaRegistryReferenceByName: schemaRegistryReferenceByName1,
-				}
+			schemaRegistry1 = &shared.SchemaRegistryReference{
+				ID: id1,
 			}
 		}
 		keyValidationAction1 := new(shared.ProduceKeyValidationAction)

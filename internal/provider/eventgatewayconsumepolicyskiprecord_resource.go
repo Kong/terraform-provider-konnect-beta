@@ -54,7 +54,7 @@ type EventGatewayConsumePolicySkipRecordResourceModel struct {
 }
 
 func (r *EventGatewayConsumePolicySkipRecordResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_event_gateway_consume_policy_skip_record"
+	resp.TypeName = req.ProviderTypeName + "_event_gateway_consume_policy_skip_record"
 }
 
 func (r *EventGatewayConsumePolicySkipRecordResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
@@ -117,6 +117,7 @@ func (r *EventGatewayConsumePolicySkipRecordResource) Schema(ctx context.Context
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
 			"name": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
 				Description: `A unique user-defined name of the policy.`,
 				Validators: []validator.String{

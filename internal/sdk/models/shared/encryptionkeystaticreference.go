@@ -3,97 +3,29 @@
 package shared
 
 import (
-	"errors"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-type EncryptionKeyStaticReferenceType string
-
-const (
-	EncryptionKeyStaticReferenceTypeReferenceByID   EncryptionKeyStaticReferenceType = "ReferenceByID"
-	EncryptionKeyStaticReferenceTypeReferenceByName EncryptionKeyStaticReferenceType = "ReferenceByName"
-)
-
-// EncryptionKeyStaticReference - A static encryption key reference, either by ID or by value.
+// EncryptionKeyStaticReference - A static encryption key reference by ID.
 type EncryptionKeyStaticReference struct {
-	ReferenceByID   *ReferenceByID   `queryParam:"inline,name=EncryptionKeyStaticReference" union:"member"`
-	ReferenceByName *ReferenceByName `queryParam:"inline,name=EncryptionKeyStaticReference" union:"member"`
-
-	Type EncryptionKeyStaticReferenceType
+	// The ID of the static key defined in the key source.
+	ID string `json:"id"`
 }
 
-func CreateEncryptionKeyStaticReferenceReferenceByID(referenceByID ReferenceByID) EncryptionKeyStaticReference {
-	typ := EncryptionKeyStaticReferenceTypeReferenceByID
-
-	return EncryptionKeyStaticReference{
-		ReferenceByID: &referenceByID,
-		Type:          typ,
-	}
+func (e EncryptionKeyStaticReference) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
 }
 
-func CreateEncryptionKeyStaticReferenceReferenceByName(referenceByName ReferenceByName) EncryptionKeyStaticReference {
-	typ := EncryptionKeyStaticReferenceTypeReferenceByName
-
-	return EncryptionKeyStaticReference{
-		ReferenceByName: &referenceByName,
-		Type:            typ,
+func (e *EncryptionKeyStaticReference) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
+		return err
 	}
+	return nil
 }
 
-func (u *EncryptionKeyStaticReference) UnmarshalJSON(data []byte) error {
-
-	var candidates []utils.UnionCandidate
-
-	// Collect all valid candidates
-	var referenceByID ReferenceByID = ReferenceByID{}
-	if err := utils.UnmarshalJSON(data, &referenceByID, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  EncryptionKeyStaticReferenceTypeReferenceByID,
-			Value: &referenceByID,
-		})
+func (e *EncryptionKeyStaticReference) GetID() string {
+	if e == nil {
+		return ""
 	}
-
-	var referenceByName ReferenceByName = ReferenceByName{}
-	if err := utils.UnmarshalJSON(data, &referenceByName, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  EncryptionKeyStaticReferenceTypeReferenceByName,
-			Value: &referenceByName,
-		})
-	}
-
-	if len(candidates) == 0 {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for EncryptionKeyStaticReference", string(data))
-	}
-
-	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestUnionCandidate(candidates, data)
-	if best == nil {
-		return fmt.Errorf("could not unmarshal `%s` into any supported union types for EncryptionKeyStaticReference", string(data))
-	}
-
-	// Set the union type and value based on the best candidate
-	u.Type = best.Type.(EncryptionKeyStaticReferenceType)
-	switch best.Type {
-	case EncryptionKeyStaticReferenceTypeReferenceByID:
-		u.ReferenceByID = best.Value.(*ReferenceByID)
-		return nil
-	case EncryptionKeyStaticReferenceTypeReferenceByName:
-		u.ReferenceByName = best.Value.(*ReferenceByName)
-		return nil
-	}
-
-	return fmt.Errorf("could not unmarshal `%s` into any supported union types for EncryptionKeyStaticReference", string(data))
-}
-
-func (u EncryptionKeyStaticReference) MarshalJSON() ([]byte, error) {
-	if u.ReferenceByID != nil {
-		return utils.MarshalJSON(u.ReferenceByID, "", true)
-	}
-
-	if u.ReferenceByName != nil {
-		return utils.MarshalJSON(u.ReferenceByName, "", true)
-	}
-
-	return nil, errors.New("could not marshal union type EncryptionKeyStaticReference: all fields are null")
+	return e.ID
 }

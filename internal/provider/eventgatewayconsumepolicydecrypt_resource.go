@@ -55,7 +55,7 @@ type EventGatewayConsumePolicyDecryptResourceModel struct {
 }
 
 func (r *EventGatewayConsumePolicyDecryptResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_event_gateway_consume_policy_decrypt"
+	resp.TypeName = req.ProviderTypeName + "_event_gateway_consume_policy_decrypt"
 }
 
 func (r *EventGatewayConsumePolicyDecryptResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
@@ -169,6 +169,7 @@ func (r *EventGatewayConsumePolicyDecryptResource) Schema(ctx context.Context, r
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
 			"name": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
 				Description: `A unique user-defined name of the policy.`,
 				Validators: []validator.String{

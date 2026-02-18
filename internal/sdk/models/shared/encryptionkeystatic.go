@@ -9,8 +9,7 @@ import (
 // EncryptionKeyStatic - A static encryption key.
 type EncryptionKeyStatic struct {
 	type_ string `const:"static" json:"type"`
-	// A static encryption key reference, either by ID or by value.
-	//
+	// A static encryption key reference by ID.
 	Key EncryptionKeyStaticReference `json:"key"`
 }
 

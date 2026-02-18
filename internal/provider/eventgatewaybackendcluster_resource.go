@@ -60,7 +60,7 @@ type EventGatewayBackendClusterResourceModel struct {
 }
 
 func (r *EventGatewayBackendClusterResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_event_gateway_backend_cluster"
+	resp.TypeName = req.ProviderTypeName + "_event_gateway_backend_cluster"
 }
 
 func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
@@ -183,7 +183,7 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 				Computed:    true,
 				Optional:    true,
 				Default:     stringdefault.StaticString(``),
-				Description: `A human-readable description of the virtual cluster. Default: ""`,
+				Description: `A human-readable description of the backend cluster. Default: ""`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtMost(512),
 				},

@@ -49,7 +49,7 @@ type APIDocumentResourceModel struct {
 }
 
 func (r *APIDocumentResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_api_document"
+	resp.TypeName = req.ProviderTypeName + "_api_document"
 }
 
 func (r *APIDocumentResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

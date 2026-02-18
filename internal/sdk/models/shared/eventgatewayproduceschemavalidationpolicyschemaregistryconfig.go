@@ -8,7 +8,6 @@ import (
 
 // EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig - The configuration of the produce schema validation policy when using a schema registry.
 type EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig struct {
-	// A reference to a schema Registry.
 	SchemaRegistry *SchemaRegistryReference `json:"schema_registry,omitempty"`
 	// Defines a behavior when record key is not valid.
 	// * reject - rejects a batch for topic partition. Only available for produce.

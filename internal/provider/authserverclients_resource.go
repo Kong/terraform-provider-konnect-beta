@@ -55,13 +55,14 @@ type AuthServerClientsResourceModel struct {
 	LoginURI                types.String            `tfsdk:"login_uri"`
 	Name                    types.String            `tfsdk:"name"`
 	RedirectUris            []types.String          `tfsdk:"redirect_uris"`
+	RefreshTokenDuration    types.Int64             `tfsdk:"refresh_token_duration"`
 	ResponseTypes           []types.String          `tfsdk:"response_types"`
 	TokenEndpointAuthMethod types.String            `tfsdk:"token_endpoint_auth_method"`
 	UpdatedAt               types.String            `tfsdk:"updated_at"`
 }
 
 func (r *AuthServerClientsResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_auth_server_clients"
+	resp.TypeName = req.ProviderTypeName + "_auth_server_clients"
 }
 
 func (r *AuthServerClientsResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
@@ -162,6 +163,15 @@ func (r *AuthServerClientsResource) Schema(ctx context.Context, req resource.Sch
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The URIs that the client is allowed to redirect to after authentication in interactive flows. All redirect URIs must be absolute URIs, be secure (HTTPS), and must not include a fragment component.`,
+			},
+			"refresh_token_duration": schema.Int64Attribute{
+				Computed:    true,
+				Optional:    true,
+				Default:     int64default.StaticInt64(2592000),
+				Description: `The duration of the minted refresh token is valid for, in seconds. Default: 2592000`,
+				Validators: []validator.Int64{
+					int64validator.Between(60, 157680000),
+				},
 			},
 			"response_types": schema.ListAttribute{
 				Required:    true,

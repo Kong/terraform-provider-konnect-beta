@@ -49,7 +49,7 @@ type EventGatewayListenerResourceModel struct {
 }
 
 func (r *EventGatewayListenerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_event_gateway_listener"
+	resp.TypeName = req.ProviderTypeName + "_event_gateway_listener"
 }
 
 func (r *EventGatewayListenerResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
@@ -82,7 +82,7 @@ func (r *EventGatewayListenerResource) Schema(ctx context.Context, req resource.
 				Computed:    true,
 				Optional:    true,
 				Default:     stringdefault.StaticString(``),
-				Description: `A human-readable description of the virtual cluster. Default: ""`,
+				Description: `A human-readable description of the listener. Default: ""`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtMost(512),
 				},

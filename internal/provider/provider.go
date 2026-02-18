@@ -148,6 +148,7 @@ func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.R
 		NewAuthServerClaimsResource,
 		NewAuthServerClientsResource,
 		NewAuthServerScopesResource,
+		NewCloudGatewayAddOnResource,
 		NewDashboardResource,
 		NewEventGatewayResource,
 		NewEventGatewayBackendClusterResource,

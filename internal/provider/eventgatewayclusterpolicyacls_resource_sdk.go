@@ -176,14 +176,34 @@ func (r *EventGatewayClusterPolicyAclsResourceModel) ToSharedEventGatewayACLsPol
 				Name: name1,
 			})
 		}
-		resourceNames := make([]shared.EventGatewayACLResourceName, 0, len(r.Config.Rules[rulesIndex].ResourceNames))
-		for resourceNamesIndex := range r.Config.Rules[rulesIndex].ResourceNames {
-			var match string
-			match = r.Config.Rules[rulesIndex].ResourceNames[resourceNamesIndex].Match.ValueString()
+		var resourceNames shared.ResourceNames
+		var arrayOfEventGatewayACLResourceName []shared.EventGatewayACLResourceName
+		if r.Config.Rules[rulesIndex].ResourceNames.ArrayOfEventGatewayACLResourceName != nil {
+			arrayOfEventGatewayACLResourceName = make([]shared.EventGatewayACLResourceName, 0, len(r.Config.Rules[rulesIndex].ResourceNames.ArrayOfEventGatewayACLResourceName))
+			for arrayOfEventGatewayACLResourceNameIndex := range r.Config.Rules[rulesIndex].ResourceNames.ArrayOfEventGatewayACLResourceName {
+				var match string
+				match = r.Config.Rules[rulesIndex].ResourceNames.ArrayOfEventGatewayACLResourceName[arrayOfEventGatewayACLResourceNameIndex].Match.ValueString()
 
-			resourceNames = append(resourceNames, shared.EventGatewayACLResourceName{
-				Match: match,
-			})
+				arrayOfEventGatewayACLResourceName = append(arrayOfEventGatewayACLResourceName, shared.EventGatewayACLResourceName{
+					Match: match,
+				})
+			}
+		}
+		if arrayOfEventGatewayACLResourceName != nil {
+			resourceNames = shared.ResourceNames{
+				ArrayOfEventGatewayACLResourceName: arrayOfEventGatewayACLResourceName,
+			}
+		}
+		str := new(string)
+		if !r.Config.Rules[rulesIndex].ResourceNames.Str.IsUnknown() && !r.Config.Rules[rulesIndex].ResourceNames.Str.IsNull() {
+			*str = r.Config.Rules[rulesIndex].ResourceNames.Str.ValueString()
+		} else {
+			str = nil
+		}
+		if str != nil {
+			resourceNames = shared.ResourceNames{
+				Str: str,
+			}
 		}
 		rules = append(rules, shared.EventGatewayACLRule{
 			ResourceType:  resourceType,

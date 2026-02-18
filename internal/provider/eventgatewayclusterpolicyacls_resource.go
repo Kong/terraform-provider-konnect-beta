@@ -54,7 +54,7 @@ type EventGatewayClusterPolicyAclsResourceModel struct {
 }
 
 func (r *EventGatewayClusterPolicyAclsResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_event_gateway_cluster_policy_acls"
+	resp.TypeName = req.ProviderTypeName + "_event_gateway_cluster_policy_acls"
 }
 
 func (r *EventGatewayClusterPolicyAclsResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
@@ -113,18 +113,37 @@ func (r *EventGatewayClusterPolicyAclsResource) Schema(ctx context.Context, req 
 									},
 									Description: `Types of Kafka operations to match against. Note that not every operation can apply to every resource type.`,
 								},
-								"resource_names": schema.ListNestedAttribute{
+								"resource_names": schema.SingleNestedAttribute{
 									Required: true,
-									NestedObject: schema.NestedAttributeObject{
-										Attributes: map[string]schema.Attribute{
-											"match": schema.StringAttribute{
-												Required: true,
-												MarkdownDescription: `Currently supported are exact matches and globs.` + "\n" +
-													`All ` + "`" + `*` + "`" + ` characters are interpreted as globs, i.e. they match zero or more of any character.`,
+									Attributes: map[string]schema.Attribute{
+										"array_of_event_gateway_acl_resource_name": schema.ListNestedAttribute{
+											Optional: true,
+											NestedObject: schema.NestedAttributeObject{
+												Attributes: map[string]schema.Attribute{
+													"match": schema.StringAttribute{
+														Required: true,
+														MarkdownDescription: `Currently supported are exact matches and globs.` + "\n" +
+															`All ` + "`" + `*` + "`" + ` characters are interpreted as globs, i.e. they match zero or more of any character.`,
+													},
+												},
+											},
+											Validators: []validator.List{
+												listvalidator.ConflictsWith(path.Expressions{
+													path.MatchRelative().AtParent().AtName("str"),
+												}...),
+												listvalidator.SizeAtMost(50),
+											},
+										},
+										"str": schema.StringAttribute{
+											Optional: true,
+											Validators: []validator.String{
+												stringvalidator.ConflictsWith(path.Expressions{
+													path.MatchRelative().AtParent().AtName("array_of_event_gateway_acl_resource_name"),
+												}...),
 											},
 										},
 									},
-									Description: `If any of these entries match, the resource name matches for this rule.`,
+									Description: `If any of these entries match, the resource name matches for this rule. A maximum of 50 entries are allowed.`,
 								},
 								"resource_type": schema.StringAttribute{
 									Required:    true,
@@ -187,6 +206,7 @@ func (r *EventGatewayClusterPolicyAclsResource) Schema(ctx context.Context, req 
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
 			"name": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
 				Description: `A unique user-defined name of the policy.`,
 				Validators: []validator.String{

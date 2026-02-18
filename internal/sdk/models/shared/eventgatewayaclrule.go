@@ -4,7 +4,9 @@ package shared
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
 // ResourceType - This rule applies to access only for type of resource
@@ -67,6 +69,96 @@ func (e *Action) UnmarshalJSON(data []byte) error {
 	}
 }
 
+type ResourceNamesType string
+
+const (
+	ResourceNamesTypeArrayOfEventGatewayACLResourceName ResourceNamesType = "arrayOfEventGatewayACLResourceName"
+	ResourceNamesTypeStr                                ResourceNamesType = "str"
+)
+
+// ResourceNames - If any of these entries match, the resource name matches for this rule. A maximum of 50 entries are allowed.
+type ResourceNames struct {
+	ArrayOfEventGatewayACLResourceName []EventGatewayACLResourceName `queryParam:"inline,name=resource_names" union:"member"`
+	Str                                *string                       `queryParam:"inline,name=resource_names" union:"member"`
+
+	Type ResourceNamesType
+}
+
+func CreateResourceNamesArrayOfEventGatewayACLResourceName(arrayOfEventGatewayACLResourceName []EventGatewayACLResourceName) ResourceNames {
+	typ := ResourceNamesTypeArrayOfEventGatewayACLResourceName
+
+	return ResourceNames{
+		ArrayOfEventGatewayACLResourceName: arrayOfEventGatewayACLResourceName,
+		Type:                               typ,
+	}
+}
+
+func CreateResourceNamesStr(str string) ResourceNames {
+	typ := ResourceNamesTypeStr
+
+	return ResourceNames{
+		Str:  &str,
+		Type: typ,
+	}
+}
+
+func (u *ResourceNames) UnmarshalJSON(data []byte) error {
+
+	var candidates []utils.UnionCandidate
+
+	// Collect all valid candidates
+	var arrayOfEventGatewayACLResourceName []EventGatewayACLResourceName = []EventGatewayACLResourceName{}
+	if err := utils.UnmarshalJSON(data, &arrayOfEventGatewayACLResourceName, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  ResourceNamesTypeArrayOfEventGatewayACLResourceName,
+			Value: arrayOfEventGatewayACLResourceName,
+		})
+	}
+
+	var str string = ""
+	if err := utils.UnmarshalJSON(data, &str, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  ResourceNamesTypeStr,
+			Value: &str,
+		})
+	}
+
+	if len(candidates) == 0 {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for ResourceNames", string(data))
+	}
+
+	// Pick the best candidate using multi-stage filtering
+	best := utils.PickBestUnionCandidate(candidates, data)
+	if best == nil {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for ResourceNames", string(data))
+	}
+
+	// Set the union type and value based on the best candidate
+	u.Type = best.Type.(ResourceNamesType)
+	switch best.Type {
+	case ResourceNamesTypeArrayOfEventGatewayACLResourceName:
+		u.ArrayOfEventGatewayACLResourceName = best.Value.([]EventGatewayACLResourceName)
+		return nil
+	case ResourceNamesTypeStr:
+		u.Str = best.Value.(*string)
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for ResourceNames", string(data))
+}
+
+func (u ResourceNames) MarshalJSON() ([]byte, error) {
+	if u.ArrayOfEventGatewayACLResourceName != nil {
+		return utils.MarshalJSON(u.ArrayOfEventGatewayACLResourceName, "", true)
+	}
+
+	if u.Str != nil {
+		return utils.MarshalJSON(u.Str, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type ResourceNames: all fields are null")
+}
+
 // EventGatewayACLRule - A Kafka ACL rule to apply to virtual cluster traffic
 type EventGatewayACLRule struct {
 	// This rule applies to access only for type of resource
@@ -75,8 +167,8 @@ type EventGatewayACLRule struct {
 	Action Action `json:"action"`
 	// Types of Kafka operations to match against. Note that not every operation can apply to every resource type.
 	Operations []EventGatewayACLOperation `json:"operations"`
-	// If any of these entries match, the resource name matches for this rule.
-	ResourceNames []EventGatewayACLResourceName `json:"resource_names"`
+	// If any of these entries match, the resource name matches for this rule. A maximum of 50 entries are allowed.
+	ResourceNames ResourceNames `json:"resource_names"`
 }
 
 func (e *EventGatewayACLRule) GetResourceType() ResourceType {
@@ -100,9 +192,9 @@ func (e *EventGatewayACLRule) GetOperations() []EventGatewayACLOperation {
 	return e.Operations
 }
 
-func (e *EventGatewayACLRule) GetResourceNames() []EventGatewayACLResourceName {
+func (e *EventGatewayACLRule) GetResourceNames() ResourceNames {
 	if e == nil {
-		return []EventGatewayACLResourceName{}
+		return ResourceNames{}
 	}
 	return e.ResourceNames
 }

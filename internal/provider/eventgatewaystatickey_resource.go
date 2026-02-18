@@ -50,7 +50,7 @@ type EventGatewayStaticKeyResourceModel struct {
 }
 
 func (r *EventGatewayStaticKeyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_event_gateway_static_key"
+	resp.TypeName = req.ProviderTypeName + "_event_gateway_static_key"
 }
 
 func (r *EventGatewayStaticKeyResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

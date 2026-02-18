@@ -53,7 +53,7 @@ type MeshGatewayResourceModel struct {
 }
 
 func (r *MeshGatewayResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_mesh_gateway"
+	resp.TypeName = req.ProviderTypeName + "_mesh_gateway"
 }
 
 func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
