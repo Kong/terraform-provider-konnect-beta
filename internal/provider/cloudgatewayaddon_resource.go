@@ -67,7 +67,7 @@ func (r *CloudGatewayAddOnResource) Schema(ctx context.Context, req resource.Sch
 					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 				},
 				Attributes: map[string]schema.Attribute{
-					"create_managed_cache_add_on_config": schema.SingleNestedAttribute{
+					"managed_cache": schema.SingleNestedAttribute{
 						Optional: true,
 						PlanModifiers: []planmodifier.Object{
 							objectplanmodifier.RequiresReplaceIfConfigured(),
@@ -79,22 +79,12 @@ func (r *CloudGatewayAddOnResource) Schema(ctx context.Context, req resource.Sch
 									objectplanmodifier.RequiresReplaceIfConfigured(),
 								},
 								Attributes: map[string]schema.Attribute{
-									"tiered_capacity_config": schema.SingleNestedAttribute{
+									"tiered": schema.SingleNestedAttribute{
 										Optional: true,
 										PlanModifiers: []planmodifier.Object{
 											objectplanmodifier.RequiresReplaceIfConfigured(),
 										},
 										Attributes: map[string]schema.Attribute{
-											"kind": schema.StringAttribute{
-												Required: true,
-												PlanModifiers: []planmodifier.String{
-													stringplanmodifier.RequiresReplaceIfConfigured(),
-												},
-												Description: `Type of capacity configuration. must be "tiered"; Requires replacement if changed.`,
-												Validators: []validator.String{
-													stringvalidator.OneOf("tiered"),
-												},
-											},
 											"tier": schema.StringAttribute{
 												Required: true,
 												PlanModifiers: []planmodifier.String{
@@ -141,13 +131,9 @@ func (r *CloudGatewayAddOnResource) Schema(ctx context.Context, req resource.Sch
 							"capacity_config": schema.SingleNestedAttribute{
 								Computed: true,
 								Attributes: map[string]schema.Attribute{
-									"tiered_capacity_config": schema.SingleNestedAttribute{
+									"tiered": schema.SingleNestedAttribute{
 										Computed: true,
 										Attributes: map[string]schema.Attribute{
-											"kind": schema.StringAttribute{
-												Computed:    true,
-												Description: `Type of capacity configuration.`,
-											},
 											"tier": schema.StringAttribute{
 												Computed: true,
 												MarkdownDescription: `Capacity tier that determines both cache size and performance characteristics:` + "\n" +
@@ -313,7 +299,7 @@ func (r *CloudGatewayAddOnResource) Schema(ctx context.Context, req resource.Sch
 					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 				},
 				Attributes: map[string]schema.Attribute{
-					"control_plane_add_on_owner": schema.SingleNestedAttribute{
+					"control_plane": schema.SingleNestedAttribute{
 						Optional: true,
 						PlanModifiers: []planmodifier.Object{
 							objectplanmodifier.RequiresReplaceIfConfigured(),
@@ -353,11 +339,11 @@ func (r *CloudGatewayAddOnResource) Schema(ctx context.Context, req resource.Sch
 						Description: `Control Plane is the owner for the add-on. Requires replacement if changed.`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
-								path.MatchRelative().AtParent().AtName("control_plane_group_add_on_owner"),
+								path.MatchRelative().AtParent().AtName("control_plane_group"),
 							}...),
 						},
 					},
-					"control_plane_group_add_on_owner": schema.SingleNestedAttribute{
+					"control_plane_group": schema.SingleNestedAttribute{
 						Optional: true,
 						PlanModifiers: []planmodifier.Object{
 							objectplanmodifier.RequiresReplaceIfConfigured(),
@@ -397,7 +383,7 @@ func (r *CloudGatewayAddOnResource) Schema(ctx context.Context, req resource.Sch
 						Description: `Control Plane Group is the owner for the add-on. Requires replacement if changed.`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
-								path.MatchRelative().AtParent().AtName("control_plane_add_on_owner"),
+								path.MatchRelative().AtParent().AtName("control_plane"),
 							}...),
 						},
 					},

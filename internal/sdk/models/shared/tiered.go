@@ -8,30 +8,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// Kind - Type of capacity configuration.
-type Kind string
-
-const (
-	KindTiered Kind = "tiered"
-)
-
-func (e Kind) ToPointer() *Kind {
-	return &e
-}
-func (e *Kind) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "tiered":
-		*e = Kind(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Kind: %v", v)
-	}
-}
-
 // Tier - Capacity tier that determines both cache size and performance characteristics:
 // - micro: ~0.5 GiB capacity
 // - small: ~1 GiB capacity
@@ -81,10 +57,10 @@ func (e *Tier) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// TieredCapacityConfig - Capacity tiers with pre-configured size and performance characteristics.
-type TieredCapacityConfig struct {
+// Tiered - Capacity tiers with pre-configured size and performance characteristics.
+type Tiered struct {
 	// Type of capacity configuration.
-	Kind Kind `json:"kind"`
+	kind string `const:"tiered" json:"kind"`
 	// Capacity tier that determines both cache size and performance characteristics:
 	// - micro: ~0.5 GiB capacity
 	// - small: ~1 GiB capacity
@@ -97,25 +73,22 @@ type TieredCapacityConfig struct {
 	Tier Tier `json:"tier"`
 }
 
-func (t TieredCapacityConfig) MarshalJSON() ([]byte, error) {
+func (t Tiered) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(t, "", false)
 }
 
-func (t *TieredCapacityConfig) UnmarshalJSON(data []byte) error {
+func (t *Tiered) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (t *TieredCapacityConfig) GetKind() Kind {
-	if t == nil {
-		return Kind("")
-	}
-	return t.Kind
+func (t *Tiered) GetKind() string {
+	return "tiered"
 }
 
-func (t *TieredCapacityConfig) GetTier() Tier {
+func (t *Tiered) GetTier() Tier {
 	if t == nil {
 		return Tier("")
 	}

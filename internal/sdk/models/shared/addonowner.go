@@ -11,33 +11,33 @@ import (
 type AddOnOwnerType string
 
 const (
-	AddOnOwnerTypeControlPlaneAddOnOwner      AddOnOwnerType = "ControlPlaneAddOnOwner"
-	AddOnOwnerTypeControlPlaneGroupAddOnOwner AddOnOwnerType = "ControlPlaneGroupAddOnOwner"
+	AddOnOwnerTypeControlPlane      AddOnOwnerType = "control_plane"
+	AddOnOwnerTypeControlPlaneGroup AddOnOwnerType = "control_plane_group"
 )
 
 // AddOnOwner - Owner for the add-on.
 type AddOnOwner struct {
-	ControlPlaneAddOnOwner      *ControlPlaneAddOnOwner      `queryParam:"inline,name=AddOnOwner" union:"member"`
-	ControlPlaneGroupAddOnOwner *ControlPlaneGroupAddOnOwner `queryParam:"inline,name=AddOnOwner" union:"member"`
+	ControlPlane      *ControlPlane      `queryParam:"inline,name=AddOnOwner" union:"member"`
+	ControlPlaneGroup *ControlPlaneGroup `queryParam:"inline,name=AddOnOwner" union:"member"`
 
 	Type AddOnOwnerType
 }
 
-func CreateAddOnOwnerControlPlaneAddOnOwner(controlPlaneAddOnOwner ControlPlaneAddOnOwner) AddOnOwner {
-	typ := AddOnOwnerTypeControlPlaneAddOnOwner
+func CreateAddOnOwnerControlPlane(controlPlane ControlPlane) AddOnOwner {
+	typ := AddOnOwnerTypeControlPlane
 
 	return AddOnOwner{
-		ControlPlaneAddOnOwner: &controlPlaneAddOnOwner,
-		Type:                   typ,
+		ControlPlane: &controlPlane,
+		Type:         typ,
 	}
 }
 
-func CreateAddOnOwnerControlPlaneGroupAddOnOwner(controlPlaneGroupAddOnOwner ControlPlaneGroupAddOnOwner) AddOnOwner {
-	typ := AddOnOwnerTypeControlPlaneGroupAddOnOwner
+func CreateAddOnOwnerControlPlaneGroup(controlPlaneGroup ControlPlaneGroup) AddOnOwner {
+	typ := AddOnOwnerTypeControlPlaneGroup
 
 	return AddOnOwner{
-		ControlPlaneGroupAddOnOwner: &controlPlaneGroupAddOnOwner,
-		Type:                        typ,
+		ControlPlaneGroup: &controlPlaneGroup,
+		Type:              typ,
 	}
 }
 
@@ -46,19 +46,19 @@ func (u *AddOnOwner) UnmarshalJSON(data []byte) error {
 	var candidates []utils.UnionCandidate
 
 	// Collect all valid candidates
-	var controlPlaneAddOnOwner ControlPlaneAddOnOwner = ControlPlaneAddOnOwner{}
-	if err := utils.UnmarshalJSON(data, &controlPlaneAddOnOwner, "", true, nil); err == nil {
+	var controlPlane ControlPlane = ControlPlane{}
+	if err := utils.UnmarshalJSON(data, &controlPlane, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AddOnOwnerTypeControlPlaneAddOnOwner,
-			Value: &controlPlaneAddOnOwner,
+			Type:  AddOnOwnerTypeControlPlane,
+			Value: &controlPlane,
 		})
 	}
 
-	var controlPlaneGroupAddOnOwner ControlPlaneGroupAddOnOwner = ControlPlaneGroupAddOnOwner{}
-	if err := utils.UnmarshalJSON(data, &controlPlaneGroupAddOnOwner, "", true, nil); err == nil {
+	var controlPlaneGroup ControlPlaneGroup = ControlPlaneGroup{}
+	if err := utils.UnmarshalJSON(data, &controlPlaneGroup, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AddOnOwnerTypeControlPlaneGroupAddOnOwner,
-			Value: &controlPlaneGroupAddOnOwner,
+			Type:  AddOnOwnerTypeControlPlaneGroup,
+			Value: &controlPlaneGroup,
 		})
 	}
 
@@ -75,11 +75,11 @@ func (u *AddOnOwner) UnmarshalJSON(data []byte) error {
 	// Set the union type and value based on the best candidate
 	u.Type = best.Type.(AddOnOwnerType)
 	switch best.Type {
-	case AddOnOwnerTypeControlPlaneAddOnOwner:
-		u.ControlPlaneAddOnOwner = best.Value.(*ControlPlaneAddOnOwner)
+	case AddOnOwnerTypeControlPlane:
+		u.ControlPlane = best.Value.(*ControlPlane)
 		return nil
-	case AddOnOwnerTypeControlPlaneGroupAddOnOwner:
-		u.ControlPlaneGroupAddOnOwner = best.Value.(*ControlPlaneGroupAddOnOwner)
+	case AddOnOwnerTypeControlPlaneGroup:
+		u.ControlPlaneGroup = best.Value.(*ControlPlaneGroup)
 		return nil
 	}
 
@@ -87,12 +87,12 @@ func (u *AddOnOwner) UnmarshalJSON(data []byte) error {
 }
 
 func (u AddOnOwner) MarshalJSON() ([]byte, error) {
-	if u.ControlPlaneAddOnOwner != nil {
-		return utils.MarshalJSON(u.ControlPlaneAddOnOwner, "", true)
+	if u.ControlPlane != nil {
+		return utils.MarshalJSON(u.ControlPlane, "", true)
 	}
 
-	if u.ControlPlaneGroupAddOnOwner != nil {
-		return utils.MarshalJSON(u.ControlPlaneGroupAddOnOwner, "", true)
+	if u.ControlPlaneGroup != nil {
+		return utils.MarshalJSON(u.ControlPlaneGroup, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type AddOnOwner: all fields are null")

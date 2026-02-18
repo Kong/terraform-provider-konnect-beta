@@ -3,6 +3,6 @@
 package types
 
 type AddOnOwner struct {
-	ControlPlaneAddOnOwner      *ControlPlaneAddOnOwner      `queryParam:"inline" tfsdk:"control_plane_add_on_owner" tfPlanOnly:"true"`
-	ControlPlaneGroupAddOnOwner *ControlPlaneGroupAddOnOwner `queryParam:"inline" tfsdk:"control_plane_group_add_on_owner" tfPlanOnly:"true"`
+	ControlPlane      *ControlPlane      `queryParam:"inline" tfsdk:"control_plane" tfPlanOnly:"true"`
+	ControlPlaneGroup *ControlPlaneGroup `queryParam:"inline" tfsdk:"control_plane_group" tfPlanOnly:"true"`
 }

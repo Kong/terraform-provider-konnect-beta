@@ -11,22 +11,22 @@ import (
 type CreateAddOnConfigType string
 
 const (
-	CreateAddOnConfigTypeCreateManagedCacheAddOnConfig CreateAddOnConfigType = "CreateManagedCacheAddOnConfig"
+	CreateAddOnConfigTypeManagedCache CreateAddOnConfigType = "managed_cache"
 )
 
 // CreateAddOnConfig - Configuration for creating different types of add-ons.
 type CreateAddOnConfig struct {
-	CreateManagedCacheAddOnConfig *CreateManagedCacheAddOnConfig `queryParam:"inline,name=CreateAddOnConfig" union:"member"`
+	ManagedCache *ManagedCache `queryParam:"inline,name=CreateAddOnConfig" union:"member"`
 
 	Type CreateAddOnConfigType
 }
 
-func CreateCreateAddOnConfigCreateManagedCacheAddOnConfig(createManagedCacheAddOnConfig CreateManagedCacheAddOnConfig) CreateAddOnConfig {
-	typ := CreateAddOnConfigTypeCreateManagedCacheAddOnConfig
+func CreateCreateAddOnConfigManagedCache(managedCache ManagedCache) CreateAddOnConfig {
+	typ := CreateAddOnConfigTypeManagedCache
 
 	return CreateAddOnConfig{
-		CreateManagedCacheAddOnConfig: &createManagedCacheAddOnConfig,
-		Type:                          typ,
+		ManagedCache: &managedCache,
+		Type:         typ,
 	}
 }
 
@@ -35,11 +35,11 @@ func (u *CreateAddOnConfig) UnmarshalJSON(data []byte) error {
 	var candidates []utils.UnionCandidate
 
 	// Collect all valid candidates
-	var createManagedCacheAddOnConfig CreateManagedCacheAddOnConfig = CreateManagedCacheAddOnConfig{}
-	if err := utils.UnmarshalJSON(data, &createManagedCacheAddOnConfig, "", true, nil); err == nil {
+	var managedCache ManagedCache = ManagedCache{}
+	if err := utils.UnmarshalJSON(data, &managedCache, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  CreateAddOnConfigTypeCreateManagedCacheAddOnConfig,
-			Value: &createManagedCacheAddOnConfig,
+			Type:  CreateAddOnConfigTypeManagedCache,
+			Value: &managedCache,
 		})
 	}
 
@@ -56,8 +56,8 @@ func (u *CreateAddOnConfig) UnmarshalJSON(data []byte) error {
 	// Set the union type and value based on the best candidate
 	u.Type = best.Type.(CreateAddOnConfigType)
 	switch best.Type {
-	case CreateAddOnConfigTypeCreateManagedCacheAddOnConfig:
-		u.CreateManagedCacheAddOnConfig = best.Value.(*CreateManagedCacheAddOnConfig)
+	case CreateAddOnConfigTypeManagedCache:
+		u.ManagedCache = best.Value.(*ManagedCache)
 		return nil
 	}
 
@@ -65,8 +65,8 @@ func (u *CreateAddOnConfig) UnmarshalJSON(data []byte) error {
 }
 
 func (u CreateAddOnConfig) MarshalJSON() ([]byte, error) {
-	if u.CreateManagedCacheAddOnConfig != nil {
-		return utils.MarshalJSON(u.CreateManagedCacheAddOnConfig, "", true)
+	if u.ManagedCache != nil {
+		return utils.MarshalJSON(u.ManagedCache, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type CreateAddOnConfig: all fields are null")

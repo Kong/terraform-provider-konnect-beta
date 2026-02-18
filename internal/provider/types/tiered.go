@@ -6,7 +6,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type ControlPlaneAddOnOwner struct {
-	ControlPlaneGeo types.String `tfsdk:"control_plane_geo"`
-	ControlPlaneID  types.String `tfsdk:"control_plane_id"`
+type Tiered struct {
+	Tier types.String `tfsdk:"tier"`
 }

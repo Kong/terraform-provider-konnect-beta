@@ -18,10 +18,9 @@ func (r *CloudGatewayAddOnResourceModel) RefreshFromSharedAddOnResponse(ctx cont
 	if resp != nil {
 		if resp.Config.ManagedCacheAddOnConfigResponse != nil {
 			r.Config.ManagedCacheAddOnConfigResponse = &tfTypes.ManagedCacheAddOnConfigResponse{}
-			if resp.Config.ManagedCacheAddOnConfigResponse.CapacityConfig.TieredCapacityConfig != nil {
-				r.Config.ManagedCacheAddOnConfigResponse.CapacityConfig.TieredCapacityConfig = &tfTypes.TieredCapacityConfig{}
-				r.Config.ManagedCacheAddOnConfigResponse.CapacityConfig.TieredCapacityConfig.Kind = types.StringValue(string(resp.Config.ManagedCacheAddOnConfigResponse.CapacityConfig.TieredCapacityConfig.Kind))
-				r.Config.ManagedCacheAddOnConfigResponse.CapacityConfig.TieredCapacityConfig.Tier = types.StringValue(string(resp.Config.ManagedCacheAddOnConfigResponse.CapacityConfig.TieredCapacityConfig.Tier))
+			if resp.Config.ManagedCacheAddOnConfigResponse.CapacityConfig.Tiered != nil {
+				r.Config.ManagedCacheAddOnConfigResponse.CapacityConfig.Tiered = &tfTypes.Tiered{}
+				r.Config.ManagedCacheAddOnConfigResponse.CapacityConfig.Tiered.Tier = types.StringValue(string(resp.Config.ManagedCacheAddOnConfigResponse.CapacityConfig.Tiered.Tier))
 			}
 			r.Config.ManagedCacheAddOnConfigResponse.DataPlaneGroups = []tfTypes.ManagedCacheAddOnDataPlaneGroup{}
 
@@ -57,15 +56,15 @@ func (r *CloudGatewayAddOnResourceModel) RefreshFromSharedAddOnResponse(ctx cont
 		r.EntityVersion = types.Int64Value(resp.EntityVersion)
 		r.ID = types.StringValue(resp.ID)
 		r.Name = types.StringValue(resp.Name)
-		if resp.Owner.ControlPlaneAddOnOwner != nil {
-			r.Owner.ControlPlaneAddOnOwner = &tfTypes.ControlPlaneAddOnOwner{}
-			r.Owner.ControlPlaneAddOnOwner.ControlPlaneGeo = types.StringValue(string(resp.Owner.ControlPlaneAddOnOwner.ControlPlaneGeo))
-			r.Owner.ControlPlaneAddOnOwner.ControlPlaneID = types.StringValue(resp.Owner.ControlPlaneAddOnOwner.ControlPlaneID)
+		if resp.Owner.ControlPlane != nil {
+			r.Owner.ControlPlane = &tfTypes.ControlPlane{}
+			r.Owner.ControlPlane.ControlPlaneGeo = types.StringValue(string(resp.Owner.ControlPlane.ControlPlaneGeo))
+			r.Owner.ControlPlane.ControlPlaneID = types.StringValue(resp.Owner.ControlPlane.ControlPlaneID)
 		}
-		if resp.Owner.ControlPlaneGroupAddOnOwner != nil {
-			r.Owner.ControlPlaneGroupAddOnOwner = &tfTypes.ControlPlaneGroupAddOnOwner{}
-			r.Owner.ControlPlaneGroupAddOnOwner.ControlPlaneGroupGeo = types.StringValue(string(resp.Owner.ControlPlaneGroupAddOnOwner.ControlPlaneGroupGeo))
-			r.Owner.ControlPlaneGroupAddOnOwner.ControlPlaneGroupID = types.StringValue(resp.Owner.ControlPlaneGroupAddOnOwner.ControlPlaneGroupID)
+		if resp.Owner.ControlPlaneGroup != nil {
+			r.Owner.ControlPlaneGroup = &tfTypes.ControlPlaneGroup{}
+			r.Owner.ControlPlaneGroup.ControlPlaneGroupGeo = types.StringValue(string(resp.Owner.ControlPlaneGroup.ControlPlaneGroupGeo))
+			r.Owner.ControlPlaneGroup.ControlPlaneGroupID = types.StringValue(resp.Owner.ControlPlaneGroup.ControlPlaneGroupID)
 		}
 		r.State = types.StringValue(string(resp.State))
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
@@ -107,63 +106,61 @@ func (r *CloudGatewayAddOnResourceModel) ToSharedCreateAddOnRequest(ctx context.
 	name = r.Name.ValueString()
 
 	var owner shared.AddOnOwner
-	var controlPlaneAddOnOwner *shared.ControlPlaneAddOnOwner
-	if r.Owner.ControlPlaneAddOnOwner != nil {
+	var controlPlane *shared.ControlPlane
+	if r.Owner.ControlPlane != nil {
 		var controlPlaneID string
-		controlPlaneID = r.Owner.ControlPlaneAddOnOwner.ControlPlaneID.ValueString()
+		controlPlaneID = r.Owner.ControlPlane.ControlPlaneID.ValueString()
 
-		controlPlaneGeo := shared.ControlPlaneGeo(r.Owner.ControlPlaneAddOnOwner.ControlPlaneGeo.ValueString())
-		controlPlaneAddOnOwner = &shared.ControlPlaneAddOnOwner{
+		controlPlaneGeo := shared.ControlPlaneGeo(r.Owner.ControlPlane.ControlPlaneGeo.ValueString())
+		controlPlane = &shared.ControlPlane{
 			ControlPlaneID:  controlPlaneID,
 			ControlPlaneGeo: controlPlaneGeo,
 		}
 	}
-	if controlPlaneAddOnOwner != nil {
+	if controlPlane != nil {
 		owner = shared.AddOnOwner{
-			ControlPlaneAddOnOwner: controlPlaneAddOnOwner,
+			ControlPlane: controlPlane,
 		}
 	}
-	var controlPlaneGroupAddOnOwner *shared.ControlPlaneGroupAddOnOwner
-	if r.Owner.ControlPlaneGroupAddOnOwner != nil {
+	var controlPlaneGroup *shared.ControlPlaneGroup
+	if r.Owner.ControlPlaneGroup != nil {
 		var controlPlaneGroupID string
-		controlPlaneGroupID = r.Owner.ControlPlaneGroupAddOnOwner.ControlPlaneGroupID.ValueString()
+		controlPlaneGroupID = r.Owner.ControlPlaneGroup.ControlPlaneGroupID.ValueString()
 
-		controlPlaneGroupGeo := shared.ControlPlaneGeo(r.Owner.ControlPlaneGroupAddOnOwner.ControlPlaneGroupGeo.ValueString())
-		controlPlaneGroupAddOnOwner = &shared.ControlPlaneGroupAddOnOwner{
+		controlPlaneGroupGeo := shared.ControlPlaneGeo(r.Owner.ControlPlaneGroup.ControlPlaneGroupGeo.ValueString())
+		controlPlaneGroup = &shared.ControlPlaneGroup{
 			ControlPlaneGroupID:  controlPlaneGroupID,
 			ControlPlaneGroupGeo: controlPlaneGroupGeo,
 		}
 	}
-	if controlPlaneGroupAddOnOwner != nil {
+	if controlPlaneGroup != nil {
 		owner = shared.AddOnOwner{
-			ControlPlaneGroupAddOnOwner: controlPlaneGroupAddOnOwner,
+			ControlPlaneGroup: controlPlaneGroup,
 		}
 	}
 	var config shared.CreateAddOnConfig
-	var createManagedCacheAddOnConfig *shared.CreateManagedCacheAddOnConfig
-	if r.Config.CreateManagedCacheAddOnConfig != nil {
+	var managedCache *shared.ManagedCache
+	if r.Config.ManagedCache != nil {
 		var capacityConfig shared.ManagedCacheCapacityConfig
-		var tieredCapacityConfig *shared.TieredCapacityConfig
-		if r.Config.CreateManagedCacheAddOnConfig.CapacityConfig.TieredCapacityConfig != nil {
-			kind := shared.Kind(r.Config.CreateManagedCacheAddOnConfig.CapacityConfig.TieredCapacityConfig.Kind.ValueString())
-			tier := shared.Tier(r.Config.CreateManagedCacheAddOnConfig.CapacityConfig.TieredCapacityConfig.Tier.ValueString())
-			tieredCapacityConfig = &shared.TieredCapacityConfig{
-				Kind: kind,
+		var tiered *shared.Tiered
+		if r.Config.ManagedCache.CapacityConfig.Tiered != nil {
+			tier := shared.Tier(r.Config.ManagedCache.CapacityConfig.Tiered.Tier.ValueString())
+			tiered = &shared.Tiered{
 				Tier: tier,
 			}
 		}
-		if tieredCapacityConfig != nil {
+		if tiered != nil {
 			capacityConfig = shared.ManagedCacheCapacityConfig{
-				TieredCapacityConfig: tieredCapacityConfig,
+				Tiered: tiered,
 			}
 		}
-		createManagedCacheAddOnConfig = &shared.CreateManagedCacheAddOnConfig{
+		managedCache = &shared.ManagedCache{
 			CapacityConfig: capacityConfig,
 		}
 	}
-	if createManagedCacheAddOnConfig != nil {
+	if managedCache != nil {
 		config = shared.CreateAddOnConfig{
-			CreateManagedCacheAddOnConfig: createManagedCacheAddOnConfig,
+			ManagedCache: managedCache,
 		}
 	}
 	out := shared.CreateAddOnRequest{

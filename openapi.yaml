@@ -28743,6 +28743,7 @@ components:
         - control_plane_id
         - control_plane_geo
       title: ControlPlaneAddOnOwner
+      x-speakeasy-name-override: control_plane
     ControlPlaneGroupAddOnOwner:
       description: Control Plane Group is the owner for the add-on.
       type: object
@@ -28764,6 +28765,7 @@ components:
         - control_plane_group_id
         - control_plane_group_geo
       title: ControlPlaneGroupAddOnOwner
+      x-speakeasy-name-override: control_plane_group
     CreateAddOnConfig:
       description: Configuration for creating different types of add-ons.
       type: object
@@ -28785,6 +28787,7 @@ components:
         - kind
         - capacity_config
       title: CreateManagedCacheAddOnConfig
+      x-speakeasy-name-override: managed_cache
     ManagedCacheCapacityConfig:
       description: Configuration for managed cache capacity and performance characteristics.
       type: object
@@ -28798,8 +28801,7 @@ components:
         kind:
           description: Type of capacity configuration.
           type: string
-          enum:
-            - tiered
+          const: tiered
         tier:
           description: |
             Capacity tier that determines both cache size and performance characteristics:
@@ -28825,6 +28827,7 @@ components:
         - kind
         - tier
       title: TieredCapacityConfig
+      x-speakeasy-name-override: Tiered
     CreatePortalCustomDomainSSL:
       type: object
       properties:

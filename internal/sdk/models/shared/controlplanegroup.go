@@ -6,8 +6,8 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// ControlPlaneGroupAddOnOwner - Control Plane Group is the owner for the add-on.
-type ControlPlaneGroupAddOnOwner struct {
+// ControlPlaneGroup - Control Plane Group is the owner for the add-on.
+type ControlPlaneGroup struct {
 	// Type of owner for the add-on.
 	kind string `const:"control-plane-group" json:"kind"`
 	// ID of the control-plane group that owns this add-on.
@@ -16,29 +16,29 @@ type ControlPlaneGroupAddOnOwner struct {
 	ControlPlaneGroupGeo ControlPlaneGeo `json:"control_plane_group_geo"`
 }
 
-func (c ControlPlaneGroupAddOnOwner) MarshalJSON() ([]byte, error) {
+func (c ControlPlaneGroup) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(c, "", false)
 }
 
-func (c *ControlPlaneGroupAddOnOwner) UnmarshalJSON(data []byte) error {
+func (c *ControlPlaneGroup) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *ControlPlaneGroupAddOnOwner) GetKind() string {
+func (c *ControlPlaneGroup) GetKind() string {
 	return "control-plane-group"
 }
 
-func (c *ControlPlaneGroupAddOnOwner) GetControlPlaneGroupID() string {
+func (c *ControlPlaneGroup) GetControlPlaneGroupID() string {
 	if c == nil {
 		return ""
 	}
 	return c.ControlPlaneGroupID
 }
 
-func (c *ControlPlaneGroupAddOnOwner) GetControlPlaneGroupGeo() ControlPlaneGeo {
+func (c *ControlPlaneGroup) GetControlPlaneGroupGeo() ControlPlaneGeo {
 	if c == nil {
 		return ControlPlaneGeo("")
 	}

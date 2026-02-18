@@ -2,6 +2,6 @@
 
 package types
 
-type CreateManagedCacheAddOnConfig struct {
+type ManagedCache struct {
 	CapacityConfig ManagedCacheCapacityConfig `tfsdk:"capacity_config"`
 }

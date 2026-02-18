@@ -11,22 +11,22 @@ import (
 type ManagedCacheCapacityConfigType string
 
 const (
-	ManagedCacheCapacityConfigTypeTieredCapacityConfig ManagedCacheCapacityConfigType = "TieredCapacityConfig"
+	ManagedCacheCapacityConfigTypeTiered ManagedCacheCapacityConfigType = "Tiered"
 )
 
 // ManagedCacheCapacityConfig - Configuration for managed cache capacity and performance characteristics.
 type ManagedCacheCapacityConfig struct {
-	TieredCapacityConfig *TieredCapacityConfig `queryParam:"inline,name=ManagedCacheCapacityConfig" union:"member"`
+	Tiered *Tiered `queryParam:"inline,name=ManagedCacheCapacityConfig" union:"member"`
 
 	Type ManagedCacheCapacityConfigType
 }
 
-func CreateManagedCacheCapacityConfigTieredCapacityConfig(tieredCapacityConfig TieredCapacityConfig) ManagedCacheCapacityConfig {
-	typ := ManagedCacheCapacityConfigTypeTieredCapacityConfig
+func CreateManagedCacheCapacityConfigTiered(tiered Tiered) ManagedCacheCapacityConfig {
+	typ := ManagedCacheCapacityConfigTypeTiered
 
 	return ManagedCacheCapacityConfig{
-		TieredCapacityConfig: &tieredCapacityConfig,
-		Type:                 typ,
+		Tiered: &tiered,
+		Type:   typ,
 	}
 }
 
@@ -35,11 +35,11 @@ func (u *ManagedCacheCapacityConfig) UnmarshalJSON(data []byte) error {
 	var candidates []utils.UnionCandidate
 
 	// Collect all valid candidates
-	var tieredCapacityConfig TieredCapacityConfig = TieredCapacityConfig{}
-	if err := utils.UnmarshalJSON(data, &tieredCapacityConfig, "", true, nil); err == nil {
+	var tiered Tiered = Tiered{}
+	if err := utils.UnmarshalJSON(data, &tiered, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  ManagedCacheCapacityConfigTypeTieredCapacityConfig,
-			Value: &tieredCapacityConfig,
+			Type:  ManagedCacheCapacityConfigTypeTiered,
+			Value: &tiered,
 		})
 	}
 
@@ -56,8 +56,8 @@ func (u *ManagedCacheCapacityConfig) UnmarshalJSON(data []byte) error {
 	// Set the union type and value based on the best candidate
 	u.Type = best.Type.(ManagedCacheCapacityConfigType)
 	switch best.Type {
-	case ManagedCacheCapacityConfigTypeTieredCapacityConfig:
-		u.TieredCapacityConfig = best.Value.(*TieredCapacityConfig)
+	case ManagedCacheCapacityConfigTypeTiered:
+		u.Tiered = best.Value.(*Tiered)
 		return nil
 	}
 
@@ -65,8 +65,8 @@ func (u *ManagedCacheCapacityConfig) UnmarshalJSON(data []byte) error {
 }
 
 func (u ManagedCacheCapacityConfig) MarshalJSON() ([]byte, error) {
-	if u.TieredCapacityConfig != nil {
-		return utils.MarshalJSON(u.TieredCapacityConfig, "", true)
+	if u.Tiered != nil {
+		return utils.MarshalJSON(u.Tiered, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type ManagedCacheCapacityConfig: all fields are null")

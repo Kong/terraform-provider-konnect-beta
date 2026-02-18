@@ -15,19 +15,18 @@ CloudGatewayAddOn Resource
 ```terraform
 resource "konnect-beta_cloud_gateway_add_on" "my_cloudgatewayaddon" {
   config = {
-    create_managed_cache_add_on_config = {
+    managed_cache = {
       capacity_config = {
-        tiered_capacity_config = {
-          kind = "tiered"
-          tier = "medium"
+        tiered = {
+          tier = "micro"
         }
       }
     }
   }
   name = "my-add-on"
   owner = {
-    control_plane_group_add_on_owner = {
-      control_plane_group_geo = "us"
+    control_plane_group = {
+      control_plane_group_geo = "sg"
       control_plane_group_id  = "123e4567-e89b-12d3-a456-426614174000"
     }
   }
@@ -59,32 +58,31 @@ resource "konnect-beta_cloud_gateway_add_on" "my_cloudgatewayaddon" {
 
 Optional:
 
-- `create_managed_cache_add_on_config` (Attributes) Configuration for creating a managed cache add-on. Requires replacement if changed. (see [below for nested schema](#nestedatt--config--create_managed_cache_add_on_config))
+- `managed_cache` (Attributes) Configuration for creating a managed cache add-on. Requires replacement if changed. (see [below for nested schema](#nestedatt--config--managed_cache))
 
 Read-Only:
 
 - `managed_cache_add_on_config_response` (Attributes) Configuration for managed cache add-on. (see [below for nested schema](#nestedatt--config--managed_cache_add_on_config_response))
 
-<a id="nestedatt--config--create_managed_cache_add_on_config"></a>
-### Nested Schema for `config.create_managed_cache_add_on_config`
+<a id="nestedatt--config--managed_cache"></a>
+### Nested Schema for `config.managed_cache`
 
 Required:
 
-- `capacity_config` (Attributes) Configuration for managed cache capacity and performance characteristics. Requires replacement if changed. (see [below for nested schema](#nestedatt--config--create_managed_cache_add_on_config--capacity_config))
+- `capacity_config` (Attributes) Configuration for managed cache capacity and performance characteristics. Requires replacement if changed. (see [below for nested schema](#nestedatt--config--managed_cache--capacity_config))
 
-<a id="nestedatt--config--create_managed_cache_add_on_config--capacity_config"></a>
-### Nested Schema for `config.create_managed_cache_add_on_config.capacity_config`
+<a id="nestedatt--config--managed_cache--capacity_config"></a>
+### Nested Schema for `config.managed_cache.capacity_config`
 
 Optional:
 
-- `tiered_capacity_config` (Attributes) Capacity tiers with pre-configured size and performance characteristics. Requires replacement if changed. (see [below for nested schema](#nestedatt--config--create_managed_cache_add_on_config--capacity_config--tiered_capacity_config))
+- `tiered` (Attributes) Capacity tiers with pre-configured size and performance characteristics. Requires replacement if changed. (see [below for nested schema](#nestedatt--config--managed_cache--capacity_config--tiered))
 
-<a id="nestedatt--config--create_managed_cache_add_on_config--capacity_config--tiered_capacity_config"></a>
-### Nested Schema for `config.create_managed_cache_add_on_config.capacity_config.tiered_capacity_config`
+<a id="nestedatt--config--managed_cache--capacity_config--tiered"></a>
+### Nested Schema for `config.managed_cache.capacity_config.tiered`
 
 Required:
 
-- `kind` (String) Type of capacity configuration. must be "tiered"; Requires replacement if changed.
 - `tier` (String) Capacity tier that determines both cache size and performance characteristics:
 - micro: ~0.5 GiB capacity
 - small: ~1 GiB capacity
@@ -112,14 +110,13 @@ Read-Only:
 
 Read-Only:
 
-- `tiered_capacity_config` (Attributes) Capacity tiers with pre-configured size and performance characteristics. (see [below for nested schema](#nestedatt--config--managed_cache_add_on_config_response--capacity_config--tiered_capacity_config))
+- `tiered` (Attributes) Capacity tiers with pre-configured size and performance characteristics. (see [below for nested schema](#nestedatt--config--managed_cache_add_on_config_response--capacity_config--tiered))
 
-<a id="nestedatt--config--managed_cache_add_on_config_response--capacity_config--tiered_capacity_config"></a>
-### Nested Schema for `config.managed_cache_add_on_config_response.capacity_config.tiered_capacity_config`
+<a id="nestedatt--config--managed_cache_add_on_config_response--capacity_config--tiered"></a>
+### Nested Schema for `config.managed_cache_add_on_config_response.capacity_config.tiered`
 
 Read-Only:
 
-- `kind` (String) Type of capacity configuration.
 - `tier` (String) Capacity tier that determines both cache size and performance characteristics:
 - micro: ~0.5 GiB capacity
 - small: ~1 GiB capacity
@@ -188,11 +185,11 @@ Read-Only:
 
 Optional:
 
-- `control_plane_add_on_owner` (Attributes) Control Plane is the owner for the add-on. Requires replacement if changed. (see [below for nested schema](#nestedatt--owner--control_plane_add_on_owner))
-- `control_plane_group_add_on_owner` (Attributes) Control Plane Group is the owner for the add-on. Requires replacement if changed. (see [below for nested schema](#nestedatt--owner--control_plane_group_add_on_owner))
+- `control_plane` (Attributes) Control Plane is the owner for the add-on. Requires replacement if changed. (see [below for nested schema](#nestedatt--owner--control_plane))
+- `control_plane_group` (Attributes) Control Plane Group is the owner for the add-on. Requires replacement if changed. (see [below for nested schema](#nestedatt--owner--control_plane_group))
 
-<a id="nestedatt--owner--control_plane_add_on_owner"></a>
-### Nested Schema for `owner.control_plane_add_on_owner`
+<a id="nestedatt--owner--control_plane"></a>
+### Nested Schema for `owner.control_plane`
 
 Optional:
 
@@ -200,8 +197,8 @@ Optional:
 - `control_plane_id` (String) ID of the control-plane that owns this add-on. Not Null; Requires replacement if changed.
 
 
-<a id="nestedatt--owner--control_plane_group_add_on_owner"></a>
-### Nested Schema for `owner.control_plane_group_add_on_owner`
+<a id="nestedatt--owner--control_plane_group"></a>
+### Nested Schema for `owner.control_plane_group`
 
 Optional:
 

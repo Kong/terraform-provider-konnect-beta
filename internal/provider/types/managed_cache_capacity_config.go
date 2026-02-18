@@ -3,5 +3,5 @@
 package types
 
 type ManagedCacheCapacityConfig struct {
-	TieredCapacityConfig *TieredCapacityConfig `queryParam:"inline" tfsdk:"tiered_capacity_config" tfPlanOnly:"true"`
+	Tiered *Tiered `queryParam:"inline" tfsdk:"tiered" tfPlanOnly:"true"`
 }

@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type TieredCapacityConfig struct {
-	Kind types.String `tfsdk:"kind"`
-	Tier types.String `tfsdk:"tier"`
+type ControlPlane struct {
+	ControlPlaneGeo types.String `tfsdk:"control_plane_geo"`
+	ControlPlaneID  types.String `tfsdk:"control_plane_id"`
 }
