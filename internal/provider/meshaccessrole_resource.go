@@ -49,7 +49,7 @@ type MeshAccessRoleResourceModel struct {
 }
 
 func (r *MeshAccessRoleResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_mesh_access_role"
+	resp.TypeName = "konnect_mesh_access_role"
 }
 
 func (r *MeshAccessRoleResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

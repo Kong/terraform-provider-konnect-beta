@@ -1,6 +1,0 @@
-resource "konnect-beta_portal_team" "my_portalteam" {
-  can_own_applications = true
-  description          = "The Identity Management (IDM) team."
-  name                 = "IDM - Developers"
-  portal_id            = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
-}

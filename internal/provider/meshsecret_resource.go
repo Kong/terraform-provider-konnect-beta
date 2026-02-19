@@ -45,7 +45,7 @@ type MeshSecretResourceModel struct {
 }
 
 func (r *MeshSecretResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_mesh_secret"
+	resp.TypeName = "konnect_mesh_secret"
 }
 
 func (r *MeshSecretResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

@@ -7,7 +7,7 @@ generate: generate-plan-modifiers speakeasy
 
 speakeasy: check-speakeasy
 	@rm -rf examples/resources
-	speakeasy run --skip-versioning --output console --minimal
+	speakeasy run --skip-versioning --output console --minimal --skip-compile
 	@go mod tidy
 	@go generate .
 	@git checkout -- README.md

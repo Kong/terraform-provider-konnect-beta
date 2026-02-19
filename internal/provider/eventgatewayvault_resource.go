@@ -50,7 +50,7 @@ type EventGatewayVaultResourceModel struct {
 }
 
 func (r *EventGatewayVaultResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_event_gateway_vault"
+	resp.TypeName = "konnect_event_gateway_vault"
 }
 
 func (r *EventGatewayVaultResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

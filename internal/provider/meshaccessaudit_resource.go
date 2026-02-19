@@ -49,7 +49,7 @@ type MeshAccessAuditResourceModel struct {
 }
 
 func (r *MeshAccessAuditResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_mesh_access_audit"
+	resp.TypeName = "konnect_mesh_access_audit"
 }
 
 func (r *MeshAccessAuditResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

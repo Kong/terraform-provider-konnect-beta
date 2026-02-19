@@ -53,7 +53,7 @@ type CloudGatewayAddOnResourceModel struct {
 }
 
 func (r *CloudGatewayAddOnResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_cloud_gateway_add_on"
+	resp.TypeName = "konnect_cloud_gateway_add_on"
 }
 
 func (r *CloudGatewayAddOnResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

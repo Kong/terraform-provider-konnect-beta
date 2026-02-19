@@ -53,7 +53,7 @@ type MeshWorkloadResourceModel struct {
 }
 
 func (r *MeshWorkloadResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_mesh_workload"
+	resp.TypeName = "konnect_mesh_workload"
 }
 
 func (r *MeshWorkloadResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
