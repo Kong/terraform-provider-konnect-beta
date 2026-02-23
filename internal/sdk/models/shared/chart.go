@@ -23,11 +23,11 @@ const (
 
 // Chart - The type of chart to render.
 type Chart struct {
-	DonutChart         *DonutChart         `queryParam:"inline,name=Chart" union:"member"`
-	TimeseriesChart    *TimeseriesChart    `queryParam:"inline,name=Chart" union:"member"`
-	BarChart           *BarChart           `queryParam:"inline,name=Chart" union:"member"`
-	SingleValueChart   *SingleValueChart   `queryParam:"inline,name=Chart" union:"member"`
-	ChoroplethMapChart *ChoroplethMapChart `queryParam:"inline,name=Chart" union:"member"`
+	DonutChart         *DonutChart         `queryParam:"inline" union:"member"`
+	TimeseriesChart    *TimeseriesChart    `queryParam:"inline" union:"member"`
+	BarChart           *BarChart           `queryParam:"inline" union:"member"`
+	SingleValueChart   *SingleValueChart   `queryParam:"inline" union:"member"`
+	ChoroplethMapChart *ChoroplethMapChart `queryParam:"inline" union:"member"`
 
 	Type ChartType
 }

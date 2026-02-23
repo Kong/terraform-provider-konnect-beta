@@ -142,8 +142,8 @@ const (
 )
 
 type Query struct {
-	AdvancedQuery *AdvancedQuery `queryParam:"inline,name=query" union:"member"`
-	LLMQuery      *LLMQuery      `queryParam:"inline,name=query" union:"member"`
+	AdvancedQuery *AdvancedQuery `queryParam:"inline" union:"member"`
+	LLMQuery      *LLMQuery      `queryParam:"inline" union:"member"`
 
 	Type QueryType
 }

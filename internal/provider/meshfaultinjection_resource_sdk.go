@@ -40,6 +40,7 @@ func (r *MeshFaultInjectionResourceModel) RefreshFromSharedMeshFaultInjectionIte
 		r.Mesh = types.StringPointerValue(resp.Mesh)
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
+		r.Spec = &tfTypes.MeshFaultInjectionItemSpec{}
 		r.Spec.From = []tfTypes.MeshFaultInjectionItemFrom{}
 
 		for _, fromItem := range resp.Spec.From {
@@ -59,6 +60,9 @@ func (r *MeshFaultInjectionResourceModel) RefreshFromSharedMeshFaultInjectionIte
 					} else {
 						http.Abort = &tfTypes.Abort{}
 						http.Abort.HTTPStatus = types.Int32Value(int32(httpItem.Abort.HTTPStatus))
+						if http.Abort.Percentage == nil {
+							http.Abort.Percentage = &tfTypes.MeshItemMode{}
+						}
 						if httpItem.Abort.Percentage.Integer != nil {
 							http.Abort.Percentage.Integer = types.Int64PointerValue(httpItem.Abort.Percentage.Integer)
 						}
@@ -70,6 +74,9 @@ func (r *MeshFaultInjectionResourceModel) RefreshFromSharedMeshFaultInjectionIte
 						http.Delay = nil
 					} else {
 						http.Delay = &tfTypes.Delay{}
+						if http.Delay.Percentage == nil {
+							http.Delay.Percentage = &tfTypes.MeshItemMode{}
+						}
 						if httpItem.Delay.Percentage.Integer != nil {
 							http.Delay.Percentage.Integer = types.Int64PointerValue(httpItem.Delay.Percentage.Integer)
 						}
@@ -83,6 +90,9 @@ func (r *MeshFaultInjectionResourceModel) RefreshFromSharedMeshFaultInjectionIte
 					} else {
 						http.ResponseBandwidth = &tfTypes.ResponseBandwidth{}
 						http.ResponseBandwidth.Limit = types.StringValue(httpItem.ResponseBandwidth.Limit)
+						if http.ResponseBandwidth.Percentage == nil {
+							http.ResponseBandwidth.Percentage = &tfTypes.MeshItemMode{}
+						}
 						if httpItem.ResponseBandwidth.Percentage.Integer != nil {
 							http.ResponseBandwidth.Percentage.Integer = types.Int64PointerValue(httpItem.ResponseBandwidth.Percentage.Integer)
 						}
@@ -94,6 +104,7 @@ func (r *MeshFaultInjectionResourceModel) RefreshFromSharedMeshFaultInjectionIte
 					from.Default.HTTP = append(from.Default.HTTP, http)
 				}
 			}
+			from.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			from.TargetRef.Kind = types.StringValue(string(fromItem.TargetRef.Kind))
 			if len(fromItem.TargetRef.Labels) > 0 {
 				from.TargetRef.Labels = make(map[string]types.String, len(fromItem.TargetRef.Labels))
@@ -123,6 +134,7 @@ func (r *MeshFaultInjectionResourceModel) RefreshFromSharedMeshFaultInjectionIte
 		for _, rulesItem := range resp.Spec.Rules {
 			var rules tfTypes.MeshFaultInjectionItemRules
 
+			rules.Default = &tfTypes.MeshFaultInjectionItemDefault{}
 			rules.Default.HTTP = []tfTypes.HTTP{}
 
 			for _, httpItem1 := range rulesItem.Default.HTTP {
@@ -133,6 +145,9 @@ func (r *MeshFaultInjectionResourceModel) RefreshFromSharedMeshFaultInjectionIte
 				} else {
 					http1.Abort = &tfTypes.Abort{}
 					http1.Abort.HTTPStatus = types.Int32Value(int32(httpItem1.Abort.HTTPStatus))
+					if http1.Abort.Percentage == nil {
+						http1.Abort.Percentage = &tfTypes.MeshItemMode{}
+					}
 					if httpItem1.Abort.Percentage.Integer != nil {
 						http1.Abort.Percentage.Integer = types.Int64PointerValue(httpItem1.Abort.Percentage.Integer)
 					}
@@ -144,6 +159,9 @@ func (r *MeshFaultInjectionResourceModel) RefreshFromSharedMeshFaultInjectionIte
 					http1.Delay = nil
 				} else {
 					http1.Delay = &tfTypes.Delay{}
+					if http1.Delay.Percentage == nil {
+						http1.Delay.Percentage = &tfTypes.MeshItemMode{}
+					}
 					if httpItem1.Delay.Percentage.Integer != nil {
 						http1.Delay.Percentage.Integer = types.Int64PointerValue(httpItem1.Delay.Percentage.Integer)
 					}
@@ -157,6 +175,9 @@ func (r *MeshFaultInjectionResourceModel) RefreshFromSharedMeshFaultInjectionIte
 				} else {
 					http1.ResponseBandwidth = &tfTypes.ResponseBandwidth{}
 					http1.ResponseBandwidth.Limit = types.StringValue(httpItem1.ResponseBandwidth.Limit)
+					if http1.ResponseBandwidth.Percentage == nil {
+						http1.ResponseBandwidth.Percentage = &tfTypes.MeshItemMode{}
+					}
 					if httpItem1.ResponseBandwidth.Percentage.Integer != nil {
 						http1.ResponseBandwidth.Percentage.Integer = types.Int64PointerValue(httpItem1.ResponseBandwidth.Percentage.Integer)
 					}
@@ -230,6 +251,9 @@ func (r *MeshFaultInjectionResourceModel) RefreshFromSharedMeshFaultInjectionIte
 					} else {
 						http2.Abort = &tfTypes.Abort{}
 						http2.Abort.HTTPStatus = types.Int32Value(int32(httpItem2.Abort.HTTPStatus))
+						if http2.Abort.Percentage == nil {
+							http2.Abort.Percentage = &tfTypes.MeshItemMode{}
+						}
 						if httpItem2.Abort.Percentage.Integer != nil {
 							http2.Abort.Percentage.Integer = types.Int64PointerValue(httpItem2.Abort.Percentage.Integer)
 						}
@@ -241,6 +265,9 @@ func (r *MeshFaultInjectionResourceModel) RefreshFromSharedMeshFaultInjectionIte
 						http2.Delay = nil
 					} else {
 						http2.Delay = &tfTypes.Delay{}
+						if http2.Delay.Percentage == nil {
+							http2.Delay.Percentage = &tfTypes.MeshItemMode{}
+						}
 						if httpItem2.Delay.Percentage.Integer != nil {
 							http2.Delay.Percentage.Integer = types.Int64PointerValue(httpItem2.Delay.Percentage.Integer)
 						}
@@ -254,6 +281,9 @@ func (r *MeshFaultInjectionResourceModel) RefreshFromSharedMeshFaultInjectionIte
 					} else {
 						http2.ResponseBandwidth = &tfTypes.ResponseBandwidth{}
 						http2.ResponseBandwidth.Limit = types.StringValue(httpItem2.ResponseBandwidth.Limit)
+						if http2.ResponseBandwidth.Percentage == nil {
+							http2.ResponseBandwidth.Percentage = &tfTypes.MeshItemMode{}
+						}
 						if httpItem2.ResponseBandwidth.Percentage.Integer != nil {
 							http2.ResponseBandwidth.Percentage.Integer = types.Int64PointerValue(httpItem2.ResponseBandwidth.Percentage.Integer)
 						}
@@ -265,6 +295,7 @@ func (r *MeshFaultInjectionResourceModel) RefreshFromSharedMeshFaultInjectionIte
 					to.Default.HTTP = append(to.Default.HTTP, http2)
 				}
 			}
+			to.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			to.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 			if len(toItem.TargetRef.Labels) > 0 {
 				to.TargetRef.Labels = make(map[string]types.String, len(toItem.TargetRef.Labels))

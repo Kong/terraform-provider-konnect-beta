@@ -4,8 +4,11 @@ package provider
 
 import (
 	"context"
+	"github.com/hashicorp/terraform-plugin-framework/action"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/ephemeral"
+	"github.com/hashicorp/terraform-plugin-framework/function"
+	"github.com/hashicorp/terraform-plugin-framework/list"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -17,7 +20,9 @@ import (
 )
 
 var _ provider.Provider = (*KonnectBetaProvider)(nil)
+var _ provider.ProviderWithActions = (*KonnectBetaProvider)(nil)
 var _ provider.ProviderWithEphemeralResources = (*KonnectBetaProvider)(nil)
+var _ provider.ProviderWithFunctions = (*KonnectBetaProvider)(nil)
 
 type KonnectBetaProvider struct {
 	// version is set to the provider version on release, "dev" when the
@@ -131,9 +136,19 @@ func (p *KonnectBetaProvider) Configure(ctx context.Context, req provider.Config
 	}
 
 	client := sdk.New(opts...)
+	resp.ActionData = client
 	resp.DataSourceData = client
 	resp.EphemeralResourceData = client
+	resp.ListResourceData = client
 	resp.ResourceData = client
+}
+
+func (p *KonnectBetaProvider) Functions(_ context.Context) []func() function.Function {
+	return []func() function.Function{}
+}
+
+func (p *KonnectBetaProvider) Actions(_ context.Context) []func() action.Action {
+	return []func() action.Action{}
 }
 
 func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.Resource {
@@ -222,6 +237,10 @@ func (p *KonnectBetaProvider) DataSources(ctx context.Context) []func() datasour
 
 func (p *KonnectBetaProvider) EphemeralResources(ctx context.Context) []func() ephemeral.EphemeralResource {
 	return []func() ephemeral.EphemeralResource{}
+}
+
+func (p *KonnectBetaProvider) ListResources(ctx context.Context) []func() list.ListResource {
+	return []func() list.ListResource{}
 }
 
 func New(version string) func() provider.Provider {

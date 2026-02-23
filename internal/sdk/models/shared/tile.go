@@ -16,7 +16,7 @@ const (
 )
 
 type Tile struct {
-	ChartTile *ChartTile `queryParam:"inline,name=Tile" union:"member"`
+	ChartTile *ChartTile `queryParam:"inline" union:"member"`
 
 	Type TileType
 }

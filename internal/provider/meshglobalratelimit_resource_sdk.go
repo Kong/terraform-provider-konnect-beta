@@ -40,6 +40,7 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 		r.Mesh = types.StringPointerValue(resp.Mesh)
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
+		r.Spec = &tfTypes.MeshGlobalRateLimitItemSpec{}
 		r.Spec.From = []tfTypes.MeshGlobalRateLimitItemFrom{}
 
 		for _, fromItem := range resp.Spec.From {
@@ -49,9 +50,12 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 				from.Default = nil
 			} else {
 				from.Default = &tfTypes.MeshGlobalRateLimitItemDefault{}
+				from.Default.Backend = &tfTypes.Backend{}
+				from.Default.Backend.RateLimitService = &tfTypes.RateLimitService{}
 				from.Default.Backend.RateLimitService.LimitOnServiceFail = types.BoolPointerValue(fromItem.Default.Backend.RateLimitService.LimitOnServiceFail)
 				from.Default.Backend.RateLimitService.Timeout = types.StringPointerValue(fromItem.Default.Backend.RateLimitService.Timeout)
 				from.Default.Backend.RateLimitService.URL = types.StringPointerValue(fromItem.Default.Backend.RateLimitService.URL)
+				from.Default.HTTP = &tfTypes.MeshGlobalRateLimitItemHTTP{}
 				from.Default.HTTP.Disabled = types.BoolPointerValue(fromItem.Default.HTTP.Disabled)
 				if fromItem.Default.HTTP.OnRateLimit == nil {
 					from.Default.HTTP.OnRateLimit = nil
@@ -123,6 +127,7 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 					from.Default.Mode = types.StringNull()
 				}
 			}
+			from.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			from.TargetRef.Kind = types.StringValue(string(fromItem.TargetRef.Kind))
 			if len(fromItem.TargetRef.Labels) > 0 {
 				from.TargetRef.Labels = make(map[string]types.String, len(fromItem.TargetRef.Labels))
@@ -182,9 +187,12 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 				to.Default = nil
 			} else {
 				to.Default = &tfTypes.MeshGlobalRateLimitItemDefault{}
+				to.Default.Backend = &tfTypes.Backend{}
+				to.Default.Backend.RateLimitService = &tfTypes.RateLimitService{}
 				to.Default.Backend.RateLimitService.LimitOnServiceFail = types.BoolPointerValue(toItem.Default.Backend.RateLimitService.LimitOnServiceFail)
 				to.Default.Backend.RateLimitService.Timeout = types.StringPointerValue(toItem.Default.Backend.RateLimitService.Timeout)
 				to.Default.Backend.RateLimitService.URL = types.StringPointerValue(toItem.Default.Backend.RateLimitService.URL)
+				to.Default.HTTP = &tfTypes.MeshGlobalRateLimitItemHTTP{}
 				to.Default.HTTP.Disabled = types.BoolPointerValue(toItem.Default.HTTP.Disabled)
 				if toItem.Default.HTTP.OnRateLimit == nil {
 					to.Default.HTTP.OnRateLimit = nil
@@ -256,6 +264,7 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 					to.Default.Mode = types.StringNull()
 				}
 			}
+			to.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			to.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 			if len(toItem.TargetRef.Labels) > 0 {
 				to.TargetRef.Labels = make(map[string]types.String, len(toItem.TargetRef.Labels))

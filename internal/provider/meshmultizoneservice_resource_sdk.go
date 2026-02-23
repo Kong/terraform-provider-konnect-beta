@@ -40,6 +40,7 @@ func (r *MeshMultiZoneServiceResourceModel) RefreshFromSharedMeshMultiZoneServic
 		r.Mesh = types.StringPointerValue(resp.Mesh)
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
+		r.Spec = &tfTypes.MeshMultiZoneServiceItemSpec{}
 		r.Spec.Ports = []tfTypes.Ports{}
 
 		for _, portsItem := range resp.Spec.Ports {
@@ -51,6 +52,8 @@ func (r *MeshMultiZoneServiceResourceModel) RefreshFromSharedMeshMultiZoneServic
 
 			r.Spec.Ports = append(r.Spec.Ports, ports)
 		}
+		r.Spec.Selector = &tfTypes.MeshMultiZoneServiceItemSelector{}
+		r.Spec.Selector.MeshService = &tfTypes.MeshExternalService{}
 		if len(resp.Spec.Selector.MeshService.MatchLabels) > 0 {
 			r.Spec.Selector.MeshService.MatchLabels = make(map[string]types.String, len(resp.Spec.Selector.MeshService.MatchLabels))
 			for key, value := range resp.Spec.Selector.MeshService.MatchLabels {
@@ -106,6 +109,7 @@ func (r *MeshMultiZoneServiceResourceModel) RefreshFromSharedMeshMultiZoneServic
 
 					hostnameGenerators.Conditions = append(hostnameGenerators.Conditions, conditions1)
 				}
+				hostnameGenerators.HostnameGeneratorRef = &tfTypes.HostnameGeneratorRef{}
 				hostnameGenerators.HostnameGeneratorRef.CoreName = types.StringValue(hostnameGeneratorsItem.HostnameGeneratorRef.CoreName)
 
 				r.Status.HostnameGenerators = append(r.Status.HostnameGenerators, hostnameGenerators)

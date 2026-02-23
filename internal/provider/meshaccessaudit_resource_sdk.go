@@ -56,6 +56,8 @@ func (r *MeshAccessAuditResourceModel) RefreshFromSharedAccessAuditItem(ctx cont
 
 						rules.Access = append(rules.Access, access)
 					}
+				} else {
+					rules.Access = nil
 				}
 				rules.AccessAll = types.BoolPointerValue(rulesItem.AccessAll)
 				rules.Mesh = types.StringPointerValue(rulesItem.Mesh)
@@ -64,10 +66,14 @@ func (r *MeshAccessAuditResourceModel) RefreshFromSharedAccessAuditItem(ctx cont
 					for _, v := range rulesItem.Types {
 						rules.Types = append(rules.Types, types.StringValue(v))
 					}
+				} else {
+					rules.Types = nil
 				}
 
 				r.Rules = append(r.Rules, rules)
 			}
+		} else {
+			r.Rules = nil
 		}
 		r.Type = types.StringValue(resp.Type)
 	}

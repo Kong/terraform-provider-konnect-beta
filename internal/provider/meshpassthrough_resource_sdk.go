@@ -40,6 +40,7 @@ func (r *MeshPassthroughResourceModel) RefreshFromSharedMeshPassthroughItem(ctx 
 		r.Mesh = types.StringPointerValue(resp.Mesh)
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
+		r.Spec = &tfTypes.MeshPassthroughItemSpec{}
 		if resp.Spec.Default == nil {
 			r.Spec.Default = nil
 		} else {

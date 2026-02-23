@@ -3,6 +3,6 @@
 package types
 
 type EncryptionKeyStaticReference struct {
-	ReferenceByID   *SchemaRegistryReferenceByID `queryParam:"inline" tfsdk:"reference_by_id" tfPlanOnly:"true"`
-	ReferenceByName *EventGatewayACLOperation    `queryParam:"inline" tfsdk:"reference_by_name" tfPlanOnly:"true"`
+	ReferenceByID   *SchemaRegistryReferenceByID `queryParam:"inline" tfsdk:"reference_by_id"`
+	ReferenceByName *EventGatewayACLOperation    `queryParam:"inline" tfsdk:"reference_by_name"`
 }

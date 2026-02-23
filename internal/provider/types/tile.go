@@ -3,5 +3,5 @@
 package types
 
 type Tile struct {
-	Chart *ChartTile `queryParam:"inline" tfsdk:"chart" tfPlanOnly:"true"`
+	Chart *ChartTile `queryParam:"inline" tfsdk:"chart"`
 }
