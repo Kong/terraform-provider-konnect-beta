@@ -17,8 +17,8 @@ const (
 
 // Protocol specifies the network protocol this listener expects to receive.
 type Protocol struct {
-	Str     *string `queryParam:"inline,name=protocol" union:"member"`
-	Integer *int64  `queryParam:"inline,name=protocol" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
 
 	Type ProtocolType
 }
@@ -213,10 +213,10 @@ const (
 )
 
 type Certificates struct {
-	DataSourceFile         *DataSourceFile         `queryParam:"inline,name=certificates" union:"member"`
-	DataSourceInline       *DataSourceInline       `queryParam:"inline,name=certificates" union:"member"`
-	DataSourceInlineString *DataSourceInlineString `queryParam:"inline,name=certificates" union:"member"`
-	DataSourceSecret       *DataSourceSecret       `queryParam:"inline,name=certificates" union:"member"`
+	DataSourceFile         *DataSourceFile         `queryParam:"inline" union:"member"`
+	DataSourceInline       *DataSourceInline       `queryParam:"inline" union:"member"`
+	DataSourceInlineString *DataSourceInlineString `queryParam:"inline" union:"member"`
+	DataSourceSecret       *DataSourceSecret       `queryParam:"inline" union:"member"`
 
 	Type CertificatesType
 }
@@ -354,8 +354,8 @@ const (
 // MeshGatewayItemMode - Mode defines the TLS behavior for the TLS session initiated
 // by the client.
 type MeshGatewayItemMode struct {
-	Str     *string `queryParam:"inline,name=mode" union:"member"`
-	Integer *int64  `queryParam:"inline,name=mode" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
 
 	Type MeshGatewayItemModeType
 }

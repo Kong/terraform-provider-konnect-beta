@@ -40,6 +40,7 @@ func (r *MeshTrustResourceModel) RefreshFromSharedMeshTrustItem(ctx context.Cont
 		r.Mesh = types.StringPointerValue(resp.Mesh)
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
+		r.Spec = &tfTypes.MeshTrustItemSpec{}
 		r.Spec.CaBundles = []tfTypes.CaBundles{}
 
 		for _, caBundlesItem := range resp.Spec.CaBundles {

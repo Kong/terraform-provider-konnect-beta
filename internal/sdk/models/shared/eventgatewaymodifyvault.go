@@ -18,8 +18,8 @@ const (
 
 // EventGatewayModifyVault - The typed schema of the vault to modify it.
 type EventGatewayModifyVault struct {
-	EventGatewayEnvVault     *EventGatewayEnvVault     `queryParam:"inline,name=EventGatewayModifyVault" union:"member"`
-	EventGatewayKonnectVault *EventGatewayKonnectVault `queryParam:"inline,name=EventGatewayModifyVault" union:"member"`
+	EventGatewayEnvVault     *EventGatewayEnvVault     `queryParam:"inline" union:"member"`
+	EventGatewayKonnectVault *EventGatewayKonnectVault `queryParam:"inline" union:"member"`
 
 	Type EventGatewayModifyVaultType
 }

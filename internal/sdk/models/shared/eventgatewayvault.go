@@ -205,8 +205,8 @@ const (
 )
 
 type EventGatewayVault struct {
-	EventGatewayVaultEventGatewayEnvVault     *EventGatewayVaultEventGatewayEnvVault     `queryParam:"inline,name=EventGatewayVault" union:"member"`
-	EventGatewayVaultEventGatewayKonnectVault *EventGatewayVaultEventGatewayKonnectVault `queryParam:"inline,name=EventGatewayVault" union:"member"`
+	EventGatewayVaultEventGatewayEnvVault     *EventGatewayVaultEventGatewayEnvVault     `queryParam:"inline" union:"member"`
+	EventGatewayVaultEventGatewayKonnectVault *EventGatewayVaultEventGatewayKonnectVault `queryParam:"inline" union:"member"`
 
 	Type EventGatewayVaultType
 }

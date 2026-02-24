@@ -8,5 +8,5 @@ terraform {
 }
 
 provider "konnect-beta" {
-  # Configuration options
+  server_url = "..." # Optional - can use KONNECT_SERVER_URL environment variable
 }

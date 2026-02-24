@@ -40,6 +40,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 		r.Mesh = types.StringPointerValue(resp.Mesh)
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
+		r.Spec = &tfTypes.MeshLoadBalancingStrategyItemSpec{}
 		if resp.Spec.TargetRef == nil {
 			r.Spec.TargetRef = nil
 		} else {
@@ -272,6 +273,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 									failover.From.Zones = append(failover.From.Zones, types.StringValue(v))
 								}
 							}
+							failover.To = &tfTypes.MeshLoadBalancingStrategyItemSpecTo{}
 							failover.To.Type = types.StringValue(string(failoverItem.To.Type))
 							failover.To.Zones = make([]types.String, 0, len(failoverItem.To.Zones))
 							for _, v := range failoverItem.To.Zones {
@@ -284,6 +286,9 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 							to.Default.LocalityAwareness.CrossZone.FailoverThreshold = nil
 						} else {
 							to.Default.LocalityAwareness.CrossZone.FailoverThreshold = &tfTypes.FailoverThreshold{}
+							if to.Default.LocalityAwareness.CrossZone.FailoverThreshold.Percentage == nil {
+								to.Default.LocalityAwareness.CrossZone.FailoverThreshold.Percentage = &tfTypes.MeshItemMode{}
+							}
 							if toItem.Default.LocalityAwareness.CrossZone.FailoverThreshold.Percentage.Integer != nil {
 								to.Default.LocalityAwareness.CrossZone.FailoverThreshold.Percentage.Integer = types.Int64PointerValue(toItem.Default.LocalityAwareness.CrossZone.FailoverThreshold.Percentage.Integer)
 							}
@@ -310,6 +315,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 					}
 				}
 			}
+			to.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			to.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 			if len(toItem.TargetRef.Labels) > 0 {
 				to.TargetRef.Labels = make(map[string]types.String, len(toItem.TargetRef.Labels))

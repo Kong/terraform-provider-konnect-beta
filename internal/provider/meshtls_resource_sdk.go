@@ -40,6 +40,7 @@ func (r *MeshTLSResourceModel) RefreshFromSharedMeshTLSItem(ctx context.Context,
 		r.Mesh = types.StringPointerValue(resp.Mesh)
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
+		r.Spec = &tfTypes.MeshTLSItemSpec{}
 		r.Spec.From = []tfTypes.MeshTLSItemFrom{}
 
 		for _, fromItem := range resp.Spec.From {
@@ -74,6 +75,7 @@ func (r *MeshTLSResourceModel) RefreshFromSharedMeshTLSItem(ctx context.Context,
 					}
 				}
 			}
+			from.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			from.TargetRef.Kind = types.StringValue(string(fromItem.TargetRef.Kind))
 			if len(fromItem.TargetRef.Labels) > 0 {
 				from.TargetRef.Labels = make(map[string]types.String, len(fromItem.TargetRef.Labels))

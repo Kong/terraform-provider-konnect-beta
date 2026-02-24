@@ -46,6 +46,8 @@ func (r *MeshZoneIngressResourceModel) RefreshFromSharedZoneIngressItem(ctx cont
 
 				r.AvailableServices = append(r.AvailableServices, availableServices)
 			}
+		} else {
+			r.AvailableServices = nil
 		}
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))

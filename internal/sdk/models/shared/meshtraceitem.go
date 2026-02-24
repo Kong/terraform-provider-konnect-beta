@@ -248,8 +248,8 @@ const (
 // Either int or decimal represented as string.
 // If not specified then the default value is 100.
 type MeshTraceItemClient struct {
-	Integer *int64  `queryParam:"inline,name=client" union:"member"`
-	Str     *string `queryParam:"inline,name=client" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
 
 	Type MeshTraceItemClientType
 }
@@ -347,8 +347,8 @@ const (
 // Either int or decimal represented as string.
 // If not specified then the default value is 100.
 type Overall struct {
-	Integer *int64  `queryParam:"inline,name=overall" union:"member"`
-	Str     *string `queryParam:"inline,name=overall" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
 
 	Type OverallType
 }
@@ -442,8 +442,8 @@ const (
 // Either int or decimal represented as string.
 // If not specified then the default value is 100.
 type Random struct {
-	Integer *int64  `queryParam:"inline,name=random" union:"member"`
-	Str     *string `queryParam:"inline,name=random" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
 
 	Type RandomType
 }

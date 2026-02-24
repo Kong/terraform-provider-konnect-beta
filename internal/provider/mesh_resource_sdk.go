@@ -350,6 +350,9 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(ctx context.Context, resp 
 					}
 					if backendsItem2.Conf.VaultCertificateAuthorityConfig != nil {
 						backends2.Conf.VaultCertificateAuthorityConfig = &tfTypes.VaultCertificateAuthorityConfig{}
+						if backends2.Conf.VaultCertificateAuthorityConfig == nil {
+							backends2.Conf.VaultCertificateAuthorityConfig = &tfTypes.VaultCertificateAuthorityConfig{}
+						}
 						if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp != nil {
 							backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp = &tfTypes.VaultCertificateAuthorityConfigFromCp{}
 							if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp == nil {

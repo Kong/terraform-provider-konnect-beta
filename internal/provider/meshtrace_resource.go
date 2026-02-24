@@ -53,7 +53,7 @@ type MeshTraceResourceModel struct {
 	Mesh             types.String                  `tfsdk:"mesh"`
 	ModificationTime types.String                  `tfsdk:"modification_time"`
 	Name             types.String                  `tfsdk:"name"`
-	Spec             tfTypes.MeshTraceItemSpec     `tfsdk:"spec"`
+	Spec             *tfTypes.MeshTraceItemSpec    `tfsdk:"spec"`
 	Type             types.String                  `tfsdk:"type"`
 	Warnings         []types.String                `tfsdk:"warnings"`
 }
@@ -802,17 +802,17 @@ func (r *MeshTraceResource) ImportState(ctx context.Context, req resource.Import
 	}
 
 	if len(data.CpID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field cp_id is required but was not found in the json encoded ID. It's expected to be a value alike '"bf138ba2-c9b1-4229-b268-04d9d8a6410b"`)
+		resp.Diagnostics.AddError("Missing required field", `The field cp_id is required but was not found in the json encoded ID. It's expected to be a value alike '"bf138ba2-c9b1-4229-b268-04d9d8a6410b"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("cp_id"), data.CpID)...)
 	if len(data.Mesh) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field mesh is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		resp.Diagnostics.AddError("Missing required field", `The field mesh is required but was not found in the json encoded ID.`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("mesh"), data.Mesh)...)
 	if len(data.Name) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field name is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		resp.Diagnostics.AddError("Missing required field", `The field name is required but was not found in the json encoded ID.`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), data.Name)...)

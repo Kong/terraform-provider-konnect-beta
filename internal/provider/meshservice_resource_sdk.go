@@ -40,6 +40,7 @@ func (r *MeshServiceResourceModel) RefreshFromSharedMeshServiceItem(ctx context.
 		r.Mesh = types.StringPointerValue(resp.Mesh)
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
+		r.Spec = &tfTypes.MeshServiceItemSpec{}
 		r.Spec.Identities = []tfTypes.MeshFaultInjectionItemSpiffeID{}
 
 		for _, identitiesItem := range resp.Spec.Identities {
@@ -148,6 +149,7 @@ func (r *MeshServiceResourceModel) RefreshFromSharedMeshServiceItem(ctx context.
 
 					hostnameGenerators.Conditions = append(hostnameGenerators.Conditions, conditions)
 				}
+				hostnameGenerators.HostnameGeneratorRef = &tfTypes.HostnameGeneratorRef{}
 				hostnameGenerators.HostnameGeneratorRef.CoreName = types.StringValue(hostnameGeneratorsItem.HostnameGeneratorRef.CoreName)
 
 				r.Status.HostnameGenerators = append(r.Status.HostnameGenerators, hostnameGenerators)

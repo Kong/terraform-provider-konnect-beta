@@ -87,8 +87,8 @@ const (
 )
 
 type TargetPort struct {
-	Integer *int64  `queryParam:"inline,name=targetPort" union:"member"`
-	Str     *string `queryParam:"inline,name=targetPort" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
 
 	Type TargetPortType
 }

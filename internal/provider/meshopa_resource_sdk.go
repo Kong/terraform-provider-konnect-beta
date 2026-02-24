@@ -40,6 +40,7 @@ func (r *MeshOPAResourceModel) RefreshFromSharedMeshOPAItem(ctx context.Context,
 		r.Mesh = types.StringPointerValue(resp.Mesh)
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
+		r.Spec = &tfTypes.MeshOPAItemSpec{}
 		if resp.Spec.Default == nil {
 			r.Spec.Default = nil
 		} else {
@@ -58,6 +59,7 @@ func (r *MeshOPAResourceModel) RefreshFromSharedMeshOPAItem(ctx context.Context,
 				var appendPolicies tfTypes.AppendPolicies
 
 				appendPolicies.IgnoreDecision = types.BoolPointerValue(appendPoliciesItem.IgnoreDecision)
+				appendPolicies.Rego = &tfTypes.CaCert{}
 				appendPolicies.Rego.Inline = types.StringPointerValue(appendPoliciesItem.Rego.Inline)
 				appendPolicies.Rego.InlineString = types.StringPointerValue(appendPoliciesItem.Rego.InlineString)
 				appendPolicies.Rego.Secret = types.StringPointerValue(appendPoliciesItem.Rego.Secret)

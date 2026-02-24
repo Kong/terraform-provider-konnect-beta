@@ -18,6 +18,7 @@ func (r *EventGatewayVaultResourceModel) RefreshFromSharedEventGatewayVault(ctx 
 	if resp != nil {
 		if resp.EventGatewayVaultEventGatewayEnvVault != nil {
 			r.Env = &tfTypes.EventGatewayEnvVault{}
+			r.Env.Config = &tfTypes.Config{}
 			r.Env.Config.Prefix = types.StringValue(resp.EventGatewayVaultEventGatewayEnvVault.Config.Prefix)
 			r.Env.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.EventGatewayVaultEventGatewayEnvVault.CreatedAt))
 			r.Env.Description = types.StringPointerValue(resp.EventGatewayVaultEventGatewayEnvVault.Description)

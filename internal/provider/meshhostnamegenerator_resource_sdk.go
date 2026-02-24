@@ -41,6 +41,7 @@ func (r *MeshHostnameGeneratorResourceModel) RefreshFromSharedHostnameGeneratorI
 		}
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
+		r.Spec = &tfTypes.HostnameGeneratorItemSpec{}
 		if resp.Spec.Extension == nil {
 			r.Spec.Extension = nil
 		} else {

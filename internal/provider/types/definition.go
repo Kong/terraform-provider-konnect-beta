@@ -3,6 +3,6 @@
 package types
 
 type Definition struct {
-	Chart Chart `tfsdk:"chart"`
-	Query Query `tfsdk:"query"`
+	Chart *Chart `tfsdk:"chart"`
+	Query *Query `tfsdk:"query"`
 }
