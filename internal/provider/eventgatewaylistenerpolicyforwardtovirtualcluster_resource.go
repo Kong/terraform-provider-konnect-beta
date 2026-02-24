@@ -10,13 +10,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -44,17 +42,17 @@ type EventGatewayListenerPolicyForwardToVirtualClusterResource struct {
 
 // EventGatewayListenerPolicyForwardToVirtualClusterResourceModel describes the resource data model.
 type EventGatewayListenerPolicyForwardToVirtualClusterResourceModel struct {
-	Config                 *tfTypes.ForwardToVirtualClusterPolicyConfig `tfsdk:"config"`
-	CreatedAt              types.String                                 `tfsdk:"created_at"`
-	Description            types.String                                 `tfsdk:"description"`
-	Enabled                types.Bool                                   `tfsdk:"enabled"`
-	EventGatewayListenerID types.String                                 `tfsdk:"event_gateway_listener_id"`
-	GatewayID              types.String                                 `tfsdk:"gateway_id"`
-	ID                     types.String                                 `tfsdk:"id"`
-	Labels                 map[string]types.String                      `tfsdk:"labels"`
-	Name                   types.String                                 `tfsdk:"name"`
-	ParentPolicyID         types.String                                 `tfsdk:"parent_policy_id"`
-	UpdatedAt              types.String                                 `tfsdk:"updated_at"`
+	Config         *tfTypes.ForwardToVirtualClusterPolicyConfig `tfsdk:"config"`
+	CreatedAt      types.String                                 `tfsdk:"created_at"`
+	Description    types.String                                 `tfsdk:"description"`
+	Enabled        types.Bool                                   `tfsdk:"enabled"`
+	GatewayID      types.String                                 `tfsdk:"gateway_id"`
+	ID             types.String                                 `tfsdk:"id"`
+	Labels         map[string]types.String                      `tfsdk:"labels"`
+	ListenerID     types.String                                 `tfsdk:"listener_id"`
+	Name           types.String                                 `tfsdk:"name"`
+	ParentPolicyID types.String                                 `tfsdk:"parent_policy_id"`
+	UpdatedAt      types.String                                 `tfsdk:"updated_at"`
 }
 
 func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -100,44 +98,15 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Schema(ctx c
 							"destination": schema.SingleNestedAttribute{
 								Required: true,
 								Attributes: map[string]schema.Attribute{
-									"virtual_cluster_reference_by_id": schema.SingleNestedAttribute{
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"id": schema.StringAttribute{
-												Required:    true,
-												Description: `The unique identifier of the virtual cluster.`,
-												Validators: []validator.String{
-													stringvalidator.UTF8LengthAtLeast(1),
-												},
-											},
-										},
-										Description: `Reference a virtual cluster by its unique identifier.`,
-										Validators: []validator.Object{
-											objectvalidator.ConflictsWith(path.Expressions{
-												path.MatchRelative().AtParent().AtName("virtual_cluster_reference_by_name"),
-											}...),
-										},
-									},
-									"virtual_cluster_reference_by_name": schema.SingleNestedAttribute{
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"name": schema.StringAttribute{
-												Required:    true,
-												Description: `The name of the virtual cluster.`,
-												Validators: []validator.String{
-													stringvalidator.UTF8LengthBetween(1, 255),
-												},
-											},
-										},
-										Description: `Reference a virtual cluster by its unique name.`,
-										Validators: []validator.Object{
-											objectvalidator.ConflictsWith(path.Expressions{
-												path.MatchRelative().AtParent().AtName("virtual_cluster_reference_by_id"),
-											}...),
+									"id": schema.StringAttribute{
+										Required:    true,
+										Description: `The unique identifier of the virtual cluster.`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 								},
-								Description: `A reference to a virtual cluster.`,
+								Description: `Reference a virtual cluster by its unique identifier.`,
 							},
 							"min_broker_id": schema.Int64Attribute{
 								Computed:    true,
@@ -180,11 +149,7 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Schema(ctx c
 								},
 							},
 							"broker_host_format": schema.SingleNestedAttribute{
-								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"type": types.StringType,
-								})),
 								Attributes: map[string]schema.Attribute{
 									"type": schema.StringAttribute{
 										Computed:    true,
@@ -256,10 +221,6 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Schema(ctx c
 				Default:     booldefault.StaticBool(true),
 				Description: `Whether the policy is enabled. Default: true`,
 			},
-			"event_gateway_listener_id": schema.StringAttribute{
-				Required:    true,
-				Description: `The ID of the Event Gateway Listener.`,
-			},
 			"gateway_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The UUID of your Gateway.`,
@@ -276,7 +237,12 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Schema(ctx c
 					`` + "\n" +
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
+			"listener_id": schema.StringAttribute{
+				Required:    true,
+				Description: `The ID of the Event Gateway Listener.`,
+			},
 			"name": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
 				Description: `A unique user-defined name of the policy.`,
 				Validators: []validator.String{
@@ -542,26 +508,26 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) ImportState(
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		EventGatewayListenerID string `json:"event_gateway_listener_id"`
-		GatewayID              string `json:"gateway_id"`
-		ID                     string `json:"id"`
+		GatewayID  string `json:"gateway_id"`
+		ListenerID string `json:"listener_id"`
+		ID         string `json:"id"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"event_gateway_listener_id": "...", "gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "listener_id": "..."}': `+err.Error())
 		return
 	}
 
-	if len(data.EventGatewayListenerID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field event_gateway_listener_id is required but was not found in the json encoded ID.`)
-		return
-	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("event_gateway_listener_id"), data.EventGatewayListenerID)...)
 	if len(data.GatewayID) == 0 {
 		resp.Diagnostics.AddError("Missing required field", `The field gateway_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("gateway_id"), data.GatewayID)...)
+	if len(data.ListenerID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field listener_id is required but was not found in the json encoded ID.`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("listener_id"), data.ListenerID)...)
 	if len(data.ID) == 0 {
 		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
 		return

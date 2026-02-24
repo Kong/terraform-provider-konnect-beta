@@ -124,7 +124,7 @@ func (r *EventGatewayClusterPolicyAclsResource) Schema(ctx context.Context, req 
 											},
 										},
 									},
-									Description: `If any of these entries match, the resource name matches for this rule.`,
+									Description: `If any of these entries match, the resource name matches for this rule. A maximum of 50 entries are allowed.`,
 								},
 								"resource_type": schema.StringAttribute{
 									Required:    true,
@@ -187,6 +187,7 @@ func (r *EventGatewayClusterPolicyAclsResource) Schema(ctx context.Context, req 
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
 			"name": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
 				Description: `A unique user-defined name of the policy.`,
 				Validators: []validator.String{

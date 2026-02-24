@@ -9,12 +9,12 @@ resource "konnect_event_gateway_listener_policy_forward_to_virtual_cluster" "my_
       sni_suffix = ".example.com"
     }
   }
-  description               = "...my_description..."
-  enabled                   = false
-  event_gateway_listener_id = "6feda708-3b1b-4415-b1db-cf2694f34b09"
-  gateway_id                = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  description = "...my_description..."
+  enabled     = false
+  gateway_id  = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   labels = {
     key = "value"
   }
-  name = "...my_name..."
+  listener_id = "bdaf2651-42bc-48ec-b29f-f4890f7f07fc"
+  name        = "...my_name..."
 }

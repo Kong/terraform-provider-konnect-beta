@@ -37,7 +37,7 @@ resource "konnect_dashboard" "my_dashboard" {
                 ]
                 granularity = "twelveHourly"
                 metrics = [
-                  "kong_latency_p50"
+                  "kong_latency_average"
                 ]
                 time_range = {
                   relative = {

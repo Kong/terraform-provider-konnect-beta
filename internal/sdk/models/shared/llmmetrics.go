@@ -15,6 +15,7 @@ const (
 	LLMMetricsCompletionTokens                 LLMMetrics = "completion_tokens"
 	LLMMetricsAiRequestCount                   LLMMetrics = "ai_request_count"
 	LLMMetricsCost                             LLMMetrics = "cost"
+	LLMMetricsErrorRate                        LLMMetrics = "error_rate"
 	LLMMetricsLlmCacheEmbeddingsLatencyAverage LLMMetrics = "llm_cache_embeddings_latency_average"
 	LLMMetricsLlmCacheFetchLatencyAverage      LLMMetrics = "llm_cache_fetch_latency_average"
 	LLMMetricsLlmLatencyAverage                LLMMetrics = "llm_latency_average"
@@ -40,6 +41,8 @@ func (e *LLMMetrics) UnmarshalJSON(data []byte) error {
 	case "ai_request_count":
 		fallthrough
 	case "cost":
+		fallthrough
+	case "error_rate":
 		fallthrough
 	case "llm_cache_embeddings_latency_average":
 		fallthrough

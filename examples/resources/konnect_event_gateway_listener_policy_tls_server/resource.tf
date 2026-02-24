@@ -13,12 +13,12 @@ resource "konnect_event_gateway_listener_policy_tls_server" "my_eventgatewaylist
       min = "TLSv1.3"
     }
   }
-  description               = "...my_description..."
-  enabled                   = true
-  event_gateway_listener_id = "34102bf1-bf41-4c00-a62f-6fca747cb8f8"
-  gateway_id                = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  description = "...my_description..."
+  enabled     = true
+  gateway_id  = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   labels = {
     key = "value"
   }
-  name = "...my_name..."
+  listener_id = "f7d7b9be-5608-44c3-8f6a-46e055797c31"
+  name        = "...my_name..."
 }
