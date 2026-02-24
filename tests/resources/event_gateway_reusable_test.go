@@ -879,9 +879,7 @@ EOF
 						bootstrap_port  = "at_start"
 						min_broker_id   = 0
 						destination = {
-							virtual_cluster_reference_by_name = {
-								name = konnect_event_gateway_virtual_cluster.my_event_gateway_virtual_cluster.name
-							}
+							id = konnect_event_gateway_virtual_cluster.my_event_gateway_virtual_cluster.id
 						}
 					}
 				}
@@ -890,7 +888,7 @@ EOF
 		require.NoError(t, err)
 
 		listenerPolicy.AddAttribute(
-			"event_gateway_listener_id",
+			"listener_id",
 			egwListener.ResourcePath()+".id",
 		)
 		listenerPolicy.AddAttribute(
@@ -976,7 +974,7 @@ EOF
 		require.NoError(t, err)
 
 		tlsServerPolicy.AddAttribute(
-			"event_gateway_listener_id",
+			"listener_id",
 			egwListener.ResourcePath()+".id",
 		)
 		tlsServerPolicy.AddAttribute(
@@ -1067,9 +1065,7 @@ EOF
 					encryption_key = {
 						static = {
 							key = {
-								reference_by_name = {
-									name = konnect_event_gateway_static_key.test_encryption_key.name
-								}
+								id = konnect_event_gateway_static_key.test_encryption_key.id
 							}
 						}
 					}
@@ -1477,9 +1473,7 @@ EOF
 				  value_validation_action = "reject"
 
 				  schema_registry = {
-					schema_registry_reference_by_name = {
-					  name = "my-schema-registry"
-					}
+					id = konnect_event_gateway_schema_registry.tf_test_schema_registry.id
 				  }
 				}
 			  }

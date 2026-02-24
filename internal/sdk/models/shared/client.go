@@ -23,6 +23,8 @@ type Client struct {
 	AccessTokenDuration *int64 `default:"300" json:"access_token_duration"`
 	// The duration of the minted token is valid for, in seconds
 	IDTokenDuration *int64 `default:"300" json:"id_token_duration"`
+	// The duration of the minted refresh token is valid for, in seconds
+	RefreshTokenDuration *int64 `default:"2592000" json:"refresh_token_duration"`
 	// Specifies whether the client is allowed to request all scopes
 	AllowAllScopes *bool `default:"false" json:"allow_all_scopes"`
 	// Specifies the scopes IDs that the client is allowed to request
@@ -100,6 +102,13 @@ func (c *Client) GetIDTokenDuration() *int64 {
 		return nil
 	}
 	return c.IDTokenDuration
+}
+
+func (c *Client) GetRefreshTokenDuration() *int64 {
+	if c == nil {
+		return nil
+	}
+	return c.RefreshTokenDuration
 }
 
 func (c *Client) GetAllowAllScopes() *bool {

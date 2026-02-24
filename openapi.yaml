@@ -8326,6 +8326,7 @@ components:
       in: path
       required: true
       description: The ID of the Event Gateway Listener.
+      x-speakeasy-name-override: listenerId
     EventGatewayPolicyAfter:
       schema:
         type: string
@@ -10086,6 +10087,10 @@ components:
           x-speakeasy-param-suppress-computed-diff: true
         attributes:
           $ref: '#/components/schemas/ApiAttributes'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
         images:
           type: object
           example:
@@ -10113,10 +10118,6 @@ components:
           title: Images
           x-speakeasy-param-suppress-computed-diff: true
           x-speakeasy-terraform-ignore: true
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
       additionalProperties: false
       required:
         - id
@@ -23436,8 +23437,10 @@ components:
         - authorization_code
         - implicit
         - client_credentials
+        - refresh_token
       x-enum-dev:
         - authorization_code
+        - refresh_token
       x-speakeasy-unknown-values: allow
     GrantTypes:
       description: List of OAuth 2.0 grant types
@@ -23465,6 +23468,12 @@ components:
       type: integer
       default: 300
       maximum: 2592000
+      minimum: 60
+    RefreshTokenDuration:
+      description: 'The duration of the minted refresh token is valid for, in seconds'
+      type: integer
+      default: 2592000
+      maximum: 157680000
       minimum: 60
     ClientAllowAllScopes:
       description: Specifies whether the client is allowed to request all scopes
@@ -23732,6 +23741,8 @@ components:
           $ref: '#/components/schemas/TokenDuration'
         id_token_duration:
           $ref: '#/components/schemas/TokenDuration'
+        refresh_token_duration:
+          $ref: '#/components/schemas/RefreshTokenDuration'
         allow_all_scopes:
           $ref: '#/components/schemas/ClientAllowAllScopes'
         allow_scopes:
@@ -23755,6 +23766,7 @@ components:
         - allow_scopes
         - access_token_duration
         - id_token_duration
+        - refresh_token_duration
         - labels
         - response_types
         - created_at
@@ -23762,6 +23774,9 @@ components:
       x-property-annotations:
         login_uri:
           - x-unstable
+        refresh_token_duration:
+          - x-unstable
+          - x-internal
     CreatedClient:
       allOf:
         - $ref: '#/components/schemas/Client'
@@ -24087,7 +24102,10 @@ components:
       type: array
       items:
         type: string
+        x-enum-internal:
+          - error_rate
         enum:
+          - error_rate
           - kong_latency_average
           - kong_latency_p50
           - kong_latency_p95
@@ -25015,12 +25033,15 @@ components:
       type: array
       items:
         type: string
+        x-enum-internal:
+          - error_rate
         enum:
           - total_tokens
           - prompt_tokens
           - completion_tokens
           - ai_request_count
           - cost
+          - error_rate
           - llm_cache_embeddings_latency_average
           - llm_cache_fetch_latency_average
           - llm_latency_average
@@ -25676,9 +25697,7 @@ components:
       x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
     VirtualClusterReference:
       description: A reference to a virtual cluster.
-      anyOf:
-        - $ref: '#/components/schemas/VirtualClusterReferenceById'
-        - $ref: '#/components/schemas/VirtualClusterReferenceByName'
+      $ref: '#/components/schemas/VirtualClusterReferenceById'
     VirtualClusterReferenceById:
       description: Reference a virtual cluster by its unique identifier.
       type: object
@@ -25690,14 +25709,6 @@ components:
           minLength: 1
       required:
         - id
-    VirtualClusterReferenceByName:
-      description: Reference a virtual cluster by its unique name.
-      type: object
-      properties:
-        name:
-          $ref: '#/components/schemas/VirtualClusterName'
-      required:
-        - name
     VirtualClusterAuthenticationSensitiveDataAwareSchemes:
       description: |
         How to handle authentication from clients.
@@ -26509,9 +26520,7 @@ components:
         - password
     SchemaRegistryReference:
       description: A reference to a schema Registry.
-      oneOf:
-        - $ref: '#/components/schemas/SchemaRegistryReferenceById'
-        - $ref: '#/components/schemas/SchemaRegistryReferenceByName'
+      $ref: '#/components/schemas/SchemaRegistryReferenceById'
     SchemaRegistryReferenceById:
       type: object
       properties:
@@ -26522,17 +26531,6 @@ components:
           minLength: 1
       required:
         - id
-    SchemaRegistryReferenceByName:
-      description: Reference a schema registry by its unique name.
-      type: object
-      properties:
-        name:
-          description: The unique name of the schema registry.
-          type: string
-          maxLength: 255
-          minLength: 1
-      required:
-        - name
     SchemaValidationType:
       description: |
         How to validate the schema and parse the record.
@@ -26571,10 +26569,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -26633,10 +26629,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -26693,10 +26687,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -26750,10 +26742,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -26790,10 +26780,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -26915,10 +26903,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -27041,8 +27027,6 @@ components:
             - `per_cluster_suffix` is the default and allocates one level in the hierarchy for virtual clusters: `broker-{node_id}.{virtual_cluster}.{sni_suffix}`
             - `shared_suffix` puts all brokers from every virtual clusters into the same level: `broker-{node_id}-{virtual_cluster}.{sni_suffix}`. This makes it easier to manage certificates for this listener.
           type: object
-          default: null
-          nullable: true
           properties:
             type:
               type: string
@@ -27071,10 +27055,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -27094,7 +27076,7 @@ components:
         condition:
           description: A string containing the boolean expression that determines whether the policy is applied.
           type: string
-          example: 'context.topic.name.endsWith("my_suffix") && records.headers["x-flag"] == "a-value"'
+          example: 'context.topic.name.endsWith("my_suffix") && record.headers["x-flag"] == "a-value"'
           default: ''
           maxLength: 1000
           x-expression:
@@ -27139,10 +27121,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -27162,7 +27142,7 @@ components:
         condition:
           description: A string containing the boolean expression that determines whether the policy is applied.
           type: string
-          example: 'context.topic.name.endsWith("my_suffix") && records.headers["x-flag"] == "a-value"'
+          example: 'context.topic.name.endsWith("my_suffix") && record.headers["x-flag"] == "a-value"'
           default: ''
           maxLength: 1000
           x-expression:
@@ -27211,10 +27191,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -27276,10 +27254,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -27346,10 +27322,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -27396,10 +27370,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -27492,10 +27464,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -27525,7 +27495,7 @@ components:
         condition:
           description: A string containing the boolean expression that determines whether the policy is applied.
           type: string
-          example: 'context.topic.name.endsWith("my_suffix") && records.headers["x-flag"] == "a-value"'
+          example: 'context.topic.name.endsWith("my_suffix") && record.headers["x-flag"] == "a-value"'
           default: ''
           maxLength: 1000
           x-expression:
@@ -27552,10 +27522,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -27575,7 +27543,7 @@ components:
         condition:
           description: A string containing the boolean expression that determines whether the policy is applied.
           type: string
-          example: 'context.topic.name.endsWith("my_suffix") && records.headers["x-flag"] == "a-value"'
+          example: 'context.topic.name.endsWith("my_suffix") && record.headers["x-flag"] == "a-value"'
           default: ''
           maxLength: 1000
           x-expression:
@@ -27642,10 +27610,8 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
-          default: null
           maxLength: 255
-          nullable: true
-          x-speakeasy-param-computed: false
+          nullable: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -27715,7 +27681,7 @@ components:
           items:
             $ref: '#/components/schemas/EventGatewayACLOperation'
         resource_names:
-          description: 'If any of these entries match, the resource name matches for this rule.'
+          description: 'If any of these entries match, the resource name matches for this rule. A maximum of 50 entries are allowed.'
           type: array
           items:
             $ref: '#/components/schemas/EventGatewayACLResourceName'
@@ -27869,9 +27835,7 @@ components:
     EncryptionKeyStaticReference:
       description: |
         A static encryption key reference, either by ID or by value.
-      anyOf:
-        - $ref: '#/components/schemas/EncryptionKeyStaticReferenceById'
-        - $ref: '#/components/schemas/EncryptionKeyStaticReferenceByName'
+      $ref: '#/components/schemas/EncryptionKeyStaticReferenceById'
     EncryptionKeyStaticReferenceById:
       description: A static encryption key reference by ID.
       type: object
@@ -27883,19 +27847,6 @@ components:
           minLength: 1
       required:
         - id
-      x-speakeasy-name-override: ReferenceByID
-    EncryptionKeyStaticReferenceByName:
-      description: A static encryption key reference by name.
-      type: object
-      properties:
-        name:
-          description: The name of the static key defined in the key source.
-          type: string
-          maxLength: 255
-          minLength: 1
-      required:
-        - name
-      x-speakeasy-name-override: ReferenceByName
     ConsumeKeyValidationAction:
       description: |
         Defines a behavior when record key is not valid.
@@ -28754,33 +28705,6 @@ components:
                 x-speakeasy-param-suppress-computed-diff: true
               attributes:
                 $ref: '#/components/schemas/ApiAttributes'
-              images:
-                type: object
-                example:
-                  icon:
-                    uri: /apis/ebbac5b0-ac89-45c3-9d2e-c4542c657e79/images/icon/raw
-                additionalProperties: false
-                nullable: true
-                properties:
-                  icon:
-                    type: object
-                    default: null
-                    additionalProperties: false
-                    nullable: true
-                    properties:
-                      uri:
-                        description: The relative API path for retrieving the raw the icon image.
-                        type: string
-                        format: uri-reference
-                        default: null
-                        nullable: true
-                        pattern: '^/[^\s]+/images/icon/raw$'
-                        x-speakeasy-param-computed: false
-                    x-speakeasy-param-computed: false
-                readOnly: true
-                title: Images
-                x-speakeasy-param-suppress-computed-diff: true
-                x-speakeasy-terraform-ignore: true
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
@@ -28794,10 +28718,6 @@ components:
             required:
               - name
             title: API
-            x-property-annotations:
-              images:
-                - x-unstable
-                - x-internal
     CreateApiSpecRequest:
       required: true
       content:
@@ -29043,43 +28963,12 @@ components:
                 x-speakeasy-param-suppress-computed-diff: true
               attributes:
                 $ref: '#/components/schemas/ApiAttributes'
-              images:
-                type: object
-                example:
-                  icon:
-                    uri: /apis/ebbac5b0-ac89-45c3-9d2e-c4542c657e79/images/icon/raw
-                additionalProperties: false
-                nullable: true
-                properties:
-                  icon:
-                    type: object
-                    default: null
-                    additionalProperties: false
-                    nullable: true
-                    properties:
-                      uri:
-                        description: The relative API path for retrieving the raw the icon image.
-                        type: string
-                        format: uri-reference
-                        default: null
-                        nullable: true
-                        pattern: '^/[^\s]+/images/icon/raw$'
-                        x-speakeasy-param-computed: false
-                    x-speakeasy-param-computed: false
-                readOnly: true
-                title: Images
-                x-speakeasy-param-suppress-computed-diff: true
-                x-speakeasy-terraform-ignore: true
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
                 $ref: '#/components/schemas/UpdatedAt'
             additionalProperties: false
             title: API
-            x-property-annotations:
-              images:
-                - x-unstable
-                - x-internal
     UpdateApiDocumentRequest:
       required: true
       content:
@@ -29256,6 +29145,8 @@ components:
                 $ref: '#/components/schemas/TokenDuration'
               id_token_duration:
                 $ref: '#/components/schemas/TokenDuration'
+              refresh_token_duration:
+                $ref: '#/components/schemas/RefreshTokenDuration'
               allow_all_scopes:
                 $ref: '#/components/schemas/ClientAllowAllScopes'
               allow_scopes:
@@ -29282,6 +29173,9 @@ components:
             x-property-annotations:
               login_uri:
                 - x-unstable
+              refresh_token_duration:
+                - x-unstable
+                - x-internal
     ReplaceClient:
       description: Client to be replaced
       required: true
@@ -29308,6 +29202,8 @@ components:
                 $ref: '#/components/schemas/TokenDuration'
               id_token_duration:
                 $ref: '#/components/schemas/TokenDuration'
+              refresh_token_duration:
+                $ref: '#/components/schemas/RefreshTokenDuration'
               allow_all_scopes:
                 $ref: '#/components/schemas/ClientAllowAllScopes'
               allow_scopes:
@@ -29324,6 +29220,9 @@ components:
             x-property-annotations:
               login_uri:
                 - x-unstable
+              refresh_token_duration:
+                - x-unstable
+                - x-internal
     CreateEventGatewayListenerRequest:
       description: The request schema for creating a listener.
       content:
@@ -29337,7 +29236,7 @@ components:
                 maxLength: 255
                 minLength: 1
               description:
-                description: A human-readable description of the virtual cluster.
+                description: A human-readable description of the listener.
                 type: string
                 default: ''
                 maxLength: 512
@@ -29365,7 +29264,7 @@ components:
                 maxLength: 255
                 minLength: 1
               description:
-                description: A human-readable description of the virtual cluster.
+                description: A human-readable description of the listener.
                 type: string
                 default: ''
                 maxLength: 512
@@ -29456,7 +29355,7 @@ components:
               name:
                 $ref: '#/components/schemas/BackendClusterName'
               description:
-                description: A human-readable description of the virtual cluster.
+                description: A human-readable description of the backend cluster.
                 type: string
                 default: ''
                 maxLength: 512
@@ -29492,7 +29391,7 @@ components:
               name:
                 $ref: '#/components/schemas/BackendClusterName'
               description:
-                description: A human-readable description of the virtual cluster.
+                description: A human-readable description of the backend cluster.
                 type: string
                 default: ''
                 maxLength: 512

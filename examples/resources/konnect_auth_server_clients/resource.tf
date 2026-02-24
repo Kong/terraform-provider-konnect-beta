@@ -20,6 +20,7 @@ resource "konnect_auth_server_clients" "my_authserverclients" {
   redirect_uris = [
     "https://flashy-sauerkraut.com/"
   ]
+  refresh_token_duration = 84206233
   response_types = [
     "none"
   ]

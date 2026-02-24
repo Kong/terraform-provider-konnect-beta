@@ -102,12 +102,12 @@ type APIResponseSchema struct {
 	// the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement
 	ImplementationMode *string `default:"null" json:"implementation_mode"`
 	// A set of attributes that describe the API
-	Attributes any     `json:"attributes,omitempty"`
-	Images     *Images `json:"images,omitempty"`
+	Attributes any `json:"attributes,omitempty"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
+	Images    *Images   `json:"images,omitempty"`
 }
 
 func (a APIResponseSchema) MarshalJSON() ([]byte, error) {
@@ -198,13 +198,6 @@ func (a *APIResponseSchema) GetAttributes() any {
 	return a.Attributes
 }
 
-func (a *APIResponseSchema) GetImages() *Images {
-	if a == nil {
-		return nil
-	}
-	return a.Images
-}
-
 func (a *APIResponseSchema) GetCreatedAt() time.Time {
 	if a == nil {
 		return time.Time{}
@@ -217,4 +210,11 @@ func (a *APIResponseSchema) GetUpdatedAt() time.Time {
 		return time.Time{}
 	}
 	return a.UpdatedAt
+}
+
+func (a *APIResponseSchema) GetImages() *Images {
+	if a == nil {
+		return nil
+	}
+	return a.Images
 }

@@ -12,8 +12,7 @@ type EventGatewayConsumeSchemaValidationPolicyConfig struct {
 	// * confluent_schema_registry - validates against confluent schema registry.
 	// * json - simple JSON parsing without the schema.
 	//
-	Type SchemaValidationType `json:"type"`
-	// A reference to a schema Registry.
+	Type           SchemaValidationType     `json:"type"`
 	SchemaRegistry *SchemaRegistryReference `json:"schema_registry,omitempty"`
 	// Defines a behavior when record key is not valid.
 	// * mark - marks a record with kong/server header and client ID value
@@ -62,7 +61,7 @@ type EventGatewayConsumeSchemaValidationPolicy struct {
 	// The type name of the policy.
 	type_ string `const:"schema_validation" json:"type"`
 	// A unique user-defined name of the policy.
-	Name *string `default:"null" json:"name"`
+	Name *string `json:"name,omitempty"`
 	// A human-readable description of the policy.
 	Description *string `default:"" json:"description"`
 	// Whether the policy is enabled.

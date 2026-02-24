@@ -47,8 +47,8 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToOperationsCreateEve
 	var gatewayID string
 	gatewayID = r.GatewayID.ValueString()
 
-	var eventGatewayListenerID string
-	eventGatewayListenerID = r.EventGatewayListenerID.ValueString()
+	var listenerID string
+	listenerID = r.ListenerID.ValueString()
 
 	eventGatewayTLSListenerPolicy, eventGatewayTLSListenerPolicyDiags := r.ToSharedEventGatewayTLSListenerPolicy(ctx)
 	diags.Append(eventGatewayTLSListenerPolicyDiags...)
@@ -59,7 +59,7 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToOperationsCreateEve
 
 	out := operations.CreateEventGatewayListenerPolicyTLSServerRequest{
 		GatewayID:                     gatewayID,
-		EventGatewayListenerID:        eventGatewayListenerID,
+		ListenerID:                    listenerID,
 		EventGatewayTLSListenerPolicy: eventGatewayTLSListenerPolicy,
 	}
 
@@ -72,16 +72,16 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToOperationsDeleteEve
 	var gatewayID string
 	gatewayID = r.GatewayID.ValueString()
 
-	var eventGatewayListenerID string
-	eventGatewayListenerID = r.EventGatewayListenerID.ValueString()
+	var listenerID string
+	listenerID = r.ListenerID.ValueString()
 
 	var policyID string
 	policyID = r.ID.ValueString()
 
 	out := operations.DeleteEventGatewayListenerPolicyTLSServerRequest{
-		GatewayID:              gatewayID,
-		EventGatewayListenerID: eventGatewayListenerID,
-		PolicyID:               policyID,
+		GatewayID:  gatewayID,
+		ListenerID: listenerID,
+		PolicyID:   policyID,
 	}
 
 	return &out, diags
@@ -93,16 +93,16 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToOperationsGetEventG
 	var gatewayID string
 	gatewayID = r.GatewayID.ValueString()
 
-	var eventGatewayListenerID string
-	eventGatewayListenerID = r.EventGatewayListenerID.ValueString()
+	var listenerID string
+	listenerID = r.ListenerID.ValueString()
 
 	var policyID string
 	policyID = r.ID.ValueString()
 
 	out := operations.GetEventGatewayListenerPolicyTLSServerRequest{
-		GatewayID:              gatewayID,
-		EventGatewayListenerID: eventGatewayListenerID,
-		PolicyID:               policyID,
+		GatewayID:  gatewayID,
+		ListenerID: listenerID,
+		PolicyID:   policyID,
 	}
 
 	return &out, diags
@@ -114,8 +114,8 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToOperationsUpdateEve
 	var gatewayID string
 	gatewayID = r.GatewayID.ValueString()
 
-	var eventGatewayListenerID string
-	eventGatewayListenerID = r.EventGatewayListenerID.ValueString()
+	var listenerID string
+	listenerID = r.ListenerID.ValueString()
 
 	var policyID string
 	policyID = r.ID.ValueString()
@@ -128,9 +128,9 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToOperationsUpdateEve
 	}
 
 	out := operations.UpdateEventGatewayListenerPolicyTLSServerRequest{
-		GatewayID:              gatewayID,
-		EventGatewayListenerID: eventGatewayListenerID,
-		PolicyID:               policyID,
+		GatewayID:  gatewayID,
+		ListenerID: listenerID,
+		PolicyID:   policyID,
 		EventGatewayTLSListenerSensitiveDataAwarePolicy: eventGatewayTLSListenerSensitiveDataAwarePolicy,
 	}
 
