@@ -35,11 +35,8 @@ func TestCloudGatewayAddOn(t *testing.T) {
 
           config = {
             managed_cache = {
-             kind = "managed-cache.v0"
-
              capacity_config = {
                tiered = {
-                kind = "tiered"
                 tier = "small"
                }
              }
@@ -77,6 +74,9 @@ func TestCloudGatewayAddOn(t *testing.T) {
 							),
 						},
 					},
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_cloud_gateway_add_on.my_addon", "name", "tf-test-add-on"),
+					),
 				},
 				{
 					Config: fullConfig,
