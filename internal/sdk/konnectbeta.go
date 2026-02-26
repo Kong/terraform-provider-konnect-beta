@@ -165,6 +165,7 @@ type KonnectBeta struct {
 	// Cluster policies are transformation and validation policies that can be applied to Kafka messages.
 	//
 	EventGatewayVirtualClusterPolicies *EventGatewayVirtualClusterPolicies
+	CloudGateways                      *CloudGateways
 
 	sdkConfiguration config.SDKConfiguration
 	hooks            *hooks.Hooks
@@ -327,6 +328,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.EventGatewayVirtualClusterConsumePolicies = newEventGatewayVirtualClusterConsumePolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayVirtualClusterProducePolicies = newEventGatewayVirtualClusterProducePolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayVirtualClusterPolicies = newEventGatewayVirtualClusterPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.CloudGateways = newCloudGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
 
 	return sdk
 }
