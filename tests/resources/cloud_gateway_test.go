@@ -29,7 +29,7 @@ func TestCloudGatewayAddOn(t *testing.T) {
        `)
 		require.NoError(t, err)
 		addon, err := hclbuilder.FromString(`
-         resource "konnect_cloud_gateway_add_on" "my_addon" {
+         resource "konnect_cloud_gateway_addon" "my_addon" {
           provider = konnect-beta
           name     = "tf-test-add-on"
 
@@ -69,13 +69,13 @@ func TestCloudGatewayAddOn(t *testing.T) {
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
 							plancheck.ExpectResourceAction(
-								"konnect_cloud_gateway_add_on.my_addon",
+								"konnect_cloud_gateway_addon.my_addon",
 								plancheck.ResourceActionCreate,
 							),
 						},
 					},
 					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr("konnect_cloud_gateway_add_on.my_addon", "name", "tf-test-add-on"),
+						resource.TestCheckResourceAttr("konnect_cloud_gateway_addon.my_addon", "name", "tf-test-add-on"),
 					),
 				},
 				{
