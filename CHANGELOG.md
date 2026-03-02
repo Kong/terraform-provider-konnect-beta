@@ -1,7 +1,7 @@
 # Changelog
 
 ## 0.16.0
-> Released on 2026/02/27
+> Released on 2026/03/02
 
 ### BREAKING CHANGES
 * `event_gateway_listener_id` renamed to `listener_id` in `konnect_event_gateway_listener_policy_forward_to_virtual_cluster` and `konnect_event_gateway_listener_policy_tls_server`
@@ -10,7 +10,7 @@
 * Static key references simplified to use `id` directly instead of `reference_by_id`/`reference_by_name` in `konnect_event_gateway_produce_policy_encrypt`
 
 ### Features
-* Add support for configuring Managed Cache in Cloud Gateway using `konnect_cloud_gateway_add_on` resource
+* Add support for configuring Managed Cache in Cloud Gateway using `konnect_cloud_gateway_addon` resource
 
 ## 0.15.0
 > Released on 2026/02/16

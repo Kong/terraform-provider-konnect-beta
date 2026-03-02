@@ -12,7 +12,7 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
 )
 
-func (r *CloudGatewayAddOnResourceModel) RefreshFromSharedAddOnResponse(ctx context.Context, resp *shared.AddOnResponse) diag.Diagnostics {
+func (r *CloudGatewayAddonResourceModel) RefreshFromSharedAddOnResponse(ctx context.Context, resp *shared.AddOnResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
@@ -84,7 +84,7 @@ func (r *CloudGatewayAddOnResourceModel) RefreshFromSharedAddOnResponse(ctx cont
 	return diags
 }
 
-func (r *CloudGatewayAddOnResourceModel) ToOperationsDeleteAddOnRequest(ctx context.Context) (*operations.DeleteAddOnRequest, diag.Diagnostics) {
+func (r *CloudGatewayAddonResourceModel) ToOperationsDeleteAddOnRequest(ctx context.Context) (*operations.DeleteAddOnRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var addOnID string
@@ -97,7 +97,7 @@ func (r *CloudGatewayAddOnResourceModel) ToOperationsDeleteAddOnRequest(ctx cont
 	return &out, diags
 }
 
-func (r *CloudGatewayAddOnResourceModel) ToOperationsGetAddOnRequest(ctx context.Context) (*operations.GetAddOnRequest, diag.Diagnostics) {
+func (r *CloudGatewayAddonResourceModel) ToOperationsGetAddOnRequest(ctx context.Context) (*operations.GetAddOnRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var addOnID string
@@ -110,7 +110,7 @@ func (r *CloudGatewayAddOnResourceModel) ToOperationsGetAddOnRequest(ctx context
 	return &out, diags
 }
 
-func (r *CloudGatewayAddOnResourceModel) ToSharedCreateAddOnRequest(ctx context.Context) (*shared.CreateAddOnRequest, diag.Diagnostics) {
+func (r *CloudGatewayAddonResourceModel) ToSharedCreateAddOnRequest(ctx context.Context) (*shared.CreateAddOnRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var name string

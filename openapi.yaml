@@ -8254,7 +8254,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: CloudGatewayAddOn#create
+        terraform-resource: CloudGatewayAddon#create
       operationId: create-add-on
       summary: Create Add-On
       description: |
@@ -8290,7 +8290,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: CloudGatewayAddOn#read
+        terraform-resource: CloudGatewayAddon#read
       operationId: get-add-on
       summary: Get Add-On
       description: Retrieves an add-on by ID.
@@ -8315,7 +8315,7 @@ paths:
       x-unstable: true
       x-internal: true
       x-speakeasy-entity-operation:
-        terraform-resource: CloudGatewayAddOn#delete
+        terraform-resource: CloudGatewayAddon#delete
         terraform-datasource: null
       operationId: delete-add-on
       summary: Delete Add-On
