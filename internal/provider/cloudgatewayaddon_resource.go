@@ -27,21 +27,21 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &CloudGatewayAddOnResource{}
-var _ resource.ResourceWithImportState = &CloudGatewayAddOnResource{}
+var _ resource.Resource = &CloudGatewayAddonResource{}
+var _ resource.ResourceWithImportState = &CloudGatewayAddonResource{}
 
-func NewCloudGatewayAddOnResource() resource.Resource {
-	return &CloudGatewayAddOnResource{}
+func NewCloudGatewayAddonResource() resource.Resource {
+	return &CloudGatewayAddonResource{}
 }
 
-// CloudGatewayAddOnResource defines the resource implementation.
-type CloudGatewayAddOnResource struct {
+// CloudGatewayAddonResource defines the resource implementation.
+type CloudGatewayAddonResource struct {
 	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
-// CloudGatewayAddOnResourceModel describes the resource data model.
-type CloudGatewayAddOnResourceModel struct {
+// CloudGatewayAddonResourceModel describes the resource data model.
+type CloudGatewayAddonResourceModel struct {
 	Config        *tfTypes.CreateAddOnConfig `tfsdk:"config"`
 	CreatedAt     types.String               `tfsdk:"created_at"`
 	EntityVersion types.Int64                `tfsdk:"entity_version"`
@@ -52,13 +52,13 @@ type CloudGatewayAddOnResourceModel struct {
 	UpdatedAt     types.String               `tfsdk:"updated_at"`
 }
 
-func (r *CloudGatewayAddOnResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_cloud_gateway_add_on"
+func (r *CloudGatewayAddonResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = "konnect_cloud_gateway_addon"
 }
 
-func (r *CloudGatewayAddOnResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *CloudGatewayAddonResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "CloudGatewayAddOn Resource",
+		MarkdownDescription: "CloudGatewayAddon Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
 				Required: true,
@@ -411,7 +411,7 @@ func (r *CloudGatewayAddOnResource) Schema(ctx context.Context, req resource.Sch
 	}
 }
 
-func (r *CloudGatewayAddOnResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *CloudGatewayAddonResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -431,8 +431,8 @@ func (r *CloudGatewayAddOnResource) Configure(ctx context.Context, req resource.
 	r.client = client
 }
 
-func (r *CloudGatewayAddOnResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *CloudGatewayAddOnResourceModel
+func (r *CloudGatewayAddonResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *CloudGatewayAddonResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -498,8 +498,8 @@ func (r *CloudGatewayAddOnResource) Create(ctx context.Context, req resource.Cre
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *CloudGatewayAddOnResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *CloudGatewayAddOnResourceModel
+func (r *CloudGatewayAddonResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *CloudGatewayAddonResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -556,8 +556,8 @@ func (r *CloudGatewayAddOnResource) Read(ctx context.Context, req resource.ReadR
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *CloudGatewayAddOnResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *CloudGatewayAddOnResourceModel
+func (r *CloudGatewayAddonResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *CloudGatewayAddonResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -576,8 +576,8 @@ func (r *CloudGatewayAddOnResource) Update(ctx context.Context, req resource.Upd
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *CloudGatewayAddOnResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *CloudGatewayAddOnResourceModel
+func (r *CloudGatewayAddonResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *CloudGatewayAddonResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -622,6 +622,6 @@ func (r *CloudGatewayAddOnResource) Delete(ctx context.Context, req resource.Del
 
 }
 
-func (r *CloudGatewayAddOnResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *CloudGatewayAddonResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), req.ID)...)
 }

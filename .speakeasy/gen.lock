@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: 12b70e1e6518da31d43fd4d068e2d67b
+  docChecksum: 5663b8de262755b20fc883efa2308e53
   docVersion: 2.0.0
   speakeasyVersion: 1.724.1
   generationVersion: 2.836.5
   releaseVersion: 0.16.0
   configChecksum: d6cbec6f9fb632958ebb1f988de6c02a
 persistentEdits:
-  generation_id: 79933698-c815-4dd0-9fee-9244adf69b3f
-  pristine_commit_hash: 1cee64292d59b755544824dcb8a763db5411a9df
-  pristine_tree_hash: c3483882897a494bd28f2b3008d80b4e0e4fdfcb
+  generation_id: 1da645ca-205e-473c-8893-e822b7bec38f
+  pristine_commit_hash: 68f0be799ef70b044128ddc686167e6597fc11e6
+  pristine_tree_hash: d9ef7b883f1e02af72370774aa79370ee40c7e80
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -172,18 +172,18 @@ trackedFiles:
     id: a44b127425a7
     last_write_checksum: sha1:0216912a2a1e21f309bf0046c68d2cf57151db53
     pristine_git_object: ede0f012fc5e697e921f184f0329d11d28661e5e
-  examples/resources/konnect-beta_cloud_gateway_add_on/import-by-string-id.tf:
-    id: b1db1450b72e
-    last_write_checksum: sha1:50ef79a428a2dab81108b26f1774c541367fbf94
-    pristine_git_object: f32579141bfa6ea7ad84498a94326d337a08fa0a
-  examples/resources/konnect-beta_cloud_gateway_add_on/import.sh:
-    id: "236632041369"
-    last_write_checksum: sha1:c426b5050159e67ce6f1e46f72053b2dce1d5743
-    pristine_git_object: 93c1e9bbd1ad3303f9e97de8b21c8da463503a01
-  examples/resources/konnect-beta_cloud_gateway_add_on/resource.tf:
-    id: 875b3b11d43d
-    last_write_checksum: sha1:82f0cb403f712967eb16b3debdded98279cbd52f
-    pristine_git_object: fb9f0695d253402c98901ef63eda1447de82fa98
+  examples/resources/konnect-beta_cloud_gateway_addon/import-by-string-id.tf:
+    id: 63a842d761e1
+    last_write_checksum: sha1:1aae2ddd085c9cab9b60cd1d1aa103d2282e504a
+    pristine_git_object: a4e05b9a1c470756cd18919a2657afdaf03f00b8
+  examples/resources/konnect-beta_cloud_gateway_addon/import.sh:
+    id: e3d6ae00fdc6
+    last_write_checksum: sha1:1d849adbcc30d23b8307d6324fd2611e99a4328c
+    pristine_git_object: 8ee58ee44fd5840455364dbd44b44b559bea147e
+  examples/resources/konnect-beta_cloud_gateway_addon/resource.tf:
+    id: 1ff878ce78d4
+    last_write_checksum: sha1:9b2eae61d97f7eefdbca4516b884fc651e35adb8
+    pristine_git_object: fc4edb7418e339f55e9a1eae22475ec56a651ab4
   examples/resources/konnect-beta_dashboard/import-by-string-id.tf:
     id: f03a90968e12
     last_write_checksum: sha1:437720f13856aba7df4cd92cc52ee0b779ffa064
@@ -1154,12 +1154,12 @@ trackedFiles:
     pristine_git_object: f1c58b0215df0ac6a5b109ed359cecc3d50f972c
   internal/provider/cloudgatewayaddon_resource.go:
     id: 35eb5cdbfe40
-    last_write_checksum: sha1:5b032eecc7a1042673cf7b770ed9721dfb82e68e
-    pristine_git_object: 1ca430cbdb64ba7b73f8843471bf71bf08e26ba6
+    last_write_checksum: sha1:f02bf27159752a541dd78bb38ca1bab680dfaa7d
+    pristine_git_object: 2b3d397efc53afa09bc5cd2eb565a02d16c76f1f
   internal/provider/cloudgatewayaddon_resource_sdk.go:
     id: a4f9b8f4cb77
-    last_write_checksum: sha1:aca8df4b531251cba2cb7286c94e569df341471f
-    pristine_git_object: 5b90e28934b5d6918fb2ae5829f953bd24c52f61
+    last_write_checksum: sha1:c65552bbaaace3ddbd8d1e46561e66febffc6f58
+    pristine_git_object: 7dc5e9d00fd235a56ea4e54a598f96efa900a03d
   internal/provider/dashboard_resource.go:
     id: ed676b0ddc21
     last_write_checksum: sha1:531417f49a0da54ef19fd9fa64b0ff8cc9a2074e
@@ -1674,8 +1674,8 @@ trackedFiles:
     pristine_git_object: 1c71c80fb5c2453180d6fc79fa5d5fa1d78b9fe0
   internal/provider/provider.go:
     id: 1e7e86841cf3
-    last_write_checksum: sha1:579b844344bd2b2356eab1ed56867bfbd9e53e0d
-    pristine_git_object: e1340ab08ea9d9ca205ee0e509b9d5917dc84dfc
+    last_write_checksum: sha1:5f9d25d556df8972272cf17db4da21476eea940a
+    pristine_git_object: b232ce5c00965f86402b9e30aa5d84f0e7663dd6
   internal/provider/reflect/diags.go:
     id: 35b6b44972e2
     last_write_checksum: sha1:ace8bc53054bb1d8ee8689acf3e4323de75a6297
