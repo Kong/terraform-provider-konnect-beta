@@ -41,18 +41,18 @@ type EventGatewayProducePolicyEncryptResource struct {
 
 // EventGatewayProducePolicyEncryptResourceModel describes the resource data model.
 type EventGatewayProducePolicyEncryptResourceModel struct {
-	Condition        types.String                      `tfsdk:"condition"`
-	Config           tfTypes.EventGatewayEncryptConfig `tfsdk:"config"`
-	CreatedAt        types.String                      `tfsdk:"created_at"`
-	Description      types.String                      `tfsdk:"description"`
-	Enabled          types.Bool                        `tfsdk:"enabled"`
-	GatewayID        types.String                      `tfsdk:"gateway_id"`
-	ID               types.String                      `tfsdk:"id"`
-	Labels           map[string]types.String           `tfsdk:"labels"`
-	Name             types.String                      `tfsdk:"name"`
-	ParentPolicyID   types.String                      `tfsdk:"parent_policy_id"`
-	UpdatedAt        types.String                      `tfsdk:"updated_at"`
-	VirtualClusterID types.String                      `tfsdk:"virtual_cluster_id"`
+	Condition        types.String                       `tfsdk:"condition"`
+	Config           *tfTypes.EventGatewayEncryptConfig `tfsdk:"config"`
+	CreatedAt        types.String                       `tfsdk:"created_at"`
+	Description      types.String                       `tfsdk:"description"`
+	Enabled          types.Bool                         `tfsdk:"enabled"`
+	GatewayID        types.String                       `tfsdk:"gateway_id"`
+	ID               types.String                       `tfsdk:"id"`
+	Labels           map[string]types.String            `tfsdk:"labels"`
+	Name             types.String                       `tfsdk:"name"`
+	ParentPolicyID   types.String                       `tfsdk:"parent_policy_id"`
+	UpdatedAt        types.String                       `tfsdk:"updated_at"`
+	VirtualClusterID types.String                       `tfsdk:"virtual_cluster_id"`
 }
 
 func (r *EventGatewayProducePolicyEncryptResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -103,44 +103,15 @@ func (r *EventGatewayProducePolicyEncryptResource) Schema(ctx context.Context, r
 									"key": schema.SingleNestedAttribute{
 										Required: true,
 										Attributes: map[string]schema.Attribute{
-											"reference_by_id": schema.SingleNestedAttribute{
-												Optional: true,
-												Attributes: map[string]schema.Attribute{
-													"id": schema.StringAttribute{
-														Required:    true,
-														Description: `The ID of the static key defined in the key source.`,
-														Validators: []validator.String{
-															stringvalidator.UTF8LengthAtLeast(1),
-														},
-													},
-												},
-												Description: `A static encryption key reference by ID.`,
-												Validators: []validator.Object{
-													objectvalidator.ConflictsWith(path.Expressions{
-														path.MatchRelative().AtParent().AtName("reference_by_name"),
-													}...),
-												},
-											},
-											"reference_by_name": schema.SingleNestedAttribute{
-												Optional: true,
-												Attributes: map[string]schema.Attribute{
-													"name": schema.StringAttribute{
-														Required:    true,
-														Description: `The name of the static key defined in the key source.`,
-														Validators: []validator.String{
-															stringvalidator.UTF8LengthBetween(1, 255),
-														},
-													},
-												},
-												Description: `A static encryption key reference by name.`,
-												Validators: []validator.Object{
-													objectvalidator.ConflictsWith(path.Expressions{
-														path.MatchRelative().AtParent().AtName("reference_by_id"),
-													}...),
+											"id": schema.StringAttribute{
+												Required:    true,
+												Description: `The ID of the static key defined in the key source.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(1),
 												},
 											},
 										},
-										Description: `A static encryption key reference, either by ID or by value.`,
+										Description: `A static encryption key reference by ID.`,
 									},
 								},
 								Description: `A static encryption key.`,
@@ -216,6 +187,7 @@ func (r *EventGatewayProducePolicyEncryptResource) Schema(ctx context.Context, r
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
 			"name": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
 				Description: `A unique user-defined name of the policy.`,
 				Validators: []validator.String{
@@ -306,43 +278,6 @@ func (r *EventGatewayProducePolicyEncryptResource) Create(ctx context.Context, r
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res.EventGatewayPolicy)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsGetEventGatewayVirtualClusterProducePolicyEncryptRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.EventGatewayVirtualClusterProducePolicies.GetEventGatewayVirtualClusterProducePolicyEncrypt(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.EventGatewayPolicy != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res1.EventGatewayPolicy)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -467,43 +402,6 @@ func (r *EventGatewayProducePolicyEncryptResource) Update(ctx context.Context, r
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsGetEventGatewayVirtualClusterProducePolicyEncryptRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.EventGatewayVirtualClusterProducePolicies.GetEventGatewayVirtualClusterProducePolicyEncrypt(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.EventGatewayPolicy != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res1.EventGatewayPolicy)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -570,17 +468,17 @@ func (r *EventGatewayProducePolicyEncryptResource) ImportState(ctx context.Conte
 	}
 
 	if len(data.GatewayID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field gateway_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"`)
+		resp.Diagnostics.AddError("Missing required field", `The field gateway_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("gateway_id"), data.GatewayID)...)
 	if len(data.ID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"`)
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
 	if len(data.VirtualClusterID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field virtual_cluster_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		resp.Diagnostics.AddError("Missing required field", `The field virtual_cluster_id is required but was not found in the json encoded ID.`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("virtual_cluster_id"), data.VirtualClusterID)...)

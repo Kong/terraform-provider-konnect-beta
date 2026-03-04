@@ -18,6 +18,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
+	speakeasy_planmodifierutils "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/utils"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
@@ -42,10 +43,10 @@ type EventGatewayVaultResource struct {
 // EventGatewayVaultResourceModel describes the resource data model.
 type EventGatewayVaultResourceModel struct {
 	Description types.String                      `tfsdk:"description"`
-	Env         *tfTypes.EventGatewayEnvVault     `queryParam:"inline" tfsdk:"env" tfPlanOnly:"true"`
+	Env         *tfTypes.EventGatewayEnvVault     `queryParam:"inline" tfsdk:"env"`
 	GatewayID   types.String                      `tfsdk:"gateway_id"`
 	ID          types.String                      `tfsdk:"id"`
-	Konnect     *tfTypes.EventGatewayKonnectVault `queryParam:"inline" tfsdk:"konnect" tfPlanOnly:"true"`
+	Konnect     *tfTypes.EventGatewayKonnectVault `queryParam:"inline" tfsdk:"konnect"`
 	Name        types.String                      `tfsdk:"name"`
 }
 
@@ -58,9 +59,11 @@ func (r *EventGatewayVaultResource) Schema(ctx context.Context, req resource.Sch
 		MarkdownDescription: "EventGatewayVault Resource",
 		Attributes: map[string]schema.Attribute{
 			"description": schema.StringAttribute{
-				Computed:    true,
-				Default:     stringdefault.StaticString(``),
-				Description: `A human-readable description of the vault. Default: ""`,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("env"), FieldPath: path.Root("env").AtName("description")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("konnect"), FieldPath: path.Root("konnect").AtName("description")}}),
+				},
+				Description: `A human-readable description of the vault.`,
 			},
 			"env": schema.SingleNestedAttribute{
 				Optional: true,
@@ -141,7 +144,10 @@ func (r *EventGatewayVaultResource) Schema(ctx context.Context, req resource.Sch
 				Description: `The UUID of your Gateway.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("env"), FieldPath: path.Root("env").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("konnect"), FieldPath: path.Root("konnect").AtName("id")}}),
+				},
 				Description: `The unique identifier of the vault.`,
 			},
 			"konnect": schema.SingleNestedAttribute{
@@ -201,7 +207,10 @@ func (r *EventGatewayVaultResource) Schema(ctx context.Context, req resource.Sch
 				},
 			},
 			"name": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("env"), FieldPath: path.Root("env").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("konnect"), FieldPath: path.Root("konnect").AtName("name")}}),
+				},
 				Description: `The name of the vault.`,
 			},
 		},
@@ -462,12 +471,12 @@ func (r *EventGatewayVaultResource) ImportState(ctx context.Context, req resourc
 	}
 
 	if len(data.GatewayID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field gateway_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"`)
+		resp.Diagnostics.AddError("Missing required field", `The field gateway_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("gateway_id"), data.GatewayID)...)
 	if len(data.ID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID.`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)

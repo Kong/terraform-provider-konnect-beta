@@ -3,6 +3,6 @@
 package types
 
 type TimeRange struct {
-	Absolute *MetricsAbsoluteTimeRangeDtoV2 `queryParam:"inline" tfsdk:"absolute" tfPlanOnly:"true"`
-	Relative *MetricsRelativeTimeRangeDtoV2 `queryParam:"inline" tfsdk:"relative" tfPlanOnly:"true"`
+	Absolute *MetricsAbsoluteTimeRangeDtoV2 `queryParam:"inline" tfsdk:"absolute"`
+	Relative *MetricsRelativeTimeRangeDtoV2 `queryParam:"inline" tfsdk:"relative"`
 }

@@ -40,6 +40,7 @@ func (r *MeshTrafficPermissionResourceModel) RefreshFromSharedMeshTrafficPermiss
 		r.Mesh = types.StringPointerValue(resp.Mesh)
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
+		r.Spec = &tfTypes.MeshTrafficPermissionItemSpec{}
 		r.Spec.From = []tfTypes.MeshTrafficPermissionItemFrom{}
 
 		for _, fromItem := range resp.Spec.From {
@@ -55,6 +56,7 @@ func (r *MeshTrafficPermissionResourceModel) RefreshFromSharedMeshTrafficPermiss
 					from.Default.Action = types.StringNull()
 				}
 			}
+			from.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			from.TargetRef.Kind = types.StringValue(string(fromItem.TargetRef.Kind))
 			if len(fromItem.TargetRef.Labels) > 0 {
 				from.TargetRef.Labels = make(map[string]types.String, len(fromItem.TargetRef.Labels))
@@ -84,6 +86,7 @@ func (r *MeshTrafficPermissionResourceModel) RefreshFromSharedMeshTrafficPermiss
 		for _, rulesItem := range resp.Spec.Rules {
 			var rules tfTypes.MeshTrafficPermissionItemRules
 
+			rules.Default = &tfTypes.MeshTrafficPermissionItemSpecDefault{}
 			rules.Default.Allow = []tfTypes.Matches{}
 
 			for _, allowItem := range rulesItem.Default.Allow {

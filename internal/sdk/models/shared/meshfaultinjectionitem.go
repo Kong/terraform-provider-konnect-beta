@@ -44,8 +44,8 @@ const (
 // Percentage of requests on which abort will be injected, has to be
 // either int or decimal represented as string.
 type Percentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage" union:"member"`
-	Str     *string `queryParam:"inline,name=percentage" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
 
 	Type PercentageType
 }
@@ -160,8 +160,8 @@ const (
 // MeshFaultInjectionItemPercentage - Percentage of requests on which delay will be injected, has to be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage" union:"member"`
-	Str     *string `queryParam:"inline,name=percentage" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
 
 	Type MeshFaultInjectionItemPercentageType
 }
@@ -274,8 +274,8 @@ const (
 // MeshFaultInjectionItemSpecPercentage - Percentage of requests on which response bandwidth limit will be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage" union:"member"`
-	Str     *string `queryParam:"inline,name=percentage" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
 
 	Type MeshFaultInjectionItemSpecPercentageType
 }
@@ -618,8 +618,8 @@ const (
 // MeshFaultInjectionItemSpecRulesPercentage - Percentage of requests on which abort will be injected, has to be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecRulesPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage" union:"member"`
-	Str     *string `queryParam:"inline,name=percentage" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
 
 	Type MeshFaultInjectionItemSpecRulesPercentageType
 }
@@ -734,8 +734,8 @@ const (
 // MeshFaultInjectionItemSpecRulesDefaultPercentage - Percentage of requests on which delay will be injected, has to be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecRulesDefaultPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage" union:"member"`
-	Str     *string `queryParam:"inline,name=percentage" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
 
 	Type MeshFaultInjectionItemSpecRulesDefaultPercentageType
 }
@@ -848,8 +848,8 @@ const (
 // MeshFaultInjectionItemSpecRulesDefaultHTTPPercentage - Percentage of requests on which response bandwidth limit will be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecRulesDefaultHTTPPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage" union:"member"`
-	Str     *string `queryParam:"inline,name=percentage" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
 
 	Type MeshFaultInjectionItemSpecRulesDefaultHTTPPercentageType
 }
@@ -1251,8 +1251,8 @@ const (
 // MeshFaultInjectionItemSpecToPercentage - Percentage of requests on which abort will be injected, has to be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecToPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage" union:"member"`
-	Str     *string `queryParam:"inline,name=percentage" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
 
 	Type MeshFaultInjectionItemSpecToPercentageType
 }
@@ -1367,8 +1367,8 @@ const (
 // MeshFaultInjectionItemSpecToDefaultPercentage - Percentage of requests on which delay will be injected, has to be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecToDefaultPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage" union:"member"`
-	Str     *string `queryParam:"inline,name=percentage" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
 
 	Type MeshFaultInjectionItemSpecToDefaultPercentageType
 }
@@ -1481,8 +1481,8 @@ const (
 // MeshFaultInjectionItemSpecToDefaultHTTPPercentage - Percentage of requests on which response bandwidth limit will be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecToDefaultHTTPPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage" union:"member"`
-	Str     *string `queryParam:"inline,name=percentage" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
 
 	Type MeshFaultInjectionItemSpecToDefaultHTTPPercentageType
 }

@@ -2,7 +2,10 @@
 
 package types
 
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
+
 type SchemaRegistryReference struct {
-	SchemaRegistryReferenceByID   *SchemaRegistryReferenceByID `queryParam:"inline" tfsdk:"schema_registry_reference_by_id" tfPlanOnly:"true"`
-	SchemaRegistryReferenceByName *EventGatewayACLOperation    `queryParam:"inline" tfsdk:"schema_registry_reference_by_name" tfPlanOnly:"true"`
+	ID types.String `tfsdk:"id"`
 }

@@ -10,6 +10,7 @@ import (
 type AdvancedMetrics string
 
 const (
+	AdvancedMetricsErrorRate              AdvancedMetrics = "error_rate"
 	AdvancedMetricsKongLatencyAverage     AdvancedMetrics = "kong_latency_average"
 	AdvancedMetricsKongLatencyP50         AdvancedMetrics = "kong_latency_p50"
 	AdvancedMetricsKongLatencyP95         AdvancedMetrics = "kong_latency_p95"
@@ -45,6 +46,8 @@ func (e *AdvancedMetrics) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "error_rate":
+		fallthrough
 	case "kong_latency_average":
 		fallthrough
 	case "kong_latency_p50":

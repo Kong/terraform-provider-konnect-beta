@@ -56,6 +56,8 @@ func (r *MeshAccessRoleResourceModel) RefreshFromSharedAccessRoleItem(ctx contex
 
 						rules.Access = append(rules.Access, access)
 					}
+				} else {
+					rules.Access = nil
 				}
 				rules.Mesh = types.StringPointerValue(rulesItem.Mesh)
 				if rulesItem.Names != nil {
@@ -63,12 +65,16 @@ func (r *MeshAccessRoleResourceModel) RefreshFromSharedAccessRoleItem(ctx contex
 					for _, v := range rulesItem.Names {
 						rules.Names = append(rules.Names, types.StringValue(v))
 					}
+				} else {
+					rules.Names = nil
 				}
 				if rulesItem.Types != nil {
 					rules.Types = make([]types.String, 0, len(rulesItem.Types))
 					for _, v := range rulesItem.Types {
 						rules.Types = append(rules.Types, types.StringValue(v))
 					}
+				} else {
+					rules.Types = nil
 				}
 				if rulesItem.When != nil {
 					rules.When = []tfTypes.When{}
@@ -102,6 +108,8 @@ func (r *MeshAccessRoleResourceModel) RefreshFromSharedAccessRoleItem(ctx contex
 
 									when.DpToken.Tags = append(when.DpToken.Tags, tags)
 								}
+							} else {
+								when.DpToken.Tags = nil
 							}
 						}
 						if whenItem.From == nil {
@@ -181,10 +189,14 @@ func (r *MeshAccessRoleResourceModel) RefreshFromSharedAccessRoleItem(ctx contex
 
 						rules.When = append(rules.When, when)
 					}
+				} else {
+					rules.When = nil
 				}
 
 				r.Rules = append(r.Rules, rules)
 			}
+		} else {
+			r.Rules = nil
 		}
 		r.Type = types.StringValue(resp.Type)
 	}

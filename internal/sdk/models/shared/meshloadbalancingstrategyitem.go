@@ -388,8 +388,8 @@ const (
 // value, the more forcefully it reduces the load balancing weight of endpoints that are
 // actively serving requests.
 type ActiveRequestBias struct {
-	Integer *int64  `queryParam:"inline,name=activeRequestBias" union:"member"`
-	Str     *string `queryParam:"inline,name=activeRequestBias" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
 
 	Type ActiveRequestBiasType
 }
@@ -1181,8 +1181,8 @@ const (
 )
 
 type MeshLoadBalancingStrategyItemPercentage struct {
-	Integer *int64  `queryParam:"inline,name=percentage" union:"member"`
-	Str     *string `queryParam:"inline,name=percentage" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
 
 	Type MeshLoadBalancingStrategyItemPercentageType
 }

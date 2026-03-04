@@ -55,6 +55,7 @@ type AuthServerClientsResourceModel struct {
 	LoginURI                types.String            `tfsdk:"login_uri"`
 	Name                    types.String            `tfsdk:"name"`
 	RedirectUris            []types.String          `tfsdk:"redirect_uris"`
+	RefreshTokenDuration    types.Int64             `tfsdk:"refresh_token_duration"`
 	ResponseTypes           []types.String          `tfsdk:"response_types"`
 	TokenEndpointAuthMethod types.String            `tfsdk:"token_endpoint_auth_method"`
 	UpdatedAt               types.String            `tfsdk:"updated_at"`
@@ -163,6 +164,15 @@ func (r *AuthServerClientsResource) Schema(ctx context.Context, req resource.Sch
 				ElementType: types.StringType,
 				Description: `The URIs that the client is allowed to redirect to after authentication in interactive flows. All redirect URIs must be absolute URIs, be secure (HTTPS), and must not include a fragment component.`,
 			},
+			"refresh_token_duration": schema.Int64Attribute{
+				Computed:    true,
+				Optional:    true,
+				Default:     int64default.StaticInt64(2592000),
+				Description: `The duration of the minted refresh token is valid for, in seconds. Default: 2592000`,
+				Validators: []validator.Int64{
+					int64validator.Between(60, 157680000),
+				},
+			},
 			"response_types": schema.ListAttribute{
 				Required:    true,
 				ElementType: types.StringType,
@@ -263,43 +273,6 @@ func (r *AuthServerClientsResource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedCreatedClient(ctx, res.CreatedClient)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsGetAuthServerClientRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.AuthServerClients.GetAuthServerClient(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.Client != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedClient(ctx, res1.Client)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -427,43 +400,6 @@ func (r *AuthServerClientsResource) Update(ctx context.Context, req resource.Upd
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsGetAuthServerClientRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.AuthServerClients.GetAuthServerClient(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.Client != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedClient(ctx, res1.Client)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -529,12 +465,12 @@ func (r *AuthServerClientsResource) ImportState(ctx context.Context, req resourc
 	}
 
 	if len(data.AuthServerID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field auth_server_id is required but was not found in the json encoded ID. It's expected to be a value alike '"d32d905a-ed33-46a3-a093-d8f536af9a8a"`)
+		resp.Diagnostics.AddError("Missing required field", `The field auth_server_id is required but was not found in the json encoded ID. It's expected to be a value alike '"d32d905a-ed33-46a3-a093-d8f536af9a8a"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("auth_server_id"), data.AuthServerID)...)
 	if len(data.ID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"kYa9iQFU5xPDSIUH9z1z"`)
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"kYa9iQFU5xPDSIUH9z1z"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)

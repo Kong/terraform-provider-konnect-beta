@@ -2,7 +2,7 @@
 
 package sdk
 
-// Generated from OpenAPI doc version 2.0.0 and generator version 2.781.2
+// Generated from OpenAPI doc version 2.0.0 and generator version 2.836.5
 
 import (
 	"context"
@@ -165,6 +165,7 @@ type KonnectBeta struct {
 	// Cluster policies are transformation and validation policies that can be applied to Kafka messages.
 	//
 	EventGatewayVirtualClusterPolicies *EventGatewayVirtualClusterPolicies
+	CloudGateways                      *CloudGateways
 
 	sdkConfiguration config.SDKConfiguration
 	hooks            *hooks.Hooks
@@ -240,9 +241,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *KonnectBeta {
 	sdk := &KonnectBeta{
-		SDKVersion: "0.15.0",
+		SDKVersion: "0.16.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 0.15.0 2.781.2 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 0.16.0 2.836.5 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
 			ServerList: ServerList,
 		},
 		hooks: hooks.New(),
@@ -327,6 +328,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.EventGatewayVirtualClusterConsumePolicies = newEventGatewayVirtualClusterConsumePolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayVirtualClusterProducePolicies = newEventGatewayVirtualClusterProducePolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayVirtualClusterPolicies = newEventGatewayVirtualClusterPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.CloudGateways = newCloudGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
 
 	return sdk
 }

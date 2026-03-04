@@ -6,6 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type SchemaRegistryReferenceByID struct {
-	ID types.String `tfsdk:"id"`
+type ControlPlane struct {
+	ControlPlaneGeo types.String `tfsdk:"control_plane_geo"`
+	ControlPlaneID  types.String `tfsdk:"control_plane_id"`
 }

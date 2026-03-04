@@ -50,7 +50,7 @@ resource "konnect_event_gateway_vault" "my_eventgatewayvault" {
 
 ### Read-Only
 
-- `description` (String) A human-readable description of the vault. Default: ""
+- `description` (String) A human-readable description of the vault.
 - `id` (String) The unique identifier of the vault.
 - `name` (String) The name of the vault.
 

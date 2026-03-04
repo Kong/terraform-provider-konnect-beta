@@ -18,8 +18,8 @@ const (
 
 // ForwardToVirtualClusterPolicyConfig - The configuration of the policy.
 type ForwardToVirtualClusterPolicyConfig struct {
-	ForwardToClusterBySNIConfig         *ForwardToClusterBySNIConfig         `queryParam:"inline,name=config" union:"member"`
-	ForwardToClusterByPortMappingConfig *ForwardToClusterByPortMappingConfig `queryParam:"inline,name=config" union:"member"`
+	ForwardToClusterBySNIConfig         *ForwardToClusterBySNIConfig         `queryParam:"inline" union:"member"`
+	ForwardToClusterByPortMappingConfig *ForwardToClusterByPortMappingConfig `queryParam:"inline" union:"member"`
 
 	Type ForwardToVirtualClusterPolicyConfigType
 }
@@ -101,7 +101,7 @@ type ForwardToVirtualClusterPolicy struct {
 	// The type name of the policy.
 	type_ string `const:"forward_to_virtual_cluster" json:"type"`
 	// A unique user-defined name of the policy.
-	Name *string `default:"null" json:"name"`
+	Name *string `json:"name,omitempty"`
 	// A human-readable description of the policy.
 	Description *string `default:"" json:"description"`
 	// Whether the policy is enabled.

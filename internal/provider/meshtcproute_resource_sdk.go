@@ -40,6 +40,7 @@ func (r *MeshTCPRouteResourceModel) RefreshFromSharedMeshTCPRouteItem(ctx contex
 		r.Mesh = types.StringPointerValue(resp.Mesh)
 		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
+		r.Spec = &tfTypes.MeshTCPRouteItemSpec{}
 		if resp.Spec.TargetRef == nil {
 			r.Spec.TargetRef = nil
 		} else {
@@ -76,6 +77,7 @@ func (r *MeshTCPRouteResourceModel) RefreshFromSharedMeshTCPRouteItem(ctx contex
 			for _, rulesItem := range toItem.Rules {
 				var rules tfTypes.MeshTCPRouteItemRules
 
+				rules.Default = &tfTypes.MeshTCPRouteItemDefault{}
 				rules.Default.BackendRefs = []tfTypes.BackendRefs{}
 
 				for _, backendRefsItem := range rulesItem.Default.BackendRefs {
@@ -110,6 +112,7 @@ func (r *MeshTCPRouteResourceModel) RefreshFromSharedMeshTCPRouteItem(ctx contex
 
 				to.Rules = append(to.Rules, rules)
 			}
+			to.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
 			to.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 			if len(toItem.TargetRef.Labels) > 0 {
 				to.TargetRef.Labels = make(map[string]types.String, len(toItem.TargetRef.Labels))

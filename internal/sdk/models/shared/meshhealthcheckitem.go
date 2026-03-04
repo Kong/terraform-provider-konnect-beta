@@ -239,8 +239,8 @@ const (
 // Deprecated: the setting has been moved to MeshCircuitBreaker policy,
 // please use MeshCircuitBreaker policy instead.
 type HealthyPanicThreshold struct {
-	Integer *int64  `queryParam:"inline,name=healthyPanicThreshold" union:"member"`
-	Str     *string `queryParam:"inline,name=healthyPanicThreshold" union:"member"`
+	Integer *int64  `queryParam:"inline" union:"member"`
+	Str     *string `queryParam:"inline" union:"member"`
 
 	Type HealthyPanicThresholdType
 }

@@ -21,6 +21,7 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 	if resp != nil {
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.CreatedBy = types.StringPointerValue(resp.CreatedBy)
+		r.Definition = &tfTypes.Dashboard{}
 		r.Definition.PresetFilters = []tfTypes.AllFilterItems{}
 
 		for _, presetFiltersItem := range resp.Definition.PresetFilters {
@@ -44,6 +45,10 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 
 			if tilesItem.ChartTile != nil {
 				tiles.Chart = &tfTypes.ChartTile{}
+				tiles.Chart.Definition = &tfTypes.Definition{}
+				if tiles.Chart.Definition.Chart == nil {
+					tiles.Chart.Definition.Chart = &tfTypes.Chart{}
+				}
 				if tilesItem.ChartTile.Definition.Chart.BarChart != nil {
 					tiles.Chart.Definition.Chart.HorizontalBar = &tfTypes.BarChart{}
 					tiles.Chart.Definition.Chart.HorizontalBar.ChartTitle = types.StringPointerValue(tilesItem.ChartTile.Definition.Chart.BarChart.ChartTitle)
@@ -72,6 +77,9 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 					tiles.Chart.Definition.Chart.TimeseriesLine.Stacked = types.BoolPointerValue(tilesItem.ChartTile.Definition.Chart.TimeseriesChart.Stacked)
 					tiles.Chart.Definition.Chart.TimeseriesLine.Type = types.StringValue(string(tilesItem.ChartTile.Definition.Chart.TimeseriesChart.Type))
 				}
+				if tiles.Chart.Definition.Query == nil {
+					tiles.Chart.Definition.Query = &tfTypes.Query{}
+				}
 				if tilesItem.ChartTile.Definition.Query.AdvancedQuery != nil {
 					tiles.Chart.Definition.Query.APIUsage = &tfTypes.AdvancedQuery{}
 					tiles.Chart.Definition.Query.APIUsage.Datasource = types.StringValue(string(tilesItem.ChartTile.Definition.Query.AdvancedQuery.Datasource))
@@ -80,6 +88,8 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 						for _, v := range tilesItem.ChartTile.Definition.Query.AdvancedQuery.Dimensions {
 							tiles.Chart.Definition.Query.APIUsage.Dimensions = append(tiles.Chart.Definition.Query.APIUsage.Dimensions, types.StringValue(string(v)))
 						}
+					} else {
+						tiles.Chart.Definition.Query.APIUsage.Dimensions = nil
 					}
 					tiles.Chart.Definition.Query.APIUsage.Filters = []tfTypes.AllFilterItems{}
 
@@ -135,6 +145,8 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 						for _, v := range tilesItem.ChartTile.Definition.Query.LLMQuery.Dimensions {
 							tiles.Chart.Definition.Query.LlmUsage.Dimensions = append(tiles.Chart.Definition.Query.LlmUsage.Dimensions, types.StringValue(string(v)))
 						}
+					} else {
+						tiles.Chart.Definition.Query.LlmUsage.Dimensions = nil
 					}
 					tiles.Chart.Definition.Query.LlmUsage.Filters = []tfTypes.AllFilterItems{}
 
@@ -182,8 +194,11 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 						}
 					}
 				}
+				tiles.Chart.Layout = &tfTypes.Layout{}
+				tiles.Chart.Layout.Position = &tfTypes.Position{}
 				tiles.Chart.Layout.Position.Col = types.Int64Value(tilesItem.ChartTile.Layout.Position.Col)
 				tiles.Chart.Layout.Position.Row = types.Int64Value(tilesItem.ChartTile.Layout.Position.Row)
+				tiles.Chart.Layout.Size = &tfTypes.Size{}
 				tiles.Chart.Layout.Size.Cols = types.Int64Value(tilesItem.ChartTile.Layout.Size.Cols)
 				tiles.Chart.Layout.Size.Rows = types.Int64Value(tilesItem.ChartTile.Layout.Size.Rows)
 				tiles.Chart.Type = types.StringValue(string(tilesItem.ChartTile.Type))
