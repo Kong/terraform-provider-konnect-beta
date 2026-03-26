@@ -3,68 +3,69 @@
 package provider
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
+	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &AuthServerResource{}
-var _ resource.ResourceWithImportState = &AuthServerResource{}
+var _ resource.Resource = &EventGatewayTLSTrustBundleResource{}
+var _ resource.ResourceWithImportState = &EventGatewayTLSTrustBundleResource{}
 
-func NewAuthServerResource() resource.Resource {
-	return &AuthServerResource{}
+func NewEventGatewayTLSTrustBundleResource() resource.Resource {
+	return &EventGatewayTLSTrustBundleResource{}
 }
 
-// AuthServerResource defines the resource implementation.
-type AuthServerResource struct {
+// EventGatewayTLSTrustBundleResource defines the resource implementation.
+type EventGatewayTLSTrustBundleResource struct {
 	// Provider configured SDK client.
 	client *sdk.KonnectBeta
 }
 
-// AuthServerResourceModel describes the resource data model.
-type AuthServerResourceModel struct {
-	Audience                      types.String            `tfsdk:"audience"`
-	CreatedAt                     types.String            `tfsdk:"created_at"`
-	DcrDefaultAccessTokenDuration types.Int64             `tfsdk:"dcr_default_access_token_duration"`
-	Description                   types.String            `tfsdk:"description"`
-	ForceDestroy                  types.String            `queryParam:"style=form,explode=true,name=force" tfsdk:"force_destroy"`
-	ID                            types.String            `tfsdk:"id"`
-	Issuer                        types.String            `tfsdk:"issuer"`
-	Labels                        map[string]types.String `tfsdk:"labels"`
-	MetadataURI                   types.String            `tfsdk:"metadata_uri"`
-	Name                          types.String            `tfsdk:"name"`
-	SigningAlgorithm              types.String            `tfsdk:"signing_algorithm"`
-	TrustedOrigins                []types.String          `tfsdk:"trusted_origins"`
-	UpdatedAt                     types.String            `tfsdk:"updated_at"`
+// EventGatewayTLSTrustBundleResourceModel describes the resource data model.
+type EventGatewayTLSTrustBundleResourceModel struct {
+	Config      *tfTypes.TLSTrustBundleConfig `tfsdk:"config"`
+	CreatedAt   types.String                  `tfsdk:"created_at"`
+	Description types.String                  `tfsdk:"description"`
+	GatewayID   types.String                  `tfsdk:"gateway_id"`
+	ID          types.String                  `tfsdk:"id"`
+	Labels      map[string]types.String       `tfsdk:"labels"`
+	Name        types.String                  `tfsdk:"name"`
+	UpdatedAt   types.String                  `tfsdk:"updated_at"`
 }
 
-func (r *AuthServerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = "konnect_auth_server"
+func (r *EventGatewayTLSTrustBundleResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = "konnect_event_gateway_tls_trust_bundle"
 }
 
-func (r *AuthServerResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *EventGatewayTLSTrustBundleResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "AuthServer Resource",
+		MarkdownDescription: "EventGatewayTLSTrustBundle Resource",
 		Attributes: map[string]schema.Attribute{
-			"audience": schema.StringAttribute{
-				Required:    true,
-				Description: `The recipients that the tokens are intended for. This becomes the 'aud' claim in an access token`,
-				Validators: []validator.String{
-					stringvalidator.UTF8LengthAtLeast(1),
+			"config": schema.SingleNestedAttribute{
+				Required: true,
+				Attributes: map[string]schema.Attribute{
+					"trusted_ca": schema.StringAttribute{
+						Required: true,
+						MarkdownDescription: `PEM-encoded list of trusted CA certificates used to verify client certificates.` + "\n" +
+							`Can be a literal PEM string or a vault reference.`,
+						Validators: []validator.String{
+							stringvalidator.UTF8LengthAtLeast(1),
+						},
+					},
 				},
 			},
 			"created_at": schema.StringAttribute{
@@ -74,39 +75,25 @@ func (r *AuthServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
-			"dcr_default_access_token_duration": schema.Int64Attribute{
-				Computed:    true,
-				Optional:    true,
-				Default:     int64default.StaticInt64(300),
-				Description: `The default access token duration, in seconds, applied to DCR clients registered against this auth server. Default: 300`,
-				Validators: []validator.Int64{
-					int64validator.Between(60, 2592000),
-				},
-			},
 			"description": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The description of the auth server`,
-			},
-			"force_destroy": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Default:     stringdefault.StaticString(`false`),
-				Description: `If true, delete the specified auth server and all its associated resources. If false, only allow deletion if no clients, scopes or claims are associated with the auth server. Default: "false"; must be one of ["true", "false"]`,
+				Default:     stringdefault.StaticString(``),
+				Description: `A human-readable description of the TLS trust bundle. Default: ""`,
 				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"true",
-						"false",
-					),
+					stringvalidator.UTF8LengthAtMost(512),
 				},
 			},
-			"id": schema.StringAttribute{
-				Computed:    true,
-				Description: `The ID of the auth server`,
+			"gateway_id": schema.StringAttribute{
+				Required:    true,
+				Description: `The UUID of your Gateway.`,
 			},
-			"issuer": schema.StringAttribute{
-				Computed:    true,
-				Description: `The complete URL for the custom authorization server. This becomes the 'iss' claim in an access token.`,
+			"id": schema.StringAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				Description: `The unique identifier of the TLS trust bundle.`,
 			},
 			"labels": schema.MapAttribute{
 				Computed:    true,
@@ -116,40 +103,11 @@ func (r *AuthServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 					`` + "\n" +
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
-			"metadata_uri": schema.StringAttribute{
-				Computed:    true,
-				Description: `The URI of the metadata document for the auth server`,
-			},
 			"name": schema.StringAttribute{
 				Required:    true,
-				Description: `The name of the auth server`,
+				Description: `The unique name of the TLS trust bundle.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthAtLeast(1),
-				},
-			},
-			"signing_algorithm": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Default:     stringdefault.StaticString(`RS256`),
-				Description: `Algorithm used in the key signing process. Default: "RS256"; must be one of ["RS256", "RS384", "RS512", "PS256", "PS384", "PS512"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"RS256",
-						"RS384",
-						"RS512",
-						"PS256",
-						"PS384",
-						"PS512",
-					),
-				},
-			},
-			"trusted_origins": schema.ListAttribute{
-				Computed:    true,
-				Optional:    true,
-				ElementType: types.StringType,
-				Description: `A list or trusted origins to apply the CORS header on for the auth server`,
-				Validators: []validator.List{
-					listvalidator.UniqueValues(),
+					stringvalidator.UTF8LengthBetween(1, 255),
 				},
 			},
 			"updated_at": schema.StringAttribute{
@@ -163,7 +121,7 @@ func (r *AuthServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 	}
 }
 
-func (r *AuthServerResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *EventGatewayTLSTrustBundleResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -183,8 +141,8 @@ func (r *AuthServerResource) Configure(ctx context.Context, req resource.Configu
 	r.client = client
 }
 
-func (r *AuthServerResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *AuthServerResourceModel
+func (r *EventGatewayTLSTrustBundleResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *EventGatewayTLSTrustBundleResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -201,13 +159,13 @@ func (r *AuthServerResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	request, requestDiags := data.ToSharedCreateAuthServer(ctx)
+	request, requestDiags := data.ToOperationsCreateEventGatewayTLSTrustBundleRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.AuthServer.CreateAuthServer(ctx, *request)
+	res, err := r.client.EventGatewayTLSTrustBundles.CreateEventGatewayTLSTrustBundle(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -219,22 +177,15 @@ func (r *AuthServerResource) Create(ctx context.Context, req resource.CreateRequ
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode == 409 {
-		resp.Diagnostics.AddError(
-			"Resource Already Exists",
-			"When creating this resource, the API indicated that this resource already exists. You can bring the existing resource under management using Terraform import functionality or retry with a unique configuration.",
-		)
-		return
-	}
 	if res.StatusCode != 201 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AuthServer != nil) {
+	if !(res.TLSTrustBundle != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAuthServer(ctx, res.AuthServer)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedTLSTrustBundle(ctx, res.TLSTrustBundle)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -250,8 +201,8 @@ func (r *AuthServerResource) Create(ctx context.Context, req resource.CreateRequ
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *AuthServerResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *AuthServerResourceModel
+func (r *EventGatewayTLSTrustBundleResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *EventGatewayTLSTrustBundleResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -268,13 +219,13 @@ func (r *AuthServerResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetAuthServerRequest(ctx)
+	request, requestDiags := data.ToOperationsGetEventGatewayTLSTrustBundleRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.AuthServer.GetAuthServer(ctx, *request)
+	res, err := r.client.EventGatewayTLSTrustBundles.GetEventGatewayTLSTrustBundle(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -294,11 +245,11 @@ func (r *AuthServerResource) Read(ctx context.Context, req resource.ReadRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AuthServer != nil) {
+	if !(res.TLSTrustBundle != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAuthServer(ctx, res.AuthServer)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedTLSTrustBundle(ctx, res.TLSTrustBundle)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -308,8 +259,8 @@ func (r *AuthServerResource) Read(ctx context.Context, req resource.ReadRequest,
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *AuthServerResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *AuthServerResourceModel
+func (r *EventGatewayTLSTrustBundleResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *EventGatewayTLSTrustBundleResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -322,13 +273,13 @@ func (r *AuthServerResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAuthServerRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateEventGatewayTLSTrustBundleRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.AuthServer.UpdateAuthServer(ctx, *request)
+	res, err := r.client.EventGatewayTLSTrustBundles.UpdateEventGatewayTLSTrustBundle(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -344,11 +295,11 @@ func (r *AuthServerResource) Update(ctx context.Context, req resource.UpdateRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AuthServer != nil) {
+	if !(res.TLSTrustBundle != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAuthServer(ctx, res.AuthServer)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedTLSTrustBundle(ctx, res.TLSTrustBundle)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -364,8 +315,8 @@ func (r *AuthServerResource) Update(ctx context.Context, req resource.UpdateRequ
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *AuthServerResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *AuthServerResourceModel
+func (r *EventGatewayTLSTrustBundleResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *EventGatewayTLSTrustBundleResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -382,13 +333,13 @@ func (r *AuthServerResource) Delete(ctx context.Context, req resource.DeleteRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAuthServerRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteEventGatewayTLSTrustBundleRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.AuthServer.DeleteAuthServer(ctx, *request)
+	res, err := r.client.EventGatewayTLSTrustBundles.DeleteEventGatewayTLSTrustBundle(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -410,6 +361,27 @@ func (r *AuthServerResource) Delete(ctx context.Context, req resource.DeleteRequ
 
 }
 
-func (r *AuthServerResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), req.ID)...)
+func (r *EventGatewayTLSTrustBundleResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
+	dec.DisallowUnknownFields()
+	var data struct {
+		GatewayID string `json:"gateway_id"`
+		ID        string `json:"id"`
+	}
+
+	if err := dec.Decode(&data); err != nil {
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "..."}': `+err.Error())
+		return
+	}
+
+	if len(data.GatewayID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field gateway_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("gateway_id"), data.GatewayID)...)
+	if len(data.ID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID.`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
 }

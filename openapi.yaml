@@ -7109,6 +7109,124 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Event Gateway Static Keys
+  '/v1/event-gateways/{gatewayId}/tls-trust-bundles':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+    post:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayTLSTrustBundle#create
+        terraform-datasource: null
+      operationId: create-event-gateway-tls-trust-bundle
+      summary: Create TLS Trust Bundle
+      description: Creates a new TLS trust bundle containing trusted CA certificates for client certificate verification.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateTLSTrustBundleRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TLSTrustBundle'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway TLS Trust Bundles
+      x-min-runtime-version: '1.1'
+      x-speakeasy-param-computed: false
+  '/v1/event-gateways/{gatewayId}/tls-trust-bundles/{tlsTrustBundleId}':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - name: tlsTrustBundleId
+        in: path
+        description: The ID of the TLS trust bundle.
+        required: true
+        schema:
+          type: string
+          format: uuid
+        x-speakeasy-match: id
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayTLSTrustBundle#read
+        terraform-datasource: null
+      operationId: get-event-gateway-tls-trust-bundle
+      summary: Get a TLS Trust Bundle
+      description: Returns information about a specific TLS trust bundle.
+      responses:
+        '200':
+          description: A single TLS trust bundle object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TLSTrustBundle'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway TLS Trust Bundles
+      x-min-runtime-version: '1.1'
+      x-speakeasy-param-computed: false
+    put:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayTLSTrustBundle#update
+        terraform-datasource: null
+      operationId: update-event-gateway-tls-trust-bundle
+      summary: Update TLS Trust Bundle
+      description: Updates an existing TLS trust bundle.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateTLSTrustBundleRequest'
+      responses:
+        '200':
+          description: Updated TLS trust bundle object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TLSTrustBundle'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway TLS Trust Bundles
+      x-min-runtime-version: '1.1'
+      x-speakeasy-param-computed: false
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayTLSTrustBundle#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-tls-trust-bundle
+      summary: Delete TLS Trust Bundle
+      description: Deletes a specific TLS trust bundle associated with the Event Gateway.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway TLS Trust Bundles
+      x-min-runtime-version: '1.1'
+      x-speakeasy-param-computed: false
   '/v1/event-gateways/{gatewayId}/listeners/{eventGatewayListenerId}/policies/{policyId}#TlsServer':
     get:
       x-speakeasy-entity-operation:
@@ -8251,8 +8369,6 @@ paths:
       - $ref: '#/components/parameters/virtualClusterId'
   /v2/cloud-gateways/add-ons:
     post:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: CloudGatewayAddon#create
       operationId: create-add-on
@@ -8270,15 +8386,35 @@ paths:
         '201':
           $ref: '#/components/responses/CreateAddOnResponse'
         '400':
-          $ref: '#/components/responses/CloudGatewaysBadRequest'
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
         '403':
-          $ref: '#/components/responses/CloudGatewaysForbidden'
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
         '404':
-          $ref: '#/components/responses/NotFound'
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
         '409':
-          $ref: '#/components/responses/CloudGatewaysConflict'
+          description: Conflict
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
       servers:
         - url: 'https://global.api.konghq.com/'
       tags:
@@ -8287,8 +8423,6 @@ paths:
       x-speakeasy-group: CloudGateways
   '/v2/cloud-gateways/add-ons/{addOnId}':
     get:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: CloudGatewayAddon#read
       operationId: get-add-on
@@ -8300,11 +8434,23 @@ paths:
         '200':
           $ref: '#/components/responses/RetrieveAddOnResponse'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
         '403':
-          $ref: '#/components/responses/Forbidden'
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
         '404':
-          $ref: '#/components/responses/NotFound'
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
       servers:
         - url: 'https://global.api.konghq.com/'
       tags:
@@ -8312,8 +8458,6 @@ paths:
       x-servers-added: true
       x-speakeasy-group: CloudGateways
     delete:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: CloudGatewayAddon#delete
         terraform-datasource: null
@@ -8327,13 +8471,29 @@ paths:
         '204':
           description: No Content
         '400':
-          $ref: '#/components/responses/CloudGatewaysBadRequest'
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
         '403':
-          $ref: '#/components/responses/Forbidden'
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
         '404':
-          $ref: '#/components/responses/NotFound'
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
       servers:
         - url: 'https://global.api.konghq.com/'
       tags:
@@ -9347,9 +9507,6 @@ components:
         description: The Identity Management (IDM) API team.
         can_own_applications: false
       title: PortalUpdateTeamRequest
-      x-property-annotations:
-        can_own_applications:
-          - x-internal
     PortalCreateTeamRequest:
       x-speakeasy-entity: PortalTeam
       description: Details about a team to create.
@@ -9380,9 +9537,6 @@ components:
       required:
         - name
       title: PortalCreateTeamRequest
-      x-property-annotations:
-        can_own_applications:
-          - x-internal
     PortalTeamResponse:
       description: Details about a developer team.
       type: object
@@ -9435,9 +9589,6 @@ components:
         updated_at: '2022-08-31T17:00:00.52Z'
         can_own_applications: false
       title: PortalTeamResponse
-      x-property-annotations:
-        can_own_applications:
-          - x-internal
     UuidFieldFilter:
       description: 'Filter using **one** of the following operators: `eq`, `oeq`, `neq`'
       type: object
@@ -23652,6 +23803,17 @@ components:
       type: string
       format: uri
       example: 'https://example.com'
+    DcrDefaultAccessTokenDuration:
+      description: 'The default access token duration, in seconds, applied to DCR clients registered against this auth server'
+      type: integer
+      default: 300
+      maximum: 2592000
+      minimum: 60
+    UpdateDcrDefaultAccessTokenDuration:
+      description: 'The default access token duration, in seconds, applied to DCR clients registered against this auth server'
+      type: integer
+      maximum: 2592000
+      minimum: 60
     AuthServer:
       type: object
       properties:
@@ -23681,6 +23843,8 @@ components:
           $ref: '#/components/schemas/UpdatedAt'
         trusted_origins:
           $ref: '#/components/schemas/TrustedOrigins'
+        dcr_default_access_token_duration:
+          $ref: '#/components/schemas/DcrDefaultAccessTokenDuration'
       required:
         - id
         - name
@@ -23692,6 +23856,10 @@ components:
         - labels
         - created_at
         - updated_at
+      x-property-annotations:
+        dcr_default_access_token_duration:
+          - x-unstable
+          - x-internal
     ClaimName:
       description: The name of the claim
       type: string
@@ -25836,11 +26004,13 @@ components:
           sasl_plain: '#/components/schemas/VirtualClusterAuthenticationSaslPlainSensitiveDataAware'
           sasl_scram: '#/components/schemas/VirtualClusterAuthenticationSaslScram'
           oauth_bearer: '#/components/schemas/VirtualClusterAuthenticationOauthBearer'
+          client_certificate: '#/components/schemas/VirtualClusterAuthenticationClientCertificate'
       oneOf:
         - $ref: '#/components/schemas/VirtualClusterAuthenticationAnonymous'
         - $ref: '#/components/schemas/VirtualClusterAuthenticationSaslPlainSensitiveDataAware'
         - $ref: '#/components/schemas/VirtualClusterAuthenticationSaslScram'
         - $ref: '#/components/schemas/VirtualClusterAuthenticationOauthBearer'
+        - $ref: '#/components/schemas/VirtualClusterAuthenticationClientCertificate'
     VirtualClusterAuthenticationScheme:
       discriminator:
         propertyName: type
@@ -25849,11 +26019,13 @@ components:
           sasl_plain: '#/components/schemas/VirtualClusterAuthenticationSaslPlain'
           sasl_scram: '#/components/schemas/VirtualClusterAuthenticationSaslScram'
           oauth_bearer: '#/components/schemas/VirtualClusterAuthenticationOauthBearer'
+          client_certificate: '#/components/schemas/VirtualClusterAuthenticationClientCertificate'
       oneOf:
         - $ref: '#/components/schemas/VirtualClusterAuthenticationAnonymous'
         - $ref: '#/components/schemas/VirtualClusterAuthenticationSaslPlain'
         - $ref: '#/components/schemas/VirtualClusterAuthenticationSaslScram'
         - $ref: '#/components/schemas/VirtualClusterAuthenticationOauthBearer'
+        - $ref: '#/components/schemas/VirtualClusterAuthenticationClientCertificate'
     VirtualClusterAuthenticationAnonymous:
       type: object
       properties:
@@ -25862,6 +26034,95 @@ components:
           const: anonymous
       required:
         - type
+    VirtualClusterAuthenticationClientCertificate:
+      description: Client certificate (mTLS) authentication scheme for the virtual cluster.
+      type: object
+      properties:
+        type:
+          type: string
+          const: client_certificate
+      example:
+        type: client_certificate
+      additionalProperties: false
+      required:
+        - type
+      x-min-runtime-version: '1.1'
+      x-speakeasy-param-computed: false
+    TLSTrustBundle:
+      description: |
+        A TLS trust bundle defines a set of trusted certificate authorities (CAs) used for client certificate
+        verification during mutual TLS (mTLS). Trust bundles are referenced by TLS listener policies to
+        determine which client certificates are accepted.
+      type: object
+      properties:
+        id:
+          description: The unique identifier of the TLS trust bundle.
+          type: string
+          format: uuid
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        name:
+          $ref: '#/components/schemas/TLSTrustBundleName'
+        description:
+          description: A human-readable description of the TLS trust bundle.
+          type: string
+          default: ''
+          maxLength: 512
+        config:
+          $ref: '#/components/schemas/TLSTrustBundleConfig'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - config
+        - created_at
+        - updated_at
+      x-min-runtime-version: '1.1'
+      x-speakeasy-param-computed: false
+    TLSTrustBundleName:
+      description: The unique name of the TLS trust bundle.
+      type: string
+      maxLength: 255
+      minLength: 1
+      x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+    TLSTrustBundleConfig:
+      type: object
+      properties:
+        trusted_ca:
+          description: |
+            PEM-encoded list of trusted CA certificates used to verify client certificates.
+            Can be a literal PEM string or a vault reference.
+          type: string
+          minLength: 1
+          x-expression:
+            type: string
+            fields:
+              - vault
+      required:
+        - trusted_ca
+    TLSTrustBundleReference:
+      description: |
+        A reference to a TLS trust bundle resource.
+
+        Either `id` or `name` must be provided. Following changes to the trust bundle name won't affect the
+        reference, as the system will create the entities relationship by `id`.
+      $ref: '#/components/schemas/TLSTrustBundleReferenceById'
+    TLSTrustBundleReferenceById:
+      type: object
+      properties:
+        id:
+          description: The unique identifier of the TLS trust bundle.
+          type: string
+          format: uuid
+          minLength: 1
+      required:
+        - id
     VirtualClusterAuthenticationSaslPlainSensitiveDataAware:
       description: SASL/PLAIN authentication scheme for the virtual cluster.
       type: object
@@ -26917,6 +27178,79 @@ components:
             If false, only TLS connections are allowed. If true, both TLS and plaintext connections are allowed.
           type: boolean
           default: false
+        client_authentication:
+          description: |
+            Configures mutual TLS (mTLS) client certificate verification. When set, the gateway
+            requests or requires clients to present a certificate during the TLS handshake.
+          type: object
+          properties:
+            mode:
+              description: |
+                * required - Reject TLS connections without a valid client certificate.
+                * requested - Request a client certificate during the TLS handshake, but allow connections without one (falls back to other configured authentication methods). If a certificate is presented but cannot be verified, the connection is closed.
+              type: string
+              enum:
+                - required
+                - requested
+              x-speakeasy-unknown-values: allow
+            tls_trust_bundles:
+              description: |
+                TLS trust bundles contain CA certificate bundles used to verify client certificates.
+                All bundles are merged into a single trust store; a client certificate is accepted if it
+                chains to any trusted CA across all bundles.
+              type: array
+              items:
+                $ref: '#/components/schemas/TLSTrustBundleReference'
+              minItems: 1
+            principal_mapping:
+              description: |
+                An expression that extracts a principal identifier from a verified client certificate.
+                This expression must evaluate to a string.
+              type: string
+              example: '$${context.certificate.subject[''CN''] ? context.certificate.subject[''CN''] : context.certificate.sans.uri[0]}'
+              x-expression:
+                type: string
+                fields:
+                  - name: context.certificate.serialNumber
+                    type: string
+                    description: The string serial number of the certificate
+                  - name: context.certificate.subject
+                    type: object
+                    description: |
+                      A map of the subject distinguished name.
+
+                      A distinguished name as described by RFC 4514 is represented as a map with each key being
+                      the attribute type and the value being the attribute value.
+                      For example:
+                      * `certificate.subject['CN']` is the common name
+                      * `certificate.subject['O']` is the organization
+                  - name: context.certificate.issuer
+                    type: object
+                    description: |
+                      A map of the issuer distinguished name.
+
+                      A distinguished name as described by RFC 4514 is represented as a map with each key being
+                      the attribute type and the value being the attribute value.
+                      For example:
+                      * `certificate.issuer['CN']` is the common name
+                      * `certificate.issuer['O']` is the organization
+                  - name: context.certificate.sans.dns
+                    type: array
+                    items:
+                      type: string
+                    description: An array of the DNS Subject Alternative Names from the certificate.
+                  - name: context.certificate.sans.uri
+                    type: array
+                    items:
+                      type: string
+                    description: An array of the URI Subject Alternative Names from the certificate.
+              x-min-runtime-version: '1.1'
+              x-speakeasy-param-computed: false
+          required:
+            - mode
+            - tls_trust_bundles
+          x-min-runtime-version: '1.1'
+          x-speakeasy-param-computed: false
       required:
         - certificates
     EventGatewayTLSListenerPolicyConfig:
@@ -26935,6 +27269,79 @@ components:
             If false, only TLS connections are allowed. If true, both TLS and plaintext connections are allowed.
           type: boolean
           default: false
+        client_authentication:
+          description: |
+            Configures mutual TLS (mTLS) client certificate verification. When set, the gateway
+            requests or requires clients to present a certificate during the TLS handshake.
+          type: object
+          properties:
+            mode:
+              description: |
+                * required - Reject TLS connections without a valid client certificate.
+                * requested - Request a client certificate during the TLS handshake, but allow connections without one (falls back to other configured authentication methods). If a certificate is presented but cannot be verified, the connection is closed.
+              type: string
+              enum:
+                - required
+                - requested
+              x-speakeasy-unknown-values: allow
+            tls_trust_bundles:
+              description: |
+                TLS trust bundles contain CA certificate bundles used to verify client certificates.
+                All bundles are merged into a single trust store; a client certificate is accepted if it
+                chains to any trusted CA across all bundles.
+              type: array
+              items:
+                $ref: '#/components/schemas/TLSTrustBundleReference'
+              minItems: 1
+            principal_mapping:
+              description: |
+                An expression that extracts a principal identifier from a verified client certificate.
+                This expression must evaluate to a string.
+              type: string
+              example: '$${context.certificate.subject[''CN''] ? context.certificate.subject[''CN''] : context.certificate.sans.uri[0]}'
+              x-expression:
+                type: string
+                fields:
+                  - name: context.certificate.serialNumber
+                    type: string
+                    description: The string serial number of the certificate
+                  - name: context.certificate.subject
+                    type: object
+                    description: |
+                      A map of the subject distinguished name.
+
+                      A distinguished name as described by RFC 4514 is represented as a map with each key being
+                      the attribute type and the value being the attribute value.
+                      For example:
+                      * `certificate.subject['CN']` is the common name
+                      * `certificate.subject['O']` is the organization
+                  - name: context.certificate.issuer
+                    type: object
+                    description: |
+                      A map of the issuer distinguished name.
+
+                      A distinguished name as described by RFC 4514 is represented as a map with each key being
+                      the attribute type and the value being the attribute value.
+                      For example:
+                      * `certificate.issuer['CN']` is the common name
+                      * `certificate.issuer['O']` is the organization
+                  - name: context.certificate.sans.dns
+                    type: array
+                    items:
+                      type: string
+                    description: An array of the DNS Subject Alternative Names from the certificate.
+                  - name: context.certificate.sans.uri
+                    type: array
+                    items:
+                      type: string
+                    description: An array of the URI Subject Alternative Names from the certificate.
+              x-min-runtime-version: '1.1'
+              x-speakeasy-param-computed: false
+          required:
+            - mode
+            - tls_trust_bundles
+          x-min-runtime-version: '1.1'
+          x-speakeasy-param-computed: false
       required:
         - certificates
     TLSCertificateSensitiveDataAware:
@@ -27181,10 +27588,19 @@ components:
           x-expression:
             type: boolean
             fields:
-              - context.auth.principal.name
-              - context.auth.type
-              - context.topic.name
-              - record.headers
+              - name: context.auth.principal.name
+                type: string
+                description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.type
+                type: string
+                description: |
+                  The matched authentication type from a virtual cluster: anonymous, sasl_plain, sasl_scram_sha256, sasl_scram_sha512, sasl_oauth_bearer.
+              - name: context.topic.name
+                type: string
+                description: The name of the topic.
+              - name: record.headers
+                type: object
+                description: An associative array of header key value pairs.
       required:
         - type
         - config
@@ -27247,10 +27663,19 @@ components:
           x-expression:
             type: boolean
             fields:
-              - context.auth.principal.name
-              - context.auth.type
-              - context.topic.name
-              - record.headers
+              - name: context.auth.principal.name
+                type: string
+                description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.type
+                type: string
+                description: |
+                  The matched authentication type from a virtual cluster: anonymous, sasl_plain, sasl_scram_sha256, sasl_scram_sha512, sasl_oauth_bearer.
+              - name: context.topic.name
+                type: string
+                description: The name of the topic.
+              - name: record.headers
+                type: object
+                description: An associative array of header key value pairs.
       required:
         - type
         - config
@@ -27330,12 +27755,25 @@ components:
           x-expression:
             type: boolean
             fields:
-              - context.auth.principal.name
-              - context.auth.type
-              - context.topic.name
-              - record.headers
-              - record.value.validated
-              - record.value.content
+              - name: context.auth.principal.name
+                type: string
+                description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.type
+                type: string
+                description: |
+                  The matched authentication type from a virtual cluster: anonymous, sasl_plain, sasl_scram_sha256, sasl_scram_sha512, sasl_oauth_bearer.
+              - name: context.topic.name
+                type: string
+                description: The name of the topic.
+              - name: record.headers
+                type: object
+                description: An associative array of header key value pairs.
+              - name: record.value.validated
+                type: boolean
+                description: Indicates whether the record value was successfully validated.
+              - name: record.value.content
+                type: object
+                description: The content of the record value.
       required:
         - type
         - config
@@ -27393,12 +27831,25 @@ components:
           x-expression:
             type: boolean
             fields:
-              - context.auth.principal.name
-              - context.auth.type
-              - context.topic.name
-              - record.headers
-              - record.value.validated
-              - record.value.content
+              - name: context.auth.principal.name
+                type: string
+                description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.type
+                type: string
+                description: |
+                  The matched authentication type from a virtual cluster: anonymous, sasl_plain, sasl_scram_sha256, sasl_scram_sha512, sasl_oauth_bearer.
+              - name: context.topic.name
+                type: string
+                description: The name of the topic.
+              - name: record.headers
+                type: object
+                description: An associative array of header key value pairs.
+              - name: record.value.validated
+                type: boolean
+                description: Indicates whether the record value was successfully validated.
+              - name: record.value.content
+                type: object
+                description: The content of the record value.
         parent_policy_id:
           description: 'The unique identifier of the parent schema validation policy, if any.'
           type: string
@@ -27448,12 +27899,25 @@ components:
           x-expression:
             type: boolean
             fields:
-              - context.auth.principal.name
-              - context.auth.type
-              - context.topic.name
-              - record.headers
-              - record.value.validated
-              - record.value.content
+              - name: context.auth.principal.name
+                type: string
+                description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.type
+                type: string
+                description: |
+                  The matched authentication type from a virtual cluster: anonymous, sasl_plain, sasl_scram_sha256, sasl_scram_sha512, sasl_oauth_bearer.
+              - name: context.topic.name
+                type: string
+                description: The name of the topic.
+              - name: record.headers
+                type: object
+                description: An associative array of header key value pairs.
+              - name: record.value.validated
+                type: boolean
+                description: Indicates whether the record value was successfully validated.
+              - name: record.value.content
+                type: object
+                description: The content of the record value.
       required:
         - type
     EventGatewaySkipRecordPolicyCreate:
@@ -27496,12 +27960,25 @@ components:
           x-expression:
             type: boolean
             fields:
-              - context.auth.principal.name
-              - context.auth.type
-              - context.topic.name
-              - record.headers
-              - record.value.validated
-              - record.value.content
+              - name: context.auth.principal.name
+                type: string
+                description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.type
+                type: string
+                description: |
+                  The matched authentication type from a virtual cluster: anonymous, sasl_plain, sasl_scram_sha256, sasl_scram_sha512, sasl_oauth_bearer.
+              - name: context.topic.name
+                type: string
+                description: The name of the topic.
+              - name: record.headers
+                type: object
+                description: An associative array of header key value pairs.
+              - name: record.value.validated
+                type: boolean
+                description: Indicates whether the record value was successfully validated.
+              - name: record.value.content
+                type: object
+                description: The content of the record value.
         parent_policy_id:
           description: 'The unique identifier of the parent schema validation policy, if any.'
           type: string
@@ -27600,10 +28077,19 @@ components:
           x-expression:
             type: boolean
             fields:
-              - context.auth.principal.name
-              - context.auth.type
-              - context.topic.name
-              - record.headers
+              - name: context.auth.principal.name
+                type: string
+                description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.type
+                type: string
+                description: |
+                  The matched authentication type from a virtual cluster: anonymous, sasl_plain, sasl_scram_sha256, sasl_scram_sha512, sasl_oauth_bearer.
+              - name: context.topic.name
+                type: string
+                description: The name of the topic.
+              - name: record.headers
+                type: object
+                description: An associative array of header key value pairs.
       required:
         - type
         - config
@@ -27648,10 +28134,19 @@ components:
           x-expression:
             type: boolean
             fields:
-              - context.auth.principal.name
-              - context.auth.type
-              - context.topic.name
-              - record.headers
+              - name: context.auth.principal.name
+                type: string
+                description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.type
+                type: string
+                description: |
+                  The matched authentication type from a virtual cluster: anonymous, sasl_plain, sasl_scram_sha256, sasl_scram_sha512, sasl_oauth_bearer.
+              - name: context.topic.name
+                type: string
+                description: The name of the topic.
+              - name: record.headers
+                type: object
+                description: An associative array of header key value pairs.
       required:
         - type
         - config
@@ -27736,8 +28231,13 @@ components:
           x-expression:
             type: boolean
             fields:
-              - context.auth.principal.name
-              - context.auth.type
+              - name: context.auth.principal.name
+                type: string
+                description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.type
+                type: string
+                description: |
+                  The matched authentication type from a virtual cluster: anonymous, sasl_plain, sasl_scram_sha256, sasl_scram_sha512, sasl_oauth_bearer.
       required:
         - type
         - config
@@ -28806,6 +29306,9 @@ components:
             - 2xlarge
             - 4xlarge
           x-speakeasy-unknown-values: allow
+      example:
+        kind: tiered
+        tier: small
       additionalProperties: false
       required:
         - kind
@@ -29517,9 +30020,15 @@ components:
                 $ref: '#/components/schemas/Labels'
               trusted_origins:
                 $ref: '#/components/schemas/TrustedOrigins'
+              dcr_default_access_token_duration:
+                $ref: '#/components/schemas/DcrDefaultAccessTokenDuration'
             required:
               - name
               - audience
+            x-property-annotations:
+              dcr_default_access_token_duration:
+                - x-unstable
+                - x-internal
     UpdateAuthServer:
       description: Auth server to be updated
       required: true
@@ -29540,6 +30049,12 @@ components:
                 $ref: '#/components/schemas/LabelsUpdate'
               trusted_origins:
                 $ref: '#/components/schemas/TrustedOrigins'
+              dcr_default_access_token_duration:
+                $ref: '#/components/schemas/UpdateDcrDefaultAccessTokenDuration'
+            x-property-annotations:
+              dcr_default_access_token_duration:
+                - x-unstable
+                - x-internal
     CreateClaim:
       description: Claim to be created
       required: true
@@ -29989,6 +30504,49 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/EventGatewayStaticKeyCreate'
+    CreateTLSTrustBundleRequest:
+      description: The request schema for creating a TLS trust bundle.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/TLSTrustBundleName'
+              description:
+                description: A human-readable description of the TLS trust bundle.
+                type: string
+                default: ''
+                maxLength: 512
+              config:
+                $ref: '#/components/schemas/TLSTrustBundleConfig'
+              labels:
+                $ref: '#/components/schemas/Labels'
+            additionalProperties: false
+            required:
+              - name
+              - config
+    UpdateTLSTrustBundleRequest:
+      description: The request schema for updating a TLS trust bundle.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/TLSTrustBundleName'
+              description:
+                description: A human-readable description of the TLS trust bundle.
+                type: string
+                default: ''
+                maxLength: 512
+              config:
+                $ref: '#/components/schemas/TLSTrustBundleConfig'
+              labels:
+                $ref: '#/components/schemas/Labels'
+            additionalProperties: false
   responses:
     PortalAuthenticationSettings:
       description: Details about a portal's authentication settings.
@@ -32258,24 +32816,6 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/BaseError'
-    CloudGatewaysBadRequest:
-      description: Bad Request
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/BadRequestError'
-    CloudGatewaysForbidden:
-      description: Forbidden
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ForbiddenError'
-    CloudGatewaysConflict:
-      description: Conflict
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ConflictError'
     CreateAddOnResponse:
       description: Response format for creating an add-on.
       content:
@@ -32390,6 +32930,11 @@ tags:
   - name: Event Gateway Schema Registries
     description: |
       Configure a schema registry that can be used to validate payloads when producing/consuming messages
+  - name: Event Gateway TLS Trust Bundles
+    description: |
+      A TLS trust bundle defines a set of trusted certificate authorities (CAs) used for client certificate
+      verification during mutual TLS (mTLS). Trust bundles are referenced by TLS listener policies to
+      determine which client certificates are accepted.
   - name: Event Gateway Vaults
   - name: Add-Ons
 security:

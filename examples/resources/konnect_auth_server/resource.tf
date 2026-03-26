@@ -1,8 +1,9 @@
 resource "konnect_auth_server" "my_authserver" {
   provider = konnect-beta
-  audience      = "...my_audience..."
-  description   = "...my_description..."
-  force_destroy = "false"
+  audience                          = "...my_audience..."
+  dcr_default_access_token_duration = 300
+  description                       = "...my_description..."
+  force_destroy                     = "false"
   labels = {
     key = "value"
   }
