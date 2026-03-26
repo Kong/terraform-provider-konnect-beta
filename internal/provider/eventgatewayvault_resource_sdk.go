@@ -21,6 +21,7 @@ func (r *EventGatewayVaultResourceModel) RefreshFromSharedEventGatewayVault(ctx 
 			r.Env.Config = &tfTypes.Config{}
 			r.Env.Config.Prefix = types.StringValue(resp.EventGatewayVaultEventGatewayEnvVault.Config.Prefix)
 			r.Env.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.EventGatewayVaultEventGatewayEnvVault.CreatedAt))
+			r.CreatedAt = r.Env.CreatedAt
 			r.Env.Description = types.StringPointerValue(resp.EventGatewayVaultEventGatewayEnvVault.Description)
 			r.Description = r.Env.Description
 			r.Env.ID = types.StringValue(resp.EventGatewayVaultEventGatewayEnvVault.ID)
@@ -34,10 +35,12 @@ func (r *EventGatewayVaultResourceModel) RefreshFromSharedEventGatewayVault(ctx 
 			r.Env.Name = types.StringValue(resp.EventGatewayVaultEventGatewayEnvVault.Name)
 			r.Name = r.Env.Name
 			r.Env.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.EventGatewayVaultEventGatewayEnvVault.UpdatedAt))
+			r.UpdatedAt = r.Env.UpdatedAt
 		}
 		if resp.EventGatewayVaultEventGatewayKonnectVault != nil {
 			r.Konnect = &tfTypes.EventGatewayKonnectVault{}
 			r.Konnect.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.EventGatewayVaultEventGatewayKonnectVault.CreatedAt))
+			r.CreatedAt = r.Konnect.CreatedAt
 			r.Konnect.Description = types.StringPointerValue(resp.EventGatewayVaultEventGatewayKonnectVault.Description)
 			r.Description = r.Konnect.Description
 			r.Konnect.ID = types.StringValue(resp.EventGatewayVaultEventGatewayKonnectVault.ID)
@@ -51,6 +54,7 @@ func (r *EventGatewayVaultResourceModel) RefreshFromSharedEventGatewayVault(ctx 
 			r.Konnect.Name = types.StringValue(resp.EventGatewayVaultEventGatewayKonnectVault.Name)
 			r.Name = r.Konnect.Name
 			r.Konnect.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.EventGatewayVaultEventGatewayKonnectVault.UpdatedAt))
+			r.UpdatedAt = r.Konnect.UpdatedAt
 		}
 	}
 

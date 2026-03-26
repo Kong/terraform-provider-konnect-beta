@@ -33,7 +33,8 @@ func (c *Config) GetPrefix() string {
 // EventGatewayEnvVault - An environment vault.
 type EventGatewayEnvVault struct {
 	// The name of the vault.
-	Name  string `json:"name"`
+	Name string `json:"name"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"env" json:"type"`
 	// A human-readable description of the vault.
 	Description *string `default:"" json:"description"`

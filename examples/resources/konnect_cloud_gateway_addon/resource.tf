@@ -1,13 +1,7 @@
 resource "konnect_cloud_gateway_addon" "my_cloudgatewayaddon" {
   provider = konnect-beta
   config = {
-    managed_cache = {
-      capacity_config = {
-        tiered = {
-          tier = "2xlarge"
-        }
-      }
-    }
+    # ...
   }
   name = "my-add-on"
   owner = {

@@ -30,7 +30,7 @@ resource "konnect_mesh_service" "my_meshservice" {
     ]
     ports = [
       {
-        app_protocol = "...my_app_protocol..."
+        app_protocol = "tcp"
         name         = "...my_name..."
         port         = 8
         target_port = {
@@ -51,7 +51,7 @@ resource "konnect_mesh_service" "my_meshservice" {
         key = "value"
       }
     }
-    state = "Available"
+    state = "Unavailable"
   }
   type = "MeshService"
 }

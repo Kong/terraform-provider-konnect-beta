@@ -15,14 +15,15 @@ AuthServer Resource
 ```terraform
 resource "konnect_auth_server" "my_authserver" {
   provider = konnect-beta
-  audience      = "...my_audience..."
-  description   = "...my_description..."
-  force_destroy = "true"
+  audience                          = "...my_audience..."
+  dcr_default_access_token_duration = 300
+  description                       = "...my_description..."
+  force_destroy                     = "false"
   labels = {
     key = "value"
   }
   name              = "...my_name..."
-  signing_algorithm = "RS384"
+  signing_algorithm = "RS256"
   trusted_origins = [
     "https://example.com"
   ]
@@ -39,6 +40,7 @@ resource "konnect_auth_server" "my_authserver" {
 
 ### Optional
 
+- `dcr_default_access_token_duration` (Number) The default access token duration, in seconds, applied to DCR clients registered against this auth server. Default: 300
 - `description` (String) The description of the auth server
 - `force_destroy` (String) If true, delete the specified auth server and all its associated resources. If false, only allow deletion if no clients, scopes or claims are associated with the auth server. Default: "false"; must be one of ["true", "false"]
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 

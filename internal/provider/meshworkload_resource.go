@@ -110,6 +110,9 @@ func (r *MeshWorkloadResource) Schema(ctx context.Context, req resource.SchemaRe
 				Attributes: map[string]schema.Attribute{
 					"dataplane_proxies": schema.SingleNestedAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.Object{
+							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+						},
 						Attributes: map[string]schema.Attribute{
 							"connected": schema.Int32Attribute{
 								Computed:    true,

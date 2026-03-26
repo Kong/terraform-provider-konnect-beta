@@ -19,7 +19,7 @@ resource "konnect_event_gateway_vault" "my_eventgatewayvault" {
     config = {
       prefix = "KONG_"
     }
-    description = "...my_description..."
+    description = ""
     labels = {
       key = "value"
     }
@@ -27,7 +27,7 @@ resource "konnect_event_gateway_vault" "my_eventgatewayvault" {
   }
   gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   konnect = {
-    description = "...my_description..."
+    description = ""
     labels = {
       key = "value"
     }
@@ -50,9 +50,11 @@ resource "konnect_event_gateway_vault" "my_eventgatewayvault" {
 
 ### Read-Only
 
+- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `description` (String) A human-readable description of the vault.
 - `id` (String) The unique identifier of the vault.
 - `name` (String) The name of the vault.
+- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--env"></a>
 ### Nested Schema for `env`

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.17.0
+> Released on 2026/03/??
+
+### Features
+* Add support for client authentication on `konnect_event_gateway_listener_policy_tls_server` using `konnect_event_gateway_tls_trust_bundle` resource
+
 ## 0.16.0
 > Released on 2026/03/02
 

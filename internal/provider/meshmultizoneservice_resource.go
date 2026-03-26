@@ -190,6 +190,9 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 								},
 								"hostname_generator_ref": schema.SingleNestedAttribute{
 									Computed: true,
+									PlanModifiers: []planmodifier.Object{
+										speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+									},
 									Attributes: map[string]schema.Attribute{
 										"core_name": schema.StringAttribute{
 											Computed: true,

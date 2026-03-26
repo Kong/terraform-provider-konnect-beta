@@ -48,7 +48,7 @@ resource "konnect_mesh_http_route" "my_meshhttproute" {
                   tags = {
                     key = "value"
                   }
-                  weight = 5
+                  weight = 1
                 }
               ]
               filters = [
@@ -87,7 +87,7 @@ resource "konnect_mesh_http_route" "my_meshhttproute" {
                       tags = {
                         key = "value"
                       }
-                      weight = 2
+                      weight = 1
                     }
                     percentage = {
                       str = "...my_str..."
@@ -102,7 +102,7 @@ resource "konnect_mesh_http_route" "my_meshhttproute" {
                     }
                     port        = 46600
                     scheme      = "https"
-                    status_code = 308
+                    status_code = 302
                   }
                   response_header_modifier = {
                     add = [
@@ -139,7 +139,7 @@ resource "konnect_mesh_http_route" "my_meshhttproute" {
                 headers = [
                   {
                     name  = "...my_name..."
-                    type  = "Absent"
+                    type  = "Exact"
                     value = "...my_value..."
                   }
                 ]

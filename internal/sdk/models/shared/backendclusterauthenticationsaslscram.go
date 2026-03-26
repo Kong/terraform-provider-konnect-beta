@@ -37,6 +37,7 @@ func (e *BackendClusterAuthenticationSaslScramAlgorithm) UnmarshalJSON(data []by
 
 // BackendClusterAuthenticationSaslScram - SASL/SCRAM authentication scheme for the backend cluster.
 type BackendClusterAuthenticationSaslScram struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"sasl_scram" json:"type"`
 	// The algorithm used for SASL/SCRAM authentication.
 	Algorithm BackendClusterAuthenticationSaslScramAlgorithm `json:"algorithm"`

@@ -2,7 +2,7 @@
 
 package sdk
 
-// Generated from OpenAPI doc version 2.0.0 and generator version 2.836.5
+// Generated from OpenAPI doc version 2.0.0 and generator version 2.869.23
 
 import (
 	"context"
@@ -145,6 +145,11 @@ type KonnectBeta struct {
 	// Static Keys are used by the Encrypt and Decrypt policies to encrypt data at rest
 	//
 	EventGatewayStaticKeys *EventGatewayStaticKeys
+	// A TLS trust bundle defines a set of trusted certificate authorities (CAs) used for client certificate
+	// verification during mutual TLS (mTLS). Trust bundles are referenced by TLS listener policies to
+	// determine which client certificates are accepted.
+	//
+	EventGatewayTLSTrustBundles *EventGatewayTLSTrustBundles
 	// Policies control how Kafka protocol traffic is modified between the client and the backend cluster.
 	//
 	// Listener policies are routing policies that pass traffic to the virtual cluster.
@@ -173,7 +178,7 @@ type KonnectBeta struct {
 
 type SDKOption func(*KonnectBeta)
 
-// WithServerURL allows the overriding of the default server URL
+// WithServerURL allows providing an alternative server URL
 func WithServerURL(serverURL string) SDKOption {
 	return func(sdk *KonnectBeta) {
 		sdk.sdkConfiguration.ServerURL = serverURL
@@ -243,7 +248,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk := &KonnectBeta{
 		SDKVersion: "0.16.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 0.16.0 2.836.5 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 0.16.0 2.869.23 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
 			ServerList: ServerList,
 		},
 		hooks: hooks.New(),
@@ -324,6 +329,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.EventGatewaySchemaRegistries = newEventGatewaySchemaRegistries(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayDataPlaneCertificates = newEventGatewayDataPlaneCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayStaticKeys = newEventGatewayStaticKeys(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.EventGatewayTLSTrustBundles = newEventGatewayTLSTrustBundles(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayListenerPolicies = newEventGatewayListenerPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayVirtualClusterConsumePolicies = newEventGatewayVirtualClusterConsumePolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayVirtualClusterProducePolicies = newEventGatewayVirtualClusterProducePolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
