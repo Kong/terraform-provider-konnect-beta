@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: 5663b8de262755b20fc883efa2308e53
+  docChecksum: 14a9cc877e21bdb1ae0afa6f9120b59b
   docVersion: 2.0.0
   speakeasyVersion: 1.759.2
   generationVersion: 2.869.23
   releaseVersion: 0.16.0
   configChecksum: b8f64c930511b3a9669889d8b7e6f655
 persistentEdits:
-  generation_id: aa4cc094-5959-476f-af20-c70fb7cfc243
-  pristine_commit_hash: b0b79be70fc5a6a0adea757849fdba406382a260
-  pristine_tree_hash: a561b997fcbb67f2a961a0477db5f0d6636312ba
+  generation_id: 6ccc6abc-7332-4894-9c26-b659396a80e2
+  pristine_commit_hash: c597a1d1c86c86501c397513d35a56784b679faf
+  pristine_tree_hash: b5c85a7a13171f03f622cb369f8409c5b3d2f9b6
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -134,8 +134,8 @@ trackedFiles:
     pristine_git_object: 20e9a7dc1bbd7281fb27788117bfde31e35b9a0d
   examples/resources/konnect-beta_auth_server/resource.tf:
     id: 21ef2438fc62
-    last_write_checksum: sha1:6f21987671a204f04a7da00dbe9feae4ae534a01
-    pristine_git_object: 10fa6f7027a1df3504672230d695eaaed38462f9
+    last_write_checksum: sha1:4dc13a0fca881ff090f71604f788f9df207257ef
+    pristine_git_object: fdaf4c56ac4e0ed252cf3f98f4d687a153634422
   examples/resources/konnect-beta_auth_server_claims/import-by-string-id.tf:
     id: f176d4ff0a6d
     last_write_checksum: sha1:c42b0b9d138ddae2807b0ce712ce8bf5bce36945
@@ -326,8 +326,8 @@ trackedFiles:
     pristine_git_object: ae73ee1ef036a934095b54201f005913a5f133ed
   examples/resources/konnect-beta_event_gateway_listener_policy_tls_server/resource.tf:
     id: 7b5529d457ab
-    last_write_checksum: sha1:f39a34f5c05fc3a6d64f750166cdf4ee648a4826
-    pristine_git_object: 6c95c08e9143800b4fcb27d36f88bd4ec233f27d
+    last_write_checksum: sha1:d233807ed8ab76a512c57ff8ef3daac4a1bce2e7
+    pristine_git_object: 53aed19126d37f3fbd63afb3a17e975745ee0386
   examples/resources/konnect-beta_event_gateway_produce_policy_encrypt/import-by-string-id.tf:
     id: dc778209e41a
     last_write_checksum: sha1:49e82e34c777d72adf9892d508d23cc5ee8d206d
@@ -388,6 +388,18 @@ trackedFiles:
     id: 325b739b1b51
     last_write_checksum: sha1:b271d2586f497eba6deae1ab51ddbb5bbdf87d70
     pristine_git_object: 8de8882a3b393f6c57f0a015b26822290c0442f1
+  examples/resources/konnect-beta_event_gateway_tls_trust_bundle/import-by-string-id.tf:
+    id: 9b723481a326
+    last_write_checksum: sha1:0e392d34c85e076b5be2c1b3a21ad96126f060e9
+    pristine_git_object: facbd3dca1fa4f5b2e7a9d60b3754d16be7d9069
+  examples/resources/konnect-beta_event_gateway_tls_trust_bundle/import.sh:
+    id: 347f1f2812a2
+    last_write_checksum: sha1:4deb95bc3b8cd215b35d1bf56c3aa1deda366551
+    pristine_git_object: 3bf69ab7e37a918de1540aa8951b584b11e73d89
+  examples/resources/konnect-beta_event_gateway_tls_trust_bundle/resource.tf:
+    id: 49bcd85eeb89
+    last_write_checksum: sha1:cdefc707eb3f79d69af8f32dc50446c0f0eb3211
+    pristine_git_object: 12be89209d20a664e325a125f36dab482c62855d
   examples/resources/konnect-beta_event_gateway_vault/import-by-string-id.tf:
     id: 7a05853c562c
     last_write_checksum: sha1:e22b5601d656e8bf1f31789c97190e5eeae8e15f
@@ -1122,12 +1134,12 @@ trackedFiles:
     pristine_git_object: ac4f334013049937264604bec0df54781ee27ceb
   internal/provider/authserver_resource.go:
     id: 52ce9db95c08
-    last_write_checksum: sha1:36f625666256b41c160cc575f5c440c41fc678a0
-    pristine_git_object: aa1ef48e1877171546defb3b048b8532e099e95e
+    last_write_checksum: sha1:6a0951c677f0356357c3502e7509324c3bfa6d6b
+    pristine_git_object: 361a2a95cfb760a0f597fb0cd48576ec5c8bc9d0
   internal/provider/authserver_resource_sdk.go:
     id: b56a22ec5901
-    last_write_checksum: sha1:74c4634411c86b810a8b3da5e2e7a26da4eb88f0
-    pristine_git_object: eb4c884740112714218b1974653075d15835ed90
+    last_write_checksum: sha1:dcb7627cb0ee08c755dc9cc6f821c4c163709971
+    pristine_git_object: 0e93f4739ae94ca01eebb529bfe939fbe79a0bd8
   internal/provider/authserverclaims_resource.go:
     id: 8a02a2ad6c47
     last_write_checksum: sha1:869241ba63977f5b142b157146f97349a5e83435
@@ -1250,12 +1262,12 @@ trackedFiles:
     pristine_git_object: 6822dc5c840756e6709b76baaaab23a440768290
   internal/provider/eventgatewaylistenerpolicytlsserver_resource.go:
     id: 37fb90ff8bf6
-    last_write_checksum: sha1:95f54384db1bf41d6763d08f129924fa7c895c5d
-    pristine_git_object: 73f36f523ca79588ad0e7d135cf74a4c907d77f4
+    last_write_checksum: sha1:bcd12bb030a1af5d99c3f1cad30a649ce94ed4e0
+    pristine_git_object: 3d61328ba3887d1d31414e8e5c60981cd5098281
   internal/provider/eventgatewaylistenerpolicytlsserver_resource_sdk.go:
     id: 20bbcfa15dc4
-    last_write_checksum: sha1:9dc7f4536cc0f8a224f7c5630640041f2164fe22
-    pristine_git_object: 417874906970e3236d98eeb55dae6f49ddbcd599
+    last_write_checksum: sha1:aa10520410f67a18f670113555dc2929ce343a22
+    pristine_git_object: 946440a1a3c9dd743fad1e267b50d100d722329e
   internal/provider/eventgatewayproducepolicyencrypt_resource.go:
     id: d5e93dbf411e
     last_write_checksum: sha1:daaf4dc3c48d8e2109a7095b54a016dde1808776
@@ -1296,6 +1308,14 @@ trackedFiles:
     id: db04a96ed32e
     last_write_checksum: sha1:2597af5b5adf7ad56c2b0491475c3566fdc83120
     pristine_git_object: 790fdd0545981a903bbc57e90a7af4f49e9aff09
+  internal/provider/eventgatewaytlstrustbundle_resource.go:
+    id: e6ac23d292a4
+    last_write_checksum: sha1:d7ef90c7c31999462c7588d83e27e81b33c33bcc
+    pristine_git_object: e0ac421c878dab54d1f22209e258e2c84cafa247
+  internal/provider/eventgatewaytlstrustbundle_resource_sdk.go:
+    id: a3d47ca127b3
+    last_write_checksum: sha1:e53db7fda9c78b476fdb225aa1ba582b68ac455e
+    pristine_git_object: f5af6faaabd742254e9a86e6d75466ec37ef8450
   internal/provider/eventgatewayvault_resource.go:
     id: 22532cca623f
     last_write_checksum: sha1:edb8a4b3ae4a2c8582e8ed66d21003c639cd4f5a
@@ -1306,12 +1326,12 @@ trackedFiles:
     pristine_git_object: 7950b0c625935c0f1b87abdb935435485d7e499d
   internal/provider/eventgatewayvirtualcluster_resource.go:
     id: 99dd1f0247ba
-    last_write_checksum: sha1:5075ef641840cf72aa2d90339f5f62061e5f311d
-    pristine_git_object: 059ed27656c3c3d8f0889d51a45afff9e6165cea
+    last_write_checksum: sha1:f8af77cf471c27229ff58eb24a836319c785255c
+    pristine_git_object: 9dfc95c431101915cbb00b8b9fe4656996dc26fc
   internal/provider/eventgatewayvirtualcluster_resource_sdk.go:
     id: b5c8ebb6b790
-    last_write_checksum: sha1:4235116c692b8d6b75f58cdc3cb9f33ad3373a9f
-    pristine_git_object: 08e94c53f2197d6d3733c4781890c96a6707cba6
+    last_write_checksum: sha1:bb68954e50b18720c69eb2ca3ba44dcaf480ac00
+    pristine_git_object: bd7a90ff55b5f3ec18efb6ce403b9c1ebe6729f7
   internal/provider/mesh_resource.go:
     id: 3049d3aec265
     last_write_checksum: sha1:a39bd2661b57b5b46a4fd6a8ca9f51ab23105a95
@@ -1674,8 +1694,8 @@ trackedFiles:
     pristine_git_object: 1c71c80fb5c2453180d6fc79fa5d5fa1d78b9fe0
   internal/provider/provider.go:
     id: 1e7e86841cf3
-    last_write_checksum: sha1:ea650919ae8d36a9b7b9cf5f5738e8bdb2285298
-    pristine_git_object: d999128fca9a5082c3a9b96c684188cd9fcccbad
+    last_write_checksum: sha1:cd9bc666fd149a3bc3210765d93f0ddc71223373
+    pristine_git_object: d2eb3c88e2a6b204b69d48d91dea58e324289db9
   internal/provider/reflect/diags.go:
     id: 35b6b44972e2
     last_write_checksum: sha1:ace8bc53054bb1d8ee8689acf3e4323de75a6297
@@ -2178,8 +2198,12 @@ trackedFiles:
     pristine_git_object: 254b3d4e97886f414e4c9ed931a0f50a8b2424b5
   internal/provider/types/event_gateway_tls_listener_policy_config.go:
     id: 9a82025056a7
-    last_write_checksum: sha1:e4410055557be1ea80ea3a9569759774cb163989
-    pristine_git_object: dbf8c574e6bb3ad9406813106d7ac70e5435e541
+    last_write_checksum: sha1:70e591e95e84e0813a056a91183bb3209979e700
+    pristine_git_object: 198fdcdd459b190416f70e3b67d993976586e196
+  internal/provider/types/event_gateway_tls_listener_policy_config_client_authentication.go:
+    id: f5011528b6eb
+    last_write_checksum: sha1:6ef98817c2992d62c9a153df2d6ca41795d69181
+    pristine_git_object: e411565ee7027295d31b30288a84344fa1c03868
   internal/provider/types/exact_list.go:
     id: 4ea79a721ddd
     last_write_checksum: sha1:ed6d5e459620a9860b28cc18a9a4685ee3e12d5a
@@ -3124,6 +3148,10 @@ trackedFiles:
     id: c3491ce8860b
     last_write_checksum: sha1:f36556912b3c7330c0e27d36cacaea68da26fb60
     pristine_git_object: 21b54bc9fd984019a026c0d25b0a0ba4f3df9268
+  internal/provider/types/tls_trust_bundle_config.go:
+    id: 16b3afeb8df3
+    last_write_checksum: sha1:7bedfb316ee7104ec42cf61108e5d671f5e88d47
+    pristine_git_object: 8b201eaccb0b7b7c4a8f578e4fa4f6507b03d1f9
   internal/provider/types/tls_version_range.go:
     id: 743b74a8f477
     last_write_checksum: sha1:6dde22fc5475b6cfede37058bc79a0082d6a89e6
@@ -3202,8 +3230,8 @@ trackedFiles:
     pristine_git_object: 32ffa91e2d724085fa787433c94f3ed8b1191de0
   internal/provider/types/virtual_cluster_authentication_scheme.go:
     id: 1733110d9b4b
-    last_write_checksum: sha1:1989c8c8f7c09329d8747e554d58592c351fd4a9
-    pristine_git_object: 7ee7f1c1b873fa82c622145cf0ce0ae8978d0d43
+    last_write_checksum: sha1:2868f5a1715a517a8d5436d98ee56b0972cfe810
+    pristine_git_object: 453fd839733ef2205ad0b0885903aec6cf75f916
   internal/provider/types/virtual_cluster_authentication_validate.go:
     id: c9feadc54833
     last_write_checksum: sha1:e7c756ac77adf8312e3e41d5fcb6211ffab94682
@@ -3376,6 +3404,10 @@ trackedFiles:
     id: 98e1b921e28a
     last_write_checksum: sha1:8df1fc80a8aa75d5174931ebf54e85d6e5fefc4f
     pristine_git_object: adf3e7f0965ac8bd6c2fdffdb381e4699ab1d84d
+  internal/sdk/eventgatewaytlstrustbundles.go:
+    id: c86267bbbca4
+    last_write_checksum: sha1:ec15790b3f95b363cab53c1fc584ade3b7a77d61
+    pristine_git_object: 5f74f9087bdbb4f5de4418d45bbd317cbc751669
   internal/sdk/eventgatewayvaults.go:
     id: 1f88dd745efa
     last_write_checksum: sha1:53e41decf42fad89215eba03fbc88adaf898784b
@@ -3466,8 +3498,8 @@ trackedFiles:
     pristine_git_object: a614e37673d3ea81eabc6139236edfb22a15dc55
   internal/sdk/konnectbeta.go:
     id: 34b8a82d72ce
-    last_write_checksum: sha1:9faabc476c764e47b97acf41cb8183ee0fda9e7b
-    pristine_git_object: c83bde1e39222180b2147c239a3c8635eae08898
+    last_write_checksum: sha1:482208e854a70d518842849c867b46ff0db1187b
+    pristine_git_object: 2f33494c21b9e10c1e70d7b813e5f7fddb779dc1
   internal/sdk/mesh.go:
     id: c3f36614baba
     last_write_checksum: sha1:8ebf7afb1e0baa8fde373eff36037b4ca1391d0a
@@ -3648,6 +3680,10 @@ trackedFiles:
     id: aece5726e987
     last_write_checksum: sha1:408925e9f71109fbddd70f332dd956f98e6d99d0
     pristine_git_object: 6589839a08ca67aea3a7f0ec28b3b89431b9c005
+  internal/sdk/models/operations/createeventgatewaytlstrustbundle.go:
+    id: ca459e4711a2
+    last_write_checksum: sha1:876cb756c6b28b3c4cf2206b9bbe9e10f4fa6761
+    pristine_git_object: 317309706bc69782128e2d2cec86184683af7951
   internal/sdk/models/operations/createeventgatewayvault.go:
     id: 9f2106b60f01
     last_write_checksum: sha1:1959e8a9723bb60ca71b8664dab9e6e74d22feab
@@ -3808,6 +3844,10 @@ trackedFiles:
     id: 84ff3b5b727b
     last_write_checksum: sha1:8bd89da432af9473bc438466309dd53e270db5d7
     pristine_git_object: c54ea4f7c16f06d43aed50345c313c55eef7b411
+  internal/sdk/models/operations/deleteeventgatewaytlstrustbundle.go:
+    id: 326c7b176cd1
+    last_write_checksum: sha1:8b8ce6e89a0f881a830bfe72abfc7fe5d7606405
+    pristine_git_object: 6ee2f6096ee6f5a97183d6a9d854fa6b014756a1
   internal/sdk/models/operations/deleteeventgatewayvault.go:
     id: f2652335ffef
     last_write_checksum: sha1:60a3af1ce1c72f1ba4d212ce6f805c77aeec891d
@@ -4096,6 +4136,10 @@ trackedFiles:
     id: 73f0f8c3810d
     last_write_checksum: sha1:4dd9df19e08d0e52e3250d7beb7eeafe2e93de16
     pristine_git_object: 1887cd6759cd646652b9b34ed0bea8443a54571e
+  internal/sdk/models/operations/geteventgatewaytlstrustbundle.go:
+    id: c51d8cda6232
+    last_write_checksum: sha1:92ea87cba55e00fb81ec24d6cb3b90367bd2dcb9
+    pristine_git_object: fbc432598e08d1c5cf0fc67d4ff03227442b4840
   internal/sdk/models/operations/geteventgatewayvault.go:
     id: 01c8f1e7486a
     last_write_checksum: sha1:66c9ff224d9836d91935ba27140ed30a0dbe7614
@@ -4640,6 +4684,10 @@ trackedFiles:
     id: c05ff9c2ed36
     last_write_checksum: sha1:57c586be5385e3f2332e30d3ba72ce660de2eac8
     pristine_git_object: ab800aad927e990353d789cdc0180a38e99554bb
+  internal/sdk/models/operations/updateeventgatewaytlstrustbundle.go:
+    id: 1ac54fe4c7c3
+    last_write_checksum: sha1:5053431f1132f69c199e40d8d6939afe1929ffde
+    pristine_git_object: eee4560952d12b53c6fbaac3c2c5960174225cc9
   internal/sdk/models/operations/updateeventgatewayvault.go:
     id: d9a8c921ba1f
     last_write_checksum: sha1:9b65cfac0c5ce82af746706616b198610307850d
@@ -4866,8 +4914,8 @@ trackedFiles:
     pristine_git_object: 8cd875f6bbefde0ce6b8f96813bf0830420b93f3
   internal/sdk/models/shared/authserver.go:
     id: e7343d9400b8
-    last_write_checksum: sha1:8e08f35923cf480ea6605ba35166a318137c2cc0
-    pristine_git_object: 3af7e3ac4d94b01dfe99f8287680886ee4704d9d
+    last_write_checksum: sha1:b2a9dc61e359fe154f6dad6ec252034bdcd30667
+    pristine_git_object: 7542c967324953ef12970cf20673dee39b92aadf
   internal/sdk/models/shared/backendcluster.go:
     id: 650e14e0c31e
     last_write_checksum: sha1:16e3284daf9823b7fd9addf222b4b0dbb30628d5
@@ -5002,8 +5050,8 @@ trackedFiles:
     pristine_git_object: 6b4dadc2a0d6d97ea6bd13d8090569ff86727e83
   internal/sdk/models/shared/createauthserver.go:
     id: d521a0c5b3d9
-    last_write_checksum: sha1:bf13a84651beffea6f5cb64b44609cbb9872f0ed
-    pristine_git_object: 1afa08f30ca4488398fc8c6fb92be7fa39c55e94
+    last_write_checksum: sha1:d15fd16adb9e99f67190e0fdfc78b681913b6d04
+    pristine_git_object: 45038ba38590ed65b5313a6998af74a1c9c96329
   internal/sdk/models/shared/createbackendclusterrequest.go:
     id: 2ddf802cbb5d
     last_write_checksum: sha1:f13374ebb612879fcf2661b9fbd21ffd314c9fa7
@@ -5060,6 +5108,10 @@ trackedFiles:
     id: 74032cccc309
     last_write_checksum: sha1:0a77745d5a74125283a2f1cdb47802934f5ed136
     pristine_git_object: a5cd6c2bcfc79febc37ed20e9b057dfc9f9cd930
+  internal/sdk/models/shared/createtlstrustbundlerequest.go:
+    id: fb39e8df4313
+    last_write_checksum: sha1:4bc027b4f4b43572ec871fe8b3a4d20d58326712
+    pristine_git_object: bd8b6a0b3bc34b0b87b8b1630b0d54abb69834c6
   internal/sdk/models/shared/createvirtualclusterrequest.go:
     id: c00701821a2c
     last_write_checksum: sha1:2fc434fd66a8b49c9a7fbc0fde85b75f2f9f9fce
@@ -5254,12 +5306,12 @@ trackedFiles:
     pristine_git_object: 0d648b2606c13c0a8c378c4ca11c4a4553ed7094
   internal/sdk/models/shared/eventgatewaytlslistenerpolicyconfig.go:
     id: fc7c874b85d0
-    last_write_checksum: sha1:03499f2e37e74cf9e81c8a7d4df5c6d025a0837b
-    pristine_git_object: be85b366f609bf1da290e4f7ab63839003283912
+    last_write_checksum: sha1:8a49239d0c10f8b4b00216b5625d16ca2e107592
+    pristine_git_object: dad1b1529ec3b9c0cad9ade3af416965e77947fc
   internal/sdk/models/shared/eventgatewaytlslistenerpolicyconfigsensitivedataaware.go:
     id: b4631b0cabe5
-    last_write_checksum: sha1:7d7087d4fba26d31c7a5d4006be41515bd6b2e2f
-    pristine_git_object: 3dde344ef22f1712560272464844238c376f3ad5
+    last_write_checksum: sha1:80e8357d87ee4ec31eaff632f5f2f670d70222e5
+    pristine_git_object: cced51e82fa635ca16333e83d6566eb05a37a062
   internal/sdk/models/shared/eventgatewaytlslistenersensitivedataawarepolicy.go:
     id: b8daef072999
     last_write_checksum: sha1:512f81db4d972d90ffdf591a352fdfa7ed7b44f8
@@ -6040,6 +6092,18 @@ trackedFiles:
     id: dd1f2228fc1a
     last_write_checksum: sha1:8d6aadd8d2476180297b2c445f456229c0ccce3b
     pristine_git_object: e29ce8b86f3d2e4413befc369589032c1265ee74
+  internal/sdk/models/shared/tlstrustbundle.go:
+    id: 9c6af539ff51
+    last_write_checksum: sha1:01250b0a4f918605c463eb6d8cd388c52dde3ba4
+    pristine_git_object: d17d0a72f2afc651ca67638df2de29106dd3847c
+  internal/sdk/models/shared/tlstrustbundleconfig.go:
+    id: e118c3a1f992
+    last_write_checksum: sha1:66ef4cc180e7c7e7d8e457026d7e87a31ed9db76
+    pristine_git_object: 9b3d93bc83d332da9df2d2a95fa3b0bbf26bf912
+  internal/sdk/models/shared/tlstrustbundlereference.go:
+    id: cd5e8784a335
+    last_write_checksum: sha1:8feff1e962636795f31e8b56858a228d556e16c0
+    pristine_git_object: 626834b25dadd09f9cc78d0801d4f4bc04aa8efa
   internal/sdk/models/shared/tlsversionrange.go:
     id: d276de518dfc
     last_write_checksum: sha1:942f427f12efaa54dc1fa4a99547e83c655855a7
@@ -6066,8 +6130,8 @@ trackedFiles:
     pristine_git_object: 5612268695f77f976ec7e3f769afeb03d0739c4e
   internal/sdk/models/shared/updateauthserver.go:
     id: 682e81afaa92
-    last_write_checksum: sha1:f890696d19605d6c2b7af4ab826e20b8edbc254c
-    pristine_git_object: 4a798e03e4fbbbe70bc86a86b8b21a6a0b9e522d
+    last_write_checksum: sha1:50c1543e42cee7a265d451b88a790ab37e785399
+    pristine_git_object: 0289c105d936c79a9137de294fbac8fb3d91433c
   internal/sdk/models/shared/updatebackendclusterrequest.go:
     id: a52f46fc63ff
     last_write_checksum: sha1:567508c31ec9a5ec33a64a6bdc51e2dace943711
@@ -6112,6 +6176,10 @@ trackedFiles:
     id: a518365a2613
     last_write_checksum: sha1:e144bfd9ae6b36f8f0a8bfd329b8786238971d1b
     pristine_git_object: 29d44aff571d3aa17c1025377f4234ee48b6ab0f
+  internal/sdk/models/shared/updatetlstrustbundlerequest.go:
+    id: b480a64573b8
+    last_write_checksum: sha1:ec1b909a4e7fe1b70df2a49902d93a3328851e56
+    pristine_git_object: a37d9afc93c78f6a5f21ac9f5a70cc7fc53648b8
   internal/sdk/models/shared/updatevirtualclusterrequest.go:
     id: 1ad8a5bf531b
     last_write_checksum: sha1:0faf579394984f52ec31addc172f30ef34afc81a
@@ -6140,6 +6208,10 @@ trackedFiles:
     id: 5b8fa4f386a5
     last_write_checksum: sha1:fbd427c5c682a46fef09331b4c00e27f52a0d893
     pristine_git_object: d22b6e162b36e62fa96f75680afadf95c74a36e5
+  internal/sdk/models/shared/virtualclusterauthenticationclientcertificate.go:
+    id: 01c8b4b07454
+    last_write_checksum: sha1:1bce4c9b326023dbe7bdae1776ade1cb6586f79f
+    pristine_git_object: a35348e6b34dd601b971a23bf1d950d041a4dd23
   internal/sdk/models/shared/virtualclusterauthenticationjwks.go:
     id: a1df8cfab17d
     last_write_checksum: sha1:70919eaa1ea3e91e85b3043e7a87c406d33ae4ea
@@ -6170,12 +6242,12 @@ trackedFiles:
     pristine_git_object: 77e1e271ed7599a249c1a6bd37fed91f2b263b71
   internal/sdk/models/shared/virtualclusterauthenticationscheme.go:
     id: b4fa66a6d83f
-    last_write_checksum: sha1:a7032325c01b062adb289a83979c027a70e7f693
-    pristine_git_object: cbc7edab79523cd957a1ab833095bb96b3e5d416
+    last_write_checksum: sha1:45dff467fba409f1985080dcf84979b7fb7444ae
+    pristine_git_object: 3a2f37923f6e61616d0a355edf240dfe73e8c0e2
   internal/sdk/models/shared/virtualclusterauthenticationsensitivedataawarescheme.go:
     id: a3860cb70005
-    last_write_checksum: sha1:1921e999289845d369f3762348af3b52c0ccdf62
-    pristine_git_object: 34a4b45ae19af38c891f37fbdf3029355321966b
+    last_write_checksum: sha1:c66856b436235472498bb3afb29bc3ae48234a5a
+    pristine_git_object: 7960a371e3add72c30318eff7d462e4f5850c2ad
   internal/sdk/models/shared/virtualclusterauthenticationvalidate.go:
     id: ce0d1e1d2d45
     last_write_checksum: sha1:3273ffbe4c6334f48ddfe897ea959279a77b4d7d
@@ -10052,10 +10124,10 @@ examples:
   createAuthServer:
     speakeasy-default-create-auth-server:
       requestBody:
-        application/json: {"name": "<value>", "audience": "<value>", "signing_algorithm": "RS256", "labels": {"env": "test"}, "trusted_origins": ["https://example.com"]}
+        application/json: {"name": "<value>", "audience": "<value>", "signing_algorithm": "RS256", "labels": {"env": "test"}, "trusted_origins": ["https://example.com"], "dcr_default_access_token_duration": 300}
       responses:
         "201":
-          application/json: {"id": "5824f903-e3fd-4fc9-9773-3f647e11baa4", "name": "<value>", "description": "zowie why or", "audience": "<value>", "signing_algorithm": "RS256", "issuer": "diners_club", "metadata_uri": "https://leading-valuable.biz/", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "trusted_origins": ["https://example.com"]}
+          application/json: {"id": "5824f903-e3fd-4fc9-9773-3f647e11baa4", "name": "<value>", "description": "zowie why or", "audience": "<value>", "signing_algorithm": "RS256", "issuer": "diners_club", "metadata_uri": "https://leading-valuable.biz/", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "trusted_origins": ["https://example.com"], "dcr_default_access_token_duration": 300}
         "400":
           application/problem+json: {"status": 57224, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
         "409":
@@ -10067,7 +10139,7 @@ examples:
           authServerId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
-          application/json: {"id": "695aa2b2-4456-4089-827a-a2c4b24aae4e", "name": "<value>", "description": "awkwardly following mockingly stable", "audience": "<value>", "signing_algorithm": "RS256", "issuer": "american_express", "metadata_uri": "https://nautical-bell.biz/", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "trusted_origins": ["https://example.com"]}
+          application/json: {"id": "695aa2b2-4456-4089-827a-a2c4b24aae4e", "name": "<value>", "description": "awkwardly following mockingly stable", "audience": "<value>", "signing_algorithm": "RS256", "issuer": "american_express", "metadata_uri": "https://nautical-bell.biz/", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "trusted_origins": ["https://example.com"], "dcr_default_access_token_duration": 300}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   updateAuthServer:
@@ -10079,7 +10151,7 @@ examples:
         application/json: {"labels": {"env": "test"}, "trusted_origins": ["https://example.com"]}
       responses:
         "200":
-          application/json: {"id": "68d4f2fa-7ace-4e1f-af19-1fbd364cf434", "name": "<value>", "description": "whimsical pretend bruised oof yieldingly save archaeology political pish strait", "audience": "<value>", "signing_algorithm": "RS256", "issuer": "discover", "metadata_uri": "https://disloyal-pneumonia.org", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "trusted_origins": ["https://example.com"]}
+          application/json: {"id": "68d4f2fa-7ace-4e1f-af19-1fbd364cf434", "name": "<value>", "description": "whimsical pretend bruised oof yieldingly save archaeology political pish strait", "audience": "<value>", "signing_algorithm": "RS256", "issuer": "discover", "metadata_uri": "https://disloyal-pneumonia.org", "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "trusted_origins": ["https://example.com"], "dcr_default_access_token_duration": 300}
         "400":
           application/problem+json: {"status": 579061, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "404":
@@ -11328,7 +11400,7 @@ examples:
           eventGatewayListenerId: "8150b381-175e-48cc-b79b-78d1d98707a8"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "tls_server", "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"certificates": [{"certificate": "<value>", "key": "${vault.env['MY_ENV_VAR']}"}], "versions": {"min": "TLSv1.2", "max": "TLSv1.3"}, "allow_plaintext": false}}
+        application/json: {"type": "tls_server", "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"certificates": [{"certificate": "<value>", "key": "${vault.env['MY_ENV_VAR']}"}], "versions": {"min": "TLSv1.2", "max": "TLSv1.3"}, "allow_plaintext": false, "client_authentication": {"mode": "requested", "tls_trust_bundles": [], "principal_mapping": "${context.certificate.subject['CN'] ? context.certificate.subject['CN'] : context.certificate.sans.uri[0]}"}}}
       responses:
         "200":
           application/json: {"type": "<value>", "description": "", "enabled": true, "labels": {"env": "test"}, "id": "3252186a-a8d6-45c3-ae43-7f70c4575b09", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -11407,7 +11479,7 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           eventGatewayListenerId: "fbb26749-530c-4cd0-8d52-9db9d81c3f08"
       requestBody:
-        application/json: {"type": "tls_server", "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"certificates": [{"certificate": "<value>", "key": "${vault.env['MY_ENV_VAR']}"}], "versions": {"min": "TLSv1.2", "max": "TLSv1.3"}, "allow_plaintext": false}}
+        application/json: {"type": "tls_server", "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"certificates": [{"certificate": "<value>", "key": "${vault.env['MY_ENV_VAR']}"}], "versions": {"min": "TLSv1.2", "max": "TLSv1.3"}, "allow_plaintext": false, "client_authentication": {"mode": "requested", "tls_trust_bundles": [{"id": "fbb26749-530c-4cd0-8d52-9db9d81c3f08"}], "principal_mapping": "${context.certificate.subject['CN'] ? context.certificate.subject['CN'] : context.certificate.sans.uri[0]}"}}}
       responses:
         "201":
           application/json: {"type": "<value>", "description": "", "enabled": true, "labels": {"env": "test"}, "id": "009e4bb7-902f-439c-ba0f-6126abc8ab52", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -12644,6 +12716,67 @@ examples:
       responses:
         "400":
           application/problem+json: {"status": 799729, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-event-gateway-tls-trust-bundle:
+    speakeasy-default-create-event-gateway-tls-trust-bundle:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"name": "<value>", "description": "", "config": {"trusted_ca": "<value>"}, "labels": {"env": "test"}}
+      responses:
+        "201":
+          application/json: {"id": "2e049efb-dbc2-4415-80f3-5425db84e2fa", "name": "<value>", "description": "", "config": {"trusted_ca": "<value>"}, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 280490, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": null, "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  get-event-gateway-tls-trust-bundle:
+    speakeasy-default-get-event-gateway-tls-trust-bundle:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          tlsTrustBundleId: "316e1e3c-30ff-4cce-9fd6-0748eed00ad3"
+      responses:
+        "200":
+          application/json: {"id": "3a03bb85-671e-46dc-bee8-b96cea186101", "name": "<value>", "description": "", "config": {"trusted_ca": "<value>"}, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-event-gateway-tls-trust-bundle:
+    speakeasy-default-update-event-gateway-tls-trust-bundle:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          tlsTrustBundleId: "c4750cd9-2ea6-48fa-baa7-41e9deedd842"
+      requestBody:
+        application/json: {"description": "", "labels": {"env": "test"}}
+      responses:
+        "200":
+          application/json: {"id": "9c7ac26b-7178-4121-a8fe-876b38e33e87", "name": "<value>", "description": "", "config": {"trusted_ca": "<value>"}, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 595864, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  delete-event-gateway-tls-trust-bundle:
+    speakeasy-default-delete-event-gateway-tls-trust-bundle:
+      parameters:
+        path:
+          gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          tlsTrustBundleId: "20c08d4b-f5a3-49ec-bf2c-2a93e6bd536a"
+      responses:
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":

@@ -3,8 +3,9 @@
 package types
 
 type VirtualClusterAuthenticationScheme struct {
-	Anonymous   *BackendClusterAuthenticationAnonymous   `queryParam:"inline" tfsdk:"anonymous"`
-	OauthBearer *VirtualClusterAuthenticationOauthBearer `queryParam:"inline" tfsdk:"oauth_bearer"`
-	SaslPlain   *VirtualClusterAuthenticationSaslPlain   `queryParam:"inline" tfsdk:"sasl_plain"`
-	SaslScram   *VirtualClusterAuthenticationSaslScram   `queryParam:"inline" tfsdk:"sasl_scram"`
+	Anonymous         *BackendClusterAuthenticationAnonymous   `queryParam:"inline" tfsdk:"anonymous"`
+	ClientCertificate *BackendClusterAuthenticationAnonymous   `queryParam:"inline" tfsdk:"client_certificate"`
+	OauthBearer       *VirtualClusterAuthenticationOauthBearer `queryParam:"inline" tfsdk:"oauth_bearer"`
+	SaslPlain         *VirtualClusterAuthenticationSaslPlain   `queryParam:"inline" tfsdk:"sasl_plain"`
+	SaslScram         *VirtualClusterAuthenticationSaslScram   `queryParam:"inline" tfsdk:"sasl_scram"`
 }

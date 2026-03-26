@@ -8,6 +8,15 @@ resource "konnect_event_gateway_listener_policy_tls_server" "my_eventgatewaylist
         key         = "$${vault.env['MY_ENV_VAR']}"
       }
     ]
+    client_authentication = {
+      mode              = "requested"
+      principal_mapping = "$${context.certificate.subject['CN'] ? context.certificate.subject['CN'] : context.certificate.sans.uri[0]}"
+      tls_trust_bundles = [
+        {
+          id = "4207e6bd-68dd-4f60-bac1-adbb586553d5"
+        }
+      ]
+    }
     versions = {
       max = "TLSv1.3"
       min = "TLSv1.2"

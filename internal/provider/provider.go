@@ -181,6 +181,7 @@ func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.R
 		NewEventGatewayProducePolicySchemaValidationResource,
 		NewEventGatewaySchemaRegistryResource,
 		NewEventGatewayStaticKeyResource,
+		NewEventGatewayTLSTrustBundleResource,
 		NewEventGatewayVaultResource,
 		NewEventGatewayVirtualClusterResource,
 		NewMeshResource,
