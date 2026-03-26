@@ -78,3 +78,6 @@ func (m *MetricsAbsoluteTimeRangeDtoV2) GetEnd() *time.Time {
 	}
 	return m.End
 }
+
+// #region class-body-metricsabsolutetimerangedtov2
+// #endregion class-body-metricsabsolutetimerangedtov2

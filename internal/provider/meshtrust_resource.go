@@ -184,6 +184,9 @@ func (r *MeshTrustResource) Schema(ctx context.Context, req resource.SchemaReque
 				Attributes: map[string]schema.Attribute{
 					"origin": schema.SingleNestedAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.Object{
+							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+						},
 						Attributes: map[string]schema.Attribute{
 							"kri": schema.StringAttribute{
 								Computed:    true,

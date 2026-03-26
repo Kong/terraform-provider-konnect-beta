@@ -9,7 +9,8 @@ import (
 // EventGatewayKonnectVault - A konnect vault.
 type EventGatewayKonnectVault struct {
 	// The name of the vault.
-	Name  string `json:"name"`
+	Name string `json:"name"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"konnect" json:"type"`
 	// A human-readable description of the vault.
 	Description *string `default:"" json:"description"`

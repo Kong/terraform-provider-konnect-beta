@@ -2,7 +2,7 @@
 
 package sdk
 
-// Generated from OpenAPI doc version 2.0.0 and generator version 2.836.5
+// Generated from OpenAPI doc version 2.0.0 and generator version 2.869.23
 
 import (
 	"context"
@@ -173,7 +173,7 @@ type KonnectBeta struct {
 
 type SDKOption func(*KonnectBeta)
 
-// WithServerURL allows the overriding of the default server URL
+// WithServerURL allows providing an alternative server URL
 func WithServerURL(serverURL string) SDKOption {
 	return func(sdk *KonnectBeta) {
 		sdk.sdkConfiguration.ServerURL = serverURL
@@ -243,7 +243,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk := &KonnectBeta{
 		SDKVersion: "0.16.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 0.16.0 2.836.5 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 0.16.0 2.869.23 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
 			ServerList: ServerList,
 		},
 		hooks: hooks.New(),

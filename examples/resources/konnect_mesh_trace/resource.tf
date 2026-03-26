@@ -19,8 +19,8 @@ resource "konnect_mesh_trace" "my_meshtrace" {
           }
           type = "OpenTelemetry"
           zipkin = {
-            api_version         = "httpProto"
-            shared_span_context = false
+            api_version         = "httpJson"
+            shared_span_context = true
             trace_id128bit      = false
             url                 = "...my_url..."
           }

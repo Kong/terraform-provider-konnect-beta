@@ -3,6 +3,6 @@
 package types
 
 type CreateAddOnConfig struct {
-	ManagedCache                    *ManagedCache                    `queryParam:"inline" tfsdk:"managed_cache"`
 	ManagedCacheAddOnConfigResponse *ManagedCacheAddOnConfigResponse `queryParam:"inline" tfsdk:"managed_cache_add_on_config_response"`
+	ManagedCache                    *ManagedCache                    `queryParam:"inline" tfsdk:"managed_cache"`
 }

@@ -122,3 +122,6 @@ func (m *MetricsRelativeTimeRangeDtoV2) GetTimeRange() *MetricsRelativeTimeRange
 	}
 	return m.TimeRange
 }
+
+// #region class-body-metricsrelativetimerangedtov2
+// #endregion class-body-metricsrelativetimerangedtov2
