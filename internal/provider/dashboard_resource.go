@@ -839,7 +839,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 															Description: `Not Null`,
 															Validators: []validator.Int64{
 																speakeasy_int64validators.NotNull(),
-																int64validator.AtMost(5),
+																int64validator.Between(0, 5),
 															},
 														},
 														"row": schema.Int64Attribute{
@@ -848,6 +848,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 															Description: `Not Null`,
 															Validators: []validator.Int64{
 																speakeasy_int64validators.NotNull(),
+																int64validator.AtLeast(0),
 															},
 														},
 													},

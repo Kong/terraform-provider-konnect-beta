@@ -76,7 +76,7 @@ resource "konnect_mesh_retry" "my_meshretry" {
                 tags = {
                   key = "value"
                 }
-                update_frequency = 6
+                update_frequency = 2
               }
             ]
             host_selection_max_attempts = 1
@@ -94,14 +94,14 @@ resource "konnect_mesh_retry" "my_meshretry" {
             retriable_request_headers = [
               {
                 name  = "...my_name..."
-                type  = "RegularExpression"
+                type  = "Exact"
                 value = "...my_value..."
               }
             ]
             retriable_response_headers = [
               {
                 name  = "...my_name..."
-                type  = "RegularExpression"
+                type  = "Exact"
                 value = "...my_value..."
               }
             ]

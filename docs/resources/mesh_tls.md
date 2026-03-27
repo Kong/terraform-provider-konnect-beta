@@ -30,7 +30,7 @@ resource "konnect_mesh_tls" "my_meshtls" {
             "ECDHE-RSA-CHACHA20-POLY1305"
           ]
           tls_version = {
-            max = "TLS11"
+            max = "TLSAuto"
             min = "TLSAuto"
           }
         }
@@ -61,7 +61,7 @@ resource "konnect_mesh_tls" "my_meshtls" {
           ]
           tls_version = {
             max = "TLSAuto"
-            min = "TLS10"
+            min = "TLSAuto"
           }
         }
       }

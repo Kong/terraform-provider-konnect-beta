@@ -17,6 +17,7 @@ func (r *AuthServerResourceModel) RefreshFromSharedAuthServer(ctx context.Contex
 	if resp != nil {
 		r.Audience = types.StringValue(resp.Audience)
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.DcrDefaultAccessTokenDuration = types.Int64PointerValue(resp.DcrDefaultAccessTokenDuration)
 		r.Description = types.StringValue(resp.Description)
 		r.ID = types.StringValue(resp.ID)
 		r.Issuer = types.StringValue(resp.Issuer)
@@ -132,13 +133,20 @@ func (r *AuthServerResourceModel) ToSharedCreateAuthServer(ctx context.Context) 
 	for trustedOriginsIndex := range r.TrustedOrigins {
 		trustedOrigins = append(trustedOrigins, r.TrustedOrigins[trustedOriginsIndex].ValueString())
 	}
+	dcrDefaultAccessTokenDuration := new(int64)
+	if !r.DcrDefaultAccessTokenDuration.IsUnknown() && !r.DcrDefaultAccessTokenDuration.IsNull() {
+		*dcrDefaultAccessTokenDuration = r.DcrDefaultAccessTokenDuration.ValueInt64()
+	} else {
+		dcrDefaultAccessTokenDuration = nil
+	}
 	out := shared.CreateAuthServer{
-		Name:             name,
-		Description:      description,
-		Audience:         audience,
-		SigningAlgorithm: signingAlgorithm,
-		Labels:           labels,
-		TrustedOrigins:   trustedOrigins,
+		Name:                          name,
+		Description:                   description,
+		Audience:                      audience,
+		SigningAlgorithm:              signingAlgorithm,
+		Labels:                        labels,
+		TrustedOrigins:                trustedOrigins,
+		DcrDefaultAccessTokenDuration: dcrDefaultAccessTokenDuration,
 	}
 
 	return &out, diags
@@ -188,13 +196,20 @@ func (r *AuthServerResourceModel) ToSharedUpdateAuthServer(ctx context.Context) 
 	for trustedOriginsIndex := range r.TrustedOrigins {
 		trustedOrigins = append(trustedOrigins, r.TrustedOrigins[trustedOriginsIndex].ValueString())
 	}
+	dcrDefaultAccessTokenDuration := new(int64)
+	if !r.DcrDefaultAccessTokenDuration.IsUnknown() && !r.DcrDefaultAccessTokenDuration.IsNull() {
+		*dcrDefaultAccessTokenDuration = r.DcrDefaultAccessTokenDuration.ValueInt64()
+	} else {
+		dcrDefaultAccessTokenDuration = nil
+	}
 	out := shared.UpdateAuthServer{
-		Name:             name,
-		Description:      description,
-		Audience:         audience,
-		SigningAlgorithm: signingAlgorithm,
-		Labels:           labels,
-		TrustedOrigins:   trustedOrigins,
+		Name:                          name,
+		Description:                   description,
+		Audience:                      audience,
+		SigningAlgorithm:              signingAlgorithm,
+		Labels:                        labels,
+		TrustedOrigins:                trustedOrigins,
+		DcrDefaultAccessTokenDuration: dcrDefaultAccessTokenDuration,
 	}
 
 	return &out, diags

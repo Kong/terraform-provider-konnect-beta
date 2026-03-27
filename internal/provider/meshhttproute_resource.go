@@ -301,6 +301,9 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																	Optional:    true,
 																	Default:     int64default.StaticInt64(1),
 																	Description: `Default: 1`,
+																	Validators: []validator.Int64{
+																		int64validator.AtLeast(0),
+																	},
 																},
 															},
 														},
@@ -475,6 +478,9 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																					Optional:    true,
 																					Default:     int64default.StaticInt64(1),
 																					Description: `Default: 1`,
+																					Validators: []validator.Int64{
+																						int64validator.AtLeast(0),
+																					},
 																				},
 																			},
 																			Description: `BackendRef defines where to forward traffic. Not Null`,
@@ -572,7 +578,7 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																			Computed:    true,
 																			Optional:    true,
 																			Default:     int64default.StaticInt64(302),
-																			Description: `StatusCode is the HTTP status code to be used in response. Default: 302; must be one of ["301", "302", "303", "307", "308"]`,
+																			Description: `StatusCode is the HTTP status code to be used in response. Default: 302; must be one of [301, 302, 303, 307, 308]`,
 																			Validators: []validator.Int64{
 																				int64validator.OneOf(
 																					301,

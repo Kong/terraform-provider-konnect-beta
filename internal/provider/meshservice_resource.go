@@ -265,6 +265,9 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 								},
 								"hostname_generator_ref": schema.SingleNestedAttribute{
 									Computed: true,
+									PlanModifiers: []planmodifier.Object{
+										speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+									},
 									Attributes: map[string]schema.Attribute{
 										"core_name": schema.StringAttribute{
 											Computed: true,
@@ -279,6 +282,9 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 					},
 					"dataplane_proxies": schema.SingleNestedAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.Object{
+							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+						},
 						Attributes: map[string]schema.Attribute{
 							"connected": schema.Int64Attribute{
 								Computed:    true,
@@ -358,6 +364,9 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 					},
 					"tls": schema.SingleNestedAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.Object{
+							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+						},
 						Attributes: map[string]schema.Attribute{
 							"status": schema.StringAttribute{
 								Computed: true,

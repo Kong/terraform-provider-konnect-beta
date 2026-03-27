@@ -63,7 +63,7 @@ resource "konnect_mesh_http_route" "my_meshhttproute" {
                   tags = {
                     key = "value"
                   }
-                  weight = 5
+                  weight = 1
                 }
               ]
               filters = [
@@ -102,7 +102,7 @@ resource "konnect_mesh_http_route" "my_meshhttproute" {
                       tags = {
                         key = "value"
                       }
-                      weight = 2
+                      weight = 1
                     }
                     percentage = {
                       str = "...my_str..."
@@ -117,7 +117,7 @@ resource "konnect_mesh_http_route" "my_meshhttproute" {
                     }
                     port        = 46600
                     scheme      = "https"
-                    status_code = 308
+                    status_code = 302
                   }
                   response_header_modifier = {
                     add = [
@@ -154,7 +154,7 @@ resource "konnect_mesh_http_route" "my_meshhttproute" {
                 headers = [
                   {
                     name  = "...my_name..."
-                    type  = "Absent"
+                    type  = "Exact"
                     value = "...my_value..."
                   }
                 ]
@@ -418,7 +418,7 @@ When empty, the request path is used as-is. (see [below for nested schema](#nest
 header in the response.
 When empty, port (if specified) of the request is used.
 - `scheme` (String) must be one of ["http", "https"]
-- `status_code` (Number) StatusCode is the HTTP status code to be used in response. Default: 302; must be one of ["301", "302", "303", "307", "308"]
+- `status_code` (Number) StatusCode is the HTTP status code to be used in response. Default: 302; must be one of [301, 302, 303, 307, 308]
 
 <a id="nestedatt--spec--to--rules--default--filters--request_redirect--path"></a>
 ### Nested Schema for `spec.to.rules.default.filters.request_redirect.path`

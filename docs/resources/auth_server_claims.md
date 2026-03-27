@@ -16,7 +16,7 @@ AuthServerClaims Resource
 resource "konnect_auth_server_claims" "my_authserverclaims" {
   provider = konnect-beta
   auth_server_id        = "d32d905a-ed33-46a3-a093-d8f536af9a8a"
-  enabled               = false
+  enabled               = true
   include_in_all_scopes = false
   include_in_scopes = [
     "ee406f81-4a0f-4902-bca4-091a176f4915"

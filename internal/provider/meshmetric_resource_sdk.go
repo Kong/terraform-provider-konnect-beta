@@ -44,7 +44,7 @@ func (r *MeshMetricResourceModel) RefreshFromSharedMeshMetricItem(ctx context.Co
 		if resp.Spec.Default == nil {
 			r.Spec.Default = nil
 		} else {
-			r.Spec.Default = &tfTypes.Default{}
+			r.Spec.Default = &tfTypes.Default1{}
 			r.Spec.Default.Applications = []tfTypes.Applications{}
 
 			for _, applicationsItem := range resp.Spec.Default.Applications {

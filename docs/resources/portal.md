@@ -15,7 +15,7 @@ Portal Resource
 ```terraform
 resource "konnect_portal" "my_portal" {
   provider = konnect-beta
-  authentication_enabled               = false
+  authentication_enabled               = true
   auto_approve_applications            = false
   auto_approve_developers              = false
   create_default_content               = false
@@ -29,7 +29,7 @@ resource "konnect_portal" "my_portal" {
     key = "value"
   }
   name         = "...my_name..."
-  rbac_enabled = true
+  rbac_enabled = false
   sipr_enabled = true
 }
 ```

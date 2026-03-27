@@ -24,7 +24,7 @@ resource "konnect_mesh_multi_zone_service" "my_meshmultizoneservice" {
   spec = {
     ports = [
       {
-        app_protocol = "...my_app_protocol..."
+        app_protocol = "tcp"
         name         = "...my_name..."
         port         = 5
       }

@@ -85,7 +85,7 @@ resource "konnect_mesh_access_log" "my_meshaccesslog" {
                       value = "...my_value..."
                     }
                   ]
-                  omit_empty_values = true
+                  omit_empty_values = false
                   plain             = "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%"
                   type              = "Json"
                 }
@@ -110,7 +110,7 @@ resource "konnect_mesh_access_log" "my_meshaccesslog" {
                       value = "...my_value..."
                     }
                   ]
-                  omit_empty_values = true
+                  omit_empty_values = false
                   plain             = "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%"
                   type              = "Json"
                 }

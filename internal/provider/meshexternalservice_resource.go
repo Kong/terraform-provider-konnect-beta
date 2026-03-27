@@ -401,6 +401,9 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 								},
 								"hostname_generator_ref": schema.SingleNestedAttribute{
 									Computed: true,
+									PlanModifiers: []planmodifier.Object{
+										speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+									},
 									Attributes: map[string]schema.Attribute{
 										"core_name": schema.StringAttribute{
 											Computed: true,
@@ -477,6 +480,9 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 					},
 					"vip": schema.SingleNestedAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.Object{
+							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+						},
 						Attributes: map[string]schema.Attribute{
 							"ip": schema.StringAttribute{
 								Computed:    true,

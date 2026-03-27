@@ -13,7 +13,8 @@ import (
 // EventGatewayVaultEventGatewayKonnectVault - A konnect vault.
 type EventGatewayVaultEventGatewayKonnectVault struct {
 	// The name of the vault.
-	Name  string `json:"name"`
+	Name string `json:"name"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"konnect" json:"type"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
@@ -114,7 +115,8 @@ func (e *EventGatewayEnvVaultConfig) GetPrefix() string {
 // EventGatewayVaultEventGatewayEnvVault - An environment vault.
 type EventGatewayVaultEventGatewayEnvVault struct {
 	// The name of the vault.
-	Name  string `json:"name"`
+	Name string `json:"name"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"env" json:"type"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`

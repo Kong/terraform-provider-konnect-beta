@@ -42,12 +42,14 @@ type EventGatewayVaultResource struct {
 
 // EventGatewayVaultResourceModel describes the resource data model.
 type EventGatewayVaultResourceModel struct {
+	CreatedAt   types.String                      `tfsdk:"created_at"`
 	Description types.String                      `tfsdk:"description"`
 	Env         *tfTypes.EventGatewayEnvVault     `queryParam:"inline" tfsdk:"env"`
 	GatewayID   types.String                      `tfsdk:"gateway_id"`
 	ID          types.String                      `tfsdk:"id"`
 	Konnect     *tfTypes.EventGatewayKonnectVault `queryParam:"inline" tfsdk:"konnect"`
 	Name        types.String                      `tfsdk:"name"`
+	UpdatedAt   types.String                      `tfsdk:"updated_at"`
 }
 
 func (r *EventGatewayVaultResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -58,6 +60,13 @@ func (r *EventGatewayVaultResource) Schema(ctx context.Context, req resource.Sch
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "EventGatewayVault Resource",
 		Attributes: map[string]schema.Attribute{
+			"created_at": schema.StringAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("env"), FieldPath: path.Root("env").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("konnect"), FieldPath: path.Root("konnect").AtName("created_at")}}),
+				},
+				Description: `An ISO-8601 timestamp representation of entity creation date.`,
+			},
 			"description": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
@@ -212,6 +221,13 @@ func (r *EventGatewayVaultResource) Schema(ctx context.Context, req resource.Sch
 					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("env"), FieldPath: path.Root("env").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("konnect"), FieldPath: path.Root("konnect").AtName("name")}}),
 				},
 				Description: `The name of the vault.`,
+			},
+			"updated_at": schema.StringAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("env"), FieldPath: path.Root("env").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("konnect"), FieldPath: path.Root("konnect").AtName("updated_at")}}),
+				},
+				Description: `An ISO-8601 timestamp representation of entity update date.`,
 			},
 		},
 	}

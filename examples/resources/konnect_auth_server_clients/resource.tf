@@ -1,7 +1,7 @@
 resource "konnect_auth_server_clients" "my_authserverclients" {
   provider = konnect-beta
-  access_token_duration = 1458901
-  allow_all_scopes      = true
+  access_token_duration = 300
+  allow_all_scopes      = false
   allow_scopes = [
     "247c0ad0-5487-46a8-bedf-a569c07c2442"
   ]
@@ -11,7 +11,7 @@ resource "konnect_auth_server_clients" "my_authserverclients" {
     "authorization_code"
   ]
   id                = "kYa9iQFU5xPDSIUH9z1z"
-  id_token_duration = 961077
+  id_token_duration = 300
   labels = {
     key = "value"
   }
@@ -20,7 +20,7 @@ resource "konnect_auth_server_clients" "my_authserverclients" {
   redirect_uris = [
     "https://flashy-sauerkraut.com/"
   ]
-  refresh_token_duration = 84206233
+  refresh_token_duration = 2592000
   response_types = [
     "none"
   ]

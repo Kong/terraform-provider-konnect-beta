@@ -5,11 +5,13 @@ package provider
 import (
 	"context"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -35,18 +37,19 @@ type AuthServerResource struct {
 
 // AuthServerResourceModel describes the resource data model.
 type AuthServerResourceModel struct {
-	Audience         types.String            `tfsdk:"audience"`
-	CreatedAt        types.String            `tfsdk:"created_at"`
-	Description      types.String            `tfsdk:"description"`
-	ForceDestroy     types.String            `queryParam:"style=form,explode=true,name=force" tfsdk:"force_destroy"`
-	ID               types.String            `tfsdk:"id"`
-	Issuer           types.String            `tfsdk:"issuer"`
-	Labels           map[string]types.String `tfsdk:"labels"`
-	MetadataURI      types.String            `tfsdk:"metadata_uri"`
-	Name             types.String            `tfsdk:"name"`
-	SigningAlgorithm types.String            `tfsdk:"signing_algorithm"`
-	TrustedOrigins   []types.String          `tfsdk:"trusted_origins"`
-	UpdatedAt        types.String            `tfsdk:"updated_at"`
+	Audience                      types.String            `tfsdk:"audience"`
+	CreatedAt                     types.String            `tfsdk:"created_at"`
+	DcrDefaultAccessTokenDuration types.Int64             `tfsdk:"dcr_default_access_token_duration"`
+	Description                   types.String            `tfsdk:"description"`
+	ForceDestroy                  types.String            `queryParam:"style=form,explode=true,name=force" tfsdk:"force_destroy"`
+	ID                            types.String            `tfsdk:"id"`
+	Issuer                        types.String            `tfsdk:"issuer"`
+	Labels                        map[string]types.String `tfsdk:"labels"`
+	MetadataURI                   types.String            `tfsdk:"metadata_uri"`
+	Name                          types.String            `tfsdk:"name"`
+	SigningAlgorithm              types.String            `tfsdk:"signing_algorithm"`
+	TrustedOrigins                []types.String          `tfsdk:"trusted_origins"`
+	UpdatedAt                     types.String            `tfsdk:"updated_at"`
 }
 
 func (r *AuthServerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -70,6 +73,15 @@ func (r *AuthServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
+			},
+			"dcr_default_access_token_duration": schema.Int64Attribute{
+				Computed:    true,
+				Optional:    true,
+				Default:     int64default.StaticInt64(300),
+				Description: `The default access token duration, in seconds, applied to DCR clients registered against this auth server. Default: 300`,
+				Validators: []validator.Int64{
+					int64validator.Between(60, 2592000),
+				},
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,
