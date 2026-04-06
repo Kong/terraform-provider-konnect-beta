@@ -35,7 +35,7 @@ func (r *PortalResourceModel) RefreshFromSharedPortalResponse(ctx context.Contex
 		}
 		r.Name = types.StringValue(resp.Name)
 		r.RbacEnabled = types.BoolPointerValue(resp.RbacEnabled)
-		r.SiprEnabled = types.BoolValue(resp.SiprEnabled)
+		r.SiprEnabled = types.BoolPointerValue(resp.SiprEnabled)
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
 
