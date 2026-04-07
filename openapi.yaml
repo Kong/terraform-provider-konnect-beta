@@ -7113,8 +7113,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/gatewayId'
     post:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayTLSTrustBundle#create
         terraform-datasource: null
@@ -7152,8 +7150,6 @@ paths:
           format: uuid
         x-speakeasy-match: id
     get:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayTLSTrustBundle#read
         terraform-datasource: null
@@ -7178,8 +7174,6 @@ paths:
       x-min-runtime-version: '1.1'
       x-speakeasy-param-computed: false
     put:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayTLSTrustBundle#update
         terraform-datasource: null
@@ -7206,8 +7200,6 @@ paths:
       x-min-runtime-version: '1.1'
       x-speakeasy-param-computed: false
     delete:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: EventGatewayTLSTrustBundle#delete
         terraform-datasource: null
@@ -9652,6 +9644,7 @@ components:
       description: Whether ip allow list is enabled for the organization.
       type: boolean
       example: true
+      default: false
     Labels:
       description: |
         Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
@@ -29449,9 +29442,6 @@ components:
               - name
             title: Portal
             x-property-annotations:
-              sipr_enabled:
-                - x-unstable
-                - x-internal
               create_default_content:
                 - x-unstable
                 - x-internal
@@ -29547,10 +29537,6 @@ components:
                 $ref: '#/components/schemas/LabelsUpdate'
             additionalProperties: false
             title: Portal
-            x-property-annotations:
-              sipr_enabled:
-                - x-unstable
-                - x-internal
     ReplacePortalImageAsset:
       description: Update an image asset for the portal.
       required: true
@@ -30580,10 +30566,6 @@ components:
                   title: Portal
                   type: object
                   additionalProperties: false
-                  x-property-annotations:
-                    sipr_enabled:
-                      - x-unstable
-                      - x-internal
                   properties:
                     id:
                       $ref: '#/components/schemas/UUID'
@@ -30791,10 +30773,6 @@ components:
               - updated_at
               - created_at
             title: Portal
-            x-property-annotations:
-              sipr_enabled:
-                - x-unstable
-                - x-internal
     PortalAssetResponse:
       description: 'Image asset for the portal. Can be either png, jpeg or svg'
       content:
@@ -30855,6 +30833,12 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/BadRequestError'
+    Internal:
+      description: Internal
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BaseError'
     ApiSlugConflict:
       description: Conflict - `slug` property must be unique
       content:
@@ -32762,12 +32746,6 @@ components:
                 items:
                   $ref: '#/components/schemas/MeshControlPlane'
             title: ListMeshControlPlanesResponse
-    Internal:
-      description: Internal
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/BaseError'
     AuthServer:
       description: An auth server
       content:
