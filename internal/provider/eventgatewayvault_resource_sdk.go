@@ -18,7 +18,7 @@ func (r *EventGatewayVaultResourceModel) RefreshFromSharedEventGatewayVault(ctx 
 	if resp != nil {
 		if resp.EventGatewayVaultEventGatewayEnvVault != nil {
 			r.Env = &tfTypes.EventGatewayEnvVault{}
-			r.Env.Config = &tfTypes.Config{}
+			r.Env.Config = &tfTypes.EventGatewayEnvVaultConfig{}
 			r.Env.Config.Prefix = types.StringValue(resp.EventGatewayVaultEventGatewayEnvVault.Config.Prefix)
 			r.Env.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.EventGatewayVaultEventGatewayEnvVault.CreatedAt))
 			r.CreatedAt = r.Env.CreatedAt
@@ -169,7 +169,7 @@ func (r *EventGatewayVaultResourceModel) ToSharedEventGatewayModifyVault(ctx con
 		var prefix string
 		prefix = r.Env.Config.Prefix.ValueString()
 
-		config := shared.Config{
+		config := shared.EventGatewayEnvVaultConfig{
 			Prefix: prefix,
 		}
 		eventGatewayEnvVault = &shared.EventGatewayEnvVault{

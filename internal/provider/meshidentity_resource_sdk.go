@@ -44,7 +44,7 @@ func (r *MeshIdentityResourceModel) RefreshFromSharedMeshIdentityItem(ctx contex
 		if resp.Spec.Provider == nil {
 			r.Spec.Provider = nil
 		} else {
-			r.Spec.Provider = &tfTypes.Provider{}
+			r.Spec.Provider = &tfTypes.MeshIdentityItemProvider{}
 			if resp.Spec.Provider.Bundled == nil {
 				r.Spec.Provider.Bundled = nil
 			} else {
@@ -282,7 +282,7 @@ func (r *MeshIdentityResourceModel) ToSharedMeshIdentityItemInput(ctx context.Co
 	if !r.Labels.IsUnknown() && !r.Labels.IsNull() {
 		diags.Append(r.Labels.ElementsAs(ctx, &labels, true)...)
 	}
-	var provider *shared.Provider
+	var provider *shared.MeshIdentityItemProvider
 	if r.Spec.Provider != nil {
 		var bundled *shared.Bundled
 		if r.Spec.Provider.Bundled != nil {
@@ -454,7 +454,7 @@ func (r *MeshIdentityResourceModel) ToSharedMeshIdentityItemInput(ctx context.Co
 			}
 		}
 		typeVar3 := shared.MeshIdentityItemSpecType(r.Spec.Provider.Type.ValueString())
-		provider = &shared.Provider{
+		provider = &shared.MeshIdentityItemProvider{
 			Bundled: bundled,
 			Spire:   spire,
 			Type:    typeVar3,

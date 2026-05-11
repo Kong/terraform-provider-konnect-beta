@@ -9,27 +9,27 @@ import (
 	"time"
 )
 
-// Type - the type of the resource
-type Type string
+// MeshAccessLogItemType - the type of the resource
+type MeshAccessLogItemType string
 
 const (
-	TypeMeshAccessLog Type = "MeshAccessLog"
+	MeshAccessLogItemTypeMeshAccessLog MeshAccessLogItemType = "MeshAccessLog"
 )
 
-func (e Type) ToPointer() *Type {
+func (e MeshAccessLogItemType) ToPointer() *MeshAccessLogItemType {
 	return &e
 }
-func (e *Type) UnmarshalJSON(data []byte) error {
+func (e *MeshAccessLogItemType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
 	case "MeshAccessLog":
-		*e = Type(v)
+		*e = MeshAccessLogItemType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Type: %v", v)
+		return fmt.Errorf("invalid value for MeshAccessLogItemType: %v", v)
 	}
 }
 
@@ -52,17 +52,17 @@ func (j *JSON) GetValue() string {
 	return j.Value
 }
 
-type MeshAccessLogItemSpecFromType string
+type MeshAccessLogItemSpecFromDefaultType string
 
 const (
-	MeshAccessLogItemSpecFromTypePlain MeshAccessLogItemSpecFromType = "Plain"
-	MeshAccessLogItemSpecFromTypeJSON  MeshAccessLogItemSpecFromType = "Json"
+	MeshAccessLogItemSpecFromDefaultTypePlain MeshAccessLogItemSpecFromDefaultType = "Plain"
+	MeshAccessLogItemSpecFromDefaultTypeJSON  MeshAccessLogItemSpecFromDefaultType = "Json"
 )
 
-func (e MeshAccessLogItemSpecFromType) ToPointer() *MeshAccessLogItemSpecFromType {
+func (e MeshAccessLogItemSpecFromDefaultType) ToPointer() *MeshAccessLogItemSpecFromDefaultType {
 	return &e
 }
-func (e *MeshAccessLogItemSpecFromType) UnmarshalJSON(data []byte) error {
+func (e *MeshAccessLogItemSpecFromDefaultType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -71,20 +71,20 @@ func (e *MeshAccessLogItemSpecFromType) UnmarshalJSON(data []byte) error {
 	case "Plain":
 		fallthrough
 	case "Json":
-		*e = MeshAccessLogItemSpecFromType(v)
+		*e = MeshAccessLogItemSpecFromDefaultType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for MeshAccessLogItemSpecFromType: %v", v)
+		return fmt.Errorf("invalid value for MeshAccessLogItemSpecFromDefaultType: %v", v)
 	}
 }
 
 // Format of access logs. Placeholders available on
 // https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators
 type Format struct {
-	JSON            []JSON                        `json:"json,omitempty"`
-	OmitEmptyValues *bool                         `default:"false" json:"omitEmptyValues"`
-	Plain           *string                       `json:"plain,omitempty"`
-	Type            MeshAccessLogItemSpecFromType `json:"type"`
+	JSON            []JSON                               `json:"json,omitempty"`
+	OmitEmptyValues *bool                                `default:"false" json:"omitEmptyValues"`
+	Plain           *string                              `json:"plain,omitempty"`
+	Type            MeshAccessLogItemSpecFromDefaultType `json:"type"`
 }
 
 func (f Format) MarshalJSON() ([]byte, error) {
@@ -119,9 +119,9 @@ func (f *Format) GetPlain() *string {
 	return f.Plain
 }
 
-func (f *Format) GetType() MeshAccessLogItemSpecFromType {
+func (f *Format) GetType() MeshAccessLogItemSpecFromDefaultType {
 	if f == nil {
-		return MeshAccessLogItemSpecFromType("")
+		return MeshAccessLogItemSpecFromDefaultType("")
 	}
 	return f.Type
 }
@@ -222,17 +222,17 @@ func (m *MeshAccessLogItemJSON) GetValue() string {
 	return m.Value
 }
 
-type MeshAccessLogItemSpecFromDefaultType string
+type MeshAccessLogItemSpecFromType string
 
 const (
-	MeshAccessLogItemSpecFromDefaultTypePlain MeshAccessLogItemSpecFromDefaultType = "Plain"
-	MeshAccessLogItemSpecFromDefaultTypeJSON  MeshAccessLogItemSpecFromDefaultType = "Json"
+	MeshAccessLogItemSpecFromTypePlain MeshAccessLogItemSpecFromType = "Plain"
+	MeshAccessLogItemSpecFromTypeJSON  MeshAccessLogItemSpecFromType = "Json"
 )
 
-func (e MeshAccessLogItemSpecFromDefaultType) ToPointer() *MeshAccessLogItemSpecFromDefaultType {
+func (e MeshAccessLogItemSpecFromType) ToPointer() *MeshAccessLogItemSpecFromType {
 	return &e
 }
-func (e *MeshAccessLogItemSpecFromDefaultType) UnmarshalJSON(data []byte) error {
+func (e *MeshAccessLogItemSpecFromType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -241,20 +241,20 @@ func (e *MeshAccessLogItemSpecFromDefaultType) UnmarshalJSON(data []byte) error 
 	case "Plain":
 		fallthrough
 	case "Json":
-		*e = MeshAccessLogItemSpecFromDefaultType(v)
+		*e = MeshAccessLogItemSpecFromType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for MeshAccessLogItemSpecFromDefaultType: %v", v)
+		return fmt.Errorf("invalid value for MeshAccessLogItemSpecFromType: %v", v)
 	}
 }
 
 // MeshAccessLogItemFormat - Format of access logs. Placeholders available on
 // https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators
 type MeshAccessLogItemFormat struct {
-	JSON            []MeshAccessLogItemJSON              `json:"json,omitempty"`
-	OmitEmptyValues *bool                                `default:"false" json:"omitEmptyValues"`
-	Plain           *string                              `json:"plain,omitempty"`
-	Type            MeshAccessLogItemSpecFromDefaultType `json:"type"`
+	JSON            []MeshAccessLogItemJSON       `json:"json,omitempty"`
+	OmitEmptyValues *bool                         `default:"false" json:"omitEmptyValues"`
+	Plain           *string                       `json:"plain,omitempty"`
+	Type            MeshAccessLogItemSpecFromType `json:"type"`
 }
 
 func (m MeshAccessLogItemFormat) MarshalJSON() ([]byte, error) {
@@ -289,9 +289,9 @@ func (m *MeshAccessLogItemFormat) GetPlain() *string {
 	return m.Plain
 }
 
-func (m *MeshAccessLogItemFormat) GetType() MeshAccessLogItemSpecFromDefaultType {
+func (m *MeshAccessLogItemFormat) GetType() MeshAccessLogItemSpecFromType {
 	if m == nil {
-		return MeshAccessLogItemSpecFromDefaultType("")
+		return MeshAccessLogItemSpecFromType("")
 	}
 	return m.Type
 }
@@ -319,18 +319,18 @@ func (m *MeshAccessLogItemSpecFromTCP) GetFormat() *MeshAccessLogItemFormat {
 	return m.Format
 }
 
-type MeshAccessLogItemType string
+type MeshAccessLogItemSpecType string
 
 const (
-	MeshAccessLogItemTypeTCP           MeshAccessLogItemType = "Tcp"
-	MeshAccessLogItemTypeFile          MeshAccessLogItemType = "File"
-	MeshAccessLogItemTypeOpenTelemetry MeshAccessLogItemType = "OpenTelemetry"
+	MeshAccessLogItemSpecTypeTCP           MeshAccessLogItemSpecType = "Tcp"
+	MeshAccessLogItemSpecTypeFile          MeshAccessLogItemSpecType = "File"
+	MeshAccessLogItemSpecTypeOpenTelemetry MeshAccessLogItemSpecType = "OpenTelemetry"
 )
 
-func (e MeshAccessLogItemType) ToPointer() *MeshAccessLogItemType {
+func (e MeshAccessLogItemSpecType) ToPointer() *MeshAccessLogItemSpecType {
 	return &e
 }
-func (e *MeshAccessLogItemType) UnmarshalJSON(data []byte) error {
+func (e *MeshAccessLogItemSpecType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -341,10 +341,10 @@ func (e *MeshAccessLogItemType) UnmarshalJSON(data []byte) error {
 	case "File":
 		fallthrough
 	case "OpenTelemetry":
-		*e = MeshAccessLogItemType(v)
+		*e = MeshAccessLogItemSpecType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for MeshAccessLogItemType: %v", v)
+		return fmt.Errorf("invalid value for MeshAccessLogItemSpecType: %v", v)
 	}
 }
 
@@ -355,7 +355,7 @@ type MeshAccessLogItemSpecFromBackends struct {
 	OpenTelemetry *MeshAccessLogItemSpecFromOpenTelemetry `json:"openTelemetry,omitempty"`
 	// TCPBackend defines a TCP logging backend.
 	TCP  *MeshAccessLogItemSpecFromTCP `json:"tcp,omitempty"`
-	Type MeshAccessLogItemType         `json:"type"`
+	Type MeshAccessLogItemSpecType     `json:"type"`
 }
 
 func (m *MeshAccessLogItemSpecFromBackends) GetFile() *File {
@@ -379,9 +379,9 @@ func (m *MeshAccessLogItemSpecFromBackends) GetTCP() *MeshAccessLogItemSpecFromT
 	return m.TCP
 }
 
-func (m *MeshAccessLogItemSpecFromBackends) GetType() MeshAccessLogItemType {
+func (m *MeshAccessLogItemSpecFromBackends) GetType() MeshAccessLogItemSpecType {
 	if m == nil {
-		return MeshAccessLogItemType("")
+		return MeshAccessLogItemSpecType("")
 	}
 	return m.Type
 }
@@ -598,17 +598,17 @@ func (m *MeshAccessLogItemSpecJSON) GetValue() string {
 	return m.Value
 }
 
-type MeshAccessLogItemSpecRulesType string
+type MeshAccessLogItemSpecRulesDefaultBackendsType string
 
 const (
-	MeshAccessLogItemSpecRulesTypePlain MeshAccessLogItemSpecRulesType = "Plain"
-	MeshAccessLogItemSpecRulesTypeJSON  MeshAccessLogItemSpecRulesType = "Json"
+	MeshAccessLogItemSpecRulesDefaultBackendsTypePlain MeshAccessLogItemSpecRulesDefaultBackendsType = "Plain"
+	MeshAccessLogItemSpecRulesDefaultBackendsTypeJSON  MeshAccessLogItemSpecRulesDefaultBackendsType = "Json"
 )
 
-func (e MeshAccessLogItemSpecRulesType) ToPointer() *MeshAccessLogItemSpecRulesType {
+func (e MeshAccessLogItemSpecRulesDefaultBackendsType) ToPointer() *MeshAccessLogItemSpecRulesDefaultBackendsType {
 	return &e
 }
-func (e *MeshAccessLogItemSpecRulesType) UnmarshalJSON(data []byte) error {
+func (e *MeshAccessLogItemSpecRulesDefaultBackendsType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -617,20 +617,20 @@ func (e *MeshAccessLogItemSpecRulesType) UnmarshalJSON(data []byte) error {
 	case "Plain":
 		fallthrough
 	case "Json":
-		*e = MeshAccessLogItemSpecRulesType(v)
+		*e = MeshAccessLogItemSpecRulesDefaultBackendsType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for MeshAccessLogItemSpecRulesType: %v", v)
+		return fmt.Errorf("invalid value for MeshAccessLogItemSpecRulesDefaultBackendsType: %v", v)
 	}
 }
 
 // MeshAccessLogItemSpecFormat - Format of access logs. Placeholders available on
 // https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators
 type MeshAccessLogItemSpecFormat struct {
-	JSON            []MeshAccessLogItemSpecJSON    `json:"json,omitempty"`
-	OmitEmptyValues *bool                          `default:"false" json:"omitEmptyValues"`
-	Plain           *string                        `json:"plain,omitempty"`
-	Type            MeshAccessLogItemSpecRulesType `json:"type"`
+	JSON            []MeshAccessLogItemSpecJSON                   `json:"json,omitempty"`
+	OmitEmptyValues *bool                                         `default:"false" json:"omitEmptyValues"`
+	Plain           *string                                       `json:"plain,omitempty"`
+	Type            MeshAccessLogItemSpecRulesDefaultBackendsType `json:"type"`
 }
 
 func (m MeshAccessLogItemSpecFormat) MarshalJSON() ([]byte, error) {
@@ -665,9 +665,9 @@ func (m *MeshAccessLogItemSpecFormat) GetPlain() *string {
 	return m.Plain
 }
 
-func (m *MeshAccessLogItemSpecFormat) GetType() MeshAccessLogItemSpecRulesType {
+func (m *MeshAccessLogItemSpecFormat) GetType() MeshAccessLogItemSpecRulesDefaultBackendsType {
 	if m == nil {
-		return MeshAccessLogItemSpecRulesType("")
+		return MeshAccessLogItemSpecRulesDefaultBackendsType("")
 	}
 	return m.Type
 }
@@ -865,18 +865,18 @@ func (m *MeshAccessLogItemTCP) GetFormat() *MeshAccessLogItemSpecRulesFormat {
 	return m.Format
 }
 
-type MeshAccessLogItemSpecType string
+type MeshAccessLogItemSpecRulesType string
 
 const (
-	MeshAccessLogItemSpecTypeTCP           MeshAccessLogItemSpecType = "Tcp"
-	MeshAccessLogItemSpecTypeFile          MeshAccessLogItemSpecType = "File"
-	MeshAccessLogItemSpecTypeOpenTelemetry MeshAccessLogItemSpecType = "OpenTelemetry"
+	MeshAccessLogItemSpecRulesTypeTCP           MeshAccessLogItemSpecRulesType = "Tcp"
+	MeshAccessLogItemSpecRulesTypeFile          MeshAccessLogItemSpecRulesType = "File"
+	MeshAccessLogItemSpecRulesTypeOpenTelemetry MeshAccessLogItemSpecRulesType = "OpenTelemetry"
 )
 
-func (e MeshAccessLogItemSpecType) ToPointer() *MeshAccessLogItemSpecType {
+func (e MeshAccessLogItemSpecRulesType) ToPointer() *MeshAccessLogItemSpecRulesType {
 	return &e
 }
-func (e *MeshAccessLogItemSpecType) UnmarshalJSON(data []byte) error {
+func (e *MeshAccessLogItemSpecRulesType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -887,10 +887,10 @@ func (e *MeshAccessLogItemSpecType) UnmarshalJSON(data []byte) error {
 	case "File":
 		fallthrough
 	case "OpenTelemetry":
-		*e = MeshAccessLogItemSpecType(v)
+		*e = MeshAccessLogItemSpecRulesType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for MeshAccessLogItemSpecType: %v", v)
+		return fmt.Errorf("invalid value for MeshAccessLogItemSpecRulesType: %v", v)
 	}
 }
 
@@ -900,8 +900,8 @@ type MeshAccessLogItemBackends struct {
 	// Defines an OpenTelemetry logging backend.
 	OpenTelemetry *MeshAccessLogItemOpenTelemetry `json:"openTelemetry,omitempty"`
 	// TCPBackend defines a TCP logging backend.
-	TCP  *MeshAccessLogItemTCP     `json:"tcp,omitempty"`
-	Type MeshAccessLogItemSpecType `json:"type"`
+	TCP  *MeshAccessLogItemTCP          `json:"tcp,omitempty"`
+	Type MeshAccessLogItemSpecRulesType `json:"type"`
 }
 
 func (m *MeshAccessLogItemBackends) GetFile() *MeshAccessLogItemFile {
@@ -925,9 +925,9 @@ func (m *MeshAccessLogItemBackends) GetTCP() *MeshAccessLogItemTCP {
 	return m.TCP
 }
 
-func (m *MeshAccessLogItemBackends) GetType() MeshAccessLogItemSpecType {
+func (m *MeshAccessLogItemBackends) GetType() MeshAccessLogItemSpecRulesType {
 	if m == nil {
-		return MeshAccessLogItemSpecType("")
+		return MeshAccessLogItemSpecRulesType("")
 	}
 	return m.Type
 }
@@ -1706,7 +1706,7 @@ func (m *MeshAccessLogItemSpec) GetTo() []To {
 // MeshAccessLogItem - MeshAccessLog configures access logging for traffic between services in the mesh. It allows you to capture and export request/response logs to various backends (file, TCP, or OpenTelemetry) for monitoring, debugging, and auditing purposes.
 type MeshAccessLogItem struct {
 	// the type of the resource
-	Type Type `json:"type"`
+	Type MeshAccessLogItemType `json:"type"`
 	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
 	Mesh *string `default:"default" json:"mesh"`
 	// A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
@@ -1734,9 +1734,9 @@ func (m *MeshAccessLogItem) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (m *MeshAccessLogItem) GetType() Type {
+func (m *MeshAccessLogItem) GetType() MeshAccessLogItemType {
 	if m == nil {
-		return Type("")
+		return MeshAccessLogItemType("")
 	}
 	return m.Type
 }
@@ -1793,7 +1793,7 @@ func (m *MeshAccessLogItem) GetModificationTime() *time.Time {
 // MeshAccessLogItemInput - MeshAccessLog configures access logging for traffic between services in the mesh. It allows you to capture and export request/response logs to various backends (file, TCP, or OpenTelemetry) for monitoring, debugging, and auditing purposes.
 type MeshAccessLogItemInput struct {
 	// the type of the resource
-	Type Type `json:"type"`
+	Type MeshAccessLogItemType `json:"type"`
 	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
 	Mesh *string `default:"default" json:"mesh"`
 	// Name of the Kuma resource
@@ -1815,9 +1815,9 @@ func (m *MeshAccessLogItemInput) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (m *MeshAccessLogItemInput) GetType() Type {
+func (m *MeshAccessLogItemInput) GetType() MeshAccessLogItemType {
 	if m == nil {
-		return Type("")
+		return MeshAccessLogItemType("")
 	}
 	return m.Type
 }

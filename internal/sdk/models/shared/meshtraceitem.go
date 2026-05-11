@@ -114,19 +114,19 @@ func (e *MeshTraceItemSpecType) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// MeshTraceItemAPIVersion - Version of the API.
+// APIVersion - Version of the API.
 // https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/trace/v3/zipkin.proto#L66
-type MeshTraceItemAPIVersion string
+type APIVersion string
 
 const (
-	MeshTraceItemAPIVersionHTTPJSON  MeshTraceItemAPIVersion = "httpJson"
-	MeshTraceItemAPIVersionHTTPProto MeshTraceItemAPIVersion = "httpProto"
+	APIVersionHTTPJSON  APIVersion = "httpJson"
+	APIVersionHTTPProto APIVersion = "httpProto"
 )
 
-func (e MeshTraceItemAPIVersion) ToPointer() *MeshTraceItemAPIVersion {
+func (e APIVersion) ToPointer() *APIVersion {
 	return &e
 }
-func (e *MeshTraceItemAPIVersion) UnmarshalJSON(data []byte) error {
+func (e *APIVersion) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -135,10 +135,10 @@ func (e *MeshTraceItemAPIVersion) UnmarshalJSON(data []byte) error {
 	case "httpJson":
 		fallthrough
 	case "httpProto":
-		*e = MeshTraceItemAPIVersion(v)
+		*e = APIVersion(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for MeshTraceItemAPIVersion: %v", v)
+		return fmt.Errorf("invalid value for APIVersion: %v", v)
 	}
 }
 
@@ -146,7 +146,7 @@ func (e *MeshTraceItemAPIVersion) UnmarshalJSON(data []byte) error {
 type Zipkin struct {
 	// Version of the API.
 	// https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/trace/v3/zipkin.proto#L66
-	APIVersion *MeshTraceItemAPIVersion `default:"httpJson" json:"apiVersion"`
+	APIVersion *APIVersion `default:"httpJson" json:"apiVersion"`
 	// Determines whether client and server spans will share the same span
 	// context.
 	// https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/trace/v3/zipkin.proto#L63
@@ -168,7 +168,7 @@ func (z *Zipkin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (z *Zipkin) GetAPIVersion() *MeshTraceItemAPIVersion {
+func (z *Zipkin) GetAPIVersion() *APIVersion {
 	if z == nil {
 		return nil
 	}

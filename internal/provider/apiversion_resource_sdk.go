@@ -4,6 +4,8 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
@@ -21,6 +23,38 @@ func (r *APIVersionResourceModel) RefreshFromSharedAPIVersionResponse(ctx contex
 		if resp.Spec != nil {
 			r.Spec = &tfTypes.CreateAPIVersionRequestSpec{}
 			r.Spec.Content = types.StringPointerValue(resp.Spec.Content)
+			if resp.Spec.Provider != nil {
+				r.Spec.Provider = &tfTypes.Provider{}
+				if resp.Spec.Provider.IntegrationAPISpecProviderPayload != nil {
+					r.Spec.Provider.IntegrationAPISpecProviderPayload = &tfTypes.IntegrationAPISpecProviderPayload{}
+					if len(resp.Spec.Provider.IntegrationAPISpecProviderPayload.Config) > 0 {
+						r.Spec.Provider.IntegrationAPISpecProviderPayload.Config = make(map[string]jsontypes.Normalized, len(resp.Spec.Provider.IntegrationAPISpecProviderPayload.Config))
+						for key, value := range resp.Spec.Provider.IntegrationAPISpecProviderPayload.Config {
+							result, _ := json.Marshal(value)
+							r.Spec.Provider.IntegrationAPISpecProviderPayload.Config[key] = jsontypes.NewNormalizedValue(string(result))
+						}
+					}
+					r.Spec.Provider.IntegrationAPISpecProviderPayload.IntegrationInstance = types.StringValue(resp.Spec.Provider.IntegrationAPISpecProviderPayload.IntegrationInstance)
+					r.Spec.Provider.IntegrationAPISpecProviderPayload.Type = types.StringValue(resp.Spec.Provider.IntegrationAPISpecProviderPayload.Type)
+				}
+				if resp.Spec.Provider.RawAPISpecProvider != nil {
+					r.Spec.Provider.RawAPISpecProvider = &tfTypes.RawAPISpecProvider{}
+					r.Spec.Provider.RawAPISpecProvider.Config = &tfTypes.RawAPISpecProviderConfig{}
+					r.Spec.Provider.RawAPISpecProvider.Type = types.StringValue(string(resp.Spec.Provider.RawAPISpecProvider.Type))
+				}
+				if resp.Spec.Provider.ResourceBoundIntegrationAPISpecProviderPayload != nil {
+					r.Spec.Provider.ResourceBoundIntegrationAPISpecProviderPayload = &tfTypes.ResourceBoundIntegrationAPISpecProviderPayload{}
+					r.Spec.Provider.ResourceBoundIntegrationAPISpecProviderPayload.Config = &tfTypes.ResourceBoundIntegrationAPISpecProviderPayloadConfig{}
+					r.Spec.Provider.ResourceBoundIntegrationAPISpecProviderPayload.Config.ResourceID = types.StringValue(resp.Spec.Provider.ResourceBoundIntegrationAPISpecProviderPayload.Config.ResourceID)
+					r.Spec.Provider.ResourceBoundIntegrationAPISpecProviderPayload.Type = types.StringValue(resp.Spec.Provider.ResourceBoundIntegrationAPISpecProviderPayload.Type)
+				}
+				if resp.Spec.Provider.URLAPISpecProvider != nil {
+					r.Spec.Provider.URLAPISpecProvider = &tfTypes.URLAPISpecProvider{}
+					r.Spec.Provider.URLAPISpecProvider.Config = &tfTypes.Config{}
+					r.Spec.Provider.URLAPISpecProvider.Config.URL = types.StringValue(resp.Spec.Provider.URLAPISpecProvider.Config.URL)
+					r.Spec.Provider.URLAPISpecProvider.Type = types.StringValue(string(resp.Spec.Provider.URLAPISpecProvider.Type))
+				}
+			}
 			if resp.Spec.Type != nil {
 				r.Spec.Type = types.StringValue(string(*resp.Spec.Type))
 			} else {
@@ -107,23 +141,23 @@ func (r *APIVersionResourceModel) ToOperationsUpdateAPIVersionRequest(ctx contex
 	var versionID string
 	versionID = r.ID.ValueString()
 
-	apiVersion, apiVersionDiags := r.ToSharedAPIVersion(ctx)
-	diags.Append(apiVersionDiags...)
+	apiVersionRequest, apiVersionRequestDiags := r.ToSharedAPIVersionRequest(ctx)
+	diags.Append(apiVersionRequestDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	out := operations.UpdateAPIVersionRequest{
-		APIID:      apiID,
-		VersionID:  versionID,
-		APIVersion: *apiVersion,
+		APIID:             apiID,
+		VersionID:         versionID,
+		APIVersionRequest: *apiVersionRequest,
 	}
 
 	return &out, diags
 }
 
-func (r *APIVersionResourceModel) ToSharedAPIVersion(ctx context.Context) (*shared.APIVersion, diag.Diagnostics) {
+func (r *APIVersionResourceModel) ToSharedAPIVersionRequest(ctx context.Context) (*shared.APIVersionRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	version := new(string)
@@ -132,17 +166,86 @@ func (r *APIVersionResourceModel) ToSharedAPIVersion(ctx context.Context) (*shar
 	} else {
 		version = nil
 	}
-	var spec *shared.APIVersionSpec
+	var spec *shared.APIVersionRequestSpec
 	content := new(string)
 	if !r.Spec.Content.IsUnknown() && !r.Spec.Content.IsNull() {
 		*content = r.Spec.Content.ValueString()
 	} else {
 		content = nil
 	}
-	spec = &shared.APIVersionSpec{
-		Content: content,
+	var provider *shared.APIVersionRequestProvider
+	if r.Spec.Provider != nil {
+		var urlAPISpecProvider *shared.URLAPISpecProvider
+		if r.Spec.Provider.URLAPISpecProvider != nil {
+			typeVar := shared.Type(r.Spec.Provider.URLAPISpecProvider.Type.ValueString())
+			var url string
+			url = r.Spec.Provider.URLAPISpecProvider.Config.URL.ValueString()
+
+			config := shared.Config{
+				URL: url,
+			}
+			urlAPISpecProvider = &shared.URLAPISpecProvider{
+				Type:   typeVar,
+				Config: config,
+			}
+		}
+		if urlAPISpecProvider != nil {
+			provider = &shared.APIVersionRequestProvider{
+				URLAPISpecProvider: urlAPISpecProvider,
+			}
+		}
+		var integrationAPISpecProviderPayload *shared.IntegrationAPISpecProviderPayload
+		if r.Spec.Provider.IntegrationAPISpecProviderPayload != nil {
+			var typeVar1 string
+			typeVar1 = r.Spec.Provider.IntegrationAPISpecProviderPayload.Type.ValueString()
+
+			config1 := make(map[string]interface{})
+			for configKey := range r.Spec.Provider.IntegrationAPISpecProviderPayload.Config {
+				var configInst interface{}
+				_ = json.Unmarshal([]byte(r.Spec.Provider.IntegrationAPISpecProviderPayload.Config[configKey].ValueString()), &configInst)
+				config1[configKey] = configInst
+			}
+			var integrationInstance string
+			integrationInstance = r.Spec.Provider.IntegrationAPISpecProviderPayload.IntegrationInstance.ValueString()
+
+			integrationAPISpecProviderPayload = &shared.IntegrationAPISpecProviderPayload{
+				Type:                typeVar1,
+				Config:              config1,
+				IntegrationInstance: integrationInstance,
+			}
+		}
+		if integrationAPISpecProviderPayload != nil {
+			provider = &shared.APIVersionRequestProvider{
+				IntegrationAPISpecProviderPayload: integrationAPISpecProviderPayload,
+			}
+		}
+		var resourceBoundIntegrationAPISpecProviderPayload *shared.ResourceBoundIntegrationAPISpecProviderPayload
+		if r.Spec.Provider.ResourceBoundIntegrationAPISpecProviderPayload != nil {
+			var typeVar2 string
+			typeVar2 = r.Spec.Provider.ResourceBoundIntegrationAPISpecProviderPayload.Type.ValueString()
+
+			var resourceID string
+			resourceID = r.Spec.Provider.ResourceBoundIntegrationAPISpecProviderPayload.Config.ResourceID.ValueString()
+
+			config2 := shared.ResourceBoundIntegrationAPISpecProviderPayloadConfig{
+				ResourceID: resourceID,
+			}
+			resourceBoundIntegrationAPISpecProviderPayload = &shared.ResourceBoundIntegrationAPISpecProviderPayload{
+				Type:   typeVar2,
+				Config: config2,
+			}
+		}
+		if resourceBoundIntegrationAPISpecProviderPayload != nil {
+			provider = &shared.APIVersionRequestProvider{
+				ResourceBoundIntegrationAPISpecProviderPayload: resourceBoundIntegrationAPISpecProviderPayload,
+			}
+		}
 	}
-	out := shared.APIVersion{
+	spec = &shared.APIVersionRequestSpec{
+		Content:  content,
+		Provider: provider,
+	}
+	out := shared.APIVersionRequest{
 		Version: version,
 		Spec:    spec,
 	}
@@ -165,8 +268,77 @@ func (r *APIVersionResourceModel) ToSharedCreateAPIVersionRequest(ctx context.Co
 	} else {
 		content = nil
 	}
+	var provider *shared.Provider
+	if r.Spec.Provider != nil {
+		var urlAPISpecProvider *shared.URLAPISpecProvider
+		if r.Spec.Provider.URLAPISpecProvider != nil {
+			typeVar := shared.Type(r.Spec.Provider.URLAPISpecProvider.Type.ValueString())
+			var url string
+			url = r.Spec.Provider.URLAPISpecProvider.Config.URL.ValueString()
+
+			config := shared.Config{
+				URL: url,
+			}
+			urlAPISpecProvider = &shared.URLAPISpecProvider{
+				Type:   typeVar,
+				Config: config,
+			}
+		}
+		if urlAPISpecProvider != nil {
+			provider = &shared.Provider{
+				URLAPISpecProvider: urlAPISpecProvider,
+			}
+		}
+		var integrationAPISpecProviderPayload *shared.IntegrationAPISpecProviderPayload
+		if r.Spec.Provider.IntegrationAPISpecProviderPayload != nil {
+			var typeVar1 string
+			typeVar1 = r.Spec.Provider.IntegrationAPISpecProviderPayload.Type.ValueString()
+
+			config1 := make(map[string]interface{})
+			for configKey := range r.Spec.Provider.IntegrationAPISpecProviderPayload.Config {
+				var configInst interface{}
+				_ = json.Unmarshal([]byte(r.Spec.Provider.IntegrationAPISpecProviderPayload.Config[configKey].ValueString()), &configInst)
+				config1[configKey] = configInst
+			}
+			var integrationInstance string
+			integrationInstance = r.Spec.Provider.IntegrationAPISpecProviderPayload.IntegrationInstance.ValueString()
+
+			integrationAPISpecProviderPayload = &shared.IntegrationAPISpecProviderPayload{
+				Type:                typeVar1,
+				Config:              config1,
+				IntegrationInstance: integrationInstance,
+			}
+		}
+		if integrationAPISpecProviderPayload != nil {
+			provider = &shared.Provider{
+				IntegrationAPISpecProviderPayload: integrationAPISpecProviderPayload,
+			}
+		}
+		var resourceBoundIntegrationAPISpecProviderPayload *shared.ResourceBoundIntegrationAPISpecProviderPayload
+		if r.Spec.Provider.ResourceBoundIntegrationAPISpecProviderPayload != nil {
+			var typeVar2 string
+			typeVar2 = r.Spec.Provider.ResourceBoundIntegrationAPISpecProviderPayload.Type.ValueString()
+
+			var resourceID string
+			resourceID = r.Spec.Provider.ResourceBoundIntegrationAPISpecProviderPayload.Config.ResourceID.ValueString()
+
+			config2 := shared.ResourceBoundIntegrationAPISpecProviderPayloadConfig{
+				ResourceID: resourceID,
+			}
+			resourceBoundIntegrationAPISpecProviderPayload = &shared.ResourceBoundIntegrationAPISpecProviderPayload{
+				Type:   typeVar2,
+				Config: config2,
+			}
+		}
+		if resourceBoundIntegrationAPISpecProviderPayload != nil {
+			provider = &shared.Provider{
+				ResourceBoundIntegrationAPISpecProviderPayload: resourceBoundIntegrationAPISpecProviderPayload,
+			}
+		}
+	}
 	spec := shared.CreateAPIVersionRequestSpec{
-		Content: content,
+		Content:  content,
+		Provider: provider,
 	}
 	out := shared.CreateAPIVersionRequest{
 		Version: version,

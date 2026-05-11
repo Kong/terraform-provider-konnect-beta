@@ -143,6 +143,100 @@ func (r *APIResourceModel) ToSharedCreateAPIRequest(ctx context.Context) (*share
 	if !r.Attributes.IsUnknown() && !r.Attributes.IsNull() {
 		_ = json.Unmarshal([]byte(r.Attributes.ValueString()), &attributes)
 	}
+	var spec *shared.APISpecPayload
+	if r.Spec != nil {
+		var apiSpecContentPayload *shared.APISpecContentPayload
+		if r.Spec.APISpecContentPayload != nil {
+			var content string
+			content = r.Spec.APISpecContentPayload.Content.ValueString()
+
+			apiSpecContentPayload = &shared.APISpecContentPayload{
+				Content: content,
+			}
+		}
+		if apiSpecContentPayload != nil {
+			spec = &shared.APISpecPayload{
+				APISpecContentPayload: apiSpecContentPayload,
+			}
+		}
+		var apiSpecProviderPayload *shared.APISpecProviderPayload
+		if r.Spec.APISpecProviderPayload != nil {
+			var provider shared.APISpecProviderPayloadProvider
+			var urlAPISpecProvider *shared.URLAPISpecProvider
+			if r.Spec.APISpecProviderPayload.Provider.URLAPISpecProvider != nil {
+				typeVar := shared.Type(r.Spec.APISpecProviderPayload.Provider.URLAPISpecProvider.Type.ValueString())
+				var url string
+				url = r.Spec.APISpecProviderPayload.Provider.URLAPISpecProvider.Config.URL.ValueString()
+
+				config := shared.Config{
+					URL: url,
+				}
+				urlAPISpecProvider = &shared.URLAPISpecProvider{
+					Type:   typeVar,
+					Config: config,
+				}
+			}
+			if urlAPISpecProvider != nil {
+				provider = shared.APISpecProviderPayloadProvider{
+					URLAPISpecProvider: urlAPISpecProvider,
+				}
+			}
+			var integrationAPISpecProviderPayload *shared.IntegrationAPISpecProviderPayload
+			if r.Spec.APISpecProviderPayload.Provider.IntegrationAPISpecProviderPayload != nil {
+				var typeVar1 string
+				typeVar1 = r.Spec.APISpecProviderPayload.Provider.IntegrationAPISpecProviderPayload.Type.ValueString()
+
+				config1 := make(map[string]interface{})
+				for configKey := range r.Spec.APISpecProviderPayload.Provider.IntegrationAPISpecProviderPayload.Config {
+					var configInst interface{}
+					_ = json.Unmarshal([]byte(r.Spec.APISpecProviderPayload.Provider.IntegrationAPISpecProviderPayload.Config[configKey].ValueString()), &configInst)
+					config1[configKey] = configInst
+				}
+				var integrationInstance string
+				integrationInstance = r.Spec.APISpecProviderPayload.Provider.IntegrationAPISpecProviderPayload.IntegrationInstance.ValueString()
+
+				integrationAPISpecProviderPayload = &shared.IntegrationAPISpecProviderPayload{
+					Type:                typeVar1,
+					Config:              config1,
+					IntegrationInstance: integrationInstance,
+				}
+			}
+			if integrationAPISpecProviderPayload != nil {
+				provider = shared.APISpecProviderPayloadProvider{
+					IntegrationAPISpecProviderPayload: integrationAPISpecProviderPayload,
+				}
+			}
+			var resourceBoundIntegrationAPISpecProviderPayload *shared.ResourceBoundIntegrationAPISpecProviderPayload
+			if r.Spec.APISpecProviderPayload.Provider.ResourceBoundIntegrationAPISpecProviderPayload != nil {
+				var typeVar2 string
+				typeVar2 = r.Spec.APISpecProviderPayload.Provider.ResourceBoundIntegrationAPISpecProviderPayload.Type.ValueString()
+
+				var resourceID string
+				resourceID = r.Spec.APISpecProviderPayload.Provider.ResourceBoundIntegrationAPISpecProviderPayload.Config.ResourceID.ValueString()
+
+				config2 := shared.ResourceBoundIntegrationAPISpecProviderPayloadConfig{
+					ResourceID: resourceID,
+				}
+				resourceBoundIntegrationAPISpecProviderPayload = &shared.ResourceBoundIntegrationAPISpecProviderPayload{
+					Type:   typeVar2,
+					Config: config2,
+				}
+			}
+			if resourceBoundIntegrationAPISpecProviderPayload != nil {
+				provider = shared.APISpecProviderPayloadProvider{
+					ResourceBoundIntegrationAPISpecProviderPayload: resourceBoundIntegrationAPISpecProviderPayload,
+				}
+			}
+			apiSpecProviderPayload = &shared.APISpecProviderPayload{
+				Provider: provider,
+			}
+		}
+		if apiSpecProviderPayload != nil {
+			spec = &shared.APISpecPayload{
+				APISpecProviderPayload: apiSpecProviderPayload,
+			}
+		}
+	}
 	specContent := new(string)
 	if !r.SpecContent.IsUnknown() && !r.SpecContent.IsNull() {
 		*specContent = r.SpecContent.ValueString()
@@ -156,6 +250,7 @@ func (r *APIResourceModel) ToSharedCreateAPIRequest(ctx context.Context) (*share
 		Slug:        slug,
 		Labels:      labels,
 		Attributes:  attributes,
+		Spec:        spec,
 		SpecContent: specContent,
 	}
 

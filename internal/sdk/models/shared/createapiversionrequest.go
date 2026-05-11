@@ -3,13 +3,133 @@
 package shared
 
 import (
+	"errors"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
+type ProviderType string
+
+const (
+	ProviderTypeURLAPISpecProvider                             ProviderType = "UrlApiSpecProvider"
+	ProviderTypeIntegrationAPISpecProviderPayload              ProviderType = "IntegrationApiSpecProviderPayload"
+	ProviderTypeResourceBoundIntegrationAPISpecProviderPayload ProviderType = "ResourceBoundIntegrationApiSpecProviderPayload"
+)
+
+// Provider - Represent spec provider information used for fetching the API spec. For raw, provide the raw content in the `content` property instead of using this provider.
+type Provider struct {
+	URLAPISpecProvider                             *URLAPISpecProvider                             `queryParam:"inline" union:"member"`
+	IntegrationAPISpecProviderPayload              *IntegrationAPISpecProviderPayload              `queryParam:"inline" union:"member"`
+	ResourceBoundIntegrationAPISpecProviderPayload *ResourceBoundIntegrationAPISpecProviderPayload `queryParam:"inline" union:"member"`
+
+	Type ProviderType
+}
+
+func CreateProviderURLAPISpecProvider(urlAPISpecProvider URLAPISpecProvider) Provider {
+	typ := ProviderTypeURLAPISpecProvider
+
+	return Provider{
+		URLAPISpecProvider: &urlAPISpecProvider,
+		Type:               typ,
+	}
+}
+
+func CreateProviderIntegrationAPISpecProviderPayload(integrationAPISpecProviderPayload IntegrationAPISpecProviderPayload) Provider {
+	typ := ProviderTypeIntegrationAPISpecProviderPayload
+
+	return Provider{
+		IntegrationAPISpecProviderPayload: &integrationAPISpecProviderPayload,
+		Type:                              typ,
+	}
+}
+
+func CreateProviderResourceBoundIntegrationAPISpecProviderPayload(resourceBoundIntegrationAPISpecProviderPayload ResourceBoundIntegrationAPISpecProviderPayload) Provider {
+	typ := ProviderTypeResourceBoundIntegrationAPISpecProviderPayload
+
+	return Provider{
+		ResourceBoundIntegrationAPISpecProviderPayload: &resourceBoundIntegrationAPISpecProviderPayload,
+		Type: typ,
+	}
+}
+
+func (u *Provider) UnmarshalJSON(data []byte) error {
+
+	var candidates []utils.UnionCandidate
+
+	// Collect all valid candidates
+	var urlAPISpecProvider URLAPISpecProvider = URLAPISpecProvider{}
+	if err := utils.UnmarshalJSON(data, &urlAPISpecProvider, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  ProviderTypeURLAPISpecProvider,
+			Value: &urlAPISpecProvider,
+		})
+	}
+
+	var integrationAPISpecProviderPayload IntegrationAPISpecProviderPayload = IntegrationAPISpecProviderPayload{}
+	if err := utils.UnmarshalJSON(data, &integrationAPISpecProviderPayload, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  ProviderTypeIntegrationAPISpecProviderPayload,
+			Value: &integrationAPISpecProviderPayload,
+		})
+	}
+
+	var resourceBoundIntegrationAPISpecProviderPayload ResourceBoundIntegrationAPISpecProviderPayload = ResourceBoundIntegrationAPISpecProviderPayload{}
+	if err := utils.UnmarshalJSON(data, &resourceBoundIntegrationAPISpecProviderPayload, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  ProviderTypeResourceBoundIntegrationAPISpecProviderPayload,
+			Value: &resourceBoundIntegrationAPISpecProviderPayload,
+		})
+	}
+
+	if len(candidates) == 0 {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Provider", string(data))
+	}
+
+	// Pick the best candidate using multi-stage filtering
+	best := utils.PickBestUnionCandidate(candidates, data)
+	if best == nil {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Provider", string(data))
+	}
+
+	// Set the union type and value based on the best candidate
+	u.Type = best.Type.(ProviderType)
+	switch best.Type {
+	case ProviderTypeURLAPISpecProvider:
+		u.URLAPISpecProvider = best.Value.(*URLAPISpecProvider)
+		return nil
+	case ProviderTypeIntegrationAPISpecProviderPayload:
+		u.IntegrationAPISpecProviderPayload = best.Value.(*IntegrationAPISpecProviderPayload)
+		return nil
+	case ProviderTypeResourceBoundIntegrationAPISpecProviderPayload:
+		u.ResourceBoundIntegrationAPISpecProviderPayload = best.Value.(*ResourceBoundIntegrationAPISpecProviderPayload)
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for Provider", string(data))
+}
+
+func (u Provider) MarshalJSON() ([]byte, error) {
+	if u.URLAPISpecProvider != nil {
+		return utils.MarshalJSON(u.URLAPISpecProvider, "", true)
+	}
+
+	if u.IntegrationAPISpecProviderPayload != nil {
+		return utils.MarshalJSON(u.IntegrationAPISpecProviderPayload, "", true)
+	}
+
+	if u.ResourceBoundIntegrationAPISpecProviderPayload != nil {
+		return utils.MarshalJSON(u.ResourceBoundIntegrationAPISpecProviderPayload, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type Provider: all fields are null")
+}
+
 type CreateAPIVersionRequestSpec struct {
-	// The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).
-	//
+	// The raw content of API specification, in json or yaml format (OpenAPI or AsyncAPI).
 	Content *string `default:"null" json:"content"`
+	// Represent spec provider information used for fetching the API spec. For raw, provide the raw content in the `content` property instead of using this provider.
+	//
+	Provider *Provider `json:"provider,omitempty"`
 }
 
 func (c CreateAPIVersionRequestSpec) MarshalJSON() ([]byte, error) {
@@ -28,6 +148,13 @@ func (c *CreateAPIVersionRequestSpec) GetContent() *string {
 		return nil
 	}
 	return c.Content
+}
+
+func (c *CreateAPIVersionRequestSpec) GetProvider() *Provider {
+	if c == nil {
+		return nil
+	}
+	return c.Provider
 }
 
 type CreateAPIVersionRequest struct {

@@ -17,6 +17,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 )
@@ -41,9 +42,11 @@ type APIPublicationResourceModel struct {
 	AuthStrategyIds          []types.String `tfsdk:"auth_strategy_ids"`
 	AutoApproveRegistrations types.Bool     `tfsdk:"auto_approve_registrations"`
 	CreatedAt                types.String   `tfsdk:"created_at"`
+	FormID                   types.String   `tfsdk:"form_id"`
 	PortalID                 types.String   `tfsdk:"portal_id"`
 	UpdatedAt                types.String   `tfsdk:"updated_at"`
 	Visibility               types.String   `tfsdk:"visibility"`
+	Warnings                 []types.String `tfsdk:"warnings"`
 }
 
 func (r *APIPublicationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -82,6 +85,10 @@ func (r *APIPublicationResource) Schema(ctx context.Context, req resource.Schema
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
+			"form_id": schema.StringAttribute{
+				Optional:    true,
+				Description: `UUID of portal form associated with API publication, must be linked to given portal and have type of 'api_registration'`,
+			},
 			"portal_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The Portal identifier`,
@@ -107,6 +114,14 @@ func (r *APIPublicationResource) Schema(ctx context.Context, req resource.Schema
 						"private",
 					),
 				},
+			},
+			"warnings": schema.ListAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.List{
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+				},
+				ElementType: types.StringType,
+				Description: `Informational warnings (e.g. incompatible fields stripped for ACE). Empty if none.`,
 			},
 		},
 	}
