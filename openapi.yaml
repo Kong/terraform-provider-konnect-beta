@@ -10807,6 +10807,7 @@ components:
           format: uuid
           default: null
           nullable: true
+          x-speakeasy-ignore: true
           x-speakeasy-param-computed: false
         warnings:
           description: Informational warnings (e.g. incompatible fields stripped for ACE). Empty if none.
@@ -26653,7 +26654,7 @@ components:
           items:
             $ref: '#/components/schemas/VirtualClusterTopicAlias'
           x-min-runtime-version: '1.2'
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
           x-unstable: true
         name:
           $ref: '#/components/schemas/VirtualClusterName'
@@ -31279,7 +31280,7 @@ components:
                 items:
                   $ref: '#/components/schemas/VirtualClusterTopicAlias'
                 x-min-runtime-version: '1.2'
-                x-speakeasy-param-computed: false
+                x-speakeasy-param-computed: true
                 x-unstable: true
               acl_mode:
                 $ref: '#/components/schemas/VirtualClusterACLMode'
@@ -31329,7 +31330,7 @@ components:
                 items:
                   $ref: '#/components/schemas/VirtualClusterTopicAlias'
                 x-min-runtime-version: '1.2'
-                x-speakeasy-param-computed: false
+                x-speakeasy-param-computed: true
                 x-unstable: true
               acl_mode:
                 $ref: '#/components/schemas/VirtualClusterACLMode'
@@ -32150,6 +32151,7 @@ components:
                 format: uuid
                 default: null
                 nullable: true
+                x-speakeasy-ignore: true
                 x-speakeasy-param-computed: false
               warnings:
                 description: Informational warnings (e.g. incompatible fields stripped for ACE). Empty if none.
