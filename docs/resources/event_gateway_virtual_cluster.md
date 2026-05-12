@@ -477,13 +477,9 @@ Default: "warn"; must be one of ["warn", "ignore"]
 <a id="nestedatt--topic_aliases"></a>
 ### Nested Schema for `topic_aliases`
 
-Required:
-
-- `alias` (String) The client-visible topic name.
-- `topic` (String) The namespace-visible topic name this alias resolves to.
-
 Optional:
 
+- `alias` (String) The client-visible topic name. Not Null
 - `conflict` (String) How to handle conflicts where an alias shadows a physical topic.
 * warn - activate the alias but log a warning and set the conflict metric to 1.
 * ignore - activate the alias silently.
@@ -491,6 +487,7 @@ Default: "warn"; must be one of ["warn", "ignore"]
 - `match` (String) CEL expression evaluated against the connection's auth context.
 If omitted or empty, the alias is active for all connections.
 Default: ""
+- `topic` (String) The namespace-visible topic name this alias resolves to. Not Null
 
 ## Import
 

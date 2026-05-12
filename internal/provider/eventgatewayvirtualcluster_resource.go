@@ -808,13 +808,19 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 					`It allows to either hide or enforce a static prefix on resources (topics, consumer group IDs, transaction IDs).`,
 			},
 			"topic_aliases": schema.ListNestedAttribute{
+				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
+					Validators: []validator.Object{
+						speakeasy_objectvalidators.NotNull(),
+					},
 					Attributes: map[string]schema.Attribute{
 						"alias": schema.StringAttribute{
-							Required:    true,
-							Description: `The client-visible topic name.`,
+							Computed:    true,
+							Optional:    true,
+							Description: `The client-visible topic name. Not Null`,
 							Validators: []validator.String{
+								speakeasy_stringvalidators.NotNull(),
 								stringvalidator.UTF8LengthAtLeast(1),
 							},
 						},
@@ -842,9 +848,11 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 								`Default: ""`,
 						},
 						"topic": schema.StringAttribute{
-							Required:    true,
-							Description: `The namespace-visible topic name this alias resolves to.`,
+							Computed:    true,
+							Optional:    true,
+							Description: `The namespace-visible topic name this alias resolves to. Not Null`,
 							Validators: []validator.String{
+								speakeasy_stringvalidators.NotNull(),
 								stringvalidator.UTF8LengthAtLeast(1),
 							},
 						},
