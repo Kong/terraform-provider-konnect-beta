@@ -2,6 +2,6 @@
 
 package types
 
-type APISpecProviderPayload struct {
+type ProviderPayload struct {
 	Provider *APISpecProviderPayloadProvider `tfsdk:"provider"`
 }

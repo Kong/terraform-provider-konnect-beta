@@ -2,5 +2,5 @@
 
 package types
 
-type RawAPISpecProviderConfig struct {
+type RawProviderConfig struct {
 }

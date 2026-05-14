@@ -6,7 +6,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type URLAPISpecProvider struct {
-	Config *Config      `tfsdk:"config"`
-	Type   types.String `tfsdk:"type"`
+type ContentPayload struct {
+	Content types.String `tfsdk:"content"`
 }

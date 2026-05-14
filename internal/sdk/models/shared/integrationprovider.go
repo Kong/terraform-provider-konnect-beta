@@ -6,13 +6,13 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// IntegrationAPISpecProviderPayload - API spec provider registered by a catalog integration.
+// IntegrationProvider - API spec provider registered by a catalog integration.
 //
 // Integrations can function as API spec providers where they register a globally unique
 // `type` and config schema which defines the shape of `config`.
 //
 // Consult integration documentation to learn more about available API spec providers.
-type IntegrationAPISpecProviderPayload struct {
+type IntegrationProvider struct {
 	// The globally unique API spec provider type that is registered by a given catalog integration.
 	Type string `json:"type"`
 	// JSON object containing values as defined by integration provider's config schema.
@@ -21,32 +21,32 @@ type IntegrationAPISpecProviderPayload struct {
 	IntegrationInstance string `json:"integration_instance"`
 }
 
-func (i IntegrationAPISpecProviderPayload) MarshalJSON() ([]byte, error) {
+func (i IntegrationProvider) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(i, "", false)
 }
 
-func (i *IntegrationAPISpecProviderPayload) UnmarshalJSON(data []byte) error {
+func (i *IntegrationProvider) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (i *IntegrationAPISpecProviderPayload) GetType() string {
+func (i *IntegrationProvider) GetType() string {
 	if i == nil {
 		return ""
 	}
 	return i.Type
 }
 
-func (i *IntegrationAPISpecProviderPayload) GetConfig() map[string]any {
+func (i *IntegrationProvider) GetConfig() map[string]any {
 	if i == nil {
 		return map[string]any{}
 	}
 	return i.Config
 }
 
-func (i *IntegrationAPISpecProviderPayload) GetIntegrationInstance() string {
+func (i *IntegrationProvider) GetIntegrationInstance() string {
 	if i == nil {
 		return ""
 	}

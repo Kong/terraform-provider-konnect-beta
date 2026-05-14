@@ -90,7 +90,7 @@ func (r *APIVersionResource) Schema(ctx context.Context, req resource.SchemaRequ
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
-							"integration_api_spec_provider_payload": schema.SingleNestedAttribute{
+							"integration_provider": schema.SingleNestedAttribute{
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"config": schema.MapAttribute{
@@ -129,13 +129,13 @@ func (r *APIVersionResource) Schema(ctx context.Context, req resource.SchemaRequ
 									`Consult integration documentation to learn more about available API spec providers.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
-										path.MatchRelative().AtParent().AtName("raw_api_spec_provider"),
-										path.MatchRelative().AtParent().AtName("resource_bound_integration_api_spec_provider_payload"),
-										path.MatchRelative().AtParent().AtName("urlapi_spec_provider"),
+										path.MatchRelative().AtParent().AtName("raw_provider"),
+										path.MatchRelative().AtParent().AtName("resource_bound_integration_provider"),
+										path.MatchRelative().AtParent().AtName("url_provider"),
 									}...),
 								},
 							},
-							"raw_api_spec_provider": schema.SingleNestedAttribute{
+							"raw_provider": schema.SingleNestedAttribute{
 								Computed: true,
 								Attributes: map[string]schema.Attribute{
 									"config": schema.SingleNestedAttribute{
@@ -146,7 +146,7 @@ func (r *APIVersionResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 								},
 							},
-							"resource_bound_integration_api_spec_provider_payload": schema.SingleNestedAttribute{
+							"resource_bound_integration_provider": schema.SingleNestedAttribute{
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"config": schema.SingleNestedAttribute{
@@ -189,13 +189,13 @@ func (r *APIVersionResource) Schema(ctx context.Context, req resource.SchemaRequ
 									`Consult integration documentation to learn more about available API spec providers.`,
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
-										path.MatchRelative().AtParent().AtName("integration_api_spec_provider_payload"),
-										path.MatchRelative().AtParent().AtName("raw_api_spec_provider"),
-										path.MatchRelative().AtParent().AtName("urlapi_spec_provider"),
+										path.MatchRelative().AtParent().AtName("integration_provider"),
+										path.MatchRelative().AtParent().AtName("raw_provider"),
+										path.MatchRelative().AtParent().AtName("url_provider"),
 									}...),
 								},
 							},
-							"urlapi_spec_provider": schema.SingleNestedAttribute{
+							"url_provider": schema.SingleNestedAttribute{
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"config": schema.SingleNestedAttribute{
@@ -230,9 +230,9 @@ func (r *APIVersionResource) Schema(ctx context.Context, req resource.SchemaRequ
 								},
 								Validators: []validator.Object{
 									objectvalidator.ConflictsWith(path.Expressions{
-										path.MatchRelative().AtParent().AtName("integration_api_spec_provider_payload"),
-										path.MatchRelative().AtParent().AtName("raw_api_spec_provider"),
-										path.MatchRelative().AtParent().AtName("resource_bound_integration_api_spec_provider_payload"),
+										path.MatchRelative().AtParent().AtName("integration_provider"),
+										path.MatchRelative().AtParent().AtName("raw_provider"),
+										path.MatchRelative().AtParent().AtName("resource_bound_integration_provider"),
 									}...),
 								},
 							},

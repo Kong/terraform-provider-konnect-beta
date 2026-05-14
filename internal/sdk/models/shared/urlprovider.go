@@ -56,30 +56,30 @@ func (c *Config) GetURL() string {
 	return c.URL
 }
 
-type URLAPISpecProvider struct {
+type URLProvider struct {
 	Type   Type   `json:"type"`
 	Config Config `json:"config"`
 }
 
-func (u URLAPISpecProvider) MarshalJSON() ([]byte, error) {
+func (u URLProvider) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(u, "", false)
 }
 
-func (u *URLAPISpecProvider) UnmarshalJSON(data []byte) error {
+func (u *URLProvider) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (u *URLAPISpecProvider) GetType() Type {
+func (u *URLProvider) GetType() Type {
 	if u == nil {
 		return Type("")
 	}
 	return u.Type
 }
 
-func (u *URLAPISpecProvider) GetConfig() Config {
+func (u *URLProvider) GetConfig() Config {
 	if u == nil {
 		return Config{}
 	}

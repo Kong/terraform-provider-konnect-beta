@@ -145,95 +145,95 @@ func (r *APIResourceModel) ToSharedCreateAPIRequest(ctx context.Context) (*share
 	}
 	var spec *shared.APISpecPayload
 	if r.Spec != nil {
-		var apiSpecContentPayload *shared.APISpecContentPayload
-		if r.Spec.APISpecContentPayload != nil {
+		var contentPayload *shared.ContentPayload
+		if r.Spec.ContentPayload != nil {
 			var content string
-			content = r.Spec.APISpecContentPayload.Content.ValueString()
+			content = r.Spec.ContentPayload.Content.ValueString()
 
-			apiSpecContentPayload = &shared.APISpecContentPayload{
+			contentPayload = &shared.ContentPayload{
 				Content: content,
 			}
 		}
-		if apiSpecContentPayload != nil {
+		if contentPayload != nil {
 			spec = &shared.APISpecPayload{
-				APISpecContentPayload: apiSpecContentPayload,
+				ContentPayload: contentPayload,
 			}
 		}
-		var apiSpecProviderPayload *shared.APISpecProviderPayload
-		if r.Spec.APISpecProviderPayload != nil {
+		var providerPayload *shared.ProviderPayload
+		if r.Spec.ProviderPayload != nil {
 			var provider shared.APISpecProviderPayloadProvider
-			var urlAPISpecProvider *shared.URLAPISpecProvider
-			if r.Spec.APISpecProviderPayload.Provider.URLAPISpecProvider != nil {
-				typeVar := shared.Type(r.Spec.APISpecProviderPayload.Provider.URLAPISpecProvider.Type.ValueString())
+			var urlProvider *shared.URLProvider
+			if r.Spec.ProviderPayload.Provider.URLProvider != nil {
+				typeVar := shared.Type(r.Spec.ProviderPayload.Provider.URLProvider.Type.ValueString())
 				var url string
-				url = r.Spec.APISpecProviderPayload.Provider.URLAPISpecProvider.Config.URL.ValueString()
+				url = r.Spec.ProviderPayload.Provider.URLProvider.Config.URL.ValueString()
 
 				config := shared.Config{
 					URL: url,
 				}
-				urlAPISpecProvider = &shared.URLAPISpecProvider{
+				urlProvider = &shared.URLProvider{
 					Type:   typeVar,
 					Config: config,
 				}
 			}
-			if urlAPISpecProvider != nil {
+			if urlProvider != nil {
 				provider = shared.APISpecProviderPayloadProvider{
-					URLAPISpecProvider: urlAPISpecProvider,
+					URLProvider: urlProvider,
 				}
 			}
-			var integrationAPISpecProviderPayload *shared.IntegrationAPISpecProviderPayload
-			if r.Spec.APISpecProviderPayload.Provider.IntegrationAPISpecProviderPayload != nil {
+			var integrationProvider *shared.IntegrationProvider
+			if r.Spec.ProviderPayload.Provider.IntegrationProvider != nil {
 				var typeVar1 string
-				typeVar1 = r.Spec.APISpecProviderPayload.Provider.IntegrationAPISpecProviderPayload.Type.ValueString()
+				typeVar1 = r.Spec.ProviderPayload.Provider.IntegrationProvider.Type.ValueString()
 
 				config1 := make(map[string]interface{})
-				for configKey := range r.Spec.APISpecProviderPayload.Provider.IntegrationAPISpecProviderPayload.Config {
+				for configKey := range r.Spec.ProviderPayload.Provider.IntegrationProvider.Config {
 					var configInst interface{}
-					_ = json.Unmarshal([]byte(r.Spec.APISpecProviderPayload.Provider.IntegrationAPISpecProviderPayload.Config[configKey].ValueString()), &configInst)
+					_ = json.Unmarshal([]byte(r.Spec.ProviderPayload.Provider.IntegrationProvider.Config[configKey].ValueString()), &configInst)
 					config1[configKey] = configInst
 				}
 				var integrationInstance string
-				integrationInstance = r.Spec.APISpecProviderPayload.Provider.IntegrationAPISpecProviderPayload.IntegrationInstance.ValueString()
+				integrationInstance = r.Spec.ProviderPayload.Provider.IntegrationProvider.IntegrationInstance.ValueString()
 
-				integrationAPISpecProviderPayload = &shared.IntegrationAPISpecProviderPayload{
+				integrationProvider = &shared.IntegrationProvider{
 					Type:                typeVar1,
 					Config:              config1,
 					IntegrationInstance: integrationInstance,
 				}
 			}
-			if integrationAPISpecProviderPayload != nil {
+			if integrationProvider != nil {
 				provider = shared.APISpecProviderPayloadProvider{
-					IntegrationAPISpecProviderPayload: integrationAPISpecProviderPayload,
+					IntegrationProvider: integrationProvider,
 				}
 			}
-			var resourceBoundIntegrationAPISpecProviderPayload *shared.ResourceBoundIntegrationAPISpecProviderPayload
-			if r.Spec.APISpecProviderPayload.Provider.ResourceBoundIntegrationAPISpecProviderPayload != nil {
+			var resourceBoundIntegrationProvider *shared.ResourceBoundIntegrationProvider
+			if r.Spec.ProviderPayload.Provider.ResourceBoundIntegrationProvider != nil {
 				var typeVar2 string
-				typeVar2 = r.Spec.APISpecProviderPayload.Provider.ResourceBoundIntegrationAPISpecProviderPayload.Type.ValueString()
+				typeVar2 = r.Spec.ProviderPayload.Provider.ResourceBoundIntegrationProvider.Type.ValueString()
 
 				var resourceID string
-				resourceID = r.Spec.APISpecProviderPayload.Provider.ResourceBoundIntegrationAPISpecProviderPayload.Config.ResourceID.ValueString()
+				resourceID = r.Spec.ProviderPayload.Provider.ResourceBoundIntegrationProvider.Config.ResourceID.ValueString()
 
-				config2 := shared.ResourceBoundIntegrationAPISpecProviderPayloadConfig{
+				config2 := shared.ResourceBoundIntegrationProviderConfig{
 					ResourceID: resourceID,
 				}
-				resourceBoundIntegrationAPISpecProviderPayload = &shared.ResourceBoundIntegrationAPISpecProviderPayload{
+				resourceBoundIntegrationProvider = &shared.ResourceBoundIntegrationProvider{
 					Type:   typeVar2,
 					Config: config2,
 				}
 			}
-			if resourceBoundIntegrationAPISpecProviderPayload != nil {
+			if resourceBoundIntegrationProvider != nil {
 				provider = shared.APISpecProviderPayloadProvider{
-					ResourceBoundIntegrationAPISpecProviderPayload: resourceBoundIntegrationAPISpecProviderPayload,
+					ResourceBoundIntegrationProvider: resourceBoundIntegrationProvider,
 				}
 			}
-			apiSpecProviderPayload = &shared.APISpecProviderPayload{
+			providerPayload = &shared.ProviderPayload{
 				Provider: provider,
 			}
 		}
-		if apiSpecProviderPayload != nil {
+		if providerPayload != nil {
 			spec = &shared.APISpecPayload{
-				APISpecProviderPayload: apiSpecProviderPayload,
+				ProviderPayload: providerPayload,
 			}
 		}
 	}

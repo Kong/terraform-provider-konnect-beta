@@ -6,30 +6,30 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-type ResourceBoundIntegrationAPISpecProviderPayloadConfig struct {
+type ResourceBoundIntegrationProviderConfig struct {
 	// ID of the associated Resource the API spec is bound to.
 	ResourceID string `json:"resource_id"`
 }
 
-func (r ResourceBoundIntegrationAPISpecProviderPayloadConfig) MarshalJSON() ([]byte, error) {
+func (r ResourceBoundIntegrationProviderConfig) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(r, "", false)
 }
 
-func (r *ResourceBoundIntegrationAPISpecProviderPayloadConfig) UnmarshalJSON(data []byte) error {
+func (r *ResourceBoundIntegrationProviderConfig) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *ResourceBoundIntegrationAPISpecProviderPayloadConfig) GetResourceID() string {
+func (r *ResourceBoundIntegrationProviderConfig) GetResourceID() string {
 	if r == nil {
 		return ""
 	}
 	return r.ResourceID
 }
 
-// ResourceBoundIntegrationAPISpecProviderPayload - API spec provider registered by a catalog integration.
+// ResourceBoundIntegrationProvider - API spec provider registered by a catalog integration.
 //
 // These providers differ from `IntegrationApiSpecProvider` in that they
 // denote a binding relationship between a resource type and the API spec.
@@ -37,35 +37,35 @@ func (r *ResourceBoundIntegrationAPISpecProviderPayloadConfig) GetResourceID() s
 // as resources of the given type are mapped/unmapped.
 //
 // Consult integration documentation to learn more about available API spec providers.
-type ResourceBoundIntegrationAPISpecProviderPayload struct {
+type ResourceBoundIntegrationProvider struct {
 	// The globally unique API spec provider type that is registered by a given catalog integration.
 	// Resource-bound providers create a 1-to-1 mapping between a resource type and the API Spec.
 	//
-	Type   string                                               `json:"type"`
-	Config ResourceBoundIntegrationAPISpecProviderPayloadConfig `json:"config"`
+	Type   string                                 `json:"type"`
+	Config ResourceBoundIntegrationProviderConfig `json:"config"`
 }
 
-func (r ResourceBoundIntegrationAPISpecProviderPayload) MarshalJSON() ([]byte, error) {
+func (r ResourceBoundIntegrationProvider) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(r, "", false)
 }
 
-func (r *ResourceBoundIntegrationAPISpecProviderPayload) UnmarshalJSON(data []byte) error {
+func (r *ResourceBoundIntegrationProvider) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *ResourceBoundIntegrationAPISpecProviderPayload) GetType() string {
+func (r *ResourceBoundIntegrationProvider) GetType() string {
 	if r == nil {
 		return ""
 	}
 	return r.Type
 }
 
-func (r *ResourceBoundIntegrationAPISpecProviderPayload) GetConfig() ResourceBoundIntegrationAPISpecProviderPayloadConfig {
+func (r *ResourceBoundIntegrationProvider) GetConfig() ResourceBoundIntegrationProviderConfig {
 	if r == nil {
-		return ResourceBoundIntegrationAPISpecProviderPayloadConfig{}
+		return ResourceBoundIntegrationProviderConfig{}
 	}
 	return r.Config
 }

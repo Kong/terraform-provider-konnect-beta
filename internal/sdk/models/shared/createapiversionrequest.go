@@ -11,44 +11,44 @@ import (
 type ProviderType string
 
 const (
-	ProviderTypeURLAPISpecProvider                             ProviderType = "UrlApiSpecProvider"
-	ProviderTypeIntegrationAPISpecProviderPayload              ProviderType = "IntegrationApiSpecProviderPayload"
-	ProviderTypeResourceBoundIntegrationAPISpecProviderPayload ProviderType = "ResourceBoundIntegrationApiSpecProviderPayload"
+	ProviderTypeURLProvider                      ProviderType = "UrlProvider"
+	ProviderTypeIntegrationProvider              ProviderType = "IntegrationProvider"
+	ProviderTypeResourceBoundIntegrationProvider ProviderType = "ResourceBoundIntegrationProvider"
 )
 
 // Provider - Represent spec provider information used for fetching the API spec. For raw, provide the raw content in the `content` property instead of using this provider.
 type Provider struct {
-	URLAPISpecProvider                             *URLAPISpecProvider                             `queryParam:"inline" union:"member"`
-	IntegrationAPISpecProviderPayload              *IntegrationAPISpecProviderPayload              `queryParam:"inline" union:"member"`
-	ResourceBoundIntegrationAPISpecProviderPayload *ResourceBoundIntegrationAPISpecProviderPayload `queryParam:"inline" union:"member"`
+	URLProvider                      *URLProvider                      `queryParam:"inline" union:"member"`
+	IntegrationProvider              *IntegrationProvider              `queryParam:"inline" union:"member"`
+	ResourceBoundIntegrationProvider *ResourceBoundIntegrationProvider `queryParam:"inline" union:"member"`
 
 	Type ProviderType
 }
 
-func CreateProviderURLAPISpecProvider(urlAPISpecProvider URLAPISpecProvider) Provider {
-	typ := ProviderTypeURLAPISpecProvider
+func CreateProviderURLProvider(urlProvider URLProvider) Provider {
+	typ := ProviderTypeURLProvider
 
 	return Provider{
-		URLAPISpecProvider: &urlAPISpecProvider,
-		Type:               typ,
+		URLProvider: &urlProvider,
+		Type:        typ,
 	}
 }
 
-func CreateProviderIntegrationAPISpecProviderPayload(integrationAPISpecProviderPayload IntegrationAPISpecProviderPayload) Provider {
-	typ := ProviderTypeIntegrationAPISpecProviderPayload
+func CreateProviderIntegrationProvider(integrationProvider IntegrationProvider) Provider {
+	typ := ProviderTypeIntegrationProvider
 
 	return Provider{
-		IntegrationAPISpecProviderPayload: &integrationAPISpecProviderPayload,
-		Type:                              typ,
+		IntegrationProvider: &integrationProvider,
+		Type:                typ,
 	}
 }
 
-func CreateProviderResourceBoundIntegrationAPISpecProviderPayload(resourceBoundIntegrationAPISpecProviderPayload ResourceBoundIntegrationAPISpecProviderPayload) Provider {
-	typ := ProviderTypeResourceBoundIntegrationAPISpecProviderPayload
+func CreateProviderResourceBoundIntegrationProvider(resourceBoundIntegrationProvider ResourceBoundIntegrationProvider) Provider {
+	typ := ProviderTypeResourceBoundIntegrationProvider
 
 	return Provider{
-		ResourceBoundIntegrationAPISpecProviderPayload: &resourceBoundIntegrationAPISpecProviderPayload,
-		Type: typ,
+		ResourceBoundIntegrationProvider: &resourceBoundIntegrationProvider,
+		Type:                             typ,
 	}
 }
 
@@ -57,27 +57,27 @@ func (u *Provider) UnmarshalJSON(data []byte) error {
 	var candidates []utils.UnionCandidate
 
 	// Collect all valid candidates
-	var urlAPISpecProvider URLAPISpecProvider = URLAPISpecProvider{}
-	if err := utils.UnmarshalJSON(data, &urlAPISpecProvider, "", true, nil); err == nil {
+	var urlProvider URLProvider = URLProvider{}
+	if err := utils.UnmarshalJSON(data, &urlProvider, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  ProviderTypeURLAPISpecProvider,
-			Value: &urlAPISpecProvider,
+			Type:  ProviderTypeURLProvider,
+			Value: &urlProvider,
 		})
 	}
 
-	var integrationAPISpecProviderPayload IntegrationAPISpecProviderPayload = IntegrationAPISpecProviderPayload{}
-	if err := utils.UnmarshalJSON(data, &integrationAPISpecProviderPayload, "", true, nil); err == nil {
+	var integrationProvider IntegrationProvider = IntegrationProvider{}
+	if err := utils.UnmarshalJSON(data, &integrationProvider, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  ProviderTypeIntegrationAPISpecProviderPayload,
-			Value: &integrationAPISpecProviderPayload,
+			Type:  ProviderTypeIntegrationProvider,
+			Value: &integrationProvider,
 		})
 	}
 
-	var resourceBoundIntegrationAPISpecProviderPayload ResourceBoundIntegrationAPISpecProviderPayload = ResourceBoundIntegrationAPISpecProviderPayload{}
-	if err := utils.UnmarshalJSON(data, &resourceBoundIntegrationAPISpecProviderPayload, "", true, nil); err == nil {
+	var resourceBoundIntegrationProvider ResourceBoundIntegrationProvider = ResourceBoundIntegrationProvider{}
+	if err := utils.UnmarshalJSON(data, &resourceBoundIntegrationProvider, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  ProviderTypeResourceBoundIntegrationAPISpecProviderPayload,
-			Value: &resourceBoundIntegrationAPISpecProviderPayload,
+			Type:  ProviderTypeResourceBoundIntegrationProvider,
+			Value: &resourceBoundIntegrationProvider,
 		})
 	}
 
@@ -94,14 +94,14 @@ func (u *Provider) UnmarshalJSON(data []byte) error {
 	// Set the union type and value based on the best candidate
 	u.Type = best.Type.(ProviderType)
 	switch best.Type {
-	case ProviderTypeURLAPISpecProvider:
-		u.URLAPISpecProvider = best.Value.(*URLAPISpecProvider)
+	case ProviderTypeURLProvider:
+		u.URLProvider = best.Value.(*URLProvider)
 		return nil
-	case ProviderTypeIntegrationAPISpecProviderPayload:
-		u.IntegrationAPISpecProviderPayload = best.Value.(*IntegrationAPISpecProviderPayload)
+	case ProviderTypeIntegrationProvider:
+		u.IntegrationProvider = best.Value.(*IntegrationProvider)
 		return nil
-	case ProviderTypeResourceBoundIntegrationAPISpecProviderPayload:
-		u.ResourceBoundIntegrationAPISpecProviderPayload = best.Value.(*ResourceBoundIntegrationAPISpecProviderPayload)
+	case ProviderTypeResourceBoundIntegrationProvider:
+		u.ResourceBoundIntegrationProvider = best.Value.(*ResourceBoundIntegrationProvider)
 		return nil
 	}
 
@@ -109,16 +109,16 @@ func (u *Provider) UnmarshalJSON(data []byte) error {
 }
 
 func (u Provider) MarshalJSON() ([]byte, error) {
-	if u.URLAPISpecProvider != nil {
-		return utils.MarshalJSON(u.URLAPISpecProvider, "", true)
+	if u.URLProvider != nil {
+		return utils.MarshalJSON(u.URLProvider, "", true)
 	}
 
-	if u.IntegrationAPISpecProviderPayload != nil {
-		return utils.MarshalJSON(u.IntegrationAPISpecProviderPayload, "", true)
+	if u.IntegrationProvider != nil {
+		return utils.MarshalJSON(u.IntegrationProvider, "", true)
 	}
 
-	if u.ResourceBoundIntegrationAPISpecProviderPayload != nil {
-		return utils.MarshalJSON(u.ResourceBoundIntegrationAPISpecProviderPayload, "", true)
+	if u.ResourceBoundIntegrationProvider != nil {
+		return utils.MarshalJSON(u.ResourceBoundIntegrationProvider, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type Provider: all fields are null")

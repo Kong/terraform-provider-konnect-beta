@@ -3,8 +3,8 @@
 package types
 
 type Provider struct {
-	IntegrationAPISpecProviderPayload              *IntegrationAPISpecProviderPayload              `queryParam:"inline" tfsdk:"integration_api_spec_provider_payload"`
-	RawAPISpecProvider                             *RawAPISpecProvider                             `queryParam:"inline" tfsdk:"raw_api_spec_provider"`
-	ResourceBoundIntegrationAPISpecProviderPayload *ResourceBoundIntegrationAPISpecProviderPayload `queryParam:"inline" tfsdk:"resource_bound_integration_api_spec_provider_payload"`
-	URLAPISpecProvider                             *URLAPISpecProvider                             `queryParam:"inline" tfsdk:"urlapi_spec_provider"`
+	IntegrationProvider              *IntegrationProvider              `queryParam:"inline" tfsdk:"integration_provider"`
+	RawProvider                      *RawProvider                      `queryParam:"inline" tfsdk:"raw_provider"`
+	ResourceBoundIntegrationProvider *ResourceBoundIntegrationProvider `queryParam:"inline" tfsdk:"resource_bound_integration_provider"`
+	URLProvider                      *URLProvider                      `queryParam:"inline" tfsdk:"url_provider"`
 }

@@ -6,6 +6,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type APISpecContentPayload struct {
-	Content types.String `tfsdk:"content"`
+type ResourceBoundIntegrationProviderConfig struct {
+	ResourceID types.String `tfsdk:"resource_id"`
 }

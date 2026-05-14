@@ -6,6 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type ResourceBoundIntegrationAPISpecProviderPayloadConfig struct {
-	ResourceID types.String `tfsdk:"resource_id"`
+type URLProvider struct {
+	Config *Config      `tfsdk:"config"`
+	Type   types.String `tfsdk:"type"`
 }

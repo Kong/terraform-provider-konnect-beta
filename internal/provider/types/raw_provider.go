@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type RawAPISpecProvider struct {
-	Config *RawAPISpecProviderConfig `tfsdk:"config"`
-	Type   types.String              `tfsdk:"type"`
+type RawProvider struct {
+	Config *RawProviderConfig `tfsdk:"config"`
+	Type   types.String       `tfsdk:"type"`
 }

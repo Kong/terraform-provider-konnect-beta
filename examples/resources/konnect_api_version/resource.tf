@@ -4,7 +4,7 @@ resource "konnect_api_version" "my_apiversion" {
   spec = {
     content = "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}"
     provider = {
-      urlapi_spec_provider = {
+      url_provider = {
         config = {
           url = "https://api.petstore.com/v3/openapi.json"
         }

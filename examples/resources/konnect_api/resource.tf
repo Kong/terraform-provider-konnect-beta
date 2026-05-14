@@ -8,7 +8,7 @@ resource "konnect_api" "my_api" {
   name = "MyAPI"
   slug = "my-api-v1"
   spec = {
-    api_spec_content_payload = {
+    content_payload = {
       content = "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}"
     }
   }

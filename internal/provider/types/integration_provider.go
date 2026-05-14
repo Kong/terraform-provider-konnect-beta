@@ -7,7 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type IntegrationAPISpecProviderPayload struct {
+type IntegrationProvider struct {
 	Config              map[string]jsontypes.Normalized `tfsdk:"config"`
 	IntegrationInstance types.String                    `tfsdk:"integration_instance"`
 	Type                types.String                    `tfsdk:"type"`
