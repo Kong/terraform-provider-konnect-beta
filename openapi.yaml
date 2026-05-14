@@ -10805,10 +10805,8 @@ components:
           description: 'UUID of portal form associated with API publication, must be linked to given portal and have type of ''api_registration'''
           type: string
           format: uuid
-          default: null
           nullable: true
-          x-speakeasy-ignore: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         warnings:
           description: Informational warnings (e.g. incompatible fields stripped for ACE). Empty if none.
           type: array
@@ -26653,8 +26651,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/VirtualClusterTopicAlias'
+          nullable: true
           x-min-runtime-version: '1.2'
-          x-speakeasy-param-computed: true
+          x-speakeasy-param-computed: false
           x-unstable: true
         name:
           $ref: '#/components/schemas/VirtualClusterName'
@@ -31279,8 +31278,9 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/VirtualClusterTopicAlias'
+                nullable: true
                 x-min-runtime-version: '1.2'
-                x-speakeasy-param-computed: true
+                x-speakeasy-param-computed: false
                 x-unstable: true
               acl_mode:
                 $ref: '#/components/schemas/VirtualClusterACLMode'
@@ -31329,8 +31329,9 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/VirtualClusterTopicAlias'
+                nullable: true
                 x-min-runtime-version: '1.2'
-                x-speakeasy-param-computed: true
+                x-speakeasy-param-computed: false
                 x-unstable: true
               acl_mode:
                 $ref: '#/components/schemas/VirtualClusterACLMode'
@@ -32149,10 +32150,8 @@ components:
                 description: 'UUID of portal form associated with API publication, must be linked to given portal and have type of ''api_registration'''
                 type: string
                 format: uuid
-                default: null
                 nullable: true
-                x-speakeasy-ignore: true
-                x-speakeasy-param-computed: false
+                x-speakeasy-param-computed: true
               warnings:
                 description: Informational warnings (e.g. incompatible fields stripped for ACE). Empty if none.
                 type: array
