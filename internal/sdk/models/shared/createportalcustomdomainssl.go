@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type DomainVerificationMethod string
 
 const (
@@ -17,20 +12,16 @@ const (
 func (e DomainVerificationMethod) ToPointer() *DomainVerificationMethod {
 	return &e
 }
-func (e *DomainVerificationMethod) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DomainVerificationMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "custom_certificate", "http":
+			return true
+		}
 	}
-	switch v {
-	case "custom_certificate":
-		fallthrough
-	case "http":
-		*e = DomainVerificationMethod(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for DomainVerificationMethod: %v", v)
-	}
+	return false
 }
 
 type CreatePortalCustomDomainSSL struct {

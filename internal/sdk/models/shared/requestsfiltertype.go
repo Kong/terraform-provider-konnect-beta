@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // RequestsFilterType - The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values.
 type RequestsFilterType string
 
@@ -18,18 +13,14 @@ const (
 func (e RequestsFilterType) ToPointer() *RequestsFilterType {
 	return &e
 }
-func (e *RequestsFilterType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RequestsFilterType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "in", "not_in":
+			return true
+		}
 	}
-	switch v {
-	case "in":
-		fallthrough
-	case "not_in":
-		*e = RequestsFilterType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RequestsFilterType: %v", v)
-	}
+	return false
 }

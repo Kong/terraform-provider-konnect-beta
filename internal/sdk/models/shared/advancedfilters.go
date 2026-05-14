@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
@@ -36,56 +34,16 @@ const (
 func (e Field) ToPointer() *Field {
 	return &e
 }
-func (e *Field) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Field) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped":
+			return true
+		}
 	}
-	switch v {
-	case "api":
-		fallthrough
-	case "api_package":
-		fallthrough
-	case "api_product":
-		fallthrough
-	case "api_product_version":
-		fallthrough
-	case "application":
-		fallthrough
-	case "consumer":
-		fallthrough
-	case "control_plane":
-		fallthrough
-	case "control_plane_group":
-		fallthrough
-	case "country_code":
-		fallthrough
-	case "data_plane_node":
-		fallthrough
-	case "data_plane_node_version":
-		fallthrough
-	case "gateway_service":
-		fallthrough
-	case "portal":
-		fallthrough
-	case "realm":
-		fallthrough
-	case "response_source":
-		fallthrough
-	case "route":
-		fallthrough
-	case "status_code":
-		fallthrough
-	case "status_code_grouped":
-		fallthrough
-	case "upstream_status_code":
-		fallthrough
-	case "upstream_status_code_grouped":
-		*e = Field(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Field: %v", v)
-	}
+	return false
 }
 
 type Operator string
@@ -100,24 +58,16 @@ const (
 func (e Operator) ToPointer() *Operator {
 	return &e
 }
-func (e *Operator) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Operator) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "in", "not_in", "empty", "not_empty":
+			return true
+		}
 	}
-	switch v {
-	case "in":
-		fallthrough
-	case "not_in":
-		fallthrough
-	case "empty":
-		fallthrough
-	case "not_empty":
-		*e = Operator(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Operator: %v", v)
-	}
+	return false
 }
 
 type AdvancedFilters struct {

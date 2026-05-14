@@ -446,34 +446,16 @@ const (
 func (e MeshFaultInjectionItemSpecKind) ToPointer() *MeshFaultInjectionItemSpecKind {
 	return &e
 }
-func (e *MeshFaultInjectionItemSpecKind) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeshFaultInjectionItemSpecKind) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane":
+			return true
+		}
 	}
-	switch v {
-	case "Mesh":
-		fallthrough
-	case "MeshSubset":
-		fallthrough
-	case "MeshGateway":
-		fallthrough
-	case "MeshService":
-		fallthrough
-	case "MeshExternalService":
-		fallthrough
-	case "MeshMultiZoneService":
-		fallthrough
-	case "MeshServiceSubset":
-		fallthrough
-	case "MeshHTTPRoute":
-		fallthrough
-	case "Dataplane":
-		*e = MeshFaultInjectionItemSpecKind(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeshFaultInjectionItemSpecKind: %v", v)
-	}
+	return false
 }
 
 type MeshFaultInjectionItemSpecProxyTypes string
@@ -486,20 +468,16 @@ const (
 func (e MeshFaultInjectionItemSpecProxyTypes) ToPointer() *MeshFaultInjectionItemSpecProxyTypes {
 	return &e
 }
-func (e *MeshFaultInjectionItemSpecProxyTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeshFaultInjectionItemSpecProxyTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Sidecar", "Gateway":
+			return true
+		}
 	}
-	switch v {
-	case "Sidecar":
-		fallthrough
-	case "Gateway":
-		*e = MeshFaultInjectionItemSpecProxyTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeshFaultInjectionItemSpecProxyTypes: %v", v)
-	}
+	return false
 }
 
 // MeshFaultInjectionItemSpecTargetRef - TargetRef is a reference to the resource that represents a group of
@@ -1012,20 +990,16 @@ const (
 func (e MeshFaultInjectionItemSpecType) ToPointer() *MeshFaultInjectionItemSpecType {
 	return &e
 }
-func (e *MeshFaultInjectionItemSpecType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeshFaultInjectionItemSpecType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Exact", "Prefix":
+			return true
+		}
 	}
-	switch v {
-	case "Exact":
-		fallthrough
-	case "Prefix":
-		*e = MeshFaultInjectionItemSpecType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeshFaultInjectionItemSpecType: %v", v)
-	}
+	return false
 }
 
 // MeshFaultInjectionItemSpiffeID - SpiffeID defines a matcher configuration for SpiffeID matching
@@ -1101,34 +1075,16 @@ const (
 func (e MeshFaultInjectionItemKind) ToPointer() *MeshFaultInjectionItemKind {
 	return &e
 }
-func (e *MeshFaultInjectionItemKind) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeshFaultInjectionItemKind) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane":
+			return true
+		}
 	}
-	switch v {
-	case "Mesh":
-		fallthrough
-	case "MeshSubset":
-		fallthrough
-	case "MeshGateway":
-		fallthrough
-	case "MeshService":
-		fallthrough
-	case "MeshExternalService":
-		fallthrough
-	case "MeshMultiZoneService":
-		fallthrough
-	case "MeshServiceSubset":
-		fallthrough
-	case "MeshHTTPRoute":
-		fallthrough
-	case "Dataplane":
-		*e = MeshFaultInjectionItemKind(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeshFaultInjectionItemKind: %v", v)
-	}
+	return false
 }
 
 type MeshFaultInjectionItemProxyTypes string
@@ -1141,20 +1097,16 @@ const (
 func (e MeshFaultInjectionItemProxyTypes) ToPointer() *MeshFaultInjectionItemProxyTypes {
 	return &e
 }
-func (e *MeshFaultInjectionItemProxyTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeshFaultInjectionItemProxyTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Sidecar", "Gateway":
+			return true
+		}
 	}
-	switch v {
-	case "Sidecar":
-		fallthrough
-	case "Gateway":
-		*e = MeshFaultInjectionItemProxyTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeshFaultInjectionItemProxyTypes: %v", v)
-	}
+	return false
 }
 
 // MeshFaultInjectionItemTargetRef - TargetRef is a reference to the resource the policy takes an effect on.
@@ -1653,34 +1605,16 @@ const (
 func (e MeshFaultInjectionItemSpecToKind) ToPointer() *MeshFaultInjectionItemSpecToKind {
 	return &e
 }
-func (e *MeshFaultInjectionItemSpecToKind) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeshFaultInjectionItemSpecToKind) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane":
+			return true
+		}
 	}
-	switch v {
-	case "Mesh":
-		fallthrough
-	case "MeshSubset":
-		fallthrough
-	case "MeshGateway":
-		fallthrough
-	case "MeshService":
-		fallthrough
-	case "MeshExternalService":
-		fallthrough
-	case "MeshMultiZoneService":
-		fallthrough
-	case "MeshServiceSubset":
-		fallthrough
-	case "MeshHTTPRoute":
-		fallthrough
-	case "Dataplane":
-		*e = MeshFaultInjectionItemSpecToKind(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeshFaultInjectionItemSpecToKind: %v", v)
-	}
+	return false
 }
 
 type MeshFaultInjectionItemSpecToProxyTypes string
@@ -1693,20 +1627,16 @@ const (
 func (e MeshFaultInjectionItemSpecToProxyTypes) ToPointer() *MeshFaultInjectionItemSpecToProxyTypes {
 	return &e
 }
-func (e *MeshFaultInjectionItemSpecToProxyTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeshFaultInjectionItemSpecToProxyTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Sidecar", "Gateway":
+			return true
+		}
 	}
-	switch v {
-	case "Sidecar":
-		fallthrough
-	case "Gateway":
-		*e = MeshFaultInjectionItemSpecToProxyTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeshFaultInjectionItemSpecToProxyTypes: %v", v)
-	}
+	return false
 }
 
 // MeshFaultInjectionItemSpecToTargetRef - TargetRef is a reference to the resource that represents a group of

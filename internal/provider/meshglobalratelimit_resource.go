@@ -359,13 +359,7 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 											Optional: true,
 											MarkdownDescription: `Mode defines rate limit behavior when limits are reached. Possible options: Limit and Shadow. Setting Shadow will` + "\n" +
 												`not block over the limit requests but will update metrics. This is useful for testing rate limit configuration.` + "\n" +
-												`must be one of ["Limit", "Shadow"]`,
-											Validators: []validator.String{
-												stringvalidator.OneOf(
-													"Limit",
-													"Shadow",
-												),
-											},
+												`possible known values include one of ["Limit", "Shadow"]`,
 										},
 									},
 									MarkdownDescription: `Default is a configuration specific to the group of clients referenced in` + "\n" +
@@ -376,20 +370,9 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 									Attributes: map[string]schema.Attribute{
 										"kind": schema.StringAttribute{
 											Optional:    true,
-											Description: `Kind of the referenced resource. Not Null; must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
+											Description: `Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]; Not Null`,
 											Validators: []validator.String{
 												speakeasy_stringvalidators.NotNull(),
-												stringvalidator.OneOf(
-													"Mesh",
-													"MeshSubset",
-													"MeshGateway",
-													"MeshService",
-													"MeshExternalService",
-													"MeshMultiZoneService",
-													"MeshServiceSubset",
-													"MeshHTTPRoute",
-													"Dataplane",
-												),
 											},
 										},
 										"labels": schema.MapAttribute{
@@ -450,20 +433,7 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
 								Required:    true,
-								Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"Mesh",
-										"MeshSubset",
-										"MeshGateway",
-										"MeshService",
-										"MeshExternalService",
-										"MeshMultiZoneService",
-										"MeshServiceSubset",
-										"MeshHTTPRoute",
-										"Dataplane",
-									),
-								},
+								Description: `Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 							},
 							"labels": schema.MapAttribute{
 								Optional:    true,
@@ -754,13 +724,7 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 											Optional: true,
 											MarkdownDescription: `Mode defines rate limit behavior when limits are reached. Possible options: Limit and Shadow. Setting Shadow will` + "\n" +
 												`not block over the limit requests but will update metrics. This is useful for testing rate limit configuration.` + "\n" +
-												`must be one of ["Limit", "Shadow"]`,
-											Validators: []validator.String{
-												stringvalidator.OneOf(
-													"Limit",
-													"Shadow",
-												),
-											},
+												`possible known values include one of ["Limit", "Shadow"]`,
 										},
 									},
 									MarkdownDescription: `Default is a configuration specific to the group of clients referenced in` + "\n" +
@@ -771,20 +735,9 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 									Attributes: map[string]schema.Attribute{
 										"kind": schema.StringAttribute{
 											Optional:    true,
-											Description: `Kind of the referenced resource. Not Null; must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
+											Description: `Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]; Not Null`,
 											Validators: []validator.String{
 												speakeasy_stringvalidators.NotNull(),
-												stringvalidator.OneOf(
-													"Mesh",
-													"MeshSubset",
-													"MeshGateway",
-													"MeshService",
-													"MeshExternalService",
-													"MeshMultiZoneService",
-													"MeshServiceSubset",
-													"MeshHTTPRoute",
-													"Dataplane",
-												),
 											},
 										},
 										"labels": schema.MapAttribute{

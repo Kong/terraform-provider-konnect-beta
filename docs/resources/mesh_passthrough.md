@@ -96,7 +96,7 @@ Optional:
 - `passthrough_mode` (String) Defines the passthrough behavior. Possible values: `All`, `None`, `Matched`
 When `All` or `None` `appendMatch` has no effect.
 If not specified then the default value is "Matched".
-must be one of ["All", "Matched", "None"]
+possible known values include one of ["All", "Matched", "None"]
 
 <a id="nestedatt--spec--default--append_match"></a>
 ### Nested Schema for `spec.default.append_match`
@@ -104,8 +104,8 @@ must be one of ["All", "Matched", "None"]
 Optional:
 
 - `port` (Number) Port defines the port to which a user makes a request.
-- `protocol` (String) Protocol defines the communication protocol. Possible values: `tcp`, `tls`, `grpc`, `http`, `http2`, `mysql`. Default: "tcp"; must be one of ["tcp", "tls", "grpc", "http", "http2", "mysql"]
-- `type` (String) Type of the match, one of `Domain`, `IP` or `CIDR` is available. Not Null; must be one of ["Domain", "IP", "CIDR"]
+- `protocol` (String) Protocol defines the communication protocol. Possible values: `tcp`, `tls`, `grpc`, `http`, `http2`, `mysql`. possible known values include one of ["tcp", "tls", "grpc", "http", "http2", "mysql"]; Default: "tcp"
+- `type` (String) Type of the match, one of `Domain`, `IP` or `CIDR` is available. possible known values include one of ["Domain", "IP", "CIDR"]; Not Null
 - `value` (String) Value for the specified Type. Not Null
 
 
@@ -115,7 +115,7 @@ Optional:
 
 Required:
 
-- `kind` (String) Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]
+- `kind` (String) Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]
 
 Optional:
 
@@ -144,8 +144,8 @@ import {
   to = konnect_mesh_passthrough.my_konnect_mesh_passthrough
   id = jsonencode({
     cp_id = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
-    mesh = "..."
-    name = "..."
+    mesh  = "..."
+    name  = "..."
   })
 }
 ```

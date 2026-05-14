@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // VirtualClusterTopicAliasConflict - How to handle conflicts where an alias shadows a physical topic.
 // * warn - activate the alias but log a warning and set the conflict metric to 1.
 // * ignore - activate the alias silently.
@@ -20,18 +15,14 @@ const (
 func (e VirtualClusterTopicAliasConflict) ToPointer() *VirtualClusterTopicAliasConflict {
 	return &e
 }
-func (e *VirtualClusterTopicAliasConflict) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *VirtualClusterTopicAliasConflict) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "warn", "ignore":
+			return true
+		}
 	}
-	switch v {
-	case "warn":
-		fallthrough
-	case "ignore":
-		*e = VirtualClusterTopicAliasConflict(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for VirtualClusterTopicAliasConflict: %v", v)
-	}
+	return false
 }

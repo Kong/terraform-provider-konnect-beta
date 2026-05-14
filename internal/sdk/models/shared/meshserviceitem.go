@@ -44,20 +44,16 @@ const (
 func (e MeshServiceItemSpecType) ToPointer() *MeshServiceItemSpecType {
 	return &e
 }
-func (e *MeshServiceItemSpecType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeshServiceItemSpecType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ServiceTag", "SpiffeID":
+			return true
+		}
 	}
-	switch v {
-	case "ServiceTag":
-		fallthrough
-	case "SpiffeID":
-		*e = MeshServiceItemSpecType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeshServiceItemSpecType: %v", v)
-	}
+	return false
 }
 
 type Identities struct {
@@ -276,20 +272,16 @@ const (
 func (e MeshServiceItemState) ToPointer() *MeshServiceItemState {
 	return &e
 }
-func (e *MeshServiceItemState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeshServiceItemState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Available", "Unavailable":
+			return true
+		}
 	}
-	switch v {
-	case "Available":
-		fallthrough
-	case "Unavailable":
-		*e = MeshServiceItemState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeshServiceItemState: %v", v)
-	}
+	return false
 }
 
 // MeshServiceItemSpec - Spec is the specification of the Kuma MeshService resource.
@@ -422,22 +414,16 @@ const (
 func (e MeshServiceItemStatusHostnameGeneratorsStatus) ToPointer() *MeshServiceItemStatusHostnameGeneratorsStatus {
 	return &e
 }
-func (e *MeshServiceItemStatusHostnameGeneratorsStatus) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeshServiceItemStatusHostnameGeneratorsStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "True", "False", "Unknown":
+			return true
+		}
 	}
-	switch v {
-	case "True":
-		fallthrough
-	case "False":
-		fallthrough
-	case "Unknown":
-		*e = MeshServiceItemStatusHostnameGeneratorsStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeshServiceItemStatusHostnameGeneratorsStatus: %v", v)
-	}
+	return false
 }
 
 type MeshServiceItemConditions struct {
@@ -525,20 +511,16 @@ const (
 func (e MeshServiceItemStatusStatus) ToPointer() *MeshServiceItemStatusStatus {
 	return &e
 }
-func (e *MeshServiceItemStatusStatus) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeshServiceItemStatusStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Ready", "NotReady":
+			return true
+		}
 	}
-	switch v {
-	case "Ready":
-		fallthrough
-	case "NotReady":
-		*e = MeshServiceItemStatusStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeshServiceItemStatusStatus: %v", v)
-	}
+	return false
 }
 
 type MeshServiceItemTLS struct {

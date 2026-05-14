@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // GrantType - OAuth 2.0 grant type
 type GrantType string
 
@@ -20,22 +15,14 @@ const (
 func (e GrantType) ToPointer() *GrantType {
 	return &e
 }
-func (e *GrantType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *GrantType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "authorization_code", "implicit", "client_credentials", "refresh_token":
+			return true
+		}
 	}
-	switch v {
-	case "authorization_code":
-		fallthrough
-	case "implicit":
-		fallthrough
-	case "client_credentials":
-		fallthrough
-	case "refresh_token":
-		*e = GrantType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for GrantType: %v", v)
-	}
+	return false
 }

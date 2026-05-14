@@ -96,22 +96,16 @@ const (
 func (e MeshTraceItemSpecType) ToPointer() *MeshTraceItemSpecType {
 	return &e
 }
-func (e *MeshTraceItemSpecType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeshTraceItemSpecType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Zipkin", "Datadog", "OpenTelemetry":
+			return true
+		}
 	}
-	switch v {
-	case "Zipkin":
-		fallthrough
-	case "Datadog":
-		fallthrough
-	case "OpenTelemetry":
-		*e = MeshTraceItemSpecType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeshTraceItemSpecType: %v", v)
-	}
+	return false
 }
 
 // APIVersion - Version of the API.
@@ -126,20 +120,16 @@ const (
 func (e APIVersion) ToPointer() *APIVersion {
 	return &e
 }
-func (e *APIVersion) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *APIVersion) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "httpJson", "httpProto":
+			return true
+		}
 	}
-	switch v {
-	case "httpJson":
-		fallthrough
-	case "httpProto":
-		*e = APIVersion(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for APIVersion: %v", v)
-	}
+	return false
 }
 
 // Zipkin backend configuration.
@@ -686,34 +676,16 @@ const (
 func (e MeshTraceItemKind) ToPointer() *MeshTraceItemKind {
 	return &e
 }
-func (e *MeshTraceItemKind) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeshTraceItemKind) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane":
+			return true
+		}
 	}
-	switch v {
-	case "Mesh":
-		fallthrough
-	case "MeshSubset":
-		fallthrough
-	case "MeshGateway":
-		fallthrough
-	case "MeshService":
-		fallthrough
-	case "MeshExternalService":
-		fallthrough
-	case "MeshMultiZoneService":
-		fallthrough
-	case "MeshServiceSubset":
-		fallthrough
-	case "MeshHTTPRoute":
-		fallthrough
-	case "Dataplane":
-		*e = MeshTraceItemKind(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeshTraceItemKind: %v", v)
-	}
+	return false
 }
 
 type MeshTraceItemProxyTypes string
@@ -726,20 +698,16 @@ const (
 func (e MeshTraceItemProxyTypes) ToPointer() *MeshTraceItemProxyTypes {
 	return &e
 }
-func (e *MeshTraceItemProxyTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeshTraceItemProxyTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Sidecar", "Gateway":
+			return true
+		}
 	}
-	switch v {
-	case "Sidecar":
-		fallthrough
-	case "Gateway":
-		*e = MeshTraceItemProxyTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeshTraceItemProxyTypes: %v", v)
-	}
+	return false
 }
 
 // MeshTraceItemTargetRef - TargetRef is a reference to the resource the policy takes an effect on.

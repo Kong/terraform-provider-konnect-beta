@@ -689,34 +689,16 @@ const (
 func (e MeshCircuitBreakerItemSpecKind) ToPointer() *MeshCircuitBreakerItemSpecKind {
 	return &e
 }
-func (e *MeshCircuitBreakerItemSpecKind) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeshCircuitBreakerItemSpecKind) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane":
+			return true
+		}
 	}
-	switch v {
-	case "Mesh":
-		fallthrough
-	case "MeshSubset":
-		fallthrough
-	case "MeshGateway":
-		fallthrough
-	case "MeshService":
-		fallthrough
-	case "MeshExternalService":
-		fallthrough
-	case "MeshMultiZoneService":
-		fallthrough
-	case "MeshServiceSubset":
-		fallthrough
-	case "MeshHTTPRoute":
-		fallthrough
-	case "Dataplane":
-		*e = MeshCircuitBreakerItemSpecKind(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeshCircuitBreakerItemSpecKind: %v", v)
-	}
+	return false
 }
 
 type MeshCircuitBreakerItemSpecProxyTypes string
@@ -729,20 +711,16 @@ const (
 func (e MeshCircuitBreakerItemSpecProxyTypes) ToPointer() *MeshCircuitBreakerItemSpecProxyTypes {
 	return &e
 }
-func (e *MeshCircuitBreakerItemSpecProxyTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeshCircuitBreakerItemSpecProxyTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Sidecar", "Gateway":
+			return true
+		}
 	}
-	switch v {
-	case "Sidecar":
-		fallthrough
-	case "Gateway":
-		*e = MeshCircuitBreakerItemSpecProxyTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeshCircuitBreakerItemSpecProxyTypes: %v", v)
-	}
+	return false
 }
 
 // MeshCircuitBreakerItemSpecTargetRef - TargetRef is a reference to the resource that represents a group of
@@ -1517,34 +1495,16 @@ const (
 func (e MeshCircuitBreakerItemKind) ToPointer() *MeshCircuitBreakerItemKind {
 	return &e
 }
-func (e *MeshCircuitBreakerItemKind) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeshCircuitBreakerItemKind) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane":
+			return true
+		}
 	}
-	switch v {
-	case "Mesh":
-		fallthrough
-	case "MeshSubset":
-		fallthrough
-	case "MeshGateway":
-		fallthrough
-	case "MeshService":
-		fallthrough
-	case "MeshExternalService":
-		fallthrough
-	case "MeshMultiZoneService":
-		fallthrough
-	case "MeshServiceSubset":
-		fallthrough
-	case "MeshHTTPRoute":
-		fallthrough
-	case "Dataplane":
-		*e = MeshCircuitBreakerItemKind(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeshCircuitBreakerItemKind: %v", v)
-	}
+	return false
 }
 
 type MeshCircuitBreakerItemProxyTypes string
@@ -1557,20 +1517,16 @@ const (
 func (e MeshCircuitBreakerItemProxyTypes) ToPointer() *MeshCircuitBreakerItemProxyTypes {
 	return &e
 }
-func (e *MeshCircuitBreakerItemProxyTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeshCircuitBreakerItemProxyTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Sidecar", "Gateway":
+			return true
+		}
 	}
-	switch v {
-	case "Sidecar":
-		fallthrough
-	case "Gateway":
-		*e = MeshCircuitBreakerItemProxyTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeshCircuitBreakerItemProxyTypes: %v", v)
-	}
+	return false
 }
 
 // MeshCircuitBreakerItemTargetRef - TargetRef is a reference to the resource the policy takes an effect on.
@@ -2312,34 +2268,16 @@ const (
 func (e MeshCircuitBreakerItemSpecToKind) ToPointer() *MeshCircuitBreakerItemSpecToKind {
 	return &e
 }
-func (e *MeshCircuitBreakerItemSpecToKind) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeshCircuitBreakerItemSpecToKind) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane":
+			return true
+		}
 	}
-	switch v {
-	case "Mesh":
-		fallthrough
-	case "MeshSubset":
-		fallthrough
-	case "MeshGateway":
-		fallthrough
-	case "MeshService":
-		fallthrough
-	case "MeshExternalService":
-		fallthrough
-	case "MeshMultiZoneService":
-		fallthrough
-	case "MeshServiceSubset":
-		fallthrough
-	case "MeshHTTPRoute":
-		fallthrough
-	case "Dataplane":
-		*e = MeshCircuitBreakerItemSpecToKind(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeshCircuitBreakerItemSpecToKind: %v", v)
-	}
+	return false
 }
 
 type MeshCircuitBreakerItemSpecToProxyTypes string
@@ -2352,20 +2290,16 @@ const (
 func (e MeshCircuitBreakerItemSpecToProxyTypes) ToPointer() *MeshCircuitBreakerItemSpecToProxyTypes {
 	return &e
 }
-func (e *MeshCircuitBreakerItemSpecToProxyTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeshCircuitBreakerItemSpecToProxyTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Sidecar", "Gateway":
+			return true
+		}
 	}
-	switch v {
-	case "Sidecar":
-		fallthrough
-	case "Gateway":
-		*e = MeshCircuitBreakerItemSpecToProxyTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeshCircuitBreakerItemSpecToProxyTypes: %v", v)
-	}
+	return false
 }
 
 // MeshCircuitBreakerItemSpecToTargetRef - TargetRef is a reference to the resource that represents a group of

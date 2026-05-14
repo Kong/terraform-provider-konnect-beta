@@ -90,7 +90,7 @@ Required:
 - 12xlarge: ~150 GiB capacity
 - 16xlarge: ~200 GiB capacity
 - 24xlarge: ~300 GiB capacity
-must be one of ["micro", "small", "medium", "large", "xlarge", "2xlarge", "4xlarge", "8xlarge", "12xlarge", "16xlarge", "24xlarge"]
+possible known values include one of ["micro", "small", "medium", "large", "xlarge", "2xlarge", "4xlarge", "8xlarge", "12xlarge", "16xlarge", "24xlarge"]
 
 
 
@@ -196,7 +196,7 @@ Optional:
 
 Optional:
 
-- `control_plane_geo` (String) Set of control-plane geos supported for deploying cloud-gateways configurations. Not Null; must be one of ["us", "eu", "au", "me", "in", "sg"]; Requires replacement if changed.
+- `control_plane_geo` (String) Set of control-plane geos supported for deploying cloud-gateways configurations. possible known values include one of ["us", "eu", "au", "me", "in", "sg"]; Not Null; Requires replacement if changed.
 - `control_plane_id` (String) ID of the control-plane that owns this add-on. Not Null; Requires replacement if changed.
 
 
@@ -205,7 +205,7 @@ Optional:
 
 Optional:
 
-- `control_plane_group_geo` (String) Set of control-plane geos supported for deploying cloud-gateways configurations. Not Null; must be one of ["us", "eu", "au", "me", "in", "sg"]; Requires replacement if changed.
+- `control_plane_group_geo` (String) Set of control-plane geos supported for deploying cloud-gateways configurations. possible known values include one of ["us", "eu", "au", "me", "in", "sg"]; Not Null; Requires replacement if changed.
 - `control_plane_group_id` (String) ID of the control-plane group that owns this add-on. Not Null; Requires replacement if changed.
 
 ## Import
