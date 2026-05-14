@@ -41,7 +41,7 @@ terraform:
     github.com/Kong/shared-speakeasy/hooks/mesh_defaults: v0.0.4
     github.com/Kong/shared-speakeasy/planmodifiers/arbitrary_json: v0.0.1
     github.com/Kong/shared-speakeasy/planmodifiers/suppress_zero_null: v0.0.1
-    github.com/hashicorp/terraform-plugin-testing: v1.13.1
+    github.com/hashicorp/terraform-plugin-testing: v1.15.0
   additionalEphemeralResources: []
   additionalFunctions: []
   additionalListResources: []
@@ -66,6 +66,7 @@ terraform:
     - env: KONNECT_SERVER_URL
       providerAttribute: server_url
   excludeEmptyObjectSchemas: false
+  forwardCompatibleEnumsByDefault: false
   imports:
     option: openapi
     paths:
@@ -78,6 +79,7 @@ terraform:
   inferUnionDiscriminators: false
   packageName: konnect-beta
   preApplyUnionDiscriminators: false
+  providerTypeNameOverride: ""
   respectRequiredFields: false
   respectTitlesForPrimitiveUnionMembers: false
   unionStrategy: populated-fields

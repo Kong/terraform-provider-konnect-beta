@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
@@ -16,45 +14,39 @@ import (
 // - xlarge: ~12 GiB capacity
 // - 2xlarge: ~25 GiB capacity
 // - 4xlarge: ~52 GiB capacity
+// - 8xlarge: ~100 GiB capacity
+// - 12xlarge: ~150 GiB capacity
+// - 16xlarge: ~200 GiB capacity
+// - 24xlarge: ~300 GiB capacity
 type Tier string
 
 const (
-	TierMicro      Tier = "micro"
-	TierSmall      Tier = "small"
-	TierMedium     Tier = "medium"
-	TierLarge      Tier = "large"
-	TierXlarge     Tier = "xlarge"
-	TierTwoxlarge  Tier = "2xlarge"
-	TierFourxlarge Tier = "4xlarge"
+	TierMicro            Tier = "micro"
+	TierSmall            Tier = "small"
+	TierMedium           Tier = "medium"
+	TierLarge            Tier = "large"
+	TierXlarge           Tier = "xlarge"
+	TierTwoxlarge        Tier = "2xlarge"
+	TierFourxlarge       Tier = "4xlarge"
+	TierEightxlarge      Tier = "8xlarge"
+	TierTwelvexlarge     Tier = "12xlarge"
+	TierSixteenxlarge    Tier = "16xlarge"
+	TierTwentyFourxlarge Tier = "24xlarge"
 )
 
 func (e Tier) ToPointer() *Tier {
 	return &e
 }
-func (e *Tier) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Tier) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "micro", "small", "medium", "large", "xlarge", "2xlarge", "4xlarge", "8xlarge", "12xlarge", "16xlarge", "24xlarge":
+			return true
+		}
 	}
-	switch v {
-	case "micro":
-		fallthrough
-	case "small":
-		fallthrough
-	case "medium":
-		fallthrough
-	case "large":
-		fallthrough
-	case "xlarge":
-		fallthrough
-	case "2xlarge":
-		fallthrough
-	case "4xlarge":
-		*e = Tier(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Tier: %v", v)
-	}
+	return false
 }
 
 // Tiered - Capacity tiers with pre-configured size and performance characteristics.
@@ -70,6 +62,10 @@ type Tiered struct {
 	// - xlarge: ~12 GiB capacity
 	// - 2xlarge: ~25 GiB capacity
 	// - 4xlarge: ~52 GiB capacity
+	// - 8xlarge: ~100 GiB capacity
+	// - 12xlarge: ~150 GiB capacity
+	// - 16xlarge: ~200 GiB capacity
+	// - 24xlarge: ~300 GiB capacity
 	//
 	Tier Tier `json:"tier"`
 }

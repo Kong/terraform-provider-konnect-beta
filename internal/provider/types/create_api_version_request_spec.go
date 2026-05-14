@@ -8,6 +8,7 @@ import (
 
 type CreateAPIVersionRequestSpec struct {
 	Content            types.String         `tfsdk:"content"`
+	Provider           *Provider            `tfsdk:"provider"`
 	Type               types.String         `tfsdk:"type"`
 	ValidationMessages []ValidationMessages `tfsdk:"validation_messages"`
 }

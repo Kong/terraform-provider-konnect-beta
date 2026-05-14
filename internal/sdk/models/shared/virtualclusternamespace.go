@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // Mode - * hide_prefix - the configured prefix is hidden from clients for topics and IDs when reading.
 //
 //	Created resources are written with the prefix on the backend cluster.
@@ -22,20 +17,16 @@ const (
 func (e Mode) ToPointer() *Mode {
 	return &e
 }
-func (e *Mode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Mode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "hide_prefix", "enforce_prefix":
+			return true
+		}
 	}
-	switch v {
-	case "hide_prefix":
-		fallthrough
-	case "enforce_prefix":
-		*e = Mode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Mode: %v", v)
-	}
+	return false
 }
 
 // VirtualClusterNamespace - Namespace allows to implement multitenancy using a single backend cluster.

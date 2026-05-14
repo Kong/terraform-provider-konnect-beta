@@ -50,38 +50,16 @@ const (
 func (e MetricsRelativeTimeRangeDtoV2TimeRange) ToPointer() *MetricsRelativeTimeRangeDtoV2TimeRange {
 	return &e
 }
-func (e *MetricsRelativeTimeRangeDtoV2TimeRange) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MetricsRelativeTimeRangeDtoV2TimeRange) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month":
+			return true
+		}
 	}
-	switch v {
-	case "15m":
-		fallthrough
-	case "1h":
-		fallthrough
-	case "6h":
-		fallthrough
-	case "12h":
-		fallthrough
-	case "24h":
-		fallthrough
-	case "7d":
-		fallthrough
-	case "30d":
-		fallthrough
-	case "current_week":
-		fallthrough
-	case "current_month":
-		fallthrough
-	case "previous_week":
-		fallthrough
-	case "previous_month":
-		*e = MetricsRelativeTimeRangeDtoV2TimeRange(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MetricsRelativeTimeRangeDtoV2TimeRange: %v", v)
-	}
+	return false
 }
 
 // MetricsRelativeTimeRangeDtoV2 - A duration representing a relative-to-now span of time. Generally the start time is floored to the requested granularity. Eg 7d from now, with 1day granularity initiated at 2024-01-08T17:11:00+05:00 will query for the time range from 2024-01-01T00:00:00+05:00 to 2024-01-08T17:11:00+05:00. The exact start and end timestamps are returned in the result query in the meta.start and meta.end fields. If the granularity for the previous query was 1hour, it would query a time range from 2024-01-01T17:00:00+05:00 to 2024-01-08T17:11:00+05:00.

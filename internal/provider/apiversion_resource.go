@@ -7,10 +7,15 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
+	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/listplanmodifier"
@@ -18,6 +23,10 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
+	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
+	speakeasy_mapvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/mapvalidators"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -75,7 +84,160 @@ func (r *APIVersionResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Attributes: map[string]schema.Attribute{
 					"content": schema.StringAttribute{
 						Optional:    true,
-						Description: `The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).`,
+						Description: `The raw content of API specification, in json or yaml format (OpenAPI or AsyncAPI).`,
+					},
+					"provider": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"integration_provider": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"config": schema.MapAttribute{
+										Computed:    true,
+										Optional:    true,
+										ElementType: jsontypes.NormalizedType{},
+										Description: `JSON object containing values as defined by integration provider's config schema. Not Null`,
+										Validators: []validator.Map{
+											speakeasy_mapvalidators.NotNull(),
+											mapvalidator.ValueStringsAre(validators.IsValidJSON()),
+										},
+									},
+									"integration_instance": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `The integration instance id or name. Not Null`,
+										Validators: []validator.String{
+											speakeasy_stringvalidators.NotNull(),
+										},
+									},
+									"type": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `The globally unique API spec provider type that is registered by a given catalog integration. Not Null`,
+										Validators: []validator.String{
+											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthBetween(1, 120),
+										},
+									},
+								},
+								MarkdownDescription: `API spec provider registered by a catalog integration.` + "\n" +
+									`` + "\n" +
+									`Integrations can function as API spec providers where they register a globally unique` + "\n" +
+									`` + "`" + `type` + "`" + ` and config schema which defines the shape of ` + "`" + `config` + "`" + `.` + "\n" +
+									`` + "\n" +
+									`Consult integration documentation to learn more about available API spec providers.`,
+								Validators: []validator.Object{
+									objectvalidator.ConflictsWith(path.Expressions{
+										path.MatchRelative().AtParent().AtName("raw_provider"),
+										path.MatchRelative().AtParent().AtName("resource_bound_integration_provider"),
+										path.MatchRelative().AtParent().AtName("url_provider"),
+									}...),
+								},
+							},
+							"raw_provider": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"config": schema.SingleNestedAttribute{
+										Computed: true,
+									},
+									"type": schema.StringAttribute{
+										Computed: true,
+									},
+								},
+							},
+							"resource_bound_integration_provider": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"config": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"resource_id": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `ID of the associated Resource the API spec is bound to. Not Null`,
+												Validators: []validator.String{
+													speakeasy_stringvalidators.NotNull(),
+												},
+											},
+										},
+										Description: `Not Null`,
+										Validators: []validator.Object{
+											speakeasy_objectvalidators.NotNull(),
+										},
+									},
+									"type": schema.StringAttribute{
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `The globally unique API spec provider type that is registered by a given catalog integration.` + "\n" +
+											`Resource-bound providers create a 1-to-1 mapping between a resource type and the API Spec.` + "\n" +
+											`Not Null`,
+										Validators: []validator.String{
+											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.UTF8LengthBetween(1, 120),
+										},
+									},
+								},
+								MarkdownDescription: `API spec provider registered by a catalog integration.` + "\n" +
+									`` + "\n" +
+									`These providers differ from ` + "`" + `IntegrationApiSpecProvider` + "`" + ` in that they` + "\n" +
+									`denote a binding relationship between a resource type and the API spec.` + "\n" +
+									`This means that the API Spec will automatically be created/deleted for/from a service` + "\n" +
+									`as resources of the given type are mapped/unmapped.` + "\n" +
+									`` + "\n" +
+									`Consult integration documentation to learn more about available API spec providers.`,
+								Validators: []validator.Object{
+									objectvalidator.ConflictsWith(path.Expressions{
+										path.MatchRelative().AtParent().AtName("integration_provider"),
+										path.MatchRelative().AtParent().AtName("raw_provider"),
+										path.MatchRelative().AtParent().AtName("url_provider"),
+									}...),
+								},
+							},
+							"url_provider": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"config": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"url": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												MarkdownDescription: `Public URL that resolves to the raw API spec contents.` + "\n" +
+													`Supported formats are JSON and YAML.` + "\n" +
+													`Not Null`,
+												Validators: []validator.String{
+													speakeasy_stringvalidators.NotNull(),
+												},
+											},
+										},
+										Description: `Not Null`,
+										Validators: []validator.Object{
+											speakeasy_objectvalidators.NotNull(),
+										},
+									},
+									"type": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `Not Null; must be "url"`,
+										Validators: []validator.String{
+											speakeasy_stringvalidators.NotNull(),
+											stringvalidator.OneOf("url"),
+										},
+									},
+								},
+								Validators: []validator.Object{
+									objectvalidator.ConflictsWith(path.Expressions{
+										path.MatchRelative().AtParent().AtName("integration_provider"),
+										path.MatchRelative().AtParent().AtName("raw_provider"),
+										path.MatchRelative().AtParent().AtName("resource_bound_integration_provider"),
+									}...),
+								},
+							},
+						},
+						Description: `Represent spec provider information used for fetching the API spec. For raw, provide the raw content in the ` + "`" + `content` + "`" + ` property instead of using this provider.`,
 					},
 					"type": schema.StringAttribute{
 						Computed: true,

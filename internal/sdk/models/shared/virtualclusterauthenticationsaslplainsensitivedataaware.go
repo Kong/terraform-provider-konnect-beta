@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
@@ -19,20 +17,16 @@ const (
 func (e VirtualClusterAuthenticationSaslPlainSensitiveDataAwareMediation) ToPointer() *VirtualClusterAuthenticationSaslPlainSensitiveDataAwareMediation {
 	return &e
 }
-func (e *VirtualClusterAuthenticationSaslPlainSensitiveDataAwareMediation) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *VirtualClusterAuthenticationSaslPlainSensitiveDataAwareMediation) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "passthrough", "terminate":
+			return true
+		}
 	}
-	switch v {
-	case "passthrough":
-		fallthrough
-	case "terminate":
-		*e = VirtualClusterAuthenticationSaslPlainSensitiveDataAwareMediation(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for VirtualClusterAuthenticationSaslPlainSensitiveDataAwareMediation: %v", v)
-	}
+	return false
 }
 
 // VirtualClusterAuthenticationSaslPlainSensitiveDataAware - SASL/PLAIN authentication scheme for the virtual cluster.
@@ -43,6 +37,11 @@ type VirtualClusterAuthenticationSaslPlainSensitiveDataAware struct {
 	Mediation VirtualClusterAuthenticationSaslPlainSensitiveDataAwareMediation `json:"mediation"`
 	// List of principals to be able to authenticate with, used with `terminate` mediation.
 	Principals []VirtualClusterAuthenticationPrincipalSensitiveDataAware `json:"principals"`
+	// Fetches principal metadata from Kong Identity after successful authentication.
+	// The principal is looked up by a custom key matched against the authenticated identity.
+	//
+	// **Requires a minimum runtime version of `1.2`**.
+	FetchKongIdentityPrincipal *FetchKongIdentityPrincipal `json:"fetch_kong_identity_principal,omitempty"`
 }
 
 func (v VirtualClusterAuthenticationSaslPlainSensitiveDataAware) MarshalJSON() ([]byte, error) {
@@ -72,4 +71,11 @@ func (v *VirtualClusterAuthenticationSaslPlainSensitiveDataAware) GetPrincipals(
 		return nil
 	}
 	return v.Principals
+}
+
+func (v *VirtualClusterAuthenticationSaslPlainSensitiveDataAware) GetFetchKongIdentityPrincipal() *FetchKongIdentityPrincipal {
+	if v == nil {
+		return nil
+	}
+	return v.FetchKongIdentityPrincipal
 }

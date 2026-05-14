@@ -6,10 +6,14 @@ import (
 	"context"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
+	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -20,6 +24,7 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect-beta/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
+	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 	"regexp"
 )
 
@@ -49,6 +54,7 @@ type APIResourceModel struct {
 	Name               types.String            `tfsdk:"name"`
 	Portals            []tfTypes.Portals       `tfsdk:"portals"`
 	Slug               types.String            `tfsdk:"slug"`
+	Spec               *tfTypes.APISpecPayload `tfsdk:"spec"`
 	SpecContent        types.String            `tfsdk:"spec_content"`
 	UpdatedAt          types.String            `tfsdk:"updated_at"`
 	Version            types.String            `tfsdk:"version"`
@@ -158,6 +164,202 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Validators: []validator.String{
 					stringvalidator.RegexMatches(regexp.MustCompile(`^[\w-]+$`), "must match pattern "+regexp.MustCompile(`^[\w-]+$`).String()),
 				},
+			},
+			"spec": schema.SingleNestedAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.Object{
+					objectplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Attributes: map[string]schema.Attribute{
+					"content_payload": schema.SingleNestedAttribute{
+						Optional: true,
+						PlanModifiers: []planmodifier.Object{
+							objectplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						Attributes: map[string]schema.Attribute{
+							"content": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `Requires replacement if changed.`,
+							},
+						},
+						Description: `The raw content of API specification, in json or yaml format (OpenAPI or AsyncAPI). Requires replacement if changed.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("provider_payload"),
+							}...),
+						},
+					},
+					"provider_payload": schema.SingleNestedAttribute{
+						Optional: true,
+						PlanModifiers: []planmodifier.Object{
+							objectplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						Attributes: map[string]schema.Attribute{
+							"provider": schema.SingleNestedAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.Object{
+									objectplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Attributes: map[string]schema.Attribute{
+									"integration_provider": schema.SingleNestedAttribute{
+										Optional: true,
+										PlanModifiers: []planmodifier.Object{
+											objectplanmodifier.RequiresReplaceIfConfigured(),
+										},
+										Attributes: map[string]schema.Attribute{
+											"config": schema.MapAttribute{
+												Required: true,
+												PlanModifiers: []planmodifier.Map{
+													mapplanmodifier.RequiresReplaceIfConfigured(),
+												},
+												ElementType: jsontypes.NormalizedType{},
+												Description: `JSON object containing values as defined by integration provider's config schema. Requires replacement if changed.`,
+												Validators: []validator.Map{
+													mapvalidator.ValueStringsAre(validators.IsValidJSON()),
+												},
+											},
+											"integration_instance": schema.StringAttribute{
+												Required: true,
+												PlanModifiers: []planmodifier.String{
+													stringplanmodifier.RequiresReplaceIfConfigured(),
+												},
+												Description: `The integration instance id or name. Requires replacement if changed.`,
+											},
+											"type": schema.StringAttribute{
+												Required: true,
+												PlanModifiers: []planmodifier.String{
+													stringplanmodifier.RequiresReplaceIfConfigured(),
+												},
+												Description: `The globally unique API spec provider type that is registered by a given catalog integration. Requires replacement if changed.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthBetween(1, 120),
+												},
+											},
+										},
+										MarkdownDescription: `API spec provider registered by a catalog integration.` + "\n" +
+											`` + "\n" +
+											`Integrations can function as API spec providers where they register a globally unique` + "\n" +
+											`` + "`" + `type` + "`" + ` and config schema which defines the shape of ` + "`" + `config` + "`" + `.` + "\n" +
+											`` + "\n" +
+											`Consult integration documentation to learn more about available API spec providers.` + "\n" +
+											`Requires replacement if changed.`,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("resource_bound_integration_provider"),
+												path.MatchRelative().AtParent().AtName("url_provider"),
+											}...),
+										},
+									},
+									"resource_bound_integration_provider": schema.SingleNestedAttribute{
+										Optional: true,
+										PlanModifiers: []planmodifier.Object{
+											objectplanmodifier.RequiresReplaceIfConfigured(),
+										},
+										Attributes: map[string]schema.Attribute{
+											"config": schema.SingleNestedAttribute{
+												Required: true,
+												PlanModifiers: []planmodifier.Object{
+													objectplanmodifier.RequiresReplaceIfConfigured(),
+												},
+												Attributes: map[string]schema.Attribute{
+													"resource_id": schema.StringAttribute{
+														Required: true,
+														PlanModifiers: []planmodifier.String{
+															stringplanmodifier.RequiresReplaceIfConfigured(),
+														},
+														Description: `ID of the associated Resource the API spec is bound to. Requires replacement if changed.`,
+													},
+												},
+												Description: `Requires replacement if changed.`,
+											},
+											"type": schema.StringAttribute{
+												Required: true,
+												PlanModifiers: []planmodifier.String{
+													stringplanmodifier.RequiresReplaceIfConfigured(),
+												},
+												MarkdownDescription: `The globally unique API spec provider type that is registered by a given catalog integration.` + "\n" +
+													`Resource-bound providers create a 1-to-1 mapping between a resource type and the API Spec.` + "\n" +
+													`Requires replacement if changed.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthBetween(1, 120),
+												},
+											},
+										},
+										MarkdownDescription: `API spec provider registered by a catalog integration.` + "\n" +
+											`` + "\n" +
+											`These providers differ from ` + "`" + `IntegrationApiSpecProvider` + "`" + ` in that they` + "\n" +
+											`denote a binding relationship between a resource type and the API spec.` + "\n" +
+											`This means that the API Spec will automatically be created/deleted for/from a service` + "\n" +
+											`as resources of the given type are mapped/unmapped.` + "\n" +
+											`` + "\n" +
+											`Consult integration documentation to learn more about available API spec providers.` + "\n" +
+											`Requires replacement if changed.`,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("integration_provider"),
+												path.MatchRelative().AtParent().AtName("url_provider"),
+											}...),
+										},
+									},
+									"url_provider": schema.SingleNestedAttribute{
+										Optional: true,
+										PlanModifiers: []planmodifier.Object{
+											objectplanmodifier.RequiresReplaceIfConfigured(),
+										},
+										Attributes: map[string]schema.Attribute{
+											"config": schema.SingleNestedAttribute{
+												Required: true,
+												PlanModifiers: []planmodifier.Object{
+													objectplanmodifier.RequiresReplaceIfConfigured(),
+												},
+												Attributes: map[string]schema.Attribute{
+													"url": schema.StringAttribute{
+														Required: true,
+														PlanModifiers: []planmodifier.String{
+															stringplanmodifier.RequiresReplaceIfConfigured(),
+														},
+														MarkdownDescription: `Public URL that resolves to the raw API spec contents.` + "\n" +
+															`Supported formats are JSON and YAML.` + "\n" +
+															`Requires replacement if changed.`,
+													},
+												},
+												Description: `Requires replacement if changed.`,
+											},
+											"type": schema.StringAttribute{
+												Required: true,
+												PlanModifiers: []planmodifier.String{
+													stringplanmodifier.RequiresReplaceIfConfigured(),
+												},
+												Description: `must be "url"; Requires replacement if changed.`,
+												Validators: []validator.String{
+													stringvalidator.OneOf("url"),
+												},
+											},
+										},
+										Description: `Requires replacement if changed.`,
+										Validators: []validator.Object{
+											objectvalidator.ConflictsWith(path.Expressions{
+												path.MatchRelative().AtParent().AtName("integration_provider"),
+												path.MatchRelative().AtParent().AtName("resource_bound_integration_provider"),
+											}...),
+										},
+									},
+								},
+								Description: `Requires replacement if changed.`,
+							},
+						},
+						Description: `Represent spec provider information used for fetching the API spec. For raw, provide the raw content in the ` + "`" + `content` + "`" + ` property instead of using this provider. Requires replacement if changed.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("content_payload"),
+							}...),
+						},
+					},
+				},
+				Description: `Requires replacement if changed.`,
 			},
 			"spec_content": schema.StringAttribute{
 				Optional: true,

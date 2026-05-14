@@ -6,28 +6,28 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
-// Config - The configuration of the environment vault.
-type Config struct {
+// EventGatewayEnvVaultConfig - The configuration of the environment vault.
+type EventGatewayEnvVaultConfig struct {
 	// The optional prefix for environment variables.
 	Prefix string `json:"prefix"`
 }
 
-func (c Config) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
+func (e EventGatewayEnvVaultConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
 }
 
-func (c *Config) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+func (e *EventGatewayEnvVaultConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *Config) GetPrefix() string {
-	if c == nil {
+func (e *EventGatewayEnvVaultConfig) GetPrefix() string {
+	if e == nil {
 		return ""
 	}
-	return c.Prefix
+	return e.Prefix
 }
 
 // EventGatewayEnvVault - An environment vault.
@@ -44,7 +44,7 @@ type EventGatewayEnvVault struct {
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
 	// The configuration of the environment vault.
-	Config Config `json:"config"`
+	Config EventGatewayEnvVaultConfig `json:"config"`
 }
 
 func (e EventGatewayEnvVault) MarshalJSON() ([]byte, error) {
@@ -83,9 +83,9 @@ func (e *EventGatewayEnvVault) GetLabels() map[string]*string {
 	return e.Labels
 }
 
-func (e *EventGatewayEnvVault) GetConfig() Config {
+func (e *EventGatewayEnvVault) GetConfig() EventGatewayEnvVaultConfig {
 	if e == nil {
-		return Config{}
+		return EventGatewayEnvVaultConfig{}
 	}
 	return e.Config
 }

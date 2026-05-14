@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type LLMMetrics string
 
 const (
@@ -26,36 +21,14 @@ const (
 func (e LLMMetrics) ToPointer() *LLMMetrics {
 	return &e
 }
-func (e *LLMMetrics) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *LLMMetrics) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "total_tokens", "prompt_tokens", "completion_tokens", "ai_request_count", "cost", "error_rate", "llm_cache_embeddings_latency_average", "llm_cache_fetch_latency_average", "llm_latency_average", "llm_embeddings_tokens", "llm_embeddings_cost":
+			return true
+		}
 	}
-	switch v {
-	case "total_tokens":
-		fallthrough
-	case "prompt_tokens":
-		fallthrough
-	case "completion_tokens":
-		fallthrough
-	case "ai_request_count":
-		fallthrough
-	case "cost":
-		fallthrough
-	case "error_rate":
-		fallthrough
-	case "llm_cache_embeddings_latency_average":
-		fallthrough
-	case "llm_cache_fetch_latency_average":
-		fallthrough
-	case "llm_latency_average":
-		fallthrough
-	case "llm_embeddings_tokens":
-		fallthrough
-	case "llm_embeddings_cost":
-		*e = LLMMetrics(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for LLMMetrics: %v", v)
-	}
+	return false
 }

@@ -25,6 +25,7 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 	speakeasy_int64validators "github.com/kong/terraform-provider-konnect-beta/internal/validators/int64validators"
+	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/listvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
 )
@@ -90,52 +91,17 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 								"field": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `Not Null; must be one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]`,
+									Description: `possible known values include one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
-										stringvalidator.OneOf(
-											"ai_plugin",
-											"ai_provider",
-											"ai_request_model",
-											"ai_response_model",
-											"api",
-											"api_package",
-											"api_product",
-											"api_product_version",
-											"application",
-											"consumer",
-											"control_plane",
-											"control_plane_group",
-											"country_code",
-											"data_plane_node",
-											"data_plane_node_version",
-											"gateway_service",
-											"llm_cache_status",
-											"llm_embeddings_model",
-											"llm_embeddings_provider",
-											"portal",
-											"realm",
-											"response_source",
-											"route",
-											"status_code",
-											"status_code_grouped",
-											"upstream_status_code",
-											"upstream_status_code_grouped",
-										),
 									},
 								},
 								"operator": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `Not Null; must be one of ["in", "not_in", "empty", "not_empty"]`,
+									Description: `possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
-										stringvalidator.OneOf(
-											"in",
-											"not_in",
-											"empty",
-											"not_empty",
-										),
 									},
 								},
 								"value": schema.StringAttribute{
@@ -245,13 +211,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																"type": schema.StringAttribute{
 																	Computed:    true,
 																	Optional:    true,
-																	Description: `Not Null; must be one of ["horizontal_bar", "vertical_bar"]`,
+																	Description: `possible known values include one of ["horizontal_bar", "vertical_bar"]; Not Null`,
 																	Validators: []validator.String{
 																		speakeasy_stringvalidators.NotNull(),
-																		stringvalidator.OneOf(
-																			"horizontal_bar",
-																			"vertical_bar",
-																		),
 																	},
 																},
 															},
@@ -316,13 +278,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																"type": schema.StringAttribute{
 																	Computed:    true,
 																	Optional:    true,
-																	Description: `Not Null; must be one of ["timeseries_line", "timeseries_bar"]`,
+																	Description: `possible known values include one of ["timeseries_line", "timeseries_bar"]; Not Null`,
 																	Validators: []validator.String{
 																		speakeasy_stringvalidators.NotNull(),
-																		stringvalidator.OneOf(
-																			"timeseries_line",
-																			"timeseries_bar",
-																		),
 																	},
 																},
 															},
@@ -353,6 +311,3022 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
+														"agentic_usage": schema.SingleNestedAttribute{
+															Optional: true,
+															Attributes: map[string]schema.Attribute{
+																"datasource": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Description: `Not Null; must be "agentic_usage"`,
+																	Validators: []validator.String{
+																		speakeasy_stringvalidators.NotNull(),
+																		stringvalidator.OneOf(
+																			"agentic_usage",
+																		),
+																	},
+																},
+																"dimensions": schema.ListAttribute{
+																	Optional:    true,
+																	ElementType: types.StringType,
+																	Description: `List of attributes or entity types to group by.`,
+																	Validators: []validator.List{
+																		listvalidator.SizeAtMost(2),
+																	},
+																},
+																"filters": schema.ListNestedAttribute{
+																	Computed: true,
+																	Optional: true,
+																	NestedObject: schema.NestedAttributeObject{
+																		Validators: []validator.Object{
+																			speakeasy_objectvalidators.NotNull(),
+																		},
+																		Attributes: map[string]schema.Attribute{
+																			"a2a_context_id": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "a2a_context_id"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"a2a_context_id",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "a2a_context_id"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"a2a_context_id",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.StringType,
+																								Description: `The values to include in the results. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_error"),
+																						path.MatchRelative().AtParent().AtName("a2a_method"),
+																						path.MatchRelative().AtParent().AtName("a2a_task_id"),
+																						path.MatchRelative().AtParent().AtName("api"),
+																						path.MatchRelative().AtParent().AtName("api_package"),
+																						path.MatchRelative().AtParent().AtName("api_product"),
+																						path.MatchRelative().AtParent().AtName("api_product_version"),
+																						path.MatchRelative().AtParent().AtName("application"),
+																						path.MatchRelative().AtParent().AtName("consumer"),
+																						path.MatchRelative().AtParent().AtName("control_plane"),
+																						path.MatchRelative().AtParent().AtName("control_plane_group"),
+																						path.MatchRelative().AtParent().AtName("country_code"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node_version"),
+																						path.MatchRelative().AtParent().AtName("gateway_service"),
+																						path.MatchRelative().AtParent().AtName("mcp_error"),
+																						path.MatchRelative().AtParent().AtName("mcp_method"),
+																						path.MatchRelative().AtParent().AtName("mcp_session_id"),
+																						path.MatchRelative().AtParent().AtName("mcp_tool_name"),
+																						path.MatchRelative().AtParent().AtName("portal"),
+																						path.MatchRelative().AtParent().AtName("realm"),
+																						path.MatchRelative().AtParent().AtName("response_source"),
+																						path.MatchRelative().AtParent().AtName("route"),
+																						path.MatchRelative().AtParent().AtName("status_code"),
+																						path.MatchRelative().AtParent().AtName("status_code_grouped"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code_grouped"),
+																					}...),
+																				},
+																			},
+																			"a2a_error": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "a2a_error"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"a2a_error",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "a2a_error"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"a2a_error",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.StringType,
+																								Description: `The values to include in the results. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_context_id"),
+																						path.MatchRelative().AtParent().AtName("a2a_method"),
+																						path.MatchRelative().AtParent().AtName("a2a_task_id"),
+																						path.MatchRelative().AtParent().AtName("api"),
+																						path.MatchRelative().AtParent().AtName("api_package"),
+																						path.MatchRelative().AtParent().AtName("api_product"),
+																						path.MatchRelative().AtParent().AtName("api_product_version"),
+																						path.MatchRelative().AtParent().AtName("application"),
+																						path.MatchRelative().AtParent().AtName("consumer"),
+																						path.MatchRelative().AtParent().AtName("control_plane"),
+																						path.MatchRelative().AtParent().AtName("control_plane_group"),
+																						path.MatchRelative().AtParent().AtName("country_code"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node_version"),
+																						path.MatchRelative().AtParent().AtName("gateway_service"),
+																						path.MatchRelative().AtParent().AtName("mcp_error"),
+																						path.MatchRelative().AtParent().AtName("mcp_method"),
+																						path.MatchRelative().AtParent().AtName("mcp_session_id"),
+																						path.MatchRelative().AtParent().AtName("mcp_tool_name"),
+																						path.MatchRelative().AtParent().AtName("portal"),
+																						path.MatchRelative().AtParent().AtName("realm"),
+																						path.MatchRelative().AtParent().AtName("response_source"),
+																						path.MatchRelative().AtParent().AtName("route"),
+																						path.MatchRelative().AtParent().AtName("status_code"),
+																						path.MatchRelative().AtParent().AtName("status_code_grouped"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code_grouped"),
+																					}...),
+																				},
+																			},
+																			"a2a_method": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "a2a_method"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"a2a_method",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "a2a_method"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"a2a_method",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.StringType,
+																								Description: `The values to include in the results. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_context_id"),
+																						path.MatchRelative().AtParent().AtName("a2a_error"),
+																						path.MatchRelative().AtParent().AtName("a2a_task_id"),
+																						path.MatchRelative().AtParent().AtName("api"),
+																						path.MatchRelative().AtParent().AtName("api_package"),
+																						path.MatchRelative().AtParent().AtName("api_product"),
+																						path.MatchRelative().AtParent().AtName("api_product_version"),
+																						path.MatchRelative().AtParent().AtName("application"),
+																						path.MatchRelative().AtParent().AtName("consumer"),
+																						path.MatchRelative().AtParent().AtName("control_plane"),
+																						path.MatchRelative().AtParent().AtName("control_plane_group"),
+																						path.MatchRelative().AtParent().AtName("country_code"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node_version"),
+																						path.MatchRelative().AtParent().AtName("gateway_service"),
+																						path.MatchRelative().AtParent().AtName("mcp_error"),
+																						path.MatchRelative().AtParent().AtName("mcp_method"),
+																						path.MatchRelative().AtParent().AtName("mcp_session_id"),
+																						path.MatchRelative().AtParent().AtName("mcp_tool_name"),
+																						path.MatchRelative().AtParent().AtName("portal"),
+																						path.MatchRelative().AtParent().AtName("realm"),
+																						path.MatchRelative().AtParent().AtName("response_source"),
+																						path.MatchRelative().AtParent().AtName("route"),
+																						path.MatchRelative().AtParent().AtName("status_code"),
+																						path.MatchRelative().AtParent().AtName("status_code_grouped"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code_grouped"),
+																					}...),
+																				},
+																			},
+																			"a2a_task_id": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "a2a_task_id"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"a2a_task_id",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "a2a_task_id"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"a2a_task_id",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.StringType,
+																								Description: `The values to include in the results. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_context_id"),
+																						path.MatchRelative().AtParent().AtName("a2a_error"),
+																						path.MatchRelative().AtParent().AtName("a2a_method"),
+																						path.MatchRelative().AtParent().AtName("api"),
+																						path.MatchRelative().AtParent().AtName("api_package"),
+																						path.MatchRelative().AtParent().AtName("api_product"),
+																						path.MatchRelative().AtParent().AtName("api_product_version"),
+																						path.MatchRelative().AtParent().AtName("application"),
+																						path.MatchRelative().AtParent().AtName("consumer"),
+																						path.MatchRelative().AtParent().AtName("control_plane"),
+																						path.MatchRelative().AtParent().AtName("control_plane_group"),
+																						path.MatchRelative().AtParent().AtName("country_code"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node_version"),
+																						path.MatchRelative().AtParent().AtName("gateway_service"),
+																						path.MatchRelative().AtParent().AtName("mcp_error"),
+																						path.MatchRelative().AtParent().AtName("mcp_method"),
+																						path.MatchRelative().AtParent().AtName("mcp_session_id"),
+																						path.MatchRelative().AtParent().AtName("mcp_tool_name"),
+																						path.MatchRelative().AtParent().AtName("portal"),
+																						path.MatchRelative().AtParent().AtName("realm"),
+																						path.MatchRelative().AtParent().AtName("response_source"),
+																						path.MatchRelative().AtParent().AtName("route"),
+																						path.MatchRelative().AtParent().AtName("status_code"),
+																						path.MatchRelative().AtParent().AtName("status_code_grouped"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code_grouped"),
+																					}...),
+																				},
+																			},
+																			"api": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "api"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf("api"),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "api"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf("api"),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.StringType,
+																								Description: `The IDs to include in the results. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_context_id"),
+																						path.MatchRelative().AtParent().AtName("a2a_error"),
+																						path.MatchRelative().AtParent().AtName("a2a_method"),
+																						path.MatchRelative().AtParent().AtName("a2a_task_id"),
+																						path.MatchRelative().AtParent().AtName("api_package"),
+																						path.MatchRelative().AtParent().AtName("api_product"),
+																						path.MatchRelative().AtParent().AtName("api_product_version"),
+																						path.MatchRelative().AtParent().AtName("application"),
+																						path.MatchRelative().AtParent().AtName("consumer"),
+																						path.MatchRelative().AtParent().AtName("control_plane"),
+																						path.MatchRelative().AtParent().AtName("control_plane_group"),
+																						path.MatchRelative().AtParent().AtName("country_code"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node_version"),
+																						path.MatchRelative().AtParent().AtName("gateway_service"),
+																						path.MatchRelative().AtParent().AtName("mcp_error"),
+																						path.MatchRelative().AtParent().AtName("mcp_method"),
+																						path.MatchRelative().AtParent().AtName("mcp_session_id"),
+																						path.MatchRelative().AtParent().AtName("mcp_tool_name"),
+																						path.MatchRelative().AtParent().AtName("portal"),
+																						path.MatchRelative().AtParent().AtName("realm"),
+																						path.MatchRelative().AtParent().AtName("response_source"),
+																						path.MatchRelative().AtParent().AtName("route"),
+																						path.MatchRelative().AtParent().AtName("status_code"),
+																						path.MatchRelative().AtParent().AtName("status_code_grouped"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code_grouped"),
+																					}...),
+																				},
+																			},
+																			"api_package": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "api_package"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"api_package",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "api_package"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"api_package",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.StringType,
+																								Description: `The IDs to include in the results. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_context_id"),
+																						path.MatchRelative().AtParent().AtName("a2a_error"),
+																						path.MatchRelative().AtParent().AtName("a2a_method"),
+																						path.MatchRelative().AtParent().AtName("a2a_task_id"),
+																						path.MatchRelative().AtParent().AtName("api"),
+																						path.MatchRelative().AtParent().AtName("api_product"),
+																						path.MatchRelative().AtParent().AtName("api_product_version"),
+																						path.MatchRelative().AtParent().AtName("application"),
+																						path.MatchRelative().AtParent().AtName("consumer"),
+																						path.MatchRelative().AtParent().AtName("control_plane"),
+																						path.MatchRelative().AtParent().AtName("control_plane_group"),
+																						path.MatchRelative().AtParent().AtName("country_code"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node_version"),
+																						path.MatchRelative().AtParent().AtName("gateway_service"),
+																						path.MatchRelative().AtParent().AtName("mcp_error"),
+																						path.MatchRelative().AtParent().AtName("mcp_method"),
+																						path.MatchRelative().AtParent().AtName("mcp_session_id"),
+																						path.MatchRelative().AtParent().AtName("mcp_tool_name"),
+																						path.MatchRelative().AtParent().AtName("portal"),
+																						path.MatchRelative().AtParent().AtName("realm"),
+																						path.MatchRelative().AtParent().AtName("response_source"),
+																						path.MatchRelative().AtParent().AtName("route"),
+																						path.MatchRelative().AtParent().AtName("status_code"),
+																						path.MatchRelative().AtParent().AtName("status_code_grouped"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code_grouped"),
+																					}...),
+																				},
+																			},
+																			"api_product": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "api_product"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"api_product",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "api_product"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"api_product",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.StringType,
+																								Description: `The IDs to include in the results. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_context_id"),
+																						path.MatchRelative().AtParent().AtName("a2a_error"),
+																						path.MatchRelative().AtParent().AtName("a2a_method"),
+																						path.MatchRelative().AtParent().AtName("a2a_task_id"),
+																						path.MatchRelative().AtParent().AtName("api"),
+																						path.MatchRelative().AtParent().AtName("api_package"),
+																						path.MatchRelative().AtParent().AtName("api_product_version"),
+																						path.MatchRelative().AtParent().AtName("application"),
+																						path.MatchRelative().AtParent().AtName("consumer"),
+																						path.MatchRelative().AtParent().AtName("control_plane"),
+																						path.MatchRelative().AtParent().AtName("control_plane_group"),
+																						path.MatchRelative().AtParent().AtName("country_code"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node_version"),
+																						path.MatchRelative().AtParent().AtName("gateway_service"),
+																						path.MatchRelative().AtParent().AtName("mcp_error"),
+																						path.MatchRelative().AtParent().AtName("mcp_method"),
+																						path.MatchRelative().AtParent().AtName("mcp_session_id"),
+																						path.MatchRelative().AtParent().AtName("mcp_tool_name"),
+																						path.MatchRelative().AtParent().AtName("portal"),
+																						path.MatchRelative().AtParent().AtName("realm"),
+																						path.MatchRelative().AtParent().AtName("response_source"),
+																						path.MatchRelative().AtParent().AtName("route"),
+																						path.MatchRelative().AtParent().AtName("status_code"),
+																						path.MatchRelative().AtParent().AtName("status_code_grouped"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code_grouped"),
+																					}...),
+																				},
+																			},
+																			"api_product_version": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "api_product_version"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"api_product_version",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "api_product_version"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"api_product_version",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.StringType,
+																								Description: `The IDs to include in the results. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_context_id"),
+																						path.MatchRelative().AtParent().AtName("a2a_error"),
+																						path.MatchRelative().AtParent().AtName("a2a_method"),
+																						path.MatchRelative().AtParent().AtName("a2a_task_id"),
+																						path.MatchRelative().AtParent().AtName("api"),
+																						path.MatchRelative().AtParent().AtName("api_package"),
+																						path.MatchRelative().AtParent().AtName("api_product"),
+																						path.MatchRelative().AtParent().AtName("application"),
+																						path.MatchRelative().AtParent().AtName("consumer"),
+																						path.MatchRelative().AtParent().AtName("control_plane"),
+																						path.MatchRelative().AtParent().AtName("control_plane_group"),
+																						path.MatchRelative().AtParent().AtName("country_code"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node_version"),
+																						path.MatchRelative().AtParent().AtName("gateway_service"),
+																						path.MatchRelative().AtParent().AtName("mcp_error"),
+																						path.MatchRelative().AtParent().AtName("mcp_method"),
+																						path.MatchRelative().AtParent().AtName("mcp_session_id"),
+																						path.MatchRelative().AtParent().AtName("mcp_tool_name"),
+																						path.MatchRelative().AtParent().AtName("portal"),
+																						path.MatchRelative().AtParent().AtName("realm"),
+																						path.MatchRelative().AtParent().AtName("response_source"),
+																						path.MatchRelative().AtParent().AtName("route"),
+																						path.MatchRelative().AtParent().AtName("status_code"),
+																						path.MatchRelative().AtParent().AtName("status_code_grouped"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code_grouped"),
+																					}...),
+																				},
+																			},
+																			"application": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "application"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"application",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "application"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"application",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.StringType,
+																								Description: `The IDs to include in the results. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_context_id"),
+																						path.MatchRelative().AtParent().AtName("a2a_error"),
+																						path.MatchRelative().AtParent().AtName("a2a_method"),
+																						path.MatchRelative().AtParent().AtName("a2a_task_id"),
+																						path.MatchRelative().AtParent().AtName("api"),
+																						path.MatchRelative().AtParent().AtName("api_package"),
+																						path.MatchRelative().AtParent().AtName("api_product"),
+																						path.MatchRelative().AtParent().AtName("api_product_version"),
+																						path.MatchRelative().AtParent().AtName("consumer"),
+																						path.MatchRelative().AtParent().AtName("control_plane"),
+																						path.MatchRelative().AtParent().AtName("control_plane_group"),
+																						path.MatchRelative().AtParent().AtName("country_code"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node_version"),
+																						path.MatchRelative().AtParent().AtName("gateway_service"),
+																						path.MatchRelative().AtParent().AtName("mcp_error"),
+																						path.MatchRelative().AtParent().AtName("mcp_method"),
+																						path.MatchRelative().AtParent().AtName("mcp_session_id"),
+																						path.MatchRelative().AtParent().AtName("mcp_tool_name"),
+																						path.MatchRelative().AtParent().AtName("portal"),
+																						path.MatchRelative().AtParent().AtName("realm"),
+																						path.MatchRelative().AtParent().AtName("response_source"),
+																						path.MatchRelative().AtParent().AtName("route"),
+																						path.MatchRelative().AtParent().AtName("status_code"),
+																						path.MatchRelative().AtParent().AtName("status_code_grouped"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code_grouped"),
+																					}...),
+																				},
+																			},
+																			"consumer": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "consumer"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf("consumer"),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "consumer"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf("consumer"),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.StringType,
+																								Description: `The IDs to include in the results. Because gateway IDs are only unique within a given control plane, the filter values must be of the form ` + "`" + `control_plane_id:field_id` + "`" + ` or ` + "`" + `control_plane_group_id:field_id` + "`" + ` for data plane nodes within a control plane group. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_context_id"),
+																						path.MatchRelative().AtParent().AtName("a2a_error"),
+																						path.MatchRelative().AtParent().AtName("a2a_method"),
+																						path.MatchRelative().AtParent().AtName("a2a_task_id"),
+																						path.MatchRelative().AtParent().AtName("api"),
+																						path.MatchRelative().AtParent().AtName("api_package"),
+																						path.MatchRelative().AtParent().AtName("api_product"),
+																						path.MatchRelative().AtParent().AtName("api_product_version"),
+																						path.MatchRelative().AtParent().AtName("application"),
+																						path.MatchRelative().AtParent().AtName("control_plane"),
+																						path.MatchRelative().AtParent().AtName("control_plane_group"),
+																						path.MatchRelative().AtParent().AtName("country_code"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node_version"),
+																						path.MatchRelative().AtParent().AtName("gateway_service"),
+																						path.MatchRelative().AtParent().AtName("mcp_error"),
+																						path.MatchRelative().AtParent().AtName("mcp_method"),
+																						path.MatchRelative().AtParent().AtName("mcp_session_id"),
+																						path.MatchRelative().AtParent().AtName("mcp_tool_name"),
+																						path.MatchRelative().AtParent().AtName("portal"),
+																						path.MatchRelative().AtParent().AtName("realm"),
+																						path.MatchRelative().AtParent().AtName("response_source"),
+																						path.MatchRelative().AtParent().AtName("route"),
+																						path.MatchRelative().AtParent().AtName("status_code"),
+																						path.MatchRelative().AtParent().AtName("status_code_grouped"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code_grouped"),
+																					}...),
+																				},
+																			},
+																			"control_plane": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "control_plane"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"control_plane",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "control_plane"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"control_plane",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.StringType,
+																								Description: `The IDs to include in the results. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_context_id"),
+																						path.MatchRelative().AtParent().AtName("a2a_error"),
+																						path.MatchRelative().AtParent().AtName("a2a_method"),
+																						path.MatchRelative().AtParent().AtName("a2a_task_id"),
+																						path.MatchRelative().AtParent().AtName("api"),
+																						path.MatchRelative().AtParent().AtName("api_package"),
+																						path.MatchRelative().AtParent().AtName("api_product"),
+																						path.MatchRelative().AtParent().AtName("api_product_version"),
+																						path.MatchRelative().AtParent().AtName("application"),
+																						path.MatchRelative().AtParent().AtName("consumer"),
+																						path.MatchRelative().AtParent().AtName("control_plane_group"),
+																						path.MatchRelative().AtParent().AtName("country_code"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node_version"),
+																						path.MatchRelative().AtParent().AtName("gateway_service"),
+																						path.MatchRelative().AtParent().AtName("mcp_error"),
+																						path.MatchRelative().AtParent().AtName("mcp_method"),
+																						path.MatchRelative().AtParent().AtName("mcp_session_id"),
+																						path.MatchRelative().AtParent().AtName("mcp_tool_name"),
+																						path.MatchRelative().AtParent().AtName("portal"),
+																						path.MatchRelative().AtParent().AtName("realm"),
+																						path.MatchRelative().AtParent().AtName("response_source"),
+																						path.MatchRelative().AtParent().AtName("route"),
+																						path.MatchRelative().AtParent().AtName("status_code"),
+																						path.MatchRelative().AtParent().AtName("status_code_grouped"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code_grouped"),
+																					}...),
+																				},
+																			},
+																			"control_plane_group": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "control_plane_group"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"control_plane_group",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "control_plane_group"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"control_plane_group",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.StringType,
+																								Description: `The IDs to include in the results. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_context_id"),
+																						path.MatchRelative().AtParent().AtName("a2a_error"),
+																						path.MatchRelative().AtParent().AtName("a2a_method"),
+																						path.MatchRelative().AtParent().AtName("a2a_task_id"),
+																						path.MatchRelative().AtParent().AtName("api"),
+																						path.MatchRelative().AtParent().AtName("api_package"),
+																						path.MatchRelative().AtParent().AtName("api_product"),
+																						path.MatchRelative().AtParent().AtName("api_product_version"),
+																						path.MatchRelative().AtParent().AtName("application"),
+																						path.MatchRelative().AtParent().AtName("consumer"),
+																						path.MatchRelative().AtParent().AtName("control_plane"),
+																						path.MatchRelative().AtParent().AtName("country_code"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node_version"),
+																						path.MatchRelative().AtParent().AtName("gateway_service"),
+																						path.MatchRelative().AtParent().AtName("mcp_error"),
+																						path.MatchRelative().AtParent().AtName("mcp_method"),
+																						path.MatchRelative().AtParent().AtName("mcp_session_id"),
+																						path.MatchRelative().AtParent().AtName("mcp_tool_name"),
+																						path.MatchRelative().AtParent().AtName("portal"),
+																						path.MatchRelative().AtParent().AtName("realm"),
+																						path.MatchRelative().AtParent().AtName("response_source"),
+																						path.MatchRelative().AtParent().AtName("route"),
+																						path.MatchRelative().AtParent().AtName("status_code"),
+																						path.MatchRelative().AtParent().AtName("status_code_grouped"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code_grouped"),
+																					}...),
+																				},
+																			},
+																			"country_code": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "country_code"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"country_code",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "country_code"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"country_code",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.StringType,
+																								Description: `The values to include in the results. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_context_id"),
+																						path.MatchRelative().AtParent().AtName("a2a_error"),
+																						path.MatchRelative().AtParent().AtName("a2a_method"),
+																						path.MatchRelative().AtParent().AtName("a2a_task_id"),
+																						path.MatchRelative().AtParent().AtName("api"),
+																						path.MatchRelative().AtParent().AtName("api_package"),
+																						path.MatchRelative().AtParent().AtName("api_product"),
+																						path.MatchRelative().AtParent().AtName("api_product_version"),
+																						path.MatchRelative().AtParent().AtName("application"),
+																						path.MatchRelative().AtParent().AtName("consumer"),
+																						path.MatchRelative().AtParent().AtName("control_plane"),
+																						path.MatchRelative().AtParent().AtName("control_plane_group"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node_version"),
+																						path.MatchRelative().AtParent().AtName("gateway_service"),
+																						path.MatchRelative().AtParent().AtName("mcp_error"),
+																						path.MatchRelative().AtParent().AtName("mcp_method"),
+																						path.MatchRelative().AtParent().AtName("mcp_session_id"),
+																						path.MatchRelative().AtParent().AtName("mcp_tool_name"),
+																						path.MatchRelative().AtParent().AtName("portal"),
+																						path.MatchRelative().AtParent().AtName("realm"),
+																						path.MatchRelative().AtParent().AtName("response_source"),
+																						path.MatchRelative().AtParent().AtName("route"),
+																						path.MatchRelative().AtParent().AtName("status_code"),
+																						path.MatchRelative().AtParent().AtName("status_code_grouped"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code_grouped"),
+																					}...),
+																				},
+																			},
+																			"data_plane_node": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "data_plane_node"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"data_plane_node",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "data_plane_node"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"data_plane_node",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.StringType,
+																								Description: `The IDs to include in the results. Because gateway IDs are only unique within a given control plane, the filter values must be of the form ` + "`" + `control_plane_id:field_id` + "`" + ` or ` + "`" + `control_plane_group_id:field_id` + "`" + ` for data plane nodes within a control plane group. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_context_id"),
+																						path.MatchRelative().AtParent().AtName("a2a_error"),
+																						path.MatchRelative().AtParent().AtName("a2a_method"),
+																						path.MatchRelative().AtParent().AtName("a2a_task_id"),
+																						path.MatchRelative().AtParent().AtName("api"),
+																						path.MatchRelative().AtParent().AtName("api_package"),
+																						path.MatchRelative().AtParent().AtName("api_product"),
+																						path.MatchRelative().AtParent().AtName("api_product_version"),
+																						path.MatchRelative().AtParent().AtName("application"),
+																						path.MatchRelative().AtParent().AtName("consumer"),
+																						path.MatchRelative().AtParent().AtName("control_plane"),
+																						path.MatchRelative().AtParent().AtName("control_plane_group"),
+																						path.MatchRelative().AtParent().AtName("country_code"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node_version"),
+																						path.MatchRelative().AtParent().AtName("gateway_service"),
+																						path.MatchRelative().AtParent().AtName("mcp_error"),
+																						path.MatchRelative().AtParent().AtName("mcp_method"),
+																						path.MatchRelative().AtParent().AtName("mcp_session_id"),
+																						path.MatchRelative().AtParent().AtName("mcp_tool_name"),
+																						path.MatchRelative().AtParent().AtName("portal"),
+																						path.MatchRelative().AtParent().AtName("realm"),
+																						path.MatchRelative().AtParent().AtName("response_source"),
+																						path.MatchRelative().AtParent().AtName("route"),
+																						path.MatchRelative().AtParent().AtName("status_code"),
+																						path.MatchRelative().AtParent().AtName("status_code_grouped"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code_grouped"),
+																					}...),
+																				},
+																			},
+																			"data_plane_node_version": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "data_plane_node_version"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"data_plane_node_version",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "data_plane_node_version"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"data_plane_node_version",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.StringType,
+																								Description: `The values to include in the results. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_context_id"),
+																						path.MatchRelative().AtParent().AtName("a2a_error"),
+																						path.MatchRelative().AtParent().AtName("a2a_method"),
+																						path.MatchRelative().AtParent().AtName("a2a_task_id"),
+																						path.MatchRelative().AtParent().AtName("api"),
+																						path.MatchRelative().AtParent().AtName("api_package"),
+																						path.MatchRelative().AtParent().AtName("api_product"),
+																						path.MatchRelative().AtParent().AtName("api_product_version"),
+																						path.MatchRelative().AtParent().AtName("application"),
+																						path.MatchRelative().AtParent().AtName("consumer"),
+																						path.MatchRelative().AtParent().AtName("control_plane"),
+																						path.MatchRelative().AtParent().AtName("control_plane_group"),
+																						path.MatchRelative().AtParent().AtName("country_code"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node"),
+																						path.MatchRelative().AtParent().AtName("gateway_service"),
+																						path.MatchRelative().AtParent().AtName("mcp_error"),
+																						path.MatchRelative().AtParent().AtName("mcp_method"),
+																						path.MatchRelative().AtParent().AtName("mcp_session_id"),
+																						path.MatchRelative().AtParent().AtName("mcp_tool_name"),
+																						path.MatchRelative().AtParent().AtName("portal"),
+																						path.MatchRelative().AtParent().AtName("realm"),
+																						path.MatchRelative().AtParent().AtName("response_source"),
+																						path.MatchRelative().AtParent().AtName("route"),
+																						path.MatchRelative().AtParent().AtName("status_code"),
+																						path.MatchRelative().AtParent().AtName("status_code_grouped"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code_grouped"),
+																					}...),
+																				},
+																			},
+																			"gateway_service": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "gateway_service"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"gateway_service",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "gateway_service"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"gateway_service",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.StringType,
+																								Description: `The IDs to include in the results. Because gateway IDs are only unique within a given control plane, the filter values must be of the form ` + "`" + `control_plane_id:field_id` + "`" + ` or ` + "`" + `control_plane_group_id:field_id` + "`" + ` for data plane nodes within a control plane group. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_context_id"),
+																						path.MatchRelative().AtParent().AtName("a2a_error"),
+																						path.MatchRelative().AtParent().AtName("a2a_method"),
+																						path.MatchRelative().AtParent().AtName("a2a_task_id"),
+																						path.MatchRelative().AtParent().AtName("api"),
+																						path.MatchRelative().AtParent().AtName("api_package"),
+																						path.MatchRelative().AtParent().AtName("api_product"),
+																						path.MatchRelative().AtParent().AtName("api_product_version"),
+																						path.MatchRelative().AtParent().AtName("application"),
+																						path.MatchRelative().AtParent().AtName("consumer"),
+																						path.MatchRelative().AtParent().AtName("control_plane"),
+																						path.MatchRelative().AtParent().AtName("control_plane_group"),
+																						path.MatchRelative().AtParent().AtName("country_code"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node_version"),
+																						path.MatchRelative().AtParent().AtName("mcp_error"),
+																						path.MatchRelative().AtParent().AtName("mcp_method"),
+																						path.MatchRelative().AtParent().AtName("mcp_session_id"),
+																						path.MatchRelative().AtParent().AtName("mcp_tool_name"),
+																						path.MatchRelative().AtParent().AtName("portal"),
+																						path.MatchRelative().AtParent().AtName("realm"),
+																						path.MatchRelative().AtParent().AtName("response_source"),
+																						path.MatchRelative().AtParent().AtName("route"),
+																						path.MatchRelative().AtParent().AtName("status_code"),
+																						path.MatchRelative().AtParent().AtName("status_code_grouped"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code_grouped"),
+																					}...),
+																				},
+																			},
+																			"mcp_error": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "mcp_error"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"mcp_error",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "mcp_error"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"mcp_error",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.StringType,
+																								Description: `The values to include in the results. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_context_id"),
+																						path.MatchRelative().AtParent().AtName("a2a_error"),
+																						path.MatchRelative().AtParent().AtName("a2a_method"),
+																						path.MatchRelative().AtParent().AtName("a2a_task_id"),
+																						path.MatchRelative().AtParent().AtName("api"),
+																						path.MatchRelative().AtParent().AtName("api_package"),
+																						path.MatchRelative().AtParent().AtName("api_product"),
+																						path.MatchRelative().AtParent().AtName("api_product_version"),
+																						path.MatchRelative().AtParent().AtName("application"),
+																						path.MatchRelative().AtParent().AtName("consumer"),
+																						path.MatchRelative().AtParent().AtName("control_plane"),
+																						path.MatchRelative().AtParent().AtName("control_plane_group"),
+																						path.MatchRelative().AtParent().AtName("country_code"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node_version"),
+																						path.MatchRelative().AtParent().AtName("gateway_service"),
+																						path.MatchRelative().AtParent().AtName("mcp_method"),
+																						path.MatchRelative().AtParent().AtName("mcp_session_id"),
+																						path.MatchRelative().AtParent().AtName("mcp_tool_name"),
+																						path.MatchRelative().AtParent().AtName("portal"),
+																						path.MatchRelative().AtParent().AtName("realm"),
+																						path.MatchRelative().AtParent().AtName("response_source"),
+																						path.MatchRelative().AtParent().AtName("route"),
+																						path.MatchRelative().AtParent().AtName("status_code"),
+																						path.MatchRelative().AtParent().AtName("status_code_grouped"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code_grouped"),
+																					}...),
+																				},
+																			},
+																			"mcp_method": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "mcp_method"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"mcp_method",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "mcp_method"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"mcp_method",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.StringType,
+																								Description: `The values to include in the results. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_context_id"),
+																						path.MatchRelative().AtParent().AtName("a2a_error"),
+																						path.MatchRelative().AtParent().AtName("a2a_method"),
+																						path.MatchRelative().AtParent().AtName("a2a_task_id"),
+																						path.MatchRelative().AtParent().AtName("api"),
+																						path.MatchRelative().AtParent().AtName("api_package"),
+																						path.MatchRelative().AtParent().AtName("api_product"),
+																						path.MatchRelative().AtParent().AtName("api_product_version"),
+																						path.MatchRelative().AtParent().AtName("application"),
+																						path.MatchRelative().AtParent().AtName("consumer"),
+																						path.MatchRelative().AtParent().AtName("control_plane"),
+																						path.MatchRelative().AtParent().AtName("control_plane_group"),
+																						path.MatchRelative().AtParent().AtName("country_code"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node_version"),
+																						path.MatchRelative().AtParent().AtName("gateway_service"),
+																						path.MatchRelative().AtParent().AtName("mcp_error"),
+																						path.MatchRelative().AtParent().AtName("mcp_session_id"),
+																						path.MatchRelative().AtParent().AtName("mcp_tool_name"),
+																						path.MatchRelative().AtParent().AtName("portal"),
+																						path.MatchRelative().AtParent().AtName("realm"),
+																						path.MatchRelative().AtParent().AtName("response_source"),
+																						path.MatchRelative().AtParent().AtName("route"),
+																						path.MatchRelative().AtParent().AtName("status_code"),
+																						path.MatchRelative().AtParent().AtName("status_code_grouped"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code_grouped"),
+																					}...),
+																				},
+																			},
+																			"mcp_session_id": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "mcp_session_id"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"mcp_session_id",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "mcp_session_id"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"mcp_session_id",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.StringType,
+																								Description: `The values to include in the results. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_context_id"),
+																						path.MatchRelative().AtParent().AtName("a2a_error"),
+																						path.MatchRelative().AtParent().AtName("a2a_method"),
+																						path.MatchRelative().AtParent().AtName("a2a_task_id"),
+																						path.MatchRelative().AtParent().AtName("api"),
+																						path.MatchRelative().AtParent().AtName("api_package"),
+																						path.MatchRelative().AtParent().AtName("api_product"),
+																						path.MatchRelative().AtParent().AtName("api_product_version"),
+																						path.MatchRelative().AtParent().AtName("application"),
+																						path.MatchRelative().AtParent().AtName("consumer"),
+																						path.MatchRelative().AtParent().AtName("control_plane"),
+																						path.MatchRelative().AtParent().AtName("control_plane_group"),
+																						path.MatchRelative().AtParent().AtName("country_code"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node_version"),
+																						path.MatchRelative().AtParent().AtName("gateway_service"),
+																						path.MatchRelative().AtParent().AtName("mcp_error"),
+																						path.MatchRelative().AtParent().AtName("mcp_method"),
+																						path.MatchRelative().AtParent().AtName("mcp_tool_name"),
+																						path.MatchRelative().AtParent().AtName("portal"),
+																						path.MatchRelative().AtParent().AtName("realm"),
+																						path.MatchRelative().AtParent().AtName("response_source"),
+																						path.MatchRelative().AtParent().AtName("route"),
+																						path.MatchRelative().AtParent().AtName("status_code"),
+																						path.MatchRelative().AtParent().AtName("status_code_grouped"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code_grouped"),
+																					}...),
+																				},
+																			},
+																			"mcp_tool_name": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "mcp_tool_name"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"mcp_tool_name",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "mcp_tool_name"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"mcp_tool_name",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.StringType,
+																								Description: `The values to include in the results. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_context_id"),
+																						path.MatchRelative().AtParent().AtName("a2a_error"),
+																						path.MatchRelative().AtParent().AtName("a2a_method"),
+																						path.MatchRelative().AtParent().AtName("a2a_task_id"),
+																						path.MatchRelative().AtParent().AtName("api"),
+																						path.MatchRelative().AtParent().AtName("api_package"),
+																						path.MatchRelative().AtParent().AtName("api_product"),
+																						path.MatchRelative().AtParent().AtName("api_product_version"),
+																						path.MatchRelative().AtParent().AtName("application"),
+																						path.MatchRelative().AtParent().AtName("consumer"),
+																						path.MatchRelative().AtParent().AtName("control_plane"),
+																						path.MatchRelative().AtParent().AtName("control_plane_group"),
+																						path.MatchRelative().AtParent().AtName("country_code"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node_version"),
+																						path.MatchRelative().AtParent().AtName("gateway_service"),
+																						path.MatchRelative().AtParent().AtName("mcp_error"),
+																						path.MatchRelative().AtParent().AtName("mcp_method"),
+																						path.MatchRelative().AtParent().AtName("mcp_session_id"),
+																						path.MatchRelative().AtParent().AtName("portal"),
+																						path.MatchRelative().AtParent().AtName("realm"),
+																						path.MatchRelative().AtParent().AtName("response_source"),
+																						path.MatchRelative().AtParent().AtName("route"),
+																						path.MatchRelative().AtParent().AtName("status_code"),
+																						path.MatchRelative().AtParent().AtName("status_code_grouped"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code_grouped"),
+																					}...),
+																				},
+																			},
+																			"portal": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "portal"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf("portal"),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "portal"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf("portal"),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.StringType,
+																								Description: `The IDs to include in the results. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_context_id"),
+																						path.MatchRelative().AtParent().AtName("a2a_error"),
+																						path.MatchRelative().AtParent().AtName("a2a_method"),
+																						path.MatchRelative().AtParent().AtName("a2a_task_id"),
+																						path.MatchRelative().AtParent().AtName("api"),
+																						path.MatchRelative().AtParent().AtName("api_package"),
+																						path.MatchRelative().AtParent().AtName("api_product"),
+																						path.MatchRelative().AtParent().AtName("api_product_version"),
+																						path.MatchRelative().AtParent().AtName("application"),
+																						path.MatchRelative().AtParent().AtName("consumer"),
+																						path.MatchRelative().AtParent().AtName("control_plane"),
+																						path.MatchRelative().AtParent().AtName("control_plane_group"),
+																						path.MatchRelative().AtParent().AtName("country_code"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node_version"),
+																						path.MatchRelative().AtParent().AtName("gateway_service"),
+																						path.MatchRelative().AtParent().AtName("mcp_error"),
+																						path.MatchRelative().AtParent().AtName("mcp_method"),
+																						path.MatchRelative().AtParent().AtName("mcp_session_id"),
+																						path.MatchRelative().AtParent().AtName("mcp_tool_name"),
+																						path.MatchRelative().AtParent().AtName("realm"),
+																						path.MatchRelative().AtParent().AtName("response_source"),
+																						path.MatchRelative().AtParent().AtName("route"),
+																						path.MatchRelative().AtParent().AtName("status_code"),
+																						path.MatchRelative().AtParent().AtName("status_code_grouped"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code_grouped"),
+																					}...),
+																				},
+																			},
+																			"realm": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "realm"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf("realm"),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "realm"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf("realm"),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.StringType,
+																								Description: `The IDs to include in the results. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_context_id"),
+																						path.MatchRelative().AtParent().AtName("a2a_error"),
+																						path.MatchRelative().AtParent().AtName("a2a_method"),
+																						path.MatchRelative().AtParent().AtName("a2a_task_id"),
+																						path.MatchRelative().AtParent().AtName("api"),
+																						path.MatchRelative().AtParent().AtName("api_package"),
+																						path.MatchRelative().AtParent().AtName("api_product"),
+																						path.MatchRelative().AtParent().AtName("api_product_version"),
+																						path.MatchRelative().AtParent().AtName("application"),
+																						path.MatchRelative().AtParent().AtName("consumer"),
+																						path.MatchRelative().AtParent().AtName("control_plane"),
+																						path.MatchRelative().AtParent().AtName("control_plane_group"),
+																						path.MatchRelative().AtParent().AtName("country_code"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node_version"),
+																						path.MatchRelative().AtParent().AtName("gateway_service"),
+																						path.MatchRelative().AtParent().AtName("mcp_error"),
+																						path.MatchRelative().AtParent().AtName("mcp_method"),
+																						path.MatchRelative().AtParent().AtName("mcp_session_id"),
+																						path.MatchRelative().AtParent().AtName("mcp_tool_name"),
+																						path.MatchRelative().AtParent().AtName("portal"),
+																						path.MatchRelative().AtParent().AtName("response_source"),
+																						path.MatchRelative().AtParent().AtName("route"),
+																						path.MatchRelative().AtParent().AtName("status_code"),
+																						path.MatchRelative().AtParent().AtName("status_code_grouped"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code_grouped"),
+																					}...),
+																				},
+																			},
+																			"response_source": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "response_source"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"response_source",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "response_source"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"response_source",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.StringType,
+																								Description: `The values to include in the results. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_context_id"),
+																						path.MatchRelative().AtParent().AtName("a2a_error"),
+																						path.MatchRelative().AtParent().AtName("a2a_method"),
+																						path.MatchRelative().AtParent().AtName("a2a_task_id"),
+																						path.MatchRelative().AtParent().AtName("api"),
+																						path.MatchRelative().AtParent().AtName("api_package"),
+																						path.MatchRelative().AtParent().AtName("api_product"),
+																						path.MatchRelative().AtParent().AtName("api_product_version"),
+																						path.MatchRelative().AtParent().AtName("application"),
+																						path.MatchRelative().AtParent().AtName("consumer"),
+																						path.MatchRelative().AtParent().AtName("control_plane"),
+																						path.MatchRelative().AtParent().AtName("control_plane_group"),
+																						path.MatchRelative().AtParent().AtName("country_code"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node_version"),
+																						path.MatchRelative().AtParent().AtName("gateway_service"),
+																						path.MatchRelative().AtParent().AtName("mcp_error"),
+																						path.MatchRelative().AtParent().AtName("mcp_method"),
+																						path.MatchRelative().AtParent().AtName("mcp_session_id"),
+																						path.MatchRelative().AtParent().AtName("mcp_tool_name"),
+																						path.MatchRelative().AtParent().AtName("portal"),
+																						path.MatchRelative().AtParent().AtName("realm"),
+																						path.MatchRelative().AtParent().AtName("route"),
+																						path.MatchRelative().AtParent().AtName("status_code"),
+																						path.MatchRelative().AtParent().AtName("status_code_grouped"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code_grouped"),
+																					}...),
+																				},
+																			},
+																			"route": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "route"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf("route"),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "route"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf("route"),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.StringType,
+																								Description: `The IDs to include in the results. Because gateway IDs are only unique within a given control plane, the filter values must be of the form ` + "`" + `control_plane_id:field_id` + "`" + ` or ` + "`" + `control_plane_group_id:field_id` + "`" + ` for data plane nodes within a control plane group. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_context_id"),
+																						path.MatchRelative().AtParent().AtName("a2a_error"),
+																						path.MatchRelative().AtParent().AtName("a2a_method"),
+																						path.MatchRelative().AtParent().AtName("a2a_task_id"),
+																						path.MatchRelative().AtParent().AtName("api"),
+																						path.MatchRelative().AtParent().AtName("api_package"),
+																						path.MatchRelative().AtParent().AtName("api_product"),
+																						path.MatchRelative().AtParent().AtName("api_product_version"),
+																						path.MatchRelative().AtParent().AtName("application"),
+																						path.MatchRelative().AtParent().AtName("consumer"),
+																						path.MatchRelative().AtParent().AtName("control_plane"),
+																						path.MatchRelative().AtParent().AtName("control_plane_group"),
+																						path.MatchRelative().AtParent().AtName("country_code"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node_version"),
+																						path.MatchRelative().AtParent().AtName("gateway_service"),
+																						path.MatchRelative().AtParent().AtName("mcp_error"),
+																						path.MatchRelative().AtParent().AtName("mcp_method"),
+																						path.MatchRelative().AtParent().AtName("mcp_session_id"),
+																						path.MatchRelative().AtParent().AtName("mcp_tool_name"),
+																						path.MatchRelative().AtParent().AtName("portal"),
+																						path.MatchRelative().AtParent().AtName("realm"),
+																						path.MatchRelative().AtParent().AtName("response_source"),
+																						path.MatchRelative().AtParent().AtName("status_code"),
+																						path.MatchRelative().AtParent().AtName("status_code_grouped"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code_grouped"),
+																					}...),
+																				},
+																			},
+																			"status_code": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "status_code"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"status_code",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "status_code"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"status_code",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.Int64Type,
+																								Description: `The codes to include in the results. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_context_id"),
+																						path.MatchRelative().AtParent().AtName("a2a_error"),
+																						path.MatchRelative().AtParent().AtName("a2a_method"),
+																						path.MatchRelative().AtParent().AtName("a2a_task_id"),
+																						path.MatchRelative().AtParent().AtName("api"),
+																						path.MatchRelative().AtParent().AtName("api_package"),
+																						path.MatchRelative().AtParent().AtName("api_product"),
+																						path.MatchRelative().AtParent().AtName("api_product_version"),
+																						path.MatchRelative().AtParent().AtName("application"),
+																						path.MatchRelative().AtParent().AtName("consumer"),
+																						path.MatchRelative().AtParent().AtName("control_plane"),
+																						path.MatchRelative().AtParent().AtName("control_plane_group"),
+																						path.MatchRelative().AtParent().AtName("country_code"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node_version"),
+																						path.MatchRelative().AtParent().AtName("gateway_service"),
+																						path.MatchRelative().AtParent().AtName("mcp_error"),
+																						path.MatchRelative().AtParent().AtName("mcp_method"),
+																						path.MatchRelative().AtParent().AtName("mcp_session_id"),
+																						path.MatchRelative().AtParent().AtName("mcp_tool_name"),
+																						path.MatchRelative().AtParent().AtName("portal"),
+																						path.MatchRelative().AtParent().AtName("realm"),
+																						path.MatchRelative().AtParent().AtName("response_source"),
+																						path.MatchRelative().AtParent().AtName("route"),
+																						path.MatchRelative().AtParent().AtName("status_code_grouped"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code_grouped"),
+																					}...),
+																				},
+																			},
+																			"status_code_grouped": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "status_code_grouped"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"status_code_grouped",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "status_code_grouped"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"status_code_grouped",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.StringType,
+																								Description: `The code groups to include in the results. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_context_id"),
+																						path.MatchRelative().AtParent().AtName("a2a_error"),
+																						path.MatchRelative().AtParent().AtName("a2a_method"),
+																						path.MatchRelative().AtParent().AtName("a2a_task_id"),
+																						path.MatchRelative().AtParent().AtName("api"),
+																						path.MatchRelative().AtParent().AtName("api_package"),
+																						path.MatchRelative().AtParent().AtName("api_product"),
+																						path.MatchRelative().AtParent().AtName("api_product_version"),
+																						path.MatchRelative().AtParent().AtName("application"),
+																						path.MatchRelative().AtParent().AtName("consumer"),
+																						path.MatchRelative().AtParent().AtName("control_plane"),
+																						path.MatchRelative().AtParent().AtName("control_plane_group"),
+																						path.MatchRelative().AtParent().AtName("country_code"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node_version"),
+																						path.MatchRelative().AtParent().AtName("gateway_service"),
+																						path.MatchRelative().AtParent().AtName("mcp_error"),
+																						path.MatchRelative().AtParent().AtName("mcp_method"),
+																						path.MatchRelative().AtParent().AtName("mcp_session_id"),
+																						path.MatchRelative().AtParent().AtName("mcp_tool_name"),
+																						path.MatchRelative().AtParent().AtName("portal"),
+																						path.MatchRelative().AtParent().AtName("realm"),
+																						path.MatchRelative().AtParent().AtName("response_source"),
+																						path.MatchRelative().AtParent().AtName("route"),
+																						path.MatchRelative().AtParent().AtName("status_code"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code_grouped"),
+																					}...),
+																				},
+																			},
+																			"upstream_status_code": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "upstream_status_code"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"upstream_status_code",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "upstream_status_code"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"upstream_status_code",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.Int64Type,
+																								Description: `The codes to include in the results. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_context_id"),
+																						path.MatchRelative().AtParent().AtName("a2a_error"),
+																						path.MatchRelative().AtParent().AtName("a2a_method"),
+																						path.MatchRelative().AtParent().AtName("a2a_task_id"),
+																						path.MatchRelative().AtParent().AtName("api"),
+																						path.MatchRelative().AtParent().AtName("api_package"),
+																						path.MatchRelative().AtParent().AtName("api_product"),
+																						path.MatchRelative().AtParent().AtName("api_product_version"),
+																						path.MatchRelative().AtParent().AtName("application"),
+																						path.MatchRelative().AtParent().AtName("consumer"),
+																						path.MatchRelative().AtParent().AtName("control_plane"),
+																						path.MatchRelative().AtParent().AtName("control_plane_group"),
+																						path.MatchRelative().AtParent().AtName("country_code"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node_version"),
+																						path.MatchRelative().AtParent().AtName("gateway_service"),
+																						path.MatchRelative().AtParent().AtName("mcp_error"),
+																						path.MatchRelative().AtParent().AtName("mcp_method"),
+																						path.MatchRelative().AtParent().AtName("mcp_session_id"),
+																						path.MatchRelative().AtParent().AtName("mcp_tool_name"),
+																						path.MatchRelative().AtParent().AtName("portal"),
+																						path.MatchRelative().AtParent().AtName("realm"),
+																						path.MatchRelative().AtParent().AtName("response_source"),
+																						path.MatchRelative().AtParent().AtName("route"),
+																						path.MatchRelative().AtParent().AtName("status_code"),
+																						path.MatchRelative().AtParent().AtName("status_code_grouped"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code_grouped"),
+																					}...),
+																				},
+																			},
+																			"upstream_status_code_grouped": schema.SingleNestedAttribute{
+																				Optional: true,
+																				Attributes: map[string]schema.Attribute{
+																					"empty_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "upstream_status_code_grouped"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"upstream_status_code_grouped",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("multiselect_filters"),
+																							}...),
+																						},
+																					},
+																					"multiselect_filters": schema.SingleNestedAttribute{
+																						Optional: true,
+																						Attributes: map[string]schema.Attribute{
+																							"field": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The field to filter. Not Null; must be "upstream_status_code_grouped"`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																									stringvalidator.OneOf(
+																										"upstream_status_code_grouped",
+																									),
+																								},
+																							},
+																							"operator": schema.StringAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
+																								Validators: []validator.String{
+																									speakeasy_stringvalidators.NotNull(),
+																								},
+																							},
+																							"value": schema.ListAttribute{
+																								Computed:    true,
+																								Optional:    true,
+																								ElementType: types.StringType,
+																								Description: `The code groups to include in the results. Not Null`,
+																								Validators: []validator.List{
+																									speakeasy_listvalidators.NotNull(),
+																								},
+																							},
+																						},
+																						Validators: []validator.Object{
+																							objectvalidator.ConflictsWith(path.Expressions{
+																								path.MatchRelative().AtParent().AtName("empty_filters"),
+																							}...),
+																						},
+																					},
+																				},
+																				Validators: []validator.Object{
+																					objectvalidator.ConflictsWith(path.Expressions{
+																						path.MatchRelative().AtParent().AtName("a2a_context_id"),
+																						path.MatchRelative().AtParent().AtName("a2a_error"),
+																						path.MatchRelative().AtParent().AtName("a2a_method"),
+																						path.MatchRelative().AtParent().AtName("a2a_task_id"),
+																						path.MatchRelative().AtParent().AtName("api"),
+																						path.MatchRelative().AtParent().AtName("api_package"),
+																						path.MatchRelative().AtParent().AtName("api_product"),
+																						path.MatchRelative().AtParent().AtName("api_product_version"),
+																						path.MatchRelative().AtParent().AtName("application"),
+																						path.MatchRelative().AtParent().AtName("consumer"),
+																						path.MatchRelative().AtParent().AtName("control_plane"),
+																						path.MatchRelative().AtParent().AtName("control_plane_group"),
+																						path.MatchRelative().AtParent().AtName("country_code"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node"),
+																						path.MatchRelative().AtParent().AtName("data_plane_node_version"),
+																						path.MatchRelative().AtParent().AtName("gateway_service"),
+																						path.MatchRelative().AtParent().AtName("mcp_error"),
+																						path.MatchRelative().AtParent().AtName("mcp_method"),
+																						path.MatchRelative().AtParent().AtName("mcp_session_id"),
+																						path.MatchRelative().AtParent().AtName("mcp_tool_name"),
+																						path.MatchRelative().AtParent().AtName("portal"),
+																						path.MatchRelative().AtParent().AtName("realm"),
+																						path.MatchRelative().AtParent().AtName("response_source"),
+																						path.MatchRelative().AtParent().AtName("route"),
+																						path.MatchRelative().AtParent().AtName("status_code"),
+																						path.MatchRelative().AtParent().AtName("status_code_grouped"),
+																						path.MatchRelative().AtParent().AtName("upstream_status_code"),
+																					}...),
+																				},
+																			},
+																		},
+																	},
+																	Description: `A list of filters to apply to the query.`,
+																},
+																"granularity": schema.StringAttribute{
+																	Computed: true,
+																	Optional: true,
+																	MarkdownDescription: `Force time grouping into buckets of the specified duration.  Only has an effect if "time" is in the "dimensions" list.` + "\n" +
+																		`` + "\n" +
+																		`The granularity of the result may be coarser than requested.  The finest allowed granularity depends on the query's time range: data farther in the past may have coarser granularity.  The exact result granularity will be reported in the response ` + "`" + `meta.granularity_ms` + "`" + ` field.` + "\n" +
+																		`` + "\n" +
+																		`If granularity is not specified and "time" is in the dimensions list, a default will be chosen based on the time range requested.` + "\n" +
+																		`` + "\n" +
+																		`Different relative times support different granularities:` + "\n" +
+																		`  - 15m => tenSecondly, thirtySecondly, minutely` + "\n" +
+																		`  - 1h  => tenSecondly, thirtySecondly, minutely, fiveMinutely, tenMinutely` + "\n" +
+																		`  - 6h  => thirtySecondly, minutely, fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
+																		`  - 12h => minutely, fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
+																		`  - 24h => fiveMinutely, tenMinutely, thirtyMinutely, hourly` + "\n" +
+																		`  - 7d  => thirtyMinutely, hourly, twoHourly, twelveHourly, daily` + "\n" +
+																		`  - 30d => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
+																		`` + "\n" +
+																		`For special time ranges:` + "\n" +
+																		`  - current_week, previous_week   => thirtyMinutely, hourly, twoHourly, twelveHourly, daily` + "\n" +
+																		`  - current_month, previous_month => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
+																		`` + "\n" +
+																		`For absolute time ranges, daily will be used.` + "\n" +
+																		`possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]`,
+																},
+																"metrics": schema.ListAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("request_count")})),
+																	ElementType: types.StringType,
+																	Description: `List of aggregated metrics to collect across the requested time span. Default: ["request_count"]`,
+																},
+																"time_range": schema.SingleNestedAttribute{
+																	Computed: true,
+																	Optional: true,
+																	Attributes: map[string]schema.Attribute{
+																		"absolute": schema.SingleNestedAttribute{
+																			Optional: true,
+																			Attributes: map[string]schema.Attribute{
+																				"end": schema.StringAttribute{
+																					Optional: true,
+																					Validators: []validator.String{
+																						validators.IsRFC3339(),
+																					},
+																				},
+																				"start": schema.StringAttribute{
+																					Optional: true,
+																					Validators: []validator.String{
+																						validators.IsRFC3339(),
+																					},
+																				},
+																				"type": schema.StringAttribute{
+																					Computed:    true,
+																					Optional:    true,
+																					Description: `Not Null; must be "absolute"`,
+																					Validators: []validator.String{
+																						speakeasy_stringvalidators.NotNull(),
+																						stringvalidator.OneOf("absolute"),
+																					},
+																				},
+																				"tz": schema.StringAttribute{
+																					Computed:    true,
+																					Optional:    true,
+																					Default:     stringdefault.StaticString(`Etc/UTC`),
+																					Description: `Default: "Etc/UTC"`,
+																				},
+																			},
+																			Description: `A duration representing an exact start and end time.`,
+																			Validators: []validator.Object{
+																				objectvalidator.ConflictsWith(path.Expressions{
+																					path.MatchRelative().AtParent().AtName("relative"),
+																				}...),
+																			},
+																		},
+																		"relative": schema.SingleNestedAttribute{
+																			Optional: true,
+																			Attributes: map[string]schema.Attribute{
+																				"time_range": schema.StringAttribute{
+																					Computed:    true,
+																					Optional:    true,
+																					Default:     stringdefault.StaticString(`1h`),
+																					Description: `possible known values include one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]; Default: "1h"`,
+																				},
+																				"type": schema.StringAttribute{
+																					Computed:    true,
+																					Optional:    true,
+																					Description: `Not Null; must be "relative"`,
+																					Validators: []validator.String{
+																						speakeasy_stringvalidators.NotNull(),
+																						stringvalidator.OneOf("relative"),
+																					},
+																				},
+																				"tz": schema.StringAttribute{
+																					Computed:    true,
+																					Optional:    true,
+																					Default:     stringdefault.StaticString(`Etc/UTC`),
+																					Description: `Default: "Etc/UTC"`,
+																				},
+																			},
+																			Description: `A duration representing a relative-to-now span of time. Generally the start time is floored to the requested granularity. Eg 7d from now, with 1day granularity initiated at 2024-01-08T17:11:00+05:00 will query for the time range from 2024-01-01T00:00:00+05:00 to 2024-01-08T17:11:00+05:00. The exact start and end timestamps are returned in the result query in the meta.start and meta.end fields. If the granularity for the previous query was 1hour, it would query a time range from 2024-01-01T17:00:00+05:00 to 2024-01-08T17:11:00+05:00.`,
+																			Validators: []validator.Object{
+																				objectvalidator.ConflictsWith(path.Expressions{
+																					path.MatchRelative().AtParent().AtName("absolute"),
+																				}...),
+																			},
+																		},
+																	},
+																	Description: `The time range to query.`,
+																},
+															},
+															Description: `A query targeting the agentic usage analytics datasource.`,
+															Validators: []validator.Object{
+																objectvalidator.ConflictsWith(path.Expressions{
+																	path.MatchRelative().AtParent().AtName("api_usage"),
+																	path.MatchRelative().AtParent().AtName("llm_usage"),
+																}...),
+															},
+														},
 														"api_usage": schema.SingleNestedAttribute{
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
@@ -386,45 +3360,17 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																			"field": schema.StringAttribute{
 																				Computed:    true,
 																				Optional:    true,
-																				Description: `Not Null; must be one of ["api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]`,
+																				Description: `possible known values include one of ["api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null`,
 																				Validators: []validator.String{
 																					speakeasy_stringvalidators.NotNull(),
-																					stringvalidator.OneOf(
-																						"api",
-																						"api_package",
-																						"api_product",
-																						"api_product_version",
-																						"application",
-																						"consumer",
-																						"control_plane",
-																						"control_plane_group",
-																						"country_code",
-																						"data_plane_node",
-																						"data_plane_node_version",
-																						"gateway_service",
-																						"portal",
-																						"realm",
-																						"response_source",
-																						"route",
-																						"status_code",
-																						"status_code_grouped",
-																						"upstream_status_code",
-																						"upstream_status_code_grouped",
-																					),
 																				},
 																			},
 																			"operator": schema.StringAttribute{
 																				Computed:    true,
 																				Optional:    true,
-																				Description: `Not Null; must be one of ["in", "not_in", "empty", "not_empty"]`,
+																				Description: `possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null`,
 																				Validators: []validator.String{
 																					speakeasy_stringvalidators.NotNull(),
-																					stringvalidator.OneOf(
-																						"in",
-																						"not_in",
-																						"empty",
-																						"not_empty",
-																					),
 																				},
 																			},
 																			"value": schema.StringAttribute{
@@ -460,22 +3406,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																		`  - current_month, previous_month => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
 																		`` + "\n" +
 																		`For absolute time ranges, daily will be used.` + "\n" +
-																		`must be one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]`,
-																	Validators: []validator.String{
-																		stringvalidator.OneOf(
-																			"tenSecondly",
-																			"thirtySecondly",
-																			"minutely",
-																			"fiveMinutely",
-																			"tenMinutely",
-																			"thirtyMinutely",
-																			"hourly",
-																			"twoHourly",
-																			"twelveHourly",
-																			"daily",
-																			"weekly",
-																		),
-																	},
+																		`possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]`,
 																},
 																"metrics": schema.ListAttribute{
 																	Computed:    true,
@@ -533,22 +3464,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																					Computed:    true,
 																					Optional:    true,
 																					Default:     stringdefault.StaticString(`1h`),
-																					Description: `Default: "1h"; must be one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]`,
-																					Validators: []validator.String{
-																						stringvalidator.OneOf(
-																							"15m",
-																							"1h",
-																							"6h",
-																							"12h",
-																							"24h",
-																							"7d",
-																							"30d",
-																							"current_week",
-																							"current_month",
-																							"previous_week",
-																							"previous_month",
-																						),
-																					},
+																					Description: `possible known values include one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]; Default: "1h"`,
 																				},
 																				"type": schema.StringAttribute{
 																					Computed:    true,
@@ -580,6 +3496,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 															Description: `A query targeting the API usage analytics datasource.`,
 															Validators: []validator.Object{
 																objectvalidator.ConflictsWith(path.Expressions{
+																	path.MatchRelative().AtParent().AtName("agentic_usage"),
 																	path.MatchRelative().AtParent().AtName("llm_usage"),
 																}...),
 															},
@@ -617,41 +3534,17 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																			"field": schema.StringAttribute{
 																				Computed:    true,
 																				Optional:    true,
-																				Description: `Not Null; must be one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "application", "consumer", "control_plane", "control_plane_group", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "realm", "route", "status_code", "status_code_grouped"]`,
+																				Description: `possible known values include one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "application", "consumer", "control_plane", "control_plane_group", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "realm", "route", "status_code", "status_code_grouped"]; Not Null`,
 																				Validators: []validator.String{
 																					speakeasy_stringvalidators.NotNull(),
-																					stringvalidator.OneOf(
-																						"ai_plugin",
-																						"ai_provider",
-																						"ai_request_model",
-																						"ai_response_model",
-																						"application",
-																						"consumer",
-																						"control_plane",
-																						"control_plane_group",
-																						"gateway_service",
-																						"llm_cache_status",
-																						"llm_embeddings_model",
-																						"llm_embeddings_provider",
-																						"realm",
-																						"route",
-																						"status_code",
-																						"status_code_grouped",
-																					),
 																				},
 																			},
 																			"operator": schema.StringAttribute{
 																				Computed:    true,
 																				Optional:    true,
-																				Description: `Not Null; must be one of ["in", "not_in", "empty", "not_empty"]`,
+																				Description: `possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null`,
 																				Validators: []validator.String{
 																					speakeasy_stringvalidators.NotNull(),
-																					stringvalidator.OneOf(
-																						"in",
-																						"not_in",
-																						"empty",
-																						"not_empty",
-																					),
 																				},
 																			},
 																			"value": schema.StringAttribute{
@@ -687,22 +3580,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																		`  - current_month, previous_month => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
 																		`` + "\n" +
 																		`For absolute time ranges, daily will be used.` + "\n" +
-																		`must be one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]`,
-																	Validators: []validator.String{
-																		stringvalidator.OneOf(
-																			"tenSecondly",
-																			"thirtySecondly",
-																			"minutely",
-																			"fiveMinutely",
-																			"tenMinutely",
-																			"thirtyMinutely",
-																			"hourly",
-																			"twoHourly",
-																			"twelveHourly",
-																			"daily",
-																			"weekly",
-																		),
-																	},
+																		`possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]`,
 																},
 																"metrics": schema.ListAttribute{
 																	Computed:    true,
@@ -760,22 +3638,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																					Computed:    true,
 																					Optional:    true,
 																					Default:     stringdefault.StaticString(`1h`),
-																					Description: `Default: "1h"; must be one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]`,
-																					Validators: []validator.String{
-																						stringvalidator.OneOf(
-																							"15m",
-																							"1h",
-																							"6h",
-																							"12h",
-																							"24h",
-																							"7d",
-																							"30d",
-																							"current_week",
-																							"current_month",
-																							"previous_week",
-																							"previous_month",
-																						),
-																					},
+																					Description: `possible known values include one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]; Default: "1h"`,
 																				},
 																				"type": schema.StringAttribute{
 																					Computed:    true,
@@ -808,6 +3671,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 															Validators: []validator.Object{
 																objectvalidator.ConflictsWith(path.Expressions{
 																	path.MatchRelative().AtParent().AtName("api_usage"),
+																	path.MatchRelative().AtParent().AtName("agentic_usage"),
 																}...),
 															},
 														},

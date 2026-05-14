@@ -35,6 +35,8 @@ func newEventGatewayTLSTrustBundles(rootSDK *KonnectBeta, sdkConfig config.SDKCo
 
 // CreateEventGatewayTLSTrustBundle - Create TLS Trust Bundle
 // Creates a new TLS trust bundle containing trusted CA certificates for client certificate verification.
+//
+// **Requires a minimum runtime version of `1.1`**.
 func (s *EventGatewayTLSTrustBundles) CreateEventGatewayTLSTrustBundle(ctx context.Context, request operations.CreateEventGatewayTLSTrustBundleRequest, opts ...operations.Option) (*operations.CreateEventGatewayTLSTrustBundleResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -316,6 +318,8 @@ func (s *EventGatewayTLSTrustBundles) CreateEventGatewayTLSTrustBundle(ctx conte
 
 // GetEventGatewayTLSTrustBundle - Get a TLS Trust Bundle
 // Returns information about a specific TLS trust bundle.
+//
+// **Requires a minimum runtime version of `1.1`**.
 func (s *EventGatewayTLSTrustBundles) GetEventGatewayTLSTrustBundle(ctx context.Context, request operations.GetEventGatewayTLSTrustBundleRequest, opts ...operations.Option) (*operations.GetEventGatewayTLSTrustBundleResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -590,6 +594,8 @@ func (s *EventGatewayTLSTrustBundles) GetEventGatewayTLSTrustBundle(ctx context.
 
 // UpdateEventGatewayTLSTrustBundle - Update TLS Trust Bundle
 // Updates an existing TLS trust bundle.
+//
+// **Requires a minimum runtime version of `1.1`**.
 func (s *EventGatewayTLSTrustBundles) UpdateEventGatewayTLSTrustBundle(ctx context.Context, request operations.UpdateEventGatewayTLSTrustBundleRequest, opts ...operations.Option) (*operations.UpdateEventGatewayTLSTrustBundleResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -871,6 +877,8 @@ func (s *EventGatewayTLSTrustBundles) UpdateEventGatewayTLSTrustBundle(ctx conte
 
 // DeleteEventGatewayTLSTrustBundle - Delete TLS Trust Bundle
 // Deletes a specific TLS trust bundle associated with the Event Gateway.
+//
+// **Requires a minimum runtime version of `1.1`**.
 func (s *EventGatewayTLSTrustBundles) DeleteEventGatewayTLSTrustBundle(ctx context.Context, request operations.DeleteEventGatewayTLSTrustBundleRequest, opts ...operations.Option) (*operations.DeleteEventGatewayTLSTrustBundleResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

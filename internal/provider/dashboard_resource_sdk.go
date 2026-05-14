@@ -137,6 +137,615 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 						}
 					}
 				}
+				if tilesItem.ChartTile.Definition.Query.AgenticQuery != nil {
+					tiles.Chart.Definition.Query.AgenticUsage = &tfTypes.AgenticQuery{}
+					tiles.Chart.Definition.Query.AgenticUsage.Datasource = types.StringValue(string(tilesItem.ChartTile.Definition.Query.AgenticQuery.Datasource))
+					if tilesItem.ChartTile.Definition.Query.AgenticQuery.Dimensions != nil {
+						tiles.Chart.Definition.Query.AgenticUsage.Dimensions = make([]types.String, 0, len(tilesItem.ChartTile.Definition.Query.AgenticQuery.Dimensions))
+						for _, v := range tilesItem.ChartTile.Definition.Query.AgenticQuery.Dimensions {
+							tiles.Chart.Definition.Query.AgenticUsage.Dimensions = append(tiles.Chart.Definition.Query.AgenticUsage.Dimensions, types.StringValue(string(v)))
+						}
+					} else {
+						tiles.Chart.Definition.Query.AgenticUsage.Dimensions = nil
+					}
+					tiles.Chart.Definition.Query.AgenticUsage.Filters = []tfTypes.AgenticFilters{}
+
+					for _, filtersItem1 := range tilesItem.ChartTile.Definition.Query.AgenticQuery.Filters {
+						var filters1 tfTypes.AgenticFilters
+
+						if filtersItem1.MetricsA2aContextIDFilterByField != nil {
+							filters1.A2aContextID = &tfTypes.MetricsA2aContextIDFilterByField{}
+							if filters1.A2aContextID == nil {
+								filters1.A2aContextID = &tfTypes.MetricsA2aContextIDFilterByField{}
+							}
+							if filtersItem1.MetricsA2aContextIDFilterByField.EmptyFilters != nil {
+								filters1.A2aContextID.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.A2aContextID.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsA2aContextIDFilterByField.EmptyFilters.Field))
+								filters1.A2aContextID.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsA2aContextIDFilterByField.EmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsA2aContextIDFilterByField.MultiselectFilters != nil {
+								filters1.A2aContextID.MultiselectFilters = &tfTypes.MultiselectFilters{}
+								filters1.A2aContextID.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsA2aContextIDFilterByField.MultiselectFilters.Field))
+								filters1.A2aContextID.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsA2aContextIDFilterByField.MultiselectFilters.Operator))
+								filters1.A2aContextID.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem1.MetricsA2aContextIDFilterByField.MultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsA2aContextIDFilterByField.MultiselectFilters.Value {
+									filters1.A2aContextID.MultiselectFilters.Value = append(filters1.A2aContextID.MultiselectFilters.Value, types.StringValue(v))
+								}
+							}
+						}
+						if filtersItem1.MetricsA2aErrorFilterByField != nil {
+							filters1.A2aError = &tfTypes.MetricsA2aContextIDFilterByField{}
+							if filters1.A2aError == nil {
+								filters1.A2aError = &tfTypes.MetricsA2aContextIDFilterByField{}
+							}
+							if filtersItem1.MetricsA2aErrorFilterByField.MetricsA2aErrorFilterByFieldEmptyFilters != nil {
+								filters1.A2aError.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.A2aError.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsA2aErrorFilterByField.MetricsA2aErrorFilterByFieldEmptyFilters.Field))
+								filters1.A2aError.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsA2aErrorFilterByField.MetricsA2aErrorFilterByFieldEmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsA2aErrorFilterByField.MetricsA2aErrorFilterByFieldMultiselectFilters != nil {
+								filters1.A2aError.MultiselectFilters = &tfTypes.MultiselectFilters{}
+								filters1.A2aError.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsA2aErrorFilterByField.MetricsA2aErrorFilterByFieldMultiselectFilters.Field))
+								filters1.A2aError.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsA2aErrorFilterByField.MetricsA2aErrorFilterByFieldMultiselectFilters.Operator))
+								filters1.A2aError.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem1.MetricsA2aErrorFilterByField.MetricsA2aErrorFilterByFieldMultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsA2aErrorFilterByField.MetricsA2aErrorFilterByFieldMultiselectFilters.Value {
+									filters1.A2aError.MultiselectFilters.Value = append(filters1.A2aError.MultiselectFilters.Value, types.StringValue(v))
+								}
+							}
+						}
+						if filtersItem1.MetricsA2aMethodFilterByField != nil {
+							filters1.A2aMethod = &tfTypes.MetricsA2aContextIDFilterByField{}
+							if filters1.A2aMethod == nil {
+								filters1.A2aMethod = &tfTypes.MetricsA2aContextIDFilterByField{}
+							}
+							if filtersItem1.MetricsA2aMethodFilterByField.MetricsA2aMethodFilterByFieldEmptyFilters != nil {
+								filters1.A2aMethod.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.A2aMethod.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsA2aMethodFilterByField.MetricsA2aMethodFilterByFieldEmptyFilters.Field))
+								filters1.A2aMethod.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsA2aMethodFilterByField.MetricsA2aMethodFilterByFieldEmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsA2aMethodFilterByField.MetricsA2aMethodFilterByFieldMultiselectFilters != nil {
+								filters1.A2aMethod.MultiselectFilters = &tfTypes.MultiselectFilters{}
+								filters1.A2aMethod.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsA2aMethodFilterByField.MetricsA2aMethodFilterByFieldMultiselectFilters.Field))
+								filters1.A2aMethod.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsA2aMethodFilterByField.MetricsA2aMethodFilterByFieldMultiselectFilters.Operator))
+								filters1.A2aMethod.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem1.MetricsA2aMethodFilterByField.MetricsA2aMethodFilterByFieldMultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsA2aMethodFilterByField.MetricsA2aMethodFilterByFieldMultiselectFilters.Value {
+									filters1.A2aMethod.MultiselectFilters.Value = append(filters1.A2aMethod.MultiselectFilters.Value, types.StringValue(v))
+								}
+							}
+						}
+						if filtersItem1.MetricsA2aTaskIDFilterByField != nil {
+							filters1.A2aTaskID = &tfTypes.MetricsA2aContextIDFilterByField{}
+							if filters1.A2aTaskID == nil {
+								filters1.A2aTaskID = &tfTypes.MetricsA2aContextIDFilterByField{}
+							}
+							if filtersItem1.MetricsA2aTaskIDFilterByField.MetricsA2aTaskIDFilterByFieldEmptyFilters != nil {
+								filters1.A2aTaskID.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.A2aTaskID.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsA2aTaskIDFilterByField.MetricsA2aTaskIDFilterByFieldEmptyFilters.Field))
+								filters1.A2aTaskID.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsA2aTaskIDFilterByField.MetricsA2aTaskIDFilterByFieldEmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsA2aTaskIDFilterByField.MetricsA2aTaskIDFilterByFieldMultiselectFilters != nil {
+								filters1.A2aTaskID.MultiselectFilters = &tfTypes.MultiselectFilters{}
+								filters1.A2aTaskID.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsA2aTaskIDFilterByField.MetricsA2aTaskIDFilterByFieldMultiselectFilters.Field))
+								filters1.A2aTaskID.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsA2aTaskIDFilterByField.MetricsA2aTaskIDFilterByFieldMultiselectFilters.Operator))
+								filters1.A2aTaskID.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem1.MetricsA2aTaskIDFilterByField.MetricsA2aTaskIDFilterByFieldMultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsA2aTaskIDFilterByField.MetricsA2aTaskIDFilterByFieldMultiselectFilters.Value {
+									filters1.A2aTaskID.MultiselectFilters.Value = append(filters1.A2aTaskID.MultiselectFilters.Value, types.StringValue(v))
+								}
+							}
+						}
+						if filtersItem1.MetricsAPIFilterByField != nil {
+							filters1.API = &tfTypes.MetricsA2aContextIDFilterByField{}
+							if filters1.API == nil {
+								filters1.API = &tfTypes.MetricsA2aContextIDFilterByField{}
+							}
+							if filtersItem1.MetricsAPIFilterByField.MetricsAPIFilterByFieldEmptyFilters != nil {
+								filters1.API.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.API.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsAPIFilterByField.MetricsAPIFilterByFieldEmptyFilters.Field))
+								filters1.API.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsAPIFilterByField.MetricsAPIFilterByFieldEmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsAPIFilterByField.MetricsAPIFilterByFieldMultiselectFilters != nil {
+								filters1.API.MultiselectFilters = &tfTypes.MultiselectFilters{}
+								filters1.API.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsAPIFilterByField.MetricsAPIFilterByFieldMultiselectFilters.Field))
+								filters1.API.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsAPIFilterByField.MetricsAPIFilterByFieldMultiselectFilters.Operator))
+								filters1.API.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem1.MetricsAPIFilterByField.MetricsAPIFilterByFieldMultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsAPIFilterByField.MetricsAPIFilterByFieldMultiselectFilters.Value {
+									filters1.API.MultiselectFilters.Value = append(filters1.API.MultiselectFilters.Value, types.StringValue(v))
+								}
+							}
+						}
+						if filtersItem1.MetricsAPIPackageFilterByField != nil {
+							filters1.APIPackage = &tfTypes.MetricsA2aContextIDFilterByField{}
+							if filters1.APIPackage == nil {
+								filters1.APIPackage = &tfTypes.MetricsA2aContextIDFilterByField{}
+							}
+							if filtersItem1.MetricsAPIPackageFilterByField.MetricsAPIPackageFilterByFieldEmptyFilters != nil {
+								filters1.APIPackage.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.APIPackage.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsAPIPackageFilterByField.MetricsAPIPackageFilterByFieldEmptyFilters.Field))
+								filters1.APIPackage.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsAPIPackageFilterByField.MetricsAPIPackageFilterByFieldEmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsAPIPackageFilterByField.MetricsAPIPackageFilterByFieldMultiselectFilters != nil {
+								filters1.APIPackage.MultiselectFilters = &tfTypes.MultiselectFilters{}
+								filters1.APIPackage.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsAPIPackageFilterByField.MetricsAPIPackageFilterByFieldMultiselectFilters.Field))
+								filters1.APIPackage.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsAPIPackageFilterByField.MetricsAPIPackageFilterByFieldMultiselectFilters.Operator))
+								filters1.APIPackage.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem1.MetricsAPIPackageFilterByField.MetricsAPIPackageFilterByFieldMultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsAPIPackageFilterByField.MetricsAPIPackageFilterByFieldMultiselectFilters.Value {
+									filters1.APIPackage.MultiselectFilters.Value = append(filters1.APIPackage.MultiselectFilters.Value, types.StringValue(v))
+								}
+							}
+						}
+						if filtersItem1.MetricsAPIProductFilterByField != nil {
+							filters1.APIProduct = &tfTypes.MetricsA2aContextIDFilterByField{}
+							if filters1.APIProduct == nil {
+								filters1.APIProduct = &tfTypes.MetricsA2aContextIDFilterByField{}
+							}
+							if filtersItem1.MetricsAPIProductFilterByField.MetricsAPIProductFilterByFieldEmptyFilters != nil {
+								filters1.APIProduct.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.APIProduct.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsAPIProductFilterByField.MetricsAPIProductFilterByFieldEmptyFilters.Field))
+								filters1.APIProduct.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsAPIProductFilterByField.MetricsAPIProductFilterByFieldEmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsAPIProductFilterByField.MetricsAPIProductFilterByFieldMultiselectFilters != nil {
+								filters1.APIProduct.MultiselectFilters = &tfTypes.MultiselectFilters{}
+								filters1.APIProduct.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsAPIProductFilterByField.MetricsAPIProductFilterByFieldMultiselectFilters.Field))
+								filters1.APIProduct.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsAPIProductFilterByField.MetricsAPIProductFilterByFieldMultiselectFilters.Operator))
+								filters1.APIProduct.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem1.MetricsAPIProductFilterByField.MetricsAPIProductFilterByFieldMultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsAPIProductFilterByField.MetricsAPIProductFilterByFieldMultiselectFilters.Value {
+									filters1.APIProduct.MultiselectFilters.Value = append(filters1.APIProduct.MultiselectFilters.Value, types.StringValue(v))
+								}
+							}
+						}
+						if filtersItem1.MetricsAPIProductVersionFilterByField != nil {
+							filters1.APIProductVersion = &tfTypes.MetricsA2aContextIDFilterByField{}
+							if filters1.APIProductVersion == nil {
+								filters1.APIProductVersion = &tfTypes.MetricsA2aContextIDFilterByField{}
+							}
+							if filtersItem1.MetricsAPIProductVersionFilterByField.MetricsAPIProductVersionFilterByFieldEmptyFilters != nil {
+								filters1.APIProductVersion.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.APIProductVersion.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsAPIProductVersionFilterByField.MetricsAPIProductVersionFilterByFieldEmptyFilters.Field))
+								filters1.APIProductVersion.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsAPIProductVersionFilterByField.MetricsAPIProductVersionFilterByFieldEmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsAPIProductVersionFilterByField.MetricsAPIProductVersionFilterByFieldMultiselectFilters != nil {
+								filters1.APIProductVersion.MultiselectFilters = &tfTypes.MultiselectFilters{}
+								filters1.APIProductVersion.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsAPIProductVersionFilterByField.MetricsAPIProductVersionFilterByFieldMultiselectFilters.Field))
+								filters1.APIProductVersion.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsAPIProductVersionFilterByField.MetricsAPIProductVersionFilterByFieldMultiselectFilters.Operator))
+								filters1.APIProductVersion.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem1.MetricsAPIProductVersionFilterByField.MetricsAPIProductVersionFilterByFieldMultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsAPIProductVersionFilterByField.MetricsAPIProductVersionFilterByFieldMultiselectFilters.Value {
+									filters1.APIProductVersion.MultiselectFilters.Value = append(filters1.APIProductVersion.MultiselectFilters.Value, types.StringValue(v))
+								}
+							}
+						}
+						if filtersItem1.MetricsApplicationFilterByField != nil {
+							filters1.Application = &tfTypes.MetricsA2aContextIDFilterByField{}
+							if filters1.Application == nil {
+								filters1.Application = &tfTypes.MetricsA2aContextIDFilterByField{}
+							}
+							if filtersItem1.MetricsApplicationFilterByField.MetricsApplicationFilterByFieldEmptyFilters != nil {
+								filters1.Application.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.Application.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsApplicationFilterByField.MetricsApplicationFilterByFieldEmptyFilters.Field))
+								filters1.Application.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsApplicationFilterByField.MetricsApplicationFilterByFieldEmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsApplicationFilterByField.MetricsApplicationFilterByFieldMultiselectFilters != nil {
+								filters1.Application.MultiselectFilters = &tfTypes.MultiselectFilters{}
+								filters1.Application.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsApplicationFilterByField.MetricsApplicationFilterByFieldMultiselectFilters.Field))
+								filters1.Application.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsApplicationFilterByField.MetricsApplicationFilterByFieldMultiselectFilters.Operator))
+								filters1.Application.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem1.MetricsApplicationFilterByField.MetricsApplicationFilterByFieldMultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsApplicationFilterByField.MetricsApplicationFilterByFieldMultiselectFilters.Value {
+									filters1.Application.MultiselectFilters.Value = append(filters1.Application.MultiselectFilters.Value, types.StringValue(v))
+								}
+							}
+						}
+						if filtersItem1.MetricsConsumerFilterByField != nil {
+							filters1.Consumer = &tfTypes.MetricsA2aContextIDFilterByField{}
+							if filters1.Consumer == nil {
+								filters1.Consumer = &tfTypes.MetricsA2aContextIDFilterByField{}
+							}
+							if filtersItem1.MetricsConsumerFilterByField.MetricsConsumerFilterByFieldEmptyFilters != nil {
+								filters1.Consumer.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.Consumer.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsConsumerFilterByField.MetricsConsumerFilterByFieldEmptyFilters.Field))
+								filters1.Consumer.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsConsumerFilterByField.MetricsConsumerFilterByFieldEmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsConsumerFilterByField.MetricsConsumerFilterByFieldMultiselectFilters != nil {
+								filters1.Consumer.MultiselectFilters = &tfTypes.MultiselectFilters{}
+								filters1.Consumer.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsConsumerFilterByField.MetricsConsumerFilterByFieldMultiselectFilters.Field))
+								filters1.Consumer.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsConsumerFilterByField.MetricsConsumerFilterByFieldMultiselectFilters.Operator))
+								filters1.Consumer.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem1.MetricsConsumerFilterByField.MetricsConsumerFilterByFieldMultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsConsumerFilterByField.MetricsConsumerFilterByFieldMultiselectFilters.Value {
+									filters1.Consumer.MultiselectFilters.Value = append(filters1.Consumer.MultiselectFilters.Value, types.StringValue(v))
+								}
+							}
+						}
+						if filtersItem1.MetricsControlPlaneFilterByField != nil {
+							filters1.ControlPlane = &tfTypes.MetricsA2aContextIDFilterByField{}
+							if filters1.ControlPlane == nil {
+								filters1.ControlPlane = &tfTypes.MetricsA2aContextIDFilterByField{}
+							}
+							if filtersItem1.MetricsControlPlaneFilterByField.MetricsControlPlaneFilterByFieldEmptyFilters != nil {
+								filters1.ControlPlane.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.ControlPlane.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsControlPlaneFilterByField.MetricsControlPlaneFilterByFieldEmptyFilters.Field))
+								filters1.ControlPlane.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsControlPlaneFilterByField.MetricsControlPlaneFilterByFieldEmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsControlPlaneFilterByField.MetricsControlPlaneFilterByFieldMultiselectFilters != nil {
+								filters1.ControlPlane.MultiselectFilters = &tfTypes.MultiselectFilters{}
+								filters1.ControlPlane.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsControlPlaneFilterByField.MetricsControlPlaneFilterByFieldMultiselectFilters.Field))
+								filters1.ControlPlane.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsControlPlaneFilterByField.MetricsControlPlaneFilterByFieldMultiselectFilters.Operator))
+								filters1.ControlPlane.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem1.MetricsControlPlaneFilterByField.MetricsControlPlaneFilterByFieldMultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsControlPlaneFilterByField.MetricsControlPlaneFilterByFieldMultiselectFilters.Value {
+									filters1.ControlPlane.MultiselectFilters.Value = append(filters1.ControlPlane.MultiselectFilters.Value, types.StringValue(v))
+								}
+							}
+						}
+						if filtersItem1.MetricsControlPlaneGroupFilterByField != nil {
+							filters1.ControlPlaneGroup = &tfTypes.MetricsA2aContextIDFilterByField{}
+							if filters1.ControlPlaneGroup == nil {
+								filters1.ControlPlaneGroup = &tfTypes.MetricsA2aContextIDFilterByField{}
+							}
+							if filtersItem1.MetricsControlPlaneGroupFilterByField.MetricsControlPlaneGroupFilterByFieldEmptyFilters != nil {
+								filters1.ControlPlaneGroup.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.ControlPlaneGroup.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsControlPlaneGroupFilterByField.MetricsControlPlaneGroupFilterByFieldEmptyFilters.Field))
+								filters1.ControlPlaneGroup.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsControlPlaneGroupFilterByField.MetricsControlPlaneGroupFilterByFieldEmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsControlPlaneGroupFilterByField.MetricsControlPlaneGroupFilterByFieldMultiselectFilters != nil {
+								filters1.ControlPlaneGroup.MultiselectFilters = &tfTypes.MultiselectFilters{}
+								filters1.ControlPlaneGroup.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsControlPlaneGroupFilterByField.MetricsControlPlaneGroupFilterByFieldMultiselectFilters.Field))
+								filters1.ControlPlaneGroup.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsControlPlaneGroupFilterByField.MetricsControlPlaneGroupFilterByFieldMultiselectFilters.Operator))
+								filters1.ControlPlaneGroup.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem1.MetricsControlPlaneGroupFilterByField.MetricsControlPlaneGroupFilterByFieldMultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsControlPlaneGroupFilterByField.MetricsControlPlaneGroupFilterByFieldMultiselectFilters.Value {
+									filters1.ControlPlaneGroup.MultiselectFilters.Value = append(filters1.ControlPlaneGroup.MultiselectFilters.Value, types.StringValue(v))
+								}
+							}
+						}
+						if filtersItem1.MetricsCountryCodeFilterByField != nil {
+							filters1.CountryCode = &tfTypes.MetricsA2aContextIDFilterByField{}
+							if filters1.CountryCode == nil {
+								filters1.CountryCode = &tfTypes.MetricsA2aContextIDFilterByField{}
+							}
+							if filtersItem1.MetricsCountryCodeFilterByField.MetricsCountryCodeFilterByFieldEmptyFilters != nil {
+								filters1.CountryCode.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.CountryCode.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsCountryCodeFilterByField.MetricsCountryCodeFilterByFieldEmptyFilters.Field))
+								filters1.CountryCode.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsCountryCodeFilterByField.MetricsCountryCodeFilterByFieldEmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsCountryCodeFilterByField.MetricsCountryCodeFilterByFieldMultiselectFilters != nil {
+								filters1.CountryCode.MultiselectFilters = &tfTypes.MultiselectFilters{}
+								filters1.CountryCode.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsCountryCodeFilterByField.MetricsCountryCodeFilterByFieldMultiselectFilters.Field))
+								filters1.CountryCode.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsCountryCodeFilterByField.MetricsCountryCodeFilterByFieldMultiselectFilters.Operator))
+								filters1.CountryCode.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem1.MetricsCountryCodeFilterByField.MetricsCountryCodeFilterByFieldMultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsCountryCodeFilterByField.MetricsCountryCodeFilterByFieldMultiselectFilters.Value {
+									filters1.CountryCode.MultiselectFilters.Value = append(filters1.CountryCode.MultiselectFilters.Value, types.StringValue(v))
+								}
+							}
+						}
+						if filtersItem1.MetricsDataPlaneNodeFilterByField != nil {
+							filters1.DataPlaneNode = &tfTypes.MetricsA2aContextIDFilterByField{}
+							if filters1.DataPlaneNode == nil {
+								filters1.DataPlaneNode = &tfTypes.MetricsA2aContextIDFilterByField{}
+							}
+							if filtersItem1.MetricsDataPlaneNodeFilterByField.MetricsDataPlaneNodeFilterByFieldEmptyFilters != nil {
+								filters1.DataPlaneNode.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.DataPlaneNode.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsDataPlaneNodeFilterByField.MetricsDataPlaneNodeFilterByFieldEmptyFilters.Field))
+								filters1.DataPlaneNode.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsDataPlaneNodeFilterByField.MetricsDataPlaneNodeFilterByFieldEmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsDataPlaneNodeFilterByField.MetricsDataPlaneNodeFilterByFieldMultiselectFilters != nil {
+								filters1.DataPlaneNode.MultiselectFilters = &tfTypes.MultiselectFilters{}
+								filters1.DataPlaneNode.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsDataPlaneNodeFilterByField.MetricsDataPlaneNodeFilterByFieldMultiselectFilters.Field))
+								filters1.DataPlaneNode.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsDataPlaneNodeFilterByField.MetricsDataPlaneNodeFilterByFieldMultiselectFilters.Operator))
+								filters1.DataPlaneNode.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem1.MetricsDataPlaneNodeFilterByField.MetricsDataPlaneNodeFilterByFieldMultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsDataPlaneNodeFilterByField.MetricsDataPlaneNodeFilterByFieldMultiselectFilters.Value {
+									filters1.DataPlaneNode.MultiselectFilters.Value = append(filters1.DataPlaneNode.MultiselectFilters.Value, types.StringValue(v))
+								}
+							}
+						}
+						if filtersItem1.MetricsDataPlaneNodeVersionFilterByField != nil {
+							filters1.DataPlaneNodeVersion = &tfTypes.MetricsA2aContextIDFilterByField{}
+							if filters1.DataPlaneNodeVersion == nil {
+								filters1.DataPlaneNodeVersion = &tfTypes.MetricsA2aContextIDFilterByField{}
+							}
+							if filtersItem1.MetricsDataPlaneNodeVersionFilterByField.MetricsDataPlaneNodeVersionFilterByFieldEmptyFilters != nil {
+								filters1.DataPlaneNodeVersion.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.DataPlaneNodeVersion.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsDataPlaneNodeVersionFilterByField.MetricsDataPlaneNodeVersionFilterByFieldEmptyFilters.Field))
+								filters1.DataPlaneNodeVersion.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsDataPlaneNodeVersionFilterByField.MetricsDataPlaneNodeVersionFilterByFieldEmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsDataPlaneNodeVersionFilterByField.MetricsDataPlaneNodeVersionFilterByFieldMultiselectFilters != nil {
+								filters1.DataPlaneNodeVersion.MultiselectFilters = &tfTypes.MultiselectFilters{}
+								filters1.DataPlaneNodeVersion.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsDataPlaneNodeVersionFilterByField.MetricsDataPlaneNodeVersionFilterByFieldMultiselectFilters.Field))
+								filters1.DataPlaneNodeVersion.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsDataPlaneNodeVersionFilterByField.MetricsDataPlaneNodeVersionFilterByFieldMultiselectFilters.Operator))
+								filters1.DataPlaneNodeVersion.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem1.MetricsDataPlaneNodeVersionFilterByField.MetricsDataPlaneNodeVersionFilterByFieldMultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsDataPlaneNodeVersionFilterByField.MetricsDataPlaneNodeVersionFilterByFieldMultiselectFilters.Value {
+									filters1.DataPlaneNodeVersion.MultiselectFilters.Value = append(filters1.DataPlaneNodeVersion.MultiselectFilters.Value, types.StringValue(v))
+								}
+							}
+						}
+						if filtersItem1.MetricsGatewayServiceFilterByField != nil {
+							filters1.GatewayService = &tfTypes.MetricsA2aContextIDFilterByField{}
+							if filters1.GatewayService == nil {
+								filters1.GatewayService = &tfTypes.MetricsA2aContextIDFilterByField{}
+							}
+							if filtersItem1.MetricsGatewayServiceFilterByField.MetricsGatewayServiceFilterByFieldEmptyFilters != nil {
+								filters1.GatewayService.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.GatewayService.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsGatewayServiceFilterByField.MetricsGatewayServiceFilterByFieldEmptyFilters.Field))
+								filters1.GatewayService.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsGatewayServiceFilterByField.MetricsGatewayServiceFilterByFieldEmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsGatewayServiceFilterByField.MetricsGatewayServiceFilterByFieldMultiselectFilters != nil {
+								filters1.GatewayService.MultiselectFilters = &tfTypes.MultiselectFilters{}
+								filters1.GatewayService.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsGatewayServiceFilterByField.MetricsGatewayServiceFilterByFieldMultiselectFilters.Field))
+								filters1.GatewayService.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsGatewayServiceFilterByField.MetricsGatewayServiceFilterByFieldMultiselectFilters.Operator))
+								filters1.GatewayService.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem1.MetricsGatewayServiceFilterByField.MetricsGatewayServiceFilterByFieldMultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsGatewayServiceFilterByField.MetricsGatewayServiceFilterByFieldMultiselectFilters.Value {
+									filters1.GatewayService.MultiselectFilters.Value = append(filters1.GatewayService.MultiselectFilters.Value, types.StringValue(v))
+								}
+							}
+						}
+						if filtersItem1.MetricsMcpErrorFilterByField != nil {
+							filters1.McpError = &tfTypes.MetricsA2aContextIDFilterByField{}
+							if filters1.McpError == nil {
+								filters1.McpError = &tfTypes.MetricsA2aContextIDFilterByField{}
+							}
+							if filtersItem1.MetricsMcpErrorFilterByField.MetricsMcpErrorFilterByFieldEmptyFilters != nil {
+								filters1.McpError.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.McpError.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsMcpErrorFilterByField.MetricsMcpErrorFilterByFieldEmptyFilters.Field))
+								filters1.McpError.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsMcpErrorFilterByField.MetricsMcpErrorFilterByFieldEmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsMcpErrorFilterByField.MetricsMcpErrorFilterByFieldMultiselectFilters != nil {
+								filters1.McpError.MultiselectFilters = &tfTypes.MultiselectFilters{}
+								filters1.McpError.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsMcpErrorFilterByField.MetricsMcpErrorFilterByFieldMultiselectFilters.Field))
+								filters1.McpError.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsMcpErrorFilterByField.MetricsMcpErrorFilterByFieldMultiselectFilters.Operator))
+								filters1.McpError.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem1.MetricsMcpErrorFilterByField.MetricsMcpErrorFilterByFieldMultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsMcpErrorFilterByField.MetricsMcpErrorFilterByFieldMultiselectFilters.Value {
+									filters1.McpError.MultiselectFilters.Value = append(filters1.McpError.MultiselectFilters.Value, types.StringValue(v))
+								}
+							}
+						}
+						if filtersItem1.MetricsMcpMethodFilterByField != nil {
+							filters1.McpMethod = &tfTypes.MetricsA2aContextIDFilterByField{}
+							if filters1.McpMethod == nil {
+								filters1.McpMethod = &tfTypes.MetricsA2aContextIDFilterByField{}
+							}
+							if filtersItem1.MetricsMcpMethodFilterByField.MetricsMcpMethodFilterByFieldEmptyFilters != nil {
+								filters1.McpMethod.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.McpMethod.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsMcpMethodFilterByField.MetricsMcpMethodFilterByFieldEmptyFilters.Field))
+								filters1.McpMethod.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsMcpMethodFilterByField.MetricsMcpMethodFilterByFieldEmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsMcpMethodFilterByField.MetricsMcpMethodFilterByFieldMultiselectFilters != nil {
+								filters1.McpMethod.MultiselectFilters = &tfTypes.MultiselectFilters{}
+								filters1.McpMethod.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsMcpMethodFilterByField.MetricsMcpMethodFilterByFieldMultiselectFilters.Field))
+								filters1.McpMethod.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsMcpMethodFilterByField.MetricsMcpMethodFilterByFieldMultiselectFilters.Operator))
+								filters1.McpMethod.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem1.MetricsMcpMethodFilterByField.MetricsMcpMethodFilterByFieldMultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsMcpMethodFilterByField.MetricsMcpMethodFilterByFieldMultiselectFilters.Value {
+									filters1.McpMethod.MultiselectFilters.Value = append(filters1.McpMethod.MultiselectFilters.Value, types.StringValue(v))
+								}
+							}
+						}
+						if filtersItem1.MetricsMcpSessionIDFilterByField != nil {
+							filters1.McpSessionID = &tfTypes.MetricsA2aContextIDFilterByField{}
+							if filters1.McpSessionID == nil {
+								filters1.McpSessionID = &tfTypes.MetricsA2aContextIDFilterByField{}
+							}
+							if filtersItem1.MetricsMcpSessionIDFilterByField.MetricsMcpSessionIDFilterByFieldEmptyFilters != nil {
+								filters1.McpSessionID.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.McpSessionID.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsMcpSessionIDFilterByField.MetricsMcpSessionIDFilterByFieldEmptyFilters.Field))
+								filters1.McpSessionID.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsMcpSessionIDFilterByField.MetricsMcpSessionIDFilterByFieldEmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsMcpSessionIDFilterByField.MetricsMcpSessionIDFilterByFieldMultiselectFilters != nil {
+								filters1.McpSessionID.MultiselectFilters = &tfTypes.MultiselectFilters{}
+								filters1.McpSessionID.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsMcpSessionIDFilterByField.MetricsMcpSessionIDFilterByFieldMultiselectFilters.Field))
+								filters1.McpSessionID.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsMcpSessionIDFilterByField.MetricsMcpSessionIDFilterByFieldMultiselectFilters.Operator))
+								filters1.McpSessionID.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem1.MetricsMcpSessionIDFilterByField.MetricsMcpSessionIDFilterByFieldMultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsMcpSessionIDFilterByField.MetricsMcpSessionIDFilterByFieldMultiselectFilters.Value {
+									filters1.McpSessionID.MultiselectFilters.Value = append(filters1.McpSessionID.MultiselectFilters.Value, types.StringValue(v))
+								}
+							}
+						}
+						if filtersItem1.MetricsMcpToolNameFilterByField != nil {
+							filters1.McpToolName = &tfTypes.MetricsA2aContextIDFilterByField{}
+							if filters1.McpToolName == nil {
+								filters1.McpToolName = &tfTypes.MetricsA2aContextIDFilterByField{}
+							}
+							if filtersItem1.MetricsMcpToolNameFilterByField.MetricsMcpToolNameFilterByFieldEmptyFilters != nil {
+								filters1.McpToolName.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.McpToolName.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsMcpToolNameFilterByField.MetricsMcpToolNameFilterByFieldEmptyFilters.Field))
+								filters1.McpToolName.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsMcpToolNameFilterByField.MetricsMcpToolNameFilterByFieldEmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsMcpToolNameFilterByField.MetricsMcpToolNameFilterByFieldMultiselectFilters != nil {
+								filters1.McpToolName.MultiselectFilters = &tfTypes.MultiselectFilters{}
+								filters1.McpToolName.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsMcpToolNameFilterByField.MetricsMcpToolNameFilterByFieldMultiselectFilters.Field))
+								filters1.McpToolName.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsMcpToolNameFilterByField.MetricsMcpToolNameFilterByFieldMultiselectFilters.Operator))
+								filters1.McpToolName.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem1.MetricsMcpToolNameFilterByField.MetricsMcpToolNameFilterByFieldMultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsMcpToolNameFilterByField.MetricsMcpToolNameFilterByFieldMultiselectFilters.Value {
+									filters1.McpToolName.MultiselectFilters.Value = append(filters1.McpToolName.MultiselectFilters.Value, types.StringValue(v))
+								}
+							}
+						}
+						if filtersItem1.MetricsPortalFilterByField != nil {
+							filters1.Portal = &tfTypes.MetricsA2aContextIDFilterByField{}
+							if filters1.Portal == nil {
+								filters1.Portal = &tfTypes.MetricsA2aContextIDFilterByField{}
+							}
+							if filtersItem1.MetricsPortalFilterByField.MetricsPortalFilterByFieldEmptyFilters != nil {
+								filters1.Portal.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.Portal.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsPortalFilterByField.MetricsPortalFilterByFieldEmptyFilters.Field))
+								filters1.Portal.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsPortalFilterByField.MetricsPortalFilterByFieldEmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsPortalFilterByField.MetricsPortalFilterByFieldMultiselectFilters != nil {
+								filters1.Portal.MultiselectFilters = &tfTypes.MultiselectFilters{}
+								filters1.Portal.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsPortalFilterByField.MetricsPortalFilterByFieldMultiselectFilters.Field))
+								filters1.Portal.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsPortalFilterByField.MetricsPortalFilterByFieldMultiselectFilters.Operator))
+								filters1.Portal.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem1.MetricsPortalFilterByField.MetricsPortalFilterByFieldMultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsPortalFilterByField.MetricsPortalFilterByFieldMultiselectFilters.Value {
+									filters1.Portal.MultiselectFilters.Value = append(filters1.Portal.MultiselectFilters.Value, types.StringValue(v))
+								}
+							}
+						}
+						if filtersItem1.MetricsRealmFilterByField != nil {
+							filters1.Realm = &tfTypes.MetricsA2aContextIDFilterByField{}
+							if filters1.Realm == nil {
+								filters1.Realm = &tfTypes.MetricsA2aContextIDFilterByField{}
+							}
+							if filtersItem1.MetricsRealmFilterByField.MetricsRealmFilterByFieldEmptyFilters != nil {
+								filters1.Realm.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.Realm.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsRealmFilterByField.MetricsRealmFilterByFieldEmptyFilters.Field))
+								filters1.Realm.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsRealmFilterByField.MetricsRealmFilterByFieldEmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsRealmFilterByField.MetricsRealmFilterByFieldMultiselectFilters != nil {
+								filters1.Realm.MultiselectFilters = &tfTypes.MultiselectFilters{}
+								filters1.Realm.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsRealmFilterByField.MetricsRealmFilterByFieldMultiselectFilters.Field))
+								filters1.Realm.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsRealmFilterByField.MetricsRealmFilterByFieldMultiselectFilters.Operator))
+								filters1.Realm.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem1.MetricsRealmFilterByField.MetricsRealmFilterByFieldMultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsRealmFilterByField.MetricsRealmFilterByFieldMultiselectFilters.Value {
+									filters1.Realm.MultiselectFilters.Value = append(filters1.Realm.MultiselectFilters.Value, types.StringValue(v))
+								}
+							}
+						}
+						if filtersItem1.MetricsResponseSourceFilterByField != nil {
+							filters1.ResponseSource = &tfTypes.MetricsA2aContextIDFilterByField{}
+							if filters1.ResponseSource == nil {
+								filters1.ResponseSource = &tfTypes.MetricsA2aContextIDFilterByField{}
+							}
+							if filtersItem1.MetricsResponseSourceFilterByField.MetricsResponseSourceFilterByFieldEmptyFilters != nil {
+								filters1.ResponseSource.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.ResponseSource.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsResponseSourceFilterByField.MetricsResponseSourceFilterByFieldEmptyFilters.Field))
+								filters1.ResponseSource.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsResponseSourceFilterByField.MetricsResponseSourceFilterByFieldEmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsResponseSourceFilterByField.MetricsResponseSourceFilterByFieldMultiselectFilters != nil {
+								filters1.ResponseSource.MultiselectFilters = &tfTypes.MultiselectFilters{}
+								filters1.ResponseSource.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsResponseSourceFilterByField.MetricsResponseSourceFilterByFieldMultiselectFilters.Field))
+								filters1.ResponseSource.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsResponseSourceFilterByField.MetricsResponseSourceFilterByFieldMultiselectFilters.Operator))
+								filters1.ResponseSource.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem1.MetricsResponseSourceFilterByField.MetricsResponseSourceFilterByFieldMultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsResponseSourceFilterByField.MetricsResponseSourceFilterByFieldMultiselectFilters.Value {
+									filters1.ResponseSource.MultiselectFilters.Value = append(filters1.ResponseSource.MultiselectFilters.Value, types.StringValue(v))
+								}
+							}
+						}
+						if filtersItem1.MetricsRouteFilterByField != nil {
+							filters1.Route = &tfTypes.MetricsA2aContextIDFilterByField{}
+							if filters1.Route == nil {
+								filters1.Route = &tfTypes.MetricsA2aContextIDFilterByField{}
+							}
+							if filtersItem1.MetricsRouteFilterByField.MetricsRouteFilterByFieldEmptyFilters != nil {
+								filters1.Route.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.Route.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsRouteFilterByField.MetricsRouteFilterByFieldEmptyFilters.Field))
+								filters1.Route.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsRouteFilterByField.MetricsRouteFilterByFieldEmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsRouteFilterByField.MetricsRouteFilterByFieldMultiselectFilters != nil {
+								filters1.Route.MultiselectFilters = &tfTypes.MultiselectFilters{}
+								filters1.Route.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsRouteFilterByField.MetricsRouteFilterByFieldMultiselectFilters.Field))
+								filters1.Route.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsRouteFilterByField.MetricsRouteFilterByFieldMultiselectFilters.Operator))
+								filters1.Route.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem1.MetricsRouteFilterByField.MetricsRouteFilterByFieldMultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsRouteFilterByField.MetricsRouteFilterByFieldMultiselectFilters.Value {
+									filters1.Route.MultiselectFilters.Value = append(filters1.Route.MultiselectFilters.Value, types.StringValue(v))
+								}
+							}
+						}
+						if filtersItem1.MetricsStatusCodeFilterByField != nil {
+							filters1.StatusCode = &tfTypes.MetricsStatusCodeFilterByField{}
+							if filters1.StatusCode == nil {
+								filters1.StatusCode = &tfTypes.MetricsStatusCodeFilterByField{}
+							}
+							if filtersItem1.MetricsStatusCodeFilterByField.MetricsStatusCodeFilterByFieldEmptyFilters != nil {
+								filters1.StatusCode.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.StatusCode.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsStatusCodeFilterByField.MetricsStatusCodeFilterByFieldEmptyFilters.Field))
+								filters1.StatusCode.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsStatusCodeFilterByField.MetricsStatusCodeFilterByFieldEmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsStatusCodeFilterByField.MetricsStatusCodeFilterByFieldMultiselectFilters != nil {
+								filters1.StatusCode.MultiselectFilters = &tfTypes.MetricsStatusCodeFilterByFieldMultiselectFilters{}
+								filters1.StatusCode.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsStatusCodeFilterByField.MetricsStatusCodeFilterByFieldMultiselectFilters.Field))
+								filters1.StatusCode.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsStatusCodeFilterByField.MetricsStatusCodeFilterByFieldMultiselectFilters.Operator))
+								filters1.StatusCode.MultiselectFilters.Value = make([]types.Int64, 0, len(filtersItem1.MetricsStatusCodeFilterByField.MetricsStatusCodeFilterByFieldMultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsStatusCodeFilterByField.MetricsStatusCodeFilterByFieldMultiselectFilters.Value {
+									filters1.StatusCode.MultiselectFilters.Value = append(filters1.StatusCode.MultiselectFilters.Value, types.Int64Value(v))
+								}
+							}
+						}
+						if filtersItem1.MetricsStatusCodeGroupedFilterByField != nil {
+							filters1.StatusCodeGrouped = &tfTypes.MetricsA2aContextIDFilterByField{}
+							if filters1.StatusCodeGrouped == nil {
+								filters1.StatusCodeGrouped = &tfTypes.MetricsA2aContextIDFilterByField{}
+							}
+							if filtersItem1.MetricsStatusCodeGroupedFilterByField.MetricsStatusCodeGroupedFilterByFieldEmptyFilters != nil {
+								filters1.StatusCodeGrouped.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.StatusCodeGrouped.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsStatusCodeGroupedFilterByField.MetricsStatusCodeGroupedFilterByFieldEmptyFilters.Field))
+								filters1.StatusCodeGrouped.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsStatusCodeGroupedFilterByField.MetricsStatusCodeGroupedFilterByFieldEmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsStatusCodeGroupedFilterByField.MetricsStatusCodeGroupedFilterByFieldMultiselectFilters != nil {
+								filters1.StatusCodeGrouped.MultiselectFilters = &tfTypes.MultiselectFilters{}
+								filters1.StatusCodeGrouped.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsStatusCodeGroupedFilterByField.MetricsStatusCodeGroupedFilterByFieldMultiselectFilters.Field))
+								filters1.StatusCodeGrouped.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsStatusCodeGroupedFilterByField.MetricsStatusCodeGroupedFilterByFieldMultiselectFilters.Operator))
+								filters1.StatusCodeGrouped.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem1.MetricsStatusCodeGroupedFilterByField.MetricsStatusCodeGroupedFilterByFieldMultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsStatusCodeGroupedFilterByField.MetricsStatusCodeGroupedFilterByFieldMultiselectFilters.Value {
+									filters1.StatusCodeGrouped.MultiselectFilters.Value = append(filters1.StatusCodeGrouped.MultiselectFilters.Value, types.StringValue(v))
+								}
+							}
+						}
+						if filtersItem1.MetricsUpstreamStatusCodeFilterByField != nil {
+							filters1.UpstreamStatusCode = &tfTypes.MetricsStatusCodeFilterByField{}
+							if filters1.UpstreamStatusCode == nil {
+								filters1.UpstreamStatusCode = &tfTypes.MetricsStatusCodeFilterByField{}
+							}
+							if filtersItem1.MetricsUpstreamStatusCodeFilterByField.MetricsUpstreamStatusCodeFilterByFieldEmptyFilters != nil {
+								filters1.UpstreamStatusCode.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.UpstreamStatusCode.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsUpstreamStatusCodeFilterByField.MetricsUpstreamStatusCodeFilterByFieldEmptyFilters.Field))
+								filters1.UpstreamStatusCode.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsUpstreamStatusCodeFilterByField.MetricsUpstreamStatusCodeFilterByFieldEmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsUpstreamStatusCodeFilterByField.MetricsUpstreamStatusCodeFilterByFieldMultiselectFilters != nil {
+								filters1.UpstreamStatusCode.MultiselectFilters = &tfTypes.MetricsStatusCodeFilterByFieldMultiselectFilters{}
+								filters1.UpstreamStatusCode.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsUpstreamStatusCodeFilterByField.MetricsUpstreamStatusCodeFilterByFieldMultiselectFilters.Field))
+								filters1.UpstreamStatusCode.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsUpstreamStatusCodeFilterByField.MetricsUpstreamStatusCodeFilterByFieldMultiselectFilters.Operator))
+								filters1.UpstreamStatusCode.MultiselectFilters.Value = make([]types.Int64, 0, len(filtersItem1.MetricsUpstreamStatusCodeFilterByField.MetricsUpstreamStatusCodeFilterByFieldMultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsUpstreamStatusCodeFilterByField.MetricsUpstreamStatusCodeFilterByFieldMultiselectFilters.Value {
+									filters1.UpstreamStatusCode.MultiselectFilters.Value = append(filters1.UpstreamStatusCode.MultiselectFilters.Value, types.Int64Value(v))
+								}
+							}
+						}
+						if filtersItem1.MetricsUpstreamStatusCodeGroupedFilterByField != nil {
+							filters1.UpstreamStatusCodeGrouped = &tfTypes.MetricsA2aContextIDFilterByField{}
+							if filters1.UpstreamStatusCodeGrouped == nil {
+								filters1.UpstreamStatusCodeGrouped = &tfTypes.MetricsA2aContextIDFilterByField{}
+							}
+							if filtersItem1.MetricsUpstreamStatusCodeGroupedFilterByField.MetricsUpstreamStatusCodeGroupedFilterByFieldEmptyFilters != nil {
+								filters1.UpstreamStatusCodeGrouped.EmptyFilters = &tfTypes.EmptyFilters{}
+								filters1.UpstreamStatusCodeGrouped.EmptyFilters.Field = types.StringValue(string(filtersItem1.MetricsUpstreamStatusCodeGroupedFilterByField.MetricsUpstreamStatusCodeGroupedFilterByFieldEmptyFilters.Field))
+								filters1.UpstreamStatusCodeGrouped.EmptyFilters.Operator = types.StringValue(string(filtersItem1.MetricsUpstreamStatusCodeGroupedFilterByField.MetricsUpstreamStatusCodeGroupedFilterByFieldEmptyFilters.Operator))
+							}
+							if filtersItem1.MetricsUpstreamStatusCodeGroupedFilterByField.MetricsUpstreamStatusCodeGroupedFilterByFieldMultiselectFilters != nil {
+								filters1.UpstreamStatusCodeGrouped.MultiselectFilters = &tfTypes.MultiselectFilters{}
+								filters1.UpstreamStatusCodeGrouped.MultiselectFilters.Field = types.StringValue(string(filtersItem1.MetricsUpstreamStatusCodeGroupedFilterByField.MetricsUpstreamStatusCodeGroupedFilterByFieldMultiselectFilters.Field))
+								filters1.UpstreamStatusCodeGrouped.MultiselectFilters.Operator = types.StringValue(string(filtersItem1.MetricsUpstreamStatusCodeGroupedFilterByField.MetricsUpstreamStatusCodeGroupedFilterByFieldMultiselectFilters.Operator))
+								filters1.UpstreamStatusCodeGrouped.MultiselectFilters.Value = make([]types.String, 0, len(filtersItem1.MetricsUpstreamStatusCodeGroupedFilterByField.MetricsUpstreamStatusCodeGroupedFilterByFieldMultiselectFilters.Value))
+								for _, v := range filtersItem1.MetricsUpstreamStatusCodeGroupedFilterByField.MetricsUpstreamStatusCodeGroupedFilterByFieldMultiselectFilters.Value {
+									filters1.UpstreamStatusCodeGrouped.MultiselectFilters.Value = append(filters1.UpstreamStatusCodeGrouped.MultiselectFilters.Value, types.StringValue(v))
+								}
+							}
+						}
+
+						tiles.Chart.Definition.Query.AgenticUsage.Filters = append(tiles.Chart.Definition.Query.AgenticUsage.Filters, filters1)
+					}
+					if tilesItem.ChartTile.Definition.Query.AgenticQuery.Granularity != nil {
+						tiles.Chart.Definition.Query.AgenticUsage.Granularity = types.StringValue(string(*tilesItem.ChartTile.Definition.Query.AgenticQuery.Granularity))
+					} else {
+						tiles.Chart.Definition.Query.AgenticUsage.Granularity = types.StringNull()
+					}
+					tiles.Chart.Definition.Query.AgenticUsage.Metrics = make([]types.String, 0, len(tilesItem.ChartTile.Definition.Query.AgenticQuery.Metrics))
+					for _, v := range tilesItem.ChartTile.Definition.Query.AgenticQuery.Metrics {
+						tiles.Chart.Definition.Query.AgenticUsage.Metrics = append(tiles.Chart.Definition.Query.AgenticUsage.Metrics, types.StringValue(string(v)))
+					}
+					if tilesItem.ChartTile.Definition.Query.AgenticQuery.TimeRange != nil {
+						tiles.Chart.Definition.Query.AgenticUsage.TimeRange = &tfTypes.TimeRange{}
+						if tilesItem.ChartTile.Definition.Query.AgenticQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2 != nil {
+							tiles.Chart.Definition.Query.AgenticUsage.TimeRange.Absolute = &tfTypes.MetricsAbsoluteTimeRangeDtoV2{}
+							tiles.Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.End = types.StringPointerValue(typeconvert.TimePointerToStringPointer(tilesItem.ChartTile.Definition.Query.AgenticQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.End))
+							tiles.Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(tilesItem.ChartTile.Definition.Query.AgenticQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Start))
+							tiles.Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.Type = types.StringValue(string(tilesItem.ChartTile.Definition.Query.AgenticQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Type))
+							tiles.Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.Tz = types.StringPointerValue(tilesItem.ChartTile.Definition.Query.AgenticQuery.TimeRange.MetricsAbsoluteTimeRangeDtoV2.Tz)
+						}
+						if tilesItem.ChartTile.Definition.Query.AgenticQuery.TimeRange.MetricsRelativeTimeRangeDtoV2 != nil {
+							tiles.Chart.Definition.Query.AgenticUsage.TimeRange.Relative = &tfTypes.MetricsRelativeTimeRangeDtoV2{}
+							if tilesItem.ChartTile.Definition.Query.AgenticQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.TimeRange != nil {
+								tiles.Chart.Definition.Query.AgenticUsage.TimeRange.Relative.TimeRange = types.StringValue(string(*tilesItem.ChartTile.Definition.Query.AgenticQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.TimeRange))
+							} else {
+								tiles.Chart.Definition.Query.AgenticUsage.TimeRange.Relative.TimeRange = types.StringNull()
+							}
+							tiles.Chart.Definition.Query.AgenticUsage.TimeRange.Relative.Type = types.StringValue(string(tilesItem.ChartTile.Definition.Query.AgenticQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.Type))
+							tiles.Chart.Definition.Query.AgenticUsage.TimeRange.Relative.Tz = types.StringPointerValue(tilesItem.ChartTile.Definition.Query.AgenticQuery.TimeRange.MetricsRelativeTimeRangeDtoV2.Tz)
+						}
+					}
+				}
 				if tilesItem.ChartTile.Definition.Query.LLMQuery != nil {
 					tiles.Chart.Definition.Query.LlmUsage = &tfTypes.AdvancedQuery{}
 					tiles.Chart.Definition.Query.LlmUsage.Datasource = types.StringValue(string(tilesItem.ChartTile.Definition.Query.LLMQuery.Datasource))
@@ -150,19 +759,19 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 					}
 					tiles.Chart.Definition.Query.LlmUsage.Filters = []tfTypes.AllFilterItems{}
 
-					for _, filtersItem1 := range tilesItem.ChartTile.Definition.Query.LLMQuery.Filters {
-						var filters1 tfTypes.AllFilterItems
+					for _, filtersItem2 := range tilesItem.ChartTile.Definition.Query.LLMQuery.Filters {
+						var filters2 tfTypes.AllFilterItems
 
-						filters1.Field = types.StringValue(string(filtersItem1.Field))
-						filters1.Operator = types.StringValue(string(filtersItem1.Operator))
-						if filtersItem1.Value == nil {
-							filters1.Value = jsontypes.NewNormalizedNull()
+						filters2.Field = types.StringValue(string(filtersItem2.Field))
+						filters2.Operator = types.StringValue(string(filtersItem2.Operator))
+						if filtersItem2.Value == nil {
+							filters2.Value = jsontypes.NewNormalizedNull()
 						} else {
-							valueResult2, _ := json.Marshal(filtersItem1.Value)
-							filters1.Value = jsontypes.NewNormalizedValue(string(valueResult2))
+							valueResult2, _ := json.Marshal(filtersItem2.Value)
+							filters2.Value = jsontypes.NewNormalizedValue(string(valueResult2))
 						}
 
-						tiles.Chart.Definition.Query.LlmUsage.Filters = append(tiles.Chart.Definition.Query.LlmUsage.Filters, filters1)
+						tiles.Chart.Definition.Query.LlmUsage.Filters = append(tiles.Chart.Definition.Query.LlmUsage.Filters, filters2)
 					}
 					if tilesItem.ChartTile.Definition.Query.LLMQuery.Granularity != nil {
 						tiles.Chart.Definition.Query.LlmUsage.Granularity = types.StringValue(string(*tilesItem.ChartTile.Definition.Query.LLMQuery.Granularity))
@@ -522,6 +1131,1197 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 					LLMQuery: llmQuery,
 				}
 			}
+			var agenticQuery *shared.AgenticQuery
+			if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage != nil {
+				datasource2 := shared.AgenticQueryDatasource(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Datasource.ValueString())
+				metrics2 := make([]shared.AgenticMetrics, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Metrics))
+				for _, metricsItem2 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Metrics {
+					metrics2 = append(metrics2, shared.AgenticMetrics(metricsItem2.ValueString()))
+				}
+				var dimensions2 []shared.AgenticQueryDimensions
+				if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Dimensions != nil {
+					dimensions2 = make([]shared.AgenticQueryDimensions, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Dimensions))
+					for _, dimensionsItem2 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Dimensions {
+						dimensions2 = append(dimensions2, shared.AgenticQueryDimensions(dimensionsItem2.ValueString()))
+					}
+				}
+				filters2 := make([]shared.AgenticFilters, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters))
+				for filtersItem := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters {
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aContextID != nil {
+						var metricsA2aContextIDFilterByField shared.MetricsA2aContextIDFilterByField
+						var multiselectFilters *shared.MultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aContextID.MultiselectFilters != nil {
+							operator2 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aContextID.MultiselectFilters.Operator.ValueString())
+							value2 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aContextID.MultiselectFilters.Value))
+							for valueIndex := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aContextID.MultiselectFilters.Value {
+								value2 = append(value2, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aContextID.MultiselectFilters.Value[valueIndex].ValueString())
+							}
+							field2 := shared.MetricsA2aContextIDFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aContextID.MultiselectFilters.Field.ValueString())
+							multiselectFilters = &shared.MultiselectFilters{
+								Operator: operator2,
+								Value:    value2,
+								Field:    field2,
+							}
+						}
+						if multiselectFilters != nil {
+							metricsA2aContextIDFilterByField = shared.MetricsA2aContextIDFilterByField{
+								MultiselectFilters: multiselectFilters,
+							}
+						}
+						var emptyFilters *shared.EmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aContextID.EmptyFilters != nil {
+							operator3 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aContextID.EmptyFilters.Operator.ValueString())
+							field3 := shared.MetricsA2aContextIDFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aContextID.EmptyFilters.Field.ValueString())
+							emptyFilters = &shared.EmptyFilters{
+								Operator: operator3,
+								Field:    field3,
+							}
+						}
+						if emptyFilters != nil {
+							metricsA2aContextIDFilterByField = shared.MetricsA2aContextIDFilterByField{
+								EmptyFilters: emptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsA2aContextIDFilterByField: &metricsA2aContextIDFilterByField,
+						})
+					}
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aError != nil {
+						var metricsA2aErrorFilterByField shared.MetricsA2aErrorFilterByField
+						var metricsA2aErrorFilterByFieldMultiselectFilters *shared.MetricsA2aErrorFilterByFieldMultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aError.MultiselectFilters != nil {
+							operator4 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aError.MultiselectFilters.Operator.ValueString())
+							value3 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aError.MultiselectFilters.Value))
+							for valueIndex1 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aError.MultiselectFilters.Value {
+								value3 = append(value3, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aError.MultiselectFilters.Value[valueIndex1].ValueString())
+							}
+							field4 := shared.MetricsA2aErrorFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aError.MultiselectFilters.Field.ValueString())
+							metricsA2aErrorFilterByFieldMultiselectFilters = &shared.MetricsA2aErrorFilterByFieldMultiselectFilters{
+								Operator: operator4,
+								Value:    value3,
+								Field:    field4,
+							}
+						}
+						if metricsA2aErrorFilterByFieldMultiselectFilters != nil {
+							metricsA2aErrorFilterByField = shared.MetricsA2aErrorFilterByField{
+								MetricsA2aErrorFilterByFieldMultiselectFilters: metricsA2aErrorFilterByFieldMultiselectFilters,
+							}
+						}
+						var metricsA2aErrorFilterByFieldEmptyFilters *shared.MetricsA2aErrorFilterByFieldEmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aError.EmptyFilters != nil {
+							operator5 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aError.EmptyFilters.Operator.ValueString())
+							field5 := shared.MetricsA2aErrorFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aError.EmptyFilters.Field.ValueString())
+							metricsA2aErrorFilterByFieldEmptyFilters = &shared.MetricsA2aErrorFilterByFieldEmptyFilters{
+								Operator: operator5,
+								Field:    field5,
+							}
+						}
+						if metricsA2aErrorFilterByFieldEmptyFilters != nil {
+							metricsA2aErrorFilterByField = shared.MetricsA2aErrorFilterByField{
+								MetricsA2aErrorFilterByFieldEmptyFilters: metricsA2aErrorFilterByFieldEmptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsA2aErrorFilterByField: &metricsA2aErrorFilterByField,
+						})
+					}
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aMethod != nil {
+						var metricsA2aMethodFilterByField shared.MetricsA2aMethodFilterByField
+						var metricsA2aMethodFilterByFieldMultiselectFilters *shared.MetricsA2aMethodFilterByFieldMultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aMethod.MultiselectFilters != nil {
+							operator6 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aMethod.MultiselectFilters.Operator.ValueString())
+							value4 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aMethod.MultiselectFilters.Value))
+							for valueIndex2 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aMethod.MultiselectFilters.Value {
+								value4 = append(value4, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aMethod.MultiselectFilters.Value[valueIndex2].ValueString())
+							}
+							field6 := shared.MetricsA2aMethodFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aMethod.MultiselectFilters.Field.ValueString())
+							metricsA2aMethodFilterByFieldMultiselectFilters = &shared.MetricsA2aMethodFilterByFieldMultiselectFilters{
+								Operator: operator6,
+								Value:    value4,
+								Field:    field6,
+							}
+						}
+						if metricsA2aMethodFilterByFieldMultiselectFilters != nil {
+							metricsA2aMethodFilterByField = shared.MetricsA2aMethodFilterByField{
+								MetricsA2aMethodFilterByFieldMultiselectFilters: metricsA2aMethodFilterByFieldMultiselectFilters,
+							}
+						}
+						var metricsA2aMethodFilterByFieldEmptyFilters *shared.MetricsA2aMethodFilterByFieldEmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aMethod.EmptyFilters != nil {
+							operator7 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aMethod.EmptyFilters.Operator.ValueString())
+							field7 := shared.MetricsA2aMethodFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aMethod.EmptyFilters.Field.ValueString())
+							metricsA2aMethodFilterByFieldEmptyFilters = &shared.MetricsA2aMethodFilterByFieldEmptyFilters{
+								Operator: operator7,
+								Field:    field7,
+							}
+						}
+						if metricsA2aMethodFilterByFieldEmptyFilters != nil {
+							metricsA2aMethodFilterByField = shared.MetricsA2aMethodFilterByField{
+								MetricsA2aMethodFilterByFieldEmptyFilters: metricsA2aMethodFilterByFieldEmptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsA2aMethodFilterByField: &metricsA2aMethodFilterByField,
+						})
+					}
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aTaskID != nil {
+						var metricsA2aTaskIDFilterByField shared.MetricsA2aTaskIDFilterByField
+						var metricsA2aTaskIDFilterByFieldMultiselectFilters *shared.MetricsA2aTaskIDFilterByFieldMultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aTaskID.MultiselectFilters != nil {
+							operator8 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aTaskID.MultiselectFilters.Operator.ValueString())
+							value5 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aTaskID.MultiselectFilters.Value))
+							for valueIndex3 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aTaskID.MultiselectFilters.Value {
+								value5 = append(value5, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aTaskID.MultiselectFilters.Value[valueIndex3].ValueString())
+							}
+							field8 := shared.MetricsA2aTaskIDFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aTaskID.MultiselectFilters.Field.ValueString())
+							metricsA2aTaskIDFilterByFieldMultiselectFilters = &shared.MetricsA2aTaskIDFilterByFieldMultiselectFilters{
+								Operator: operator8,
+								Value:    value5,
+								Field:    field8,
+							}
+						}
+						if metricsA2aTaskIDFilterByFieldMultiselectFilters != nil {
+							metricsA2aTaskIDFilterByField = shared.MetricsA2aTaskIDFilterByField{
+								MetricsA2aTaskIDFilterByFieldMultiselectFilters: metricsA2aTaskIDFilterByFieldMultiselectFilters,
+							}
+						}
+						var metricsA2aTaskIDFilterByFieldEmptyFilters *shared.MetricsA2aTaskIDFilterByFieldEmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aTaskID.EmptyFilters != nil {
+							operator9 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aTaskID.EmptyFilters.Operator.ValueString())
+							field9 := shared.MetricsA2aTaskIDFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].A2aTaskID.EmptyFilters.Field.ValueString())
+							metricsA2aTaskIDFilterByFieldEmptyFilters = &shared.MetricsA2aTaskIDFilterByFieldEmptyFilters{
+								Operator: operator9,
+								Field:    field9,
+							}
+						}
+						if metricsA2aTaskIDFilterByFieldEmptyFilters != nil {
+							metricsA2aTaskIDFilterByField = shared.MetricsA2aTaskIDFilterByField{
+								MetricsA2aTaskIDFilterByFieldEmptyFilters: metricsA2aTaskIDFilterByFieldEmptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsA2aTaskIDFilterByField: &metricsA2aTaskIDFilterByField,
+						})
+					}
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].API != nil {
+						var metricsAPIFilterByField shared.MetricsAPIFilterByField
+						var metricsAPIFilterByFieldMultiselectFilters *shared.MetricsAPIFilterByFieldMultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].API.MultiselectFilters != nil {
+							operator10 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].API.MultiselectFilters.Operator.ValueString())
+							value6 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].API.MultiselectFilters.Value))
+							for valueIndex4 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].API.MultiselectFilters.Value {
+								value6 = append(value6, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].API.MultiselectFilters.Value[valueIndex4].ValueString())
+							}
+							field10 := shared.MetricsAPIFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].API.MultiselectFilters.Field.ValueString())
+							metricsAPIFilterByFieldMultiselectFilters = &shared.MetricsAPIFilterByFieldMultiselectFilters{
+								Operator: operator10,
+								Value:    value6,
+								Field:    field10,
+							}
+						}
+						if metricsAPIFilterByFieldMultiselectFilters != nil {
+							metricsAPIFilterByField = shared.MetricsAPIFilterByField{
+								MetricsAPIFilterByFieldMultiselectFilters: metricsAPIFilterByFieldMultiselectFilters,
+							}
+						}
+						var metricsAPIFilterByFieldEmptyFilters *shared.MetricsAPIFilterByFieldEmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].API.EmptyFilters != nil {
+							operator11 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].API.EmptyFilters.Operator.ValueString())
+							field11 := shared.MetricsAPIFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].API.EmptyFilters.Field.ValueString())
+							metricsAPIFilterByFieldEmptyFilters = &shared.MetricsAPIFilterByFieldEmptyFilters{
+								Operator: operator11,
+								Field:    field11,
+							}
+						}
+						if metricsAPIFilterByFieldEmptyFilters != nil {
+							metricsAPIFilterByField = shared.MetricsAPIFilterByField{
+								MetricsAPIFilterByFieldEmptyFilters: metricsAPIFilterByFieldEmptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsAPIFilterByField: &metricsAPIFilterByField,
+						})
+					}
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIPackage != nil {
+						var metricsAPIPackageFilterByField shared.MetricsAPIPackageFilterByField
+						var metricsAPIPackageFilterByFieldMultiselectFilters *shared.MetricsAPIPackageFilterByFieldMultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIPackage.MultiselectFilters != nil {
+							operator12 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIPackage.MultiselectFilters.Operator.ValueString())
+							value7 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIPackage.MultiselectFilters.Value))
+							for valueIndex5 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIPackage.MultiselectFilters.Value {
+								value7 = append(value7, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIPackage.MultiselectFilters.Value[valueIndex5].ValueString())
+							}
+							field12 := shared.MetricsAPIPackageFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIPackage.MultiselectFilters.Field.ValueString())
+							metricsAPIPackageFilterByFieldMultiselectFilters = &shared.MetricsAPIPackageFilterByFieldMultiselectFilters{
+								Operator: operator12,
+								Value:    value7,
+								Field:    field12,
+							}
+						}
+						if metricsAPIPackageFilterByFieldMultiselectFilters != nil {
+							metricsAPIPackageFilterByField = shared.MetricsAPIPackageFilterByField{
+								MetricsAPIPackageFilterByFieldMultiselectFilters: metricsAPIPackageFilterByFieldMultiselectFilters,
+							}
+						}
+						var metricsAPIPackageFilterByFieldEmptyFilters *shared.MetricsAPIPackageFilterByFieldEmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIPackage.EmptyFilters != nil {
+							operator13 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIPackage.EmptyFilters.Operator.ValueString())
+							field13 := shared.MetricsAPIPackageFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIPackage.EmptyFilters.Field.ValueString())
+							metricsAPIPackageFilterByFieldEmptyFilters = &shared.MetricsAPIPackageFilterByFieldEmptyFilters{
+								Operator: operator13,
+								Field:    field13,
+							}
+						}
+						if metricsAPIPackageFilterByFieldEmptyFilters != nil {
+							metricsAPIPackageFilterByField = shared.MetricsAPIPackageFilterByField{
+								MetricsAPIPackageFilterByFieldEmptyFilters: metricsAPIPackageFilterByFieldEmptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsAPIPackageFilterByField: &metricsAPIPackageFilterByField,
+						})
+					}
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIProduct != nil {
+						var metricsAPIProductFilterByField shared.MetricsAPIProductFilterByField
+						var metricsAPIProductFilterByFieldMultiselectFilters *shared.MetricsAPIProductFilterByFieldMultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIProduct.MultiselectFilters != nil {
+							operator14 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIProduct.MultiselectFilters.Operator.ValueString())
+							value8 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIProduct.MultiselectFilters.Value))
+							for valueIndex6 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIProduct.MultiselectFilters.Value {
+								value8 = append(value8, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIProduct.MultiselectFilters.Value[valueIndex6].ValueString())
+							}
+							field14 := shared.MetricsAPIProductFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIProduct.MultiselectFilters.Field.ValueString())
+							metricsAPIProductFilterByFieldMultiselectFilters = &shared.MetricsAPIProductFilterByFieldMultiselectFilters{
+								Operator: operator14,
+								Value:    value8,
+								Field:    field14,
+							}
+						}
+						if metricsAPIProductFilterByFieldMultiselectFilters != nil {
+							metricsAPIProductFilterByField = shared.MetricsAPIProductFilterByField{
+								MetricsAPIProductFilterByFieldMultiselectFilters: metricsAPIProductFilterByFieldMultiselectFilters,
+							}
+						}
+						var metricsAPIProductFilterByFieldEmptyFilters *shared.MetricsAPIProductFilterByFieldEmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIProduct.EmptyFilters != nil {
+							operator15 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIProduct.EmptyFilters.Operator.ValueString())
+							field15 := shared.MetricsAPIProductFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIProduct.EmptyFilters.Field.ValueString())
+							metricsAPIProductFilterByFieldEmptyFilters = &shared.MetricsAPIProductFilterByFieldEmptyFilters{
+								Operator: operator15,
+								Field:    field15,
+							}
+						}
+						if metricsAPIProductFilterByFieldEmptyFilters != nil {
+							metricsAPIProductFilterByField = shared.MetricsAPIProductFilterByField{
+								MetricsAPIProductFilterByFieldEmptyFilters: metricsAPIProductFilterByFieldEmptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsAPIProductFilterByField: &metricsAPIProductFilterByField,
+						})
+					}
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIProductVersion != nil {
+						var metricsAPIProductVersionFilterByField shared.MetricsAPIProductVersionFilterByField
+						var metricsAPIProductVersionFilterByFieldMultiselectFilters *shared.MetricsAPIProductVersionFilterByFieldMultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIProductVersion.MultiselectFilters != nil {
+							operator16 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIProductVersion.MultiselectFilters.Operator.ValueString())
+							value9 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIProductVersion.MultiselectFilters.Value))
+							for valueIndex7 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIProductVersion.MultiselectFilters.Value {
+								value9 = append(value9, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIProductVersion.MultiselectFilters.Value[valueIndex7].ValueString())
+							}
+							field16 := shared.MetricsAPIProductVersionFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIProductVersion.MultiselectFilters.Field.ValueString())
+							metricsAPIProductVersionFilterByFieldMultiselectFilters = &shared.MetricsAPIProductVersionFilterByFieldMultiselectFilters{
+								Operator: operator16,
+								Value:    value9,
+								Field:    field16,
+							}
+						}
+						if metricsAPIProductVersionFilterByFieldMultiselectFilters != nil {
+							metricsAPIProductVersionFilterByField = shared.MetricsAPIProductVersionFilterByField{
+								MetricsAPIProductVersionFilterByFieldMultiselectFilters: metricsAPIProductVersionFilterByFieldMultiselectFilters,
+							}
+						}
+						var metricsAPIProductVersionFilterByFieldEmptyFilters *shared.MetricsAPIProductVersionFilterByFieldEmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIProductVersion.EmptyFilters != nil {
+							operator17 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIProductVersion.EmptyFilters.Operator.ValueString())
+							field17 := shared.MetricsAPIProductVersionFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].APIProductVersion.EmptyFilters.Field.ValueString())
+							metricsAPIProductVersionFilterByFieldEmptyFilters = &shared.MetricsAPIProductVersionFilterByFieldEmptyFilters{
+								Operator: operator17,
+								Field:    field17,
+							}
+						}
+						if metricsAPIProductVersionFilterByFieldEmptyFilters != nil {
+							metricsAPIProductVersionFilterByField = shared.MetricsAPIProductVersionFilterByField{
+								MetricsAPIProductVersionFilterByFieldEmptyFilters: metricsAPIProductVersionFilterByFieldEmptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsAPIProductVersionFilterByField: &metricsAPIProductVersionFilterByField,
+						})
+					}
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Application != nil {
+						var metricsApplicationFilterByField shared.MetricsApplicationFilterByField
+						var metricsApplicationFilterByFieldMultiselectFilters *shared.MetricsApplicationFilterByFieldMultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Application.MultiselectFilters != nil {
+							operator18 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Application.MultiselectFilters.Operator.ValueString())
+							value10 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Application.MultiselectFilters.Value))
+							for valueIndex8 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Application.MultiselectFilters.Value {
+								value10 = append(value10, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Application.MultiselectFilters.Value[valueIndex8].ValueString())
+							}
+							field18 := shared.MetricsApplicationFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Application.MultiselectFilters.Field.ValueString())
+							metricsApplicationFilterByFieldMultiselectFilters = &shared.MetricsApplicationFilterByFieldMultiselectFilters{
+								Operator: operator18,
+								Value:    value10,
+								Field:    field18,
+							}
+						}
+						if metricsApplicationFilterByFieldMultiselectFilters != nil {
+							metricsApplicationFilterByField = shared.MetricsApplicationFilterByField{
+								MetricsApplicationFilterByFieldMultiselectFilters: metricsApplicationFilterByFieldMultiselectFilters,
+							}
+						}
+						var metricsApplicationFilterByFieldEmptyFilters *shared.MetricsApplicationFilterByFieldEmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Application.EmptyFilters != nil {
+							operator19 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Application.EmptyFilters.Operator.ValueString())
+							field19 := shared.MetricsApplicationFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Application.EmptyFilters.Field.ValueString())
+							metricsApplicationFilterByFieldEmptyFilters = &shared.MetricsApplicationFilterByFieldEmptyFilters{
+								Operator: operator19,
+								Field:    field19,
+							}
+						}
+						if metricsApplicationFilterByFieldEmptyFilters != nil {
+							metricsApplicationFilterByField = shared.MetricsApplicationFilterByField{
+								MetricsApplicationFilterByFieldEmptyFilters: metricsApplicationFilterByFieldEmptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsApplicationFilterByField: &metricsApplicationFilterByField,
+						})
+					}
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Consumer != nil {
+						var metricsConsumerFilterByField shared.MetricsConsumerFilterByField
+						var metricsConsumerFilterByFieldMultiselectFilters *shared.MetricsConsumerFilterByFieldMultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Consumer.MultiselectFilters != nil {
+							operator20 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Consumer.MultiselectFilters.Operator.ValueString())
+							value11 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Consumer.MultiselectFilters.Value))
+							for valueIndex9 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Consumer.MultiselectFilters.Value {
+								value11 = append(value11, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Consumer.MultiselectFilters.Value[valueIndex9].ValueString())
+							}
+							field20 := shared.MetricsConsumerFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Consumer.MultiselectFilters.Field.ValueString())
+							metricsConsumerFilterByFieldMultiselectFilters = &shared.MetricsConsumerFilterByFieldMultiselectFilters{
+								Operator: operator20,
+								Value:    value11,
+								Field:    field20,
+							}
+						}
+						if metricsConsumerFilterByFieldMultiselectFilters != nil {
+							metricsConsumerFilterByField = shared.MetricsConsumerFilterByField{
+								MetricsConsumerFilterByFieldMultiselectFilters: metricsConsumerFilterByFieldMultiselectFilters,
+							}
+						}
+						var metricsConsumerFilterByFieldEmptyFilters *shared.MetricsConsumerFilterByFieldEmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Consumer.EmptyFilters != nil {
+							operator21 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Consumer.EmptyFilters.Operator.ValueString())
+							field21 := shared.MetricsConsumerFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Consumer.EmptyFilters.Field.ValueString())
+							metricsConsumerFilterByFieldEmptyFilters = &shared.MetricsConsumerFilterByFieldEmptyFilters{
+								Operator: operator21,
+								Field:    field21,
+							}
+						}
+						if metricsConsumerFilterByFieldEmptyFilters != nil {
+							metricsConsumerFilterByField = shared.MetricsConsumerFilterByField{
+								MetricsConsumerFilterByFieldEmptyFilters: metricsConsumerFilterByFieldEmptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsConsumerFilterByField: &metricsConsumerFilterByField,
+						})
+					}
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ControlPlane != nil {
+						var metricsControlPlaneFilterByField shared.MetricsControlPlaneFilterByField
+						var metricsControlPlaneFilterByFieldMultiselectFilters *shared.MetricsControlPlaneFilterByFieldMultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ControlPlane.MultiselectFilters != nil {
+							operator22 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ControlPlane.MultiselectFilters.Operator.ValueString())
+							value12 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ControlPlane.MultiselectFilters.Value))
+							for valueIndex10 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ControlPlane.MultiselectFilters.Value {
+								value12 = append(value12, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ControlPlane.MultiselectFilters.Value[valueIndex10].ValueString())
+							}
+							field22 := shared.MetricsControlPlaneFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ControlPlane.MultiselectFilters.Field.ValueString())
+							metricsControlPlaneFilterByFieldMultiselectFilters = &shared.MetricsControlPlaneFilterByFieldMultiselectFilters{
+								Operator: operator22,
+								Value:    value12,
+								Field:    field22,
+							}
+						}
+						if metricsControlPlaneFilterByFieldMultiselectFilters != nil {
+							metricsControlPlaneFilterByField = shared.MetricsControlPlaneFilterByField{
+								MetricsControlPlaneFilterByFieldMultiselectFilters: metricsControlPlaneFilterByFieldMultiselectFilters,
+							}
+						}
+						var metricsControlPlaneFilterByFieldEmptyFilters *shared.MetricsControlPlaneFilterByFieldEmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ControlPlane.EmptyFilters != nil {
+							operator23 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ControlPlane.EmptyFilters.Operator.ValueString())
+							field23 := shared.MetricsControlPlaneFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ControlPlane.EmptyFilters.Field.ValueString())
+							metricsControlPlaneFilterByFieldEmptyFilters = &shared.MetricsControlPlaneFilterByFieldEmptyFilters{
+								Operator: operator23,
+								Field:    field23,
+							}
+						}
+						if metricsControlPlaneFilterByFieldEmptyFilters != nil {
+							metricsControlPlaneFilterByField = shared.MetricsControlPlaneFilterByField{
+								MetricsControlPlaneFilterByFieldEmptyFilters: metricsControlPlaneFilterByFieldEmptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsControlPlaneFilterByField: &metricsControlPlaneFilterByField,
+						})
+					}
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ControlPlaneGroup != nil {
+						var metricsControlPlaneGroupFilterByField shared.MetricsControlPlaneGroupFilterByField
+						var metricsControlPlaneGroupFilterByFieldMultiselectFilters *shared.MetricsControlPlaneGroupFilterByFieldMultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ControlPlaneGroup.MultiselectFilters != nil {
+							operator24 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ControlPlaneGroup.MultiselectFilters.Operator.ValueString())
+							value13 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ControlPlaneGroup.MultiselectFilters.Value))
+							for valueIndex11 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ControlPlaneGroup.MultiselectFilters.Value {
+								value13 = append(value13, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ControlPlaneGroup.MultiselectFilters.Value[valueIndex11].ValueString())
+							}
+							field24 := shared.MetricsControlPlaneGroupFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ControlPlaneGroup.MultiselectFilters.Field.ValueString())
+							metricsControlPlaneGroupFilterByFieldMultiselectFilters = &shared.MetricsControlPlaneGroupFilterByFieldMultiselectFilters{
+								Operator: operator24,
+								Value:    value13,
+								Field:    field24,
+							}
+						}
+						if metricsControlPlaneGroupFilterByFieldMultiselectFilters != nil {
+							metricsControlPlaneGroupFilterByField = shared.MetricsControlPlaneGroupFilterByField{
+								MetricsControlPlaneGroupFilterByFieldMultiselectFilters: metricsControlPlaneGroupFilterByFieldMultiselectFilters,
+							}
+						}
+						var metricsControlPlaneGroupFilterByFieldEmptyFilters *shared.MetricsControlPlaneGroupFilterByFieldEmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ControlPlaneGroup.EmptyFilters != nil {
+							operator25 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ControlPlaneGroup.EmptyFilters.Operator.ValueString())
+							field25 := shared.MetricsControlPlaneGroupFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ControlPlaneGroup.EmptyFilters.Field.ValueString())
+							metricsControlPlaneGroupFilterByFieldEmptyFilters = &shared.MetricsControlPlaneGroupFilterByFieldEmptyFilters{
+								Operator: operator25,
+								Field:    field25,
+							}
+						}
+						if metricsControlPlaneGroupFilterByFieldEmptyFilters != nil {
+							metricsControlPlaneGroupFilterByField = shared.MetricsControlPlaneGroupFilterByField{
+								MetricsControlPlaneGroupFilterByFieldEmptyFilters: metricsControlPlaneGroupFilterByFieldEmptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsControlPlaneGroupFilterByField: &metricsControlPlaneGroupFilterByField,
+						})
+					}
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].CountryCode != nil {
+						var metricsCountryCodeFilterByField shared.MetricsCountryCodeFilterByField
+						var metricsCountryCodeFilterByFieldMultiselectFilters *shared.MetricsCountryCodeFilterByFieldMultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].CountryCode.MultiselectFilters != nil {
+							operator26 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].CountryCode.MultiselectFilters.Operator.ValueString())
+							value14 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].CountryCode.MultiselectFilters.Value))
+							for valueIndex12 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].CountryCode.MultiselectFilters.Value {
+								value14 = append(value14, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].CountryCode.MultiselectFilters.Value[valueIndex12].ValueString())
+							}
+							field26 := shared.MetricsCountryCodeFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].CountryCode.MultiselectFilters.Field.ValueString())
+							metricsCountryCodeFilterByFieldMultiselectFilters = &shared.MetricsCountryCodeFilterByFieldMultiselectFilters{
+								Operator: operator26,
+								Value:    value14,
+								Field:    field26,
+							}
+						}
+						if metricsCountryCodeFilterByFieldMultiselectFilters != nil {
+							metricsCountryCodeFilterByField = shared.MetricsCountryCodeFilterByField{
+								MetricsCountryCodeFilterByFieldMultiselectFilters: metricsCountryCodeFilterByFieldMultiselectFilters,
+							}
+						}
+						var metricsCountryCodeFilterByFieldEmptyFilters *shared.MetricsCountryCodeFilterByFieldEmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].CountryCode.EmptyFilters != nil {
+							operator27 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].CountryCode.EmptyFilters.Operator.ValueString())
+							field27 := shared.MetricsCountryCodeFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].CountryCode.EmptyFilters.Field.ValueString())
+							metricsCountryCodeFilterByFieldEmptyFilters = &shared.MetricsCountryCodeFilterByFieldEmptyFilters{
+								Operator: operator27,
+								Field:    field27,
+							}
+						}
+						if metricsCountryCodeFilterByFieldEmptyFilters != nil {
+							metricsCountryCodeFilterByField = shared.MetricsCountryCodeFilterByField{
+								MetricsCountryCodeFilterByFieldEmptyFilters: metricsCountryCodeFilterByFieldEmptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsCountryCodeFilterByField: &metricsCountryCodeFilterByField,
+						})
+					}
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].DataPlaneNode != nil {
+						var metricsDataPlaneNodeFilterByField shared.MetricsDataPlaneNodeFilterByField
+						var metricsDataPlaneNodeFilterByFieldMultiselectFilters *shared.MetricsDataPlaneNodeFilterByFieldMultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].DataPlaneNode.MultiselectFilters != nil {
+							operator28 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].DataPlaneNode.MultiselectFilters.Operator.ValueString())
+							value15 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].DataPlaneNode.MultiselectFilters.Value))
+							for valueIndex13 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].DataPlaneNode.MultiselectFilters.Value {
+								value15 = append(value15, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].DataPlaneNode.MultiselectFilters.Value[valueIndex13].ValueString())
+							}
+							field28 := shared.MetricsDataPlaneNodeFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].DataPlaneNode.MultiselectFilters.Field.ValueString())
+							metricsDataPlaneNodeFilterByFieldMultiselectFilters = &shared.MetricsDataPlaneNodeFilterByFieldMultiselectFilters{
+								Operator: operator28,
+								Value:    value15,
+								Field:    field28,
+							}
+						}
+						if metricsDataPlaneNodeFilterByFieldMultiselectFilters != nil {
+							metricsDataPlaneNodeFilterByField = shared.MetricsDataPlaneNodeFilterByField{
+								MetricsDataPlaneNodeFilterByFieldMultiselectFilters: metricsDataPlaneNodeFilterByFieldMultiselectFilters,
+							}
+						}
+						var metricsDataPlaneNodeFilterByFieldEmptyFilters *shared.MetricsDataPlaneNodeFilterByFieldEmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].DataPlaneNode.EmptyFilters != nil {
+							operator29 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].DataPlaneNode.EmptyFilters.Operator.ValueString())
+							field29 := shared.MetricsDataPlaneNodeFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].DataPlaneNode.EmptyFilters.Field.ValueString())
+							metricsDataPlaneNodeFilterByFieldEmptyFilters = &shared.MetricsDataPlaneNodeFilterByFieldEmptyFilters{
+								Operator: operator29,
+								Field:    field29,
+							}
+						}
+						if metricsDataPlaneNodeFilterByFieldEmptyFilters != nil {
+							metricsDataPlaneNodeFilterByField = shared.MetricsDataPlaneNodeFilterByField{
+								MetricsDataPlaneNodeFilterByFieldEmptyFilters: metricsDataPlaneNodeFilterByFieldEmptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsDataPlaneNodeFilterByField: &metricsDataPlaneNodeFilterByField,
+						})
+					}
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].DataPlaneNodeVersion != nil {
+						var metricsDataPlaneNodeVersionFilterByField shared.MetricsDataPlaneNodeVersionFilterByField
+						var metricsDataPlaneNodeVersionFilterByFieldMultiselectFilters *shared.MetricsDataPlaneNodeVersionFilterByFieldMultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].DataPlaneNodeVersion.MultiselectFilters != nil {
+							operator30 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].DataPlaneNodeVersion.MultiselectFilters.Operator.ValueString())
+							value16 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].DataPlaneNodeVersion.MultiselectFilters.Value))
+							for valueIndex14 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].DataPlaneNodeVersion.MultiselectFilters.Value {
+								value16 = append(value16, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].DataPlaneNodeVersion.MultiselectFilters.Value[valueIndex14].ValueString())
+							}
+							field30 := shared.MetricsDataPlaneNodeVersionFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].DataPlaneNodeVersion.MultiselectFilters.Field.ValueString())
+							metricsDataPlaneNodeVersionFilterByFieldMultiselectFilters = &shared.MetricsDataPlaneNodeVersionFilterByFieldMultiselectFilters{
+								Operator: operator30,
+								Value:    value16,
+								Field:    field30,
+							}
+						}
+						if metricsDataPlaneNodeVersionFilterByFieldMultiselectFilters != nil {
+							metricsDataPlaneNodeVersionFilterByField = shared.MetricsDataPlaneNodeVersionFilterByField{
+								MetricsDataPlaneNodeVersionFilterByFieldMultiselectFilters: metricsDataPlaneNodeVersionFilterByFieldMultiselectFilters,
+							}
+						}
+						var metricsDataPlaneNodeVersionFilterByFieldEmptyFilters *shared.MetricsDataPlaneNodeVersionFilterByFieldEmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].DataPlaneNodeVersion.EmptyFilters != nil {
+							operator31 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].DataPlaneNodeVersion.EmptyFilters.Operator.ValueString())
+							field31 := shared.MetricsDataPlaneNodeVersionFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].DataPlaneNodeVersion.EmptyFilters.Field.ValueString())
+							metricsDataPlaneNodeVersionFilterByFieldEmptyFilters = &shared.MetricsDataPlaneNodeVersionFilterByFieldEmptyFilters{
+								Operator: operator31,
+								Field:    field31,
+							}
+						}
+						if metricsDataPlaneNodeVersionFilterByFieldEmptyFilters != nil {
+							metricsDataPlaneNodeVersionFilterByField = shared.MetricsDataPlaneNodeVersionFilterByField{
+								MetricsDataPlaneNodeVersionFilterByFieldEmptyFilters: metricsDataPlaneNodeVersionFilterByFieldEmptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsDataPlaneNodeVersionFilterByField: &metricsDataPlaneNodeVersionFilterByField,
+						})
+					}
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].GatewayService != nil {
+						var metricsGatewayServiceFilterByField shared.MetricsGatewayServiceFilterByField
+						var metricsGatewayServiceFilterByFieldMultiselectFilters *shared.MetricsGatewayServiceFilterByFieldMultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].GatewayService.MultiselectFilters != nil {
+							operator32 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].GatewayService.MultiselectFilters.Operator.ValueString())
+							value17 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].GatewayService.MultiselectFilters.Value))
+							for valueIndex15 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].GatewayService.MultiselectFilters.Value {
+								value17 = append(value17, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].GatewayService.MultiselectFilters.Value[valueIndex15].ValueString())
+							}
+							field32 := shared.MetricsGatewayServiceFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].GatewayService.MultiselectFilters.Field.ValueString())
+							metricsGatewayServiceFilterByFieldMultiselectFilters = &shared.MetricsGatewayServiceFilterByFieldMultiselectFilters{
+								Operator: operator32,
+								Value:    value17,
+								Field:    field32,
+							}
+						}
+						if metricsGatewayServiceFilterByFieldMultiselectFilters != nil {
+							metricsGatewayServiceFilterByField = shared.MetricsGatewayServiceFilterByField{
+								MetricsGatewayServiceFilterByFieldMultiselectFilters: metricsGatewayServiceFilterByFieldMultiselectFilters,
+							}
+						}
+						var metricsGatewayServiceFilterByFieldEmptyFilters *shared.MetricsGatewayServiceFilterByFieldEmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].GatewayService.EmptyFilters != nil {
+							operator33 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].GatewayService.EmptyFilters.Operator.ValueString())
+							field33 := shared.MetricsGatewayServiceFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].GatewayService.EmptyFilters.Field.ValueString())
+							metricsGatewayServiceFilterByFieldEmptyFilters = &shared.MetricsGatewayServiceFilterByFieldEmptyFilters{
+								Operator: operator33,
+								Field:    field33,
+							}
+						}
+						if metricsGatewayServiceFilterByFieldEmptyFilters != nil {
+							metricsGatewayServiceFilterByField = shared.MetricsGatewayServiceFilterByField{
+								MetricsGatewayServiceFilterByFieldEmptyFilters: metricsGatewayServiceFilterByFieldEmptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsGatewayServiceFilterByField: &metricsGatewayServiceFilterByField,
+						})
+					}
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpError != nil {
+						var metricsMcpErrorFilterByField shared.MetricsMcpErrorFilterByField
+						var metricsMcpErrorFilterByFieldMultiselectFilters *shared.MetricsMcpErrorFilterByFieldMultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpError.MultiselectFilters != nil {
+							operator34 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpError.MultiselectFilters.Operator.ValueString())
+							value18 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpError.MultiselectFilters.Value))
+							for valueIndex16 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpError.MultiselectFilters.Value {
+								value18 = append(value18, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpError.MultiselectFilters.Value[valueIndex16].ValueString())
+							}
+							field34 := shared.MetricsMcpErrorFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpError.MultiselectFilters.Field.ValueString())
+							metricsMcpErrorFilterByFieldMultiselectFilters = &shared.MetricsMcpErrorFilterByFieldMultiselectFilters{
+								Operator: operator34,
+								Value:    value18,
+								Field:    field34,
+							}
+						}
+						if metricsMcpErrorFilterByFieldMultiselectFilters != nil {
+							metricsMcpErrorFilterByField = shared.MetricsMcpErrorFilterByField{
+								MetricsMcpErrorFilterByFieldMultiselectFilters: metricsMcpErrorFilterByFieldMultiselectFilters,
+							}
+						}
+						var metricsMcpErrorFilterByFieldEmptyFilters *shared.MetricsMcpErrorFilterByFieldEmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpError.EmptyFilters != nil {
+							operator35 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpError.EmptyFilters.Operator.ValueString())
+							field35 := shared.MetricsMcpErrorFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpError.EmptyFilters.Field.ValueString())
+							metricsMcpErrorFilterByFieldEmptyFilters = &shared.MetricsMcpErrorFilterByFieldEmptyFilters{
+								Operator: operator35,
+								Field:    field35,
+							}
+						}
+						if metricsMcpErrorFilterByFieldEmptyFilters != nil {
+							metricsMcpErrorFilterByField = shared.MetricsMcpErrorFilterByField{
+								MetricsMcpErrorFilterByFieldEmptyFilters: metricsMcpErrorFilterByFieldEmptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsMcpErrorFilterByField: &metricsMcpErrorFilterByField,
+						})
+					}
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpMethod != nil {
+						var metricsMcpMethodFilterByField shared.MetricsMcpMethodFilterByField
+						var metricsMcpMethodFilterByFieldMultiselectFilters *shared.MetricsMcpMethodFilterByFieldMultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpMethod.MultiselectFilters != nil {
+							operator36 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpMethod.MultiselectFilters.Operator.ValueString())
+							value19 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpMethod.MultiselectFilters.Value))
+							for valueIndex17 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpMethod.MultiselectFilters.Value {
+								value19 = append(value19, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpMethod.MultiselectFilters.Value[valueIndex17].ValueString())
+							}
+							field36 := shared.MetricsMcpMethodFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpMethod.MultiselectFilters.Field.ValueString())
+							metricsMcpMethodFilterByFieldMultiselectFilters = &shared.MetricsMcpMethodFilterByFieldMultiselectFilters{
+								Operator: operator36,
+								Value:    value19,
+								Field:    field36,
+							}
+						}
+						if metricsMcpMethodFilterByFieldMultiselectFilters != nil {
+							metricsMcpMethodFilterByField = shared.MetricsMcpMethodFilterByField{
+								MetricsMcpMethodFilterByFieldMultiselectFilters: metricsMcpMethodFilterByFieldMultiselectFilters,
+							}
+						}
+						var metricsMcpMethodFilterByFieldEmptyFilters *shared.MetricsMcpMethodFilterByFieldEmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpMethod.EmptyFilters != nil {
+							operator37 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpMethod.EmptyFilters.Operator.ValueString())
+							field37 := shared.MetricsMcpMethodFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpMethod.EmptyFilters.Field.ValueString())
+							metricsMcpMethodFilterByFieldEmptyFilters = &shared.MetricsMcpMethodFilterByFieldEmptyFilters{
+								Operator: operator37,
+								Field:    field37,
+							}
+						}
+						if metricsMcpMethodFilterByFieldEmptyFilters != nil {
+							metricsMcpMethodFilterByField = shared.MetricsMcpMethodFilterByField{
+								MetricsMcpMethodFilterByFieldEmptyFilters: metricsMcpMethodFilterByFieldEmptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsMcpMethodFilterByField: &metricsMcpMethodFilterByField,
+						})
+					}
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpSessionID != nil {
+						var metricsMcpSessionIDFilterByField shared.MetricsMcpSessionIDFilterByField
+						var metricsMcpSessionIDFilterByFieldMultiselectFilters *shared.MetricsMcpSessionIDFilterByFieldMultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpSessionID.MultiselectFilters != nil {
+							operator38 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpSessionID.MultiselectFilters.Operator.ValueString())
+							value20 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpSessionID.MultiselectFilters.Value))
+							for valueIndex18 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpSessionID.MultiselectFilters.Value {
+								value20 = append(value20, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpSessionID.MultiselectFilters.Value[valueIndex18].ValueString())
+							}
+							field38 := shared.MetricsMcpSessionIDFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpSessionID.MultiselectFilters.Field.ValueString())
+							metricsMcpSessionIDFilterByFieldMultiselectFilters = &shared.MetricsMcpSessionIDFilterByFieldMultiselectFilters{
+								Operator: operator38,
+								Value:    value20,
+								Field:    field38,
+							}
+						}
+						if metricsMcpSessionIDFilterByFieldMultiselectFilters != nil {
+							metricsMcpSessionIDFilterByField = shared.MetricsMcpSessionIDFilterByField{
+								MetricsMcpSessionIDFilterByFieldMultiselectFilters: metricsMcpSessionIDFilterByFieldMultiselectFilters,
+							}
+						}
+						var metricsMcpSessionIDFilterByFieldEmptyFilters *shared.MetricsMcpSessionIDFilterByFieldEmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpSessionID.EmptyFilters != nil {
+							operator39 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpSessionID.EmptyFilters.Operator.ValueString())
+							field39 := shared.MetricsMcpSessionIDFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpSessionID.EmptyFilters.Field.ValueString())
+							metricsMcpSessionIDFilterByFieldEmptyFilters = &shared.MetricsMcpSessionIDFilterByFieldEmptyFilters{
+								Operator: operator39,
+								Field:    field39,
+							}
+						}
+						if metricsMcpSessionIDFilterByFieldEmptyFilters != nil {
+							metricsMcpSessionIDFilterByField = shared.MetricsMcpSessionIDFilterByField{
+								MetricsMcpSessionIDFilterByFieldEmptyFilters: metricsMcpSessionIDFilterByFieldEmptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsMcpSessionIDFilterByField: &metricsMcpSessionIDFilterByField,
+						})
+					}
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpToolName != nil {
+						var metricsMcpToolNameFilterByField shared.MetricsMcpToolNameFilterByField
+						var metricsMcpToolNameFilterByFieldMultiselectFilters *shared.MetricsMcpToolNameFilterByFieldMultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpToolName.MultiselectFilters != nil {
+							operator40 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpToolName.MultiselectFilters.Operator.ValueString())
+							value21 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpToolName.MultiselectFilters.Value))
+							for valueIndex19 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpToolName.MultiselectFilters.Value {
+								value21 = append(value21, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpToolName.MultiselectFilters.Value[valueIndex19].ValueString())
+							}
+							field40 := shared.MetricsMcpToolNameFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpToolName.MultiselectFilters.Field.ValueString())
+							metricsMcpToolNameFilterByFieldMultiselectFilters = &shared.MetricsMcpToolNameFilterByFieldMultiselectFilters{
+								Operator: operator40,
+								Value:    value21,
+								Field:    field40,
+							}
+						}
+						if metricsMcpToolNameFilterByFieldMultiselectFilters != nil {
+							metricsMcpToolNameFilterByField = shared.MetricsMcpToolNameFilterByField{
+								MetricsMcpToolNameFilterByFieldMultiselectFilters: metricsMcpToolNameFilterByFieldMultiselectFilters,
+							}
+						}
+						var metricsMcpToolNameFilterByFieldEmptyFilters *shared.MetricsMcpToolNameFilterByFieldEmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpToolName.EmptyFilters != nil {
+							operator41 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpToolName.EmptyFilters.Operator.ValueString())
+							field41 := shared.MetricsMcpToolNameFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].McpToolName.EmptyFilters.Field.ValueString())
+							metricsMcpToolNameFilterByFieldEmptyFilters = &shared.MetricsMcpToolNameFilterByFieldEmptyFilters{
+								Operator: operator41,
+								Field:    field41,
+							}
+						}
+						if metricsMcpToolNameFilterByFieldEmptyFilters != nil {
+							metricsMcpToolNameFilterByField = shared.MetricsMcpToolNameFilterByField{
+								MetricsMcpToolNameFilterByFieldEmptyFilters: metricsMcpToolNameFilterByFieldEmptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsMcpToolNameFilterByField: &metricsMcpToolNameFilterByField,
+						})
+					}
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Portal != nil {
+						var metricsPortalFilterByField shared.MetricsPortalFilterByField
+						var metricsPortalFilterByFieldMultiselectFilters *shared.MetricsPortalFilterByFieldMultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Portal.MultiselectFilters != nil {
+							operator42 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Portal.MultiselectFilters.Operator.ValueString())
+							value22 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Portal.MultiselectFilters.Value))
+							for valueIndex20 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Portal.MultiselectFilters.Value {
+								value22 = append(value22, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Portal.MultiselectFilters.Value[valueIndex20].ValueString())
+							}
+							field42 := shared.MetricsPortalFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Portal.MultiselectFilters.Field.ValueString())
+							metricsPortalFilterByFieldMultiselectFilters = &shared.MetricsPortalFilterByFieldMultiselectFilters{
+								Operator: operator42,
+								Value:    value22,
+								Field:    field42,
+							}
+						}
+						if metricsPortalFilterByFieldMultiselectFilters != nil {
+							metricsPortalFilterByField = shared.MetricsPortalFilterByField{
+								MetricsPortalFilterByFieldMultiselectFilters: metricsPortalFilterByFieldMultiselectFilters,
+							}
+						}
+						var metricsPortalFilterByFieldEmptyFilters *shared.MetricsPortalFilterByFieldEmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Portal.EmptyFilters != nil {
+							operator43 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Portal.EmptyFilters.Operator.ValueString())
+							field43 := shared.MetricsPortalFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Portal.EmptyFilters.Field.ValueString())
+							metricsPortalFilterByFieldEmptyFilters = &shared.MetricsPortalFilterByFieldEmptyFilters{
+								Operator: operator43,
+								Field:    field43,
+							}
+						}
+						if metricsPortalFilterByFieldEmptyFilters != nil {
+							metricsPortalFilterByField = shared.MetricsPortalFilterByField{
+								MetricsPortalFilterByFieldEmptyFilters: metricsPortalFilterByFieldEmptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsPortalFilterByField: &metricsPortalFilterByField,
+						})
+					}
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Realm != nil {
+						var metricsRealmFilterByField shared.MetricsRealmFilterByField
+						var metricsRealmFilterByFieldMultiselectFilters *shared.MetricsRealmFilterByFieldMultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Realm.MultiselectFilters != nil {
+							operator44 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Realm.MultiselectFilters.Operator.ValueString())
+							value23 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Realm.MultiselectFilters.Value))
+							for valueIndex21 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Realm.MultiselectFilters.Value {
+								value23 = append(value23, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Realm.MultiselectFilters.Value[valueIndex21].ValueString())
+							}
+							field44 := shared.MetricsRealmFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Realm.MultiselectFilters.Field.ValueString())
+							metricsRealmFilterByFieldMultiselectFilters = &shared.MetricsRealmFilterByFieldMultiselectFilters{
+								Operator: operator44,
+								Value:    value23,
+								Field:    field44,
+							}
+						}
+						if metricsRealmFilterByFieldMultiselectFilters != nil {
+							metricsRealmFilterByField = shared.MetricsRealmFilterByField{
+								MetricsRealmFilterByFieldMultiselectFilters: metricsRealmFilterByFieldMultiselectFilters,
+							}
+						}
+						var metricsRealmFilterByFieldEmptyFilters *shared.MetricsRealmFilterByFieldEmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Realm.EmptyFilters != nil {
+							operator45 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Realm.EmptyFilters.Operator.ValueString())
+							field45 := shared.MetricsRealmFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Realm.EmptyFilters.Field.ValueString())
+							metricsRealmFilterByFieldEmptyFilters = &shared.MetricsRealmFilterByFieldEmptyFilters{
+								Operator: operator45,
+								Field:    field45,
+							}
+						}
+						if metricsRealmFilterByFieldEmptyFilters != nil {
+							metricsRealmFilterByField = shared.MetricsRealmFilterByField{
+								MetricsRealmFilterByFieldEmptyFilters: metricsRealmFilterByFieldEmptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsRealmFilterByField: &metricsRealmFilterByField,
+						})
+					}
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ResponseSource != nil {
+						var metricsResponseSourceFilterByField shared.MetricsResponseSourceFilterByField
+						var metricsResponseSourceFilterByFieldMultiselectFilters *shared.MetricsResponseSourceFilterByFieldMultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ResponseSource.MultiselectFilters != nil {
+							operator46 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ResponseSource.MultiselectFilters.Operator.ValueString())
+							value24 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ResponseSource.MultiselectFilters.Value))
+							for valueIndex22 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ResponseSource.MultiselectFilters.Value {
+								value24 = append(value24, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ResponseSource.MultiselectFilters.Value[valueIndex22].ValueString())
+							}
+							field46 := shared.MetricsResponseSourceFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ResponseSource.MultiselectFilters.Field.ValueString())
+							metricsResponseSourceFilterByFieldMultiselectFilters = &shared.MetricsResponseSourceFilterByFieldMultiselectFilters{
+								Operator: operator46,
+								Value:    value24,
+								Field:    field46,
+							}
+						}
+						if metricsResponseSourceFilterByFieldMultiselectFilters != nil {
+							metricsResponseSourceFilterByField = shared.MetricsResponseSourceFilterByField{
+								MetricsResponseSourceFilterByFieldMultiselectFilters: metricsResponseSourceFilterByFieldMultiselectFilters,
+							}
+						}
+						var metricsResponseSourceFilterByFieldEmptyFilters *shared.MetricsResponseSourceFilterByFieldEmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ResponseSource.EmptyFilters != nil {
+							operator47 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ResponseSource.EmptyFilters.Operator.ValueString())
+							field47 := shared.MetricsResponseSourceFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].ResponseSource.EmptyFilters.Field.ValueString())
+							metricsResponseSourceFilterByFieldEmptyFilters = &shared.MetricsResponseSourceFilterByFieldEmptyFilters{
+								Operator: operator47,
+								Field:    field47,
+							}
+						}
+						if metricsResponseSourceFilterByFieldEmptyFilters != nil {
+							metricsResponseSourceFilterByField = shared.MetricsResponseSourceFilterByField{
+								MetricsResponseSourceFilterByFieldEmptyFilters: metricsResponseSourceFilterByFieldEmptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsResponseSourceFilterByField: &metricsResponseSourceFilterByField,
+						})
+					}
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Route != nil {
+						var metricsRouteFilterByField shared.MetricsRouteFilterByField
+						var metricsRouteFilterByFieldMultiselectFilters *shared.MetricsRouteFilterByFieldMultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Route.MultiselectFilters != nil {
+							operator48 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Route.MultiselectFilters.Operator.ValueString())
+							value25 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Route.MultiselectFilters.Value))
+							for valueIndex23 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Route.MultiselectFilters.Value {
+								value25 = append(value25, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Route.MultiselectFilters.Value[valueIndex23].ValueString())
+							}
+							field48 := shared.MetricsRouteFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Route.MultiselectFilters.Field.ValueString())
+							metricsRouteFilterByFieldMultiselectFilters = &shared.MetricsRouteFilterByFieldMultiselectFilters{
+								Operator: operator48,
+								Value:    value25,
+								Field:    field48,
+							}
+						}
+						if metricsRouteFilterByFieldMultiselectFilters != nil {
+							metricsRouteFilterByField = shared.MetricsRouteFilterByField{
+								MetricsRouteFilterByFieldMultiselectFilters: metricsRouteFilterByFieldMultiselectFilters,
+							}
+						}
+						var metricsRouteFilterByFieldEmptyFilters *shared.MetricsRouteFilterByFieldEmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Route.EmptyFilters != nil {
+							operator49 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Route.EmptyFilters.Operator.ValueString())
+							field49 := shared.MetricsRouteFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].Route.EmptyFilters.Field.ValueString())
+							metricsRouteFilterByFieldEmptyFilters = &shared.MetricsRouteFilterByFieldEmptyFilters{
+								Operator: operator49,
+								Field:    field49,
+							}
+						}
+						if metricsRouteFilterByFieldEmptyFilters != nil {
+							metricsRouteFilterByField = shared.MetricsRouteFilterByField{
+								MetricsRouteFilterByFieldEmptyFilters: metricsRouteFilterByFieldEmptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsRouteFilterByField: &metricsRouteFilterByField,
+						})
+					}
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].StatusCode != nil {
+						var metricsStatusCodeFilterByField shared.MetricsStatusCodeFilterByField
+						var metricsStatusCodeFilterByFieldMultiselectFilters *shared.MetricsStatusCodeFilterByFieldMultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].StatusCode.MultiselectFilters != nil {
+							operator50 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].StatusCode.MultiselectFilters.Operator.ValueString())
+							value26 := make([]int64, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].StatusCode.MultiselectFilters.Value))
+							for valueIndex24 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].StatusCode.MultiselectFilters.Value {
+								value26 = append(value26, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].StatusCode.MultiselectFilters.Value[valueIndex24].ValueInt64())
+							}
+							field50 := shared.MetricsStatusCodeFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].StatusCode.MultiselectFilters.Field.ValueString())
+							metricsStatusCodeFilterByFieldMultiselectFilters = &shared.MetricsStatusCodeFilterByFieldMultiselectFilters{
+								Operator: operator50,
+								Value:    value26,
+								Field:    field50,
+							}
+						}
+						if metricsStatusCodeFilterByFieldMultiselectFilters != nil {
+							metricsStatusCodeFilterByField = shared.MetricsStatusCodeFilterByField{
+								MetricsStatusCodeFilterByFieldMultiselectFilters: metricsStatusCodeFilterByFieldMultiselectFilters,
+							}
+						}
+						var metricsStatusCodeFilterByFieldEmptyFilters *shared.MetricsStatusCodeFilterByFieldEmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].StatusCode.EmptyFilters != nil {
+							operator51 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].StatusCode.EmptyFilters.Operator.ValueString())
+							field51 := shared.MetricsStatusCodeFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].StatusCode.EmptyFilters.Field.ValueString())
+							metricsStatusCodeFilterByFieldEmptyFilters = &shared.MetricsStatusCodeFilterByFieldEmptyFilters{
+								Operator: operator51,
+								Field:    field51,
+							}
+						}
+						if metricsStatusCodeFilterByFieldEmptyFilters != nil {
+							metricsStatusCodeFilterByField = shared.MetricsStatusCodeFilterByField{
+								MetricsStatusCodeFilterByFieldEmptyFilters: metricsStatusCodeFilterByFieldEmptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsStatusCodeFilterByField: &metricsStatusCodeFilterByField,
+						})
+					}
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].StatusCodeGrouped != nil {
+						var metricsStatusCodeGroupedFilterByField shared.MetricsStatusCodeGroupedFilterByField
+						var metricsStatusCodeGroupedFilterByFieldMultiselectFilters *shared.MetricsStatusCodeGroupedFilterByFieldMultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].StatusCodeGrouped.MultiselectFilters != nil {
+							operator52 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].StatusCodeGrouped.MultiselectFilters.Operator.ValueString())
+							value27 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].StatusCodeGrouped.MultiselectFilters.Value))
+							for valueIndex25 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].StatusCodeGrouped.MultiselectFilters.Value {
+								value27 = append(value27, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].StatusCodeGrouped.MultiselectFilters.Value[valueIndex25].ValueString())
+							}
+							field52 := shared.MetricsStatusCodeGroupedFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].StatusCodeGrouped.MultiselectFilters.Field.ValueString())
+							metricsStatusCodeGroupedFilterByFieldMultiselectFilters = &shared.MetricsStatusCodeGroupedFilterByFieldMultiselectFilters{
+								Operator: operator52,
+								Value:    value27,
+								Field:    field52,
+							}
+						}
+						if metricsStatusCodeGroupedFilterByFieldMultiselectFilters != nil {
+							metricsStatusCodeGroupedFilterByField = shared.MetricsStatusCodeGroupedFilterByField{
+								MetricsStatusCodeGroupedFilterByFieldMultiselectFilters: metricsStatusCodeGroupedFilterByFieldMultiselectFilters,
+							}
+						}
+						var metricsStatusCodeGroupedFilterByFieldEmptyFilters *shared.MetricsStatusCodeGroupedFilterByFieldEmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].StatusCodeGrouped.EmptyFilters != nil {
+							operator53 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].StatusCodeGrouped.EmptyFilters.Operator.ValueString())
+							field53 := shared.MetricsStatusCodeGroupedFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].StatusCodeGrouped.EmptyFilters.Field.ValueString())
+							metricsStatusCodeGroupedFilterByFieldEmptyFilters = &shared.MetricsStatusCodeGroupedFilterByFieldEmptyFilters{
+								Operator: operator53,
+								Field:    field53,
+							}
+						}
+						if metricsStatusCodeGroupedFilterByFieldEmptyFilters != nil {
+							metricsStatusCodeGroupedFilterByField = shared.MetricsStatusCodeGroupedFilterByField{
+								MetricsStatusCodeGroupedFilterByFieldEmptyFilters: metricsStatusCodeGroupedFilterByFieldEmptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsStatusCodeGroupedFilterByField: &metricsStatusCodeGroupedFilterByField,
+						})
+					}
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].UpstreamStatusCode != nil {
+						var metricsUpstreamStatusCodeFilterByField shared.MetricsUpstreamStatusCodeFilterByField
+						var metricsUpstreamStatusCodeFilterByFieldMultiselectFilters *shared.MetricsUpstreamStatusCodeFilterByFieldMultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].UpstreamStatusCode.MultiselectFilters != nil {
+							operator54 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].UpstreamStatusCode.MultiselectFilters.Operator.ValueString())
+							value28 := make([]int64, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].UpstreamStatusCode.MultiselectFilters.Value))
+							for valueIndex26 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].UpstreamStatusCode.MultiselectFilters.Value {
+								value28 = append(value28, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].UpstreamStatusCode.MultiselectFilters.Value[valueIndex26].ValueInt64())
+							}
+							field54 := shared.MetricsUpstreamStatusCodeFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].UpstreamStatusCode.MultiselectFilters.Field.ValueString())
+							metricsUpstreamStatusCodeFilterByFieldMultiselectFilters = &shared.MetricsUpstreamStatusCodeFilterByFieldMultiselectFilters{
+								Operator: operator54,
+								Value:    value28,
+								Field:    field54,
+							}
+						}
+						if metricsUpstreamStatusCodeFilterByFieldMultiselectFilters != nil {
+							metricsUpstreamStatusCodeFilterByField = shared.MetricsUpstreamStatusCodeFilterByField{
+								MetricsUpstreamStatusCodeFilterByFieldMultiselectFilters: metricsUpstreamStatusCodeFilterByFieldMultiselectFilters,
+							}
+						}
+						var metricsUpstreamStatusCodeFilterByFieldEmptyFilters *shared.MetricsUpstreamStatusCodeFilterByFieldEmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].UpstreamStatusCode.EmptyFilters != nil {
+							operator55 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].UpstreamStatusCode.EmptyFilters.Operator.ValueString())
+							field55 := shared.MetricsUpstreamStatusCodeFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].UpstreamStatusCode.EmptyFilters.Field.ValueString())
+							metricsUpstreamStatusCodeFilterByFieldEmptyFilters = &shared.MetricsUpstreamStatusCodeFilterByFieldEmptyFilters{
+								Operator: operator55,
+								Field:    field55,
+							}
+						}
+						if metricsUpstreamStatusCodeFilterByFieldEmptyFilters != nil {
+							metricsUpstreamStatusCodeFilterByField = shared.MetricsUpstreamStatusCodeFilterByField{
+								MetricsUpstreamStatusCodeFilterByFieldEmptyFilters: metricsUpstreamStatusCodeFilterByFieldEmptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsUpstreamStatusCodeFilterByField: &metricsUpstreamStatusCodeFilterByField,
+						})
+					}
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].UpstreamStatusCodeGrouped != nil {
+						var metricsUpstreamStatusCodeGroupedFilterByField shared.MetricsUpstreamStatusCodeGroupedFilterByField
+						var metricsUpstreamStatusCodeGroupedFilterByFieldMultiselectFilters *shared.MetricsUpstreamStatusCodeGroupedFilterByFieldMultiselectFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].UpstreamStatusCodeGrouped.MultiselectFilters != nil {
+							operator56 := shared.RequestsFilterType(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].UpstreamStatusCodeGrouped.MultiselectFilters.Operator.ValueString())
+							value29 := make([]string, 0, len(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].UpstreamStatusCodeGrouped.MultiselectFilters.Value))
+							for valueIndex27 := range r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].UpstreamStatusCodeGrouped.MultiselectFilters.Value {
+								value29 = append(value29, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].UpstreamStatusCodeGrouped.MultiselectFilters.Value[valueIndex27].ValueString())
+							}
+							field56 := shared.MetricsUpstreamStatusCodeGroupedFilterByFieldField(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].UpstreamStatusCodeGrouped.MultiselectFilters.Field.ValueString())
+							metricsUpstreamStatusCodeGroupedFilterByFieldMultiselectFilters = &shared.MetricsUpstreamStatusCodeGroupedFilterByFieldMultiselectFilters{
+								Operator: operator56,
+								Value:    value29,
+								Field:    field56,
+							}
+						}
+						if metricsUpstreamStatusCodeGroupedFilterByFieldMultiselectFilters != nil {
+							metricsUpstreamStatusCodeGroupedFilterByField = shared.MetricsUpstreamStatusCodeGroupedFilterByField{
+								MetricsUpstreamStatusCodeGroupedFilterByFieldMultiselectFilters: metricsUpstreamStatusCodeGroupedFilterByFieldMultiselectFilters,
+							}
+						}
+						var metricsUpstreamStatusCodeGroupedFilterByFieldEmptyFilters *shared.MetricsUpstreamStatusCodeGroupedFilterByFieldEmptyFilters
+						if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].UpstreamStatusCodeGrouped.EmptyFilters != nil {
+							operator57 := shared.RequestsFilterTypeEmpty(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].UpstreamStatusCodeGrouped.EmptyFilters.Operator.ValueString())
+							field57 := shared.MetricsUpstreamStatusCodeGroupedFilterByField2Field(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Filters[filtersItem].UpstreamStatusCodeGrouped.EmptyFilters.Field.ValueString())
+							metricsUpstreamStatusCodeGroupedFilterByFieldEmptyFilters = &shared.MetricsUpstreamStatusCodeGroupedFilterByFieldEmptyFilters{
+								Operator: operator57,
+								Field:    field57,
+							}
+						}
+						if metricsUpstreamStatusCodeGroupedFilterByFieldEmptyFilters != nil {
+							metricsUpstreamStatusCodeGroupedFilterByField = shared.MetricsUpstreamStatusCodeGroupedFilterByField{
+								MetricsUpstreamStatusCodeGroupedFilterByFieldEmptyFilters: metricsUpstreamStatusCodeGroupedFilterByFieldEmptyFilters,
+							}
+						}
+						filters2 = append(filters2, shared.AgenticFilters{
+							MetricsUpstreamStatusCodeGroupedFilterByField: &metricsUpstreamStatusCodeGroupedFilterByField,
+						})
+					}
+				}
+				granularity2 := new(shared.Granularity)
+				if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Granularity.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Granularity.IsNull() {
+					*granularity2 = shared.Granularity(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Granularity.ValueString())
+				} else {
+					granularity2 = nil
+				}
+				var timeRange4 *shared.TimeRange
+				if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange != nil {
+					var metricsRelativeTimeRangeDtoV22 *shared.MetricsRelativeTimeRangeDtoV2
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Relative != nil {
+						tz4 := new(string)
+						if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Relative.Tz.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Relative.Tz.IsNull() {
+							*tz4 = r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Relative.Tz.ValueString()
+						} else {
+							tz4 = nil
+						}
+						typeVar5 := shared.MetricsRelativeTimeRangeDtoV2Type(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Relative.Type.ValueString())
+						timeRange5 := new(shared.MetricsRelativeTimeRangeDtoV2TimeRange)
+						if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Relative.TimeRange.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Relative.TimeRange.IsNull() {
+							*timeRange5 = shared.MetricsRelativeTimeRangeDtoV2TimeRange(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Relative.TimeRange.ValueString())
+						} else {
+							timeRange5 = nil
+						}
+						metricsRelativeTimeRangeDtoV22 = &shared.MetricsRelativeTimeRangeDtoV2{
+							Tz:        tz4,
+							Type:      typeVar5,
+							TimeRange: timeRange5,
+						}
+					}
+					if metricsRelativeTimeRangeDtoV22 != nil {
+						timeRange4 = &shared.TimeRange{
+							MetricsRelativeTimeRangeDtoV2: metricsRelativeTimeRangeDtoV22,
+						}
+					}
+					var metricsAbsoluteTimeRangeDtoV22 *shared.MetricsAbsoluteTimeRangeDtoV2
+					if r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Absolute != nil {
+						tz5 := new(string)
+						if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.Tz.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.Tz.IsNull() {
+							*tz5 = r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.Tz.ValueString()
+						} else {
+							tz5 = nil
+						}
+						typeVar6 := shared.MetricsAbsoluteTimeRangeDtoV2Type(r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.Type.ValueString())
+						start2 := new(time.Time)
+						if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.Start.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.Start.IsNull() {
+							*start2, _ = time.Parse(time.RFC3339Nano, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.Start.ValueString())
+						} else {
+							start2 = nil
+						}
+						end2 := new(time.Time)
+						if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.End.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.End.IsNull() {
+							*end2, _ = time.Parse(time.RFC3339Nano, r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.TimeRange.Absolute.End.ValueString())
+						} else {
+							end2 = nil
+						}
+						metricsAbsoluteTimeRangeDtoV22 = &shared.MetricsAbsoluteTimeRangeDtoV2{
+							Tz:    tz5,
+							Type:  typeVar6,
+							Start: start2,
+							End:   end2,
+						}
+					}
+					if metricsAbsoluteTimeRangeDtoV22 != nil {
+						timeRange4 = &shared.TimeRange{
+							MetricsAbsoluteTimeRangeDtoV2: metricsAbsoluteTimeRangeDtoV22,
+						}
+					}
+				}
+				agenticQuery = &shared.AgenticQuery{
+					Datasource:  datasource2,
+					Metrics:     metrics2,
+					Dimensions:  dimensions2,
+					Filters:     filters2,
+					Granularity: granularity2,
+					TimeRange:   timeRange4,
+				}
+			}
+			if agenticQuery != nil {
+				query = shared.Query{
+					AgenticQuery: agenticQuery,
+				}
+			}
 			var chart shared.Chart
 			var donutChart *shared.DonutChart
 			if r.Definition.Tiles[tilesItem].Chart.Definition.Chart.Donut != nil {
@@ -531,10 +2331,10 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 				} else {
 					chartTitle = nil
 				}
-				typeVar5 := shared.DonutChartType(r.Definition.Tiles[tilesItem].Chart.Definition.Chart.Donut.Type.ValueString())
+				typeVar7 := shared.DonutChartType(r.Definition.Tiles[tilesItem].Chart.Definition.Chart.Donut.Type.ValueString())
 				donutChart = &shared.DonutChart{
 					ChartTitle: chartTitle,
-					Type:       typeVar5,
+					Type:       typeVar7,
 				}
 			}
 			if donutChart != nil {
@@ -550,7 +2350,7 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 				} else {
 					chartTitle1 = nil
 				}
-				typeVar6 := shared.TimeseriesChartType(r.Definition.Tiles[tilesItem].Chart.Definition.Chart.TimeseriesLine.Type.ValueString())
+				typeVar8 := shared.TimeseriesChartType(r.Definition.Tiles[tilesItem].Chart.Definition.Chart.TimeseriesLine.Type.ValueString())
 				stacked := new(bool)
 				if !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.TimeseriesLine.Stacked.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.TimeseriesLine.Stacked.IsNull() {
 					*stacked = r.Definition.Tiles[tilesItem].Chart.Definition.Chart.TimeseriesLine.Stacked.ValueBool()
@@ -559,7 +2359,7 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 				}
 				timeseriesChart = &shared.TimeseriesChart{
 					ChartTitle: chartTitle1,
-					Type:       typeVar6,
+					Type:       typeVar8,
 					Stacked:    stacked,
 				}
 			}
@@ -576,7 +2376,7 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 				} else {
 					chartTitle2 = nil
 				}
-				typeVar7 := shared.BarChartType(r.Definition.Tiles[tilesItem].Chart.Definition.Chart.HorizontalBar.Type.ValueString())
+				typeVar9 := shared.BarChartType(r.Definition.Tiles[tilesItem].Chart.Definition.Chart.HorizontalBar.Type.ValueString())
 				stacked1 := new(bool)
 				if !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.HorizontalBar.Stacked.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.HorizontalBar.Stacked.IsNull() {
 					*stacked1 = r.Definition.Tiles[tilesItem].Chart.Definition.Chart.HorizontalBar.Stacked.ValueBool()
@@ -585,7 +2385,7 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 				}
 				barChart = &shared.BarChart{
 					ChartTitle: chartTitle2,
-					Type:       typeVar7,
+					Type:       typeVar9,
 					Stacked:    stacked1,
 				}
 			}
@@ -602,7 +2402,7 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 				} else {
 					chartTitle3 = nil
 				}
-				typeVar8 := shared.SingleValueChartType(r.Definition.Tiles[tilesItem].Chart.Definition.Chart.SingleValue.Type.ValueString())
+				typeVar10 := shared.SingleValueChartType(r.Definition.Tiles[tilesItem].Chart.Definition.Chart.SingleValue.Type.ValueString())
 				decimalPoints := new(float64)
 				if !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.SingleValue.DecimalPoints.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.SingleValue.DecimalPoints.IsNull() {
 					*decimalPoints = r.Definition.Tiles[tilesItem].Chart.Definition.Chart.SingleValue.DecimalPoints.ValueFloat64()
@@ -611,7 +2411,7 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 				}
 				singleValueChart = &shared.SingleValueChart{
 					ChartTitle:    chartTitle3,
-					Type:          typeVar8,
+					Type:          typeVar10,
 					DecimalPoints: decimalPoints,
 				}
 			}
@@ -628,10 +2428,10 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 				} else {
 					chartTitle4 = nil
 				}
-				typeVar9 := shared.ChoroplethMapChartType(r.Definition.Tiles[tilesItem].Chart.Definition.Chart.ChoroplethMap.Type.ValueString())
+				typeVar11 := shared.ChoroplethMapChartType(r.Definition.Tiles[tilesItem].Chart.Definition.Chart.ChoroplethMap.Type.ValueString())
 				choroplethMapChart = &shared.ChoroplethMapChart{
 					ChartTitle: chartTitle4,
-					Type:       typeVar9,
+					Type:       typeVar11,
 				}
 			}
 			if choroplethMapChart != nil {
@@ -655,16 +2455,16 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 	}
 	presetFilters := make([]shared.AllFilterItems, 0, len(r.Definition.PresetFilters))
 	for presetFiltersIndex := range r.Definition.PresetFilters {
-		field2 := shared.AllFilterItemsField(r.Definition.PresetFilters[presetFiltersIndex].Field.ValueString())
-		operator2 := shared.AllFilterItemsOperator(r.Definition.PresetFilters[presetFiltersIndex].Operator.ValueString())
-		var value2 interface{}
+		field58 := shared.AllFilterItemsField(r.Definition.PresetFilters[presetFiltersIndex].Field.ValueString())
+		operator58 := shared.AllFilterItemsOperator(r.Definition.PresetFilters[presetFiltersIndex].Operator.ValueString())
+		var value30 interface{}
 		if !r.Definition.PresetFilters[presetFiltersIndex].Value.IsUnknown() && !r.Definition.PresetFilters[presetFiltersIndex].Value.IsNull() {
-			_ = json.Unmarshal([]byte(r.Definition.PresetFilters[presetFiltersIndex].Value.ValueString()), &value2)
+			_ = json.Unmarshal([]byte(r.Definition.PresetFilters[presetFiltersIndex].Value.ValueString()), &value30)
 		}
 		presetFilters = append(presetFilters, shared.AllFilterItems{
-			Field:    field2,
-			Operator: operator2,
-			Value:    value2,
+			Field:    field58,
+			Operator: operator58,
+			Value:    value30,
 		})
 	}
 	definition := shared.Dashboard{

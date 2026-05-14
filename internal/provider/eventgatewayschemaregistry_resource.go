@@ -38,16 +38,16 @@ type EventGatewaySchemaRegistryResource struct {
 
 // EventGatewaySchemaRegistryResourceModel describes the resource data model.
 type EventGatewaySchemaRegistryResourceModel struct {
-	Config      *tfTypes.BackendClusterAuthenticationAnonymous `tfsdk:"config"`
-	Confluent   *tfTypes.SchemaRegistryConfluent               `queryParam:"inline" tfsdk:"confluent"`
-	CreatedAt   types.String                                   `tfsdk:"created_at"`
-	Description types.String                                   `tfsdk:"description"`
-	GatewayID   types.String                                   `tfsdk:"gateway_id"`
-	ID          types.String                                   `tfsdk:"id"`
-	Labels      map[string]types.String                        `tfsdk:"labels"`
-	Name        types.String                                   `tfsdk:"name"`
-	Type        types.String                                   `tfsdk:"type"`
-	UpdatedAt   types.String                                   `tfsdk:"updated_at"`
+	Config      *tfTypes.RawProviderConfig       `tfsdk:"config"`
+	Confluent   *tfTypes.SchemaRegistryConfluent `queryParam:"inline" tfsdk:"confluent"`
+	CreatedAt   types.String                     `tfsdk:"created_at"`
+	Description types.String                     `tfsdk:"description"`
+	GatewayID   types.String                     `tfsdk:"gateway_id"`
+	ID          types.String                     `tfsdk:"id"`
+	Labels      map[string]types.String          `tfsdk:"labels"`
+	Name        types.String                     `tfsdk:"name"`
+	Type        types.String                     `tfsdk:"type"`
+	UpdatedAt   types.String                     `tfsdk:"updated_at"`
 }
 
 func (r *EventGatewaySchemaRegistryResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -106,13 +106,7 @@ func (r *EventGatewaySchemaRegistryResource) Schema(ctx context.Context, req res
 							},
 							"schema_type": schema.StringAttribute{
 								Required:    true,
-								Description: `The format of the message. must be one of ["avro", "json"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"avro",
-										"json",
-									),
-								},
+								Description: `The format of the message. possible known values include one of ["avro", "json"]`,
 							},
 							"timeout_seconds": schema.Int64Attribute{
 								Computed:    true,

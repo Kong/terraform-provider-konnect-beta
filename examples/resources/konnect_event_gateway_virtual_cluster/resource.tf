@@ -4,6 +4,13 @@ resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster"
   authentication = [
     {
       sasl_plain = {
+        fetch_kong_identity_principal = {
+          directory    = "...my_directory..."
+          failure_mode = "ignore"
+          fetch_by = {
+            key = "...my_key..."
+          }
+        }
         mediation = "passthrough"
         principals = [
           {
@@ -49,4 +56,12 @@ resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster"
     mode   = "hide_prefix"
     prefix = "...my_prefix..."
   }
+  topic_aliases = [
+    {
+      alias    = "...my_alias..."
+      conflict = "warn"
+      match    = ""
+      topic    = "...my_topic..."
+    }
+  ]
 }

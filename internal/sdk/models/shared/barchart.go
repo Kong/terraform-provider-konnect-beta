@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
@@ -18,20 +16,16 @@ const (
 func (e BarChartType) ToPointer() *BarChartType {
 	return &e
 }
-func (e *BarChartType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *BarChartType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "horizontal_bar", "vertical_bar":
+			return true
+		}
 	}
-	switch v {
-	case "horizontal_bar":
-		fallthrough
-	case "vertical_bar":
-		*e = BarChartType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for BarChartType: %v", v)
-	}
+	return false
 }
 
 // BarChart - A chart that can display non-timeseries data as bars.  This type of chart supports up to 2 dimensions (not `time`).

@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // Granularity - Force time grouping into buckets of the specified duration.  Only has an effect if "time" is in the "dimensions" list.
 //
 // The granularity of the result may be coarser than requested.  The finest allowed granularity depends on the query's time range: data farther in the past may have coarser granularity.  The exact result granularity will be reported in the response `meta.granularity_ms` field.
@@ -46,36 +41,14 @@ const (
 func (e Granularity) ToPointer() *Granularity {
 	return &e
 }
-func (e *Granularity) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Granularity) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly":
+			return true
+		}
 	}
-	switch v {
-	case "tenSecondly":
-		fallthrough
-	case "thirtySecondly":
-		fallthrough
-	case "minutely":
-		fallthrough
-	case "fiveMinutely":
-		fallthrough
-	case "tenMinutely":
-		fallthrough
-	case "thirtyMinutely":
-		fallthrough
-	case "hourly":
-		fallthrough
-	case "twoHourly":
-		fallthrough
-	case "twelveHourly":
-		fallthrough
-	case "daily":
-		fallthrough
-	case "weekly":
-		*e = Granularity(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Granularity: %v", v)
-	}
+	return false
 }

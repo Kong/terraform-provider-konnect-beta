@@ -208,14 +208,7 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 															Computed:    true,
 															Optional:    true,
 															Default:     stringdefault.StaticString(`Disabled`),
-															Description: `Configuration of TLS for Prometheus listener. Default: "Disabled"; must be one of ["Disabled", "ProvidedTLS", "ActiveMTLSBackend"]`,
-															Validators: []validator.String{
-																stringvalidator.OneOf(
-																	"Disabled",
-																	"ProvidedTLS",
-																	"ActiveMTLSBackend",
-																),
-															},
+															Description: `Configuration of TLS for Prometheus listener. possible known values include one of ["Disabled", "ProvidedTLS", "ActiveMTLSBackend"]; Default: "Disabled"`,
 														},
 													},
 													Description: `Configuration of TLS for prometheus listener.`,
@@ -225,13 +218,9 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 										},
 										"type": schema.StringAttribute{
 											Optional:    true,
-											Description: `Type of the backend that will be used to collect metrics. At the moment only Prometheus backend is available. Not Null; must be one of ["Prometheus", "OpenTelemetry"]`,
+											Description: `Type of the backend that will be used to collect metrics. At the moment only Prometheus backend is available. possible known values include one of ["Prometheus", "OpenTelemetry"]; Not Null`,
 											Validators: []validator.String{
 												speakeasy_stringvalidators.NotNull(),
-												stringvalidator.OneOf(
-													"Prometheus",
-													"OpenTelemetry",
-												),
 											},
 										},
 									},
@@ -264,14 +253,9 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 													Attributes: map[string]schema.Attribute{
 														"name": schema.StringAttribute{
 															Optional:    true,
-															Description: `Name of the predefined profile, one of: all, basic, none. Not Null; must be one of ["All", "Basic", "None"]`,
+															Description: `Name of the predefined profile, one of: all, basic, none. possible known values include one of ["All", "Basic", "None"]; Not Null`,
 															Validators: []validator.String{
 																speakeasy_stringvalidators.NotNull(),
-																stringvalidator.OneOf(
-																	"All",
-																	"Basic",
-																	"None",
-																),
 															},
 														},
 													},
@@ -298,15 +282,9 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 														},
 														"type": schema.StringAttribute{
 															Optional:    true,
-															Description: `Type defined the type of selector, one of: prefix, regex, exact. Not Null; must be one of ["Prefix", "Regex", "Exact", "Contains"]`,
+															Description: `Type defined the type of selector, one of: prefix, regex, exact. possible known values include one of ["Prefix", "Regex", "Exact", "Contains"]; Not Null`,
 															Validators: []validator.String{
 																speakeasy_stringvalidators.NotNull(),
-																stringvalidator.OneOf(
-																	"Prefix",
-																	"Regex",
-																	"Exact",
-																	"Contains",
-																),
 															},
 														},
 													},
@@ -334,15 +312,9 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 														},
 														"type": schema.StringAttribute{
 															Optional:    true,
-															Description: `Type defined the type of selector, one of: prefix, regex, exact. Not Null; must be one of ["Prefix", "Regex", "Exact", "Contains"]`,
+															Description: `Type defined the type of selector, one of: prefix, regex, exact. possible known values include one of ["Prefix", "Regex", "Exact", "Contains"]; Not Null`,
 															Validators: []validator.String{
 																speakeasy_stringvalidators.NotNull(),
-																stringvalidator.OneOf(
-																	"Prefix",
-																	"Regex",
-																	"Exact",
-																	"Contains",
-																),
 															},
 														},
 													},
@@ -364,20 +336,7 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
 								Required:    true,
-								Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"Mesh",
-										"MeshSubset",
-										"MeshGateway",
-										"MeshService",
-										"MeshExternalService",
-										"MeshMultiZoneService",
-										"MeshServiceSubset",
-										"MeshHTTPRoute",
-										"Dataplane",
-									),
-								},
+								Description: `Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 							},
 							"labels": schema.MapAttribute{
 								Optional:    true,

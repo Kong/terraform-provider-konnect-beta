@@ -1,36 +1,36 @@
-resource "konnect_auth_server" "my_authserver" {
+resource "konnect_identity_auth_server" "my_authserver" {
   provider = konnect-beta
 
   name     = "tf-ci-testing-authserver"
   audience = "local-demo"
 }
 
-resource "konnect_auth_server_scopes" "my_scope" {
+resource "konnect_identity_auth_server_scope" "my_scope" {
   provider            = konnect-beta
   name                = "my-scope"
   description         = "My Scope"
   include_in_metadata = true
   enabled             = true
 
-  auth_server_id = konnect_auth_server.my_authserver.id
+  auth_server_id = konnect_identity_auth_server.my_authserver.id
 }
 
-resource "konnect_auth_server_claims" "my_authserverclaims" {
+resource "konnect_identity_auth_server_claim" "my_authserverclaims" {
   provider = konnect-beta
 
   enabled               = true
   include_in_all_scopes = false
   include_in_scopes = [
-    konnect_auth_server_scopes.my_scope.id
+    konnect_identity_auth_server_scope.my_scope.id
   ]
   include_in_token = true
   name             = "my-claim"
   value            = "some-value"
 
-  auth_server_id = konnect_auth_server.my_authserver.id
+  auth_server_id = konnect_identity_auth_server.my_authserver.id
 }
 
-resource "konnect_auth_server_clients" "my_client" {
+resource "konnect_identity_auth_server_client" "my_client" {
   provider = konnect-beta
 
   name             = "my-client"
@@ -47,16 +47,16 @@ resource "konnect_auth_server_clients" "my_client" {
     "code"
   ]
 
-  auth_server_id = konnect_auth_server.my_authserver.id
+  auth_server_id = konnect_identity_auth_server.my_authserver.id
 }
 
 output "issuer" {
-  value = konnect_auth_server.my_authserver.issuer
+  value = konnect_identity_auth_server.my_authserver.issuer
 }
 
 output "client_id" {
-  value = konnect_auth_server_clients.my_client.id
+  value = konnect_identity_auth_server_client.my_client.id
 }
 output "client_secret" {
-  value = konnect_auth_server_clients.my_client.client_secret
+  value = konnect_identity_auth_server_client.my_client.client_secret
 }

@@ -184,15 +184,7 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 								Computed:    true,
 								Optional:    true,
 								Default:     stringdefault.StaticString(`tcp`),
-								Description: `Protocol defines a protocol of the communication. Possible values: ` + "`" + `tcp` + "`" + `, ` + "`" + `grpc` + "`" + `, ` + "`" + `http` + "`" + `, ` + "`" + `http2` + "`" + `. Default: "tcp"; must be one of ["tcp", "grpc", "http", "http2"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"tcp",
-										"grpc",
-										"http",
-										"http2",
-									),
-								},
+								Description: `Protocol defines a protocol of the communication. Possible values: ` + "`" + `tcp` + "`" + `, ` + "`" + `grpc` + "`" + `, ` + "`" + `http` + "`" + `, ` + "`" + `http2` + "`" + `. possible known values include one of ["tcp", "grpc", "http", "http2"]; Default: "tcp"`,
 							},
 							"type": schema.StringAttribute{
 								Computed:    true,
@@ -286,15 +278,7 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 										Computed:    true,
 										Optional:    true,
 										Default:     stringdefault.StaticString(`Secured`),
-										Description: `Mode defines if proxy should skip verification, one of ` + "`" + `SkipSAN` + "`" + `, ` + "`" + `SkipCA` + "`" + `, ` + "`" + `Secured` + "`" + `, ` + "`" + `SkipAll` + "`" + `. Default ` + "`" + `Secured` + "`" + `. Default: "Secured"; must be one of ["SkipSAN", "SkipCA", "Secured", "SkipAll"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"SkipSAN",
-												"SkipCA",
-												"Secured",
-												"SkipAll",
-											),
-										},
+										Description: `Mode defines if proxy should skip verification, one of ` + "`" + `SkipSAN` + "`" + `, ` + "`" + `SkipCA` + "`" + `, ` + "`" + `Secured` + "`" + `, ` + "`" + `SkipAll` + "`" + `. Default ` + "`" + `Secured` + "`" + `. possible known values include one of ["SkipSAN", "SkipCA", "Secured", "SkipAll"]; Default: "Secured"`,
 									},
 									"server_name": schema.StringAttribute{
 										Optional:    true,
@@ -315,13 +299,7 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 													Computed:    true,
 													Optional:    true,
 													Default:     stringdefault.StaticString(`Exact`),
-													Description: `Type specifies matching type, one of ` + "`" + `Exact` + "`" + `, ` + "`" + `Prefix` + "`" + `. Default: ` + "`" + `Exact` + "`" + `. Default: "Exact"; must be one of ["Exact", "Prefix"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"Exact",
-															"Prefix",
-														),
-													},
+													Description: `Type specifies matching type, one of ` + "`" + `Exact` + "`" + `, ` + "`" + `Prefix` + "`" + `. Default: ` + "`" + `Exact` + "`" + `. possible known values include one of ["Exact", "Prefix"]; Default: "Exact"`,
 												},
 												"value": schema.StringAttribute{
 													Optional:    true,
@@ -344,31 +322,13 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 										Computed:    true,
 										Optional:    true,
 										Default:     stringdefault.StaticString(`TLSAuto`),
-										Description: `Max defines maximum supported version. One of ` + "`" + `TLSAuto` + "`" + `, ` + "`" + `TLS10` + "`" + `, ` + "`" + `TLS11` + "`" + `, ` + "`" + `TLS12` + "`" + `, ` + "`" + `TLS13` + "`" + `. Default: "TLSAuto"; must be one of ["TLSAuto", "TLS10", "TLS11", "TLS12", "TLS13"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"TLSAuto",
-												"TLS10",
-												"TLS11",
-												"TLS12",
-												"TLS13",
-											),
-										},
+										Description: `Max defines maximum supported version. One of ` + "`" + `TLSAuto` + "`" + `, ` + "`" + `TLS10` + "`" + `, ` + "`" + `TLS11` + "`" + `, ` + "`" + `TLS12` + "`" + `, ` + "`" + `TLS13` + "`" + `. possible known values include one of ["TLSAuto", "TLS10", "TLS11", "TLS12", "TLS13"]; Default: "TLSAuto"`,
 									},
 									"min": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
 										Default:     stringdefault.StaticString(`TLSAuto`),
-										Description: `Min defines minimum supported version. One of ` + "`" + `TLSAuto` + "`" + `, ` + "`" + `TLS10` + "`" + `, ` + "`" + `TLS11` + "`" + `, ` + "`" + `TLS12` + "`" + `, ` + "`" + `TLS13` + "`" + `. Default: "TLSAuto"; must be one of ["TLSAuto", "TLS10", "TLS11", "TLS12", "TLS13"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"TLSAuto",
-												"TLS10",
-												"TLS11",
-												"TLS12",
-												"TLS13",
-											),
-										},
+										Description: `Min defines minimum supported version. One of ` + "`" + `TLSAuto` + "`" + `, ` + "`" + `TLS10` + "`" + `, ` + "`" + `TLS11` + "`" + `, ` + "`" + `TLS12` + "`" + `, ` + "`" + `TLS13` + "`" + `. possible known values include one of ["TLSAuto", "TLS10", "TLS11", "TLS12", "TLS13"]; Default: "TLSAuto"`,
 									},
 								},
 								Description: `Version section for providing version specification.`,

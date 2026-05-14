@@ -285,7 +285,7 @@ Optional:
 - `file` (Attributes) FileBackend defines configuration for file based access logs (see [below for nested schema](#nestedatt--spec--from--default--backends--file))
 - `open_telemetry` (Attributes) Defines an OpenTelemetry logging backend. (see [below for nested schema](#nestedatt--spec--from--default--backends--open_telemetry))
 - `tcp` (Attributes) TCPBackend defines a TCP logging backend. (see [below for nested schema](#nestedatt--spec--from--default--backends--tcp))
-- `type` (String) Not Null; must be one of ["Tcp", "File", "OpenTelemetry"]
+- `type` (String) possible known values include one of ["Tcp", "File", "OpenTelemetry"]; Not Null
 
 <a id="nestedatt--spec--from--default--backends--file"></a>
 ### Nested Schema for `spec.from.default.backends.file`
@@ -304,7 +304,7 @@ Optional:
 - `json` (Attributes List) (see [below for nested schema](#nestedatt--spec--from--default--backends--file--format--json))
 - `omit_empty_values` (Boolean) Default: false
 - `plain` (String)
-- `type` (String) Not Null; must be one of ["Plain", "Json"]
+- `type` (String) possible known values include one of ["Plain", "Json"]; Not Null
 
 <a id="nestedatt--spec--from--default--backends--file--format--json"></a>
 ### Nested Schema for `spec.from.default.backends.file.format.json`
@@ -358,7 +358,7 @@ Optional:
 - `json` (Attributes List) (see [below for nested schema](#nestedatt--spec--from--default--backends--tcp--format--json))
 - `omit_empty_values` (Boolean) Default: false
 - `plain` (String)
-- `type` (String) Not Null; must be one of ["Plain", "Json"]
+- `type` (String) possible known values include one of ["Plain", "Json"]; Not Null
 
 <a id="nestedatt--spec--from--default--backends--tcp--format--json"></a>
 ### Nested Schema for `spec.from.default.backends.tcp.format.json`
@@ -378,7 +378,7 @@ Optional:
 
 Optional:
 
-- `kind` (String) Kind of the referenced resource. Not Null; must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]
+- `kind` (String) Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]; Not Null
 - `labels` (Map of String) Labels are used to select group of MeshServices that match labels. Either Labels or
 Name and Namespace can be used.
 - `mesh` (String) Mesh is reserved for future use to identify cross mesh resources.
@@ -417,7 +417,7 @@ Optional:
 - `file` (Attributes) FileBackend defines configuration for file based access logs (see [below for nested schema](#nestedatt--spec--rules--default--backends--file))
 - `open_telemetry` (Attributes) Defines an OpenTelemetry logging backend. (see [below for nested schema](#nestedatt--spec--rules--default--backends--open_telemetry))
 - `tcp` (Attributes) TCPBackend defines a TCP logging backend. (see [below for nested schema](#nestedatt--spec--rules--default--backends--tcp))
-- `type` (String) Not Null; must be one of ["Tcp", "File", "OpenTelemetry"]
+- `type` (String) possible known values include one of ["Tcp", "File", "OpenTelemetry"]; Not Null
 
 <a id="nestedatt--spec--rules--default--backends--file"></a>
 ### Nested Schema for `spec.rules.default.backends.file`
@@ -436,7 +436,7 @@ Optional:
 - `json` (Attributes List) (see [below for nested schema](#nestedatt--spec--rules--default--backends--file--format--json))
 - `omit_empty_values` (Boolean) Default: false
 - `plain` (String)
-- `type` (String) Not Null; must be one of ["Plain", "Json"]
+- `type` (String) possible known values include one of ["Plain", "Json"]; Not Null
 
 <a id="nestedatt--spec--rules--default--backends--file--format--json"></a>
 ### Nested Schema for `spec.rules.default.backends.file.format.json`
@@ -490,7 +490,7 @@ Optional:
 - `json` (Attributes List) (see [below for nested schema](#nestedatt--spec--rules--default--backends--tcp--format--json))
 - `omit_empty_values` (Boolean) Default: false
 - `plain` (String)
-- `type` (String) Not Null; must be one of ["Plain", "Json"]
+- `type` (String) possible known values include one of ["Plain", "Json"]; Not Null
 
 <a id="nestedatt--spec--rules--default--backends--tcp--format--json"></a>
 ### Nested Schema for `spec.rules.default.backends.tcp.format.json`
@@ -511,7 +511,7 @@ Optional:
 
 Required:
 
-- `kind` (String) Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]
+- `kind` (String) Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]
 
 Optional:
 
@@ -557,7 +557,7 @@ Optional:
 - `file` (Attributes) FileBackend defines configuration for file based access logs (see [below for nested schema](#nestedatt--spec--to--default--backends--file))
 - `open_telemetry` (Attributes) Defines an OpenTelemetry logging backend. (see [below for nested schema](#nestedatt--spec--to--default--backends--open_telemetry))
 - `tcp` (Attributes) TCPBackend defines a TCP logging backend. (see [below for nested schema](#nestedatt--spec--to--default--backends--tcp))
-- `type` (String) Not Null; must be one of ["Tcp", "File", "OpenTelemetry"]
+- `type` (String) possible known values include one of ["Tcp", "File", "OpenTelemetry"]; Not Null
 
 <a id="nestedatt--spec--to--default--backends--file"></a>
 ### Nested Schema for `spec.to.default.backends.file`
@@ -576,7 +576,7 @@ Optional:
 - `json` (Attributes List) (see [below for nested schema](#nestedatt--spec--to--default--backends--file--format--json))
 - `omit_empty_values` (Boolean) Default: false
 - `plain` (String)
-- `type` (String) Not Null; must be one of ["Plain", "Json"]
+- `type` (String) possible known values include one of ["Plain", "Json"]; Not Null
 
 <a id="nestedatt--spec--to--default--backends--file--format--json"></a>
 ### Nested Schema for `spec.to.default.backends.file.format.json`
@@ -630,7 +630,7 @@ Optional:
 - `json` (Attributes List) (see [below for nested schema](#nestedatt--spec--to--default--backends--tcp--format--json))
 - `omit_empty_values` (Boolean) Default: false
 - `plain` (String)
-- `type` (String) Not Null; must be one of ["Plain", "Json"]
+- `type` (String) possible known values include one of ["Plain", "Json"]; Not Null
 
 <a id="nestedatt--spec--to--default--backends--tcp--format--json"></a>
 ### Nested Schema for `spec.to.default.backends.tcp.format.json`
@@ -650,7 +650,7 @@ Optional:
 
 Optional:
 
-- `kind` (String) Kind of the referenced resource. Not Null; must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]
+- `kind` (String) Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]; Not Null
 - `labels` (Map of String) Labels are used to select group of MeshServices that match labels. Either Labels or
 Name and Namespace can be used.
 - `mesh` (String) Mesh is reserved for future use to identify cross mesh resources.
@@ -676,8 +676,8 @@ import {
   to = konnect_mesh_access_log.my_konnect_mesh_access_log
   id = jsonencode({
     cp_id = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
-    mesh = "..."
-    name = "..."
+    mesh  = "..."
+    name  = "..."
   })
 }
 ```

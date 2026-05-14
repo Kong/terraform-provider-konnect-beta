@@ -13,7 +13,7 @@ import (
 
 const (
 	testAuthServer = `
-resource "konnect_auth_server" "my_authserver" {
+resource "konnect_identity_auth_server" "my_authserver" {
   provider = konnect-beta
 
   name     = "tf-ci-testing-authserver-for-client"
@@ -32,7 +32,7 @@ func TestAuthServerClients(t *testing.T) {
 		authServer, err := hclbuilder.FromString(testAuthServer)
 		require.NoError(t, err)
 
-		authServerClient, err := hclbuilder.FromString(`resource "konnect_auth_server_clients" "my_client" {
+		authServerClient, err := hclbuilder.FromString(`resource "konnect_identity_auth_server_client" "my_client" {
 			provider = konnect-beta
 
 			name             = "my-client-without-id"
@@ -49,7 +49,7 @@ func TestAuthServerClients(t *testing.T) {
 				"code"
 			]
 
-			auth_server_id = konnect_auth_server.my_authserver.id
+			auth_server_id = konnect_identity_auth_server.my_authserver.id
 			}
 			`)
 		require.NoError(t, err)
@@ -61,13 +61,13 @@ func TestAuthServerClients(t *testing.T) {
 					Config: builder.Upsert(authServer).Upsert(authServerClient).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction("konnect_auth_server.my_authserver", plancheck.ResourceActionCreate),
-							plancheck.ExpectResourceAction("konnect_auth_server_clients.my_client", plancheck.ResourceActionCreate),
+							plancheck.ExpectResourceAction("konnect_identity_auth_server.my_authserver", plancheck.ResourceActionCreate),
+							plancheck.ExpectResourceAction("konnect_identity_auth_server_client.my_client", plancheck.ResourceActionCreate),
 						},
 					},
 					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr("konnect_auth_server_clients.my_client", "name", "my-client-without-id"),
-						resource.TestCheckResourceAttrSet("konnect_auth_server_clients.my_client", "id"),
+						resource.TestCheckResourceAttr("konnect_identity_auth_server_client.my_client", "name", "my-client-without-id"),
+						resource.TestCheckResourceAttrSet("konnect_identity_auth_server_client.my_client", "id"),
 					),
 				},
 				// Update
@@ -75,11 +75,11 @@ func TestAuthServerClients(t *testing.T) {
 					Config: builder.Upsert(authServer).Upsert(authServerClient.AddAttribute("allow_all_scopes", "false")).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction("konnect_auth_server_clients.my_client", plancheck.ResourceActionUpdate),
+							plancheck.ExpectResourceAction("konnect_identity_auth_server_client.my_client", plancheck.ResourceActionUpdate),
 						},
 					},
 					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr("konnect_auth_server_clients.my_client", "allow_all_scopes", "false"),
+						resource.TestCheckResourceAttr("konnect_identity_auth_server_client.my_client", "allow_all_scopes", "false"),
 					),
 				},
 			},
@@ -94,7 +94,7 @@ func TestAuthServerClients(t *testing.T) {
 		authServer, err := hclbuilder.FromString(testAuthServer)
 		require.NoError(t, err)
 
-		authServerClient, err := hclbuilder.FromString(`resource "konnect_auth_server_clients" "my_client" {
+		authServerClient, err := hclbuilder.FromString(`resource "konnect_identity_auth_server_client" "my_client" {
 			provider = konnect-beta
 
 			name             = "my-client-without-id"
@@ -112,7 +112,7 @@ func TestAuthServerClients(t *testing.T) {
 				"code"
 			]
 
-			auth_server_id = konnect_auth_server.my_authserver.id
+			auth_server_id = konnect_identity_auth_server.my_authserver.id
 			}
 			`)
 		require.NoError(t, err)
@@ -135,13 +135,13 @@ func TestAuthServerClients(t *testing.T) {
 					Config: builder.Upsert(authServer).Upsert(uuidResource).Upsert(authServerClient).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction("konnect_auth_server.my_authserver", plancheck.ResourceActionCreate),
+							plancheck.ExpectResourceAction("konnect_identity_auth_server.my_authserver", plancheck.ResourceActionCreate),
 						},
 					},
 					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr("konnect_auth_server_clients.my_client", "name", "my-client-without-id"),
-						resource.TestCheckResourceAttrPair("konnect_auth_server_clients.my_client", "id", "random_id.example", "id"),
-						resource.TestCheckResourceAttr("konnect_auth_server_clients.my_client", "client_secret", "YAzsyUlNZ5gNGeKS9H3VAdxVPzhPo4ae"),
+						resource.TestCheckResourceAttr("konnect_identity_auth_server_client.my_client", "name", "my-client-without-id"),
+						resource.TestCheckResourceAttrPair("konnect_identity_auth_server_client.my_client", "id", "random_id.example", "id"),
+						resource.TestCheckResourceAttr("konnect_identity_auth_server_client.my_client", "client_secret", "YAzsyUlNZ5gNGeKS9H3VAdxVPzhPo4ae"),
 					),
 				},
 				// Update
@@ -149,11 +149,11 @@ func TestAuthServerClients(t *testing.T) {
 					Config: builder.Upsert(authServer).Upsert(uuidResource).Upsert(authServerClient.AddAttribute("allow_all_scopes", "false")).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction("konnect_auth_server_clients.my_client", plancheck.ResourceActionUpdate),
+							plancheck.ExpectResourceAction("konnect_identity_auth_server_client.my_client", plancheck.ResourceActionUpdate),
 						},
 					},
 					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr("konnect_auth_server_clients.my_client", "allow_all_scopes", "false"),
+						resource.TestCheckResourceAttr("konnect_identity_auth_server_client.my_client", "allow_all_scopes", "false"),
 					),
 				},
 			},

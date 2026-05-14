@@ -19,6 +19,13 @@ resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster"
   authentication = [
     {
       sasl_plain = {
+        fetch_kong_identity_principal = {
+          directory    = "...my_directory..."
+          failure_mode = "ignore"
+          fetch_by = {
+            key = "...my_key..."
+          }
+        }
         mediation = "passthrough"
         principals = [
           {
@@ -64,6 +71,14 @@ resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster"
     mode   = "hide_prefix"
     prefix = "...my_prefix..."
   }
+  topic_aliases = [
+    {
+      alias    = "...my_alias..."
+      conflict = "warn"
+      match    = ""
+      topic    = "...my_topic..."
+    }
+  ]
 }
 ```
 
@@ -77,7 +92,7 @@ resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster"
   and does not forward ACL-related commands to the backend cluster.
   Note that if there are no ACL policies configured, all access is denied.
 - `passthrough` tells the gateway to forward all ACL-related commands.
-must be one of ["enforce_on_gateway", "passthrough"]
+possible known values include one of ["enforce_on_gateway", "passthrough"]
 - `authentication` (Attributes List) How to handle authentication from clients.
 
 It tries to authenticate with every rule sequentially one by one.
@@ -99,6 +114,15 @@ The format follows the RFC1035: 1-63 chars, lowercase alphanumeric or '-', must 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `namespace` (Attributes) Namespace allows to implement multitenancy using a single backend cluster.
 It allows to either hide or enforce a static prefix on resources (topics, consumer group IDs, transaction IDs). (see [below for nested schema](#nestedatt--namespace))
+- `topic_aliases` (Attributes List) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Topic aliases allow exposing backend topics under additional names.
+An alias creates a new entry point to the same physical data.
+The alias `topic` field references namespace-visible names (if namespace is configured).
+Aliases are independent of namespace and can be used without it.
+
+**Requires a minimum runtime version of `1.2`**. (see [below for nested schema](#nestedatt--topic_aliases))
 
 ### Read-Only
 
@@ -112,7 +136,9 @@ It allows to either hide or enforce a static prefix on resources (topics, consum
 Optional:
 
 - `anonymous` (Attributes) (see [below for nested schema](#nestedatt--authentication--anonymous))
-- `client_certificate` (Attributes) Client certificate (mTLS) authentication scheme for the virtual cluster. (see [below for nested schema](#nestedatt--authentication--client_certificate))
+- `client_certificate` (Attributes) Client certificate (mTLS) authentication scheme for the virtual cluster.
+
+**Requires a minimum runtime version of `1.1`**. (see [below for nested schema](#nestedatt--authentication--client_certificate))
 - `oauth_bearer` (Attributes) Oauth Bearer authentication scheme for the virtual cluster. (see [below for nested schema](#nestedatt--authentication--oauth_bearer))
 - `sasl_plain` (Attributes) SASL/PLAIN authentication scheme for the virtual cluster. (see [below for nested schema](#nestedatt--authentication--sasl_plain))
 - `sasl_scram` (Attributes) SASL/SCRAM authentication scheme for the virtual cluster. (see [below for nested schema](#nestedatt--authentication--sasl_scram))
@@ -124,6 +150,42 @@ Optional:
 <a id="nestedatt--authentication--client_certificate"></a>
 ### Nested Schema for `authentication.client_certificate`
 
+Optional:
+
+- `fetch_kong_identity_principal` (Attributes) Fetches principal metadata from Kong Identity after successful authentication.
+The principal is looked up by a custom key matched against the authenticated identity.
+
+**Requires a minimum runtime version of `1.2`**. (see [below for nested schema](#nestedatt--authentication--client_certificate--fetch_kong_identity_principal))
+
+<a id="nestedatt--authentication--client_certificate--fetch_kong_identity_principal"></a>
+### Nested Schema for `authentication.client_certificate.fetch_kong_identity_principal`
+
+Optional:
+
+- `directory` (String) Kong Identity directory to use for principal lookup. Not Null
+- `failure_mode` (String) Behavior when the Kong Identity principal lookup fails.
+* `error` - fail the authentication if the principal lookup fails.
+* `ignore` - proceed without principal metadata if the lookup fails.
+
+**Requires a minimum runtime version of `1.2`**.
+possible known values include one of ["error", "ignore"]; Not Null
+- `fetch_by` (Attributes) Defines how to look up the principal in Kong Identity.
+
+**Requires a minimum runtime version of `1.2`**.
+Not Null (see [below for nested schema](#nestedatt--authentication--client_certificate--fetch_kong_identity_principal--fetch_by))
+
+<a id="nestedatt--authentication--client_certificate--fetch_kong_identity_principal--fetch_by"></a>
+### Nested Schema for `authentication.client_certificate.fetch_kong_identity_principal.fetch_by`
+
+Optional:
+
+- `key` (String) The metadata key in Kong Identity to match the authenticated identity against.
+Value for the lookup is a `username` in case of `sasl_plain` or `sasl_scram`.
+In case of `client_certificate` it's a principal mapped by the listener TLSServer policy.
+Not Null
+
+
+
 
 <a id="nestedatt--authentication--oauth_bearer"></a>
 ### Nested Schema for `authentication.oauth_bearer`
@@ -131,6 +193,10 @@ Optional:
 Optional:
 
 - `claims_mapping` (Attributes) Maps JWT claims in the case when sub and scope are presented as different claims in your JWT token. (see [below for nested schema](#nestedatt--authentication--oauth_bearer--claims_mapping))
+- `fetch_kong_identity_principal` (Attributes) Fetches principal metadata from Kong Identity after successful OAUTHBEARER authentication.
+The principal is looked up by the iss and sub claims from the JWT token.
+
+**Requires a minimum runtime version of `1.2`**. (see [below for nested schema](#nestedatt--authentication--oauth_bearer--fetch_kong_identity_principal))
 - `jwks` (Attributes) JSON Web Key Set configuration for verifying token signatures. (see [below for nested schema](#nestedatt--authentication--oauth_bearer--jwks))
 - `mediation` (String) Methods to mediate authentication:
 * passthrough - pass authentication from the client through proxy to the backend cluster without any kind of
@@ -140,7 +206,7 @@ Optional:
 * terminate - terminate authentication at the proxy level and originate authentication to the backend cluster
   using the configuration defined at BackendCluster's authentication.
   SASL auth is not originated if authentication on the backend_cluster is not configured.
-Not Null; must be one of ["passthrough", "validate_forward", "terminate"]
+possible known values include one of ["passthrough", "validate_forward", "terminate"]; Not Null
 - `validate` (Attributes) Validation rules. (see [below for nested schema](#nestedatt--authentication--oauth_bearer--validate))
 
 <a id="nestedatt--authentication--oauth_bearer--claims_mapping"></a>
@@ -150,6 +216,20 @@ Optional:
 
 - `scope` (String) Maps the scope claim.
 - `sub` (String) Maps the subject claim.
+
+
+<a id="nestedatt--authentication--oauth_bearer--fetch_kong_identity_principal"></a>
+### Nested Schema for `authentication.oauth_bearer.fetch_kong_identity_principal`
+
+Optional:
+
+- `directory` (String) Kong Identity directory to use for principal lookup. Not Null
+- `failure_mode` (String) Behavior when the Kong Identity principal lookup fails.
+* `error` - fail the authentication if the principal lookup fails.
+* `ignore` - proceed without principal metadata if the lookup fails.
+
+**Requires a minimum runtime version of `1.2`**.
+possible known values include one of ["error", "ignore"]; Not Null
 
 
 <a id="nestedatt--authentication--oauth_bearer--jwks"></a>
@@ -185,8 +265,41 @@ Optional:
 
 Optional:
 
-- `mediation` (String) The mediation type for SASL/PLAIN authentication. Not Null; must be one of ["passthrough", "terminate"]
+- `fetch_kong_identity_principal` (Attributes) Fetches principal metadata from Kong Identity after successful authentication.
+The principal is looked up by a custom key matched against the authenticated identity.
+
+**Requires a minimum runtime version of `1.2`**. (see [below for nested schema](#nestedatt--authentication--sasl_plain--fetch_kong_identity_principal))
+- `mediation` (String) The mediation type for SASL/PLAIN authentication. possible known values include one of ["passthrough", "terminate"]; Not Null
 - `principals` (Attributes List) List of principals to be able to authenticate with, used with `terminate` mediation. (see [below for nested schema](#nestedatt--authentication--sasl_plain--principals))
+
+<a id="nestedatt--authentication--sasl_plain--fetch_kong_identity_principal"></a>
+### Nested Schema for `authentication.sasl_plain.fetch_kong_identity_principal`
+
+Optional:
+
+- `directory` (String) Kong Identity directory to use for principal lookup. Not Null
+- `failure_mode` (String) Behavior when the Kong Identity principal lookup fails.
+* `error` - fail the authentication if the principal lookup fails.
+* `ignore` - proceed without principal metadata if the lookup fails.
+
+**Requires a minimum runtime version of `1.2`**.
+possible known values include one of ["error", "ignore"]; Not Null
+- `fetch_by` (Attributes) Defines how to look up the principal in Kong Identity.
+
+**Requires a minimum runtime version of `1.2`**.
+Not Null (see [below for nested schema](#nestedatt--authentication--sasl_plain--fetch_kong_identity_principal--fetch_by))
+
+<a id="nestedatt--authentication--sasl_plain--fetch_kong_identity_principal--fetch_by"></a>
+### Nested Schema for `authentication.sasl_plain.fetch_kong_identity_principal.fetch_by`
+
+Optional:
+
+- `key` (String) The metadata key in Kong Identity to match the authenticated identity against.
+Value for the lookup is a `username` in case of `sasl_plain` or `sasl_scram`.
+In case of `client_certificate` it's a principal mapped by the listener TLSServer policy.
+Not Null
+
+
 
 <a id="nestedatt--authentication--sasl_plain--principals"></a>
 ### Nested Schema for `authentication.sasl_plain.principals`
@@ -208,7 +321,40 @@ Not Null
 
 Optional:
 
-- `algorithm` (String) The algorithm used for SASL/SCRAM authentication. Not Null; must be one of ["sha256", "sha512"]
+- `algorithm` (String) The algorithm used for SASL/SCRAM authentication. possible known values include one of ["sha256", "sha512"]; Not Null
+- `fetch_kong_identity_principal` (Attributes) Fetches principal metadata from Kong Identity after successful authentication.
+The principal is looked up by a custom key matched against the authenticated identity.
+
+**Requires a minimum runtime version of `1.2`**. (see [below for nested schema](#nestedatt--authentication--sasl_scram--fetch_kong_identity_principal))
+
+<a id="nestedatt--authentication--sasl_scram--fetch_kong_identity_principal"></a>
+### Nested Schema for `authentication.sasl_scram.fetch_kong_identity_principal`
+
+Optional:
+
+- `directory` (String) Kong Identity directory to use for principal lookup. Not Null
+- `failure_mode` (String) Behavior when the Kong Identity principal lookup fails.
+* `error` - fail the authentication if the principal lookup fails.
+* `ignore` - proceed without principal metadata if the lookup fails.
+
+**Requires a minimum runtime version of `1.2`**.
+possible known values include one of ["error", "ignore"]; Not Null
+- `fetch_by` (Attributes) Defines how to look up the principal in Kong Identity.
+
+**Requires a minimum runtime version of `1.2`**.
+Not Null (see [below for nested schema](#nestedatt--authentication--sasl_scram--fetch_kong_identity_principal--fetch_by))
+
+<a id="nestedatt--authentication--sasl_scram--fetch_kong_identity_principal--fetch_by"></a>
+### Nested Schema for `authentication.sasl_scram.fetch_kong_identity_principal.fetch_by`
+
+Optional:
+
+- `key` (String) The metadata key in Kong Identity to match the authenticated identity against.
+Value for the lookup is a `username` in case of `sasl_plain` or `sasl_scram`.
+In case of `client_certificate` it's a principal mapped by the listener TLSServer policy.
+Not Null
+
+
 
 
 
@@ -233,7 +379,7 @@ Required:
   Created resources are written with the prefix on the backend cluster.
 * enforce_prefix - the configured prefix remains visible to clients.
   Created resources must include the prefix or the request will fail.
-must be one of ["hide_prefix", "enforce_prefix"]
+possible known values include one of ["hide_prefix", "enforce_prefix"]
 - `prefix` (String) The namespace is differentiated by this chosen prefix.
 For example, if the prefix is set to "analytics_" the topic named "analytics_user_clicks" is available to the clients
 of the virtual cluster. Topics without the prefix will be ignored unless added via `additional.topics`.
@@ -301,7 +447,7 @@ Optional:
 - `conflict` (String) How to inform the user about conflicts where multiple backend topics would map to the same virtual topic name.
 * warn - log in the Event Gateway logs. Additionally, it sets knep_namespace_topic_conflict to 1.
 * ignore - do not do anything. It does not cause knep_namespace_topic_conflict metric to be set to 1.
-Default: "warn"; must be one of ["warn", "ignore"]
+possible known values include one of ["warn", "ignore"]; Default: "warn"
 - `exact_list` (Attributes List) Explicit allow-list of backend topic names. (see [below for nested schema](#nestedatt--namespace--additional--topics--exact_list--exact_list))
 
 <a id="nestedatt--namespace--additional--topics--exact_list--exact_list"></a>
@@ -321,8 +467,30 @@ Optional:
 - `conflict` (String) How to inform the user about conflicts where multiple backend topics would map to the same virtual topic name.
 * warn - log in the Event Gateway logs. Additionally, it sets knep_namespace_topic_conflict to 1.
 * ignore - do not do anything. It does not cause knep_namespace_topic_conflict metric to be set to 1.
-Default: "warn"; must be one of ["warn", "ignore"]
+possible known values include one of ["warn", "ignore"]; Default: "warn"
 - `glob` (String) Expose any backend topic that matches this glob pattern (e.g., `operations_data_*`). Not Null
+
+
+
+
+
+<a id="nestedatt--topic_aliases"></a>
+### Nested Schema for `topic_aliases`
+
+Required:
+
+- `alias` (String) The client-visible topic name.
+- `topic` (String) The namespace-visible topic name this alias resolves to.
+
+Optional:
+
+- `conflict` (String) How to handle conflicts where an alias shadows a physical topic.
+* warn - activate the alias but log a warning and set the conflict metric to 1.
+* ignore - activate the alias silently.
+possible known values include one of ["warn", "ignore"]; Default: "warn"
+- `match` (String) CEL expression evaluated against the connection's auth context.
+If omitted or empty, the alias is active for all connections.
+Default: ""
 
 ## Import
 
@@ -335,7 +503,7 @@ import {
   to = konnect_event_gateway_virtual_cluster.my_konnect_event_gateway_virtual_cluster
   id = jsonencode({
     gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "..."
+    id         = "..."
   })
 }
 ```

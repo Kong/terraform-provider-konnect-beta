@@ -19,27 +19,28 @@ resource "konnect_dashboard" "my_dashboard" {
               }
             }
             query = {
-              api_usage = {
-                datasource = "api_usage"
+              llm_usage = {
+                datasource = "llm_usage"
                 dimensions = [
-                  "status_code_grouped",
+                  "consumer"
                 ]
                 filters = [
                   {
-                    field    = "realm"
-                    operator = "not_empty"
+                    field    = "application"
+                    operator = "empty"
                     value    = "{ \"see\": \"documentation\" }"
                   }
                 ]
-                granularity = "twelveHourly"
+                granularity = "tenMinutely"
                 metrics = [
-                  "kong_latency_average"
+                  "ai_request_count"
                 ]
                 time_range = {
-                  relative = {
-                    time_range = "1h"
-                    type       = "relative"
-                    tz         = "Etc/UTC"
+                  absolute = {
+                    end   = "2022-11-26T07:30:44.592Z"
+                    start = "2022-01-09T02:25:36.303Z"
+                    type  = "absolute"
+                    tz    = "Etc/UTC"
                   }
                 }
               }

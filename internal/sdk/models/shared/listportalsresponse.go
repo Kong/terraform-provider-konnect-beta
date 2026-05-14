@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 	"time"
 )
@@ -20,20 +18,16 @@ const (
 func (e ListPortalsResponseDefaultAPIVisibility) ToPointer() *ListPortalsResponseDefaultAPIVisibility {
 	return &e
 }
-func (e *ListPortalsResponseDefaultAPIVisibility) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ListPortalsResponseDefaultAPIVisibility) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "public", "private":
+			return true
+		}
 	}
-	switch v {
-	case "public":
-		fallthrough
-	case "private":
-		*e = ListPortalsResponseDefaultAPIVisibility(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ListPortalsResponseDefaultAPIVisibility: %v", v)
-	}
+	return false
 }
 
 // ListPortalsResponseDefaultPageVisibility - The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.
@@ -47,20 +41,16 @@ const (
 func (e ListPortalsResponseDefaultPageVisibility) ToPointer() *ListPortalsResponseDefaultPageVisibility {
 	return &e
 }
-func (e *ListPortalsResponseDefaultPageVisibility) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ListPortalsResponseDefaultPageVisibility) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "public", "private":
+			return true
+		}
 	}
-	switch v {
-	case "public":
-		fallthrough
-	case "private":
-		*e = ListPortalsResponseDefaultPageVisibility(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ListPortalsResponseDefaultPageVisibility: %v", v)
-	}
+	return false
 }
 
 type Portal struct {
@@ -80,7 +70,7 @@ type Portal struct {
 	AuthenticationEnabled *bool `default:"true" json:"authentication_enabled"`
 	// Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.
 	RbacEnabled *bool `default:"false" json:"rbac_enabled"`
-	// Whether ip allow list is enabled for the organization.
+	// Whether ip allow list is enabled for the portal.
 	SiprEnabled *bool `default:"false" json:"sipr_enabled"`
 	// The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.
 	DefaultAPIVisibility ListPortalsResponseDefaultAPIVisibility `json:"default_api_visibility"`

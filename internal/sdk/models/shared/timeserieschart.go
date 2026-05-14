@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
@@ -18,20 +16,16 @@ const (
 func (e TimeseriesChartType) ToPointer() *TimeseriesChartType {
 	return &e
 }
-func (e *TimeseriesChartType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TimeseriesChartType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "timeseries_line", "timeseries_bar":
+			return true
+		}
 	}
-	switch v {
-	case "timeseries_line":
-		fallthrough
-	case "timeseries_bar":
-		*e = TimeseriesChartType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TimeseriesChartType: %v", v)
-	}
+	return false
 }
 
 // TimeseriesChart - A chart that can render timeseries data -- data from a query that has `time` as a dimension -- as lines or bars.

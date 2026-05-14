@@ -91,14 +91,14 @@ Optional:
 - `selector` (Attributes) (see [below for nested schema](#nestedatt--spec--selector))
 - `state` (String) State of MeshService. Available if there is at least one healthy endpoint. Otherwise, Unavailable.
 It's used for cross zone communication to check if we should send traffic to it, when MeshService is aggregated into MeshMultiZoneService.
-Default: "Unavailable"; must be one of ["Available", "Unavailable"]
+possible known values include one of ["Available", "Unavailable"]; Default: "Unavailable"
 
 <a id="nestedatt--spec--identities"></a>
 ### Nested Schema for `spec.identities`
 
 Optional:
 
-- `type` (String) Not Null; must be one of ["ServiceTag", "SpiffeID"]
+- `type` (String) possible known values include one of ["ServiceTag", "SpiffeID"]; Not Null
 - `value` (String) Not Null
 
 
@@ -247,8 +247,8 @@ import {
   to = konnect_mesh_service.my_konnect_mesh_service
   id = jsonencode({
     cp_id = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
-    mesh = "..."
-    name = "..."
+    mesh  = "..."
+    name  = "..."
   })
 }
 ```

@@ -179,13 +179,7 @@ func (r *MeshOPAResource) Schema(ctx context.Context, req resource.SchemaRequest
 										Optional: true,
 										MarkdownDescription: `OnAgentFailure either 'allow' or 'deny' (default to deny) whether` + "\n" +
 											`to allow requests when the authorization agent failed.` + "\n" +
-											`must be one of ["Allow", "Deny"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"Allow",
-												"Deny",
-											),
-										},
+											`possible known values include one of ["Allow", "Deny"]`,
 									},
 									"request_body": schema.SingleNestedAttribute{
 										Optional: true,
@@ -224,20 +218,7 @@ func (r *MeshOPAResource) Schema(ctx context.Context, req resource.SchemaRequest
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
 								Required:    true,
-								Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"Mesh",
-										"MeshSubset",
-										"MeshGateway",
-										"MeshService",
-										"MeshExternalService",
-										"MeshMultiZoneService",
-										"MeshServiceSubset",
-										"MeshHTTPRoute",
-										"Dataplane",
-									),
-								},
+								Description: `Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 							},
 							"labels": schema.MapAttribute{
 								Optional:    true,

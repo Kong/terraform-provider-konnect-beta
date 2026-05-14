@@ -34,27 +34,28 @@ resource "konnect_dashboard" "my_dashboard" {
               }
             }
             query = {
-              api_usage = {
-                datasource = "api_usage"
+              llm_usage = {
+                datasource = "llm_usage"
                 dimensions = [
-                  "status_code_grouped",
+                  "consumer"
                 ]
                 filters = [
                   {
-                    field    = "realm"
-                    operator = "not_empty"
+                    field    = "application"
+                    operator = "empty"
                     value    = "{ \"see\": \"documentation\" }"
                   }
                 ]
-                granularity = "twelveHourly"
+                granularity = "tenMinutely"
                 metrics = [
-                  "kong_latency_average"
+                  "ai_request_count"
                 ]
                 time_range = {
-                  relative = {
-                    time_range = "1h"
-                    type       = "relative"
-                    tz         = "Etc/UTC"
+                  absolute = {
+                    end   = "2022-11-26T07:30:44.592Z"
+                    start = "2022-01-09T02:25:36.303Z"
+                    type  = "absolute"
+                    tz    = "Etc/UTC"
                   }
                 }
               }
@@ -199,7 +200,7 @@ Optional:
 
 - `chart_title` (String) The title of the chart, which is displayed in the tile's header.
 - `stacked` (Boolean) Whether to stack the bars (implicitly adding them together to form a total), or leave them independent from each other.
-- `type` (String) Not Null; must be one of ["horizontal_bar", "vertical_bar"]
+- `type` (String) possible known values include one of ["horizontal_bar", "vertical_bar"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--chart--single_value"></a>
@@ -219,7 +220,7 @@ Optional:
 
 - `chart_title` (String) The title of the chart, which is displayed in the tile's header.
 - `stacked` (Boolean) Whether to stack the bars or lines (implicitly adding them together to form a total), or leave them independent from each other.
-- `type` (String) Not Null; must be one of ["timeseries_line", "timeseries_bar"]
+- `type` (String) possible known values include one of ["timeseries_line", "timeseries_bar"]; Not Null
 
 
 
@@ -228,8 +229,891 @@ Optional:
 
 Optional:
 
+- `agentic_usage` (Attributes) A query targeting the agentic usage analytics datasource. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage))
 - `api_usage` (Attributes) A query targeting the API usage analytics datasource. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--api_usage))
 - `llm_usage` (Attributes) A query targeting the LLM usage analytics datasource. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--llm_usage))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage`
+
+Optional:
+
+- `datasource` (String) Not Null; must be "agentic_usage"
+- `dimensions` (List of String) List of attributes or entity types to group by.
+- `filters` (Attributes List) A list of filters to apply to the query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters))
+- `granularity` (String) Force time grouping into buckets of the specified duration.  Only has an effect if "time" is in the "dimensions" list.
+
+The granularity of the result may be coarser than requested.  The finest allowed granularity depends on the query's time range: data farther in the past may have coarser granularity.  The exact result granularity will be reported in the response `meta.granularity_ms` field.
+
+If granularity is not specified and "time" is in the dimensions list, a default will be chosen based on the time range requested.
+
+Different relative times support different granularities:
+  - 15m => tenSecondly, thirtySecondly, minutely
+  - 1h  => tenSecondly, thirtySecondly, minutely, fiveMinutely, tenMinutely
+  - 6h  => thirtySecondly, minutely, fiveMinutely, tenMinutely, thirtyMinutely, hourly
+  - 12h => minutely, fiveMinutely, tenMinutely, thirtyMinutely, hourly
+  - 24h => fiveMinutely, tenMinutely, thirtyMinutely, hourly
+  - 7d  => thirtyMinutely, hourly, twoHourly, twelveHourly, daily
+  - 30d => hourly, twoHourly, twelveHourly, daily, weekly
+
+For special time ranges:
+  - current_week, previous_week   => thirtyMinutely, hourly, twoHourly, twelveHourly, daily
+  - current_month, previous_month => hourly, twoHourly, twelveHourly, daily, weekly
+
+For absolute time ranges, daily will be used.
+possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]
+- `metrics` (List of String) List of aggregated metrics to collect across the requested time span. Default: ["request_count"]
+- `time_range` (Attributes) The time range to query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--time_range))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters`
+
+Optional:
+
+- `a2a_context_id` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_context_id))
+- `a2a_error` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_error))
+- `a2a_method` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_method))
+- `a2a_task_id` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_task_id))
+- `api` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api))
+- `api_package` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api_package))
+- `api_product` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api_product))
+- `api_product_version` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api_product_version))
+- `application` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--application))
+- `consumer` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--consumer))
+- `control_plane` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--control_plane))
+- `control_plane_group` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--control_plane_group))
+- `country_code` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--country_code))
+- `data_plane_node` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--data_plane_node))
+- `data_plane_node_version` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--data_plane_node_version))
+- `gateway_service` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--gateway_service))
+- `mcp_error` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_error))
+- `mcp_method` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_method))
+- `mcp_session_id` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_session_id))
+- `mcp_tool_name` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_tool_name))
+- `portal` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--portal))
+- `realm` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--realm))
+- `response_source` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--response_source))
+- `route` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--route))
+- `status_code` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--status_code))
+- `status_code_grouped` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--status_code_grouped))
+- `upstream_status_code` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--upstream_status_code))
+- `upstream_status_code_grouped` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--upstream_status_code_grouped))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_context_id"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.a2a_context_id`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_context_id--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_context_id--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_context_id--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.a2a_context_id.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "a2a_context_id"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_context_id--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.a2a_context_id.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "a2a_context_id"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The values to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_error"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.a2a_error`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_error--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_error--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_error--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.a2a_error.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "a2a_error"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_error--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.a2a_error.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "a2a_error"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The values to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_method"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.a2a_method`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_method--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_method--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_method--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.a2a_method.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "a2a_method"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_method--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.a2a_method.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "a2a_method"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The values to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_task_id"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.a2a_task_id`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_task_id--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_task_id--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_task_id--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.a2a_task_id.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "a2a_task_id"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_task_id--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.a2a_task_id.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "a2a_task_id"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The values to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.api`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.api.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "api"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.api.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "api"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The IDs to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api_package"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.api_package`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api_package--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api_package--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api_package--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.api_package.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "api_package"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api_package--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.api_package.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "api_package"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The IDs to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api_product"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.api_product`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api_product--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api_product--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api_product--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.api_product.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "api_product"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api_product--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.api_product.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "api_product"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The IDs to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api_product_version"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.api_product_version`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api_product_version--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api_product_version--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api_product_version--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.api_product_version.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "api_product_version"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api_product_version--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.api_product_version.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "api_product_version"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The IDs to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--application"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.application`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--application--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--application--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--application--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.application.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "application"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--application--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.application.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "application"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The IDs to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--consumer"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.consumer`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--consumer--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--consumer--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--consumer--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.consumer.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "consumer"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--consumer--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.consumer.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "consumer"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The IDs to include in the results. Because gateway IDs are only unique within a given control plane, the filter values must be of the form `control_plane_id:field_id` or `control_plane_group_id:field_id` for data plane nodes within a control plane group. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--control_plane"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.control_plane`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--control_plane--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--control_plane--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--control_plane--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.control_plane.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "control_plane"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--control_plane--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.control_plane.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "control_plane"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The IDs to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--control_plane_group"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.control_plane_group`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--control_plane_group--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--control_plane_group--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--control_plane_group--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.control_plane_group.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "control_plane_group"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--control_plane_group--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.control_plane_group.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "control_plane_group"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The IDs to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--country_code"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.country_code`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--country_code--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--country_code--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--country_code--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.country_code.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "country_code"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--country_code--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.country_code.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "country_code"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The values to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--data_plane_node"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.data_plane_node`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--data_plane_node--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--data_plane_node--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--data_plane_node--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.data_plane_node.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "data_plane_node"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--data_plane_node--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.data_plane_node.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "data_plane_node"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The IDs to include in the results. Because gateway IDs are only unique within a given control plane, the filter values must be of the form `control_plane_id:field_id` or `control_plane_group_id:field_id` for data plane nodes within a control plane group. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--data_plane_node_version"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.data_plane_node_version`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--data_plane_node_version--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--data_plane_node_version--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--data_plane_node_version--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.data_plane_node_version.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "data_plane_node_version"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--data_plane_node_version--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.data_plane_node_version.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "data_plane_node_version"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The values to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--gateway_service"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.gateway_service`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--gateway_service--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--gateway_service--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--gateway_service--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.gateway_service.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "gateway_service"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--gateway_service--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.gateway_service.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "gateway_service"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The IDs to include in the results. Because gateway IDs are only unique within a given control plane, the filter values must be of the form `control_plane_id:field_id` or `control_plane_group_id:field_id` for data plane nodes within a control plane group. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_error"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.mcp_error`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_error--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_error--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_error--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.mcp_error.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "mcp_error"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_error--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.mcp_error.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "mcp_error"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The values to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_method"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.mcp_method`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_method--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_method--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_method--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.mcp_method.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "mcp_method"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_method--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.mcp_method.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "mcp_method"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The values to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_session_id"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.mcp_session_id`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_session_id--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_session_id--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_session_id--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.mcp_session_id.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "mcp_session_id"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_session_id--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.mcp_session_id.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "mcp_session_id"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The values to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_tool_name"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.mcp_tool_name`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_tool_name--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_tool_name--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_tool_name--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.mcp_tool_name.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "mcp_tool_name"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_tool_name--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.mcp_tool_name.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "mcp_tool_name"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The values to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--portal"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.portal`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--portal--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--portal--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--portal--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.portal.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "portal"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--portal--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.portal.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "portal"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The IDs to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--realm"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.realm`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--realm--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--realm--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--realm--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.realm.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "realm"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--realm--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.realm.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "realm"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The IDs to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--response_source"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.response_source`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--response_source--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--response_source--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--response_source--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.response_source.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "response_source"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--response_source--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.response_source.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "response_source"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The values to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--route"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.route`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--route--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--route--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--route--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.route.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "route"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--route--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.route.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "route"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The IDs to include in the results. Because gateway IDs are only unique within a given control plane, the filter values must be of the form `control_plane_id:field_id` or `control_plane_group_id:field_id` for data plane nodes within a control plane group. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--status_code"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.status_code`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--status_code--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--status_code--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--status_code--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.status_code.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "status_code"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--status_code--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.status_code.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "status_code"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of Number) The codes to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--status_code_grouped"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.status_code_grouped`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--status_code_grouped--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--status_code_grouped--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--status_code_grouped--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.status_code_grouped.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "status_code_grouped"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--status_code_grouped--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.status_code_grouped.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "status_code_grouped"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The code groups to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--upstream_status_code"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.upstream_status_code`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--upstream_status_code--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--upstream_status_code--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--upstream_status_code--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.upstream_status_code.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "upstream_status_code"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--upstream_status_code--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.upstream_status_code.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "upstream_status_code"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of Number) The codes to include in the results. Not Null
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--upstream_status_code_grouped"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.upstream_status_code_grouped`
+
+Optional:
+
+- `empty_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--upstream_status_code_grouped--empty_filters))
+- `multiselect_filters` (Attributes) (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--upstream_status_code_grouped--multiselect_filters))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--upstream_status_code_grouped--empty_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.upstream_status_code_grouped.empty_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "upstream_status_code_grouped"
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--upstream_status_code_grouped--multiselect_filters"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.filters.upstream_status_code_grouped.multiselect_filters`
+
+Optional:
+
+- `field` (String) The field to filter. Not Null; must be "upstream_status_code_grouped"
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
+- `value` (List of String) The code groups to include in the results. Not Null
+
+
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--time_range"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.time_range`
+
+Optional:
+
+- `absolute` (Attributes) A duration representing an exact start and end time. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--time_range--absolute))
+- `relative` (Attributes) A duration representing a relative-to-now span of time. Generally the start time is floored to the requested granularity. Eg 7d from now, with 1day granularity initiated at 2024-01-08T17:11:00+05:00 will query for the time range from 2024-01-01T00:00:00+05:00 to 2024-01-08T17:11:00+05:00. The exact start and end timestamps are returned in the result query in the meta.start and meta.end fields. If the granularity for the previous query was 1hour, it would query a time range from 2024-01-01T17:00:00+05:00 to 2024-01-08T17:11:00+05:00. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--time_range--relative))
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--time_range--absolute"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.time_range.absolute`
+
+Optional:
+
+- `end` (String)
+- `start` (String)
+- `type` (String) Not Null; must be "absolute"
+- `tz` (String) Default: "Etc/UTC"
+
+
+<a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--time_range--relative"></a>
+### Nested Schema for `definition.tiles.chart.definition.query.agentic_usage.time_range.relative`
+
+Optional:
+
+- `time_range` (String) possible known values include one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]; Default: "1h"
+- `type` (String) Not Null; must be "relative"
+- `tz` (String) Default: "Etc/UTC"
+
+
+
 
 <a id="nestedatt--definition--tiles--chart--definition--query--api_usage"></a>
 ### Nested Schema for `definition.tiles.chart.definition.query.api_usage`
@@ -259,7 +1143,7 @@ For special time ranges:
   - current_month, previous_month => hourly, twoHourly, twelveHourly, daily, weekly
 
 For absolute time ranges, daily will be used.
-must be one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]
+possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]
 - `metrics` (List of String) List of aggregated metrics to collect across the requested time span. If no metrics are specified, request_count will be computed by default. Default: ["request_count"]
 - `time_range` (Attributes) The time range to query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--api_usage--time_range))
 
@@ -268,8 +1152,8 @@ must be one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "te
 
 Optional:
 
-- `field` (String) Not Null; must be one of ["api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]
-- `operator` (String) Not Null; must be one of ["in", "not_in", "empty", "not_empty"]
+- `field` (String) possible known values include one of ["api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null
+- `operator` (String) possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null
 - `value` (String) Parsed as JSON.
 
 
@@ -297,7 +1181,7 @@ Optional:
 
 Optional:
 
-- `time_range` (String) Default: "1h"; must be one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]
+- `time_range` (String) possible known values include one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]; Default: "1h"
 - `type` (String) Not Null; must be "relative"
 - `tz` (String) Default: "Etc/UTC"
 
@@ -332,7 +1216,7 @@ For special time ranges:
   - current_month, previous_month => hourly, twoHourly, twelveHourly, daily, weekly
 
 For absolute time ranges, daily will be used.
-must be one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]
+possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]
 - `metrics` (List of String) List of aggregated metrics to collect across the requested time span. Default: ["ai_request_count"]
 - `time_range` (Attributes) The time range to query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--llm_usage--time_range))
 
@@ -341,8 +1225,8 @@ must be one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "te
 
 Optional:
 
-- `field` (String) Not Null; must be one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "application", "consumer", "control_plane", "control_plane_group", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "realm", "route", "status_code", "status_code_grouped"]
-- `operator` (String) Not Null; must be one of ["in", "not_in", "empty", "not_empty"]
+- `field` (String) possible known values include one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "application", "consumer", "control_plane", "control_plane_group", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "realm", "route", "status_code", "status_code_grouped"]; Not Null
+- `operator` (String) possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null
 - `value` (String) Parsed as JSON.
 
 
@@ -370,7 +1254,7 @@ Optional:
 
 Optional:
 
-- `time_range` (String) Default: "1h"; must be one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]
+- `time_range` (String) possible known values include one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]; Default: "1h"
 - `type` (String) Not Null; must be "relative"
 - `tz` (String) Default: "Etc/UTC"
 
@@ -413,8 +1297,8 @@ Optional:
 
 Optional:
 
-- `field` (String) Not Null; must be one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]
-- `operator` (String) Not Null; must be one of ["in", "not_in", "empty", "not_empty"]
+- `field` (String) possible known values include one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null
+- `operator` (String) possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null
 - `value` (String) Parsed as JSON.
 
 ## Import

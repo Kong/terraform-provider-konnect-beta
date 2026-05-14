@@ -120,20 +120,7 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
 								Required:    true,
-								Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"Mesh",
-										"MeshSubset",
-										"MeshGateway",
-										"MeshService",
-										"MeshExternalService",
-										"MeshMultiZoneService",
-										"MeshServiceSubset",
-										"MeshHTTPRoute",
-										"Dataplane",
-									),
-								},
+								Description: `Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 							},
 							"labels": schema.MapAttribute{
 								Optional:    true,
@@ -248,13 +235,9 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 																Attributes: map[string]schema.Attribute{
 																	"format": schema.StringAttribute{
 																		Optional:    true,
-																		Description: `The format of the reset header. Not Null; must be one of ["Seconds", "UnixTimestamp"]`,
+																		Description: `The format of the reset header. possible known values include one of ["Seconds", "UnixTimestamp"]; Not Null`,
 																		Validators: []validator.String{
 																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf(
-																				"Seconds",
-																				"UnixTimestamp",
-																			),
 																		},
 																	},
 																	"name": schema.StringAttribute{
@@ -323,14 +306,9 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 														Attributes: map[string]schema.Attribute{
 															"predicate": schema.StringAttribute{
 																Optional:    true,
-																Description: `Type is requested predicate mode. Not Null; must be one of ["OmitPreviousHosts", "OmitHostsWithTags", "OmitPreviousPriorities"]`,
+																Description: `Type is requested predicate mode. possible known values include one of ["OmitPreviousHosts", "OmitHostsWithTags", "OmitPreviousPriorities"]; Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
-																	stringvalidator.OneOf(
-																		"OmitPreviousHosts",
-																		"OmitHostsWithTags",
-																		"OmitPreviousPriorities",
-																	),
 																},
 															},
 															"tags": schema.MapAttribute{
@@ -392,13 +370,9 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 																Attributes: map[string]schema.Attribute{
 																	"format": schema.StringAttribute{
 																		Optional:    true,
-																		Description: `The format of the reset header. Not Null; must be one of ["Seconds", "UnixTimestamp"]`,
+																		Description: `The format of the reset header. possible known values include one of ["Seconds", "UnixTimestamp"]; Not Null`,
 																		Validators: []validator.String{
 																			speakeasy_stringvalidators.NotNull(),
-																			stringvalidator.OneOf(
-																				"Seconds",
-																				"UnixTimestamp",
-																			),
 																		},
 																	},
 																	"name": schema.StringAttribute{
@@ -447,16 +421,7 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 																Computed:    true,
 																Optional:    true,
 																Default:     stringdefault.StaticString(`Exact`),
-																Description: `Type specifies how to match against the value of the header. Default: "Exact"; must be one of ["Exact", "Present", "RegularExpression", "Absent", "Prefix"]`,
-																Validators: []validator.String{
-																	stringvalidator.OneOf(
-																		"Exact",
-																		"Present",
-																		"RegularExpression",
-																		"Absent",
-																		"Prefix",
-																	),
-																},
+																Description: `Type specifies how to match against the value of the header. possible known values include one of ["Exact", "Present", "RegularExpression", "Absent", "Prefix"]; Default: "Exact"`,
 															},
 															"value": schema.StringAttribute{
 																Optional:    true,
@@ -493,16 +458,7 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 																Computed:    true,
 																Optional:    true,
 																Default:     stringdefault.StaticString(`Exact`),
-																Description: `Type specifies how to match against the value of the header. Default: "Exact"; must be one of ["Exact", "Present", "RegularExpression", "Absent", "Prefix"]`,
-																Validators: []validator.String{
-																	stringvalidator.OneOf(
-																		"Exact",
-																		"Present",
-																		"RegularExpression",
-																		"Absent",
-																		"Prefix",
-																	),
-																},
+																Description: `Type specifies how to match against the value of the header. possible known values include one of ["Exact", "Present", "RegularExpression", "Absent", "Prefix"]; Default: "Exact"`,
 															},
 															"value": schema.StringAttribute{
 																Optional:    true,
@@ -551,20 +507,9 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 									Attributes: map[string]schema.Attribute{
 										"kind": schema.StringAttribute{
 											Optional:    true,
-											Description: `Kind of the referenced resource. Not Null; must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
+											Description: `Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]; Not Null`,
 											Validators: []validator.String{
 												speakeasy_stringvalidators.NotNull(),
-												stringvalidator.OneOf(
-													"Mesh",
-													"MeshSubset",
-													"MeshGateway",
-													"MeshService",
-													"MeshExternalService",
-													"MeshMultiZoneService",
-													"MeshServiceSubset",
-													"MeshHTTPRoute",
-													"Dataplane",
-												),
 											},
 										},
 										"labels": schema.MapAttribute{

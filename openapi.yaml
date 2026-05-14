@@ -426,6 +426,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Pages
+      x-speakeasy-group: Portal Pages
   '/v3/portals/{portalId}/pages/{pageId}':
     get:
       x-speakeasy-entity-operation:
@@ -446,6 +447,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Pages
+      x-speakeasy-group: Portal Pages
     patch:
       x-speakeasy-entity-operation:
         terraform-resource: PortalPage#update
@@ -475,6 +477,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Pages
+      x-speakeasy-group: Portal Pages
     delete:
       x-speakeasy-entity-operation:
         terraform-resource: PortalPage#delete
@@ -496,6 +499,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Pages
+      x-speakeasy-group: Portal Pages
   '/v3/portals/{portalId}/snippets':
     post:
       x-speakeasy-entity-operation:
@@ -601,17 +605,12 @@ paths:
     parameters:
       - $ref: '#/components/parameters/PortalId'
     get:
-      x-unstable: true
       x-speakeasy-entity-operation:
         terraform-resource: PortalAuth#read
         terraform-datasource: null
       operationId: get-portal-authentication-settings
       summary: Get Auth Settings
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Returns the developer authentication configuration for a portal, which determines how developers can log in and how they are assigned to teams.
+      description: 'Returns the developer authentication configuration for a portal, which determines how developers can log in and how they are assigned to teams.'
       responses:
         '200':
           $ref: '#/components/responses/PortalAuthenticationSettings'
@@ -620,17 +619,12 @@ paths:
       tags:
         - Portal Auth Settings
     patch:
-      x-unstable: true
       x-speakeasy-entity-operation:
         terraform-resource: 'PortalAuth#create,update'
         terraform-datasource: null
       operationId: update-portal-authentication-settings
       summary: Update Auth Settings
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Updates the developer authentication configuration for a portal. Developers can be allowed to login using basic auth (email & password) or use Single-Sign-On through an Identity Provider. Developers can be automatically assigned to teams by mapping claims from their IdP account.
+      description: Updates the developer authentication configuration for a portal. Developers can be allowed to login using basic auth (email & password) or use Single-Sign-On through an Identity Provider. Developers can be automatically assigned to teams by mapping claims from their IdP account.
       requestBody:
         $ref: '#/components/requestBodies/UpdatePortalAuthenticationSettings'
       responses:
@@ -737,6 +731,69 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Teams
+  '/v3/portals/{portalId}/audit-log-webhook':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: 'PortalAuditLogWebhook#create,update'
+        terraform-datasource: null
+      operationId: update-portal-audit-log-webhook
+      summary: Update Portal Audit Log Webhook
+      description: Updates the configuration for a webhook to receive audit logs.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortalAuditLogWebhook'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalAuditLogWebhook'
+        '400':
+          $ref: '#/components/responses/PortalWebhookBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Audit Logs
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalAuditLogWebhook#read
+        terraform-datasource: null
+      operationId: get-portal-audit-log-webhook
+      summary: Get Portal Audit Log Webhook
+      description: Returns configuration for the audit log webhook.
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalAuditLogWebhook'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Audit Logs
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalAuditLogWebhook#delete
+        terraform-datasource: null
+      operationId: delete-portal-audit-log-webhook
+      summary: Delete Portal Audit Log Webhook
+      description: 'Removes configuration for the audit log webhook. The destination ID is set to empty, and the webhook enabled field is set to false'
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Portal Audit Logs
   /v3/apis:
     post:
       x-speakeasy-entity-operation:
@@ -5865,7 +5922,7 @@ paths:
   /v1/auth-servers:
     post:
       x-speakeasy-entity-operation:
-        terraform-resource: AuthServer#create
+        terraform-resource: IdentityAuthServer#create
         terraform-datasource: null
       operationId: createAuthServer
       summary: Create a new auth server
@@ -5886,7 +5943,7 @@ paths:
       - $ref: '#/components/parameters/authServerId'
     get:
       x-speakeasy-entity-operation:
-        terraform-resource: AuthServer#read
+        terraform-resource: IdentityAuthServer#read
         terraform-datasource: null
       operationId: getAuthServer
       summary: Get an auth server
@@ -5900,7 +5957,7 @@ paths:
         - Auth Server
     patch:
       x-speakeasy-entity-operation:
-        terraform-resource: AuthServer#update
+        terraform-resource: IdentityAuthServer#update
         terraform-datasource: null
       operationId: updateAuthServer
       summary: Update an auth server
@@ -5920,7 +5977,7 @@ paths:
         - Auth Server
     delete:
       x-speakeasy-entity-operation:
-        terraform-resource: AuthServer#delete
+        terraform-resource: IdentityAuthServer#delete
         terraform-datasource: null
       operationId: deleteAuthServer
       summary: Delete an auth server
@@ -5950,7 +6007,7 @@ paths:
       - $ref: '#/components/parameters/authServerIdForChildren'
     post:
       x-speakeasy-entity-operation:
-        terraform-resource: AuthServerClaims#create
+        terraform-resource: IdentityAuthServerClaim#create
         terraform-datasource: null
       operationId: createAuthServerClaim
       summary: Create a new auth server claim
@@ -5972,7 +6029,7 @@ paths:
       - $ref: '#/components/parameters/claimId'
     get:
       x-speakeasy-entity-operation:
-        terraform-resource: AuthServerClaims#read
+        terraform-resource: IdentityAuthServerClaim#read
         terraform-datasource: null
       operationId: getAuthServerClaim
       summary: Get an auth server claim
@@ -5986,7 +6043,7 @@ paths:
         - Auth Server Claims
     patch:
       x-speakeasy-entity-operation:
-        terraform-resource: AuthServerClaims#update
+        terraform-resource: IdentityAuthServerClaim#update
         terraform-datasource: null
       operationId: updateAuthServerClaim
       summary: Update an auth server claim
@@ -6004,7 +6061,7 @@ paths:
         - Auth Server Claims
     delete:
       x-speakeasy-entity-operation:
-        terraform-resource: AuthServerClaims#delete
+        terraform-resource: IdentityAuthServerClaim#delete
         terraform-datasource: null
       operationId: deleteAuthServerClaim
       summary: Delete an auth server claim
@@ -6021,7 +6078,7 @@ paths:
       - $ref: '#/components/parameters/authServerIdForChildren'
     post:
       x-speakeasy-entity-operation:
-        terraform-resource: AuthServerScopes#create
+        terraform-resource: IdentityAuthServerScope#create
         terraform-datasource: null
       operationId: createAuthServerScope
       summary: Create a new auth server scope
@@ -6045,7 +6102,7 @@ paths:
       - $ref: '#/components/parameters/scopeId'
     get:
       x-speakeasy-entity-operation:
-        terraform-resource: AuthServerScopes#read
+        terraform-resource: IdentityAuthServerScope#read
         terraform-datasource: null
       operationId: getAuthServerScope
       summary: Get an auth server scope
@@ -6059,7 +6116,7 @@ paths:
         - Auth Server Scopes
     patch:
       x-speakeasy-entity-operation:
-        terraform-resource: AuthServerScopes#update
+        terraform-resource: IdentityAuthServerScope#update
         terraform-datasource: null
       operationId: updateAuthServerScope
       summary: Update an auth server scope
@@ -6079,7 +6136,7 @@ paths:
         - Auth Server Scopes
     delete:
       x-speakeasy-entity-operation:
-        terraform-resource: AuthServerScopes#delete
+        terraform-resource: IdentityAuthServerScope#delete
         terraform-datasource: null
       operationId: deleteAuthServerScope
       summary: Delete an auth server scope
@@ -6096,7 +6153,7 @@ paths:
       - $ref: '#/components/parameters/authServerIdForChildren'
     post:
       x-speakeasy-entity-operation:
-        terraform-resource: AuthServerClients#create
+        terraform-resource: IdentityAuthServerClient#create
         terraform-datasource: null
       operationId: createAuthServerClient
       summary: Create a new auth server client
@@ -6120,7 +6177,7 @@ paths:
       - $ref: '#/components/parameters/clientId'
     get:
       x-speakeasy-entity-operation:
-        terraform-resource: AuthServerClients#read
+        terraform-resource: IdentityAuthServerClient#read
         terraform-datasource: null
       operationId: getAuthServerClient
       summary: Get an auth server client
@@ -6134,7 +6191,7 @@ paths:
         - Auth Server Clients
     put:
       x-speakeasy-entity-operation:
-        terraform-resource: AuthServerClients#update
+        terraform-resource: IdentityAuthServerClient#update
         terraform-datasource: null
       operationId: replaceAuthServerClient
       summary: Replace an auth server client
@@ -6156,7 +6213,7 @@ paths:
         - Auth Server Clients
     delete:
       x-speakeasy-entity-operation:
-        terraform-resource: AuthServerClients#delete
+        terraform-resource: IdentityAuthServerClient#delete
         terraform-datasource: null
       operationId: deleteAuthServerClient
       summary: Delete an auth server client
@@ -7118,7 +7175,10 @@ paths:
         terraform-datasource: null
       operationId: create-event-gateway-tls-trust-bundle
       summary: Create TLS Trust Bundle
-      description: Creates a new TLS trust bundle containing trusted CA certificates for client certificate verification.
+      description: |-
+        Creates a new TLS trust bundle containing trusted CA certificates for client certificate verification.
+
+        **Requires a minimum runtime version of `1.1`**.
       requestBody:
         $ref: '#/components/requestBodies/CreateTLSTrustBundleRequest'
       responses:
@@ -7155,7 +7215,10 @@ paths:
         terraform-datasource: null
       operationId: get-event-gateway-tls-trust-bundle
       summary: Get a TLS Trust Bundle
-      description: Returns information about a specific TLS trust bundle.
+      description: |-
+        Returns information about a specific TLS trust bundle.
+
+        **Requires a minimum runtime version of `1.1`**.
       responses:
         '200':
           description: A single TLS trust bundle object.
@@ -7179,7 +7242,10 @@ paths:
         terraform-datasource: null
       operationId: update-event-gateway-tls-trust-bundle
       summary: Update TLS Trust Bundle
-      description: Updates an existing TLS trust bundle.
+      description: |-
+        Updates an existing TLS trust bundle.
+
+        **Requires a minimum runtime version of `1.1`**.
       requestBody:
         $ref: '#/components/requestBodies/UpdateTLSTrustBundleRequest'
       responses:
@@ -7205,7 +7271,10 @@ paths:
         terraform-datasource: null
       operationId: delete-event-gateway-tls-trust-bundle
       summary: Delete TLS Trust Bundle
-      description: Deletes a specific TLS trust bundle associated with the Event Gateway.
+      description: |-
+        Deletes a specific TLS trust bundle associated with the Event Gateway.
+
+        **Requires a minimum runtime version of `1.1`**.
       responses:
         '204':
           description: No Content
@@ -8492,6 +8561,54 @@ paths:
         - Add-Ons
       x-servers-added: true
       x-speakeasy-group: CloudGateways
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: CloudGatewayAddon#update
+        terraform-datasource: null
+      operationId: update-add-on
+      summary: Update Add-On
+      description: Updates the configuration of an existing add-on.
+      parameters:
+        - $ref: '#/components/parameters/AddOnId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAddOnRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateAddOnResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Add-Ons
+      x-servers-added: true
+      x-speakeasy-group: CloudGateways
 components:
   parameters:
     AddOnId:
@@ -8931,7 +9048,7 @@ components:
         - parent_page_id
       title: PortalPageResponse
     PortalSnippetResponse:
-      description: Details about a page in a portal.
+      description: Details about a snippet in a portal.
       type: object
       properties:
         id:
@@ -9169,10 +9286,6 @@ components:
           $ref: '#/components/schemas/UpdatePortalCustomDomainSSL'
       additionalProperties: false
       title: UpdatePortalCustomDomainRequest
-      x-property-annotations:
-        ssl:
-          - x-unstable
-          - x-internal
     PortalClaimMappings:
       description: Mappings from a portal developer atribute to an Identity Provider claim.
       type: object
@@ -9640,11 +9753,6 @@ components:
       example: '2022-11-04T20:10:06.927Z'
       readOnly: true
       x-speakeasy-param-suppress-computed-diff: true
-    SourceIPEnabled:
-      description: Whether ip allow list is enabled for the organization.
-      type: boolean
-      example: true
-      default: false
     Labels:
       description: |
         Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
@@ -10376,7 +10484,6 @@ components:
       title: API
       x-property-annotations:
         images:
-          - x-unstable
           - x-internal
     AuthStrategyApiSyncError:
       type: object
@@ -10485,70 +10592,6 @@ components:
           $ref: '#/components/schemas/UpdatedAt'
       additionalProperties: false
       title: API Document
-    ApiVersion:
-      type: object
-      properties:
-        id:
-          description: The API version identifier.
-          type: string
-          format: uuid
-          example: 7710d5c4-d902-410b-992f-18b814155b53
-          readOnly: true
-          x-speakeasy-param-suppress-computed-diff: true
-        version:
-          description: The version of the api.
-          type: string
-          example: 1.0.0
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
-        spec:
-          type: object
-          default: null
-          additionalProperties: false
-          nullable: true
-          properties:
-            content:
-              default: null
-              description: |
-                The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).
-              example: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
-              nullable: true
-              type: string
-              x-speakeasy-param-computed: false
-            type:
-              description: |
-                The type of specification being stored. This allows us to render the specification correctly.
-              type: string
-              example: oas3
-              enum:
-                - oas2
-                - oas3
-                - asyncapi
-              readOnly: true
-              title: API Spec Type
-              x-speakeasy-param-suppress-computed-diff: true
-              x-speakeasy-unknown-values: allow
-            validation_messages:
-              description: The errors that occurred while parsing the API version spec.
-              type: array
-              items:
-                type: object
-                additionalProperties: false
-                required:
-                  - message
-                properties:
-                  message:
-                    type: string
-              readOnly: true
-              x-speakeasy-param-suppress-computed-diff: true
-          x-speakeasy-param-computed: false
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-      additionalProperties: false
-      title: API Version
     ApiVersionSummary:
       type: object
       properties:
@@ -10573,6 +10616,18 @@ components:
           properties:
             type:
               $ref: '#/components/schemas/ApiSpecType'
+            provider:
+              description: Provenance of the spec for the current version. Present when a spec exists.
+              oneOf:
+                - $ref: '#/components/schemas/RawApiSpecProvider'
+                - $ref: '#/components/schemas/UrlApiSpecProvider'
+                - $ref: '#/components/schemas/IntegrationApiSpecProviderPayload'
+                - $ref: '#/components/schemas/ResourceBoundIntegrationApiSpecProviderPayload'
+              title: ApiSpecProvider
+              x-internal: true
+          x-property-annotations:
+            provider:
+              - x-internal
           x-speakeasy-param-computed: false
         created_at:
           $ref: '#/components/schemas/CreatedAt'
@@ -10584,6 +10639,80 @@ components:
       title: API Version Summary
       x-speakeasy-param-suppress-computed-diff: true
       x-speakeasy-terraform-ignore: true
+    APIVersionRequest:
+      type: object
+      properties:
+        version:
+          description: The version of the api.
+          type: string
+          example: 1.0.0
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        spec:
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            content:
+              default: null
+              description: 'The raw content of API specification, in json or yaml format (OpenAPI or AsyncAPI).'
+              example: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
+              nullable: true
+              type: string
+              x-speakeasy-param-computed: false
+            provider:
+              description: |
+                Represent spec provider information used for fetching the API spec. For raw, provide the raw content in the `content` property instead of using this provider.
+              oneOf:
+                - $ref: '#/components/schemas/UrlApiSpecProvider'
+                - $ref: '#/components/schemas/IntegrationApiSpecProviderPayload'
+                - $ref: '#/components/schemas/ResourceBoundIntegrationApiSpecProviderPayload'
+          x-property-annotations:
+            provider:
+              - x-internal
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      title: API Version Request
+    ApiSpecPayload:
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/ApiSpecContentPayload'
+        - $ref: '#/components/schemas/ApiSpecProviderPayload'
+      title: ApiSpecPayload
+      writeOnly: true
+      x-internal: true
+    ApiSpecContentPayload:
+      description: |
+        The raw content of API specification, in json or yaml format (OpenAPI or AsyncAPI).
+      type: object
+      properties:
+        content:
+          example: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
+          type: string
+      additionalProperties: false
+      required:
+        - content
+      title: ApiSpecContentPayload
+      x-internal: true
+      x-speakeasy-name-override: ContentPayload
+    ApiSpecProviderPayload:
+      description: |
+        Represent spec provider information used for fetching the API spec. For raw, provide the raw content in the `content` property instead of using this provider.
+      type: object
+      properties:
+        provider:
+          oneOf:
+            - $ref: '#/components/schemas/UrlApiSpecProvider'
+            - $ref: '#/components/schemas/IntegrationApiSpecProviderPayload'
+            - $ref: '#/components/schemas/ResourceBoundIntegrationApiSpecProviderPayload'
+      additionalProperties: false
+      required:
+        - provider
+      title: ApiSpecProviderPayload
+      x-internal: true
+      x-speakeasy-name-override: ProviderPayload
     ApiSpec:
       type: object
       properties:
@@ -10674,12 +10803,29 @@ components:
           $ref: '#/components/schemas/ApiPublicationAuthStrategyIds'
         visibility:
           $ref: '#/components/schemas/ApiPublicationVisibility'
+        form_id:
+          description: 'UUID of portal form associated with API publication, must be linked to given portal and have type of ''api_registration'''
+          type: string
+          format: uuid
+          nullable: true
+          x-speakeasy-param-computed: true
+        warnings:
+          description: Informational warnings (e.g. incompatible fields stripped for ACE). Empty if none.
+          type: array
+          items:
+            type: string
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
       additionalProperties: false
       title: API Publication
+      x-property-annotations:
+        form_id:
+          - x-internal
+          - x-unstable
     ApiImplementationService:
       description: A Gateway service that implements an API
       type: object
@@ -10793,6 +10939,110 @@ components:
         - asyncapi
       title: API Spec Type
       x-speakeasy-unknown-values: allow
+    RawApiSpecProvider:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - raw
+        config:
+          type: object
+          additionalProperties: false
+          maxProperties: 0
+          minProperties: 0
+      required:
+        - type
+        - config
+      x-speakeasy-name-override: RawProvider
+    UrlApiSpecProvider:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - url
+        config:
+          type: object
+          properties:
+            url:
+              description: |
+                Public URL that resolves to the raw API spec contents.
+                Supported formats are JSON and YAML.
+              type: string
+              format: uri
+              example: 'https://api.petstore.com/v3/openapi.json'
+          required:
+            - url
+      required:
+        - type
+        - config
+      x-speakeasy-name-override: UrlProvider
+    IntegrationApiSpecProviderPayload:
+      description: |
+        API spec provider registered by a catalog integration.
+
+        Integrations can function as API spec providers where they register a globally unique
+        `type` and config schema which defines the shape of `config`.
+
+        Consult integration documentation to learn more about available API spec providers.
+      type: object
+      properties:
+        type:
+          description: The globally unique API spec provider type that is registered by a given catalog integration.
+          type: string
+          example: swaggerhub_api_version
+          maxLength: 120
+          minLength: 1
+        config:
+          description: JSON object containing values as defined by integration provider's config schema.
+          type: object
+          example:
+            owner: petco
+            api: pet_store
+            version: v3
+          additionalProperties: true
+          minProperties: 1
+        integration_instance:
+          description: The integration instance id or name
+          type: string
+      required:
+        - type
+        - config
+        - integration_instance
+      x-speakeasy-name-override: IntegrationProvider
+    ResourceBoundIntegrationApiSpecProviderPayload:
+      description: |
+        API spec provider registered by a catalog integration.
+
+        These providers differ from `IntegrationApiSpecProvider` in that they
+        denote a binding relationship between a resource type and the API spec.
+        This means that the API Spec will automatically be created/deleted for/from a service
+        as resources of the given type are mapped/unmapped.
+
+        Consult integration documentation to learn more about available API spec providers.
+      type: object
+      properties:
+        type:
+          description: |
+            The globally unique API spec provider type that is registered by a given catalog integration.
+            Resource-bound providers create a 1-to-1 mapping between a resource type and the API Spec.
+          type: string
+          maxLength: 120
+          minLength: 1
+        config:
+          type: object
+          properties:
+            resource_id:
+              description: ID of the associated Resource the API spec is bound to.
+              type: string
+              example: IqkHvMdyHukxcwAs
+          required:
+            - resource_id
+      required:
+        - type
+        - config
+      x-speakeasy-name-override: ResourceBoundIntegrationProvider
     UnsupportedMediaTypeError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -24041,13 +24291,12 @@ components:
       allOf:
         - $ref: '#/components/schemas/Client'
         - type: object
-          required:
-            - client_secret
           properties:
             client_secret:
               description: The OAuth 2.0 client secret
               type: string
               example: YAzsyUlNZ5gNGeKS9H3VAdxVPzhPo4ae
+              x-speakeasy-param-computed: true
     AdvancedQuery:
       description: A query targeting the API usage analytics datasource.
       type: object
@@ -24182,6 +24431,82 @@ components:
       additionalProperties: false
       required:
         - datasource
+    AgenticQuery:
+      description: A query targeting the agentic usage analytics datasource.
+      type: object
+      properties:
+        datasource:
+          type: string
+          enum:
+            - agentic_usage
+        metrics:
+          $ref: '#/components/schemas/AgenticMetrics'
+        dimensions:
+          description: List of attributes or entity types to group by.
+          type: array
+          items:
+            type: string
+            enum:
+              - a2a_context_id
+              - a2a_error
+              - a2a_method
+              - a2a_task_id
+              - api
+              - api_package
+              - api_product
+              - api_product_version
+              - application
+              - consumer
+              - control_plane
+              - control_plane_group
+              - country_code
+              - data_plane_node
+              - data_plane_node_version
+              - gateway_service
+              - mcp_error
+              - mcp_method
+              - mcp_session_id
+              - mcp_tool_name
+              - portal
+              - realm
+              - response_source
+              - route
+              - status_code
+              - status_code_grouped
+              - time
+              - upstream_status_code
+              - upstream_status_code_grouped
+            x-speakeasy-unknown-values: allow
+          default: null
+          maxItems: 2
+          nullable: true
+          x-speakeasy-param-computed: false
+        filters:
+          $ref: '#/components/schemas/AgenticFilters'
+        granularity:
+          $ref: '#/components/schemas/Granularity'
+        time_range:
+          $ref: '#/components/schemas/TimeRange'
+      example:
+        datasource: agentic_usage
+        time_range:
+          type: relative
+          time_range: 24h
+          tz: EST
+        dimensions:
+          - time
+          - mcp_tool_name
+        filters:
+          - operator: in
+            field: control_plane
+            value:
+              - d5ac5d88-efed-4e10-9dfe-0b0a6646c219
+        granularity: hourly
+        metrics:
+          - request_count
+      additionalProperties: false
+      required:
+        - datasource
     Tile:
       discriminator:
         propertyName: type
@@ -24263,9 +24588,11 @@ components:
                 mapping:
                   api_usage: '#/components/schemas/AdvancedQuery'
                   llm_usage: '#/components/schemas/LLMQuery'
+                  agentic_usage: '#/components/schemas/AgenticQuery'
               oneOf:
                 - $ref: '#/components/schemas/AdvancedQuery'
                 - $ref: '#/components/schemas/LLMQuery'
+                - $ref: '#/components/schemas/AgenticQuery'
             chart:
               $ref: '#/components/schemas/Chart'
           required:
@@ -25601,6 +25928,395 @@ components:
         required:
           - field
           - operator
+    AgenticMetrics:
+      description: List of aggregated metrics to collect across the requested time span.
+      type: array
+      items:
+        type: string
+        enum:
+          - a2a_latency_average
+          - a2a_response_size_sum
+          - error_rate
+          - kong_latency_average
+          - kong_latency_p50
+          - kong_latency_p95
+          - kong_latency_p99
+          - mcp_response_body_size_sum
+          - request_count
+          - request_per_minute
+          - request_size_average
+          - request_size_p50
+          - request_size_p95
+          - request_size_p99
+          - request_size_sum
+          - response_latency_average
+          - response_latency_p50
+          - response_latency_p95
+          - response_latency_p99
+          - response_size_average
+          - response_size_p50
+          - response_size_p95
+          - response_size_p99
+          - response_size_sum
+          - upstream_latency_average
+          - upstream_latency_p50
+          - upstream_latency_p95
+          - upstream_latency_p99
+        x-speakeasy-unknown-values: allow
+      default:
+        - request_count
+    MetricsA2aContextIdFilterByField:
+      oneOf:
+        - title: Multiselect filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The values to include in the results.
+              type: array
+              items:
+                type: string
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - a2a_context_id
+          required:
+            - operator
+            - value
+            - field
+        - title: Empty filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - a2a_context_id
+          required:
+            - operator
+            - field
+      title: Filter by a2a_context_id
+    MetricsA2aErrorFilterByField:
+      oneOf:
+        - title: Multiselect filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The values to include in the results.
+              type: array
+              items:
+                type: string
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - a2a_error
+          required:
+            - operator
+            - value
+            - field
+        - title: Empty filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - a2a_error
+          required:
+            - operator
+            - field
+      title: Filter by a2a_error
+    MetricsA2aMethodFilterByField:
+      oneOf:
+        - title: Multiselect filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The values to include in the results.
+              type: array
+              items:
+                type: string
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - a2a_method
+          required:
+            - operator
+            - value
+            - field
+        - title: Empty filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - a2a_method
+          required:
+            - operator
+            - field
+      title: Filter by a2a_method
+    MetricsA2aTaskIdFilterByField:
+      oneOf:
+        - title: Multiselect filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The values to include in the results.
+              type: array
+              items:
+                type: string
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - a2a_task_id
+          required:
+            - operator
+            - value
+            - field
+        - title: Empty filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - a2a_task_id
+          required:
+            - operator
+            - field
+      title: Filter by a2a_task_id
+    MetricsMcpErrorFilterByField:
+      oneOf:
+        - title: Multiselect filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The values to include in the results.
+              type: array
+              items:
+                type: string
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - mcp_error
+          required:
+            - operator
+            - value
+            - field
+        - title: Empty filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - mcp_error
+          required:
+            - operator
+            - field
+      title: Filter by mcp_error
+    MetricsMcpMethodFilterByField:
+      oneOf:
+        - title: Multiselect filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The values to include in the results.
+              type: array
+              items:
+                type: string
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - mcp_method
+          required:
+            - operator
+            - value
+            - field
+        - title: Empty filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - mcp_method
+          required:
+            - operator
+            - field
+      title: Filter by mcp_method
+    MetricsMcpSessionIdFilterByField:
+      oneOf:
+        - title: Multiselect filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The values to include in the results.
+              type: array
+              items:
+                type: string
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - mcp_session_id
+          required:
+            - operator
+            - value
+            - field
+        - title: Empty filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - mcp_session_id
+          required:
+            - operator
+            - field
+      title: Filter by mcp_session_id
+    MetricsMcpToolNameFilterByField:
+      oneOf:
+        - title: Multiselect filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The values to include in the results.
+              type: array
+              items:
+                type: string
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - mcp_tool_name
+          required:
+            - operator
+            - value
+            - field
+        - title: Empty filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - mcp_tool_name
+          required:
+            - operator
+            - field
+      title: Filter by mcp_tool_name
+    AgenticFilters:
+      description: A list of filters to apply to the query.
+      type: array
+      items:
+        discriminator:
+          propertyName: field
+          mapping:
+            a2a_context_id: '#/components/schemas/MetricsA2aContextIdFilterByField'
+            a2a_error: '#/components/schemas/MetricsA2aErrorFilterByField'
+            a2a_method: '#/components/schemas/MetricsA2aMethodFilterByField'
+            a2a_task_id: '#/components/schemas/MetricsA2aTaskIdFilterByField'
+            api: '#/components/schemas/MetricsApiFilterByField'
+            api_package: '#/components/schemas/MetricsApiPackageFilterByField'
+            api_product: '#/components/schemas/MetricsApiProductFilterByField'
+            api_product_version: '#/components/schemas/MetricsApiProductVersionFilterByField'
+            application: '#/components/schemas/MetricsApplicationFilterByField'
+            consumer: '#/components/schemas/MetricsConsumerFilterByField'
+            control_plane: '#/components/schemas/MetricsControlPlaneFilterByField'
+            control_plane_group: '#/components/schemas/MetricsControlPlaneGroupFilterByField'
+            country_code: '#/components/schemas/MetricsCountryCodeFilterByField'
+            data_plane_node: '#/components/schemas/MetricsDataPlaneNodeFilterByField'
+            data_plane_node_version: '#/components/schemas/MetricsDataPlaneNodeVersionFilterByField'
+            gateway_service: '#/components/schemas/MetricsGatewayServiceFilterByField'
+            mcp_error: '#/components/schemas/MetricsMcpErrorFilterByField'
+            mcp_method: '#/components/schemas/MetricsMcpMethodFilterByField'
+            mcp_session_id: '#/components/schemas/MetricsMcpSessionIdFilterByField'
+            mcp_tool_name: '#/components/schemas/MetricsMcpToolNameFilterByField'
+            portal: '#/components/schemas/MetricsPortalFilterByField'
+            realm: '#/components/schemas/MetricsRealmFilterByField'
+            response_source: '#/components/schemas/MetricsResponseSourceFilterByField'
+            route: '#/components/schemas/MetricsRouteFilterByField'
+            status_code: '#/components/schemas/MetricsStatusCodeFilterByField'
+            status_code_grouped: '#/components/schemas/MetricsStatusCodeGroupedFilterByField'
+            upstream_status_code: '#/components/schemas/MetricsUpstreamStatusCodeFilterByField'
+            upstream_status_code_grouped: '#/components/schemas/MetricsUpstreamStatusCodeGroupedFilterByField'
+        oneOf:
+          - $ref: '#/components/schemas/MetricsA2aContextIdFilterByField'
+          - $ref: '#/components/schemas/MetricsA2aErrorFilterByField'
+          - $ref: '#/components/schemas/MetricsA2aMethodFilterByField'
+          - $ref: '#/components/schemas/MetricsA2aTaskIdFilterByField'
+          - $ref: '#/components/schemas/MetricsApiFilterByField'
+          - $ref: '#/components/schemas/MetricsApiPackageFilterByField'
+          - $ref: '#/components/schemas/MetricsApiProductFilterByField'
+          - $ref: '#/components/schemas/MetricsApiProductVersionFilterByField'
+          - $ref: '#/components/schemas/MetricsApplicationFilterByField'
+          - $ref: '#/components/schemas/MetricsConsumerFilterByField'
+          - $ref: '#/components/schemas/MetricsControlPlaneFilterByField'
+          - $ref: '#/components/schemas/MetricsControlPlaneGroupFilterByField'
+          - $ref: '#/components/schemas/MetricsCountryCodeFilterByField'
+          - $ref: '#/components/schemas/MetricsDataPlaneNodeFilterByField'
+          - $ref: '#/components/schemas/MetricsDataPlaneNodeVersionFilterByField'
+          - $ref: '#/components/schemas/MetricsGatewayServiceFilterByField'
+          - $ref: '#/components/schemas/MetricsMcpErrorFilterByField'
+          - $ref: '#/components/schemas/MetricsMcpMethodFilterByField'
+          - $ref: '#/components/schemas/MetricsMcpSessionIdFilterByField'
+          - $ref: '#/components/schemas/MetricsMcpToolNameFilterByField'
+          - $ref: '#/components/schemas/MetricsPortalFilterByField'
+          - $ref: '#/components/schemas/MetricsRealmFilterByField'
+          - $ref: '#/components/schemas/MetricsResponseSourceFilterByField'
+          - $ref: '#/components/schemas/MetricsRouteFilterByField'
+          - $ref: '#/components/schemas/MetricsStatusCodeFilterByField'
+          - $ref: '#/components/schemas/MetricsStatusCodeGroupedFilterByField'
+          - $ref: '#/components/schemas/MetricsUpstreamStatusCodeFilterByField'
+          - $ref: '#/components/schemas/MetricsUpstreamStatusCodeGroupedFilterByField'
     DonutChart:
       description: |
         A chart that can display one-dimensional data in a hollow, segmented circle.  To use this chart, ensure that
@@ -25927,6 +26643,24 @@ components:
           $ref: '#/components/schemas/VirtualClusterAuthenticationSensitiveDataAwareSchemes'
         namespace:
           $ref: '#/components/schemas/VirtualClusterNamespace'
+        topic_aliases:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            Topic aliases allow exposing backend topics under additional names.
+            An alias creates a new entry point to the same physical data.
+            The alias `topic` field references namespace-visible names (if namespace is configured).
+            Aliases are independent of namespace and can be used without it.
+
+            **Requires a minimum runtime version of `1.2`**.
+          type: array
+          items:
+            $ref: '#/components/schemas/VirtualClusterTopicAlias'
+          nullable: true
+          x-min-runtime-version: '1.2'
+          x-speakeasy-param-computed: false
+          x-unstable: true
         name:
           $ref: '#/components/schemas/VirtualClusterName'
         dns_label:
@@ -26028,24 +26762,35 @@ components:
       required:
         - type
     VirtualClusterAuthenticationClientCertificate:
-      description: Client certificate (mTLS) authentication scheme for the virtual cluster.
+      description: |-
+        Client certificate (mTLS) authentication scheme for the virtual cluster.
+
+        **Requires a minimum runtime version of `1.1`**.
       type: object
       properties:
         type:
           type: string
           const: client_certificate
+        fetch_kong_identity_principal:
+          $ref: '#/components/schemas/FetchKongIdentityPrincipal'
       example:
         type: client_certificate
       additionalProperties: false
       required:
         - type
       x-min-runtime-version: '1.1'
+      x-property-annotations:
+        fetch_kong_identity_principal:
+          - x-unstable
+          - x-internal
       x-speakeasy-param-computed: false
     TLSTrustBundle:
-      description: |
+      description: |-
         A TLS trust bundle defines a set of trusted certificate authorities (CAs) used for client certificate
         verification during mutual TLS (mTLS). Trust bundles are referenced by TLS listener policies to
         determine which client certificates are accepted.
+
+        **Requires a minimum runtime version of `1.1`**.
       type: object
       properties:
         id:
@@ -26138,10 +26883,16 @@ components:
           default: null
           nullable: true
           x-speakeasy-param-computed: false
+        fetch_kong_identity_principal:
+          $ref: '#/components/schemas/FetchKongIdentityPrincipal'
       additionalProperties: false
       required:
         - type
         - mediation
+      x-property-annotations:
+        fetch_kong_identity_principal:
+          - x-unstable
+          - x-internal
     VirtualClusterAuthenticationSaslPlain:
       description: |
         SASL/PLAIN authentication scheme for the virtual cluster containing principals with username and password.
@@ -26166,10 +26917,16 @@ components:
           minItems: 1
           nullable: true
           x-speakeasy-param-computed: false
+        fetch_kong_identity_principal:
+          $ref: '#/components/schemas/FetchKongIdentityPrincipal'
       additionalProperties: false
       required:
         - type
         - mediation
+      x-property-annotations:
+        fetch_kong_identity_principal:
+          - x-unstable
+          - x-internal
     VirtualClusterAuthenticationPrincipalSensitiveDataAware:
       description: A principal for authentication.
       type: object
@@ -26242,10 +26999,16 @@ components:
             - sha256
             - sha512
           x-speakeasy-unknown-values: allow
+        fetch_kong_identity_principal:
+          $ref: '#/components/schemas/FetchKongIdentityPrincipal'
       additionalProperties: false
       required:
         - type
         - algorithm
+      x-property-annotations:
+        fetch_kong_identity_principal:
+          - x-unstable
+          - x-internal
     VirtualClusterAuthenticationOauthBearer:
       description: Oauth Bearer authentication scheme for the virtual cluster.
       type: object
@@ -26275,10 +27038,16 @@ components:
           $ref: '#/components/schemas/VirtualClusterAuthenticationJWKS'
         validate:
           $ref: '#/components/schemas/VirtualClusterAuthenticationValidate'
+        fetch_kong_identity_principal:
+          $ref: '#/components/schemas/FetchKongIdentityPrincipalOauthBearer'
       additionalProperties: false
       required:
         - type
         - mediation
+      x-property-annotations:
+        fetch_kong_identity_principal:
+          - x-unstable
+          - x-internal
     VirtualClusterAuthenticationValidate:
       description: Validation rules.
       type: object
@@ -26307,6 +27076,87 @@ components:
           minLength: 1
       required:
         - name
+    FetchKongIdentityPrincipal:
+      description: |-
+        Fetches principal metadata from Kong Identity after successful authentication.
+        The principal is looked up by a custom key matched against the authenticated identity.
+
+        **Requires a minimum runtime version of `1.2`**.
+      type: object
+      properties:
+        directory:
+          description: Kong Identity directory to use for principal lookup.
+          type: string
+          minLength: 1
+        fetch_by:
+          $ref: '#/components/schemas/FetchKongIdentityPrincipalFetchBy'
+        failure_mode:
+          $ref: '#/components/schemas/FetchKongIdentityPrincipalFailureMode'
+      required:
+        - directory
+        - fetch_by
+        - failure_mode
+      x-internal: true
+      x-min-runtime-version: '1.2'
+      x-speakeasy-param-computed: false
+      x-unstable: true
+    FetchKongIdentityPrincipalOauthBearer:
+      description: |-
+        Fetches principal metadata from Kong Identity after successful OAUTHBEARER authentication.
+        The principal is looked up by the iss and sub claims from the JWT token.
+
+        **Requires a minimum runtime version of `1.2`**.
+      type: object
+      properties:
+        directory:
+          description: Kong Identity directory to use for principal lookup.
+          type: string
+          minLength: 1
+        failure_mode:
+          $ref: '#/components/schemas/FetchKongIdentityPrincipalFailureMode'
+      required:
+        - directory
+        - failure_mode
+      x-internal: true
+      x-min-runtime-version: '1.2'
+      x-speakeasy-param-computed: false
+      x-unstable: true
+    FetchKongIdentityPrincipalFetchBy:
+      description: |-
+        Defines how to look up the principal in Kong Identity.
+
+        **Requires a minimum runtime version of `1.2`**.
+      type: object
+      properties:
+        key:
+          description: |
+            The metadata key in Kong Identity to match the authenticated identity against.
+            Value for the lookup is a `username` in case of `sasl_plain` or `sasl_scram`.
+            In case of `client_certificate` it's a principal mapped by the listener TLSServer policy.
+          type: string
+          minLength: 1
+      required:
+        - key
+      x-internal: true
+      x-min-runtime-version: '1.2'
+      x-speakeasy-param-computed: false
+      x-unstable: true
+    FetchKongIdentityPrincipalFailureMode:
+      description: |-
+        Behavior when the Kong Identity principal lookup fails.
+        * `error` - fail the authentication if the principal lookup fails.
+        * `ignore` - proceed without principal metadata if the lookup fails.
+
+        **Requires a minimum runtime version of `1.2`**.
+      type: string
+      enum:
+        - error
+        - ignore
+      x-internal: true
+      x-min-runtime-version: '1.2'
+      x-speakeasy-param-computed: false
+      x-speakeasy-unknown-values: allow
+      x-unstable: true
     VirtualClusterDNSLabel:
       description: |-
         The DNS label used in the bootstrap server URL to identify the virtual cluster when using SNI routing.
@@ -26439,7 +27289,10 @@ components:
             - tls12
             - tls13
         client_identity:
-          description: Client mTLS configuration.
+          description: |-
+            Client mTLS configuration.
+
+            **Requires a minimum runtime version of `1.1`**.
           type: object
           properties:
             certificate:
@@ -27172,9 +28025,11 @@ components:
           type: boolean
           default: false
         client_authentication:
-          description: |
+          description: |-
             Configures mutual TLS (mTLS) client certificate verification. When set, the gateway
             requests or requires clients to present a certificate during the TLS handshake.
+
+            **Requires a minimum runtime version of `1.1`**.
           type: object
           properties:
             mode:
@@ -27196,11 +28051,13 @@ components:
                 $ref: '#/components/schemas/TLSTrustBundleReference'
               minItems: 1
             principal_mapping:
-              description: |
+              description: |-
                 An expression that extracts a principal identifier from a verified client certificate.
                 This expression must evaluate to a string.
+
+                **Requires a minimum runtime version of `1.1`**.
               type: string
-              example: '$${context.certificate.subject[''CN''] ? context.certificate.subject[''CN''] : context.certificate.sans.uri[0]}'
+              example: '${context.certificate.subject[''CN''] ? context.certificate.subject[''CN''] : context.certificate.sans.uri[0]}'
               x-expression:
                 type: string
                 fields:
@@ -27263,9 +28120,11 @@ components:
           type: boolean
           default: false
         client_authentication:
-          description: |
+          description: |-
             Configures mutual TLS (mTLS) client certificate verification. When set, the gateway
             requests or requires clients to present a certificate during the TLS handshake.
+
+            **Requires a minimum runtime version of `1.1`**.
           type: object
           properties:
             mode:
@@ -27287,11 +28146,13 @@ components:
                 $ref: '#/components/schemas/TLSTrustBundleReference'
               minItems: 1
             principal_mapping:
-              description: |
+              description: |-
                 An expression that extracts a principal identifier from a verified client certificate.
                 This expression must evaluate to a string.
+
+                **Requires a minimum runtime version of `1.1`**.
               type: string
-              example: '$${context.certificate.subject[''CN''] ? context.certificate.subject[''CN''] : context.certificate.sans.uri[0]}'
+              example: '${context.certificate.subject[''CN''] ? context.certificate.subject[''CN''] : context.certificate.sans.uri[0]}'
               x-expression:
                 type: string
                 fields:
@@ -27520,11 +28381,13 @@ components:
           minimum: 1
           nullable: false
         broker_host_format:
-          description: |
+          description: |-
             Configures DNS names assigned to brokers in virtual clusters.
 
             - `per_cluster_suffix` is the default and allocates one level in the hierarchy for virtual clusters: `broker-{node_id}.{virtual_cluster}.{sni_suffix}`
             - `shared_suffix` puts all brokers from every virtual clusters into the same level: `broker-{node_id}-{virtual_cluster}.{sni_suffix}`. This makes it easier to manage certificates for this listener.
+
+            **Requires a minimum runtime version of `1.1`**.
           type: object
           properties:
             type:
@@ -28648,6 +29511,67 @@ components:
             $ref: '#/components/schemas/VirtualClusterNamespaceIdSelector'
           nullable: false
       x-speakeasy-param-computed: false
+    VirtualClusterTopicAlias:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        A topic alias maps an alias name to a namespace-visible topic name.
+        Clients can produce to, consume from, and discover the topic under the alias name.
+        The original topic name remains accessible.
+
+        **Requires a minimum runtime version of `1.2`**.
+      type: object
+      properties:
+        alias:
+          description: The client-visible topic name.
+          type: string
+          minLength: 1
+        topic:
+          description: The namespace-visible topic name this alias resolves to.
+          type: string
+          minLength: 1
+        match:
+          description: |
+            CEL expression evaluated against the connection's auth context.
+            If omitted or empty, the alias is active for all connections.
+          type: string
+          default: ''
+          x-expression:
+            type: boolean
+            fields:
+              - name: context.auth.principal.name
+                type: string
+                description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.type
+                type: string
+                description: |
+                  The matched authentication type from a virtual cluster: anonymous, sasl_plain, sasl_scram_sha256, sasl_scram_sha512, sasl_oauth_bearer.
+              - name: context.auth.token.claims
+                type: object
+                description: 'All claims from the JWT token. Only populated for sasl_oauth_bearer authentication. Claims can be strings, numbers, booleans, arrays or nested JSON objects.'
+        conflict:
+          $ref: '#/components/schemas/VirtualClusterTopicAliasConflict'
+      required:
+        - alias
+        - topic
+      x-min-runtime-version: '1.2'
+      x-speakeasy-param-computed: false
+      x-unstable: true
+    VirtualClusterTopicAliasConflict:
+      description: |
+        How to handle conflicts where an alias shadows a physical topic.
+        * warn - activate the alias but log a warning and set the conflict metric to 1.
+        * ignore - activate the alias silently.
+      type: string
+      default: warn
+      enum:
+        - warn
+        - ignore
+      x-enum-varnames:
+        - VirtualClusterTopicAliasConflictWarn
+        - VirtualClusterTopicAliasConflictIgnore
+      x-speakeasy-unknown-values: allow
     VirtualClusterNamespaceTopicSelector:
       type: object
       discriminator:
@@ -28899,7 +29823,7 @@ components:
         If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
         If provided as an expression, the expression itself is stored and returned by the API.
       type: string
-      example: '$${vault.env[''MY_ENV_VAR'']}'
+      example: '${vault.env[''MY_ENV_VAR'']}'
       minLength: 1
       x-expression:
         type: string
@@ -29265,6 +30189,38 @@ components:
         - capacity_config
       title: CreateManagedCacheAddOnConfig
       x-speakeasy-name-override: managed_cache
+    UpdateAddOnRequest:
+      description: Request body for updating an add-on.
+      type: object
+      properties:
+        config:
+          $ref: '#/components/schemas/UpdateAddOnConfig'
+      additionalProperties: false
+      required:
+        - config
+      title: UpdateAddOnRequest
+    UpdateAddOnConfig:
+      description: Configuration for updating different types of add-ons.
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/UpdateManagedCacheAddOnConfig'
+      title: UpdateAddOnConfig
+    UpdateManagedCacheAddOnConfig:
+      description: Configuration for updating a managed cache add-on.
+      type: object
+      properties:
+        kind:
+          description: Type of add-on configuration.
+          type: string
+          const: managed-cache.v0
+        capacity_config:
+          $ref: '#/components/schemas/ManagedCacheCapacityConfig'
+      additionalProperties: false
+      required:
+        - kind
+        - capacity_config
+      title: UpdateManagedCacheAddOnConfig
+      x-speakeasy-name-override: managed_cache
     ManagedCacheCapacityConfig:
       description: Configuration for managed cache capacity and performance characteristics.
       type: object
@@ -29289,6 +30245,10 @@ components:
             - xlarge: ~12 GiB capacity
             - 2xlarge: ~25 GiB capacity
             - 4xlarge: ~52 GiB capacity
+            - 8xlarge: ~100 GiB capacity
+            - 12xlarge: ~150 GiB capacity
+            - 16xlarge: ~200 GiB capacity
+            - 24xlarge: ~300 GiB capacity
           type: string
           enum:
             - micro
@@ -29298,6 +30258,10 @@ components:
             - xlarge
             - 2xlarge
             - 4xlarge
+            - 8xlarge
+            - 12xlarge
+            - 16xlarge
+            - 24xlarge
           x-speakeasy-unknown-values: allow
       example:
         kind: tiered
@@ -29388,7 +30352,10 @@ components:
                 type: boolean
                 default: false
               sipr_enabled:
-                $ref: '#/components/schemas/SourceIPEnabled'
+                description: Whether ip allow list is enabled for the portal.
+                type: boolean
+                example: true
+                default: false
               default_api_visibility:
                 description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
                 type: string
@@ -29490,7 +30457,10 @@ components:
                 type: boolean
                 default: false
               sipr_enabled:
-                $ref: '#/components/schemas/SourceIPEnabled'
+                description: Whether ip allow list is enabled for the portal.
+                type: boolean
+                example: true
+                default: false
               default_api_visibility:
                 description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
                 type: string
@@ -29577,6 +30547,34 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UpdatePortalSnippetRequest'
+    UpdatePortalAuditLogWebhook:
+      description: The request schema to modify an portal audit log webhook.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              enabled:
+                description: Indicates if the data should be sent to the configured destination.
+                type: boolean
+                example: true
+                default: false
+              audit_log_destination_id:
+                description: ID of the audit log destination.
+                type: string
+                format: uuid
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+              include_principal_name:
+                description: Whether to include the principal name in the audit log entries sent to the webhook.
+                type: boolean
+                example: true
+                default: false
+            x-property-annotations:
+              include_principal_name:
+                - x-internal
+                - x-unstable
     PortalUpdateTeam:
       description: Update a team in a portal.
       content:
@@ -29696,6 +30694,8 @@ components:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
                 $ref: '#/components/schemas/UpdatedAt'
+              spec:
+                $ref: '#/components/schemas/ApiSpecPayload'
               spec_content:
                 description: 'The content of the API specification. This is the raw content of the API specification, in json or yaml. By including this field, you can add a API specification without having to make a separate call to update the API specification.'
                 type: string
@@ -29763,13 +30763,6 @@ components:
           schema:
             type: object
             properties:
-              id:
-                description: The API version identifier.
-                type: string
-                format: uuid
-                example: 7710d5c4-d902-410b-992f-18b814155b53
-                readOnly: true
-                x-speakeasy-param-suppress-computed-diff: true
               version:
                 description: The version of the api.
                 type: string
@@ -29783,46 +30776,25 @@ components:
                 properties:
                   content:
                     default: null
-                    description: |
-                      The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).
+                    description: 'The raw content of API specification, in json or yaml format (OpenAPI or AsyncAPI).'
                     example: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
                     nullable: true
                     type: string
                     x-speakeasy-param-computed: false
-                  type:
+                  provider:
                     description: |
-                      The type of specification being stored. This allows us to render the specification correctly.
-                    type: string
-                    example: oas3
-                    enum:
-                      - oas2
-                      - oas3
-                      - asyncapi
-                    readOnly: true
-                    title: API Spec Type
-                    x-speakeasy-param-suppress-computed-diff: true
-                    x-speakeasy-unknown-values: allow
-                  validation_messages:
-                    description: The errors that occurred while parsing the API version spec.
-                    type: array
-                    items:
-                      type: object
-                      additionalProperties: false
-                      required:
-                        - message
-                      properties:
-                        message:
-                          type: string
-                    readOnly: true
-                    x-speakeasy-param-suppress-computed-diff: true
-              created_at:
-                $ref: '#/components/schemas/CreatedAt'
-              updated_at:
-                $ref: '#/components/schemas/UpdatedAt'
+                      Represent spec provider information used for fetching the API spec. For raw, provide the raw content in the `content` property instead of using this provider.
+                    oneOf:
+                      - $ref: '#/components/schemas/UrlApiSpecProvider'
+                      - $ref: '#/components/schemas/IntegrationApiSpecProviderPayload'
+                      - $ref: '#/components/schemas/ResourceBoundIntegrationApiSpecProviderPayload'
+                x-property-annotations:
+                  provider:
+                    - x-internal
             additionalProperties: false
             required:
               - spec
-            title: API Version
+            title: API Version Request
     CreateApiDocumentRequest:
       required: true
       content:
@@ -29973,7 +30945,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ApiVersion'
+            $ref: '#/components/schemas/APIVersionRequest'
     PutApiPublicationRequest:
       required: true
       content:
@@ -30298,6 +31270,24 @@ components:
                 $ref: '#/components/schemas/VirtualClusterAuthenticationSchemes'
               namespace:
                 $ref: '#/components/schemas/VirtualClusterNamespace'
+              topic_aliases:
+                description: |-
+                  **Pre-release Feature**
+                  This feature is currently in beta and is subject to change.
+
+                  Topic aliases allow exposing backend topics under additional names.
+                  An alias creates a new entry point to the same physical data.
+                  The alias `topic` field references namespace-visible names (if namespace is configured).
+                  Aliases are independent of namespace and can be used without it.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                type: array
+                items:
+                  $ref: '#/components/schemas/VirtualClusterTopicAlias'
+                nullable: true
+                x-min-runtime-version: '1.2'
+                x-speakeasy-param-computed: false
+                x-unstable: true
               acl_mode:
                 $ref: '#/components/schemas/VirtualClusterACLMode'
               dns_label:
@@ -30331,6 +31321,24 @@ components:
                 $ref: '#/components/schemas/VirtualClusterAuthenticationSensitiveDataAwareSchemes'
               namespace:
                 $ref: '#/components/schemas/VirtualClusterNamespace'
+              topic_aliases:
+                description: |-
+                  **Pre-release Feature**
+                  This feature is currently in beta and is subject to change.
+
+                  Topic aliases allow exposing backend topics under additional names.
+                  An alias creates a new entry point to the same physical data.
+                  The alias `topic` field references namespace-visible names (if namespace is configured).
+                  Aliases are independent of namespace and can be used without it.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                type: array
+                items:
+                  $ref: '#/components/schemas/VirtualClusterTopicAlias'
+                nullable: true
+                x-min-runtime-version: '1.2'
+                x-speakeasy-param-computed: false
+                x-unstable: true
               acl_mode:
                 $ref: '#/components/schemas/VirtualClusterACLMode'
               dns_label:
@@ -30600,7 +31608,10 @@ components:
                       type: boolean
                       default: false
                     sipr_enabled:
-                      $ref: '#/components/schemas/SourceIPEnabled'
+                      description: Whether ip allow list is enabled for the portal.
+                      type: boolean
+                      example: true
+                      default: false
                     default_api_visibility:
                       description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
                       type: string
@@ -30709,7 +31720,10 @@ components:
                 type: boolean
                 default: false
               sipr_enabled:
-                $ref: '#/components/schemas/SourceIPEnabled'
+                description: Whether ip allow list is enabled for the portal.
+                type: boolean
+                example: true
+                default: false
               default_api_visibility:
                 description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
                 type: string
@@ -30803,6 +31817,40 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalSnippetResponse'
+    PortalAuditLogWebhook:
+      description: Portal audit log webhook response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              enabled:
+                description: Indicates if the data should be sent to the configured audit log destination.
+                type: boolean
+                example: true
+                default: false
+              audit_log_destination_id:
+                description: ID of the audit log destination.
+                type: string
+                format: uuid
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+              include_principal_name:
+                description: Whether to include the principal name in the audit log entries sent to the webhook.
+                type: boolean
+                example: true
+                default: false
+            x-property-annotations:
+              include_principal_name:
+                - x-internal
+                - x-unstable
+    PortalWebhookBadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
     Unauthorized:
       description: Unauthorized
       content:
@@ -31063,6 +32111,21 @@ components:
                           type: string
                     readOnly: true
                     x-speakeasy-param-suppress-computed-diff: true
+                  provider:
+                    description: |
+                      The provider used to supply the spec content. In write requests, provide
+                      this instead of or alongside content. If omitted on writes, the server
+                      infers type raw from spec.content.
+                    oneOf:
+                      - $ref: '#/components/schemas/RawApiSpecProvider'
+                      - $ref: '#/components/schemas/UrlApiSpecProvider'
+                      - $ref: '#/components/schemas/IntegrationApiSpecProviderPayload'
+                      - $ref: '#/components/schemas/ResourceBoundIntegrationApiSpecProviderPayload'
+                    title: ApiSpecProvider
+                    x-internal: true
+                x-property-annotations:
+                  provider:
+                    - x-internal
                 x-speakeasy-param-computed: false
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
@@ -31089,6 +32152,19 @@ components:
                 $ref: '#/components/schemas/ApiPublicationAuthStrategyIds'
               visibility:
                 $ref: '#/components/schemas/ApiPublicationVisibility'
+              form_id:
+                description: 'UUID of portal form associated with API publication, must be linked to given portal and have type of ''api_registration'''
+                type: string
+                format: uuid
+                nullable: true
+                x-speakeasy-param-computed: true
+              warnings:
+                description: Informational warnings (e.g. incompatible fields stripped for ACE). Empty if none.
+                type: array
+                items:
+                  type: string
+                readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
@@ -31100,6 +32176,10 @@ components:
               - updated_at
               - auth_strategy_ids
             title: API Publication
+            x-property-annotations:
+              form_id:
+                - x-internal
+                - x-unstable
     ApiImplementationResponse:
       description: An API implementation
       content:
@@ -32802,6 +33882,12 @@ components:
             $ref: '#/components/schemas/AddOnResponse'
     RetrieveAddOnResponse:
       description: Response format for retrieving an add-on by ID.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddOnResponse'
+    UpdateAddOnResponse:
+      description: Response format for updating an add-on.
       content:
         application/json:
           schema:
