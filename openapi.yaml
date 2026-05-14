@@ -10696,6 +10696,7 @@ components:
         - content
       title: ApiSpecContentPayload
       x-internal: true
+      x-speakeasy-name-override: ContentPayload
     ApiSpecProviderPayload:
       description: |
         Represent spec provider information used for fetching the API spec. For raw, provide the raw content in the `content` property instead of using this provider.
@@ -10711,6 +10712,7 @@ components:
         - provider
       title: ApiSpecProviderPayload
       x-internal: true
+      x-speakeasy-name-override: ProviderPayload
     ApiSpec:
       type: object
       properties:
@@ -10952,6 +10954,7 @@ components:
       required:
         - type
         - config
+      x-speakeasy-name-override: RawProvider
     UrlApiSpecProvider:
       type: object
       properties:
@@ -10974,6 +10977,7 @@ components:
       required:
         - type
         - config
+      x-speakeasy-name-override: UrlProvider
     IntegrationApiSpecProviderPayload:
       description: |
         API spec provider registered by a catalog integration.
@@ -11006,6 +11010,7 @@ components:
         - type
         - config
         - integration_instance
+      x-speakeasy-name-override: IntegrationProvider
     ResourceBoundIntegrationApiSpecProviderPayload:
       description: |
         API spec provider registered by a catalog integration.
@@ -11037,6 +11042,7 @@ components:
       required:
         - type
         - config
+      x-speakeasy-name-override: ResourceBoundIntegrationProvider
     UnsupportedMediaTypeError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
