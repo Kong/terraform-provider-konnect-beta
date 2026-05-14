@@ -52,34 +52,16 @@ const (
 func (e MeshHealthCheckItemKind) ToPointer() *MeshHealthCheckItemKind {
 	return &e
 }
-func (e *MeshHealthCheckItemKind) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeshHealthCheckItemKind) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane":
+			return true
+		}
 	}
-	switch v {
-	case "Mesh":
-		fallthrough
-	case "MeshSubset":
-		fallthrough
-	case "MeshGateway":
-		fallthrough
-	case "MeshService":
-		fallthrough
-	case "MeshExternalService":
-		fallthrough
-	case "MeshMultiZoneService":
-		fallthrough
-	case "MeshServiceSubset":
-		fallthrough
-	case "MeshHTTPRoute":
-		fallthrough
-	case "Dataplane":
-		*e = MeshHealthCheckItemKind(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeshHealthCheckItemKind: %v", v)
-	}
+	return false
 }
 
 type MeshHealthCheckItemProxyTypes string
@@ -92,20 +74,16 @@ const (
 func (e MeshHealthCheckItemProxyTypes) ToPointer() *MeshHealthCheckItemProxyTypes {
 	return &e
 }
-func (e *MeshHealthCheckItemProxyTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeshHealthCheckItemProxyTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Sidecar", "Gateway":
+			return true
+		}
 	}
-	switch v {
-	case "Sidecar":
-		fallthrough
-	case "Gateway":
-		*e = MeshHealthCheckItemProxyTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeshHealthCheckItemProxyTypes: %v", v)
-	}
+	return false
 }
 
 // MeshHealthCheckItemTargetRef - TargetRef is a reference to the resource the policy takes an effect on.
@@ -657,34 +635,16 @@ const (
 func (e MeshHealthCheckItemSpecKind) ToPointer() *MeshHealthCheckItemSpecKind {
 	return &e
 }
-func (e *MeshHealthCheckItemSpecKind) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeshHealthCheckItemSpecKind) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane":
+			return true
+		}
 	}
-	switch v {
-	case "Mesh":
-		fallthrough
-	case "MeshSubset":
-		fallthrough
-	case "MeshGateway":
-		fallthrough
-	case "MeshService":
-		fallthrough
-	case "MeshExternalService":
-		fallthrough
-	case "MeshMultiZoneService":
-		fallthrough
-	case "MeshServiceSubset":
-		fallthrough
-	case "MeshHTTPRoute":
-		fallthrough
-	case "Dataplane":
-		*e = MeshHealthCheckItemSpecKind(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeshHealthCheckItemSpecKind: %v", v)
-	}
+	return false
 }
 
 type MeshHealthCheckItemSpecProxyTypes string
@@ -697,20 +657,16 @@ const (
 func (e MeshHealthCheckItemSpecProxyTypes) ToPointer() *MeshHealthCheckItemSpecProxyTypes {
 	return &e
 }
-func (e *MeshHealthCheckItemSpecProxyTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeshHealthCheckItemSpecProxyTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Sidecar", "Gateway":
+			return true
+		}
 	}
-	switch v {
-	case "Sidecar":
-		fallthrough
-	case "Gateway":
-		*e = MeshHealthCheckItemSpecProxyTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeshHealthCheckItemSpecProxyTypes: %v", v)
-	}
+	return false
 }
 
 // MeshHealthCheckItemSpecTargetRef - TargetRef is a reference to the resource that represents a group of

@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // FetchKongIdentityPrincipalFailureMode - Behavior when the Kong Identity principal lookup fails.
 // * `error` - fail the authentication if the principal lookup fails.
 // * `ignore` - proceed without principal metadata if the lookup fails.
@@ -22,18 +17,14 @@ const (
 func (e FetchKongIdentityPrincipalFailureMode) ToPointer() *FetchKongIdentityPrincipalFailureMode {
 	return &e
 }
-func (e *FetchKongIdentityPrincipalFailureMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *FetchKongIdentityPrincipalFailureMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "error", "ignore":
+			return true
+		}
 	}
-	switch v {
-	case "error":
-		fallthrough
-	case "ignore":
-		*e = FetchKongIdentityPrincipalFailureMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for FetchKongIdentityPrincipalFailureMode: %v", v)
-	}
+	return false
 }

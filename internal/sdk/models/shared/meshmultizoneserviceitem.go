@@ -169,22 +169,16 @@ const (
 func (e MeshMultiZoneServiceItemStatusStatus) ToPointer() *MeshMultiZoneServiceItemStatusStatus {
 	return &e
 }
-func (e *MeshMultiZoneServiceItemStatusStatus) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeshMultiZoneServiceItemStatusStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "True", "False", "Unknown":
+			return true
+		}
 	}
-	switch v {
-	case "True":
-		fallthrough
-	case "False":
-		fallthrough
-	case "Unknown":
-		*e = MeshMultiZoneServiceItemStatusStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeshMultiZoneServiceItemStatusStatus: %v", v)
-	}
+	return false
 }
 
 type MeshMultiZoneServiceItemConditions struct {
@@ -243,22 +237,16 @@ const (
 func (e MeshMultiZoneServiceItemStatusHostnameGeneratorsStatus) ToPointer() *MeshMultiZoneServiceItemStatusHostnameGeneratorsStatus {
 	return &e
 }
-func (e *MeshMultiZoneServiceItemStatusHostnameGeneratorsStatus) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeshMultiZoneServiceItemStatusHostnameGeneratorsStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "True", "False", "Unknown":
+			return true
+		}
 	}
-	switch v {
-	case "True":
-		fallthrough
-	case "False":
-		fallthrough
-	case "Unknown":
-		*e = MeshMultiZoneServiceItemStatusHostnameGeneratorsStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeshMultiZoneServiceItemStatusHostnameGeneratorsStatus: %v", v)
-	}
+	return false
 }
 
 type MeshMultiZoneServiceItemStatusConditions struct {

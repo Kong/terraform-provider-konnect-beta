@@ -67,7 +67,7 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `login_uri` (String) The URI of the login page where the user is redirected to authenticate in interactive flows. The login page must be secure (HTTPS).
 - `redirect_uris` (List of String) The URIs that the client is allowed to redirect to after authentication in interactive flows. All redirect URIs must be absolute URIs, be secure (HTTPS), and must not include a fragment component.
 - `refresh_token_duration` (Number) The duration of the minted refresh token is valid for, in seconds. Default: 2592000
-- `token_endpoint_auth_method` (String) Requested authentication method for OAuth 2.0 endpoints. Default: "client_secret_post"; must be one of ["client_secret_post", "none"]
+- `token_endpoint_auth_method` (String) Requested authentication method for OAuth 2.0 endpoints. possible known values include one of ["client_secret_post", "none"]; Default: "client_secret_post"
 
 ### Read-Only
 
@@ -85,7 +85,7 @@ import {
   to = konnect_identity_auth_server_client.my_konnect_identity_auth_server_client
   id = jsonencode({
     auth_server_id = "d32d905a-ed33-46a3-a093-d8f536af9a8a"
-    id = "kYa9iQFU5xPDSIUH9z1z"
+    id             = "kYa9iQFU5xPDSIUH9z1z"
   })
 }
 ```

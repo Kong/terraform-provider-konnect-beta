@@ -68,74 +68,16 @@ const (
 func (e AgenticQueryDimensions) ToPointer() *AgenticQueryDimensions {
 	return &e
 }
-func (e *AgenticQueryDimensions) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AgenticQueryDimensions) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "a2a_context_id", "a2a_error", "a2a_method", "a2a_task_id", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "mcp_error", "mcp_method", "mcp_session_id", "mcp_tool_name", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "time", "upstream_status_code", "upstream_status_code_grouped":
+			return true
+		}
 	}
-	switch v {
-	case "a2a_context_id":
-		fallthrough
-	case "a2a_error":
-		fallthrough
-	case "a2a_method":
-		fallthrough
-	case "a2a_task_id":
-		fallthrough
-	case "api":
-		fallthrough
-	case "api_package":
-		fallthrough
-	case "api_product":
-		fallthrough
-	case "api_product_version":
-		fallthrough
-	case "application":
-		fallthrough
-	case "consumer":
-		fallthrough
-	case "control_plane":
-		fallthrough
-	case "control_plane_group":
-		fallthrough
-	case "country_code":
-		fallthrough
-	case "data_plane_node":
-		fallthrough
-	case "data_plane_node_version":
-		fallthrough
-	case "gateway_service":
-		fallthrough
-	case "mcp_error":
-		fallthrough
-	case "mcp_method":
-		fallthrough
-	case "mcp_session_id":
-		fallthrough
-	case "mcp_tool_name":
-		fallthrough
-	case "portal":
-		fallthrough
-	case "realm":
-		fallthrough
-	case "response_source":
-		fallthrough
-	case "route":
-		fallthrough
-	case "status_code":
-		fallthrough
-	case "status_code_grouped":
-		fallthrough
-	case "time":
-		fallthrough
-	case "upstream_status_code":
-		fallthrough
-	case "upstream_status_code_grouped":
-		*e = AgenticQueryDimensions(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AgenticQueryDimensions: %v", v)
-	}
+	return false
 }
 
 // AgenticQuery - A query targeting the agentic usage analytics datasource.

@@ -116,13 +116,9 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 								"visibility": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `Whether a menu item is public or private. Private menu items are only accessible to authenticated users. Not Null; must be one of ["public", "private"]`,
+									Description: `Whether a menu item is public or private. Private menu items are only accessible to authenticated users. possible known values include one of ["public", "private"]; Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
-										stringvalidator.OneOf(
-											"public",
-											"private",
-										),
 									},
 								},
 							},
@@ -171,13 +167,9 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 											"visibility": schema.StringAttribute{
 												Computed:    true,
 												Optional:    true,
-												Description: `Whether a menu item is public or private. Private menu items are only accessible to authenticated users. Not Null; must be one of ["public", "private"]`,
+												Description: `Whether a menu item is public or private. Private menu items are only accessible to authenticated users. possible known values include one of ["public", "private"]; Not Null`,
 												Validators: []validator.String{
 													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.OneOf(
-														"public",
-														"private",
-													),
 												},
 											},
 										},
@@ -234,13 +226,9 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 								"visibility": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `Whether a menu item is public or private. Private menu items are only accessible to authenticated users. Not Null; must be one of ["public", "private"]`,
+									Description: `Whether a menu item is public or private. Private menu items are only accessible to authenticated users. possible known values include one of ["public", "private"]; Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
-										stringvalidator.OneOf(
-											"public",
-											"private",
-										),
 									},
 								},
 							},
@@ -320,14 +308,7 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 					"mode": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `must be one of ["light", "dark", "system"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"light",
-								"dark",
-								"system",
-							),
-						},
+						Description: `possible known values include one of ["light", "dark", "system"]`,
 					},
 					"name": schema.StringAttribute{
 						Computed: true,

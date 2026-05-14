@@ -206,7 +206,7 @@ Optional:
 - `json_patches` (Attributes List) JsonPatches specifies list of jsonpatches to apply to on Envoy's Cluster
 resource (see [below for nested schema](#nestedatt--spec--default--append_modifications--cluster--json_patches))
 - `match` (Attributes) Match is a set of conditions that have to be matched for modification operation to happen. (see [below for nested schema](#nestedatt--spec--default--append_modifications--cluster--match))
-- `operation` (String) Operation to execute on matched cluster. Not Null; must be one of ["Add", "Remove", "Patch"]
+- `operation` (String) Operation to execute on matched cluster. possible known values include one of ["Add", "Remove", "Patch"]; Not Null
 - `value` (String) Value of xDS resource in YAML format to add or patch.
 
 <a id="nestedatt--spec--default--append_modifications--cluster--json_patches"></a>
@@ -215,7 +215,7 @@ resource (see [below for nested schema](#nestedatt--spec--default--append_modifi
 Optional:
 
 - `from` (String) From is a jsonpatch from string, used by move and copy operations.
-- `op` (String) Op is a jsonpatch operation string. Not Null; must be one of ["add", "remove", "replace", "move", "copy"]
+- `op` (String) Op is a jsonpatch operation string. possible known values include one of ["add", "remove", "replace", "move", "copy"]; Not Null
 - `path` (String) Path is a jsonpatch path string. Not Null
 - `value` (String) Value must be a valid json value used by replace and add operations. Parsed as JSON.
 
@@ -251,7 +251,7 @@ Optional:
 - `json_patches` (Attributes List) JsonPatches specifies list of jsonpatches to apply to on Envoy's
 HTTP Filter available in HTTP Connection Manager in a Listener resource. (see [below for nested schema](#nestedatt--spec--default--append_modifications--http_filter--json_patches))
 - `match` (Attributes) Match is a set of conditions that have to be matched for modification operation to happen. (see [below for nested schema](#nestedatt--spec--default--append_modifications--http_filter--match))
-- `operation` (String) Operation to execute on matched listener. Not Null; must be one of ["Remove", "Patch", "AddFirst", "AddBefore", "AddAfter", "AddLast"]
+- `operation` (String) Operation to execute on matched listener. possible known values include one of ["Remove", "Patch", "AddFirst", "AddBefore", "AddAfter", "AddLast"]; Not Null
 - `value` (String) Value of xDS resource in YAML format to add or patch.
 
 <a id="nestedatt--spec--default--append_modifications--http_filter--json_patches"></a>
@@ -260,7 +260,7 @@ HTTP Filter available in HTTP Connection Manager in a Listener resource. (see [b
 Optional:
 
 - `from` (String) From is a jsonpatch from string, used by move and copy operations.
-- `op` (String) Op is a jsonpatch operation string. Not Null; must be one of ["add", "remove", "replace", "move", "copy"]
+- `op` (String) Op is a jsonpatch operation string. possible known values include one of ["add", "remove", "replace", "move", "copy"]; Not Null
 - `path` (String) Path is a jsonpatch path string. Not Null
 - `value` (String) Value must be a valid json value used by replace and add operations. Parsed as JSON.
 
@@ -298,7 +298,7 @@ Optional:
 - `json_patches` (Attributes List) JsonPatches specifies list of jsonpatches to apply to on Envoy's Listener
 resource (see [below for nested schema](#nestedatt--spec--default--append_modifications--listener--json_patches))
 - `match` (Attributes) Match is a set of conditions that have to be matched for modification operation to happen. (see [below for nested schema](#nestedatt--spec--default--append_modifications--listener--match))
-- `operation` (String) Operation to execute on matched listener. Not Null; must be one of ["Add", "Remove", "Patch"]
+- `operation` (String) Operation to execute on matched listener. possible known values include one of ["Add", "Remove", "Patch"]; Not Null
 - `value` (String) Value of xDS resource in YAML format to add or patch.
 
 <a id="nestedatt--spec--default--append_modifications--listener--json_patches"></a>
@@ -307,7 +307,7 @@ resource (see [below for nested schema](#nestedatt--spec--default--append_modifi
 Optional:
 
 - `from` (String) From is a jsonpatch from string, used by move and copy operations.
-- `op` (String) Op is a jsonpatch operation string. Not Null; must be one of ["add", "remove", "replace", "move", "copy"]
+- `op` (String) Op is a jsonpatch operation string. possible known values include one of ["add", "remove", "replace", "move", "copy"]; Not Null
 - `path` (String) Path is a jsonpatch path string. Not Null
 - `value` (String) Value must be a valid json value used by replace and add operations. Parsed as JSON.
 
@@ -344,7 +344,7 @@ Optional:
 - `json_patches` (Attributes List) JsonPatches specifies list of jsonpatches to apply to on Envoy Listener's
 filter. (see [below for nested schema](#nestedatt--spec--default--append_modifications--network_filter--json_patches))
 - `match` (Attributes) Match is a set of conditions that have to be matched for modification operation to happen. (see [below for nested schema](#nestedatt--spec--default--append_modifications--network_filter--match))
-- `operation` (String) Operation to execute on matched listener. Not Null; must be one of ["Remove", "Patch", "AddFirst", "AddBefore", "AddAfter", "AddLast"]
+- `operation` (String) Operation to execute on matched listener. possible known values include one of ["Remove", "Patch", "AddFirst", "AddBefore", "AddAfter", "AddLast"]; Not Null
 - `value` (String) Value of xDS resource in YAML format to add or patch.
 
 <a id="nestedatt--spec--default--append_modifications--network_filter--json_patches"></a>
@@ -353,7 +353,7 @@ filter. (see [below for nested schema](#nestedatt--spec--default--append_modific
 Optional:
 
 - `from` (String) From is a jsonpatch from string, used by move and copy operations.
-- `op` (String) Op is a jsonpatch operation string. Not Null; must be one of ["add", "remove", "replace", "move", "copy"]
+- `op` (String) Op is a jsonpatch operation string. possible known values include one of ["add", "remove", "replace", "move", "copy"]; Not Null
 - `path` (String) Path is a jsonpatch path string. Not Null
 - `value` (String) Value must be a valid json value used by replace and add operations. Parsed as JSON.
 
@@ -391,7 +391,7 @@ Optional:
 - `json_patches` (Attributes List) JsonPatches specifies list of jsonpatches to apply to on Envoy's
 VirtualHost resource (see [below for nested schema](#nestedatt--spec--default--append_modifications--virtual_host--json_patches))
 - `match` (Attributes) Match is a set of conditions that have to be matched for modification operation to happen. Not Null (see [below for nested schema](#nestedatt--spec--default--append_modifications--virtual_host--match))
-- `operation` (String) Operation to execute on matched listener. Not Null; must be one of ["Add", "Remove", "Patch"]
+- `operation` (String) Operation to execute on matched listener. possible known values include one of ["Add", "Remove", "Patch"]; Not Null
 - `value` (String) Value of xDS resource in YAML format to add or patch.
 
 <a id="nestedatt--spec--default--append_modifications--virtual_host--json_patches"></a>
@@ -400,7 +400,7 @@ VirtualHost resource (see [below for nested schema](#nestedatt--spec--default--a
 Optional:
 
 - `from` (String) From is a jsonpatch from string, used by move and copy operations.
-- `op` (String) Op is a jsonpatch operation string. Not Null; must be one of ["add", "remove", "replace", "move", "copy"]
+- `op` (String) Op is a jsonpatch operation string. possible known values include one of ["add", "remove", "replace", "move", "copy"]; Not Null
 - `path` (String) Path is a jsonpatch path string. Not Null
 - `value` (String) Value must be a valid json value used by replace and add operations. Parsed as JSON.
 
@@ -436,7 +436,7 @@ For example MeshTrace plugin can create Cluster with "mesh-trace" origin.
 
 Required:
 
-- `kind` (String) Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]
+- `kind` (String) Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]
 
 Optional:
 
@@ -465,8 +465,8 @@ import {
   to = konnect_mesh_proxy_patch.my_konnect_mesh_proxy_patch
   id = jsonencode({
     cp_id = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
-    mesh = "..."
-    name = "..."
+    mesh  = "..."
+    name  = "..."
   })
 }
 ```

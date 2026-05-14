@@ -15,70 +15,70 @@ EventGatewayVirtualCluster Resource
 ```terraform
 resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster" {
   provider = konnect-beta
-acl_mode = "enforce_on_gateway"
-authentication = [
-{
-sasl_plain = {
-fetch_kong_identity_principal = {
-directory = "...my_directory..."
-failure_mode = "ignore"
-fetch_by = {
-key = "...my_key..."
-}
-}
-mediation = "passthrough"
-principals = [
-{
-password = "${vault.env['MY_ENV_VAR']}"
-username = "...my_username..."
-}
-]
-}
-}
-]
-description = ""
-destination = {
-id = "759b5471-3de4-485c-b7d3-6e8cb8929d81"
-}
-dns_label = "vcluster-1"
-gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-labels = {
+  acl_mode = "enforce_on_gateway"
+  authentication = [
+    {
+      sasl_plain = {
+        fetch_kong_identity_principal = {
+          directory    = "...my_directory..."
+          failure_mode = "ignore"
+          fetch_by = {
+            key = "...my_key..."
+          }
+        }
+        mediation = "passthrough"
+        principals = [
+          {
+            password = "$${vault.env['MY_ENV_VAR']}"
+            username = "...my_username..."
+          }
+        ]
+      }
+    }
+  ]
+  description = ""
+  destination = {
+    id = "759b5471-3de4-485c-b7d3-6e8cb8929d81"
+  }
+  dns_label  = "vcluster-1"
+  gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  labels = {
     key = "value"
-}
-name = "...my_name..."
-namespace = {
-additional = {
-consumer_groups = [
-{
-glob = {
-glob = "...my_glob..."
-}
-}
-]
-topics = [
-{
-exact_list = {
-conflict = "warn"
-exact_list = [
-{
-backend = "...my_backend..."
-}
-]
-}
-}
-]
-}
-mode = "hide_prefix"
-prefix = "...my_prefix..."
-}
-topic_aliases = [
-{
-alias = "...my_alias..."
-conflict = "warn"
-match = ""
-topic = "...my_topic..."
-}
-]
+  }
+  name = "...my_name..."
+  namespace = {
+    additional = {
+      consumer_groups = [
+        {
+          glob = {
+            glob = "...my_glob..."
+          }
+        }
+      ]
+      topics = [
+        {
+          exact_list = {
+            conflict = "warn"
+            exact_list = [
+              {
+                backend = "...my_backend..."
+              }
+            ]
+          }
+        }
+      ]
+    }
+    mode   = "hide_prefix"
+    prefix = "...my_prefix..."
+  }
+  topic_aliases = [
+    {
+      alias    = "...my_alias..."
+      conflict = "warn"
+      match    = ""
+      topic    = "...my_topic..."
+    }
+  ]
 }
 ```
 
@@ -92,7 +92,7 @@ topic = "...my_topic..."
   and does not forward ACL-related commands to the backend cluster.
   Note that if there are no ACL policies configured, all access is denied.
 - `passthrough` tells the gateway to forward all ACL-related commands.
-must be one of ["enforce_on_gateway", "passthrough"]
+possible known values include one of ["enforce_on_gateway", "passthrough"]
 - `authentication` (Attributes List) How to handle authentication from clients.
 
 It tries to authenticate with every rule sequentially one by one.
@@ -168,7 +168,7 @@ Optional:
 * `ignore` - proceed without principal metadata if the lookup fails.
 
 **Requires a minimum runtime version of `1.2`**.
-Not Null; must be one of ["error", "ignore"]
+possible known values include one of ["error", "ignore"]; Not Null
 - `fetch_by` (Attributes) Defines how to look up the principal in Kong Identity.
 
 **Requires a minimum runtime version of `1.2`**.
@@ -206,7 +206,7 @@ The principal is looked up by the iss and sub claims from the JWT token.
 * terminate - terminate authentication at the proxy level and originate authentication to the backend cluster
   using the configuration defined at BackendCluster's authentication.
   SASL auth is not originated if authentication on the backend_cluster is not configured.
-Not Null; must be one of ["passthrough", "validate_forward", "terminate"]
+possible known values include one of ["passthrough", "validate_forward", "terminate"]; Not Null
 - `validate` (Attributes) Validation rules. (see [below for nested schema](#nestedatt--authentication--oauth_bearer--validate))
 
 <a id="nestedatt--authentication--oauth_bearer--claims_mapping"></a>
@@ -229,7 +229,7 @@ Optional:
 * `ignore` - proceed without principal metadata if the lookup fails.
 
 **Requires a minimum runtime version of `1.2`**.
-Not Null; must be one of ["error", "ignore"]
+possible known values include one of ["error", "ignore"]; Not Null
 
 
 <a id="nestedatt--authentication--oauth_bearer--jwks"></a>
@@ -269,7 +269,7 @@ Optional:
 The principal is looked up by a custom key matched against the authenticated identity.
 
 **Requires a minimum runtime version of `1.2`**. (see [below for nested schema](#nestedatt--authentication--sasl_plain--fetch_kong_identity_principal))
-- `mediation` (String) The mediation type for SASL/PLAIN authentication. Not Null; must be one of ["passthrough", "terminate"]
+- `mediation` (String) The mediation type for SASL/PLAIN authentication. possible known values include one of ["passthrough", "terminate"]; Not Null
 - `principals` (Attributes List) List of principals to be able to authenticate with, used with `terminate` mediation. (see [below for nested schema](#nestedatt--authentication--sasl_plain--principals))
 
 <a id="nestedatt--authentication--sasl_plain--fetch_kong_identity_principal"></a>
@@ -283,7 +283,7 @@ Optional:
 * `ignore` - proceed without principal metadata if the lookup fails.
 
 **Requires a minimum runtime version of `1.2`**.
-Not Null; must be one of ["error", "ignore"]
+possible known values include one of ["error", "ignore"]; Not Null
 - `fetch_by` (Attributes) Defines how to look up the principal in Kong Identity.
 
 **Requires a minimum runtime version of `1.2`**.
@@ -321,7 +321,7 @@ Not Null
 
 Optional:
 
-- `algorithm` (String) The algorithm used for SASL/SCRAM authentication. Not Null; must be one of ["sha256", "sha512"]
+- `algorithm` (String) The algorithm used for SASL/SCRAM authentication. possible known values include one of ["sha256", "sha512"]; Not Null
 - `fetch_kong_identity_principal` (Attributes) Fetches principal metadata from Kong Identity after successful authentication.
 The principal is looked up by a custom key matched against the authenticated identity.
 
@@ -338,7 +338,7 @@ Optional:
 * `ignore` - proceed without principal metadata if the lookup fails.
 
 **Requires a minimum runtime version of `1.2`**.
-Not Null; must be one of ["error", "ignore"]
+possible known values include one of ["error", "ignore"]; Not Null
 - `fetch_by` (Attributes) Defines how to look up the principal in Kong Identity.
 
 **Requires a minimum runtime version of `1.2`**.
@@ -379,7 +379,7 @@ Required:
   Created resources are written with the prefix on the backend cluster.
 * enforce_prefix - the configured prefix remains visible to clients.
   Created resources must include the prefix or the request will fail.
-must be one of ["hide_prefix", "enforce_prefix"]
+possible known values include one of ["hide_prefix", "enforce_prefix"]
 - `prefix` (String) The namespace is differentiated by this chosen prefix.
 For example, if the prefix is set to "analytics_" the topic named "analytics_user_clicks" is available to the clients
 of the virtual cluster. Topics without the prefix will be ignored unless added via `additional.topics`.
@@ -447,7 +447,7 @@ Optional:
 - `conflict` (String) How to inform the user about conflicts where multiple backend topics would map to the same virtual topic name.
 * warn - log in the Event Gateway logs. Additionally, it sets knep_namespace_topic_conflict to 1.
 * ignore - do not do anything. It does not cause knep_namespace_topic_conflict metric to be set to 1.
-Default: "warn"; must be one of ["warn", "ignore"]
+possible known values include one of ["warn", "ignore"]; Default: "warn"
 - `exact_list` (Attributes List) Explicit allow-list of backend topic names. (see [below for nested schema](#nestedatt--namespace--additional--topics--exact_list--exact_list))
 
 <a id="nestedatt--namespace--additional--topics--exact_list--exact_list"></a>
@@ -467,7 +467,7 @@ Optional:
 - `conflict` (String) How to inform the user about conflicts where multiple backend topics would map to the same virtual topic name.
 * warn - log in the Event Gateway logs. Additionally, it sets knep_namespace_topic_conflict to 1.
 * ignore - do not do anything. It does not cause knep_namespace_topic_conflict metric to be set to 1.
-Default: "warn"; must be one of ["warn", "ignore"]
+possible known values include one of ["warn", "ignore"]; Default: "warn"
 - `glob` (String) Expose any backend topic that matches this glob pattern (e.g., `operations_data_*`). Not Null
 
 
@@ -487,7 +487,7 @@ Optional:
 - `conflict` (String) How to handle conflicts where an alias shadows a physical topic.
 * warn - activate the alias but log a warning and set the conflict metric to 1.
 * ignore - activate the alias silently.
-Default: "warn"; must be one of ["warn", "ignore"]
+possible known values include one of ["warn", "ignore"]; Default: "warn"
 - `match` (String) CEL expression evaluated against the connection's auth context.
 If omitted or empty, the alias is active for all connections.
 Default: ""
@@ -503,7 +503,7 @@ import {
   to = konnect_event_gateway_virtual_cluster.my_konnect_event_gateway_virtual_cluster
   id = jsonencode({
     gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "..."
+    id         = "..."
   })
 }
 ```

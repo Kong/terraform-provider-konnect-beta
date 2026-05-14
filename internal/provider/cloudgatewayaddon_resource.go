@@ -86,22 +86,7 @@ func (r *CloudGatewayAddonResource) Schema(ctx context.Context, req resource.Sch
 													`- 12xlarge: ~150 GiB capacity` + "\n" +
 													`- 16xlarge: ~200 GiB capacity` + "\n" +
 													`- 24xlarge: ~300 GiB capacity` + "\n" +
-													`must be one of ["micro", "small", "medium", "large", "xlarge", "2xlarge", "4xlarge", "8xlarge", "12xlarge", "16xlarge", "24xlarge"]`,
-												Validators: []validator.String{
-													stringvalidator.OneOf(
-														"micro",
-														"small",
-														"medium",
-														"large",
-														"xlarge",
-														"2xlarge",
-														"4xlarge",
-														"8xlarge",
-														"12xlarge",
-														"16xlarge",
-														"24xlarge",
-													),
-												},
+													`possible known values include one of ["micro", "small", "medium", "large", "xlarge", "2xlarge", "4xlarge", "8xlarge", "12xlarge", "16xlarge", "24xlarge"]`,
 											},
 										},
 										Description: `Capacity tiers with pre-configured size and performance characteristics.`,
@@ -307,17 +292,9 @@ func (r *CloudGatewayAddonResource) Schema(ctx context.Context, req resource.Sch
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.RequiresReplaceIfConfigured(),
 								},
-								Description: `Set of control-plane geos supported for deploying cloud-gateways configurations. Not Null; must be one of ["us", "eu", "au", "me", "in", "sg"]; Requires replacement if changed.`,
+								Description: `Set of control-plane geos supported for deploying cloud-gateways configurations. possible known values include one of ["us", "eu", "au", "me", "in", "sg"]; Not Null; Requires replacement if changed.`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
-									stringvalidator.OneOf(
-										"us",
-										"eu",
-										"au",
-										"me",
-										"in",
-										"sg",
-									),
 								},
 							},
 							"control_plane_id": schema.StringAttribute{
@@ -351,17 +328,9 @@ func (r *CloudGatewayAddonResource) Schema(ctx context.Context, req resource.Sch
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.RequiresReplaceIfConfigured(),
 								},
-								Description: `Set of control-plane geos supported for deploying cloud-gateways configurations. Not Null; must be one of ["us", "eu", "au", "me", "in", "sg"]; Requires replacement if changed.`,
+								Description: `Set of control-plane geos supported for deploying cloud-gateways configurations. possible known values include one of ["us", "eu", "au", "me", "in", "sg"]; Not Null; Requires replacement if changed.`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
-									stringvalidator.OneOf(
-										"us",
-										"eu",
-										"au",
-										"me",
-										"in",
-										"sg",
-									),
 								},
 							},
 							"control_plane_group_id": schema.StringAttribute{

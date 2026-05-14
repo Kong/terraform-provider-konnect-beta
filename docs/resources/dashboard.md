@@ -200,7 +200,7 @@ Optional:
 
 - `chart_title` (String) The title of the chart, which is displayed in the tile's header.
 - `stacked` (Boolean) Whether to stack the bars (implicitly adding them together to form a total), or leave them independent from each other.
-- `type` (String) Not Null; must be one of ["horizontal_bar", "vertical_bar"]
+- `type` (String) possible known values include one of ["horizontal_bar", "vertical_bar"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--chart--single_value"></a>
@@ -220,7 +220,7 @@ Optional:
 
 - `chart_title` (String) The title of the chart, which is displayed in the tile's header.
 - `stacked` (Boolean) Whether to stack the bars or lines (implicitly adding them together to form a total), or leave them independent from each other.
-- `type` (String) Not Null; must be one of ["timeseries_line", "timeseries_bar"]
+- `type` (String) possible known values include one of ["timeseries_line", "timeseries_bar"]; Not Null
 
 
 
@@ -261,7 +261,7 @@ For special time ranges:
   - current_month, previous_month => hourly, twoHourly, twelveHourly, daily, weekly
 
 For absolute time ranges, daily will be used.
-must be one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]
+possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]
 - `metrics` (List of String) List of aggregated metrics to collect across the requested time span. Default: ["request_count"]
 - `time_range` (Attributes) The time range to query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--agentic_usage--time_range))
 
@@ -313,7 +313,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "a2a_context_id"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_context_id--multiselect_filters"></a>
@@ -322,7 +322,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "a2a_context_id"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The values to include in the results. Not Null
 
 
@@ -341,7 +341,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "a2a_error"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_error--multiselect_filters"></a>
@@ -350,7 +350,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "a2a_error"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The values to include in the results. Not Null
 
 
@@ -369,7 +369,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "a2a_method"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_method--multiselect_filters"></a>
@@ -378,7 +378,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "a2a_method"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The values to include in the results. Not Null
 
 
@@ -397,7 +397,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "a2a_task_id"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--a2a_task_id--multiselect_filters"></a>
@@ -406,7 +406,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "a2a_task_id"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The values to include in the results. Not Null
 
 
@@ -425,7 +425,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "api"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api--multiselect_filters"></a>
@@ -434,7 +434,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "api"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The IDs to include in the results. Not Null
 
 
@@ -453,7 +453,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "api_package"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api_package--multiselect_filters"></a>
@@ -462,7 +462,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "api_package"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The IDs to include in the results. Not Null
 
 
@@ -481,7 +481,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "api_product"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api_product--multiselect_filters"></a>
@@ -490,7 +490,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "api_product"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The IDs to include in the results. Not Null
 
 
@@ -509,7 +509,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "api_product_version"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--api_product_version--multiselect_filters"></a>
@@ -518,7 +518,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "api_product_version"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The IDs to include in the results. Not Null
 
 
@@ -537,7 +537,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "application"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--application--multiselect_filters"></a>
@@ -546,7 +546,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "application"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The IDs to include in the results. Not Null
 
 
@@ -565,7 +565,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "consumer"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--consumer--multiselect_filters"></a>
@@ -574,7 +574,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "consumer"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The IDs to include in the results. Because gateway IDs are only unique within a given control plane, the filter values must be of the form `control_plane_id:field_id` or `control_plane_group_id:field_id` for data plane nodes within a control plane group. Not Null
 
 
@@ -593,7 +593,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "control_plane"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--control_plane--multiselect_filters"></a>
@@ -602,7 +602,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "control_plane"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The IDs to include in the results. Not Null
 
 
@@ -621,7 +621,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "control_plane_group"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--control_plane_group--multiselect_filters"></a>
@@ -630,7 +630,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "control_plane_group"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The IDs to include in the results. Not Null
 
 
@@ -649,7 +649,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "country_code"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--country_code--multiselect_filters"></a>
@@ -658,7 +658,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "country_code"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The values to include in the results. Not Null
 
 
@@ -677,7 +677,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "data_plane_node"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--data_plane_node--multiselect_filters"></a>
@@ -686,7 +686,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "data_plane_node"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The IDs to include in the results. Because gateway IDs are only unique within a given control plane, the filter values must be of the form `control_plane_id:field_id` or `control_plane_group_id:field_id` for data plane nodes within a control plane group. Not Null
 
 
@@ -705,7 +705,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "data_plane_node_version"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--data_plane_node_version--multiselect_filters"></a>
@@ -714,7 +714,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "data_plane_node_version"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The values to include in the results. Not Null
 
 
@@ -733,7 +733,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "gateway_service"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--gateway_service--multiselect_filters"></a>
@@ -742,7 +742,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "gateway_service"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The IDs to include in the results. Because gateway IDs are only unique within a given control plane, the filter values must be of the form `control_plane_id:field_id` or `control_plane_group_id:field_id` for data plane nodes within a control plane group. Not Null
 
 
@@ -761,7 +761,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "mcp_error"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_error--multiselect_filters"></a>
@@ -770,7 +770,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "mcp_error"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The values to include in the results. Not Null
 
 
@@ -789,7 +789,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "mcp_method"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_method--multiselect_filters"></a>
@@ -798,7 +798,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "mcp_method"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The values to include in the results. Not Null
 
 
@@ -817,7 +817,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "mcp_session_id"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_session_id--multiselect_filters"></a>
@@ -826,7 +826,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "mcp_session_id"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The values to include in the results. Not Null
 
 
@@ -845,7 +845,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "mcp_tool_name"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--mcp_tool_name--multiselect_filters"></a>
@@ -854,7 +854,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "mcp_tool_name"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The values to include in the results. Not Null
 
 
@@ -873,7 +873,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "portal"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--portal--multiselect_filters"></a>
@@ -882,7 +882,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "portal"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The IDs to include in the results. Not Null
 
 
@@ -901,7 +901,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "realm"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--realm--multiselect_filters"></a>
@@ -910,7 +910,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "realm"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The IDs to include in the results. Not Null
 
 
@@ -929,7 +929,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "response_source"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--response_source--multiselect_filters"></a>
@@ -938,7 +938,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "response_source"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The values to include in the results. Not Null
 
 
@@ -957,7 +957,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "route"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--route--multiselect_filters"></a>
@@ -966,7 +966,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "route"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The IDs to include in the results. Because gateway IDs are only unique within a given control plane, the filter values must be of the form `control_plane_id:field_id` or `control_plane_group_id:field_id` for data plane nodes within a control plane group. Not Null
 
 
@@ -985,7 +985,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "status_code"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--status_code--multiselect_filters"></a>
@@ -994,7 +994,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "status_code"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of Number) The codes to include in the results. Not Null
 
 
@@ -1013,7 +1013,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "status_code_grouped"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--status_code_grouped--multiselect_filters"></a>
@@ -1022,7 +1022,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "status_code_grouped"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The code groups to include in the results. Not Null
 
 
@@ -1041,7 +1041,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "upstream_status_code"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--upstream_status_code--multiselect_filters"></a>
@@ -1050,7 +1050,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "upstream_status_code"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of Number) The codes to include in the results. Not Null
 
 
@@ -1069,7 +1069,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "upstream_status_code_grouped"
-- `operator` (String) The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]
+- `operator` (String) The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null
 
 
 <a id="nestedatt--definition--tiles--chart--definition--query--agentic_usage--filters--upstream_status_code_grouped--multiselect_filters"></a>
@@ -1078,7 +1078,7 @@ Optional:
 Optional:
 
 - `field` (String) The field to filter. Not Null; must be "upstream_status_code_grouped"
-- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]
+- `operator` (String) The type of filter to apply.  `in` filters will limit results to only the specified values, while `not_in` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null
 - `value` (List of String) The code groups to include in the results. Not Null
 
 
@@ -1108,7 +1108,7 @@ Optional:
 
 Optional:
 
-- `time_range` (String) Default: "1h"; must be one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]
+- `time_range` (String) possible known values include one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]; Default: "1h"
 - `type` (String) Not Null; must be "relative"
 - `tz` (String) Default: "Etc/UTC"
 
@@ -1143,7 +1143,7 @@ For special time ranges:
   - current_month, previous_month => hourly, twoHourly, twelveHourly, daily, weekly
 
 For absolute time ranges, daily will be used.
-must be one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]
+possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]
 - `metrics` (List of String) List of aggregated metrics to collect across the requested time span. If no metrics are specified, request_count will be computed by default. Default: ["request_count"]
 - `time_range` (Attributes) The time range to query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--api_usage--time_range))
 
@@ -1152,8 +1152,8 @@ must be one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "te
 
 Optional:
 
-- `field` (String) Not Null; must be one of ["api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]
-- `operator` (String) Not Null; must be one of ["in", "not_in", "empty", "not_empty"]
+- `field` (String) possible known values include one of ["api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null
+- `operator` (String) possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null
 - `value` (String) Parsed as JSON.
 
 
@@ -1181,7 +1181,7 @@ Optional:
 
 Optional:
 
-- `time_range` (String) Default: "1h"; must be one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]
+- `time_range` (String) possible known values include one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]; Default: "1h"
 - `type` (String) Not Null; must be "relative"
 - `tz` (String) Default: "Etc/UTC"
 
@@ -1216,7 +1216,7 @@ For special time ranges:
   - current_month, previous_month => hourly, twoHourly, twelveHourly, daily, weekly
 
 For absolute time ranges, daily will be used.
-must be one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]
+possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]
 - `metrics` (List of String) List of aggregated metrics to collect across the requested time span. Default: ["ai_request_count"]
 - `time_range` (Attributes) The time range to query. (see [below for nested schema](#nestedatt--definition--tiles--chart--definition--query--llm_usage--time_range))
 
@@ -1225,8 +1225,8 @@ must be one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "te
 
 Optional:
 
-- `field` (String) Not Null; must be one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "application", "consumer", "control_plane", "control_plane_group", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "realm", "route", "status_code", "status_code_grouped"]
-- `operator` (String) Not Null; must be one of ["in", "not_in", "empty", "not_empty"]
+- `field` (String) possible known values include one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "application", "consumer", "control_plane", "control_plane_group", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "realm", "route", "status_code", "status_code_grouped"]; Not Null
+- `operator` (String) possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null
 - `value` (String) Parsed as JSON.
 
 
@@ -1254,7 +1254,7 @@ Optional:
 
 Optional:
 
-- `time_range` (String) Default: "1h"; must be one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]
+- `time_range` (String) possible known values include one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]; Default: "1h"
 - `type` (String) Not Null; must be "relative"
 - `tz` (String) Default: "Etc/UTC"
 
@@ -1297,8 +1297,8 @@ Optional:
 
 Optional:
 
-- `field` (String) Not Null; must be one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]
-- `operator` (String) Not Null; must be one of ["in", "not_in", "empty", "not_empty"]
+- `field` (String) possible known values include one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null
+- `operator` (String) possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null
 - `value` (String) Parsed as JSON.
 
 ## Import

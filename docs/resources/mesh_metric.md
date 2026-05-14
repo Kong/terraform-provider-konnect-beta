@@ -152,7 +152,7 @@ Optional:
 
 - `open_telemetry` (Attributes) OpenTelemetry backend configuration (see [below for nested schema](#nestedatt--spec--default--backends--open_telemetry))
 - `prometheus` (Attributes) Prometheus backend configuration. (see [below for nested schema](#nestedatt--spec--default--backends--prometheus))
-- `type` (String) Type of the backend that will be used to collect metrics. At the moment only Prometheus backend is available. Not Null; must be one of ["Prometheus", "OpenTelemetry"]
+- `type` (String) Type of the backend that will be used to collect metrics. At the moment only Prometheus backend is available. possible known values include one of ["Prometheus", "OpenTelemetry"]; Not Null
 
 <a id="nestedatt--spec--default--backends--open_telemetry"></a>
 ### Nested Schema for `spec.default.backends.open_telemetry`
@@ -178,7 +178,7 @@ Optional:
 
 Optional:
 
-- `mode` (String) Configuration of TLS for Prometheus listener. Default: "Disabled"; must be one of ["Disabled", "ProvidedTLS", "ActiveMTLSBackend"]
+- `mode` (String) Configuration of TLS for Prometheus listener. possible known values include one of ["Disabled", "ProvidedTLS", "ActiveMTLSBackend"]; Default: "Disabled"
 
 
 
@@ -210,7 +210,7 @@ Include takes precedence over Exclude. (see [below for nested schema](#nestedatt
 
 Optional:
 
-- `name` (String) Name of the predefined profile, one of: all, basic, none. Not Null; must be one of ["All", "Basic", "None"]
+- `name` (String) Name of the predefined profile, one of: all, basic, none. possible known values include one of ["All", "Basic", "None"]; Not Null
 
 
 <a id="nestedatt--spec--default--sidecar--profiles--exclude"></a>
@@ -219,7 +219,7 @@ Optional:
 Optional:
 
 - `match` (String) Match is the value used to match using particular Type. Not Null
-- `type` (String) Type defined the type of selector, one of: prefix, regex, exact. Not Null; must be one of ["Prefix", "Regex", "Exact", "Contains"]
+- `type` (String) Type defined the type of selector, one of: prefix, regex, exact. possible known values include one of ["Prefix", "Regex", "Exact", "Contains"]; Not Null
 
 
 <a id="nestedatt--spec--default--sidecar--profiles--include"></a>
@@ -228,7 +228,7 @@ Optional:
 Optional:
 
 - `match` (String) Match is the value used to match using particular Type. Not Null
-- `type` (String) Type defined the type of selector, one of: prefix, regex, exact. Not Null; must be one of ["Prefix", "Regex", "Exact", "Contains"]
+- `type` (String) Type defined the type of selector, one of: prefix, regex, exact. possible known values include one of ["Prefix", "Regex", "Exact", "Contains"]; Not Null
 
 
 
@@ -239,7 +239,7 @@ Optional:
 
 Required:
 
-- `kind` (String) Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]
+- `kind` (String) Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]
 
 Optional:
 
@@ -268,8 +268,8 @@ import {
   to = konnect_mesh_metric.my_konnect_mesh_metric
   id = jsonencode({
     cp_id = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
-    mesh = "..."
-    name = "..."
+    mesh  = "..."
+    name  = "..."
   })
 }
 ```

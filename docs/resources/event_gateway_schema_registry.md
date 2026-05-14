@@ -15,25 +15,25 @@ EventGatewaySchemaRegistry Resource
 ```terraform
 resource "konnect_event_gateway_schema_registry" "my_eventgatewayschemaregistry" {
   provider = konnect-beta
-confluent = {
-config = {
-authentication = {
-basic = {
-password = "${vault.env['MY_ENV_VAR']}"
-username = "...my_username..."
-}
-}
-endpoint = "https://key-hovercraft.com"
-schema_type = "avro"
-timeout_seconds = 10
-}
-description = "...my_description..."
-labels = {
-    key = "value"
-}
-name = "...my_name..."
-}
-gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  confluent = {
+    config = {
+      authentication = {
+        basic = {
+          password = "$${vault.env['MY_ENV_VAR']}"
+          username = "...my_username..."
+        }
+      }
+      endpoint        = "https://key-hovercraft.com"
+      schema_type     = "avro"
+      timeout_seconds = 10
+    }
+    description = "...my_description..."
+    labels = {
+      key = "value"
+    }
+    name = "...my_name..."
+  }
+  gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
 }
 ```
 
@@ -82,7 +82,7 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 Required:
 
 - `endpoint` (String) The endpoint of the Confluent schema registry.
-- `schema_type` (String) The format of the message. must be one of ["avro", "json"]
+- `schema_type` (String) The format of the message. possible known values include one of ["avro", "json"]
 
 Optional:
 
@@ -125,7 +125,7 @@ import {
   to = konnect_event_gateway_schema_registry.my_konnect_event_gateway_schema_registry
   id = jsonencode({
     gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "..."
+    id         = "..."
   })
 }
 ```

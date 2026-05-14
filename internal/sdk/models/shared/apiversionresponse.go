@@ -3,7 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
@@ -22,22 +21,16 @@ const (
 func (e APIVersionResponseAPISpecType) ToPointer() *APIVersionResponseAPISpecType {
 	return &e
 }
-func (e *APIVersionResponseAPISpecType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *APIVersionResponseAPISpecType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "oas2", "oas3", "asyncapi":
+			return true
+		}
 	}
-	switch v {
-	case "oas2":
-		fallthrough
-	case "oas3":
-		fallthrough
-	case "asyncapi":
-		*e = APIVersionResponseAPISpecType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for APIVersionResponseAPISpecType: %v", v)
-	}
+	return false
 }
 
 type APIVersionResponseValidationMessages struct {

@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type AllFilterItemsField string
 
 const (
@@ -42,70 +37,16 @@ const (
 func (e AllFilterItemsField) ToPointer() *AllFilterItemsField {
 	return &e
 }
-func (e *AllFilterItemsField) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AllFilterItemsField) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped":
+			return true
+		}
 	}
-	switch v {
-	case "ai_plugin":
-		fallthrough
-	case "ai_provider":
-		fallthrough
-	case "ai_request_model":
-		fallthrough
-	case "ai_response_model":
-		fallthrough
-	case "api":
-		fallthrough
-	case "api_package":
-		fallthrough
-	case "api_product":
-		fallthrough
-	case "api_product_version":
-		fallthrough
-	case "application":
-		fallthrough
-	case "consumer":
-		fallthrough
-	case "control_plane":
-		fallthrough
-	case "control_plane_group":
-		fallthrough
-	case "country_code":
-		fallthrough
-	case "data_plane_node":
-		fallthrough
-	case "data_plane_node_version":
-		fallthrough
-	case "gateway_service":
-		fallthrough
-	case "llm_cache_status":
-		fallthrough
-	case "llm_embeddings_model":
-		fallthrough
-	case "llm_embeddings_provider":
-		fallthrough
-	case "portal":
-		fallthrough
-	case "realm":
-		fallthrough
-	case "response_source":
-		fallthrough
-	case "route":
-		fallthrough
-	case "status_code":
-		fallthrough
-	case "status_code_grouped":
-		fallthrough
-	case "upstream_status_code":
-		fallthrough
-	case "upstream_status_code_grouped":
-		*e = AllFilterItemsField(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AllFilterItemsField: %v", v)
-	}
+	return false
 }
 
 type AllFilterItemsOperator string
@@ -120,24 +61,16 @@ const (
 func (e AllFilterItemsOperator) ToPointer() *AllFilterItemsOperator {
 	return &e
 }
-func (e *AllFilterItemsOperator) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AllFilterItemsOperator) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "in", "not_in", "empty", "not_empty":
+			return true
+		}
 	}
-	switch v {
-	case "in":
-		fallthrough
-	case "not_in":
-		fallthrough
-	case "empty":
-		fallthrough
-	case "not_empty":
-		*e = AllFilterItemsOperator(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AllFilterItemsOperator: %v", v)
-	}
+	return false
 }
 
 type AllFilterItems struct {

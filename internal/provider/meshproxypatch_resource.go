@@ -147,16 +147,9 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 															},
 															"op": schema.StringAttribute{
 																Optional:    true,
-																Description: `Op is a jsonpatch operation string. Not Null; must be one of ["add", "remove", "replace", "move", "copy"]`,
+																Description: `Op is a jsonpatch operation string. possible known values include one of ["add", "remove", "replace", "move", "copy"]; Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
-																	stringvalidator.OneOf(
-																		"add",
-																		"remove",
-																		"replace",
-																		"move",
-																		"copy",
-																	),
 																},
 															},
 															"path": schema.StringAttribute{
@@ -205,14 +198,9 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"operation": schema.StringAttribute{
 													Optional:    true,
-													Description: `Operation to execute on matched cluster. Not Null; must be one of ["Add", "Remove", "Patch"]`,
+													Description: `Operation to execute on matched cluster. possible known values include one of ["Add", "Remove", "Patch"]; Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf(
-															"Add",
-															"Remove",
-															"Patch",
-														),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -242,16 +230,9 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 															},
 															"op": schema.StringAttribute{
 																Optional:    true,
-																Description: `Op is a jsonpatch operation string. Not Null; must be one of ["add", "remove", "replace", "move", "copy"]`,
+																Description: `Op is a jsonpatch operation string. possible known values include one of ["add", "remove", "replace", "move", "copy"]; Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
-																	stringvalidator.OneOf(
-																		"add",
-																		"remove",
-																		"replace",
-																		"move",
-																		"copy",
-																	),
 																},
 															},
 															"path": schema.StringAttribute{
@@ -309,17 +290,9 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"operation": schema.StringAttribute{
 													Optional:    true,
-													Description: `Operation to execute on matched listener. Not Null; must be one of ["Remove", "Patch", "AddFirst", "AddBefore", "AddAfter", "AddLast"]`,
+													Description: `Operation to execute on matched listener. possible known values include one of ["Remove", "Patch", "AddFirst", "AddBefore", "AddAfter", "AddLast"]; Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf(
-															"Remove",
-															"Patch",
-															"AddFirst",
-															"AddBefore",
-															"AddAfter",
-															"AddLast",
-														),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -350,16 +323,9 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 															},
 															"op": schema.StringAttribute{
 																Optional:    true,
-																Description: `Op is a jsonpatch operation string. Not Null; must be one of ["add", "remove", "replace", "move", "copy"]`,
+																Description: `Op is a jsonpatch operation string. possible known values include one of ["add", "remove", "replace", "move", "copy"]; Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
-																	stringvalidator.OneOf(
-																		"add",
-																		"remove",
-																		"replace",
-																		"move",
-																		"copy",
-																	),
 																},
 															},
 															"path": schema.StringAttribute{
@@ -413,14 +379,9 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"operation": schema.StringAttribute{
 													Optional:    true,
-													Description: `Operation to execute on matched listener. Not Null; must be one of ["Add", "Remove", "Patch"]`,
+													Description: `Operation to execute on matched listener. possible known values include one of ["Add", "Remove", "Patch"]; Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf(
-															"Add",
-															"Remove",
-															"Patch",
-														),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -450,16 +411,9 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 															},
 															"op": schema.StringAttribute{
 																Optional:    true,
-																Description: `Op is a jsonpatch operation string. Not Null; must be one of ["add", "remove", "replace", "move", "copy"]`,
+																Description: `Op is a jsonpatch operation string. possible known values include one of ["add", "remove", "replace", "move", "copy"]; Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
-																	stringvalidator.OneOf(
-																		"add",
-																		"remove",
-																		"replace",
-																		"move",
-																		"copy",
-																	),
 																},
 															},
 															"path": schema.StringAttribute{
@@ -517,17 +471,9 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"operation": schema.StringAttribute{
 													Optional:    true,
-													Description: `Operation to execute on matched listener. Not Null; must be one of ["Remove", "Patch", "AddFirst", "AddBefore", "AddAfter", "AddLast"]`,
+													Description: `Operation to execute on matched listener. possible known values include one of ["Remove", "Patch", "AddFirst", "AddBefore", "AddAfter", "AddLast"]; Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf(
-															"Remove",
-															"Patch",
-															"AddFirst",
-															"AddBefore",
-															"AddAfter",
-															"AddLast",
-														),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -557,16 +503,9 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 															},
 															"op": schema.StringAttribute{
 																Optional:    true,
-																Description: `Op is a jsonpatch operation string. Not Null; must be one of ["add", "remove", "replace", "move", "copy"]`,
+																Description: `Op is a jsonpatch operation string. possible known values include one of ["add", "remove", "replace", "move", "copy"]; Not Null`,
 																Validators: []validator.String{
 																	speakeasy_stringvalidators.NotNull(),
-																	stringvalidator.OneOf(
-																		"add",
-																		"remove",
-																		"replace",
-																		"move",
-																		"copy",
-																	),
 																},
 															},
 															"path": schema.StringAttribute{
@@ -622,14 +561,9 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 												},
 												"operation": schema.StringAttribute{
 													Optional:    true,
-													Description: `Operation to execute on matched listener. Not Null; must be one of ["Add", "Remove", "Patch"]`,
+													Description: `Operation to execute on matched listener. possible known values include one of ["Add", "Remove", "Patch"]; Not Null`,
 													Validators: []validator.String{
 														speakeasy_stringvalidators.NotNull(),
-														stringvalidator.OneOf(
-															"Add",
-															"Remove",
-															"Patch",
-														),
 													},
 												},
 												"value": schema.StringAttribute{
@@ -653,20 +587,7 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
 								Required:    true,
-								Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"Mesh",
-										"MeshSubset",
-										"MeshGateway",
-										"MeshService",
-										"MeshExternalService",
-										"MeshMultiZoneService",
-										"MeshServiceSubset",
-										"MeshHTTPRoute",
-										"Dataplane",
-									),
-								},
+								Description: `Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 							},
 							"labels": schema.MapAttribute{
 								Optional:    true,

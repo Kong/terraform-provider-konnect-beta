@@ -91,52 +91,17 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 								"field": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `Not Null; must be one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]`,
+									Description: `possible known values include one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
-										stringvalidator.OneOf(
-											"ai_plugin",
-											"ai_provider",
-											"ai_request_model",
-											"ai_response_model",
-											"api",
-											"api_package",
-											"api_product",
-											"api_product_version",
-											"application",
-											"consumer",
-											"control_plane",
-											"control_plane_group",
-											"country_code",
-											"data_plane_node",
-											"data_plane_node_version",
-											"gateway_service",
-											"llm_cache_status",
-											"llm_embeddings_model",
-											"llm_embeddings_provider",
-											"portal",
-											"realm",
-											"response_source",
-											"route",
-											"status_code",
-											"status_code_grouped",
-											"upstream_status_code",
-											"upstream_status_code_grouped",
-										),
 									},
 								},
 								"operator": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `Not Null; must be one of ["in", "not_in", "empty", "not_empty"]`,
+									Description: `possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
-										stringvalidator.OneOf(
-											"in",
-											"not_in",
-											"empty",
-											"not_empty",
-										),
 									},
 								},
 								"value": schema.StringAttribute{
@@ -246,13 +211,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																"type": schema.StringAttribute{
 																	Computed:    true,
 																	Optional:    true,
-																	Description: `Not Null; must be one of ["horizontal_bar", "vertical_bar"]`,
+																	Description: `possible known values include one of ["horizontal_bar", "vertical_bar"]; Not Null`,
 																	Validators: []validator.String{
 																		speakeasy_stringvalidators.NotNull(),
-																		stringvalidator.OneOf(
-																			"horizontal_bar",
-																			"vertical_bar",
-																		),
 																	},
 																},
 															},
@@ -317,13 +278,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																"type": schema.StringAttribute{
 																	Computed:    true,
 																	Optional:    true,
-																	Description: `Not Null; must be one of ["timeseries_line", "timeseries_bar"]`,
+																	Description: `possible known values include one of ["timeseries_line", "timeseries_bar"]; Not Null`,
 																	Validators: []validator.String{
 																		speakeasy_stringvalidators.NotNull(),
-																		stringvalidator.OneOf(
-																			"timeseries_line",
-																			"timeseries_bar",
-																		),
 																	},
 																},
 															},
@@ -404,13 +361,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -437,13 +390,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -515,13 +464,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -548,13 +493,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -626,13 +567,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -659,13 +596,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -737,13 +670,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -770,13 +699,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -846,13 +771,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -877,13 +798,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -955,13 +872,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -988,13 +901,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -1066,13 +975,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -1099,13 +1004,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -1177,13 +1078,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -1210,13 +1107,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -1288,13 +1181,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -1321,13 +1210,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -1397,13 +1282,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -1428,13 +1309,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -1506,13 +1383,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -1539,13 +1412,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -1617,13 +1486,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -1650,13 +1515,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -1728,13 +1589,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -1761,13 +1618,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -1839,13 +1692,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -1872,13 +1721,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -1950,13 +1795,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -1983,13 +1824,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -2061,13 +1898,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -2094,13 +1927,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -2172,13 +2001,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -2205,13 +2030,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -2283,13 +2104,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -2316,13 +2133,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -2394,13 +2207,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -2427,13 +2236,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -2505,13 +2310,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -2538,13 +2339,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -2614,13 +2411,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -2645,13 +2438,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -2721,13 +2510,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -2752,13 +2537,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -2830,13 +2611,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -2863,13 +2640,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -2939,13 +2712,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -2970,13 +2739,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -3048,13 +2813,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -3081,13 +2842,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -3159,13 +2916,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -3192,13 +2945,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -3270,13 +3019,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -3303,13 +3048,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -3381,13 +3122,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply. Not Null; must be one of ["empty", "not_empty"]`,
+																								Description: `The type of filter to apply. possible known values include one of ["empty", "not_empty"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"empty",
-																										"not_empty",
-																									),
 																								},
 																							},
 																						},
@@ -3414,13 +3151,9 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																							"operator": schema.StringAttribute{
 																								Computed:    true,
 																								Optional:    true,
-																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. Not Null; must be one of ["in", "not_in"]`,
+																								Description: `The type of filter to apply.  ` + "`" + `in` + "`" + ` filters will limit results to only the specified values, while ` + "`" + `not_in` + "`" + ` filters will exclude the specified values. possible known values include one of ["in", "not_in"]; Not Null`,
 																								Validators: []validator.String{
 																									speakeasy_stringvalidators.NotNull(),
-																									stringvalidator.OneOf(
-																										"in",
-																										"not_in",
-																									),
 																								},
 																							},
 																							"value": schema.ListAttribute{
@@ -3499,22 +3232,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																		`  - current_month, previous_month => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
 																		`` + "\n" +
 																		`For absolute time ranges, daily will be used.` + "\n" +
-																		`must be one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]`,
-																	Validators: []validator.String{
-																		stringvalidator.OneOf(
-																			"tenSecondly",
-																			"thirtySecondly",
-																			"minutely",
-																			"fiveMinutely",
-																			"tenMinutely",
-																			"thirtyMinutely",
-																			"hourly",
-																			"twoHourly",
-																			"twelveHourly",
-																			"daily",
-																			"weekly",
-																		),
-																	},
+																		`possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]`,
 																},
 																"metrics": schema.ListAttribute{
 																	Computed:    true,
@@ -3572,22 +3290,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																					Computed:    true,
 																					Optional:    true,
 																					Default:     stringdefault.StaticString(`1h`),
-																					Description: `Default: "1h"; must be one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]`,
-																					Validators: []validator.String{
-																						stringvalidator.OneOf(
-																							"15m",
-																							"1h",
-																							"6h",
-																							"12h",
-																							"24h",
-																							"7d",
-																							"30d",
-																							"current_week",
-																							"current_month",
-																							"previous_week",
-																							"previous_month",
-																						),
-																					},
+																					Description: `possible known values include one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]; Default: "1h"`,
 																				},
 																				"type": schema.StringAttribute{
 																					Computed:    true,
@@ -3657,45 +3360,17 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																			"field": schema.StringAttribute{
 																				Computed:    true,
 																				Optional:    true,
-																				Description: `Not Null; must be one of ["api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]`,
+																				Description: `possible known values include one of ["api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null`,
 																				Validators: []validator.String{
 																					speakeasy_stringvalidators.NotNull(),
-																					stringvalidator.OneOf(
-																						"api",
-																						"api_package",
-																						"api_product",
-																						"api_product_version",
-																						"application",
-																						"consumer",
-																						"control_plane",
-																						"control_plane_group",
-																						"country_code",
-																						"data_plane_node",
-																						"data_plane_node_version",
-																						"gateway_service",
-																						"portal",
-																						"realm",
-																						"response_source",
-																						"route",
-																						"status_code",
-																						"status_code_grouped",
-																						"upstream_status_code",
-																						"upstream_status_code_grouped",
-																					),
 																				},
 																			},
 																			"operator": schema.StringAttribute{
 																				Computed:    true,
 																				Optional:    true,
-																				Description: `Not Null; must be one of ["in", "not_in", "empty", "not_empty"]`,
+																				Description: `possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null`,
 																				Validators: []validator.String{
 																					speakeasy_stringvalidators.NotNull(),
-																					stringvalidator.OneOf(
-																						"in",
-																						"not_in",
-																						"empty",
-																						"not_empty",
-																					),
 																				},
 																			},
 																			"value": schema.StringAttribute{
@@ -3731,22 +3406,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																		`  - current_month, previous_month => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
 																		`` + "\n" +
 																		`For absolute time ranges, daily will be used.` + "\n" +
-																		`must be one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]`,
-																	Validators: []validator.String{
-																		stringvalidator.OneOf(
-																			"tenSecondly",
-																			"thirtySecondly",
-																			"minutely",
-																			"fiveMinutely",
-																			"tenMinutely",
-																			"thirtyMinutely",
-																			"hourly",
-																			"twoHourly",
-																			"twelveHourly",
-																			"daily",
-																			"weekly",
-																		),
-																	},
+																		`possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]`,
 																},
 																"metrics": schema.ListAttribute{
 																	Computed:    true,
@@ -3804,22 +3464,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																					Computed:    true,
 																					Optional:    true,
 																					Default:     stringdefault.StaticString(`1h`),
-																					Description: `Default: "1h"; must be one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]`,
-																					Validators: []validator.String{
-																						stringvalidator.OneOf(
-																							"15m",
-																							"1h",
-																							"6h",
-																							"12h",
-																							"24h",
-																							"7d",
-																							"30d",
-																							"current_week",
-																							"current_month",
-																							"previous_week",
-																							"previous_month",
-																						),
-																					},
+																					Description: `possible known values include one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]; Default: "1h"`,
 																				},
 																				"type": schema.StringAttribute{
 																					Computed:    true,
@@ -3889,41 +3534,17 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																			"field": schema.StringAttribute{
 																				Computed:    true,
 																				Optional:    true,
-																				Description: `Not Null; must be one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "application", "consumer", "control_plane", "control_plane_group", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "realm", "route", "status_code", "status_code_grouped"]`,
+																				Description: `possible known values include one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "application", "consumer", "control_plane", "control_plane_group", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "realm", "route", "status_code", "status_code_grouped"]; Not Null`,
 																				Validators: []validator.String{
 																					speakeasy_stringvalidators.NotNull(),
-																					stringvalidator.OneOf(
-																						"ai_plugin",
-																						"ai_provider",
-																						"ai_request_model",
-																						"ai_response_model",
-																						"application",
-																						"consumer",
-																						"control_plane",
-																						"control_plane_group",
-																						"gateway_service",
-																						"llm_cache_status",
-																						"llm_embeddings_model",
-																						"llm_embeddings_provider",
-																						"realm",
-																						"route",
-																						"status_code",
-																						"status_code_grouped",
-																					),
 																				},
 																			},
 																			"operator": schema.StringAttribute{
 																				Computed:    true,
 																				Optional:    true,
-																				Description: `Not Null; must be one of ["in", "not_in", "empty", "not_empty"]`,
+																				Description: `possible known values include one of ["in", "not_in", "empty", "not_empty"]; Not Null`,
 																				Validators: []validator.String{
 																					speakeasy_stringvalidators.NotNull(),
-																					stringvalidator.OneOf(
-																						"in",
-																						"not_in",
-																						"empty",
-																						"not_empty",
-																					),
 																				},
 																			},
 																			"value": schema.StringAttribute{
@@ -3959,22 +3580,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																		`  - current_month, previous_month => hourly, twoHourly, twelveHourly, daily, weekly` + "\n" +
 																		`` + "\n" +
 																		`For absolute time ranges, daily will be used.` + "\n" +
-																		`must be one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]`,
-																	Validators: []validator.String{
-																		stringvalidator.OneOf(
-																			"tenSecondly",
-																			"thirtySecondly",
-																			"minutely",
-																			"fiveMinutely",
-																			"tenMinutely",
-																			"thirtyMinutely",
-																			"hourly",
-																			"twoHourly",
-																			"twelveHourly",
-																			"daily",
-																			"weekly",
-																		),
-																	},
+																		`possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]`,
 																},
 																"metrics": schema.ListAttribute{
 																	Computed:    true,
@@ -4032,22 +3638,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																					Computed:    true,
 																					Optional:    true,
 																					Default:     stringdefault.StaticString(`1h`),
-																					Description: `Default: "1h"; must be one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]`,
-																					Validators: []validator.String{
-																						stringvalidator.OneOf(
-																							"15m",
-																							"1h",
-																							"6h",
-																							"12h",
-																							"24h",
-																							"7d",
-																							"30d",
-																							"current_week",
-																							"current_month",
-																							"previous_week",
-																							"previous_month",
-																						),
-																					},
+																					Description: `possible known values include one of ["15m", "1h", "6h", "12h", "24h", "7d", "30d", "current_week", "current_month", "previous_week", "previous_month"]; Default: "1h"`,
 																				},
 																				"type": schema.StringAttribute{
 																					Computed:    true,

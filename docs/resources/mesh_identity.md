@@ -128,7 +128,7 @@ Optional:
 
 Required:
 
-- `type` (String) Type specifies the type of certificate provider. must be one of ["Bundled", "Spire"]
+- `type` (String) Type specifies the type of certificate provider. possible known values include one of ["Bundled", "Spire"]
 
 Optional:
 
@@ -147,7 +147,7 @@ Optional:
 - `insecure_allow_self_signed` (Boolean) InsecureAllowSelfSigned allows users to enable the use of self-signed certificates.
 - `mesh_trust_creation` (String) MeshTrustCreation defines whether a MeshTrust resource should be automatically created
 from an existing MeshIdentity. If not defined, the control plane automatically generates a MeshTrust.
-must be one of ["Enabled", "Disabled"]
+possible known values include one of ["Enabled", "Disabled"]
 
 <a id="nestedatt--spec--provider--bundled--autogenerate"></a>
 ### Nested Schema for `spec.provider.bundled.autogenerate`
@@ -170,7 +170,7 @@ Optional:
 
 Required:
 
-- `type` (String) must be one of ["File", "Secret", "EnvVar", "InsecureInline"]
+- `type` (String) possible known values include one of ["File", "Secret", "EnvVar", "InsecureInline"]
 
 Optional:
 
@@ -218,7 +218,7 @@ Required:
 
 Required:
 
-- `type` (String) must be one of ["File", "Secret", "EnvVar", "InsecureInline"]
+- `type` (String) possible known values include one of ["File", "Secret", "EnvVar", "InsecureInline"]
 
 Optional:
 
@@ -348,8 +348,8 @@ import {
   to = konnect_mesh_identity.my_konnect_mesh_identity
   id = jsonencode({
     cp_id = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
-    mesh = "..."
-    name = "..."
+    mesh  = "..."
+    name  = "..."
   })
 }
 ```

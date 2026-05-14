@@ -235,7 +235,7 @@ defined inplace. (see [below for nested schema](#nestedatt--spec--target_ref))
 
 Required:
 
-- `kind` (String) Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]
+- `kind` (String) Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]
 
 Optional:
 
@@ -295,7 +295,7 @@ Optional:
 
 Optional:
 
-- `kind` (String) Kind of the referenced resource. Not Null; must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]
+- `kind` (String) Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]; Not Null
 - `labels` (Map of String) Labels are used to select group of MeshServices that match labels. Either Labels or
 Name and Namespace can be used.
 - `mesh` (String) Mesh is reserved for future use to identify cross mesh resources.
@@ -326,7 +326,7 @@ header value formatting, separating each value with a comma. (see [below for nes
 - `response_header_modifier` (Attributes) Only one action is supported per header name.
 Configuration to set or add multiple values for a header must use RFC 7230
 header value formatting, separating each value with a comma. (see [below for nested schema](#nestedatt--spec--to--rules--default--filters--response_header_modifier))
-- `type` (String) Not Null; must be one of ["RequestHeaderModifier", "ResponseHeaderModifier", "RequestRedirect", "URLRewrite", "RequestMirror"]
+- `type` (String) possible known values include one of ["RequestHeaderModifier", "ResponseHeaderModifier", "RequestRedirect", "URLRewrite", "RequestMirror"]; Not Null
 - `url_rewrite` (Attributes) (see [below for nested schema](#nestedatt--spec--to--rules--default--filters--url_rewrite))
 
 <a id="nestedatt--spec--to--rules--default--filters--request_header_modifier"></a>
@@ -371,7 +371,7 @@ to the target cluster will be mirrored. (see [below for nested schema](#nestedat
 
 Optional:
 
-- `kind` (String) Kind of the referenced resource. Not Null; must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]
+- `kind` (String) Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]; Not Null
 - `labels` (Map of String) Labels are used to select group of MeshServices that match labels. Either Labels or
 Name and Namespace can be used.
 - `mesh` (String) Mesh is reserved for future use to identify cross mesh resources.
@@ -417,8 +417,8 @@ When empty, the request path is used as-is. (see [below for nested schema](#nest
 - `port` (Number) Port is the port to be used in the value of the `Location`
 header in the response.
 When empty, port (if specified) of the request is used.
-- `scheme` (String) must be one of ["http", "https"]
-- `status_code` (Number) StatusCode is the HTTP status code to be used in response. Default: 302; must be one of [301, 302, 303, 307, 308]
+- `scheme` (String) possible known values include one of ["http", "https"]
+- `status_code` (Number) StatusCode is the HTTP status code to be used in response. possible known values include one of [301, 302, 303, 307, 308]; Default: 302
 
 <a id="nestedatt--spec--to--rules--default--filters--request_redirect--path"></a>
 ### Nested Schema for `spec.to.rules.default.filters.request_redirect.path`
@@ -427,7 +427,7 @@ Optional:
 
 - `replace_full_path` (String)
 - `replace_prefix_match` (String)
-- `type` (String) Not Null; must be one of ["ReplaceFullPath", "ReplacePrefixMatch"]
+- `type` (String) possible known values include one of ["ReplaceFullPath", "ReplacePrefixMatch"]; Not Null
 
 
 
@@ -476,7 +476,7 @@ Optional:
 
 - `replace_full_path` (String)
 - `replace_prefix_match` (String)
-- `type` (String) Not Null; must be one of ["ReplaceFullPath", "ReplacePrefixMatch"]
+- `type` (String) possible known values include one of ["ReplaceFullPath", "ReplacePrefixMatch"]; Not Null
 
 
 
@@ -488,7 +488,7 @@ Optional:
 Optional:
 
 - `headers` (Attributes List) (see [below for nested schema](#nestedatt--spec--to--rules--matches--headers))
-- `method` (String) must be one of ["CONNECT", "DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT", "TRACE"]
+- `method` (String) possible known values include one of ["CONNECT", "DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT", "TRACE"]
 - `path` (Attributes) (see [below for nested schema](#nestedatt--spec--to--rules--matches--path))
 - `query_params` (Attributes List) QueryParams matches based on HTTP URL query parameters. Multiple matches
 are ANDed together such that all listed matches must succeed. (see [below for nested schema](#nestedatt--spec--to--rules--matches--query_params))
@@ -501,7 +501,7 @@ Optional:
 - `name` (String) Name is the name of the HTTP Header to be matched. Name MUST be lower case
 as they will be handled with case insensitivity (See https://tools.ietf.org/html/rfc7230#section-3.2).
 Not Null
-- `type` (String) Type specifies how to match against the value of the header. Default: "Exact"; must be one of ["Exact", "Present", "RegularExpression", "Absent", "Prefix"]
+- `type` (String) Type specifies how to match against the value of the header. possible known values include one of ["Exact", "Present", "RegularExpression", "Absent", "Prefix"]; Default: "Exact"
 - `value` (String) Value is the value of HTTP Header to be matched.
 
 
@@ -510,7 +510,7 @@ Not Null
 
 Optional:
 
-- `type` (String) Not Null; must be one of ["Exact", "PathPrefix", "RegularExpression"]
+- `type` (String) possible known values include one of ["Exact", "PathPrefix", "RegularExpression"]; Not Null
 - `value` (String) Exact or prefix matches must be an absolute path. A prefix matches only
 if separated by a slash or the entire path.
 Not Null
@@ -522,7 +522,7 @@ Not Null
 Optional:
 
 - `name` (String) Not Null
-- `type` (String) Not Null; must be one of ["Exact", "RegularExpression"]
+- `type` (String) possible known values include one of ["Exact", "RegularExpression"]; Not Null
 - `value` (String) Not Null
 
 
@@ -533,7 +533,7 @@ Optional:
 
 Optional:
 
-- `kind` (String) Kind of the referenced resource. Not Null; must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]
+- `kind` (String) Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]; Not Null
 - `labels` (Map of String) Labels are used to select group of MeshServices that match labels. Either Labels or
 Name and Namespace can be used.
 - `mesh` (String) Mesh is reserved for future use to identify cross mesh resources.
@@ -559,8 +559,8 @@ import {
   to = konnect_mesh_http_route.my_konnect_mesh_http_route
   id = jsonencode({
     cp_id = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
-    mesh = "..."
-    name = "..."
+    mesh  = "..."
+    name  = "..."
   })
 }
 ```

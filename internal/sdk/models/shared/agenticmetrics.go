@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type AgenticMetrics string
 
 const (
@@ -43,70 +38,14 @@ const (
 func (e AgenticMetrics) ToPointer() *AgenticMetrics {
 	return &e
 }
-func (e *AgenticMetrics) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AgenticMetrics) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "a2a_latency_average", "a2a_response_size_sum", "error_rate", "kong_latency_average", "kong_latency_p50", "kong_latency_p95", "kong_latency_p99", "mcp_response_body_size_sum", "request_count", "request_per_minute", "request_size_average", "request_size_p50", "request_size_p95", "request_size_p99", "request_size_sum", "response_latency_average", "response_latency_p50", "response_latency_p95", "response_latency_p99", "response_size_average", "response_size_p50", "response_size_p95", "response_size_p99", "response_size_sum", "upstream_latency_average", "upstream_latency_p50", "upstream_latency_p95", "upstream_latency_p99":
+			return true
+		}
 	}
-	switch v {
-	case "a2a_latency_average":
-		fallthrough
-	case "a2a_response_size_sum":
-		fallthrough
-	case "error_rate":
-		fallthrough
-	case "kong_latency_average":
-		fallthrough
-	case "kong_latency_p50":
-		fallthrough
-	case "kong_latency_p95":
-		fallthrough
-	case "kong_latency_p99":
-		fallthrough
-	case "mcp_response_body_size_sum":
-		fallthrough
-	case "request_count":
-		fallthrough
-	case "request_per_minute":
-		fallthrough
-	case "request_size_average":
-		fallthrough
-	case "request_size_p50":
-		fallthrough
-	case "request_size_p95":
-		fallthrough
-	case "request_size_p99":
-		fallthrough
-	case "request_size_sum":
-		fallthrough
-	case "response_latency_average":
-		fallthrough
-	case "response_latency_p50":
-		fallthrough
-	case "response_latency_p95":
-		fallthrough
-	case "response_latency_p99":
-		fallthrough
-	case "response_size_average":
-		fallthrough
-	case "response_size_p50":
-		fallthrough
-	case "response_size_p95":
-		fallthrough
-	case "response_size_p99":
-		fallthrough
-	case "response_size_sum":
-		fallthrough
-	case "upstream_latency_average":
-		fallthrough
-	case "upstream_latency_p50":
-		fallthrough
-	case "upstream_latency_p95":
-		fallthrough
-	case "upstream_latency_p99":
-		*e = AgenticMetrics(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AgenticMetrics: %v", v)
-	}
+	return false
 }

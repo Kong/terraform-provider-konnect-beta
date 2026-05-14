@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // RequestsFilterTypeEmpty - The type of filter to apply.
 type RequestsFilterTypeEmpty string
 
@@ -18,18 +13,14 @@ const (
 func (e RequestsFilterTypeEmpty) ToPointer() *RequestsFilterTypeEmpty {
 	return &e
 }
-func (e *RequestsFilterTypeEmpty) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RequestsFilterTypeEmpty) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "empty", "not_empty":
+			return true
+		}
 	}
-	switch v {
-	case "empty":
-		fallthrough
-	case "not_empty":
-		*e = RequestsFilterTypeEmpty(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RequestsFilterTypeEmpty: %v", v)
-	}
+	return false
 }
