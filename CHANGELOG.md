@@ -1,7 +1,7 @@
 # Changelog
 
 ## 0.18.0
-> Released on 2026/05/??
+> Released on 2026/05/15
 
 ### BREAKING CHANGES
 * The following resources have been renamed:  
