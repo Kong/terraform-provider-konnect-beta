@@ -109,13 +109,7 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 			"default_api_visibility": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The default visibility of APIs in the portal. If set to ` + "`" + `public` + "`" + `, newly published APIs are visible to unauthenticated developers. If set to ` + "`" + `private` + "`" + `, newly published APIs are hidden from unauthenticated developers. must be one of ["public", "private"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"public",
-						"private",
-					),
-				},
+				Description: `The default visibility of APIs in the portal. If set to ` + "`" + `public` + "`" + `, newly published APIs are visible to unauthenticated developers. If set to ` + "`" + `private` + "`" + `, newly published APIs are hidden from unauthenticated developers. possible known values include one of ["public", "private"]`,
 			},
 			"default_application_auth_strategy_id": schema.StringAttribute{
 				Optional:    true,
@@ -131,13 +125,7 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 			"default_page_visibility": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The default visibility of pages in the portal. If set to ` + "`" + `public` + "`" + `, newly created pages are visible to unauthenticated developers. If set to ` + "`" + `private` + "`" + `, newly created pages are hidden from unauthenticated developers. must be one of ["public", "private"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"public",
-						"private",
-					),
-				},
+				Description: `The default visibility of pages in the portal. If set to ` + "`" + `public` + "`" + `, newly created pages are visible to unauthenticated developers. If set to ` + "`" + `private` + "`" + `, newly created pages are hidden from unauthenticated developers. possible known values include one of ["public", "private"]`,
 			},
 			"description": schema.StringAttribute{
 				Optional:    true,
@@ -202,7 +190,8 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 			"sipr_enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether ip allow list is enabled for the organization.`,
+				Default:     booldefault.StaticBool(false),
+				Description: `Whether ip allow list is enabled for the portal. Default: false`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

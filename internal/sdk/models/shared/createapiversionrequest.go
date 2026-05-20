@@ -3,13 +3,133 @@
 package shared
 
 import (
+	"errors"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
+type ProviderType string
+
+const (
+	ProviderTypeURLProvider                      ProviderType = "UrlProvider"
+	ProviderTypeIntegrationProvider              ProviderType = "IntegrationProvider"
+	ProviderTypeResourceBoundIntegrationProvider ProviderType = "ResourceBoundIntegrationProvider"
+)
+
+// Provider - Represent spec provider information used for fetching the API spec. For raw, provide the raw content in the `content` property instead of using this provider.
+type Provider struct {
+	URLProvider                      *URLProvider                      `queryParam:"inline" union:"member"`
+	IntegrationProvider              *IntegrationProvider              `queryParam:"inline" union:"member"`
+	ResourceBoundIntegrationProvider *ResourceBoundIntegrationProvider `queryParam:"inline" union:"member"`
+
+	Type ProviderType
+}
+
+func CreateProviderURLProvider(urlProvider URLProvider) Provider {
+	typ := ProviderTypeURLProvider
+
+	return Provider{
+		URLProvider: &urlProvider,
+		Type:        typ,
+	}
+}
+
+func CreateProviderIntegrationProvider(integrationProvider IntegrationProvider) Provider {
+	typ := ProviderTypeIntegrationProvider
+
+	return Provider{
+		IntegrationProvider: &integrationProvider,
+		Type:                typ,
+	}
+}
+
+func CreateProviderResourceBoundIntegrationProvider(resourceBoundIntegrationProvider ResourceBoundIntegrationProvider) Provider {
+	typ := ProviderTypeResourceBoundIntegrationProvider
+
+	return Provider{
+		ResourceBoundIntegrationProvider: &resourceBoundIntegrationProvider,
+		Type:                             typ,
+	}
+}
+
+func (u *Provider) UnmarshalJSON(data []byte) error {
+
+	var candidates []utils.UnionCandidate
+
+	// Collect all valid candidates
+	var urlProvider URLProvider = URLProvider{}
+	if err := utils.UnmarshalJSON(data, &urlProvider, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  ProviderTypeURLProvider,
+			Value: &urlProvider,
+		})
+	}
+
+	var integrationProvider IntegrationProvider = IntegrationProvider{}
+	if err := utils.UnmarshalJSON(data, &integrationProvider, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  ProviderTypeIntegrationProvider,
+			Value: &integrationProvider,
+		})
+	}
+
+	var resourceBoundIntegrationProvider ResourceBoundIntegrationProvider = ResourceBoundIntegrationProvider{}
+	if err := utils.UnmarshalJSON(data, &resourceBoundIntegrationProvider, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  ProviderTypeResourceBoundIntegrationProvider,
+			Value: &resourceBoundIntegrationProvider,
+		})
+	}
+
+	if len(candidates) == 0 {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Provider", string(data))
+	}
+
+	// Pick the best candidate using multi-stage filtering
+	best := utils.PickBestUnionCandidate(candidates, data)
+	if best == nil {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Provider", string(data))
+	}
+
+	// Set the union type and value based on the best candidate
+	u.Type = best.Type.(ProviderType)
+	switch best.Type {
+	case ProviderTypeURLProvider:
+		u.URLProvider = best.Value.(*URLProvider)
+		return nil
+	case ProviderTypeIntegrationProvider:
+		u.IntegrationProvider = best.Value.(*IntegrationProvider)
+		return nil
+	case ProviderTypeResourceBoundIntegrationProvider:
+		u.ResourceBoundIntegrationProvider = best.Value.(*ResourceBoundIntegrationProvider)
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for Provider", string(data))
+}
+
+func (u Provider) MarshalJSON() ([]byte, error) {
+	if u.URLProvider != nil {
+		return utils.MarshalJSON(u.URLProvider, "", true)
+	}
+
+	if u.IntegrationProvider != nil {
+		return utils.MarshalJSON(u.IntegrationProvider, "", true)
+	}
+
+	if u.ResourceBoundIntegrationProvider != nil {
+		return utils.MarshalJSON(u.ResourceBoundIntegrationProvider, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type Provider: all fields are null")
+}
+
 type CreateAPIVersionRequestSpec struct {
-	// The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).
-	//
+	// The raw content of API specification, in json or yaml format (OpenAPI or AsyncAPI).
 	Content *string `default:"null" json:"content"`
+	// Represent spec provider information used for fetching the API spec. For raw, provide the raw content in the `content` property instead of using this provider.
+	//
+	Provider *Provider `json:"provider,omitempty"`
 }
 
 func (c CreateAPIVersionRequestSpec) MarshalJSON() ([]byte, error) {
@@ -28,6 +148,13 @@ func (c *CreateAPIVersionRequestSpec) GetContent() *string {
 		return nil
 	}
 	return c.Content
+}
+
+func (c *CreateAPIVersionRequestSpec) GetProvider() *Provider {
+	if c == nil {
+		return nil
+	}
+	return c.Provider
 }
 
 type CreateAPIVersionRequest struct {

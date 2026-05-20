@@ -135,28 +135,13 @@ func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.Schem
 											Computed:    true,
 											Optional:    true,
 											Default:     stringdefault.StaticString(`tcp`),
-											Description: `Protocol defines the communication protocol. Possible values: ` + "`" + `tcp` + "`" + `, ` + "`" + `tls` + "`" + `, ` + "`" + `grpc` + "`" + `, ` + "`" + `http` + "`" + `, ` + "`" + `http2` + "`" + `, ` + "`" + `mysql` + "`" + `. Default: "tcp"; must be one of ["tcp", "tls", "grpc", "http", "http2", "mysql"]`,
-											Validators: []validator.String{
-												stringvalidator.OneOf(
-													"tcp",
-													"tls",
-													"grpc",
-													"http",
-													"http2",
-													"mysql",
-												),
-											},
+											Description: `Protocol defines the communication protocol. Possible values: ` + "`" + `tcp` + "`" + `, ` + "`" + `tls` + "`" + `, ` + "`" + `grpc` + "`" + `, ` + "`" + `http` + "`" + `, ` + "`" + `http2` + "`" + `, ` + "`" + `mysql` + "`" + `. possible known values include one of ["tcp", "tls", "grpc", "http", "http2", "mysql"]; Default: "tcp"`,
 										},
 										"type": schema.StringAttribute{
 											Optional:    true,
-											Description: `Type of the match, one of ` + "`" + `Domain` + "`" + `, ` + "`" + `IP` + "`" + ` or ` + "`" + `CIDR` + "`" + ` is available. Not Null; must be one of ["Domain", "IP", "CIDR"]`,
+											Description: `Type of the match, one of ` + "`" + `Domain` + "`" + `, ` + "`" + `IP` + "`" + ` or ` + "`" + `CIDR` + "`" + ` is available. possible known values include one of ["Domain", "IP", "CIDR"]; Not Null`,
 											Validators: []validator.String{
 												speakeasy_stringvalidators.NotNull(),
-												stringvalidator.OneOf(
-													"Domain",
-													"IP",
-													"CIDR",
-												),
 											},
 										},
 										"value": schema.StringAttribute{
@@ -175,14 +160,7 @@ func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.Schem
 								MarkdownDescription: `Defines the passthrough behavior. Possible values: ` + "`" + `All` + "`" + `, ` + "`" + `None` + "`" + `, ` + "`" + `Matched` + "`" + `` + "\n" +
 									`When ` + "`" + `All` + "`" + ` or ` + "`" + `None` + "`" + ` ` + "`" + `appendMatch` + "`" + ` has no effect.` + "\n" +
 									`If not specified then the default value is "Matched".` + "\n" +
-									`must be one of ["All", "Matched", "None"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"All",
-										"Matched",
-										"None",
-									),
-								},
+									`possible known values include one of ["All", "Matched", "None"]`,
 							},
 						},
 						Description: `MeshPassthrough configuration.`,
@@ -192,20 +170,7 @@ func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.Schem
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
 								Required:    true,
-								Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"Mesh",
-										"MeshSubset",
-										"MeshGateway",
-										"MeshService",
-										"MeshExternalService",
-										"MeshMultiZoneService",
-										"MeshServiceSubset",
-										"MeshHTTPRoute",
-										"Dataplane",
-									),
-								},
+								Description: `Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 							},
 							"labels": schema.MapAttribute{
 								Optional:    true,

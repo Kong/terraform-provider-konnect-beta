@@ -56,50 +56,16 @@ const (
 func (e LLMQueryDimensions) ToPointer() *LLMQueryDimensions {
 	return &e
 }
-func (e *LLMQueryDimensions) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *LLMQueryDimensions) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "control_plane", "control_plane_group", "gateway_service", "consumer", "application", "route", "ai_provider", "ai_response_model", "ai_request_model", "llm_cache_status", "llm_embeddings_provider", "llm_embeddings_model", "time", "realm", "status_code", "status_code_grouped", "ai_plugin":
+			return true
+		}
 	}
-	switch v {
-	case "control_plane":
-		fallthrough
-	case "control_plane_group":
-		fallthrough
-	case "gateway_service":
-		fallthrough
-	case "consumer":
-		fallthrough
-	case "application":
-		fallthrough
-	case "route":
-		fallthrough
-	case "ai_provider":
-		fallthrough
-	case "ai_response_model":
-		fallthrough
-	case "ai_request_model":
-		fallthrough
-	case "llm_cache_status":
-		fallthrough
-	case "llm_embeddings_provider":
-		fallthrough
-	case "llm_embeddings_model":
-		fallthrough
-	case "time":
-		fallthrough
-	case "realm":
-		fallthrough
-	case "status_code":
-		fallthrough
-	case "status_code_grouped":
-		fallthrough
-	case "ai_plugin":
-		*e = LLMQueryDimensions(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for LLMQueryDimensions: %v", v)
-	}
+	return false
 }
 
 // LLMQuery - A query targeting the LLM usage analytics datasource.

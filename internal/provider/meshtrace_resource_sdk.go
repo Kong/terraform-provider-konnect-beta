@@ -282,9 +282,9 @@ func (r *MeshTraceResourceModel) ToSharedMeshTraceItemInput(ctx context.Context)
 			type1 := shared.MeshTraceItemSpecType(r.Spec.Default.Backends[backendsIndex].Type.ValueString())
 			var zipkin *shared.Zipkin
 			if r.Spec.Default.Backends[backendsIndex].Zipkin != nil {
-				apiVersion := new(shared.MeshTraceItemAPIVersion)
+				apiVersion := new(shared.APIVersion)
 				if !r.Spec.Default.Backends[backendsIndex].Zipkin.APIVersion.IsUnknown() && !r.Spec.Default.Backends[backendsIndex].Zipkin.APIVersion.IsNull() {
-					*apiVersion = shared.MeshTraceItemAPIVersion(r.Spec.Default.Backends[backendsIndex].Zipkin.APIVersion.ValueString())
+					*apiVersion = shared.APIVersion(r.Spec.Default.Backends[backendsIndex].Zipkin.APIVersion.ValueString())
 				} else {
 					apiVersion = nil
 				}

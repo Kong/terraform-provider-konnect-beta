@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
@@ -19,20 +17,16 @@ const (
 func (e VirtualClusterAuthenticationSaslScramAlgorithm) ToPointer() *VirtualClusterAuthenticationSaslScramAlgorithm {
 	return &e
 }
-func (e *VirtualClusterAuthenticationSaslScramAlgorithm) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *VirtualClusterAuthenticationSaslScramAlgorithm) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "sha256", "sha512":
+			return true
+		}
 	}
-	switch v {
-	case "sha256":
-		fallthrough
-	case "sha512":
-		*e = VirtualClusterAuthenticationSaslScramAlgorithm(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for VirtualClusterAuthenticationSaslScramAlgorithm: %v", v)
-	}
+	return false
 }
 
 // VirtualClusterAuthenticationSaslScram - SASL/SCRAM authentication scheme for the virtual cluster.
@@ -41,6 +35,11 @@ type VirtualClusterAuthenticationSaslScram struct {
 	type_ string `const:"sasl_scram" json:"type"`
 	// The algorithm used for SASL/SCRAM authentication.
 	Algorithm VirtualClusterAuthenticationSaslScramAlgorithm `json:"algorithm"`
+	// Fetches principal metadata from Kong Identity after successful authentication.
+	// The principal is looked up by a custom key matched against the authenticated identity.
+	//
+	// **Requires a minimum runtime version of `1.2`**.
+	FetchKongIdentityPrincipal *FetchKongIdentityPrincipal `json:"fetch_kong_identity_principal,omitempty"`
 }
 
 func (v VirtualClusterAuthenticationSaslScram) MarshalJSON() ([]byte, error) {
@@ -63,4 +62,11 @@ func (v *VirtualClusterAuthenticationSaslScram) GetAlgorithm() VirtualClusterAut
 		return VirtualClusterAuthenticationSaslScramAlgorithm("")
 	}
 	return v.Algorithm
+}
+
+func (v *VirtualClusterAuthenticationSaslScram) GetFetchKongIdentityPrincipal() *FetchKongIdentityPrincipal {
+	if v == nil {
+		return nil
+	}
+	return v.FetchKongIdentityPrincipal
 }

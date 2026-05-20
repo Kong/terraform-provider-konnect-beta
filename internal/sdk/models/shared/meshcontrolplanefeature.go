@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type MeshControlPlaneFeatureType string
 
 const (
@@ -17,20 +12,16 @@ const (
 func (e MeshControlPlaneFeatureType) ToPointer() *MeshControlPlaneFeatureType {
 	return &e
 }
-func (e *MeshControlPlaneFeatureType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeshControlPlaneFeatureType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "MeshCreation", "HostnameGeneratorCreation":
+			return true
+		}
 	}
-	switch v {
-	case "MeshCreation":
-		fallthrough
-	case "HostnameGeneratorCreation":
-		*e = MeshControlPlaneFeatureType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeshControlPlaneFeatureType: %v", v)
-	}
+	return false
 }
 
 // MeshControlPlaneFeature - Features to be enabled in the control plane. Currently only defaults are supported.

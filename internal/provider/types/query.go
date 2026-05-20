@@ -3,6 +3,7 @@
 package types
 
 type Query struct {
-	APIUsage *AdvancedQuery `queryParam:"inline" tfsdk:"api_usage"`
-	LlmUsage *AdvancedQuery `queryParam:"inline" tfsdk:"llm_usage"`
+	APIUsage     *AdvancedQuery `queryParam:"inline" tfsdk:"api_usage"`
+	AgenticUsage *AgenticQuery  `queryParam:"inline" tfsdk:"agentic_usage"`
+	LlmUsage     *AdvancedQuery `queryParam:"inline" tfsdk:"llm_usage"`
 }

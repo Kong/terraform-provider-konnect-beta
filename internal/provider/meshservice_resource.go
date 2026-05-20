@@ -130,13 +130,9 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 							Attributes: map[string]schema.Attribute{
 								"type": schema.StringAttribute{
 									Optional:    true,
-									Description: `Not Null; must be one of ["ServiceTag", "SpiffeID"]`,
+									Description: `possible known values include one of ["ServiceTag", "SpiffeID"]; Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
-										stringvalidator.OneOf(
-											"ServiceTag",
-											"SpiffeID",
-										),
 									},
 								},
 								"value": schema.StringAttribute{
@@ -232,13 +228,7 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 						Default:  stringdefault.StaticString(`Unavailable`),
 						MarkdownDescription: `State of MeshService. Available if there is at least one healthy endpoint. Otherwise, Unavailable.` + "\n" +
 							`It's used for cross zone communication to check if we should send traffic to it, when MeshService is aggregated into MeshMultiZoneService.` + "\n" +
-							`Default: "Unavailable"; must be one of ["Available", "Unavailable"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"Available",
-								"Unavailable",
-							),
-						},
+							`possible known values include one of ["Available", "Unavailable"]; Default: "Unavailable"`,
 					},
 				},
 				Description: `Spec is the specification of the Kuma MeshService resource.`,

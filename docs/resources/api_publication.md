@@ -20,6 +20,7 @@ resource "konnect_api_publication" "my_apipublication" {
     "9c3bed4d-0322-4ea0-ba19-a4bd65d821f6"
   ]
   auto_approve_registrations = true
+  form_id                    = "deafd39d-fc2f-4b87-9ee2-8e8feb2eae76"
   portal_id                  = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
   visibility                 = "private"
 }
@@ -40,15 +41,17 @@ Omitting this property means the portal's default application auth strategy will
 Setting to null means the API will not require application authentication.
 DCR support for application registration is currently in development.
 - `auto_approve_registrations` (Boolean) Whether the application registration auto approval on this portal for the api is enabled. If set to false, fallbacks on portal's auto_approve_applications value.
+- `form_id` (String) UUID of portal form associated with API publication, must be linked to given portal and have type of 'api_registration'
 - `visibility` (String) The visibility of the API in the portal.
 Public API publications do not require authentication to view and retrieve information about them.
 Private API publications require authentication to retrieve information about them.
-Default: "private"; must be one of ["public", "private"]
+possible known values include one of ["public", "private"]; Default: "private"
 
 ### Read-Only
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
+- `warnings` (List of String) Informational warnings (e.g. incompatible fields stripped for ACE). Empty if none.
 
 ## Import
 
@@ -60,7 +63,7 @@ In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.
 import {
   to = konnect_api_publication.my_konnect_api_publication
   id = jsonencode({
-    api_id = "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+    api_id    = "9f5061ce-78f6-4452-9108-ad7c02821fd5"
     portal_id = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
   })
 }

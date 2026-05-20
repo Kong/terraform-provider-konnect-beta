@@ -140,7 +140,7 @@ Optional:
 
 - `datadog` (Attributes) Datadog backend configuration. (see [below for nested schema](#nestedatt--spec--default--backends--datadog))
 - `open_telemetry` (Attributes) OpenTelemetry backend configuration. (see [below for nested schema](#nestedatt--spec--default--backends--open_telemetry))
-- `type` (String) Not Null; must be one of ["Zipkin", "Datadog", "OpenTelemetry"]
+- `type` (String) possible known values include one of ["Zipkin", "Datadog", "OpenTelemetry"]; Not Null
 - `zipkin` (Attributes) Zipkin backend configuration. (see [below for nested schema](#nestedatt--spec--default--backends--zipkin))
 
 <a id="nestedatt--spec--default--backends--datadog"></a>
@@ -174,7 +174,7 @@ Optional:
 
 - `api_version` (String) Version of the API.
 https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/trace/v3/zipkin.proto#L66
-Default: "httpJson"; must be one of ["httpJson", "httpProto"]
+possible known values include one of ["httpJson", "httpProto"]; Default: "httpJson"
 - `shared_span_context` (Boolean) Determines whether client and server spans will share the same span
 context.
 https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/trace/v3/zipkin.proto#L63
@@ -266,7 +266,7 @@ included.
 
 Required:
 
-- `kind` (String) Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]
+- `kind` (String) Kind of the referenced resource. possible known values include one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]
 
 Optional:
 
@@ -295,8 +295,8 @@ import {
   to = konnect_mesh_trace.my_konnect_mesh_trace
   id = jsonencode({
     cp_id = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
-    mesh = "..."
-    name = "..."
+    mesh  = "..."
+    name  = "..."
   })
 }
 ```

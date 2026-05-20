@@ -3,6 +3,6 @@
 package types
 
 type EventGatewayKeySource struct {
-	Aws    *BackendClusterAuthenticationAnonymous `queryParam:"inline" tfsdk:"aws"`
-	Static *BackendClusterAuthenticationAnonymous `queryParam:"inline" tfsdk:"static"`
+	Aws    *RawProviderConfig `queryParam:"inline" tfsdk:"aws"`
+	Static *RawProviderConfig `queryParam:"inline" tfsdk:"static"`
 }

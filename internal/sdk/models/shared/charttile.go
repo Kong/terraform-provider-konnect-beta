@@ -137,13 +137,15 @@ func (e *ChartTileType) UnmarshalJSON(data []byte) error {
 type QueryType string
 
 const (
-	QueryTypeAPIUsage QueryType = "api_usage"
-	QueryTypeLlmUsage QueryType = "llm_usage"
+	QueryTypeAPIUsage     QueryType = "api_usage"
+	QueryTypeLlmUsage     QueryType = "llm_usage"
+	QueryTypeAgenticUsage QueryType = "agentic_usage"
 )
 
 type Query struct {
 	AdvancedQuery *AdvancedQuery `queryParam:"inline" union:"member"`
 	LLMQuery      *LLMQuery      `queryParam:"inline" union:"member"`
+	AgenticQuery  *AgenticQuery  `queryParam:"inline" union:"member"`
 
 	Type QueryType
 }
@@ -169,6 +171,18 @@ func CreateQueryLlmUsage(llmUsage LLMQuery) Query {
 	return Query{
 		LLMQuery: &llmUsage,
 		Type:     typ,
+	}
+}
+
+func CreateQueryAgenticUsage(agenticUsage AgenticQuery) Query {
+	typ := QueryTypeAgenticUsage
+
+	typStr := AgenticQueryDatasource(typ)
+	agenticUsage.Datasource = typStr
+
+	return Query{
+		AgenticQuery: &agenticUsage,
+		Type:         typ,
 	}
 }
 
@@ -202,6 +216,15 @@ func (u *Query) UnmarshalJSON(data []byte) error {
 		u.LLMQuery = llmQuery
 		u.Type = QueryTypeLlmUsage
 		return nil
+	case "agentic_usage":
+		agenticQuery := new(AgenticQuery)
+		if err := utils.UnmarshalJSON(data, &agenticQuery, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Datasource == agentic_usage) type AgenticQuery within Query: %w", string(data), err)
+		}
+
+		u.AgenticQuery = agenticQuery
+		u.Type = QueryTypeAgenticUsage
+		return nil
 	}
 
 	return fmt.Errorf("could not unmarshal `%s` into any supported union types for Query", string(data))
@@ -214,6 +237,10 @@ func (u Query) MarshalJSON() ([]byte, error) {
 
 	if u.LLMQuery != nil {
 		return utils.MarshalJSON(u.LLMQuery, "", true)
+	}
+
+	if u.AgenticQuery != nil {
+		return utils.MarshalJSON(u.AgenticQuery, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type Query: all fields are null")
@@ -251,6 +278,10 @@ func (d *Definition) GetQueryAPIUsage() *AdvancedQuery {
 
 func (d *Definition) GetQueryLlmUsage() *LLMQuery {
 	return d.GetQuery().LLMQuery
+}
+
+func (d *Definition) GetQueryAgenticUsage() *AgenticQuery {
+	return d.GetQuery().AgenticQuery
 }
 
 func (d *Definition) GetChart() Chart {

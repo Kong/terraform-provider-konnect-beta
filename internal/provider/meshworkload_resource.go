@@ -39,17 +39,17 @@ type MeshWorkloadResource struct {
 
 // MeshWorkloadResourceModel describes the resource data model.
 type MeshWorkloadResourceModel struct {
-	CpID             types.String                                   `tfsdk:"cp_id"`
-	CreationTime     types.String                                   `tfsdk:"creation_time"`
-	Kri              types.String                                   `tfsdk:"kri"`
-	Labels           map[string]types.String                        `tfsdk:"labels"`
-	Mesh             types.String                                   `tfsdk:"mesh"`
-	ModificationTime types.String                                   `tfsdk:"modification_time"`
-	Name             types.String                                   `tfsdk:"name"`
-	Spec             *tfTypes.BackendClusterAuthenticationAnonymous `tfsdk:"spec"`
-	Status           *tfTypes.WorkloadItemStatus                    `tfsdk:"status"`
-	Type             types.String                                   `tfsdk:"type"`
-	Warnings         []types.String                                 `tfsdk:"warnings"`
+	CpID             types.String                `tfsdk:"cp_id"`
+	CreationTime     types.String                `tfsdk:"creation_time"`
+	Kri              types.String                `tfsdk:"kri"`
+	Labels           map[string]types.String     `tfsdk:"labels"`
+	Mesh             types.String                `tfsdk:"mesh"`
+	ModificationTime types.String                `tfsdk:"modification_time"`
+	Name             types.String                `tfsdk:"name"`
+	Spec             *tfTypes.RawProviderConfig  `tfsdk:"spec"`
+	Status           *tfTypes.WorkloadItemStatus `tfsdk:"status"`
+	Type             types.String                `tfsdk:"type"`
+	Warnings         []types.String              `tfsdk:"warnings"`
 }
 
 func (r *MeshWorkloadResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

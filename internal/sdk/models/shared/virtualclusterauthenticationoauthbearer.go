@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
@@ -27,22 +25,16 @@ const (
 func (e VirtualClusterAuthenticationOauthBearerMediation) ToPointer() *VirtualClusterAuthenticationOauthBearerMediation {
 	return &e
 }
-func (e *VirtualClusterAuthenticationOauthBearerMediation) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *VirtualClusterAuthenticationOauthBearerMediation) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "passthrough", "validate_forward", "terminate":
+			return true
+		}
 	}
-	switch v {
-	case "passthrough":
-		fallthrough
-	case "validate_forward":
-		fallthrough
-	case "terminate":
-		*e = VirtualClusterAuthenticationOauthBearerMediation(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for VirtualClusterAuthenticationOauthBearerMediation: %v", v)
-	}
+	return false
 }
 
 // VirtualClusterAuthenticationOauthBearer - Oauth Bearer authentication scheme for the virtual cluster.
@@ -65,6 +57,11 @@ type VirtualClusterAuthenticationOauthBearer struct {
 	Jwks *VirtualClusterAuthenticationJWKS `json:"jwks,omitempty"`
 	// Validation rules.
 	Validate *VirtualClusterAuthenticationValidate `json:"validate,omitempty"`
+	// Fetches principal metadata from Kong Identity after successful OAUTHBEARER authentication.
+	// The principal is looked up by the iss and sub claims from the JWT token.
+	//
+	// **Requires a minimum runtime version of `1.2`**.
+	FetchKongIdentityPrincipal *FetchKongIdentityPrincipalOauthBearer `json:"fetch_kong_identity_principal,omitempty"`
 }
 
 func (v VirtualClusterAuthenticationOauthBearer) MarshalJSON() ([]byte, error) {
@@ -108,4 +105,11 @@ func (v *VirtualClusterAuthenticationOauthBearer) GetValidate() *VirtualClusterA
 		return nil
 	}
 	return v.Validate
+}
+
+func (v *VirtualClusterAuthenticationOauthBearer) GetFetchKongIdentityPrincipal() *FetchKongIdentityPrincipalOauthBearer {
+	if v == nil {
+		return nil
+	}
+	return v.FetchKongIdentityPrincipal
 }

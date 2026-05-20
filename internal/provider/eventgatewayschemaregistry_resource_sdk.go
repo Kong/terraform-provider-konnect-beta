@@ -19,7 +19,7 @@ func (r *EventGatewaySchemaRegistryResourceModel) RefreshFromSharedSchemaRegistr
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
-			r.Config = &tfTypes.BackendClusterAuthenticationAnonymous{}
+			r.Config = &tfTypes.RawProviderConfig{}
 		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)

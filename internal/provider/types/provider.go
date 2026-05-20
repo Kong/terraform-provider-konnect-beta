@@ -2,12 +2,9 @@
 
 package types
 
-import (
-	"github.com/hashicorp/terraform-plugin-framework/types"
-)
-
 type Provider struct {
-	Bundled *Bundled     `tfsdk:"bundled"`
-	Spire   *Spire       `tfsdk:"spire"`
-	Type    types.String `tfsdk:"type"`
+	IntegrationProvider              *IntegrationProvider              `queryParam:"inline" tfsdk:"integration_provider"`
+	RawProvider                      *RawProvider                      `queryParam:"inline" tfsdk:"raw_provider"`
+	ResourceBoundIntegrationProvider *ResourceBoundIntegrationProvider `queryParam:"inline" tfsdk:"resource_bound_integration_provider"`
+	URLProvider                      *URLProvider                      `queryParam:"inline" tfsdk:"url_provider"`
 }

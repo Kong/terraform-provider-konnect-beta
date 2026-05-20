@@ -188,7 +188,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 					if toItem.Default.LoadBalancer.Random == nil {
 						to.Default.LoadBalancer.Random = nil
 					} else {
-						to.Default.LoadBalancer.Random = &tfTypes.BackendClusterAuthenticationAnonymous{}
+						to.Default.LoadBalancer.Random = &tfTypes.RawProviderConfig{}
 					}
 					if toItem.Default.LoadBalancer.RingHash == nil {
 						to.Default.LoadBalancer.RingHash = nil
@@ -247,7 +247,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 					if toItem.Default.LoadBalancer.RoundRobin == nil {
 						to.Default.LoadBalancer.RoundRobin = nil
 					} else {
-						to.Default.LoadBalancer.RoundRobin = &tfTypes.BackendClusterAuthenticationAnonymous{}
+						to.Default.LoadBalancer.RoundRobin = &tfTypes.RawProviderConfig{}
 					}
 					to.Default.LoadBalancer.Type = types.StringValue(string(toItem.Default.LoadBalancer.Type))
 				}

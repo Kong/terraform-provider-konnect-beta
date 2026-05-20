@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.18.0
+> Released on 2026/05/15
+
+### BREAKING CHANGES
+* The following resources have been renamed:  
+  - konnect_auth_server -> konnect_identity_auth_server
+  - konnect_auth_server_scopes -> konnect_identity_auth_server_scope
+  - konnect_auth_server_claims -> konnect_identity_auth_server_claim
+  - konnect_auth_server_clients -> konnect_identity_auth_server_client
+
+### Features
+* Add support for `konnect_portal_audit_log_webhook` resource
+* Add support for `topic_aliases` in `konnect_event_gateway_virtual_cluster` resource
+* Add support for updates, and larger cache sizes for `konnect_cloud_gateway_addon` resource
+* Add support for different providers for API spec in `konnect_api`, and `konnect_api_version` resources
+
 ## 0.17.0
 > Released on 2026/03/26
 

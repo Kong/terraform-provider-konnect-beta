@@ -16,7 +16,7 @@ func TestAuthServer(t *testing.T) {
 					ProtoV6ProviderFactories: providerFactory,
 					ConfigDirectory:          config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr("konnect_auth_server.my_authserver", "name", "tf-ci-testing-authserver"),
+						resource.TestCheckResourceAttr("konnect_identity_auth_server.my_authserver", "name", "tf-ci-testing-authserver"),
 					),
 				},
 				{

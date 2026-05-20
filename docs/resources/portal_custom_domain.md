@@ -50,7 +50,7 @@ Optional:
 
 - `custom_certificate` (String) Custom certificate to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate"
 - `custom_private_key` (String) Custom certificate private key to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate"
-- `domain_verification_method` (String) must be one of ["custom_certificate", "http"]; Requires replacement if changed.
+- `domain_verification_method` (String) possible known values include one of ["custom_certificate", "http"]; Requires replacement if changed.
 - `skip_ca_check` (Boolean) Advanced option. If true, the custom certificate is served exactly as provided, without attempting to bundle against a public trust store. Required for certificates issued by an internal/private CA.
 
 Read-Only:

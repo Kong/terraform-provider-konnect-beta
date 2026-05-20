@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 )
 
@@ -32,48 +30,16 @@ const (
 func (e LLMFiltersField) ToPointer() *LLMFiltersField {
 	return &e
 }
-func (e *LLMFiltersField) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *LLMFiltersField) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "application", "consumer", "control_plane", "control_plane_group", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "realm", "route", "status_code", "status_code_grouped":
+			return true
+		}
 	}
-	switch v {
-	case "ai_plugin":
-		fallthrough
-	case "ai_provider":
-		fallthrough
-	case "ai_request_model":
-		fallthrough
-	case "ai_response_model":
-		fallthrough
-	case "application":
-		fallthrough
-	case "consumer":
-		fallthrough
-	case "control_plane":
-		fallthrough
-	case "control_plane_group":
-		fallthrough
-	case "gateway_service":
-		fallthrough
-	case "llm_cache_status":
-		fallthrough
-	case "llm_embeddings_model":
-		fallthrough
-	case "llm_embeddings_provider":
-		fallthrough
-	case "realm":
-		fallthrough
-	case "route":
-		fallthrough
-	case "status_code":
-		fallthrough
-	case "status_code_grouped":
-		*e = LLMFiltersField(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for LLMFiltersField: %v", v)
-	}
+	return false
 }
 
 type LLMFiltersOperator string
@@ -88,24 +54,16 @@ const (
 func (e LLMFiltersOperator) ToPointer() *LLMFiltersOperator {
 	return &e
 }
-func (e *LLMFiltersOperator) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *LLMFiltersOperator) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "in", "not_in", "empty", "not_empty":
+			return true
+		}
 	}
-	switch v {
-	case "in":
-		fallthrough
-	case "not_in":
-		fallthrough
-	case "empty":
-		fallthrough
-	case "not_empty":
-		*e = LLMFiltersOperator(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for LLMFiltersOperator: %v", v)
-	}
+	return false
 }
 
 type LLMFilters struct {
