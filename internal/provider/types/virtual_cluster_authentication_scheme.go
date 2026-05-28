@@ -3,7 +3,7 @@
 package types
 
 type VirtualClusterAuthenticationScheme struct {
-	Anonymous         *RawProviderConfig                             `queryParam:"inline" tfsdk:"anonymous"`
+	Anonymous         *RawAPISpecProviderConfig                      `queryParam:"inline" tfsdk:"anonymous"`
 	ClientCertificate *VirtualClusterAuthenticationClientCertificate `queryParam:"inline" tfsdk:"client_certificate"`
 	OauthBearer       *VirtualClusterAuthenticationOauthBearer       `queryParam:"inline" tfsdk:"oauth_bearer"`
 	SaslPlain         *VirtualClusterAuthenticationSaslPlain         `queryParam:"inline" tfsdk:"sasl_plain"`

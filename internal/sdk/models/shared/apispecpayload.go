@@ -11,43 +11,43 @@ import (
 type APISpecProviderPayloadProviderType string
 
 const (
-	APISpecProviderPayloadProviderTypeURLProvider                      APISpecProviderPayloadProviderType = "UrlProvider"
-	APISpecProviderPayloadProviderTypeIntegrationProvider              APISpecProviderPayloadProviderType = "IntegrationProvider"
-	APISpecProviderPayloadProviderTypeResourceBoundIntegrationProvider APISpecProviderPayloadProviderType = "ResourceBoundIntegrationProvider"
+	APISpecProviderPayloadProviderTypeURLAPISpecProvider                             APISpecProviderPayloadProviderType = "UrlApiSpecProvider"
+	APISpecProviderPayloadProviderTypeIntegrationAPISpecProviderPayload              APISpecProviderPayloadProviderType = "IntegrationApiSpecProviderPayload"
+	APISpecProviderPayloadProviderTypeResourceBoundIntegrationAPISpecProviderPayload APISpecProviderPayloadProviderType = "ResourceBoundIntegrationApiSpecProviderPayload"
 )
 
 type APISpecProviderPayloadProvider struct {
-	URLProvider                      *URLProvider                      `queryParam:"inline" union:"member"`
-	IntegrationProvider              *IntegrationProvider              `queryParam:"inline" union:"member"`
-	ResourceBoundIntegrationProvider *ResourceBoundIntegrationProvider `queryParam:"inline" union:"member"`
+	URLAPISpecProvider                             *URLAPISpecProvider                             `queryParam:"inline" union:"member"`
+	IntegrationAPISpecProviderPayload              *IntegrationAPISpecProviderPayload              `queryParam:"inline" union:"member"`
+	ResourceBoundIntegrationAPISpecProviderPayload *ResourceBoundIntegrationAPISpecProviderPayload `queryParam:"inline" union:"member"`
 
 	Type APISpecProviderPayloadProviderType
 }
 
-func CreateAPISpecProviderPayloadProviderURLProvider(urlProvider URLProvider) APISpecProviderPayloadProvider {
-	typ := APISpecProviderPayloadProviderTypeURLProvider
+func CreateAPISpecProviderPayloadProviderURLAPISpecProvider(urlAPISpecProvider URLAPISpecProvider) APISpecProviderPayloadProvider {
+	typ := APISpecProviderPayloadProviderTypeURLAPISpecProvider
 
 	return APISpecProviderPayloadProvider{
-		URLProvider: &urlProvider,
-		Type:        typ,
+		URLAPISpecProvider: &urlAPISpecProvider,
+		Type:               typ,
 	}
 }
 
-func CreateAPISpecProviderPayloadProviderIntegrationProvider(integrationProvider IntegrationProvider) APISpecProviderPayloadProvider {
-	typ := APISpecProviderPayloadProviderTypeIntegrationProvider
+func CreateAPISpecProviderPayloadProviderIntegrationAPISpecProviderPayload(integrationAPISpecProviderPayload IntegrationAPISpecProviderPayload) APISpecProviderPayloadProvider {
+	typ := APISpecProviderPayloadProviderTypeIntegrationAPISpecProviderPayload
 
 	return APISpecProviderPayloadProvider{
-		IntegrationProvider: &integrationProvider,
-		Type:                typ,
+		IntegrationAPISpecProviderPayload: &integrationAPISpecProviderPayload,
+		Type:                              typ,
 	}
 }
 
-func CreateAPISpecProviderPayloadProviderResourceBoundIntegrationProvider(resourceBoundIntegrationProvider ResourceBoundIntegrationProvider) APISpecProviderPayloadProvider {
-	typ := APISpecProviderPayloadProviderTypeResourceBoundIntegrationProvider
+func CreateAPISpecProviderPayloadProviderResourceBoundIntegrationAPISpecProviderPayload(resourceBoundIntegrationAPISpecProviderPayload ResourceBoundIntegrationAPISpecProviderPayload) APISpecProviderPayloadProvider {
+	typ := APISpecProviderPayloadProviderTypeResourceBoundIntegrationAPISpecProviderPayload
 
 	return APISpecProviderPayloadProvider{
-		ResourceBoundIntegrationProvider: &resourceBoundIntegrationProvider,
-		Type:                             typ,
+		ResourceBoundIntegrationAPISpecProviderPayload: &resourceBoundIntegrationAPISpecProviderPayload,
+		Type: typ,
 	}
 }
 
@@ -56,27 +56,27 @@ func (u *APISpecProviderPayloadProvider) UnmarshalJSON(data []byte) error {
 	var candidates []utils.UnionCandidate
 
 	// Collect all valid candidates
-	var urlProvider URLProvider = URLProvider{}
-	if err := utils.UnmarshalJSON(data, &urlProvider, "", true, nil); err == nil {
+	var urlAPISpecProvider URLAPISpecProvider = URLAPISpecProvider{}
+	if err := utils.UnmarshalJSON(data, &urlAPISpecProvider, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  APISpecProviderPayloadProviderTypeURLProvider,
-			Value: &urlProvider,
+			Type:  APISpecProviderPayloadProviderTypeURLAPISpecProvider,
+			Value: &urlAPISpecProvider,
 		})
 	}
 
-	var integrationProvider IntegrationProvider = IntegrationProvider{}
-	if err := utils.UnmarshalJSON(data, &integrationProvider, "", true, nil); err == nil {
+	var integrationAPISpecProviderPayload IntegrationAPISpecProviderPayload = IntegrationAPISpecProviderPayload{}
+	if err := utils.UnmarshalJSON(data, &integrationAPISpecProviderPayload, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  APISpecProviderPayloadProviderTypeIntegrationProvider,
-			Value: &integrationProvider,
+			Type:  APISpecProviderPayloadProviderTypeIntegrationAPISpecProviderPayload,
+			Value: &integrationAPISpecProviderPayload,
 		})
 	}
 
-	var resourceBoundIntegrationProvider ResourceBoundIntegrationProvider = ResourceBoundIntegrationProvider{}
-	if err := utils.UnmarshalJSON(data, &resourceBoundIntegrationProvider, "", true, nil); err == nil {
+	var resourceBoundIntegrationAPISpecProviderPayload ResourceBoundIntegrationAPISpecProviderPayload = ResourceBoundIntegrationAPISpecProviderPayload{}
+	if err := utils.UnmarshalJSON(data, &resourceBoundIntegrationAPISpecProviderPayload, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  APISpecProviderPayloadProviderTypeResourceBoundIntegrationProvider,
-			Value: &resourceBoundIntegrationProvider,
+			Type:  APISpecProviderPayloadProviderTypeResourceBoundIntegrationAPISpecProviderPayload,
+			Value: &resourceBoundIntegrationAPISpecProviderPayload,
 		})
 	}
 
@@ -93,14 +93,14 @@ func (u *APISpecProviderPayloadProvider) UnmarshalJSON(data []byte) error {
 	// Set the union type and value based on the best candidate
 	u.Type = best.Type.(APISpecProviderPayloadProviderType)
 	switch best.Type {
-	case APISpecProviderPayloadProviderTypeURLProvider:
-		u.URLProvider = best.Value.(*URLProvider)
+	case APISpecProviderPayloadProviderTypeURLAPISpecProvider:
+		u.URLAPISpecProvider = best.Value.(*URLAPISpecProvider)
 		return nil
-	case APISpecProviderPayloadProviderTypeIntegrationProvider:
-		u.IntegrationProvider = best.Value.(*IntegrationProvider)
+	case APISpecProviderPayloadProviderTypeIntegrationAPISpecProviderPayload:
+		u.IntegrationAPISpecProviderPayload = best.Value.(*IntegrationAPISpecProviderPayload)
 		return nil
-	case APISpecProviderPayloadProviderTypeResourceBoundIntegrationProvider:
-		u.ResourceBoundIntegrationProvider = best.Value.(*ResourceBoundIntegrationProvider)
+	case APISpecProviderPayloadProviderTypeResourceBoundIntegrationAPISpecProviderPayload:
+		u.ResourceBoundIntegrationAPISpecProviderPayload = best.Value.(*ResourceBoundIntegrationAPISpecProviderPayload)
 		return nil
 	}
 
@@ -108,96 +108,96 @@ func (u *APISpecProviderPayloadProvider) UnmarshalJSON(data []byte) error {
 }
 
 func (u APISpecProviderPayloadProvider) MarshalJSON() ([]byte, error) {
-	if u.URLProvider != nil {
-		return utils.MarshalJSON(u.URLProvider, "", true)
+	if u.URLAPISpecProvider != nil {
+		return utils.MarshalJSON(u.URLAPISpecProvider, "", true)
 	}
 
-	if u.IntegrationProvider != nil {
-		return utils.MarshalJSON(u.IntegrationProvider, "", true)
+	if u.IntegrationAPISpecProviderPayload != nil {
+		return utils.MarshalJSON(u.IntegrationAPISpecProviderPayload, "", true)
 	}
 
-	if u.ResourceBoundIntegrationProvider != nil {
-		return utils.MarshalJSON(u.ResourceBoundIntegrationProvider, "", true)
+	if u.ResourceBoundIntegrationAPISpecProviderPayload != nil {
+		return utils.MarshalJSON(u.ResourceBoundIntegrationAPISpecProviderPayload, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type APISpecProviderPayloadProvider: all fields are null")
 }
 
-// ProviderPayload - Represent spec provider information used for fetching the API spec. For raw, provide the raw content in the `content` property instead of using this provider.
-type ProviderPayload struct {
+// APISpecProviderPayload - Represent spec provider information used for fetching the API spec. For raw, provide the raw content in the `content` property instead of using this provider.
+type APISpecProviderPayload struct {
 	Provider APISpecProviderPayloadProvider `json:"provider"`
 }
 
-func (p ProviderPayload) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(p, "", false)
+func (a APISpecProviderPayload) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (p *ProviderPayload) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+func (a *APISpecProviderPayload) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *ProviderPayload) GetProvider() APISpecProviderPayloadProvider {
-	if p == nil {
+func (a *APISpecProviderPayload) GetProvider() APISpecProviderPayloadProvider {
+	if a == nil {
 		return APISpecProviderPayloadProvider{}
 	}
-	return p.Provider
+	return a.Provider
 }
 
-// ContentPayload - The raw content of API specification, in json or yaml format (OpenAPI or AsyncAPI).
-type ContentPayload struct {
+// APISpecContentPayload - The raw content of API specification, in json or yaml format (OpenAPI or AsyncAPI).
+type APISpecContentPayload struct {
 	Content string `json:"content"`
 }
 
-func (c ContentPayload) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
+func (a APISpecContentPayload) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (c *ContentPayload) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+func (a *APISpecContentPayload) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *ContentPayload) GetContent() string {
-	if c == nil {
+func (a *APISpecContentPayload) GetContent() string {
+	if a == nil {
 		return ""
 	}
-	return c.Content
+	return a.Content
 }
 
 type APISpecPayloadType string
 
 const (
-	APISpecPayloadTypeContentPayload  APISpecPayloadType = "ContentPayload"
-	APISpecPayloadTypeProviderPayload APISpecPayloadType = "ProviderPayload"
+	APISpecPayloadTypeAPISpecContentPayload  APISpecPayloadType = "ApiSpecContentPayload"
+	APISpecPayloadTypeAPISpecProviderPayload APISpecPayloadType = "ApiSpecProviderPayload"
 )
 
 type APISpecPayload struct {
-	ContentPayload  *ContentPayload  `queryParam:"inline" union:"member"`
-	ProviderPayload *ProviderPayload `queryParam:"inline" union:"member"`
+	APISpecContentPayload  *APISpecContentPayload  `queryParam:"inline" union:"member"`
+	APISpecProviderPayload *APISpecProviderPayload `queryParam:"inline" union:"member"`
 
 	Type APISpecPayloadType
 }
 
-func CreateAPISpecPayloadContentPayload(contentPayload ContentPayload) APISpecPayload {
-	typ := APISpecPayloadTypeContentPayload
+func CreateAPISpecPayloadAPISpecContentPayload(apiSpecContentPayload APISpecContentPayload) APISpecPayload {
+	typ := APISpecPayloadTypeAPISpecContentPayload
 
 	return APISpecPayload{
-		ContentPayload: &contentPayload,
-		Type:           typ,
+		APISpecContentPayload: &apiSpecContentPayload,
+		Type:                  typ,
 	}
 }
 
-func CreateAPISpecPayloadProviderPayload(providerPayload ProviderPayload) APISpecPayload {
-	typ := APISpecPayloadTypeProviderPayload
+func CreateAPISpecPayloadAPISpecProviderPayload(apiSpecProviderPayload APISpecProviderPayload) APISpecPayload {
+	typ := APISpecPayloadTypeAPISpecProviderPayload
 
 	return APISpecPayload{
-		ProviderPayload: &providerPayload,
-		Type:            typ,
+		APISpecProviderPayload: &apiSpecProviderPayload,
+		Type:                   typ,
 	}
 }
 
@@ -206,19 +206,19 @@ func (u *APISpecPayload) UnmarshalJSON(data []byte) error {
 	var candidates []utils.UnionCandidate
 
 	// Collect all valid candidates
-	var contentPayload ContentPayload = ContentPayload{}
-	if err := utils.UnmarshalJSON(data, &contentPayload, "", true, nil); err == nil {
+	var apiSpecContentPayload APISpecContentPayload = APISpecContentPayload{}
+	if err := utils.UnmarshalJSON(data, &apiSpecContentPayload, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  APISpecPayloadTypeContentPayload,
-			Value: &contentPayload,
+			Type:  APISpecPayloadTypeAPISpecContentPayload,
+			Value: &apiSpecContentPayload,
 		})
 	}
 
-	var providerPayload ProviderPayload = ProviderPayload{}
-	if err := utils.UnmarshalJSON(data, &providerPayload, "", true, nil); err == nil {
+	var apiSpecProviderPayload APISpecProviderPayload = APISpecProviderPayload{}
+	if err := utils.UnmarshalJSON(data, &apiSpecProviderPayload, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  APISpecPayloadTypeProviderPayload,
-			Value: &providerPayload,
+			Type:  APISpecPayloadTypeAPISpecProviderPayload,
+			Value: &apiSpecProviderPayload,
 		})
 	}
 
@@ -235,11 +235,11 @@ func (u *APISpecPayload) UnmarshalJSON(data []byte) error {
 	// Set the union type and value based on the best candidate
 	u.Type = best.Type.(APISpecPayloadType)
 	switch best.Type {
-	case APISpecPayloadTypeContentPayload:
-		u.ContentPayload = best.Value.(*ContentPayload)
+	case APISpecPayloadTypeAPISpecContentPayload:
+		u.APISpecContentPayload = best.Value.(*APISpecContentPayload)
 		return nil
-	case APISpecPayloadTypeProviderPayload:
-		u.ProviderPayload = best.Value.(*ProviderPayload)
+	case APISpecPayloadTypeAPISpecProviderPayload:
+		u.APISpecProviderPayload = best.Value.(*APISpecProviderPayload)
 		return nil
 	}
 
@@ -247,12 +247,12 @@ func (u *APISpecPayload) UnmarshalJSON(data []byte) error {
 }
 
 func (u APISpecPayload) MarshalJSON() ([]byte, error) {
-	if u.ContentPayload != nil {
-		return utils.MarshalJSON(u.ContentPayload, "", true)
+	if u.APISpecContentPayload != nil {
+		return utils.MarshalJSON(u.APISpecContentPayload, "", true)
 	}
 
-	if u.ProviderPayload != nil {
-		return utils.MarshalJSON(u.ProviderPayload, "", true)
+	if u.APISpecProviderPayload != nil {
+		return utils.MarshalJSON(u.APISpecProviderPayload, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type APISpecPayload: all fields are null")

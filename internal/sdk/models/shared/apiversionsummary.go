@@ -12,55 +12,55 @@ import (
 type APISpecProviderType string
 
 const (
-	APISpecProviderTypeRawProvider                      APISpecProviderType = "RawProvider"
-	APISpecProviderTypeURLProvider                      APISpecProviderType = "UrlProvider"
-	APISpecProviderTypeIntegrationProvider              APISpecProviderType = "IntegrationProvider"
-	APISpecProviderTypeResourceBoundIntegrationProvider APISpecProviderType = "ResourceBoundIntegrationProvider"
+	APISpecProviderTypeRawAPISpecProvider                             APISpecProviderType = "RawApiSpecProvider"
+	APISpecProviderTypeURLAPISpecProvider                             APISpecProviderType = "UrlApiSpecProvider"
+	APISpecProviderTypeIntegrationAPISpecProviderPayload              APISpecProviderType = "IntegrationApiSpecProviderPayload"
+	APISpecProviderTypeResourceBoundIntegrationAPISpecProviderPayload APISpecProviderType = "ResourceBoundIntegrationApiSpecProviderPayload"
 )
 
 // APISpecProvider - Provenance of the spec for the current version. Present when a spec exists.
 type APISpecProvider struct {
-	RawProvider                      *RawProvider                      `queryParam:"inline" union:"member"`
-	URLProvider                      *URLProvider                      `queryParam:"inline" union:"member"`
-	IntegrationProvider              *IntegrationProvider              `queryParam:"inline" union:"member"`
-	ResourceBoundIntegrationProvider *ResourceBoundIntegrationProvider `queryParam:"inline" union:"member"`
+	RawAPISpecProvider                             *RawAPISpecProvider                             `queryParam:"inline" union:"member"`
+	URLAPISpecProvider                             *URLAPISpecProvider                             `queryParam:"inline" union:"member"`
+	IntegrationAPISpecProviderPayload              *IntegrationAPISpecProviderPayload              `queryParam:"inline" union:"member"`
+	ResourceBoundIntegrationAPISpecProviderPayload *ResourceBoundIntegrationAPISpecProviderPayload `queryParam:"inline" union:"member"`
 
 	Type APISpecProviderType
 }
 
-func CreateAPISpecProviderRawProvider(rawProvider RawProvider) APISpecProvider {
-	typ := APISpecProviderTypeRawProvider
+func CreateAPISpecProviderRawAPISpecProvider(rawAPISpecProvider RawAPISpecProvider) APISpecProvider {
+	typ := APISpecProviderTypeRawAPISpecProvider
 
 	return APISpecProvider{
-		RawProvider: &rawProvider,
-		Type:        typ,
+		RawAPISpecProvider: &rawAPISpecProvider,
+		Type:               typ,
 	}
 }
 
-func CreateAPISpecProviderURLProvider(urlProvider URLProvider) APISpecProvider {
-	typ := APISpecProviderTypeURLProvider
+func CreateAPISpecProviderURLAPISpecProvider(urlAPISpecProvider URLAPISpecProvider) APISpecProvider {
+	typ := APISpecProviderTypeURLAPISpecProvider
 
 	return APISpecProvider{
-		URLProvider: &urlProvider,
-		Type:        typ,
+		URLAPISpecProvider: &urlAPISpecProvider,
+		Type:               typ,
 	}
 }
 
-func CreateAPISpecProviderIntegrationProvider(integrationProvider IntegrationProvider) APISpecProvider {
-	typ := APISpecProviderTypeIntegrationProvider
+func CreateAPISpecProviderIntegrationAPISpecProviderPayload(integrationAPISpecProviderPayload IntegrationAPISpecProviderPayload) APISpecProvider {
+	typ := APISpecProviderTypeIntegrationAPISpecProviderPayload
 
 	return APISpecProvider{
-		IntegrationProvider: &integrationProvider,
-		Type:                typ,
+		IntegrationAPISpecProviderPayload: &integrationAPISpecProviderPayload,
+		Type:                              typ,
 	}
 }
 
-func CreateAPISpecProviderResourceBoundIntegrationProvider(resourceBoundIntegrationProvider ResourceBoundIntegrationProvider) APISpecProvider {
-	typ := APISpecProviderTypeResourceBoundIntegrationProvider
+func CreateAPISpecProviderResourceBoundIntegrationAPISpecProviderPayload(resourceBoundIntegrationAPISpecProviderPayload ResourceBoundIntegrationAPISpecProviderPayload) APISpecProvider {
+	typ := APISpecProviderTypeResourceBoundIntegrationAPISpecProviderPayload
 
 	return APISpecProvider{
-		ResourceBoundIntegrationProvider: &resourceBoundIntegrationProvider,
-		Type:                             typ,
+		ResourceBoundIntegrationAPISpecProviderPayload: &resourceBoundIntegrationAPISpecProviderPayload,
+		Type: typ,
 	}
 }
 
@@ -69,35 +69,35 @@ func (u *APISpecProvider) UnmarshalJSON(data []byte) error {
 	var candidates []utils.UnionCandidate
 
 	// Collect all valid candidates
-	var rawProvider RawProvider = RawProvider{}
-	if err := utils.UnmarshalJSON(data, &rawProvider, "", true, nil); err == nil {
+	var rawAPISpecProvider RawAPISpecProvider = RawAPISpecProvider{}
+	if err := utils.UnmarshalJSON(data, &rawAPISpecProvider, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  APISpecProviderTypeRawProvider,
-			Value: &rawProvider,
+			Type:  APISpecProviderTypeRawAPISpecProvider,
+			Value: &rawAPISpecProvider,
 		})
 	}
 
-	var urlProvider URLProvider = URLProvider{}
-	if err := utils.UnmarshalJSON(data, &urlProvider, "", true, nil); err == nil {
+	var urlAPISpecProvider URLAPISpecProvider = URLAPISpecProvider{}
+	if err := utils.UnmarshalJSON(data, &urlAPISpecProvider, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  APISpecProviderTypeURLProvider,
-			Value: &urlProvider,
+			Type:  APISpecProviderTypeURLAPISpecProvider,
+			Value: &urlAPISpecProvider,
 		})
 	}
 
-	var integrationProvider IntegrationProvider = IntegrationProvider{}
-	if err := utils.UnmarshalJSON(data, &integrationProvider, "", true, nil); err == nil {
+	var integrationAPISpecProviderPayload IntegrationAPISpecProviderPayload = IntegrationAPISpecProviderPayload{}
+	if err := utils.UnmarshalJSON(data, &integrationAPISpecProviderPayload, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  APISpecProviderTypeIntegrationProvider,
-			Value: &integrationProvider,
+			Type:  APISpecProviderTypeIntegrationAPISpecProviderPayload,
+			Value: &integrationAPISpecProviderPayload,
 		})
 	}
 
-	var resourceBoundIntegrationProvider ResourceBoundIntegrationProvider = ResourceBoundIntegrationProvider{}
-	if err := utils.UnmarshalJSON(data, &resourceBoundIntegrationProvider, "", true, nil); err == nil {
+	var resourceBoundIntegrationAPISpecProviderPayload ResourceBoundIntegrationAPISpecProviderPayload = ResourceBoundIntegrationAPISpecProviderPayload{}
+	if err := utils.UnmarshalJSON(data, &resourceBoundIntegrationAPISpecProviderPayload, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
-			Type:  APISpecProviderTypeResourceBoundIntegrationProvider,
-			Value: &resourceBoundIntegrationProvider,
+			Type:  APISpecProviderTypeResourceBoundIntegrationAPISpecProviderPayload,
+			Value: &resourceBoundIntegrationAPISpecProviderPayload,
 		})
 	}
 
@@ -114,17 +114,17 @@ func (u *APISpecProvider) UnmarshalJSON(data []byte) error {
 	// Set the union type and value based on the best candidate
 	u.Type = best.Type.(APISpecProviderType)
 	switch best.Type {
-	case APISpecProviderTypeRawProvider:
-		u.RawProvider = best.Value.(*RawProvider)
+	case APISpecProviderTypeRawAPISpecProvider:
+		u.RawAPISpecProvider = best.Value.(*RawAPISpecProvider)
 		return nil
-	case APISpecProviderTypeURLProvider:
-		u.URLProvider = best.Value.(*URLProvider)
+	case APISpecProviderTypeURLAPISpecProvider:
+		u.URLAPISpecProvider = best.Value.(*URLAPISpecProvider)
 		return nil
-	case APISpecProviderTypeIntegrationProvider:
-		u.IntegrationProvider = best.Value.(*IntegrationProvider)
+	case APISpecProviderTypeIntegrationAPISpecProviderPayload:
+		u.IntegrationAPISpecProviderPayload = best.Value.(*IntegrationAPISpecProviderPayload)
 		return nil
-	case APISpecProviderTypeResourceBoundIntegrationProvider:
-		u.ResourceBoundIntegrationProvider = best.Value.(*ResourceBoundIntegrationProvider)
+	case APISpecProviderTypeResourceBoundIntegrationAPISpecProviderPayload:
+		u.ResourceBoundIntegrationAPISpecProviderPayload = best.Value.(*ResourceBoundIntegrationAPISpecProviderPayload)
 		return nil
 	}
 
@@ -132,20 +132,20 @@ func (u *APISpecProvider) UnmarshalJSON(data []byte) error {
 }
 
 func (u APISpecProvider) MarshalJSON() ([]byte, error) {
-	if u.RawProvider != nil {
-		return utils.MarshalJSON(u.RawProvider, "", true)
+	if u.RawAPISpecProvider != nil {
+		return utils.MarshalJSON(u.RawAPISpecProvider, "", true)
 	}
 
-	if u.URLProvider != nil {
-		return utils.MarshalJSON(u.URLProvider, "", true)
+	if u.URLAPISpecProvider != nil {
+		return utils.MarshalJSON(u.URLAPISpecProvider, "", true)
 	}
 
-	if u.IntegrationProvider != nil {
-		return utils.MarshalJSON(u.IntegrationProvider, "", true)
+	if u.IntegrationAPISpecProviderPayload != nil {
+		return utils.MarshalJSON(u.IntegrationAPISpecProviderPayload, "", true)
 	}
 
-	if u.ResourceBoundIntegrationProvider != nil {
-		return utils.MarshalJSON(u.ResourceBoundIntegrationProvider, "", true)
+	if u.ResourceBoundIntegrationAPISpecProviderPayload != nil {
+		return utils.MarshalJSON(u.ResourceBoundIntegrationAPISpecProviderPayload, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type APISpecProvider: all fields are null")
@@ -177,8 +177,8 @@ type APIVersionSummary struct {
 	// The API version identifier.
 	ID *string `json:"id,omitempty"`
 	// The version of this api spec.
-	Version *string `default:"null" json:"version"`
-	Spec    *Spec   `json:"spec"`
+	Version *string `json:"version,omitempty"`
+	Spec    *Spec   `json:"spec,omitempty"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	// An ISO-8601 timestamp representation of entity update date.

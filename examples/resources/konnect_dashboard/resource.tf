@@ -3,7 +3,7 @@ resource "konnect_dashboard" "my_dashboard" {
   definition = {
     preset_filters = [
       {
-        field    = "ai_provider"
+        field    = "a2a_method"
         operator = "not_in"
         value    = "{ \"see\": \"documentation\" }"
       }
