@@ -22,7 +22,7 @@ type APIPublication struct {
 	//
 	Visibility *APIPublicationVisibility `default:"private" json:"visibility"`
 	// UUID of portal form associated with API publication, must be linked to given portal and have type of 'api_registration'
-	FormID *string `json:"form_id,omitempty"`
+	FormID *string `default:"null" json:"form_id"`
 }
 
 func (a APIPublication) MarshalJSON() ([]byte, error) {

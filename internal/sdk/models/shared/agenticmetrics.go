@@ -12,7 +12,7 @@ const (
 	AgenticMetricsKongLatencyP50         AgenticMetrics = "kong_latency_p50"
 	AgenticMetricsKongLatencyP95         AgenticMetrics = "kong_latency_p95"
 	AgenticMetricsKongLatencyP99         AgenticMetrics = "kong_latency_p99"
-	AgenticMetricsMcpResponseBodySizeSum AgenticMetrics = "mcp_response_body_size_sum"
+	AgenticMetricsMcpResponseSizeSum     AgenticMetrics = "mcp_response_size_sum"
 	AgenticMetricsRequestCount           AgenticMetrics = "request_count"
 	AgenticMetricsRequestPerMinute       AgenticMetrics = "request_per_minute"
 	AgenticMetricsRequestSizeAverage     AgenticMetrics = "request_size_average"
@@ -43,7 +43,7 @@ func (e AgenticMetrics) ToPointer() *AgenticMetrics {
 func (e *AgenticMetrics) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "a2a_latency_average", "a2a_response_size_sum", "error_rate", "kong_latency_average", "kong_latency_p50", "kong_latency_p95", "kong_latency_p99", "mcp_response_body_size_sum", "request_count", "request_per_minute", "request_size_average", "request_size_p50", "request_size_p95", "request_size_p99", "request_size_sum", "response_latency_average", "response_latency_p50", "response_latency_p95", "response_latency_p99", "response_size_average", "response_size_p50", "response_size_p95", "response_size_p99", "response_size_sum", "upstream_latency_average", "upstream_latency_p50", "upstream_latency_p95", "upstream_latency_p99":
+		case "a2a_latency_average", "a2a_response_size_sum", "error_rate", "kong_latency_average", "kong_latency_p50", "kong_latency_p95", "kong_latency_p99", "mcp_response_size_sum", "request_count", "request_per_minute", "request_size_average", "request_size_p50", "request_size_p95", "request_size_p99", "request_size_sum", "response_latency_average", "response_latency_p50", "response_latency_p95", "response_latency_p99", "response_size_average", "response_size_p50", "response_size_p95", "response_size_p99", "response_size_sum", "upstream_latency_average", "upstream_latency_p50", "upstream_latency_p95", "upstream_latency_p99":
 			return true
 		}
 	}

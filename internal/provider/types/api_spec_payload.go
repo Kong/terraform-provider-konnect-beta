@@ -3,6 +3,6 @@
 package types
 
 type APISpecPayload struct {
-	ContentPayload  *ContentPayload  `queryParam:"inline" tfsdk:"content_payload"`
-	ProviderPayload *ProviderPayload `queryParam:"inline" tfsdk:"provider_payload"`
+	APISpecContentPayload  *APISpecContentPayload  `queryParam:"inline" tfsdk:"api_spec_content_payload"`
+	APISpecProviderPayload *APISpecProviderPayload `queryParam:"inline" tfsdk:"api_spec_provider_payload"`
 }

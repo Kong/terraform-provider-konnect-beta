@@ -23,7 +23,7 @@ func (r *EventGatewayVirtualClusterResourceModel) RefreshFromSharedVirtualCluste
 			var authentication tfTypes.VirtualClusterAuthenticationScheme
 
 			if authenticationItem.VirtualClusterAuthenticationAnonymous != nil {
-				authentication.Anonymous = &tfTypes.RawProviderConfig{}
+				authentication.Anonymous = &tfTypes.RawAPISpecProviderConfig{}
 			}
 			if authenticationItem.VirtualClusterAuthenticationClientCertificate != nil {
 				authentication.ClientCertificate = &tfTypes.VirtualClusterAuthenticationClientCertificate{}
@@ -217,25 +217,21 @@ func (r *EventGatewayVirtualClusterResourceModel) RefreshFromSharedVirtualCluste
 			r.Namespace.Mode = types.StringValue(string(resp.Namespace.Mode))
 			r.Namespace.Prefix = types.StringValue(resp.Namespace.Prefix)
 		}
-		if resp.TopicAliases != nil {
-			r.TopicAliases = []tfTypes.VirtualClusterTopicAlias{}
+		r.TopicAliases = []tfTypes.VirtualClusterTopicAlias{}
 
-			for _, topicAliasesItem := range resp.TopicAliases {
-				var topicAliases tfTypes.VirtualClusterTopicAlias
+		for _, topicAliasesItem := range resp.TopicAliases {
+			var topicAliases tfTypes.VirtualClusterTopicAlias
 
-				topicAliases.Alias = types.StringValue(topicAliasesItem.Alias)
-				if topicAliasesItem.Conflict != nil {
-					topicAliases.Conflict = types.StringValue(string(*topicAliasesItem.Conflict))
-				} else {
-					topicAliases.Conflict = types.StringNull()
-				}
-				topicAliases.Match = types.StringPointerValue(topicAliasesItem.Match)
-				topicAliases.Topic = types.StringValue(topicAliasesItem.Topic)
-
-				r.TopicAliases = append(r.TopicAliases, topicAliases)
+			topicAliases.Alias = types.StringValue(topicAliasesItem.Alias)
+			if topicAliasesItem.Conflict != nil {
+				topicAliases.Conflict = types.StringValue(string(*topicAliasesItem.Conflict))
+			} else {
+				topicAliases.Conflict = types.StringNull()
 			}
-		} else {
-			r.TopicAliases = nil
+			topicAliases.Match = types.StringPointerValue(topicAliasesItem.Match)
+			topicAliases.Topic = types.StringValue(topicAliasesItem.Topic)
+
+			r.TopicAliases = append(r.TopicAliases, topicAliases)
 		}
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
@@ -644,35 +640,32 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 			Additional: additional,
 		}
 	}
-	var topicAliases []shared.VirtualClusterTopicAlias
-	if r.TopicAliases != nil {
-		topicAliases = make([]shared.VirtualClusterTopicAlias, 0, len(r.TopicAliases))
-		for topicAliasesIndex := range r.TopicAliases {
-			var alias string
-			alias = r.TopicAliases[topicAliasesIndex].Alias.ValueString()
+	topicAliases := make([]shared.VirtualClusterTopicAlias, 0, len(r.TopicAliases))
+	for topicAliasesIndex := range r.TopicAliases {
+		var alias string
+		alias = r.TopicAliases[topicAliasesIndex].Alias.ValueString()
 
-			var topic string
-			topic = r.TopicAliases[topicAliasesIndex].Topic.ValueString()
+		var topic string
+		topic = r.TopicAliases[topicAliasesIndex].Topic.ValueString()
 
-			match := new(string)
-			if !r.TopicAliases[topicAliasesIndex].Match.IsUnknown() && !r.TopicAliases[topicAliasesIndex].Match.IsNull() {
-				*match = r.TopicAliases[topicAliasesIndex].Match.ValueString()
-			} else {
-				match = nil
-			}
-			conflict2 := new(shared.VirtualClusterTopicAliasConflict)
-			if !r.TopicAliases[topicAliasesIndex].Conflict.IsUnknown() && !r.TopicAliases[topicAliasesIndex].Conflict.IsNull() {
-				*conflict2 = shared.VirtualClusterTopicAliasConflict(r.TopicAliases[topicAliasesIndex].Conflict.ValueString())
-			} else {
-				conflict2 = nil
-			}
-			topicAliases = append(topicAliases, shared.VirtualClusterTopicAlias{
-				Alias:    alias,
-				Topic:    topic,
-				Match:    match,
-				Conflict: conflict2,
-			})
+		match := new(string)
+		if !r.TopicAliases[topicAliasesIndex].Match.IsUnknown() && !r.TopicAliases[topicAliasesIndex].Match.IsNull() {
+			*match = r.TopicAliases[topicAliasesIndex].Match.ValueString()
+		} else {
+			match = nil
 		}
+		conflict2 := new(shared.VirtualClusterTopicAliasConflict)
+		if !r.TopicAliases[topicAliasesIndex].Conflict.IsUnknown() && !r.TopicAliases[topicAliasesIndex].Conflict.IsNull() {
+			*conflict2 = shared.VirtualClusterTopicAliasConflict(r.TopicAliases[topicAliasesIndex].Conflict.ValueString())
+		} else {
+			conflict2 = nil
+		}
+		topicAliases = append(topicAliases, shared.VirtualClusterTopicAlias{
+			Alias:    alias,
+			Topic:    topic,
+			Match:    match,
+			Conflict: conflict2,
+		})
 	}
 	aclMode := shared.VirtualClusterACLMode(r.ACLMode.ValueString())
 	var dnsLabel string
@@ -1027,35 +1020,32 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 			Additional: additional,
 		}
 	}
-	var topicAliases []shared.VirtualClusterTopicAlias
-	if r.TopicAliases != nil {
-		topicAliases = make([]shared.VirtualClusterTopicAlias, 0, len(r.TopicAliases))
-		for topicAliasesIndex := range r.TopicAliases {
-			var alias string
-			alias = r.TopicAliases[topicAliasesIndex].Alias.ValueString()
+	topicAliases := make([]shared.VirtualClusterTopicAlias, 0, len(r.TopicAliases))
+	for topicAliasesIndex := range r.TopicAliases {
+		var alias string
+		alias = r.TopicAliases[topicAliasesIndex].Alias.ValueString()
 
-			var topic string
-			topic = r.TopicAliases[topicAliasesIndex].Topic.ValueString()
+		var topic string
+		topic = r.TopicAliases[topicAliasesIndex].Topic.ValueString()
 
-			match := new(string)
-			if !r.TopicAliases[topicAliasesIndex].Match.IsUnknown() && !r.TopicAliases[topicAliasesIndex].Match.IsNull() {
-				*match = r.TopicAliases[topicAliasesIndex].Match.ValueString()
-			} else {
-				match = nil
-			}
-			conflict2 := new(shared.VirtualClusterTopicAliasConflict)
-			if !r.TopicAliases[topicAliasesIndex].Conflict.IsUnknown() && !r.TopicAliases[topicAliasesIndex].Conflict.IsNull() {
-				*conflict2 = shared.VirtualClusterTopicAliasConflict(r.TopicAliases[topicAliasesIndex].Conflict.ValueString())
-			} else {
-				conflict2 = nil
-			}
-			topicAliases = append(topicAliases, shared.VirtualClusterTopicAlias{
-				Alias:    alias,
-				Topic:    topic,
-				Match:    match,
-				Conflict: conflict2,
-			})
+		match := new(string)
+		if !r.TopicAliases[topicAliasesIndex].Match.IsUnknown() && !r.TopicAliases[topicAliasesIndex].Match.IsNull() {
+			*match = r.TopicAliases[topicAliasesIndex].Match.ValueString()
+		} else {
+			match = nil
 		}
+		conflict2 := new(shared.VirtualClusterTopicAliasConflict)
+		if !r.TopicAliases[topicAliasesIndex].Conflict.IsUnknown() && !r.TopicAliases[topicAliasesIndex].Conflict.IsNull() {
+			*conflict2 = shared.VirtualClusterTopicAliasConflict(r.TopicAliases[topicAliasesIndex].Conflict.ValueString())
+		} else {
+			conflict2 = nil
+		}
+		topicAliases = append(topicAliases, shared.VirtualClusterTopicAlias{
+			Alias:    alias,
+			Topic:    topic,
+			Match:    match,
+			Conflict: conflict2,
+		})
 	}
 	aclMode := shared.VirtualClusterACLMode(r.ACLMode.ValueString())
 	var dnsLabel string

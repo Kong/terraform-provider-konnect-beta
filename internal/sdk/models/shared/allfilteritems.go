@@ -5,6 +5,10 @@ package shared
 type AllFilterItemsField string
 
 const (
+	AllFilterItemsFieldA2aContextID              AllFilterItemsField = "a2a_context_id"
+	AllFilterItemsFieldA2aError                  AllFilterItemsField = "a2a_error"
+	AllFilterItemsFieldA2aMethod                 AllFilterItemsField = "a2a_method"
+	AllFilterItemsFieldA2aTaskID                 AllFilterItemsField = "a2a_task_id"
 	AllFilterItemsFieldAiPlugin                  AllFilterItemsField = "ai_plugin"
 	AllFilterItemsFieldAiProvider                AllFilterItemsField = "ai_provider"
 	AllFilterItemsFieldAiRequestModel            AllFilterItemsField = "ai_request_model"
@@ -24,6 +28,10 @@ const (
 	AllFilterItemsFieldLlmCacheStatus            AllFilterItemsField = "llm_cache_status"
 	AllFilterItemsFieldLlmEmbeddingsModel        AllFilterItemsField = "llm_embeddings_model"
 	AllFilterItemsFieldLlmEmbeddingsProvider     AllFilterItemsField = "llm_embeddings_provider"
+	AllFilterItemsFieldMcpError                  AllFilterItemsField = "mcp_error"
+	AllFilterItemsFieldMcpMethod                 AllFilterItemsField = "mcp_method"
+	AllFilterItemsFieldMcpSessionID              AllFilterItemsField = "mcp_session_id"
+	AllFilterItemsFieldMcpToolName               AllFilterItemsField = "mcp_tool_name"
 	AllFilterItemsFieldPortal                    AllFilterItemsField = "portal"
 	AllFilterItemsFieldRealm                     AllFilterItemsField = "realm"
 	AllFilterItemsFieldResponseSource            AllFilterItemsField = "response_source"
@@ -42,7 +50,7 @@ func (e AllFilterItemsField) ToPointer() *AllFilterItemsField {
 func (e *AllFilterItemsField) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped":
+		case "a2a_context_id", "a2a_error", "a2a_method", "a2a_task_id", "ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "mcp_error", "mcp_method", "mcp_session_id", "mcp_tool_name", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped":
 			return true
 		}
 	}

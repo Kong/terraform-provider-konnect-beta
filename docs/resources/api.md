@@ -23,7 +23,7 @@ resource "konnect_api" "my_api" {
   name = "MyAPI"
   slug = "my-api-v1"
   spec = {
-    content_payload = {
+    api_spec_content_payload = {
       content = "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}"
     }
   }
@@ -67,37 +67,37 @@ Defaults to `slugify(name + version)`
 
 Optional:
 
-- `content_payload` (Attributes) The raw content of API specification, in json or yaml format (OpenAPI or AsyncAPI). Requires replacement if changed. (see [below for nested schema](#nestedatt--spec--content_payload))
-- `provider_payload` (Attributes) Represent spec provider information used for fetching the API spec. For raw, provide the raw content in the `content` property instead of using this provider. Requires replacement if changed. (see [below for nested schema](#nestedatt--spec--provider_payload))
+- `api_spec_content_payload` (Attributes) The raw content of API specification, in json or yaml format (OpenAPI or AsyncAPI). Requires replacement if changed. (see [below for nested schema](#nestedatt--spec--api_spec_content_payload))
+- `api_spec_provider_payload` (Attributes) Represent spec provider information used for fetching the API spec. For raw, provide the raw content in the `content` property instead of using this provider. Requires replacement if changed. (see [below for nested schema](#nestedatt--spec--api_spec_provider_payload))
 
-<a id="nestedatt--spec--content_payload"></a>
-### Nested Schema for `spec.content_payload`
+<a id="nestedatt--spec--api_spec_content_payload"></a>
+### Nested Schema for `spec.api_spec_content_payload`
 
 Required:
 
 - `content` (String) Requires replacement if changed.
 
 
-<a id="nestedatt--spec--provider_payload"></a>
-### Nested Schema for `spec.provider_payload`
+<a id="nestedatt--spec--api_spec_provider_payload"></a>
+### Nested Schema for `spec.api_spec_provider_payload`
 
 Required:
 
-- `provider` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--spec--provider_payload--provider))
+- `provider` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--spec--api_spec_provider_payload--provider))
 
-<a id="nestedatt--spec--provider_payload--provider"></a>
-### Nested Schema for `spec.provider_payload.provider`
+<a id="nestedatt--spec--api_spec_provider_payload--provider"></a>
+### Nested Schema for `spec.api_spec_provider_payload.provider`
 
 Optional:
 
-- `integration_provider` (Attributes) API spec provider registered by a catalog integration.
+- `integration_api_spec_provider_payload` (Attributes) API spec provider registered by a catalog integration.
 
 Integrations can function as API spec providers where they register a globally unique
 `type` and config schema which defines the shape of `config`.
 
 Consult integration documentation to learn more about available API spec providers.
-Requires replacement if changed. (see [below for nested schema](#nestedatt--spec--provider_payload--provider--integration_provider))
-- `resource_bound_integration_provider` (Attributes) API spec provider registered by a catalog integration.
+Requires replacement if changed. (see [below for nested schema](#nestedatt--spec--api_spec_provider_payload--provider--integration_api_spec_provider_payload))
+- `resource_bound_integration_api_spec_provider_payload` (Attributes) API spec provider registered by a catalog integration.
 
 These providers differ from `IntegrationApiSpecProvider` in that they
 denote a binding relationship between a resource type and the API spec.
@@ -105,11 +105,11 @@ This means that the API Spec will automatically be created/deleted for/from a se
 as resources of the given type are mapped/unmapped.
 
 Consult integration documentation to learn more about available API spec providers.
-Requires replacement if changed. (see [below for nested schema](#nestedatt--spec--provider_payload--provider--resource_bound_integration_provider))
-- `url_provider` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--spec--provider_payload--provider--url_provider))
+Requires replacement if changed. (see [below for nested schema](#nestedatt--spec--api_spec_provider_payload--provider--resource_bound_integration_api_spec_provider_payload))
+- `urlapi_spec_provider` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--spec--api_spec_provider_payload--provider--urlapi_spec_provider))
 
-<a id="nestedatt--spec--provider_payload--provider--integration_provider"></a>
-### Nested Schema for `spec.provider_payload.provider.integration_provider`
+<a id="nestedatt--spec--api_spec_provider_payload--provider--integration_api_spec_provider_payload"></a>
+### Nested Schema for `spec.api_spec_provider_payload.provider.integration_api_spec_provider_payload`
 
 Required:
 
@@ -118,18 +118,18 @@ Required:
 - `type` (String) The globally unique API spec provider type that is registered by a given catalog integration. Requires replacement if changed.
 
 
-<a id="nestedatt--spec--provider_payload--provider--resource_bound_integration_provider"></a>
-### Nested Schema for `spec.provider_payload.provider.resource_bound_integration_provider`
+<a id="nestedatt--spec--api_spec_provider_payload--provider--resource_bound_integration_api_spec_provider_payload"></a>
+### Nested Schema for `spec.api_spec_provider_payload.provider.resource_bound_integration_api_spec_provider_payload`
 
 Required:
 
-- `config` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--spec--provider_payload--provider--resource_bound_integration_provider--config))
+- `config` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--spec--api_spec_provider_payload--provider--resource_bound_integration_api_spec_provider_payload--config))
 - `type` (String) The globally unique API spec provider type that is registered by a given catalog integration.
 Resource-bound providers create a 1-to-1 mapping between a resource type and the API Spec.
 Requires replacement if changed.
 
-<a id="nestedatt--spec--provider_payload--provider--resource_bound_integration_provider--config"></a>
-### Nested Schema for `spec.provider_payload.provider.resource_bound_integration_provider.config`
+<a id="nestedatt--spec--api_spec_provider_payload--provider--resource_bound_integration_api_spec_provider_payload--config"></a>
+### Nested Schema for `spec.api_spec_provider_payload.provider.resource_bound_integration_api_spec_provider_payload.config`
 
 Required:
 
@@ -137,16 +137,16 @@ Required:
 
 
 
-<a id="nestedatt--spec--provider_payload--provider--url_provider"></a>
-### Nested Schema for `spec.provider_payload.provider.url_provider`
+<a id="nestedatt--spec--api_spec_provider_payload--provider--urlapi_spec_provider"></a>
+### Nested Schema for `spec.api_spec_provider_payload.provider.urlapi_spec_provider`
 
 Required:
 
-- `config` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--spec--provider_payload--provider--url_provider--config))
+- `config` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--spec--api_spec_provider_payload--provider--urlapi_spec_provider--config))
 - `type` (String) must be "url"; Requires replacement if changed.
 
-<a id="nestedatt--spec--provider_payload--provider--url_provider--config"></a>
-### Nested Schema for `spec.provider_payload.provider.url_provider.config`
+<a id="nestedatt--spec--api_spec_provider_payload--provider--urlapi_spec_provider--config"></a>
+### Nested Schema for `spec.api_spec_provider_payload.provider.urlapi_spec_provider.config`
 
 Required:
 

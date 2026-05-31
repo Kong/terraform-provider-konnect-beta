@@ -85,7 +85,6 @@ func (r *APIPublicationResource) Schema(ctx context.Context, req resource.Schema
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
 			"form_id": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `UUID of portal form associated with API publication, must be linked to given portal and have type of 'api_registration'`,
 			},

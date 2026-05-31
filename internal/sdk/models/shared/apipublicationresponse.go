@@ -23,7 +23,7 @@ type APIPublicationResponse struct {
 	//
 	Visibility *APIPublicationVisibility `default:"private" json:"visibility"`
 	// UUID of portal form associated with API publication, must be linked to given portal and have type of 'api_registration'
-	FormID *string `json:"form_id,omitempty"`
+	FormID *string `default:"null" json:"form_id"`
 	// Informational warnings (e.g. incompatible fields stripped for ACE). Empty if none.
 	Warnings []string `json:"warnings,omitempty"`
 	// An ISO-8601 timestamp representation of entity creation date.

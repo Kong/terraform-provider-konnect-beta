@@ -44,6 +44,10 @@ const (
 		  destination = {
 				id = konnect_event_gateway_backend_cluster.my_event_gateway_backend_cluster.id
 		  }
+
+		  lifecycle {
+				ignore_changes = [labels, topic_aliases, destination]
+		  }
 		}
 	`
 )
@@ -552,6 +556,131 @@ func TestEventGatewayReusable(t *testing.T) {
 					Check: resource.ComposeAggregateTestCheckFunc(resource.TestCheckResourceAttr("konnect_event_gateway_consume_policy_schema_validation.test_schema_validation_policy", "labels.%", "2"),
 						resource.TestCheckResourceAttr("konnect_event_gateway_consume_policy_schema_validation.test_schema_validation_policy", "labels.env", "test"),
 						resource.TestCheckResourceAttr("konnect_event_gateway_consume_policy_schema_validation.test_schema_validation_policy", "labels.validation", "strict"),
+					),
+				},
+			},
+		})
+	})
+
+	t.Run("EGW Consume Policy Decrypt Fields", func(t *testing.T) {
+		builder := hclbuilder.NewWithProvider(
+			hclbuilder.KonnectBeta,
+			fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort),
+		)
+		builder.ProviderProperty = hclbuilder.KonnectBeta
+
+		egwCp, err := hclbuilder.FromString(eventGatewayCP)
+		require.NoError(t, err)
+
+		backendCluster, err := hclbuilder.FromString(eventGatewayBackendCluster)
+		require.NoError(t, err)
+		backendCluster.AddAttribute("gateway_id", egwCp.ResourcePath()+".id")
+
+		virtualCluster, err := hclbuilder.FromString(eventGatewayVirtualCluster)
+		require.NoError(t, err)
+		virtualCluster.AddAttribute("gateway_id", egwCp.ResourcePath()+".id")
+
+		staticKey, err := hclbuilder.FromString(`
+			resource "konnect_event_gateway_static_key" "test_consume_decrypt_fields_key" {
+				name  = "test-consume-decrypt-fields-key"
+				value = "$${vault.env[\"MY_ENV_VAR\"]}"
+			}
+		`)
+		require.NoError(t, err)
+		staticKey.AddAttribute("gateway_id", egwCp.ResourcePath()+".id")
+
+		consumePolicySchemaValidationParent, err := hclbuilder.FromString(`
+			resource "konnect_event_gateway_consume_policy_schema_validation" "test_consume_schema_validation_parent_for_decrypt_fields" {
+				name        = "test-consume-schema-validation-parent-for-decrypt-fields"
+				description = "Parent consume schema validation policy"
+				enabled     = true
+				condition   = "context.topic.name == 'validated-topic'"
+
+				config = {
+					type                    = "json"
+					key_validation_action   = "mark"
+					value_validation_action = "skip"
+				}
+			}
+		`)
+		require.NoError(t, err)
+		consumePolicySchemaValidationParent.AddAttribute("gateway_id", egwCp.ResourcePath()+".id")
+		consumePolicySchemaValidationParent.AddAttribute("virtual_cluster_id", virtualCluster.ResourcePath()+".id")
+
+		consumePolicyDecryptFields, err := hclbuilder.FromString(`
+			resource "konnect_event_gateway_consume_policy_decrypt_fields" "test_consume_decrypt_fields_policy" {
+				name        = "test-consume-decrypt-fields-policy"
+				description = "Test consume decrypt fields policy"
+				condition   = "record.value.content.foo.bar == \"a-value\""
+				enabled     = false
+
+				config = {
+					decrypt_fields = {
+						paths = {
+							array_of_event_gateway_parsed_record_field_paths_array = [
+								{
+									match = "credentials.password"
+								}
+							]
+						}
+					}
+					failure_mode = "mark"
+					key_sources = [
+						{
+							static = {
+								name = "test-consume-decrypt-fields-key"
+							}
+						}
+					]
+				}
+			}
+		`)
+		require.NoError(t, err)
+		consumePolicyDecryptFields.AddAttribute("gateway_id", egwCp.ResourcePath()+".id")
+		consumePolicyDecryptFields.AddAttribute("virtual_cluster_id", virtualCluster.ResourcePath()+".id")
+		consumePolicyDecryptFields.AddAttribute("parent_policy_id", consumePolicySchemaValidationParent.ResourcePath()+".id")
+
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					Config: builder.Upsert(egwCp).Upsert(backendCluster).Upsert(virtualCluster).Upsert(staticKey).
+						Upsert(consumePolicySchemaValidationParent).Upsert(consumePolicyDecryptFields).Build(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectResourceAction("konnect_event_gateway_consume_policy_decrypt_fields.test_consume_decrypt_fields_policy", plancheck.ResourceActionCreate),
+						},
+					},
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_event_gateway_consume_policy_decrypt_fields.test_consume_decrypt_fields_policy", "enabled", "false"),
+						resource.TestCheckResourceAttr("konnect_event_gateway_consume_policy_decrypt_fields.test_consume_decrypt_fields_policy", "config.failure_mode", "mark"),
+						resource.TestCheckResourceAttr("konnect_event_gateway_consume_policy_decrypt_fields.test_consume_decrypt_fields_policy", "config.decrypt_fields.paths.array_of_event_gateway_parsed_record_field_paths_array.0.match", "credentials.password"),
+					),
+				},
+				{
+					Config: builder.Upsert(egwCp).Upsert(backendCluster).Upsert(virtualCluster).Upsert(staticKey).
+						Upsert(consumePolicySchemaValidationParent).Upsert(consumePolicyDecryptFields).Build(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectEmptyPlan(),
+						},
+					},
+				},
+				{
+					Config: builder.Upsert(egwCp).Upsert(backendCluster).Upsert(virtualCluster).Upsert(staticKey).
+						Upsert(consumePolicySchemaValidationParent).Upsert(
+						consumePolicyDecryptFields.
+							AddAttribute("enabled", "true").
+							AddAttribute("description", "Updated consume decrypt fields policy"),
+					).Build(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectResourceAction("konnect_event_gateway_consume_policy_decrypt_fields.test_consume_decrypt_fields_policy", plancheck.ResourceActionUpdate),
+						},
+					},
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_event_gateway_consume_policy_decrypt_fields.test_consume_decrypt_fields_policy", "enabled", "true"),
+						resource.TestCheckResourceAttr("konnect_event_gateway_consume_policy_decrypt_fields.test_consume_decrypt_fields_policy", "description", "Updated consume decrypt fields policy"),
 					),
 				},
 			},
@@ -1563,6 +1692,166 @@ EOF
 							"description",
 							"updated schema validation policy",
 						),
+					),
+				},
+			},
+		})
+	})
+
+	t.Run("EGW Produce Policy Encrypt Fields", func(t *testing.T) {
+		builder := hclbuilder.NewWithProvider(
+			hclbuilder.KonnectBeta,
+			fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort),
+		)
+		builder.ProviderProperty = hclbuilder.KonnectBeta
+
+		egwCp, err := hclbuilder.FromString(eventGatewayCP)
+		require.NoError(t, err)
+
+		backendCluster, err := hclbuilder.FromString(eventGatewayBackendCluster)
+		require.NoError(t, err)
+		backendCluster.AddAttribute("gateway_id", egwCp.ResourcePath()+".id")
+
+		virtualCluster, err := hclbuilder.FromString(eventGatewayVirtualCluster)
+		require.NoError(t, err)
+		virtualCluster.AddAttribute("gateway_id", egwCp.ResourcePath()+".id")
+
+		schemaRegistry, err := hclbuilder.FromString(`
+			resource "konnect_event_gateway_schema_registry" "test_schema_registry_for_encrypt_fields" {
+				confluent = {
+					name        = "schema-registry-for-encrypt-fields"
+					description = "schema registry for encrypt fields"
+
+					config = {
+						endpoint        = "https://key-hovercraft.com"
+						schema_type     = "avro"
+						timeout_seconds = 8
+
+						authentication = {
+							basic = {
+								username = "test-user"
+								password = "$${vault.env['MY_ENV_VAR']}"
+							}
+						}
+					}
+				}
+			}
+		`)
+		require.NoError(t, err)
+		schemaRegistry.AddAttribute("gateway_id", egwCp.ResourcePath()+".id")
+
+		producePolicySchemaValidationParent, err := hclbuilder.FromString(`
+			resource "konnect_event_gateway_produce_policy_schema_validation" "test_produce_schema_validation_parent_for_encrypt_fields" {
+				name        = "test-produce-schema-validation-parent-for-encrypt-fields"
+				description = "Parent produce schema validation policy"
+				enabled     = true
+				condition   = "context.topic.name.endsWith('my_suffix')"
+
+				config = {
+					confluent_schema_registry = {
+						key_validation_action   = "reject"
+						value_validation_action = "reject"
+
+						schema_registry = {
+							id = konnect_event_gateway_schema_registry.test_schema_registry_for_encrypt_fields.id
+						}
+					}
+				}
+			}
+		`)
+		require.NoError(t, err)
+		producePolicySchemaValidationParent.AddAttribute("gateway_id", egwCp.ResourcePath()+".id")
+		producePolicySchemaValidationParent.AddAttribute("virtual_cluster_id", virtualCluster.ResourcePath()+".id")
+		producePolicySchemaValidationParent.AddAttribute(
+			"depends_on",
+			`[konnect_event_gateway_schema_registry.test_schema_registry_for_encrypt_fields]`,
+		)
+
+		staticKey, err := hclbuilder.FromString(`
+			resource "konnect_event_gateway_static_key" "test_produce_encrypt_fields_key" {
+				name  = "test-produce-encrypt-fields-key"
+				value = "$${vault.env[\"MY_ENV_VAR\"]}"
+			}
+		`)
+		require.NoError(t, err)
+		staticKey.AddAttribute("gateway_id", egwCp.ResourcePath()+".id")
+
+		producePolicyEncryptFields, err := hclbuilder.FromString(`
+			resource "konnect_event_gateway_produce_policy_encrypt_fields" "test_produce_encrypt_fields_policy" {
+				name        = "test-produce-encrypt-fields-policy"
+				description = "Test produce encrypt fields policy"
+				condition   = "record.value.content.foo.bar == \"a-value\""
+				enabled     = true
+
+				config = {
+					encrypt_fields = [
+						{
+							encryption_key = {
+								static = {
+									key = {
+										id = konnect_event_gateway_static_key.test_produce_encrypt_fields_key.id
+									}
+								}
+							}
+							paths = {
+								array_of_event_gateway_parsed_record_field_paths_array = [
+									{
+										match = "credentials.password"
+									}
+								]
+							}
+						}
+					]
+					failure_mode = "mark"
+				}
+			}
+		`)
+		require.NoError(t, err)
+		producePolicyEncryptFields.AddAttribute("gateway_id", egwCp.ResourcePath()+".id")
+		producePolicyEncryptFields.AddAttribute("virtual_cluster_id", virtualCluster.ResourcePath()+".id")
+		producePolicyEncryptFields.AddAttribute("parent_policy_id", producePolicySchemaValidationParent.ResourcePath()+".id")
+
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					Config: builder.Upsert(egwCp).Upsert(backendCluster).Upsert(virtualCluster).Upsert(schemaRegistry).
+						Upsert(producePolicySchemaValidationParent).Upsert(staticKey).Upsert(producePolicyEncryptFields).Build(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectResourceAction("konnect_event_gateway_produce_policy_encrypt_fields.test_produce_encrypt_fields_policy", plancheck.ResourceActionCreate),
+						},
+					},
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_event_gateway_produce_policy_encrypt_fields.test_produce_encrypt_fields_policy", "enabled", "true"),
+						resource.TestCheckResourceAttr("konnect_event_gateway_produce_policy_encrypt_fields.test_produce_encrypt_fields_policy", "config.failure_mode", "mark"),
+						resource.TestCheckResourceAttr("konnect_event_gateway_produce_policy_encrypt_fields.test_produce_encrypt_fields_policy", "config.encrypt_fields.0.paths.array_of_event_gateway_parsed_record_field_paths_array.0.match", "credentials.password"),
+					),
+				},
+				{
+					Config: builder.Upsert(egwCp).Upsert(backendCluster).Upsert(virtualCluster).Upsert(schemaRegistry).
+						Upsert(producePolicySchemaValidationParent).Upsert(staticKey).Upsert(producePolicyEncryptFields).Build(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectEmptyPlan(),
+						},
+					},
+				},
+				{
+					Config: builder.Upsert(egwCp).Upsert(backendCluster).Upsert(virtualCluster).Upsert(schemaRegistry).
+						Upsert(producePolicySchemaValidationParent).Upsert(staticKey).Upsert(
+						producePolicyEncryptFields.
+							AddAttribute("enabled", "false").
+							AddAttribute("description", "Updated produce encrypt fields policy"),
+					).Build(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectResourceAction("konnect_event_gateway_produce_policy_encrypt_fields.test_produce_encrypt_fields_policy", plancheck.ResourceActionUpdate),
+						},
+					},
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_event_gateway_produce_policy_encrypt_fields.test_produce_encrypt_fields_policy", "enabled", "false"),
+						resource.TestCheckResourceAttr("konnect_event_gateway_produce_policy_encrypt_fields.test_produce_encrypt_fields_policy", "description", "Updated produce encrypt fields policy"),
 					),
 				},
 			},

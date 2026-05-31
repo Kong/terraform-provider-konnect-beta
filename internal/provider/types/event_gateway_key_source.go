@@ -3,6 +3,6 @@
 package types
 
 type EventGatewayKeySource struct {
-	Aws    *RawProviderConfig `queryParam:"inline" tfsdk:"aws"`
-	Static *RawProviderConfig `queryParam:"inline" tfsdk:"static"`
+	Aws    *RawAPISpecProviderConfig `queryParam:"inline" tfsdk:"aws"`
+	Static *RawAPISpecProviderConfig `queryParam:"inline" tfsdk:"static"`
 }

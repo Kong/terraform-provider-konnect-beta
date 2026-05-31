@@ -102,7 +102,7 @@ func (r *MeshGatewayResourceModel) RefreshFromSharedMeshGatewayItem(ctx context.
 					if listenersItem.TLS.Options == nil {
 						listeners.TLS.Options = nil
 					} else {
-						listeners.TLS.Options = &tfTypes.RawProviderConfig{}
+						listeners.TLS.Options = &tfTypes.RawAPISpecProviderConfig{}
 					}
 				}
 

@@ -171,7 +171,7 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					objectplanmodifier.RequiresReplaceIfConfigured(),
 				},
 				Attributes: map[string]schema.Attribute{
-					"content_payload": schema.SingleNestedAttribute{
+					"api_spec_content_payload": schema.SingleNestedAttribute{
 						Optional: true,
 						PlanModifiers: []planmodifier.Object{
 							objectplanmodifier.RequiresReplaceIfConfigured(),
@@ -188,11 +188,11 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 						Description: `The raw content of API specification, in json or yaml format (OpenAPI or AsyncAPI). Requires replacement if changed.`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
-								path.MatchRelative().AtParent().AtName("provider_payload"),
+								path.MatchRelative().AtParent().AtName("api_spec_provider_payload"),
 							}...),
 						},
 					},
-					"provider_payload": schema.SingleNestedAttribute{
+					"api_spec_provider_payload": schema.SingleNestedAttribute{
 						Optional: true,
 						PlanModifiers: []planmodifier.Object{
 							objectplanmodifier.RequiresReplaceIfConfigured(),
@@ -204,7 +204,7 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 									objectplanmodifier.RequiresReplaceIfConfigured(),
 								},
 								Attributes: map[string]schema.Attribute{
-									"integration_provider": schema.SingleNestedAttribute{
+									"integration_api_spec_provider_payload": schema.SingleNestedAttribute{
 										Optional: true,
 										PlanModifiers: []planmodifier.Object{
 											objectplanmodifier.RequiresReplaceIfConfigured(),
@@ -248,12 +248,12 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 											`Requires replacement if changed.`,
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
-												path.MatchRelative().AtParent().AtName("resource_bound_integration_provider"),
-												path.MatchRelative().AtParent().AtName("url_provider"),
+												path.MatchRelative().AtParent().AtName("resource_bound_integration_api_spec_provider_payload"),
+												path.MatchRelative().AtParent().AtName("urlapi_spec_provider"),
 											}...),
 										},
 									},
-									"resource_bound_integration_provider": schema.SingleNestedAttribute{
+									"resource_bound_integration_api_spec_provider_payload": schema.SingleNestedAttribute{
 										Optional: true,
 										PlanModifiers: []planmodifier.Object{
 											objectplanmodifier.RequiresReplaceIfConfigured(),
@@ -299,12 +299,12 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 											`Requires replacement if changed.`,
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
-												path.MatchRelative().AtParent().AtName("integration_provider"),
-												path.MatchRelative().AtParent().AtName("url_provider"),
+												path.MatchRelative().AtParent().AtName("integration_api_spec_provider_payload"),
+												path.MatchRelative().AtParent().AtName("urlapi_spec_provider"),
 											}...),
 										},
 									},
-									"url_provider": schema.SingleNestedAttribute{
+									"urlapi_spec_provider": schema.SingleNestedAttribute{
 										Optional: true,
 										PlanModifiers: []planmodifier.Object{
 											objectplanmodifier.RequiresReplaceIfConfigured(),
@@ -342,8 +342,8 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 										Description: `Requires replacement if changed.`,
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
-												path.MatchRelative().AtParent().AtName("integration_provider"),
-												path.MatchRelative().AtParent().AtName("resource_bound_integration_provider"),
+												path.MatchRelative().AtParent().AtName("integration_api_spec_provider_payload"),
+												path.MatchRelative().AtParent().AtName("resource_bound_integration_api_spec_provider_payload"),
 											}...),
 										},
 									},
@@ -354,7 +354,7 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 						Description: `Represent spec provider information used for fetching the API spec. For raw, provide the raw content in the ` + "`" + `content` + "`" + ` property instead of using this provider. Requires replacement if changed.`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
-								path.MatchRelative().AtParent().AtName("content_payload"),
+								path.MatchRelative().AtParent().AtName("api_spec_content_payload"),
 							}...),
 						},
 					},
