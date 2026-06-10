@@ -34,6 +34,7 @@ func (r *PortalResourceModel) RefreshFromSharedPortalResponse(ctx context.Contex
 			}
 		}
 		r.Name = types.StringValue(resp.Name)
+		r.NotificationsDeveloperPiiVisibilityEnabled = types.BoolPointerValue(resp.NotificationsDeveloperPiiVisibilityEnabled)
 		r.RbacEnabled = types.BoolPointerValue(resp.RbacEnabled)
 		r.SiprEnabled = types.BoolPointerValue(resp.SiprEnabled)
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
@@ -175,6 +176,12 @@ func (r *PortalResourceModel) ToSharedCreatePortal(ctx context.Context) (*shared
 			labels[labelsKey] = labelsInst
 		}
 	}
+	notificationsDeveloperPiiVisibilityEnabled := new(bool)
+	if !r.NotificationsDeveloperPiiVisibilityEnabled.IsUnknown() && !r.NotificationsDeveloperPiiVisibilityEnabled.IsNull() {
+		*notificationsDeveloperPiiVisibilityEnabled = r.NotificationsDeveloperPiiVisibilityEnabled.ValueBool()
+	} else {
+		notificationsDeveloperPiiVisibilityEnabled = nil
+	}
 	createDefaultContent := new(bool)
 	if !r.CreateDefaultContent.IsUnknown() && !r.CreateDefaultContent.IsNull() {
 		*createDefaultContent = r.CreateDefaultContent.ValueBool()
@@ -194,7 +201,8 @@ func (r *PortalResourceModel) ToSharedCreatePortal(ctx context.Context) (*shared
 		AutoApproveDevelopers:            autoApproveDevelopers,
 		AutoApproveApplications:          autoApproveApplications,
 		Labels:                           labels,
-		CreateDefaultContent:             createDefaultContent,
+		NotificationsDeveloperPiiVisibilityEnabled: notificationsDeveloperPiiVisibilityEnabled,
+		CreateDefaultContent:                       createDefaultContent,
 	}
 
 	return &out, diags
@@ -282,6 +290,12 @@ func (r *PortalResourceModel) ToSharedUpdatePortal(ctx context.Context) (*shared
 			labels[labelsKey] = labelsInst
 		}
 	}
+	notificationsDeveloperPiiVisibilityEnabled := new(bool)
+	if !r.NotificationsDeveloperPiiVisibilityEnabled.IsUnknown() && !r.NotificationsDeveloperPiiVisibilityEnabled.IsNull() {
+		*notificationsDeveloperPiiVisibilityEnabled = r.NotificationsDeveloperPiiVisibilityEnabled.ValueBool()
+	} else {
+		notificationsDeveloperPiiVisibilityEnabled = nil
+	}
 	out := shared.UpdatePortal{
 		Name:                             name,
 		DisplayName:                      displayName,
@@ -295,6 +309,7 @@ func (r *PortalResourceModel) ToSharedUpdatePortal(ctx context.Context) (*shared
 		AutoApproveDevelopers:            autoApproveDevelopers,
 		AutoApproveApplications:          autoApproveApplications,
 		Labels:                           labels,
+		NotificationsDeveloperPiiVisibilityEnabled: notificationsDeveloperPiiVisibilityEnabled,
 	}
 
 	return &out, diags

@@ -17,11 +17,14 @@ resource "konnect_event_gateway_consume_policy_schema_validation" "my_eventgatew
   provider = konnect-beta
   condition = "context.topic.name.endsWith(\"my_suffix\") && record.headers[\"x-flag\"] == \"a-value\""
   config = {
+    failure_mode          = "skip"
     key_validation_action = "mark"
     schema_registry = {
       id = "e1881384-290f-443c-a5bd-ed6f2e53d539"
     }
     type                    = "json"
+    validate_key            = false
+    validate_value          = true
     value_validation_action = "mark"
   }
   description = ""
@@ -73,13 +76,31 @@ possible known values include one of ["confluent_schema_registry", "json"]
 
 Optional:
 
-- `key_validation_action` (String) Defines a behavior when record key is not valid.
+- `failure_mode` (String) Describes how to handle a failure in a policy applied to consumed records.
+* `error` - the batch is not delivered to the client. Use sparingly: erroring on a batch causes clients to get stuck on the problematic offset and requires manual intervention to skip it.
+* `skip` - the record is not delivered to the client.
+* `passthrough` - passes the record to the client even though policy execution failed.
+* `mark` - passes the record to the client but marks it with a `kong/policy-failure-<id>` header whose value is the reason for the policy failure (truncated to 512 characters).
+
+**Requires a minimum runtime version of `1.2`**.
+possible known values include one of ["error", "skip", "passthrough", "mark"]
+- `key_validation_action` (String, Deprecated) Deprecated. Use `failure_mode`.
+
+Defines a behavior when record key is not valid.
 * mark - marks a record with kong/server header and client ID value
   to help to identify the clients violating schema.
 * skip - skips delivering a record.
 possible known values include one of ["mark", "skip"]
 - `schema_registry` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry))
-- `value_validation_action` (String) Defines a behavior when record value is not valid.
+- `validate_key` (Boolean) If true, validate the record key.
+
+**Requires a minimum runtime version of `1.2`**.
+- `validate_value` (Boolean) If true, validate the record value.
+
+**Requires a minimum runtime version of `1.2`**.
+- `value_validation_action` (String, Deprecated) Deprecated. Use `failure_mode`.
+
+Defines a behavior when record value is not valid.
 * mark - marks a record with kong/server header and client ID value
   to help to identify the clients violating schema.
 * skip - skips delivering a record.

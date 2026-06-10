@@ -2,11 +2,14 @@ resource "konnect_event_gateway_consume_policy_schema_validation" "my_eventgatew
   provider = konnect-beta
   condition = "context.topic.name.endsWith(\"my_suffix\") && record.headers[\"x-flag\"] == \"a-value\""
   config = {
+    failure_mode          = "skip"
     key_validation_action = "mark"
     schema_registry = {
       id = "e1881384-290f-443c-a5bd-ed6f2e53d539"
     }
     type                    = "json"
+    validate_key            = false
+    validate_value          = true
     value_validation_action = "mark"
   }
   description = ""
