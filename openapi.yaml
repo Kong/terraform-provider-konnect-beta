@@ -31305,6 +31305,17 @@ components:
       required:
         - failure_mode
         - encrypt_fields
+    EventGatewayParsedRecordEncryptionSelector:
+      description: Selects fields of a parsed record for encryption and defines what key to encrypt them with.
+      type: object
+      properties:
+        encryption_key:
+          $ref: '#/components/schemas/EncryptionKey'
+        paths:
+          $ref: '#/components/schemas/EventGatewayParsedRecordFieldPathsArray'
+      required:
+        - paths
+        - encryption_key
     EventGatewayParsedRecordFieldPathsArray:
       type: array
       items:
@@ -31660,6 +31671,14 @@ components:
         - failure_mode
         - key_sources
         - decrypt_fields
+    EventGatewayParsedRecordDecryptionSelector:
+      description: Selects fields of a parsed record for decryption.
+      type: object
+      properties:
+        paths:
+          $ref: '#/components/schemas/EventGatewayParsedRecordFieldPathsArray'
+      required:
+        - paths
     EventGatewayModifyHeadersPolicy:
       description: A policy that modifies headers for requests.
       type: object
@@ -33671,46 +33690,6 @@ components:
           type: boolean
           nullable: false
       additionalProperties: false
-    EventGatewayParsedRecordEncryptionSelector:
-      description: Selects fields of a parsed record for encryption and defines what key to encrypt them with.
-      type: object
-      properties:
-        paths_expression:
-          description: |
-            This expression should evaluate to an array of exact field paths,
-            equivalent to the `match` values in the array variant.
-          type: string
-          example: |
-            ${context.auth.type == 'sasl_oauth_bearer' ? ['credentials.accessToken', 'credentials.refreshToken'] : ['credentials.password']}
-          x-speakeasy-param-computed: false
-        paths:
-          $ref: '#/components/schemas/EventGatewayParsedRecordFieldPathsArray'
-        encryption_key:
-          $ref: '#/components/schemas/EncryptionKey'
-      required:
-        - encryption_key
-      x-speakeasy-transform-from-api:
-        jq: if (.paths | type) == "string" then .paths_expression = .paths | del(.paths) else . end
-      x-speakeasy-transform-to-api:
-        jq: if (.paths_expression | type) == "string" then .paths = .paths_expression | del(.paths_expression) else . end
-    EventGatewayParsedRecordDecryptionSelector:
-      description: Selects fields of a parsed record for decryption.
-      type: object
-      properties:
-        paths_expression:
-          description: |
-            This expression should evaluate to an array of exact field paths,
-            equivalent to the `match` values in the array variant.
-          type: string
-          example: |
-            ${context.auth.type == 'sasl_oauth_bearer' ? ['credentials.accessToken', 'credentials.refreshToken'] : ['credentials.password']}
-          x-speakeasy-param-computed: false
-        paths:
-          $ref: '#/components/schemas/EventGatewayParsedRecordFieldPathsArray'
-      x-speakeasy-transform-from-api:
-        jq: if (.paths | type) == "string" then .paths_expression = .paths | del(.paths) else . end
-      x-speakeasy-transform-to-api:
-        jq: if (.paths_expression | type) == "string" then .paths = .paths_expression | del(.paths_expression) else . end
   requestBodies:
     CreatePortalCustomDomain:
       description: Create a portal custom domain.
