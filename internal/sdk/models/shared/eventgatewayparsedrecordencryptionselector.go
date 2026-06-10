@@ -2,58 +2,12 @@
 
 package shared
 
-import (
-	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
-)
-
 // EventGatewayParsedRecordEncryptionSelector - Selects fields of a parsed record for encryption and defines what key to encrypt them with.
 type EventGatewayParsedRecordEncryptionSelector struct {
-	// This expression should evaluate to an array of exact field paths,
-	// equivalent to the `match` values in the array variant.
-	//
-	PathsExpression *string                                   `json:"paths_expression,omitempty"`
-	Paths           []EventGatewayParsedRecordFieldPathsArray `json:"paths,omitempty"`
 	// The key to use for encryption.
 	//
-	EncryptionKey EncryptionKey `json:"encryption_key"`
-}
-
-func (e EventGatewayParsedRecordEncryptionSelector) MarshalJSON() ([]byte, error) {
-	jsonBytes, err := utils.MarshalJSON(e, "", false)
-	if err != nil {
-		return nil, err
-	}
-	out, err := utils.RunJQBytes(jsonBytes, "if (.paths_expression | type) == \"string\" then .paths = .paths_expression | del(.paths_expression) else . end")
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (e *EventGatewayParsedRecordEncryptionSelector) UnmarshalJSON(data []byte) error {
-	if out, err := utils.RunJQBytes(data, "if (.paths | type) == \"string\" then .paths_expression = .paths | del(.paths) else . end"); err != nil {
-		return err
-	} else {
-		data = out
-	}
-	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (e *EventGatewayParsedRecordEncryptionSelector) GetPathsExpression() *string {
-	if e == nil {
-		return nil
-	}
-	return e.PathsExpression
-}
-
-func (e *EventGatewayParsedRecordEncryptionSelector) GetPaths() []EventGatewayParsedRecordFieldPathsArray {
-	if e == nil {
-		return nil
-	}
-	return e.Paths
+	EncryptionKey EncryptionKey                             `json:"encryption_key"`
+	Paths         []EventGatewayParsedRecordFieldPathsArray `json:"paths"`
 }
 
 func (e *EventGatewayParsedRecordEncryptionSelector) GetEncryptionKey() EncryptionKey {
@@ -69,4 +23,11 @@ func (e *EventGatewayParsedRecordEncryptionSelector) GetEncryptionKeyAws() *Encr
 
 func (e *EventGatewayParsedRecordEncryptionSelector) GetEncryptionKeyStatic() *EncryptionKeyStatic {
 	return e.GetEncryptionKey().EncryptionKeyStatic
+}
+
+func (e *EventGatewayParsedRecordEncryptionSelector) GetPaths() []EventGatewayParsedRecordFieldPathsArray {
+	if e == nil {
+		return []EventGatewayParsedRecordFieldPathsArray{}
+	}
+	return e.Paths
 }

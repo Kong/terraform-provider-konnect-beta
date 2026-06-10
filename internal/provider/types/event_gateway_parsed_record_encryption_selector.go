@@ -2,12 +2,7 @@
 
 package types
 
-import (
-	"github.com/hashicorp/terraform-plugin-framework/types"
-)
-
 type EventGatewayParsedRecordEncryptionSelector struct {
-	EncryptionKey   *EncryptionKey                `tfsdk:"encryption_key"`
-	Paths           []EventGatewayACLResourceName `tfsdk:"paths"`
-	PathsExpression types.String                  `tfsdk:"paths_expression"`
+	EncryptionKey *EncryptionKey                `tfsdk:"encryption_key"`
+	Paths         []EventGatewayACLResourceName `tfsdk:"paths"`
 }

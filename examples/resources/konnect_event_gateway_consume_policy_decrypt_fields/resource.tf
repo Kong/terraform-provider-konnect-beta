@@ -8,7 +8,6 @@ resource "konnect_event_gateway_consume_policy_decrypt_fields" "my_eventgatewayc
           match = "someObject.someArray[1].fieldName"
         }
       ]
-      paths_expression = "$${context.auth.type == 'sasl_oauth_bearer' ? ['credentials.accessToken', 'credentials.refreshToken'] : ['credentials.password']}\n"
     }
     failure_mode = "mark"
     key_sources = [

@@ -83,7 +83,7 @@ func (r *EventGatewayConsumePolicyDecryptFieldsResource) Schema(ctx context.Cont
 						Required: true,
 						Attributes: map[string]schema.Attribute{
 							"paths": schema.ListNestedAttribute{
-								Optional: true,
+								Required: true,
 								NestedObject: schema.NestedAttributeObject{
 									Attributes: map[string]schema.Attribute{
 										"match": schema.StringAttribute{
@@ -97,11 +97,6 @@ func (r *EventGatewayConsumePolicyDecryptFieldsResource) Schema(ctx context.Cont
 								Validators: []validator.List{
 									listvalidator.SizeAtMost(50),
 								},
-							},
-							"paths_expression": schema.StringAttribute{
-								Optional: true,
-								MarkdownDescription: `This expression should evaluate to an array of exact field paths,` + "\n" +
-									`equivalent to the ` + "`" + `match` + "`" + ` values in the array variant.`,
 							},
 						},
 						Description: `Selects fields of a parsed record for decryption.`,

@@ -187,12 +187,6 @@ func (r *EventGatewayConsumePolicyDecryptFieldsResourceModel) ToSharedEventGatew
 			})
 		}
 	}
-	pathsExpression := new(string)
-	if !r.Config.DecryptFields.PathsExpression.IsUnknown() && !r.Config.DecryptFields.PathsExpression.IsNull() {
-		*pathsExpression = r.Config.DecryptFields.PathsExpression.ValueString()
-	} else {
-		pathsExpression = nil
-	}
 	paths := make([]shared.EventGatewayParsedRecordFieldPathsArray, 0, len(r.Config.DecryptFields.Paths))
 	for pathsIndex := range r.Config.DecryptFields.Paths {
 		var match string
@@ -203,8 +197,7 @@ func (r *EventGatewayConsumePolicyDecryptFieldsResourceModel) ToSharedEventGatew
 		})
 	}
 	decryptFields := shared.EventGatewayParsedRecordDecryptionSelector{
-		PathsExpression: pathsExpression,
-		Paths:           paths,
+		Paths: paths,
 	}
 	config := shared.EventGatewayParsedRecordDecryptFieldsConfig{
 		FailureMode:   failureMode,
@@ -276,12 +269,6 @@ func (r *EventGatewayConsumePolicyDecryptFieldsResourceModel) ToSharedEventGatew
 			})
 		}
 	}
-	pathsExpression := new(string)
-	if !r.Config.DecryptFields.PathsExpression.IsUnknown() && !r.Config.DecryptFields.PathsExpression.IsNull() {
-		*pathsExpression = r.Config.DecryptFields.PathsExpression.ValueString()
-	} else {
-		pathsExpression = nil
-	}
 	paths := make([]shared.EventGatewayParsedRecordFieldPathsArray, 0, len(r.Config.DecryptFields.Paths))
 	for pathsIndex := range r.Config.DecryptFields.Paths {
 		var match string
@@ -292,8 +279,7 @@ func (r *EventGatewayConsumePolicyDecryptFieldsResourceModel) ToSharedEventGatew
 		})
 	}
 	decryptFields := shared.EventGatewayParsedRecordDecryptionSelector{
-		PathsExpression: pathsExpression,
-		Paths:           paths,
+		Paths: paths,
 	}
 	config := shared.EventGatewayParsedRecordDecryptFieldsConfig{
 		FailureMode:   failureMode,

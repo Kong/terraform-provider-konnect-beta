@@ -173,21 +173,6 @@ func (r *EventGatewayProducePolicyEncryptFieldsResourceModel) ToSharedEventGatew
 	failureMode := shared.ProduceFailureMode(r.Config.FailureMode.ValueString())
 	encryptFields := make([]shared.EventGatewayParsedRecordEncryptionSelector, 0, len(r.Config.EncryptFields))
 	for encryptFieldsIndex := range r.Config.EncryptFields {
-		pathsExpression := new(string)
-		if !r.Config.EncryptFields[encryptFieldsIndex].PathsExpression.IsUnknown() && !r.Config.EncryptFields[encryptFieldsIndex].PathsExpression.IsNull() {
-			*pathsExpression = r.Config.EncryptFields[encryptFieldsIndex].PathsExpression.ValueString()
-		} else {
-			pathsExpression = nil
-		}
-		paths := make([]shared.EventGatewayParsedRecordFieldPathsArray, 0, len(r.Config.EncryptFields[encryptFieldsIndex].Paths))
-		for pathsIndex := range r.Config.EncryptFields[encryptFieldsIndex].Paths {
-			var match string
-			match = r.Config.EncryptFields[encryptFieldsIndex].Paths[pathsIndex].Match.ValueString()
-
-			paths = append(paths, shared.EventGatewayParsedRecordFieldPathsArray{
-				Match: match,
-			})
-		}
 		var encryptionKey shared.EncryptionKey
 		var encryptionKeyAWS *shared.EncryptionKeyAWS
 		if r.Config.EncryptFields[encryptFieldsIndex].EncryptionKey.Aws != nil {
@@ -220,10 +205,18 @@ func (r *EventGatewayProducePolicyEncryptFieldsResourceModel) ToSharedEventGatew
 				EncryptionKeyStatic: encryptionKeyStatic,
 			}
 		}
+		paths := make([]shared.EventGatewayParsedRecordFieldPathsArray, 0, len(r.Config.EncryptFields[encryptFieldsIndex].Paths))
+		for pathsIndex := range r.Config.EncryptFields[encryptFieldsIndex].Paths {
+			var match string
+			match = r.Config.EncryptFields[encryptFieldsIndex].Paths[pathsIndex].Match.ValueString()
+
+			paths = append(paths, shared.EventGatewayParsedRecordFieldPathsArray{
+				Match: match,
+			})
+		}
 		encryptFields = append(encryptFields, shared.EventGatewayParsedRecordEncryptionSelector{
-			PathsExpression: pathsExpression,
-			Paths:           paths,
-			EncryptionKey:   encryptionKey,
+			EncryptionKey: encryptionKey,
+			Paths:         paths,
 		})
 	}
 	config := shared.EventGatewayParsedRecordEncryptFieldsConfig{
@@ -282,21 +275,6 @@ func (r *EventGatewayProducePolicyEncryptFieldsResourceModel) ToSharedEventGatew
 	failureMode := shared.ProduceFailureMode(r.Config.FailureMode.ValueString())
 	encryptFields := make([]shared.EventGatewayParsedRecordEncryptionSelector, 0, len(r.Config.EncryptFields))
 	for encryptFieldsIndex := range r.Config.EncryptFields {
-		pathsExpression := new(string)
-		if !r.Config.EncryptFields[encryptFieldsIndex].PathsExpression.IsUnknown() && !r.Config.EncryptFields[encryptFieldsIndex].PathsExpression.IsNull() {
-			*pathsExpression = r.Config.EncryptFields[encryptFieldsIndex].PathsExpression.ValueString()
-		} else {
-			pathsExpression = nil
-		}
-		paths := make([]shared.EventGatewayParsedRecordFieldPathsArray, 0, len(r.Config.EncryptFields[encryptFieldsIndex].Paths))
-		for pathsIndex := range r.Config.EncryptFields[encryptFieldsIndex].Paths {
-			var match string
-			match = r.Config.EncryptFields[encryptFieldsIndex].Paths[pathsIndex].Match.ValueString()
-
-			paths = append(paths, shared.EventGatewayParsedRecordFieldPathsArray{
-				Match: match,
-			})
-		}
 		var encryptionKey shared.EncryptionKey
 		var encryptionKeyAWS *shared.EncryptionKeyAWS
 		if r.Config.EncryptFields[encryptFieldsIndex].EncryptionKey.Aws != nil {
@@ -329,10 +307,18 @@ func (r *EventGatewayProducePolicyEncryptFieldsResourceModel) ToSharedEventGatew
 				EncryptionKeyStatic: encryptionKeyStatic,
 			}
 		}
+		paths := make([]shared.EventGatewayParsedRecordFieldPathsArray, 0, len(r.Config.EncryptFields[encryptFieldsIndex].Paths))
+		for pathsIndex := range r.Config.EncryptFields[encryptFieldsIndex].Paths {
+			var match string
+			match = r.Config.EncryptFields[encryptFieldsIndex].Paths[pathsIndex].Match.ValueString()
+
+			paths = append(paths, shared.EventGatewayParsedRecordFieldPathsArray{
+				Match: match,
+			})
+		}
 		encryptFields = append(encryptFields, shared.EventGatewayParsedRecordEncryptionSelector{
-			PathsExpression: pathsExpression,
-			Paths:           paths,
-			EncryptionKey:   encryptionKey,
+			EncryptionKey: encryptionKey,
+			Paths:         paths,
 		})
 	}
 	config := shared.EventGatewayParsedRecordEncryptFieldsConfig{

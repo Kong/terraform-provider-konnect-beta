@@ -23,7 +23,6 @@ resource "konnect_event_gateway_consume_policy_decrypt_fields" "my_eventgatewayc
           match = "someObject.someArray[1].fieldName"
         }
       ]
-      paths_expression = "$${context.auth.type == 'sasl_oauth_bearer' ? ['credentials.accessToken', 'credentials.refreshToken'] : ['credentials.password']}\n"
     }
     failure_mode = "mark"
     key_sources = [
@@ -95,11 +94,9 @@ possible known values include one of ["error", "skip", "passthrough", "mark"]
 <a id="nestedatt--config--decrypt_fields"></a>
 ### Nested Schema for `config.decrypt_fields`
 
-Optional:
+Required:
 
 - `paths` (Attributes List) (see [below for nested schema](#nestedatt--config--decrypt_fields--paths))
-- `paths_expression` (String) This expression should evaluate to an array of exact field paths,
-equivalent to the `match` values in the array variant.
 
 <a id="nestedatt--config--decrypt_fields--paths"></a>
 ### Nested Schema for `config.decrypt_fields.paths`

@@ -16,7 +16,6 @@ resource "konnect_event_gateway_produce_policy_encrypt_fields" "my_eventgatewayp
             match = "someObject.someArray[1].fieldName"
           }
         ]
-        paths_expression = "$${context.auth.type == 'sasl_oauth_bearer' ? ['credentials.accessToken', 'credentials.refreshToken'] : ['credentials.password']}\n"
       }
     ]
     failure_mode = "mark"

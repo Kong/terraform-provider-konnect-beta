@@ -31,7 +31,6 @@ resource "konnect_event_gateway_produce_policy_encrypt_fields" "my_eventgatewayp
             match = "someObject.someArray[1].fieldName"
           }
         ]
-        paths_expression = "$${context.auth.type == 'sasl_oauth_bearer' ? ['credentials.accessToken', 'credentials.refreshToken'] : ['credentials.password']}\n"
       }
     ]
     failure_mode = "mark"
@@ -98,12 +97,7 @@ possible known values include one of ["reject", "passthrough", "mark"]
 Required:
 
 - `encryption_key` (Attributes) The key to use for encryption. (see [below for nested schema](#nestedatt--config--encrypt_fields--encryption_key))
-
-Optional:
-
 - `paths` (Attributes List) (see [below for nested schema](#nestedatt--config--encrypt_fields--paths))
-- `paths_expression` (String) This expression should evaluate to an array of exact field paths,
-equivalent to the `match` values in the array variant.
 
 <a id="nestedatt--config--encrypt_fields--encryption_key"></a>
 ### Nested Schema for `config.encrypt_fields.encryption_key`

@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: 08abbe7d2a30624311f153d22e63b36f
+  docChecksum: c7e822af2cee4f0b49db89c6bda4966f
   docVersion: 2.0.0
   speakeasyVersion: 1.763.0
   generationVersion: 2.884.0
   releaseVersion: 0.18.0
   configChecksum: 86faa775043d98dda8a9e4af2ee1d390
 persistentEdits:
-  generation_id: 590d559e-a540-4d22-9c32-3dfe28c5d34d
-  pristine_commit_hash: 0b705364b8c2861df484f78329fc6703a738ef79
-  pristine_tree_hash: 4f4d03e315de1a3bc61b324da318de4170286c5d
+  generation_id: 7d05b305-7833-4cb9-af24-7c7f016f39ac
+  pristine_commit_hash: 1a6c298b2e0bffcca1bf5750b757822b08d706c0
+  pristine_tree_hash: f478b274236ade0487979fb9b668a033873f7477
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -207,8 +207,8 @@ trackedFiles:
     pristine_git_object: 6f4f974cebd476f298ef34368dd2efa10c146a04
   examples/resources/konnect-beta_event_gateway_consume_policy_decrypt_fields/resource.tf:
     id: a64bbaedf772
-    last_write_checksum: sha1:86bf35683c99b3dcec16d30e7c2502992bfa3c52
-    pristine_git_object: b8d022b360810db410c0becdb75bcb4643291e95
+    last_write_checksum: sha1:430a85480c96c7cf66ff1874218a2978c3c27fc4
+    pristine_git_object: 0dcc9cb33c9b08bff24d013665d91b015c03fe83
   examples/resources/konnect-beta_event_gateway_consume_policy_modify_headers/import-by-string-id.tf:
     id: 2833b783c60f
     last_write_checksum: sha1:7050cfed09d4ff73e341583beb7eed7facd788e4
@@ -315,8 +315,8 @@ trackedFiles:
     pristine_git_object: 4415b1522c83734b9d59bc7b25616e9d44f5069f
   examples/resources/konnect-beta_event_gateway_produce_policy_encrypt_fields/resource.tf:
     id: 6fa2ea6aac89
-    last_write_checksum: sha1:00777ba8afa6aed5fb35e616878349fd0244d282
-    pristine_git_object: 3e7d689f5ba0ff8df2d7a0c1e7671ce9561b4967
+    last_write_checksum: sha1:284d2d07433f364d354bef8ab958cda5002c6be0
+    pristine_git_object: 674054f4d67729977169bdc1df5755465b56de02
   examples/resources/konnect-beta_event_gateway_produce_policy_modify_headers/import-by-string-id.tf:
     id: bb9587b41c3e
     last_write_checksum: sha1:4d9f8728b9ee50c0018a77acf03175bc76516d89
@@ -1231,12 +1231,12 @@ trackedFiles:
     pristine_git_object: f7a4910140ac4216ab2c011ad58629c886141604
   internal/provider/eventgatewayconsumepolicydecryptfields_resource.go:
     id: 5f29d35673c8
-    last_write_checksum: sha1:d54475efd82ad46b53277c415386e6191ff2a4c2
-    pristine_git_object: 45401216c1a1e8b638c4ed26df5e64b09ed5f8e3
+    last_write_checksum: sha1:7d33e71121a02fafa20bd6d9fd3e8b642dbe0f87
+    pristine_git_object: f15306b39eab2638738420c8a7e86aadcd51570e
   internal/provider/eventgatewayconsumepolicydecryptfields_resource_sdk.go:
     id: 0fe9a0bc82d3
-    last_write_checksum: sha1:4ba909c54eb77b4da70345c1d6fa0ee2c28a7d69
-    pristine_git_object: 0c57a915ca2b35afe0cf7db244a25f1a4f95b6ae
+    last_write_checksum: sha1:050d33f3095bc0e0bec459a6dbb016f28265706b
+    pristine_git_object: 78a9a07b63555bd5c2d12f1859a86bf61877452a
   internal/provider/eventgatewayconsumepolicymodifyheaders_resource.go:
     id: ca46291e305b
     last_write_checksum: sha1:904e4d930c221eb7317b316b6abcca5926b8164e
@@ -1303,12 +1303,12 @@ trackedFiles:
     pristine_git_object: b1b2eb3625abb8cb5ee24b87bcee5ec5aeee9d27
   internal/provider/eventgatewayproducepolicyencryptfields_resource.go:
     id: 71bba6fb5dac
-    last_write_checksum: sha1:534040019c959b764081cc36b1a5609b61291c71
-    pristine_git_object: 8dcb8d22314353bbfb27c79929291ef109adf12a
+    last_write_checksum: sha1:a2c316c73ae0f588aea2b0fad84cc5d92bb23399
+    pristine_git_object: fc5077ba43bd32ce812057b1eb7f5361f1c1c66e
   internal/provider/eventgatewayproducepolicyencryptfields_resource_sdk.go:
     id: caf50a6c9f69
-    last_write_checksum: sha1:56a18c452e05f5ed9604c9450b65130dd74ddb8b
-    pristine_git_object: af7b7a2e9388d5775af43ffd8211295770411e96
+    last_write_checksum: sha1:c74a964868e68a409392323d6b5034c1cf56ba60
+    pristine_git_object: ab682086373141e8a756892d796126d16d05aa86
   internal/provider/eventgatewayproducepolicymodifyheaders_resource.go:
     id: 8f53363af814
     last_write_checksum: sha1:f20e07878169636262973da51c8c0af6753a0bb1
@@ -2287,16 +2287,16 @@ trackedFiles:
     pristine_git_object: 0f013a8c285df85e29196fab8e3396c22c2d05b6
   internal/provider/types/event_gateway_parsed_record_decryption_selector.go:
     id: 97ce34291519
-    last_write_checksum: sha1:cfc3960b9a4432902a612ded457a667f951823dd
-    pristine_git_object: 5db7c9fb7d1d43b6f3f6721976cc7ada0f508bc3
+    last_write_checksum: sha1:50f7cce47e35fc59b7e14aeec7a3789f50d087e5
+    pristine_git_object: 6a3ec3bd6b8a90698deea27834a98b641a7f2b28
   internal/provider/types/event_gateway_parsed_record_encrypt_fields_config.go:
     id: d6e442b5489a
     last_write_checksum: sha1:adce531bfe126d45e211eaee1f392b9e6fd4aaea
     pristine_git_object: aa7945acf3e0ed4b118af8aae1075aee9178adbc
   internal/provider/types/event_gateway_parsed_record_encryption_selector.go:
     id: 587601f30461
-    last_write_checksum: sha1:ef466ba5f579ed179af8a2efd0092963fafb896d
-    pristine_git_object: 3be97d5a406b9e7b5351dda8e0188344f2da101b
+    last_write_checksum: sha1:9a837873e383defa1c67fd46e9036eac92e8ca55
+    pristine_git_object: 031a4e8e99a1bbac4799ccc1e9a4e40331819d28
   internal/provider/types/event_gateway_produce_schema_validation_policy_config.go:
     id: f63519f5813a
     last_write_checksum: sha1:30a02927f9429bba17ca33e535bca7031908a35a
@@ -5523,8 +5523,8 @@ trackedFiles:
     pristine_git_object: c2f84710cda1c3fb8e945db15e1aedcdde3e83d8
   internal/sdk/models/shared/eventgatewayparsedrecorddecryptionselector.go:
     id: 901a227bbb0f
-    last_write_checksum: sha1:6bd2a0e2d9f0fd4f3fe0c53251979bec671ad5d0
-    pristine_git_object: df3a1313b18b78a739372a5bd2df147e1ea8b47c
+    last_write_checksum: sha1:a0ef5e9598223cd44dfdc566869a1b7933840a58
+    pristine_git_object: 56d23e48673243600ac8622164cc2055ef64aeca
   internal/sdk/models/shared/eventgatewayparsedrecordencryptfieldsconfig.go:
     id: dee5e4778b90
     last_write_checksum: sha1:4b5cca6c0b3f13ef032e6912e7c0d96e4c65440c
@@ -5539,8 +5539,8 @@ trackedFiles:
     pristine_git_object: c3a4d363bc848fe8adaa782a8180a5d1d4343964
   internal/sdk/models/shared/eventgatewayparsedrecordencryptionselector.go:
     id: 01b95d4aa1a5
-    last_write_checksum: sha1:8b9b1b8d159d57aadc551e3d9a4fa87d8a0899c1
-    pristine_git_object: 3dcfd360710d4309854442077f00d492e5cb3a67
+    last_write_checksum: sha1:228b895a32658f5a2a5a38c15c81a0d77425c20a
+    pristine_git_object: b8d728995488f5ab6c17848d13d8f7aaf7f0687b
   internal/sdk/models/shared/eventgatewayparsedrecordfieldpathsarray.go:
     id: ea8b7f89ca2a
     last_write_checksum: sha1:5d3b69b23901592af0188ae4b6d6052db35ce6c6
@@ -13319,7 +13319,7 @@ examples:
           virtualClusterId: "72e35192-a3a9-4be2-add0-c344d7f5143f"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "decrypt_fields", "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"failure_mode": "passthrough", "key_sources": [{"type": "static"}], "decrypt_fields": {"paths_expression": "${context.auth.type == 'sasl_oauth_bearer' ? ['credentials.accessToken', 'credentials.refreshToken'] : ['credentials.password']}\n", "paths": [{"match": "someObject.someArray[1].fieldName"}]}}, "condition": "record.value.content.foo.bar == \"a-value\""}
+        application/json: {"type": "decrypt_fields", "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"failure_mode": "passthrough", "key_sources": [{"type": "static"}], "decrypt_fields": {"paths": [{"match": "someObject.someArray[1].fieldName"}]}}, "condition": "record.value.content.foo.bar == \"a-value\""}
       responses:
         "200":
           application/json: {"type": "<value>", "description": "", "enabled": true, "labels": {"env": "test"}, "id": "bbe6538c-546a-4299-b48e-80cb44957631", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z", "condition": ""}
@@ -13350,7 +13350,7 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "98eda957-1fb0-41d6-b0e3-b2c6ffdda1ab"
       requestBody:
-        application/json: {"type": "decrypt_fields", "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"failure_mode": "passthrough", "key_sources": [], "decrypt_fields": {"paths_expression": "${context.auth.type == 'sasl_oauth_bearer' ? ['credentials.accessToken', 'credentials.refreshToken'] : ['credentials.password']}\n", "paths": [{"match": "someObject.someArray[1].fieldName"}]}}, "condition": "record.value.content.foo.bar == \"a-value\"", "parent_policy_id": "30bb5ff5-6064-41ba-93ef-5094338b0f2d"}
+        application/json: {"type": "decrypt_fields", "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"failure_mode": "passthrough", "key_sources": [], "decrypt_fields": {"paths": [{"match": "someObject.someArray[1].fieldName"}]}}, "condition": "record.value.content.foo.bar == \"a-value\"", "parent_policy_id": "30bb5ff5-6064-41ba-93ef-5094338b0f2d"}
       responses:
         "201":
           application/json: {"type": "<value>", "description": "", "enabled": true, "labels": {"env": "test"}, "id": "e6b4b823-44ab-4910-bf6e-e4dd27eedff4", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z", "condition": ""}
@@ -13384,7 +13384,7 @@ examples:
           virtualClusterId: "3195c944-377c-486c-b513-59b500f35738"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "encrypt_fields", "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"failure_mode": "reject", "encrypt_fields": [{"paths": [{"match": "someObject.someArray[1].fieldName"}], "encryption_key": {"type": "aws", "arn": "arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab"}}]}, "condition": "record.value.content.foo.bar == \"a-value\""}
+        application/json: {"type": "encrypt_fields", "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"failure_mode": "reject", "encrypt_fields": [{"encryption_key": {"type": "aws", "arn": "arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab"}, "paths": [{"match": "someObject.someArray[1].fieldName"}]}]}, "condition": "record.value.content.foo.bar == \"a-value\""}
       responses:
         "200":
           application/json: {"type": "<value>", "description": "", "enabled": true, "labels": {"env": "test"}, "id": "95e2a917-816b-4bac-9731-f793ff0482bf", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z", "condition": ""}
@@ -13415,7 +13415,7 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           virtualClusterId: "039a8298-74c0-4208-83e5-05ac988178d4"
       requestBody:
-        application/json: {"type": "encrypt_fields", "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"failure_mode": "reject", "encrypt_fields": [{"paths": [{"match": "someObject.someArray[1].fieldName"}], "encryption_key": {"type": "aws", "arn": "arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab"}}]}, "condition": "record.value.content.foo.bar == \"a-value\"", "parent_policy_id": "338c9184-a746-4375-9677-36e73964ecb1"}
+        application/json: {"type": "encrypt_fields", "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"failure_mode": "reject", "encrypt_fields": [{"encryption_key": {"type": "aws", "arn": "arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab"}, "paths": [{"match": "someObject.someArray[1].fieldName"}]}]}, "condition": "record.value.content.foo.bar == \"a-value\"", "parent_policy_id": "338c9184-a746-4375-9677-36e73964ecb1"}
       responses:
         "201":
           application/json: {"type": "<value>", "description": "", "enabled": true, "labels": {"env": "test"}, "id": "91430f6d-c67a-40e3-9f2f-d55887ef3f28", "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z", "condition": ""}

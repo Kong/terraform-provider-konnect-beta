@@ -134,7 +134,7 @@ func (r *EventGatewayProducePolicyEncryptFieldsResource) Schema(ctx context.Cont
 									Description: `The key to use for encryption.`,
 								},
 								"paths": schema.ListNestedAttribute{
-									Optional: true,
+									Required: true,
 									NestedObject: schema.NestedAttributeObject{
 										Attributes: map[string]schema.Attribute{
 											"match": schema.StringAttribute{
@@ -148,11 +148,6 @@ func (r *EventGatewayProducePolicyEncryptFieldsResource) Schema(ctx context.Cont
 									Validators: []validator.List{
 										listvalidator.SizeAtMost(50),
 									},
-								},
-								"paths_expression": schema.StringAttribute{
-									Optional: true,
-									MarkdownDescription: `This expression should evaluate to an array of exact field paths,` + "\n" +
-										`equivalent to the ` + "`" + `match` + "`" + ` values in the array variant.`,
 								},
 							},
 						},
