@@ -3,19 +3,19 @@ id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
   docChecksum: c7e822af2cee4f0b49db89c6bda4966f
   docVersion: 2.0.0
-  speakeasyVersion: 1.763.0
-  generationVersion: 2.884.0
-  releaseVersion: 0.18.0
-  configChecksum: 86faa775043d98dda8a9e4af2ee1d390
+  speakeasyVersion: 1.773.1
+  generationVersion: 2.897.1
+  releaseVersion: 0.19.0
+  configChecksum: 1a11bf5f7c8e1790ebaf3d001ce87ac6
 persistentEdits:
-  generation_id: 7d05b305-7833-4cb9-af24-7c7f016f39ac
-  pristine_commit_hash: 1a6c298b2e0bffcca1bf5750b757822b08d706c0
-  pristine_tree_hash: f478b274236ade0487979fb9b668a033873f7477
+  generation_id: 4e118563-4b4b-475d-80b9-6508fa76280d
+  pristine_commit_hash: 74eb9d18fa44c38562ec88d1a03f97325bbb276b
+  pristine_tree_hash: 915526e0765c8604a9bad472c1fca237587dfcea
 features:
   terraform:
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.3.2
-    core: 3.47.4
+    core: 3.47.9
     deepObjectParams: 0.1.0
     deprecations: 2.82.0
     globalSecurity: 2.82.3
@@ -27,7 +27,7 @@ features:
     nameOverrides: 2.81.7
     nullables: 0.0.0
     openEnums: 0.1.0
-    pagination: 2.83.5
+    pagination: 2.83.6
     retries: 2.81.4
     transformJq: 0.0.1
     typeOverrides: 2.81.1
@@ -51,8 +51,8 @@ trackedFiles:
     pristine_git_object: 30d29da8113ccf18b6e43476468d8c84ebedfc62
   examples/provider/provider.tf:
     id: 954e955c0240
-    last_write_checksum: sha1:4870a831f696bca34a9097a4c85fa66722b934a2
-    pristine_git_object: 320ffb151df311e39ac37851117571f9518febf0
+    last_write_checksum: sha1:1910cef0a7b3d8b9d7cd2a4dd6b983e09a023b8d
+    pristine_git_object: f9d81ddd84d02e7e33c6d03f1dddaec76dc17e73
   examples/resources/konnect-beta_api/import-by-string-id.tf:
     id: 6435593c3f89
     last_write_checksum: sha1:a36bf325d41344d42d260528f3f0cefa29da5f50
@@ -991,8 +991,8 @@ trackedFiles:
     pristine_git_object: 5e2537e3fb800784e4a4864dfedd4f2abb974c8d
   go.mod:
     id: c47645c391ad
-    last_write_checksum: sha1:912d5b6f0a29eaa8d7fb6d536161732109795167
-    pristine_git_object: 77ab99e638161f61c5bcea83c7f3cd751c165e73
+    last_write_checksum: sha1:cb8b1df45f7cfedc38195729a1554e6776000dee
+    pristine_git_object: 2ac25eadbd5dedf2ff371509b9e564b4992f2af1
   internal/planmodifiers/boolplanmodifier/suppress_diff.go:
     id: 3cf85b98963e
     last_write_checksum: sha1:514a576081b053eca73d5376de591929138489b3
@@ -1455,8 +1455,8 @@ trackedFiles:
     pristine_git_object: 02fd6850b087083576e5cbeadc48614537a35616
   internal/provider/meshcontrolplanes_data_source.go:
     id: "787364299751"
-    last_write_checksum: sha1:ab5d946a4fb70b40d9d0d485953e1517285ff22d
-    pristine_git_object: d72a103b32d5ad9f2e56e48432bea2a041dc8687
+    last_write_checksum: sha1:e2b015b1648aca732a48f9c8e935d3c1c63dab34
+    pristine_git_object: 30a87ebefd6186e46cf1f4a507846917742192d0
   internal/provider/meshcontrolplanes_data_source_sdk.go:
     id: 48cd696e6882
     last_write_checksum: sha1:173812ba68d00326c089093ac8f0ac0332fa6e8e
@@ -3627,8 +3627,8 @@ trackedFiles:
     pristine_git_object: 24827e92d9ceb6d7a3eea097902ed1b309bc5e14
   internal/sdk/internal/utils/json.go:
     id: 2231afac3add
-    last_write_checksum: sha1:cb067fa56fdf88fa4a2274d4db38323def4f26b8
-    pristine_git_object: 4f907511bf5d9eb58b7c5c93f655f72bab3237e2
+    last_write_checksum: sha1:963a5e429099cc9a4cdf2671b8edd45a76bd50cc
+    pristine_git_object: d58fd9ceec774582f5399001b0cca1d2d1843a54
   internal/sdk/internal/utils/pathparams.go:
     id: e7fec2afe4a6
     last_write_checksum: sha1:0485190ee735fa553828e7b4c58731f0fb004bf0
@@ -3663,8 +3663,8 @@ trackedFiles:
     pristine_git_object: a614e37673d3ea81eabc6139236edfb22a15dc55
   internal/sdk/konnectbeta.go:
     id: 34b8a82d72ce
-    last_write_checksum: sha1:b196fbe42427071dfabea1f1c69210d38fb1d35a
-    pristine_git_object: 2c25606420a315584f763a2db908425d08d4c19d
+    last_write_checksum: sha1:cc7f17ea08b082ea8f3bf78892008db1d0055ec7
+    pristine_git_object: 2cdee095f6171877d215af8b385cebad30644666
   internal/sdk/mesh.go:
     id: c3f36614baba
     last_write_checksum: sha1:8ebf7afb1e0baa8fde373eff36037b4ca1391d0a
