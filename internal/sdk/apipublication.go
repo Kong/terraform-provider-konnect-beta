@@ -113,10 +113,10 @@ func (s *APIPublication) PublishAPIToPortal(ctx context.Context, request operati
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -128,13 +128,7 @@ func (s *APIPublication) PublishAPIToPortal(ctx context.Context, request operati
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -409,10 +403,10 @@ func (s *APIPublication) FetchPublication(ctx context.Context, request operation
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -424,13 +418,7 @@ func (s *APIPublication) FetchPublication(ctx context.Context, request operation
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -677,10 +665,10 @@ func (s *APIPublication) DeletePublication(ctx context.Context, request operatio
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -692,13 +680,7 @@ func (s *APIPublication) DeletePublication(ctx context.Context, request operatio
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {

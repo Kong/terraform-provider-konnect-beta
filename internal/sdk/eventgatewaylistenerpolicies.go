@@ -109,10 +109,10 @@ func (s *EventGatewayListenerPolicies) GetEventGatewayListenerPolicyTLSServer(ct
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -124,13 +124,7 @@ func (s *EventGatewayListenerPolicies) GetEventGatewayListenerPolicyTLSServer(ct
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -390,10 +384,10 @@ func (s *EventGatewayListenerPolicies) UpdateEventGatewayListenerPolicyTLSServer
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -405,13 +399,7 @@ func (s *EventGatewayListenerPolicies) UpdateEventGatewayListenerPolicyTLSServer
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -658,10 +646,10 @@ func (s *EventGatewayListenerPolicies) DeleteEventGatewayListenerPolicyTLSServer
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -673,13 +661,7 @@ func (s *EventGatewayListenerPolicies) DeleteEventGatewayListenerPolicyTLSServer
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -913,10 +895,10 @@ func (s *EventGatewayListenerPolicies) GetEventGatewayListenerPolicyForwardToVir
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -928,13 +910,7 @@ func (s *EventGatewayListenerPolicies) GetEventGatewayListenerPolicyForwardToVir
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -1194,10 +1170,10 @@ func (s *EventGatewayListenerPolicies) UpdateEventGatewayListenerPolicyForwardTo
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -1209,13 +1185,7 @@ func (s *EventGatewayListenerPolicies) UpdateEventGatewayListenerPolicyForwardTo
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -1462,10 +1432,10 @@ func (s *EventGatewayListenerPolicies) DeleteEventGatewayListenerPolicyForwardTo
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -1477,13 +1447,7 @@ func (s *EventGatewayListenerPolicies) DeleteEventGatewayListenerPolicyForwardTo
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -1728,10 +1692,10 @@ func (s *EventGatewayListenerPolicies) CreateEventGatewayListenerPolicyTLSServer
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -1743,13 +1707,7 @@ func (s *EventGatewayListenerPolicies) CreateEventGatewayListenerPolicyTLSServer
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -2013,10 +1971,10 @@ func (s *EventGatewayListenerPolicies) CreateEventGatewayListenerPolicyForwardTo
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -2028,13 +1986,7 @@ func (s *EventGatewayListenerPolicies) CreateEventGatewayListenerPolicyForwardTo
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {

@@ -2,7 +2,7 @@
 
 package sdk
 
-// Generated from OpenAPI doc version 2.0.0 and generator version 2.884.0
+// Generated from OpenAPI doc version 2.0.0 and generator version 2.897.1
 
 import (
 	"context"
@@ -69,8 +69,10 @@ type KonnectBeta struct {
 	// APIs related to configuration of Konnect Developer Portal auth settings.
 	PortalAuthSettings *PortalAuthSettings
 	// APIs related to configuration of Konnect Developer Portal developer teams.
-	PortalTeams               *PortalTeams
-	PortalAuditLogs           *PortalAuditLogs
+	PortalTeams     *PortalTeams
+	PortalAuditLogs *PortalAuditLogs
+	// APIs related to Konnect Portal IP Allow List.
+	PortalsIPAllowList        *PortalsIPAllowList
 	API                       *API
 	APIDocumentation          *APIDocumentation
 	APISpecification          *APISpecification
@@ -246,9 +248,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *KonnectBeta {
 	sdk := &KonnectBeta{
-		SDKVersion: "0.18.0",
+		SDKVersion: "0.19.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 0.18.0 2.884.0 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 0.19.0 2.897.1 2.0.0 github.com/kong/terraform-provider-konnect-beta/internal/sdk",
 			ServerList: ServerList,
 		},
 		hooks: hooks.New(),
@@ -278,6 +280,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.PortalAuthSettings = newPortalAuthSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalTeams = newPortalTeams(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalAuditLogs = newPortalAuditLogs(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalsIPAllowList = newPortalsIPAllowList(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.API = newAPI(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.APIDocumentation = newAPIDocumentation(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.APISpecification = newAPISpecification(sdk, sdk.sdkConfiguration, sdk.hooks)

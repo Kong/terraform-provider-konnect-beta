@@ -21,9 +21,12 @@ func (r *EventGatewayConsumePolicySchemaValidationResourceModel) RefreshFromShar
 			configPriorData := r.Config
 			r.Config = &tfTypes.EventGatewayConsumeSchemaValidationPolicyConfig{}
 			if configPriorData != nil {
+				r.Config.FailureMode = configPriorData.FailureMode
 				r.Config.KeyValidationAction = configPriorData.KeyValidationAction
 				r.Config.SchemaRegistry = configPriorData.SchemaRegistry
 				r.Config.Type = configPriorData.Type
+				r.Config.ValidateKey = configPriorData.ValidateKey
+				r.Config.ValidateValue = configPriorData.ValidateValue
 				r.Config.ValueValidationAction = configPriorData.ValueValidationAction
 			}
 		}
@@ -182,6 +185,24 @@ func (r *EventGatewayConsumePolicySchemaValidationResourceModel) ToSharedEventGa
 			ID: id,
 		}
 	}
+	failureMode := new(shared.ConsumeFailureMode)
+	if !r.Config.FailureMode.IsUnknown() && !r.Config.FailureMode.IsNull() {
+		*failureMode = shared.ConsumeFailureMode(r.Config.FailureMode.ValueString())
+	} else {
+		failureMode = nil
+	}
+	validateKey := new(bool)
+	if !r.Config.ValidateKey.IsUnknown() && !r.Config.ValidateKey.IsNull() {
+		*validateKey = r.Config.ValidateKey.ValueBool()
+	} else {
+		validateKey = nil
+	}
+	validateValue := new(bool)
+	if !r.Config.ValidateValue.IsUnknown() && !r.Config.ValidateValue.IsNull() {
+		*validateValue = r.Config.ValidateValue.ValueBool()
+	} else {
+		validateValue = nil
+	}
 	keyValidationAction := new(shared.ConsumeKeyValidationAction)
 	if !r.Config.KeyValidationAction.IsUnknown() && !r.Config.KeyValidationAction.IsNull() {
 		*keyValidationAction = shared.ConsumeKeyValidationAction(r.Config.KeyValidationAction.ValueString())
@@ -197,6 +218,9 @@ func (r *EventGatewayConsumePolicySchemaValidationResourceModel) ToSharedEventGa
 	config := shared.EventGatewayConsumeSchemaValidationPolicyConfig{
 		Type:                  typeVar,
 		SchemaRegistry:        schemaRegistry,
+		FailureMode:           failureMode,
+		ValidateKey:           validateKey,
+		ValidateValue:         validateValue,
 		KeyValidationAction:   keyValidationAction,
 		ValueValidationAction: valueValidationAction,
 	}

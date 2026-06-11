@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.19.0
+> Released on 2026/06/11
+
+### BREAKING CHANGES
+* `filters` for Agentic Usage in `konnect_dashboard` resource have been simplified to match existing.
+
+### Features
+* Add support for new Event Gateway Policies
+  * `konnect_event_gateway_consume_policy_decrypt_fields`
+  * `konnect_event_gateway_produce_policy_encrypt_fields`
+* Add support for `konnect_portal_ip_allow_list` resource
+
 ## 0.18.0
 > Released on 2026/05/15
 

@@ -115,10 +115,10 @@ func (s *APIDocumentation) CreateAPIDocument(ctx context.Context, request operat
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -130,13 +130,7 @@ func (s *APIDocumentation) CreateAPIDocument(ctx context.Context, request operat
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -452,10 +446,10 @@ func (s *APIDocumentation) FetchAPIDocument(ctx context.Context, request operati
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -467,13 +461,7 @@ func (s *APIDocumentation) FetchAPIDocument(ctx context.Context, request operati
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -733,10 +721,10 @@ func (s *APIDocumentation) UpdateAPIDocument(ctx context.Context, request operat
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -748,13 +736,7 @@ func (s *APIDocumentation) UpdateAPIDocument(ctx context.Context, request operat
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -1064,10 +1046,10 @@ func (s *APIDocumentation) DeleteAPIDocument(ctx context.Context, request operat
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -1079,13 +1061,7 @@ func (s *APIDocumentation) DeleteAPIDocument(ctx context.Context, request operat
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {

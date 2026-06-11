@@ -112,10 +112,10 @@ func (s *Portals) ListPortals(ctx context.Context, request operations.ListPortal
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -127,13 +127,7 @@ func (s *Portals) ListPortals(ctx context.Context, request operations.ListPortal
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -393,10 +387,10 @@ func (s *Portals) CreatePortal(ctx context.Context, request shared.CreatePortal,
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -408,13 +402,7 @@ func (s *Portals) CreatePortal(ctx context.Context, request shared.CreatePortal,
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -667,10 +655,10 @@ func (s *Portals) GetPortal(ctx context.Context, request operations.GetPortalReq
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -682,13 +670,7 @@ func (s *Portals) GetPortal(ctx context.Context, request operations.GetPortalReq
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -948,10 +930,10 @@ func (s *Portals) UpdatePortal(ctx context.Context, request operations.UpdatePor
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -963,13 +945,7 @@ func (s *Portals) UpdatePortal(ctx context.Context, request operations.UpdatePor
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -1262,10 +1238,10 @@ func (s *Portals) DeletePortal(ctx context.Context, request operations.DeletePor
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -1277,13 +1253,7 @@ func (s *Portals) DeletePortal(ctx context.Context, request operations.DeletePor
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {

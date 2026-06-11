@@ -118,10 +118,10 @@ func (s *EventGatewayTLSTrustBundles) CreateEventGatewayTLSTrustBundle(ctx conte
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -133,13 +133,7 @@ func (s *EventGatewayTLSTrustBundles) CreateEventGatewayTLSTrustBundle(ctx conte
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -394,10 +388,10 @@ func (s *EventGatewayTLSTrustBundles) GetEventGatewayTLSTrustBundle(ctx context.
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -409,13 +403,7 @@ func (s *EventGatewayTLSTrustBundles) GetEventGatewayTLSTrustBundle(ctx context.
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -677,10 +665,10 @@ func (s *EventGatewayTLSTrustBundles) UpdateEventGatewayTLSTrustBundle(ctx conte
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -692,13 +680,7 @@ func (s *EventGatewayTLSTrustBundles) UpdateEventGatewayTLSTrustBundle(ctx conte
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
@@ -947,10 +929,10 @@ func (s *EventGatewayTLSTrustBundles) DeleteEventGatewayTLSTrustBundle(ctx conte
 		} else {
 			retryConfig = &retry.Config{
 				Strategy: "backoff", Backoff: &retry.BackoffStrategy{
-					InitialInterval: 100,
-					MaxInterval:     500,
+					InitialInterval: 500,
+					MaxInterval:     60000,
 					Exponent:        1.5,
-					MaxElapsedTime:  500,
+					MaxElapsedTime:  3600000,
 				},
 				RetryConnectionErrors: true,
 			}
@@ -962,13 +944,7 @@ func (s *EventGatewayTLSTrustBundles) DeleteEventGatewayTLSTrustBundle(ctx conte
 		httpRes, err = utils.Retry(ctx, utils.Retries{
 			Config: retryConfig,
 			StatusCodes: []string{
-				"404",
-				"408",
 				"429",
-				"500",
-				"502",
-				"503",
-				"504",
 			},
 		}, func() (*http.Response, error) {
 			if req.Body != nil && req.Body != http.NoBody && req.GetBody != nil {
