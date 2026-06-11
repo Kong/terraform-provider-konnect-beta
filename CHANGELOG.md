@@ -1,7 +1,7 @@
 # Changelog
 
 ## 0.19.0
-> Released on 2026/06/??
+> Released on 2026/06/11
 
 ### BREAKING CHANGES
 * `filters` for Agentic Usage in `konnect_dashboard` resource have been simplified to match existing.
