@@ -7,8 +7,11 @@ import (
 )
 
 type EventGatewayConsumeSchemaValidationPolicyConfig struct {
+	FailureMode           types.String             `tfsdk:"failure_mode"`
 	KeyValidationAction   types.String             `tfsdk:"key_validation_action"`
 	SchemaRegistry        *SchemaRegistryReference `tfsdk:"schema_registry"`
 	Type                  types.String             `tfsdk:"type"`
+	ValidateKey           types.Bool               `tfsdk:"validate_key"`
+	ValidateValue         types.Bool               `tfsdk:"validate_value"`
 	ValueValidationAction types.String             `tfsdk:"value_validation_action"`
 }

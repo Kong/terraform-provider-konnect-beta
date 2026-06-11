@@ -72,9 +72,23 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
-					"key_validation_action": schema.StringAttribute{
+					"failure_mode": schema.StringAttribute{
 						Optional: true,
-						MarkdownDescription: `Defines a behavior when record key is not valid.` + "\n" +
+						MarkdownDescription: `Describes how to handle a failure in a policy applied to consumed records.` + "\n" +
+							`* ` + "`" + `error` + "`" + ` - the batch is not delivered to the client. Use sparingly: erroring on a batch causes clients to get stuck on the problematic offset and requires manual intervention to skip it.` + "\n" +
+							`* ` + "`" + `skip` + "`" + ` - the record is not delivered to the client.` + "\n" +
+							`* ` + "`" + `passthrough` + "`" + ` - passes the record to the client even though policy execution failed.` + "\n" +
+							`* ` + "`" + `mark` + "`" + ` - passes the record to the client but marks it with a ` + "`" + `kong/policy-failure-<id>` + "`" + ` header whose value is the reason for the policy failure (truncated to 512 characters).` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.` + "\n" +
+							`possible known values include one of ["error", "skip", "passthrough", "mark"]`,
+					},
+					"key_validation_action": schema.StringAttribute{
+						Optional:           true,
+						DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+						MarkdownDescription: `Deprecated. Use ` + "`" + `failure_mode` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Defines a behavior when record key is not valid.` + "\n" +
 							`* mark - marks a record with kong/server header and client ID value` + "\n" +
 							`  to help to identify the clients violating schema.` + "\n" +
 							`* skip - skips delivering a record.` + "\n" +
@@ -99,9 +113,24 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 							`* json - simple JSON parsing without the schema.` + "\n" +
 							`possible known values include one of ["confluent_schema_registry", "json"]`,
 					},
-					"value_validation_action": schema.StringAttribute{
+					"validate_key": schema.BoolAttribute{
 						Optional: true,
-						MarkdownDescription: `Defines a behavior when record value is not valid.` + "\n" +
+						MarkdownDescription: `If true, validate the record key.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.`,
+					},
+					"validate_value": schema.BoolAttribute{
+						Optional: true,
+						MarkdownDescription: `If true, validate the record value.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `1.2` + "`" + `**.`,
+					},
+					"value_validation_action": schema.StringAttribute{
+						Optional:           true,
+						DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+						MarkdownDescription: `Deprecated. Use ` + "`" + `failure_mode` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Defines a behavior when record value is not valid.` + "\n" +
 							`* mark - marks a record with kong/server header and client ID value` + "\n" +
 							`  to help to identify the clients violating schema.` + "\n" +
 							`* skip - skips delivering a record.` + "\n" +

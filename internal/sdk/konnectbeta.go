@@ -69,8 +69,10 @@ type KonnectBeta struct {
 	// APIs related to configuration of Konnect Developer Portal auth settings.
 	PortalAuthSettings *PortalAuthSettings
 	// APIs related to configuration of Konnect Developer Portal developer teams.
-	PortalTeams               *PortalTeams
-	PortalAuditLogs           *PortalAuditLogs
+	PortalTeams     *PortalTeams
+	PortalAuditLogs *PortalAuditLogs
+	// APIs related to Konnect Portal IP Allow List.
+	PortalsIPAllowList        *PortalsIPAllowList
 	API                       *API
 	APIDocumentation          *APIDocumentation
 	APISpecification          *APISpecification
@@ -278,6 +280,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.PortalAuthSettings = newPortalAuthSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalTeams = newPortalTeams(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalAuditLogs = newPortalAuditLogs(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalsIPAllowList = newPortalsIPAllowList(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.API = newAPI(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.APIDocumentation = newAPIDocumentation(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.APISpecification = newAPISpecification(sdk, sdk.sdkConfiguration, sdk.hooks)

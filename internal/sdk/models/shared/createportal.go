@@ -83,6 +83,8 @@ type CreatePortal struct {
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
+	// When enabled, portal registration notifications include the registering developer's identifying information (such as name and email).
+	NotificationsDeveloperPiiVisibilityEnabled *bool `default:"false" json:"notifications_developer_pii_visibility_enabled"`
 	// Use to create the portal page default content upon creation of this portal
 	CreateDefaultContent *bool `default:"false" json:"create_default_content"`
 }
@@ -180,6 +182,13 @@ func (c *CreatePortal) GetLabels() map[string]*string {
 		return nil
 	}
 	return c.Labels
+}
+
+func (c *CreatePortal) GetNotificationsDeveloperPiiVisibilityEnabled() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.NotificationsDeveloperPiiVisibilityEnabled
 }
 
 func (c *CreatePortal) GetCreateDefaultContent() *bool {

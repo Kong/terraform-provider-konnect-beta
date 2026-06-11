@@ -17,6 +17,7 @@ func TestPortal(t *testing.T) {
 					ConfigDirectory:          config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_portal.my_portal", "name", "Hello World"),
+						resource.TestCheckResourceAttr("konnect_portal_ip_allow_list.my_portalipallowlist", "allowed_ips.#", "3"),
 					),
 				},
 				{
