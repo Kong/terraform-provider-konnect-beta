@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type EventGatewayProduceSchemaValidationPolicyJSONConfig struct {
+type EventGatewayConsumeSchemaValidationPolicyJSONConfig struct {
 	FailureMode           types.String             `tfsdk:"failure_mode"`
 	KeyValidationAction   types.String             `tfsdk:"key_validation_action"`
 	SchemaRegistry        *SchemaRegistryReference `tfsdk:"schema_registry"`
