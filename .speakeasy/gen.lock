@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: e3bbe1e9-fe63-436b-a42c-05e3e3f77633
 management:
-  docChecksum: 57c45252e7e86038e29684d84ac8f781
+  docChecksum: 532f04ac464f056f44528847e51f75f1
   docVersion: 2.0.0
   speakeasyVersion: 1.773.1
   generationVersion: 2.897.1
   releaseVersion: 0.19.0
   configChecksum: 1a11bf5f7c8e1790ebaf3d001ce87ac6
 persistentEdits:
-  generation_id: 879d2ec3-6553-4890-9aa9-32d4832dc5dc
-  pristine_commit_hash: d26c9f5bfdb152cbbd7c70bd2a7fd258c4d8454d
-  pristine_tree_hash: 1384660fbf87d211a146f035d160d044891791be
+  generation_id: ca97097d-62d5-4f94-a508-463424e05a35
+  pristine_commit_hash: 86e4b3b3691ecdb3edad09bf8bea9efd9d8ea2db
+  pristine_tree_hash: 44ba7c0c94a763b597731cfcb42240a9fb0cd88d
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -1687,8 +1687,8 @@ trackedFiles:
     pristine_git_object: e2e74def83c464997b291950b9334a31d4d6ad4c
   internal/provider/portal_resource.go:
     id: a15e85b54f08
-    last_write_checksum: sha1:8eba5b6426813a10b5140b88aec85f32f2f61e67
-    pristine_git_object: 377755af5d40c9f5af1f17291e78a200d7cf1d56
+    last_write_checksum: sha1:c66e2dfef5dc7fb133cdda792666ee3e8c2150bd
+    pristine_git_object: 3337a6927044527547b5d61fd8d3d4fb5f90e6e4
   internal/provider/portal_resource_sdk.go:
     id: 6dd876308f89
     last_write_checksum: sha1:3fd356625cf087f87a028f4b846b60fcb48966ae
@@ -5331,8 +5331,8 @@ trackedFiles:
     pristine_git_object: e34cb382ab94aa123dba86b2e6fd39d2db5d1b9b
   internal/sdk/models/shared/createportal.go:
     id: bf2eaac1fec1
-    last_write_checksum: sha1:bf9b48d656741638d481b2dbf1a09f0bfd77bf10
-    pristine_git_object: 4477aff7965b7c63e6403b2d12253a2573fd0fac
+    last_write_checksum: sha1:550a9f68a323fa0e245e12f5e1d67e60f7eddf35
+    pristine_git_object: 5484ea20f322c151097bce44d614738c29e49e09
   internal/sdk/models/shared/createportalcustomdomainrequest.go:
     id: 7ee9af576694
     last_write_checksum: sha1:0f6b582ccfde3b982e10e7b1e4f5fbf4ab166116
@@ -5719,8 +5719,8 @@ trackedFiles:
     pristine_git_object: 74ddc3b6c5b820ba0300c8ab6eea15d13f93c7d6
   internal/sdk/models/shared/listportalsresponse.go:
     id: 5ad6d253b1a6
-    last_write_checksum: sha1:a191d1a91b905d5282cb567d6af561bbdfdfe9a2
-    pristine_git_object: 8b97f42898a75273e148cba88e02a712e89c3bf3
+    last_write_checksum: sha1:81a53c668a258313bc6b0621cb8f05e38ef18d71
+    pristine_git_object: f137931f1809e34fca883ef061df406c5e89237d
   internal/sdk/models/shared/llmfilters.go:
     id: 825adb844114
     last_write_checksum: sha1:9ee659b79dda28a6c355a0eb315c4d7da47d79c3
@@ -6283,8 +6283,8 @@ trackedFiles:
     pristine_git_object: b14bf87b6b1b0f76d33c547a935d0505c2f733c1
   internal/sdk/models/shared/portalresponse.go:
     id: e090da0c094a
-    last_write_checksum: sha1:19c8d2f0c0017d9fb3bad8a72dfbfd3681e94d14
-    pristine_git_object: 16752a3044e130ef8ed1b73ef695dd27213799fe
+    last_write_checksum: sha1:665901a08a49503b138b036e3f52101f48e67ceb
+    pristine_git_object: 9ff77689028aa1e5fd42949b9822bc6596ed759a
   internal/sdk/models/shared/portalsnippetresponse.go:
     id: 8be74f97f95a
     last_write_checksum: sha1:b20ef8b0795961bd679d4cbf47bc00e93d12be72
@@ -6523,8 +6523,8 @@ trackedFiles:
     pristine_git_object: 3599793a5ad1aa31e06086e8719ca24090ff78a7
   internal/sdk/models/shared/updateportal.go:
     id: bee6d3f054a4
-    last_write_checksum: sha1:9b98a28741d4b4e41cd93078eb304f04c053e67c
-    pristine_git_object: 9d64f458423b52c1db012d41851cc1f151f8bc8b
+    last_write_checksum: sha1:cd224d6a1c876d382cbbf648effac56cf246f3da
+    pristine_git_object: 52c82fe0dc6fb861b431cc7375a04cc7945eddf6
   internal/sdk/models/shared/updateportalauditlogwebhook.go:
     id: c08b2fe64c7c
     last_write_checksum: sha1:d382b11601684cda7cba75a54f4b82ab7eb55cc5
@@ -6881,10 +6881,10 @@ examples:
   create-portal:
     speakeasy-default-create-portal:
       requestBody:
-        application/json: {"name": "<value>", "description": null, "authentication_enabled": true, "rbac_enabled": false, "mcp_server_enabled": null, "sipr_enabled": true, "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "labels": {"env": "test"}, "notifications_developer_pii_visibility_enabled": false, "create_default_content": false}
+        application/json: {"name": "<value>", "description": null, "authentication_enabled": true, "rbac_enabled": false, "sipr_enabled": true, "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "labels": {"env": "test"}, "notifications_developer_pii_visibility_enabled": false, "create_default_content": false}
       responses:
         "201":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "<value>", "display_name": "Ahmed41", "description": null, "authentication_enabled": true, "rbac_enabled": false, "mcp_server_enabled": null, "sipr_enabled": true, "default_api_visibility": "private", "default_page_visibility": "private", "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "default_domain": "tattered-verve.info", "canonical_domain": "crafty-jury.com", "labels": {"env": "test"}, "notifications_developer_pii_visibility_enabled": false}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "<value>", "display_name": "Ahmed41", "description": null, "authentication_enabled": true, "rbac_enabled": false, "sipr_enabled": true, "default_api_visibility": "private", "default_page_visibility": "private", "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "default_domain": "tattered-verve.info", "canonical_domain": "crafty-jury.com", "labels": {"env": "test"}, "notifications_developer_pii_visibility_enabled": false}
         "400":
           application/problem+json: {"status": 114263, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>"], "source": "body"}]}
         "401":
@@ -6898,7 +6898,7 @@ examples:
           portalId: "1672e313-9f8e-4485-a62b-716aad351889"
       responses:
         "200":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "<value>", "display_name": "Brenna55", "description": null, "authentication_enabled": true, "rbac_enabled": false, "mcp_server_enabled": null, "sipr_enabled": true, "default_api_visibility": "private", "default_page_visibility": "private", "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "default_domain": "crooked-tinderbox.biz", "canonical_domain": "intent-cricket.net", "labels": {"env": "test"}, "notifications_developer_pii_visibility_enabled": false}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "<value>", "display_name": "Brenna55", "description": null, "authentication_enabled": true, "rbac_enabled": false, "sipr_enabled": true, "default_api_visibility": "private", "default_page_visibility": "private", "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "default_domain": "crooked-tinderbox.biz", "canonical_domain": "intent-cricket.net", "labels": {"env": "test"}, "notifications_developer_pii_visibility_enabled": false}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -6911,10 +6911,10 @@ examples:
         path:
           portalId: "efe853b6-a55c-4929-9b80-c39a22b01c7a"
       requestBody:
-        application/json: {"name": null, "description": null, "authentication_enabled": true, "rbac_enabled": false, "mcp_server_enabled": null, "sipr_enabled": true, "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "labels": {"env": "test"}, "notifications_developer_pii_visibility_enabled": false}
+        application/json: {"name": null, "description": null, "authentication_enabled": true, "rbac_enabled": false, "sipr_enabled": true, "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "labels": {"env": "test"}, "notifications_developer_pii_visibility_enabled": false}
       responses:
         "200":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "<value>", "display_name": "Adaline.Nolan", "description": null, "authentication_enabled": true, "rbac_enabled": false, "mcp_server_enabled": null, "sipr_enabled": true, "default_api_visibility": "public", "default_page_visibility": "private", "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "default_domain": "animated-bathrobe.name", "canonical_domain": "inferior-offset.name", "labels": {"env": "test"}, "notifications_developer_pii_visibility_enabled": false}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "<value>", "display_name": "Adaline.Nolan", "description": null, "authentication_enabled": true, "rbac_enabled": false, "sipr_enabled": true, "default_api_visibility": "public", "default_page_visibility": "private", "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "default_domain": "animated-bathrobe.name", "canonical_domain": "inferior-offset.name", "labels": {"env": "test"}, "notifications_developer_pii_visibility_enabled": false}
         "400":
           application/problem+json: {"status": 293102, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":

@@ -177,6 +177,7 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
 			"mcp_server_enabled": schema.BoolAttribute{
+				Computed:    true,
 				Optional:    true,
 				Description: `Whether the portal has the MCP server enabled`,
 			},
