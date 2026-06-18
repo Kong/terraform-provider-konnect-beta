@@ -33845,9 +33845,7 @@ components:
               mcp_server_enabled:
                 description: Whether the portal has the MCP server enabled
                 type: boolean
-                default: null
-                nullable: true
-                x-speakeasy-param-computed: false
+                x-speakeasy-param-computed: true
               sipr_enabled:
                 description: Whether ip allow list is enabled for the portal.
                 type: boolean
@@ -33963,9 +33961,7 @@ components:
               mcp_server_enabled:
                 description: Whether the portal has the MCP server enabled
                 type: boolean
-                default: null
-                nullable: true
-                x-speakeasy-param-computed: false
+                x-speakeasy-param-computed: true
               sipr_enabled:
                 description: Whether ip allow list is enabled for the portal.
                 type: boolean
@@ -35143,9 +35139,7 @@ components:
                     mcp_server_enabled:
                       description: Whether the portal has the MCP server enabled
                       type: boolean
-                      default: null
-                      nullable: true
-                      x-speakeasy-param-computed: false
+                      x-speakeasy-param-computed: true
                     sipr_enabled:
                       description: Whether ip allow list is enabled for the portal.
                       type: boolean
@@ -35265,9 +35259,7 @@ components:
               mcp_server_enabled:
                 description: Whether the portal has the MCP server enabled
                 type: boolean
-                default: null
-                nullable: true
-                x-speakeasy-param-computed: false
+                x-speakeasy-param-computed: true
               sipr_enabled:
                 description: Whether ip allow list is enabled for the portal.
                 type: boolean
