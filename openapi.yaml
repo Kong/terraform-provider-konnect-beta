@@ -9745,7 +9745,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
+                $ref: '#/components/schemas/EventGatewayConsumePolicySchemaValidationTFOnly'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -9772,7 +9772,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
+                $ref: '#/components/schemas/EventGatewayConsumePolicySchemaValidationTFOnly'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -10107,7 +10107,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EventGatewayPolicy'
+                $ref: '#/components/schemas/EventGatewayConsumePolicySchemaValidationTFOnly'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -30304,16 +30304,6 @@ components:
           minLength: 1
       required:
         - id
-    SchemaValidationType:
-      description: |
-        How to validate the schema and parse the record.
-        * confluent_schema_registry - validates against confluent schema registry.
-        * json - simple JSON parsing without the schema.
-      type: string
-      enum:
-        - confluent_schema_registry
-        - json
-      x-speakeasy-unknown-values: allow
     SchemaRegistryCreate:
       description: The typed schema of the schema registry to create it.
       discriminator:
@@ -30391,6 +30381,64 @@ components:
         - created_at
         - updated_at
     EventGatewayProducePolicySchemaValidationTFOnly:
+      description: A policy associated with an Event Gateway.
+      type: object
+      properties:
+        type:
+          description: The type name of the policy.
+          type: string
+          maxLength: 255
+          minLength: 1
+        name:
+          description: A unique user-defined name of the policy.
+          type: string
+          maxLength: 255
+          nullable: false
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the policy.
+          type: string
+          default: ''
+          maxLength: 512
+        enabled:
+          description: Whether the policy is enabled.
+          type: boolean
+          default: true
+        labels:
+          $ref: '#/components/schemas/Labels'
+        id:
+          description: The unique identifier of the policy.
+          type: string
+          format: uuid
+        config:
+          description: The configuration of the policy.
+          type: object
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        parent_policy_id:
+          description: 'The unique identifier of the parent policy, if any.'
+          type: string
+          format: uuid
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        condition:
+          description: A string containing the boolean expression that determines whether the policy is applied.
+          type: string
+          default: ''
+          maxLength: 1000
+          x-expression:
+            type: boolean
+            fields: []
+      required:
+        - type
+        - id
+        - created_at
+        - updated_at
+        - config
+    EventGatewayConsumePolicySchemaValidationTFOnly:
       description: A policy associated with an Event Gateway.
       type: object
       properties:
@@ -32180,37 +32228,9 @@ components:
         labels:
           $ref: '#/components/schemas/Labels'
         config:
-          description: The configuration of the schema validation policy.
+          description: The configuration of the policy.
           type: object
-          properties:
-            type:
-              $ref: '#/components/schemas/SchemaValidationType'
-            schema_registry:
-              $ref: '#/components/schemas/SchemaRegistryReference'
-            failure_mode:
-              $ref: '#/components/schemas/ConsumeFailureMode'
-            validate_key:
-              description: |-
-                If true, validate the record key.
-
-                **Requires a minimum runtime version of `1.2`**.
-              type: boolean
-              x-min-runtime-version: '1.2'
-              x-speakeasy-param-computed: false
-            validate_value:
-              description: |-
-                If true, validate the record value.
-
-                **Requires a minimum runtime version of `1.2`**.
-              type: boolean
-              x-min-runtime-version: '1.2'
-              x-speakeasy-param-computed: false
-            key_validation_action:
-              $ref: '#/components/schemas/ConsumeKeyValidationAction'
-            value_validation_action:
-              $ref: '#/components/schemas/ConsumeValueValidationAction'
-          required:
-            - type
+          $ref: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicyConfig'
         condition:
           description: A string containing the boolean expression that determines whether the policy is applied.
           type: string
@@ -32253,6 +32273,82 @@ components:
         - type
         - config
       title: Schema Validation
+    EventGatewayConsumeSchemaValidationPolicyConfig:
+      description: The configuration of the consume schema validation policy.
+      discriminator:
+        propertyName: type
+        mapping:
+          confluent_schema_registry: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicySchemaRegistryConfig'
+          json: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicyJsonConfig'
+      oneOf:
+        - $ref: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicySchemaRegistryConfig'
+        - $ref: '#/components/schemas/EventGatewayConsumeSchemaValidationPolicyJsonConfig'
+    EventGatewayConsumeSchemaValidationPolicyJsonConfig:
+      description: The configuration of the consume schema validation policy when using JSON parsing without schema.
+      type: object
+      properties:
+        schema_registry:
+          $ref: '#/components/schemas/SchemaRegistryReference'
+        failure_mode:
+          $ref: '#/components/schemas/ConsumeFailureMode'
+        validate_key:
+          description: |-
+            If true, validate the record key.
+
+            **Requires a minimum runtime version of `1.2`**.
+          type: boolean
+          x-min-runtime-version: '1.2'
+          x-speakeasy-param-computed: false
+        validate_value:
+          description: |-
+            If true, validate the record value.
+
+            **Requires a minimum runtime version of `1.2`**.
+          type: boolean
+          x-min-runtime-version: '1.2'
+          x-speakeasy-param-computed: false
+        key_validation_action:
+          $ref: '#/components/schemas/ConsumeKeyValidationAction'
+        value_validation_action:
+          $ref: '#/components/schemas/ConsumeValueValidationAction'
+        type:
+          type: string
+          const: json
+      required:
+        - type
+    EventGatewayConsumeSchemaValidationPolicySchemaRegistryConfig:
+      description: The configuration of the consume schema validation policy when using a schema registry.
+      type: object
+      properties:
+        schema_registry:
+          $ref: '#/components/schemas/SchemaRegistryReference'
+        failure_mode:
+          $ref: '#/components/schemas/ConsumeFailureMode'
+        validate_key:
+          description: |-
+            If true, validate the record key.
+
+            **Requires a minimum runtime version of `1.2`**.
+          type: boolean
+          x-min-runtime-version: '1.2'
+          x-speakeasy-param-computed: false
+        validate_value:
+          description: |-
+            If true, validate the record value.
+
+            **Requires a minimum runtime version of `1.2`**.
+          type: boolean
+          x-min-runtime-version: '1.2'
+          x-speakeasy-param-computed: false
+        key_validation_action:
+          $ref: '#/components/schemas/ConsumeKeyValidationAction'
+        value_validation_action:
+          $ref: '#/components/schemas/ConsumeValueValidationAction'
+        type:
+          type: string
+          const: confluent_schema_registry
+      required:
+        - type
     EventGatewayProduceSchemaValidationPolicy:
       description: A policy that validates produce messages against a schema registry.
       type: object
@@ -33746,6 +33842,12 @@ components:
                 description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.'
                 type: boolean
                 default: false
+              mcp_server_enabled:
+                description: Whether the portal has the MCP server enabled
+                type: boolean
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
               sipr_enabled:
                 description: Whether ip allow list is enabled for the portal.
                 type: boolean
@@ -33808,7 +33910,7 @@ components:
               - name
             title: Portal
             x-property-annotations:
-              notifications_developer_pii_visibility_enabled:
+              mcp_server_enabled:
                 - x-unstable
                 - x-internal
               create_default_content:
@@ -33858,6 +33960,12 @@ components:
                 description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.'
                 type: boolean
                 default: false
+              mcp_server_enabled:
+                description: Whether the portal has the MCP server enabled
+                type: boolean
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
               sipr_enabled:
                 description: Whether ip allow list is enabled for the portal.
                 type: boolean
@@ -33914,7 +34022,7 @@ components:
             additionalProperties: false
             title: Portal
             x-property-annotations:
-              notifications_developer_pii_visibility_enabled:
+              mcp_server_enabled:
                 - x-unstable
                 - x-internal
     ReplacePortalImageAsset:
@@ -34996,7 +35104,7 @@ components:
                   type: object
                   additionalProperties: false
                   x-property-annotations:
-                    notifications_developer_pii_visibility_enabled:
+                    mcp_server_enabled:
                       - x-unstable
                       - x-internal
                   properties:
@@ -35032,6 +35140,12 @@ components:
                       description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.'
                       type: boolean
                       default: false
+                    mcp_server_enabled:
+                      description: Whether the portal has the MCP server enabled
+                      type: boolean
+                      default: null
+                      nullable: true
+                      x-speakeasy-param-computed: false
                     sipr_enabled:
                       description: Whether ip allow list is enabled for the portal.
                       type: boolean
@@ -35148,6 +35262,12 @@ components:
                 description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.'
                 type: boolean
                 default: false
+              mcp_server_enabled:
+                description: Whether the portal has the MCP server enabled
+                type: boolean
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
               sipr_enabled:
                 description: Whether ip allow list is enabled for the portal.
                 type: boolean
@@ -35221,7 +35341,7 @@ components:
               - created_at
             title: Portal
             x-property-annotations:
-              notifications_developer_pii_visibility_enabled:
+              mcp_server_enabled:
                 - x-unstable
                 - x-internal
     PortalAssetResponse:
