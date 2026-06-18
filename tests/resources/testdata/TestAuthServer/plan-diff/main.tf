@@ -37,7 +37,6 @@ resource "konnect_identity_auth_server_client" "my_client" {
   allow_all_scopes = true
   grant_types = [
     "client_credentials",
-    "authorization_code",
     "implicit"
   ]
 

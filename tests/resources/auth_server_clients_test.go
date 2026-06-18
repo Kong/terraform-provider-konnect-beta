@@ -39,7 +39,6 @@ func TestAuthServerClients(t *testing.T) {
 			allow_all_scopes = true
 			grant_types = [
 				"client_credentials",
-				"authorization_code",
 				"implicit"
 			]
 
@@ -101,7 +100,6 @@ func TestAuthServerClients(t *testing.T) {
 			allow_all_scopes = true
 			grant_types = [
 				"client_credentials",
-				"authorization_code",
 				"implicit"
 			]
 			client_secret  = "YAzsyUlNZ5gNGeKS9H3VAdxVPzhPo4ae"
