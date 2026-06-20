@@ -52,6 +52,7 @@ func (r *PortalDataSourceModel) RefreshFromSharedPortal(ctx context.Context, res
 			r.Labels[key] = types.StringPointerValue(value)
 		}
 	}
+	r.McpServerEnabled = types.BoolPointerValue(resp.McpServerEnabled)
 	r.Name = types.StringValue(resp.Name)
 	r.NotificationsDeveloperPiiVisibilityEnabled = types.BoolPointerValue(resp.NotificationsDeveloperPiiVisibilityEnabled)
 	r.RbacEnabled = types.BoolPointerValue(resp.RbacEnabled)

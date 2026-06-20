@@ -33,6 +33,7 @@ func (r *PortalResourceModel) RefreshFromSharedPortalResponse(ctx context.Contex
 				r.Labels[key] = types.StringPointerValue(value)
 			}
 		}
+		r.McpServerEnabled = types.BoolPointerValue(resp.McpServerEnabled)
 		r.Name = types.StringValue(resp.Name)
 		r.NotificationsDeveloperPiiVisibilityEnabled = types.BoolPointerValue(resp.NotificationsDeveloperPiiVisibilityEnabled)
 		r.RbacEnabled = types.BoolPointerValue(resp.RbacEnabled)
@@ -127,6 +128,12 @@ func (r *PortalResourceModel) ToSharedCreatePortal(ctx context.Context) (*shared
 	} else {
 		rbacEnabled = nil
 	}
+	mcpServerEnabled := new(bool)
+	if !r.McpServerEnabled.IsUnknown() && !r.McpServerEnabled.IsNull() {
+		*mcpServerEnabled = r.McpServerEnabled.ValueBool()
+	} else {
+		mcpServerEnabled = nil
+	}
 	siprEnabled := new(bool)
 	if !r.SiprEnabled.IsUnknown() && !r.SiprEnabled.IsNull() {
 		*siprEnabled = r.SiprEnabled.ValueBool()
@@ -194,6 +201,7 @@ func (r *PortalResourceModel) ToSharedCreatePortal(ctx context.Context) (*shared
 		Description:                      description,
 		AuthenticationEnabled:            authenticationEnabled,
 		RbacEnabled:                      rbacEnabled,
+		McpServerEnabled:                 mcpServerEnabled,
 		SiprEnabled:                      siprEnabled,
 		DefaultAPIVisibility:             defaultAPIVisibility,
 		DefaultPageVisibility:            defaultPageVisibility,
@@ -240,6 +248,12 @@ func (r *PortalResourceModel) ToSharedUpdatePortal(ctx context.Context) (*shared
 		*rbacEnabled = r.RbacEnabled.ValueBool()
 	} else {
 		rbacEnabled = nil
+	}
+	mcpServerEnabled := new(bool)
+	if !r.McpServerEnabled.IsUnknown() && !r.McpServerEnabled.IsNull() {
+		*mcpServerEnabled = r.McpServerEnabled.ValueBool()
+	} else {
+		mcpServerEnabled = nil
 	}
 	siprEnabled := new(bool)
 	if !r.SiprEnabled.IsUnknown() && !r.SiprEnabled.IsNull() {
@@ -302,6 +316,7 @@ func (r *PortalResourceModel) ToSharedUpdatePortal(ctx context.Context) (*shared
 		Description:                      description,
 		AuthenticationEnabled:            authenticationEnabled,
 		RbacEnabled:                      rbacEnabled,
+		McpServerEnabled:                 mcpServerEnabled,
 		SiprEnabled:                      siprEnabled,
 		DefaultAPIVisibility:             defaultAPIVisibility,
 		DefaultPageVisibility:            defaultPageVisibility,

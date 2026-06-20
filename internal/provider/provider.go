@@ -186,6 +186,7 @@ func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.R
 		NewIdentityAuthServerClaimResource,
 		NewIdentityAuthServerClientResource,
 		NewIdentityAuthServerScopeResource,
+		NewIdentityDirectoryResource,
 		NewMeshResource,
 		NewMeshAccessAuditResource,
 		NewMeshAccessLogResource,
