@@ -1,0 +1,5 @@
+import {
+  provider = konnect-beta
+  to = konnect_identity_directory.my_konnect-beta_identity_directory
+  id = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
+}
