@@ -51,6 +51,7 @@ type PortalResourceModel struct {
 	ForceDestroy                               types.String            `queryParam:"style=form,explode=true,name=force" tfsdk:"force_destroy"`
 	ID                                         types.String            `tfsdk:"id"`
 	Labels                                     map[string]types.String `tfsdk:"labels"`
+	McpServerEnabled                           types.Bool              `tfsdk:"mcp_server_enabled"`
 	Name                                       types.String            `tfsdk:"name"`
 	NotificationsDeveloperPiiVisibilityEnabled types.Bool              `tfsdk:"notifications_developer_pii_visibility_enabled"`
 	RbacEnabled                                types.Bool              `tfsdk:"rbac_enabled"`
@@ -174,6 +175,11 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					`Labels are intended to store **INTERNAL** metadata.` + "\n" +
 					`` + "\n" +
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
+			},
+			"mcp_server_enabled": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `Whether the portal has the MCP server enabled`,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,

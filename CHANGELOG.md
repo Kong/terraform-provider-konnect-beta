@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.19.1
+> Released on 2026/06/18
+
+### Bug Fixes
+* Fix `konnect_event_gateway_consume_policy_schema_validation` schema to match the produce policy
+
 ## 0.19.0
 > Released on 2026/06/11
 
