@@ -82,9 +82,12 @@ func TestIdentityDirectory(t *testing.T) {
 							"allowed_control_planes.#",
 							"1",
 						),
-						resource.TestCheckResourceAttrSet(
+						// Verify the control plane ID matches between the control plane and identity directory
+						resource.TestCheckResourceAttrPair(
 							"konnect_identity_directory.test_directory_with_cp",
 							"allowed_control_planes.0",
+							"konnect_gateway_control_plane.test_cp_for_directory",
+							"id",
 						),
 					),
 				},
@@ -98,7 +101,7 @@ func TestIdentityDirectory(t *testing.T) {
 				},
 				{
 					Config: builder.Upsert(controlPlane).Upsert(
-						identityDirectory.AddAttribute("description", `"Updated directory with control planes"`),
+						identityDirectory.AddAttribute("description", `"Updated description for directory with control planes"`),
 					).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
 						PreApply: []plancheck.PlanCheck{
@@ -112,7 +115,7 @@ func TestIdentityDirectory(t *testing.T) {
 						resource.TestCheckResourceAttr(
 							"konnect_identity_directory.test_directory_with_cp",
 							"description",
-							"Updated directory with control planes",
+							"Updated description for directory with control planes",
 						),
 					),
 				},
