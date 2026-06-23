@@ -224,12 +224,12 @@ func (r *EventGatewayVirtualClusterResourceModel) RefreshFromSharedVirtualCluste
 				var topicAliases tfTypes.VirtualClusterTopicAlias
 
 				topicAliases.Alias = types.StringValue(topicAliasesItem.Alias)
+				topicAliases.Condition = types.StringPointerValue(topicAliasesItem.Condition)
 				if topicAliasesItem.Conflict != nil {
 					topicAliases.Conflict = types.StringValue(string(*topicAliasesItem.Conflict))
 				} else {
 					topicAliases.Conflict = types.StringNull()
 				}
-				topicAliases.Match = types.StringPointerValue(topicAliasesItem.Match)
 				topicAliases.Topic = types.StringValue(topicAliasesItem.Topic)
 
 				r.TopicAliases = append(r.TopicAliases, topicAliases)
@@ -654,11 +654,11 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 			var topic string
 			topic = r.TopicAliases[topicAliasesIndex].Topic.ValueString()
 
-			match := new(string)
-			if !r.TopicAliases[topicAliasesIndex].Match.IsUnknown() && !r.TopicAliases[topicAliasesIndex].Match.IsNull() {
-				*match = r.TopicAliases[topicAliasesIndex].Match.ValueString()
+			condition := new(string)
+			if !r.TopicAliases[topicAliasesIndex].Condition.IsUnknown() && !r.TopicAliases[topicAliasesIndex].Condition.IsNull() {
+				*condition = r.TopicAliases[topicAliasesIndex].Condition.ValueString()
 			} else {
-				match = nil
+				condition = nil
 			}
 			conflict2 := new(shared.VirtualClusterTopicAliasConflict)
 			if !r.TopicAliases[topicAliasesIndex].Conflict.IsUnknown() && !r.TopicAliases[topicAliasesIndex].Conflict.IsNull() {
@@ -667,10 +667,10 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 				conflict2 = nil
 			}
 			topicAliases = append(topicAliases, shared.VirtualClusterTopicAlias{
-				Alias:    alias,
-				Topic:    topic,
-				Match:    match,
-				Conflict: conflict2,
+				Alias:     alias,
+				Topic:     topic,
+				Condition: condition,
+				Conflict:  conflict2,
 			})
 		}
 	}
@@ -1037,11 +1037,11 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 			var topic string
 			topic = r.TopicAliases[topicAliasesIndex].Topic.ValueString()
 
-			match := new(string)
-			if !r.TopicAliases[topicAliasesIndex].Match.IsUnknown() && !r.TopicAliases[topicAliasesIndex].Match.IsNull() {
-				*match = r.TopicAliases[topicAliasesIndex].Match.ValueString()
+			condition := new(string)
+			if !r.TopicAliases[topicAliasesIndex].Condition.IsUnknown() && !r.TopicAliases[topicAliasesIndex].Condition.IsNull() {
+				*condition = r.TopicAliases[topicAliasesIndex].Condition.ValueString()
 			} else {
-				match = nil
+				condition = nil
 			}
 			conflict2 := new(shared.VirtualClusterTopicAliasConflict)
 			if !r.TopicAliases[topicAliasesIndex].Conflict.IsUnknown() && !r.TopicAliases[topicAliasesIndex].Conflict.IsNull() {
@@ -1050,10 +1050,10 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 				conflict2 = nil
 			}
 			topicAliases = append(topicAliases, shared.VirtualClusterTopicAlias{
-				Alias:    alias,
-				Topic:    topic,
-				Match:    match,
-				Conflict: conflict2,
+				Alias:     alias,
+				Topic:     topic,
+				Condition: condition,
+				Conflict:  conflict2,
 			})
 		}
 	}

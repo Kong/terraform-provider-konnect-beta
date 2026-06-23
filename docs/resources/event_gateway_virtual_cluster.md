@@ -73,10 +73,10 @@ resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster"
   }
   topic_aliases = [
     {
-      alias    = "...my_alias..."
-      conflict = "warn"
-      match    = ""
-      topic    = "...my_topic..."
+      alias     = "...my_alias..."
+      condition = ""
+      conflict  = "warn"
+      topic     = "...my_topic..."
     }
   ]
 }
@@ -484,13 +484,13 @@ Required:
 
 Optional:
 
+- `condition` (String) CEL expression evaluated against the connection's auth context.
+If omitted or empty, the alias is active for all connections.
+Default: ""
 - `conflict` (String) How to handle conflicts where an alias shadows a physical topic.
 * warn - activate the alias but log a warning and set the conflict metric to 1.
 * ignore - activate the alias silently.
 possible known values include one of ["warn", "ignore"]; Default: "warn"
-- `match` (String) CEL expression evaluated against the connection's auth context.
-If omitted or empty, the alias is active for all connections.
-Default: ""
 
 ## Import
 
