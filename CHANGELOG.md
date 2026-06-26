@@ -6,6 +6,9 @@
 ### Features
 * Add support for `konnect_identity_directory` resource
 
+### Bug Fixes
+* Fix documentation for `condition` field in `topic_aliases` to indicate runtime version 1.2 requirement in `konnect_event_gateway_virtual_cluster`
+
 ## 0.19.1
 > Released on 2026/06/18
 
