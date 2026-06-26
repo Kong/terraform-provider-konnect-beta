@@ -58,10 +58,10 @@ resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster"
   }
   topic_aliases = [
     {
-      alias    = "...my_alias..."
-      conflict = "warn"
-      match    = ""
-      topic    = "...my_topic..."
+      alias     = "...my_alias..."
+      condition = ""
+      conflict  = "warn"
+      topic     = "...my_topic..."
     }
   ]
 }

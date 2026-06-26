@@ -7,8 +7,8 @@ import (
 )
 
 type VirtualClusterTopicAlias struct {
-	Alias    types.String `tfsdk:"alias"`
-	Conflict types.String `tfsdk:"conflict"`
-	Match    types.String `tfsdk:"match"`
-	Topic    types.String `tfsdk:"topic"`
+	Alias     types.String `tfsdk:"alias"`
+	Condition types.String `tfsdk:"condition"`
+	Conflict  types.String `tfsdk:"conflict"`
+	Topic     types.String `tfsdk:"topic"`
 }

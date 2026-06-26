@@ -765,6 +765,14 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 								stringvalidator.UTF8LengthAtLeast(1),
 							},
 						},
+						"condition": schema.StringAttribute{
+							Computed: true,
+							Optional: true,
+							Default:  stringdefault.StaticString(``),
+							MarkdownDescription: `CEL expression evaluated against the connection's auth context.` + "\n" +
+								`If omitted or empty, the alias is active for all connections.` + "\n" +
+								`Default: ""`,
+						},
 						"conflict": schema.StringAttribute{
 							Computed: true,
 							Optional: true,
@@ -773,14 +781,6 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 								`* warn - activate the alias but log a warning and set the conflict metric to 1.` + "\n" +
 								`* ignore - activate the alias silently.` + "\n" +
 								`possible known values include one of ["warn", "ignore"]; Default: "warn"`,
-						},
-						"match": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
-							Default:  stringdefault.StaticString(``),
-							MarkdownDescription: `CEL expression evaluated against the connection's auth context.` + "\n" +
-								`If omitted or empty, the alias is active for all connections.` + "\n" +
-								`Default: ""`,
 						},
 						"topic": schema.StringAttribute{
 							Required:    true,

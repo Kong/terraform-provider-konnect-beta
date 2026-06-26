@@ -10972,6 +10972,127 @@ paths:
         - Add-Ons
       x-servers-added: true
       x-speakeasy-group: CloudGateways
+  /v2/directories:
+    post:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityDirectory#create
+        terraform-datasource: null
+      operationId: createDirectory
+      summary: Create a new Directory
+      description: |
+        Creates a new directory for grouping principals around an organizational identity boundary.
+        Directories can be configured with metadata, labels, and control plane access restrictions.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateDirectoryRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/KongDirectoryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - Kong Identity Directories
+      x-servers-added: true
+  '/v2/directories/{directoryId}':
+    parameters:
+      - $ref: '#/components/parameters/directoryId'
+    put:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityDirectory#update
+        terraform-datasource: null
+      operationId: replaceDirectory
+      summary: Replace a Directory
+      description: |
+        Completely replaces an existing directory with the provided data.
+        All fields must be specified; any omitted fields will be reset to their defaults.
+      requestBody:
+        $ref: '#/components/requestBodies/ReplaceDirectoryRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/KongDirectoryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - Kong Identity Directories
+      x-servers-added: true
+    get:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityDirectory#read
+        terraform-datasource: null
+      operationId: getDirectory
+      summary: Get a Directory
+      description: Retrieves detailed information about a specific directory by its ID.
+      responses:
+        '200':
+          $ref: '#/components/responses/KongDirectoryResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - Kong Identity Directories
+      x-servers-added: true
+    delete:
+      x-unstable: true
+      x-internal: true
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityDirectory#delete
+        terraform-datasource: null
+      operationId: deleteDirectory
+      summary: Delete a Directory
+      description: |
+        Deletes a directory and optionally all its associated resources (principals, keys, etc.).
+        Use the force parameter to control deletion behavior when dependencies exist.
+      parameters:
+        - name: force
+          in: query
+          description: 'If true, delete the specified directory and all its associated resources. If false, only allow deletion if no clients, scopes or claims are associated with the auth server.'
+          schema:
+            type: string
+            default: 'false'
+            enum:
+              - 'true'
+              - 'false'
+          x-speakeasy-name-override: force_destroy
+      responses:
+        '204':
+          description: Success
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      servers:
+        - url: 'https://us.api.konghq.com/'
+      tags:
+        - Kong Identity Directories
+      x-servers-added: true
 components:
   parameters:
     AddOnId:
@@ -11036,6 +11157,15 @@ components:
       description: Id of the Konnect resource
       example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
       x-speakeasy-param-force-new: true
+      schema:
+        type: string
+        format: uuid
+    directoryId:
+      name: directoryId
+      in: path
+      required: true
+      description: ID of the directory
+      x-speakeasy-match: id
       schema:
         type: string
         format: uuid
@@ -30380,122 +30510,6 @@ components:
         - id
         - created_at
         - updated_at
-    EventGatewayProducePolicySchemaValidationTFOnly:
-      description: A policy associated with an Event Gateway.
-      type: object
-      properties:
-        type:
-          description: The type name of the policy.
-          type: string
-          maxLength: 255
-          minLength: 1
-        name:
-          description: A unique user-defined name of the policy.
-          type: string
-          maxLength: 255
-          nullable: false
-          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
-        description:
-          description: A human-readable description of the policy.
-          type: string
-          default: ''
-          maxLength: 512
-        enabled:
-          description: Whether the policy is enabled.
-          type: boolean
-          default: true
-        labels:
-          $ref: '#/components/schemas/Labels'
-        id:
-          description: The unique identifier of the policy.
-          type: string
-          format: uuid
-        config:
-          description: The configuration of the policy.
-          type: object
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        parent_policy_id:
-          description: 'The unique identifier of the parent policy, if any.'
-          type: string
-          format: uuid
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-        condition:
-          description: A string containing the boolean expression that determines whether the policy is applied.
-          type: string
-          default: ''
-          maxLength: 1000
-          x-expression:
-            type: boolean
-            fields: []
-      required:
-        - type
-        - id
-        - created_at
-        - updated_at
-        - config
-    EventGatewayConsumePolicySchemaValidationTFOnly:
-      description: A policy associated with an Event Gateway.
-      type: object
-      properties:
-        type:
-          description: The type name of the policy.
-          type: string
-          maxLength: 255
-          minLength: 1
-        name:
-          description: A unique user-defined name of the policy.
-          type: string
-          maxLength: 255
-          nullable: false
-          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
-        description:
-          description: A human-readable description of the policy.
-          type: string
-          default: ''
-          maxLength: 512
-        enabled:
-          description: Whether the policy is enabled.
-          type: boolean
-          default: true
-        labels:
-          $ref: '#/components/schemas/Labels'
-        id:
-          description: The unique identifier of the policy.
-          type: string
-          format: uuid
-        config:
-          description: The configuration of the policy.
-          type: object
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        parent_policy_id:
-          description: 'The unique identifier of the parent policy, if any.'
-          type: string
-          format: uuid
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-        condition:
-          description: A string containing the boolean expression that determines whether the policy is applied.
-          type: string
-          default: ''
-          maxLength: 1000
-          x-expression:
-            type: boolean
-            fields: []
-      required:
-        - type
-        - id
-        - created_at
-        - updated_at
-        - config
     EventGatewayListenerPolicy:
       description: A policy associated with an Event Gateway.
       type: object
@@ -33038,7 +33052,7 @@ components:
           description: The namespace-visible topic name this alias resolves to.
           type: string
           minLength: 1
-        match:
+        condition:
           description: |
             CEL expression evaluated against the connection's auth context.
             If omitted or empty, the alias is active for all connections.
@@ -33763,6 +33777,178 @@ components:
         - tier
       title: TieredCapacityConfig
       x-speakeasy-name-override: Tiered
+    KongIdentityAllowedControlPlanes:
+      description: |
+        List of control plane IDs authorized to make authentication requests to this directory.
+        Maximum of 32 control planes can be specified. Use allow_all_control_planes for unrestricted access.
+      type: array
+      items:
+        type: string
+        format: uuid
+        uniqueItems: true
+        minItems: 0
+        maxItems: 32
+      default: []
+      nullable: false
+    KongIdentityAllowAllControlPlanes:
+      description: |
+        When set to true, all control planes within the organization can make authentication requests to this directory.
+        This overrides the allowed_control_planes list. Defaults to false for security.
+      type: boolean
+      default: false
+      nullable: false
+    DirectoryName:
+      description: |
+        Human-readable name of the directory, used to identify the organizational boundary.
+        A directory name is unique within the organization.
+      type: string
+      maxLength: 255
+      minLength: 1
+      pattern: '^[a-z0-9-_]+$'
+    DirectoryDescription:
+      description: |
+        Optional description providing additional context about the directory's purpose or usage.
+      type: string
+      maxLength: 255
+    CreateDirectoryBody:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/DirectoryName'
+        description:
+          $ref: '#/components/schemas/DirectoryDescription'
+        allowed_control_planes:
+          $ref: '#/components/schemas/KongIdentityAllowedControlPlanes'
+        allow_all_control_planes:
+          $ref: '#/components/schemas/KongIdentityAllowAllControlPlanes'
+        ttl_secs:
+          $ref: '#/components/schemas/DirectoryTTLSecs'
+        negative_ttl_secs:
+          $ref: '#/components/schemas/DirectoryNegativeTTLSecs'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      additionalProperties: false
+      required:
+        - name
+      x-property-annotations:
+        ttl_secs:
+          - x-internal
+          - x-unstable
+        negative_ttl_secs:
+          - x-internal
+          - x-unstable
+    ReplaceDirectoryBody:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/DirectoryName'
+        description:
+          $ref: '#/components/schemas/DirectoryDescription'
+        allowed_control_planes:
+          $ref: '#/components/schemas/KongIdentityAllowedControlPlanes'
+        allow_all_control_planes:
+          $ref: '#/components/schemas/KongIdentityAllowAllControlPlanes'
+        ttl_secs:
+          $ref: '#/components/schemas/DirectoryTTLSecs'
+        negative_ttl_secs:
+          $ref: '#/components/schemas/DirectoryNegativeTTLSecs'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+      additionalProperties: false
+      required:
+        - name
+      x-property-annotations:
+        ttl_secs:
+          - x-internal
+          - x-unstable
+        negative_ttl_secs:
+          - x-internal
+          - x-unstable
+    DirectoryTTLSecs:
+      description: |
+        The time in seconds that a principal will be cached in memory on a running Gateway if it is
+        successfully authenticated from this directory. Maximum is 86400 seconds (24 hours).
+      type: integer
+      default: 600
+      maximum: 86400
+      minimum: 300
+    DirectoryNegativeTTLSecs:
+      description: |
+        If a running Gateway triggers a lookup for a principal that cannot be authenticated in this directory,
+        a `negative_ttl_secs` is set. The Gateway will not try to look up the principal in Konnect for `negative_ttl_secs` seconds.
+
+        A principal will be cached for `negative_ttl_secs` if it does not exist in the directory, or if the provided credentials are invalid.
+        Maximum is 86400 seconds (24 hours).
+      type: integer
+      default: 600
+      maximum: 86400
+      minimum: 300
+    KongDirectory:
+      description: |
+        A directory represents an organizational boundary for grouping principals and managing their identities.
+        Directories are region-specific and can control which control planes have authentication access.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          $ref: '#/components/schemas/DirectoryName'
+        description:
+          $ref: '#/components/schemas/DirectoryDescription'
+        allowed_control_planes:
+          $ref: '#/components/schemas/KongIdentityAllowedControlPlanes'
+        allow_all_control_planes:
+          $ref: '#/components/schemas/KongIdentityAllowAllControlPlanes'
+        ttl_secs:
+          $ref: '#/components/schemas/DirectoryTTLSecs'
+        negative_ttl_secs:
+          $ref: '#/components/schemas/DirectoryNegativeTTLSecs'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - name
+        - description
+        - labels
+        - allowed_control_planes
+        - allow_all_control_planes
+        - ttl_secs
+        - negative_ttl_secs
+        - managed_by
+        - created_at
+        - updated_at
+      x-property-annotations:
+        ttl_secs:
+          - x-internal
+          - x-unstable
+        negative_ttl_secs:
+          - x-internal
+          - x-unstable
+    ManagedBy:
+      description: |
+        Stores information about what manages this entity, such as the tool or system responsible for its lifecycle (for example, `terraform`).
+
+        Keys must be 1–63 characters long and start with an alphanumeric character.
+      type: object
+      example:
+        owner: terraform
+      additionalProperties:
+        type: string
+        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
+        minLength: 1
+        maxLength: 63
+      maxProperties: 5
+      title: ManagedBy
     CreatePortalCustomDomainSSL:
       type: object
       properties:
@@ -33786,6 +33972,122 @@ components:
           type: boolean
           nullable: false
       additionalProperties: false
+    EventGatewayConsumePolicySchemaValidationTFOnly:
+      description: A policy associated with an Event Gateway.
+      type: object
+      properties:
+        type:
+          description: The type name of the policy.
+          type: string
+          maxLength: 255
+          minLength: 1
+        name:
+          description: A unique user-defined name of the policy.
+          type: string
+          maxLength: 255
+          nullable: false
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the policy.
+          type: string
+          default: ''
+          maxLength: 512
+        enabled:
+          description: Whether the policy is enabled.
+          type: boolean
+          default: true
+        labels:
+          $ref: '#/components/schemas/Labels'
+        id:
+          description: The unique identifier of the policy.
+          type: string
+          format: uuid
+        config:
+          description: The configuration of the policy.
+          type: object
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        parent_policy_id:
+          description: 'The unique identifier of the parent policy, if any.'
+          type: string
+          format: uuid
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        condition:
+          description: A string containing the boolean expression that determines whether the policy is applied.
+          type: string
+          default: ''
+          maxLength: 1000
+          x-expression:
+            type: boolean
+            fields: []
+      required:
+        - type
+        - id
+        - created_at
+        - updated_at
+        - config
+    EventGatewayProducePolicySchemaValidationTFOnly:
+      description: A policy associated with an Event Gateway.
+      type: object
+      properties:
+        type:
+          description: The type name of the policy.
+          type: string
+          maxLength: 255
+          minLength: 1
+        name:
+          description: A unique user-defined name of the policy.
+          type: string
+          maxLength: 255
+          nullable: false
+          x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+        description:
+          description: A human-readable description of the policy.
+          type: string
+          default: ''
+          maxLength: 512
+        enabled:
+          description: Whether the policy is enabled.
+          type: boolean
+          default: true
+        labels:
+          $ref: '#/components/schemas/Labels'
+        id:
+          description: The unique identifier of the policy.
+          type: string
+          format: uuid
+        config:
+          description: The configuration of the policy.
+          type: object
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        parent_policy_id:
+          description: 'The unique identifier of the parent policy, if any.'
+          type: string
+          format: uuid
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        condition:
+          description: A string containing the boolean expression that determines whether the policy is applied.
+          type: string
+          default: ''
+          maxLength: 1000
+          x-expression:
+            type: boolean
+            fields: []
+      required:
+        - type
+        - id
+        - created_at
+        - updated_at
+        - config
   requestBodies:
     CreatePortalCustomDomain:
       description: Create a portal custom domain.
@@ -35066,6 +35368,20 @@ components:
               labels:
                 $ref: '#/components/schemas/Labels'
             additionalProperties: false
+    CreateDirectoryRequest:
+      description: Directory to be created
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateDirectoryBody'
+    ReplaceDirectoryRequest:
+      description: Directory to be replaced
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReplaceDirectoryBody'
   responses:
     PortalAuthenticationSettings:
       description: Details about a portal's authentication settings.
@@ -37447,6 +37763,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/AddOnResponse'
+    KongDirectoryResponse:
+      description: A Directory
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KongDirectory'
   securitySchemes:
     personalAccessToken:
       type: http
@@ -37558,6 +37880,12 @@ tags:
       determine which client certificates are accepted.
   - name: Event Gateway Vaults
   - name: Add-Ons
+  - name: Kong Identity Directories
+    description: |
+      Use a directory to group consumers around an identity, defined by organizational boundaries,
+      such as a production directory or a development directory. Directories are connected to a
+      [geographic region](https://docs.konghq.com/konnect/geo/) in Konnect. Centrally managed consumers defined in
+      directories can be used across multiple control planes.
 security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
