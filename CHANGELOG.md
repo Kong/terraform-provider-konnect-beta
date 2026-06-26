@@ -1,7 +1,7 @@
 # Changelog
 
 ## 0.20.0
-> Released on 2026/06/??
+> Released on 2026/06/26
 
 ### Features
 * Add support for `konnect_identity_directory` resource
