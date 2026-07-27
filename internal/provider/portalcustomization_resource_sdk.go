@@ -93,6 +93,17 @@ func (r *PortalCustomizationResourceModel) RefreshFromSharedPortalCustomization(
 				r.Menu.Main = nil
 			}
 		}
+		if resp.PortalLayout == nil {
+			r.PortalLayout = nil
+		} else {
+			r.PortalLayout = &tfTypes.PortalLayout{}
+			if resp.PortalLayout.Footer == nil {
+				r.PortalLayout.Footer = nil
+			} else {
+				r.PortalLayout.Footer = &tfTypes.Footer{}
+				r.PortalLayout.Footer.SnippetName = types.StringPointerValue(resp.PortalLayout.Footer.SnippetName)
+			}
+		}
 		r.Robots = types.StringPointerValue(resp.Robots)
 		if resp.SpecRenderer == nil {
 			r.SpecRenderer = nil
@@ -373,6 +384,24 @@ func (r *PortalCustomizationResourceModel) ToSharedPortalCustomization(ctx conte
 	} else {
 		robots = nil
 	}
+	var portalLayout *shared.PortalLayout
+	if r.PortalLayout != nil {
+		var footer *shared.Footer
+		if r.PortalLayout.Footer != nil {
+			snippetName := new(string)
+			if !r.PortalLayout.Footer.SnippetName.IsUnknown() && !r.PortalLayout.Footer.SnippetName.IsNull() {
+				*snippetName = r.PortalLayout.Footer.SnippetName.ValueString()
+			} else {
+				snippetName = nil
+			}
+			footer = &shared.Footer{
+				SnippetName: snippetName,
+			}
+		}
+		portalLayout = &shared.PortalLayout{
+			Footer: footer,
+		}
+	}
 	out := shared.PortalCustomization{
 		Theme:        theme,
 		Layout:       layout,
@@ -381,6 +410,7 @@ func (r *PortalCustomizationResourceModel) ToSharedPortalCustomization(ctx conte
 		Menu:         menu,
 		SpecRenderer: specRenderer,
 		Robots:       robots,
+		PortalLayout: portalLayout,
 	}
 
 	return &out, diags

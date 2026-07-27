@@ -69,7 +69,9 @@ type KonnectBeta struct {
 	// APIs related to configuration of Konnect Developer Portal auth settings.
 	PortalAuthSettings *PortalAuthSettings
 	// APIs related to configuration of Konnect Developer Portal developer teams.
-	PortalTeams     *PortalTeams
+	PortalTeams *PortalTeams
+	// APIs related to Konnect Developer Portal developer team roles.
+	PortalTeamRoles *PortalTeamRoles
 	PortalAuditLogs *PortalAuditLogs
 	// APIs related to Konnect Portal IP Allow List.
 	PortalsIPAllowList        *PortalsIPAllowList
@@ -104,8 +106,10 @@ type KonnectBeta struct {
 	MeshExternalService       *MeshExternalService
 	MeshIdentity              *MeshIdentity
 	MeshMultiZoneService      *MeshMultiZoneService
+	MeshOpenTelemetryBackend  *MeshOpenTelemetryBackend
 	MeshService               *MeshService
 	MeshTrust                 *MeshTrust
+	MeshZoneAddress           *MeshZoneAddress
 	Workload                  *Workload
 	MeshGlobalRateLimit       *MeshGlobalRateLimit
 	MeshOPA                   *MeshOPA
@@ -119,8 +123,9 @@ type KonnectBeta struct {
 	// Scopes define the extent of access that an access token grants to a Client. The management API will give you the ability to create, configure and manage multiple Scopes per Auth Server, and restrict their usage by Client.
 	AuthServerScopes *AuthServerScopes
 	// Clients represent the identity of machines, such as microservices, mobile apps, or scripts entity. The management API will give you the ability to create, configure and manage multiple Clients per Auth Server.
-	AuthServerClients *AuthServerClients
-	Dashboards        *Dashboards
+	AuthServerClients    *AuthServerClients
+	Dashboards           *Dashboards
+	PersonalAccessTokens *PersonalAccessTokens
 	// Create an Event Gateway Control Plane, used to store Event Gateway configuration
 	//
 	EventGateways *EventGateways
@@ -285,6 +290,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.Snippets = newSnippets(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalAuthSettings = newPortalAuthSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalTeams = newPortalTeams(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalTeamRoles = newPortalTeamRoles(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalAuditLogs = newPortalAuditLogs(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalsIPAllowList = newPortalsIPAllowList(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.API = newAPI(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -318,8 +324,10 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.MeshExternalService = newMeshExternalService(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshIdentity = newMeshIdentity(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshMultiZoneService = newMeshMultiZoneService(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshOpenTelemetryBackend = newMeshOpenTelemetryBackend(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshService = newMeshService(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshTrust = newMeshTrust(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MeshZoneAddress = newMeshZoneAddress(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Workload = newWorkload(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshGlobalRateLimit = newMeshGlobalRateLimit(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MeshOPA = newMeshOPA(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -331,6 +339,7 @@ func New(opts ...SDKOption) *KonnectBeta {
 	sdk.AuthServerScopes = newAuthServerScopes(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthServerClients = newAuthServerClients(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Dashboards = newDashboards(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PersonalAccessTokens = newPersonalAccessTokens(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGateways = newEventGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayListeners = newEventGatewayListeners(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayVirtualClusters = newEventGatewayVirtualClusters(sdk, sdk.sdkConfiguration, sdk.hooks)

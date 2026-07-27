@@ -9,8 +9,9 @@ resource "konnect_mesh_external_service" "my_meshexternalservice" {
   spec = {
     endpoints = [
       {
-        address = "example.com"
-        port    = 9478
+        address  = "example.com"
+        port     = 9478
+        priority = 69
       }
     ]
     extension = {

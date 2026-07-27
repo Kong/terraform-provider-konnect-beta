@@ -6,6 +6,7 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
@@ -66,6 +67,8 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(ctx context.Context, resp 
 				}
 			}
 		}
+		r.CreationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreationTime))
+		r.Kri = types.StringPointerValue(resp.Kri)
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key2, value2 := range resp.Labels {
@@ -179,6 +182,7 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(ctx context.Context, resp 
 			}
 			r.Metrics.EnabledBackend = types.StringPointerValue(resp.Metrics.EnabledBackend)
 		}
+		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		if resp.Mtls == nil {
 			r.Mtls = nil
 		} else {
@@ -638,7 +642,7 @@ func (r *MeshResourceModel) ToOperationsPutMeshRequest(ctx context.Context) (*op
 	var name string
 	name = r.Name.ValueString()
 
-	meshItem, meshItemDiags := r.ToSharedMeshItem(ctx)
+	meshItem, meshItemDiags := r.ToSharedMeshItemInput(ctx)
 	diags.Append(meshItemDiags...)
 
 	if diags.HasError() {
@@ -654,7 +658,7 @@ func (r *MeshResourceModel) ToOperationsPutMeshRequest(ctx context.Context) (*op
 	return &out, diags
 }
 
-func (r *MeshResourceModel) ToSharedMeshItem(ctx context.Context) (*shared.MeshItem, diag.Diagnostics) {
+func (r *MeshResourceModel) ToSharedMeshItemInput(ctx context.Context) (*shared.MeshItemInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var constraints *shared.Constraints
@@ -2296,7 +2300,7 @@ func (r *MeshResourceModel) ToSharedMeshItem(ctx context.Context) (*shared.MeshI
 	var typeVar2 string
 	typeVar2 = r.Type.ValueString()
 
-	out := shared.MeshItem{
+	out := shared.MeshItemInput{
 		Constraints:                 constraints,
 		Labels:                      labels,
 		Logging:                     logging,

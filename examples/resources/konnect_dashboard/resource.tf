@@ -13,9 +13,10 @@ resource "konnect_dashboard" "my_dashboard" {
         chart = {
           definition = {
             chart = {
-              choropleth_map = {
-                chart_title = "...my_chart_title..."
-                type        = "choropleth_map"
+              single_value = {
+                chart_title    = "...my_chart_title..."
+                decimal_points = 7.86
+                type           = "single_value"
               }
             }
             query = {
@@ -32,6 +33,7 @@ resource "konnect_dashboard" "my_dashboard" {
                   }
                 ]
                 granularity = "tenMinutely"
+                limit       = 50
                 metrics = [
                   "ai_request_count"
                 ]

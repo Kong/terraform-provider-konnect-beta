@@ -36,6 +36,7 @@ type KonnectBetaProviderModel struct {
 	KonnectAccessToken       types.String `tfsdk:"konnect_access_token"`
 	PersonalAccessToken      types.String `tfsdk:"personal_access_token"`
 	ServerURL                types.String `tfsdk:"server_url"`
+	ServiceAccessToken       types.String `tfsdk:"service_access_token"`
 	SystemAccountAccessToken types.String `tfsdk:"system_account_access_token"`
 }
 
@@ -65,6 +66,12 @@ func (p *KonnectBetaProvider) Schema(ctx context.Context, req provider.SchemaReq
 			"server_url": schema.StringAttribute{
 				Description: `Server URL (defaults to https://global.api.konghq.com)`,
 				Optional:    true,
+			},
+			"service_access_token": schema.StringAttribute{
+				MarkdownDescription: `The Service access token is meant to be used between internal services.` + "\n" +
+					`.`,
+				Optional:  true,
+				Sensitive: true,
 			},
 			"system_account_access_token": schema.StringAttribute{
 				MarkdownDescription: `The system account access token is meant for automations and integrations that are not directly associated with a human identity.` + "\n" +
@@ -119,6 +126,10 @@ func (p *KonnectBetaProvider) Configure(ctx context.Context, req provider.Config
 
 	if !data.KonnectAccessToken.IsUnknown() {
 		security.KonnectAccessToken = data.KonnectAccessToken.ValueStringPointer()
+	}
+
+	if !data.ServiceAccessToken.IsUnknown() {
+		security.ServiceAccessToken = data.ServiceAccessToken.ValueStringPointer()
 	}
 
 	providerHTTPTransportOpts := ProviderHTTPTransportOpts{
@@ -206,6 +217,7 @@ func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.R
 		NewMeshMetricResource,
 		NewMeshMultiZoneServiceResource,
 		NewMeshOPAResource,
+		NewMeshOpenTelemetryBackendResource,
 		NewMeshPassthroughResource,
 		NewMeshProxyPatchResource,
 		NewMeshRateLimitResource,
@@ -219,8 +231,10 @@ func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.R
 		NewMeshTrafficPermissionResource,
 		NewMeshTrustResource,
 		NewMeshWorkloadResource,
+		NewMeshZoneAddressResource,
 		NewMeshZoneEgressResource,
 		NewMeshZoneIngressResource,
+		NewOrganizationPersonalAccessTokenSettingsResource,
 		NewPortalResource,
 		NewPortalAuditLogWebhookResource,
 		NewPortalAuthResource,
@@ -232,6 +246,7 @@ func (p *KonnectBetaProvider) Resources(ctx context.Context) []func() resource.R
 		NewPortalPageResource,
 		NewPortalSnippetResource,
 		NewPortalTeamResource,
+		NewPortalTeamRoleResource,
 	}
 }
 

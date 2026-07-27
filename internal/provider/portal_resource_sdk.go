@@ -140,15 +140,15 @@ func (r *PortalResourceModel) ToSharedCreatePortal(ctx context.Context) (*shared
 	} else {
 		siprEnabled = nil
 	}
-	defaultAPIVisibility := new(shared.DefaultAPIVisibility)
+	defaultAPIVisibility := new(shared.PortalDefaultAPIVisibility)
 	if !r.DefaultAPIVisibility.IsUnknown() && !r.DefaultAPIVisibility.IsNull() {
-		*defaultAPIVisibility = shared.DefaultAPIVisibility(r.DefaultAPIVisibility.ValueString())
+		*defaultAPIVisibility = shared.PortalDefaultAPIVisibility(r.DefaultAPIVisibility.ValueString())
 	} else {
 		defaultAPIVisibility = nil
 	}
-	defaultPageVisibility := new(shared.DefaultPageVisibility)
+	defaultPageVisibility := new(shared.PortalDefaultPageVisibility)
 	if !r.DefaultPageVisibility.IsUnknown() && !r.DefaultPageVisibility.IsNull() {
-		*defaultPageVisibility = shared.DefaultPageVisibility(r.DefaultPageVisibility.ValueString())
+		*defaultPageVisibility = shared.PortalDefaultPageVisibility(r.DefaultPageVisibility.ValueString())
 	} else {
 		defaultPageVisibility = nil
 	}
@@ -261,15 +261,15 @@ func (r *PortalResourceModel) ToSharedUpdatePortal(ctx context.Context) (*shared
 	} else {
 		siprEnabled = nil
 	}
-	defaultAPIVisibility := new(shared.UpdatePortalDefaultAPIVisibility)
+	defaultAPIVisibility := new(shared.PortalDefaultAPIVisibility)
 	if !r.DefaultAPIVisibility.IsUnknown() && !r.DefaultAPIVisibility.IsNull() {
-		*defaultAPIVisibility = shared.UpdatePortalDefaultAPIVisibility(r.DefaultAPIVisibility.ValueString())
+		*defaultAPIVisibility = shared.PortalDefaultAPIVisibility(r.DefaultAPIVisibility.ValueString())
 	} else {
 		defaultAPIVisibility = nil
 	}
-	defaultPageVisibility := new(shared.UpdatePortalDefaultPageVisibility)
+	defaultPageVisibility := new(shared.PortalDefaultPageVisibility)
 	if !r.DefaultPageVisibility.IsUnknown() && !r.DefaultPageVisibility.IsNull() {
-		*defaultPageVisibility = shared.UpdatePortalDefaultPageVisibility(r.DefaultPageVisibility.ValueString())
+		*defaultPageVisibility = shared.PortalDefaultPageVisibility(r.DefaultPageVisibility.ValueString())
 	} else {
 		defaultPageVisibility = nil
 	}

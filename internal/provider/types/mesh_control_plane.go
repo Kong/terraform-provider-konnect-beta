@@ -14,4 +14,5 @@ type MeshControlPlane struct {
 	Labels      map[string]types.String   `tfsdk:"labels"`
 	Name        types.String              `tfsdk:"name"`
 	UpdatedAt   types.String              `tfsdk:"updated_at"`
+	Version     types.String              `tfsdk:"version"`
 }

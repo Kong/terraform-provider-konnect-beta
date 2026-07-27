@@ -7,52 +7,6 @@ import (
 	"time"
 )
 
-// ListPortalsResponseDefaultAPIVisibility - The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.
-type ListPortalsResponseDefaultAPIVisibility string
-
-const (
-	ListPortalsResponseDefaultAPIVisibilityPublic  ListPortalsResponseDefaultAPIVisibility = "public"
-	ListPortalsResponseDefaultAPIVisibilityPrivate ListPortalsResponseDefaultAPIVisibility = "private"
-)
-
-func (e ListPortalsResponseDefaultAPIVisibility) ToPointer() *ListPortalsResponseDefaultAPIVisibility {
-	return &e
-}
-
-// IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *ListPortalsResponseDefaultAPIVisibility) IsExact() bool {
-	if e != nil {
-		switch *e {
-		case "public", "private":
-			return true
-		}
-	}
-	return false
-}
-
-// ListPortalsResponseDefaultPageVisibility - The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.
-type ListPortalsResponseDefaultPageVisibility string
-
-const (
-	ListPortalsResponseDefaultPageVisibilityPublic  ListPortalsResponseDefaultPageVisibility = "public"
-	ListPortalsResponseDefaultPageVisibilityPrivate ListPortalsResponseDefaultPageVisibility = "private"
-)
-
-func (e ListPortalsResponseDefaultPageVisibility) ToPointer() *ListPortalsResponseDefaultPageVisibility {
-	return &e
-}
-
-// IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *ListPortalsResponseDefaultPageVisibility) IsExact() bool {
-	if e != nil {
-		switch *e {
-		case "public", "private":
-			return true
-		}
-	}
-	return false
-}
-
 type Portal struct {
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`
@@ -74,10 +28,10 @@ type Portal struct {
 	McpServerEnabled *bool `json:"mcp_server_enabled,omitempty"`
 	// Whether ip allow list is enabled for the portal.
 	SiprEnabled *bool `default:"false" json:"sipr_enabled"`
-	// The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.
-	DefaultAPIVisibility ListPortalsResponseDefaultAPIVisibility `json:"default_api_visibility"`
-	// The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.
-	DefaultPageVisibility ListPortalsResponseDefaultPageVisibility `json:"default_page_visibility"`
+	// The default visibility of APIs in the portal.
+	DefaultAPIVisibility PortalDefaultAPIVisibility `json:"default_api_visibility"`
+	// The default visibility of pages in the portal.
+	DefaultPageVisibility PortalDefaultPageVisibility `json:"default_page_visibility"`
 	// The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.
 	DefaultApplicationAuthStrategyID *string `default:"null" json:"default_application_auth_strategy_id"`
 	// Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.
@@ -178,16 +132,16 @@ func (p *Portal) GetSiprEnabled() *bool {
 	return p.SiprEnabled
 }
 
-func (p *Portal) GetDefaultAPIVisibility() ListPortalsResponseDefaultAPIVisibility {
+func (p *Portal) GetDefaultAPIVisibility() PortalDefaultAPIVisibility {
 	if p == nil {
-		return ListPortalsResponseDefaultAPIVisibility("")
+		return PortalDefaultAPIVisibility("")
 	}
 	return p.DefaultAPIVisibility
 }
 
-func (p *Portal) GetDefaultPageVisibility() ListPortalsResponseDefaultPageVisibility {
+func (p *Portal) GetDefaultPageVisibility() PortalDefaultPageVisibility {
 	if p == nil {
-		return ListPortalsResponseDefaultPageVisibility("")
+		return PortalDefaultPageVisibility("")
 	}
 	return p.DefaultPageVisibility
 }

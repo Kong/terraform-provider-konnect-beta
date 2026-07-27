@@ -33,6 +33,12 @@ resource "konnect_mesh_access_log" "my_meshaccesslog" {
                     value = "...my_value..."
                   }
                 ]
+                backend_ref = {
+                  kind = "MeshOpenTelemetryBackend"
+                  labels = {
+                    key = "value"
+                  }
+                }
                 body     = { "kvlistValue" : { "values" : [{ "key" : "mesh", "value" : { "stringValue" : "%KUMA_MESH%" } }] } }
                 endpoint = "otel-collector:4317"
               }
@@ -98,6 +104,12 @@ resource "konnect_mesh_access_log" "my_meshaccesslog" {
                     value = "...my_value..."
                   }
                 ]
+                backend_ref = {
+                  kind = "MeshOpenTelemetryBackend"
+                  labels = {
+                    key = "value"
+                  }
+                }
                 body     = { "kvlistValue" : { "values" : [{ "key" : "mesh", "value" : { "stringValue" : "%KUMA_MESH%" } }] } }
                 endpoint = "otel-collector:4317"
               }
@@ -119,6 +131,18 @@ resource "konnect_mesh_access_log" "my_meshaccesslog" {
             }
           ]
         }
+        matches = [
+          {
+            sni = {
+              type  = "Exact"
+              value = "...my_value..."
+            }
+            spiffe_id = {
+              type  = "Prefix"
+              value = "...my_value..."
+            }
+          }
+        ]
       }
     ]
     target_ref = {
@@ -163,6 +187,12 @@ resource "konnect_mesh_access_log" "my_meshaccesslog" {
                     value = "...my_value..."
                   }
                 ]
+                backend_ref = {
+                  kind = "MeshOpenTelemetryBackend"
+                  labels = {
+                    key = "value"
+                  }
+                }
                 body     = { "kvlistValue" : { "values" : [{ "key" : "mesh", "value" : { "stringValue" : "%KUMA_MESH%" } }] } }
                 endpoint = "otel-collector:4317"
               }

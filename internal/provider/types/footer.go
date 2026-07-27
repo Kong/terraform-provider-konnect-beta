@@ -6,7 +6,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type MeshFaultInjectionItemSpiffeID struct {
-	Type  types.String `tfsdk:"type"`
-	Value types.String `tfsdk:"value"`
+type Footer struct {
+	SnippetName types.String `tfsdk:"snippet_name"`
 }
