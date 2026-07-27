@@ -8,6 +8,7 @@ info:
     name: Kong
     url: 'https://cloud.konghq.com'
   x-ref-schema-name: DataplaneOverview
+  x-latest-public-runtime-version: '1.2'
   x-extensions-note: |
     This API uses the `x-expression` vendor extension to indicate that a string property is a DSL expression.
     Supported types:
@@ -21,7 +22,9 @@ info:
 
     `x-min-runtime-version` indicates the minimum Event Gateway runtime version required to use a certain policy or
     policy feature. The runtime version can be configured at the Event Gateway entity level. It must be a string
-    containing a semantic version in the `MAJOR.MINOR` format, e.g., `"1.1"`.
+    containing a semantic version in the `MAJOR.MINOR` format, e.g., `"1.1"`. info.[x-latest-public-runtime-version]
+    indicates the latest public runtime version of Event Gateway. When
+    `x-min-runtime-version > x-latest-public-runtime-version`, the property or schema will only appear in dev schemas.
 servers:
   - url: 'https://global.api.konghq.com'
   - url: 'https://us.api.konghq.com'
@@ -673,7 +676,15 @@ paths:
         - Portal Teams
   '/v3/portals/{portalId}/teams/{teamId}':
     parameters:
-      - $ref: '#/components/parameters/TeamId'
+      - name: teamId
+        in: path
+        description: ID of the team.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        x-speakeasy-match: id
       - $ref: '#/components/parameters/PortalId'
     get:
       x-speakeasy-entity-operation:
@@ -731,6 +742,71 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Teams
+  '/v3/portals/{portalId}/teams/{teamId}/assigned-roles':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/TeamId'
+      - $ref: '#/components/parameters/PageSize'
+      - $ref: '#/components/parameters/PageNumber'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalTeamRole#create
+        terraform-datasource: null
+      operationId: assign-role-to-portal-teams
+      summary: Assign Role
+      description: 'Assign a role to a developer team. This associates the set of permissions in a role with the team, so that they will be applied to any developer who is a member of the team.'
+      requestBody:
+        $ref: '#/components/requestBodies/PortalAssignRole'
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalAssignedRole'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Portal Team Roles
+  '/v3/portals/{portalId}/teams/{teamId}/assigned-roles/{roleId}':
+    parameters:
+      - name: roleId
+        in: path
+        description: ID of the assigned role.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 8350205f-a305-4e39-abe9-bc082a80091a
+        x-speakeasy-match: id
+      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/TeamId'
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalTeamRole#delete
+        terraform-datasource: null
+      operationId: remove-role-from-portal-team
+      summary: Remove Role
+      description: Removes an assigned role from a developer team. This deletes the association of the role with team and each of its members.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Team Roles
   '/v3/portals/{portalId}/audit-log-webhook':
     parameters:
       - $ref: '#/components/parameters/PortalId'
@@ -6342,6 +6418,204 @@ paths:
           - 504
     parameters:
       - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshopentelemetrybackends/{name}':
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshOpenTelemetryBackend#get
+        terraform-datasource: null
+      operationId: getMeshOpenTelemetryBackend
+      summary: Returns MeshOpenTelemetryBackend entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshOpenTelemetryBackend
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/MeshOpenTelemetryBackendItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshOpenTelemetryBackend
+      x-speakeasy-retries:
+        strategy: backoff
+        backoff:
+          initialInterval: 100
+          maxInterval: 500
+          maxElapsedTime: 500
+        retryConnectionErrors: true
+        statusCodes:
+          - 404
+          - 408
+          - 429
+          - 500
+          - 502
+          - 503
+          - 504
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: 'MeshOpenTelemetryBackend#create,update'
+        terraform-datasource: null
+      operationId: putMeshOpenTelemetryBackend
+      summary: Creates or Updates MeshOpenTelemetryBackend entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshOpenTelemetryBackend
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshOpenTelemetryBackendItem'
+      responses:
+        '200':
+          $ref: '#/components/responses/MeshOpenTelemetryBackendCreateOrUpdateSuccessResponse'
+        '201':
+          $ref: '#/components/responses/MeshOpenTelemetryBackendCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshOpenTelemetryBackend
+      x-speakeasy-retries:
+        strategy: backoff
+        backoff:
+          initialInterval: 100
+          maxInterval: 500
+          maxElapsedTime: 500
+        retryConnectionErrors: true
+        statusCodes:
+          - 404
+          - 408
+          - 429
+          - 500
+          - 502
+          - 503
+          - 504
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshOpenTelemetryBackend#delete
+        terraform-datasource: null
+      operationId: deleteMeshOpenTelemetryBackend
+      summary: Deletes MeshOpenTelemetryBackend entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshOpenTelemetryBackend
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/MeshOpenTelemetryBackendDeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshOpenTelemetryBackend
+      x-speakeasy-retries:
+        strategy: backoff
+        backoff:
+          initialInterval: 100
+          maxInterval: 500
+          maxElapsedTime: 500
+        retryConnectionErrors: true
+        statusCodes:
+          - 404
+          - 408
+          - 429
+          - 500
+          - 502
+          - 503
+          - 504
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshopentelemetrybackends':
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshOpenTelemetryBackendList#get
+        terraform-datasource: null
+      operationId: getMeshOpenTelemetryBackendList
+      summary: Returns a list of MeshOpenTelemetryBackend in the mesh.
+      parameters:
+        - name: offset
+          in: query
+          description: offset in the list of entities
+          required: false
+          schema:
+            type: integer
+          example: 0
+        - name: size
+          in: query
+          description: the number of items per page
+          required: false
+          schema:
+            type: integer
+            default: 100
+            maximum: 1000
+            minimum: 1
+        - name: filter
+          in: query
+          description: 'filter by labels when multiple filters are present, they are ANDed'
+          required: false
+          schema:
+            type: object
+            properties:
+              key:
+                type: string
+              value:
+                type: string
+          example:
+            label.k8s.kuma.io/namespace: my-ns
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/MeshOpenTelemetryBackendList'
+      tags:
+        - MeshOpenTelemetryBackend
+      x-speakeasy-retries:
+        strategy: backoff
+        backoff:
+          initialInterval: 100
+          maxInterval: 500
+          maxElapsedTime: 500
+        retryConnectionErrors: true
+        statusCodes:
+          - 404
+          - 408
+          - 429
+          - 500
+          - 502
+          - 503
+          - 504
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshservices/{name}':
     get:
       x-speakeasy-entity-operation:
@@ -6721,6 +6995,204 @@ paths:
           $ref: '#/components/responses/MeshTrustList'
       tags:
         - MeshTrust
+      x-speakeasy-retries:
+        strategy: backoff
+        backoff:
+          initialInterval: 100
+          maxInterval: 500
+          maxElapsedTime: 500
+        retryConnectionErrors: true
+        statusCodes:
+          - 404
+          - 408
+          - 429
+          - 500
+          - 502
+          - 503
+          - 504
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshzoneaddresses/{name}':
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshZoneAddress#get
+        terraform-datasource: null
+      operationId: getMeshZoneAddress
+      summary: Returns MeshZoneAddress entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshZoneAddress
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/MeshZoneAddressItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshZoneAddress
+      x-speakeasy-retries:
+        strategy: backoff
+        backoff:
+          initialInterval: 100
+          maxInterval: 500
+          maxElapsedTime: 500
+        retryConnectionErrors: true
+        statusCodes:
+          - 404
+          - 408
+          - 429
+          - 500
+          - 502
+          - 503
+          - 504
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: 'MeshZoneAddress#create,update'
+        terraform-datasource: null
+      operationId: putMeshZoneAddress
+      summary: Creates or Updates MeshZoneAddress entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshZoneAddress
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshZoneAddressItem'
+      responses:
+        '200':
+          $ref: '#/components/responses/MeshZoneAddressCreateOrUpdateSuccessResponse'
+        '201':
+          $ref: '#/components/responses/MeshZoneAddressCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshZoneAddress
+      x-speakeasy-retries:
+        strategy: backoff
+        backoff:
+          initialInterval: 100
+          maxInterval: 500
+          maxElapsedTime: 500
+        retryConnectionErrors: true
+        statusCodes:
+          - 404
+          - 408
+          - 429
+          - 500
+          - 502
+          - 503
+          - 504
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshZoneAddress#delete
+        terraform-datasource: null
+      operationId: deleteMeshZoneAddress
+      summary: Deletes MeshZoneAddress entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshZoneAddress
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/MeshZoneAddressDeleteSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshZoneAddress
+      x-speakeasy-retries:
+        strategy: backoff
+        backoff:
+          initialInterval: 100
+          maxInterval: 500
+          maxElapsedTime: 500
+        retryConnectionErrors: true
+        statusCodes:
+          - 404
+          - 408
+          - 429
+          - 500
+          - 502
+          - 503
+          - 504
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshzoneaddresses':
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: MeshZoneAddressList#get
+        terraform-datasource: null
+      operationId: getMeshZoneAddressList
+      summary: Returns a list of MeshZoneAddress in the mesh.
+      parameters:
+        - name: offset
+          in: query
+          description: offset in the list of entities
+          required: false
+          schema:
+            type: integer
+          example: 0
+        - name: size
+          in: query
+          description: the number of items per page
+          required: false
+          schema:
+            type: integer
+            default: 100
+            maximum: 1000
+            minimum: 1
+        - name: filter
+          in: query
+          description: 'filter by labels when multiple filters are present, they are ANDed'
+          required: false
+          schema:
+            type: object
+            properties:
+              key:
+                type: string
+              value:
+                type: string
+          example:
+            label.k8s.kuma.io/namespace: my-ns
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/MeshZoneAddressList'
+      tags:
+        - MeshZoneAddress
       x-speakeasy-retries:
         strategy: backoff
         backoff:
@@ -7863,6 +8335,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/MeshControlPlaneFilter'
       responses:
         '200':
           $ref: '#/components/responses/ListMeshControlPlanesResponse'
@@ -8474,6 +8947,62 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Dashboards
+  '/v3/organizations/{organizationId}/personal-access-token-settings':
+    parameters:
+      - name: organizationId
+        in: path
+        description: A UUID representing an organization.
+        required: true
+        schema:
+          description: UUID representing an organization
+          type: string
+          format: uuid
+          example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: OrganizationPersonalAccessTokenSettings#read
+        terraform-datasource: null
+      operationId: get-organizations-personal-access-token-settings
+      summary: Get personal access token policy settings
+      description: Get personal access token policy settings. Only organization administrators are authorized  to perform this action.
+      responses:
+        '200':
+          $ref: '#/components/responses/PersonalAccessTokenSettingsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      security:
+        - personalAccessToken: []
+        - konnectAccessToken: []
+        - serviceAccessToken: []
+        - systemAccountAccessToken: []
+      tags:
+        - Personal Access Tokens
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: 'OrganizationPersonalAccessTokenSettings#create,update'
+        terraform-datasource: null
+      operationId: update-personal-access-token-settings
+      summary: Update personal access token policy settings
+      description: Update personal access token policy settings. Only organization administrators are authorized  to perform this action.
+      requestBody:
+        $ref: '#/components/requestBodies/PersonalAccessTokenSettingsUpdateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/PersonalAccessTokenSettingsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      security:
+        - personalAccessToken: []
+        - konnectAccessToken: []
+        - systemAccountAccessToken: []
+      tags:
+        - Personal Access Tokens
   /v1/event-gateways:
     parameters: []
     post:
@@ -10798,8 +11327,10 @@ paths:
       operationId: create-add-on
       summary: Create Add-On
       description: |
-        Creates a new add-on. Specific add-on types (e.g., managed cache)
-        are defined by the sub-kind configuration.
+        Creates a new add-on for a control plane or control plane group. The add-on type is
+        determined by the `config.kind` field — currently only `managed-cache.v0` is supported,
+        which provisions a Redis-compatible cache co-located with your data planes. After it's created,
+        the add-on transitions through `initializing → ready` as it deploys across data plane groups.
       requestBody:
         required: true
         content:
@@ -10851,7 +11382,7 @@ paths:
         terraform-resource: CloudGatewayAddon#read
       operationId: get-add-on
       summary: Get Add-On
-      description: Retrieves an add-on by ID.
+      description: 'Retrieves a single add-on by ID, including its current lifecycle state and per data plane group deployment status.'
       parameters:
         - $ref: '#/components/parameters/AddOnId'
       responses:
@@ -10888,7 +11419,8 @@ paths:
       operationId: delete-add-on
       summary: Delete Add-On
       description: |
-        Deletes an add-on by ID. The request will be rejected if the managed cache partial is still in use by some plugins.
+        Deletes an add-on by ID. The request is rejected if any Kong plugins are still referencing
+        the managed cache add-on — remove those plugin references before deleting.
       parameters:
         - $ref: '#/components/parameters/AddOnId'
       responses:
@@ -10930,7 +11462,9 @@ paths:
         terraform-datasource: null
       operationId: update-add-on
       summary: Update Add-On
-      description: Updates the configuration of an existing add-on.
+      description: |
+        Updates the configuration of an existing add-on, such as changing the managed cache
+        capacity tier. Tier upgrades are supported; downgrades are not.
       parameters:
         - $ref: '#/components/parameters/AddOnId'
       requestBody:
@@ -10974,8 +11508,6 @@ paths:
       x-speakeasy-group: CloudGateways
   /v2/directories:
     post:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: IdentityDirectory#create
         terraform-datasource: null
@@ -11006,8 +11538,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/directoryId'
     put:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: IdentityDirectory#update
         terraform-datasource: null
@@ -11035,8 +11565,6 @@ paths:
         - Kong Identity Directories
       x-servers-added: true
     get:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: IdentityDirectory#read
         terraform-datasource: null
@@ -11058,8 +11586,6 @@ paths:
         - Kong Identity Directories
       x-servers-added: true
     delete:
-      x-unstable: true
-      x-internal: true
       x-speakeasy-entity-operation:
         terraform-resource: IdentityDirectory#delete
         terraform-datasource: null
@@ -11227,6 +11753,14 @@ components:
       required: true
       description: The Portal identifier
       x-speakeasy-match: id
+    MeshControlPlaneFilter:
+      name: filter
+      description: Filters a collection of control planes.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/MeshControlPlaneFilterParameters'
+      style: deepObject
     PageId:
       schema:
         type: string
@@ -11315,7 +11849,6 @@ components:
       required: true
       x-speakeasy-match: id
     TeamId:
-      x-speakeasy-match: id
       schema:
         type: string
         format: uuid
@@ -11365,6 +11898,22 @@ components:
         - data
       title: ReplacePortalImageAsset
       x-speakeasy-param-computed: false
+    PortalDefaultApiVisibility:
+      description: The default visibility of APIs in the portal.
+      type: string
+      enum:
+        - public
+        - private
+      title: PortalDefaultApiVisibility
+      x-speakeasy-unknown-values: allow
+    PortalDefaultPageVisibility:
+      description: The default visibility of pages in the portal.
+      type: string
+      enum:
+        - public
+        - private
+      title: PortalDefaultPageVisibility
+      x-speakeasy-unknown-values: allow
     PageSlug:
       description: |
         The slug of a page in a portal, used to compute its full URL path within the portal hierarchy.
@@ -11398,12 +11947,6 @@ components:
       example: '# Welcome to My Page'
       maxLength: 1000000
       title: PageContent
-    SnippetName:
-      description: The unique name of a snippet in a portal.
-      type: string
-      example: my-snippet
-      maxLength: 512
-      title: SnippetName
     SnippetTitle:
       description: The display title of a snippet in a portal.
       type: string
@@ -11969,6 +12512,44 @@ components:
             oidc_scopes: .oidc_config.scopes
           }
           | del(.oidc_config)
+    PortalAssignRoleRequest:
+      description: An assigned role associates a service and an action to a team.
+      type: object
+      properties:
+        role_name:
+          type: string
+          example: API Viewer
+        entity_id:
+          type: string
+          format: uuid
+          example: e67490ce-44dc-4cbd-b65e-b52c746fc26a
+        entity_type_name:
+          type: string
+          example: Services
+        entity_region:
+          description: Region of the entity.
+          type: string
+          example: eu
+          enum:
+            - us
+            - eu
+            - au
+            - me
+            - in
+            - sg
+            - '*'
+          x-speakeasy-unknown-values: allow
+      example:
+        role_name: API Viewer
+        entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+        entity_type_name: Services
+        entity_region: us
+      required:
+        - role_name
+        - entity_id
+        - entity_type_name
+        - entity_region
+      title: PortalAssignRoleRequest
     PortalAuthenticationSettingsUpdateRequest:
       x-speakeasy-entity: PortalAuth
       description: Properties to update a portal's developer auth settings.
@@ -12114,14 +12695,12 @@ components:
           type: string
           example: IDM - Developers
           pattern: '^[\w \W]+$'
-          writeOnly: true
         description:
           type: string
           example: The Identity Management (IDM) team.
           default: null
           maxLength: 250
           nullable: true
-          writeOnly: true
           x-speakeasy-param-computed: false
         can_own_applications:
           description: Whether the team is allowed to own applications
@@ -12187,6 +12766,50 @@ components:
         updated_at: '2022-08-31T17:00:00.52Z'
         can_own_applications: false
       title: PortalTeamResponse
+    PortalAssignedRoleResponse:
+      description: An assigned role associates a service and an action to a team.
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: eaf7adf1-32c8-4bbf-b960-d1f8456afe67
+        role_name:
+          type: string
+          example: API Viewer
+        entity_id:
+          type: string
+          format: uuid
+          example: 817d0422-45c9-4d88-8d64-45aef05c1ae7
+        entity_type_name:
+          type: string
+          example: Services
+        entity_region:
+          description: Region of the entity.
+          type: string
+          example: eu
+          enum:
+            - us
+            - eu
+            - au
+            - me
+            - in
+            - sg
+            - '*'
+          x-speakeasy-unknown-values: allow
+      example:
+        id: 1a3c2169-27f8-4594-926b-41df3432d5dc
+        role_name: API Viewer
+        entity_id: 18ee2573-dec0-4b83-be99-fa7700bcdc61
+        entity_type_name: Services
+        entity_region: us
+      required:
+        - id
+        - role_name
+        - entity_id
+        - entity_type_name
+        - entity_region
+      title: PortalAssignedRoleResponse
     UuidFieldFilter:
       description: 'Filter using **one** of the following operators: `eq`, `oeq`, `neq`'
       type: object
@@ -12705,7 +13328,13 @@ components:
       required:
         - title
         - items
-    PortalCustomization:
+    SnippetName:
+      description: The unique name of a snippet in a portal.
+      type: string
+      example: my-snippet
+      maxLength: 512
+      title: SnippetName
+    PortalCustomizationV3:
       description: The custom settings of this portal
       type: object
       properties:
@@ -12832,12 +13461,41 @@ components:
           default: null
           nullable: true
           x-speakeasy-param-computed: false
+        portal_layout:
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            footer:
+              type: object
+              default: null
+              additionalProperties: false
+              nullable: true
+              properties:
+                snippet_name:
+                  description: The unique name of a snippet in the portal to render in place of the default footer.
+                  type: string
+                  example: my-snippet
+                  default: null
+                  maxLength: 512
+                  nullable: true
+                  title: SnippetName
+                  x-speakeasy-param-computed: false
+              required:
+                - snippet_name
+              x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: false
       additionalProperties: false
       title: PortalCustomization
       x-property-annotations:
         js:
           - x-unstable
           - x-internal
+        portal_layout:
+          - x-unstable
+          - x-internal
+      x-speakeasy-name-override: PortalCustomization
     PortalAllowedIPs:
       description: The list of allowed ips for the portal.
       type: array
@@ -13442,6 +14100,17 @@ components:
       nullable: false
       title: API Attributes
       x-speakeasy-type-override: any
+    LabelsFieldFilter:
+      allOf:
+        - title: LabelsFieldFilter
+          description: |
+            Filters on the resource's `labels` field. Filters must use dot-notation to identify
+            the label key that will be used to filter the results. For example:
+              - `filter[labels.owner]`
+              - `filter[labels.owner][neq]=kong`
+              - `filter[labels.env]=dev`
+              - `filter[labels.env][ocontains]=dev,test`
+        - $ref: '#/components/schemas/StringFieldFilter'
     ApiSpecType:
       description: |
         The type of specification being stored. This allows us to render the specification correctly.
@@ -13850,6 +14519,18 @@ components:
                   default: []
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
+        creationTime:
+          description: Time at which the resource was created
+          type: string
+          format: date-time
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        kri:
+          description: Kuma Resource Identifier (KRI) of the given resource
+          type: string
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         labels:
           type: object
           additionalProperties:
@@ -13943,6 +14624,12 @@ components:
               type: string
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
+        modificationTime:
+          description: Time at which the resource was updated
+          type: string
+          format: date-time
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         mtls:
           description: |-
             mTLS settings.
@@ -14258,15 +14945,19 @@ components:
                               properties:
                                 attributes:
                                   description: |-
-                                    Attributes can contain placeholders available on
+                                    Attributes defines custom OpenTelemetry attributes. Keys must be static
+                                    OpenTelemetry attribute names. Values can contain placeholders available on
                                     https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators
                                   type: array
                                   items:
                                     properties:
                                       key:
+                                        description: Key is the OpenTelemetry attribute name.
                                         type: string
+                                        pattern: '^[a-z]([a-z0-9]|[._][a-z0-9])*$'
                                         x-speakeasy-param-computed: false
                                       value:
+                                        description: Value can contain Kuma placeholders.
                                         type: string
                                         x-speakeasy-param-computed: false
                                     required:
@@ -14277,6 +14968,29 @@ components:
                                     - key: mesh
                                       value: '%KUMA_MESH%'
                                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                backendRef:
+                                  description: |-
+                                    BackendRef is a reference to a MeshOpenTelemetryBackend resource that
+                                    defines the collector endpoint. Mutually exclusive with Endpoint.
+                                  type: object
+                                  properties:
+                                    kind:
+                                      description: Kind of the backend resource.
+                                      type: string
+                                      enum:
+                                        - MeshOpenTelemetryBackend
+                                      x-speakeasy-param-computed: false
+                                    labels:
+                                      description: |-
+                                        Labels to match the referenced resource. When multiple resources match,
+                                        the oldest by creation time wins.
+                                      type: object
+                                      additionalProperties:
+                                        type: string
+                                      x-speakeasy-param-computed: false
+                                  required:
+                                    - kind
+                                  x-speakeasy-param-computed: false
                                 body:
                                   description: |-
                                     Body is a raw string or an OTLP any value as described at
@@ -14292,13 +15006,14 @@ components:
                                   x-kubernetes-preserve-unknown-fields: true
                                   x-speakeasy-plan-modifiers: ArbitraryJSONModifier
                                 endpoint:
-                                  description: Endpoint of OpenTelemetry collector. An empty port defaults to 4317.
+                                  description: |-
+                                    Endpoint of OpenTelemetry collector. An empty port defaults to 4317.
+
+                                    Deprecated: use BackendRef instead.
                                   type: string
                                   example: 'otel-collector:4317'
-                                  minLength: 1
+                                  default: ''
                                   x-speakeasy-param-computed: false
-                              required:
-                                - endpoint
                               x-speakeasy-param-computed: false
                             tcp:
                               description: TCPBackend defines a TCP logging backend.
@@ -14450,9 +15165,7 @@ components:
                 type: object
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
             rules:
-              description: |-
-                Rules defines inbound access log configurations. Currently limited to
-                selecting all inbound traffic, as L7 matching is not yet implemented.
+              description: Rules defines inbound access log configurations.
               type: array
               items:
                 properties:
@@ -14527,15 +15240,19 @@ components:
                               properties:
                                 attributes:
                                   description: |-
-                                    Attributes can contain placeholders available on
+                                    Attributes defines custom OpenTelemetry attributes. Keys must be static
+                                    OpenTelemetry attribute names. Values can contain placeholders available on
                                     https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators
                                   type: array
                                   items:
                                     properties:
                                       key:
+                                        description: Key is the OpenTelemetry attribute name.
                                         type: string
+                                        pattern: '^[a-z]([a-z0-9]|[._][a-z0-9])*$'
                                         x-speakeasy-param-computed: false
                                       value:
+                                        description: Value can contain Kuma placeholders.
                                         type: string
                                         x-speakeasy-param-computed: false
                                     required:
@@ -14546,6 +15263,29 @@ components:
                                     - key: mesh
                                       value: '%KUMA_MESH%'
                                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                backendRef:
+                                  description: |-
+                                    BackendRef is a reference to a MeshOpenTelemetryBackend resource that
+                                    defines the collector endpoint. Mutually exclusive with Endpoint.
+                                  type: object
+                                  properties:
+                                    kind:
+                                      description: Kind of the backend resource.
+                                      type: string
+                                      enum:
+                                        - MeshOpenTelemetryBackend
+                                      x-speakeasy-param-computed: false
+                                    labels:
+                                      description: |-
+                                        Labels to match the referenced resource. When multiple resources match,
+                                        the oldest by creation time wins.
+                                      type: object
+                                      additionalProperties:
+                                        type: string
+                                      x-speakeasy-param-computed: false
+                                  required:
+                                    - kind
+                                  x-speakeasy-param-computed: false
                                 body:
                                   description: |-
                                     Body is a raw string or an OTLP any value as described at
@@ -14560,13 +15300,14 @@ components:
                                             stringValue: '%KUMA_MESH%'
                                   x-kubernetes-preserve-unknown-fields: true
                                 endpoint:
-                                  description: Endpoint of OpenTelemetry collector. An empty port defaults to 4317.
+                                  description: |-
+                                    Endpoint of OpenTelemetry collector. An empty port defaults to 4317.
+
+                                    Deprecated: use BackendRef instead.
                                   type: string
                                   example: 'otel-collector:4317'
-                                  minLength: 1
+                                  default: ''
                                   x-speakeasy-param-computed: false
-                              required:
-                                - endpoint
                               x-speakeasy-param-computed: false
                             tcp:
                               description: TCPBackend defines a TCP logging backend.
@@ -14638,6 +15379,54 @@ components:
                           type: object
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                     x-speakeasy-param-computed: false
+                  matches:
+                    description: |-
+                      Matches defines a list of conditions (by SpiffeID or SNI) that select the
+                      traffic this rule applies to. Rules fire independently: a connection that
+                      satisfies multiple rules is logged to every matching rule's backends.
+                    type: array
+                    items:
+                      properties:
+                        sni:
+                          description: SNI defines a matcher configuration for matching by SNI value carried on the TLS connection
+                          type: object
+                          properties:
+                            type:
+                              description: Type defines how to match traffic by SNI. Only `Exact` is supported.
+                              type: string
+                              enum:
+                                - Exact
+                              x-speakeasy-param-computed: false
+                            value:
+                              description: Value is the SNI carried on the TLS connection that needs to match for the configuration to be applied
+                              type: string
+                              x-speakeasy-param-computed: false
+                          required:
+                            - type
+                            - value
+                          x-speakeasy-param-computed: false
+                        spiffeID:
+                          description: SpiffeID defines a matcher configuration for SpiffeID matching
+                          type: object
+                          properties:
+                            type:
+                              description: Type defines how to match incoming traffic by SpiffeID. `Exact` or `Prefix` are allowed.
+                              type: string
+                              enum:
+                                - Exact
+                                - Prefix
+                              x-speakeasy-param-computed: false
+                              x-speakeasy-unknown-values: allow
+                            value:
+                              description: Value is SpiffeID of a client that needs to match for the configuration to be applied
+                              type: string
+                              x-speakeasy-param-computed: false
+                          required:
+                            - type
+                            - value
+                          x-speakeasy-param-computed: false
+                      type: object
+                    x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 required:
                   - default
                 type: object
@@ -14795,15 +15584,19 @@ components:
                               properties:
                                 attributes:
                                   description: |-
-                                    Attributes can contain placeholders available on
+                                    Attributes defines custom OpenTelemetry attributes. Keys must be static
+                                    OpenTelemetry attribute names. Values can contain placeholders available on
                                     https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators
                                   type: array
                                   items:
                                     properties:
                                       key:
+                                        description: Key is the OpenTelemetry attribute name.
                                         type: string
+                                        pattern: '^[a-z]([a-z0-9]|[._][a-z0-9])*$'
                                         x-speakeasy-param-computed: false
                                       value:
+                                        description: Value can contain Kuma placeholders.
                                         type: string
                                         x-speakeasy-param-computed: false
                                     required:
@@ -14814,6 +15607,29 @@ components:
                                     - key: mesh
                                       value: '%KUMA_MESH%'
                                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
+                                backendRef:
+                                  description: |-
+                                    BackendRef is a reference to a MeshOpenTelemetryBackend resource that
+                                    defines the collector endpoint. Mutually exclusive with Endpoint.
+                                  type: object
+                                  properties:
+                                    kind:
+                                      description: Kind of the backend resource.
+                                      type: string
+                                      enum:
+                                        - MeshOpenTelemetryBackend
+                                      x-speakeasy-param-computed: false
+                                    labels:
+                                      description: |-
+                                        Labels to match the referenced resource. When multiple resources match,
+                                        the oldest by creation time wins.
+                                      type: object
+                                      additionalProperties:
+                                        type: string
+                                      x-speakeasy-param-computed: false
+                                  required:
+                                    - kind
+                                  x-speakeasy-param-computed: false
                                 body:
                                   description: |-
                                     Body is a raw string or an OTLP any value as described at
@@ -14829,13 +15645,14 @@ components:
                                   x-kubernetes-preserve-unknown-fields: true
                                   x-speakeasy-plan-modifiers: ArbitraryJSONModifier
                                 endpoint:
-                                  description: Endpoint of OpenTelemetry collector. An empty port defaults to 4317.
+                                  description: |-
+                                    Endpoint of OpenTelemetry collector. An empty port defaults to 4317.
+
+                                    Deprecated: use BackendRef instead.
                                   type: string
                                   example: 'otel-collector:4317'
-                                  minLength: 1
+                                  default: ''
                                   x-speakeasy-param-computed: false
-                              required:
-                                - endpoint
                               x-speakeasy-param-computed: false
                             tcp:
                               description: TCPBackend defines a TCP logging backend.
@@ -14999,6 +15816,56 @@ components:
           type: string
           format: date-time
           example: '0001-01-01T00:00:00Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        status:
+          description: Status is the current status of the Kuma MeshAccessLog resource.
+          type: object
+          properties:
+            conditions:
+              type: array
+              items:
+                properties:
+                  message:
+                    description: |-
+                      message is a human readable message indicating details about the transition.
+                      This may be an empty string.
+                    type: string
+                    maxLength: 32768
+                    x-speakeasy-param-computed: false
+                  reason:
+                    description: |-
+                      reason contains a programmatic identifier indicating the reason for the condition's last transition.
+                      Producers of specific condition types may define expected values and meanings for this field,
+                      and whether the values are considered a guaranteed API.
+                      The value should be a CamelCase string.
+                      This field may not be empty.
+                    type: string
+                    maxLength: 1024
+                    minLength: 1
+                    pattern: '^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$'
+                    x-speakeasy-param-computed: false
+                  status:
+                    description: 'status of the condition, one of True, False, Unknown.'
+                    type: string
+                    enum:
+                      - 'True'
+                      - 'False'
+                      - Unknown
+                    x-speakeasy-unknown-values: allow
+                  type:
+                    description: type of condition in CamelCase or in foo.example.com/CamelCase.
+                    type: string
+                    maxLength: 316
+                    pattern: '^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$'
+                    x-speakeasy-param-computed: false
+                required:
+                  - message
+                  - reason
+                  - status
+                  - type
+                type: object
+              x-speakeasy-plan-modifiers: SupressZeroNullModifier
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
       required:
@@ -16456,6 +17323,24 @@ components:
                     type: array
                     items:
                       properties:
+                        sni:
+                          description: SNI defines a matcher configuration for matching by SNI value carried on the TLS connection
+                          type: object
+                          properties:
+                            type:
+                              description: Type defines how to match traffic by SNI. Only `Exact` is supported.
+                              type: string
+                              enum:
+                                - Exact
+                              x-speakeasy-param-computed: false
+                            value:
+                              description: Value is the SNI carried on the TLS connection that needs to match for the configuration to be applied
+                              type: string
+                              x-speakeasy-param-computed: false
+                          required:
+                            - type
+                            - value
+                          x-speakeasy-param-computed: false
                         spiffeID:
                           description: SpiffeID defines a matcher configuration for SpiffeID matching
                           type: object
@@ -16469,7 +17354,7 @@ components:
                               x-speakeasy-param-computed: false
                               x-speakeasy-unknown-values: allow
                             value:
-                              description: Value is SpiffeId of a client that needs to match for the configuration to be applied
+                              description: Value is SpiffeID of a client that needs to match for the configuration to be applied
                               type: string
                               x-speakeasy-param-computed: false
                           required:
@@ -16856,6 +17741,18 @@ components:
                 x-speakeasy-param-computed: false
               default: []
           x-speakeasy-param-computed: false
+        creationTime:
+          description: Time at which the resource was created
+          type: string
+          format: date-time
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        kri:
+          description: Kuma Resource Identifier (KRI) of the given resource
+          type: string
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         labels:
           type: object
           additionalProperties:
@@ -16874,6 +17771,12 @@ components:
           type: string
           x-speakeasy-param-computed: false
           x-speakeasy-param-force-new: true
+        modificationTime:
+          description: Time at which the resource was updated
+          type: string
+          format: date-time
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           type: string
           x-speakeasy-param-computed: false
@@ -18955,7 +19858,9 @@ components:
               type: object
               properties:
                 applications:
-                  description: Applications is a list of application that Dataplane Proxy will scrape
+                  description: |-
+                    Applications is a list of applications that Dataplane Proxy will scrape.
+                    Ignored on zone-proxy-only Dataplanes (zone ingress/egress exist without a co-located workload).
                   type: array
                   items:
                     properties:
@@ -18990,16 +19895,41 @@ components:
                         description: OpenTelemetry backend configuration
                         type: object
                         properties:
+                          backendRef:
+                            description: |-
+                              BackendRef is a reference to a MeshOpenTelemetryBackend resource that
+                              defines the collector endpoint. Mutually exclusive with Endpoint.
+                            type: object
+                            properties:
+                              kind:
+                                description: Kind of the backend resource.
+                                type: string
+                                enum:
+                                  - MeshOpenTelemetryBackend
+                                x-speakeasy-param-computed: false
+                              labels:
+                                description: |-
+                                  Labels to match the referenced resource. When multiple resources match,
+                                  the oldest by creation time wins.
+                                type: object
+                                additionalProperties:
+                                  type: string
+                                x-speakeasy-param-computed: false
+                            required:
+                              - kind
+                            x-speakeasy-param-computed: false
                           endpoint:
-                            description: Endpoint for OpenTelemetry collector
+                            description: |-
+                              Endpoint for OpenTelemetry collector.
+
+                              Deprecated: use BackendRef instead.
                             type: string
+                            default: ''
                             x-speakeasy-param-computed: false
                           refreshInterval:
                             description: RefreshInterval defines how frequent metrics should be pushed to collector
                             type: string
                             x-speakeasy-param-computed: false
-                        required:
-                          - endpoint
                         x-speakeasy-param-computed: false
                       prometheus:
                         description: Prometheus backend configuration.
@@ -19225,6 +20155,56 @@ components:
           type: string
           format: date-time
           example: '0001-01-01T00:00:00Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        status:
+          description: Status is the current status of the Kuma MeshMetric resource.
+          type: object
+          properties:
+            conditions:
+              type: array
+              items:
+                properties:
+                  message:
+                    description: |-
+                      message is a human readable message indicating details about the transition.
+                      This may be an empty string.
+                    type: string
+                    maxLength: 32768
+                    x-speakeasy-param-computed: false
+                  reason:
+                    description: |-
+                      reason contains a programmatic identifier indicating the reason for the condition's last transition.
+                      Producers of specific condition types may define expected values and meanings for this field,
+                      and whether the values are considered a guaranteed API.
+                      The value should be a CamelCase string.
+                      This field may not be empty.
+                    type: string
+                    maxLength: 1024
+                    minLength: 1
+                    pattern: '^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$'
+                    x-speakeasy-param-computed: false
+                  status:
+                    description: 'status of the condition, one of True, False, Unknown.'
+                    type: string
+                    enum:
+                      - 'True'
+                      - 'False'
+                      - Unknown
+                    x-speakeasy-unknown-values: allow
+                  type:
+                    description: type of condition in CamelCase or in foo.example.com/CamelCase.
+                    type: string
+                    maxLength: 316
+                    pattern: '^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$'
+                    x-speakeasy-param-computed: false
+                required:
+                  - message
+                  - reason
+                  - status
+                  - type
+                type: object
+              x-speakeasy-plan-modifiers: SupressZeroNullModifier
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
       required:
@@ -20306,9 +21286,7 @@ components:
                 type: object
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
             rules:
-              description: |-
-                Rules defines inbound rate limiting configurations. Currently limited to
-                selecting all inbound traffic, as L7 matching is not yet implemented.
+              description: Rules defines inbound rate limiting configurations.
               type: array
               items:
                 properties:
@@ -20442,6 +21420,51 @@ components:
                             x-speakeasy-param-computed: false
                         x-speakeasy-param-computed: false
                     x-speakeasy-param-computed: false
+                  matches:
+                    description: Matches define additional conditions for applying this rate limit rule.
+                    type: array
+                    items:
+                      properties:
+                        sni:
+                          description: SNI defines a matcher configuration for matching by SNI value carried on the TLS connection
+                          type: object
+                          properties:
+                            type:
+                              description: Type defines how to match traffic by SNI. Only `Exact` is supported.
+                              type: string
+                              enum:
+                                - Exact
+                              x-speakeasy-param-computed: false
+                            value:
+                              description: Value is the SNI carried on the TLS connection that needs to match for the configuration to be applied
+                              type: string
+                              x-speakeasy-param-computed: false
+                          required:
+                            - type
+                            - value
+                          x-speakeasy-param-computed: false
+                        spiffeID:
+                          description: SpiffeID defines a matcher configuration for SpiffeID matching
+                          type: object
+                          properties:
+                            type:
+                              description: Type defines how to match incoming traffic by SpiffeID. `Exact` or `Prefix` are allowed.
+                              type: string
+                              enum:
+                                - Exact
+                                - Prefix
+                              x-speakeasy-param-computed: false
+                              x-speakeasy-unknown-values: allow
+                            value:
+                              description: Value is SpiffeID of a client that needs to match for the configuration to be applied
+                              type: string
+                              x-speakeasy-param-computed: false
+                          required:
+                            - type
+                            - value
+                          x-speakeasy-param-computed: false
+                      type: object
+                    x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 type: object
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
             targetRef:
@@ -22209,8 +23232,8 @@ components:
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
             rules:
               description: |-
-                Rules defines inbound timeout configurations. Currently limited to exactly one rule containing
-                default timeouts that apply to all inbound traffic, as L7 matching is not yet implemented.
+                Rules defines inbound timeout configurations. When matches are present, the rule is applied only
+                to traffic selected by the given source and destination matchers.
               type: array
               items:
                 properties:
@@ -22272,6 +23295,51 @@ components:
                         type: string
                         x-speakeasy-param-computed: false
                     x-speakeasy-param-computed: false
+                  matches:
+                    description: Matches define predicates for selecting traffic this configuration applies to.
+                    type: array
+                    items:
+                      properties:
+                        sni:
+                          description: SNI defines a matcher configuration for matching by SNI value carried on the TLS connection
+                          type: object
+                          properties:
+                            type:
+                              description: Type defines how to match traffic by SNI. Only `Exact` is supported.
+                              type: string
+                              enum:
+                                - Exact
+                              x-speakeasy-param-computed: false
+                            value:
+                              description: Value is the SNI carried on the TLS connection that needs to match for the configuration to be applied
+                              type: string
+                              x-speakeasy-param-computed: false
+                          required:
+                            - type
+                            - value
+                          x-speakeasy-param-computed: false
+                        spiffeID:
+                          description: SpiffeID defines a matcher configuration for SpiffeID matching
+                          type: object
+                          properties:
+                            type:
+                              description: Type defines how to match incoming traffic by SpiffeID. `Exact` or `Prefix` are allowed.
+                              type: string
+                              enum:
+                                - Exact
+                                - Prefix
+                              x-speakeasy-param-computed: false
+                              x-speakeasy-unknown-values: allow
+                            value:
+                              description: Value is SpiffeID of a client that needs to match for the configuration to be applied
+                              type: string
+                              x-speakeasy-param-computed: false
+                          required:
+                            - type
+                            - value
+                          x-speakeasy-param-computed: false
+                      type: object
+                    x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 type: object
               x-speakeasy-plan-modifiers: SupressZeroNullModifier
             targetRef:
@@ -22600,14 +23668,38 @@ components:
                         description: OpenTelemetry backend configuration.
                         type: object
                         properties:
+                          backendRef:
+                            description: |-
+                              BackendRef is a reference to a MeshOpenTelemetryBackend resource that
+                              defines the collector endpoint. Mutually exclusive with Endpoint.
+                            type: object
+                            properties:
+                              kind:
+                                description: Kind of the backend resource.
+                                type: string
+                                enum:
+                                  - MeshOpenTelemetryBackend
+                                x-speakeasy-param-computed: false
+                              labels:
+                                description: |-
+                                  Labels to match the referenced resource. When multiple resources match,
+                                  the oldest by creation time wins.
+                                type: object
+                                additionalProperties:
+                                  type: string
+                                x-speakeasy-param-computed: false
+                            required:
+                              - kind
+                            x-speakeasy-param-computed: false
                           endpoint:
-                            description: Address of OpenTelemetry collector.
+                            description: |-
+                              Address of OpenTelemetry collector.
+
+                              Deprecated: use BackendRef instead.
                             type: string
                             example: 'otel-collector:4317'
-                            minLength: 1
+                            default: ''
                             x-speakeasy-param-computed: false
-                        required:
-                          - endpoint
                         x-speakeasy-param-computed: false
                       type:
                         type: string
@@ -22838,6 +23930,56 @@ components:
           example: '0001-01-01T00:00:00Z'
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
+        status:
+          description: Status is the current status of the Kuma MeshTrace resource.
+          type: object
+          properties:
+            conditions:
+              type: array
+              items:
+                properties:
+                  message:
+                    description: |-
+                      message is a human readable message indicating details about the transition.
+                      This may be an empty string.
+                    type: string
+                    maxLength: 32768
+                    x-speakeasy-param-computed: false
+                  reason:
+                    description: |-
+                      reason contains a programmatic identifier indicating the reason for the condition's last transition.
+                      Producers of specific condition types may define expected values and meanings for this field,
+                      and whether the values are considered a guaranteed API.
+                      The value should be a CamelCase string.
+                      This field may not be empty.
+                    type: string
+                    maxLength: 1024
+                    minLength: 1
+                    pattern: '^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$'
+                    x-speakeasy-param-computed: false
+                  status:
+                    description: 'status of the condition, one of True, False, Unknown.'
+                    type: string
+                    enum:
+                      - 'True'
+                      - 'False'
+                      - Unknown
+                    x-speakeasy-unknown-values: allow
+                  type:
+                    description: type of condition in CamelCase or in foo.example.com/CamelCase.
+                    type: string
+                    maxLength: 316
+                    pattern: '^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$'
+                    x-speakeasy-param-computed: false
+                required:
+                  - message
+                  - reason
+                  - status
+                  - type
+                type: object
+              x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
       required:
         - type
         - name
@@ -23001,6 +24143,24 @@ components:
                         type: array
                         items:
                           properties:
+                            sni:
+                              description: SNI defines a matcher configuration for matching by SNI value carried on the TLS connection
+                              type: object
+                              properties:
+                                type:
+                                  description: Type defines how to match traffic by SNI. Only `Exact` is supported.
+                                  type: string
+                                  enum:
+                                    - Exact
+                                  x-speakeasy-param-computed: false
+                                value:
+                                  description: Value is the SNI carried on the TLS connection that needs to match for the configuration to be applied
+                                  type: string
+                                  x-speakeasy-param-computed: false
+                              required:
+                                - type
+                                - value
+                              x-speakeasy-param-computed: false
                             spiffeID:
                               description: SpiffeID defines a matcher configuration for SpiffeID matching
                               type: object
@@ -23014,7 +24174,7 @@ components:
                                   x-speakeasy-param-computed: false
                                   x-speakeasy-unknown-values: allow
                                 value:
-                                  description: Value is SpiffeId of a client that needs to match for the configuration to be applied
+                                  description: Value is SpiffeID of a client that needs to match for the configuration to be applied
                                   type: string
                                   x-speakeasy-param-computed: false
                               required:
@@ -23030,6 +24190,24 @@ components:
                         type: array
                         items:
                           properties:
+                            sni:
+                              description: SNI defines a matcher configuration for matching by SNI value carried on the TLS connection
+                              type: object
+                              properties:
+                                type:
+                                  description: Type defines how to match traffic by SNI. Only `Exact` is supported.
+                                  type: string
+                                  enum:
+                                    - Exact
+                                  x-speakeasy-param-computed: false
+                                value:
+                                  description: Value is the SNI carried on the TLS connection that needs to match for the configuration to be applied
+                                  type: string
+                                  x-speakeasy-param-computed: false
+                              required:
+                                - type
+                                - value
+                              x-speakeasy-param-computed: false
                             spiffeID:
                               description: SpiffeID defines a matcher configuration for SpiffeID matching
                               type: object
@@ -23043,7 +24221,7 @@ components:
                                   x-speakeasy-param-computed: false
                                   x-speakeasy-unknown-values: allow
                                 value:
-                                  description: Value is SpiffeId of a client that needs to match for the configuration to be applied
+                                  description: Value is SpiffeID of a client that needs to match for the configuration to be applied
                                   type: string
                                   x-speakeasy-param-computed: false
                               required:
@@ -23057,6 +24235,24 @@ components:
                         type: array
                         items:
                           properties:
+                            sni:
+                              description: SNI defines a matcher configuration for matching by SNI value carried on the TLS connection
+                              type: object
+                              properties:
+                                type:
+                                  description: Type defines how to match traffic by SNI. Only `Exact` is supported.
+                                  type: string
+                                  enum:
+                                    - Exact
+                                  x-speakeasy-param-computed: false
+                                value:
+                                  description: Value is the SNI carried on the TLS connection that needs to match for the configuration to be applied
+                                  type: string
+                                  x-speakeasy-param-computed: false
+                              required:
+                                - type
+                                - value
+                              x-speakeasy-param-computed: false
                             spiffeID:
                               description: SpiffeID defines a matcher configuration for SpiffeID matching
                               type: object
@@ -23070,7 +24266,7 @@ components:
                                   x-speakeasy-param-computed: false
                                   x-speakeasy-unknown-values: allow
                                 value:
-                                  description: Value is SpiffeId of a client that needs to match for the configuration to be applied
+                                  description: Value is SpiffeID of a client that needs to match for the configuration to be applied
                                   type: string
                                   x-speakeasy-param-computed: false
                               required:
@@ -23181,11 +24377,29 @@ components:
     ZoneEgressItem:
       type: object
       properties:
+        creationTime:
+          description: Time at which the resource was created
+          type: string
+          format: date-time
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        kri:
+          description: Kuma Resource Identifier (KRI) of the given resource
+          type: string
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         labels:
           type: object
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+        modificationTime:
+          description: Time at which the resource was updated
+          type: string
+          format: date-time
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           type: string
           x-speakeasy-param-computed: false
@@ -23256,11 +24470,29 @@ components:
           nullable: true
           x-speakeasy-param-computed: false
           x-speakeasy-plan-modifiers: SupressZeroNullModifier
+        creationTime:
+          description: Time at which the resource was created
+          type: string
+          format: date-time
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        kri:
+          description: Kuma Resource Identifier (KRI) of the given resource
+          type: string
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         labels:
           type: object
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+        modificationTime:
+          description: Time at which the resource was updated
+          type: string
+          format: date-time
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           type: string
           x-speakeasy-param-computed: false
@@ -23315,6 +24547,12 @@ components:
     SecretItem:
       type: object
       properties:
+        creationTime:
+          description: Time at which the resource was created
+          type: string
+          format: date-time
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         data:
           description: Value of the secret
           type: string
@@ -23337,6 +24575,12 @@ components:
         mesh:
           type: string
           x-speakeasy-param-computed: false
+        modificationTime:
+          description: Time at which the resource was updated
+          type: string
+          format: date-time
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           type: string
           x-speakeasy-param-computed: false
@@ -23473,6 +24717,30 @@ components:
           readOnly: true
           x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
+        snis:
+          description: 'List of SNIs (Server Name Indication) advertised by xDS for this destination, one entry per port, sorted by port ascending. Present for MeshService, MeshMultiZoneService and MeshExternalService.'
+          type: array
+          items:
+            type: object
+            required:
+              - port
+              - sni
+            properties:
+              port:
+                description: The destination port this SNI corresponds to.
+                type: integer
+                format: int32
+                x-speakeasy-param-computed: false
+              sni:
+                description: The SNI string advertised by xDS for this port.
+                type: string
+                x-speakeasy-param-computed: false
+          example:
+            - port: 8080
+              sni: sni.extsvc.default.zone-east.kuma-system.myresource1.8080
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+          x-speakeasy-plan-modifiers: SupressZeroNullModifier
         name:
           description: Name of the Kuma resource
           type: string
@@ -23514,6 +24782,16 @@ components:
                     format: int32
                     maximum: 65535
                     minimum: 1
+                    x-speakeasy-param-computed: false
+                  priority:
+                    description: |-
+                      Priority maps to Envoy's priority levels to enable endpoint failover.
+                      Lower values have higher priority (0 is the default/primary).
+                      When the primary endpoints become unhealthy, traffic fails over to the next priority level.
+                    type: integer
+                    format: int32
+                    maximum: 128
+                    minimum: 0
                     x-speakeasy-param-computed: false
                 required:
                   - address
@@ -24040,6 +25318,20 @@ components:
                       x-speakeasy-param-computed: false
                       x-speakeasy-unknown-values: allow
                   x-speakeasy-param-computed: false
+                extension:
+                  description: Extension indicates that custom provider is used.
+                  type: object
+                  properties:
+                    config:
+                      description: Config is a freeform configuration for the extension.
+                      x-kubernetes-preserve-unknown-fields: true
+                    name:
+                      description: Name is the name of the extension provider.
+                      type: string
+                      x-speakeasy-param-computed: false
+                  required:
+                    - name
+                  x-speakeasy-param-computed: false
                 spire:
                   description: Spire indicates that SPIRE is used for certificate delivery.
                   type: object
@@ -24062,6 +25354,7 @@ components:
                   enum:
                     - Bundled
                     - Spire
+                    - Extension
                   x-speakeasy-param-computed: false
                   x-speakeasy-unknown-values: allow
               required:
@@ -24188,6 +25481,30 @@ components:
           readOnly: true
           x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
+        snis:
+          description: 'List of SNIs (Server Name Indication) advertised by xDS for this destination, one entry per port, sorted by port ascending. Present for MeshService, MeshMultiZoneService and MeshExternalService.'
+          type: array
+          items:
+            type: object
+            required:
+              - port
+              - sni
+            properties:
+              port:
+                description: The destination port this SNI corresponds to.
+                type: integer
+                format: int32
+                x-speakeasy-param-computed: false
+              sni:
+                description: The SNI string advertised by xDS for this port.
+                type: string
+                x-speakeasy-param-computed: false
+          example:
+            - port: 8080
+              sni: sni.mzsvc.default.zone-east.kuma-demo.myresource1.8080
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+          x-speakeasy-plan-modifiers: SupressZeroNullModifier
         name:
           description: Name of the Kuma resource
           type: string
@@ -24447,6 +25764,215 @@ components:
         - type
         - name
         - spec
+    MeshOpenTelemetryBackendItem:
+      description: |-
+        MeshOpenTelemetryBackend defines a shared OTel collector endpoint for observability policies.
+        An empty spec is valid and represents the node-local default flow
+        (kuma-dp resolves the address at runtime using HOST_IP or 127.0.0.1).
+      type: object
+      properties:
+        type:
+          description: the type of the resource
+          type: string
+          enum:
+            - MeshOpenTelemetryBackend
+          x-speakeasy-param-computed: false
+        mesh:
+          description: Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
+          type: string
+          default: default
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-force-new: true
+        kri:
+          description: A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
+          type: string
+          example: kri_motb_default_zone-east_kuma-system_myresource1_
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
+        name:
+          description: Name of the Kuma resource
+          type: string
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-force-new: true
+        labels:
+          description: The labels to help identity resources
+          type: object
+          additionalProperties:
+            type: string
+          x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-default:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaDefinition: 'kumalabels.EmptyKumaLabelsMapDefault{}'
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaType: 'kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType: types.StringType}}'
+            valueType: kumalabels.KumaLabelsMapValue
+        spec:
+          description: Spec is the specification of the Kuma MeshOpenTelemetryBackend resource.
+          type: object
+          properties:
+            endpoint:
+              description: |-
+                Endpoint optionally defines the OTel collector address and port.
+                When omitted, the CP defaults port to 4317 and leaves address empty;
+                kuma-dp resolves the address at runtime using HOST_IP or 127.0.0.1.
+              type: object
+              properties:
+                address:
+                  description: |-
+                    Address of the OTel collector (hostname or IP).
+                    When omitted, kuma-dp resolves it at runtime using HOST_IP or 127.0.0.1.
+                  type: string
+                  x-speakeasy-param-computed: false
+                path:
+                  description: |-
+                    Path is an optional base path prefix for HTTP endpoints.
+                    The CP appends signal-specific suffixes (/v1/traces, /v1/metrics, /v1/logs).
+                    Non-empty value is rejected by validation when protocol is grpc.
+                  type: string
+                  x-speakeasy-param-computed: false
+                port:
+                  description: Port of the OTel collector. Defaults to 4317 when omitted.
+                  type: integer
+                  format: int32
+                  x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: false
+            env:
+              description: |-
+                Env controls whether standard OTEL exporter env vars participate in the
+                final exporter config for this backend.
+                Defaults to mode: Optional, precedence: EnvFirst, allowSignalOverrides: true
+                when omitted.
+              type: object
+              properties:
+                allowSignalOverrides:
+                  description: |-
+                    AllowSignalOverrides controls whether per-signal OTEL env vars
+                    (OTEL_EXPORTER_OTLP_TRACES_*, OTEL_EXPORTER_OTLP_METRICS_*,
+                    OTEL_EXPORTER_OTLP_LOGS_*) may diverge from the shared
+                    OTEL_EXPORTER_OTLP_* values.
+                    true (default): per-signal vars override the shared values for that
+                    signal.
+                    false: per-signal vars are ignored; the shared values apply to all
+                    signals. When per-signal overrides are dropped this way,
+                    SignalOverridesDisallowed appears in blockedReasons (a soft block -
+                    export still works via the shared config).
+                  type: boolean
+                  x-speakeasy-param-computed: false
+                mode:
+                  description: |-
+                    Mode controls whether OTEL env vars participate in the merge.
+                    Disabled: env vars are skipped entirely; only explicit backend fields and
+                    built-in defaults apply.
+                    Optional (default): env vars are used when present; absence is fine.
+                    Required: env vars must supply the missing fields - if any required field
+                    is missing the signal is blocked (state: missing, RequiredEnvMissing in
+                    blockedReasons) even when an explicit value or default could fill it.
+                  type: string
+                  default: Optional
+                  enum:
+                    - Disabled
+                    - Optional
+                    - Required
+                  x-speakeasy-param-computed: false
+                  x-speakeasy-unknown-values: allow
+                precedence:
+                  description: |-
+                    Precedence controls which source wins when both an explicit backend field
+                    and an env var are present for the same field.
+                    EnvFirst (default): env vars win; explicit backend fields fill gaps.
+                    ExplicitFirst: explicit backend fields win; env vars fill gaps.
+                    In either case, built-in defaults are the last fallback.
+                  type: string
+                  default: EnvFirst
+                  enum:
+                    - ExplicitFirst
+                    - EnvFirst
+                  x-speakeasy-param-computed: false
+                  x-speakeasy-unknown-values: allow
+              x-speakeasy-param-computed: false
+            protocol:
+              description: |-
+                Protocol selects gRPC or HTTP transport for the collector connection.
+                Defaults to grpc when omitted.
+              type: string
+              enum:
+                - grpc
+                - http
+              x-speakeasy-param-computed: false
+              x-speakeasy-unknown-values: allow
+          x-speakeasy-param-computed: false
+        creationTime:
+          description: Time at which the resource was created
+          type: string
+          format: date-time
+          example: '0001-01-01T00:00:00Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        modificationTime:
+          description: Time at which the resource was updated
+          type: string
+          format: date-time
+          example: '0001-01-01T00:00:00Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        status:
+          description: Status is the current status of the Kuma MeshOpenTelemetryBackend resource.
+          type: object
+          properties:
+            conditions:
+              type: array
+              items:
+                properties:
+                  message:
+                    description: |-
+                      message is a human readable message indicating details about the transition.
+                      This may be an empty string.
+                    type: string
+                    maxLength: 32768
+                    x-speakeasy-param-computed: false
+                  reason:
+                    description: |-
+                      reason contains a programmatic identifier indicating the reason for the condition's last transition.
+                      Producers of specific condition types may define expected values and meanings for this field,
+                      and whether the values are considered a guaranteed API.
+                      The value should be a CamelCase string.
+                      This field may not be empty.
+                    type: string
+                    maxLength: 1024
+                    minLength: 1
+                    pattern: '^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$'
+                    x-speakeasy-param-computed: false
+                  status:
+                    description: 'status of the condition, one of True, False, Unknown.'
+                    type: string
+                    enum:
+                      - 'True'
+                      - 'False'
+                      - Unknown
+                    x-speakeasy-unknown-values: allow
+                  type:
+                    description: type of condition in CamelCase or in foo.example.com/CamelCase.
+                    type: string
+                    maxLength: 316
+                    pattern: '^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$'
+                    x-speakeasy-param-computed: false
+                required:
+                  - message
+                  - reason
+                  - status
+                  - type
+                type: object
+              x-speakeasy-plan-modifiers: SupressZeroNullModifier
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+      required:
+        - type
+        - name
+        - spec
     MeshServiceItem:
       description: 'MeshService represents a service in the mesh with its connectivity and health information. It defines service endpoints by selecting data plane proxies through labels or direct references, configures service ports and protocols, tracks service availability and health status, and provides automatic VIP assignment and hostname generation for service discovery.'
       type: object
@@ -24470,6 +25996,30 @@ components:
           readOnly: true
           x-speakeasy-param-computed: false
           x-speakeasy-param-suppress-computed-diff: true
+        snis:
+          description: 'List of SNIs (Server Name Indication) advertised by xDS for this destination, one entry per port, sorted by port ascending. Present for MeshService, MeshMultiZoneService and MeshExternalService.'
+          type: array
+          items:
+            type: object
+            required:
+              - port
+              - sni
+            properties:
+              port:
+                description: The destination port this SNI corresponds to.
+                type: integer
+                format: int32
+                x-speakeasy-param-computed: false
+              sni:
+                description: The SNI string advertised by xDS for this port.
+                type: string
+                x-speakeasy-param-computed: false
+          example:
+            - port: 8080
+              sni: sni.msvc.default.zone-east.kuma-demo.myresource1.8080
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+          x-speakeasy-plan-modifiers: SupressZeroNullModifier
         name:
           description: Name of the Kuma resource
           type: string
@@ -24850,6 +26400,87 @@ components:
                   type: string
                   x-speakeasy-param-computed: false
               x-speakeasy-param-computed: false
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+      required:
+        - type
+        - name
+        - spec
+    MeshZoneAddressItem:
+      description: MeshZoneAddress holds the public address and port for a mesh-scoped zone ingress proxy.
+      type: object
+      properties:
+        type:
+          description: the type of the resource
+          type: string
+          enum:
+            - MeshZoneAddress
+          x-speakeasy-param-computed: false
+        mesh:
+          description: Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
+          type: string
+          default: default
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-force-new: true
+        kri:
+          description: A unique identifier for this resource instance used by internal tooling and integrations. Typically derived from resource attributes and may be used for cross-references or indexing
+          type: string
+          example: kri_mza_default_zone-east_kuma-demo_myresource1_
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
+        name:
+          description: Name of the Kuma resource
+          type: string
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-force-new: true
+        labels:
+          description: The labels to help identity resources
+          type: object
+          additionalProperties:
+            type: string
+          x-speakeasy-param-computed: false
+          x-speakeasy-terraform-custom-default:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaDefinition: 'kumalabels.EmptyKumaLabelsMapDefault{}'
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/Kong/shared-speakeasy/customtypes/kumalabels
+            schemaType: 'kumalabels.KumaLabelsMapType{MapType: types.MapType{ElemType: types.StringType}}'
+            valueType: kumalabels.KumaLabelsMapValue
+        spec:
+          description: Spec is the specification of the Kuma MeshZoneAddress resource.
+          type: object
+          properties:
+            address:
+              description: Address is the publicly reachable address of the zone ingress.
+              type: string
+              minLength: 1
+              x-speakeasy-param-computed: false
+            port:
+              description: Port is the publicly reachable port of the zone ingress.
+              type: integer
+              format: int32
+              maximum: 65535
+              minimum: 1
+              x-speakeasy-param-computed: false
+          required:
+            - address
+            - port
+          x-speakeasy-param-computed: false
+        creationTime:
+          description: Time at which the resource was created
+          type: string
+          format: date-time
+          example: '0001-01-01T00:00:00Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        modificationTime:
+          description: Time at which the resource was updated
+          type: string
+          format: date-time
+          example: '0001-01-01T00:00:00Z'
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
       required:
@@ -26020,97 +27651,26 @@ components:
         - type
         - name
         - spec
-    MeshControlPlaneFeatures:
-      type: array
-      items:
-        $ref: '#/components/schemas/MeshControlPlaneFeature'
-    MeshControlPlaneFeatureHostnameGenerationCreation:
-      properties:
-        enabled:
-          type: boolean
-      required:
-        - enabled
-    MeshControlPlaneFeatureMeshCreation:
-      properties:
-        enabled:
-          type: boolean
-      required:
-        - enabled
-    MeshControlPlaneFeature:
-      description: |
-        Features to be enabled in the control plane. Currently only defaults are supported.
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - MeshCreation
-            - HostnameGeneratorCreation
-          x-speakeasy-unknown-values: allow
-        hostnameGeneratorCreation:
-          $ref: '#/components/schemas/MeshControlPlaneFeatureHostnameGenerationCreation'
-        meshCreation:
-          $ref: '#/components/schemas/MeshControlPlaneFeatureMeshCreation'
-      required:
-        - type
-    AccessAuditItem:
-      type: object
-      properties:
-        labels:
-          type: object
-          additionalProperties:
-            type: string
-          x-speakeasy-param-computed: false
-        name:
-          type: string
-          x-speakeasy-param-computed: false
-        rules:
-          type: array
-          items:
-            properties:
-              access:
-                type: array
-                items:
-                  oneOf:
-                    - type: string
-                    - type: integer
-                default: null
-                nullable: true
-                x-speakeasy-param-computed: false
-                x-speakeasy-plan-modifiers: SupressZeroNullModifier
-              accessAll:
-                type: boolean
-                x-speakeasy-param-computed: false
-              mesh:
-                type: string
-                x-speakeasy-param-computed: false
-              types:
-                type: array
-                items:
-                  type: string
-                default: null
-                nullable: true
-                x-speakeasy-param-computed: false
-                x-speakeasy-plan-modifiers: SupressZeroNullModifier
-            type: object
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
-          x-speakeasy-plan-modifiers: SupressZeroNullModifier
-        type:
-          type: string
-          x-speakeasy-param-computed: false
-      required:
-        - type
-        - name
     AccessRoleItem:
       type: object
       properties:
+        creationTime:
+          description: Time at which the resource was created
+          type: string
+          format: date-time
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         labels:
           type: object
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+        modificationTime:
+          description: Time at which the resource was updated
+          type: string
+          format: date-time
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           type: string
           x-speakeasy-param-computed: false
@@ -26281,11 +27841,23 @@ components:
     AccessRoleBindingItem:
       type: object
       properties:
+        creationTime:
+          description: Time at which the resource was created
+          type: string
+          format: date-time
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         labels:
           type: object
           additionalProperties:
             type: string
           x-speakeasy-param-computed: false
+        modificationTime:
+          description: Time at which the resource was updated
+          type: string
+          format: date-time
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           type: string
           x-speakeasy-param-computed: false
@@ -26318,6 +27890,101 @@ components:
       required:
         - type
         - name
+    AccessAuditItem:
+      type: object
+      properties:
+        creationTime:
+          description: Time at which the resource was created
+          type: string
+          format: date-time
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          x-speakeasy-param-computed: false
+        modificationTime:
+          description: Time at which the resource was updated
+          type: string
+          format: date-time
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        name:
+          type: string
+          x-speakeasy-param-computed: false
+        rules:
+          type: array
+          items:
+            properties:
+              access:
+                type: array
+                items:
+                  oneOf:
+                    - type: string
+                    - type: integer
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+                x-speakeasy-plan-modifiers: SupressZeroNullModifier
+              accessAll:
+                type: boolean
+                x-speakeasy-param-computed: false
+              mesh:
+                type: string
+                x-speakeasy-param-computed: false
+              types:
+                type: array
+                items:
+                  type: string
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+                x-speakeasy-plan-modifiers: SupressZeroNullModifier
+            type: object
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-plan-modifiers: SupressZeroNullModifier
+        type:
+          type: string
+          x-speakeasy-param-computed: false
+      required:
+        - type
+        - name
+    MeshControlPlaneFeatures:
+      type: array
+      items:
+        $ref: '#/components/schemas/MeshControlPlaneFeature'
+    MeshControlPlaneFeatureHostnameGenerationCreation:
+      properties:
+        enabled:
+          type: boolean
+      required:
+        - enabled
+    MeshControlPlaneFeatureMeshCreation:
+      properties:
+        enabled:
+          type: boolean
+      required:
+        - enabled
+    MeshControlPlaneFeature:
+      description: |
+        Features to be enabled in the control plane. Currently only defaults are supported.
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - MeshCreation
+            - HostnameGeneratorCreation
+          x-speakeasy-unknown-values: allow
+        hostnameGeneratorCreation:
+          $ref: '#/components/schemas/MeshControlPlaneFeatureHostnameGenerationCreation'
+        meshCreation:
+          $ref: '#/components/schemas/MeshControlPlaneFeatureMeshCreation'
+      required:
+        - type
     MeshControlPlaneLabels:
       description: Labels to facilitate tagged search on control planes. Keys must be of length 1-63 characters.
       type: object
@@ -26364,6 +28031,8 @@ components:
           $ref: '#/components/schemas/MeshControlPlaneLabels'
         features:
           $ref: '#/components/schemas/MeshControlPlaneFeatures'
+        version:
+          $ref: '#/components/schemas/MeshControlPlaneVersion'
         created_at:
           type: string
           format: date-time
@@ -26394,6 +28063,8 @@ components:
           $ref: '#/components/schemas/MeshControlPlaneFeatures'
         labels:
           $ref: '#/components/schemas/MeshControlPlaneLabels'
+        version:
+          $ref: '#/components/schemas/MeshControlPlaneVersion'
       additionalProperties: false
       required:
         - name
@@ -26408,6 +28079,8 @@ components:
           $ref: '#/components/schemas/MeshControlPlaneDescription'
         labels:
           $ref: '#/components/schemas/MeshControlPlaneNonNullableLabels'
+        version:
+          $ref: '#/components/schemas/MeshControlPlaneVersion'
       required:
         - name
       title: PutMeshControlPlaneRequest
@@ -26422,6 +28095,31 @@ components:
       type: string
       example: A control plane to handle traffic on development environment.
       maxLength: 250
+    MeshControlPlaneVersion:
+      description: 'The version of the control plane. Setting it propagates the change to the global control plane, and is the only way to move a control plane between versions.'
+      type: string
+      example: v3
+      default: v2
+      pattern: '^v[0-9]{1,9}$'
+      x-internal: true
+    MeshControlPlaneFilterParameters:
+      type: object
+      properties:
+        name:
+          description: 'Filter using **one** of the following operators: `eq`, `contains`'
+          type: object
+          additionalProperties: false
+          properties:
+            eq:
+              description: The field exactly matches the provided value.
+              type: string
+            contains:
+              description: The field contains the provided value.
+              type: string
+        labels:
+          $ref: '#/components/schemas/LabelsFieldFilter'
+      additionalProperties: false
+      title: MeshControlPlaneFilterParameters
     ResponseType:
       description: OAuth 2.0 response type
       type: string
@@ -26592,6 +28290,12 @@ components:
           description: The URI of the metadata document for the auth server
           type: string
           format: uri
+        jwks_uri:
+          description: The URI of the JWKS endpoint for the auth server
+          type: string
+          format: uri
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         labels:
           $ref: '#/components/schemas/Labels'
         created_at:
@@ -26840,6 +28544,7 @@ components:
               - data_plane_node_version
               - gateway_service
               - portal
+              - principal
               - realm
               - response_source
               - route
@@ -26861,6 +28566,11 @@ components:
           $ref: '#/components/schemas/Granularity'
         time_range:
           $ref: '#/components/schemas/TimeRange'
+        limit:
+          description: Limits the number of distinct metric groups to return.
+          type: number
+          default: 50
+          maximum: 1000
       example:
         datasource: api_usage
         time_range:
@@ -26911,6 +28621,7 @@ components:
               - llm_embeddings_provider
               - llm_embeddings_model
               - time
+              - principal
               - realm
               - status_code
               - status_code_grouped
@@ -26926,6 +28637,11 @@ components:
           $ref: '#/components/schemas/Granularity'
         time_range:
           $ref: '#/components/schemas/TimeRange'
+        limit:
+          description: Limits the number of distinct metric groups to return.
+          type: number
+          default: 50
+          maximum: 1000
       example:
         datasource: llm_usage
         time_range:
@@ -26983,6 +28699,7 @@ components:
               - mcp_session_id
               - mcp_tool_name
               - portal
+              - principal
               - realm
               - response_source
               - route
@@ -27002,6 +28719,11 @@ components:
           $ref: '#/components/schemas/Granularity'
         time_range:
           $ref: '#/components/schemas/TimeRange'
+        limit:
+          description: Limits the number of distinct metric groups to return.
+          type: number
+          default: 50
+          maximum: 1000
       example:
         datasource: agentic_usage
         time_range:
@@ -27048,6 +28770,10 @@ components:
               - plugin_name
               - plugin_scope
               - data_plane_node_version
+              - env
+              - team
+              - region
+              - hostname
             x-speakeasy-unknown-values: allow
           default: null
           maxItems: 2
@@ -27060,9 +28786,8 @@ components:
         time_range:
           $ref: '#/components/schemas/PlatformTimeRange'
         limit:
-          description: 'Maximum number of group_by buckets to return. Defaults to 50, capped at 1000. Only applies when a group_by dimension is requested.'
+          description: Limits the number of distinct metric groups to return.
           type: number
-          example: 25
           default: 50
           maximum: 1000
       example:
@@ -27785,6 +29510,42 @@ components:
             - operator
             - field
       title: Filter by portal
+    MetricsPrincipalFilterByField:
+      oneOf:
+        - title: Multiselect filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The IDs to include in the results.
+              type: array
+              items:
+                $ref: '#/components/schemas/UnscopedUuid'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - principal
+          required:
+            - operator
+            - value
+            - field
+        - title: Empty filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - principal
+          required:
+            - operator
+            - field
+      title: Filter by principal
     MetricsRealmFilterByField:
       oneOf:
         - title: Multiselect filters
@@ -28065,6 +29826,7 @@ components:
               - data_plane_node_version
               - gateway_service
               - portal
+              - principal
               - realm
               - response_source
               - route
@@ -28485,6 +30247,7 @@ components:
               - llm_cache_status
               - llm_embeddings_model
               - llm_embeddings_provider
+              - principal
               - realm
               - route
               - status_code
@@ -28862,6 +30625,7 @@ components:
               - mcp_session_id
               - mcp_tool_name
               - portal
+              - principal
               - realm
               - response_source
               - route
@@ -28908,12 +30672,16 @@ components:
           enum:
             - control_plane
             - data_plane_node_version
+            - env
             - gateway_service
+            - hostname
             - plugin
             - plugin_name
             - plugin_scope
             - realm
+            - region
             - route
+            - team
           x-speakeasy-unknown-values: allow
         operator:
           type: string
@@ -29080,6 +30848,24 @@ components:
       required:
         - type
       title: Bar chart
+    TopNChart:
+      description: |
+        A chart that ranks dimension values by a metric and renders them as a table, showing
+        the top results.  This type of chart supports up to 3 dimensions.
+      type: object
+      properties:
+        chart_title:
+          description: 'The title of the chart, which is displayed in the tile''s header.'
+          type: string
+          nullable: false
+        type:
+          type: string
+          enum:
+            - top_n
+      additionalProperties: false
+      required:
+        - type
+      title: Top N chart
     SingleValueChart:
       description: A chart that can render a single number.  This chart works with a single metric and no dimensions.
       type: object
@@ -29131,14 +30917,160 @@ components:
           timeseries_bar: '#/components/schemas/TimeseriesChart'
           horizontal_bar: '#/components/schemas/BarChart'
           vertical_bar: '#/components/schemas/BarChart'
+          top_n: '#/components/schemas/TopNChart'
           single_value: '#/components/schemas/SingleValueChart'
           choropleth_map: '#/components/schemas/ChoroplethMapChart'
       oneOf:
         - $ref: '#/components/schemas/DonutChart'
         - $ref: '#/components/schemas/TimeseriesChart'
         - $ref: '#/components/schemas/BarChart'
+        - $ref: '#/components/schemas/TopNChart'
         - $ref: '#/components/schemas/SingleValueChart'
         - $ref: '#/components/schemas/ChoroplethMapChart'
+    MetricsEnvFilterByField:
+      oneOf:
+        - title: Multiselect filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The values to include in the results.
+              type: array
+              items:
+                type: string
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - env
+          required:
+            - operator
+            - value
+            - field
+        - title: Empty filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - env
+          required:
+            - operator
+            - field
+      title: Filter by env
+    MetricsHostnameFilterByField:
+      oneOf:
+        - title: Multiselect filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The values to include in the results.
+              type: array
+              items:
+                type: string
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - hostname
+          required:
+            - operator
+            - value
+            - field
+        - title: Empty filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - hostname
+          required:
+            - operator
+            - field
+      title: Filter by hostname
+    MetricsRegionFilterByField:
+      oneOf:
+        - title: Multiselect filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The values to include in the results.
+              type: array
+              items:
+                type: string
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - region
+          required:
+            - operator
+            - value
+            - field
+        - title: Empty filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - region
+          required:
+            - operator
+            - field
+      title: Filter by region
+    MetricsTeamFilterByField:
+      oneOf:
+        - title: Multiselect filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterType'
+            value:
+              description: |
+                The values to include in the results.
+              type: array
+              items:
+                type: string
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - team
+          required:
+            - operator
+            - value
+            - field
+        - title: Empty filters
+          type: object
+          properties:
+            operator:
+              $ref: '#/components/schemas/RequestsFilterTypeEmpty'
+            field:
+              description: The field to filter.
+              type: string
+              enum:
+                - team
+          required:
+            - operator
+            - field
+      title: Filter by team
     AllFilterItems:
       type: object
       properties:
@@ -29164,7 +31096,9 @@ components:
             - country_code
             - data_plane_node
             - data_plane_node_version
+            - env
             - gateway_service
+            - hostname
             - llm_cache_status
             - llm_embeddings_model
             - llm_embeddings_provider
@@ -29173,11 +31107,14 @@ components:
             - mcp_session_id
             - mcp_tool_name
             - portal
+            - principal
             - realm
+            - region
             - response_source
             - route
             - status_code
             - status_code_grouped
+            - team
             - upstream_status_code
             - upstream_status_code_grouped
           x-speakeasy-unknown-values: allow
@@ -29194,6 +31131,10 @@ components:
       required:
         - field
         - operator
+    MaxPATExpirationPeriodDays:
+      type: integer
+      maximum: 365
+      minimum: 1
     EventGatewayInfo:
       description: The gateway object contains information about a Konnect gateway.
       type: object
@@ -29342,9 +31283,6 @@ components:
           $ref: '#/components/schemas/VirtualClusterNamespace'
         topic_aliases:
           description: |-
-            **Pre-release Feature**
-            This feature is currently in beta and is subject to change.
-
             Topic aliases allow exposing backend topics under additional names.
             An alias creates a new entry point to the same physical data.
             The alias `topic` field references namespace-visible names (if namespace is configured).
@@ -29357,7 +31295,6 @@ components:
           nullable: true
           x-min-runtime-version: '1.2'
           x-speakeasy-param-computed: false
-          x-unstable: true
         name:
           $ref: '#/components/schemas/VirtualClusterName'
         dns_label:
@@ -29476,10 +31413,6 @@ components:
       required:
         - type
       x-min-runtime-version: '1.1'
-      x-property-annotations:
-        fetch_kong_identity_principal:
-          - x-unstable
-          - x-internal
       x-speakeasy-param-computed: false
     TLSTrustBundle:
       description: |-
@@ -29586,10 +31519,6 @@ components:
       required:
         - type
         - mediation
-      x-property-annotations:
-        fetch_kong_identity_principal:
-          - x-unstable
-          - x-internal
     VirtualClusterAuthenticationSaslPlain:
       description: |
         SASL/PLAIN authentication scheme for the virtual cluster containing principals with username and password.
@@ -29620,10 +31549,6 @@ components:
       required:
         - type
         - mediation
-      x-property-annotations:
-        fetch_kong_identity_principal:
-          - x-unstable
-          - x-internal
     VirtualClusterAuthenticationPrincipalSensitiveDataAware:
       description: A principal for authentication.
       type: object
@@ -29702,10 +31627,6 @@ components:
       required:
         - type
         - algorithm
-      x-property-annotations:
-        fetch_kong_identity_principal:
-          - x-unstable
-          - x-internal
     VirtualClusterAuthenticationOauthBearer:
       description: Oauth Bearer authentication scheme for the virtual cluster.
       type: object
@@ -29741,10 +31662,6 @@ components:
       required:
         - type
         - mediation
-      x-property-annotations:
-        fetch_kong_identity_principal:
-          - x-unstable
-          - x-internal
     VirtualClusterAuthenticationValidate:
       description: Validation rules.
       type: object
@@ -29793,10 +31710,8 @@ components:
         - directory
         - fetch_by
         - failure_mode
-      x-internal: true
       x-min-runtime-version: '1.2'
       x-speakeasy-param-computed: false
-      x-unstable: true
     FetchKongIdentityPrincipalOauthBearer:
       description: |-
         Fetches principal metadata from Kong Identity after successful OAUTHBEARER authentication.
@@ -29814,10 +31729,8 @@ components:
       required:
         - directory
         - failure_mode
-      x-internal: true
       x-min-runtime-version: '1.2'
       x-speakeasy-param-computed: false
-      x-unstable: true
     FetchKongIdentityPrincipalFetchBy:
       description: |-
         Defines how to look up the principal in Kong Identity.
@@ -29834,10 +31747,8 @@ components:
           minLength: 1
       required:
         - key
-      x-internal: true
       x-min-runtime-version: '1.2'
       x-speakeasy-param-computed: false
-      x-unstable: true
     FetchKongIdentityPrincipalFailureMode:
       description: |-
         Behavior when the Kong Identity principal lookup fails.
@@ -29849,11 +31760,9 @@ components:
       enum:
         - error
         - ignore
-      x-internal: true
       x-min-runtime-version: '1.2'
       x-speakeasy-param-computed: false
       x-speakeasy-unknown-values: allow
-      x-unstable: true
     VirtualClusterDNSLabel:
       description: |-
         The DNS label used in the bootstrap server URL to identify the virtual cluster when using SNI routing.
@@ -30016,10 +31925,12 @@ components:
           anonymous: '#/components/schemas/BackendClusterAuthenticationAnonymous'
           sasl_plain: '#/components/schemas/BackendClusterAuthenticationSaslPlain'
           sasl_scram: '#/components/schemas/BackendClusterAuthenticationSaslScram'
+          sasl_aws_iam: '#/components/schemas/BackendClusterAuthenticationSaslAwsIam'
       oneOf:
         - $ref: '#/components/schemas/BackendClusterAuthenticationAnonymous'
         - $ref: '#/components/schemas/BackendClusterAuthenticationSaslPlain'
         - $ref: '#/components/schemas/BackendClusterAuthenticationSaslScram'
+        - $ref: '#/components/schemas/BackendClusterAuthenticationSaslAwsIam'
     BackendClusterAuthenticationSensitiveDataAwareScheme:
       discriminator:
         propertyName: type
@@ -30027,10 +31938,12 @@ components:
           anonymous: '#/components/schemas/BackendClusterAuthenticationAnonymous'
           sasl_plain: '#/components/schemas/BackendClusterAuthenticationSaslPlainSensitiveDataAware'
           sasl_scram: '#/components/schemas/BackendClusterAuthenticationSaslScramSensitiveDataAware'
+          sasl_aws_iam: '#/components/schemas/BackendClusterAuthenticationSaslAwsIam'
       oneOf:
         - $ref: '#/components/schemas/BackendClusterAuthenticationAnonymous'
         - $ref: '#/components/schemas/BackendClusterAuthenticationSaslPlainSensitiveDataAware'
         - $ref: '#/components/schemas/BackendClusterAuthenticationSaslScramSensitiveDataAware'
+        - $ref: '#/components/schemas/BackendClusterAuthenticationSaslAwsIam'
     BackendClusterAuthenticationAnonymous:
       description: Anonymous authentication scheme for the backend cluster.
       type: object
@@ -30122,6 +32035,97 @@ components:
         - username
         - algorithm
         - password
+    BackendClusterAuthenticationSaslAwsIam:
+      description: |-
+        AWS IAM-based OAUTHBEARER authentication scheme for the backend cluster, for example when connecting to
+        Amazon MSK with IAM authentication.
+
+        **Requires a minimum runtime version of `1.3`**.
+      type: object
+      properties:
+        type:
+          type: string
+          const: sasl_aws_iam
+        sasl_aws_iam:
+          type: object
+          discriminator:
+            propertyName: type
+            mapping:
+              default_provider_chain: '#/components/schemas/BackendClusterAuthenticationSaslAwsIamDefaultProviderChain'
+              assume_role: '#/components/schemas/BackendClusterAuthenticationSaslAwsIamAssumeRole'
+          oneOf:
+            - $ref: '#/components/schemas/BackendClusterAuthenticationSaslAwsIamDefaultProviderChain'
+            - $ref: '#/components/schemas/BackendClusterAuthenticationSaslAwsIamAssumeRole'
+      example:
+        type: sasl_aws_iam
+        sasl_aws_iam:
+          type: default_provider_chain
+      additionalProperties: false
+      required:
+        - type
+        - sasl_aws_iam
+      x-internal: true
+      x-min-runtime-version: '1.3'
+      x-speakeasy-param-computed: false
+      x-unstable: true
+    BackendClusterAuthenticationSaslAwsIamDefaultProviderChain:
+      description: |-
+        Configures whether to authenticate using credentials obtained from the AWS default credentials provider chain
+
+        **Requires a minimum runtime version of `1.3`**.
+      type: object
+      properties:
+        type:
+          type: string
+          const: default_provider_chain
+      additionalProperties: false
+      required:
+        - type
+      x-internal: true
+      x-min-runtime-version: '1.3'
+      x-speakeasy-param-computed: false
+      x-unstable: true
+    BackendClusterAuthenticationSaslAwsIamAssumeRole:
+      description: |-
+        Configures whether to authenticate using credentials obtained by first assuming a role, using the AWS default credentials provider chain
+
+        **Requires a minimum runtime version of `1.3`**.
+      type: object
+      properties:
+        type:
+          type: string
+          const: assume_role
+        assume_role:
+          description: Configuration for assuming an IAM role. Required when `type` is `assume_role`.
+          type: object
+          properties:
+            arn:
+              description: |
+                The [ARN](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-arns)
+                of the IAM role to assume, formatted as `arn:aws:iam::<account-id>:role/<role-name>`.
+              type: string
+              example: 'arn:aws:iam::123456789012:role/example-role'
+              maxLength: 2048
+              minLength: 10
+              pattern: '^arn:aws(-[a-z-]+)?:iam:.+'
+            session_name:
+              description: |
+                The session name to attach to the assumed role session. The value becomes part of the assumed
+                role user ARN, queryable as `arn:aws:sts::<account-id>:assumed-role/<role-name>/<session-name>`.
+              type: string
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+          required:
+            - arn
+      additionalProperties: false
+      required:
+        - type
+        - assume_role
+      x-internal: true
+      x-min-runtime-version: '1.3'
+      x-speakeasy-param-computed: false
+      x-unstable: true
     EventGatewayVaultType:
       description: The type of the vault.
       type: string
@@ -31216,9 +33220,26 @@ components:
                   was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
                   when returned by the registry), `format` ("avro"|"json"), and either
                   `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
-                  applicable; use `has()` to test presence.
+                  applicable; use `has()` to test presence. Registry `metadata` (tags and properties)
+                  is available from runtime 1.3 via `record.value.schema.metadata`.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.value.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Confluent schema-registry metadata for the record value. Present (as empty maps)
+                  whenever `record.value.schema` is present. Fields:
+                  * `properties` (`map` of `string` to `string`) - Confluent `metadata.properties`;
+                    empty map when the registry omits it.
+                  * `tags` (`map` of `string` to list of `string`) - keyed by tag, value is the list
+                    of Confluent schema paths (e.g. `io.confluent.field.<name>`) carrying that tag;
+                    empty map when the registry omits it.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -31228,6 +33249,17 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Same shape as `record.value.schema.metadata`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
       required:
         - type
@@ -31327,9 +33359,26 @@ components:
                   was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
                   when returned by the registry), `format` ("avro"|"json"), and either
                   `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
-                  applicable; use `has()` to test presence.
+                  applicable; use `has()` to test presence. Registry `metadata` (tags and properties)
+                  is available from runtime 1.3 via `record.value.schema.metadata`.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.value.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Confluent schema-registry metadata for the record value. Present (as empty maps)
+                  whenever `record.value.schema` is present. Fields:
+                  * `properties` (`map` of `string` to `string`) - Confluent `metadata.properties`;
+                    empty map when the registry omits it.
+                  * `tags` (`map` of `string` to list of `string`) - keyed by tag, value is the list
+                    of Confluent schema paths (e.g. `io.confluent.field.<name>`) carrying that tag;
+                    empty map when the registry omits it.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -31339,6 +33388,17 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Same shape as `record.value.schema.metadata`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
         parent_policy_id:
           description: The unique identifier of the parent schema validation policy.
@@ -31393,6 +33453,7 @@ components:
             type: string
             example: 'someObject.someArray[1].fieldName'
       maxItems: 50
+      minItems: 1
     EventGatewayDecryptPolicy:
       description: Decrypts Kafka records or keys using AES_256_GCM. Keys are therefore 256 bits long.
       type: object
@@ -31580,9 +33641,26 @@ components:
                   was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
                   when returned by the registry), `format` ("avro"|"json"), and either
                   `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
-                  applicable; use `has()` to test presence.
+                  applicable; use `has()` to test presence. Registry `metadata` (tags and properties)
+                  is available from runtime 1.3 via `record.value.schema.metadata`.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.value.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Confluent schema-registry metadata for the record value. Present (as empty maps)
+                  whenever `record.value.schema` is present. Fields:
+                  * `properties` (`map` of `string` to `string`) - Confluent `metadata.properties`;
+                    empty map when the registry omits it.
+                  * `tags` (`map` of `string` to list of `string`) - keyed by tag, value is the list
+                    of Confluent schema paths (e.g. `io.confluent.field.<name>`) carrying that tag;
+                    empty map when the registry omits it.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -31592,6 +33670,17 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Same shape as `record.value.schema.metadata`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
       required:
         - type
@@ -31691,9 +33780,26 @@ components:
                   was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
                   when returned by the registry), `format` ("avro"|"json"), and either
                   `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
-                  applicable; use `has()` to test presence.
+                  applicable; use `has()` to test presence. Registry `metadata` (tags and properties)
+                  is available from runtime 1.3 via `record.value.schema.metadata`.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.value.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Confluent schema-registry metadata for the record value. Present (as empty maps)
+                  whenever `record.value.schema` is present. Fields:
+                  * `properties` (`map` of `string` to `string`) - Confluent `metadata.properties`;
+                    empty map when the registry omits it.
+                  * `tags` (`map` of `string` to list of `string`) - keyed by tag, value is the list
+                    of Confluent schema paths (e.g. `io.confluent.field.<name>`) carrying that tag;
+                    empty map when the registry omits it.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -31703,6 +33809,17 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Same shape as `record.value.schema.metadata`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
         parent_policy_id:
           description: The unique identifier of the parent schema validation policy.
@@ -31837,9 +33954,26 @@ components:
                   was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
                   when returned by the registry), `format` ("avro"|"json"), and either
                   `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
-                  applicable; use `has()` to test presence.
+                  applicable; use `has()` to test presence. Registry `metadata` (tags and properties)
+                  is available from runtime 1.3 via `record.value.schema.metadata`.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.value.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Confluent schema-registry metadata for the record value. Present (as empty maps)
+                  whenever `record.value.schema` is present. Fields:
+                  * `properties` (`map` of `string` to `string`) - Confluent `metadata.properties`;
+                    empty map when the registry omits it.
+                  * `tags` (`map` of `string` to list of `string`) - keyed by tag, value is the list
+                    of Confluent schema paths (e.g. `io.confluent.field.<name>`) carrying that tag;
+                    empty map when the registry omits it.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -31849,6 +33983,17 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Same shape as `record.value.schema.metadata`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
       required:
         - type
@@ -31950,9 +34095,26 @@ components:
                   was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
                   when returned by the registry), `format` ("avro"|"json"), and either
                   `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
-                  applicable; use `has()` to test presence.
+                  applicable; use `has()` to test presence. Registry `metadata` (tags and properties)
+                  is available from runtime 1.3 via `record.value.schema.metadata`.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.value.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Confluent schema-registry metadata for the record value. Present (as empty maps)
+                  whenever `record.value.schema` is present. Fields:
+                  * `properties` (`map` of `string` to `string`) - Confluent `metadata.properties`;
+                    empty map when the registry omits it.
+                  * `tags` (`map` of `string` to list of `string`) - keyed by tag, value is the list
+                    of Confluent schema paths (e.g. `io.confluent.field.<name>`) carrying that tag;
+                    empty map when the registry omits it.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -31962,6 +34124,17 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Same shape as `record.value.schema.metadata`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
         parent_policy_id:
           description: 'The unique identifier of the parent schema validation policy, if any.'
@@ -32055,9 +34228,26 @@ components:
                   was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
                   when returned by the registry), `format` ("avro"|"json"), and either
                   `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
-                  applicable; use `has()` to test presence.
+                  applicable; use `has()` to test presence. Registry `metadata` (tags and properties)
+                  is available from runtime 1.3 via `record.value.schema.metadata`.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.value.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Confluent schema-registry metadata for the record value. Present (as empty maps)
+                  whenever `record.value.schema` is present. Fields:
+                  * `properties` (`map` of `string` to `string`) - Confluent `metadata.properties`;
+                    empty map when the registry omits it.
+                  * `tags` (`map` of `string` to list of `string`) - keyed by tag, value is the list
+                    of Confluent schema paths (e.g. `io.confluent.field.<name>`) carrying that tag;
+                    empty map when the registry omits it.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -32067,6 +34257,17 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Same shape as `record.value.schema.metadata`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
       required:
         - type
@@ -32153,9 +34354,26 @@ components:
                   was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
                   when returned by the registry), `format` ("avro"|"json"), and either
                   `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
-                  applicable; use `has()` to test presence.
+                  applicable; use `has()` to test presence. Registry `metadata` (tags and properties)
+                  is available from runtime 1.3 via `record.value.schema.metadata`.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.value.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Confluent schema-registry metadata for the record value. Present (as empty maps)
+                  whenever `record.value.schema` is present. Fields:
+                  * `properties` (`map` of `string` to `string`) - Confluent `metadata.properties`;
+                    empty map when the registry omits it.
+                  * `tags` (`map` of `string` to list of `string`) - keyed by tag, value is the list
+                    of Confluent schema paths (e.g. `io.confluent.field.<name>`) carrying that tag;
+                    empty map when the registry omits it.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -32165,6 +34383,17 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Same shape as `record.value.schema.metadata`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
         parent_policy_id:
           description: 'The unique identifier of the parent schema validation policy, if any.'
@@ -33034,9 +35263,6 @@ components:
       x-speakeasy-param-computed: false
     VirtualClusterTopicAlias:
       description: |-
-        **Pre-release Feature**
-        This feature is currently in beta and is subject to change.
-
         A topic alias maps an alias name to a namespace-visible topic name.
         Clients can produce to, consume from, and discover the topic under the alias name.
         The original topic name remains accessible.
@@ -33094,7 +35320,6 @@ components:
         - topic
       x-min-runtime-version: '1.2'
       x-speakeasy-param-computed: false
-      x-unstable: true
     VirtualClusterTopicAliasConflict:
       description: |
         How to handle conflicts where an alias shadows a physical topic.
@@ -33368,7 +35593,14 @@ components:
           - vault
       x-sensitive: true
     ControlPlaneGeo:
-      description: Set of control-plane geos supported for deploying cloud-gateways configurations.
+      description: |
+        Geographic region of the control plane. Supported values:
+        - `us` — United States
+        - `eu` — Europe
+        - `au` — Australia
+        - `me` — Middle East
+        - `in` — India
+        - `sg` — Singapore
       type: string
       enum:
         - us
@@ -34154,19 +36386,9 @@ components:
                 example: true
                 default: false
               default_api_visibility:
-                description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
-                type: string
-                enum:
-                  - public
-                  - private
-                x-speakeasy-unknown-values: allow
+                $ref: '#/components/schemas/PortalDefaultApiVisibility'
               default_page_visibility:
-                description: 'The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.'
-                type: string
-                enum:
-                  - public
-                  - private
-                x-speakeasy-unknown-values: allow
+                $ref: '#/components/schemas/PortalDefaultPageVisibility'
               default_application_auth_strategy_id:
                 description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
                 type: string
@@ -34270,19 +36492,9 @@ components:
                 example: true
                 default: false
               default_api_visibility:
-                description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
-                type: string
-                enum:
-                  - public
-                  - private
-                x-speakeasy-unknown-values: allow
+                $ref: '#/components/schemas/PortalDefaultApiVisibility'
               default_page_visibility:
-                description: 'The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.'
-                type: string
-                enum:
-                  - public
-                  - private
-                x-speakeasy-unknown-values: allow
+                $ref: '#/components/schemas/PortalDefaultPageVisibility'
               default_application_auth_strategy_id:
                 description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
                 type: string
@@ -34324,6 +36536,7 @@ components:
                 - x-unstable
                 - x-internal
     ReplacePortalImageAsset:
+      x-go-name: ReplacePortalImageAssetRequestBody
       description: Update an image asset for the portal.
       required: true
       content:
@@ -34334,7 +36547,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/PortalCustomization'
+            $ref: '#/components/schemas/PortalCustomizationV3'
     CreatePortalPage:
       description: Create a page in a portal.
       required: true
@@ -34409,6 +36622,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalAuthenticationSettingsUpdateRequest'
+    PortalAssignRole:
+      description: Assign a role to a team.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalAssignRoleRequest'
     CreatePortalSourceIPRestriction:
       content:
         application/json:
@@ -35021,6 +37240,23 @@ components:
               refresh_token_duration:
                 - x-unstable
                 - x-internal
+    PersonalAccessTokenSettingsUpdateRequest:
+      description: Request body schema for updating personal access token settings.
+      content:
+        application/json:
+          schema:
+            x-speakeasy-entity: OrganizationPersonalAccessTokenSettings
+            type: object
+            properties:
+              pats_enabled:
+                type: boolean
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+              max_expiration_period_days:
+                $ref: '#/components/schemas/MaxPATExpirationPeriodDays'
+            additionalProperties: false
+            minProperties: 1
     CreateEventGatewayListenerRequest:
       description: The request schema for creating a listener.
       content:
@@ -35099,9 +37335,6 @@ components:
                 $ref: '#/components/schemas/VirtualClusterNamespace'
               topic_aliases:
                 description: |-
-                  **Pre-release Feature**
-                  This feature is currently in beta and is subject to change.
-
                   Topic aliases allow exposing backend topics under additional names.
                   An alias creates a new entry point to the same physical data.
                   The alias `topic` field references namespace-visible names (if namespace is configured).
@@ -35114,7 +37347,6 @@ components:
                 nullable: true
                 x-min-runtime-version: '1.2'
                 x-speakeasy-param-computed: false
-                x-unstable: true
               acl_mode:
                 $ref: '#/components/schemas/VirtualClusterACLMode'
               dns_label:
@@ -35150,9 +37382,6 @@ components:
                 $ref: '#/components/schemas/VirtualClusterNamespace'
               topic_aliases:
                 description: |-
-                  **Pre-release Feature**
-                  This feature is currently in beta and is subject to change.
-
                   Topic aliases allow exposing backend topics under additional names.
                   An alias creates a new entry point to the same physical data.
                   The alias `topic` field references namespace-visible names (if namespace is configured).
@@ -35165,7 +37394,6 @@ components:
                 nullable: true
                 x-min-runtime-version: '1.2'
                 x-speakeasy-param-computed: false
-                x-unstable: true
               acl_mode:
                 $ref: '#/components/schemas/VirtualClusterACLMode'
               dns_label:
@@ -35389,6 +37617,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalAuthenticationSettingsResponse'
+    PortalAssignedRole:
+      description: Details about the role assignment.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalAssignedRoleResponse'
     PortalTeam:
       description: Details about a team of developers in a portal.
       content:
@@ -35401,6 +37635,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalCustomDomain'
+      x-go-name: PortalCustomDomainResponse
     ListPortalsResponse:
       description: A paginated list of portals in the current region of an organization.
       content:
@@ -35462,19 +37697,9 @@ components:
                       example: true
                       default: false
                     default_api_visibility:
-                      description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
-                      type: string
-                      enum:
-                        - public
-                        - private
-                      x-speakeasy-unknown-values: allow
+                      $ref: '#/components/schemas/PortalDefaultApiVisibility'
                     default_page_visibility:
-                      description: 'The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.'
-                      type: string
-                      enum:
-                        - public
-                        - private
-                      x-speakeasy-unknown-values: allow
+                      $ref: '#/components/schemas/PortalDefaultPageVisibility'
                     default_application_auth_strategy_id:
                       description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
                       type: string
@@ -35582,19 +37807,9 @@ components:
                 example: true
                 default: false
               default_api_visibility:
-                description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
-                type: string
-                enum:
-                  - public
-                  - private
-                x-speakeasy-unknown-values: allow
+                $ref: '#/components/schemas/PortalDefaultApiVisibility'
               default_page_visibility:
-                description: 'The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.'
-                type: string
-                enum:
-                  - public
-                  - private
-                x-speakeasy-unknown-values: allow
+                $ref: '#/components/schemas/PortalDefaultPageVisibility'
               default_application_auth_strategy_id:
                 description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
                 type: string
@@ -35669,7 +37884,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/PortalCustomization'
+            $ref: '#/components/schemas/PortalCustomizationV3'
     PortalPage:
       description: Details about a page in a portal.
       content:
@@ -37233,6 +39448,51 @@ components:
         application/json:
           schema:
             type: object
+    MeshOpenTelemetryBackendItem:
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MeshOpenTelemetryBackendItem'
+    MeshOpenTelemetryBackendList:
+      description: List
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              items:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MeshOpenTelemetryBackendItem'
+              total:
+                description: The total number of entities
+                type: number
+              next:
+                description: URL to the next page
+                type: string
+    MeshOpenTelemetryBackendCreateOrUpdateSuccessResponse:
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              warnings:
+                description: |
+                  warnings is a list of warning messages to return to the requesting Kuma API clients.
+                  Warning messages describe a problem the client making the API request should correct or be aware of.
+                type: array
+                items:
+                  type: string
+                readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
+    MeshOpenTelemetryBackendDeleteSuccessResponse:
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            type: object
     MeshServiceItem:
       description: Successful response
       content:
@@ -37318,6 +39578,51 @@ components:
                 readOnly: true
                 x-speakeasy-param-suppress-computed-diff: true
     MeshTrustDeleteSuccessResponse:
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            type: object
+    MeshZoneAddressItem:
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MeshZoneAddressItem'
+    MeshZoneAddressList:
+      description: List
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              items:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MeshZoneAddressItem'
+              total:
+                description: The total number of entities
+                type: number
+              next:
+                description: URL to the next page
+                type: string
+    MeshZoneAddressCreateOrUpdateSuccessResponse:
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              warnings:
+                description: |
+                  warnings is a list of warning messages to return to the requesting Kuma API clients.
+                  Warning messages describe a problem the client making the API request should correct or be aware of.
+                type: array
+                items:
+                  type: string
+                readOnly: true
+                x-speakeasy-param-suppress-computed-diff: true
+    MeshZoneAddressDeleteSuccessResponse:
       description: Successful response
       content:
         application/json:
@@ -37727,6 +40032,23 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CreatedClient'
+    PersonalAccessTokenSettingsResponse:
+      description: Response containing personal access token settings.
+      content:
+        application/json:
+          schema:
+            x-speakeasy-entity: OrganizationPersonalAccessTokenSettings
+            type: object
+            properties:
+              pats_enabled:
+                type: boolean
+                default: true
+              max_expiration_period_days:
+                $ref: '#/components/schemas/MaxPATExpirationPeriodDays'
+            additionalProperties: false
+            required:
+              - pats_enabled
+              - max_expiration_period_days
     CreateGatewayResponse:
       description: A response to creating a gateway.
       content:
@@ -37794,6 +40116,12 @@ components:
       bearerFormat: JWT
       description: |
         The Konnect access token is meant to be used by the Konnect dashboard and the decK CLI authenticate with.
+    serviceAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        The Service access token is meant to be used between internal services.
 tags:
   - name: Portals
     description: APIs related to configuration of Konnect Developer Portals.
@@ -37805,6 +40133,8 @@ tags:
     description: APIs related to configuration of Konnect Developer Portal auth settings.
   - name: Portal Teams
     description: APIs related to configuration of Konnect Developer Portal developer teams.
+  - name: Portal Team Roles
+    description: APIs related to Konnect Developer Portal developer team roles.
   - name: Assets
     description: APIs for managing static assets for Konnect Developer Portals.
   - name: Pages
@@ -37880,6 +40210,8 @@ tags:
       determine which client certificates are accepted.
   - name: Event Gateway Vaults
   - name: Add-Ons
+    description: |
+      Optional services that extend the capabilities of a Cloud Gateway data plane group. The currently supported add-on type is managed cache (`managed-cache.v0`), which provisions a Redis-compatible in-memory cache co-located with your data planes. Each add-on is scoped to a control plane or control plane group, and is automatically deployed across all data plane groups that belong to that owner.
   - name: Kong Identity Directories
     description: |
       Use a directory to group consumers around an identity, defined by organizational boundaries,
@@ -37890,6 +40222,7 @@ security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
   - konnectAccessToken: []
+  - serviceAccessToken: []
 x-speakeasy-retries:
   strategy: backoff
   backoff:
