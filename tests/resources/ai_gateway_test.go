@@ -1,0 +1,33 @@
+package tests
+
+import (
+	"testing"
+
+	"github.com/hashicorp/terraform-plugin-testing/config"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+)
+
+func TestAIGateway(t *testing.T) {
+	t.Run("CRUD", func(t *testing.T) {
+		resource.Test(t, resource.TestCase{
+			Steps: []resource.TestStep{
+				{
+					ProtoV6ProviderFactories: providerFactory,
+					ConfigDirectory:          config.TestNameDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_ai_gateway.my_aigateway", "name", "my-test-ai-gateway"),
+						resource.TestCheckResourceAttr("konnect_ai_gateway_data_plane_certificate.my_aigatewaydataplanecertificate", "title", "tf-test-dp-cert"),
+						resource.TestCheckResourceAttr("konnect_ai_gateway_consumer.my_aigatewayconsumer", "name", "tf-test-consumer"),
+						resource.TestCheckResourceAttr("konnect_ai_gateway_consumer_group.my_aigatewayconsumergroup", "name", "tf-test-consumers"),
+						resource.TestCheckResourceAttr("konnect_ai_gateway_consumer_group_member.my_aigatewayconsumergroupmember", "consumer_id", "${konnect_ai_gateway_consumer.my_aigatewayconsumer.id}"),
+						resource.TestCheckResourceAttr("konnect_ai_gateway_consumer_credential.my_aigatewayconsumercredential", "display_name", "TF Test Dev Key"),
+						resource.TestCheckResourceAttr("konnect_ai_gateway_config_store.my_aigatewayconfigstore", "name", "tf-test-config-store"),
+						resource.TestCheckResourceAttr("konnect_ai_gateway_vault.my_aigatewayvault", "name", "tf-test-vault"),
+						resource.TestCheckResourceAttr("konnect_ai_gateway_config_store_secret.my_aigatewayconfigstoresecret", "key", "tf-test-secret-key"),
+						resource.TestCheckResourceAttr("konnect_ai_gateway_config_store_secret.my_aigatewayconfigstoresecret", "value", "tf-test-secret-value"),
+					),
+				},
+			},
+		})
+	})
+}
