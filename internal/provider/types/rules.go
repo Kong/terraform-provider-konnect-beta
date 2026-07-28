@@ -7,8 +7,8 @@ import (
 )
 
 type Rules struct {
-	Access    []MeshItemMode `tfsdk:"access"`
-	AccessAll types.Bool     `tfsdk:"access_all"`
-	Mesh      types.String   `tfsdk:"mesh"`
-	Types     []types.String `tfsdk:"types"`
+	Access    []AIGatewayRedisCloudConfigurationPort `tfsdk:"access"`
+	AccessAll types.Bool                             `tfsdk:"access_all"`
+	Mesh      types.String                           `tfsdk:"mesh"`
+	Types     []types.String                         `tfsdk:"types"`
 }

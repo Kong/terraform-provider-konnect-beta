@@ -85,7 +85,7 @@ func (r *PortalDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 			},
 			"default_api_visibility": schema.StringAttribute{
 				Computed:    true,
-				Description: `The default visibility of APIs in the portal. If set to ` + "`" + `public` + "`" + `, newly published APIs are visible to unauthenticated developers. If set to ` + "`" + `private` + "`" + `, newly published APIs are hidden from unauthenticated developers.`,
+				Description: `The default visibility of APIs in the portal.`,
 			},
 			"default_application_auth_strategy_id": schema.StringAttribute{
 				Computed:    true,
@@ -97,7 +97,7 @@ func (r *PortalDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 			},
 			"default_page_visibility": schema.StringAttribute{
 				Computed:    true,
-				Description: `The default visibility of pages in the portal. If set to ` + "`" + `public` + "`" + `, newly created pages are visible to unauthenticated developers. If set to ` + "`" + `private` + "`" + `, newly created pages are hidden from unauthenticated developers.`,
+				Description: `The default visibility of pages in the portal.`,
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,

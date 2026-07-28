@@ -6,6 +6,7 @@ type Security struct {
 	PersonalAccessToken      *string `security:"scheme,type=http,subtype=bearer,name=Authorization"`
 	SystemAccountAccessToken *string `security:"scheme,type=http,subtype=bearer,name=Authorization"`
 	KonnectAccessToken       *string `security:"scheme,type=http,subtype=bearer,name=Authorization"`
+	ServiceAccessToken       *string `security:"scheme,type=http,subtype=bearer,name=Authorization"`
 }
 
 func (s *Security) GetPersonalAccessToken() *string {
@@ -27,4 +28,11 @@ func (s *Security) GetKonnectAccessToken() *string {
 		return nil
 	}
 	return s.KonnectAccessToken
+}
+
+func (s *Security) GetServiceAccessToken() *string {
+	if s == nil {
+		return nil
+	}
+	return s.ServiceAccessToken
 }

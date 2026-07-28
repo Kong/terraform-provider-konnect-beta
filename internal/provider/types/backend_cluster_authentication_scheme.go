@@ -3,7 +3,8 @@
 package types
 
 type BackendClusterAuthenticationScheme struct {
-	Anonymous *RawProviderConfig                     `queryParam:"inline" tfsdk:"anonymous"`
-	SaslPlain *BackendClusterAuthenticationSaslPlain `queryParam:"inline" tfsdk:"sasl_plain"`
-	SaslScram *BackendClusterAuthenticationSaslScram `queryParam:"inline" tfsdk:"sasl_scram"`
+	Anonymous  *RawProviderConfig                      `queryParam:"inline" tfsdk:"anonymous"`
+	SaslAwsIam *BackendClusterAuthenticationSaslAwsIam `queryParam:"inline" tfsdk:"sasl_aws_iam"`
+	SaslPlain  *BackendClusterAuthenticationSaslPlain  `queryParam:"inline" tfsdk:"sasl_plain"`
+	SaslScram  *BackendClusterAuthenticationSaslScram  `queryParam:"inline" tfsdk:"sasl_scram"`
 }

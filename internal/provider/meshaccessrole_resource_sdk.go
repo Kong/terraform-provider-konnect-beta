@@ -6,6 +6,7 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
@@ -28,12 +29,14 @@ func (r *MeshAccessRoleResourceModel) RefreshFromSharedAccessRoleItem(ctx contex
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.CreationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreationTime))
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
 				r.Labels[key] = types.StringValue(value)
 			}
 		}
+		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		r.Name = types.StringValue(resp.Name)
 		if resp.Rules != nil {
 			r.Rules = []tfTypes.AccessRoleItemRules{}
@@ -42,10 +45,10 @@ func (r *MeshAccessRoleResourceModel) RefreshFromSharedAccessRoleItem(ctx contex
 				var rules tfTypes.AccessRoleItemRules
 
 				if rulesItem.Access != nil {
-					rules.Access = []tfTypes.MeshItemMode{}
+					rules.Access = []tfTypes.AIGatewayRedisCloudConfigurationPort{}
 
 					for _, accessItem := range rulesItem.Access {
-						var access tfTypes.MeshItemMode
+						var access tfTypes.AIGatewayRedisCloudConfigurationPort
 
 						if accessItem.Str != nil {
 							access.Str = types.StringPointerValue(accessItem.Str)
@@ -247,7 +250,7 @@ func (r *MeshAccessRoleResourceModel) ToOperationsPutAccessRoleRequest(ctx conte
 	var name string
 	name = r.Name.ValueString()
 
-	accessRoleItem, accessRoleItemDiags := r.ToSharedAccessRoleItem(ctx)
+	accessRoleItem, accessRoleItemDiags := r.ToSharedAccessRoleItemInput(ctx)
 	diags.Append(accessRoleItemDiags...)
 
 	if diags.HasError() {
@@ -263,7 +266,7 @@ func (r *MeshAccessRoleResourceModel) ToOperationsPutAccessRoleRequest(ctx conte
 	return &out, diags
 }
 
-func (r *MeshAccessRoleResourceModel) ToSharedAccessRoleItem(ctx context.Context) (*shared.AccessRoleItem, diag.Diagnostics) {
+func (r *MeshAccessRoleResourceModel) ToSharedAccessRoleItemInput(ctx context.Context) (*shared.AccessRoleItemInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	labels := make(map[string]string)
@@ -530,7 +533,7 @@ func (r *MeshAccessRoleResourceModel) ToSharedAccessRoleItem(ctx context.Context
 	var typeVar string
 	typeVar = r.Type.ValueString()
 
-	out := shared.AccessRoleItem{
+	out := shared.AccessRoleItemInput{
 		Labels: labels,
 		Name:   name,
 		Rules:  rules,

@@ -52,7 +52,7 @@ func (r *MeshProxyPatchResourceModel) RefreshFromSharedMeshProxyPatchItem(ctx co
 			if appendModificationsItem.Cluster == nil {
 				appendModifications.Cluster = nil
 			} else {
-				appendModifications.Cluster = &tfTypes.Cluster{}
+				appendModifications.Cluster = &tfTypes.MeshProxyPatchItemCluster{}
 				appendModifications.Cluster.JSONPatches = []tfTypes.JSONPatches{}
 
 				for _, jsonPatchesItem := range appendModificationsItem.Cluster.JSONPatches {
@@ -346,7 +346,7 @@ func (r *MeshProxyPatchResourceModel) ToSharedMeshProxyPatchItemInput(ctx contex
 	}
 	appendModifications := make([]shared.AppendModifications, 0, len(r.Spec.Default.AppendModifications))
 	for appendModificationsIndex := range r.Spec.Default.AppendModifications {
-		var cluster *shared.Cluster
+		var cluster *shared.MeshProxyPatchItemCluster
 		if r.Spec.Default.AppendModifications[appendModificationsIndex].Cluster != nil {
 			jsonPatches := make([]shared.JSONPatches, 0, len(r.Spec.Default.AppendModifications[appendModificationsIndex].Cluster.JSONPatches))
 			for jsonPatchesIndex := range r.Spec.Default.AppendModifications[appendModificationsIndex].Cluster.JSONPatches {
@@ -397,7 +397,7 @@ func (r *MeshProxyPatchResourceModel) ToSharedMeshProxyPatchItemInput(ctx contex
 			} else {
 				value1 = nil
 			}
-			cluster = &shared.Cluster{
+			cluster = &shared.MeshProxyPatchItemCluster{
 				JSONPatches: jsonPatches,
 				Match:       match,
 				Operation:   operation,

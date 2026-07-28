@@ -77,6 +77,11 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 					tiles.Chart.Definition.Chart.TimeseriesLine.Stacked = types.BoolPointerValue(tilesItem.ChartTile.Definition.Chart.TimeseriesChart.Stacked)
 					tiles.Chart.Definition.Chart.TimeseriesLine.Type = types.StringValue(string(tilesItem.ChartTile.Definition.Chart.TimeseriesChart.Type))
 				}
+				if tilesItem.ChartTile.Definition.Chart.TopNChart != nil {
+					tiles.Chart.Definition.Chart.TopN = &tfTypes.ChoroplethMapChart{}
+					tiles.Chart.Definition.Chart.TopN.ChartTitle = types.StringPointerValue(tilesItem.ChartTile.Definition.Chart.TopNChart.ChartTitle)
+					tiles.Chart.Definition.Chart.TopN.Type = types.StringValue(string(tilesItem.ChartTile.Definition.Chart.TopNChart.Type))
+				}
 				if tiles.Chart.Definition.Query == nil {
 					tiles.Chart.Definition.Query = &tfTypes.Query{}
 				}
@@ -112,6 +117,7 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 					} else {
 						tiles.Chart.Definition.Query.APIUsage.Granularity = types.StringNull()
 					}
+					tiles.Chart.Definition.Query.APIUsage.Limit = types.Float64PointerValue(tilesItem.ChartTile.Definition.Query.AdvancedQuery.Limit)
 					tiles.Chart.Definition.Query.APIUsage.Metrics = make([]types.String, 0, len(tilesItem.ChartTile.Definition.Query.AdvancedQuery.Metrics))
 					for _, v := range tilesItem.ChartTile.Definition.Query.AdvancedQuery.Metrics {
 						tiles.Chart.Definition.Query.APIUsage.Metrics = append(tiles.Chart.Definition.Query.APIUsage.Metrics, types.StringValue(string(v)))
@@ -169,6 +175,7 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 					} else {
 						tiles.Chart.Definition.Query.AgenticUsage.Granularity = types.StringNull()
 					}
+					tiles.Chart.Definition.Query.AgenticUsage.Limit = types.Float64PointerValue(tilesItem.ChartTile.Definition.Query.AgenticQuery.Limit)
 					tiles.Chart.Definition.Query.AgenticUsage.Metrics = make([]types.String, 0, len(tilesItem.ChartTile.Definition.Query.AgenticQuery.Metrics))
 					for _, v := range tilesItem.ChartTile.Definition.Query.AgenticQuery.Metrics {
 						tiles.Chart.Definition.Query.AgenticUsage.Metrics = append(tiles.Chart.Definition.Query.AgenticUsage.Metrics, types.StringValue(string(v)))
@@ -226,6 +233,7 @@ func (r *DashboardResourceModel) RefreshFromSharedDashboardResponse(ctx context.
 					} else {
 						tiles.Chart.Definition.Query.LlmUsage.Granularity = types.StringNull()
 					}
+					tiles.Chart.Definition.Query.LlmUsage.Limit = types.Float64PointerValue(tilesItem.ChartTile.Definition.Query.LLMQuery.Limit)
 					tiles.Chart.Definition.Query.LlmUsage.Metrics = make([]types.String, 0, len(tilesItem.ChartTile.Definition.Query.LLMQuery.Metrics))
 					for _, v := range tilesItem.ChartTile.Definition.Query.LLMQuery.Metrics {
 						tiles.Chart.Definition.Query.LlmUsage.Metrics = append(tiles.Chart.Definition.Query.LlmUsage.Metrics, types.StringValue(string(v)))
@@ -511,6 +519,12 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 						}
 					}
 				}
+				limit := new(float64)
+				if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.Limit.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.Limit.IsNull() {
+					*limit = r.Definition.Tiles[tilesItem].Chart.Definition.Query.APIUsage.Limit.ValueFloat64()
+				} else {
+					limit = nil
+				}
 				advancedQuery = &shared.AdvancedQuery{
 					Datasource:  datasource,
 					Metrics:     metrics,
@@ -518,6 +532,7 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 					Filters:     filters,
 					Granularity: granularity,
 					TimeRange:   timeRange,
+					Limit:       limit,
 				}
 			}
 			if advancedQuery != nil {
@@ -621,6 +636,12 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 						}
 					}
 				}
+				limit1 := new(float64)
+				if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.Limit.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.Limit.IsNull() {
+					*limit1 = r.Definition.Tiles[tilesItem].Chart.Definition.Query.LlmUsage.Limit.ValueFloat64()
+				} else {
+					limit1 = nil
+				}
 				llmQuery = &shared.LLMQuery{
 					Datasource:  datasource1,
 					Metrics:     metrics1,
@@ -628,6 +649,7 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 					Filters:     filters1,
 					Granularity: granularity1,
 					TimeRange:   timeRange2,
+					Limit:       limit1,
 				}
 			}
 			if llmQuery != nil {
@@ -731,6 +753,12 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 						}
 					}
 				}
+				limit2 := new(float64)
+				if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Limit.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Limit.IsNull() {
+					*limit2 = r.Definition.Tiles[tilesItem].Chart.Definition.Query.AgenticUsage.Limit.ValueFloat64()
+				} else {
+					limit2 = nil
+				}
 				agenticQuery = &shared.AgenticQuery{
 					Datasource:  datasource2,
 					Metrics:     metrics2,
@@ -738,6 +766,7 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 					Filters:     filters2,
 					Granularity: granularity2,
 					TimeRange:   timeRange4,
+					Limit:       limit2,
 				}
 			}
 			if agenticQuery != nil {
@@ -841,11 +870,11 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 						}
 					}
 				}
-				limit := new(float64)
+				limit3 := new(float64)
 				if !r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.Limit.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.Limit.IsNull() {
-					*limit = r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.Limit.ValueFloat64()
+					*limit3 = r.Definition.Tiles[tilesItem].Chart.Definition.Query.PlatformUsage.Limit.ValueFloat64()
 				} else {
-					limit = nil
+					limit3 = nil
 				}
 				platformQuery = &shared.PlatformQuery{
 					Datasource:  datasource3,
@@ -854,7 +883,7 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 					Filters:     filters3,
 					Granularity: granularity3,
 					TimeRange:   timeRange6,
-					Limit:       limit,
+					Limit:       limit3,
 				}
 			}
 			if platformQuery != nil {
@@ -934,15 +963,34 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 					BarChart: barChart,
 				}
 			}
-			var singleValueChart *shared.SingleValueChart
-			if r.Definition.Tiles[tilesItem].Chart.Definition.Chart.SingleValue != nil {
+			var topNChart *shared.TopNChart
+			if r.Definition.Tiles[tilesItem].Chart.Definition.Chart.TopN != nil {
 				chartTitle3 := new(string)
-				if !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.SingleValue.ChartTitle.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.SingleValue.ChartTitle.IsNull() {
-					*chartTitle3 = r.Definition.Tiles[tilesItem].Chart.Definition.Chart.SingleValue.ChartTitle.ValueString()
+				if !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.TopN.ChartTitle.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.TopN.ChartTitle.IsNull() {
+					*chartTitle3 = r.Definition.Tiles[tilesItem].Chart.Definition.Chart.TopN.ChartTitle.ValueString()
 				} else {
 					chartTitle3 = nil
 				}
-				typeVar12 := shared.SingleValueChartType(r.Definition.Tiles[tilesItem].Chart.Definition.Chart.SingleValue.Type.ValueString())
+				typeVar12 := shared.TopNChartType(r.Definition.Tiles[tilesItem].Chart.Definition.Chart.TopN.Type.ValueString())
+				topNChart = &shared.TopNChart{
+					ChartTitle: chartTitle3,
+					Type:       typeVar12,
+				}
+			}
+			if topNChart != nil {
+				chart = shared.Chart{
+					TopNChart: topNChart,
+				}
+			}
+			var singleValueChart *shared.SingleValueChart
+			if r.Definition.Tiles[tilesItem].Chart.Definition.Chart.SingleValue != nil {
+				chartTitle4 := new(string)
+				if !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.SingleValue.ChartTitle.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.SingleValue.ChartTitle.IsNull() {
+					*chartTitle4 = r.Definition.Tiles[tilesItem].Chart.Definition.Chart.SingleValue.ChartTitle.ValueString()
+				} else {
+					chartTitle4 = nil
+				}
+				typeVar13 := shared.SingleValueChartType(r.Definition.Tiles[tilesItem].Chart.Definition.Chart.SingleValue.Type.ValueString())
 				decimalPoints := new(float64)
 				if !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.SingleValue.DecimalPoints.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.SingleValue.DecimalPoints.IsNull() {
 					*decimalPoints = r.Definition.Tiles[tilesItem].Chart.Definition.Chart.SingleValue.DecimalPoints.ValueFloat64()
@@ -950,8 +998,8 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 					decimalPoints = nil
 				}
 				singleValueChart = &shared.SingleValueChart{
-					ChartTitle:    chartTitle3,
-					Type:          typeVar12,
+					ChartTitle:    chartTitle4,
+					Type:          typeVar13,
 					DecimalPoints: decimalPoints,
 				}
 			}
@@ -962,16 +1010,16 @@ func (r *DashboardResourceModel) ToSharedDashboardUpdateRequest(ctx context.Cont
 			}
 			var choroplethMapChart *shared.ChoroplethMapChart
 			if r.Definition.Tiles[tilesItem].Chart.Definition.Chart.ChoroplethMap != nil {
-				chartTitle4 := new(string)
+				chartTitle5 := new(string)
 				if !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.ChoroplethMap.ChartTitle.IsUnknown() && !r.Definition.Tiles[tilesItem].Chart.Definition.Chart.ChoroplethMap.ChartTitle.IsNull() {
-					*chartTitle4 = r.Definition.Tiles[tilesItem].Chart.Definition.Chart.ChoroplethMap.ChartTitle.ValueString()
+					*chartTitle5 = r.Definition.Tiles[tilesItem].Chart.Definition.Chart.ChoroplethMap.ChartTitle.ValueString()
 				} else {
-					chartTitle4 = nil
+					chartTitle5 = nil
 				}
-				typeVar13 := shared.ChoroplethMapChartType(r.Definition.Tiles[tilesItem].Chart.Definition.Chart.ChoroplethMap.Type.ValueString())
+				typeVar14 := shared.ChoroplethMapChartType(r.Definition.Tiles[tilesItem].Chart.Definition.Chart.ChoroplethMap.Type.ValueString())
 				choroplethMapChart = &shared.ChoroplethMapChart{
-					ChartTitle: chartTitle4,
-					Type:       typeVar13,
+					ChartTitle: chartTitle5,
+					Type:       typeVar14,
 				}
 			}
 			if choroplethMapChart != nil {

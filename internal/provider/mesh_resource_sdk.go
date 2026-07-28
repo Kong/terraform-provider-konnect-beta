@@ -6,6 +6,7 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect-beta/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/models/shared"
@@ -66,6 +67,8 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(ctx context.Context, resp 
 				}
 			}
 		}
+		r.CreationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreationTime))
+		r.Kri = types.StringPointerValue(resp.Kri)
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key2, value2 := range resp.Labels {
@@ -105,7 +108,7 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(ctx context.Context, resp 
 		} else {
 			r.MeshServices = &tfTypes.MeshServices{}
 			if resp.MeshServices.Mode != nil {
-				r.MeshServices.Mode = &tfTypes.MeshItemMode{}
+				r.MeshServices.Mode = &tfTypes.AIGatewayRedisCloudConfigurationPort{}
 				if resp.MeshServices.Mode.Str != nil {
 					r.MeshServices.Mode.Str = types.StringPointerValue(resp.MeshServices.Mode.Str)
 				}
@@ -161,7 +164,7 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(ctx context.Context, resp 
 						} else {
 							backends1.Conf.PrometheusMetricsBackendConfig.TLS = &tfTypes.MeshServices{}
 							if backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode != nil {
-								backends1.Conf.PrometheusMetricsBackendConfig.TLS.Mode = &tfTypes.MeshItemMode{}
+								backends1.Conf.PrometheusMetricsBackendConfig.TLS.Mode = &tfTypes.AIGatewayRedisCloudConfigurationPort{}
 								if backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Str != nil {
 									backends1.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Str = types.StringPointerValue(backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Str)
 								}
@@ -179,6 +182,7 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(ctx context.Context, resp 
 			}
 			r.Metrics.EnabledBackend = types.StringPointerValue(resp.Metrics.EnabledBackend)
 		}
+		r.ModificationTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ModificationTime))
 		if resp.Mtls == nil {
 			r.Mtls = nil
 		} else {
@@ -196,7 +200,7 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(ctx context.Context, resp 
 						if backendsItem2.Conf.ACMCertificateAuthorityConfig.Auth == nil {
 							backends2.Conf.ACMCertificateAuthorityConfig.Auth = nil
 						} else {
-							backends2.Conf.ACMCertificateAuthorityConfig.Auth = &tfTypes.Auth{}
+							backends2.Conf.ACMCertificateAuthorityConfig.Auth = &tfTypes.ConfAuth{}
 							if backendsItem2.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials == nil {
 								backends2.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials = nil
 							} else {
@@ -372,7 +376,7 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(ctx context.Context, resp 
 											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.IamServerIDHeader = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.IamServerIDHeader)
 											backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Role = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Role)
 											if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type != nil {
-												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type = &tfTypes.MeshItemMode{}
+												backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type = &tfTypes.AIGatewayRedisCloudConfigurationPort{}
 												if backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type.Str != nil {
 													backends2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type.Str = types.StringPointerValue(backendsItem2.Conf.VaultCertificateAuthorityConfig.VaultCertificateAuthorityConfigFromCp.FromCp.Auth.VaultCertificateAuthorityConfigFromCpAuthAws.Aws.Type.Str)
 												}
@@ -504,7 +508,7 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(ctx context.Context, resp 
 					}
 				}
 				if backendsItem2.Mode != nil {
-					backends2.Mode = &tfTypes.MeshItemMode{}
+					backends2.Mode = &tfTypes.AIGatewayRedisCloudConfigurationPort{}
 					if backendsItem2.Mode.Str != nil {
 						backends2.Mode.Str = types.StringPointerValue(backendsItem2.Mode.Str)
 					}
@@ -638,7 +642,7 @@ func (r *MeshResourceModel) ToOperationsPutMeshRequest(ctx context.Context) (*op
 	var name string
 	name = r.Name.ValueString()
 
-	meshItem, meshItemDiags := r.ToSharedMeshItem(ctx)
+	meshItem, meshItemDiags := r.ToSharedMeshItemInput(ctx)
 	diags.Append(meshItemDiags...)
 
 	if diags.HasError() {
@@ -654,7 +658,7 @@ func (r *MeshResourceModel) ToOperationsPutMeshRequest(ctx context.Context) (*op
 	return &out, diags
 }
 
-func (r *MeshResourceModel) ToSharedMeshItem(ctx context.Context) (*shared.MeshItem, diag.Diagnostics) {
+func (r *MeshResourceModel) ToSharedMeshItemInput(ctx context.Context) (*shared.MeshItemInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var constraints *shared.Constraints
@@ -1637,7 +1641,7 @@ func (r *MeshResourceModel) ToSharedMeshItem(ctx context.Context) (*shared.MeshI
 					} else {
 						arn = nil
 					}
-					var auth1 *shared.Auth
+					var auth1 *shared.ConfAuth
 					if r.Mtls.Backends[backendsIndex2].Conf.ACMCertificateAuthorityConfig.Auth != nil {
 						var awsCredentials *shared.AwsCredentials
 						if r.Mtls.Backends[backendsIndex2].Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials != nil {
@@ -1788,7 +1792,7 @@ func (r *MeshResourceModel) ToSharedMeshItem(ctx context.Context) (*shared.MeshI
 								AccessKeySecret: accessKeySecret,
 							}
 						}
-						auth1 = &shared.Auth{
+						auth1 = &shared.ConfAuth{
 							AwsCredentials: awsCredentials,
 						}
 					}
@@ -2296,7 +2300,7 @@ func (r *MeshResourceModel) ToSharedMeshItem(ctx context.Context) (*shared.MeshI
 	var typeVar2 string
 	typeVar2 = r.Type.ValueString()
 
-	out := shared.MeshItem{
+	out := shared.MeshItemInput{
 		Constraints:                 constraints,
 		Labels:                      labels,
 		Logging:                     logging,

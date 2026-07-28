@@ -13,7 +13,7 @@ type PutMeshRequest struct {
 	// name of the Mesh
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 	// Put request
-	MeshItem shared.MeshItem `request:"mediaType=application/json"`
+	MeshItem shared.MeshItemInput `request:"mediaType=application/json"`
 }
 
 func (p *PutMeshRequest) GetCpID() string {
@@ -30,9 +30,9 @@ func (p *PutMeshRequest) GetName() string {
 	return p.Name
 }
 
-func (p *PutMeshRequest) GetMeshItem() shared.MeshItem {
+func (p *PutMeshRequest) GetMeshItem() shared.MeshItemInput {
 	if p == nil {
-		return shared.MeshItem{}
+		return shared.MeshItemInput{}
 	}
 	return p.MeshItem
 }

@@ -3,7 +3,7 @@
 package types
 
 type Sampling struct {
-	Client  *MeshItemMode `tfsdk:"client"`
-	Overall *MeshItemMode `tfsdk:"overall"`
-	Random  *MeshItemMode `tfsdk:"random"`
+	Client  *AIGatewayRedisCloudConfigurationPort `tfsdk:"client"`
+	Overall *AIGatewayRedisCloudConfigurationPort `tfsdk:"overall"`
+	Random  *AIGatewayRedisCloudConfigurationPort `tfsdk:"random"`
 }

@@ -15,5 +15,6 @@ resource "konnect_mesh_control_plane" "my_meshcontrolplane" {
   labels = {
     key = "value"
   }
-  name = "Test control plane"
+  name    = "Test control plane"
+  version = "v3"
 }

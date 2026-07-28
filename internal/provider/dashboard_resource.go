@@ -93,7 +93,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 								"field": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `possible known values include one of ["a2a_context_id", "a2a_error", "a2a_method", "a2a_task_id", "ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "mcp_error", "mcp_method", "mcp_session_id", "mcp_tool_name", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null`,
+									Description: `possible known values include one of ["a2a_context_id", "a2a_error", "a2a_method", "a2a_task_id", "ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "env", "gateway_service", "hostname", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "mcp_error", "mcp_method", "mcp_session_id", "mcp_tool_name", "portal", "principal", "realm", "region", "response_source", "route", "status_code", "status_code_grouped", "team", "upstream_status_code", "upstream_status_code_grouped"]; Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
 									},
@@ -165,6 +165,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																	path.MatchRelative().AtParent().AtName("donut"),
 																	path.MatchRelative().AtParent().AtName("single_value"),
 																	path.MatchRelative().AtParent().AtName("timeseries_line"),
+																	path.MatchRelative().AtParent().AtName("top_n"),
 																}...),
 															},
 														},
@@ -194,6 +195,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																	path.MatchRelative().AtParent().AtName("choropleth_map"),
 																	path.MatchRelative().AtParent().AtName("single_value"),
 																	path.MatchRelative().AtParent().AtName("timeseries_line"),
+																	path.MatchRelative().AtParent().AtName("top_n"),
 																}...),
 															},
 														},
@@ -227,6 +229,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																	path.MatchRelative().AtParent().AtName("donut"),
 																	path.MatchRelative().AtParent().AtName("single_value"),
 																	path.MatchRelative().AtParent().AtName("timeseries_line"),
+																	path.MatchRelative().AtParent().AtName("top_n"),
 																}...),
 															},
 														},
@@ -261,6 +264,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																	path.MatchRelative().AtParent().AtName("choropleth_map"),
 																	path.MatchRelative().AtParent().AtName("donut"),
 																	path.MatchRelative().AtParent().AtName("timeseries_line"),
+																	path.MatchRelative().AtParent().AtName("top_n"),
 																}...),
 															},
 														},
@@ -300,6 +304,37 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																	path.MatchRelative().AtParent().AtName("choropleth_map"),
 																	path.MatchRelative().AtParent().AtName("donut"),
 																	path.MatchRelative().AtParent().AtName("single_value"),
+																	path.MatchRelative().AtParent().AtName("top_n"),
+																}...),
+															},
+														},
+														"top_n": schema.SingleNestedAttribute{
+															Optional: true,
+															Attributes: map[string]schema.Attribute{
+																"chart_title": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Description: `The title of the chart, which is displayed in the tile's header.`,
+																},
+																"type": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Description: `Not Null; must be "top_n"`,
+																	Validators: []validator.String{
+																		speakeasy_stringvalidators.NotNull(),
+																		stringvalidator.OneOf("top_n"),
+																	},
+																},
+															},
+															MarkdownDescription: `A chart that ranks dimension values by a metric and renders them as a table, showing` + "\n" +
+																`the top results.  This type of chart supports up to 3 dimensions.`,
+															Validators: []validator.Object{
+																objectvalidator.ConflictsWith(path.Expressions{
+																	path.MatchRelative().AtParent().AtName("horizontal_bar"),
+																	path.MatchRelative().AtParent().AtName("choropleth_map"),
+																	path.MatchRelative().AtParent().AtName("donut"),
+																	path.MatchRelative().AtParent().AtName("single_value"),
+																	path.MatchRelative().AtParent().AtName("timeseries_line"),
 																}...),
 															},
 														},
@@ -346,7 +381,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																			"field": schema.StringAttribute{
 																				Computed:    true,
 																				Optional:    true,
-																				Description: `possible known values include one of ["a2a_context_id", "a2a_error", "a2a_method", "a2a_task_id", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "mcp_error", "mcp_method", "mcp_session_id", "mcp_tool_name", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null`,
+																				Description: `possible known values include one of ["a2a_context_id", "a2a_error", "a2a_method", "a2a_task_id", "api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "mcp_error", "mcp_method", "mcp_session_id", "mcp_tool_name", "portal", "principal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null`,
 																				Validators: []validator.String{
 																					speakeasy_stringvalidators.NotNull(),
 																				},
@@ -393,6 +428,15 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																		`` + "\n" +
 																		`For absolute time ranges, daily will be used.` + "\n" +
 																		`possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]`,
+																},
+																"limit": schema.Float64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     float64default.StaticFloat64(50),
+																	Description: `Limits the number of distinct metric groups to return. Default: 50`,
+																	Validators: []validator.Float64{
+																		float64validator.AtMost(1000),
+																	},
 																},
 																"metrics": schema.ListAttribute{
 																	Computed:    true,
@@ -521,7 +565,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																			"field": schema.StringAttribute{
 																				Computed:    true,
 																				Optional:    true,
-																				Description: `possible known values include one of ["api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null`,
+																				Description: `possible known values include one of ["api", "api_package", "api_product", "api_product_version", "application", "consumer", "control_plane", "control_plane_group", "country_code", "data_plane_node", "data_plane_node_version", "gateway_service", "portal", "principal", "realm", "response_source", "route", "status_code", "status_code_grouped", "upstream_status_code", "upstream_status_code_grouped"]; Not Null`,
 																				Validators: []validator.String{
 																					speakeasy_stringvalidators.NotNull(),
 																				},
@@ -568,6 +612,15 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																		`` + "\n" +
 																		`For absolute time ranges, daily will be used.` + "\n" +
 																		`possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]`,
+																},
+																"limit": schema.Float64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     float64default.StaticFloat64(50),
+																	Description: `Limits the number of distinct metric groups to return. Default: 50`,
+																	Validators: []validator.Float64{
+																		float64validator.AtMost(1000),
+																	},
 																},
 																"metrics": schema.ListAttribute{
 																	Computed:    true,
@@ -696,7 +749,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																			"field": schema.StringAttribute{
 																				Computed:    true,
 																				Optional:    true,
-																				Description: `possible known values include one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "application", "consumer", "control_plane", "control_plane_group", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "realm", "route", "status_code", "status_code_grouped"]; Not Null`,
+																				Description: `possible known values include one of ["ai_plugin", "ai_provider", "ai_request_model", "ai_response_model", "application", "consumer", "control_plane", "control_plane_group", "gateway_service", "llm_cache_status", "llm_embeddings_model", "llm_embeddings_provider", "principal", "realm", "route", "status_code", "status_code_grouped"]; Not Null`,
 																				Validators: []validator.String{
 																					speakeasy_stringvalidators.NotNull(),
 																				},
@@ -743,6 +796,15 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																		`` + "\n" +
 																		`For absolute time ranges, daily will be used.` + "\n" +
 																		`possible known values include one of ["tenSecondly", "thirtySecondly", "minutely", "fiveMinutely", "tenMinutely", "thirtyMinutely", "hourly", "twoHourly", "twelveHourly", "daily", "weekly"]`,
+																},
+																"limit": schema.Float64Attribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     float64default.StaticFloat64(50),
+																	Description: `Limits the number of distinct metric groups to return. Default: 50`,
+																	Validators: []validator.Float64{
+																		float64validator.AtMost(1000),
+																	},
 																},
 																"metrics": schema.ListAttribute{
 																	Computed:    true,
@@ -871,7 +933,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																			"field": schema.StringAttribute{
 																				Computed:    true,
 																				Optional:    true,
-																				Description: `The field to filter. possible known values include one of ["control_plane", "data_plane_node_version", "gateway_service", "plugin", "plugin_name", "plugin_scope", "realm", "route"]; Not Null`,
+																				Description: `The field to filter. possible known values include one of ["control_plane", "data_plane_node_version", "env", "gateway_service", "hostname", "plugin", "plugin_name", "plugin_scope", "realm", "region", "route", "team"]; Not Null`,
 																				Validators: []validator.String{
 																					speakeasy_stringvalidators.NotNull(),
 																				},
@@ -924,7 +986,7 @@ func (r *DashboardResource) Schema(ctx context.Context, req resource.SchemaReque
 																	Computed:    true,
 																	Optional:    true,
 																	Default:     float64default.StaticFloat64(50),
-																	Description: `Maximum number of group_by buckets to return. Defaults to 50, capped at 1000. Only applies when a group_by dimension is requested. Default: 50`,
+																	Description: `Limits the number of distinct metric groups to return. Default: 50`,
 																	Validators: []validator.Float64{
 																		float64validator.AtMost(1000),
 																	},
