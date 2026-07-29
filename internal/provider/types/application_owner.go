@@ -6,6 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type AIGatewayDenyACL struct {
-	Deny []types.String `tfsdk:"deny"`
+type ApplicationOwner struct {
+	ID   types.String `tfsdk:"id"`
+	Type types.String `tfsdk:"type"`
 }

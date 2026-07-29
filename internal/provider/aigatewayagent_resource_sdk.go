@@ -22,21 +22,17 @@ func (r *AIGatewayAgentResourceModel) RefreshFromSharedAIGatewayAgent(ctx contex
 			r.Access = nil
 		} else {
 			r.Access = &tfTypes.AIGatewayAgentAccess{}
-			if resp.Access.Acls != nil {
+			if resp.Access.Acls == nil {
+				r.Access.Acls = nil
+			} else {
 				r.Access.Acls = &tfTypes.AIGatewayACLS{}
-				if resp.Access.Acls.AIGatewayAllowACL != nil {
-					r.Access.Acls.AIGatewayAllowACL = &tfTypes.AIGatewayAllowACL{}
-					r.Access.Acls.AIGatewayAllowACL.Allow = make([]types.String, 0, len(resp.Access.Acls.AIGatewayAllowACL.Allow))
-					for _, v := range resp.Access.Acls.AIGatewayAllowACL.Allow {
-						r.Access.Acls.AIGatewayAllowACL.Allow = append(r.Access.Acls.AIGatewayAllowACL.Allow, types.StringValue(v))
-					}
+				r.Access.Acls.Allow = make([]types.String, 0, len(resp.Access.Acls.Allow))
+				for _, v := range resp.Access.Acls.Allow {
+					r.Access.Acls.Allow = append(r.Access.Acls.Allow, types.StringValue(v))
 				}
-				if resp.Access.Acls.AIGatewayDenyACL != nil {
-					r.Access.Acls.AIGatewayDenyACL = &tfTypes.AIGatewayDenyACL{}
-					r.Access.Acls.AIGatewayDenyACL.Deny = make([]types.String, 0, len(resp.Access.Acls.AIGatewayDenyACL.Deny))
-					for _, v := range resp.Access.Acls.AIGatewayDenyACL.Deny {
-						r.Access.Acls.AIGatewayDenyACL.Deny = append(r.Access.Acls.AIGatewayDenyACL.Deny, types.StringValue(v))
-					}
+				r.Access.Acls.Deny = make([]types.String, 0, len(resp.Access.Acls.Deny))
+				for _, v := range resp.Access.Acls.Deny {
+					r.Access.Acls.Deny = append(r.Access.Acls.Deny, types.StringValue(v))
 				}
 			}
 		}
@@ -59,7 +55,7 @@ func (r *AIGatewayAgentResourceModel) RefreshFromSharedAIGatewayAgent(ctx contex
 			r.Config.Route = nil
 		} else {
 			r.Config.Route = &tfTypes.AIGatewayRouteConfig{}
-			if resp.Config.Route.Headers != nil {
+			if len(resp.Config.Route.Headers) > 0 {
 				r.Config.Route.Headers = make(map[string]jsontypes.Normalized, len(resp.Config.Route.Headers))
 				for key, value := range resp.Config.Route.Headers {
 					result, _ := json.Marshal(value)
@@ -75,21 +71,13 @@ func (r *AIGatewayAgentResourceModel) RefreshFromSharedAIGatewayAgent(ctx contex
 				r.Config.Route.Hosts = nil
 			}
 			r.Config.Route.HTTPSRedirectStatusCode = types.Int64PointerValue(resp.Config.Route.HTTPSRedirectStatusCode)
-			if resp.Config.Route.Methods != nil {
-				r.Config.Route.Methods = make([]types.String, 0, len(resp.Config.Route.Methods))
-				for _, v := range resp.Config.Route.Methods {
-					r.Config.Route.Methods = append(r.Config.Route.Methods, types.StringValue(v))
-				}
-			} else {
-				r.Config.Route.Methods = nil
+			r.Config.Route.Methods = make([]types.String, 0, len(resp.Config.Route.Methods))
+			for _, v := range resp.Config.Route.Methods {
+				r.Config.Route.Methods = append(r.Config.Route.Methods, types.StringValue(v))
 			}
-			if resp.Config.Route.Paths != nil {
-				r.Config.Route.Paths = make([]types.String, 0, len(resp.Config.Route.Paths))
-				for _, v := range resp.Config.Route.Paths {
-					r.Config.Route.Paths = append(r.Config.Route.Paths, types.StringValue(v))
-				}
-			} else {
-				r.Config.Route.Paths = nil
+			r.Config.Route.Paths = make([]types.String, 0, len(resp.Config.Route.Paths))
+			for _, v := range resp.Config.Route.Paths {
+				r.Config.Route.Paths = append(r.Config.Route.Paths, types.StringValue(v))
 			}
 			r.Config.Route.PreserveHost = types.BoolPointerValue(resp.Config.Route.PreserveHost)
 			r.Config.Route.Protocols = make([]types.String, 0, len(resp.Config.Route.Protocols))
@@ -100,13 +88,9 @@ func (r *AIGatewayAgentResourceModel) RefreshFromSharedAIGatewayAgent(ctx contex
 			r.Config.Route.RequestBuffering = types.BoolPointerValue(resp.Config.Route.RequestBuffering)
 			r.Config.Route.ResponseBuffering = types.BoolPointerValue(resp.Config.Route.ResponseBuffering)
 			r.Config.Route.StripPath = types.BoolPointerValue(resp.Config.Route.StripPath)
-			if resp.Config.Route.Tags != nil {
-				r.Config.Route.Tags = make([]types.String, 0, len(resp.Config.Route.Tags))
-				for _, v := range resp.Config.Route.Tags {
-					r.Config.Route.Tags = append(r.Config.Route.Tags, types.StringValue(v))
-				}
-			} else {
-				r.Config.Route.Tags = nil
+			r.Config.Route.Tags = make([]types.String, 0, len(resp.Config.Route.Tags))
+			for _, v := range resp.Config.Route.Tags {
+				r.Config.Route.Tags = append(r.Config.Route.Tags, types.StringValue(v))
 			}
 		}
 		r.Config.URL = types.StringValue(resp.Config.URL)
@@ -242,35 +226,17 @@ func (r *AIGatewayAgentResourceModel) ToSharedCreateAIGatewayAgentRequest(ctx co
 	if r.Access != nil {
 		var acls *shared.AIGatewayACLS
 		if r.Access.Acls != nil {
-			var aiGatewayAllowACL *shared.AIGatewayAllowACL
-			if r.Access.Acls.AIGatewayAllowACL != nil {
-				allow := make([]string, 0, len(r.Access.Acls.AIGatewayAllowACL.Allow))
-				for allowIndex := range r.Access.Acls.AIGatewayAllowACL.Allow {
-					allow = append(allow, r.Access.Acls.AIGatewayAllowACL.Allow[allowIndex].ValueString())
-				}
-				aiGatewayAllowACL = &shared.AIGatewayAllowACL{
-					Allow: allow,
-				}
+			allow := make([]string, 0, len(r.Access.Acls.Allow))
+			for allowIndex := range r.Access.Acls.Allow {
+				allow = append(allow, r.Access.Acls.Allow[allowIndex].ValueString())
 			}
-			if aiGatewayAllowACL != nil {
-				acls = &shared.AIGatewayACLS{
-					AIGatewayAllowACL: aiGatewayAllowACL,
-				}
+			deny := make([]string, 0, len(r.Access.Acls.Deny))
+			for denyIndex := range r.Access.Acls.Deny {
+				deny = append(deny, r.Access.Acls.Deny[denyIndex].ValueString())
 			}
-			var aiGatewayDenyACL *shared.AIGatewayDenyACL
-			if r.Access.Acls.AIGatewayDenyACL != nil {
-				deny := make([]string, 0, len(r.Access.Acls.AIGatewayDenyACL.Deny))
-				for denyIndex := range r.Access.Acls.AIGatewayDenyACL.Deny {
-					deny = append(deny, r.Access.Acls.AIGatewayDenyACL.Deny[denyIndex].ValueString())
-				}
-				aiGatewayDenyACL = &shared.AIGatewayDenyACL{
-					Deny: deny,
-				}
-			}
-			if aiGatewayDenyACL != nil {
-				acls = &shared.AIGatewayACLS{
-					AIGatewayDenyACL: aiGatewayDenyACL,
-				}
+			acls = &shared.AIGatewayACLS{
+				Allow: allow,
+				Deny:  deny,
 			}
 		}
 		access = &shared.AIGatewayAgentAccess{
@@ -282,14 +248,11 @@ func (r *AIGatewayAgentResourceModel) ToSharedCreateAIGatewayAgentRequest(ctx co
 
 	var route *shared.AIGatewayRouteConfig
 	if r.Config.Route != nil {
-		var headers map[string]interface{}
-		if r.Config.Route.Headers != nil {
-			headers = make(map[string]interface{})
-			for headersKey := range r.Config.Route.Headers {
-				var headersInst interface{}
-				_ = json.Unmarshal([]byte(r.Config.Route.Headers[headersKey].ValueString()), &headersInst)
-				headers[headersKey] = headersInst
-			}
+		headers := make(map[string]interface{})
+		for headersKey := range r.Config.Route.Headers {
+			var headersInst interface{}
+			_ = json.Unmarshal([]byte(r.Config.Route.Headers[headersKey].ValueString()), &headersInst)
+			headers[headersKey] = headersInst
 		}
 		var hosts []string
 		if r.Config.Route.Hosts != nil {
@@ -304,19 +267,13 @@ func (r *AIGatewayAgentResourceModel) ToSharedCreateAIGatewayAgentRequest(ctx co
 		} else {
 			httpsRedirectStatusCode = nil
 		}
-		var methods []string
-		if r.Config.Route.Methods != nil {
-			methods = make([]string, 0, len(r.Config.Route.Methods))
-			for methodsIndex := range r.Config.Route.Methods {
-				methods = append(methods, r.Config.Route.Methods[methodsIndex].ValueString())
-			}
+		methods := make([]string, 0, len(r.Config.Route.Methods))
+		for methodsIndex := range r.Config.Route.Methods {
+			methods = append(methods, r.Config.Route.Methods[methodsIndex].ValueString())
 		}
-		var paths []string
-		if r.Config.Route.Paths != nil {
-			paths = make([]string, 0, len(r.Config.Route.Paths))
-			for pathsIndex := range r.Config.Route.Paths {
-				paths = append(paths, r.Config.Route.Paths[pathsIndex].ValueString())
-			}
+		paths := make([]string, 0, len(r.Config.Route.Paths))
+		for pathsIndex := range r.Config.Route.Paths {
+			paths = append(paths, r.Config.Route.Paths[pathsIndex].ValueString())
 		}
 		preserveHost := new(bool)
 		if !r.Config.Route.PreserveHost.IsUnknown() && !r.Config.Route.PreserveHost.IsNull() {
@@ -352,12 +309,9 @@ func (r *AIGatewayAgentResourceModel) ToSharedCreateAIGatewayAgentRequest(ctx co
 		} else {
 			stripPath = nil
 		}
-		var tags []string
-		if r.Config.Route.Tags != nil {
-			tags = make([]string, 0, len(r.Config.Route.Tags))
-			for tagsIndex := range r.Config.Route.Tags {
-				tags = append(tags, r.Config.Route.Tags[tagsIndex].ValueString())
-			}
+		tags := make([]string, 0, len(r.Config.Route.Tags))
+		for tagsIndex := range r.Config.Route.Tags {
+			tags = append(tags, r.Config.Route.Tags[tagsIndex].ValueString())
 		}
 		route = &shared.AIGatewayRouteConfig{
 			Headers:                 headers,
@@ -463,35 +417,17 @@ func (r *AIGatewayAgentResourceModel) ToSharedUpdateAIGatewayAgentRequest(ctx co
 	if r.Access != nil {
 		var acls *shared.AIGatewayACLS
 		if r.Access.Acls != nil {
-			var aiGatewayAllowACL *shared.AIGatewayAllowACL
-			if r.Access.Acls.AIGatewayAllowACL != nil {
-				allow := make([]string, 0, len(r.Access.Acls.AIGatewayAllowACL.Allow))
-				for allowIndex := range r.Access.Acls.AIGatewayAllowACL.Allow {
-					allow = append(allow, r.Access.Acls.AIGatewayAllowACL.Allow[allowIndex].ValueString())
-				}
-				aiGatewayAllowACL = &shared.AIGatewayAllowACL{
-					Allow: allow,
-				}
+			allow := make([]string, 0, len(r.Access.Acls.Allow))
+			for allowIndex := range r.Access.Acls.Allow {
+				allow = append(allow, r.Access.Acls.Allow[allowIndex].ValueString())
 			}
-			if aiGatewayAllowACL != nil {
-				acls = &shared.AIGatewayACLS{
-					AIGatewayAllowACL: aiGatewayAllowACL,
-				}
+			deny := make([]string, 0, len(r.Access.Acls.Deny))
+			for denyIndex := range r.Access.Acls.Deny {
+				deny = append(deny, r.Access.Acls.Deny[denyIndex].ValueString())
 			}
-			var aiGatewayDenyACL *shared.AIGatewayDenyACL
-			if r.Access.Acls.AIGatewayDenyACL != nil {
-				deny := make([]string, 0, len(r.Access.Acls.AIGatewayDenyACL.Deny))
-				for denyIndex := range r.Access.Acls.AIGatewayDenyACL.Deny {
-					deny = append(deny, r.Access.Acls.AIGatewayDenyACL.Deny[denyIndex].ValueString())
-				}
-				aiGatewayDenyACL = &shared.AIGatewayDenyACL{
-					Deny: deny,
-				}
-			}
-			if aiGatewayDenyACL != nil {
-				acls = &shared.AIGatewayACLS{
-					AIGatewayDenyACL: aiGatewayDenyACL,
-				}
+			acls = &shared.AIGatewayACLS{
+				Allow: allow,
+				Deny:  deny,
 			}
 		}
 		access = &shared.AIGatewayAgentAccess{
@@ -503,14 +439,11 @@ func (r *AIGatewayAgentResourceModel) ToSharedUpdateAIGatewayAgentRequest(ctx co
 
 	var route *shared.AIGatewayRouteConfig
 	if r.Config.Route != nil {
-		var headers map[string]interface{}
-		if r.Config.Route.Headers != nil {
-			headers = make(map[string]interface{})
-			for headersKey := range r.Config.Route.Headers {
-				var headersInst interface{}
-				_ = json.Unmarshal([]byte(r.Config.Route.Headers[headersKey].ValueString()), &headersInst)
-				headers[headersKey] = headersInst
-			}
+		headers := make(map[string]interface{})
+		for headersKey := range r.Config.Route.Headers {
+			var headersInst interface{}
+			_ = json.Unmarshal([]byte(r.Config.Route.Headers[headersKey].ValueString()), &headersInst)
+			headers[headersKey] = headersInst
 		}
 		var hosts []string
 		if r.Config.Route.Hosts != nil {
@@ -525,19 +458,13 @@ func (r *AIGatewayAgentResourceModel) ToSharedUpdateAIGatewayAgentRequest(ctx co
 		} else {
 			httpsRedirectStatusCode = nil
 		}
-		var methods []string
-		if r.Config.Route.Methods != nil {
-			methods = make([]string, 0, len(r.Config.Route.Methods))
-			for methodsIndex := range r.Config.Route.Methods {
-				methods = append(methods, r.Config.Route.Methods[methodsIndex].ValueString())
-			}
+		methods := make([]string, 0, len(r.Config.Route.Methods))
+		for methodsIndex := range r.Config.Route.Methods {
+			methods = append(methods, r.Config.Route.Methods[methodsIndex].ValueString())
 		}
-		var paths []string
-		if r.Config.Route.Paths != nil {
-			paths = make([]string, 0, len(r.Config.Route.Paths))
-			for pathsIndex := range r.Config.Route.Paths {
-				paths = append(paths, r.Config.Route.Paths[pathsIndex].ValueString())
-			}
+		paths := make([]string, 0, len(r.Config.Route.Paths))
+		for pathsIndex := range r.Config.Route.Paths {
+			paths = append(paths, r.Config.Route.Paths[pathsIndex].ValueString())
 		}
 		preserveHost := new(bool)
 		if !r.Config.Route.PreserveHost.IsUnknown() && !r.Config.Route.PreserveHost.IsNull() {
@@ -573,12 +500,9 @@ func (r *AIGatewayAgentResourceModel) ToSharedUpdateAIGatewayAgentRequest(ctx co
 		} else {
 			stripPath = nil
 		}
-		var tags []string
-		if r.Config.Route.Tags != nil {
-			tags = make([]string, 0, len(r.Config.Route.Tags))
-			for tagsIndex := range r.Config.Route.Tags {
-				tags = append(tags, r.Config.Route.Tags[tagsIndex].ValueString())
-			}
+		tags := make([]string, 0, len(r.Config.Route.Tags))
+		for tagsIndex := range r.Config.Route.Tags {
+			tags = append(tags, r.Config.Route.Tags[tagsIndex].ValueString())
 		}
 		route = &shared.AIGatewayRouteConfig{
 			Headers:                 headers,

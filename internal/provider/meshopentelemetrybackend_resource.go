@@ -50,7 +50,7 @@ type MeshOpenTelemetryBackendResourceModel struct {
 	ModificationTime types.String                              `tfsdk:"modification_time"`
 	Name             types.String                              `tfsdk:"name"`
 	Spec             *tfTypes.MeshOpenTelemetryBackendItemSpec `tfsdk:"spec"`
-	Status           *tfTypes.Status                           `tfsdk:"status"`
+	Status           *tfTypes.MeshAccessLogItemStatus          `tfsdk:"status"`
 	Type             types.String                              `tfsdk:"type"`
 	Warnings         []types.String                            `tfsdk:"warnings"`
 }

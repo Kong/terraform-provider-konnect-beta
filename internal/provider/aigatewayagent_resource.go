@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -18,7 +17,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -27,7 +25,6 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect-beta/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk"
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
-	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/listvalidators"
 	"regexp"
 )
 
@@ -79,47 +76,17 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
-							"ai_gateway_allow_acl": schema.SingleNestedAttribute{
-								Optional: true,
-								Attributes: map[string]schema.Attribute{
-									"allow": schema.ListAttribute{
-										Computed:    true,
-										Optional:    true,
-										ElementType: types.StringType,
-										Description: `List of Consumer Groups Names, or Authenticated Groups Names that are permitted access. Not Null`,
-										Validators: []validator.List{
-											speakeasy_listvalidators.NotNull(),
-										},
-									},
-								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
-								Validators: []validator.Object{
-									objectvalidator.ConflictsWith(path.Expressions{
-										path.MatchRelative().AtParent().AtName("ai_gateway_deny_acl"),
-									}...),
-								},
+							"allow": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `List of Consumer Groups Names, or Authenticated Groups Names that are permitted access.`,
 							},
-							"ai_gateway_deny_acl": schema.SingleNestedAttribute{
-								Optional: true,
-								Attributes: map[string]schema.Attribute{
-									"deny": schema.ListAttribute{
-										Computed:    true,
-										Optional:    true,
-										ElementType: types.StringType,
-										Description: `List of Consumer Groups Names, or Authenticated Groups Names that are denied access. Not Null`,
-										Validators: []validator.List{
-											speakeasy_listvalidators.NotNull(),
-										},
-									},
-								},
-								MarkdownDescription: `**Pre-release Feature**` + "\n" +
-									`This feature is currently in beta and is subject to change.`,
-								Validators: []validator.Object{
-									objectvalidator.ConflictsWith(path.Expressions{
-										path.MatchRelative().AtParent().AtName("ai_gateway_allow_acl"),
-									}...),
-								},
+							"deny": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `List of Consumer Groups Names, or Authenticated Groups Names that are denied access.`,
 							},
 						},
 						MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -143,12 +110,7 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"logging": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"max_payload_size": types.Int64Type,
-							"payloads":         types.BoolType,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"max_payload_size": schema.Int64Attribute{
 								Computed:    true,
@@ -179,6 +141,7 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"headers": schema.MapAttribute{
+								Computed:    true,
 								Optional:    true,
 								ElementType: jsontypes.NormalizedType{},
 								Description: `One or more lists of values indexed by header name that will cause this route to match if present in the request. The ` + "`" + `Host` + "`" + ` header cannot be used with this attribute: hosts should be specified using the ` + "`" + `hosts` + "`" + ` attribute. When ` + "`" + `headers` + "`" + ` contains only one value and that value starts with the special prefix ` + "`" + `~*` + "`" + `, the value is interpreted as a regular expression.`,
@@ -198,11 +161,13 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 								Description: `The status code Kong responds with when all properties of a route match except the protocol i.e. if the protocol of the request is ` + "`" + `HTTP` + "`" + ` instead of ` + "`" + `HTTPS` + "`" + `. ` + "`" + `Location` + "`" + ` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the route is configured to only accept the ` + "`" + `https` + "`" + ` protocol. Default: 426`,
 							},
 							"methods": schema.ListAttribute{
+								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								Description: `A list of HTTP methods that match this route.`,
 							},
 							"paths": schema.ListAttribute{
+								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								Description: `A list of paths that match this route.`,
@@ -248,6 +213,7 @@ func (r *AIGatewayAgentResource) Schema(ctx context.Context, req resource.Schema
 								Description: `When matching a route via one of the ` + "`" + `paths` + "`" + `, strip the matching prefix from the upstream request URL. Default: true`,
 							},
 							"tags": schema.ListAttribute{
+								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								Description: `An optional set of strings associated with the route for grouping and filtering.`,

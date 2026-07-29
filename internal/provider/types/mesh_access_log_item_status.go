@@ -2,6 +2,6 @@
 
 package types
 
-type Status struct {
+type MeshAccessLogItemStatus struct {
 	Conditions []Conditions `tfsdk:"conditions"`
 }

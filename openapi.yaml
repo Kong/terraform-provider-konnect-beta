@@ -604,6 +604,196 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Snippets
+  '/v3/portals/{portalId}/applications':
+    post:
+      x-speakeasy-entity-operation: PortalApplication#create
+      operationId: create-application
+      summary: Create Application
+      description: 'Creates a new application for this portal. The application must be assigned to a developer or a team. An application can be registered for various APIs, issuing credentials for API access. If using DCR, an application will be linked to an Identity Provider''s application by its `client_id`.'
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateApplication'
+      responses:
+        '201':
+          $ref: '#/components/responses/GetApplication'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Applications
+      x-terraform-id-to-object:
+        auth_strategy_id: auth_strategy.id
+  '/v3/portals/{portalId}/applications/{applicationId}':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/ApplicationIdToMatchResourceID'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalApplication#read
+        terraform-datasource: null
+      operationId: get-application
+      summary: Get an Application by Portal
+      description: 'Returns the configuration of a single application in this portal. If an application is linked to a DCR Provider, the `dcr_provider.id` and `client_id` can be used to correlate it. An application manages a set of credentials and registrations for specific APIs.'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetApplication'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Applications
+    patch:
+      x-speakeasy-entity-operation: PortalApplication#update
+      operationId: update-application
+      summary: Update Application
+      description: Updates an application.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateApplication'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetApplication'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Applications
+    delete:
+      x-speakeasy-entity-operation: PortalApplication#delete
+      operationId: delete-application
+      summary: Delete Application by Portal
+      description: 'Delete a single application in this portal, along with its registrations and credentials.'
+      responses:
+        '204':
+          description: The application has been deleted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Applications
+  '/v3/portals/{portalId}/applications/{applicationId}/registrations':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/ApplicationId'
+    post:
+      x-speakeasy-entity-operation: PortalApplicationRegistration#create
+      operationId: create-application-registration
+      summary: Create Registration
+      description: Creates a new registration for this application to access a specific API. Registrations created through the portal management API will respect the auto-approve settings of the portal and/or API publication. API publications that do not use auto-approve must be manually approved by an administrator after creation.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateApplicationRegistration'
+      responses:
+        '201':
+          $ref: '#/components/responses/GetApplicationRegistration'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Conflict
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+      tags:
+        - Application Registrations
+      x-terraform-id-to-object:
+        api_id: api.id
+  '/v3/portals/{portalId}/applications/{applicationId}/registrations/{registrationId}':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/ApplicationId'
+      - $ref: '#/components/parameters/RegistrationIdToMatchResourceID'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalApplicationRegistration#read
+        terraform-datasource: null
+      operationId: get-application-registration
+      summary: Get a Registration
+      description: Returns information about an application's registration status for a particular API.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetApplicationRegistration'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Application Registrations
+    patch:
+      x-speakeasy-entity-operation: PortalApplicationRegistration#update
+      operationId: update-application-registration
+      summary: Update Registration
+      description: 'Updates the status of a particular application registration to an API. Approved application registrations will allow API traffic to the corresponding API. Revoked, rejected, or pending will not allow API traffic.'
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateApplicationRegistration'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateApplicationRegistration'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Application Registrations
+    delete:
+      x-speakeasy-entity-operation: PortalApplicationRegistration#delete
+      operationId: delete-application-registration
+      summary: Delete Registration
+      description: |-
+        Deletes an application registration, which if currently approved will immediately block API traffic to the API.
+        Note: Developers can request a new application registration for the given API as long as they have RBAC access to consume.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Application Registrations
   '/v3/portals/{portalId}/authentication-settings':
     parameters:
       - $ref: '#/components/parameters/PortalId'
@@ -807,6 +997,99 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Team Roles
+  '/v3/portals/{portalId}/developers':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+    post:
+      x-speakeasy-entity-operation: PortalDeveloper#create
+      operationId: create-developer
+      summary: Create Developer Account
+      description: Creates a new developer account in the specified portal. SAML login is currently not supported.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateDeveloper'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateDeveloperResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          description: Conflict
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+      tags:
+        - Portal Developers
+  '/v3/portals/{portalId}/developers/{developerId}':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+      - $ref: '#/components/parameters/DeveloperIdToMatchResourceID'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalDeveloper#read
+        terraform-datasource: null
+      operationId: get-developer
+      summary: Get a Developer
+      description: 'Returns information about a single developer in this portal. Each developer manages a set applications, providing them credentials to access registered APIs. Developer registration access can be limited to specific APIs using RBAC.'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetDeveloper'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Developers
+    patch:
+      x-speakeasy-entity-operation: PortalDeveloper#update
+      operationId: update-developer
+      summary: Update Developer
+      description: 'Updates the status of a particular developer. Approved developers have access to login to the portal. Revoked, rejected, or pending are not allowed to login. Even if a developer''s status is no longer approved, they will still be able to using any existing credentials generated while they were approved, until each application registration is revoked or deleted.'
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateDeveloper'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateDeveloper'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Developers
+    delete:
+      x-speakeasy-entity-operation: PortalDeveloper#delete
+      operationId: delete-developer
+      summary: Delete Developer
+      description: 'Deletes a developer, which will discontinue their ability to login, view any non-public resources, and delete all applications owned by them. All credentials issued to the developer will no longer provide access to any APIs. A deleted developer''s unique email must be re-registered and approved to gain access again.'
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Developers
   '/v3/portals/{portalId}/audit-log-webhook':
     parameters:
       - $ref: '#/components/parameters/PortalId'
@@ -13572,6 +13855,23 @@ components:
       in: path
       required: true
       description: The UUID API identifier
+    ApplicationId:
+      name: applicationId
+      in: path
+      required: true
+      description: ID of the application.
+      schema:
+        type: string
+        format: uuid
+    ApplicationIdToMatchResourceID:
+      name: applicationId
+      in: path
+      required: true
+      description: ID of the application.
+      schema:
+        type: string
+        format: uuid
+      x-speakeasy-match: id
     authServerId:
       schema:
         type: string
@@ -13620,6 +13920,16 @@ components:
       schema:
         type: string
         format: uuid
+    DeveloperIdToMatchResourceID:
+      name: developerId
+      in: path
+      required: true
+      description: ID of the developer.
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      x-speakeasy-match: id
     directoryId:
       name: directoryId
       in: path
@@ -13734,6 +14044,15 @@ components:
       in: path
       required: true
       description: The Portal identifier
+    RegistrationIdToMatchResourceID:
+      name: registrationId
+      in: path
+      required: true
+      description: ID of the application registration.
+      schema:
+        type: string
+        format: uuid
+      x-speakeasy-match: id
     scopeId:
       schema:
         type: string
@@ -13832,21 +14151,113 @@ components:
         - data
       title: ReplacePortalImageAsset
       x-speakeasy-param-computed: false
-    PortalDefaultApiVisibility:
-      description: The default visibility of APIs in the portal.
+    CreateDeveloperRequest:
+      description: Request body for creating a developer in a portal.
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 255
+        full_name:
+          type: string
+          maxLength: 255
+        status:
+          description: 'When omitted, the portal''s `auto_approve_developers` setting determines the initial status. Set this property to override the portal default with any valid developer status.'
+          type: string
+          example: approved
+          enum:
+            - approved
+            - pending
+            - revoked
+            - rejected
+          title: DeveloperStatus
+          x-speakeasy-unknown-values: allow
+        send_invitation_email:
+          description: 'When true, sends an invitation email to the developer. Default is false; no emails are sent unless explicitly requested.'
+          type: boolean
+          default: false
+        additional_data:
+          description: 'Optional developer-supplied answers to the portal''s `developer_registration` form, supplied as a flat map keyed by field `name` (the field''s non-built-in slug). Values match each field''s input type. Built-in fields (`full_name`, `email`) come in via the top-level body properties — not here. Silently ignored when no developer registration form is active on the portal.'
+          allOf:
+            - $ref: '#/components/schemas/FormResponseInput'
+      example:
+        email: developer@example.com
+        full_name: Developer Name
+      additionalProperties: false
+      required:
+        - email
+        - full_name
+      title: CreateDeveloperRequest
+      x-property-annotations:
+        additional_data:
+          - x-internal
+          - x-unstable
+    UpdateDeveloperRequest:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/DeveloperStatus'
+      example:
+        status: approved
+      additionalProperties: false
+      title: UpdateDeveloperRequest
+    PortalDeveloper:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        email:
+          type: string
+          format: email
+          maxLength: 255
+        full_name:
+          type: string
+          maxLength: 255
+        status:
+          $ref: '#/components/schemas/DeveloperStatus'
+        additional_data:
+          description: 'Developer-supplied responses to the portal''s `developer_registration` form, captured at registration time. `null` when no responses were recorded (form not configured at registration time, or developer created via admin endpoint without `additional_data`). Keyed by field `name` (lowercase slug; letters, digits, underscores, or hyphens).'
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/FormResponseData'
+          nullable: true
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+      example:
+        id: 7cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+        email: developer@example.com
+        full_name: Jane Dev
+        status: approved
+        created_at: '2022-11-15T20:37:41.457Z'
+        updated_at: '2022-11-15T20:37:47.456Z'
+      additionalProperties: false
+      required:
+        - id
+        - created_at
+        - updated_at
+        - email
+        - full_name
+        - status
+      title: PortalDeveloper
+      x-property-annotations:
+        additional_data:
+          - x-internal
+          - x-unstable
+    DeveloperStatus:
+      description: 'The status of a developer in a portal. Approved developers can log in, create applications, and view and register for products they have access to. Pending, revoked, and rejected developers cannot login or view any non-public portal information, or create or modify applications or registrations.'
       type: string
+      example: approved
       enum:
-        - public
-        - private
-      title: PortalDefaultApiVisibility
-      x-speakeasy-unknown-values: allow
-    PortalDefaultPageVisibility:
-      description: The default visibility of pages in the portal.
-      type: string
-      enum:
-        - public
-        - private
-      title: PortalDefaultPageVisibility
+        - approved
+        - pending
+        - revoked
+        - rejected
+      title: DeveloperStatus
       x-speakeasy-unknown-values: allow
     PageSlug:
       description: |
@@ -14088,6 +14499,400 @@ components:
         - name
         - content
       title: CreatePortalSnippetRequest
+    CreateApplicationRequest:
+      type: object
+      properties:
+        name:
+          description: The name of the application.
+          type: string
+          maxLength: 255
+        description:
+          description: A description of the application.
+          type: string
+          maxLength: 255
+          nullable: false
+        labels:
+          $ref: '#/components/schemas/LabelsUpdate'
+        dcr_client_id:
+          description: |
+            If using a DCR auth strategy, set this property to link the portal application to an existing
+            client from the DCR provider, instead of having Konnect create a new client.
+
+            This allows importing existing clients from an Identity Provider into Konnect, allowing
+            them to be controlled through DCR flows in the portal and use existing client secrets
+            for API access.
+
+            The value must be a valid client ID in the DCR provider associated with the auth strategy.
+            For some DCR providers, if the client ID is invalid, the application may still be created but will not function properly.
+
+            Note: For AzureAD auth strategies, the client ID must resolve to an accessible Microsoft Entra
+            application using the configured DCR provider credentials. Otherwise, application creation fails.
+          type: string
+          maxLength: 255
+          nullable: false
+        client_id:
+          $ref: '#/components/schemas/ApplicationClientId'
+        auth_strategy_id:
+          description: The ID of the authentication strategy the application will use when making requests to registered APIs.
+          type: string
+          format: uuid
+          nullable: false
+        owner:
+          $ref: '#/components/schemas/ApplicationOwner'
+      example:
+        name: Portal Application
+        description: A portal application provisioned for a developer by a Portal Admin.
+        labels:
+          env: production
+        auth_strategy_id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        owner:
+          id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          type: developer
+      additionalProperties: false
+      required:
+        - name
+        - owner
+      title: CreateApplicationRequest
+    UpdateApplicationRequest:
+      type: object
+      properties:
+        owner:
+          $ref: '#/components/schemas/ApplicationOwner'
+      additionalProperties: false
+      title: UpdateApplicationRequest
+    GetApplicationResponse:
+      $ref: '#/components/schemas/Application'
+    GetApplicationRegistrationResponse:
+      $ref: '#/components/schemas/ApplicationRegistration'
+    UpdateApplicationRegistrationResponse:
+      $ref: '#/components/schemas/ApplicationRegistration'
+    Application:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        name:
+          description: The name of the application.
+          type: string
+        description:
+          description: A description of the application.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        labels:
+          $ref: '#/components/schemas/LabelsUpdate'
+        client_id:
+          description: The ID used to linked the portal application to an Identity Provider application.
+          type: string
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        registration_count:
+          description: The number of API registrations that are associated with the application. Registrations of any status are included in the count.
+          type: number
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        dcr_provider:
+          description: 'Information about the DCR provider this application uses, if using DCR.'
+          type: object
+          additionalProperties: false
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+          readOnly: true
+          required:
+            - id
+          x-speakeasy-param-suppress-computed-diff: true
+        portal:
+          description: Information about the portal the application is in.
+          type: object
+          additionalProperties: false
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+          readOnly: true
+          required:
+            - id
+          x-speakeasy-param-suppress-computed-diff: true
+        auth_strategy:
+          type: object
+          additionalProperties: false
+          properties:
+            id:
+              description: The Application Auth Strategy ID.
+              type: string
+              format: uuid
+              example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+              readOnly: true
+              x-speakeasy-param-suppress-computed-diff: true
+            name:
+              type: string
+              example: name
+              default: name
+            credential_type:
+              type: string
+              enum:
+                - key_auth
+                - client_credentials
+                - self_managed_client_credentials
+              x-speakeasy-unknown-values: allow
+            key_names:
+              type: array
+              items:
+                type: string
+              readOnly: true
+              x-speakeasy-param-suppress-computed-diff: true
+            ttl:
+              description: Default maximum Time-To-Live for keys created under this strategy.
+              type: object
+              properties:
+                value:
+                  type: integer
+                  minimum: 1
+                unit:
+                  type: string
+                  enum:
+                    - days
+                    - weeks
+                    - years
+                  x-speakeasy-unknown-values: allow
+              readOnly: true
+              x-speakeasy-param-suppress-computed-diff: true
+            auth_methods:
+              type: array
+              items:
+                type: string
+                description: Auth Methods enabled for this strategy
+              example:
+                - bearer
+              readOnly: true
+              x-speakeasy-param-suppress-computed-diff: true
+            available_scopes:
+              description: Possible developer selectable scopes for an application. Only present when using DCR Provider that supports it.
+              type: array
+              items:
+                type: string
+              readOnly: true
+              x-speakeasy-param-suppress-computed-diff: true
+          readOnly: true
+          required:
+            - id
+            - name
+            - credential_type
+          x-speakeasy-param-suppress-computed-diff: true
+        granted_scopes:
+          description: List of granted scopes for the application. Null if application type does not support returning granted scopes.
+          type: array
+          items:
+            type: string
+          default: null
+          nullable: true
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
+        owner:
+          $ref: '#/components/schemas/ApplicationOwner'
+      example:
+        id: b15e2460-ba40-431d-9df0-4957fcffacda
+        labels:
+          env: test
+        name: App 1
+        description: An easy to manage app in a Konnect developer portal
+        registration_count: 4
+        portal:
+          id: 95606071-49c7-4c2e-ae49-8a86d72a8110
+        auth_strategy:
+          id: 45606071-49c7-4c2e-ae49-8a86d72a8110
+          name: API Key
+          credential_type: key_auth
+          key_names:
+            - apikey
+        created_at: '2022-12-22T19:09:30.712Z'
+        updated_at: '2022-12-22T19:09:30.712Z'
+        owner:
+          id: 8cd9feff-b4da-4a9f-ba49-cbe83c75ff22
+          type: developer
+      additionalProperties: false
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+        - description
+        - registration_count
+        - auth_strategy
+        - portal
+        - labels
+      title: Application
+    CreateApplicationRegistrationRequest:
+      type: object
+      properties:
+        api_id:
+          description: The ID of the API the application is registering for.
+          type: string
+          format: uuid
+        status:
+          description: The status of the application registration. It must be a valid status value for a registration creation.
+          type: string
+          example: approved
+          enum:
+            - approved
+            - pending
+          x-speakeasy-unknown-values: allow
+        additional_data:
+          description: 'Optional developer answers to the `api_registration` form linked to the API publication, captured at admin-side creation time. Supplied as a flat map keyed by field `name`; values match each field''s input type. Silently ignored when no form is linked to the publication.'
+          allOf:
+            - $ref: '#/components/schemas/FormResponseInput'
+      example:
+        api_id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      additionalProperties: false
+      required:
+        - api_id
+      title: CreateApplicationRegistrationRequest
+      x-property-annotations:
+        additional_data:
+          - x-internal
+          - x-unstable
+    ApplicationRegistration:
+      description: A application's registration for a specific version of an API.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        status:
+          $ref: '#/components/schemas/ApplicationRegistrationStatus'
+        additional_data:
+          description: 'Developer-supplied responses to the `api_registration` form linked to the API publication, captured at registration time. `null` when no responses were recorded. Keyed by field `name` (lowercase slug; letters, digits, underscores, or hyphens).'
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/FormResponseData'
+          nullable: true
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        api:
+          description: Details about the API the application is registered to.
+          type: object
+          additionalProperties: false
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+            name:
+              description: The name of the API the application is registered to.
+              type: string
+            version:
+              description: The version of the API the application is registered to.
+              type: string
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            entity_type:
+              $ref: '#/components/schemas/EntityType'
+          required:
+            - id
+            - name
+            - version
+            - entity_type
+        application:
+          description: Details about the application the registration is part of.
+          type: object
+          additionalProperties: false
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+            name:
+              description: The name of the application the registration is part of.
+              type: string
+          required:
+            - id
+            - name
+        consumer:
+          description: Details about the consumer associated with this application registration.
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              $ref: '#/components/schemas/UUID'
+            custom_id:
+              description: The custom ID of the associated consumer.
+              type: string
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            username:
+              description: The username of the associated consumer.
+              type: string
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            control_plane_id:
+              $ref: '#/components/schemas/UUID'
+          required:
+            - id
+            - control_plane_id
+          x-speakeasy-param-computed: false
+      example:
+        id: c300cc33-2d33-4754-b086-a98e0fcd36fb
+        status: approved
+        application:
+          id: c15e2460-ba40-431d-9df0-4957fcff7cda
+          name: App 1
+        api:
+          id: 86f637b7-cd95-478b-9b02-d770618f641c
+          name: Great Stuff
+          version: v1
+          entity_type: api
+        created_at: '2022-12-22T20:13:07.305Z'
+        updated_at: '2022-12-22T20:13:36.710Z'
+      additionalProperties: false
+      required:
+        - id
+        - created_at
+        - updated_at
+        - status
+        - api
+        - application
+      title: ApplicationRegistration
+      x-property-annotations:
+        additional_data:
+          - x-internal
+          - x-unstable
+      x-speakeasy-transform-from-api:
+        jq: |
+          . + {
+            application_id: .application.id
+          }
+    ApplicationRegistrationStatus:
+      description: |-
+        The status of an application registration request. Each registration is linked to a single API, and application credentials will not grant access to the API until the registration is approved.
+        Pending, revoked, and rejected registrations will not provide access to the API.
+      type: string
+      example: approved
+      enum:
+        - approved
+        - pending
+        - revoked
+        - rejected
+      title: ApplicationRegistrationStatus
+      x-speakeasy-unknown-values: allow
+    UpdateApplicationRegistrationRequest:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/ApplicationRegistrationStatus'
+      example:
+        status: rejected
+      additionalProperties: false
+      title: UpdateApplicationRegistrationRequest
     PortalFilterParameters:
       type: object
       properties:
@@ -14619,6 +15424,7 @@ components:
         name: IDM - Developers
         description: The Identity Management (IDM) API team.
         can_own_applications: false
+      additionalProperties: false
       title: PortalUpdateTeamRequest
     PortalCreateTeamRequest:
       x-speakeasy-entity: PortalTeam
@@ -14629,12 +15435,14 @@ components:
           type: string
           example: IDM - Developers
           pattern: '^[\w \W]+$'
+          writeOnly: true
         description:
           type: string
           example: The Identity Management (IDM) team.
           default: null
           maxLength: 250
           nullable: true
+          writeOnly: true
           x-speakeasy-param-computed: false
         can_own_applications:
           description: Whether the team is allowed to own applications
@@ -14645,6 +15453,7 @@ components:
         name: IDM - Developers
         description: The Identity Management (IDM) team.
         can_own_applications: false
+      additionalProperties: false
       required:
         - name
       title: PortalCreateTeamRequest
@@ -14661,18 +15470,12 @@ components:
         name:
           type: string
           example: IDM - Developers
-          default: null
           maxLength: 250
-          nullable: true
           pattern: '^[\w \W]+$'
-          x-speakeasy-param-computed: false
         description:
           type: string
           example: The developers for the IDM API.
-          default: null
           maxLength: 250
-          nullable: true
-          x-speakeasy-param-computed: false
         created_at:
           type: string
           format: date-time
@@ -14699,6 +15502,12 @@ components:
         created_at: '1992-02-07T17:46:57.52Z'
         updated_at: '2022-08-31T17:00:00.52Z'
         can_own_applications: false
+      required:
+        - id
+        - name
+        - description
+        - created_at
+        - updated_at
       title: PortalTeamResponse
     PortalAssignedRoleResponse:
       description: An assigned role associates a service and an action to a team.
@@ -15430,6 +16239,141 @@ components:
           - x-unstable
           - x-internal
       x-speakeasy-name-override: PortalCustomization
+    ApplicationOwnerType:
+      description: The type of the owner of the application. Can be `developer` (individual developer) or `team`.
+      type: string
+      enum:
+        - developer
+        - team
+      x-speakeasy-unknown-values: allow
+    ApplicationOwnerId:
+      description: 'The ID of the owner of the application. When type is `developer`, this is the developer ID. When type is `team`, this is the team ID.'
+      type: string
+      format: uuid
+    ApplicationOwner:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ApplicationOwnerType'
+        id:
+          $ref: '#/components/schemas/ApplicationOwnerId'
+      additionalProperties: false
+      required:
+        - type
+        - id
+    ApplicationClientId:
+      description: |
+        An identifier to correlate the application with an external system.
+        Cannot be set when using Dynamic Client Registration.
+      type: string
+      maxLength: 255
+      nullable: false
+    CustomFormFieldName:
+      description: |
+        Stable slug for the field (letters, digits, underscores, or hyphens). Immutable for the life of the field; renames are achieved by editing `label`. Acts as the join key for stored responses. Optional on create — server slugifies `label` when omitted.
+      type: string
+      example: full-name
+      maxLength: 128
+      pattern: '^[\w-]+$'
+    FormResponseEntry:
+      description: 'A single field''s submitted answer, snapshotted with the field metadata as it appeared at submission time.'
+      type: object
+      properties:
+        name:
+          description: 'Field slug, matches the parent object key.'
+          allOf:
+            - $ref: '#/components/schemas/CustomFormFieldName'
+        label:
+          description: Field label snapshotted at submission time.
+          type: string
+          example: Full Name
+        type:
+          description: Field input type at submission time.
+          type: string
+          example: text
+          enum:
+            - text
+            - email
+            - number
+            - textarea
+            - select
+            - checkbox
+          x-speakeasy-unknown-values: allow
+        value:
+          description: |
+            Submitted value. Type matches the field `type`: `text`/`email`/`textarea` return strings; `number` returns a number; `checkbox` returns a boolean; `select` returns a string for single-select or an array of strings for multi-select.
+          oneOf:
+            - type: string
+              example: Ada Lovelace
+            - type: number
+              example: 42
+            - type: boolean
+              example: true
+            - type: array
+              items:
+                type: string
+              example:
+                - api
+                - portal
+      additionalProperties: false
+      required:
+        - name
+        - label
+        - type
+        - value
+    FormResponseData:
+      description: |
+        A developer's submitted form responses as returned by the server. Keyed by field `name` (lowercase slug; letters, digits, underscores, or hyphens). Each value is a self-describing record `{name, label, type, value}` captured at submission time. Stored encrypted at rest; not queryable via SQL.
+      type: object
+      example:
+        full_name:
+          name: full_name
+          label: Full Name
+          type: text
+          value: Ada Lovelace
+        email:
+          name: email
+          label: Email Address
+          type: email
+          value: ada@example.com
+        topics:
+          name: topics
+          label: Topics of Interest
+          type: select
+          value:
+            - api
+            - portal
+      additionalProperties:
+        $ref: '#/components/schemas/FormResponseEntry'
+    EntityType:
+      description: The type of entity that is being published. Can be either an API or an API Package.
+      type: string
+      example: api
+      enum:
+        - api
+        - api_package
+      title: Entity Type
+      x-speakeasy-unknown-values: allow
+    FormResponseInput:
+      description: |
+        Developer-supplied answers to a custom form, keyed by field `name` (lowercase slug; letters, digits, underscores, or hyphens). Each value matches the field's input type: string for text/email/textarea, number for number, boolean for checkbox, and for select a string when `mode` is `single_select` or an array of strings when `mode` is `multi_select`. Built-in fields (`full_name`, `email` on `developer_registration`) are submitted via top-level body properties — not here.
+      type: object
+      example:
+        department: engineering
+        age: 35
+        accepted_terms: true
+        topics:
+          - api
+          - portal
+      additionalProperties:
+        oneOf:
+          - type: string
+          - type: number
+          - type: boolean
+          - type: array
+            items:
+              type: string
+      x-speakeasy-terraform-ignore: true
     PortalAllowedIPs:
       description: The list of allowed ips for the portal.
       type: array
@@ -15903,6 +16847,8 @@ components:
       description: An API publication in a portal
       type: object
       properties:
+        environment:
+          $ref: '#/components/schemas/ApiEnvironmentName'
         auto_approve_registrations:
           $ref: '#/components/schemas/AutoApproveRegistrations'
         auth_strategy_ids:
@@ -15930,6 +16876,9 @@ components:
       title: API Publication
       x-property-annotations:
         form_id:
+          - x-internal
+          - x-unstable
+        environment:
           - x-internal
           - x-unstable
     ApiImplementationService:
@@ -15973,6 +16922,33 @@ components:
       required:
         - control_plane_id
       title: API Implementation Control Plane
+    ApiEnvironmentName:
+      description: |
+        The name of the environment this record is scoped to. Present only for APIs
+        configured across multiple environments.
+      type: string
+      example: production
+      default: null
+      maxLength: 256
+      minLength: 1
+      nullable: true
+      readOnly: true
+      x-speakeasy-param-computed: false
+      x-speakeasy-param-suppress-computed-diff: true
+    ApiImplementationEnvironment:
+      description: |
+        The environment this implementation is scoped to, by name. On write, selects the
+        target environment: required when the API is configured across multiple
+        environments, and optional otherwise (accepted only if it matches the API's sole
+        environment). On read, the resolved environment name. Present only for APIs
+        configured across multiple environments.
+      type: string
+      example: production
+      default: null
+      maxLength: 256
+      minLength: 1
+      nullable: true
+      x-speakeasy-param-computed: false
     ApiImplementation:
       description: An entity that implements an API
       type: object
@@ -15990,10 +16966,16 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
+        environment:
+          $ref: '#/components/schemas/ApiImplementationEnvironment'
         service:
           $ref: '#/components/schemas/ApiImplementationService'
       additionalProperties: false
       title: ApiImplementationGatewayServiceEntity
+      x-property-annotations:
+        environment:
+          - x-internal
+          - x-unstable
       x-speakeasy-name-override: Service Reference
     ApiImplementationControlPlaneEntity:
       description: A control plane that implements an API
@@ -16005,10 +16987,16 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
+        environment:
+          $ref: '#/components/schemas/ApiImplementationEnvironment'
         control_plane:
           $ref: '#/components/schemas/ApiImplementationControlPlane'
       additionalProperties: false
       title: ApiImplementationControlPlaneEntity
+      x-property-annotations:
+        environment:
+          - x-internal
+          - x-unstable
       x-speakeasy-name-override: Control Plane Reference
     ApiAttributes:
       description: A set of attributes that describe the API
@@ -35154,9 +36142,26 @@ components:
                   was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
                   when returned by the registry), `format` ("avro"|"json"), and either
                   `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
-                  applicable; use `has()` to test presence.
+                  applicable; use `has()` to test presence. Registry `metadata` (tags and properties)
+                  is available from runtime 1.3 via `record.value.schema.metadata`.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.value.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Confluent schema-registry metadata for the record value. Present (as empty maps)
+                  whenever `record.value.schema` is present. Fields:
+                  * `properties` (`map` of `string` to `string`) - Confluent `metadata.properties`;
+                    empty map when the registry omits it.
+                  * `tags` (`map` of `string` to list of `string`) - keyed by tag, value is the list
+                    of Confluent schema paths (e.g. `io.confluent.field.<name>`) carrying that tag;
+                    empty map when the registry omits it.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -35166,6 +36171,17 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Same shape as `record.value.schema.metadata`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
       required:
         - type
@@ -35265,9 +36281,26 @@ components:
                   was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
                   when returned by the registry), `format` ("avro"|"json"), and either
                   `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
-                  applicable; use `has()` to test presence.
+                  applicable; use `has()` to test presence. Registry `metadata` (tags and properties)
+                  is available from runtime 1.3 via `record.value.schema.metadata`.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.value.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Confluent schema-registry metadata for the record value. Present (as empty maps)
+                  whenever `record.value.schema` is present. Fields:
+                  * `properties` (`map` of `string` to `string`) - Confluent `metadata.properties`;
+                    empty map when the registry omits it.
+                  * `tags` (`map` of `string` to list of `string`) - keyed by tag, value is the list
+                    of Confluent schema paths (e.g. `io.confluent.field.<name>`) carrying that tag;
+                    empty map when the registry omits it.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -35277,6 +36310,17 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Same shape as `record.value.schema.metadata`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
         parent_policy_id:
           description: The unique identifier of the parent schema validation policy.
@@ -35331,6 +36375,7 @@ components:
             type: string
             example: 'someObject.someArray[1].fieldName'
       maxItems: 50
+      minItems: 1
     EventGatewayDecryptPolicy:
       description: Decrypts Kafka records or keys using AES_256_GCM. Keys are therefore 256 bits long.
       type: object
@@ -35518,9 +36563,26 @@ components:
                   was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
                   when returned by the registry), `format` ("avro"|"json"), and either
                   `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
-                  applicable; use `has()` to test presence.
+                  applicable; use `has()` to test presence. Registry `metadata` (tags and properties)
+                  is available from runtime 1.3 via `record.value.schema.metadata`.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.value.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Confluent schema-registry metadata for the record value. Present (as empty maps)
+                  whenever `record.value.schema` is present. Fields:
+                  * `properties` (`map` of `string` to `string`) - Confluent `metadata.properties`;
+                    empty map when the registry omits it.
+                  * `tags` (`map` of `string` to list of `string`) - keyed by tag, value is the list
+                    of Confluent schema paths (e.g. `io.confluent.field.<name>`) carrying that tag;
+                    empty map when the registry omits it.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -35530,6 +36592,17 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Same shape as `record.value.schema.metadata`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
       required:
         - type
@@ -35629,9 +36702,26 @@ components:
                   was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
                   when returned by the registry), `format` ("avro"|"json"), and either
                   `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
-                  applicable; use `has()` to test presence.
+                  applicable; use `has()` to test presence. Registry `metadata` (tags and properties)
+                  is available from runtime 1.3 via `record.value.schema.metadata`.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.value.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Confluent schema-registry metadata for the record value. Present (as empty maps)
+                  whenever `record.value.schema` is present. Fields:
+                  * `properties` (`map` of `string` to `string`) - Confluent `metadata.properties`;
+                    empty map when the registry omits it.
+                  * `tags` (`map` of `string` to list of `string`) - keyed by tag, value is the list
+                    of Confluent schema paths (e.g. `io.confluent.field.<name>`) carrying that tag;
+                    empty map when the registry omits it.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -35641,6 +36731,17 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Same shape as `record.value.schema.metadata`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
         parent_policy_id:
           description: The unique identifier of the parent schema validation policy.
@@ -35775,9 +36876,26 @@ components:
                   was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
                   when returned by the registry), `format` ("avro"|"json"), and either
                   `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
-                  applicable; use `has()` to test presence.
+                  applicable; use `has()` to test presence. Registry `metadata` (tags and properties)
+                  is available from runtime 1.3 via `record.value.schema.metadata`.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.value.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Confluent schema-registry metadata for the record value. Present (as empty maps)
+                  whenever `record.value.schema` is present. Fields:
+                  * `properties` (`map` of `string` to `string`) - Confluent `metadata.properties`;
+                    empty map when the registry omits it.
+                  * `tags` (`map` of `string` to list of `string`) - keyed by tag, value is the list
+                    of Confluent schema paths (e.g. `io.confluent.field.<name>`) carrying that tag;
+                    empty map when the registry omits it.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -35787,6 +36905,17 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Same shape as `record.value.schema.metadata`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
       required:
         - type
@@ -35888,9 +37017,26 @@ components:
                   was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
                   when returned by the registry), `format` ("avro"|"json"), and either
                   `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
-                  applicable; use `has()` to test presence.
+                  applicable; use `has()` to test presence. Registry `metadata` (tags and properties)
+                  is available from runtime 1.3 via `record.value.schema.metadata`.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.value.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Confluent schema-registry metadata for the record value. Present (as empty maps)
+                  whenever `record.value.schema` is present. Fields:
+                  * `properties` (`map` of `string` to `string`) - Confluent `metadata.properties`;
+                    empty map when the registry omits it.
+                  * `tags` (`map` of `string` to list of `string`) - keyed by tag, value is the list
+                    of Confluent schema paths (e.g. `io.confluent.field.<name>`) carrying that tag;
+                    empty map when the registry omits it.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -35900,6 +37046,17 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Same shape as `record.value.schema.metadata`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
         parent_policy_id:
           description: 'The unique identifier of the parent schema validation policy, if any.'
@@ -35993,9 +37150,26 @@ components:
                   was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
                   when returned by the registry), `format` ("avro"|"json"), and either
                   `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
-                  applicable; use `has()` to test presence.
+                  applicable; use `has()` to test presence. Registry `metadata` (tags and properties)
+                  is available from runtime 1.3 via `record.value.schema.metadata`.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.value.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Confluent schema-registry metadata for the record value. Present (as empty maps)
+                  whenever `record.value.schema` is present. Fields:
+                  * `properties` (`map` of `string` to `string`) - Confluent `metadata.properties`;
+                    empty map when the registry omits it.
+                  * `tags` (`map` of `string` to list of `string`) - keyed by tag, value is the list
+                    of Confluent schema paths (e.g. `io.confluent.field.<name>`) carrying that tag;
+                    empty map when the registry omits it.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -36005,6 +37179,17 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Same shape as `record.value.schema.metadata`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
       required:
         - type
@@ -36091,9 +37276,26 @@ components:
                   was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
                   when returned by the registry), `format` ("avro"|"json"), and either
                   `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
-                  applicable; use `has()` to test presence.
+                  applicable; use `has()` to test presence. Registry `metadata` (tags and properties)
+                  is available from runtime 1.3 via `record.value.schema.metadata`.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.value.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Confluent schema-registry metadata for the record value. Present (as empty maps)
+                  whenever `record.value.schema` is present. Fields:
+                  * `properties` (`map` of `string` to `string`) - Confluent `metadata.properties`;
+                    empty map when the registry omits it.
+                  * `tags` (`map` of `string` to list of `string`) - keyed by tag, value is the list
+                    of Confluent schema paths (e.g. `io.confluent.field.<name>`) carrying that tag;
+                    empty map when the registry omits it.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
               - name: record.key.schema
                 type: object
@@ -36103,6 +37305,17 @@ components:
                   schema_validation configured.
 
                   **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-param-computed: false
+              - name: record.key.schema.metadata
+                type: object
+                x-min-runtime-version: '1.3'
+                description: |-
+                  Same shape as `record.value.schema.metadata`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.3`**.
+                x-unstable: true
+                x-internal: true
                 x-speakeasy-param-computed: false
         parent_policy_id:
           description: 'The unique identifier of the parent schema validation policy, if any.'
@@ -38478,10 +39691,8 @@ components:
             version:
               - v1
               - v2
-          default: null
           additionalProperties: true
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         hosts:
           description: A list of domain names that match this route. Note that the hosts value is case sensitive.
           type: array
@@ -38500,17 +39711,13 @@ components:
           type: array
           items:
             type: string
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         paths:
           description: A list of paths that match this route.
           type: array
           items:
             type: string
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         preserve_host:
           description: 'When matching a route via one of the `hosts` domain names, use the request `Host` header in the upstream request headers. If set to `false`, the upstream `Host` header will be that of the service''s `host`.'
           type: boolean
@@ -38544,9 +39751,7 @@ components:
           type: array
           items:
             type: string
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         model:
           $ref: '#/components/schemas/AIGatewayModelAliasConfig'
       additionalProperties: false
@@ -38554,46 +39759,8 @@ components:
     AIGatewayModelAliasConfig:
       description: Configuration for routing to this model using an alias.
       oneOf:
-        - $ref: '#/components/schemas/AIGatewayModelAliasConfigBody'
-        - $ref: '#/components/schemas/AIGatewayModelAliasConfigHeaders'
         - $ref: '#/components/schemas/AIGatewayModelAliasConfigPath'
       title: AIGatewayModelAliasConfig
-    AIGatewayModelAliasConfigBody:
-      description: |
-        Configuration for routing requests to a specific model using a request body property.
-      type: object
-      properties:
-        body:
-          description: |
-            Value indexed by property name that will cause this route to match if present in the request body.
-          type: object
-          example:
-            model:
-              - '@azure/claude-sonnet-5'
-          additionalProperties: true
-          maxProperties: 1
-      additionalProperties: false
-      required:
-        - body
-      title: AIGatewayModelAliasConfigBody
-    AIGatewayModelAliasConfigHeaders:
-      description: |
-        Configuration for routing requests to a specific model using a header.
-      type: object
-      properties:
-        headers:
-          description: |
-            Value indexed by property name that will cause this route to match if present in the request headers.
-          type: object
-          example:
-            model:
-              - '@azure/claude-sonnet-5'
-          additionalProperties: true
-          maxProperties: 1
-      additionalProperties: false
-      required:
-        - headers
-      title: AIGatewayModelAliasConfigHeaders
     AIGatewayModelAliasConfigPath:
       description: |
         Configuration for routing requests to a specific model using a path alias.
@@ -41299,49 +42466,25 @@ components:
         - location_id
         - project_id
       x-unstable: true
-    AIGatewayAllowACL:
-      description: |-
-        **Pre-release Feature**
-        This feature is currently in beta and is subject to change.
-      type: object
-      properties:
-        allow:
-          description: 'List of Consumer Groups Names, or Authenticated Groups Names that are permitted access.'
-          type: array
-          items:
-            type: string
-      example:
-        allow:
-          - consumer-group-1
-      required:
-        - allow
-      x-unstable: true
-    AIGatewayDenyACL:
-      description: |-
-        **Pre-release Feature**
-        This feature is currently in beta and is subject to change.
-      type: object
-      properties:
-        deny:
-          description: 'List of Consumer Groups Names, or Authenticated Groups Names that are denied access.'
-          type: array
-          items:
-            type: string
-      example:
-        deny:
-          - consumer-group-1
-      required:
-        - deny
-      x-unstable: true
     AIGatewayACLS:
       description: |-
         **Pre-release Feature**
         This feature is currently in beta and is subject to change.
 
         Access control rules. Configure exactly one of `allow` or `deny`.
-      oneOf:
-        - $ref: '#/components/schemas/AIGatewayAllowACL'
-        - $ref: '#/components/schemas/AIGatewayDenyACL'
+      properties:
+        allow:
+          description: 'List of Consumer Groups Names, or Authenticated Groups Names that are permitted access.'
+          type: array
+          items:
+            type: string
+          x-speakeasy-param-computed: true
+        deny:
+          description: 'List of Consumer Groups Names, or Authenticated Groups Names that are denied access.'
+          type: array
+          items:
+            type: string
+          x-speakeasy-param-computed: true
       x-unstable: true
     AIGatewayAgentAccess:
       description: |-
@@ -43354,9 +44497,7 @@ components:
 
                 Configuration for AI Gateway logging.
               type: object
-              default: null
               additionalProperties: false
-              nullable: true
               properties:
                 payloads:
                   type: boolean
@@ -43445,9 +44586,7 @@ components:
 
                 Configuration for AI Gateway logging.
               type: object
-              default: null
               additionalProperties: false
-              nullable: true
               properties:
                 payloads:
                   type: boolean
@@ -43536,9 +44675,7 @@ components:
 
                 Configuration for AI Gateway logging.
               type: object
-              default: null
               additionalProperties: false
-              nullable: true
               properties:
                 payloads:
                   type: boolean
@@ -44896,10 +46033,8 @@ components:
             version:
               - v1
               - v2
-          default: null
           additionalProperties: true
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         hosts:
           description: A list of domain names that match this route. Note that the hosts value is case sensitive.
           type: array
@@ -44918,17 +46053,13 @@ components:
           type: array
           items:
             type: string
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         paths:
           description: A list of paths that match this route.
           type: array
           items:
             type: string
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         preserve_host:
           description: 'When matching a route via one of the `hosts` domain names, use the request `Host` header in the upstream request headers. If set to `false`, the upstream `Host` header will be that of the service''s `host`.'
           type: boolean
@@ -44962,9 +46093,7 @@ components:
           type: array
           items:
             type: string
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
       additionalProperties: false
       x-unstable: true
     AIGatewayLoggingConfig:
@@ -45875,8 +47004,7 @@ components:
           $ref: '#/components/schemas/ManagedBy'
         type:
           type: string
-          enum:
-            - key-auth
+          const: key-auth
         config:
           description: |
             Configuration for the Kong Key auth identity provider.
@@ -45954,8 +47082,7 @@ components:
           $ref: '#/components/schemas/ManagedBy'
         type:
           type: string
-          enum:
-            - openid-connect
+          const: openid-connect
         config:
           description: |
             Configuration for the OpenID Connect identity provider.
@@ -45992,9 +47119,7 @@ components:
               type: array
               items:
                 type: string
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             client_secret:
               description: |
                 An array of strings representing the client secret for the OpenID Connect provider.
@@ -46002,8 +47127,6 @@ components:
               type: array
               items:
                 type: string
-              default: null
-              nullable: true
               writeOnly: true
               x-speakeasy-param-computed: false
             consumer_claims:
@@ -46015,8 +47138,6 @@ components:
                 type: array
                 items:
                   type: string
-              default: null
-              nullable: true
               x-speakeasy-param-computed: false
             consumer_groups_claim:
               description: |
@@ -46025,8 +47146,6 @@ components:
               type: array
               items:
                 type: string
-              default: null
-              nullable: true
               x-speakeasy-param-computed: false
             consumer_groups_optional:
               description: |
@@ -47575,12 +48694,76 @@ components:
         - $ref: '#/components/schemas/AIGatewayIdentityProviderKeyAuthResponse'
         - $ref: '#/components/schemas/AIGatewayIdentityProviderOpenIDConnectResponse'
       x-unstable: true
-    AIGatewayIdentityProviderResponseProperties:
+    AIGatewayIdentityProviderKeyAuthResponse:
       description: |-
         **Pre-release Feature**
         This feature is currently in beta and is subject to change.
       type: object
       properties:
+        display_name:
+          description: The display name for this identity provider instance.
+          type: string
+          example: Okta AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this identity provider instance, used as a stable human-readable reference. This value is immutable after creation.
+          example: okta-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        type:
+          type: string
+          const: key-auth
+        config:
+          description: |
+            Configuration for the Kong Key auth identity provider.
+            For advanced use cases, additional config properties can be sent in the request body.
+            See: https://developer.konghq.com/plugins/key-auth/reference/ for the list of properties
+          type: object
+          default: null
+          additionalProperties: true
+          nullable: true
+          properties:
+            hide_credentials:
+              description: |
+                An optional boolean value telling the plugin to show or hide the credential from the upstream service.
+                If true, the plugin strips the credential from the request.
+              type: boolean
+              default: true
+            key_in_body:
+              description: |
+                If enabled, reads the request body.
+                Supported MIME types: application/www-form-urlencoded, application/json, and multipart/form-data.
+              type: boolean
+              default: false
+            key_in_header:
+              description: |
+                If enabled (default), the plugin reads the request header and tries to find the key in it.
+              type: boolean
+              default: true
+            key_in_query:
+              description: |
+                If enabled (default), the plugin reads the query parameter in the request and tries to find the key in it.
+              type: boolean
+              default: true
+            key_names:
+              description: |
+                An array of strings containing the names of the keys to look for in the request.
+              type: array
+              items:
+                type: string
+              default:
+                - apikey
+          x-speakeasy-param-computed: false
         id:
           $ref: '#/components/schemas/UUID'
         created_at:
@@ -47588,27 +48771,156 @@ components:
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
       required:
+        - display_name
+        - name
+        - type
         - id
         - created_at
         - updated_at
-      x-unstable: true
-    AIGatewayIdentityProviderKeyAuthResponse:
-      description: |-
-        **Pre-release Feature**
-        This feature is currently in beta and is subject to change.
-      allOf:
-        - $ref: '#/components/schemas/AIGatewayIdentityProviderKeyAuth'
-        - $ref: '#/components/schemas/AIGatewayIdentityProviderResponseProperties'
-      title: AIGatewayIdentityProviderKeyAuthResponse
+      title: AIGatewayIdentityProviderKeyAuthConfig
       x-unstable: true
     AIGatewayIdentityProviderOpenIDConnectResponse:
       description: |-
         **Pre-release Feature**
         This feature is currently in beta and is subject to change.
-      allOf:
-        - $ref: '#/components/schemas/AIGatewayIdentityProviderOpenIDConnect'
-        - $ref: '#/components/schemas/AIGatewayIdentityProviderResponseProperties'
-      title: AIGatewayIdentityProviderOpenIDConnectResponse
+      type: object
+      properties:
+        display_name:
+          description: The display name for this identity provider instance.
+          type: string
+          example: Okta AI SE
+          maxLength: 256
+          minLength: 1
+        name:
+          description: |-
+            **Pre-release Feature**
+            This feature is currently in beta and is subject to change.
+
+            A user-defined unique identifier for this identity provider instance, used as a stable human-readable reference. This value is immutable after creation.
+          example: okta-ai-se
+          allOf:
+            - $ref: '#/components/schemas/AIGatewayEntityIdentifier'
+          x-unstable: true
+        labels:
+          $ref: '#/components/schemas/PublicLabels'
+        managed_by:
+          $ref: '#/components/schemas/ManagedBy'
+        type:
+          type: string
+          const: openid-connect
+        config:
+          description: |
+            Configuration for the OpenID Connect identity provider.
+            For advanced use cases, additional config properties can be sent in the request body.
+            See: https://developer.konghq.com/plugins/openid-connect/reference/ for the list of properties
+          type: object
+          default: null
+          additionalProperties: true
+          nullable: true
+          properties:
+            auth_methods:
+              description: Types of credentials/grants to enable.
+              type: array
+              items:
+                type: string
+                enum:
+                  - authorization_code
+                  - bearer
+                  - client_credentials
+                  - introspection
+                  - kong_oauth2
+                  - password
+                  - refresh_token
+                  - session
+                  - userinfo
+                x-speakeasy-unknown-values: allow
+              default:
+                - bearer
+                - client_credentials
+            client_id:
+              description: |
+                An array of strings representing the client id for the OpenID Connect provider.
+                When multiple values are provided, the client ID and secrets pairs correspond based on their locations in the array.
+              type: array
+              items:
+                type: string
+              x-speakeasy-param-computed: true
+            client_secret:
+              description: |
+                An array of strings representing the client secret for the OpenID Connect provider.
+                When multiple values are provided, the client ID and secrets pairs correspond based on their locations in the array.
+              type: array
+              items:
+                type: string
+              writeOnly: true
+              x-speakeasy-param-computed: false
+            consumer_claims:
+              description: |
+                An array containing an array of string paths representing the location of the claim in a nested object.
+                For example, to map to user.info.id, set [ "user", "info", "id" ].
+              type: array
+              items:
+                type: array
+                items:
+                  type: string
+              x-speakeasy-param-computed: false
+            consumer_groups_claim:
+              description: |
+                The claim used for consumer groups mapping. 
+                If multiple values are set, it means the claim is inside a nested object of the token payload.
+              type: array
+              items:
+                type: string
+              x-speakeasy-param-computed: false
+            consumer_groups_optional:
+              description: |
+                Do not terminate the request if consumer groups mapping fails.
+              type: boolean
+              default: false
+            consumer_optional:
+              description: |
+                Do not terminate the request if consumer mapping fails.
+              type: boolean
+              default: false
+            issuer:
+              description: URL that identifies the OpenID Provider
+              type: string
+              example: 'https://dev-123456.okta.com'
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            scopes:
+              description: |
+                This field is referenceable.
+              type: array
+              items:
+                type: string
+              default:
+                - openid
+            ssl_verify:
+              type: boolean
+              default: true
+            cache_tokens_salt:
+              description: |
+                Salt used for generating the cache key that is used for caching the token endpoint requests.
+              type: string
+          required:
+            - cache_tokens_salt
+          x-speakeasy-param-computed: false
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - display_name
+        - name
+        - type
+        - id
+        - created_at
+        - updated_at
+      title: AIGatewayIdentityProviderOpenIDConnectConfig
       x-unstable: true
     PublicLabels:
       description: |
@@ -47847,9 +49159,19 @@ components:
                 example: true
                 default: false
               default_api_visibility:
-                $ref: '#/components/schemas/PortalDefaultApiVisibility'
+                description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
+                type: string
+                enum:
+                  - public
+                  - private
+                x-speakeasy-unknown-values: allow
               default_page_visibility:
-                $ref: '#/components/schemas/PortalDefaultPageVisibility'
+                description: 'The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.'
+                type: string
+                enum:
+                  - public
+                  - private
+                x-speakeasy-unknown-values: allow
               default_application_auth_strategy_id:
                 description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
                 type: string
@@ -47953,9 +49275,19 @@ components:
                 example: true
                 default: false
               default_api_visibility:
-                $ref: '#/components/schemas/PortalDefaultApiVisibility'
+                description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
+                type: string
+                enum:
+                  - public
+                  - private
+                x-speakeasy-unknown-values: allow
               default_page_visibility:
-                $ref: '#/components/schemas/PortalDefaultPageVisibility'
+                description: 'The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.'
+                type: string
+                enum:
+                  - public
+                  - private
+                x-speakeasy-unknown-values: allow
               default_application_auth_strategy_id:
                 description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
                 type: string
@@ -47996,8 +49328,14 @@ components:
               mcp_server_enabled:
                 - x-unstable
                 - x-internal
+    UpdateDeveloper:
+      description: Update a developer.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateDeveloperRequest'
     ReplacePortalImageAsset:
-      x-go-name: ReplacePortalImageAssetRequestBody
       description: Update an image asset for the portal.
       required: true
       content:
@@ -48037,6 +49375,41 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UpdatePortalSnippetRequest'
+    CreateDeveloper:
+      description: Create a developer for a portal.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateDeveloperRequest'
+    CreateApplication:
+      description: Create an application for a portal.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateApplicationRequest'
+    CreateApplicationRegistration:
+      description: Create an application registration for a portal application.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateApplicationRegistrationRequest'
+    UpdateApplicationRegistration:
+      description: Update an application registration.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateApplicationRegistrationRequest'
+    UpdateApplication:
+      description: Update an application.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateApplicationRequest'
     UpdatePortalAuditLogWebhook:
       description: The request schema to modify an portal audit log webhook.
       content:
@@ -49090,13 +50463,30 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalTeamResponse'
+    CreateDeveloperResponse:
+      description: Details about the created developer in a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalDeveloper'
+    GetDeveloper:
+      description: Details about a developer in a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalDeveloper'
+    UpdateDeveloper:
+      description: Details about the developer being updated.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalDeveloper'
     PortalCustomDomain:
       description: Portal custom domain
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalCustomDomain'
-      x-go-name: PortalCustomDomainResponse
     ListPortalsResponse:
       description: A paginated list of portals in the current region of an organization.
       content:
@@ -49158,9 +50548,19 @@ components:
                       example: true
                       default: false
                     default_api_visibility:
-                      $ref: '#/components/schemas/PortalDefaultApiVisibility'
+                      description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
+                      type: string
+                      enum:
+                        - public
+                        - private
+                      x-speakeasy-unknown-values: allow
                     default_page_visibility:
-                      $ref: '#/components/schemas/PortalDefaultPageVisibility'
+                      description: 'The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.'
+                      type: string
+                      enum:
+                        - public
+                        - private
+                      x-speakeasy-unknown-values: allow
                     default_application_auth_strategy_id:
                       description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
                       type: string
@@ -49268,9 +50668,19 @@ components:
                 example: true
                 default: false
               default_api_visibility:
-                $ref: '#/components/schemas/PortalDefaultApiVisibility'
+                description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
+                type: string
+                enum:
+                  - public
+                  - private
+                x-speakeasy-unknown-values: allow
               default_page_visibility:
-                $ref: '#/components/schemas/PortalDefaultPageVisibility'
+                description: 'The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.'
+                type: string
+                enum:
+                  - public
+                  - private
+                x-speakeasy-unknown-values: allow
               default_application_auth_strategy_id:
                 description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
                 type: string
@@ -49358,6 +50768,24 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalSnippetResponse'
+    GetApplication:
+      description: Details about an application in a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetApplicationResponse'
+    GetApplicationRegistration:
+      description: Details about an application registration.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetApplicationRegistrationResponse'
+    UpdateApplicationRegistration:
+      description: Details about the application registration being updated.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateApplicationRegistrationResponse'
     PortalAuditLogWebhook:
       description: Portal audit log webhook response
       content:
@@ -49693,6 +51121,8 @@ components:
             description: An API publication in a portal
             type: object
             properties:
+              environment:
+                $ref: '#/components/schemas/ApiEnvironmentName'
               auto_approve_registrations:
                 $ref: '#/components/schemas/AutoApproveRegistrations'
               auth_strategy_ids:
@@ -49725,6 +51155,9 @@ components:
             title: API Publication
             x-property-annotations:
               form_id:
+                - x-internal
+                - x-unstable
+              environment:
                 - x-internal
                 - x-unstable
     ApiImplementationResponse:
@@ -51855,6 +53288,8 @@ tags:
     description: APIs related to customization of Konnect Developer Portals.
   - name: Portal Auth Settings
     description: APIs related to configuration of Konnect Developer Portal auth settings.
+  - name: Portal Developers
+    description: APIs related to Konnect Developer Portal developers.
   - name: Portal Teams
     description: APIs related to configuration of Konnect Developer Portal developer teams.
   - name: Portal Team Roles
@@ -51865,6 +53300,10 @@ tags:
     description: APIs related to Konnect Developer Portal Custom Pages.
   - name: Snippets
     description: APIs related to Konnect Developer Portal Custom Snippets.
+  - name: Applications
+    description: APIs related to Konnect Developer Portal Applications.
+  - name: Application Registrations
+    description: APIs related to Konnect Developer Portal Application Registrations.
   - name: Portals IP Allow List
     description: APIs related to Konnect Portal IP Allow List.
   - name: API

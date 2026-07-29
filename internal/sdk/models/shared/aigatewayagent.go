@@ -82,7 +82,7 @@ type AIGatewayAgentConfig struct {
 	// This feature is currently in beta and is subject to change.
 	//
 	// Configuration for AI Gateway logging.
-	Logging *AIGatewayAgentLogging `json:"logging"`
+	Logging *AIGatewayAgentLogging `json:"logging,omitempty"`
 }
 
 func (a AIGatewayAgentConfig) MarshalJSON() ([]byte, error) {

@@ -52,7 +52,6 @@ type AIGatewayIdentityProviderResourceModel struct {
 	KeyAuth       *tfTypes.AIGatewayIdentityProviderKeyAuth       `queryParam:"inline" tfsdk:"key_auth"`
 	Name          types.String                                    `tfsdk:"name"`
 	OpenidConnect *tfTypes.AIGatewayIdentityProviderOpenIDConnect `queryParam:"inline" tfsdk:"openid_connect"`
-	Type          types.String                                    `tfsdk:"type"`
 	UpdatedAt     types.String                                    `tfsdk:"updated_at"`
 }
 
@@ -206,15 +205,6 @@ func (r *AIGatewayIdentityProviderResource) Schema(ctx context.Context, req reso
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
 						},
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "key-auth"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf("key-auth"),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -302,6 +292,7 @@ func (r *AIGatewayIdentityProviderResource) Schema(ctx context.Context, req reso
 								},
 							},
 							"client_id": schema.ListAttribute{
+								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `An array of strings representing the client id for the OpenID Connect provider.` + "\n" +
@@ -416,17 +407,6 @@ func (r *AIGatewayIdentityProviderResource) Schema(ctx context.Context, req reso
 							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z0-9._-]{1,256}$`).String()),
 						},
 					},
-					"type": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Not Null; must be "openid-connect"`,
-						Validators: []validator.String{
-							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf(
-								"openid-connect",
-							),
-						},
-					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -443,12 +423,6 @@ func (r *AIGatewayIdentityProviderResource) Schema(ctx context.Context, req reso
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("key_auth"),
 					}...),
-				},
-			},
-			"type": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("key_auth"), FieldPath: path.Root("key_auth").AtName("type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openid_connect"), FieldPath: path.Root("openid_connect").AtName("type")}}),
 				},
 			},
 			"updated_at": schema.StringAttribute{

@@ -81,7 +81,7 @@ type CreateAIGatewayAgentRequestConfig struct {
 	// This feature is currently in beta and is subject to change.
 	//
 	// Configuration for AI Gateway logging.
-	Logging *CreateAIGatewayAgentRequestLogging `json:"logging"`
+	Logging *CreateAIGatewayAgentRequestLogging `json:"logging,omitempty"`
 }
 
 func (c CreateAIGatewayAgentRequestConfig) MarshalJSON() ([]byte, error) {

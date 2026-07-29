@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -44,6 +45,7 @@ type APIImplementationResourceModel struct {
 	APIID                 types.String                   `tfsdk:"api_id"`
 	ControlPlaneReference *tfTypes.ControlPlaneReference `queryParam:"inline" tfsdk:"control_plane_reference"`
 	CreatedAt             types.String                   `tfsdk:"created_at"`
+	Environment           types.String                   `tfsdk:"environment"`
 	ID                    types.String                   `tfsdk:"id"`
 	ServiceReference      *tfTypes.ServiceReference      `queryParam:"inline" tfsdk:"service_reference"`
 	UpdatedAt             types.String                   `tfsdk:"updated_at"`
@@ -105,6 +107,21 @@ func (r *APIImplementationResource) Schema(ctx context.Context, req resource.Sch
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
+					"environment": schema.StringAttribute{
+						Optional: true,
+						PlanModifiers: []planmodifier.String{
+							stringplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						MarkdownDescription: `The environment this implementation is scoped to, by name. On write, selects the` + "\n" +
+							`target environment: required when the API is configured across multiple` + "\n" +
+							`environments, and optional otherwise (accepted only if it matches the API's sole` + "\n" +
+							`environment). On read, the resolved environment name. Present only for APIs` + "\n" +
+							`configured across multiple environments.` + "\n" +
+							`Requires replacement if changed.`,
+						Validators: []validator.String{
+							stringvalidator.UTF8LengthBetween(1, 256),
+						},
+					},
 					"id": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -134,6 +151,17 @@ func (r *APIImplementationResource) Schema(ctx context.Context, req resource.Sch
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
+			"environment": schema.StringAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("service_reference"), FieldPath: path.Root("service_reference").AtName("environment")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("control_plane_reference"), FieldPath: path.Root("control_plane_reference").AtName("environment")}}),
+				},
+				MarkdownDescription: `The environment this implementation is scoped to, by name. On write, selects the` + "\n" +
+					`target environment: required when the API is configured across multiple` + "\n" +
+					`environments, and optional otherwise (accepted only if it matches the API's sole` + "\n" +
+					`environment). On read, the resolved environment name. Present only for APIs` + "\n" +
+					`configured across multiple environments.`,
+			},
 			"id": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
@@ -153,6 +181,21 @@ func (r *APIImplementationResource) Schema(ctx context.Context, req resource.Sch
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
+					},
+					"environment": schema.StringAttribute{
+						Optional: true,
+						PlanModifiers: []planmodifier.String{
+							stringplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						MarkdownDescription: `The environment this implementation is scoped to, by name. On write, selects the` + "\n" +
+							`target environment: required when the API is configured across multiple` + "\n" +
+							`environments, and optional otherwise (accepted only if it matches the API's sole` + "\n" +
+							`environment). On read, the resolved environment name. Present only for APIs` + "\n" +
+							`configured across multiple environments.` + "\n" +
+							`Requires replacement if changed.`,
+						Validators: []validator.String{
+							stringvalidator.UTF8LengthBetween(1, 256),
+						},
 					},
 					"id": schema.StringAttribute{
 						Computed: true,

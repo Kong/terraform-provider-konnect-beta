@@ -35,7 +35,6 @@ import (
 	"github.com/kong/terraform-provider-konnect-beta/internal/validators"
 	speakeasy_int64validators "github.com/kong/terraform-provider-konnect-beta/internal/validators/int64validators"
 	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/listvalidators"
-	speakeasy_mapvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/mapvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect-beta/internal/validators/stringvalidators"
 	"regexp"
@@ -88,47 +87,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
-									"ai_gateway_allow_acl": schema.SingleNestedAttribute{
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"allow": schema.ListAttribute{
-												Computed:    true,
-												Optional:    true,
-												ElementType: types.StringType,
-												Description: `List of Consumer Groups Names, or Authenticated Groups Names that are permitted access. Not Null`,
-												Validators: []validator.List{
-													speakeasy_listvalidators.NotNull(),
-												},
-											},
-										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.`,
-										Validators: []validator.Object{
-											objectvalidator.ConflictsWith(path.Expressions{
-												path.MatchRelative().AtParent().AtName("ai_gateway_deny_acl"),
-											}...),
-										},
+									"allow": schema.ListAttribute{
+										Computed:    true,
+										Optional:    true,
+										ElementType: types.StringType,
+										Description: `List of Consumer Groups Names, or Authenticated Groups Names that are permitted access.`,
 									},
-									"ai_gateway_deny_acl": schema.SingleNestedAttribute{
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"deny": schema.ListAttribute{
-												Computed:    true,
-												Optional:    true,
-												ElementType: types.StringType,
-												Description: `List of Consumer Groups Names, or Authenticated Groups Names that are denied access. Not Null`,
-												Validators: []validator.List{
-													speakeasy_listvalidators.NotNull(),
-												},
-											},
-										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.`,
-										Validators: []validator.Object{
-											objectvalidator.ConflictsWith(path.Expressions{
-												path.MatchRelative().AtParent().AtName("ai_gateway_allow_acl"),
-											}...),
-										},
+									"deny": schema.ListAttribute{
+										Computed:    true,
+										Optional:    true,
+										ElementType: types.StringType,
+										Description: `List of Consumer Groups Names, or Authenticated Groups Names that are denied access.`,
 									},
 								},
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -2001,6 +1970,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"headers": schema.MapAttribute{
+										Computed:    true,
 										Optional:    true,
 										ElementType: jsontypes.NormalizedType{},
 										Description: `One or more lists of values indexed by header name that will cause this route to match if present in the request. The ` + "`" + `Host` + "`" + ` header cannot be used with this attribute: hosts should be specified using the ` + "`" + `hosts` + "`" + ` attribute. When ` + "`" + `headers` + "`" + ` contains only one value and that value starts with the special prefix ` + "`" + `~*` + "`" + `, the value is interpreted as a regular expression.`,
@@ -2020,6 +1990,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Description: `The status code Kong responds with when all properties of a route match except the protocol i.e. if the protocol of the request is ` + "`" + `HTTP` + "`" + ` instead of ` + "`" + `HTTPS` + "`" + `. ` + "`" + `Location` + "`" + ` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the route is configured to only accept the ` + "`" + `https` + "`" + ` protocol. Default: 426`,
 									},
 									"methods": schema.ListAttribute{
+										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 										Description: `A list of HTTP methods that match this route.`,
@@ -2028,50 +1999,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Computed: true,
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
-											"ai_gateway_model_alias_config_body": schema.SingleNestedAttribute{
-												Optional: true,
-												Attributes: map[string]schema.Attribute{
-													"body": schema.MapAttribute{
-														Computed:    true,
-														Optional:    true,
-														ElementType: jsontypes.NormalizedType{},
-														Description: `Value indexed by property name that will cause this route to match if present in the request body. Not Null`,
-														Validators: []validator.Map{
-															speakeasy_mapvalidators.NotNull(),
-															mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-														},
-													},
-												},
-												Description: `Configuration for routing requests to a specific model using a request body property.`,
-												Validators: []validator.Object{
-													objectvalidator.ConflictsWith(path.Expressions{
-														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_headers"),
-														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_path"),
-													}...),
-												},
-											},
-											"ai_gateway_model_alias_config_headers": schema.SingleNestedAttribute{
-												Optional: true,
-												Attributes: map[string]schema.Attribute{
-													"headers": schema.MapAttribute{
-														Computed:    true,
-														Optional:    true,
-														ElementType: jsontypes.NormalizedType{},
-														Description: `Value indexed by property name that will cause this route to match if present in the request headers. Not Null`,
-														Validators: []validator.Map{
-															speakeasy_mapvalidators.NotNull(),
-															mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-														},
-													},
-												},
-												Description: `Configuration for routing requests to a specific model using a header.`,
-												Validators: []validator.Object{
-													objectvalidator.ConflictsWith(path.Expressions{
-														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_body"),
-														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_path"),
-													}...),
-												},
-											},
 											"ai_gateway_model_alias_config_path": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
@@ -2087,17 +2014,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													},
 												},
 												Description: `Configuration for routing requests to a specific model using a path alias.`,
-												Validators: []validator.Object{
-													objectvalidator.ConflictsWith(path.Expressions{
-														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_body"),
-														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_headers"),
-													}...),
-												},
 											},
 										},
 										Description: `Configuration for routing to this model using an alias.`,
 									},
 									"paths": schema.ListAttribute{
+										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 										Description: `A list of paths that match this route.`,
@@ -2143,6 +2065,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Description: `When matching a route via one of the ` + "`" + `paths` + "`" + `, strip the matching prefix from the upstream request URL. Default: true`,
 									},
 									"tags": schema.ListAttribute{
+										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 										Description: `An optional set of strings associated with the route for grouping and filtering.`,
@@ -3961,47 +3884,17 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
-									"ai_gateway_allow_acl": schema.SingleNestedAttribute{
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"allow": schema.ListAttribute{
-												Computed:    true,
-												Optional:    true,
-												ElementType: types.StringType,
-												Description: `List of Consumer Groups Names, or Authenticated Groups Names that are permitted access. Not Null`,
-												Validators: []validator.List{
-													speakeasy_listvalidators.NotNull(),
-												},
-											},
-										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.`,
-										Validators: []validator.Object{
-											objectvalidator.ConflictsWith(path.Expressions{
-												path.MatchRelative().AtParent().AtName("ai_gateway_deny_acl"),
-											}...),
-										},
+									"allow": schema.ListAttribute{
+										Computed:    true,
+										Optional:    true,
+										ElementType: types.StringType,
+										Description: `List of Consumer Groups Names, or Authenticated Groups Names that are permitted access.`,
 									},
-									"ai_gateway_deny_acl": schema.SingleNestedAttribute{
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"deny": schema.ListAttribute{
-												Computed:    true,
-												Optional:    true,
-												ElementType: types.StringType,
-												Description: `List of Consumer Groups Names, or Authenticated Groups Names that are denied access. Not Null`,
-												Validators: []validator.List{
-													speakeasy_listvalidators.NotNull(),
-												},
-											},
-										},
-										MarkdownDescription: `**Pre-release Feature**` + "\n" +
-											`This feature is currently in beta and is subject to change.`,
-										Validators: []validator.Object{
-											objectvalidator.ConflictsWith(path.Expressions{
-												path.MatchRelative().AtParent().AtName("ai_gateway_allow_acl"),
-											}...),
-										},
+									"deny": schema.ListAttribute{
+										Computed:    true,
+										Optional:    true,
+										ElementType: types.StringType,
+										Description: `List of Consumer Groups Names, or Authenticated Groups Names that are denied access.`,
 									},
 								},
 								MarkdownDescription: `**Pre-release Feature**` + "\n" +
@@ -5893,6 +5786,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"headers": schema.MapAttribute{
+										Computed:    true,
 										Optional:    true,
 										ElementType: jsontypes.NormalizedType{},
 										Description: `One or more lists of values indexed by header name that will cause this route to match if present in the request. The ` + "`" + `Host` + "`" + ` header cannot be used with this attribute: hosts should be specified using the ` + "`" + `hosts` + "`" + ` attribute. When ` + "`" + `headers` + "`" + ` contains only one value and that value starts with the special prefix ` + "`" + `~*` + "`" + `, the value is interpreted as a regular expression.`,
@@ -5912,6 +5806,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Description: `The status code Kong responds with when all properties of a route match except the protocol i.e. if the protocol of the request is ` + "`" + `HTTP` + "`" + ` instead of ` + "`" + `HTTPS` + "`" + `. ` + "`" + `Location` + "`" + ` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the route is configured to only accept the ` + "`" + `https` + "`" + ` protocol. Default: 426`,
 									},
 									"methods": schema.ListAttribute{
+										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 										Description: `A list of HTTP methods that match this route.`,
@@ -5920,50 +5815,6 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Computed: true,
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
-											"ai_gateway_model_alias_config_body": schema.SingleNestedAttribute{
-												Optional: true,
-												Attributes: map[string]schema.Attribute{
-													"body": schema.MapAttribute{
-														Computed:    true,
-														Optional:    true,
-														ElementType: jsontypes.NormalizedType{},
-														Description: `Value indexed by property name that will cause this route to match if present in the request body. Not Null`,
-														Validators: []validator.Map{
-															speakeasy_mapvalidators.NotNull(),
-															mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-														},
-													},
-												},
-												Description: `Configuration for routing requests to a specific model using a request body property.`,
-												Validators: []validator.Object{
-													objectvalidator.ConflictsWith(path.Expressions{
-														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_headers"),
-														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_path"),
-													}...),
-												},
-											},
-											"ai_gateway_model_alias_config_headers": schema.SingleNestedAttribute{
-												Optional: true,
-												Attributes: map[string]schema.Attribute{
-													"headers": schema.MapAttribute{
-														Computed:    true,
-														Optional:    true,
-														ElementType: jsontypes.NormalizedType{},
-														Description: `Value indexed by property name that will cause this route to match if present in the request headers. Not Null`,
-														Validators: []validator.Map{
-															speakeasy_mapvalidators.NotNull(),
-															mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-														},
-													},
-												},
-												Description: `Configuration for routing requests to a specific model using a header.`,
-												Validators: []validator.Object{
-													objectvalidator.ConflictsWith(path.Expressions{
-														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_body"),
-														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_path"),
-													}...),
-												},
-											},
 											"ai_gateway_model_alias_config_path": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
@@ -5979,17 +5830,12 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 													},
 												},
 												Description: `Configuration for routing requests to a specific model using a path alias.`,
-												Validators: []validator.Object{
-													objectvalidator.ConflictsWith(path.Expressions{
-														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_body"),
-														path.MatchRelative().AtParent().AtName("ai_gateway_model_alias_config_headers"),
-													}...),
-												},
 											},
 										},
 										Description: `Configuration for routing to this model using an alias.`,
 									},
 									"paths": schema.ListAttribute{
+										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 										Description: `A list of paths that match this route.`,
@@ -6035,6 +5881,7 @@ func (r *AIGatewayModelResource) Schema(ctx context.Context, req resource.Schema
 										Description: `When matching a route via one of the ` + "`" + `paths` + "`" + `, strip the matching prefix from the upstream request URL. Default: true`,
 									},
 									"tags": schema.ListAttribute{
+										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 										Description: `An optional set of strings associated with the route for grouping and filtering.`,

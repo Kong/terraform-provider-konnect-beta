@@ -6,6 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type AIGatewayAllowACL struct {
-	Allow []types.String `tfsdk:"allow"`
+type TTL struct {
+	Unit  types.String `tfsdk:"unit"`
+	Value types.Int64  `tfsdk:"value"`
 }

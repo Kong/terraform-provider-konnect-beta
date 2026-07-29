@@ -18,9 +18,9 @@ type AIGatewayModelRouteConfig struct {
 	// The status code Kong responds with when all properties of a route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the route is configured to only accept the `https` protocol.
 	HTTPSRedirectStatusCode *int64 `default:"426" json:"https_redirect_status_code"`
 	// A list of HTTP methods that match this route.
-	Methods []string `json:"methods"`
+	Methods []string `json:"methods,omitempty"`
 	// A list of paths that match this route.
-	Paths []string `json:"paths"`
+	Paths []string `json:"paths,omitempty"`
 	// When matching a route via one of the `hosts` domain names, use the request `Host` header in the upstream request headers. If set to `false`, the upstream `Host` header will be that of the service's `host`.
 	PreserveHost *bool `default:"false" json:"preserve_host"`
 	// An array of the protocols this route should allow. See the [route Object](#route-object) section for a list of accepted protocols. When set to only `https`, HTTP requests are answered with an upgrade error. When set to only `http`, HTTPS requests are answered with an error.
@@ -34,7 +34,7 @@ type AIGatewayModelRouteConfig struct {
 	// When matching a route via one of the `paths`, strip the matching prefix from the upstream request URL.
 	StripPath *bool `default:"true" json:"strip_path"`
 	// An optional set of strings associated with the route for grouping and filtering.
-	Tags []string `json:"tags"`
+	Tags []string `json:"tags,omitempty"`
 	// Configuration for routing to this model using an alias.
 	Model *AIGatewayModelAliasConfig `json:"model,omitempty"`
 }

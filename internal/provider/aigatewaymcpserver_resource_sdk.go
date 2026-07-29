@@ -144,7 +144,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				r.ConversionListener.Config.Route = nil
 			} else {
 				r.ConversionListener.Config.Route = &tfTypes.AIGatewayRouteConfig{}
-				if resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Route.Headers != nil {
+				if len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Route.Headers) > 0 {
 					r.ConversionListener.Config.Route.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Route.Headers))
 					for key, value := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Route.Headers {
 						result, _ := json.Marshal(value)
@@ -160,21 +160,13 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					r.ConversionListener.Config.Route.Hosts = nil
 				}
 				r.ConversionListener.Config.Route.HTTPSRedirectStatusCode = types.Int64PointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Route.HTTPSRedirectStatusCode)
-				if resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Route.Methods != nil {
-					r.ConversionListener.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Route.Methods))
-					for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Route.Methods {
-						r.ConversionListener.Config.Route.Methods = append(r.ConversionListener.Config.Route.Methods, types.StringValue(v))
-					}
-				} else {
-					r.ConversionListener.Config.Route.Methods = nil
+				r.ConversionListener.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Route.Methods))
+				for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Route.Methods {
+					r.ConversionListener.Config.Route.Methods = append(r.ConversionListener.Config.Route.Methods, types.StringValue(v))
 				}
-				if resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Route.Paths != nil {
-					r.ConversionListener.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Route.Paths))
-					for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Route.Paths {
-						r.ConversionListener.Config.Route.Paths = append(r.ConversionListener.Config.Route.Paths, types.StringValue(v))
-					}
-				} else {
-					r.ConversionListener.Config.Route.Paths = nil
+				r.ConversionListener.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Route.Paths))
+				for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Route.Paths {
+					r.ConversionListener.Config.Route.Paths = append(r.ConversionListener.Config.Route.Paths, types.StringValue(v))
 				}
 				r.ConversionListener.Config.Route.PreserveHost = types.BoolPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Route.PreserveHost)
 				r.ConversionListener.Config.Route.Protocols = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Route.Protocols))
@@ -185,13 +177,9 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				r.ConversionListener.Config.Route.RequestBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Route.RequestBuffering)
 				r.ConversionListener.Config.Route.ResponseBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Route.ResponseBuffering)
 				r.ConversionListener.Config.Route.StripPath = types.BoolPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Route.StripPath)
-				if resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Route.Tags != nil {
-					r.ConversionListener.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Route.Tags))
-					for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Route.Tags {
-						r.ConversionListener.Config.Route.Tags = append(r.ConversionListener.Config.Route.Tags, types.StringValue(v))
-					}
-				} else {
-					r.ConversionListener.Config.Route.Tags = nil
+				r.ConversionListener.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Route.Tags))
+				for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Route.Tags {
+					r.ConversionListener.Config.Route.Tags = append(r.ConversionListener.Config.Route.Tags, types.StringValue(v))
 				}
 			}
 			if resp.AIGatewayMCPServerAIGatewayMCPServerConversionListener.Config.Server == nil {
@@ -517,7 +505,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				r.ConversionOnly.Config.Route = nil
 			} else {
 				r.ConversionOnly.Config.Route = &tfTypes.AIGatewayRouteConfig{}
-				if resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Route.Headers != nil {
+				if len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Route.Headers) > 0 {
 					r.ConversionOnly.Config.Route.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Route.Headers))
 					for key4, value4 := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Route.Headers {
 						result2, _ := json.Marshal(value4)
@@ -533,21 +521,13 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					r.ConversionOnly.Config.Route.Hosts = nil
 				}
 				r.ConversionOnly.Config.Route.HTTPSRedirectStatusCode = types.Int64PointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Route.HTTPSRedirectStatusCode)
-				if resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Route.Methods != nil {
-					r.ConversionOnly.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Route.Methods))
-					for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Route.Methods {
-						r.ConversionOnly.Config.Route.Methods = append(r.ConversionOnly.Config.Route.Methods, types.StringValue(v))
-					}
-				} else {
-					r.ConversionOnly.Config.Route.Methods = nil
+				r.ConversionOnly.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Route.Methods))
+				for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Route.Methods {
+					r.ConversionOnly.Config.Route.Methods = append(r.ConversionOnly.Config.Route.Methods, types.StringValue(v))
 				}
-				if resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Route.Paths != nil {
-					r.ConversionOnly.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Route.Paths))
-					for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Route.Paths {
-						r.ConversionOnly.Config.Route.Paths = append(r.ConversionOnly.Config.Route.Paths, types.StringValue(v))
-					}
-				} else {
-					r.ConversionOnly.Config.Route.Paths = nil
+				r.ConversionOnly.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Route.Paths))
+				for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Route.Paths {
+					r.ConversionOnly.Config.Route.Paths = append(r.ConversionOnly.Config.Route.Paths, types.StringValue(v))
 				}
 				r.ConversionOnly.Config.Route.PreserveHost = types.BoolPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Route.PreserveHost)
 				r.ConversionOnly.Config.Route.Protocols = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Route.Protocols))
@@ -558,13 +538,9 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				r.ConversionOnly.Config.Route.RequestBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Route.RequestBuffering)
 				r.ConversionOnly.Config.Route.ResponseBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Route.ResponseBuffering)
 				r.ConversionOnly.Config.Route.StripPath = types.BoolPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Route.StripPath)
-				if resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Route.Tags != nil {
-					r.ConversionOnly.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Route.Tags))
-					for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Route.Tags {
-						r.ConversionOnly.Config.Route.Tags = append(r.ConversionOnly.Config.Route.Tags, types.StringValue(v))
-					}
-				} else {
-					r.ConversionOnly.Config.Route.Tags = nil
+				r.ConversionOnly.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Route.Tags))
+				for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.Route.Tags {
+					r.ConversionOnly.Config.Route.Tags = append(r.ConversionOnly.Config.Route.Tags, types.StringValue(v))
 				}
 			}
 			r.ConversionOnly.Config.URL = types.StringValue(resp.AIGatewayMCPServerAIGatewayMCPServerConversionOnly.Config.URL)
@@ -826,7 +802,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				r.Listener.Config.Route = nil
 			} else {
 				r.Listener.Config.Route = &tfTypes.AIGatewayRouteConfig{}
-				if resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Route.Headers != nil {
+				if len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Route.Headers) > 0 {
 					r.Listener.Config.Route.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Route.Headers))
 					for key8, value8 := range resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Route.Headers {
 						result4, _ := json.Marshal(value8)
@@ -842,21 +818,13 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					r.Listener.Config.Route.Hosts = nil
 				}
 				r.Listener.Config.Route.HTTPSRedirectStatusCode = types.Int64PointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Route.HTTPSRedirectStatusCode)
-				if resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Route.Methods != nil {
-					r.Listener.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Route.Methods))
-					for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Route.Methods {
-						r.Listener.Config.Route.Methods = append(r.Listener.Config.Route.Methods, types.StringValue(v))
-					}
-				} else {
-					r.Listener.Config.Route.Methods = nil
+				r.Listener.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Route.Methods))
+				for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Route.Methods {
+					r.Listener.Config.Route.Methods = append(r.Listener.Config.Route.Methods, types.StringValue(v))
 				}
-				if resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Route.Paths != nil {
-					r.Listener.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Route.Paths))
-					for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Route.Paths {
-						r.Listener.Config.Route.Paths = append(r.Listener.Config.Route.Paths, types.StringValue(v))
-					}
-				} else {
-					r.Listener.Config.Route.Paths = nil
+				r.Listener.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Route.Paths))
+				for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Route.Paths {
+					r.Listener.Config.Route.Paths = append(r.Listener.Config.Route.Paths, types.StringValue(v))
 				}
 				r.Listener.Config.Route.PreserveHost = types.BoolPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Route.PreserveHost)
 				r.Listener.Config.Route.Protocols = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Route.Protocols))
@@ -867,13 +835,9 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				r.Listener.Config.Route.RequestBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Route.RequestBuffering)
 				r.Listener.Config.Route.ResponseBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Route.ResponseBuffering)
 				r.Listener.Config.Route.StripPath = types.BoolPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Route.StripPath)
-				if resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Route.Tags != nil {
-					r.Listener.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Route.Tags))
-					for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Route.Tags {
-						r.Listener.Config.Route.Tags = append(r.Listener.Config.Route.Tags, types.StringValue(v))
-					}
-				} else {
-					r.Listener.Config.Route.Tags = nil
+				r.Listener.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Route.Tags))
+				for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Route.Tags {
+					r.Listener.Config.Route.Tags = append(r.Listener.Config.Route.Tags, types.StringValue(v))
 				}
 			}
 			if resp.AIGatewayMCPServerAIGatewayMCPServerListener.Config.Server == nil {
@@ -1349,7 +1313,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				r.PassthroughListener.Config.Route = nil
 			} else {
 				r.PassthroughListener.Config.Route = &tfTypes.AIGatewayRouteConfig{}
-				if resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Route.Headers != nil {
+				if len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Route.Headers) > 0 {
 					r.PassthroughListener.Config.Route.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Route.Headers))
 					for key12, value12 := range resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Route.Headers {
 						result6, _ := json.Marshal(value12)
@@ -1365,21 +1329,13 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					r.PassthroughListener.Config.Route.Hosts = nil
 				}
 				r.PassthroughListener.Config.Route.HTTPSRedirectStatusCode = types.Int64PointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Route.HTTPSRedirectStatusCode)
-				if resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Route.Methods != nil {
-					r.PassthroughListener.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Route.Methods))
-					for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Route.Methods {
-						r.PassthroughListener.Config.Route.Methods = append(r.PassthroughListener.Config.Route.Methods, types.StringValue(v))
-					}
-				} else {
-					r.PassthroughListener.Config.Route.Methods = nil
+				r.PassthroughListener.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Route.Methods))
+				for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Route.Methods {
+					r.PassthroughListener.Config.Route.Methods = append(r.PassthroughListener.Config.Route.Methods, types.StringValue(v))
 				}
-				if resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Route.Paths != nil {
-					r.PassthroughListener.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Route.Paths))
-					for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Route.Paths {
-						r.PassthroughListener.Config.Route.Paths = append(r.PassthroughListener.Config.Route.Paths, types.StringValue(v))
-					}
-				} else {
-					r.PassthroughListener.Config.Route.Paths = nil
+				r.PassthroughListener.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Route.Paths))
+				for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Route.Paths {
+					r.PassthroughListener.Config.Route.Paths = append(r.PassthroughListener.Config.Route.Paths, types.StringValue(v))
 				}
 				r.PassthroughListener.Config.Route.PreserveHost = types.BoolPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Route.PreserveHost)
 				r.PassthroughListener.Config.Route.Protocols = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Route.Protocols))
@@ -1390,13 +1346,9 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				r.PassthroughListener.Config.Route.RequestBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Route.RequestBuffering)
 				r.PassthroughListener.Config.Route.ResponseBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Route.ResponseBuffering)
 				r.PassthroughListener.Config.Route.StripPath = types.BoolPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Route.StripPath)
-				if resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Route.Tags != nil {
-					r.PassthroughListener.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Route.Tags))
-					for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Route.Tags {
-						r.PassthroughListener.Config.Route.Tags = append(r.PassthroughListener.Config.Route.Tags, types.StringValue(v))
-					}
-				} else {
-					r.PassthroughListener.Config.Route.Tags = nil
+				r.PassthroughListener.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Route.Tags))
+				for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Route.Tags {
+					r.PassthroughListener.Config.Route.Tags = append(r.PassthroughListener.Config.Route.Tags, types.StringValue(v))
 				}
 			}
 			if resp.AIGatewayMCPServerAIGatewayMCPServerPassthroughListener.Config.Server == nil {
@@ -1831,7 +1783,7 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				r.UpstreamServer.Config.Route = nil
 			} else {
 				r.UpstreamServer.Config.Route = &tfTypes.AIGatewayRouteConfig{}
-				if resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Route.Headers != nil {
+				if len(resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Route.Headers) > 0 {
 					r.UpstreamServer.Config.Route.Headers = make(map[string]jsontypes.Normalized, len(resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Route.Headers))
 					for key16, value16 := range resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Route.Headers {
 						result8, _ := json.Marshal(value16)
@@ -1847,21 +1799,13 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 					r.UpstreamServer.Config.Route.Hosts = nil
 				}
 				r.UpstreamServer.Config.Route.HTTPSRedirectStatusCode = types.Int64PointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Route.HTTPSRedirectStatusCode)
-				if resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Route.Methods != nil {
-					r.UpstreamServer.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Route.Methods))
-					for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Route.Methods {
-						r.UpstreamServer.Config.Route.Methods = append(r.UpstreamServer.Config.Route.Methods, types.StringValue(v))
-					}
-				} else {
-					r.UpstreamServer.Config.Route.Methods = nil
+				r.UpstreamServer.Config.Route.Methods = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Route.Methods))
+				for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Route.Methods {
+					r.UpstreamServer.Config.Route.Methods = append(r.UpstreamServer.Config.Route.Methods, types.StringValue(v))
 				}
-				if resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Route.Paths != nil {
-					r.UpstreamServer.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Route.Paths))
-					for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Route.Paths {
-						r.UpstreamServer.Config.Route.Paths = append(r.UpstreamServer.Config.Route.Paths, types.StringValue(v))
-					}
-				} else {
-					r.UpstreamServer.Config.Route.Paths = nil
+				r.UpstreamServer.Config.Route.Paths = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Route.Paths))
+				for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Route.Paths {
+					r.UpstreamServer.Config.Route.Paths = append(r.UpstreamServer.Config.Route.Paths, types.StringValue(v))
 				}
 				r.UpstreamServer.Config.Route.PreserveHost = types.BoolPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Route.PreserveHost)
 				r.UpstreamServer.Config.Route.Protocols = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Route.Protocols))
@@ -1872,13 +1816,9 @@ func (r *AIGatewayMCPServerResourceModel) RefreshFromSharedAIGatewayMCPServer(ct
 				r.UpstreamServer.Config.Route.RequestBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Route.RequestBuffering)
 				r.UpstreamServer.Config.Route.ResponseBuffering = types.BoolPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Route.ResponseBuffering)
 				r.UpstreamServer.Config.Route.StripPath = types.BoolPointerValue(resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Route.StripPath)
-				if resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Route.Tags != nil {
-					r.UpstreamServer.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Route.Tags))
-					for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Route.Tags {
-						r.UpstreamServer.Config.Route.Tags = append(r.UpstreamServer.Config.Route.Tags, types.StringValue(v))
-					}
-				} else {
-					r.UpstreamServer.Config.Route.Tags = nil
+				r.UpstreamServer.Config.Route.Tags = make([]types.String, 0, len(resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Route.Tags))
+				for _, v := range resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Route.Tags {
+					r.UpstreamServer.Config.Route.Tags = append(r.UpstreamServer.Config.Route.Tags, types.StringValue(v))
 				}
 			}
 			if resp.AIGatewayMCPServerAIGatewayMCPServerUpstreamServer.Config.Server == nil {
@@ -2322,14 +2262,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		typeVar := shared.AIGatewayMCPServerConversionOnlyType(r.ConversionOnly.Type.ValueString())
 		var route *shared.AIGatewayRouteConfig
 		if r.ConversionOnly.Config.Route != nil {
-			var headers map[string]interface{}
-			if r.ConversionOnly.Config.Route.Headers != nil {
-				headers = make(map[string]interface{})
-				for headersKey := range r.ConversionOnly.Config.Route.Headers {
-					var headersInst interface{}
-					_ = json.Unmarshal([]byte(r.ConversionOnly.Config.Route.Headers[headersKey].ValueString()), &headersInst)
-					headers[headersKey] = headersInst
-				}
+			headers := make(map[string]interface{})
+			for headersKey := range r.ConversionOnly.Config.Route.Headers {
+				var headersInst interface{}
+				_ = json.Unmarshal([]byte(r.ConversionOnly.Config.Route.Headers[headersKey].ValueString()), &headersInst)
+				headers[headersKey] = headersInst
 			}
 			var hosts []string
 			if r.ConversionOnly.Config.Route.Hosts != nil {
@@ -2344,19 +2281,13 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			} else {
 				httpsRedirectStatusCode = nil
 			}
-			var methods []string
-			if r.ConversionOnly.Config.Route.Methods != nil {
-				methods = make([]string, 0, len(r.ConversionOnly.Config.Route.Methods))
-				for methodsIndex := range r.ConversionOnly.Config.Route.Methods {
-					methods = append(methods, r.ConversionOnly.Config.Route.Methods[methodsIndex].ValueString())
-				}
+			methods := make([]string, 0, len(r.ConversionOnly.Config.Route.Methods))
+			for methodsIndex := range r.ConversionOnly.Config.Route.Methods {
+				methods = append(methods, r.ConversionOnly.Config.Route.Methods[methodsIndex].ValueString())
 			}
-			var paths []string
-			if r.ConversionOnly.Config.Route.Paths != nil {
-				paths = make([]string, 0, len(r.ConversionOnly.Config.Route.Paths))
-				for pathsIndex := range r.ConversionOnly.Config.Route.Paths {
-					paths = append(paths, r.ConversionOnly.Config.Route.Paths[pathsIndex].ValueString())
-				}
+			paths := make([]string, 0, len(r.ConversionOnly.Config.Route.Paths))
+			for pathsIndex := range r.ConversionOnly.Config.Route.Paths {
+				paths = append(paths, r.ConversionOnly.Config.Route.Paths[pathsIndex].ValueString())
 			}
 			preserveHost := new(bool)
 			if !r.ConversionOnly.Config.Route.PreserveHost.IsUnknown() && !r.ConversionOnly.Config.Route.PreserveHost.IsNull() {
@@ -2392,12 +2323,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			} else {
 				stripPath = nil
 			}
-			var tags []string
-			if r.ConversionOnly.Config.Route.Tags != nil {
-				tags = make([]string, 0, len(r.ConversionOnly.Config.Route.Tags))
-				for tagsIndex := range r.ConversionOnly.Config.Route.Tags {
-					tags = append(tags, r.ConversionOnly.Config.Route.Tags[tagsIndex].ValueString())
-				}
+			tags := make([]string, 0, len(r.ConversionOnly.Config.Route.Tags))
+			for tagsIndex := range r.ConversionOnly.Config.Route.Tags {
+				tags = append(tags, r.ConversionOnly.Config.Route.Tags[tagsIndex].ValueString())
 			}
 			route = &shared.AIGatewayRouteConfig{
 				Headers:                 headers,
@@ -2669,14 +2597,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		typeVar1 := shared.AIGatewayMCPServerConversionListenerType(r.ConversionListener.Type.ValueString())
 		var route1 *shared.AIGatewayRouteConfig
 		if r.ConversionListener.Config.Route != nil {
-			var headers2 map[string]interface{}
-			if r.ConversionListener.Config.Route.Headers != nil {
-				headers2 = make(map[string]interface{})
-				for headersKey1 := range r.ConversionListener.Config.Route.Headers {
-					var headersInst1 interface{}
-					_ = json.Unmarshal([]byte(r.ConversionListener.Config.Route.Headers[headersKey1].ValueString()), &headersInst1)
-					headers2[headersKey1] = headersInst1
-				}
+			headers2 := make(map[string]interface{})
+			for headersKey1 := range r.ConversionListener.Config.Route.Headers {
+				var headersInst1 interface{}
+				_ = json.Unmarshal([]byte(r.ConversionListener.Config.Route.Headers[headersKey1].ValueString()), &headersInst1)
+				headers2[headersKey1] = headersInst1
 			}
 			var hosts1 []string
 			if r.ConversionListener.Config.Route.Hosts != nil {
@@ -2691,19 +2616,13 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			} else {
 				httpsRedirectStatusCode1 = nil
 			}
-			var methods1 []string
-			if r.ConversionListener.Config.Route.Methods != nil {
-				methods1 = make([]string, 0, len(r.ConversionListener.Config.Route.Methods))
-				for methodsIndex1 := range r.ConversionListener.Config.Route.Methods {
-					methods1 = append(methods1, r.ConversionListener.Config.Route.Methods[methodsIndex1].ValueString())
-				}
+			methods1 := make([]string, 0, len(r.ConversionListener.Config.Route.Methods))
+			for methodsIndex1 := range r.ConversionListener.Config.Route.Methods {
+				methods1 = append(methods1, r.ConversionListener.Config.Route.Methods[methodsIndex1].ValueString())
 			}
-			var paths1 []string
-			if r.ConversionListener.Config.Route.Paths != nil {
-				paths1 = make([]string, 0, len(r.ConversionListener.Config.Route.Paths))
-				for pathsIndex1 := range r.ConversionListener.Config.Route.Paths {
-					paths1 = append(paths1, r.ConversionListener.Config.Route.Paths[pathsIndex1].ValueString())
-				}
+			paths1 := make([]string, 0, len(r.ConversionListener.Config.Route.Paths))
+			for pathsIndex1 := range r.ConversionListener.Config.Route.Paths {
+				paths1 = append(paths1, r.ConversionListener.Config.Route.Paths[pathsIndex1].ValueString())
 			}
 			preserveHost1 := new(bool)
 			if !r.ConversionListener.Config.Route.PreserveHost.IsUnknown() && !r.ConversionListener.Config.Route.PreserveHost.IsNull() {
@@ -2739,12 +2658,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			} else {
 				stripPath1 = nil
 			}
-			var tags1 []string
-			if r.ConversionListener.Config.Route.Tags != nil {
-				tags1 = make([]string, 0, len(r.ConversionListener.Config.Route.Tags))
-				for tagsIndex1 := range r.ConversionListener.Config.Route.Tags {
-					tags1 = append(tags1, r.ConversionListener.Config.Route.Tags[tagsIndex1].ValueString())
-				}
+			tags1 := make([]string, 0, len(r.ConversionListener.Config.Route.Tags))
+			for tagsIndex1 := range r.ConversionListener.Config.Route.Tags {
+				tags1 = append(tags1, r.ConversionListener.Config.Route.Tags[tagsIndex1].ValueString())
 			}
 			route1 = &shared.AIGatewayRouteConfig{
 				Headers:                 headers2,
@@ -3548,14 +3464,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		typeVar5 := shared.AIGatewayMCPServerListenerType(r.Listener.Type.ValueString())
 		var route2 *shared.AIGatewayRouteConfig
 		if r.Listener.Config.Route != nil {
-			var headers4 map[string]interface{}
-			if r.Listener.Config.Route.Headers != nil {
-				headers4 = make(map[string]interface{})
-				for headersKey2 := range r.Listener.Config.Route.Headers {
-					var headersInst2 interface{}
-					_ = json.Unmarshal([]byte(r.Listener.Config.Route.Headers[headersKey2].ValueString()), &headersInst2)
-					headers4[headersKey2] = headersInst2
-				}
+			headers4 := make(map[string]interface{})
+			for headersKey2 := range r.Listener.Config.Route.Headers {
+				var headersInst2 interface{}
+				_ = json.Unmarshal([]byte(r.Listener.Config.Route.Headers[headersKey2].ValueString()), &headersInst2)
+				headers4[headersKey2] = headersInst2
 			}
 			var hosts2 []string
 			if r.Listener.Config.Route.Hosts != nil {
@@ -3570,19 +3483,13 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			} else {
 				httpsRedirectStatusCode2 = nil
 			}
-			var methods2 []string
-			if r.Listener.Config.Route.Methods != nil {
-				methods2 = make([]string, 0, len(r.Listener.Config.Route.Methods))
-				for methodsIndex2 := range r.Listener.Config.Route.Methods {
-					methods2 = append(methods2, r.Listener.Config.Route.Methods[methodsIndex2].ValueString())
-				}
+			methods2 := make([]string, 0, len(r.Listener.Config.Route.Methods))
+			for methodsIndex2 := range r.Listener.Config.Route.Methods {
+				methods2 = append(methods2, r.Listener.Config.Route.Methods[methodsIndex2].ValueString())
 			}
-			var paths2 []string
-			if r.Listener.Config.Route.Paths != nil {
-				paths2 = make([]string, 0, len(r.Listener.Config.Route.Paths))
-				for pathsIndex2 := range r.Listener.Config.Route.Paths {
-					paths2 = append(paths2, r.Listener.Config.Route.Paths[pathsIndex2].ValueString())
-				}
+			paths2 := make([]string, 0, len(r.Listener.Config.Route.Paths))
+			for pathsIndex2 := range r.Listener.Config.Route.Paths {
+				paths2 = append(paths2, r.Listener.Config.Route.Paths[pathsIndex2].ValueString())
 			}
 			preserveHost2 := new(bool)
 			if !r.Listener.Config.Route.PreserveHost.IsUnknown() && !r.Listener.Config.Route.PreserveHost.IsNull() {
@@ -3618,12 +3525,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			} else {
 				stripPath2 = nil
 			}
-			var tags2 []string
-			if r.Listener.Config.Route.Tags != nil {
-				tags2 = make([]string, 0, len(r.Listener.Config.Route.Tags))
-				for tagsIndex2 := range r.Listener.Config.Route.Tags {
-					tags2 = append(tags2, r.Listener.Config.Route.Tags[tagsIndex2].ValueString())
-				}
+			tags2 := make([]string, 0, len(r.Listener.Config.Route.Tags))
+			for tagsIndex2 := range r.Listener.Config.Route.Tags {
+				tags2 = append(tags2, r.Listener.Config.Route.Tags[tagsIndex2].ValueString())
 			}
 			route2 = &shared.AIGatewayRouteConfig{
 				Headers:                 headers4,
@@ -4428,14 +4332,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		typeVar9 := shared.AIGatewayMCPServerPassthroughListenerType(r.PassthroughListener.Type.ValueString())
 		var route3 *shared.AIGatewayRouteConfig
 		if r.PassthroughListener.Config.Route != nil {
-			var headers6 map[string]interface{}
-			if r.PassthroughListener.Config.Route.Headers != nil {
-				headers6 = make(map[string]interface{})
-				for headersKey3 := range r.PassthroughListener.Config.Route.Headers {
-					var headersInst3 interface{}
-					_ = json.Unmarshal([]byte(r.PassthroughListener.Config.Route.Headers[headersKey3].ValueString()), &headersInst3)
-					headers6[headersKey3] = headersInst3
-				}
+			headers6 := make(map[string]interface{})
+			for headersKey3 := range r.PassthroughListener.Config.Route.Headers {
+				var headersInst3 interface{}
+				_ = json.Unmarshal([]byte(r.PassthroughListener.Config.Route.Headers[headersKey3].ValueString()), &headersInst3)
+				headers6[headersKey3] = headersInst3
 			}
 			var hosts3 []string
 			if r.PassthroughListener.Config.Route.Hosts != nil {
@@ -4450,19 +4351,13 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			} else {
 				httpsRedirectStatusCode3 = nil
 			}
-			var methods3 []string
-			if r.PassthroughListener.Config.Route.Methods != nil {
-				methods3 = make([]string, 0, len(r.PassthroughListener.Config.Route.Methods))
-				for methodsIndex3 := range r.PassthroughListener.Config.Route.Methods {
-					methods3 = append(methods3, r.PassthroughListener.Config.Route.Methods[methodsIndex3].ValueString())
-				}
+			methods3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Methods))
+			for methodsIndex3 := range r.PassthroughListener.Config.Route.Methods {
+				methods3 = append(methods3, r.PassthroughListener.Config.Route.Methods[methodsIndex3].ValueString())
 			}
-			var paths3 []string
-			if r.PassthroughListener.Config.Route.Paths != nil {
-				paths3 = make([]string, 0, len(r.PassthroughListener.Config.Route.Paths))
-				for pathsIndex3 := range r.PassthroughListener.Config.Route.Paths {
-					paths3 = append(paths3, r.PassthroughListener.Config.Route.Paths[pathsIndex3].ValueString())
-				}
+			paths3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Paths))
+			for pathsIndex3 := range r.PassthroughListener.Config.Route.Paths {
+				paths3 = append(paths3, r.PassthroughListener.Config.Route.Paths[pathsIndex3].ValueString())
 			}
 			preserveHost3 := new(bool)
 			if !r.PassthroughListener.Config.Route.PreserveHost.IsUnknown() && !r.PassthroughListener.Config.Route.PreserveHost.IsNull() {
@@ -4498,12 +4393,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			} else {
 				stripPath3 = nil
 			}
-			var tags3 []string
-			if r.PassthroughListener.Config.Route.Tags != nil {
-				tags3 = make([]string, 0, len(r.PassthroughListener.Config.Route.Tags))
-				for tagsIndex3 := range r.PassthroughListener.Config.Route.Tags {
-					tags3 = append(tags3, r.PassthroughListener.Config.Route.Tags[tagsIndex3].ValueString())
-				}
+			tags3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Tags))
+			for tagsIndex3 := range r.PassthroughListener.Config.Route.Tags {
+				tags3 = append(tags3, r.PassthroughListener.Config.Route.Tags[tagsIndex3].ValueString())
 			}
 			route3 = &shared.AIGatewayRouteConfig{
 				Headers:                 headers6,
@@ -5392,14 +5284,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 		typeVar13 := shared.AIGatewayMCPServerUpstreamServerType(r.UpstreamServer.Type.ValueString())
 		var route4 *shared.AIGatewayRouteConfig
 		if r.UpstreamServer.Config.Route != nil {
-			var headers8 map[string]interface{}
-			if r.UpstreamServer.Config.Route.Headers != nil {
-				headers8 = make(map[string]interface{})
-				for headersKey4 := range r.UpstreamServer.Config.Route.Headers {
-					var headersInst4 interface{}
-					_ = json.Unmarshal([]byte(r.UpstreamServer.Config.Route.Headers[headersKey4].ValueString()), &headersInst4)
-					headers8[headersKey4] = headersInst4
-				}
+			headers8 := make(map[string]interface{})
+			for headersKey4 := range r.UpstreamServer.Config.Route.Headers {
+				var headersInst4 interface{}
+				_ = json.Unmarshal([]byte(r.UpstreamServer.Config.Route.Headers[headersKey4].ValueString()), &headersInst4)
+				headers8[headersKey4] = headersInst4
 			}
 			var hosts4 []string
 			if r.UpstreamServer.Config.Route.Hosts != nil {
@@ -5414,19 +5303,13 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			} else {
 				httpsRedirectStatusCode4 = nil
 			}
-			var methods4 []string
-			if r.UpstreamServer.Config.Route.Methods != nil {
-				methods4 = make([]string, 0, len(r.UpstreamServer.Config.Route.Methods))
-				for methodsIndex4 := range r.UpstreamServer.Config.Route.Methods {
-					methods4 = append(methods4, r.UpstreamServer.Config.Route.Methods[methodsIndex4].ValueString())
-				}
+			methods4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Methods))
+			for methodsIndex4 := range r.UpstreamServer.Config.Route.Methods {
+				methods4 = append(methods4, r.UpstreamServer.Config.Route.Methods[methodsIndex4].ValueString())
 			}
-			var paths4 []string
-			if r.UpstreamServer.Config.Route.Paths != nil {
-				paths4 = make([]string, 0, len(r.UpstreamServer.Config.Route.Paths))
-				for pathsIndex4 := range r.UpstreamServer.Config.Route.Paths {
-					paths4 = append(paths4, r.UpstreamServer.Config.Route.Paths[pathsIndex4].ValueString())
-				}
+			paths4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Paths))
+			for pathsIndex4 := range r.UpstreamServer.Config.Route.Paths {
+				paths4 = append(paths4, r.UpstreamServer.Config.Route.Paths[pathsIndex4].ValueString())
 			}
 			preserveHost4 := new(bool)
 			if !r.UpstreamServer.Config.Route.PreserveHost.IsUnknown() && !r.UpstreamServer.Config.Route.PreserveHost.IsNull() {
@@ -5462,12 +5345,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedCreateAIGatewayMCPServerReques
 			} else {
 				stripPath4 = nil
 			}
-			var tags4 []string
-			if r.UpstreamServer.Config.Route.Tags != nil {
-				tags4 = make([]string, 0, len(r.UpstreamServer.Config.Route.Tags))
-				for tagsIndex4 := range r.UpstreamServer.Config.Route.Tags {
-					tags4 = append(tags4, r.UpstreamServer.Config.Route.Tags[tagsIndex4].ValueString())
-				}
+			tags4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Tags))
+			for tagsIndex4 := range r.UpstreamServer.Config.Route.Tags {
+				tags4 = append(tags4, r.UpstreamServer.Config.Route.Tags[tagsIndex4].ValueString())
 			}
 			route4 = &shared.AIGatewayRouteConfig{
 				Headers:                 headers8,
@@ -6390,14 +6270,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		typeVar := shared.AIGatewayMCPServerConversionOnlyType(r.ConversionOnly.Type.ValueString())
 		var route *shared.AIGatewayRouteConfig
 		if r.ConversionOnly.Config.Route != nil {
-			var headers map[string]interface{}
-			if r.ConversionOnly.Config.Route.Headers != nil {
-				headers = make(map[string]interface{})
-				for headersKey := range r.ConversionOnly.Config.Route.Headers {
-					var headersInst interface{}
-					_ = json.Unmarshal([]byte(r.ConversionOnly.Config.Route.Headers[headersKey].ValueString()), &headersInst)
-					headers[headersKey] = headersInst
-				}
+			headers := make(map[string]interface{})
+			for headersKey := range r.ConversionOnly.Config.Route.Headers {
+				var headersInst interface{}
+				_ = json.Unmarshal([]byte(r.ConversionOnly.Config.Route.Headers[headersKey].ValueString()), &headersInst)
+				headers[headersKey] = headersInst
 			}
 			var hosts []string
 			if r.ConversionOnly.Config.Route.Hosts != nil {
@@ -6412,19 +6289,13 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			} else {
 				httpsRedirectStatusCode = nil
 			}
-			var methods []string
-			if r.ConversionOnly.Config.Route.Methods != nil {
-				methods = make([]string, 0, len(r.ConversionOnly.Config.Route.Methods))
-				for methodsIndex := range r.ConversionOnly.Config.Route.Methods {
-					methods = append(methods, r.ConversionOnly.Config.Route.Methods[methodsIndex].ValueString())
-				}
+			methods := make([]string, 0, len(r.ConversionOnly.Config.Route.Methods))
+			for methodsIndex := range r.ConversionOnly.Config.Route.Methods {
+				methods = append(methods, r.ConversionOnly.Config.Route.Methods[methodsIndex].ValueString())
 			}
-			var paths []string
-			if r.ConversionOnly.Config.Route.Paths != nil {
-				paths = make([]string, 0, len(r.ConversionOnly.Config.Route.Paths))
-				for pathsIndex := range r.ConversionOnly.Config.Route.Paths {
-					paths = append(paths, r.ConversionOnly.Config.Route.Paths[pathsIndex].ValueString())
-				}
+			paths := make([]string, 0, len(r.ConversionOnly.Config.Route.Paths))
+			for pathsIndex := range r.ConversionOnly.Config.Route.Paths {
+				paths = append(paths, r.ConversionOnly.Config.Route.Paths[pathsIndex].ValueString())
 			}
 			preserveHost := new(bool)
 			if !r.ConversionOnly.Config.Route.PreserveHost.IsUnknown() && !r.ConversionOnly.Config.Route.PreserveHost.IsNull() {
@@ -6460,12 +6331,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			} else {
 				stripPath = nil
 			}
-			var tags []string
-			if r.ConversionOnly.Config.Route.Tags != nil {
-				tags = make([]string, 0, len(r.ConversionOnly.Config.Route.Tags))
-				for tagsIndex := range r.ConversionOnly.Config.Route.Tags {
-					tags = append(tags, r.ConversionOnly.Config.Route.Tags[tagsIndex].ValueString())
-				}
+			tags := make([]string, 0, len(r.ConversionOnly.Config.Route.Tags))
+			for tagsIndex := range r.ConversionOnly.Config.Route.Tags {
+				tags = append(tags, r.ConversionOnly.Config.Route.Tags[tagsIndex].ValueString())
 			}
 			route = &shared.AIGatewayRouteConfig{
 				Headers:                 headers,
@@ -6737,14 +6605,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		typeVar1 := shared.AIGatewayMCPServerConversionListenerType(r.ConversionListener.Type.ValueString())
 		var route1 *shared.AIGatewayRouteConfig
 		if r.ConversionListener.Config.Route != nil {
-			var headers2 map[string]interface{}
-			if r.ConversionListener.Config.Route.Headers != nil {
-				headers2 = make(map[string]interface{})
-				for headersKey1 := range r.ConversionListener.Config.Route.Headers {
-					var headersInst1 interface{}
-					_ = json.Unmarshal([]byte(r.ConversionListener.Config.Route.Headers[headersKey1].ValueString()), &headersInst1)
-					headers2[headersKey1] = headersInst1
-				}
+			headers2 := make(map[string]interface{})
+			for headersKey1 := range r.ConversionListener.Config.Route.Headers {
+				var headersInst1 interface{}
+				_ = json.Unmarshal([]byte(r.ConversionListener.Config.Route.Headers[headersKey1].ValueString()), &headersInst1)
+				headers2[headersKey1] = headersInst1
 			}
 			var hosts1 []string
 			if r.ConversionListener.Config.Route.Hosts != nil {
@@ -6759,19 +6624,13 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			} else {
 				httpsRedirectStatusCode1 = nil
 			}
-			var methods1 []string
-			if r.ConversionListener.Config.Route.Methods != nil {
-				methods1 = make([]string, 0, len(r.ConversionListener.Config.Route.Methods))
-				for methodsIndex1 := range r.ConversionListener.Config.Route.Methods {
-					methods1 = append(methods1, r.ConversionListener.Config.Route.Methods[methodsIndex1].ValueString())
-				}
+			methods1 := make([]string, 0, len(r.ConversionListener.Config.Route.Methods))
+			for methodsIndex1 := range r.ConversionListener.Config.Route.Methods {
+				methods1 = append(methods1, r.ConversionListener.Config.Route.Methods[methodsIndex1].ValueString())
 			}
-			var paths1 []string
-			if r.ConversionListener.Config.Route.Paths != nil {
-				paths1 = make([]string, 0, len(r.ConversionListener.Config.Route.Paths))
-				for pathsIndex1 := range r.ConversionListener.Config.Route.Paths {
-					paths1 = append(paths1, r.ConversionListener.Config.Route.Paths[pathsIndex1].ValueString())
-				}
+			paths1 := make([]string, 0, len(r.ConversionListener.Config.Route.Paths))
+			for pathsIndex1 := range r.ConversionListener.Config.Route.Paths {
+				paths1 = append(paths1, r.ConversionListener.Config.Route.Paths[pathsIndex1].ValueString())
 			}
 			preserveHost1 := new(bool)
 			if !r.ConversionListener.Config.Route.PreserveHost.IsUnknown() && !r.ConversionListener.Config.Route.PreserveHost.IsNull() {
@@ -6807,12 +6666,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			} else {
 				stripPath1 = nil
 			}
-			var tags1 []string
-			if r.ConversionListener.Config.Route.Tags != nil {
-				tags1 = make([]string, 0, len(r.ConversionListener.Config.Route.Tags))
-				for tagsIndex1 := range r.ConversionListener.Config.Route.Tags {
-					tags1 = append(tags1, r.ConversionListener.Config.Route.Tags[tagsIndex1].ValueString())
-				}
+			tags1 := make([]string, 0, len(r.ConversionListener.Config.Route.Tags))
+			for tagsIndex1 := range r.ConversionListener.Config.Route.Tags {
+				tags1 = append(tags1, r.ConversionListener.Config.Route.Tags[tagsIndex1].ValueString())
 			}
 			route1 = &shared.AIGatewayRouteConfig{
 				Headers:                 headers2,
@@ -7616,14 +7472,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		typeVar5 := shared.AIGatewayMCPServerListenerType(r.Listener.Type.ValueString())
 		var route2 *shared.AIGatewayRouteConfig
 		if r.Listener.Config.Route != nil {
-			var headers4 map[string]interface{}
-			if r.Listener.Config.Route.Headers != nil {
-				headers4 = make(map[string]interface{})
-				for headersKey2 := range r.Listener.Config.Route.Headers {
-					var headersInst2 interface{}
-					_ = json.Unmarshal([]byte(r.Listener.Config.Route.Headers[headersKey2].ValueString()), &headersInst2)
-					headers4[headersKey2] = headersInst2
-				}
+			headers4 := make(map[string]interface{})
+			for headersKey2 := range r.Listener.Config.Route.Headers {
+				var headersInst2 interface{}
+				_ = json.Unmarshal([]byte(r.Listener.Config.Route.Headers[headersKey2].ValueString()), &headersInst2)
+				headers4[headersKey2] = headersInst2
 			}
 			var hosts2 []string
 			if r.Listener.Config.Route.Hosts != nil {
@@ -7638,19 +7491,13 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			} else {
 				httpsRedirectStatusCode2 = nil
 			}
-			var methods2 []string
-			if r.Listener.Config.Route.Methods != nil {
-				methods2 = make([]string, 0, len(r.Listener.Config.Route.Methods))
-				for methodsIndex2 := range r.Listener.Config.Route.Methods {
-					methods2 = append(methods2, r.Listener.Config.Route.Methods[methodsIndex2].ValueString())
-				}
+			methods2 := make([]string, 0, len(r.Listener.Config.Route.Methods))
+			for methodsIndex2 := range r.Listener.Config.Route.Methods {
+				methods2 = append(methods2, r.Listener.Config.Route.Methods[methodsIndex2].ValueString())
 			}
-			var paths2 []string
-			if r.Listener.Config.Route.Paths != nil {
-				paths2 = make([]string, 0, len(r.Listener.Config.Route.Paths))
-				for pathsIndex2 := range r.Listener.Config.Route.Paths {
-					paths2 = append(paths2, r.Listener.Config.Route.Paths[pathsIndex2].ValueString())
-				}
+			paths2 := make([]string, 0, len(r.Listener.Config.Route.Paths))
+			for pathsIndex2 := range r.Listener.Config.Route.Paths {
+				paths2 = append(paths2, r.Listener.Config.Route.Paths[pathsIndex2].ValueString())
 			}
 			preserveHost2 := new(bool)
 			if !r.Listener.Config.Route.PreserveHost.IsUnknown() && !r.Listener.Config.Route.PreserveHost.IsNull() {
@@ -7686,12 +7533,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			} else {
 				stripPath2 = nil
 			}
-			var tags2 []string
-			if r.Listener.Config.Route.Tags != nil {
-				tags2 = make([]string, 0, len(r.Listener.Config.Route.Tags))
-				for tagsIndex2 := range r.Listener.Config.Route.Tags {
-					tags2 = append(tags2, r.Listener.Config.Route.Tags[tagsIndex2].ValueString())
-				}
+			tags2 := make([]string, 0, len(r.Listener.Config.Route.Tags))
+			for tagsIndex2 := range r.Listener.Config.Route.Tags {
+				tags2 = append(tags2, r.Listener.Config.Route.Tags[tagsIndex2].ValueString())
 			}
 			route2 = &shared.AIGatewayRouteConfig{
 				Headers:                 headers4,
@@ -8496,14 +8340,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		typeVar9 := shared.AIGatewayMCPServerPassthroughListenerType(r.PassthroughListener.Type.ValueString())
 		var route3 *shared.AIGatewayRouteConfig
 		if r.PassthroughListener.Config.Route != nil {
-			var headers6 map[string]interface{}
-			if r.PassthroughListener.Config.Route.Headers != nil {
-				headers6 = make(map[string]interface{})
-				for headersKey3 := range r.PassthroughListener.Config.Route.Headers {
-					var headersInst3 interface{}
-					_ = json.Unmarshal([]byte(r.PassthroughListener.Config.Route.Headers[headersKey3].ValueString()), &headersInst3)
-					headers6[headersKey3] = headersInst3
-				}
+			headers6 := make(map[string]interface{})
+			for headersKey3 := range r.PassthroughListener.Config.Route.Headers {
+				var headersInst3 interface{}
+				_ = json.Unmarshal([]byte(r.PassthroughListener.Config.Route.Headers[headersKey3].ValueString()), &headersInst3)
+				headers6[headersKey3] = headersInst3
 			}
 			var hosts3 []string
 			if r.PassthroughListener.Config.Route.Hosts != nil {
@@ -8518,19 +8359,13 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			} else {
 				httpsRedirectStatusCode3 = nil
 			}
-			var methods3 []string
-			if r.PassthroughListener.Config.Route.Methods != nil {
-				methods3 = make([]string, 0, len(r.PassthroughListener.Config.Route.Methods))
-				for methodsIndex3 := range r.PassthroughListener.Config.Route.Methods {
-					methods3 = append(methods3, r.PassthroughListener.Config.Route.Methods[methodsIndex3].ValueString())
-				}
+			methods3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Methods))
+			for methodsIndex3 := range r.PassthroughListener.Config.Route.Methods {
+				methods3 = append(methods3, r.PassthroughListener.Config.Route.Methods[methodsIndex3].ValueString())
 			}
-			var paths3 []string
-			if r.PassthroughListener.Config.Route.Paths != nil {
-				paths3 = make([]string, 0, len(r.PassthroughListener.Config.Route.Paths))
-				for pathsIndex3 := range r.PassthroughListener.Config.Route.Paths {
-					paths3 = append(paths3, r.PassthroughListener.Config.Route.Paths[pathsIndex3].ValueString())
-				}
+			paths3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Paths))
+			for pathsIndex3 := range r.PassthroughListener.Config.Route.Paths {
+				paths3 = append(paths3, r.PassthroughListener.Config.Route.Paths[pathsIndex3].ValueString())
 			}
 			preserveHost3 := new(bool)
 			if !r.PassthroughListener.Config.Route.PreserveHost.IsUnknown() && !r.PassthroughListener.Config.Route.PreserveHost.IsNull() {
@@ -8566,12 +8401,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			} else {
 				stripPath3 = nil
 			}
-			var tags3 []string
-			if r.PassthroughListener.Config.Route.Tags != nil {
-				tags3 = make([]string, 0, len(r.PassthroughListener.Config.Route.Tags))
-				for tagsIndex3 := range r.PassthroughListener.Config.Route.Tags {
-					tags3 = append(tags3, r.PassthroughListener.Config.Route.Tags[tagsIndex3].ValueString())
-				}
+			tags3 := make([]string, 0, len(r.PassthroughListener.Config.Route.Tags))
+			for tagsIndex3 := range r.PassthroughListener.Config.Route.Tags {
+				tags3 = append(tags3, r.PassthroughListener.Config.Route.Tags[tagsIndex3].ValueString())
 			}
 			route3 = &shared.AIGatewayRouteConfig{
 				Headers:                 headers6,
@@ -9460,14 +9292,11 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 		typeVar13 := shared.AIGatewayMCPServerUpstreamServerType(r.UpstreamServer.Type.ValueString())
 		var route4 *shared.AIGatewayRouteConfig
 		if r.UpstreamServer.Config.Route != nil {
-			var headers8 map[string]interface{}
-			if r.UpstreamServer.Config.Route.Headers != nil {
-				headers8 = make(map[string]interface{})
-				for headersKey4 := range r.UpstreamServer.Config.Route.Headers {
-					var headersInst4 interface{}
-					_ = json.Unmarshal([]byte(r.UpstreamServer.Config.Route.Headers[headersKey4].ValueString()), &headersInst4)
-					headers8[headersKey4] = headersInst4
-				}
+			headers8 := make(map[string]interface{})
+			for headersKey4 := range r.UpstreamServer.Config.Route.Headers {
+				var headersInst4 interface{}
+				_ = json.Unmarshal([]byte(r.UpstreamServer.Config.Route.Headers[headersKey4].ValueString()), &headersInst4)
+				headers8[headersKey4] = headersInst4
 			}
 			var hosts4 []string
 			if r.UpstreamServer.Config.Route.Hosts != nil {
@@ -9482,19 +9311,13 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			} else {
 				httpsRedirectStatusCode4 = nil
 			}
-			var methods4 []string
-			if r.UpstreamServer.Config.Route.Methods != nil {
-				methods4 = make([]string, 0, len(r.UpstreamServer.Config.Route.Methods))
-				for methodsIndex4 := range r.UpstreamServer.Config.Route.Methods {
-					methods4 = append(methods4, r.UpstreamServer.Config.Route.Methods[methodsIndex4].ValueString())
-				}
+			methods4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Methods))
+			for methodsIndex4 := range r.UpstreamServer.Config.Route.Methods {
+				methods4 = append(methods4, r.UpstreamServer.Config.Route.Methods[methodsIndex4].ValueString())
 			}
-			var paths4 []string
-			if r.UpstreamServer.Config.Route.Paths != nil {
-				paths4 = make([]string, 0, len(r.UpstreamServer.Config.Route.Paths))
-				for pathsIndex4 := range r.UpstreamServer.Config.Route.Paths {
-					paths4 = append(paths4, r.UpstreamServer.Config.Route.Paths[pathsIndex4].ValueString())
-				}
+			paths4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Paths))
+			for pathsIndex4 := range r.UpstreamServer.Config.Route.Paths {
+				paths4 = append(paths4, r.UpstreamServer.Config.Route.Paths[pathsIndex4].ValueString())
 			}
 			preserveHost4 := new(bool)
 			if !r.UpstreamServer.Config.Route.PreserveHost.IsUnknown() && !r.UpstreamServer.Config.Route.PreserveHost.IsNull() {
@@ -9530,12 +9353,9 @@ func (r *AIGatewayMCPServerResourceModel) ToSharedUpdateAIGatewayMCPServerReques
 			} else {
 				stripPath4 = nil
 			}
-			var tags4 []string
-			if r.UpstreamServer.Config.Route.Tags != nil {
-				tags4 = make([]string, 0, len(r.UpstreamServer.Config.Route.Tags))
-				for tagsIndex4 := range r.UpstreamServer.Config.Route.Tags {
-					tags4 = append(tags4, r.UpstreamServer.Config.Route.Tags[tagsIndex4].ValueString())
-				}
+			tags4 := make([]string, 0, len(r.UpstreamServer.Config.Route.Tags))
+			for tagsIndex4 := range r.UpstreamServer.Config.Route.Tags {
+				tags4 = append(tags4, r.UpstreamServer.Config.Route.Tags[tagsIndex4].ValueString())
 			}
 			route4 = &shared.AIGatewayRouteConfig{
 				Headers:                 headers8,

@@ -173,7 +173,7 @@ func (r *MeshMetricResourceModel) RefreshFromSharedMeshMetricItem(ctx context.Co
 		if resp.Status == nil {
 			r.Status = nil
 		} else {
-			r.Status = &tfTypes.Status{}
+			r.Status = &tfTypes.MeshAccessLogItemStatus{}
 			r.Status.Conditions = []tfTypes.Conditions{}
 
 			for _, conditionsItem := range resp.Status.Conditions {

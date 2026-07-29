@@ -48,17 +48,17 @@ type MeshAccessLogResource struct {
 
 // MeshAccessLogResourceModel describes the resource data model.
 type MeshAccessLogResourceModel struct {
-	CpID             types.String                   `tfsdk:"cp_id"`
-	CreationTime     types.String                   `tfsdk:"creation_time"`
-	Kri              types.String                   `tfsdk:"kri"`
-	Labels           kumalabels.KumaLabelsMapValue  `tfsdk:"labels"`
-	Mesh             types.String                   `tfsdk:"mesh"`
-	ModificationTime types.String                   `tfsdk:"modification_time"`
-	Name             types.String                   `tfsdk:"name"`
-	Spec             *tfTypes.MeshAccessLogItemSpec `tfsdk:"spec"`
-	Status           *tfTypes.Status                `tfsdk:"status"`
-	Type             types.String                   `tfsdk:"type"`
-	Warnings         []types.String                 `tfsdk:"warnings"`
+	CpID             types.String                     `tfsdk:"cp_id"`
+	CreationTime     types.String                     `tfsdk:"creation_time"`
+	Kri              types.String                     `tfsdk:"kri"`
+	Labels           kumalabels.KumaLabelsMapValue    `tfsdk:"labels"`
+	Mesh             types.String                     `tfsdk:"mesh"`
+	ModificationTime types.String                     `tfsdk:"modification_time"`
+	Name             types.String                     `tfsdk:"name"`
+	Spec             *tfTypes.MeshAccessLogItemSpec   `tfsdk:"spec"`
+	Status           *tfTypes.MeshAccessLogItemStatus `tfsdk:"status"`
+	Type             types.String                     `tfsdk:"type"`
+	Warnings         []types.String                   `tfsdk:"warnings"`
 }
 
 func (r *MeshAccessLogResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

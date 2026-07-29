@@ -2,7 +2,11 @@
 
 package types
 
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
+
 type AIGatewayACLS struct {
-	AIGatewayAllowACL *AIGatewayAllowACL `queryParam:"inline" tfsdk:"ai_gateway_allow_acl"`
-	AIGatewayDenyACL  *AIGatewayDenyACL  `queryParam:"inline" tfsdk:"ai_gateway_deny_acl"`
+	Allow []types.String `tfsdk:"allow"`
+	Deny  []types.String `tfsdk:"deny"`
 }

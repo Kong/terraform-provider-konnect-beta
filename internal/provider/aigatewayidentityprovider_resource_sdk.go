@@ -59,8 +59,6 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 			}
 			r.KeyAuth.Name = types.StringValue(resp.AIGatewayIdentityProviderKeyAuthResponse.Name)
 			r.Name = r.KeyAuth.Name
-			r.KeyAuth.Type = types.StringValue(string(resp.AIGatewayIdentityProviderKeyAuthResponse.Type))
-			r.Type = r.KeyAuth.Type
 			r.KeyAuth.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayIdentityProviderKeyAuthResponse.UpdatedAt))
 			r.UpdatedAt = r.KeyAuth.UpdatedAt
 		}
@@ -86,34 +84,22 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 					r.OpenidConnect.Config.AuthMethods = append(r.OpenidConnect.Config.AuthMethods, types.StringValue(string(v)))
 				}
 				r.OpenidConnect.Config.CacheTokensSalt = types.StringValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.CacheTokensSalt)
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientID != nil {
-					r.OpenidConnect.Config.ClientID = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientID))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientID {
-						r.OpenidConnect.Config.ClientID = append(r.OpenidConnect.Config.ClientID, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.ClientID = nil
+				r.OpenidConnect.Config.ClientID = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientID))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ClientID {
+					r.OpenidConnect.Config.ClientID = append(r.OpenidConnect.Config.ClientID, types.StringValue(v))
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ConsumerClaims != nil {
-					r.OpenidConnect.Config.ConsumerClaims = nil
-					for _, consumerClaimsItem := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ConsumerClaims {
-						var consumerClaims []types.String
-						consumerClaims = make([]types.String, 0, len(consumerClaimsItem))
-						for _, v := range consumerClaimsItem {
-							consumerClaims = append(consumerClaims, types.StringValue(v))
-						}
-						r.OpenidConnect.Config.ConsumerClaims = append(r.OpenidConnect.Config.ConsumerClaims, consumerClaims)
+				r.OpenidConnect.Config.ConsumerClaims = nil
+				for _, consumerClaimsItem := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ConsumerClaims {
+					var consumerClaims []types.String
+					consumerClaims = make([]types.String, 0, len(consumerClaimsItem))
+					for _, v := range consumerClaimsItem {
+						consumerClaims = append(consumerClaims, types.StringValue(v))
 					}
-				} else {
-					r.OpenidConnect.Config.ConsumerClaims = nil
+					r.OpenidConnect.Config.ConsumerClaims = append(r.OpenidConnect.Config.ConsumerClaims, consumerClaims)
 				}
-				if resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ConsumerGroupsClaim != nil {
-					r.OpenidConnect.Config.ConsumerGroupsClaim = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ConsumerGroupsClaim))
-					for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ConsumerGroupsClaim {
-						r.OpenidConnect.Config.ConsumerGroupsClaim = append(r.OpenidConnect.Config.ConsumerGroupsClaim, types.StringValue(v))
-					}
-				} else {
-					r.OpenidConnect.Config.ConsumerGroupsClaim = nil
+				r.OpenidConnect.Config.ConsumerGroupsClaim = make([]types.String, 0, len(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ConsumerGroupsClaim))
+				for _, v := range resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ConsumerGroupsClaim {
+					r.OpenidConnect.Config.ConsumerGroupsClaim = append(r.OpenidConnect.Config.ConsumerGroupsClaim, types.StringValue(v))
 				}
 				r.OpenidConnect.Config.ConsumerGroupsOptional = types.BoolPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ConsumerGroupsOptional)
 				r.OpenidConnect.Config.ConsumerOptional = types.BoolPointerValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Config.ConsumerOptional)
@@ -147,8 +133,6 @@ func (r *AIGatewayIdentityProviderResourceModel) RefreshFromSharedAIGatewayIdent
 			}
 			r.OpenidConnect.Name = types.StringValue(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Name)
 			r.Name = r.OpenidConnect.Name
-			r.OpenidConnect.Type = types.StringValue(string(resp.AIGatewayIdentityProviderOpenIDConnectResponse.Type))
-			r.Type = r.OpenidConnect.Type
 			r.OpenidConnect.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AIGatewayIdentityProviderOpenIDConnectResponse.UpdatedAt))
 			r.UpdatedAt = r.OpenidConnect.UpdatedAt
 		}
@@ -263,7 +247,6 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 
 			managedBy[managedByKey] = managedByInst
 		}
-		typeVar := shared.AIGatewayIdentityProviderKeyAuthType(r.KeyAuth.Type.ValueString())
 		var config *shared.AIGatewayIdentityProviderKeyAuthConfig
 		if r.KeyAuth.Config != nil {
 			hideCredentials := new(bool)
@@ -312,7 +295,6 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			Name:        name,
 			Labels:      labels,
 			ManagedBy:   managedBy,
-			Type:        typeVar,
 			Config:      config,
 		}
 	}
@@ -343,44 +325,31 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 
 			managedBy1[managedByKey1] = managedByInst1
 		}
-		typeVar1 := shared.AIGatewayIdentityProviderOpenIDConnectType(r.OpenidConnect.Type.ValueString())
 		var config1 *shared.AIGatewayIdentityProviderOpenIDConnectConfig
 		if r.OpenidConnect.Config != nil {
 			authMethods := make([]shared.AuthMethods, 0, len(r.OpenidConnect.Config.AuthMethods))
 			for _, authMethodsItem := range r.OpenidConnect.Config.AuthMethods {
 				authMethods = append(authMethods, shared.AuthMethods(authMethodsItem.ValueString()))
 			}
-			var clientID []string
-			if r.OpenidConnect.Config.ClientID != nil {
-				clientID = make([]string, 0, len(r.OpenidConnect.Config.ClientID))
-				for clientIDIndex := range r.OpenidConnect.Config.ClientID {
-					clientID = append(clientID, r.OpenidConnect.Config.ClientID[clientIDIndex].ValueString())
-				}
+			clientID := make([]string, 0, len(r.OpenidConnect.Config.ClientID))
+			for clientIDIndex := range r.OpenidConnect.Config.ClientID {
+				clientID = append(clientID, r.OpenidConnect.Config.ClientID[clientIDIndex].ValueString())
 			}
-			var clientSecret []string
-			if r.OpenidConnect.Config.ClientSecret != nil {
-				clientSecret = make([]string, 0, len(r.OpenidConnect.Config.ClientSecret))
-				for clientSecretIndex := range r.OpenidConnect.Config.ClientSecret {
-					clientSecret = append(clientSecret, r.OpenidConnect.Config.ClientSecret[clientSecretIndex].ValueString())
-				}
+			clientSecret := make([]string, 0, len(r.OpenidConnect.Config.ClientSecret))
+			for clientSecretIndex := range r.OpenidConnect.Config.ClientSecret {
+				clientSecret = append(clientSecret, r.OpenidConnect.Config.ClientSecret[clientSecretIndex].ValueString())
 			}
-			var consumerClaims [][]string
-			if r.OpenidConnect.Config.ConsumerClaims != nil {
-				consumerClaims = make([][]string, 0, len(r.OpenidConnect.Config.ConsumerClaims))
-				for consumerClaimsIndex := range r.OpenidConnect.Config.ConsumerClaims {
-					consumerClaimsTmp := make([]string, 0, len(r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex]))
-					for index := range r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex] {
-						consumerClaimsTmp = append(consumerClaimsTmp, r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex][index].ValueString())
-					}
-					consumerClaims = append(consumerClaims, consumerClaimsTmp)
+			consumerClaims := make([][]string, 0, len(r.OpenidConnect.Config.ConsumerClaims))
+			for consumerClaimsIndex := range r.OpenidConnect.Config.ConsumerClaims {
+				consumerClaimsTmp := make([]string, 0, len(r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex]))
+				for index := range r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex] {
+					consumerClaimsTmp = append(consumerClaimsTmp, r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex][index].ValueString())
 				}
+				consumerClaims = append(consumerClaims, consumerClaimsTmp)
 			}
-			var consumerGroupsClaim []string
-			if r.OpenidConnect.Config.ConsumerGroupsClaim != nil {
-				consumerGroupsClaim = make([]string, 0, len(r.OpenidConnect.Config.ConsumerGroupsClaim))
-				for consumerGroupsClaimIndex := range r.OpenidConnect.Config.ConsumerGroupsClaim {
-					consumerGroupsClaim = append(consumerGroupsClaim, r.OpenidConnect.Config.ConsumerGroupsClaim[consumerGroupsClaimIndex].ValueString())
-				}
+			consumerGroupsClaim := make([]string, 0, len(r.OpenidConnect.Config.ConsumerGroupsClaim))
+			for consumerGroupsClaimIndex := range r.OpenidConnect.Config.ConsumerGroupsClaim {
+				consumerGroupsClaim = append(consumerGroupsClaim, r.OpenidConnect.Config.ConsumerGroupsClaim[consumerGroupsClaimIndex].ValueString())
 			}
 			consumerGroupsOptional := new(bool)
 			if !r.OpenidConnect.Config.ConsumerGroupsOptional.IsUnknown() && !r.OpenidConnect.Config.ConsumerGroupsOptional.IsNull() {
@@ -437,7 +406,6 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedCreateAIGatewayIdentity
 			Name:        name1,
 			Labels:      labels1,
 			ManagedBy:   managedBy1,
-			Type:        typeVar1,
 			Config:      config1,
 		}
 	}
@@ -476,7 +444,6 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 
 			managedBy[managedByKey] = managedByInst
 		}
-		typeVar := shared.AIGatewayIdentityProviderKeyAuthType(r.KeyAuth.Type.ValueString())
 		var config *shared.AIGatewayIdentityProviderKeyAuthConfig
 		if r.KeyAuth.Config != nil {
 			hideCredentials := new(bool)
@@ -525,7 +492,6 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			Name:        name,
 			Labels:      labels,
 			ManagedBy:   managedBy,
-			Type:        typeVar,
 			Config:      config,
 		}
 	}
@@ -556,44 +522,31 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 
 			managedBy1[managedByKey1] = managedByInst1
 		}
-		typeVar1 := shared.AIGatewayIdentityProviderOpenIDConnectType(r.OpenidConnect.Type.ValueString())
 		var config1 *shared.AIGatewayIdentityProviderOpenIDConnectConfig
 		if r.OpenidConnect.Config != nil {
 			authMethods := make([]shared.AuthMethods, 0, len(r.OpenidConnect.Config.AuthMethods))
 			for _, authMethodsItem := range r.OpenidConnect.Config.AuthMethods {
 				authMethods = append(authMethods, shared.AuthMethods(authMethodsItem.ValueString()))
 			}
-			var clientID []string
-			if r.OpenidConnect.Config.ClientID != nil {
-				clientID = make([]string, 0, len(r.OpenidConnect.Config.ClientID))
-				for clientIDIndex := range r.OpenidConnect.Config.ClientID {
-					clientID = append(clientID, r.OpenidConnect.Config.ClientID[clientIDIndex].ValueString())
-				}
+			clientID := make([]string, 0, len(r.OpenidConnect.Config.ClientID))
+			for clientIDIndex := range r.OpenidConnect.Config.ClientID {
+				clientID = append(clientID, r.OpenidConnect.Config.ClientID[clientIDIndex].ValueString())
 			}
-			var clientSecret []string
-			if r.OpenidConnect.Config.ClientSecret != nil {
-				clientSecret = make([]string, 0, len(r.OpenidConnect.Config.ClientSecret))
-				for clientSecretIndex := range r.OpenidConnect.Config.ClientSecret {
-					clientSecret = append(clientSecret, r.OpenidConnect.Config.ClientSecret[clientSecretIndex].ValueString())
-				}
+			clientSecret := make([]string, 0, len(r.OpenidConnect.Config.ClientSecret))
+			for clientSecretIndex := range r.OpenidConnect.Config.ClientSecret {
+				clientSecret = append(clientSecret, r.OpenidConnect.Config.ClientSecret[clientSecretIndex].ValueString())
 			}
-			var consumerClaims [][]string
-			if r.OpenidConnect.Config.ConsumerClaims != nil {
-				consumerClaims = make([][]string, 0, len(r.OpenidConnect.Config.ConsumerClaims))
-				for consumerClaimsIndex := range r.OpenidConnect.Config.ConsumerClaims {
-					consumerClaimsTmp := make([]string, 0, len(r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex]))
-					for index := range r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex] {
-						consumerClaimsTmp = append(consumerClaimsTmp, r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex][index].ValueString())
-					}
-					consumerClaims = append(consumerClaims, consumerClaimsTmp)
+			consumerClaims := make([][]string, 0, len(r.OpenidConnect.Config.ConsumerClaims))
+			for consumerClaimsIndex := range r.OpenidConnect.Config.ConsumerClaims {
+				consumerClaimsTmp := make([]string, 0, len(r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex]))
+				for index := range r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex] {
+					consumerClaimsTmp = append(consumerClaimsTmp, r.OpenidConnect.Config.ConsumerClaims[consumerClaimsIndex][index].ValueString())
 				}
+				consumerClaims = append(consumerClaims, consumerClaimsTmp)
 			}
-			var consumerGroupsClaim []string
-			if r.OpenidConnect.Config.ConsumerGroupsClaim != nil {
-				consumerGroupsClaim = make([]string, 0, len(r.OpenidConnect.Config.ConsumerGroupsClaim))
-				for consumerGroupsClaimIndex := range r.OpenidConnect.Config.ConsumerGroupsClaim {
-					consumerGroupsClaim = append(consumerGroupsClaim, r.OpenidConnect.Config.ConsumerGroupsClaim[consumerGroupsClaimIndex].ValueString())
-				}
+			consumerGroupsClaim := make([]string, 0, len(r.OpenidConnect.Config.ConsumerGroupsClaim))
+			for consumerGroupsClaimIndex := range r.OpenidConnect.Config.ConsumerGroupsClaim {
+				consumerGroupsClaim = append(consumerGroupsClaim, r.OpenidConnect.Config.ConsumerGroupsClaim[consumerGroupsClaimIndex].ValueString())
 			}
 			consumerGroupsOptional := new(bool)
 			if !r.OpenidConnect.Config.ConsumerGroupsOptional.IsUnknown() && !r.OpenidConnect.Config.ConsumerGroupsOptional.IsNull() {
@@ -650,7 +603,6 @@ func (r *AIGatewayIdentityProviderResourceModel) ToSharedUpdateAIGatewayIdentity
 			Name:        name1,
 			Labels:      labels1,
 			ManagedBy:   managedBy1,
-			Type:        typeVar1,
 			Config:      config1,
 		}
 	}

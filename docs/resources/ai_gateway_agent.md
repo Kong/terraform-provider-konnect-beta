@@ -17,11 +17,12 @@ resource "konnect_ai_gateway_agent" "my_aigatewayagent" {
   provider = konnect-beta
   access = {
     acls = {
-      ai_gateway_deny_acl = {
-        deny = [
-          "..."
-        ]
-      }
+      allow = [
+        "..."
+      ]
+      deny = [
+        "..."
+      ]
     }
   }
   additional_properties = "{ \"see\": \"documentation\" }"
@@ -178,25 +179,8 @@ Access control rules. Configure exactly one of `allow` or `deny`. (see [below fo
 
 Optional:
 
-- `ai_gateway_allow_acl` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--access--acls--ai_gateway_allow_acl))
-- `ai_gateway_deny_acl` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--access--acls--ai_gateway_deny_acl))
-
-<a id="nestedatt--access--acls--ai_gateway_allow_acl"></a>
-### Nested Schema for `access.acls.ai_gateway_allow_acl`
-
-Optional:
-
-- `allow` (List of String) List of Consumer Groups Names, or Authenticated Groups Names that are permitted access. Not Null
-
-
-<a id="nestedatt--access--acls--ai_gateway_deny_acl"></a>
-### Nested Schema for `access.acls.ai_gateway_deny_acl`
-
-Optional:
-
-- `deny` (List of String) List of Consumer Groups Names, or Authenticated Groups Names that are denied access. Not Null
+- `allow` (List of String) List of Consumer Groups Names, or Authenticated Groups Names that are permitted access.
+- `deny` (List of String) List of Consumer Groups Names, or Authenticated Groups Names that are denied access.
 
 ## Import
 

@@ -20,7 +20,6 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
       key = "value"
     }
     name = "okta-ai-se"
-    type = "key-auth"
   }
   openid_connect = {
     config = {
@@ -59,6 +58,5 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
       key = "value"
     }
     name = "okta-ai-se"
-    type = "openid-connect"
   }
 }

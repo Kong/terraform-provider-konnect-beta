@@ -2,11 +2,12 @@ resource "konnect_ai_gateway_agent" "my_aigatewayagent" {
   provider = konnect-beta
   access = {
     acls = {
-      ai_gateway_deny_acl = {
-        deny = [
-          "..."
-        ]
-      }
+      allow = [
+        "..."
+      ]
+      deny = [
+        "..."
+      ]
     }
   }
   additional_properties = "{ \"see\": \"documentation\" }"

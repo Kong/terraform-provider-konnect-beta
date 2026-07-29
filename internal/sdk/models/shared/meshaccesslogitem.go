@@ -1939,21 +1939,21 @@ func (m *MeshAccessLogItemSpec) GetTo() []To {
 	return m.To
 }
 
-// MeshAccessLogItemStatus - status of the condition, one of True, False, Unknown.
-type MeshAccessLogItemStatus string
+// MeshAccessLogItemStatusStatus - status of the condition, one of True, False, Unknown.
+type MeshAccessLogItemStatusStatus string
 
 const (
-	MeshAccessLogItemStatusTrue    MeshAccessLogItemStatus = "True"
-	MeshAccessLogItemStatusFalse   MeshAccessLogItemStatus = "False"
-	MeshAccessLogItemStatusUnknown MeshAccessLogItemStatus = "Unknown"
+	MeshAccessLogItemStatusStatusTrue    MeshAccessLogItemStatusStatus = "True"
+	MeshAccessLogItemStatusStatusFalse   MeshAccessLogItemStatusStatus = "False"
+	MeshAccessLogItemStatusStatusUnknown MeshAccessLogItemStatusStatus = "Unknown"
 )
 
-func (e MeshAccessLogItemStatus) ToPointer() *MeshAccessLogItemStatus {
+func (e MeshAccessLogItemStatusStatus) ToPointer() *MeshAccessLogItemStatusStatus {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *MeshAccessLogItemStatus) IsExact() bool {
+func (e *MeshAccessLogItemStatusStatus) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "True", "False", "Unknown":
@@ -1974,7 +1974,7 @@ type Conditions struct {
 	// This field may not be empty.
 	Reason string `json:"reason"`
 	// status of the condition, one of True, False, Unknown.
-	Status MeshAccessLogItemStatus `json:"status"`
+	Status MeshAccessLogItemStatusStatus `json:"status"`
 	// type of condition in CamelCase or in foo.example.com/CamelCase.
 	Type string `json:"type"`
 }
@@ -1993,9 +1993,9 @@ func (c *Conditions) GetReason() string {
 	return c.Reason
 }
 
-func (c *Conditions) GetStatus() MeshAccessLogItemStatus {
+func (c *Conditions) GetStatus() MeshAccessLogItemStatusStatus {
 	if c == nil {
-		return MeshAccessLogItemStatus("")
+		return MeshAccessLogItemStatusStatus("")
 	}
 	return c.Status
 }
@@ -2007,16 +2007,16 @@ func (c *Conditions) GetType() string {
 	return c.Type
 }
 
-// Status is the current status of the Kuma MeshAccessLog resource.
-type Status struct {
+// MeshAccessLogItemStatus - Status is the current status of the Kuma MeshAccessLog resource.
+type MeshAccessLogItemStatus struct {
 	Conditions []Conditions `json:"conditions,omitempty"`
 }
 
-func (s *Status) GetConditions() []Conditions {
-	if s == nil {
+func (m *MeshAccessLogItemStatus) GetConditions() []Conditions {
+	if m == nil {
 		return nil
 	}
-	return s.Conditions
+	return m.Conditions
 }
 
 // MeshAccessLogItem - MeshAccessLog configures access logging for traffic between services in the mesh. It allows you to capture and export request/response logs to various backends (file, TCP, or OpenTelemetry) for monitoring, debugging, and auditing purposes.
@@ -2038,7 +2038,7 @@ type MeshAccessLogItem struct {
 	// Time at which the resource was updated
 	ModificationTime *time.Time `json:"modificationTime,omitempty"`
 	// Status is the current status of the Kuma MeshAccessLog resource.
-	Status *Status `json:"status,omitempty"`
+	Status *MeshAccessLogItemStatus `json:"status,omitempty"`
 }
 
 func (m MeshAccessLogItem) MarshalJSON() ([]byte, error) {
@@ -2108,7 +2108,7 @@ func (m *MeshAccessLogItem) GetModificationTime() *time.Time {
 	return m.ModificationTime
 }
 
-func (m *MeshAccessLogItem) GetStatus() *Status {
+func (m *MeshAccessLogItem) GetStatus() *MeshAccessLogItemStatus {
 	if m == nil {
 		return nil
 	}

@@ -3,34 +3,9 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect-beta/internal/sdk/internal/utils"
 	"time"
 )
-
-type AIGatewayIdentityProviderOpenIDConnectResponseType string
-
-const (
-	AIGatewayIdentityProviderOpenIDConnectResponseTypeOpenidConnect AIGatewayIdentityProviderOpenIDConnectResponseType = "openid-connect"
-)
-
-func (e AIGatewayIdentityProviderOpenIDConnectResponseType) ToPointer() *AIGatewayIdentityProviderOpenIDConnectResponseType {
-	return &e
-}
-func (e *AIGatewayIdentityProviderOpenIDConnectResponseType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "openid-connect":
-		*e = AIGatewayIdentityProviderOpenIDConnectResponseType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AIGatewayIdentityProviderOpenIDConnectResponseType: %v", v)
-	}
-}
 
 type AIGatewayIdentityProviderOpenIDConnectResponseAuthMethods string
 
@@ -70,15 +45,15 @@ type AIGatewayIdentityProviderOpenIDConnectResponseConfig struct {
 	// An array of strings representing the client id for the OpenID Connect provider.
 	// When multiple values are provided, the client ID and secrets pairs correspond based on their locations in the array.
 	//
-	ClientID []string `json:"client_id"`
+	ClientID []string `json:"client_id,omitempty"`
 	// An array containing an array of string paths representing the location of the claim in a nested object.
 	// For example, to map to user.info.id, set [ "user", "info", "id" ].
 	//
-	ConsumerClaims [][]string `json:"consumer_claims"`
+	ConsumerClaims [][]string `json:"consumer_claims,omitempty"`
 	// The claim used for consumer groups mapping.
 	// If multiple values are set, it means the claim is inside a nested object of the token payload.
 	//
-	ConsumerGroupsClaim []string `json:"consumer_groups_claim"`
+	ConsumerGroupsClaim []string `json:"consumer_groups_claim,omitempty"`
 	// Do not terminate the request if consumer groups mapping fails.
 	//
 	ConsumerGroupsOptional *bool `default:"false" json:"consumer_groups_optional"`
@@ -206,8 +181,9 @@ type AIGatewayIdentityProviderOpenIDConnectResponse struct {
 	//
 	// Keys must be 1–63 characters long and start with an alphanumeric character.
 	//
-	ManagedBy map[string]string                                  `json:"managed_by,omitempty"`
-	Type      AIGatewayIdentityProviderOpenIDConnectResponseType `json:"type"`
+	ManagedBy map[string]string `json:"managed_by,omitempty"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"openid-connect" json:"type"`
 	// Configuration for the OpenID Connect identity provider.
 	// For advanced use cases, additional config properties can be sent in the request body.
 	// See: https://developer.konghq.com/plugins/openid-connect/reference/ for the list of properties
@@ -260,11 +236,8 @@ func (a *AIGatewayIdentityProviderOpenIDConnectResponse) GetManagedBy() map[stri
 	return a.ManagedBy
 }
 
-func (a *AIGatewayIdentityProviderOpenIDConnectResponse) GetType() AIGatewayIdentityProviderOpenIDConnectResponseType {
-	if a == nil {
-		return AIGatewayIdentityProviderOpenIDConnectResponseType("")
-	}
-	return a.Type
+func (a *AIGatewayIdentityProviderOpenIDConnectResponse) GetType() string {
+	return "openid-connect"
 }
 
 func (a *AIGatewayIdentityProviderOpenIDConnectResponse) GetConfig() *AIGatewayIdentityProviderOpenIDConnectResponseConfig {

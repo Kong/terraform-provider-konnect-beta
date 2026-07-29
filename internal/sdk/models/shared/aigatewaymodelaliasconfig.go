@@ -11,36 +11,14 @@ import (
 type AIGatewayModelAliasConfigType string
 
 const (
-	AIGatewayModelAliasConfigTypeAIGatewayModelAliasConfigBody    AIGatewayModelAliasConfigType = "AIGatewayModelAliasConfigBody"
-	AIGatewayModelAliasConfigTypeAIGatewayModelAliasConfigHeaders AIGatewayModelAliasConfigType = "AIGatewayModelAliasConfigHeaders"
-	AIGatewayModelAliasConfigTypeAIGatewayModelAliasConfigPath    AIGatewayModelAliasConfigType = "AIGatewayModelAliasConfigPath"
+	AIGatewayModelAliasConfigTypeAIGatewayModelAliasConfigPath AIGatewayModelAliasConfigType = "AIGatewayModelAliasConfigPath"
 )
 
 // AIGatewayModelAliasConfig - Configuration for routing to this model using an alias.
 type AIGatewayModelAliasConfig struct {
-	AIGatewayModelAliasConfigBody    *AIGatewayModelAliasConfigBody    `queryParam:"inline" union:"member"`
-	AIGatewayModelAliasConfigHeaders *AIGatewayModelAliasConfigHeaders `queryParam:"inline" union:"member"`
-	AIGatewayModelAliasConfigPath    *AIGatewayModelAliasConfigPath    `queryParam:"inline" union:"member"`
+	AIGatewayModelAliasConfigPath *AIGatewayModelAliasConfigPath `queryParam:"inline" union:"member"`
 
 	Type AIGatewayModelAliasConfigType
-}
-
-func CreateAIGatewayModelAliasConfigAIGatewayModelAliasConfigBody(aiGatewayModelAliasConfigBody AIGatewayModelAliasConfigBody) AIGatewayModelAliasConfig {
-	typ := AIGatewayModelAliasConfigTypeAIGatewayModelAliasConfigBody
-
-	return AIGatewayModelAliasConfig{
-		AIGatewayModelAliasConfigBody: &aiGatewayModelAliasConfigBody,
-		Type:                          typ,
-	}
-}
-
-func CreateAIGatewayModelAliasConfigAIGatewayModelAliasConfigHeaders(aiGatewayModelAliasConfigHeaders AIGatewayModelAliasConfigHeaders) AIGatewayModelAliasConfig {
-	typ := AIGatewayModelAliasConfigTypeAIGatewayModelAliasConfigHeaders
-
-	return AIGatewayModelAliasConfig{
-		AIGatewayModelAliasConfigHeaders: &aiGatewayModelAliasConfigHeaders,
-		Type:                             typ,
-	}
 }
 
 func CreateAIGatewayModelAliasConfigAIGatewayModelAliasConfigPath(aiGatewayModelAliasConfigPath AIGatewayModelAliasConfigPath) AIGatewayModelAliasConfig {
@@ -57,22 +35,6 @@ func (u *AIGatewayModelAliasConfig) UnmarshalJSON(data []byte) error {
 	var candidates []utils.UnionCandidate
 
 	// Collect all valid candidates
-	var aiGatewayModelAliasConfigBody AIGatewayModelAliasConfigBody = AIGatewayModelAliasConfigBody{}
-	if err := utils.UnmarshalJSON(data, &aiGatewayModelAliasConfigBody, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AIGatewayModelAliasConfigTypeAIGatewayModelAliasConfigBody,
-			Value: &aiGatewayModelAliasConfigBody,
-		})
-	}
-
-	var aiGatewayModelAliasConfigHeaders AIGatewayModelAliasConfigHeaders = AIGatewayModelAliasConfigHeaders{}
-	if err := utils.UnmarshalJSON(data, &aiGatewayModelAliasConfigHeaders, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  AIGatewayModelAliasConfigTypeAIGatewayModelAliasConfigHeaders,
-			Value: &aiGatewayModelAliasConfigHeaders,
-		})
-	}
-
 	var aiGatewayModelAliasConfigPath AIGatewayModelAliasConfigPath = AIGatewayModelAliasConfigPath{}
 	if err := utils.UnmarshalJSON(data, &aiGatewayModelAliasConfigPath, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
@@ -94,12 +56,6 @@ func (u *AIGatewayModelAliasConfig) UnmarshalJSON(data []byte) error {
 	// Set the union type and value based on the best candidate
 	u.Type = best.Type.(AIGatewayModelAliasConfigType)
 	switch best.Type {
-	case AIGatewayModelAliasConfigTypeAIGatewayModelAliasConfigBody:
-		u.AIGatewayModelAliasConfigBody = best.Value.(*AIGatewayModelAliasConfigBody)
-		return nil
-	case AIGatewayModelAliasConfigTypeAIGatewayModelAliasConfigHeaders:
-		u.AIGatewayModelAliasConfigHeaders = best.Value.(*AIGatewayModelAliasConfigHeaders)
-		return nil
 	case AIGatewayModelAliasConfigTypeAIGatewayModelAliasConfigPath:
 		u.AIGatewayModelAliasConfigPath = best.Value.(*AIGatewayModelAliasConfigPath)
 		return nil
@@ -109,14 +65,6 @@ func (u *AIGatewayModelAliasConfig) UnmarshalJSON(data []byte) error {
 }
 
 func (u AIGatewayModelAliasConfig) MarshalJSON() ([]byte, error) {
-	if u.AIGatewayModelAliasConfigBody != nil {
-		return utils.MarshalJSON(u.AIGatewayModelAliasConfigBody, "", true)
-	}
-
-	if u.AIGatewayModelAliasConfigHeaders != nil {
-		return utils.MarshalJSON(u.AIGatewayModelAliasConfigHeaders, "", true)
-	}
-
 	if u.AIGatewayModelAliasConfigPath != nil {
 		return utils.MarshalJSON(u.AIGatewayModelAliasConfigPath, "", true)
 	}

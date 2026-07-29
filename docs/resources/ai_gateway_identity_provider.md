@@ -35,7 +35,6 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
       key = "value"
     }
     name = "okta-ai-se"
-    type = "key-auth"
   }
   openid_connect = {
     config = {
@@ -74,7 +73,6 @@ resource "konnect_ai_gateway_identity_provider" "my_aigatewayidentityprovider" {
       key = "value"
     }
     name = "okta-ai-se"
-    type = "openid-connect"
   }
 }
 ```
@@ -106,7 +104,6 @@ Configuration for an identity provider. (see [below for nested schema](#nestedat
 This feature is currently in beta and is subject to change.
 
 A user-defined unique identifier for this identity provider instance, used as a stable human-readable reference. This value is immutable after creation.
-- `type` (String)
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--key_auth"></a>
@@ -131,7 +128,6 @@ This feature is currently in beta and is subject to change.
 
 A user-defined unique identifier for this identity provider instance, used as a stable human-readable reference. This value is immutable after creation.
 Not Null
-- `type` (String) Not Null; must be "key-auth"
 
 Read-Only:
 
@@ -179,7 +175,6 @@ This feature is currently in beta and is subject to change.
 
 A user-defined unique identifier for this identity provider instance, used as a stable human-readable reference. This value is immutable after creation.
 Not Null
-- `type` (String) Not Null; must be "openid-connect"
 
 Read-Only:
 

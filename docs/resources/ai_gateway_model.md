@@ -18,11 +18,12 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
   api = {
     access = {
       acls = {
-        ai_gateway_allow_acl = {
-          allow = [
-            "..."
-          ]
-        }
+        allow = [
+          "..."
+        ]
+        deny = [
+          "..."
+        ]
       }
       identity_providers = [
         "okta-ai-se"
@@ -148,11 +149,12 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
   model = {
     access = {
       acls = {
-        ai_gateway_allow_acl = {
-          allow = [
-            "..."
-          ]
-        }
+        allow = [
+          "..."
+        ]
+        deny = [
+          "..."
+        ]
       }
       identity_providers = [
         "okta-ai-se"
@@ -248,10 +250,10 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
           "..."
         ]
         model = {
-          ai_gateway_model_alias_config_body = {
-            body = {
-              key = jsonencode("value")
-            }
+          ai_gateway_model_alias_config_path = {
+            path_aliases = [
+              "@azure/claude-sonnet-5"
+            ]
           }
         }
         paths = [
@@ -394,26 +396,8 @@ At most 1 identity provider of each identity provider type can be referenced.
 
 Optional:
 
-- `ai_gateway_allow_acl` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--api--access--acls--ai_gateway_allow_acl))
-- `ai_gateway_deny_acl` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--api--access--acls--ai_gateway_deny_acl))
-
-<a id="nestedatt--api--access--acls--ai_gateway_allow_acl"></a>
-### Nested Schema for `api.access.acls.ai_gateway_allow_acl`
-
-Optional:
-
-- `allow` (List of String) List of Consumer Groups Names, or Authenticated Groups Names that are permitted access. Not Null
-
-
-<a id="nestedatt--api--access--acls--ai_gateway_deny_acl"></a>
-### Nested Schema for `api.access.acls.ai_gateway_deny_acl`
-
-Optional:
-
-- `deny` (List of String) List of Consumer Groups Names, or Authenticated Groups Names that are denied access. Not Null
-
+- `allow` (List of String) List of Consumer Groups Names, or Authenticated Groups Names that are permitted access.
+- `deny` (List of String) List of Consumer Groups Names, or Authenticated Groups Names that are denied access.
 
 
 
@@ -1019,25 +1003,7 @@ Optional:
 
 Optional:
 
-- `ai_gateway_model_alias_config_body` (Attributes) Configuration for routing requests to a specific model using a request body property. (see [below for nested schema](#nestedatt--api--config--route--model--ai_gateway_model_alias_config_body))
-- `ai_gateway_model_alias_config_headers` (Attributes) Configuration for routing requests to a specific model using a header. (see [below for nested schema](#nestedatt--api--config--route--model--ai_gateway_model_alias_config_headers))
 - `ai_gateway_model_alias_config_path` (Attributes) Configuration for routing requests to a specific model using a path alias. (see [below for nested schema](#nestedatt--api--config--route--model--ai_gateway_model_alias_config_path))
-
-<a id="nestedatt--api--config--route--model--ai_gateway_model_alias_config_body"></a>
-### Nested Schema for `api.config.route.model.ai_gateway_model_alias_config_body`
-
-Optional:
-
-- `body` (Map of String) Value indexed by property name that will cause this route to match if present in the request body. Not Null
-
-
-<a id="nestedatt--api--config--route--model--ai_gateway_model_alias_config_headers"></a>
-### Nested Schema for `api.config.route.model.ai_gateway_model_alias_config_headers`
-
-Optional:
-
-- `headers` (Map of String) Value indexed by property name that will cause this route to match if present in the request headers. Not Null
-
 
 <a id="nestedatt--api--config--route--model--ai_gateway_model_alias_config_path"></a>
 ### Nested Schema for `api.config.route.model.ai_gateway_model_alias_config_path`
@@ -1571,26 +1537,8 @@ At most 1 identity provider of each identity provider type can be referenced.
 
 Optional:
 
-- `ai_gateway_allow_acl` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--model--access--acls--ai_gateway_allow_acl))
-- `ai_gateway_deny_acl` (Attributes) **Pre-release Feature**
-This feature is currently in beta and is subject to change. (see [below for nested schema](#nestedatt--model--access--acls--ai_gateway_deny_acl))
-
-<a id="nestedatt--model--access--acls--ai_gateway_allow_acl"></a>
-### Nested Schema for `model.access.acls.ai_gateway_allow_acl`
-
-Optional:
-
-- `allow` (List of String) List of Consumer Groups Names, or Authenticated Groups Names that are permitted access. Not Null
-
-
-<a id="nestedatt--model--access--acls--ai_gateway_deny_acl"></a>
-### Nested Schema for `model.access.acls.ai_gateway_deny_acl`
-
-Optional:
-
-- `deny` (List of String) List of Consumer Groups Names, or Authenticated Groups Names that are denied access. Not Null
-
+- `allow` (List of String) List of Consumer Groups Names, or Authenticated Groups Names that are permitted access.
+- `deny` (List of String) List of Consumer Groups Names, or Authenticated Groups Names that are denied access.
 
 
 
@@ -2210,25 +2158,7 @@ Optional:
 
 Optional:
 
-- `ai_gateway_model_alias_config_body` (Attributes) Configuration for routing requests to a specific model using a request body property. (see [below for nested schema](#nestedatt--model--config--route--model--ai_gateway_model_alias_config_body))
-- `ai_gateway_model_alias_config_headers` (Attributes) Configuration for routing requests to a specific model using a header. (see [below for nested schema](#nestedatt--model--config--route--model--ai_gateway_model_alias_config_headers))
 - `ai_gateway_model_alias_config_path` (Attributes) Configuration for routing requests to a specific model using a path alias. (see [below for nested schema](#nestedatt--model--config--route--model--ai_gateway_model_alias_config_path))
-
-<a id="nestedatt--model--config--route--model--ai_gateway_model_alias_config_body"></a>
-### Nested Schema for `model.config.route.model.ai_gateway_model_alias_config_body`
-
-Optional:
-
-- `body` (Map of String) Value indexed by property name that will cause this route to match if present in the request body. Not Null
-
-
-<a id="nestedatt--model--config--route--model--ai_gateway_model_alias_config_headers"></a>
-### Nested Schema for `model.config.route.model.ai_gateway_model_alias_config_headers`
-
-Optional:
-
-- `headers` (Map of String) Value indexed by property name that will cause this route to match if present in the request headers. Not Null
-
 
 <a id="nestedatt--model--config--route--model--ai_gateway_model_alias_config_path"></a>
 ### Nested Schema for `model.config.route.model.ai_gateway_model_alias_config_path`

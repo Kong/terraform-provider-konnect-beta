@@ -3,11 +3,12 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
   api = {
     access = {
       acls = {
-        ai_gateway_allow_acl = {
-          allow = [
-            "..."
-          ]
-        }
+        allow = [
+          "..."
+        ]
+        deny = [
+          "..."
+        ]
       }
       identity_providers = [
         "okta-ai-se"
@@ -133,11 +134,12 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
   model = {
     access = {
       acls = {
-        ai_gateway_allow_acl = {
-          allow = [
-            "..."
-          ]
-        }
+        allow = [
+          "..."
+        ]
+        deny = [
+          "..."
+        ]
       }
       identity_providers = [
         "okta-ai-se"
@@ -233,10 +235,10 @@ resource "konnect_ai_gateway_model" "my_aigatewaymodel" {
           "..."
         ]
         model = {
-          ai_gateway_model_alias_config_body = {
-            body = {
-              key = jsonencode("value")
-            }
+          ai_gateway_model_alias_config_path = {
+            path_aliases = [
+              "@azure/claude-sonnet-5"
+            ]
           }
         }
         paths = [
