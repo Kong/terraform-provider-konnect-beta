@@ -27,6 +27,8 @@ func TestAIGateway(t *testing.T) {
 						resource.TestCheckResourceAttr("konnect_ai_gateway_config_store_secret.my_aigatewayconfigstoresecret", "value", "tf-test-secret-value"),
 						resource.TestCheckResourceAttr("konnect_ai_gateway_identity_provider.my_aigatewayidentityprovider", "name", "tf-test-key-auth-identity-provider"),
 						resource.TestCheckResourceAttr("konnect_ai_gateway_identity_provider.my_aigatewayidentityprovider2", "name", "tf-test-openid-connect-identity-provider"),
+						resource.TestCheckResourceAttr("konnect_ai_gateway_policy.my_aigatewaypolicy", "name", "ai-pii-sanitizer-1234"),
+						resource.TestCheckResourceAttr("konnect_ai_gateway_agent.my_aigatewayagent", "name", "tf-test-flight-booking-agent"),
 					),
 				},
 			},
